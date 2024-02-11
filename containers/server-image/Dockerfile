@@ -6,7 +6,12 @@ FROM $INIT_IMAGE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
+# Extra packages can be added via project configuration
+ARG EXTRAPACKAGES
+
 COPY timezone_alignment.sh /usr/bin
+
+COPY healthcheck.sh /usr/bin
 
 # Copy timezone link update service
 COPY timezone_alignment.service /usr/lib/systemd/system/
@@ -17,10 +22,10 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 # Main packages
 RUN zypper ref && zypper --non-interactive up
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
+    ${EXTRAPACKAGES} \
     ${PRODUCT_PATTERN_PREFIX}_server \
     ${PRODUCT_PATTERN_PREFIX}_retail \
     spacewalk-utils-extras \
-    shim \
     grub2-x86_64-efi \
     ed \
     susemanager-tftpsync \
@@ -52,6 +57,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     virtual-host-gatherer-Nutanix \
     virtual-host-gatherer-VMware \
     vim \
+    python3-pygit2 \
     ipmitool
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
@@ -71,6 +77,10 @@ COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
+# Set a warning message for interactive shells
+COPY motd /etc/motd
+RUN echo "cat /etc/motd" >/etc/sh.shrc.local
+
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
     systemctl enable timezone_alignment;
@@ -89,10 +99,11 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=4.4.1
+LABEL org.opencontainers.image.version=5.0.3
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:4.4.1.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 CMD ["/usr/lib/systemd/systemd"]
-HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
+HEALTHCHECK --interval=60s --timeout=120s --retries=5 --start-period=300s CMD ["/usr/bin/healthcheck.sh"]

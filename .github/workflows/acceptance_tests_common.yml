@@ -13,8 +13,25 @@ env:
   UYUNI_VERSION: master
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
 jobs:
+  paths-filter:
+    runs-on: ubuntu-latest
+    outputs:
+      require_acceptance_tests: ${{ steps.filter.outputs.require_acceptance_tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            require_acceptance_tests:
+              - 'java/**'
+              - 'web/html/src/**'
+              - 'testsuite/**'
+              - '!.github/workflows/**'
   test-uyuni:
     runs-on: ubuntu-22.04
+    needs: paths-filter
+    if: needs.paths-filter.outputs.require_acceptance_tests == 'true'
     steps:
       - name: fix podman
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
@@ -90,6 +107,8 @@ jobs:
       - name: run_cucumber_clients
         run: ./testsuite/podman_runner/17_run_init_clients_tests.sh
       - name: split_secondary
+        run: ./testsuite/podman_runner/19_split_secondary_tests.sh
+      - name: split_secondary_p
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
       - name: run_secondary_tests
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 

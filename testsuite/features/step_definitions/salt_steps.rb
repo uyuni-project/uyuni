@@ -471,6 +471,8 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   pkgs = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
   if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
+  elsif slemicro_host?(host)
+    target.run("test -e /usr/bin/zypper && transactional-update -n pkg install #{pkgs}", check_errors: false)
   elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
   elsif deb_host?(host)

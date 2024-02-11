@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -32,20 +32,6 @@ Feature: Sanity checks
     And reverse resolution should work for "proxy"
     And "proxy" should communicate with the server using public interface
     And the clock from "proxy" should be exact
-
-@sle12sp4_minion
-  Scenario: The SLES 12 SP4 minion is healthy
-    Then "sle12sp4_minion" should have a FQDN
-    And reverse resolution should work for "sle12sp4_minion"
-    And "sle12sp4_minion" should communicate with the server using public interface
-    And the clock from "sle12sp4_minion" should be exact
-
-@sle12sp4_ssh_minion
-  Scenario: The SLES 12 SP4 Salt SSH minion is healthy
-    Then "sle12sp4_minion" should have a FQDN
-    And reverse resolution should work for "sle12sp4_minion"
-    And "sle12sp4_minion" should communicate with the server using public interface
-    And the clock from "sle12sp4_minion" should be exact
 
 @sle12sp5_minion
   Scenario: The SLES 12 SP5 minion is healthy
@@ -397,19 +383,19 @@ Feature: Sanity checks
     And "opensuse155arm_ssh_minion" should communicate with the server using public interface
     And the clock from "opensuse155arm_ssh_minion" should be exact
 
-@sle15sp3s390_minion
-  Scenario: The SLES 15 SP3 s390x minion is healthy
-    Then "sle15sp3s390_minion" should have a FQDN
-    And reverse resolution should work for "sle15sp3s390_minion"
-    And "sle15sp3s390_minion" should communicate with the server using public interface
-    And the clock from "sle15sp3s390_minion" should be exact
+@sle15sp5s390_minion
+  Scenario: The SLES 15 SP5 s390x minion is healthy
+    Then "sle15sp5s390_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp5s390_minion"
+    And "sle15sp5s390_minion" should communicate with the server using public interface
+    And the clock from "sle15sp5s390_minion" should be exact
 
-@sle15sp3s390_ssh_minion
-  Scenario: The SLES 15 SP3 s390x SSH minion is healthy
-    Then "sle15sp3s390_ssh_minion" should have a FQDN
-    And reverse resolution should work for "sle15sp3s390_ssh_minion"
-    And "sle15sp3s390_ssh_minion" should communicate with the server using public interface
-    And the clock from "sle15sp3s390_ssh_minion" should be exact
+@sle15sp5s390_ssh_minion
+  Scenario: The SLES 15 SP5 s390x SSH minion is healthy
+    Then "sle15sp5s390_ssh_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp5s390_ssh_minion"
+    And "sle15sp5s390_ssh_minion" should communicate with the server using public interface
+    And the clock from "sle15sp5s390_ssh_minion" should be exact
 
 @sle12sp5_buildhost
   Scenario: The SLES 12 SP5 build host is healthy

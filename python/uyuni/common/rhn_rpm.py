@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -30,7 +31,7 @@ from rhn.stringutils import sstr
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
 
-if not hasattr(tempfile, 'SpooledTemporaryFile'):
+if not hasattr(tempfile, "SpooledTemporaryFile"):
     # RHEL5
     tempfile.SpooledTemporaryFile = tempfile.NamedTemporaryFile
 
@@ -40,7 +41,7 @@ error = rpm.error
 
 sym, val = None, None
 for sym, val in list(rpm.__dict__.items()):
-    if sym[:3] == 'RPM':
+    if sym[:3] == "RPM":
         # A constant, probably - import it into our namespace
         globals()[sym] = val
 del sym, val
@@ -60,26 +61,26 @@ rpm.RPMTAG_MODULARITYLABEL = 5096
 # PGPHASHALGO_SHA384          =  9,   /*!< SHA384 */
 # PGPHASHALGO_SHA512          = 10,   /*!< SHA512 */
 PGPHASHALGO = {
-    1: 'md5',
-    2: 'sha1',
-    3: 'ripemd160',
-    5: 'md2',
-    6: 'tiger192',
-    7: 'haval-5-160',
-    8: 'sha256',
-    9: 'sha384',
-    10: 'sha512',
+    1: "md5",
+    2: "sha1",
+    3: "ripemd160",
+    5: "md2",
+    6: "tiger192",
+    7: "haval-5-160",
+    8: "sha256",
+    9: "sha384",
+    10: "sha512",
 }
 
 
+# pylint: disable-next=invalid-name
 class RPM_Header:
-
     "Wrapper class for an rpm header - we need to store a flag is_source"
 
     def __init__(self, hdr, is_source=None):
         self.hdr = hdr
         self.is_source = is_source
-        self.packaging = 'rpm'
+        self.packaging = "rpm"
         self.signatures = []
         self._extract_signatures()
 
@@ -132,18 +133,21 @@ class RPM_Header:
         mtag = None
         if rpm.RPMTAG_MODULARITYLABEL in self.hdr.keys():
             mtag = self.hdr[rpm.RPMTAG_MODULARITYLABEL]
-        elif rpm.RPMTAG_DISTTAG in self.hdr.keys() \
-                and self.hdr[rpm.RPMTAG_DISTTAG].startswith(b"module("):
+        elif rpm.RPMTAG_DISTTAG in self.hdr.keys() and self.hdr[
+            rpm.RPMTAG_DISTTAG
+        ].startswith(b"module("):
             # Strip away 'module(...)' wrap
             mtag = self.hdr[rpm.RPMTAG_DISTTAG][7:-1]
         return mtag
 
     def checksum_type(self):
-        if self.hdr[rpm.RPMTAG_FILEDIGESTALGO] \
-                and self.hdr[rpm.RPMTAG_FILEDIGESTALGO] in PGPHASHALGO:
+        if (
+            self.hdr[rpm.RPMTAG_FILEDIGESTALGO]
+            and self.hdr[rpm.RPMTAG_FILEDIGESTALGO] in PGPHASHALGO
+        ):
             checksum_type = PGPHASHALGO[self.hdr[rpm.RPMTAG_FILEDIGESTALGO]]
         else:
-            checksum_type = 'md5'
+            checksum_type = "md5"
         return checksum_type
 
     def is_signed(self):
@@ -160,7 +164,7 @@ class RPM_Header:
             [rpm.RPMTAG_DSAHEADER, "dsa"],
             [rpm.RPMTAG_RSAHEADER, "rsa"],
             [rpm.RPMTAG_SIGGPG, "gpg"],
-            [rpm.RPMTAG_SIGPGP, 'pgp'],
+            [rpm.RPMTAG_SIGPGP, "pgp"],
         ]
         for ht, sig_type in header_tags:
             ret = self.hdr[ht]
@@ -184,17 +188,21 @@ class RPM_Header:
                 key_id = ret[19:27]
 
             key_id_len = len(key_id)
+            # pylint: disable-next=consider-using-f-string
             fmt = "%dB" % key_id_len
             t = struct.unpack(fmt, key_id)
             fmt = "%02x" * key_id_len
             key_id = fmt % t
-            self.signatures.append({
-                'signature_type': sig_type,
-                'key_id': key_id,
-                'signature': ret,
-            })
+            self.signatures.append(
+                {
+                    "signature_type": sig_type,
+                    "key_id": key_id,
+                    "signature": ret,
+                }
+            )
 
 
+# pylint: disable-next=missing-class-docstring,invalid-name
 class RPM_Package(A_Package):
     # pylint: disable=R0902
 
@@ -267,12 +275,13 @@ class RPM_Package(A_Package):
         try:
             # Read the number of index entries
             header_index = struct_lead[8:12]
-            (header_index_value, ) = struct.unpack('>I', header_index)
+            (header_index_value,) = struct.unpack(">I", header_index)
 
             # Read the the size of the header data store
             header_store = struct_lead[12:16]
-            (header_store_value, ) = struct.unpack('>I', header_store)
+            (header_store_value,) = struct.unpack(">I", header_store)
         except:
+            # pylint: disable-next=raise-missing-from
             raise InvalidPackageError
 
         # The total size of the header. Each index entry is 16 bytes long.
@@ -337,12 +346,13 @@ def get_header_struct_size(package_file):
     try:
         # Read the number of index entries
         header_index = package_file.read(4)
-        (header_index_value, ) = struct.unpack('>I', header_index)
+        (header_index_value,) = struct.unpack(">I", header_index)
 
         # Read the the size of the header data store
         header_store = package_file.read(4)
-        (header_store_value, ) = struct.unpack('>I', header_store)
+        (header_store_value,) = struct.unpack(">I", header_store)
     except:
+        # pylint: disable-next=raise-missing-from
         raise InvalidPackageError
 
     # The total size of the header. Each index entry is 16 bytes long.
@@ -355,21 +365,23 @@ def get_header_struct_size(package_file):
 
     return header_size
 
+
 SHARED_TS = None
 
 
 def get_package_header(filename=None, file_obj=None, fd=None):
-    """ Loads the package header from a file / stream / file descriptor
-        Raises rpm.error if an error is found, or InvalidPacageError if package is
-        busted
+    """Loads the package header from a file / stream / file descriptor
+    Raises rpm.error if an error is found, or InvalidPacageError if package is
+    busted
     """
     global SHARED_TS
     # XXX Deal with exceptions better
-    if (filename is None and file_obj is None and fd is None):
+    if filename is None and file_obj is None and fd is None:
         raise ValueError("No parameters passed")
 
     if filename is not None:
-        f = open(filename, 'r')
+        # pylint: disable-next=unspecified-encoding
+        f = open(filename, "r")
     elif file_obj is not None:
         f = file_obj
         f.seek(0, 0)
@@ -388,12 +400,12 @@ def get_package_header(filename=None, file_obj=None, fd=None):
         SHARED_TS = rpm.ts()
     SHARED_TS.setVSFlags(-1)
 
-    rpm.addMacro('_dbpath', '/var/cache/rhn/rhnpush-rpmdb')
+    rpm.addMacro("_dbpath", "/var/cache/rhn/rhnpush-rpmdb")
     try:
         hdr = SHARED_TS.hdrFromFdno(file_desc)
-        rpm.delMacro('_dbpath')
+        rpm.delMacro("_dbpath")
     except:
-        rpm.delMacro('_dbpath')
+        rpm.delMacro("_dbpath")
         raise
 
     if hdr is None:
@@ -403,8 +415,8 @@ def get_package_header(filename=None, file_obj=None, fd=None):
     return RPM_Header(hdr, is_source)
 
 
+# pylint: disable-next=missing-class-docstring
 class MatchIterator:
-
     def __init__(self, tag_name=None, value=None):
         # Query by name, by default
         if not tag_name:
@@ -435,12 +447,14 @@ class MatchIterator:
         return RPM_Header(hdr, is_source)
 
 
+# pylint: disable-next=invalid-name
 def headerLoad(data):
     hdr = rpm.headerLoad(data)
     is_source = hdr[rpm.RPMTAG_SOURCEPACKAGE]
     return RPM_Header(hdr, is_source)
 
 
+# pylint: disable-next=invalid-name
 def labelCompare(t1, t2):
     return rpm.labelCompare(t1, t2)
 
@@ -452,30 +466,33 @@ def nvre_compare(t1, t2):
         if evr[0] == "":
             evr[0] = None
         return evr
+
     if t1[0] != t2[0]:
         raise ValueError("You should only compare packages with the same name")
     evr1, evr2 = (build_evr(t1), build_evr(t2))
     return rpm.labelCompare(evr1, evr2)
 
 
+# pylint: disable-next=invalid-name
 def hdrLabelCompare(hdr1, hdr2):
-    """ take two RPMs or headers and compare them for order """
+    """take two RPMs or headers and compare them for order"""
 
-    if hdr1['name'] == hdr2['name']:
-        hdr1 = [hdr1['epoch'] or None, hdr1['version'], hdr1['release']]
-        hdr2 = [hdr2['epoch'] or None, hdr2['version'], hdr2['release']]
+    if hdr1["name"] == hdr2["name"]:
+        hdr1 = [hdr1["epoch"] or None, hdr1["version"], hdr1["release"]]
+        hdr2 = [hdr2["epoch"] or None, hdr2["version"], hdr2["release"]]
         if hdr1[0]:
             hdr1[0] = str(hdr1[0])
         if hdr2[0]:
             hdr2[0] = str(hdr2[0])
         return rpm.labelCompare(hdr1, hdr2)
-    elif hdr1['name'] < hdr2['name']:
+    elif hdr1["name"] < hdr2["name"]:
         return -1
     return 1
 
 
+# pylint: disable-next=invalid-name
 def sortRPMs(rpms):
-    """ Sorts a list of RPM files. They *must* exist.  """
+    """Sorts a list of RPM files. They *must* exist."""
 
     assert isinstance(rpms, type([]))
 
@@ -483,7 +500,8 @@ def sortRPMs(rpms):
     helper = [(get_package_header(x), x) for x in rpms]
 
     # Sort the list using the headers as a comparison
-    sort_cmp=lambda x, y: hdrLabelCompare(x[0], y[0])
+    # pylint: disable-next=unnecessary-lambda-assignment
+    sort_cmp = lambda x, y: hdrLabelCompare(x[0], y[0])
     try:
         helper.sort(sort_cmp)
     except TypeError:
@@ -493,13 +511,14 @@ def sortRPMs(rpms):
     return [x[1] for x in helper]
 
 
+# pylint: disable-next=invalid-name
 def getInstalledHeader(rpmName):
-    """ quieries the RPM DB for a header matching rpmName. """
+    """quieries the RPM DB for a header matching rpmName."""
 
     matchiter = MatchIterator("name")
     matchiter.pattern("name", rpm.RPMMIRE_STRCMP, rpmName)
     return matchiter.next()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

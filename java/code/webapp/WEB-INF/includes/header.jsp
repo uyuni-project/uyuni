@@ -8,8 +8,8 @@
 
 <div id="messages-container"></div>
 
-<div class="header-content">
-  <div class="navbar-header">
+<div class="header-content container-fluid">
+  <div class="navbar-header d-flex flex-row">
     <a href="#" class="navbar-toggle">
       <i class="fa fa-bars" aria-hidden="true"></i>
     </a>
@@ -22,7 +22,7 @@
   </div>
 
   <rhn:require acl="user_authenticated()">
-    <ul class="nav navbar-nav navbar-utility">
+    <ul class="nav navbar-nav navbar-utility d-flex flex-row">
       <li>
         <a href="/rhn/account/UserDetails.do"
           title="${requestScope.session.user.login}">
@@ -62,7 +62,7 @@
         </a>
       </li>
     </ul>
-    <ul class="nav navbar-nav navbar-primary">
+    <ul class="nav navbar-nav navbar-primary d-flex flex-row">
       <li id="notifications">
         <script>
           spaImportReactPage('notifications/notifications');
@@ -97,7 +97,7 @@
   </rhn:require>
 
   <rhn:require acl="not user_authenticated()">
-    <ul class="nav navbar-nav navbar-utility">
+    <ul class="nav navbar-nav navbar-utility d-flex flex-row">
       <li>
         <a class="about-link" href="/rhn/help/about.do"><bean:message key="About Spacewalk"/></a>
       </li>

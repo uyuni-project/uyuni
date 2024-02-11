@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -18,8 +19,8 @@
 from .importLib import Import
 
 
+# pylint: disable-next=missing-class-docstring
 class ProductNamesImport(Import):
-
     def __init__(self, batch, backend):
         Import.__init__(self, batch, backend)
 

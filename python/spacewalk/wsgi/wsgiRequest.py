@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2010--2016 Red Hat, Inc.
 #
@@ -16,6 +17,7 @@
 
 
 import socket
+
 try:
     #  python 2
     import httplib
@@ -24,24 +26,31 @@ except ImportError:
     import http.client as httplib
 
 
+# pylint: disable-next=missing-class-docstring
 class WsgiRequest:
     # pylint: disable=R0902
 
     def __init__(self, env, start_response):
-        self.method = env['REQUEST_METHOD']
+        self.method = env["REQUEST_METHOD"]
         self.headers_in = env
-        self.path_info = env['PATH_INFO']
+        self.path_info = env["PATH_INFO"]
         self.start_response = start_response
-        self.uri = self.unparsed_uri = env['REQUEST_URI']
-        self.server = WsgiServer(env['SERVER_NAME'], env['SERVER_PORT'])
+        self.uri = self.unparsed_uri = env["REQUEST_URI"]
+        self.server = WsgiServer(env["SERVER_NAME"], env["SERVER_PORT"])
         self.connection = WsgiConnection(env)
         self.options = {}
         self.main = 0
-        self.proto_num = float(env['SERVER_PROTOCOL'].split('/')[1])
+        self.proto_num = float(env["SERVER_PROTOCOL"].split("/")[1])
         self.headers_out = WsgiMPtable()
         self.sent_header = 0
         self.content_type = ""
-        self.the_request = env['REQUEST_METHOD'] + " " + env['SCRIPT_NAME'] + " " + env['SERVER_PROTOCOL']
+        self.the_request = (
+            env["REQUEST_METHOD"]
+            + " "
+            + env["SCRIPT_NAME"]
+            + " "
+            + env["SERVER_PROTOCOL"]
+        )
         self.output = []
         self.err_headers_out = WsgiMPtable()
         self.status = ""
@@ -81,29 +90,30 @@ class WsgiRequest:
             self.status = self.status + " Status " + self.status
 
         if len(self.content_type) > 0:
-            self.headers_out['Content-Type'] = self.content_type
+            self.headers_out["Content-Type"] = self.content_type
         # default to text/xml
-        if not self.headers_out.has_key('Content-Type'):
-            self.headers_out['Content-Type'] = 'text/xml'
+        if not self.headers_out.has_key("Content-Type"):
+            self.headers_out["Content-Type"] = "text/xml"
 
         # leave transfer encoding settings to wsgi as at least 'chunked'
         # create problems
-        self.headers_out.remove_key('Transfer-Encoding')
+        self.headers_out.remove_key("Transfer-Encoding")
 
         self.start_response(self.status, list(self.headers_out.items()))
         return
 
     def get_remote_host(self, _rev=""):
-        host = self.headers_in['REMOTE_ADDR']
+        host = self.headers_in["REMOTE_ADDR"]
         try:
             host = socket.gethostbyaddr(host)[0]
+        # pylint: disable-next=bare-except
         except:
             # pylint: disable=W0702
             pass
         return host
 
     def read(self, buf=-1):
-        return self.headers_in['wsgi.input'].read(buf)
+        return self.headers_in["wsgi.input"].read(buf)
 
 
 class WsgiServer:
@@ -118,26 +128,26 @@ class WsgiConnection:
     # pylint: disable=R0903
 
     def __init__(self, env):
-        self.remote_ip = env['REMOTE_ADDR']
-        self.local_addr = (env['SERVER_NAME'], env['SERVER_PORT'])
+        self.remote_ip = env["REMOTE_ADDR"]
+        self.local_addr = (env["SERVER_NAME"], env["SERVER_PORT"])
 
 
 class WsgiMPtable:
 
-    """ This class emulates mod_python's mp_table. See
-        http://www.modpython.org/live/current/doc-html/pyapi-mptable.html
+    """This class emulates mod_python's mp_table. See
+    http://www.modpython.org/live/current/doc-html/pyapi-mptable.html
 
-        The table object is a wrapper around the Apache APR table. The table
-        object behaves very much like a dictionary (including the Python 2.2
-        features such as support of the in operator, etc.), with the following
-        differences:
+    The table object is a wrapper around the Apache APR table. The table
+    object behaves very much like a dictionary (including the Python 2.2
+    features such as support of the in operator, etc.), with the following
+    differences:
 
-        ...
-        - Duplicate keys are allowed (see add() below). When there is more
-          than one value for a key, a subscript operation returns a list.
+    ...
+    - Duplicate keys are allowed (see add() below). When there is more
+      than one value for a key, a subscript operation returns a list.
 
-        Much of the information that Apache uses is stored in tables.
-        For example, req.headers_in and req.headers_out.
+    Much of the information that Apache uses is stored in tables.
+    For example, req.headers_in and req.headers_out.
     """
 
     def __init__(self):

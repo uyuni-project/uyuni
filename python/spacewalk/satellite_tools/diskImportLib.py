@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Common dumper stuff
 #
@@ -42,11 +43,13 @@ class Backend:
         Backend.__backend = SQLBackend()
         return Backend.__backend
 
+
 # get_backend() returns a shared instance of an Oracle backend
 
 
 def get_backend():
     return Backend().get_backend()
+
 
 # Functions for dumping packages
 
@@ -65,6 +68,7 @@ def rpmsPath(obj_id, mountPoint, sources=0):
 class diskImportLibContainer:
 
     """virtual class - redefines endContainerCallback"""
+
     # pylint: disable=E1101,E0203,W0201
     # this class has no __init__ for the purpose
     # it's used in multiple inheritance mode and inherited classes should
@@ -78,6 +82,7 @@ class diskImportLibContainer:
         self.batch = []
 
 
+# pylint: disable-next=missing-class-docstring
 class OrgContainer(xmlSource.OrgContainer):
     importer_class = orgImport.OrgImport
     master_label = None
@@ -91,8 +96,9 @@ class OrgContainer(xmlSource.OrgContainer):
         self.create_orgs = create_orgs
 
     def endContainerCallback(self):
-        importer = self.importer_class(self.batch, get_backend(),
-                                       self.master_label, self.create_orgs)
+        importer = self.importer_class(
+            self.batch, get_backend(), self.master_label, self.create_orgs
+        )
         importer.run()
         self.batch = []
 
@@ -122,19 +128,27 @@ class CPUArchContainer(diskImportLibContainer, xmlSource.CPUArchContainer):
     importer_class = archImport.CPUArchImport
 
 
-class ServerPackageArchCompatContainer(diskImportLibContainer, xmlSource.ServerPackageArchCompatContainer):
+class ServerPackageArchCompatContainer(
+    diskImportLibContainer, xmlSource.ServerPackageArchCompatContainer
+):
     importer_class = archImport.ServerPackageArchCompatImport
 
 
-class ServerChannelArchCompatContainer(diskImportLibContainer, xmlSource.ServerChannelArchCompatContainer):
+class ServerChannelArchCompatContainer(
+    diskImportLibContainer, xmlSource.ServerChannelArchCompatContainer
+):
     importer_class = archImport.ServerChannelArchCompatImport
 
 
-class ChannelPackageArchCompatContainer(diskImportLibContainer, xmlSource.ChannelPackageArchCompatContainer):
+class ChannelPackageArchCompatContainer(
+    diskImportLibContainer, xmlSource.ChannelPackageArchCompatContainer
+):
     importer_class = archImport.ChannelPackageArchCompatImport
 
 
-class ServerGroupServerArchCompatContainer(diskImportLibContainer, xmlSource.ServerGroupServerArchCompatContainer):
+class ServerGroupServerArchCompatContainer(
+    diskImportLibContainer, xmlSource.ServerGroupServerArchCompatContainer
+):
     importer_class = archImport.ServerGroupServerArchCompatImport
 
 
@@ -153,64 +167,98 @@ class PackageContainer(diskImportLibContainer, xmlSource.PackageContainer):
 class SourcePackageContainer(diskImportLibContainer, xmlSource.SourcePackageContainer):
     importer_class = SourcePackageImport
 
-class SupportInformationContainer(diskImportLibContainer, xmlSource.SupportInformationContainer):
+
+class SupportInformationContainer(
+    diskImportLibContainer, xmlSource.SupportInformationContainer
+):
     importer_class = supportInformationImport.SupportInformationImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
+
 
 class SuseProductsContainer(diskImportLibContainer, xmlSource.SuseProductsContainer):
     importer_class = suseProductsImport.SuseProductsImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
 
-class SuseProductChannelsContainer(diskImportLibContainer, xmlSource.SuseProductChannelsContainer):
+
+class SuseProductChannelsContainer(
+    diskImportLibContainer, xmlSource.SuseProductChannelsContainer
+):
     importer_class = suseProductsImport.SuseProductChannelsImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
 
-class SuseUpgradePathsContainer(diskImportLibContainer, xmlSource.SuseUpgradePathsContainer):
+
+class SuseUpgradePathsContainer(
+    diskImportLibContainer, xmlSource.SuseUpgradePathsContainer
+):
     importer_class = suseProductsImport.SuseUpgradePathsImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
 
-class SuseProductExtensionsContainer(diskImportLibContainer, xmlSource.SuseProductExtensionsContainer):
+
+class SuseProductExtensionsContainer(
+    diskImportLibContainer, xmlSource.SuseProductExtensionsContainer
+):
     importer_class = suseProductsImport.SuseProductExtensionsImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
 
-class SuseProductRepositoriesContainer(diskImportLibContainer, xmlSource.SuseProductRepositoriesContainer):
+
+class SuseProductRepositoriesContainer(
+    diskImportLibContainer, xmlSource.SuseProductRepositoriesContainer
+):
     importer_class = suseProductsImport.SuseProductRepositoriesImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
 
-class SCCRepositoriesContainer(diskImportLibContainer, xmlSource.SCCRepositoriesContainer):
+
+class SCCRepositoriesContainer(
+    diskImportLibContainer, xmlSource.SCCRepositoriesContainer
+):
     importer_class = suseProductsImport.SCCRepositoriesImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
 
-class SuseSubscriptionsContainer(diskImportLibContainer, xmlSource.SuseSubscriptionsContainer):
+
+class SuseSubscriptionsContainer(
+    diskImportLibContainer, xmlSource.SuseSubscriptionsContainer
+):
     importer_class = suseProductsImport.SuseSubscriptionsImport
+
     def endContainerCallback(self):
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
 
-class ClonedChannelsContainer(diskImportLibContainer, xmlSource.ClonedChannelsContainer):
+
+class ClonedChannelsContainer(
+    diskImportLibContainer, xmlSource.ClonedChannelsContainer
+):
     importer_class = suseProductsImport.ClonedChannelsImport
+
     def endContainerCallback(self):
         if not self.batch:
             return

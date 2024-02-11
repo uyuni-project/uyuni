@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -14,6 +15,7 @@
 #
 
 import sys
+
 try:
     #  python 2
     import xmlrpclib
@@ -37,7 +39,7 @@ from spacewalk.common import rhnFlags
 
 # default template values for error messages
 templateValues = {
-    'hostname': 'example.com',
+    "hostname": "example.com",
 }
 
 
@@ -70,146 +72,166 @@ FaultArray = {
     22: _("Unable to retrieve requested entry."),
     23: _("Could not update database entry."),
     24: _("Unsupported server architecture."),
-    28: _("""
+    28: _(
+        """
      The anonymous server functionality is no longer available.
 
      Please re-register this system by running mgr_register as root.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
      or login at https://%(hostname)s, and from the "Overview" tab,
      select "Subscription Management" to enable the service for this system.
-     """),
+     """
+    ),
     29: _("Record not available in the database."),
     30: _("Invalid value for entry."),
-    31: _("""
+    31: _(
+        """
      This system does not have a valid entitlement for SUSE Manager.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
      or login at https://%(hostname)s, and from the "Overview" tab,
      select "Subscription Management" to enable the service for this system.
-     """),
+     """
+    ),
     32: _("Channel error"),
     33: _("Client session token is invalid."),
     34: _("Client session token has expired."),
     35: _("You are not authorized to retrieve the requested object."),
     36: _("Invalid action"),
-    37: _("You are not allowed to perform administrative tasks \
-on this system."),
+    37: _(
+        "You are not allowed to perform administrative tasks \
+on this system."
+    ),
     38: _("The system is already subscribed to the specified channel."),
     39: _("The system is not currently subscribed to the specified channel."),
     40: _("The specified channel does not exist."),
     41: _("Invalid channel version."),
-    43: _("""
+    43: _(
+        """
      User group membership limits exceeded.
 
      The current settings for your account do not allow you to add another
      user account. Please check with the organization administrator for your
      account if the maximum number of users allowed to subscribe to server needs
      to be changed.
-     """),
-    44: _("""
+     """
+    ),
+    44: _(
+        """
      System group membership limits exceeded.
 
      The current settings for your account do not allow you to add another
      system profile. Please check with the organization administrator for your
      account for modifying the maximum number of system profiles that can be
      subscribed to your account.
-     """),
-    45: _("""
+     """
+    ),
+    45: _(
+        """
      Invalid architecture.
 
      The architecture of the package is not supported by
-     """ + PRODUCT_NAME),
+     """
+        + PRODUCT_NAME
+    ),
     47: _("""Invalid RPM header"""),
-    48: _("""
+    48: _(
+        """
     This system is already registered as a Salt Minion. If you want to register it as a traditional client
     please delete it first via the web UI or API and then register it using the traditional tools.
-    """),
+    """
+    ),
     # For the uploading tools
     50: _("Invalid information uploaded to the server"),
     53: _("Error uploading network interfaces configuration."),
-    54: _("""
+    54: _(
+        """
      Package Upload Failed due to uniqueness constraint violation.
      Make sure the package does not have any duplicate dependencies or
      does not already exists on the server
-     """),
-    55: _("""
+     """
+    ),
+    55: _(
+        """
      The --force mgrpush option is disabled on this server.
      Please contact your SUSE Manager administrator for more help.
-     """),
-
+     """
+    ),
     # 60-70: token errors
-    60: _("""
+    60: _(
+        """
      The activation token specified could not be found on the server.
      Please retry with a valid key.
-     """),
+     """
+    ),
     61: _("Too many systems registered using this registration token"),
     62: _("Token contains invalid, obsoleted or insufficient settings"),
     63: _("Conflicting activation tokens"),
-
     # 70-80: channel subscription errors
-    70: _("""
+    70: _(
+        """
      No matching base channel found for your system.
-     """),
-    71: _("""
+     """
+    ),
+    71: _(
+        """
      You do not have subscription permission to the designated channel.
      Please refer to your organization's channel or organization
      administrators for further details.
-     """),
+     """
+    ),
     72: _("""You can not unsubscribe from base channel."""),
     73: _("""SUSE Manager or Proxy channel can not be subscribed."""),
-
     # 80-90: server group errors
     80: _("There was an error while trying to join the system to its groups"),
-
     # 90-100: entitlement errors
     90: _("Unable to entitle system"),
-
     # 100-109: e-mail and uuid related faults
     100: _("Maximum e-mail length violation."),
     105: _("This system has been previously registered."),
     106: _("Invalid username"),
-
     # 140-159 applet errors
     140: _("Unable to look up server"),
-
     # 160-179: OSAD errors
     160: _("Required argument is missing"),
-
     # 600-699: RHEL5+ EN errors
     601: _("No entitlement information tied to hardware"),
     602: _("Installation number is not entitling"),
-
     # 700-799: Additional user input verification errors.
     700: _("Maximum username length violation"),
     701: _("Maximum password length violation"),
     702: _("This user has read only API access. Action denied."),
-
     800: _("System Name cannot be less than 1 character"),
-
     # 1000-1999: Proxy specific errors:
     # issued by a Proxy to the client
     1000: _("SUSE Manager Proxy error."),
     1001: _("SUSE Manager Proxy unable to login."),
     # issued by a SUSE Manager Server/Satellite to the proxy
-    1002: _("""
+    1002: _(
+        """
      SUSE Manager Proxy system ID does not match a Spacewalk Proxy Server
      in the database.
-     """),
+     """
+    ),
     1003: _("SUSE Manager Proxy session token is invalid."),
     1004: _("SUSE Manager Proxy session token has expired."),
-
-
     # 2000-2999: Red Hat Satellite specific errors:
-    2001: _(PRODUCT_NAME + """
+    2001: _(
+        PRODUCT_NAME
+        + """
       user creation is not allowed via mgr_register;
      please contact your sysadmin to have your account created.
-     """),
-    2004: _("""
+     """
+    ),
+    2004: _(
+        """
      This SUSE Manager server is not allowed to use Inter Server Sync on this server
-     """),
-    2005: _("""
+     """
+    ),
+    2005: _(
+        """
      Inter Server Sync is disabled on this SUSE Manager Server.
-     """),
-
+     """
+    ),
     # 3000-3999: XML dumper errors:
     3000: _("Invalid datatype passed"),
     3001: _("Unable to retrieve channel"),
@@ -224,7 +246,6 @@ on this system."),
     3013: _("Invalid channel version"),
     3015: _("No comps file for channel"),
     3016: _("Unable to retrieve comps file"),
-
     # 4000 - 4999: config management errors
     4002: _("Configuration action missing"),
     4003: _("File too large"),
@@ -242,7 +263,6 @@ on this system."),
     4015: _("Full path of file must be specified"),
     4016: _("Invalid revision number"),
     4017: _("Cannot compare files of different file type"),
-
     # 5100 - 5199: scap results reporting error
     5101: _("SCAP results file transfer is invalid or incomplete"),
     5102: _("Error composing directory path for detailed SCAP results"),
@@ -270,7 +290,8 @@ class rhnException(Exception):
         s = StringIO()
         s.write("\nInternal code error. Information available:\n")
         for a in self.args:
-            s.write("  %s\n" % (a, ))
+            # pylint: disable-next=consider-using-f-string
+            s.write("  %s\n" % (a,))
 
         return s.getvalue()
 
@@ -294,13 +315,15 @@ class redirectException(Exception):
         return repr(self.path)
 
 
-Explain = _("""
+Explain = _(
+    """
      An error has occurred while processing your request. If this problem
      persists please enter a bug report at scc.suse.com.
      If you choose to submit the bug report, please be sure to include
      details of what you were trying to do when this error occurred and
      details on how to reproduce this problem.
-""")
+"""
+)
 
 
 class rhnFault(Exception):
@@ -318,7 +341,7 @@ class rhnFault(Exception):
         self.code = err_code
         self.text = err_text
         self.explain = explain
-        self.arrayText = ''
+        self.arrayText = ""
         if self.code and self.code in FaultArray:
             self.arrayText = FaultArray[self.code]
         Exception.__init__(self, self.code, self.text, self.arrayText)
@@ -327,14 +350,13 @@ class rhnFault(Exception):
         """
         String representation of this object.
         """
-        return "<rhnFault class (code = %s, text = '%s')>" % (self.code,
-                                                              self.text)
+        # pylint: disable-next=consider-using-f-string
+        return "<rhnFault class (code = %s, text = '%s')>" % (self.code, self.text)
 
     def getxml(self):
-
         # see if there were any template strings loaded from the db,
         # {label:value}
-        templateOverrides = rhnFlags.get('templateOverrides')
+        templateOverrides = rhnFlags.get("templateOverrides")
 
         # update the templateValues in the module
         if templateOverrides:
@@ -361,8 +383,10 @@ class rhnFault(Exception):
 
 class rhnNotFound(Exception):
 
-    """ Raised when we want return 404 Not Found """
+    """Raised when we want return 404 Not Found"""
+
     pass
+
 
 if __name__ == "__main__":
     print("You can not run this module by itself")

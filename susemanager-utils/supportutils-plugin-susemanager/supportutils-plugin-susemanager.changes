@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:51:37 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Add Salt and Reposync connections to min. required DB connections calculation
+
+-------------------------------------------------------------------
+Tue Jan 16 08:25:53 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Updated query to the new credentials structure
+
+-------------------------------------------------------------------
+Fri Dec 15 17:27:05 CET 2023 - rosuna@suse.com
+
+- version 4.4.6-1
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+
+-------------------------------------------------------------------
 Mon Sep 18 14:38:09 CEST 2023 - rosuna@suse.com
 
 - version 4.4.5-1

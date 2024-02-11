@@ -29,22 +29,11 @@
     <!-- import plugins styles -->
     <link rel="stylesheet" href="/css/legacy/jquery.timepicker.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/css/bootstrap-datepicker.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
     <!-- import styles -->
     <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
-    <c:choose>
-      <c:when test="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}">
-        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme" disabled="disabled"/>
-        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme"/>
-      </c:when>
-      <c:otherwise>
-        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme"/>
-        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme" disabled="disabled"/>
-      </c:otherwise>
-    </c:choose>
-
+    <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme"/>
+    
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>
     <script>window.preferredLocale='${currentLocale}'</script>
@@ -71,7 +60,6 @@
 
     <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>
     <script src="/javascript/legacy/bootstrap.min.js?cb=${cb_version}"></script>
-    <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
     <script src="/javascript/ajax.js?cb=${cb_version}"></script>

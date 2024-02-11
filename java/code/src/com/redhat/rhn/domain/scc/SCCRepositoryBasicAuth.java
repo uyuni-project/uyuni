@@ -59,7 +59,7 @@ public class SCCRepositoryBasicAuth extends SCCRepositoryAuth {
 
             List<String> sourceParams = new ArrayList<>(Arrays.asList(
                     StringUtils.split(Optional.ofNullable(url.getQuery()).orElse(""), '&')));
-            sourceParams.add(MIRRCRED_QUERY + getCredentials().getId());
+            sourceParams.add(MIRRCRED_QUERY + getOptionalCredentials().orElseThrow().getId());
             String newQuery = StringUtils.join(sourceParams, "&");
 
             URI newURI = new URI(url.getScheme(), url.getUserInfo(), url.getHost(), url.getPort(),

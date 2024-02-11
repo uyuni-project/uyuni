@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Mon Jan 29 13:56:25 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-1
+  * Revert py2.7-incompatible formatting 
+
+-------------------------------------------------------------------
+Mon Jan 29 11:46:36 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Apply Black and Pylint to enforce Python style
+
+-------------------------------------------------------------------
+Tue Jan 16 08:08:10 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Use localhost without ssl when running on the server
+
+-------------------------------------------------------------------
+Fri Dec 15 16:57:45 CET 2023 - rosuna@suse.com
+
+- version 4.4.10-1
+  * Update translation strings
+
+-------------------------------------------------------------------
 Wed Nov 01 20:54:15 CET 2023 - marina.latini@suse.com
 
 - version 4.4.9-1

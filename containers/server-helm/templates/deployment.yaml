@@ -54,6 +54,22 @@ spec:
         volumeMounts:
           - mountPath: /mnt
             name: var-cobbler
+      - name: init-var-salt
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        command:
+          - sh
+          - -x
+          - -c
+          - >
+            chown --reference=/var/lib/salt /mnt;
+            chmod --reference=/var/lib/salt /mnt;
+            if [ -z "$(ls -A /mnt)" ]; then
+              cp -a /var/lib/salt/. /mnt;
+            fi
+        volumeMounts:
+          - mountPath: /mnt
+            name: var-salt
       - name: init-var-pgsql
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -115,7 +131,7 @@ spec:
         volumeMounts:
           - mountPath: /mnt
             name: srv-salt
-      - name: init-srv-www-pub
+      - name: init-srv-www
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
         command:
@@ -123,44 +139,15 @@ spec:
           - -x
           - -c
           - >
-            chown --reference=/srv/www/htdocs/pub /mnt;
-            chmod --reference=/srv/www/htdocs/pub /mnt;
+            chown --reference=/srv/www /mnt;
+            chmod --reference=/srv/www /mnt;
             if [ -z "$(ls -A /mnt)" ]; then
-              cp -a /srv/www/htdocs/pub/. /mnt;
+              cp -a /srv/www/. /mnt;
               ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /mnt/RHN-ORG-TRUSTED-SSL-CERT;
             fi
         volumeMounts:
           - mountPath: /mnt
-            name: srv-www-pub
-      - name: init-srv-www-cobbler
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
-        imagePullPolicy: {{ .Values.pullPolicy }}
-        command:
-          - sh
-          - -x
-          - -c
-          - >
-            chown --reference=/srv/www/cobbler /mnt;
-            chmod --reference=/srv/www/cobbler /mnt;
-            if [ -z "$(ls -A /mnt)" ]; then
-              cp -a /srv/www/cobbler/. /mnt;
-            fi
-        volumeMounts:
-          - mountPath: /mnt
-            name: srv-www-cobbler
-      - name: init-srv-www-osimages
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
-        imagePullPolicy: {{ .Values.pullPolicy }}
-        command:
-          - sh
-          - -x
-          - -c
-          - >
-            chown --reference=/srv/www/os-images /mnt;
-            chmod --reference=/srv/www/os-images /mnt
-        volumeMounts:
-          - mountPath: /mnt
-            name: srv-www-osimages
+            name: srv-www
       - name: init-srv-tftpboot
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -405,6 +392,10 @@ spec:
       - name: uyuni
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "spacewalk-service stop && systemctl stop postgresql"]
         ports:
           - containerPort: 443
           - containerPort: 80
@@ -435,6 +426,22 @@ spec:
           - name: SSH_AUTH_SOCK
             value: /tmp/ssh_auth_sock
 {{- end }}
+        livenessProbe:
+          exec:
+            command:
+              - /usr/bin/healthcheck.sh
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          timeoutSeconds: 120
+          failureThreshold: 5
+        readinessProbe:
+          exec:
+            command:
+              - /usr/bin/systemctl
+              - is-active
+              - multi-user.target
+          periodSeconds: 10
+          timeoutSeconds: 10
         volumeMounts:
           - mountPath: /run
             name: tmp
@@ -442,6 +449,8 @@ spec:
             name: cgroup
           - mountPath: /var/lib/cobbler
             name: var-cobbler
+          - mountPath: /var/lib/salt
+            name: var-salt
           - mountPath: /var/lib/pgsql
             name: var-pgsql
           - mountPath: /var/cache
@@ -452,12 +461,8 @@ spec:
             name: var-log
           - mountPath: /srv/salt
             name: srv-salt
-          - mountPath: /srv/www/htdocs/pub
-            name: srv-www-pub
-          - mountPath: /srv/www/cobbler
-            name: srv-www-cobbler
-          - mountPath: /srv/www/os-images
-            name: srv-www-osimages
+          - mountPath: /srv/www
+            name: srv-www
           - mountPath: /srv/tftpboot
             name: srv-tftpboot
           - mountPath: /srv/formula_metadata
@@ -534,6 +539,9 @@ spec:
       - name: var-cobbler
         persistentVolumeClaim:
           claimName: var-cobbler
+      - name: var-salt
+        persistentVolumeClaim:
+          claimName: var-salt
       - name: var-pgsql
         persistentVolumeClaim:
           claimName: var-pgsql
@@ -549,15 +557,9 @@ spec:
       - name: srv-salt
         persistentVolumeClaim:
           claimName: srv-salt
-      - name: srv-www-pub
+      - name: srv-www
         persistentVolumeClaim:
-          claimName: srv-www-pub
-      - name: srv-www-cobbler
-        persistentVolumeClaim:
-          claimName: srv-www-cobbler
-      - name: srv-www-osimages
-        persistentVolumeClaim:
-          claimName: srv-www-osimages
+          claimName: srv-www
       - name: srv-tftpboot
         persistentVolumeClaim:
           claimName: srv-tftpboot

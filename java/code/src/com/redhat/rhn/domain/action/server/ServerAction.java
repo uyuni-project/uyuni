@@ -27,6 +27,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -304,4 +305,13 @@ public class ServerAction extends ActionChild implements Serializable {
         return  ActionFactory.STATUS_FAILED.equals(status);
     }
 
+    @Override
+    public String toString() {
+        return "ServerAction{" +
+                "serverId=" + serverId +
+                ", actionId=" + Optional.ofNullable(getParentAction()).map(a -> a.getId().toString()).orElse("?") +
+                ", resultCode=" + resultCode +
+                ", status=" + status +
+                '}';
+    }
 }

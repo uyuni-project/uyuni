@@ -747,7 +747,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
         />
         <PopUp
           id="instance-details-popup"
-          title={t("Instance Details for '{name}'", { name: this.state.instancePopupContent.name })}
+          title={t('Instance Details for "{name}"', { name: this.state.instancePopupContent.name })}
           content={this.state.instancePopupContent.content}
         />
       </div>

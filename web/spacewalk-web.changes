@@ -1,4 +1,48 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:50:51 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-1
+  * Reduce UI inconsistencies between the SUSE Manager and Uyuni themes
+  * Add one-shot action execution to recurring custom state create/edit
+  * Bump the WebUI version to 2024.01
+
+-------------------------------------------------------------------
+Tue Jan 16 08:32:17 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * Fix the use of page size preference in systems and packages
+    lists (bsc#1217209)
+  * Revert reordering of license tags for spacewalk-html
+
+-------------------------------------------------------------------
+Thu Jan 11 12:09:38 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1-1
+  * Fix missing action chain schedule initial value
+  * Update shared page layouts
+  * Move release files from spacewalk to spacewalk web, and add
+    the Mainteanance Update or Milestone version when the package
+    is built for SUSE Manager
+  * Bump the WebUI version to 5.0.0 Alpha 1
+
+-------------------------------------------------------------------
+Fri Dec 15 17:25:38 CET 2023 - rosuna@suse.com
+
+- version 4.4.13-1
+  * Fix issue displaying Ansible playbook name (bsc#1216657) 
+  * Add support for `PaygNotCompliantWarning` notification
+  * Safeguard request URLs against tempering (bsc#1216754)
+  * Remove Select2
+  * Handle new message from subscription-matcher (bsc#1216506)
+  * Fix Enterprise Linux 9 RPM
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Remove ssh_push_port_http default configuration as it is used
+    only by traditional clients which are now unsupported
+  * Adapt Enterprise Linux for /usr/share/susemanager structure
+  * Add option to filter packages by build time in CLM (jsc#SUMA-282)
+  * Update the version in the WebUI to 2023.12
+
+-------------------------------------------------------------------
 Wed Nov 01 20:13:53 CET 2023 - marina.latini@suse.com
 
 - version 4.4.12-1
@@ -49,11 +93,11 @@ Wed Apr 19 12:48:03 CEST 2023 - marina.latini@suse.com
 
 - version 4.4.10-1
   * fix an issue where the datetimepicker shows wrong date (bsc#1209231)
-  * Fix datetime picker appearing behind modal edge
+  * Fix datetime picker appearing behind modal edge (bsc#1209703)
   * Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
   * Fix UI inconsistencies in susemanager-light and susemanager-dark
     theme
-  * Deprecate jQuery datepicker, integrate React datepicker
+  * Deprecate jQuery datepicker, integrate React datepicker (bsc#1209689)
 
 -------------------------------------------------------------------
 Tue Feb 28 15:34:47 CET 2023 - jgonzalez@suse.com

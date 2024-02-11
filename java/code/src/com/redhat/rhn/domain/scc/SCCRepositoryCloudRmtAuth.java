@@ -70,11 +70,11 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
                 */
                 return getRepo().getUrl();
             }
-            URI credUrl = new URI(getCredentials().getUrl());
 
+            URI credUrl = new URI(getOptionalCredentials().orElseThrow().getUrl());
             List<String> sourceParams = new ArrayList<>(Arrays.asList(
                     StringUtils.split(Optional.ofNullable(url.getQuery()).orElse(""), '&')));
-            sourceParams.add(MIRRCRED_QUERY + getCredentials().getId());
+            sourceParams.add(MIRRCRED_QUERY + getOptionalCredentials().orElseThrow().getId());
             String newQuery = StringUtils.join(sourceParams, "&");
 
             URI newURI = new URI(credUrl.getScheme(), url.getUserInfo(), credUrl.getHost(), credUrl.getPort(),

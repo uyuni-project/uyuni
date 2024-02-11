@@ -1,4 +1,0 @@
-- Fix postgres require macros to be installable
-
-Introducing postgresql_version_min and postgresql_version_max to limit
-allowed postgresql version

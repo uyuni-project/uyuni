@@ -15,7 +15,7 @@
 <datasource_modes>
 
 <mode name="XccdScan">
-    <query params="offset, limit">
+    <query params="scan_id, limit">
           SELECT rhnxccdftestresult.id AS scan_id
                     , rhnxccdftestresult.server_id AS system_id
                     , rhnactionscap.action_id AS action_id
@@ -37,6 +37,7 @@
                     INNER JOIN rhnxccdfprofile ON rhnxccdftestresult.profile_id = rhnxccdfprofile.id
                     INNER JOIN rhnxccdfruleresult ON rhnxccdftestresult.id = rhnxccdfruleresult.testresult_id
                     INNER JOIN rhnxccdfruleresulttype ON rhnxccdfruleresult.result_id = rhnxccdfruleresulttype.id
+           WHERE rhnxccdftestresult.id &gt; :scan_id
         GROUP BY rhnxccdftestresult.id
                     , rhnxccdftestresult.server_id
                     , rhnactionscap.action_id
@@ -46,12 +47,13 @@
                     , rhnxccdfprofile.identifier
                     , rhnxccdfprofile.title
                     , rhnxccdftestresult.end_time
-        ORDER BY rhnxccdftestresult.id OFFSET :offset LIMIT :limit
+        ORDER BY scan_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="XccdScanResult">
-    <query params="offset, limit">
+    <query params="scan_id, rule_id, ident_id, limit">
         WITH ruleresult_idrefs AS (
             SELECT rim.rresult_id
                        , rim.ident_id
@@ -60,6 +62,7 @@
                        INNER JOIN rhnxccdfident xi ON rim.ident_id = xi.id
                        INNER JOIN rhnxccdfidentsystem xis ON xi.identsystem_id = xis.id
              WHERE xis.system = '#IDREF#'
+                        AND rim.rresult_id &gt; :rule_id
         )
         SELECT rhnxccdfruleresult.testresult_id AS scan_id
                    , rhnxccdfruleresult.id AS rule_id
@@ -76,7 +79,9 @@
                    LEFT JOIN rhnxccdfruleidentmap ON rhnxccdfruleidentmap.rresult_id = ruleresult_idrefs.rresult_id AND rhnxccdfruleidentmap.ident_id != ruleresult_idrefs.ident_id
                    LEFT JOIN rhnxccdfident on rhnxccdfruleidentmap.ident_id = rhnxccdfident.id
                    LEFT JOIN rhnxccdfidentsystem on rhnxccdfident.identsystem_id = rhnxccdfidentsystem.id
-        ORDER BY scan_id, rule_id, ident_id OFFSET :offset LIMIT :limit
+           WHERE (rhnxccdfruleresult.testresult_id, rhnxccdfruleresult.id, COALESCE(rhnxccdfruleidentmap.ident_id, ruleresult_idrefs.ident_id)) &gt; (:scan_id, :rule_id, :ident_id)
+        ORDER BY scan_id, rule_id, ident_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 

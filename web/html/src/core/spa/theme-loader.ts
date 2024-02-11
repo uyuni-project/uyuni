@@ -6,18 +6,9 @@ const BOOTSTRAP_READY_PAGES: string[] = [];
 
 export const onEndNavigate = () => {
   const pathname = window.location.pathname;
-  const themeLink = document.getElementById("web-theme");
-  const updatedThemeLink = document.getElementById("updated-web-theme");
-  if (!themeLink || !updatedThemeLink) {
-    Loggerhead.error(`Unable to identify web theme at ${pathname}`);
-    return;
-  }
-
   if (BOOTSTRAP_READY_PAGES.includes(pathname)) {
-    themeLink.setAttribute("disabled", "disabled");
-    updatedThemeLink.removeAttribute("disabled");
+    document.body.className = document.body.className.replace("old-theme", "new-theme");
   } else {
-    themeLink.removeAttribute("disabled");
-    updatedThemeLink.setAttribute("disabled", "disabled");
+    document.body.className = document.body.className.replace("new-theme", "old-theme");
   }
 };

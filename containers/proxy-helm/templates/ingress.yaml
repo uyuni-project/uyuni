@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uyuni-proxy-ingress-nossl
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+  {{- if eq .Values.ingress "nginx" }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  {{- else if eq .Values.ingress "traefik" }}
+    traefik.ingress.kubernetes.io/router.tls: "false"
+    traefik.ingress.kubernetes.io/router.entrypoints: "web"
+  {{- end }}
+  labels:
+    app: uyuni-proxy
+spec:
+  rules:
+  - host: {{ .Values.fqdn }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: uyuni-proxy-tcp
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

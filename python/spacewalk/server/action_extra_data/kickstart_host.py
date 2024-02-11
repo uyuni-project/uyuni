@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -14,12 +15,14 @@
 #
 from spacewalk.common.rhnLog import log_debug
 
-__rhnexport__ = ['schedule_virt_host_pkg_install', 'add_tools_channel']
+__rhnexport__ = ["schedule_virt_host_pkg_install", "add_tools_channel"]
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def schedule_virt_host_pkg_install(server_id, action_id, data={}):
     log_debug(3, action_id)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def add_tools_channel(server_id, action_id, data={}):
     log_debug(3, action_id)

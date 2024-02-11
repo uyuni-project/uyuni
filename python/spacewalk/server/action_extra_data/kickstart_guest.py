@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -16,36 +17,52 @@ from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.server.rhnServer import server_kickstart
 
-__rhnexport__ = ['initiate', 'add_tools_channel', 'schedule_virt_guest_pkg_install']
+__rhnexport__ = ["initiate", "add_tools_channel", "schedule_virt_guest_pkg_install"]
 
 
 def _action(action_name, server_id, action_id, success_state, success_type):
     log_debug(3, action_name, server_id, action_id)
 
-    action_status = rhnFlags.get('action_status')
+    action_status = rhnFlags.get("action_status")
 
     if action_status == 3:
-        ks_state = 'failed'
+        ks_state = "failed"
         next_action_type = None
     else:
         ks_state = success_state
         next_action_type = success_type
 
-    server_kickstart.update_kickstart_session(server_id, action_id,
-                                              action_status, kickstart_state=ks_state,
-                                              next_action_type=next_action_type)
+    server_kickstart.update_kickstart_session(
+        server_id,
+        action_id,
+        action_status,
+        kickstart_state=ks_state,
+        next_action_type=next_action_type,
+    )
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def schedule_virt_guest_pkg_install(server_id, action_id, data={}):
-    _action('schedule_virt_guest_pkg_install', server_id, action_id,
-            'complete', None)
+    _action("schedule_virt_guest_pkg_install", server_id, action_id, "complete", None)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def add_tools_channel(server_id, action_id, data={}):
-    _action('add_tools_channel', server_id, action_id,
-            'complete', 'kickstart_guest.schedule_virt_guest_pkg_install')
+    _action(
+        "add_tools_channel",
+        server_id,
+        action_id,
+        "complete",
+        "kickstart_guest.schedule_virt_guest_pkg_install",
+    )
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def initiate(server_id, action_id, data={}):
-    _action('initiate', server_id, action_id,
-            'in_progress', 'kickstart_guest.add_tools_channel')
+    _action(
+        "initiate",
+        server_id,
+        action_id,
+        "in_progress",
+        "kickstart_guest.add_tools_channel",
+    )

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -24,8 +25,9 @@ from spacewalk.common.rhnException import rhnException
 from spacewalk.server import rhnSQL, rhnAction, rhnLib, rhnChannel
 
 
-def update_kickstart_session(server_id, action_id, action_status,
-                             kickstart_state, next_action_type):
+def update_kickstart_session(
+    server_id, action_id, action_status, kickstart_state, next_action_type
+):
     log_debug(3, server_id, action_id, action_status, kickstart_state, next_action_type)
 
     # Is this a kickstart-related action?
@@ -43,44 +45,55 @@ def update_kickstart_session(server_id, action_id, action_status,
         next_action_id = get_next_action_id(action_id, next_action_type)
     elif action_status == 3:
         # Failed
-        ks_status = 'failed'
+        ks_status = "failed"
         next_action_id = None
     else:
+        # pylint: disable-next=consider-using-f-string
         raise rhnException("Invalid action state %s" % action_status)
 
-    update_ks_session_table(ks_session_id, ks_status, next_action_id,
-                            server_id)
+    update_ks_session_table(ks_session_id, ks_status, next_action_id, server_id)
     return ks_session_id
 
-_query_update_ks_session_table = rhnSQL.Statement("""
+
+_query_update_ks_session_table = rhnSQL.Statement(
+    """
     update rhnKickstartSession
        set action_id = :action_id,
            state_id = :ks_status_id,
            new_server_id = :server_id
      where id = :ks_session_id
-""")
+"""
+)
 
 
-def update_ks_session_table(ks_session_id, ks_status, next_action_id,
-                            server_id):
+def update_ks_session_table(ks_session_id, ks_status, next_action_id, server_id):
     log_debug(4, ks_session_id, ks_status, next_action_id, server_id)
-    ks_table = rhnSQL.Table('rhnKickstartSessionState', 'label')
-    ks_status_id = ks_table[ks_status]['id']
+    ks_table = rhnSQL.Table("rhnKickstartSessionState", "label")
+    ks_status_id = ks_table[ks_status]["id"]
 
     h = rhnSQL.prepare(_query_update_ks_session_table)
-    h.execute(ks_session_id=ks_session_id, ks_status_id=ks_status_id,
-              action_id=next_action_id, server_id=server_id)
+    h.execute(
+        ks_session_id=ks_session_id,
+        ks_status_id=ks_status_id,
+        action_id=next_action_id,
+        server_id=server_id,
+    )
 
-    if ks_status == 'complete':
+    if ks_status == "complete":
         delete_guests(server_id)
 
-_query_lookup_guests_for_host = rhnSQL.Statement("""
+
+_query_lookup_guests_for_host = rhnSQL.Statement(
+    """
     select virtual_system_id from rhnVirtualInstance
         where host_system_id = :server_id
-""")
-_query_delete_virtual_instances = rhnSQL.Statement("""
+"""
+)
+_query_delete_virtual_instances = rhnSQL.Statement(
+    """
     delete from rhnVirtualInstance where host_system_id = :server_id
-""")
+"""
+)
 
 
 def delete_guests(server_id):
@@ -97,12 +110,14 @@ def delete_guests(server_id):
         row = h.fetchone_dict()
         if not row:
             break
-        guest_id = row['virtual_system_id']
-        log_debug(4, 'Deleting guest server: %s' % guest_id)
+        guest_id = row["virtual_system_id"]
+        # pylint: disable-next=consider-using-f-string
+        log_debug(4, "Deleting guest server: %s" % guest_id)
         try:
             if guest_id is not None:
                 delete_server(guest_id)
         except rhnSQL.SQLError:
+            # pylint: disable-next=consider-using-f-string
             log_error("Error deleting server: %s" % guest_id)
 
     # Finally delete all the virtual instances:
@@ -115,17 +130,20 @@ def delete_guests(server_id):
         rhnSQL.commit()
     except rhnSQL.SQLError:
         e = sys.exc_info()[1]
+        # pylint: disable-next=consider-using-f-string
         log_error("Error committing transaction: %s" % e)
         rhnSQL.rollback()
 
 
-_query_get_next_action_id = rhnSQL.Statement("""
+_query_get_next_action_id = rhnSQL.Statement(
+    """
     select a.id
       from rhnAction a, rhnActionType at
      where a.prerequisite = :action_id
        and a.action_type = at.id
        and at.label = :next_action_type
-""")
+"""
+)
 
 
 def get_next_action_id(action_id, next_action_type=None):
@@ -136,9 +154,11 @@ def get_next_action_id(action_id, next_action_type=None):
     row = h.fetchone_dict()
     if not row:
         return None
-    return row['id']
+    return row["id"]
 
-_query_lookup_kickstart_session_id = rhnSQL.Statement("""
+
+_query_lookup_kickstart_session_id = rhnSQL.Statement(
+    """
     select ks.id
       from rhnKickstartSession ks
      where (
@@ -147,7 +167,8 @@ _query_lookup_kickstart_session_id = rhnSQL.Statement("""
              or ks.host_server_id = :server_id
            )
        and ks.action_id = :action_id
-""")
+"""
+)
 
 
 def get_kickstart_session_id(server_id, action_id):
@@ -158,40 +179,48 @@ def get_kickstart_session_id(server_id, action_id):
     if not row:
         # Nothing to do
         return None
-    return row['id']
+    return row["id"]
 
 
-_query_insert_package_delta = rhnSQL.Statement("""
+_query_insert_package_delta = rhnSQL.Statement(
+    """
     insert into rhnPackageDelta (id, label)
     values (:package_delta_id, 'ks-delta-' || :package_delta_id)
-""")
-_query_insert_action_package_delta = rhnSQL.Statement("""
+"""
+)
+_query_insert_action_package_delta = rhnSQL.Statement(
+    """
     insert into rhnActionPackageDelta (action_id, package_delta_id)
     values (:action_id, :package_delta_id)
-""")
-_query_insert_package_delta_element = rhnSQL.Statement("""
+"""
+)
+_query_insert_package_delta_element = rhnSQL.Statement(
+    """
     insert into rhnPackageDeltaElement
            (package_delta_id, transaction_package_id)
     values
            (:package_delta_id,
             lookup_transaction_package(:operation, :n, :e, :v, :r, :a))
-""")
+"""
+)
 
 
-def schedule_kickstart_delta(server_id, kickstart_session_id,
-                             installs, removes):
+def schedule_kickstart_delta(server_id, kickstart_session_id, installs, removes):
     log_debug(3, server_id, kickstart_session_id)
     row = get_kickstart_session_info(kickstart_session_id, server_id)
-    org_id = row['org_id']
-    scheduler = row['scheduler']
+    org_id = row["org_id"]
+    scheduler = row["scheduler"]
 
     action_id = rhnAction.schedule_server_action(
         server_id,
-        action_type='packages.runTransaction', action_name="Package delta",
-        delta_time=0, scheduler=scheduler, org_id=org_id,
+        action_type="packages.runTransaction",
+        action_name="Package delta",
+        delta_time=0,
+        scheduler=scheduler,
+        org_id=org_id,
     )
 
-    package_delta_id = rhnSQL.Sequence('rhn_packagedelta_id_seq').next()
+    package_delta_id = rhnSQL.Sequence("rhn_packagedelta_id_seq").next()
 
     h = rhnSQL.prepare(_query_insert_package_delta)
     h.execute(package_delta_id=package_delta_id)
@@ -200,48 +229,67 @@ def schedule_kickstart_delta(server_id, kickstart_session_id,
     h.execute(action_id=action_id, package_delta_id=package_delta_id)
 
     h = rhnSQL.prepare(_query_insert_package_delta_element)
-    col_names = ['n', 'v', 'r', 'e']
-    __execute_many(h, installs, col_names, operation='insert', a=None,
-                   package_delta_id=package_delta_id)
-    __execute_many(h, removes, col_names, operation='delete', a=None,
-                   package_delta_id=package_delta_id)
+    col_names = ["n", "v", "r", "e"]
+    __execute_many(
+        h,
+        installs,
+        col_names,
+        operation="insert",
+        a=None,
+        package_delta_id=package_delta_id,
+    )
+    __execute_many(
+        h,
+        removes,
+        col_names,
+        operation="delete",
+        a=None,
+        package_delta_id=package_delta_id,
+    )
 
-    update_ks_session_table(kickstart_session_id, 'package_synch_scheduled',
-                            action_id, server_id)
+    update_ks_session_table(
+        kickstart_session_id, "package_synch_scheduled", action_id, server_id
+    )
 
     return action_id
 
 
 def schedule_kickstart_sync(server_id, kickstart_session_id):
     row = get_kickstart_session_info(kickstart_session_id, server_id)
-    org_id = row['org_id']
-    scheduler = row['scheduler']
+    org_id = row["org_id"]
+    scheduler = row["scheduler"]
 
     # Create a new action
     action_id = rhnAction.schedule_server_action(
         server_id,
-        action_type='kickstart.schedule_sync',
+        action_type="kickstart.schedule_sync",
         action_name="Schedule a package sync",
-        delta_time=0, scheduler=scheduler, org_id=org_id,
+        delta_time=0,
+        scheduler=scheduler,
+        org_id=org_id,
     )
     return action_id
 
 
 def _get_ks_virt_type(type_id):
-    _query_kickstart_virt_type = rhnSQL.Statement("""
+    # pylint: disable-next=invalid-name
+    _query_kickstart_virt_type = rhnSQL.Statement(
+        """
         select  label
         from    rhnKickstartVirtualizationType kvt
         where   kvt.id = :id
-    """)
+    """
+    )
     prepared_query = rhnSQL.prepare(_query_kickstart_virt_type)
     prepared_query.execute(id=type_id)
     row = prepared_query.fetchone_dict()
 
     # XXX: we should have better constraints on the db so this doesn't happen.
     if not row:
-        kstype = 'auto'
+        kstype = "auto"
     else:
-        kstype = row['label']
+        kstype = row["label"]
+    # pylint: disable-next=consider-using-f-string
     log_debug(1, "KS_TYPE: %s" % kstype)
     return kstype
 
@@ -249,7 +297,7 @@ def _get_ks_virt_type(type_id):
 def get_kickstart_session_type(server_id, action_id):
     ks_session_id = get_kickstart_session_id(server_id, action_id)
     ks_session_info = get_kickstart_session_info(ks_session_id, server_id)
-    ks_type_id = ks_session_info['virtualization_type']
+    ks_type_id = ks_session_info["virtualization_type"]
     ks_type = _get_ks_virt_type(ks_type_id)
     return ks_type
 
@@ -257,24 +305,28 @@ def get_kickstart_session_type(server_id, action_id):
 def subscribe_to_tools_channel(server_id, kickstart_session_id):
     log_debug(3)
     row = get_kickstart_session_info(kickstart_session_id, server_id)
-    org_id = row['org_id']
-    scheduler = row['scheduler']
-    ks_type_id = row['virtualization_type']
+    org_id = row["org_id"]
+    scheduler = row["scheduler"]
+    ks_type_id = row["virtualization_type"]
     ks_type = _get_ks_virt_type(ks_type_id)
 
-    if ks_type == 'para_host':
+    if ks_type == "para_host":
         action_id = rhnAction.schedule_server_action(
             server_id,
-            action_type='kickstart_host.add_tools_channel',
-            action_name='Subscribe server to the Tools channel.',
-            delta_time=0, scheduler=scheduler, org_id=org_id,
+            action_type="kickstart_host.add_tools_channel",
+            action_name="Subscribe server to the Tools channel.",
+            delta_time=0,
+            scheduler=scheduler,
+            org_id=org_id,
         )
-    elif ks_type == 'para_guest':
+    elif ks_type == "para_guest":
         action_id = rhnAction.schedule_server_action(
             server_id,
-            action_type='kickstart_guest.add_tools_channel',
-            action_name='Subscribe guest to the Tools channel.',
-            delta_time=0, scheduler=scheduler, org_id=org_id,
+            action_type="kickstart_guest.add_tools_channel",
+            action_name="Subscribe guest to the Tools channel.",
+            delta_time=0,
+            scheduler=scheduler,
+            org_id=org_id,
         )
     else:
         action_id = None
@@ -284,28 +336,34 @@ def subscribe_to_tools_channel(server_id, kickstart_session_id):
 def schedule_virt_pkg_install(server_id, kickstart_session_id):
     log_debug(3)
     row = get_kickstart_session_info(kickstart_session_id, server_id)
-    org_id = row['org_id']
-    scheduler = row['scheduler']
-    ks_type_id = row['virtualization_type']
+    org_id = row["org_id"]
+    scheduler = row["scheduler"]
+    ks_type_id = row["virtualization_type"]
+    # pylint: disable-next=consider-using-f-string
     log_debug(1, "VIRTUALIZATION_TYPE: %s" % str(ks_type_id))
     ks_type = _get_ks_virt_type(ks_type_id)
+    # pylint: disable-next=consider-using-f-string
     log_debug(1, "VIRTUALZIATION_TYPE_LABEL: %s" % str(ks_type))
 
-    if ks_type == 'para_host':
+    if ks_type == "para_host":
         log_debug(1, "SCHEDULING VIRT HOST PACKAGE INSTALL...")
         action_id = rhnAction.schedule_server_action(
             server_id,
-            action_type='kickstart_host.schedule_virt_host_pkg_install',
+            action_type="kickstart_host.schedule_virt_host_pkg_install",
             action_name="Schedule install of mgr-virtualization-host package.",
-            delta_time=0, scheduler=scheduler, org_id=org_id,
+            delta_time=0,
+            scheduler=scheduler,
+            org_id=org_id,
         )
-    elif ks_type == 'para_guest':
+    elif ks_type == "para_guest":
         log_debug(1, "SCHEDULING VIRT GUEST PACKAGE INSTALL...")
         action_id = rhnAction.schedule_server_action(
             server_id,
-            action_type='kickstart_guest.schedule_virt_guest_pkg_install',
+            action_type="kickstart_guest.schedule_virt_guest_pkg_install",
             action_name="Schedule install of mgr-virtualization-guest package.",
-            delta_time=0, scheduler=scheduler, org_id=org_id,
+            delta_time=0,
+            scheduler=scheduler,
+            org_id=org_id,
         )
     else:
         log_debug(1, "NOT A VIRT KICKSTART")
@@ -313,7 +371,9 @@ def schedule_virt_pkg_install(server_id, kickstart_session_id):
 
     return action_id
 
-_query_ak_deploy_config = rhnSQL.Statement("""
+
+_query_ak_deploy_config = rhnSQL.Statement(
+    """
 select rt.deploy_configs
   from rhnKickstartSession ks,
        rhnKickstartDefaultRegToken kdrt,
@@ -321,7 +381,8 @@ select rt.deploy_configs
  where ks.kickstart_id = kdrt.kickstart_id
    and kdrt.regtoken_id = rt.id
    and ks.id = :session_id
-""")
+"""
+)
 # Make sure the activation keys associated with this kickstart profile
 # have enabled deploying config files. Only deploy configs if at least one
 # of them has. This is replacing code that didn't work because the
@@ -334,11 +395,13 @@ def ks_activation_key_deploy_config(kickstart_session_id):
     rows = h.fetchall_dict()
     if rows:
         for row in rows:
-            if row['deploy_configs'] and row['deploy_configs'] == 'Y':
+            if row["deploy_configs"] and row["deploy_configs"] == "Y":
                 return True
     return False
 
-_query_schedule_config_files = rhnSQL.Statement("""
+
+_query_schedule_config_files = rhnSQL.Statement(
+    """
     insert into rhnActionConfigRevision
            (id, action_id, server_id, config_revision_id)
     select sequence_nextval('rhn_actioncr_id_seq'), :action_id,
@@ -360,45 +423,49 @@ _query_schedule_config_files = rhnSQL.Statement("""
                and cf.state_id = cfs.id
                and cfs.label = 'alive'
             ) X
-""")
+"""
+)
 
 
-def schedule_config_deploy(server_id, action_id, kickstart_session_id,
-                           server_profile):
-    """ schedule a configfiles.deploy action dependent on the current action """
+def schedule_config_deploy(server_id, action_id, kickstart_session_id, server_profile):
+    """schedule a configfiles.deploy action dependent on the current action"""
     log_debug(3, server_id, action_id, kickstart_session_id)
     row = get_kickstart_session_info(kickstart_session_id, server_id)
-    org_id = row['org_id']
-    scheduler = row['scheduler']
-    deploy_configs = (row['deploy_configs'] == 'Y'
-                      and ks_activation_key_deploy_config(kickstart_session_id))
+    org_id = row["org_id"]
+    scheduler = row["scheduler"]
+    deploy_configs = row["deploy_configs"] == "Y" and ks_activation_key_deploy_config(
+        kickstart_session_id
+    )
 
     if not deploy_configs:
         # Nothing more to do here
-        update_ks_session_table(kickstart_session_id, 'complete',
-                                next_action_id=None, server_id=server_id)
+        update_ks_session_table(
+            kickstart_session_id, "complete", next_action_id=None, server_id=server_id
+        )
         return None
 
     if server_profile:
         # Have to schedule a package deploy action
-        aid = schedule_rhncfg_install(server_id, action_id, scheduler,
-                                      server_profile)
+        aid = schedule_rhncfg_install(server_id, action_id, scheduler, server_profile)
     else:
         aid = action_id
 
     next_action_id = rhnAction.schedule_server_action(
         server_id,
-        action_type='configfiles.deploy',
-        action_name='Deploy config files',
-        delta_time=0, scheduler=scheduler, org_id=org_id,
+        action_type="configfiles.deploy",
+        action_name="Deploy config files",
+        delta_time=0,
+        scheduler=scheduler,
+        org_id=org_id,
         prerequisite=aid,
     )
     # Deploy all of the config files that are part of this server's config
     # channels
     h = rhnSQL.prepare(_query_schedule_config_files)
     h.execute(server_id=server_id, action_id=next_action_id)
-    update_ks_session_table(kickstart_session_id, 'configuration_deploy',
-                            next_action_id, server_id)
+    update_ks_session_table(
+        kickstart_session_id, "configuration_deploy", next_action_id, server_id
+    )
     return next_action_id
 
 
@@ -406,20 +473,25 @@ class MissingBaseChannelError(Exception):
     pass
 
 
-def schedule_rhncfg_install(server_id, action_id, scheduler,
-                            server_profile=None):
-    capability = 'rhn-config-action'
+def schedule_rhncfg_install(server_id, action_id, scheduler, server_profile=None):
+    capability = "rhn-config-action"
     try:
-        packages = _subscribe_server_to_capable_channels(server_id, scheduler,
-                                                         capability)
+        packages = _subscribe_server_to_capable_channels(
+            server_id, scheduler, capability
+        )
     except MissingBaseChannelError:
         log_debug(2, "No base channel", server_id)
         return action_id
 
     if not packages:
         # No channels offer this capability
-        log_debug(3, server_id, action_id,
-                  "No channels to provide %s found" % capability)
+        log_debug(
+            3,
+            server_id,
+            action_id,
+            # pylint: disable-next=consider-using-f-string
+            "No channels to provide %s found" % capability,
+        )
         # No new action needed here
         return action_id
 
@@ -433,9 +505,9 @@ def schedule_rhncfg_install(server_id, action_id, scheduler,
 
     packages_to_install = []
     for p in packages:
-        key = (p['name'], p['version'], p['release'], p['epoch'])
+        key = (p["name"], p["version"], p["release"], p["epoch"])
         if key not in sphash:
-            packages_to_install.append(p['package_id'])
+            packages_to_install.append(p["package_id"])
 
     if not packages_to_install:
         # We already have these packages installed
@@ -443,18 +515,23 @@ def schedule_rhncfg_install(server_id, action_id, scheduler,
         return action_id
 
     log_debug(4, "Scheduling package install action")
-    new_action_id = schedule_package_install(server_id, action_id, scheduler,
-                                             packages_to_install)
+    new_action_id = schedule_package_install(
+        server_id, action_id, scheduler, packages_to_install
+    )
     return new_action_id
 
-_query_lookup_subscribed_server_channels = rhnSQL.Statement("""
+
+_query_lookup_subscribed_server_channels = rhnSQL.Statement(
+    """
     select sc.channel_id,
            case when c.parent_channel is not null then 0 else 1 end is_base_channel
       from rhnServerChannel sc, rhnChannel c
      where sc.server_id = :server_id
        and sc.channel_id = c.id
-""")
-_query_lookup_unsubscribed_server_channels = rhnSQL.Statement("""
+"""
+)
+_query_lookup_unsubscribed_server_channels = rhnSQL.Statement(
+    """
 select c.id
   from
       -- Get all the channels available to this org
@@ -476,7 +553,8 @@ select c.id
           from rhnServerChannel
          where server_id = :server_id
          and channel_id = c.id)
-""")
+"""
+)
 
 
 def _subscribe_server_to_capable_channels(server_id, scheduler, capability):
@@ -490,26 +568,24 @@ def _subscribe_server_to_capable_channels(server_id, scheduler, capability):
         row = h.fetchone_dict()
         if not row:
             break
-        channel_id = row['channel_id']
-        if row['is_base_channel']:
+        channel_id = row["channel_id"]
+        if row["is_base_channel"]:
             base_channel_id = channel_id
         channels.append((channel_id, 1))
     if base_channel_id is None:
         raise MissingBaseChannelError()
 
-    org_id = rhnSQL.Table('rhnServer', 'id')[server_id]['org_id']
+    org_id = rhnSQL.Table("rhnServer", "id")[server_id]["org_id"]
 
     # Get the child channels this system is *not* subscribed to
     h = rhnSQL.prepare(_query_lookup_unsubscribed_server_channels)
-    h.execute(server_id=server_id, org_id=org_id,
-              base_channel_id=base_channel_id)
-    l = [(x['id'], 0) for x in h.fetchall_dict() or []]
+    h.execute(server_id=server_id, org_id=org_id, base_channel_id=base_channel_id)
+    l = [(x["id"], 0) for x in h.fetchall_dict() or []]
     channels.extend(l)
     # We now have a list of channels; look for one that provides the
     # capability
     for channel_id, is_subscribed in channels:
-        log_debug(5, "Checking channel:", channel_id, "; subscribed:",
-                  is_subscribed)
+        log_debug(5, "Checking channel:", channel_id, "; subscribed:", is_subscribed)
         packages = _channel_provides_capability(channel_id, capability)
         if packages:
             if is_subscribed:
@@ -518,8 +594,7 @@ def _subscribe_server_to_capable_channels(server_id, scheduler, capability):
 
             # Try to subscribe to it
             rhnChannel.subscribe_sql(server_id, channel_id, 0)
-            log_debug(4, "Subscribed to", channel_id,
-                      "Found packages", packages)
+            log_debug(4, "Subscribed to", channel_id, "Found packages", packages)
             # We subscribed to this channel - we're done
             return packages
 
@@ -527,7 +602,9 @@ def _subscribe_server_to_capable_channels(server_id, scheduler, capability):
     log_debug(4, "No channels to provide capability", capability)
     return None
 
-_query_channel_provides_capability = rhnSQL.Statement("""
+
+_query_channel_provides_capability = rhnSQL.Statement(
+    """
     select distinct pp.package_id, pn.name, pe.version, pe.release, pe.epoch
       from rhnChannelNewestPackage cnp,
            rhnPackageProvides pp,
@@ -540,7 +617,8 @@ _query_channel_provides_capability = rhnSQL.Statement("""
        and pc.name = :capability
        and cnp.name_id = pn.id
        and cnp.evr_id = pe.id
-""")
+"""
+)
 
 
 def _channel_provides_capability(channel_id, capability):
@@ -552,14 +630,17 @@ def _channel_provides_capability(channel_id, capability):
         return ret
     return ret
 
-_query_insert_action_packages = rhnSQL.Statement("""
+
+_query_insert_action_packages = rhnSQL.Statement(
+    """
     insert into rhnActionPackage
            (id, action_id, name_id, evr_id, package_arch_id, parameter)
     select sequence_nextval('rhn_act_p_id_seq'), :action_id, name_id, evr_id,
            package_arch_id, 'upgrade'
       from rhnPackage
      where id = :package_id
-""")
+"""
+)
 
 
 def schedule_package_install(server_id, action_id, scheduler, packages):
@@ -567,9 +648,12 @@ def schedule_package_install(server_id, action_id, scheduler, packages):
         # Nothing to do
         return action_id
     new_action_id = rhnAction.schedule_server_action(
-        server_id, action_type='packages.update',
+        server_id,
+        action_type="packages.update",
         action_name="Package update to enable configuration deployment",
-        delta_time=0, scheduler=scheduler, prerequisite=action_id,
+        delta_time=0,
+        scheduler=scheduler,
+        prerequisite=action_id,
     )
     # Add entries to rhnActionPackage
     action_ids = [new_action_id] * len(packages)
@@ -578,10 +662,11 @@ def schedule_package_install(server_id, action_id, scheduler, packages):
     return new_action_id
 
 
+# pylint: disable-next=invalid-name
 def __execute_many(cursor, array, col_names, **kwargs):
-    """ Execute the cursor, with arguments extracted from the array
-        The array is converted into a hash having col_names as keys, and adds
-        whatever kwarg was specified too.
+    """Execute the cursor, with arguments extracted from the array
+    The array is converted into a hash having col_names as keys, and adds
+    whatever kwarg was specified too.
     """
     linecount = len(array)
     if not linecount:
@@ -600,15 +685,17 @@ def _packages_from_cursor(cursor):
         row = cursor.fetchone_dict()
         if not row:
             break
-        p_name = row['name']
-        if p_name == 'gpg-pubkey':
+        p_name = row["name"]
+        if p_name == "gpg-pubkey":
             # We ignore GPG public keys since they are too weird to schedule
             # as a package delta
             continue
-        result.append((p_name, row['version'], row['release'], row['epoch']))
+        result.append((p_name, row["version"], row["release"], row["epoch"]))
     return result
 
-_query_lookup_pending_kickstart_sessions = rhnSQL.Statement("""
+
+_query_lookup_pending_kickstart_sessions = rhnSQL.Statement(
+    """
     select ks.id, ks.action_id, NULL other_server_id
       from rhnKickstartSessionState kss,
            rhnKickstartSession ks
@@ -619,20 +706,23 @@ _query_lookup_pending_kickstart_sessions = rhnSQL.Statement("""
        and ks.state_id = kss.id
        and kss.label not in ('complete', 'failed')
        and (:ks_session_id is null or ks.id != :ks_session_id)
-""")
+"""
+)
 
-_query_terminate_pending_kickstart_sessions = rhnSQL.Statement("""
+_query_terminate_pending_kickstart_sessions = rhnSQL.Statement(
+    """
     update rhnKickstartSession
        set action_id = NULL,
            state_id = :state_id
      where id = :kickstart_session_id
-""")
+"""
+)
 
 
 def terminate_kickstart_sessions(server_id):
     log_debug(3, server_id)
     history = []
-    tokens_obj = rhnFlags.get('registration_token')
+    tokens_obj = rhnFlags.get("registration_token")
     current_ks_session_id = tokens_obj.get_kickstart_session_id()
     # ks_session_id can be null
     h = rhnSQL.prepare(_query_lookup_pending_kickstart_sessions)
@@ -644,31 +734,36 @@ def terminate_kickstart_sessions(server_id):
         row = h.fetchone_dict()
         if not row:
             break
-        ks_session_ids.append(row['id'])
-        action_ids.append(row['action_id'])
+        ks_session_ids.append(row["id"])
+        action_ids.append(row["action_id"])
 
     if not ks_session_ids:
         # Nothing to do
         log_debug(4, "Nothing to do", server_id, current_ks_session_id)
         return []
 
-    ks_session_table = rhnSQL.Table('rhnKickstartSessionState', 'label')
-    state_id_failed = ks_session_table['failed']['id']
+    ks_session_table = rhnSQL.Table("rhnKickstartSessionState", "label")
+    state_id_failed = ks_session_table["failed"]["id"]
     state_ids = [state_id_failed] * len(ks_session_ids)
 
     # Add a history item
     for ks_session_id in ks_session_ids:
         log_debug(4, "Adding history entry for session id", ks_session_id)
-        history.append(("Kickstart session canceled",
-                        "A kickstart session for this system was canceled because "
-                        "the system was re-registered with token <strong>%s</strong>" %
-                        tokens_obj.get_names()))
+        history.append(
+            (
+                "Kickstart session canceled",
+                # pylint: disable-next=consider-using-f-string
+                "A kickstart session for this system was canceled because "
+                "the system was re-registered with token <strong>%s</strong>"
+                % tokens_obj.get_names(),
+            )
+        )
 
     h = rhnSQL.prepare(_query_terminate_pending_kickstart_sessions)
 
     params = {
-        'kickstart_session_id': ks_session_ids,
-        'state_id': state_ids,
+        "kickstart_session_id": ks_session_ids,
+        "state_id": state_ids,
     }
     # Terminate pending actions
     log_debug(4, "Terminating sessions", params)
@@ -683,8 +778,9 @@ def terminate_kickstart_sessions(server_id):
 
 
 def get_kickstart_profile_package_profile(kickstart_session_id):
-    """ Fetches the package profile from the kickstart profile (Not the session) """
-    h = rhnSQL.prepare("""
+    """Fetches the package profile from the kickstart profile (Not the session)"""
+    h = rhnSQL.prepare(
+        """
         select pn.name, pe.version, pe.release, pe.epoch, pa.label
           from rhnKickstartSession ks,
                rhnKickstartDefaults kd,
@@ -698,14 +794,16 @@ def get_kickstart_profile_package_profile(kickstart_session_id):
            and spp.evr_id = pe.id
            and spp.package_arch_id = pa.id
            and kd.kickstart_id = ks.kickstart_id
-    """)
+    """
+    )
     h.execute(kickstart_session_id=kickstart_session_id)
     return _packages_from_cursor(h)
 
 
 def get_kisckstart_session_package_profile(kickstart_session_id):
-    """ Fetches the package profile from the kickstart session """
-    h = rhnSQL.prepare("""
+    """Fetches the package profile from the kickstart session"""
+    h = rhnSQL.prepare(
+        """
         select pn.name, pe.version, pe.release, pe.epoch, pa.label
           from rhnKickstartSession ks,
                rhnServerProfilePackage spp,
@@ -717,14 +815,16 @@ def get_kisckstart_session_package_profile(kickstart_session_id):
            and spp.name_id = pn.id
            and spp.evr_id = pe.id
            and spp.package_arch_id = pa.id
-    """)
+    """
+    )
     h.execute(kickstart_session_id=kickstart_session_id)
     return _packages_from_cursor(h)
 
 
 def get_server_package_profile(server_id):
     # XXX misa 2005-05-25  May need to look at package arches too
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select pn.name, pe.version, pe.release, pe.epoch, pa.label
           from rhnServerPackage sp,
                rhnPackageName pn,
@@ -734,15 +834,19 @@ def get_server_package_profile(server_id):
            and sp.name_id = pn.id
            and sp.evr_id = pe.id
            and sp.package_arch_id = pa.id
-    """)
+    """
+    )
     h.execute(server_id=server_id)
     return _packages_from_cursor(h)
 
-_query_get_kickstart_session_info = rhnSQL.Statement("""
+
+_query_get_kickstart_session_info = rhnSQL.Statement(
+    """
     select org_id, scheduler, deploy_configs, virtualization_type
       from rhnKickstartSession
      where id = :kickstart_session_id
-""")
+"""
+)
 
 
 def get_kickstart_session_info(kickstart_session_id, server_id):
@@ -750,12 +854,17 @@ def get_kickstart_session_info(kickstart_session_id, server_id):
     h.execute(kickstart_session_id=kickstart_session_id)
     row = h.fetchone_dict()
     if not row:
-        raise rhnException("Could not fetch kickstart session id %s "
-                           "for server %s" % (kickstart_session_id, server_id))
+        raise rhnException(
+            # pylint: disable-next=consider-using-f-string
+            "Could not fetch kickstart session id %s "
+            "for server %s" % (kickstart_session_id, server_id)
+        )
 
     return row
 
-_query_lookup_ks_server_profile = rhnSQL.Statement("""
+
+_query_lookup_ks_server_profile = rhnSQL.Statement(
+    """
     select kss.server_profile_id
       from rhnServerProfileType spt,
            rhnServerProfile sp,
@@ -764,28 +873,33 @@ _query_lookup_ks_server_profile = rhnSQL.Statement("""
        and kss.server_profile_id = sp.id
        and sp.profile_type_id = spt.id
        and spt.label = :profile_type_label
-""")
-_query_delete_server_profile = rhnSQL.Statement("""
+"""
+)
+_query_delete_server_profile = rhnSQL.Statement(
+    """
     delete from rhnServerProfile where id = :server_profile_id
-""")
+"""
+)
 
 
+# pylint: disable-next=unused-argument
 def cleanup_profile(server_id, action_id, ks_session_id, action_status):
     if ks_session_id is None:
         log_debug(4, "No kickstart session")
         return
     if action_status != 2:
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Action status: %s; nothing to do" % action_status)
         return
 
     h = rhnSQL.prepare(_query_lookup_ks_server_profile)
-    h.execute(ks_session_id=ks_session_id, profile_type_label='sync_profile')
+    h.execute(ks_session_id=ks_session_id, profile_type_label="sync_profile")
     row = h.fetchone_dict()
     if not row:
         log_debug(4, "No server profile of the right type found; nothing to do")
         return
 
-    server_profile_id = row['server_profile_id']
+    server_profile_id = row["server_profile_id"]
     if server_profile_id is None:
         log_debug(4, "No server profile associated with this kickstart session")
         return

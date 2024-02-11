@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -23,24 +24,31 @@ import os
 import sys
 
 _topdir = os.path.dirname(sys.argv[0])
-_basedir = os.path.abspath(_topdir + '/../..')
+_basedir = os.path.abspath(_topdir + "/../..")
 if _basedir not in sys.path:
     sys.path.append(_basedir)
 
+# pylint: disable-next=wrong-import-position
 import time
+
+# pylint: disable-next=wrong-import-position
 from rhn import rpclib
+
+# pylint: disable-next=wrong-import-position,unused-import
 from spacewalk.server import rhnSQL, rhnServer, rhnCapability
+
+# pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnConfig import ConfigParserError
 
 
 def main():
     if len(sys.argv) == 1:
-        server_name = 'xmlrpc.rhn.webdev.redhat.com'
+        server_name = "xmlrpc.rhn.webdev.redhat.com"
     else:
         server_name = sys.argv[1]
 
     if len(sys.argv) <= 2:
-        db_name = 'rhnuser/rhnuser@webdev'
+        db_name = "rhnuser/rhnuser@webdev"
     else:
         db_name = sys.argv[2]
 
@@ -51,37 +59,41 @@ def main():
         print("Test skipped")
         return 0
 
-    uri = "http://%s/XMLRPC" % (server_name, )
+    # pylint: disable-next=consider-using-f-string
+    uri = "http://%s/XMLRPC" % (server_name,)
     s = rpclib.Server(uri)
 
+    # pylint: disable-next=consider-using-f-string
     username = password = "test-username-%.3f" % time.time()
+    # pylint: disable-next=consider-using-f-string
     email = "misa+%s@redhat.com" % username
 
     s.registration.reserve_user(username, password)
     s.registration.new_user(username, password, email)
 
     data = {
-        'os_release': '9',
-        'architecture': 'athlon-redhat-linux',
-        'profile_name': 'Test profile for %s' % username,
-        'username': username,
-        'password': password,
+        "os_release": "9",
+        "architecture": "athlon-redhat-linux",
+        # pylint: disable-next=consider-using-f-string
+        "profile_name": "Test profile for %s" % username,
+        "username": username,
+        "password": password,
     }
     systemid = s.registration.new_system(data)
 
     str_caps = [
-        'this.is.bogus1(0)=0',
-        'this.is.bogus2(1)=1',
-        'this.is.bogus3(2)=2',
+        "this.is.bogus1(0)=0",
+        "this.is.bogus2(1)=1",
+        "this.is.bogus3(2)=2",
     ]
     for cap in str_caps:
-        s.add_header('X-RHN-Client-Capability', cap)
+        s.add_header("X-RHN-Client-Capability", cap)
 
     # Add some packages
     packages = [
-        ['a', '1', '1', ''],
-        ['b', '2', '2', ''],
-        ['c', '3', '3', ''],
+        ["a", "1", "1", ""],
+        ["b", "2", "2", ""],
+        ["c", "3", "3", ""],
     ]
     s.registration.update_packages(systemid, packages)
 
@@ -91,5 +103,6 @@ def main():
 
     return 0
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main() or 0)

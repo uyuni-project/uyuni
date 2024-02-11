@@ -330,4 +330,16 @@ public class CPU extends BaseDomainHelper {
     public String  getArchName() {
         return arch.getName();
     }
+
+    @Override
+    public String toString() {
+        return "CPU{" +
+                "id=" + id +
+                ", server=" + server +
+                ", model='" + model + '\'' +
+                ", version='" + version + '\'' +
+                ", vendor='" + vendor + '\'' +
+                ", nrCPU=" + nrCPU +
+                '}';
+    }
 }

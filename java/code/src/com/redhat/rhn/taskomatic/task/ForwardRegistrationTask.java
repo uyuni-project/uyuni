@@ -17,8 +17,8 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -65,9 +65,9 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         }
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
 
-            List<Credentials> credentials = CredentialsFactory.listSCCCredentials();
-            Optional<Credentials> optPrimCred = credentials.stream()
-                    .filter(Credentials::isPrimarySCCCredential)
+            List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
+            Optional<SCCCredentials> optPrimCred = credentials.stream()
+                    .filter(c -> c.isPrimary())
                     .findFirst();
             if (optPrimCred.isEmpty()) {
                 // We cannot update SCC without credentials
@@ -93,7 +93,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     /*
      * Do SCC related tasks like insert, update and delete system in SCC
      */
-    private void executeSCCTasks(Credentials primaryCredentials) {
+    private void executeSCCTasks(SCCCredentials primaryCredentials) {
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
             String uuid = ContentSyncManager.getUUID();

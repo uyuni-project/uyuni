@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -20,11 +21,28 @@ import os
 import sys
 import time
 from uyuni.common import usix
+
+# pylint: disable-next=unused-import
 import server.importlib.headerSource
+
+# pylint: disable-next=unused-import
 import server.importlib.packageImport
+
+# pylint: disable-next=unused-import
 import server.importlib.backendOracle
+
+# pylint: disable-next=unused-import
 import server.xmlrpc.up2date
-from spacewalk.server import rhnSQL, rhnChannel, rhnServer, rhnUser, rhnServerGroup, rhnActivationKey
+from spacewalk.server import (
+    rhnSQL,
+    rhnChannel,
+    rhnServer,
+    rhnUser,
+    rhnServerGroup,
+    rhnActivationKey,
+)
+
+# pylint: disable-next=unused-import
 from spacewalk.server.xmlrpc import registration
 
 
@@ -36,7 +54,12 @@ def create_channel_family():
 
 
 def create_channel(label, channel_family, org_id=None, channel_arch=None):
-    vdict = new_channel_dict(label=label, channel_family=channel_family, org_id=org_id, channel_arch=channel_arch)
+    vdict = new_channel_dict(
+        label=label,
+        channel_family=channel_family,
+        org_id=org_id,
+        channel_arch=channel_arch,
+    )
     c = rhnChannel.Channel()
     c.load_from_dict(vdict)
     c.save()
@@ -45,7 +68,9 @@ def create_channel(label, channel_family, org_id=None, channel_arch=None):
 
 def create_new_org():
     "Create a brand new org; return the new org id"
+    # pylint: disable-next=consider-using-f-string
     org_name = "unittest-org-%.3f" % time.time()
+    # pylint: disable-next=consider-using-f-string
     org_password = "unittest-password-%.3f" % time.time()
 
     org_id = rhnServerGroup.create_new_org(org_name, org_password)
@@ -75,21 +100,24 @@ def fetch_server_group(org_id, name):
     s.load(org_id, name)
     return s
 
-_query_fetch_server_groups = rhnSQL.Statement("""
+
+_query_fetch_server_groups = rhnSQL.Statement(
+    """
     select sgm.server_group_id
       from rhnServerGroupMembers sgm,
            rhnServerGroup sg
      where sgm.server_id = :server_id
       and sgm.server_group_id = sg.id
       and sg.group_type is null
-""")
+"""
+)
 
 
 def fetch_server_groups(server_id):
     "Return a server's groups"
     h = rhnSQL.prepare(_query_fetch_server_groups)
     h.execute(server_id=server_id)
-    groups = [x['server_group_id'] for x in h.fetchall_dict() or []]
+    groups = [x["server_group_id"] for x in h.fetchall_dict() or []]
     groups.sort()
     return groups
 
@@ -97,9 +125,11 @@ def fetch_server_groups(server_id):
 def build_server_group_params(**kwargs):
     "Build params for server groups"
     params = {
-        'org_id':   'no such org',
-        'name':   "unittest group name %.3f" % time.time(),
-        'description':   "unittest group description %.3f" % time.time(),
+        "org_id": "no such org",
+        # pylint: disable-next=consider-using-f-string
+        "name": "unittest group name %.3f" % time.time(),
+        # pylint: disable-next=consider-using-f-string
+        "description": "unittest group description %.3f" % time.time(),
     }
     params.update(kwargs)
     return params
@@ -113,8 +143,10 @@ def create_new_user(org_id=None, username=None, password=None, roles=None):
         org_id = lookup_org_id(org_id)
 
     if username is None:
+        # pylint: disable-next=consider-using-f-string
         username = "unittest-user-%.3f" % time.time()
     if password is None:
+        # pylint: disable-next=consider-using-f-string
         password = "unittest-password-%.3f" % time.time()
     if roles is None:
         roles = []
@@ -123,18 +155,20 @@ def create_new_user(org_id=None, username=None, password=None, roles=None):
     u.set_org_id(org_id)
     u.save()
     # The password is scrambled now - re-set it
-    u.contact['password'] = password
+    u.contact["password"] = password
     u.save()
     user_id = u.getid()
 
     # Set roles
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select ug.id
           from rhnUserGroupType ugt, rhnUserGroup ug
          where ug.org_id = :org_id
            and ug.group_type = ugt.id
            and ugt.label = :role
-    """)
+    """
+    )
     create_ugm = rhnSQL.Procedure("rhn_user.add_to_usergroup")
     for role in roles:
         h.execute(org_id=org_id, role=role)
@@ -142,7 +176,7 @@ def create_new_user(org_id=None, username=None, password=None, roles=None):
         if not row:
             raise InvalidRoleError(org_id, role)
 
-        user_group_id = row['id']
+        user_group_id = row["id"]
         create_ugm(user_id, user_group_id)
 
     rhnSQL.commit()
@@ -160,13 +194,14 @@ def lookup_org_id(org_id):
         if not u:
             raise rhnServerGroup.InvalidUserError(org_id)
 
-        return u.contact['org_id']
+        return u.contact["org_id"]
 
-    t = rhnSQL.Table('web_customer', 'id')
+    t = rhnSQL.Table("web_customer", "id")
     row = t[org_id]
     if not row:
         raise rhnServerGroup.InvalidOrgError(org_id)
-    return row['id']
+    return row["id"]
+
 
 # class InvalidEntitlementError(Exception):
 #    pass
@@ -179,70 +214,85 @@ class InvalidRoleError(Exception):
 def listdir(directory):
     directory = os.path.abspath(os.path.normpath(directory))
     if not os.access(directory, os.R_OK | os.X_OK):
+        # pylint: disable-next=consider-using-f-string
         print(("Can't access %s." % (directory)))
         sys.exit(1)
     if not os.path.isdir(directory):
+        # pylint: disable-next=consider-using-f-string
         print(("%s not valid." % (directory)))
         sys.exit(1)
+    # pylint: disable-next=invalid-name
     packageList = []
     for f in os.listdir(directory):
+        # pylint: disable-next=consider-using-f-string
         packageList.append("%s/%s" % (directory, f))
     return packageList
+
 
 # stolen from backend/server/test/unit-test/test_rhnChannel
 
 
 def new_channel_dict(**kwargs):
+    # pylint: disable-next=invalid-name
     _counter = 0
 
-    label = kwargs.get('label')
+    label = kwargs.get("label")
     if label is None:
-        label = 'rhn-unittest-%.3f-%s' % (time.time(), _counter)
+        # pylint: disable-next=consider-using-f-string
+        label = "rhn-unittest-%.3f-%s" % (time.time(), _counter)
+        # pylint: disable-next=invalid-name
         _counter = _counter + 1
 
-    release = kwargs.get('release') or 'release-' + label
-    os = kwargs.get('os') or 'Unittest Distro'
-    if 'org_id' in kwargs:
-        org_id = kwargs['org_id']
+    release = kwargs.get("release") or "release-" + label
+    # pylint: disable-next=redefined-outer-name
+    os = kwargs.get("os") or "Unittest Distro"
+    if "org_id" in kwargs:
+        # pylint: disable-next=unused-variable
+        org_id = kwargs["org_id"]
     else:
-        org_id = 'rhn-noc'
+        org_id = "rhn-noc"
 
     vdict = {
-        'label': label,
-        'name': kwargs.get('name') or label,
-        'summary': kwargs.get('summary') or label,
-        'description': kwargs.get('description') or label,
-        'basedir': kwargs.get('basedir') or '/',
-        'channel_arch': kwargs.get('channel_arch') or 'i386',
-        'channel_families': [kwargs.get('channel_family') or label],
-        'org_id': kwargs.get('org_id'),
-        'gpg_key_url': kwargs.get('gpg_key_url'),
-        'gpg_key_id': kwargs.get('gpg_key_id'),
-        'gpg_key_fp': kwargs.get('gpg_key_fp'),
-        'end_of_life': kwargs.get('end_of_life'),
-        'dists': [{
-            'release': release,
-            'os': os,
-        }],
+        "label": label,
+        "name": kwargs.get("name") or label,
+        "summary": kwargs.get("summary") or label,
+        "description": kwargs.get("description") or label,
+        "basedir": kwargs.get("basedir") or "/",
+        "channel_arch": kwargs.get("channel_arch") or "i386",
+        "channel_families": [kwargs.get("channel_family") or label],
+        "org_id": kwargs.get("org_id"),
+        "gpg_key_url": kwargs.get("gpg_key_url"),
+        "gpg_key_id": kwargs.get("gpg_key_id"),
+        "gpg_key_fp": kwargs.get("gpg_key_fp"),
+        "end_of_life": kwargs.get("end_of_life"),
+        "dists": [
+            {
+                "release": release,
+                "os": os,
+            }
+        ],
     }
     return vdict
 
 
 # stolen from backend/server/tests/unit-test/test_rhnChannel
 def new_channel_family_dict(**kwargs):
+    # pylint: disable-next=invalid-name
     _counter = 0
 
-    label = kwargs.get('label')
+    label = kwargs.get("label")
     if label is None:
-        label = 'rhn-unittest-%.3f-%s' % (time.time(), _counter)
+        # pylint: disable-next=consider-using-f-string
+        label = "rhn-unittest-%.3f-%s" % (time.time(), _counter)
+        # pylint: disable-next=invalid-name
         _counter = _counter + 1
 
-    product_url = kwargs.get('product_url') or 'http://rhn.redhat.com'
+    product_url = kwargs.get("product_url") or "http://rhn.redhat.com"
 
     vdict = {
-        'label': label,
-        'name': kwargs.get('name') or label,
-        'product_url': product_url,
+        "label": label,
+        "name": kwargs.get("name") or label,
+        "product_url": product_url,
     }
     return vdict
 
@@ -250,13 +300,13 @@ def new_channel_family_dict(**kwargs):
 def new_server(user, org_id):
     serv = rhnServer.Server(user, org_id=org_id)
     # serv.default_description()
-    params = build_sys_params_with_username(username=user.contact['login'])
+    params = build_sys_params_with_username(username=user.contact["login"])
 
     # print params
-    serv.server['release'] = params['os_release']
-    serv.server['os'] = "Unittest Distro"
-    serv.server['name'] = params['profile_name']
-    serv.set_arch('i386')
+    serv.server["release"] = params["os_release"]
+    serv.server["os"] = "Unittest Distro"
+    serv.server["name"] = params["profile_name"]
+    serv.set_arch("i386")
     serv.default_description()
     serv.getid()
     serv.gen_secret()
@@ -272,25 +322,34 @@ class Counter:
         self._counter = val + 1
         return val
 
+
 def build_sys_params_with_username(**kwargs):
     val = Counter().value()
+    # pylint: disable-next=consider-using-f-string
     rnd_string = "%s%s" % (int(time.time()), val)
 
     params = {
-        'os_release': '9',
-        'architecture': 'i386',
-        'profile_name': "unittest server " + rnd_string,
-        'username': 'no such user',
-        'password': 'no such password',
+        "os_release": "9",
+        "architecture": "i386",
+        "profile_name": "unittest server " + rnd_string,
+        "username": "no such user",
+        "password": "no such password",
     }
     params.update(kwargs)
-    if 'token' in params:
-        del params['token']
+    if "token" in params:
+        del params["token"]
     return params
 
 
-def create_activation_key(org_id=None, user_id=None, groups=None,
-                          channels=None, entitlement_level=None, note=None, server_id=None):
+def create_activation_key(
+    org_id=None,
+    user_id=None,
+    groups=None,
+    channels=None,
+    entitlement_level=None,
+    note=None,
+    server_id=None,
+):
     if org_id is None:
         need_user = 1
         org_id = create_new_org()
@@ -307,18 +366,20 @@ def create_activation_key(org_id=None, user_id=None, groups=None,
 
     if groups is None:
         groups = []
+        # pylint: disable-next=unused-variable
         for i in range(3):
             params = build_server_group_params(org_id=org_id)
             sg = create_server_group(params)
             groups.append(sg.get_id())
 
     if channels is None:
-        channels = ['rhel-i386-as-3-beta', 'rhel-i386-as-2.1-beta']
+        channels = ["rhel-i386-as-3-beta", "rhel-i386-as-2.1-beta"]
 
     if entitlement_level is None:
-        entitlement_level = 'enterprise_entitled'
+        entitlement_level = "enterprise_entitled"
 
     if note is None:
+        # pylint: disable-next=consider-using-f-string
         note = "Test activation key %d" % int(time.time())
 
     a = rhnActivationKey.ActivationKey()

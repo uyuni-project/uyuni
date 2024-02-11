@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -20,64 +21,72 @@ from . import headerSource
 from . import debPackage
 
 
+# pylint: disable-next=missing-class-docstring
 class mpmBinaryPackage(headerSource.rpmBinaryPackage):
-
     tagMap = headerSource.rpmBinaryPackage.tagMap.copy()
 
     # Remove already-mapped tags
     _already_mapped = [
-        'rpm_version', 'payload_size', 'payload_format',
-        'package_group', 'build_time', 'build_host'
+        "rpm_version",
+        "payload_size",
+        "payload_format",
+        "package_group",
+        "build_time",
+        "build_host",
     ]
     for t in _already_mapped:
         if t in tagMap:
             del tagMap[t]
 
-    def populate(self, header, size, checksum_type, checksum, path=None, org_id=None,
-                 channels=[]):
-
+    # pylint: disable-next=dangerous-default-value
+    def populate(
+        self, header, size, checksum_type, checksum, path=None, org_id=None, channels=[]
+    ):
         # call to base class method
-        headerSource.rpmBinaryPackage.populate(self, header, size, checksum_type, checksum, path,
-                                               org_id, channels)
+        headerSource.rpmBinaryPackage.populate(
+            self, header, size, checksum_type, checksum, path, org_id, channels
+        )
 
-        srpm = self.get('source_rpm', '')
-        if srpm == '':
-            self['source_rpm'] = None
+        srpm = self.get("source_rpm", "")
+        if srpm == "":
+            self["source_rpm"] = None
 
-        group = self.get('package_group', '')
-        if group == '':
-            self['package_group'] = 'NoGroup'
+        group = self.get("package_group", "")
+        if group == "":
+            self["package_group"] = "NoGroup"
 
         return self
 
     def _populateFiles(self, header):
         files = []
-        for f in header.get('files', []):
+        for f in header.get("files", []):
             fc = headerSource.rpmFile()
             fc.populate(f)
             files.append(fc)
-        self['files'] = files
+        self["files"] = files
 
     def _populateDependencyInformation(self, header):
         mapping = {
-            'provides': headerSource.rpmProvides,
-            'requires': headerSource.rpmRequires,
-            'conflicts': headerSource.rpmConflicts,
-            'obsoletes': headerSource.rpmObsoletes,
-            'recommends': headerSource.rpmRecommends,
-            'supplements': headerSource.rpmSupplements,
-            'enhances': headerSource.rpmEnhances,
-            'suggests': headerSource.rpmSuggests,
+            "provides": headerSource.rpmProvides,
+            "requires": headerSource.rpmRequires,
+            "conflicts": headerSource.rpmConflicts,
+            "obsoletes": headerSource.rpmObsoletes,
+            "recommends": headerSource.rpmRecommends,
+            "supplements": headerSource.rpmSupplements,
+            "enhances": headerSource.rpmEnhances,
+            "suggests": headerSource.rpmSuggests,
         }
 
         for k, dclass in list(mapping.items()):
             unique_deps = []
             l = []
             for dinfo in header.get(k, []):
+                # pylint: disable-next=redefined-builtin
                 hash = dinfo
-                if not len(hash['name']):
+                # pylint: disable-next=use-implicit-booleaness-not-len
+                if not len(hash["name"]):
                     continue
-                dep_nv = (hash['name'], hash['version'], hash['flags'])
+                dep_nv = (hash["name"], hash["version"], hash["flags"])
                 if dep_nv not in unique_deps:
                     unique_deps.append(dep_nv)
                     finst = dclass()
@@ -89,28 +98,60 @@ class mpmBinaryPackage(headerSource.rpmBinaryPackage):
 
     def _populateChangeLog(self, header):
         l = []
-        for cinfo in header.get('changelog', []):
+        for cinfo in header.get("changelog", []):
             cinst = headerSource.rpmChangeLog()
             cinst.populate(cinfo)
             l.append(cinst)
-        self['changelog'] = l
+        self["changelog"] = l
+
 
 # top-level package object creation --------------------------------------
 
 
-def create_package(header, size, checksum_type, checksum, relpath, org_id, header_start=None,
-                   header_end=None, channels=[]):
-    if header.packaging == 'rpm':
-        return headerSource.createPackage(header, size=size,
-                                          checksum_type=checksum_type, checksum=checksum,
-                                          relpath=relpath, org_id=org_id, header_start=header_start,
-                                          header_end=header_end, channels=channels)
-    if header.packaging == 'deb':
-        return debPackage.debBinaryPackage(header, size=size, checksum_type=checksum_type, checksum=checksum, path=relpath,
-                                           org_id=org_id, channels=channels)
+# pylint: disable-next=dangerous-default-value
+def create_package(
+    header,
+    size,
+    checksum_type,
+    checksum,
+    relpath,
+    org_id,
+    header_start=None,
+    header_end=None,
+    channels=[],
+):
+    if header.packaging == "rpm":
+        return headerSource.createPackage(
+            header,
+            size=size,
+            checksum_type=checksum_type,
+            checksum=checksum,
+            relpath=relpath,
+            org_id=org_id,
+            header_start=header_start,
+            header_end=header_end,
+            channels=channels,
+        )
+    if header.packaging == "deb":
+        return debPackage.debBinaryPackage(
+            header,
+            size=size,
+            checksum_type=checksum_type,
+            checksum=checksum,
+            path=relpath,
+            org_id=org_id,
+            channels=channels,
+        )
     if header.is_source:
         raise NotImplementedError()
     p = mpmBinaryPackage()
-    p.populate(header, size=size, checksum_type=checksum_type, checksum=checksum, path=relpath,
-               org_id=org_id, channels=channels)
+    p.populate(
+        header,
+        size=size,
+        checksum_type=checksum_type,
+        checksum=checksum,
+        path=relpath,
+        org_id=org_id,
+        channels=channels,
+    )
     return p

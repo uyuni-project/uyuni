@@ -21,8 +21,10 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -33,14 +35,17 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,19 +61,23 @@ public class MirrorCredentialsManager {
 
     private final CloudPaygManager cloudPaygManager;
 
+    private final ContentSyncManager contentSyncManager;
+
     /**
      * Default Constructor
      */
     public MirrorCredentialsManager() {
-        this(GlobalInstanceHolder.PAYG_MANAGER);
+        this(GlobalInstanceHolder.PAYG_MANAGER, new ContentSyncManager());
     }
 
     /**
      * Constructore
      * @param cloudPaygManagerIn the cloud manager
+     * @param contentSyncManagerIn the content sync manager
      */
-    public MirrorCredentialsManager(CloudPaygManager cloudPaygManagerIn) {
+    public MirrorCredentialsManager(CloudPaygManager cloudPaygManagerIn, ContentSyncManager contentSyncManagerIn) {
         cloudPaygManager = cloudPaygManagerIn;
+        contentSyncManager = contentSyncManagerIn;
     }
 
     /**
@@ -77,16 +86,15 @@ public class MirrorCredentialsManager {
      * @return list of all available mirror credentials
      */
     public List<MirrorCredentialsDto> findMirrorCredentials() {
-        List<MirrorCredentialsDto> credsList = new ArrayList<>();
-        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
-            MirrorCredentialsDto creds = new MirrorCredentialsDto(
-                    c.getUsername(), c.getPassword());
-            creds.setId(c.getId());
-            if (c.getUrl() != null) {
-                creds.setPrimary(true);
-            }
-            credsList.add(creds);
-        }
+        List<MirrorCredentialsDto> credsList =
+                CredentialsFactory.listSCCCredentials().stream()
+                        .map(MirrorCredentialsDto::fromSCCCredentials)
+                        .sorted(
+                            // Put primary first then use the sort by id
+                            Comparator.comparing(MirrorCredentialsDto::isPrimary).reversed()
+                                .thenComparing(MirrorCredentialsDto::getId)
+                        )
+                        .collect(Collectors.toList());
         if (log.isDebugEnabled()) {
             log.debug("Found {} mirror credentials", credsList.size());
         }
@@ -100,18 +108,19 @@ public class MirrorCredentialsManager {
      * @return credentials for given ID
      */
     public MirrorCredentialsDto findMirrorCredentials(long id) {
-        Credentials c = CredentialsFactory.lookupCredentialsById(id);
-        MirrorCredentialsDto creds =
-                new MirrorCredentialsDto(c.getUsername(), c.getPassword());
-        creds.setId(c.getId());
-        // We use the URL to identify primary
-        if (c.getUrl() != null) {
-            creds.setPrimary(true);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("Found credentials ({}): {}", creds.getId(), creds.getUser());
-        }
-        return creds;
+        return CredentialsFactory.lookupSCCCredentialsById(id).map(c -> {
+            MirrorCredentialsDto creds =
+                    new MirrorCredentialsDto(c.getUsername(), c.getPassword());
+            creds.setId(c.getId());
+            // We use the URL to identify primary
+            if (c.getUrl() != null) {
+                creds.setPrimary(true);
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("Found credentials ({}): {}", creds.getId(), creds.getUser());
+            }
+            return creds;
+        }).orElseThrow(() -> new ContentSyncException("Credentials not found: " + id));
     }
 
     /**
@@ -128,28 +137,28 @@ public class MirrorCredentialsManager {
             throw new ContentSyncException("User or password is empty");
         }
         // Check if the supplied user name already exists in stored credentials
-        for (Credentials existingCred : CredentialsFactory.listSCCCredentials()) {
+        for (SCCCredentials existingCred : CredentialsFactory.listSCCCredentials()) {
             if (existingCred.getUsername().equals(creds.getUser()) &&
-                    (!creds.getId().equals(existingCred.getId()))) {
+                    (!Objects.equals(existingCred.getId(), creds.getId()))) {
                 throw new MirrorCredentialsNotUniqueException("Username already exists");
             }
         }
 
         // Try to lookup the credentials first
-        Credentials c = null;
-        if (creds.getId() != null) {
-            c = CredentialsFactory.lookupCredentialsById(creds.getId());
-        }
-        if (c == null) {
-            c = CredentialsFactory.createSCCCredentials();
-        }
-        else {
-            // We are editing existing credentials, clear the cache
-            MirrorCredentialsDto oldCreds = findMirrorCredentials(creds.getId());
-            SetupWizardSessionCache.clearSubscriptions(oldCreds, request);
-        }
-        c.setUsername(creds.getUser());
-        c.setPassword(creds.getPassword());
+        SCCCredentials c = Optional.ofNullable(creds.getId())
+                .flatMap(id -> CredentialsFactory.lookupSCCCredentialsById(creds.getId()))
+                .map(existing -> {
+                    // We are editing existing credentials, clear the cache
+                    MirrorCredentialsDto oldCreds = findMirrorCredentials(creds.getId());
+                    SetupWizardSessionCache.clearSubscriptions(oldCreds, request);
+
+                    existing.setUsername(creds.getUser());
+                    existing.setPassword(creds.getPassword());
+
+                    return existing;
+                })
+                .orElseGet(() -> CredentialsFactory.createSCCCredentials(creds.getUser(), creds.getPassword()));
+
         CredentialsFactory.storeCredentials(c);
         if (log.isDebugEnabled()) {
             log.debug("Stored credentials ({}): {}", c.getId(), c.getUsername());
@@ -180,7 +189,7 @@ public class MirrorCredentialsManager {
 
         // Make new primary credentials if necessary
         if (credentials.isPrimary()) {
-            List<Credentials> credsList = CredentialsFactory.listSCCCredentials();
+            List<SCCCredentials> credsList = CredentialsFactory.listSCCCredentials();
             if (credsList != null && !credsList.isEmpty()) {
                 credsList.stream().filter(c -> !c.equals(dbCreds)).findFirst()
                     .ifPresent(c -> {
@@ -222,8 +231,7 @@ public class MirrorCredentialsManager {
         CredentialsFactory.removeCredentials(dbCreds);
 
         // Link orphan content sources
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.linkAndRefreshContentSource(null);
+        contentSyncManager.linkAndRefreshContentSource(null);
 
         // update info about hasSCCCredentials
         cloudPaygManager.checkRefreshCache(true);
@@ -236,20 +244,21 @@ public class MirrorCredentialsManager {
      * @throws ContentSyncException in case the credentials cannot be found
      */
     public void makePrimaryCredentials(Long id) throws ContentSyncException {
-        if (CredentialsFactory.lookupCredentialsById(id) == null) {
+        if (CredentialsFactory.lookupSCCCredentialsById(id).isEmpty()) {
             throw new ContentSyncException("Credentials not found: " + id);
         }
 
         for (MirrorCredentialsDto c : findMirrorCredentials()) {
-            Credentials dbCreds = CredentialsFactory.lookupCredentialsById(c.getId());
-            if (dbCreds.getId().equals(id)) {
-                dbCreds.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
-                CredentialsFactory.storeCredentials(dbCreds);
-            }
-            else if (dbCreds.getUrl() != null) {
-                dbCreds.setUrl(null);
-                CredentialsFactory.storeCredentials(dbCreds);
-            }
+            CredentialsFactory.lookupSCCCredentialsById(c.getId()).ifPresent(dbCreds -> {
+                if (dbCreds.getId().equals(id)) {
+                    dbCreds.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
+                    CredentialsFactory.storeCredentials(dbCreds);
+                }
+                else if (dbCreds.getUrl() != null) {
+                    dbCreds.setUrl(null);
+                    CredentialsFactory.storeCredentials(dbCreds);
+                }
+            });
         }
     }
 
@@ -269,9 +278,12 @@ public class MirrorCredentialsManager {
                 log.debug("Downloading subscriptions for {}", creds.getUser());
             }
             try {
-                Credentials credentials = CredentialsFactory.lookupCredentialsById(creds.getId());
-                List<SCCSubscriptionJson> subscriptions = new ContentSyncManager().updateSubscriptions(credentials);
-                SetupWizardSessionCache.storeSubscriptions(makeDtos(subscriptions), creds, request);
+                CredentialsFactory.lookupSCCCredentialsById(creds.getId())
+                    .ifPresent(credentials -> {
+                        SCCContentSyncSource source = new SCCContentSyncSource(credentials);
+                        List<SCCSubscriptionJson> subscriptions = contentSyncManager.updateSubscriptions(source);
+                        SetupWizardSessionCache.storeSubscriptions(makeDtos(subscriptions), creds, request);
+                    });
             }
             catch (ContentSyncException e) {
                 log.error("Error getting subscriptions for {}: {}", creds.getUser(), e.getMessage());
@@ -290,45 +302,44 @@ public class MirrorCredentialsManager {
      * @return list of subscription DTOs
      */
     private List<SubscriptionDto> makeDtos(List<SCCSubscriptionJson> subscriptions) {
-        if (subscriptions == null) {
-            return null;
-        }
-        Map<String, String> familyNameByLabel = ChannelFamilyFactory.getAllChannelFamilies()
-                .stream().collect(Collectors.toMap(ChannelFamily::getLabel, ChannelFamily::getName));
-        // Go through all of the given subscriptions
         List<SubscriptionDto> dtos = new ArrayList<>();
-        for (SCCSubscriptionJson s : subscriptions) {
-            // Skip all non-active
-            if (!s.getStatus().equals("ACTIVE")) {
-                continue;
-            }
-
-            // Determine subscription name from given product class
-            List<String> productClasses = s.getProductClasses();
-            if (productClasses.isEmpty()) {
-                log.warn("No product class for subscription: {}, skipping...", s.getName());
-                continue;
-            }
-            String subscriptionName = null;
-            for (String productClass : productClasses) {
-                String name = Optional.ofNullable(familyNameByLabel.get(productClass)).orElse(productClass);
-
-                // It is an OR relationship: append with OR
-                if (subscriptionName == null) {
-                    subscriptionName = name;
-                }
-                else {
-                    subscriptionName = subscriptionName + " OR " + name;
-                }
-            }
-
-            // We have a valid subscription, add it as DTO
-            SubscriptionDto dto = new SubscriptionDto();
-            dto.setName(subscriptionName);
-            dto.setStartDate(s.getStartsAt());
-            dto.setEndDate(s.getExpiresAt());
-            dtos.add(dto);
+        if (CollectionUtils.isEmpty(subscriptions)) {
+            return dtos;
         }
+
+        Map<String, String> familyNameByLabel = ChannelFamilyFactory.getAllChannelFamilies()
+            .stream().collect(Collectors.toMap(ChannelFamily::getLabel, ChannelFamily::getName));
+
+        subscriptions.stream()
+            // Only active subscriptions
+            .filter(s -> "ACTIVE".equals(s.getStatus()))
+            // Only subscription with at least one product class
+            .filter(s -> {
+                if (CollectionUtils.isEmpty(s.getProductClasses())) {
+                    log.warn("No product class for subscription: {}, skipping...", s.getName());
+                    return false;
+                }
+
+                return true;
+            })
+            // Convert the SCCSubscriptionJSON to a SubscriptionDTO
+            .map(s -> {
+                StringBuilder subscriptionNameBuilder = new StringBuilder();
+                for (String productClass : s.getProductClasses()) {
+                    String name = familyNameByLabel.getOrDefault(productClass, productClass);
+
+                    // It is an OR relationship: append with OR
+                    if (subscriptionNameBuilder.length() > 0) {
+                        subscriptionNameBuilder.append(" OR ");
+                    }
+
+                    subscriptionNameBuilder.append(name);
+                }
+
+                return new SubscriptionDto(subscriptionNameBuilder.toString(), s.getStartsAt(), s.getExpiresAt());
+            })
+            .forEach(dtos::add);
+
         return dtos;
     }
 }

@@ -1,8 +1,34 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:47:08 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Apply Black and Pylint to enforce Python style
+
+-------------------------------------------------------------------
+Tue Jan 16 08:19:04 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Fri Dec 15 17:07:23 CET 2023 - rosuna@suse.com
+
+- version 4.4.9-1
+  * Include reboot info beacon in the bootstrap script for transactional
+    systems (bsc#1217588)
+  * Enable openSUSE Tumbleweed and openSUSE MicroOS
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Drop spacewalk-ssh-push-init and spacewalk-push-register
+  * Change certificate defaults using RSA 4096 Bit and sha384 hash algorithm
+  * Change wrong name in unexisting variable ORG_CERT_FILE to CERT_FILE
+    for rhn_bootstrap_strings.py
+  * Revert hardcoded folder and renamed variable for clarity
+
+-------------------------------------------------------------------
 Wed Nov 01 20:43:30 CET 2023 - marina.latini@suse.com
 
 - version 4.4.8-1
-  * Handle server keys in PKCS8 format in mgr-ssl-cert-setup
+  * Handle server keys in PKCS8 format in mgr-ssl-cert-setup (bsc#1218615)
 
 -------------------------------------------------------------------
 Mon Sep 18 14:28:41 CEST 2023 - rosuna@suse.com

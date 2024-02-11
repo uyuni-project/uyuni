@@ -101,3 +101,8 @@ java/code/src/com/suse/manager/webui/utils/gson/NotificationMessageJson.java @uy
 
 # Websockets
 java/code/src/com/suse/manager/webui/websocket/ @uyuni-project/frontend
+
+# Ignore translations, in the CODEOWNERS the last matching wins
+**/*.po
+**/*.pot
+**/StringResource*.xml

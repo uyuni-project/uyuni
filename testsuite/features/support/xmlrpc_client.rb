@@ -24,7 +24,8 @@ class XmlrpcClient
   #   params: A hash of parameters. The keys are the names of the parameters, and the values are the values of the
   # parameters.
   def call(name, params)
-    # TODO: What happens if params.nil?
     @xmlrpc_client.call(name, *params.values)
+  rescue XMLRPC::FaultException => e
+    raise SystemCallError, "API failure: #{e.message}"
   end
 end

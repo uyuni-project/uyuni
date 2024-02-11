@@ -854,16 +854,14 @@ sub populate_initial_configs {
           Spacewalk::Setup::read_config(Spacewalk::Setup::DEFAULT_SUSEMANAGER_CONF, \%mgrDefaults);
       }
       $mgrDefaults{'scc_url'} = Spacewalk::Setup::DEFAULT_SCC_URL if (not $mgrDefaults{'scc_url'});
+      my $sccpasswdenc = encode_base64($answers->{'scc-pass'});
+      chomp($sccpasswdenc); # encode_base64 add \n at the end
 
       # SCC - write to DB
-      my $st = sprintf("insert into suseCredentials (id, user_id, type_id, username, password, url)
-                        values (sequence_nextval('suse_credentials_id_seq'), NULL,
-                                (select id from suseCredentialsType where label = 'scc'),
+      my $st = sprintf("insert into suseCredentials (id, user_id, type, username, password, url)
+                        values (sequence_nextval('suse_credentials_id_seq'), NULL, 'scc',
                                  '%s', '%s', '%s');",
-                       $answers->{'scc-user'},
-                       encode_base64($answers->{'scc-pass'}),
-                       $mgrDefaults{'scc_url'}
-                      );
+                       $answers->{'scc-user'}, $sccpasswdenc, $mgrDefaults{'scc_url'});
       Spacewalk::Setup::system_or_exit(["/bin/bash", "-c",
                                         "echo \"$st\" | spacewalk-sql --select-mode - 2>&1"],
                                        1, "*** Setup Organization Credentials failed.");

@@ -9130,7 +9130,17 @@ Please note that some manual configuration of these scripts may still be require
         <source>Filters</source>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.tip" xml:space="preserve">
-        <source>-zsh*,kernel +zsh-html</source>
+        <source>
+              &lt;strong&gt;Filter syntax:&lt;/strong&gt; &lt;code&gt;[+-]keyword[,keyword ...]&lt;/code&gt;&lt;br/&gt;
+              Use &lt;strong&gt;'+'&lt;/strong&gt; to include only the package names matching the keyword and
+              &lt;strong&gt;'-'&lt;/strong&gt; to exclude the package names matching the keyword. Multiple filters can be
+              separated with spaces. Filters are evaluated in the order that they are specified. Shell-style wildcards
+              are supported.&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;Example:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
+              except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
+          </source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
@@ -26140,6 +26150,13 @@ given channel.</source>
         <source>This is a Pay-as-you-go server</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
+        <source>Do not use strict mode</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
       <target state="new"/>
   </trans-unit>

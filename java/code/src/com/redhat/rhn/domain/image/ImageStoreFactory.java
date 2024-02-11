@@ -15,10 +15,11 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.org.Org;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -211,14 +212,21 @@ public class ImageStoreFactory extends HibernateFactory {
      * @param ist - image store type
      * @return new Credentials instance
      */
-    public static Credentials createCredentials(Map<String, String> params, ImageStoreType ist) {
-        String type;
-        if (ist.equals(ImageStoreFactory.TYPE_REGISTRY)) {
-            type = Credentials.TYPE_REGISTRY;
-        }
-        else {
+    public static RegistryCredentials createCredentials(Map<String, String> params, ImageStoreType ist) {
+        if (!ist.equals(ImageStoreFactory.TYPE_REGISTRY)) {
             return null;
         }
-        return CredentialsFactory.createCredentials(params.get(USER_KEY), params.get(PASS_KEY), type);
+
+        String user = params.get(USER_KEY);
+        String password = params.get(PASS_KEY);
+
+        if (StringUtils.isEmpty(user)) {
+            return null;
+        }
+
+        RegistryCredentials registryCredentials = CredentialsFactory.createRegistryCredentials(user, password);
+        CredentialsFactory.storeCredentials(registryCredentials);
+
+        return registryCredentials;
     }
 }

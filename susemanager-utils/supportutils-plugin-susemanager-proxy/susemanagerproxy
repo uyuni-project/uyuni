@@ -5,39 +5,25 @@
 #              about SUSE Manager Proxy
 # License:     GPLv2
 # Author:      Michael Calmer <mc@suse.de>
-# Modified:    2020 November 09
+# Modified:    2024 February 03
 #############################################################
 
-SVER=4.2.0
-RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
+SVER=5.0.0
+RCFILE="/usr/lib/supportconfig/resources/supportconfig.rc"
+OF='plugin-susemanager-proxy.txt'
 LOG_LINES=500  # 0 means include the entire file
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
-plugin_command "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
+log_write $OF
+log_entry $OF note "Supportconfig Plugin for SUSE Manager Proxy, v${SVER}"
+addHeaderFile $OF
 
-plugin_command "hostname --fqdn"
+log_cmd $OF "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
 
-validate_rpm_if_installed() {
-        THISRPM=$1
-        echo "#==[ Validating RPM ]=================================#"
-        if rpm -q $THISRPM >/dev/null 2>&1; then
-                echo "# rpm -V $THISRPM"
-
-                if rpm -V $THISRPM; then
-                        echo "Status: Passed"
-                else
-                        echo "Status: WARNING"
-                fi
-        else
-                echo "package $THISRPM is not installed"
-                echo "Status: Skipped"
-        fi
-        echo
-}
+log_cmd $OF "hostname --fqdn"
 
 #############################################################
-section_header "Supportconfig Plugin for SUSE Manager Proxy, v${SVER}"
 RPMLIST="
 spacewalk-backend
 spacewalk-backend-libs
@@ -57,45 +43,45 @@ SUSE-Manager-Proxy-release
 "
 
 for THISRPM in $RPMLIST; do
-        validate_rpm_if_installed $THISRPM
+        rpm_verify $OF $THISRPM
 done
 
-find_and_plog_files () {
+find_and_log_files () {
         [ -d "$1" ] || return 0
         FILES=$(find "$@" ! -name \*.gz ! -name \*.bz2 ! -name \*.xz)
         if [ -n "$FILES" ]; then
-                plog_files $LOG_LINES $FILES
+                log_files $OF $LOG_LINES $FILES
         fi
 }
 
-section_header "SUSE Manager Proxy Config Files"
+log_entry $OF note "SUSE Manager Proxy Config Files"
 
-pconf_files \
+conf_files $OF \
     /etc/rhn/rhn.conf \
     /etc/squid/squid.conf
 
-section_header "SUSE Manager Proxy Log Files"
+log_entry $OF note "SUSE Manager Proxy Log Files"
 
-find_and_plog_files /var/log/rhn -type f
-find_and_plog_files /var/log/squid -type f
-find_and_plog_files /var/log/apache2 -type f
-find_and_plog_files /var/log/salt -type f
+find_and_log_files /var/log/rhn -type f
+find_and_log_files /var/log/squid -type f
+find_and_log_files /var/log/apache2 -type f
+find_and_log_files /var/log/salt -type f
 
-section_header "SSL Configuration"
+log_entry $OF note "SSL Configuration"
 
-pconf_files $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
+conf_files $OF $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
             /etc/apache2/ssl.crt/server.crt
 
-section_header "Crypto Policy"
+log_entry $OF note "Crypto Policy"
 
 if [ -f /etc/crypto-policies/config ]; then
-        plugin_command "cat /etc/crypto-policies/config"
+        log_cmd $OF "cat /etc/crypto-policies/config"
 elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
-        plugin_message "FIPS"
+        log_write $OF "FIPS"
 else
-        plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+        log_cmd $OF "grep -v '#' /usr/share/crypto-policies/default-config"
 fi
 
-plugin_command "zypper --no-refresh ls"
-plugin_command "zypper --no-refresh lr -u"
+log_cmd $OF "zypper --no-refresh ls"
+log_cmd $OF "zypper --no-refresh lr -u"
 

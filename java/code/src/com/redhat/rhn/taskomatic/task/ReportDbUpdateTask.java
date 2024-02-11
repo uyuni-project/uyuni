@@ -31,6 +31,7 @@ import org.hibernate.Session;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +42,27 @@ public class ReportDbUpdateTask extends RhnJavaJob {
     private static final String SYSTEM_REPORT_QUERIES = "SystemReport_queries";
     private static final String CHANNEL_REPORT_QUERIES = "ChannelReport_queries";
     private static final String SCAP_REPORT_QUERIES = "ScapReport_queries";
+    // Common fields
+    private static final String SYSTEM_ID = "system_id";
+    private static final String HISTORY_ID = "history_id";
+    private static final String ACTION_ID = "action_id";
+    private static final String CHANNEL_ID = "channel_id";
+    private static final String CONFIG_CHANNEL_ID = "config_channel_id";
+    private static final String INSTANCE_ID = "instance_id";
+    private static final String INTERFACE_ID = "interface_id";
+    private static final String SYSTEM_GROUP_ID = "system_group_id";
+    private static final String ADDRESS = "address";
+    private static final String ERRATA_ID = "errata_id";
+    private static final String NAME = "name";
+    private static final String ORGANIZATION = "organization";
+    private static final String KEY = "key";
+    public static final String ACCOUNT_ID = "account_id";
+    public static final String ACCOUNT_GROUP_ID = "account_group_id";
+    public static final String SCAN_ID = "scan_id";
+    public static final String RULE_ID = "rule_id";
+    public static final String IDENT_ID = "ident_id";
+    public static final String PACKAGE_ID = "package_id";
+    public static final String REPOSITORY_ID = "repository_id";
 
     private final int batchSize;
 
@@ -63,79 +85,73 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         this.batchSize = batchSizeIn;
     }
 
-    private void fillReportDbTable(Session session, String xmlName, String tableName) {
-        TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
-            SelectMode query = ModeFactory.getMode(xmlName, tableName, Map.class);
-
-            // Remove all the existing data
-            log.debug("Deleting existing data in table {}", tableName);
-            WriteMode delete = dbHelper.generateDelete(session, tableName);
-            delete.executeUpdate(Map.of("mgm_id", LOCAL_MGM_ID));
-
-            // Extract the first batch
-            DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", batchSize));
-            if (!firstBatch.isEmpty()) {
-                // Generate the insert using the column name retrieved from the select
-                Set<String> columnParameters = firstBatch.get(0).keySet();
-                WriteMode insert = dbHelper.generateInsertWithDate(session, tableName, LOCAL_MGM_ID, columnParameters);
-
-                insert.executeUpdates(firstBatch);
-                log.debug("Extracted {} rows for table {}", firstBatch.size(), tableName);
-
-                // Iterate further if we can have additional rows
-                if (firstBatch.size() == batchSize) {
-                    dbHelper.<Map<String, Object>>batchStream(query, batchSize, batchSize)
-                            .forEach(batch -> {
-                                insert.executeUpdates(batch);
-                                log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
-                            });
-                }
-            }
-            else {
-                log.debug("No data extracted for table {}", tableName);
-            }
-        });
-    }
-
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         ConnectionManager rcm = ConnectionManagerFactory.localReportingConnectionManager();
         ReportDbHibernateFactory rh = new ReportDbHibernateFactory(rcm);
 
         try {
-            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroup");
-            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroupPermission");
-            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "Account");
-            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "AccountGroup");
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroup",
+                Map.of(SYSTEM_GROUP_ID, 0));
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroupPermission",
+                Map.of(SYSTEM_GROUP_ID, 0, ACCOUNT_ID, 0));
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "Account",
+                Map.of(ACCOUNT_ID, 0));
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "AccountGroup",
+                Map.of(ACCOUNT_ID, 0, ACCOUNT_GROUP_ID, 0));
 
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "System");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemHistory");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemAction");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemChannel");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemConfigChannel");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemVirtualData");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetInterface");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV4");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV6");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemOutdated");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemGroupMember");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemEntitlement");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemErrata");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageInstalled");
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "System",
+                Map.of(SYSTEM_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemHistory",
+                Map.of(SYSTEM_ID, 0, HISTORY_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemAction",
+                Map.of(SYSTEM_ID, 0, ACTION_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemChannel",
+                Map.of(SYSTEM_ID, 0, CHANNEL_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemConfigChannel",
+                Map.of(SYSTEM_ID, 0, CONFIG_CHANNEL_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemVirtualData",
+                Map.of(INSTANCE_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetInterface",
+                Map.of(SYSTEM_ID, 0, INTERFACE_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV4",
+                Map.of(SYSTEM_ID, 0, INTERFACE_ID, 0, ADDRESS, ""));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV6",
+                Map.of(SYSTEM_ID, 0, INTERFACE_ID, 0, ADDRESS, ""));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemOutdated",
+                Map.of(SYSTEM_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemGroupMember",
+                Map.of(SYSTEM_ID, 0, SYSTEM_GROUP_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemEntitlement",
+                Map.of(SYSTEM_ID, 0, SYSTEM_GROUP_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemErrata",
+                Map.of(SYSTEM_ID, 0, ERRATA_ID, 0));
+            fillReportDbTableById(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageInstalled",
+                Map.of(NAME, ""));
             fillReportDbTableById(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageUpdate",
-                    "SystemPackageUpdateIDs");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemCustomInfo");
+                Map.of(PACKAGE_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemCustomInfo",
+                Map.of(ORGANIZATION, "", SYSTEM_ID, 0, KEY, ""));
 
-            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Channel");
-            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelErrata");
-            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelPackage");
-            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelRepository");
-            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Errata");
-            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Package");
-            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Repository");
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Channel",
+                Map.of(CHANNEL_ID, 0));
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelErrata",
+                Map.of(CHANNEL_ID, 0, ERRATA_ID, 0));
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelPackage",
+                Map.of(CHANNEL_ID, 0, PACKAGE_ID, 0));
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelRepository",
+                Map.of(CHANNEL_ID, 0, REPOSITORY_ID, 0));
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Errata",
+                Map.of(ERRATA_ID, 0));
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Package",
+                Map.of(PACKAGE_ID, 0));
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Repository",
+                Map.of(REPOSITORY_ID, 0));
 
-            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScan");
-            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScanResult");
+            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScan",
+                Map.of(SCAN_ID, 0));
+            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScanResult",
+                Map.of(SCAN_ID, 0, RULE_ID, 0, IDENT_ID, 0));
 
             dbHelper.analyzeReportDb(rh.getSession());
 
@@ -158,9 +174,25 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         }
     }
 
-    private void fillReportDbTableById(Session session, String xmlName, String tableName, String idsQuery) {
+    private void fillReportDbTable(Session session, String xmlName, String tableName, Map<String, Object> filterMap) {
         TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
-            SelectMode queryData = ModeFactory.getMode(xmlName, idsQuery, Map.class);
+            // Remove all the existing data
+            log.debug("Deleting existing data in table {}", tableName);
+            WriteMode delete = dbHelper.generateDelete(session, tableName);
+            delete.executeUpdate(Map.of("mgm_id", LOCAL_MGM_ID));
+
+            // Extract the first batch using the given filters, only adding the batch size as number of rows limit
+            Map<String, Object> parametersMap = new HashMap<>(filterMap);
+            parametersMap.put("limit", batchSize);
+
+            fillTableInBatches(session, xmlName, tableName, tableName, parametersMap, filterMap.keySet());
+        });
+    }
+
+    private void fillReportDbTableById(Session session, String xmlName, String tableName,
+                                       Map<String, Object> filterMap) {
+        TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
+            SelectMode queryData = ModeFactory.getMode(xmlName, tableName + "_Ids", Map.class);
 
             // Remove all the existing data
             log.debug("Deleting existing data in table {}", tableName);
@@ -168,42 +200,50 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             delete.executeUpdate(Map.of("mgm_id", LOCAL_MGM_ID));
 
             // Get the full data set first
-            @SuppressWarnings("unchecked")
             DataResult<Map<String, Long>> dataSet = queryData.execute();
             if (dataSet.isEmpty()) {
                 log.debug("No data extracted for table {}", tableName);
                 return;
             }
 
-            SelectMode query = ModeFactory.getMode(xmlName, tableName + "_byId", Map.class);
             for (Map<String, Long> data : dataSet) {
                 Long id = data.get("id");
 
-                // Extract the first batch
-                @SuppressWarnings("unchecked")
-                DataResult<Map<String, Object>> firstBatch = query.execute(
-                        Map.of("id", id, "offset", 0, "limit", batchSize));
-                if (firstBatch.isEmpty()) {
-                    log.debug("No data extracted for table {}", tableName);
-                    continue;
-                }
-                // Generate the insert using the column name retrieved from the select
-                Set<String> columnParameters = firstBatch.get(0).keySet();
-                WriteMode insert = dbHelper.generateInsertWithDate(session, tableName, LOCAL_MGM_ID, columnParameters);
+                Map<String, Object> parametersMap = new HashMap<>(filterMap);
+                parametersMap.put("id", id);
+                parametersMap.put("limit", batchSize);
 
-                insert.executeUpdates(firstBatch);
-                log.debug("Extracted {} rows for table {} and id {}", firstBatch.size(), tableName, id);
-
-                // Iterate further if we can have additional rows
-                if (firstBatch.size() == batchSize) {
-                    dbHelper.<Map<String, Object>>batchStream(query, batchSize, batchSize)
-                            .forEach(batch -> {
-                                insert.executeUpdates(batch);
-                                log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
-                            });
-                }
+                fillTableInBatches(session, xmlName, tableName + "_byId", tableName, parametersMap, filterMap.keySet());
             }
         });
+    }
+
+    private void fillTableInBatches(Session session, String xmlName, String queryName, String tableName,
+                                    Map<String, Object> parametersMap, Set<String> mutableFieldsSet) {
+        SelectMode query = ModeFactory.getMode(xmlName, queryName, Map.class);
+        DataResult<Map<String, Object>> dataBatch = query.execute(parametersMap);
+        if (dataBatch.isEmpty()) {
+            log.debug("No data extracted for table {}", tableName);
+            return;
+        }
+
+        // Generate the insert using the column name retrieved from the select
+        Set<String> columnParameters = dataBatch.get(0).keySet();
+        WriteMode insert = dbHelper.generateInsertWithDate(session, tableName, LOCAL_MGM_ID, columnParameters);
+
+        insert.executeUpdates(dataBatch);
+        log.debug("Extracted {} rows for table {}", dataBatch.size(), tableName);
+
+        // Iterate further if we can have additional rows
+        while (dataBatch.size() >= batchSize) {
+            dbHelper.updateParameters(parametersMap, dataBatch, mutableFieldsSet);
+
+            dataBatch = query.execute(parametersMap);
+            if (!dataBatch.isEmpty()) {
+                log.debug("Extracted {} rows more for table {}", dataBatch.size(), tableName);
+                insert.executeUpdates(dataBatch);
+            }
+        }
     }
 
     @Override

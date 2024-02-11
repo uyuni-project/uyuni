@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.21
+Version:        5.0.3
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -96,9 +96,10 @@ BuildRequires:  classmate
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
+BuildRequires:  glassfish-activation-api
+BuildRequires:  glassfish-jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
-BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate-types
 BuildRequires:  httpcomponents-asyncclient
@@ -148,8 +149,7 @@ BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
 BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
-BuildRequires:  glassfish-activation-api
-BuildRequires:  glassfish-jaxb-api
+BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
@@ -188,7 +188,6 @@ Requires:       glassfish-activation-api
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       hibernate-commons-annotations
 Requires:       hibernate-types
 Requires:       httpcomponents-client
@@ -241,6 +240,7 @@ Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
+Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
@@ -537,9 +537,6 @@ install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data
-install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data/images
-install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/formula_data
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
@@ -553,6 +550,8 @@ install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config
 # Adjust product tree tag
 %if 0%{?is_opensuse}
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+%else
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
 # Adjust languages
 sed -i -e '/# NOTE: for the RPMs this is defined at the SPEC!/d' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
@@ -703,9 +702,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %attr(775, tomcat, tomcat) %dir %{serverdir}/tomcat/webapps
 %dir %{userserverdir}/susemanager
 %dir %{userserverdir}/susemanager/salt
-%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data
-%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data/images
-%dir %{userserverdir}/susemanager/formula_data
 %attr(770, tomcat, %{salt_user_group}) %dir %{userserverdir}/susemanager/tmp
 %dir %{serverdir}/tomcat/webapps/rhn/
 %{serverdir}/tomcat/webapps/rhn/apidoc/
@@ -785,7 +781,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %else
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
-
 
 %files lib
 %defattr(644,root,root,755)

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2018 SUSE LLC
@@ -10,14 +11,19 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
+# pylint: disable-next=unused-import
 import sys
 from spacewalk.common.rhnLog import log_debug
+
+# pylint: disable-next=unused-import
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.rhnLib import ShadowAction
 
 # the "exposed" functions
-__rhnexport__ = ['subscribe']
+__rhnexport__ = ["subscribe"]
 
+
+# pylint: disable-next=invalid-name,unused-argument
 def subscribe(serverId, actionId, dry_run=0):
     log_debug(3)
 

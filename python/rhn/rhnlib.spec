@@ -1,7 +1,7 @@
 #
 # spec file for package rhnlib
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -42,12 +42,12 @@
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 Name:           rhnlib
-Version:        4.4.5
+Version:        5.0.2
 Release:        1
 %if "%{_vendor}" == "debbuild"
 Group:          python
-%else
 Packager:       Uyuni Project <devel@lists.uyuni-project.org>
+%else
 Group:          Development/Libraries
 %endif
 URL:            https://github.com/uyuni-project/uyuni

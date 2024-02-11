@@ -1,4 +1,52 @@
 -------------------------------------------------------------------
+Mon Jan 29 12:00:55 CET 2024 - rosuna@suse.com
+
+- version 5.0.4-1
+  * Change schedule of system-profile-refresh to run on the 2nd Saturday
+    of the month to not collide with normal working times (bsc#1215769)
+
+-------------------------------------------------------------------
+Thu Jan 18 11:04:39 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.3-1
+  * move schema files to /usr/share/susemanager/db out of
+    persistent storage
+
+-------------------------------------------------------------------
+Tue Jan 16 17:59:37 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * Add missing migration paths to version 5.0.2
+
+-------------------------------------------------------------------
+Tue Jan 16 08:12:40 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Thu Jan 11 16:42:14 CET 2024 - marina.latini@suse.com
+
+- version 4.4.10-1
+  * Refactor susecredentials to support the new hierarchy
+  * Update allowed postgres version
+  * Fix schema upgrade
+  * Improve performance of System (bsc#1211254)
+
+-------------------------------------------------------------------
+Fri Dec 15 17:30:34 CET 2023 - rosuna@suse.com
+
+- version 4.4.9-1
+  * Adjust upgrade script to work from SUSE Manager 4.3
+  * Add provider detection for Amazon Linux 2023 packages
+  * Rename ssh-push-bunch into ssh-service-bunch
+  * Copy current SUSE Manager 4.3 schema to master and remove
+    migration shortcuts
+  * Add schema definition and migration for armhf
+  * Revert adding unique index for rhnpackagechangelogdata table
+    (bsc#1218027)
+
+-------------------------------------------------------------------
 Wed Nov 01 19:59:54 CET 2023 - marina.latini@suse.com
 
 - version 4.4.8-1

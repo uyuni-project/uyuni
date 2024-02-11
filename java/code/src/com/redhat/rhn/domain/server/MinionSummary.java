@@ -18,6 +18,7 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * This class represents a summary of a minion.
@@ -164,5 +165,13 @@ public class MinionSummary {
                 .append(machineId)
                 .append(contactMethodLabel)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("serverId", serverId)
+                .append("minionId", minionId)
+                .toString();
     }
 }

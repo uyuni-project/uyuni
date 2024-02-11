@@ -65,14 +65,6 @@ module.exports = (env, argv) => {
       },
       // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
       {
-        from: path.resolve(__dirname, "../node_modules/select2"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy/select2"),
-      },
-      {
-        from: path.resolve(__dirname, "../node_modules/select2-bootstrap-css/select2-bootstrap.css"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy/select2"),
-      },
-      {
         from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
@@ -113,7 +105,8 @@ module.exports = (env, argv) => {
       "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
       "css/susemanager-fullscreen": path.resolve(__dirname, "../branding/css/susemanager-fullscreen.less"),
       "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
-      "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.less"),
+      // TODO: We're removing the dark theme for now
+      "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
     },
     output: {
       filename: `[name].bundle.js`,

@@ -1,7 +1,7 @@
 #
 # spec file for package perl-Satcon
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -23,7 +23,7 @@ Name:           perl-Satcon
 Summary:        Framework for configuration files
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.4.3
+Version:        5.0.1
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

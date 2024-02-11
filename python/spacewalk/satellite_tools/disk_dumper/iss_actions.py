@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -18,62 +19,62 @@ import sys
 from . import iss_ui
 
 
+# pylint: disable-next=missing-class-docstring
 class ActionDeps:
-
     def __init__(self, options):
         # self.step_precedence contains the dependencies among the export steps.
         self.step_precedence = {
-            'orgs': [''],
-            'packages': [''],
-            'source-packages': [''],
-            'errata': [''],
-            'kickstarts': [''],
-            'rpms': [''],
+            "orgs": [""],
+            "packages": [""],
+            "source-packages": [""],
+            "errata": [""],
+            "kickstarts": [""],
+            "rpms": [""],
             #            'srpms'                     : ['channels'],
-            'channels': ['channel-families'],
-            'channel-families': ['blacklists'],
-            'blacklists': ['arches'],
-            'short': ['channels'],
-            'arches': ['arches-extra'],
-            'arches-extra': [''],
-            'productnames': [''],
-            'supportinfo': [''],
-            'suse-products': [''],
-            'suse-product-channels': ['suse-products', 'channels'],
-            'suse-upgrade-paths': ['suse-products'],
-            'suse-product-extensions': ['suse-products'],
-            'scc-repositories': [''],
-            'suse-product-repositories': ['suse-products', 'scc-repositories'],
-            'suse-subscriptions': ['channel-families'],
-            'cloned-channels': ['channels'],
+            "channels": ["channel-families"],
+            "channel-families": ["blacklists"],
+            "blacklists": ["arches"],
+            "short": ["channels"],
+            "arches": ["arches-extra"],
+            "arches-extra": [""],
+            "productnames": [""],
+            "supportinfo": [""],
+            "suse-products": [""],
+            "suse-product-channels": ["suse-products", "channels"],
+            "suse-upgrade-paths": ["suse-products"],
+            "suse-product-extensions": ["suse-products"],
+            "scc-repositories": [""],
+            "suse-product-repositories": ["suse-products", "scc-repositories"],
+            "suse-subscriptions": ["channel-families"],
+            "cloned-channels": ["channels"],
         }
 
         # self.step_hierarchy lists the export steps in the order they need to be run.
         self.step_hierarchy = [
-            'orgs',
-            'channel-families',
-            'arches',
-            'arches-extra',
-            'productnames',
-            'channels',
-            'blacklists',
-            'short',
-            'cloned-channels',
-            'rpms',
-            'packages',
-            'errata',
-            'kickstarts',
-            'supportinfo',
-            'suse-products',
-            'scc-repositories',
-            'suse-product-channels',
-            'suse-upgrade-paths',
-            'suse-product-extensions',
-            'suse-product-repositories',
-            'suse-subscriptions',
+            "orgs",
+            "channel-families",
+            "arches",
+            "arches-extra",
+            "productnames",
+            "channels",
+            "blacklists",
+            "short",
+            "cloned-channels",
+            "rpms",
+            "packages",
+            "errata",
+            "kickstarts",
+            "supportinfo",
+            "suse-products",
+            "scc-repositories",
+            "suse-product-channels",
+            "suse-upgrade-paths",
+            "suse-product-extensions",
+            "suse-product-repositories",
+            "suse-subscriptions",
         ]
         self.options = options
-        self.action_dict = {'blacklists': 0}
+        self.action_dict = {"blacklists": 0}
 
     def list_steps(self):
         print("LIST OF STEPS:")
@@ -89,6 +90,7 @@ class ActionDeps:
 
         # Make sure that the step entered by the user is actually a step.
         if self.options.step not in self.step_hierarchy:
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("Error: '%s' is not a valid step.\n" % self.options.step)
             sys.exit(-1)
 
@@ -104,30 +106,29 @@ class ActionDeps:
 
     # Handles the logic for the --no-rpms, --no-packages, --no-errata, --no-kickstarts, and --list-channels.
     def handle_options(self):
-
         if self.options.list_steps:
             self.list_steps()
 
         if self.options.no_rpms:
-            self.action_dict['rpms'] = 0
+            self.action_dict["rpms"] = 0
 
         if self.options.no_packages:
-            self.action_dict['packages'] = 0
+            self.action_dict["packages"] = 0
 
         if self.options.no_errata:
-            self.action_dict['errata'] = 0
+            self.action_dict["errata"] = 0
 
         if self.options.no_kickstarts:
-            self.action_dict['kickstarts'] = 0
+            self.action_dict["kickstarts"] = 0
 
         if not self.options.all_orgs and not self.options.org:
-            self.action_dict['orgs'] = 0
+            self.action_dict["orgs"] = 0
 
         if self.options.list_channels:
-            self.action_dict['channels'] = 1
-            self.action_dict['blacklists'] = 0
-            self.action_dict['arches'] = 0
-            self.action_dict['channel-families'] = 1
+            self.action_dict["channels"] = 1
+            self.action_dict["blacklists"] = 0
+            self.action_dict["arches"] = 0
+            self.action_dict["channel-families"] = 1
 
     # This method uses self.step_precendence to figure out if a step needs to be turned off.
     def turn_off_dep_steps(self, step):
@@ -150,6 +151,7 @@ class ActionDeps:
         self.handle_options()
         self.handle_step_dependents()
         return self.step_hierarchy, self.action_dict
+
 
 if __name__ == "__main__":
     a = iss_ui.UI()

@@ -19,25 +19,32 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.domain.org.OrgFactory;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.io.File;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Cleans up orphaned packages
  *
  */
-
 public class PackageCleanup extends RhnJavaJob {
 
     @Override
     public String getConfigNamespace() {
         return "package_cleanup";
     }
+
+    // this task is executed every 10 minutes. A daily job should be executed between
+    // these two times.
+    private static final LocalTime DAILY_JOB_START = LocalTime.parse("20:49:00");
+    private static final LocalTime DAILY_JOB_END = DAILY_JOB_START.plusMinutes(10);
 
     /**
      * {@inheritDoc}
@@ -74,10 +81,39 @@ public class PackageCleanup extends RhnJavaJob {
 
             // Reset the queue (table)
             resetQueue();
+
+            // Change org for orphan vendor packages that a user can delete them
+            changeOrgForOrphanVendorPackages();
         }
         catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new JobExecutionException(e);
+        }
+    }
+
+    /*
+     * Sometimes reposync disassociates vendor packages (org_id = 0) from
+     * channels.
+     * These orphans are then hard to work with in uyuni (nobody has
+     * permissions to view/delete them). We workaround this issue by
+     * assigning such packages to the default organization, so that they can
+     * be deleted using the existing orphan-deleting procedure.
+     *
+     * Sometimes packages move from 1 channel to another. If the org change
+     * between the reposync of these two channels, the package gets downloaded
+     * again and exists twice. To prevent this we want this cleanup running
+     * only 1 time per day outside of a full reposync which happens typically
+     * during the night.
+     */
+    private void changeOrgForOrphanVendorPackages() {
+        LocalTime now = LocalTime.now();
+        if (now.isAfter(DAILY_JOB_START) && now.isBefore(DAILY_JOB_END)) {
+            WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                    TaskConstants.TASK_QUERY_PKGCLEANUP_ORPHAN_VENDOR_PKG_CHANGE_ORG);
+            int updates = update.executeUpdate(Map.of("org_id", OrgFactory.getSatelliteOrg().getId()));
+            if (updates > 0) {
+                log.info("Found {} orphan vendor packages and moved them to the default organization.", updates);
+            }
         }
     }
 
@@ -119,5 +155,4 @@ public class PackageCleanup extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_PKGCLEANUP_FIND_CANDIDATES);
         return query.execute(Collections.emptyMap());
     }
-
 }

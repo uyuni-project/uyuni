@@ -177,7 +177,7 @@ export function Select(props: Props) {
         // Common props to pass to both 'react-select' and 'react-select/async'
         const commonProps = Object.assign(
           {
-            className: inputClass ? ` ${inputClass}` : "",
+            className: `form-control--react-select ${inputClass ?? ""}`,
             name: props.name,
             inputId: props.name,
             isDisabled: props.disabled,
@@ -252,7 +252,7 @@ Select.defaultProps = {
   getOptionValue: (option) => (option instanceof Object ? option.value : option),
   getOptionLabel: (option) => (option instanceof Object ? option.label : option),
   isLoading: false,
-  emptyText: "No options",
+  emptyText: t("No options"),
   inputClass: undefined,
   defaultValue: undefined,
   label: undefined,

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -18,16 +19,19 @@ from spacewalk.common.rhnConfig import initCFG
 from spacewalk.server.xmlrpc import queue
 
 initLOG("stderr", 4)
-initCFG('server.xmlrpc')
-rhnSQL.initDB('rhnuser/rhnuser@webdev')
+initCFG("server.xmlrpc")
+rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
 q = queue.Queue()
+# pylint: disable-next=using-constant-test
 if 1:
+    # pylint: disable-next=unspecified-encoding
     systemid = open("../../test/backend/checks/systemid-farm06").read()
     print((q.get(systemid, version=2)))
 else:
     q.server_id = 1003485791
 
+    # pylint: disable-next=protected-access
     q._invalidate_failed_prereq_actions()
 
 # rhnSQL.rollback()

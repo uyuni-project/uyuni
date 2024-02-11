@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2010--2015 Red Hat, Inc.
 #
@@ -18,4 +19,6 @@ from wsgi import wsgiHandler
 
 
 def application(environ, start_response):
-    return wsgiHandler.handle(environ, start_response, "config", "server.config-management")
+    return wsgiHandler.handle(
+        environ, start_response, "config", "server.config-management"
+    )

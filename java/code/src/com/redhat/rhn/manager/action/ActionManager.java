@@ -363,7 +363,22 @@ public class ActionManager extends BaseManager {
                                               .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
                                               .anyMatch(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
         if (hasValidPrerequisite) {
-            throw new ActionIsChildException();
+            StringBuilder message = new StringBuilder();
+            for (Action a : actions) {
+                Action p = a.getPrerequisite();
+                Long lastId = a.getId();
+                do {
+                    if (p != null) {
+                        lastId = p.getId();
+                    }
+                    else {
+                        break;
+                    }
+                    p = p.getPrerequisite();
+                } while (p != null);
+                message.append(String.format("To cancel the whole chain, please cancel Action %d%n", lastId));
+            }
+            throw new ActionIsChildException(message.toString());
         }
 
         Set<Action> actionsToDelete = concat(

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -31,6 +32,7 @@ from .rhnLib import parseRPMFilename
 # Functions that deal with the database
 #
 
+
 # New client
 # Returns a package path, given a server_id, package filename and channel label
 def get_package_path(server_id, pkg_spec, channel):
@@ -42,7 +44,8 @@ def get_package_path(server_id, pkg_spec, channel):
         pkg.insert(1, None)
     else:
         if "/" in pkg_spec:
-            org, checksum, pkg_spec = pkg_spec.split('/', 2)
+            # pylint: disable-next=unused-variable
+            org, checksum, pkg_spec = pkg_spec.split("/", 2)
         pkg = parseRPMFilename(pkg_spec)
         if pkg is None:
             log_debug(4, "Error", "Requested weird package", pkg_spec)
@@ -78,12 +81,20 @@ def get_package_path(server_id, pkg_spec, channel):
     """
     pkg = list(map(str, pkg))
     h = rhnSQL.prepare(statement)
-    h.execute(name=pkg[0], ver=pkg[2], rel=pkg[3], arch=pkg[4],
-              channel=channel, server_id=server_id, checksum=checksum)
+    h.execute(
+        name=pkg[0],
+        ver=pkg[2],
+        rel=pkg[3],
+        arch=pkg[4],
+        channel=channel,
+        server_id=server_id,
+        checksum=checksum,
+    )
     rs = h.fetchall_dict()
     if not rs:
-        log_debug(4, "Error", "Non-existant package requested", server_id,
-                  pkg_spec, channel)
+        log_debug(
+            4, "Error", "Non-existant package requested", server_id, pkg_spec, channel
+        )
         raise rhnFault(17, _("Invalid RPM package %s requested") % pkg_spec)
     # It is unlikely for this query to return more than one row,
     # but it is possible
@@ -93,18 +104,19 @@ def get_package_path(server_id, pkg_spec, channel):
     max_row = rs[0]
     for each in rs[1:]:
         # Compare the epoch as string
-        if _none2emptyString(each['epoch']) > _none2emptyString(max_row['epoch']):
+        if _none2emptyString(each["epoch"]) > _none2emptyString(max_row["epoch"]):
             max_row = each
 
     # Set the flag for the proxy download accelerator
-    rhnFlags.set("Download-Accelerator-Path", max_row['path'])
-    return check_package_file(max_row['path'], max_row['id'], pkg_spec), max_row['id']
+    rhnFlags.set("Download-Accelerator-Path", max_row["path"])
+    return check_package_file(max_row["path"], max_row["id"], pkg_spec), max_row["id"]
 
 
 def check_package_file(rel_path, logpkg, raisepkg):
     if rel_path is None:
         log_error("Package path null for package id", logpkg)
         raise rhnFault(17, _("Invalid RPM package %s requested") % raisepkg)
+    # pylint: disable-next=consider-using-f-string
     filePath = "%s/%s" % (CFG.MOUNT_POINT, rel_path)
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem
@@ -118,9 +130,10 @@ def unlink_package_file(path):
     try:
         os.unlink(path)
     except OSError:
-        log_debug(1,  "Error unlinking %s;" % path)
+        # pylint: disable-next=consider-using-f-string
+        log_debug(1, "Error unlinking %s;" % path)
     dirname = os.path.dirname(path)
-    base_dirs = (CFG.MOUNT_POINT + '/' + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
+    base_dirs = (CFG.MOUNT_POINT + "/" + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
     while dirname not in base_dirs:
         try:
             os.rmdir(dirname)
@@ -141,9 +154,11 @@ def get_all_package_paths(server_id, pkg_spec, channel):
     log_debug(3, server_id, pkg_spec, channel)
     remotepath = None
     # get the path and package
+    # pylint: disable-next=unused-variable
     localpath, pkg_id = get_package_path(server_id, pkg_spec, channel)
 
     return remotepath, localpath
+
 
 # New client
 # Returns the path to a source rpm
@@ -153,13 +168,19 @@ def get_source_package_path(server_id, pkgFilename, channel):
     log_debug(3, server_id, pkgFilename, channel)
     rs = __query_source_package_path_by_name(server_id, pkgFilename, channel)
     if rs is None:
-        log_debug(4, "Error", "Non-existant package requested", server_id,
-                  pkgFilename, channel)
+        log_debug(
+            4,
+            "Error",
+            "Non-existant package requested",
+            server_id,
+            pkgFilename,
+            channel,
+        )
         raise rhnFault(17, _("Invalid RPM package %s requested") % pkgFilename)
 
     # Set the flag for the proxy download accelerator
-    rhnFlags.set("Download-Accelerator-Path", rs['path'])
-    return check_package_file(rs['path'], pkgFilename, pkgFilename)
+    rhnFlags.set("Download-Accelerator-Path", rs["path"])
+    return check_package_file(rs["path"], pkgFilename, pkgFilename)
 
 
 # 0 or 1: is this source in this channel?
@@ -203,24 +224,27 @@ def __query_source_package_path_by_name(server_id, pkgFilename, channel):
 def get_info_for_package(pkg, channel_id, org_id):
     log_debug(3, pkg)
     pkg = list(map(str, pkg))
-    params = {'name': pkg[0],
-              'ver': pkg[1],
-              'rel': pkg[2],
-              'epoch': pkg[3],
-              'arch': pkg[4],
-              'channel_id': channel_id,
-              'org_id': org_id}
+    params = {
+        "name": pkg[0],
+        "ver": pkg[1],
+        "rel": pkg[2],
+        "epoch": pkg[3],
+        "arch": pkg[4],
+        "channel_id": channel_id,
+        "org_id": org_id,
+    }
     # yum repo has epoch="0" not only when epoch is "0" but also if it's NULL
     # in DB we cannot insert an empty string, so we check for NULL or '0'
-    if pkg[3] == '0' or pkg[3] == '' or pkg[3] is None:
+    if pkg[3] == "0" or pkg[3] == "" or pkg[3] is None:
         epochStatement = "(epoch is null or epoch = '0')"
     else:
         epochStatement = "epoch = :epoch"
-    if params['org_id']:
+    if params["org_id"]:
         orgStatement = "org_id = :org_id"
     else:
         orgStatement = "org_id is null"
 
+    # pylint: disable-next=consider-using-f-string
     statement = """
     select p.path, cp.channel_id,
            cv.checksum_type, cv.checksum, p.org_id, pe.epoch
@@ -244,7 +268,10 @@ def get_info_for_package(pkg, channel_id, org_id):
        and %s
      order by cp.channel_id nulls last,
               p.id desc
-    """ % (epochStatement, orgStatement)
+    """ % (
+        epochStatement,
+        orgStatement,
+    )
 
     h = rhnSQL.prepare(statement)
     h.execute(**params)
@@ -253,10 +280,11 @@ def get_info_for_package(pkg, channel_id, org_id):
     if not ret:
         return ret
     for i in ret:
-        if i['org_id'] == None:
-            i['org_id'] = ''
+        # pylint: disable-next=singleton-comparison
+        if i["org_id"] == None:
+            i["org_id"] = ""
         else:
-            i['org_id'] = str(i['org_id'])
+            i["org_id"] = str(i["org_id"])
     return ret
 
 
@@ -265,32 +293,51 @@ def _none2emptyString(foo):
         return ""
     return str(foo)
 
-def add_eula_to_package(package_id, eula_id):
-    """ Associates an EULA to a package """
 
-    h = rhnSQL.prepare("""
+def add_eula_to_package(package_id, eula_id):
+    """Associates an EULA to a package"""
+
+    h = rhnSQL.prepare(
+        """
         SELECT *
           FROM susePackageEula
          WHERE package_id = :package_id
            AND eula_id    = :eula_id
-    """)
+    """
+    )
     h.execute(package_id=package_id, eula_id=eula_id)
     ret = h.fetchone_dict()
 
     if not ret:
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             INSERT INTO susePackageEula (package_id, eula_id)
                  VALUES (:package_id, :eula_id)
-        """)
+        """
+        )
         h.execute(package_id=package_id, eula_id=eula_id)
 
-if __name__ == '__main__':
-    """Test code.
-    """
+
+if __name__ == "__main__":
+    # pylint: disable-next=pointless-string-statement
+    """Test code."""
     from spacewalk.common.rhnLog import initLOG
+
     initLOG("stdout", 1)
     rhnSQL.initDB()
     print("")
     # new client
-    print((get_package_path(1000463284, 'kernel-2.4.2-2.i686.rpm', 'redhat-linux-i386-7.1')))
-    print((get_source_package_path(1000463284, 'kernel-2.4.2-2.i686.rpm', 'redhat-linux-i386-7.1')))
+    print(
+        (
+            get_package_path(
+                1000463284, "kernel-2.4.2-2.i686.rpm", "redhat-linux-i386-7.1"
+            )
+        )
+    )
+    print(
+        (
+            get_source_package_path(
+                1000463284, "kernel-2.4.2-2.i686.rpm", "redhat-linux-i386-7.1"
+            )
+        )
+    )

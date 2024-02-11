@@ -432,7 +432,8 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="needs-adaptation">이는 {1}일을 기준으로 {0} 계정의 @@PRODUCT_NAME@@ 현황 보고서입니다.
+        <target state="final">{7}
+{1}일을 기준으로 {0} 계정의 @@PRODUCT_NAME@@ 현황 보고서입니다.
 
 다음 중 하나에 해당하는 경우 이 이메일이 전송됩니다.
 
@@ -445,7 +446,7 @@ Thank you for using @@PRODUCT_NAME@@.
 ----------------------
 
 시스템에서 이 이메일을 비활성화하려면
-설정 페이지(https://{4}/rhn/account/UserPreferences.do)로 이동하십시오.
+사용자 설정 페이지(https://{4}/rhn/account/UserPreferences.do)로 이동하십시오.
 
 
 @@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
@@ -574,12 +575,14 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+      <trans-unit approved="yes" id="dailysummary.email.notpaygcompliant" xml:space="preserve">
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">경고: 이 @@PRODUCT_NAME@@ PAYG 인스턴스는 호환되지 않으며 일부 기능이 비활성화되어 있습니다.
+제품을 계속 사용하려면 관리자에게 문의하여 이 문제를 수정하십시오.
+          </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

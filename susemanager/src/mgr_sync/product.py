@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -19,9 +20,10 @@ from functools import total_ordering
 
 from spacewalk.susemanager.mgr_sync.channel import Channel
 
-@total_ordering
-class Product(object):
 
+@total_ordering
+# pylint: disable-next=missing-class-docstring
+class Product(object):
     class Status(str, Enum):  # pylint: disable=too-few-public-methods
         INSTALLED = "INSTALLED"
         AVAILABLE = "AVAILABLE"
@@ -34,63 +36,80 @@ class Product(object):
         self.recommended = data["recommended"]
         self.extensions = []
         self._parse_extensions(data["extensions"])
-        self.channels = [Channel(channel) for channel in data['channels']]
+        self.channels = [Channel(channel) for channel in data["channels"]]
         self.isBase = False  # pylint: disable=invalid-name
 
     def __repr__(self):
         return self.to_ascii_row()
 
     def __eq__(self, other):
-        return (self.friendly_name == other.friendly_name)
+        return self.friendly_name == other.friendly_name
 
     def __lt__(self, other):
+        # pylint: disable-next=invalid-name
         self_is_SUSE = self.friendly_name.startswith("SUSE")
+        # pylint: disable-next=invalid-name
         other_is_SUSE = other.friendly_name.startswith("SUSE")
         if self_is_SUSE and not other_is_SUSE:
             return False
         if not self_is_SUSE and other_is_SUSE:
             return True
-        return (self.friendly_name.lower() < other.friendly_name.lower())
+        return self.friendly_name.lower() < other.friendly_name.lower()
 
     @property
     def short_status(self):
         # pylint: disable=E1101
         if self.status == Product.Status.AVAILABLE:
+            # pylint: disable-next=consider-using-f-string
             return "[ ]%s" % (self.recommended and " (R)" or "")
         else:
-            return "[%s]%s" % (str(self.status.value)[0], self.recommended and " (R)" or "")
+            # pylint: disable-next=consider-using-f-string
+            return "[%s]%s" % (
+                str(self.status.value)[0],
+                self.recommended and " (R)" or "",
+            )
 
     def to_ascii_row(self):
+        # pylint: disable-next=consider-using-f-string
         return "{0} {1}".format(self.short_status, self.friendly_name)
 
-    def to_stdout(self, indentation_level=0, filter=None, expand=False,  # pylint: disable=redefined-builtin
-                  interactive_data=None):
+    def to_stdout(
+        self,
+        indentation_level=0,
+        # pylint: disable-next=redefined-builtin
+        filter=None,
+        expand=False,  # pylint: disable=redefined-builtin
+        interactive_data=None,
+    ):
         prefix = indentation_level * "  "
         if interactive_data is None:
             interactive_data = {}
         if interactive_data:
-            if self.status in (Product.Status.INSTALLED,
-                               Product.Status.UNAVAILABLE):
+            if self.status in (Product.Status.INSTALLED, Product.Status.UNAVAILABLE):
                 prefix = "     " + prefix
             else:
-                counter = interactive_data['counter']
+                counter = interactive_data["counter"]
+                # pylint: disable-next=consider-using-f-string
                 prefix = "{0:03}) {1}".format(counter, prefix)
-                interactive_data['num_prod'][counter] = self
-                interactive_data['counter'] += 1
+                interactive_data["num_prod"][counter] = self
+                interactive_data["counter"] += 1
 
         if not filter or self.matches_filter(filter):
             print(prefix + self.to_ascii_row())
 
-            if (not expand and self.status is not Product.Status.INSTALLED) or \
-               self.status == Product.Status.UNAVAILABLE:
+            if (
+                not expand and self.status is not Product.Status.INSTALLED
+            ) or self.status == Product.Status.UNAVAILABLE:
                 return
 
             indentation_level += 1
             for ext in self.extensions:
-                ext.to_stdout(indentation_level=indentation_level,
-                              expand=expand,
-                              filter=filter,
-                              interactive_data=interactive_data)
+                ext.to_stdout(
+                    indentation_level=indentation_level,
+                    expand=expand,
+                    filter=filter,
+                    interactive_data=interactive_data,
+                )
 
     def _parse_extensions(self, data):
         for extension in data:
@@ -120,6 +139,7 @@ def parse_products(data, log):
     for pdata in data:
         prd = Product(pdata)
         prd.isBase = True
+        # pylint: disable-next=consider-using-f-string
         log.debug("Found product '{0} {1}'".format(prd.friendly_name, prd.arch))
         products.append(prd)
 

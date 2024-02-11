@@ -65,10 +65,21 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
      * @return the channel family
      */
     public static ChannelFamily ensureChannelFamilyExists(User user, String label) {
+        return ensureChannelFamilyExists(user, label, label);
+    }
+
+    /**
+     * Utility method that ensures that a channel family exists.
+     * @param user the user
+     * @param label the label
+     * @param name the name
+     * @return the channel family
+     */
+    public static ChannelFamily ensureChannelFamilyExists(User user, String label, String name) {
         ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
         if (cf == null) {
             cf = ChannelFamilyFactoryTest.createTestChannelFamily(user, true, TestUtils.randomString());
-            cf.setName(label);
+            cf.setName(name);
             cf.setLabel(label);
             ChannelFamilyFactory.save(cf);
         }

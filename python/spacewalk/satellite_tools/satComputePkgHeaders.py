@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -18,6 +19,8 @@
 # when a script runs under it
 
 import sys
+
+# pylint: disable-next=deprecated-module
 from optparse import OptionParser, Option
 
 from spacewalk.server import rhnSQL
@@ -42,6 +45,7 @@ def parse_qs(*_args):
 def parse_qsl(*_args):
     pass
 
+
 status = None
 table = None
 config_tree = None
@@ -56,19 +60,15 @@ OK = 1
 sys.modules["_apache"] = sys.modules["__main__"]
 
 options_table = [
-    Option("-v", "--verbose",       action="count",
-           help="Increase verbosity"),
-    Option("--commit",              action="store_true",
-           help="Commit work"),
-    Option("--backup-file",         action="store",
-           help="Backup packages into this file"),
-    Option("--prefix",              action="store",     default='/pub',
-           help="Prefix to find files in"),
+    Option("-v", "--verbose", action="count", help="Increase verbosity"),
+    Option("--commit", action="store_true", help="Commit work"),
+    Option("--backup-file", action="store", help="Backup packages into this file"),
+    Option("--prefix", action="store", default="/pub", help="Prefix to find files in"),
 ]
 
 
+# pylint: disable-next=missing-class-docstring
 class Runner:
-
     def __init__(self):
         self.options = None
         self._channels_hash = None
@@ -77,6 +77,7 @@ class Runner:
     def main(self):
         parser = OptionParser(option_list=options_table)
 
+        # pylint: disable-next=unused-variable
         (self.options, _args) = parser.parse_args()
 
         rhnSQL.initDB()
@@ -113,8 +114,12 @@ class Runner:
                 row = h.fetchone_dict()
                 if not row:
                     break
-                package_id = row['package_id']
-                package_ids[package_id] = (row['path'], row['header_start'], row['header_end'])
+                package_id = row["package_id"]
+                package_ids[package_id] = (
+                    row["path"],
+                    row["header_start"],
+                    row["header_end"],
+                )
 
         self._channel_packages = {}
         orphaned_packages = {}
@@ -126,7 +131,7 @@ class Runner:
                 row = h.fetchone_dict()
                 if not row:
                     break
-                channel_label = row['label']
+                channel_label = row["label"]
                 if package_id in self._channel_packages:
                     l = self._channel_packages[package_id]
                 else:
@@ -145,17 +150,21 @@ class Runner:
 
         return package_ids
 
-    _query_get_channel_packages = rhnSQL.Statement("""
+    _query_get_channel_packages = rhnSQL.Statement(
+        """
         select c.id, c.label
           from rhnChannel c,
                rhnChannelPackage cp
          where cp.package_id = :package_id
            and cp.channel_id = c.id
-    """)
+    """
+    )
 
-    _query_get_channels = rhnSQL.Statement("""
+    _query_get_channels = rhnSQL.Statement(
+        """
         select id, label from rhnChannel
-    """)
+    """
+    )
 
     def _get_channels(self):
         h = rhnSQL.prepare(self._query_get_channels)
@@ -166,10 +175,11 @@ class Runner:
             row = h.fetchone_dict()
             if not row:
                 break
-            ret[row['label']] = row['id']
+            ret[row["label"]] = row["id"]
         return ret
 
-    _query_get_packages = rhnSQL.Statement("""
+    _query_get_packages = rhnSQL.Statement(
+        """
         select cp.package_id, p.path, p.header_start, p.header_end
           from rhnChannelPackage cp,
                rhnPackage p
@@ -177,14 +187,17 @@ class Runner:
            and cp.package_id = p.id
            and p.path is not null
            and p.header_start = -1
-    """)
+    """
+    )
 
-    _query_add_package_header_values = rhnSQL.Statement("""
+    _query_add_package_header_values = rhnSQL.Statement(
+        """
         update rhnPackage
            set header_start = :header_start,
                header_end = :header_end
          where id = :package_id
-    """)
+    """
+    )
 
     def _add_package_header_values(self, package_ids):
         if not package_ids:
@@ -192,8 +205,10 @@ class Runner:
         h = rhnSQL.prepare(self._query_add_package_header_values)
         for package_id, (path, header_start, header_end) in list(package_ids.items()):
             try:
-                p_file = file(self.options.prefix + "/" + path, 'r')
+                # pylint: disable-next=undefined-variable
+                p_file = file(self.options.prefix + "/" + path, "r")
             except IOError:
+                # pylint: disable-next=consider-using-f-string
                 print(("Error opening file %s" % path))
                 continue
 
@@ -201,26 +216,36 @@ class Runner:
                 (header_start, header_end) = rhn_rpm.get_header_byte_range(p_file)
             except InvalidPackageError:
                 e = sys.exc_info()[1]
+                # pylint: disable-next=consider-using-f-string
                 print(("Error reading header size from file %s: %s" % (path, e)))
 
             try:
-                h.execute(package_id=package_id, header_start=header_start, header_end=header_end)
+                h.execute(
+                    package_id=package_id,
+                    header_start=header_start,
+                    header_end=header_end,
+                )
             except rhnSQL.SQLError:
                 pass
 
     @staticmethod
     def _backup_packages(package_ids, backup_file):
+        # pylint: disable-next=unspecified-encoding
         f = open(backup_file, "w+")
 
         if not package_ids:
             return
 
-        template = "update rhnPackage set header_start=%s and header_end=%s where id = %s;\n"
+        template = (
+            "update rhnPackage set header_start=%s and header_end=%s where id = %s;\n"
+        )
+        # pylint: disable-next=unused-variable
         for package_id, (_path, header_start, header_end) in list(package_ids.items()):
             s = template % (header_start, header_end, package_id)
             f.write(s)
         f.write("commit;\n")
         f.close()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(Runner().main() or 0)

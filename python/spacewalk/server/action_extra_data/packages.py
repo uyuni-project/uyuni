@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -16,6 +17,8 @@
 
 import sys
 import re
+
+# pylint: disable-next=reimported,ungrouped-imports
 import sys
 
 from uyuni.common.usix import ListType, IntType
@@ -27,19 +30,23 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.rhnServer import server_kickstart
 
 # the "exposed" functions
-__rhnexport__ = ['remove',
-                 'update',
-                 'refresh_list',
-                 'delta',
-                 'runTransaction',
-                 'verify',
-                 'setLocks']
+__rhnexport__ = [
+    "remove",
+    "update",
+    "refresh_list",
+    "delta",
+    "runTransaction",
+    "verify",
+    "setLocks",
+]
 
 
 class InvalidDep(Exception):
     pass
 
-_query_insert_attribute_verify_results = rhnSQL.Statement("""
+
+_query_insert_attribute_verify_results = rhnSQL.Statement(
+    """
 insert into rhnServerActionVerifyResult (
     server_id, action_id,
     package_name_id,
@@ -60,9 +67,11 @@ values (
       :test_D, :test_L, :test_U,
       :test_G, :test_T
 )
-""")
+"""
+)
 
-_query_insert_missing_verify_results = rhnSQL.Statement("""
+_query_insert_missing_verify_results = rhnSQL.Statement(
+    """
 insert into rhnServerActionVerifyMissing (
     server_id,
     action_id,
@@ -79,28 +88,38 @@ values (
     lookup_package_arch(:arch),
     lookup_package_capability(:filename)
 )
-""")
+"""
+)
 
-_query_delete_verify_results = rhnSQL.Statement("""
+_query_delete_verify_results = rhnSQL.Statement(
+    """
     delete from rhnServerActionVerifyResult
      where server_id = :server_id
        and action_id = :action_id
-""")
+"""
+)
 
-_query_delete_verify_missing = rhnSQL.Statement("""
+_query_delete_verify_missing = rhnSQL.Statement(
+    """
     delete from rhnServerActionVerifyMissing
      where server_id = :server_id
        and action_id = :action_id
-""")
+"""
+)
 
 
+# pylint: disable-next=dangerous-default-value
 def verify(server_id, action_id, data={}):
     log_debug(3, action_id)
 
-    if (not data) or ('verify_info' not in data):
+    if (not data) or ("verify_info" not in data):
         # some data should have been passed back...
-        log_error("Insufficient package verify information returned",
-                  server_id, action_id, data)
+        log_error(
+            "Insufficient package verify information returned",
+            server_id,
+            action_id,
+            data,
+        )
         return
 
     log_debug(4, "pkg verify data", data)
@@ -112,27 +131,42 @@ def verify(server_id, action_id, data={}):
     h = rhnSQL.prepare(_query_delete_verify_missing)
     h.execute(server_id=server_id, action_id=action_id)
 
-    attrib_tests = ['S', 'M', '5', 'D', 'L', 'U', 'G', 'T']
+    attrib_tests = ["S", "M", "5", "D", "L", "U", "G", "T"]
 
     # Store the values for executemany() for the attribute-failures
-    verify_attribs = {'server_id': [], 'action_id': [], 'package_name': [],
-                      'epoch': [], 'version': [], 'release': [], 'arch': [],
-                      'filename': [], 'attrib': [], }
+    verify_attribs = {
+        "server_id": [],
+        "action_id": [],
+        "package_name": [],
+        "epoch": [],
+        "version": [],
+        "release": [],
+        "arch": [],
+        "filename": [],
+        "attrib": [],
+    }
     for test in attrib_tests:
         verify_attribs["test_" + test] = []
 
     # Store the "missing xxxx" results for executemany()
-    missing_files = {'server_id': [], 'action_id': [], 'package_name': [],
-                     'epoch': [], 'version': [], 'release': [], 'arch': [],
-                     'filename': []}
+    missing_files = {
+        "server_id": [],
+        "action_id": [],
+        "package_name": [],
+        "epoch": [],
+        "version": [],
+        "release": [],
+        "arch": [],
+        "filename": [],
+    }
 
     # Uniquify the packages
     uq_packages = {}
 
-    for package_spec, responses in data['verify_info']:
+    for package_spec, responses in data["verify_info"]:
         package_spec = list(package_spec)
         # Fix the epoch
-        if package_spec[3] == '':
+        if package_spec[3] == "":
             package_spec[3] = None
         package_spec = tuple(package_spec)
         if package_spec in uq_packages:
@@ -140,29 +174,35 @@ def verify(server_id, action_id, data={}):
             continue
 
         # We need to uniquify the file names within a package too
+        # pylint: disable-next=redefined-builtin
         hash = {}
         for response in responses:
             try:
+                # pylint: disable-next=redefined-builtin
                 dict = _parse_response_line(response, attrib_tests)
             except InvalidResponseLine:
-                log_error("packages.verify: (%s, %s): invalid line %s"
-                          % (server_id, action_id, response))
+                log_error(
+                    # pylint: disable-next=consider-using-f-string
+                    "packages.verify: (%s, %s): invalid line %s"
+                    % (server_id, action_id, response)
+                )
                 continue
 
-            hash[dict['filename']] = dict
+            hash[dict["filename"]] = dict
 
         # Add the rest of the variables to the dictionaries
+        # pylint: disable-next=unused-variable
         for filename, dict in list(hash.items()):
-            dict['server_id'] = server_id
-            dict['action_id'] = action_id
+            dict["server_id"] = server_id
+            dict["action_id"] = action_id
 
-            dict['package_name'] = package_spec[0]
-            dict['version'] = package_spec[1]
-            dict['release'] = package_spec[2]
-            dict['epoch'] = package_spec[3]
-            dict['arch'] = package_spec[4]
+            dict["package_name"] = package_spec[0]
+            dict["version"] = package_spec[1]
+            dict["release"] = package_spec[2]
+            dict["epoch"] = package_spec[3]
+            dict["arch"] = package_spec[4]
 
-            if 'missing' not in dict:
+            if "missing" not in dict:
                 _hash_append(verify_attribs, dict)
             else:
                 _hash_append(missing_files, dict)
@@ -170,17 +210,19 @@ def verify(server_id, action_id, data={}):
         # This package was visited, store it
         uq_packages[package_spec] = None
 
-    if verify_attribs['action_id']:
+    if verify_attribs["action_id"]:
         h = rhnSQL.prepare(_query_insert_attribute_verify_results)
         h.executemany(**verify_attribs)
 
-    if missing_files['action_id']:
+    if missing_files["action_id"]:
         h = rhnSQL.prepare(_query_insert_missing_verify_results)
         h.executemany(**missing_files)
 
     rhnSQL.commit()
 
-_query_set_locks = rhnSQL.Statement("""
+
+_query_set_locks = rhnSQL.Statement(
+    """
     UPDATE rhnLockedPackages
       SET pending = NULL
       WHERE rhnLockedPackages.server_id = :server_id AND
@@ -195,8 +237,10 @@ _query_set_locks = rhnSQL.Statement("""
             AND rhnActionPackage.parameter = 'lock'
             AND rhnLockedPackages.pending = 'L'
       )
-""")
-_query_remove_locks = rhnSQL.Statement("""
+"""
+)
+_query_remove_locks = rhnSQL.Statement(
+    """
     DELETE FROM rhnLockedPackages
       WHERE rhnLockedPackages.server_id = :server_id AND
         rhnLockedPackages.pkg_id IN (
@@ -210,15 +254,20 @@ _query_remove_locks = rhnSQL.Statement("""
             AND rhnActionPackage.parameter = 'lock'
             AND rhnLockedPackages.pending = 'U'
       )
-""")
+"""
+)
+
+
+# pylint: disable-next=invalid-name,dangerous-default-value,unused-argument
 def setLocks(server_id, action_id, data={}):
     log_debug(3, action_id)
 
     h = rhnSQL.prepare(_query_set_locks)
-    h.execute(server_id = server_id, action_id = action_id)
+    h.execute(server_id=server_id, action_id=action_id)
 
     h = rhnSQL.prepare(_query_remove_locks)
-    h.execute(server_id = server_id, action_id = action_id)
+    h.execute(server_id=server_id, action_id=action_id)
+
 
 # Exception raised when an invalid line is found
 
@@ -246,6 +295,7 @@ def _parse_response_line(response, tests):
     # see #155952
     #
 
+    # pylint: disable-next=anomalous-backslash-in-string
     res_re = re.compile("^(?P<ts>[\S]+)\s+(?P<attr>[cdglr]?)\s* (?P<filename>[\S]+)$")
 
     m = res_re.match(response)
@@ -256,8 +306,8 @@ def _parse_response_line(response, tests):
     ts, attr, filename = m.groups()
     # clean up attr, as it can get slightly fudged in the
 
-    if ts == 'missing':
-        return {'filename': filename, 'missing': None}
+    if ts == "missing":
+        return {"filename": filename, "missing": None}
 
     # bug 155952: SELinux will return an extra flag
     # FIXME: need to support the extra selinux context flag
@@ -270,19 +320,20 @@ def _parse_response_line(response, tests):
     if not filename:
         raise InvalidResponseLine
 
+    # pylint: disable-next=redefined-builtin
     dict = {
-        'attrib': attr or None,  # convert empty attribute to None
-        'filename': filename,
+        "attrib": attr or None,  # convert empty attribute to None
+        "filename": filename,
     }
     # Add the tests
     for i in range(len(tests)):
         val = ts[i]
         t_name = tests[i]
         if val == t_name:
-            val = 'Y'
-        elif val == '.':
-            val = 'N'
-        elif val != '?':
+            val = "Y"
+        elif val == ".":
+            val = "N"
+        elif val != "?":
             raise InvalidResponseLine
         dict["test_" + t_name] = val
 
@@ -291,37 +342,43 @@ def _parse_response_line(response, tests):
 
 def _hash_append(dst, src):
     # Append the values of src to dst
+    # pylint: disable-next=redefined-builtin
     for k, list in list(dst.items()):
         list.append(src[k])
 
 
+# pylint: disable-next=dangerous-default-value
 def update(server_id, action_id, data={}):
     log_debug(3, server_id, action_id)
 
-    action_status = rhnFlags.get('action_status')
+    action_status = rhnFlags.get("action_status")
 
     if action_status == 3:
         # Action failed
-        kickstart_state = 'failed'
+        kickstart_state = "failed"
         next_action_type = None
     else:
-        kickstart_state = 'deployed'
+        kickstart_state = "deployed"
 
         # This is horrendous, but in order to fix it I would have to change almost all of the
         # actions code, which we don't have time to do for the 500 beta. --wregglej
         try:
-            ks_session_type = server_kickstart.get_kickstart_session_type(server_id, action_id)
+            ks_session_type = server_kickstart.get_kickstart_session_type(
+                server_id, action_id
+            )
         except rhnException:
+            # pylint: disable-next=redefined-outer-name,unused-variable
             re = sys.exc_info()[1]
             ks_session_type = None
 
         if ks_session_type is None:
             next_action_type = "None"
-        elif ks_session_type == 'para_guest':
-            next_action_type = 'kickstart_guest.initiate'
+        elif ks_session_type == "para_guest":
+            next_action_type = "kickstart_guest.initiate"
         else:
-            next_action_type = 'kickstart.initiate'
+            next_action_type = "kickstart.initiate"
 
+    # pylint: disable-next=consider-using-f-string
     log_debug(4, "next_action_type: %s" % next_action_type)
 
     # More hideous hacked together code to get around our inflexible actions "framework".
@@ -329,23 +386,31 @@ def update(server_id, action_id, data={}):
     # at this point, so we don't want to update a non-existant kickstart session.
     # I feel so dirty.  --wregglej
     if next_action_type != "None":
-        server_kickstart.update_kickstart_session(server_id, action_id,
-                                                  action_status, kickstart_state=kickstart_state,
-                                                  next_action_type=next_action_type)
+        server_kickstart.update_kickstart_session(
+            server_id,
+            action_id,
+            action_status,
+            kickstart_state=kickstart_state,
+            next_action_type=next_action_type,
+        )
 
         _mark_dep_failures(server_id, action_id, data)
 
 
+# pylint: disable-next=dangerous-default-value
 def remove(server_id, action_id, data={}):
-    log_debug(3, action_id, data.get('name'))
+    log_debug(3, action_id, data.get("name"))
     _mark_dep_failures(server_id, action_id, data)
 
 
-_query_delete_dep_failures = rhnSQL.Statement("""
+_query_delete_dep_failures = rhnSQL.Statement(
+    """
     delete from rhnActionPackageRemovalFailure
     where server_id = :server_id and action_id = :action_id
-""")
-_query_insert_dep_failures = rhnSQL.Statement("""
+"""
+)
+_query_insert_dep_failures = rhnSQL.Statement(
+    """
     insert into rhnActionPackageRemovalFailure (
         server_id, action_id, name_id, evr_id, capability_id,
         flags, suggested, sense)
@@ -354,52 +419,67 @@ _query_insert_dep_failures = rhnSQL.Statement("""
         LOOKUP_EVR(:epoch, :version, :release, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id)),
         LOOKUP_PACKAGE_CAPABILITY(:needs_name, :needs_version),
         :flags, LOOKUP_PACKAGE_NAME(:suggested, :ignore_null), :sense)
-""")
+"""
+)
 
 
 def _mark_dep_failures(server_id, action_id, data):
     if not data:
         log_debug(4, "Nothing to do")
         return
-    failed_deps = data.get('failed_deps')
+    failed_deps = data.get("failed_deps")
     if not failed_deps:
         log_debug(4, "No failed deps")
         return
 
     if not isinstance(failed_deps, ListType):
         # Not the right format
-        log_error("action_extra_data.packages.remove: server %s, action %s: "
-                  "wrong type %s" % (server_id, action_id, type(failed_deps)))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "action_extra_data.packages.remove: server %s, action %s: "
+            "wrong type %s" % (server_id, action_id, type(failed_deps))
+        )
         return
 
     inserts = {}
-    for f in ('server_id', 'action_id',
-              'name', 'version', 'release', 'epoch',
-              'needs_name', 'needs_version', 'ignore_null',
-              'flags', 'suggested', 'sense'):
+    for f in (
+        "server_id",
+        "action_id",
+        "name",
+        "version",
+        "release",
+        "epoch",
+        "needs_name",
+        "needs_version",
+        "ignore_null",
+        "flags",
+        "suggested",
+        "sense",
+    ):
         inserts[f] = []
 
     for failed_dep in failed_deps:
         try:
-            pkg, needs_pkg, flags, suggested, sense = _check_dep(server_id,
-                                                                 action_id, failed_dep)
+            pkg, needs_pkg, flags, suggested, sense = _check_dep(
+                server_id, action_id, failed_dep
+            )
         except InvalidDep:
             continue
 
-        inserts['server_id'].append(server_id)
-        inserts['action_id'].append(action_id)
-        inserts['name'] .append(pkg[0])
-        inserts['version'].append(pkg[1])
-        inserts['release'].append(pkg[2])
-        inserts['epoch'].append(None)
+        inserts["server_id"].append(server_id)
+        inserts["action_id"].append(action_id)
+        inserts["name"].append(pkg[0])
+        inserts["version"].append(pkg[1])
+        inserts["release"].append(pkg[2])
+        inserts["epoch"].append(None)
 
-        inserts['needs_name'].append(needs_pkg[0])
-        inserts['needs_version'].append(needs_pkg[1])
+        inserts["needs_name"].append(needs_pkg[0])
+        inserts["needs_version"].append(needs_pkg[1])
 
-        inserts['flags'].append(flags)
-        inserts['suggested'].append(suggested)
-        inserts['ignore_null'].append(1)
-        inserts['sense'].append(sense)
+        inserts["flags"].append(flags)
+        inserts["suggested"].append(suggested)
+        inserts["ignore_null"].append(1)
+        inserts["sense"].append(sense)
 
     h = rhnSQL.prepare(_query_delete_dep_failures)
     rowcount = h.execute(server_id=server_id, action_id=action_id)
@@ -416,75 +496,106 @@ def _check_dep(server_id, action_id, failed_dep):
         return
     if not isinstance(failed_dep, ListType):
         # Not the right format
-        log_error("action_extra_data.packages.remove: server %s, action %s: "
-                  "failed dep type error: %s" % (
-                      server_id, action_id, type(failed_dep)))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "action_extra_data.packages.remove: server %s, action %s: "
+            "failed dep type error: %s" % (server_id, action_id, type(failed_dep))
+        )
         raise InvalidDep
 
     # This is boring, but somebody's got to do it
     if len(failed_dep) < 5:
-        log_error("action_extra_data.packages.remove: server %s, action %s: "
-                  "failed dep: not enough entries: %s" % (
-                      server_id, action_id, len(failed_dep)))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "action_extra_data.packages.remove: server %s, action %s: "
+            "failed dep: not enough entries: %s"
+            % (server_id, action_id, len(failed_dep))
+        )
         raise InvalidDep
 
     pkg, needs_pkg, flags, suggested, sense = failed_dep[:5]
 
     if not isinstance(pkg, ListType) or len(pkg) < 3:
-        log_error("action_extra_data.packages.remove: server %s, action %s: "
-                  "failed dep: bad package spec %s (type %s, len %s)" % (
-                      server_id, action_id, pkg, type(pkg), len(pkg)))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "action_extra_data.packages.remove: server %s, action %s: "
+            "failed dep: bad package spec %s (type %s, len %s)"
+            % (server_id, action_id, pkg, type(pkg), len(pkg))
+        )
         raise InvalidDep
     pkg = list(map(str, pkg[:3]))
 
     if not isinstance(needs_pkg, ListType) or len(needs_pkg) < 2:
-        log_error("action_extra_data.packages.remove: server %s, action %s: "
-                  "failed dep: bad needs package spec %s (type %s, len %s)" % (
-                      server_id, action_id, needs_pkg, type(needs_pkg),
-                      len(needs_pkg)))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "action_extra_data.packages.remove: server %s, action %s: "
+            "failed dep: bad needs package spec %s (type %s, len %s)"
+            % (server_id, action_id, needs_pkg, type(needs_pkg), len(needs_pkg))
+        )
         raise InvalidDep
     needs_pkg = list(map(str, needs_pkg[:2]))
 
     if not isinstance(flags, IntType):
-        log_error("action_extra_data.packages.remove: server %s, action %s: "
-                  "failed dep: bad flags type %s" % (server_id, action_id, type(flags)))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "action_extra_data.packages.remove: server %s, action %s: "
+            "failed dep: bad flags type %s" % (server_id, action_id, type(flags))
+        )
         raise InvalidDep
 
     if not isinstance(sense, IntType):
-        log_error("action_extra_data.packages.remove: server %s, action %s: "
-                  "failed dep: bad sense type %s" % (server_id, action_id, type(sense)))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "action_extra_data.packages.remove: server %s, action %s: "
+            "failed dep: bad sense type %s" % (server_id, action_id, type(sense))
+        )
         raise InvalidDep
 
     return pkg, needs_pkg, flags, str(suggested), sense
 
 
+# pylint: disable-next=dangerous-default-value
 def refresh_list(server_id, action_id, data={}):
     if not data:
         return
-    log_debug(2, "action_extra_data.packages.refresh_list: Should do something "
-              "useful with this data", server_id, action_id, data)
+    log_debug(
+        2,
+        "action_extra_data.packages.refresh_list: Should do something "
+        "useful with this data",
+        server_id,
+        action_id,
+        data,
+    )
 
 
+# pylint: disable-next=dangerous-default-value
 def delta(server_id, action_id, data={}):
     if not data:
         return
-    log_debug(2, "action_extra_data.packages.delta: Should do something "
-              "useful with this data", server_id, action_id, data)
+    log_debug(
+        2,
+        "action_extra_data.packages.delta: Should do something "
+        "useful with this data",
+        server_id,
+        action_id,
+        data,
+    )
 
 
+# pylint: disable-next=invalid-name,dangerous-default-value
 def runTransaction(server_id, action_id, data={}):
     log_debug(3, action_id)
 
     # If it's a kickstart-related transaction, mark the kickstart session as
     # completed
-    action_status = rhnFlags.get('action_status')
+    action_status = rhnFlags.get("action_status")
     ks_session_id = _next_kickstart_step(server_id, action_id, action_status)
 
     # Cleanup package profile
-    server_kickstart.cleanup_profile(server_id, action_id, ks_session_id,
-                                     action_status)
+    server_kickstart.cleanup_profile(server_id, action_id, ks_session_id, action_status)
 
     _mark_dep_failures(server_id, action_id, data)
+
 
 # Determine the next step to be executed in the kickstart code
 
@@ -492,22 +603,30 @@ def runTransaction(server_id, action_id, data={}):
 def _next_kickstart_step(server_id, action_id, action_status):
     if action_status == 3:  # Failed
         # Nothing more to do here
-        return server_kickstart.update_kickstart_session(server_id,
-                                                         action_id, action_status, kickstart_state='complete',
-                                                         next_action_type=None)
+        return server_kickstart.update_kickstart_session(
+            server_id,
+            action_id,
+            action_status,
+            kickstart_state="complete",
+            next_action_type=None,
+        )
 
     # Fetch kickstart session id
-    ks_session_id = server_kickstart.get_kickstart_session_id(server_id,
-                                                              action_id)
+    ks_session_id = server_kickstart.get_kickstart_session_id(server_id, action_id)
 
     if ks_session_id is None:
-        return server_kickstart.update_kickstart_session(server_id,
-                                                         action_id, action_status, kickstart_state='complete',
-                                                         next_action_type=None)
+        return server_kickstart.update_kickstart_session(
+            server_id,
+            action_id,
+            action_status,
+            kickstart_state="complete",
+            next_action_type=None,
+        )
 
     # Get the current server profile
     server_profile = server_kickstart.get_server_package_profile(server_id)
 
-    server_kickstart.schedule_config_deploy(server_id, action_id,
-                                            ks_session_id, server_profile=server_profile)
+    server_kickstart.schedule_config_deploy(
+        server_id, action_id, ks_session_id, server_profile=server_profile
+    )
     return ks_session_id

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -26,8 +27,8 @@ from spacewalk.common.rhnTB import add_to_seclist
 from spacewalk.server import rhnSQL, rhnUser
 
 
+# pylint: disable-next=missing-class-docstring
 class UserAuth:
-
     def __init__(self):
         self.org_id = None
         self.user_id = None
@@ -45,13 +46,19 @@ class UserAuth:
                 time.sleep(2)
             raise
 
-        log_debug(4, "Groups: %s; org_id: %s; user_id: %s" % (
-            self.groups, self.org_id, self.user_id))
+        log_debug(
+            4,
+            # pylint: disable-next=consider-using-f-string
+            "Groups: %s; org_id: %s; user_id: %s"
+            % (self.groups, self.org_id, self.user_id),
+        )
 
     def auth_session(self, session_string):
         user_instance = rhnUser.session_reload(session_string)
         try:
-            self.groups, self.org_id, self.user_id = getUserGroupsFromUserInstance(user_instance)
+            self.groups, self.org_id, self.user_id = getUserGroupsFromUserInstance(
+                user_instance
+            )
         except rhnFault:
             e = sys.exc_info()[1]
             if e.code == 2:
@@ -60,21 +67,25 @@ class UserAuth:
                 time.sleep(2)
             raise
 
-        log_debug(4, "Groups: %s; org_id: %s; user_id: %s" % (
-            self.groups, self.org_id, self.user_id))
+        log_debug(
+            4,
+            # pylint: disable-next=consider-using-f-string
+            "Groups: %s; org_id: %s; user_id: %s"
+            % (self.groups, self.org_id, self.user_id),
+        )
 
     def isOrgAdmin(self):
-        if 'org_admin' in self.groups:
+        if "org_admin" in self.groups:
             log_debug(4, "Is org admin")
             return 1
         log_debug(4, "Is NOT org admin")
         return 0
 
     def isChannelAdmin(self):
-        if 'org_admin' in self.groups:
+        if "org_admin" in self.groups:
             log_debug(4, "Is channel admin because isa org admin")
             return 1
-        if 'channel_admin' in self.groups:
+        if "channel_admin" in self.groups:
             log_debug(4, "Is channel admin")
             return 1
         log_debug(4, "Is NOT channel admin")
@@ -86,22 +97,23 @@ class UserAuth:
         # users the ability to push to their org.
 
         # If the org id is not specified, default to the user's org id
-        if 'orgId' not in info:
-            info['orgId'] = self.org_id
-        log_debug(4, "info[orgId]", info['orgId'], "org id", self.org_id)
+        if "orgId" not in info:
+            info["orgId"] = self.org_id
+        log_debug(4, "info[orgId]", info["orgId"], "org id", self.org_id)
 
-        org_id = info['orgId']
+        org_id = info["orgId"]
 
-        if org_id == '':
+        if org_id == "":
             # Satellites are not allowwd to push in the null org
-            raise rhnFault(4,
-                           _("You are not authorized to manage packages in the null org"))
+            raise rhnFault(
+                4, _("You are not authorized to manage packages in the null org")
+            )
 
         if org_id and self.org_id != org_id:
             # Not so fast...
-            raise rhnFault(32,
-                           _("You are not allowed to manage packages in the %s org") %
-                           org_id)
+            raise rhnFault(
+                32, _("You are not allowed to manage packages in the %s org") % org_id
+            )
 
         # Org admins and channel admins have full privileges; we could use
         # user_manages_channes, except for the case where there are no chanels
@@ -117,8 +129,7 @@ class UserAuth:
 
         # ok, you're a regular user who doesn't manage any channels.
         # take a hike.
-        raise rhnFault(32,
-                       _("You are not allowed to perform administrative tasks"))
+        raise rhnFault(32, _("You are not allowed to perform administrative tasks"))
 
     def authzChannels(self, channels):
         log_debug(4, channels)
@@ -128,24 +139,34 @@ class UserAuth:
         # rhn_channel.user_role_check checks for the ownership of the channel
         # by this user's org
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select rhn_channel.user_role_check(id, :user_id, 'manage') manage
               from rhnChannel
              where label = :channel
-        """)
+        """
+        )
 
         for channel in channels:
             h.execute(channel=channel, user_id=self.user_id)
 
             row = h.fetchone_dict()
             # Either the channel doesn't exist, or not allowed to manage it
-            if not row or not row['manage']:
-                raise rhnFault(32,
-                               _("You are not allowed to manage channel %s, or that "
-                                 "channel does not exist") % channel)
+            if not row or not row["manage"]:
+                raise rhnFault(
+                    32,
+                    _(
+                        "You are not allowed to manage channel %s, or that "
+                        "channel does not exist"
+                    )
+                    % channel,
+                )
 
-            log_debug(4, "User %s allowed to manage channel %s" %
-                      (self.user_id, channel))
+            log_debug(
+                4,
+                # pylint: disable-next=consider-using-f-string
+                "User %s allowed to manage channel %s" % (self.user_id, channel),
+            )
 
         return None
 
@@ -163,9 +184,10 @@ def getUserGroupsFromUserInstance(user_instance):
     # Don't need to check the password, the session should have already been checked.
 
     # Get the org id
-    org_id = user.contact['org_id']
+    org_id = user.contact["org_id"]
     user_id = user.getid()
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select ugt.label
           from rhnUserGroupType ugt,
                rhnUserGroup ug,
@@ -173,14 +195,15 @@ def getUserGroupsFromUserInstance(user_instance):
          where ugm.user_id = :user_id
                and ugm.user_group_id = ug.id
                and ug.group_type = ugt.id
-    """)
+    """
+    )
     h.execute(user_id=user_id)
     groups = []
     while 1:
         row = h.fetchone_dict()
         if not row:
             break
-        groups.append(row['label'])
+        groups.append(row["label"])
     return groups, org_id, user_id
 
 
@@ -200,23 +223,29 @@ def getUserGroups(login, password):
         log_debug("user.check_password failed")
         raise rhnFault(2)
 
+    # pylint: disable-next=undefined-variable
     if rhnUser.is_user_disabled(username):
-        msg = _("""
+        msg = _(
+            """
                %s Account has been deactivated on this server.
-               Please contact your Org administrator for more help.""")
+               Please contact your Org administrator for more help."""
+        )
+        # pylint: disable-next=undefined-variable
         raise rhnFault(1, msg % username, explain=0)
 
     return getUserGroupsFromUserInstance(user)
 
 
 def user_manages_channels(user_id):
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select distinct 1
           from rhnChannel
          where rhn_channel.user_role_check(id, :user_id, 'manage') = 1
-    """)
+    """
+    )
 
     h.execute(user_id=user_id)
     row = h.fetchone_dict()
 
-    return (row is not None)
+    return row is not None

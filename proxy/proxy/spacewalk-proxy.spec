@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,14 +15,15 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
+
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.6
+Version:        5.0.1
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -143,10 +144,9 @@ Requires(pre):  policycoreutils
 # weakremover used on SUSE to get rid of orphan packages which are
 # unsupported and do not have a dependency anymore
 Provides:       weakremover(jabberd)
-Provides:       weakremover(jabberd-sqlite)
 Provides:       weakremover(jabberd-db)
+Provides:       weakremover(jabberd-sqlite)
 Provides:       weakremover(spacewalk-setup-jabberd)
-
 
 %description common
 The Spacewalk Proxy Server allows package caching

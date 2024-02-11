@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Code that drops files on the filesystem (/PKG-UPLOAD)
 #
@@ -30,17 +31,19 @@ from spacewalk.server.importlib.importLib import InvalidArchError
 from spacewalk.server import rhnPackageUpload, rhnSQL, basePackageUpload
 
 
+# pylint: disable-next=missing-class-docstring
 class PackagePush(basePackageUpload.BasePackageUpload):
-
     def __init__(self, req):
         basePackageUpload.BasePackageUpload.__init__(self, req)
-        self.required_fields.extend([
-            'Auth',
-            'Force',
-        ])
+        self.required_fields.extend(
+            [
+                "Auth",
+                "Force",
+            ]
+        )
         self.null_org = None
         # Default packaging is rpm
-        self.packaging = 'rpm'
+        self.packaging = "rpm"
         self.username = None
         self.password = None
         self.force = None
@@ -51,8 +54,9 @@ class PackagePush(basePackageUpload.BasePackageUpload):
     def headerParserHandler(self, req):
         ret = basePackageUpload.BasePackageUpload.headerParserHandler(self, req)
         # Optional headers
-        maps = [['Null-Org', 'null_org'], ['Packaging', 'packaging']]
+        maps = [["Null-Org", "null_org"], ["Packaging", "packaging"]]
         for hn, sn in maps:
+            # pylint: disable-next=consider-using-f-string
             header_name = "%s-%s" % (self.header_prefix, hn)
             if header_name in req.headers_in:
                 setattr(self, sn, req.headers_in[header_name])
@@ -66,6 +70,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
 
             rhnFlags.set("apache-return-code", apache.HTTP_NOT_FOUND)
             try:
+                # pylint: disable-next=unspecified-encoding
                 outage_message = open(CFG.MESSAGE_TO_ALL).read()
             except IOError:
                 log_error("Missing outage message file")
@@ -75,11 +80,11 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         # Init the database connection
         rhnSQL.initDB()
         use_session = 0
-        if self.field_data.has_key('Auth-Session'):
-            session_token = self.field_data['Auth-Session']
+        if self.field_data.has_key("Auth-Session"):
+            session_token = self.field_data["Auth-Session"]
             use_session = 1
         else:
-            encoded_auth_token = self.field_data['Auth']
+            encoded_auth_token = self.field_data["Auth"]
 
         if not use_session:
             auth_token = self.get_auth_token(encoded_auth_token)
@@ -90,17 +95,19 @@ class PackagePush(basePackageUpload.BasePackageUpload):
 
             self.username, self.password = auth_token[:2]
 
-        force = self.field_data['Force']
+        force = self.field_data["Force"]
         force = int(force)
         log_debug(1, "Username", self.username, "Force", force)
 
         if use_session:
-            self.org_id, self.force = rhnPackageUpload.authenticate_session(session_token,
-                                                                            force=force, null_org=self.null_org)
+            self.org_id, self.force = rhnPackageUpload.authenticate_session(
+                session_token, force=force, null_org=self.null_org
+            )
         else:
             # We don't push to any channels
-            self.org_id, self.force = rhnPackageUpload.authenticate(self.username,
-                                                                    self.password, force=force, null_org=self.null_org)
+            self.org_id, self.force = rhnPackageUpload.authenticate(
+                self.username, self.password, force=force, null_org=self.null_org
+            )
 
         return apache.OK
 
@@ -109,28 +116,41 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         if ret != apache.OK:
             return ret
 
-        a_pkg = rhnPackageUpload.save_uploaded_package(req,
-                                                       (self.package_name, None, self.package_version,
-                                                        self.package_release, self.package_arch),
-                                                       str(self.org_id),
-                                                       self.packaging,
-                                                       self.file_checksum_type, self.file_checksum)
+        a_pkg = rhnPackageUpload.save_uploaded_package(
+            req,
+            (
+                self.package_name,
+                None,
+                self.package_version,
+                self.package_release,
+                self.package_arch,
+            ),
+            str(self.org_id),
+            self.packaging,
+            self.file_checksum_type,
+            self.file_checksum,
+        )
 
         self.rel_package_path = rhnPackageUpload.relative_path_from_header(
-            a_pkg.header, org_id=self.org_id,
-            checksum_type=a_pkg.checksum_type, checksum=a_pkg.checksum)
-        self.package_path = os.path.join(CFG.MOUNT_POINT,
-                                         self.rel_package_path)
+            a_pkg.header,
+            org_id=self.org_id,
+            checksum_type=a_pkg.checksum_type,
+            checksum=a_pkg.checksum,
+        )
+        self.package_path = os.path.join(CFG.MOUNT_POINT, self.rel_package_path)
 
         try:
-            package_dict, diff_level = rhnPackageUpload.push_package(a_pkg,
-                                                                     force=self.force,
-                                                                     relative_path=self.rel_package_path,
-                                                                     org_id=self.org_id)
+            package_dict, diff_level = rhnPackageUpload.push_package(
+                a_pkg,
+                force=self.force,
+                relative_path=self.rel_package_path,
+                org_id=self.org_id,
+            )
         except InvalidArchError:
             e = sys.exc_info()[1]
             req.write(str(e))
             return apache.HTTP_NOT_ACCEPTABLE
+        # pylint: disable-next=broad-exception-caught
         except Exception:
             e = sys.exc_info()[1]
             req.write(str(e))
@@ -142,7 +162,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         # Everything went fine
         rhnSQL.commit()
         reply = "All OK"
-        req.headers_out['Content-Length'] = str(len(reply))
+        req.headers_out["Content-Length"] = str(len(reply))
         req.send_http_header()
         req.write(reply)
         log_debug(2, "Returning with OK")
@@ -152,19 +172,19 @@ class PackagePush(basePackageUpload.BasePackageUpload):
     @staticmethod
     def _send_package_diff(req, diff_level, diff):
         args = {
-            'level': diff_level,
-            'diff': diff,
+            "level": diff_level,
+            "diff": diff,
         }
-        reply = rpclib.xmlrpclib.dumps((args, ))
+        reply = rpclib.xmlrpclib.dumps((args,))
         ret_stat = apache.HTTP_BAD_REQUEST
         req.status = ret_stat
-        req.err_headers_out['Content-Length'] = str(len(reply))
+        req.err_headers_out["Content-Length"] = str(len(reply))
         req.send_http_header()
         req.write(reply)
         return apache.OK
 
     @staticmethod
     def get_auth_token(value):
-        s = ''.join([x.strip() for x in value.split(',')])
-        arr = list(map(base64.decodestring, s.split(':')))
+        s = "".join([x.strip() for x in value.split(",")])
+        arr = list(map(base64.decodestring, s.split(":")))
         return arr

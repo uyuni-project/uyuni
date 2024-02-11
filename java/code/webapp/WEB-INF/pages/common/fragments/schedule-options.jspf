@@ -3,7 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
-<script type="text/javascript" src="/javascript/schedule-options.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
 <div class="spacewalk-scheduler">
     <div class="form-horizontal">
         <c:set var="maintenanceWindowsEmpty" value="${maintenanceWindows != null && empty maintenanceWindows}" />
@@ -56,11 +55,16 @@
                 />
                 <label for="schedule-by-action-chain"><bean:message key="schedule-options.action-chain"/></label>
             </div>
-            <div class="col-sm-6">
-                <input type="hidden" id="action-chain" name="action_chain"
-                    data-existing-action-chains='${existingActionChains}'
-                />
+            <div class="col-sm-6" id="action-chain-picker">
+                <script type="text/javascript">
+                    spaImportReactPage('schedule-options/action-chain-picker').then(function(module) {
+                        module.renderer('action-chain-picker', {
+                            actionChains: '${existingActionChains}'
+                        });
+                    });
+                </script>
             </div>
+            <input type="hidden" id="action-chain" name="action_chain" />
         </div>
     </div>
 </div>

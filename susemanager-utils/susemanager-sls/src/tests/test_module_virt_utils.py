@@ -67,11 +67,13 @@ CRM_MON_XML = b"""
 </pacemaker-result>
 """
 
+
 @pytest.fixture
 def libvirt():
     if not hasattr(virt_utils, "libvirt"):
         virt_utils.libvirt = Mock()
     return virt_utils.libvirt
+
 
 @pytest.mark.parametrize(
     "path,expected",
@@ -95,9 +97,14 @@ def test_get_cluster_filesystem_nocrm():
     """
     test the get_cluster_filesystem() function when crm is not installed
     """
-    with patch.object(virt_utils.os, "readlink", MagicMock(return_value="/srv/clusterfs/xml")):
+    with patch.object(
+        virt_utils.os, "readlink", MagicMock(return_value="/srv/clusterfs/xml")
+    ):
         with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
-            popen_mock.return_value.communicate.side_effect = OSError("No such file or directory: 'crm'")
+            popen_mock.return_value.communicate.side_effect = OSError(
+                "No such file or directory: 'crm'"
+            )
+            # pylint: disable-next=singleton-comparison
             assert virt_utils.get_cluster_filesystem("/srv/clusterfs/xml") == None
 
 
@@ -106,11 +113,15 @@ def test_vm_info_no_cluster(no_graphics):
     """
     Test the vm_info() function for a VM which isn't in a cluster
     """
-    fake_vminfo = {} if no_graphics else {
-        "graphics": {
-            "type": "spice",
+    fake_vminfo = (
+        {}
+        if no_graphics
+        else {
+            "graphics": {
+                "type": "spice",
+            }
         }
-    }
+    )
     vminfo_mock = MagicMock(return_value={"vm": fake_vminfo})
     with patch.dict(virt_utils.__salt__, {"virt.vm_info": vminfo_mock}):
         info = virt_utils.vm_info("vm")
@@ -137,21 +148,28 @@ def test_vminfo_cluster():
 
     vms = [
         ("vm01", "15c09f1f-6ac7-43b5-83e9-96a63c40fb14"),
-        ("vm03", "c4596ec0-4e0e-4a1d-aa43-88ba442d5085")
+        ("vm03", "c4596ec0-4e0e-4a1d-aa43-88ba442d5085"),
     ]
-    vms_xml = [ElementTree.fromstring(vm_xml_template.format(vm[0], vm[1])) for vm in vms]
+    vms_xml = [
+        ElementTree.fromstring(vm_xml_template.format(vm[0], vm[1])) for vm in vms
+    ]
 
     vminfo_mock = MagicMock(return_value={"vm01": {"graphics": {"type": "vnc"}}})
 
     popen_mock = MagicMock()
-    popen_mock.return_value.communicate.side_effect = [(CRM_MON_XML, None), (CRM_CONFIG_XML, None)]
+    popen_mock.return_value.communicate.side_effect = [
+        (CRM_MON_XML, None),
+        (CRM_CONFIG_XML, None),
+    ]
 
     with patch.dict(virt_utils.__salt__, {"virt.vm_info": vminfo_mock}):
         with patch.object(virt_utils.subprocess, "Popen", popen_mock):
-            with patch.object(virt_utils.ElementTree, "parse", MagicMock(side_effect=vms_xml)):
+            with patch.object(
+                virt_utils.ElementTree, "parse", MagicMock(side_effect=vms_xml)
+            ):
                 info = virt_utils.vm_info()
                 assert info["vm01"].get("cluster_primitive") == "vm01"
-                assert info["vm01"].get("graphics_type") =="vnc"
+                assert info["vm01"].get("graphics_type") == "vnc"
                 assert info["vm01"].get("definition_path") == "/srv/clusterfs/vm01.xml"
                 assert info["vm01"].get("vcpus") == 1
                 assert info["vm01"]["uuid"] == "15c09f1f-6ac7-43b5-83e9-96a63c40fb14"
@@ -159,7 +177,7 @@ def test_vminfo_cluster():
                 assert info["vm03"]["uuid"] == "c4596ec0-4e0e-4a1d-aa43-88ba442d5085"
                 assert info["vm03"].get("definition_path") == "/srv/clusterfs/vm03.xml"
                 assert info["vm03"].get("memory") == 512
-                assert info["vm03"].get("graphics_type") =="vnc"
+                assert info["vm03"].get("graphics_type") == "vnc"
 
 
 def test_host_info():
@@ -180,20 +198,28 @@ def test_host_info():
     <constraints/>
   </configuration>
 </cib>"""
-    popen_mock.return_value.communicate.side_effect = [(b"demo-kvm1", None), (crm_conf_node, None)]
+    popen_mock.return_value.communicate.side_effect = [
+        (b"demo-kvm1", None),
+        (crm_conf_node, None),
+    ]
     with patch.object(virt_utils.subprocess, "Popen", popen_mock):
-        with patch.dict(virt_utils.__salt__, {"virt.get_hypervisor": MagicMock(return_value="kvm")}):
+        with patch.dict(
+            virt_utils.__salt__, {"virt.get_hypervisor": MagicMock(return_value="kvm")}
+        ):
             info = virt_utils.host_info()
             assert info["hypervisor"] == "kvm"
             assert info["cluster_other_nodes"] == ["demo-kvm2", "demo-kvm3"]
 
 
+# pylint: disable-next=redefined-outer-name
 def test_vm_definition(libvirt):
     """
     test the vm_definition() function with a regular VM
     """
     with patch.object(libvirt, "open", MagicMock()) as mock_conn:
-        mock_conn.return_value.lookupByUUIDString.return_value.name.return_value = "vm01"
+        mock_conn.return_value.lookupByUUIDString.return_value.name.return_value = (
+            "vm01"
+        )
         vm_xml = """<domain type='kvm'>
   <name>vm01</name>
   <uuid>15c09f1f-6ac7-43b5-83e9-96a63c40fb14</uuid>
@@ -206,15 +232,19 @@ def test_vm_definition(libvirt):
             "cpu": 1,
         }
 
-        with patch.dict(virt_utils.__salt__, {
-            "virt.get_xml": MagicMock(return_value=vm_xml),
-            "virt.vm_info": MagicMock(return_value={"vm01": vm_info})
-        }):
+        with patch.dict(
+            virt_utils.__salt__,
+            {
+                "virt.get_xml": MagicMock(return_value=vm_xml),
+                "virt.vm_info": MagicMock(return_value={"vm01": vm_info}),
+            },
+        ):
             actual = virt_utils.vm_definition("15c09f1f-6ac7-43b5-83e9-96a63c40fb14")
             assert actual["definition"] == vm_xml
             assert actual["info"] == vm_info
 
 
+# pylint: disable-next=redefined-outer-name
 def test_vm_definition_cluster(libvirt):
     """
     test the vm_definition() function with a stopped VM defined on a cluster
@@ -235,10 +265,17 @@ def test_vm_definition_cluster(libvirt):
     with patch.object(libvirt, "open", MagicMock()) as mock_conn:
         with patch.object(libvirt, "libvirtError", Exception) as mock_error:
             mock_conn.return_value.lookupByUUIDString.side_effect = mock_error
-            with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
-                popen_mock.return_value.communicate.return_value = (CRM_CONFIG_XML, None)
+            with patch.object(
+                virt_utils.subprocess, "Popen", MagicMock()
+            ) as popen_mock:
+                popen_mock.return_value.communicate.return_value = (
+                    CRM_CONFIG_XML,
+                    None,
+                )
                 with patch("builtins.open", mock_open(read_data=vm_xml)):
-                    actual = virt_utils.vm_definition("15c09f1f-6ac7-43b5-83e9-96a63c40fb14")
+                    actual = virt_utils.vm_definition(
+                        "15c09f1f-6ac7-43b5-83e9-96a63c40fb14"
+                    )
                     assert actual["definition"] == vm_xml
                     assert actual.get("info") is None
 
@@ -249,7 +286,7 @@ def test_virt_tuner_templates(has_virt_tuner):
     Test the virt_tuner_templates() function
     """
     templates = ["template1", "template2"] if has_virt_tuner else []
-    tuner_mock= MagicMock()
+    tuner_mock = MagicMock()
     tuner_mock.templates.keys.return_value = templates
     virt_utils.virt_tuner = tuner_mock if has_virt_tuner else None
 
@@ -264,7 +301,7 @@ def test_domain_parameters(has_virt_tuner):
     template_params = {"cpu": 22, "mem": 512, "foo": "bar"} if has_virt_tuner else {}
     template_mock = MagicMock()
     template_mock.function.return_value = template_params
-    tuner_mock= MagicMock()
+    tuner_mock = MagicMock()
     tuner_mock.templates = {"template1": template_mock}
     virt_utils.virt_tuner = tuner_mock if has_virt_tuner else None
 

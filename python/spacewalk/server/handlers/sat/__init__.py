@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -19,7 +20,8 @@ __all__ = []
 from . import auth
 
 rpcClasses = {
-    'authentication':   auth.Authentication,
+    "authentication": auth.Authentication,
 }
 
+# pylint: disable-next=invalid-name
 getHandler = None

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -24,8 +25,8 @@ import unittest
 from uyuni.common import rhnLib
 
 
+# pylint: disable-next=missing-class-docstring
 class Tests(unittest.TestCase):
-
     def _test_timestamp_1(self):
         # Start with some timestamp, and verify that
         # timestamp(strftime(t)) is # t
@@ -33,8 +34,9 @@ class Tests(unittest.TestCase):
         increment = 123456
         while t < time.time() + increment:
             is_eq, t1, tstr, t2 = self._test(t)
-            #self.assertEqual(t, t2, "%s %s %s %s" % (t, t2, ttuple, tstr))
+            # self.assertEqual(t, t2, "%s %s %s %s" % (t, t2, ttuple, tstr))
             if not is_eq:
+                # pylint: disable-next=consider-using-f-string
                 print(("%s %s %s" % (t1, t2, tstr)))
             t = t + increment
 
@@ -61,21 +63,26 @@ class Tests(unittest.TestCase):
             tlist[2] = tlist[2] - (1 + tlist[6]) % 7
             t = int(time.mktime(tlist))
 
+            # pylint: disable-next=unused-variable
             is_eq, t1, tstr, t2 = self._test(t)
             if not is_eq:
+                # pylint: disable-next=consider-using-f-string
                 print(("%s %s %s" % (t, t2, tstr)))
 
     def test_timestamp_3(self):
         t = 57739297
         # Set the UTC time zone to avoid test flakiness due to the local TZ having DST or not.
-        os.environ['TZ'] = 'UTC'
+        os.environ["TZ"] = "UTC"
         time.tzset()
         dstshift = (time.localtime(t)[8] - time.daylight) * 3600
+        # pylint: disable-next=unused-variable
         is_eq, t1, tstr, t2 = self._test(t, dstshift)
+        # pylint: disable-next=consider-using-f-string
         self.assertTrue(is_eq, "Failed: %s, %s" % (t1, t2))
 
     def _test_timestamp_4(self):
         return self.test_timestamp_3()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(unittest.main() or 0)

@@ -11310,53 +11310,78 @@ For a detailed analysis, please refer to the log files.
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
         <target state="final">@@PRODUCT_NAME@@の新しい更新が利用できるようになりました。詳細については、&lt;a href="{0}"&gt;リリースノート&lt;a&gt;を参照してください。</target>
       </trans-unit>
-    <trans-unit id="message.payg.errorbyosnoscc" xml:space="preserve">
+      <trans-unit approved="yes" id="message.payg.errorbyosnoscc" xml:space="preserve">
         <source>
           @@PRODUCT_NAME@@ is not able to manage this instance since it is Bring-your-own-subscription and no SCC credentials are set.
           To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt;.
         </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
+        <target state="final">
+          @@PRODUCT_NAME@@ は、Bring-your-own-subscriptionであり、SCC資格情報が設定されていないため、このインスタンスを管理できません。
+          この状況を修正するには、&lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;ここ&lt;/a&gt;にSCC資格情報を追加してください。
+        </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="message.payg.errornotcompliant" xml:space="preserve">
         <source>
           This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
           amend the situation before continuing using the product.
         </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve">
+        <target state="final">
+          この @@PRODUCT_NAME@@ PAYGは準拠していないため、一部の機能が無効になります。製品の使用を続ける前に、
+          管理者に連絡して、この状況を修正してください。
+        </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="message.payg.errorbyosnosccssm" xml:space="preserve">
         <source>
 @@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
 To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt; or select in SSM just Pay-as-you-go-instances.
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">
+1つ以上のBring-your-own-subscriptionがあり、SCC資格情報が設定されていないため、@@PRODUCT_NAME@@ はこれらのインスタンスを管理できません。
+この状況を修正するには、&lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;ここ&lt;/a&gt;にSCC資格情報を追加するか、SSMで従量課金制インスタンスのみを選択してください。
+        </target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ PAYGインスタンスは準拠していません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
+        <target state="final">この @@PRODUCT_NAME@@ PAYGインスタンスは準拠していません。一部の @@PRODUCT_NAME@@ 機能は無効になります。システム管理者に確認してください。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
         <source>
           The action you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
+        <target state="final">
+          @@PRODUCT_NAME@@ がPAYGであり、現在のアクションにBYOSサーバがあり、現在SCC資格情報が設定されていないため、試行したアクションを実行できませんでした。
+          この状況を修正するには、この @@PRODUCT_NAME@@ インスタンスにSCC資格情報を設定して、再試行してください。従量課金制インスタンスでのみアクションを実行することもできます。
+          Bring-your-own-subscriptionサーバが検出されました: {0}。
+        </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
         <source>
           The action chain you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action chain and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action chain only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
+        <target state="final">
+          @@PRODUCT_NAME@@ がPAYGで、現在の動作チェーンにBYOSサーバがあり、現在SCC資格情報が設定されていないため、試行した動作チェーンを実行できませんでした。
+          この状況を修正するには、この @@PRODUCT_NAME@@ インスタンスにSCC資格情報を設定して、再試行してください。従量課金制インスタンスでのみ動作チェーンを実行することもできます。
+          Bring-your-own-subscriptioサーバが検出されました: {0}。
+        </target>
+      </trans-unit>
+    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+        <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <source>Perform a standalone Salt update</source>
       <target state="new"/>
   </trans-unit>
       </body>

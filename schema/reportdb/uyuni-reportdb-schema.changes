@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Thu Jan 18 11:04:01 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.3-1
+  * move schema files to /usr/share/susemanager/db out of
+    persistent storage
+
+-------------------------------------------------------------------
+Tue Jan 16 18:08:04 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * Add missing migration paths to version 5.0.2
+
+-------------------------------------------------------------------
+Tue Jan 16 08:10:25 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Fri Dec 15 17:34:22 CET 2023 - rosuna@suse.com
+
+- version 4.4.6-1
+  * Remove unused makefiles
+
+-------------------------------------------------------------------
 Wed Nov 01 19:35:15 CET 2023 - marina.latini@suse.com
 
 - version 4.4.5-1

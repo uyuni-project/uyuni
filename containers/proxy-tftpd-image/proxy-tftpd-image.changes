@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:41:12 CET 2024 - rosuna@suse.com
+
+- version 5.0.2
+  * Simplify publishing to Open Build Service
+
+-------------------------------------------------------------------
+Fri Jan 12 12:15:31 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * Bump version to 5.0.0
+  * Use product version in reference label
+
+-------------------------------------------------------------------
+Mon Dec 18 14:34:17 CET 2023 - rosuna@suse.com
+
+- version 4.4.3
+  * Uyuni 2023.12 release
+
+-------------------------------------------------------------------
 Wed Nov 01 21:25:13 CET 2023 - marina.latini@suse.com
 
 - version 4.4.2

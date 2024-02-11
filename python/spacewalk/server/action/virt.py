@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,87 +20,107 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.rhnLib import InvalidAction
 from uyuni.common.usix import raise_with_tb
 
-__rhnexport__ = ['refresh',
-                 'shutdown',
-                 'reboot',
-                 'resume',
-                 'start',
-                 'schedulePoller',
-                 'suspend',
-                 'destroy',
-                 'setMemory',
-                 'setVCPUs'
-                 ]
+__rhnexport__ = [
+    "refresh",
+    "shutdown",
+    "reboot",
+    "resume",
+    "start",
+    "schedulePoller",
+    "suspend",
+    "destroy",
+    "setMemory",
+    "setVCPUs",
+]
 
 ###########################################################################
 # SQL Queries for each virtualization action type.
 ###########################################################################
-_query_refresh = rhnSQL.Statement("""
+_query_refresh = rhnSQL.Statement(
+    """
     select  avf.action_id,
     from    rhnActionVirtRefresh
     where   avf.action_id = :action_id
-""")
+"""
+)
 
-_query_shutdown = rhnSQL.Statement("""
+_query_shutdown = rhnSQL.Statement(
+    """
     select  avs.action_id,
             avs.uuid
     from    rhnActionVirtShutdown avs
     where   avs.action_id = :action_id
-""")
+"""
+)
 
-_query_suspend = rhnSQL.Statement("""
+_query_suspend = rhnSQL.Statement(
+    """
     select  avs.action_id,
             avs.uuid
     from    rhnActionVirtSuspend avs
     where   avs.action_id = :action_id
-""")
+"""
+)
 
-_query_resume = rhnSQL.Statement("""
+_query_resume = rhnSQL.Statement(
+    """
     select  avr.action_id,
             avr.uuid
     from    rhnActionVirtResume avr
     where   avr.action_id = :action_id
-""")
+"""
+)
 
-_query_reboot = rhnSQL.Statement("""
+_query_reboot = rhnSQL.Statement(
+    """
     select  avr.action_id,
             avr.uuid
     from    rhnActionVirtReboot avr
     where   avr.action_id = :action_id
 
-""")
+"""
+)
 
-_query_destroy = rhnSQL.Statement("""
+_query_destroy = rhnSQL.Statement(
+    """
     select  avd.action_id,
             avd.uuid
     from    rhnActionVirtDestroy avd
     where   avd.action_id = :action_id
-""")
+"""
+)
 
-_query_start = rhnSQL.Statement("""
+_query_start = rhnSQL.Statement(
+    """
     select  avs.action_id,
             avs.uuid
     from    rhnActionVirtStart avs
     where   avs.action_id = :action_id
-""")
+"""
+)
 
-_query_setMemory = rhnSQL.Statement("""
+_query_setMemory = rhnSQL.Statement(
+    """
     select  asm.action_id,
             asm.uuid,
             asm.memory
     from    rhnActionVirtSetMemory asm
     where   asm.action_id = :action_id
-""")
+"""
+)
 
-_query_getVCPUs = rhnSQL.Statement("""
+_query_getVCPUs = rhnSQL.Statement(
+    """
     select  av.action_id,
             av.uuid,
             av.vcpu
     from    rhnActionVirtVCPU av
     where   av.action_id = :action_id
-""")
+"""
+)
 
-_query_schedulePoller = rhnSQL.Statement("""
+_query_schedulePoller = rhnSQL.Statement(
+    """
     select  asp.action_id,
             asp.minute,
             asp.hour,
@@ -108,7 +129,8 @@ _query_schedulePoller = rhnSQL.Statement("""
             asp.dow
     from    rhnActionVirtSchedulePoller asp
     where   asp.action_id = :action_id
-""")
+"""
+)
 
 ##########################################################################
 # Functions that return the correct parameters that the actions are
@@ -117,13 +139,11 @@ _query_schedulePoller = rhnSQL.Statement("""
 
 
 class NoUUIDException(Exception):
-
     def __init__(self):
         Exception.__init__(self)
 
 
 class NoRowFoundException(Exception):
-
     def __init__(self):
         Exception.__init__(self)
 
@@ -138,15 +158,17 @@ def _get_uuid(query_str, action_id):
     if not row:
         raise NoRowFoundException()
 
-    if 'uuid' not in row:
+    if "uuid" not in row:
         raise NoUUIDException()
 
-    uuid = row['uuid']
+    uuid = row["uuid"]
     return uuid
+
 
 # Returns an empty tuple, since the virt.refresh action has no params.
 
 
+# pylint: disable-next=unused-argument
 def refresh(server_id, action_id, dry_run=0):
     log_debug(3, dry_run)
 
@@ -158,52 +180,72 @@ def refresh(server_id, action_id, dry_run=0):
         raise NoRowFoundException()
 
     # Sanity check. If this doesn't pass then something is definitely screwed up.
-    if not row['action_id']:
+    if not row["action_id"]:
         raise InvalidAction("Refresh action is missing an action_id.")
 
     return ()
 
+
 # Returns a uuid
 
 
+# pylint: disable-next=unused-argument
 def action(action_name, query, server_id, action_id, dry_run=0):
     log_debug(3, action_name, dry_run)
     try:
         uuid = _get_uuid(query, action_id)
     except NoRowFoundException:
-        raise_with_tb(InvalidAction("No %s actions found." % action_name.lower()), sys.exc_info()[2])
+        raise_with_tb(
+            # pylint: disable-next=consider-using-f-string
+            InvalidAction("No %s actions found." % action_name.lower()),
+            sys.exc_info()[2],
+        )
     except NoUUIDException:
-        raise_with_tb(InvalidAction("%s action %s has no uuid associated with it." %
-                            (action_name, str(action_id))), sys.exc_info()[2])
+        raise_with_tb(
+            InvalidAction(
+                # pylint: disable-next=consider-using-f-string
+                "%s action %s has no uuid associated with it."
+                % (action_name, str(action_id))
+            ),
+            sys.exc_info()[2],
+        )
     return (uuid,)
 
 
+# pylint: disable-next=unused-argument
 def start(server_id, action_id, dry_run=0):
     return action("Start", _query_start, server_id, action_id, dry_run=0)
 
 
+# pylint: disable-next=unused-argument
 def shutdown(server_id, action_id, dry_run=0):
     return action("Shutdown", _query_shutdown, server_id, action_id, dry_run=0)
 
 
+# pylint: disable-next=unused-argument
 def suspend(server_id, action_id, dry_run=0):
     return action("Suspend", _query_suspend, server_id, action_id, dry_run=0)
 
 
+# pylint: disable-next=unused-argument
 def resume(server_id, action_id, dry_run=0):
     return action("Resume", _query_resume, server_id, action_id, dry_run=0)
 
 
+# pylint: disable-next=unused-argument
 def reboot(server_id, action_id, dry_run=0):
     return action("Reboot", _query_reboot, server_id, action_id, dry_run=0)
 
 
+# pylint: disable-next=unused-argument
 def destroy(server_id, action_id, dry_run=0):
     return action("Destroy", _query_destroy, server_id, action_id, dry_run=0)
+
 
 # Returns a uuid and the amount of memory to allocate to the domain.
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def setMemory(server_id, action_id, dry_run=0):
     log_debug(3, dry_run)
 
@@ -214,20 +256,24 @@ def setMemory(server_id, action_id, dry_run=0):
     if not row:
         raise InvalidAction("No setMemory actions found.")
 
-    if 'uuid' not in row:
+    if "uuid" not in row:
+        # pylint: disable-next=consider-using-f-string
         raise InvalidAction("Set Memory action %s has no uuid." % str(action_id))
 
-    if 'memory' not in row:
+    if "memory" not in row:
+        # pylint: disable-next=consider-using-f-string
         raise InvalidAction("setMemory action %s has no memory set." % str(action_id))
 
-    uuid = row['uuid']
-    memory = row['memory']
+    uuid = row["uuid"]
+    memory = row["memory"]
 
     return (uuid, memory)
+
 
 # Returns a uuid and the amount of VCPUs to allocate to the domain.
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def setVCPUs(server_id, action_id, dry_run=0):
     log_debug(3, dry_run)
 
@@ -238,10 +284,11 @@ def setVCPUs(server_id, action_id, dry_run=0):
     if not row:
         raise InvalidAction("No VCPU actions found.")
 
-    return row['uuid'], row['vcpu']
+    return row["uuid"], row["vcpu"]
 
 
 # Returns the minute, hour, dom, month, and dow to call schedulePoller with.
+# pylint: disable-next=invalid-name,unused-argument
 def schedulePoller(server_id, action_id, dry_run=0):
     log_debug(3, dry_run)
 
@@ -252,19 +299,39 @@ def schedulePoller(server_id, action_id, dry_run=0):
     if not row:
         raise InvalidAction("No schedulePoller actions found.")
 
-    if 'minute' not in row:
-        raise InvalidAction("schedulePoller action %s has no minute associated with it." % str(action_id))
+    if "minute" not in row:
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "schedulePoller action %s has no minute associated with it."
+            % str(action_id)
+        )
 
-    if 'hour' not in row:
-        raise InvalidAction("schedulePoller action %s has no hour associated with it." % str(action_id))
+    if "hour" not in row:
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "schedulePoller action %s has no hour associated with it."
+            % str(action_id)
+        )
 
-    if 'dom' not in row:
-        raise InvalidAction("schedulePoller action %s has no day of the month associated with it." % str(action_id))
+    if "dom" not in row:
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "schedulePoller action %s has no day of the month associated with it."
+            % str(action_id)
+        )
 
-    if 'month' not in row:
-        raise InvalidAction("schedulePoller action %s has no month associated with it." % str(action_id))
+    if "month" not in row:
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "schedulePoller action %s has no month associated with it."
+            % str(action_id)
+        )
 
-    if 'dow' not in row:
-        raise InvalidAction("schedulePoller action %s has no day of the week associated with it." % str(action_id))
+    if "dow" not in row:
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "schedulePoller action %s has no day of the week associated with it."
+            % str(action_id)
+        )
 
-    return (row['minute'], row['hour'], row['dom'], row['month'], row['dow'])
+    return (row["minute"], row["hour"], row["dom"], row["month"], row["dow"])

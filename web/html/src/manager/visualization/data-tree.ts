@@ -63,19 +63,19 @@ function dataTree(data, container) {
 
   function instance() {}
 
-  instance.data = function (d) {
+  instance.data = function (d?: any) {
     return arguments.length ? ((data = d), instance) : data;
   };
 
-  instance.preprocessor = function (p) {
+  instance.preprocessor = function (p?: any): any {
     return arguments.length ? ((preprocessor = p), instance) : preprocessor;
   };
 
-  instance.filters = function (f) {
+  instance.filters = function (f?: any) {
     return arguments.length ? ((filters = f), instance) : filters;
   };
 
-  instance.partitioning = function (p) {
+  instance.partitioning = function (p?: any) {
     return arguments.length ? ((partitioning = p), instance) : partitioning;
   };
 

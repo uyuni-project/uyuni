@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.cloudpayg;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -25,12 +24,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -38,18 +34,18 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "susePaygProduct")
 @NamedQuery(
-    name = "PaygCredentialsProduct.listByCredentials",
-    query = "SELECT p FROM com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct AS p WHERE p.credentials = :creds"
+    name = "PaygCredentialsProduct.listByCredentialsId",
+    query = "SELECT p FROM com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId"
 )
 @NamedQuery(
-    name = "PaygCredentialsProduct.deleteByCredentials",
-    query = "DELETE FROM com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct AS p WHERE p.credentials = :creds"
+    name = "PaygCredentialsProduct.deleteByCredentialsId",
+    query = "DELETE FROM com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId"
 )
 public class PaygCredentialsProduct extends BaseDomainHelper {
 
     private Long id;
 
-    private Credentials credentials;
+    private Long credentialsId;
 
     private String name;
 
@@ -64,12 +60,12 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
     }
 
     /**
-     * Create an instance with the given credentials and product
-     * @param credentialsIn the credential
+     * Create an instance with the given credentials id and product
+     * @param credentialsIdIn the id of the credential
      * @param productInfoIn the product
      */
-    PaygCredentialsProduct(Credentials credentialsIn, PaygProductInfo productInfoIn) {
-        this.credentials = credentialsIn;
+    PaygCredentialsProduct(Long credentialsIdIn, PaygProductInfo productInfoIn) {
+        this.credentialsId = credentialsIdIn;
         this.name = productInfoIn.getName();
         this.version = productInfoIn.getVersion();
         this.arch = productInfoIn.getArch();
@@ -87,14 +83,13 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
         this.id = idIn;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credentials_id", referencedColumnName = "id")
-    public Credentials getCredentials() {
-        return credentials;
+    @Column(name = "credentials_id")
+    public Long getCredentialsId() {
+        return credentialsId;
     }
 
-    public void setCredentials(Credentials credentialsIn) {
-        this.credentials = credentialsIn;
+    public void setCredentialsId(Long credentialsIdIn) {
+        this.credentialsId = credentialsIdIn;
     }
 
     @Column(name = "name")
@@ -137,7 +132,7 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
         PaygCredentialsProduct that = (PaygCredentialsProduct) o;
 
         return new EqualsBuilder()
-            .append(credentials, that.credentials)
+            .append(credentialsId, that.credentialsId)
             .append(name, that.getName())
             .append(version, that.getVersion())
             .append(arch, that.getArch())
@@ -147,7 +142,7 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-            .append(credentials)
+            .append(credentialsId)
             .append(name)
             .append(version)
             .append(arch)
@@ -158,7 +153,7 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
-            .append("credentials", credentials)
+            .append("credentialsId", credentialsId)
             .append("name", name)
             .append("version", version)
             .append("arch", arch)

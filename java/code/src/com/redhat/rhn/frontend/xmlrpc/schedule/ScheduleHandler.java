@@ -79,7 +79,9 @@ public class ScheduleHandler extends BaseHandler {
             return BaseHandler.VALID;
         }
         catch (ActionIsChildException e) {
-            throw new UnsupportedOperationException(locService.getMessage("api.schedule.cannotcancelchild"));
+            throw new UnsupportedOperationException(String.format("%s%n%s",
+                    locService.getMessage("api.schedule.cannotcancelchild"),
+                    e.getMessage()));
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());

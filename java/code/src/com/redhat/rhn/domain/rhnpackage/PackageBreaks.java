@@ -20,7 +20,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * PackagePreDepends
+ * PackageBreaks
  */
 @Entity
 @Table(name = "rhnPackageBreaks")

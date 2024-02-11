@@ -15,7 +15,9 @@
 package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.credentials.BaseCredentials;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 
 import com.suse.scc.model.SCCOrderItemJson;
 
@@ -68,7 +70,7 @@ public class SCCOrderItem extends BaseDomainHelper {
      * @param j Json Order Item object
      * @param c Credentials object
      */
-    public SCCOrderItem(SCCOrderItemJson j, Credentials c) {
+    public SCCOrderItem(SCCOrderItemJson j, SCCCredentials c) {
         update(j, c);
     }
 
@@ -77,7 +79,7 @@ public class SCCOrderItem extends BaseDomainHelper {
      * @param j the SCC Order Item Json object
      * @param c the credentials used to fetch it
      */
-    public void update(SCCOrderItemJson j, Credentials c) {
+    public void update(SCCOrderItemJson j, SCCCredentials c) {
         credentials = c;
         sccId = j.getSccId();
         sku = j.getSku();
@@ -210,7 +212,7 @@ public class SCCOrderItem extends BaseDomainHelper {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @ManyToOne
+    @ManyToOne(targetEntity = BaseCredentials.class)
     public Credentials getCredentials() {
         return credentials;
     }

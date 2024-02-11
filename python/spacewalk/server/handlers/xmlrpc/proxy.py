@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -19,6 +20,7 @@ import time
 from rhn.UserDictCase import UserDictCase
 
 # common module imports
+# pylint: disable-next=reimported
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -35,15 +37,15 @@ from spacewalk.server import rhnServer, rhnSQL, apacheAuth, rhnPackage, rhnChann
 # proxy functions
 
 
+# pylint: disable-next=missing-class-docstring,invalid-name
 class rhnProxyHandler(rhnHandler):
-
     def __init__(self):
         rhnHandler.__init__(self)
 
     def auth_system(self, system_id):
-        """ System authentication. We override the standard function because
-            we need to check additionally if this system_id is entitled for
-            proxy functionality.
+        """System authentication. We override the standard function because
+        we need to check additionally if this system_id is entitled for
+        proxy functionality.
         """
         log_debug(3)
         server = rhnHandler.auth_system(self, system_id)
@@ -51,31 +53,36 @@ class rhnProxyHandler(rhnHandler):
         # entitlement.
         # XXX: this needs to be moved out of the rhnServer module,
         # possibly in here
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select 1
         from rhnProxyInfo pi
         where pi.server_id = :server_id
-        """)
+        """
+        )
         h.execute(server_id=self.server_id)
         row = h.fetchone_dict()
         if not row:
             # we require entitlement for this functionality
             log_error("Server not entitled for Proxy", self.server_id)
-            raise rhnFault(1002, _(
-                'SUSE Manager Proxy service not enabled for server profile: "%s"')
-                % server.server["name"])
+            raise rhnFault(
+                1002,
+                _('SUSE Manager Proxy service not enabled for server profile: "%s"')
+                % server.server["name"],
+            )
         # we're fine...
         return server
 
     def auth_client(self, token):
-        """ Authenticate a system based on the same authentication tokens
-            the client is sending for GET requests
+        """Authenticate a system based on the same authentication tokens
+        the client is sending for GET requests
         """
         log_debug(3)
         # Build a UserDictCase out of the token
+        # pylint: disable-next=redefined-builtin
         dict = UserDictCase(token)
         # Set rhnFlags so that we can piggyback on apacheAuth's auth_client
-        rhnFlags.set('AUTH_SESSION_TOKEN', dict)
+        rhnFlags.set("AUTH_SESSION_TOKEN", dict)
 
         # XXX To clean up apacheAuth.auth_client's logging, this is not about
         # GET requests
@@ -86,7 +93,7 @@ class rhnProxyHandler(rhnHandler):
 
         log_debug(4, "Client auth OK")
         # We checked it already, so we're sure it's there
-        client_id = dict['X-RHN-Server-Id']
+        client_id = dict["X-RHN-Server-Id"]
 
         server = rhnServer.search(client_id)
         if not server:
@@ -97,63 +104,65 @@ class rhnProxyHandler(rhnHandler):
         # permissions change... Damn it. --gafton
         self.server = server
         self.server_id = client_id
-        self.user = dict['X-RHN-Auth-User-Id']
+        self.user = dict["X-RHN-Auth-User-Id"]
         return server
 
 
 class Proxy(rhnProxyHandler):
 
-    """ this is the XML-RPC receiver for proxy calls """
+    """this is the XML-RPC receiver for proxy calls"""
 
     def __init__(self):
         log_debug(3)
         rhnProxyHandler.__init__(self)
-        self.functions.append('package_source_in_channel')
-        self.functions.append('login')
-        self.functions.append('listAllPackagesKickstart')
-        self.functions.append('getKickstartChannel')
-        self.functions.append('getKickstartOrgChannel')
-        self.functions.append('getKickstartSessionChannel')
-        self.functions.append('getKickstartChildChannel')
-        self.functions.append('getTinyUrlChannel')
-        self.functions.append('checkTokenValidity')
+        self.functions.append("package_source_in_channel")
+        self.functions.append("login")
+        self.functions.append("listAllPackagesKickstart")
+        self.functions.append("getKickstartChannel")
+        self.functions.append("getKickstartOrgChannel")
+        self.functions.append("getKickstartSessionChannel")
+        self.functions.append("getKickstartChildChannel")
+        self.functions.append("getTinyUrlChannel")
+        self.functions.append("checkTokenValidity")
 
     # Method to force a check of the client's auth token.
     # Proxy may call this if it does not recognize the token, which may
     # happen if the proxy is load-balanced.
+    # pylint: disable-next=invalid-name
     def checkTokenValidity(self, token, systemid):
         log_debug(5, token, systemid)
         # authenticate that this request is initiated from a proxy
         try:
             self.auth_system(systemid)
-            server = self.auth_client(token) # sets self.server_id
+            # pylint: disable-next=unused-variable
+            server = self.auth_client(token)  # sets self.server_id
         except rhnFault:
             # A Fault means that something did not auth. Either the caller
             # is not a proxy or the token is not valid, return false.
             return False
         # Proxy has to calculate new proxy-clock-skew, and needs channel info
         ret = {}
-        ret['X-RHN-Auth-Server-Time'] = str(time.time())
+        ret["X-RHN-Auth-Server-Time"] = str(time.time())
         channels = rhnChannel.getSubscribedChannels(self.server_id)
-        ret['X-RHN-Auth-Channels'] = channels
+        ret["X-RHN-Auth-Channels"] = channels
         return ret
 
     def package_source_in_channel(self, package, channel, auth_token):
-        """ Validates the client request for a source package download """
+        """Validates the client request for a source package download"""
         log_debug(3, package, channel)
+        # pylint: disable-next=unused-variable
         server = self.auth_client(auth_token)
-        return rhnPackage.package_source_in_channel(self.server_id,
-                                                    package, channel)
+        return rhnPackage.package_source_in_channel(self.server_id, package, channel)
 
     def login(self, system_id):
-        """ Login routine for the proxy
+        """Login routine for the proxy
 
-            Return a formatted string of session token information as regards
-            an Spacewalk Proxy.  Also sets this information in the headers.
+        Return a formatted string of session token information as regards
+        an Spacewalk Proxy.  Also sets this information in the headers.
 
-            NOTE: design description for the auth token format and how it is
-               is used is well documented in the proxy/broker/rhnProxyAuth.py
-               code.
+        NOTE: design description for the auth token format and how it is
+           is used is well documented in the proxy/broker/rhnProxyAuth.py
+           code.
         """
         log_debug(5, system_id)
         # Authenticate. We need the user record to be able to generate
@@ -162,13 +171,22 @@ class Proxy(rhnProxyHandler):
         self.auth_system(system_id)
         # log the entry
         log_debug(1, self.server_id)
+        # pylint: disable-next=invalid-name
         rhnServerTime = str(time.time())
+        # pylint: disable-next=invalid-name
         expireOffset = str(CFG.PROXY_AUTH_TIMEOUT)
-        signature = computeSignature(CFG.SECRET_KEY, self.server_id, self.user,
-                                     rhnServerTime, expireOffset)
+        signature = computeSignature(
+            CFG.SECRET_KEY, self.server_id, self.user, rhnServerTime, expireOffset
+        )
 
-        token = '%s:%s:%s:%s:%s' % (self.server_id, self.user, rhnServerTime,
-                                    expireOffset, signature)
+        # pylint: disable-next=consider-using-f-string
+        token = "%s:%s:%s:%s:%s" % (
+            self.server_id,
+            self.user,
+            rhnServerTime,
+            expireOffset,
+            signature,
+        )
 
         # NOTE: for RHN Proxies of version 3.1+ tokens are passed up in a
         #       multi-valued header with HOSTNAME tagged onto the end of the
@@ -179,13 +197,14 @@ class Proxy(rhnProxyHandler):
 
         # Push this value into the headers so that the proxy can
         # intercept and cache it without parsing the xmlrpc.
-        transport = rhnFlags.get('outputTransportOptions')
-        transport['X-RHN-Action'] = 'login'
-        transport['X-RHN-Proxy-Auth'] = token
+        transport = rhnFlags.get("outputTransportOptions")
+        transport["X-RHN-Action"] = "login"
+        transport["X-RHN-Proxy-Auth"] = token
         return token
 
+    # pylint: disable-next=invalid-name
     def listAllPackagesKickstart(self, channel, system_id):
-        """ Creates and/or serves up a cached copy of all the packages for
+        """Creates and/or serves up a cached copy of all the packages for
         this channel, including checksum information.
         """
         log_debug(5, channel)
@@ -198,61 +217,70 @@ class Proxy(rhnProxyHandler):
         rhnFlags.set("compress_response", 1)
         return packages
 
+    # pylint: disable-next=invalid-name
     def getKickstartChannel(self, kickstart, system_id):
-        """ Gets channel information for this kickstart tree"""
+        """Gets channel information for this kickstart tree"""
         log_debug(5, kickstart)
         # authenticate that this request is initiated from a proxy
         self.auth_system(system_id)
         return self.__getKickstartChannel(kickstart)
 
+    # pylint: disable-next=invalid-name
     def getKickstartOrgChannel(self, kickstart, org_id, system_id):
-        """ Gets channel information for this kickstart tree"""
+        """Gets channel information for this kickstart tree"""
         log_debug(5, kickstart, org_id)
         # authenticate that this request is initiated from a proxy
         self.auth_system(system_id)
         ret = rhnChannel.getChannelInfoForKickstartOrg(kickstart, org_id)
         return self.__getKickstart(kickstart, ret)
 
+    # pylint: disable-next=invalid-name
     def getKickstartSessionChannel(self, kickstart, session, system_id):
-        """ Gets channel information for this kickstart tree"""
+        """Gets channel information for this kickstart tree"""
         log_debug(5, kickstart, session)
         # authenticate that this request is initiated from a proxy
         self.auth_system(system_id)
         return self.__getKickstartSessionChannel(kickstart, session)
 
+    # pylint: disable-next=invalid-name
     def getKickstartChildChannel(self, kickstart, child, system_id):
-        """ Gets channel information for this kickstart tree"""
+        """Gets channel information for this kickstart tree"""
         log_debug(5, kickstart, child)
         # authenticate that this request is initiated from a proxy
         self.auth_system(system_id)
-        if (hasattr(CFG, 'KS_RESTRICT_CHILD_CHANNELS') and
-                CFG.KS_RESTRICT_CHILD_CHANNELS):
+        if (
+            hasattr(CFG, "KS_RESTRICT_CHILD_CHANNELS")
+            and CFG.KS_RESTRICT_CHILD_CHANNELS
+        ):
+            # pylint: disable-next=undefined-variable
             return getKickstartChannel(kickstart)
 
         ret = rhnChannel.getChildChannelInfoForKickstart(kickstart, child)
         return self.__getKickstart(kickstart, ret)
 
+    # pylint: disable-next=invalid-name
     def getTinyUrlChannel(self, tinyurl, system_id):
-        """ Gets channel information for this tinyurl"""
+        """Gets channel information for this tinyurl"""
         log_debug(5, tinyurl)
         # authenticate that this request is initiated from a proxy
         self.auth_system(system_id)
         ret = rhnChannel.getChannelInfoForTinyUrl(tinyurl)
-        if not ret or not 'url' in ret or len(ret['url'].split('/')) != 6:
-            raise rhnFault(40,
-                           "could not find any data on tiny url '%s'" % tinyurl)
+        if not ret or not "url" in ret or len(ret["url"].split("/")) != 6:
+            # pylint: disable-next=consider-using-f-string
+            raise rhnFault(40, "could not find any data on tiny url '%s'" % tinyurl)
 
         # tiny urls are always for kickstart sessions
-        args = ret['url'].split('/')
+        args = ret["url"].split("/")
         return self.__getKickstartSessionChannel(args[-1], args[-2])
 
+    # -----------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------
-
+    # pylint: disable-next=invalid-name
     def __getKickstartChannel(self, kickstart):
         ret = rhnChannel.getChannelInfoForKickstart(kickstart)
         return self.__getKickstart(kickstart, ret)
 
+    # pylint: disable-next=invalid-name
     def __getKickstartSessionChannel(self, kickstart, session):
         ret = rhnChannel.getChannelInfoForKickstartSession(session)
 
@@ -260,8 +288,9 @@ class Proxy(rhnProxyHandler):
             return self.__getKickstartChannel(kickstart)
         return self.__getKickstart(kickstart, ret)
 
+    # pylint: disable-next=invalid-name
     def __getKickstart(self, kickstart, ret):
         if not ret:
-            raise rhnFault(40,
-                           "could not find any data on kickstart '%s'" % kickstart)
+            # pylint: disable-next=consider-using-f-string
+            raise rhnFault(40, "could not find any data on kickstart '%s'" % kickstart)
         return ret

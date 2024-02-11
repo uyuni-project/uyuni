@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
 #
@@ -7,16 +8,17 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 #
 
 import math
 import gzip
 import string
+
 try:
     # python 3
     import pickle as cPickle
@@ -30,6 +32,7 @@ from spacewalk.common import rhnCache
 from spacewalk.common.rhnLog import log_debug, log_error
 from uyuni.common.rhnLib import timestamp
 
+# pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnSQL
 
 # XXX Although it would have been much easier to do it all in python, we want
@@ -42,7 +45,8 @@ from spacewalk.server import rhnSQL
 
 ### The following functions expose this module as a dictionary
 
-def has_key(name, modified = None):
+
+def has_key(name, modified=None):
     # We have to rely on the same entity generating the time and comparing it;
     # we are generating UNIX timestamps on the app side, and we store them in
     # the database as DATE fields. The trick is to make both conversions in
@@ -62,17 +66,18 @@ def has_key(name, modified = None):
     if not row:
         # Key not found
         return 0
-    
+
     # has_key behaves as stat(): the access time doesn't change just by
     # poking around to see if the key is there
-    
-    if modified and row['delta'] != 0:
+
+    if modified and row["delta"] != 0:
         # Different version
         return 0
     # Same copy
     return 1
-    
-def get(name, modified = None, raw = None, compressed = None):
+
+
+def get(name, modified=None, raw=None, compressed=None):
     # Check to see if the entry is in the database, with the right version
     h = _fetch_cursor(key=name, modified=modified)
 
@@ -82,7 +87,7 @@ def get(name, modified = None, raw = None, compressed = None):
         # Key not found
         return None
 
-    if modified and row['delta'] != 0:
+    if modified and row["delta"] != 0:
         # Different version
         log_debug(4, "database cache: different version")
         return None
@@ -90,7 +95,7 @@ def get(name, modified = None, raw = None, compressed = None):
     if modified is None:
         # The caller doesn't care about the modified time, but we do, since we
         # want to fetch the same version from the disk cache
-        modified = row['modified']
+        modified = row["modified"]
 
     if rhnCache.has_key(name, modified):
         # We have the value
@@ -102,7 +107,7 @@ def get(name, modified = None, raw = None, compressed = None):
     # The disk cache doesn't have this key at all, or it's a modified value
     # Fetch the value from the database
 
-    v = row['value']
+    v = row["value"]
     # Update the accessed field
     rhnSQL.Procedure("rhn_cache_update_accessed")(name)
 
@@ -120,14 +125,14 @@ def get(name, modified = None, raw = None, compressed = None):
         data = v.read()
     except (ValueError, IOError, gzip.zlib.error) as e:
         # XXX poking at gzip.zlib may not be that well-advised
-        log_error("rhnDatabaseCache: gzip error for key %s: %s" % (
-            name, e))
+        # pylint: disable-next=consider-using-f-string
+        log_error("rhnDatabaseCache: gzip error for key %s: %s" % (name, e))
         # Ignore this entry in the database cache, it has invalid data
         return None
 
     # We store the data in the database cache, in raw format
     rhnCache.set(name, data, modified=modified, raw=1)
-    
+
     # Unpickle the data, unless raw access was requested
     if not raw:
         return cPickle.loads(data)
@@ -140,10 +145,12 @@ def delete(name):
     rhnSQL.Procedure("rhn_cache_delete")(name)
     # Delete it from the disk cache too, just in case
     rhnCache.delete(name)
-    
+
+
 # We only set the database cache value
 # The local disk one will be cached when get() is called for the first time
-def set(name, value, modified = None, raw = None, compressed = None):
+# pylint: disable-next=redefined-builtin
+def set(name, value, modified=None, raw=None, compressed=None):
     if modified is not None:
         modified = timestamp(modified)
     if raw:
@@ -167,7 +174,7 @@ def set(name, value, modified = None, raw = None, compressed = None):
     data_length = len(val)
     chunk_size = 32512
     chunks = int(math.ceil(float(data_length) / chunk_size))
-    #if chunks > 256:
+    # if chunks > 256:
     #    raise Exception, "Data too big"
 
     plsql_template = r"""
@@ -225,30 +232,38 @@ END;
 
     indices = list(range(chunks))
     start_pos = list(map(lambda x, cs=chunk_size: x * cs + 1, indices))
-    sizes = [ chunk_size ] * (chunks - 1) + \
-        [ 'length(rawtohex(arg_%s)) / 2' % (chunks - 1) ]
+    sizes = [chunk_size] * (chunks - 1) + [
+        # pylint: disable-next=consider-using-f-string
+        "length(rawtohex(arg_%s)) / 2"
+        % (chunks - 1)
+    ]
 
     query = plsql_template % (
         string.join(
-            list(map(lambda x, y, t=decl_template: t % (x, y),
-                indices, indices)),
-            "\n"
+            list(map(lambda x, y, t=decl_template: t % (x, y), indices, indices)), "\n"
         ),
         string.join(
-            list(map(lambda x, y, z, t=dbms_lob_template: t % (x, y, z),
-                sizes, start_pos, indices)),
-            "\n"
+            list(
+                map(
+                    lambda x, y, z, t=dbms_lob_template: t % (x, y, z),
+                    sizes,
+                    start_pos,
+                    indices,
+                )
+            ),
+            "\n",
         ),
     )
     params = {
-        'modified'  : modified,
-        'data_len'  : data_length,
-        'key'       : name,
+        "modified": modified,
+        "data_len": data_length,
+        "key": name,
     }
     for i in indices:
         start = i * chunk_size
         end = (i + 1) * chunk_size
-        params['val_%s' % i] = rhnSQL.types.LONG_BINARY(val[start:end])
+        # pylint: disable-next=consider-using-f-string
+        params["val_%s" % i] = rhnSQL.types.LONG_BINARY(val[start:end])
 
     h = rhnSQL.prepare(query)
     tries = 3
@@ -268,15 +283,18 @@ END;
     else:
         # Kept raising Unique constraint violated - something else may be
         # wrong; re-raise the last exception
+        # pylint: disable-next=misplaced-bare-raise
         raise
-    
+
+
 def _fetch_cursor(key=None, modified=None):
     if modified is not None:
         modified = timestamp(modified)
-           
+
     # Computing the number of seconds since Jan 1 1970
-    
-    h = rhnSQL.prepare("""
+
+    h = rhnSQL.prepare(
+        """
     select c.key_id, c.value, nvl(
              (c.modified - 
                 TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS')) *
@@ -286,7 +304,7 @@ def _fetch_cursor(key=None, modified=None):
              'YYYY-MM-DD HH24:MI:SS')) * 86400 modified
       from rhnCache c
      where c.key_id = LOOKUP_CACHE_KEY(:key)
-    """)
+    """
+    )
     h.execute(key=key, modified=modified)
     return h
-

@@ -44,6 +44,12 @@ status_uptime:
   mgrcompat.module_run:
     - name: status.uptime
 
+{%- if not grains.get('transactional', False) %}
+reboot_required:
+  mgrcompat.module_run:
+    - name: reboot_info.reboot_required
+{%- endif %}
+
 kernel_live_version:
   mgrcompat.module_run:
     - name: sumautil.get_kernel_live_version

@@ -53,6 +53,7 @@ import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.SaltFileUtils;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -225,6 +226,39 @@ public class RecurringActionManager extends BaseManager {
             throw new PermissionException("Org not accessible to user");
         }
         return RecurringActionFactory.listOrgRecurringActions(orgId);
+    }
+
+    /**
+     * List all members of a given entity
+     *
+     * @param type the type of the entity
+     * @param id the entity id
+     * @param user the user
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the actions visible to the user
+     */
+    public static DataResult<SimpleMinionJson> listEntityMembers(
+            RecurringAction.TargetType type, Long id, User user, PageControl pc, Function<Optional<PageControl>,
+            PagedSqlQueryBuilder.FilterWithValue> parser) {
+        DataResult<SimpleMinionJson> members;
+        switch (type) {
+            case GROUP:
+                if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
+                    throw new PermissionException(String.format("User does not have access to group id %d", id));
+                }
+                members = RecurringActionFactory.listGroupMembers(id, pc, parser);
+                break;
+            case ORG:
+                if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+                    throw new PermissionException("Org not accessible to user");
+                }
+                members = RecurringActionFactory.listOrgMembers(id, pc, parser);
+                break;
+            default:
+                throw new IllegalStateException("Unsupported type " + type);
+        }
+        return members;
     }
 
     /**

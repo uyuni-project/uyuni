@@ -1,6 +1,7 @@
 # Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 Feature: Export and import configuration channels with new ISS implementation
   Distribute configuration between servers
   Run export and import with ISS v2

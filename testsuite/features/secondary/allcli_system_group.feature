@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_visualization
 Feature: Manage a group of systems
 

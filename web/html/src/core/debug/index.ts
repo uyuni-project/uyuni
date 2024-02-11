@@ -2,30 +2,36 @@ import { showErrorToastr, showSuccessToastr, showWarningToastr } from "component
 
 type Theme = "susemanager-light" | "susemanager-dark" | "uyuni";
 
-const debug = {
+const debugUtils = {
+  theme() {
+    const theme = document.querySelector<HTMLLinkElement>(
+      'link[href^="/css/susemanager-light"],link[href^="/css/susemanager-dark"],link[href^="/css/uyuni"]'
+    );
+    if (!theme) {
+      throw new TypeError("Unable to identify theme");
+    }
+    return `the theme is: ${theme.getAttribute("href")}`;
+  },
   toggleTheme(toTheme?: Theme) {
     const lightTheme = document.querySelector('link[href^="/css/susemanager-light"]');
     if (lightTheme) {
-      lightTheme.setAttribute(
-        "href",
-        toTheme || lightTheme.getAttribute("href")!.replace("susemanager-light", "uyuni")
-      );
-      return;
+      const to = toTheme || lightTheme.getAttribute("href")!.replace("susemanager-light", "uyuni");
+      lightTheme.setAttribute("href", to);
+      return `the theme is now: ${to}`;
     }
 
     const darkTheme = document.querySelector('link[href^="/css/susemanager-dark"]');
     if (darkTheme) {
-      darkTheme.setAttribute("href", toTheme || darkTheme.getAttribute("href")!.replace("susemanager-dark", "uyuni"));
-      return;
+      const to = toTheme || darkTheme.getAttribute("href")!.replace("susemanager-dark", "uyuni");
+      darkTheme.setAttribute("href", to);
+      return `the theme is now: ${to}`;
     }
 
     const uyuniTheme = document.querySelector('link[href^="/css/uyuni"]');
     if (uyuniTheme) {
-      uyuniTheme.setAttribute(
-        "href",
-        toTheme || uyuniTheme.getAttribute("href")!.replace("uyuni", "susemanager-light")
-      );
-      return;
+      const to = toTheme || uyuniTheme.getAttribute("href")!.replace("uyuni", "susemanager-light");
+      uyuniTheme.setAttribute("href", to);
+      return `the theme is now: ${to}`;
     }
   },
   showSuccessToastr,
@@ -35,16 +41,9 @@ const debug = {
 
 declare global {
   interface Window {
-    debug?: typeof debug;
+    debugUtils: typeof debugUtils;
   }
 }
-
-const bindDebugHelpers = () => {
-  window.debug = debug;
-};
-
-if (window.location.host.startsWith("localhost")) {
-  bindDebugHelpers();
-}
+window.debugUtils = debugUtils;
 
 export default {};

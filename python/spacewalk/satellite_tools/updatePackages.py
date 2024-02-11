@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -20,18 +21,25 @@ import sys
 import os
 import shutil
 
+# pylint: disable-next=deprecated-module
 from optparse import Option, OptionParser
 from spacewalk.common.rhnLog import initLOG, rhnLog
 from spacewalk.common.rhnConfig import CFG, initCFG
 from uyuni.common import rhn_rpm
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.server.rhnLib import parseRPMFilename, get_package_path
 from spacewalk.server import rhnSQL, rhnPackageUpload
 from spacewalk.server.rhnServer import server_packages
 from spacewalk.satellite_tools.progress_bar import ProgressBar
+
+# pylint: disable-next=ungrouped-imports
 from uyuni.common.checksum import getFileChecksum
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.server.importlib import mpmSource
 
-initCFG('server.satellite')
+initCFG("server.satellite")
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
 OPTIONS = None
@@ -39,20 +47,27 @@ debug = 0
 verbose = 0
 
 options_table = [
-    Option("--update-package-files", action="store_true",
-           help="Update package files (bugs #659348, #652852)"),
-    Option("--update-sha256", action="store_true",
-           help="Update SHA-256 capable packages"),
-    Option("--update-filer", action="store_true",
-           help="Convert filer structure"),
-    Option("--update-kstrees", action="store_true",
-           help="Fix kickstart trees permissions"),
-    Option("--update-changelog", action="store_true",
-           help="Fix incorrectly encoded package changelog data"),
-    Option("-v", "--verbose", action="count",
-           help="Increase verbosity"),
-    Option("--debug", action="store_true",
-           help="Log the debug information to a log file"),
+    Option(
+        "--update-package-files",
+        action="store_true",
+        help="Update package files (bugs #659348, #652852)",
+    ),
+    Option(
+        "--update-sha256", action="store_true", help="Update SHA-256 capable packages"
+    ),
+    Option("--update-filer", action="store_true", help="Convert filer structure"),
+    Option(
+        "--update-kstrees", action="store_true", help="Fix kickstart trees permissions"
+    ),
+    Option(
+        "--update-changelog",
+        action="store_true",
+        help="Fix incorrectly encoded package changelog data",
+    ),
+    Option("-v", "--verbose", action="count", help="Increase verbosity"),
+    Option(
+        "--debug", action="store_true", help="Log the debug information to a log file"
+    ),
 ]
 
 
@@ -64,6 +79,7 @@ def main():
 
     if args:
         for arg in args:
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("Not a valid option ('%s'), try --help\n" % arg)
         sys.exit(-1)
 
@@ -91,6 +107,7 @@ def main():
 
     if options.update_changelog:
         process_changelog()
+
 
 _get_path_query = """
         select id, checksum_type, checksum, path, epoch, new_path
@@ -129,7 +146,8 @@ _update_pkg_path_query = """
 
 def process_package_data():
     if debug:
-        log = rhnLog('/var/log/rhn/update-packages.log', 5)
+        # pylint: disable-next=no-value-for-parameter
+        log = rhnLog("/var/log/rhn/update-packages.log", 5)
 
     _get_path_sql = rhnSQL.prepare(_get_path_query)
     _update_package_path = rhnSQL.prepare(_update_pkg_path_query)
@@ -141,9 +159,15 @@ def process_package_data():
         # Nothing to change
         return
     if verbose:
+        # pylint: disable-next=consider-using-f-string
         print(("Processing %s packages" % len(paths)))
-    pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
-                     finalSize=len(paths), finalBarLength=40, stream=sys.stdout)
+    pb = ProgressBar(
+        prompt="standby: ",
+        endTag=" - Complete!",
+        finalSize=len(paths),
+        finalBarLength=40,
+        stream=sys.stdout,
+    )
     pb.printAll(1)
     skip_list = []
     new_ok_list = []
@@ -151,44 +175,61 @@ def process_package_data():
     for path in paths:
         pb.addTo(1)
         pb.printIncrement()
-        old_path_nvrea = path['path'].split('/')
+        old_path_nvrea = path["path"].split("/")
         org_id = old_path_nvrea[1]
         # pylint: disable=W0703
         try:
             nevra = parseRPMFilename(old_path_nvrea[-1])
-            if nevra[1] in [None, '']:
-                nevra[1] = path['epoch']
+            if nevra[1] in [None, ""]:
+                nevra[1] = path["epoch"]
         except Exception:
             # probably not an rpm skip
             if debug:
-                log.writeMessage("Skipping: %s Not a valid rpm"
-                                 % old_path_nvrea[-1])
+                # pylint: disable-next=consider-using-f-string
+                log.writeMessage("Skipping: %s Not a valid rpm" % old_path_nvrea[-1])
             continue
-        old_abs_path = os.path.join(CFG.MOUNT_POINT, path['path'])
+        old_abs_path = os.path.join(CFG.MOUNT_POINT, path["path"])
 
-        checksum_type = path['checksum_type']
-        checksum = path['checksum']
-        new_path = get_package_path(nevra, org_id, prepend=old_path_nvrea[0],
-                                    checksum=checksum)
+        checksum_type = path["checksum_type"]
+        checksum = path["checksum"]
+        new_path = get_package_path(
+            nevra, org_id, prepend=old_path_nvrea[0], checksum=checksum
+        )
         new_abs_path = os.path.join(CFG.MOUNT_POINT, new_path)
 
-        bad_abs_path = os.path.join(CFG.MOUNT_POINT,
-                                    get_package_path(nevra, org_id, prepend=old_path_nvrea[0],
-                                                     omit_epoch=True, checksum=checksum))
+        bad_abs_path = os.path.join(
+            CFG.MOUNT_POINT,
+            get_package_path(
+                nevra,
+                org_id,
+                prepend=old_path_nvrea[0],
+                omit_epoch=True,
+                checksum=checksum,
+            ),
+        )
 
         if not os.path.exists(old_abs_path):
             if os.path.exists(new_abs_path):
                 new_ok_list.append(new_abs_path)
                 if debug:
-                    log.writeMessage("File %s already on final path %s" % (path['path'], new_abs_path))
+                    log.writeMessage(
+                        # pylint: disable-next=consider-using-f-string
+                        "File %s already on final path %s"
+                        % (path["path"], new_abs_path)
+                    )
                 old_abs_path = new_abs_path
             elif os.path.exists(bad_abs_path):
-                log.writeMessage("File %s found on %s" % (path['path'], bad_abs_path))
+                # pylint: disable-next=consider-using-f-string
+                log.writeMessage("File %s found on %s" % (path["path"], bad_abs_path))
                 old_abs_path = bad_abs_path
             else:
                 skip_list.append(old_abs_path)
                 if debug:
-                    log.writeMessage("Missing path %s for package %d" % (old_abs_path, path['id']))
+                    log.writeMessage(
+                        # pylint: disable-next=consider-using-f-string
+                        "Missing path %s for package %d"
+                        % (old_abs_path, path["id"])
+                    )
                 continue
 
         # pylint: disable=W0703
@@ -196,8 +237,11 @@ def process_package_data():
             hdr = rhn_rpm.get_package_header(filename=old_abs_path)
         except Exception:
             e = sys.exc_info()[1]
-            msg = "Exception occurred when reading package header %s: %s" % \
-                (old_abs_path, str(e))
+            # pylint: disable-next=consider-using-f-string
+            msg = "Exception occurred when reading package header %s: %s" % (
+                old_abs_path,
+                str(e),
+            )
             print(msg)
             if debug:
                 log.writeMessage(msg)
@@ -208,25 +252,31 @@ def process_package_data():
             new_abs_dir = os.path.dirname(new_abs_path)
             # relocate the package on the filer
             if debug:
-                log.writeMessage("Relocating %s to %s on filer"
-                                 % (old_abs_path, new_abs_path))
+                log.writeMessage(
+                    # pylint: disable-next=consider-using-f-string
+                    "Relocating %s to %s on filer"
+                    % (old_abs_path, new_abs_path)
+                )
             if not os.path.isdir(new_abs_dir):
                 os.makedirs(new_abs_dir)
             shutil.move(old_abs_path, new_abs_path)
             # Clean up left overs
             os.removedirs(os.path.dirname(old_abs_path))
             # make the path readable
-            os.chmod(new_abs_path, int('0644', 8))
+            os.chmod(new_abs_path, int("0644", 8))
 
         # Update the db paths
-        _update_package_path.execute(the_id=path['id'],
-                                     new_path=new_path)
+        _update_package_path.execute(the_id=path["id"], new_path=new_path)
         if debug:
-            log.writeMessage("query Executed: update rhnPackage %d to %s"
-                             % (path['id'], new_path))
+            log.writeMessage(
+                # pylint: disable-next=consider-using-f-string
+                "query Executed: update rhnPackage %d to %s"
+                % (path["id"], new_path)
+            )
         # Process gpg key ids
         server_packages.processPackageKeyAssociations(hdr, checksum_type, checksum)
         if debug:
+            # pylint: disable-next=consider-using-f-string
             log.writeMessage("gpg key info updated from %s" % new_abs_path)
         i = i + 1
         # we need to break the transaction to smaller pieces
@@ -237,16 +287,22 @@ def process_package_data():
     rhnSQL.commit()
     sys.stderr.write("Transaction Committed! \n")
     if verbose:
+        # pylint: disable-next=consider-using-f-string
         print((" Skipping %s packages, paths not found" % len(skip_list)))
     if new_ok_list and verbose:
-        print((" There were %s packages found in the correct location" % len(new_ok_list)))
+        print(
+            # pylint: disable-next=consider-using-f-string
+            (" There were %s packages found in the correct location" % len(new_ok_list))
+        )
     return
 
 
 def process_kickstart_trees():
+    # pylint: disable-next=unused-variable
     for root, _dirs, files in os.walk(CFG.MOUNT_POINT + "/rhn/"):
         for name in files:
-            os.chmod(root + '/' + name, int('0644', 8))
+            os.chmod(root + "/" + name, int("0644", 8))
+
 
 _get_sha256_packages_query = """
 select p.id, p.path
@@ -304,7 +360,8 @@ end;
 
 def process_sha256_packages():
     if debug:
-        log = rhnLog('/var/log/rhn/update-packages.log', 5)
+        # pylint: disable-next=no-value-for-parameter
+        log = rhnLog("/var/log/rhn/update-packages.log", 5)
 
     _get_sha256_packages_sql = rhnSQL.prepare(_get_sha256_packages_query)
     _get_sha256_packages_sql.execute()
@@ -318,10 +375,16 @@ def process_sha256_packages():
         return
 
     if verbose:
+        # pylint: disable-next=consider-using-f-string
         print(("Processing %s SHA256 capable packages" % len(packages)))
 
-    pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
-                     finalSize=len(packages), finalBarLength=40, stream=sys.stdout)
+    pb = ProgressBar(
+        prompt="standby: ",
+        endTag=" - Complete!",
+        finalSize=len(packages),
+        finalBarLength=40,
+        stream=sys.stdout,
+    )
     pb.printAll(1)
 
     _update_sha256_package_sql = rhnSQL.prepare(_update_sha256_package)
@@ -331,26 +394,40 @@ def process_sha256_packages():
         pb.addTo(1)
         pb.printIncrement()
 
-        old_abs_path = os.path.join(CFG.MOUNT_POINT, package['path'])
+        old_abs_path = os.path.join(CFG.MOUNT_POINT, package["path"])
         if debug and verbose:
+            # pylint: disable-next=consider-using-f-string
             log.writeMessage("Processing package: %s" % old_abs_path)
-        temp_file = open(old_abs_path, 'rb')
-        header, _payload_stream, _header_start, _header_end = \
-            rhnPackageUpload.load_package(temp_file)
+        temp_file = open(old_abs_path, "rb")
+        (
+            header,
+            # pylint: disable-next=unused-variable
+            _payload_stream,
+            # pylint: disable-next=unused-variable
+            _header_start,
+            # pylint: disable-next=unused-variable
+            _header_end,
+        ) = rhnPackageUpload.load_package(temp_file)
         checksum_type = header.checksum_type()
         checksum = getFileChecksum(checksum_type, file_obj=temp_file)
 
-        old_path = package['path'].split('/')
+        old_path = package["path"].split("/")
         nevra = parseRPMFilename(old_path[-1])
         org_id = old_path[1]
-        new_path = get_package_path(nevra, org_id, prepend=old_path[0], checksum=checksum)
+        new_path = get_package_path(
+            nevra, org_id, prepend=old_path[0], checksum=checksum
+        )
         new_abs_path = os.path.join(CFG.MOUNT_POINT, new_path)
 
         # Filer content relocation
         try:
             if old_abs_path != new_abs_path:
                 if debug:
-                    log.writeMessage("Relocating %s to %s on filer" % (old_abs_path, new_abs_path))
+                    log.writeMessage(
+                        # pylint: disable-next=consider-using-f-string
+                        "Relocating %s to %s on filer"
+                        % (old_abs_path, new_abs_path)
+                    )
 
                 new_abs_dir = os.path.dirname(new_abs_path)
                 if not os.path.isdir(new_abs_dir):
@@ -360,37 +437,44 @@ def process_sha256_packages():
                 if not os.path.exists(new_abs_path):
                     os.link(old_abs_path, new_abs_path)
                 elif debug:
+                    # pylint: disable-next=consider-using-f-string
                     log.writeMessage("File %s already exists" % new_abs_path)
 
                 # Make the new path readable
-                os.chmod(new_abs_path, int('0644', 8))
+                os.chmod(new_abs_path, int("0644", 8))
         except OSError:
             e = sys.exc_info()[1]
-            message = "Error when relocating %s to %s on filer: %s" % \
-                      (old_abs_path, new_abs_path, str(e))
+            # pylint: disable-next=consider-using-f-string
+            message = "Error when relocating %s to %s on filer: %s" % (
+                old_abs_path,
+                new_abs_path,
+                str(e),
+            )
             print(message)
             if debug:
                 log.writeMessage(message)
             sys.exit(1)
 
         # Update package checksum in the database
-        _update_sha256_package_sql.execute(ctype=checksum_type, csum=checksum,
-                                           path=new_path, id=package['id'])
+        _update_sha256_package_sql.execute(
+            ctype=checksum_type, csum=checksum, path=new_path, id=package["id"]
+        )
 
         _select_checksum_type_id_sql = rhnSQL.prepare(_select_checksum_type_id)
         _select_checksum_type_id_sql.execute(ctype=checksum_type)
         checksum_type_id = _select_checksum_type_id_sql.fetchone()[0]
 
         # Update checksum of every single file in a package
-        for i, f in enumerate(header['filenames']):
-            csum = header['filemd5s'][i]
+        for i, f in enumerate(header["filenames"]):
+            csum = header["filemd5s"][i]
 
             # Do not update checksums for directories & links
             if not csum:
                 continue
 
-            _update_package_files_sql.execute(ctype_id=checksum_type_id, csum=csum,
-                                              pid=package['id'], filename=f)
+            _update_package_files_sql.execute(
+                ctype_id=checksum_type_id, csum=csum, pid=package["id"], filename=f
+            )
 
         rhnSQL.commit()
 
@@ -401,6 +485,7 @@ def process_sha256_packages():
                 os.removedirs(os.path.dirname(old_abs_path))
         except OSError:
             e = sys.exc_info()[1]
+            # pylint: disable-next=consider-using-f-string
             message = "Error when removing %s: %s" % (old_abs_path, str(e))
             print(message)
             if debug:
@@ -409,6 +494,7 @@ def process_sha256_packages():
             sys.exit(1)
 
     pb.printComplete()
+
 
 package_query = """
     select p.id as id,
@@ -479,23 +565,33 @@ package_repodata_delete = """
 def process_package_files():
     def parse_header(header):
         checksum_type = rhn_rpm.RPM_Header(header).checksum_type()
-        return mpmSource.create_package(header, size=0,
-                                        checksum_type=checksum_type, checksum=None, relpath=None,
-                                        org_id=None, header_start=None, header_end=None, channels=[])
+        return mpmSource.create_package(
+            header,
+            size=0,
+            checksum_type=checksum_type,
+            checksum=None,
+            relpath=None,
+            org_id=None,
+            header_start=None,
+            header_end=None,
+            channels=[],
+        )
 
     package_name_h = rhnSQL.prepare(package_name_query)
 
     def package_name(pid):
         package_name_h.execute(pid=pid)
         r = package_name_h.fetchall_dict()[0]
-        return "%s-%s.%s" % (r['name'], r['vre'], r['arch'])
+        # pylint: disable-next=consider-using-f-string
+        return "%s-%s.%s" % (r["name"], r["vre"], r["arch"])
 
     package_repodata_h = rhnSQL.prepare(package_repodata_delete)
 
     def delete_package_repodata(pid):
         package_repodata_h.execute(pid=pid)
 
-    log = rhnLog('/var/log/rhn/update-packages.log', 5)
+    # pylint: disable-next=no-value-for-parameter
+    log = rhnLog("/var/log/rhn/update-packages.log", 5)
 
     package_query_h = rhnSQL.prepare(package_query)
     package_query_h.execute()
@@ -504,15 +600,16 @@ def process_package_files():
     update_packagefile_checksum_h = rhnSQL.prepare(update_packagefile_checksum)
     insert_packagefile_h = rhnSQL.prepare(insert_packagefile)
 
-    while (True):
+    while True:
         row = package_query_h.fetchone_dict()
         if not row:  # No more packages in DB to process
             break
 
-        package_path = os.path.join(CFG.MOUNT_POINT, row['path'])
+        package_path = os.path.join(CFG.MOUNT_POINT, row["path"])
 
         if not os.path.exists(package_path):
             if debug:
+                # pylint: disable-next=consider-using-f-string
                 log.writeMessage("Package path '%s' does not exist." % package_path)
             continue
 
@@ -521,104 +618,139 @@ def process_package_files():
             hdr = rhn_rpm.get_package_header(filename=package_path)
         except Exception:
             e = sys.exc_info()[1]
+            # pylint: disable-next=consider-using-f-string
             message = "Error when reading package %s header: %s" % (package_path, e)
             if debug:
                 log.writeMessage(message)
             continue
 
         pkg_updates = 0
-        if row['filecount'] != len(hdr['filenames']):
+        if row["filecount"] != len(hdr["filenames"]):
             # Number of package files on disk and in the DB do not match
             # (possibly a bug #652852). We have to correct them one by one.
-            package_capabilities_h.execute(pid=row['id'])
+            package_capabilities_h.execute(pid=row["id"])
             pkg_caps = {}  # file-name : capabilities dictionary
             for cap in package_capabilities_h.fetchall_dict() or []:
-                pkg_caps[cap['name']] = cap
+                pkg_caps[cap["name"]] = cap
 
-            for f in parse_header(hdr)['files']:
-                if f['name'] in pkg_caps:
+            for f in parse_header(hdr)["files"]:
+                if f["name"] in pkg_caps:
                     continue  # The package files exists in the DB
 
                 # Insert the missing package file into DB
-                insert_packagefile_h.execute(pid=row['id'], name=f['name'],
-                                             ctype=f['checksum_type'], csum=f['checksum'], device=f['device'],
-                                             inode=f['inode'], file_mode=f['file_mode'], username=f['username'],
-                                             groupname=f['groupname'], rdev=f['rdev'], file_size=f['file_size'],
-                                             mtime=f['mtime'], linkto=f['linkto'], flags=f['flags'],
-                                             verifyflags=f['verifyflags'], lang=f['lang'])
+                insert_packagefile_h.execute(
+                    pid=row["id"],
+                    name=f["name"],
+                    ctype=f["checksum_type"],
+                    csum=f["checksum"],
+                    device=f["device"],
+                    inode=f["inode"],
+                    file_mode=f["file_mode"],
+                    username=f["username"],
+                    groupname=f["groupname"],
+                    rdev=f["rdev"],
+                    file_size=f["file_size"],
+                    mtime=f["mtime"],
+                    linkto=f["linkto"],
+                    flags=f["flags"],
+                    verifyflags=f["verifyflags"],
+                    lang=f["lang"],
+                )
                 pkg_updates += 1
 
             if debug and pkg_updates:
-                log.writeMessage("Package id: %s, name: %s, %s files inserted" %
-                                 (row['id'], package_name(row['id']), pkg_updates))
-        elif row['nonnullcsums'] == 0:
+                log.writeMessage(
+                    # pylint: disable-next=consider-using-f-string
+                    "Package id: %s, name: %s, %s files inserted"
+                    % (row["id"], package_name(row["id"]), pkg_updates)
+                )
+        elif row["nonnullcsums"] == 0:
             # All package files in the DB have null checksum (possibly a bug #659348)
-            package_capabilities_h.execute(pid=row['id'])
+            package_capabilities_h.execute(pid=row["id"])
             pkg_caps = {}  # file-name : capabilities dictionary
             for cap in package_capabilities_h.fetchall_dict() or []:
-                pkg_caps[cap['name']] = cap
+                pkg_caps[cap["name"]] = cap
 
-            for f in parse_header(hdr)['files']:
-                if f['checksum'] == '':  # Convert empty string (symlinks) to None to match w/ Oracle returns
-                    f['checksum'] = None
+            for f in parse_header(hdr)["files"]:
+                if (
+                    f["checksum"] == ""
+                ):  # Convert empty string (symlinks) to None to match w/ Oracle returns
+                    f["checksum"] = None
 
-                caps = pkg_caps[f['name']]
+                caps = pkg_caps[f["name"]]
 
-                if not caps['checksum'] == f['checksum']:
+                if not caps["checksum"] == f["checksum"]:
                     # Package file exists, but its checksum in the DB is incorrect
-                    update_packagefile_checksum_h.execute(ctype=f['checksum_type'], csum=f['checksum'],
-                                                          pid=caps['package_id'], cid=caps['capability_id'])
+                    update_packagefile_checksum_h.execute(
+                        ctype=f["checksum_type"],
+                        csum=f["checksum"],
+                        pid=caps["package_id"],
+                        cid=caps["capability_id"],
+                    )
                     pkg_updates += 1
 
             if debug and pkg_updates:
-                log.writeMessage("Package id: %s, name: %s, %s checksums updated" %
-                                 (row['id'], package_name(row['id']), pkg_updates))
+                log.writeMessage(
+                    # pylint: disable-next=consider-using-f-string
+                    "Package id: %s, name: %s, %s checksums updated"
+                    % (row["id"], package_name(row["id"]), pkg_updates)
+                )
 
         if pkg_updates:
-            log.writeMessage("Package id: %s, purging rhnPackageRepoData" % row['id'])
-            delete_package_repodata(row['id'])
+            # pylint: disable-next=consider-using-f-string
+            log.writeMessage("Package id: %s, purging rhnPackageRepoData" % row["id"])
+            delete_package_repodata(row["id"])
 
         rhnSQL.commit()  # End of a package
 
 
 def process_changelog():
     def convert(u):
-        last = ''
+        last = ""
         while u != last:
             last = u
             try:
-                u = last.encode('iso8859-1').decode('utf8')
+                u = last.encode("iso8859-1").decode("utf8")
             except (UnicodeDecodeError, UnicodeEncodeError):
                 e = sys.exc_info()[1]
-                if e.reason == 'unexpected end of data':
+                if e.reason == "unexpected end of data":
                     u = u[:-1]
                     continue
                 else:
                     break
         return u
 
-    if CFG.db_backend == 'postgresql':
+    if CFG.db_backend == "postgresql":
         lengthb = "octet_length(%s)"
     else:
         lengthb = "lengthb(%s)"
+    # pylint: disable-next=consider-using-f-string
     _non_ascii_changelog_data_count = """select count(*) as cnt from rhnpackagechangelogdata
                                           where length(name) <> %s
                                              or length(text) <> %s
-        """ % (lengthb % 'name', lengthb % 'text')
+        """ % (
+        lengthb % "name",
+        lengthb % "text",
+    )
+    # pylint: disable-next=consider-using-f-string
     _non_ascii_changelog_data = """select * from rhnpackagechangelogdata
                                     where length(name) <> %s
                                        or length(text) <> %s
-        """ % (lengthb % 'name', lengthb % 'text')
+        """ % (
+        lengthb % "name",
+        lengthb % "text",
+    )
     _update_changelog_data_name = """update rhnpackagechangelogdata set name = :name
                                            where id = :id"""
     _update_changelog_data_text = """update rhnpackagechangelogdata set text = :text
                                            where id = :id"""
     if debug:
-        log = rhnLog('/var/log/rhn/update-packages.log', 5)
+        # pylint: disable-next=no-value-for-parameter
+        log = rhnLog("/var/log/rhn/update-packages.log", 5)
 
     query_count = rhnSQL.prepare(_non_ascii_changelog_data_count)
     query_count.execute()
-    nrows = query_count.fetchall_dict()[0]['cnt']
+    nrows = query_count.fetchall_dict()[0]["cnt"]
 
     query = rhnSQL.prepare(_non_ascii_changelog_data)
     query.execute()
@@ -631,16 +763,22 @@ def process_changelog():
         return
 
     if verbose:
+        # pylint: disable-next=consider-using-f-string
         print(("Processing %s non-ASCII changelog entries" % nrows))
 
-    pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
-                     finalSize=nrows, finalBarLength=40, stream=sys.stdout)
+    pb = ProgressBar(
+        prompt="standby: ",
+        endTag=" - Complete!",
+        finalSize=nrows,
+        finalBarLength=40,
+        stream=sys.stdout,
+    )
     pb.printAll(1)
 
     update_name = rhnSQL.prepare(_update_changelog_data_name)
     update_text = rhnSQL.prepare(_update_changelog_data_text)
 
-    while (True):
+    while True:
         row = query.fetchone_dict()
         if not row:  # No more packages in DB to process
             break
@@ -648,28 +786,36 @@ def process_changelog():
         pb.addTo(1)
         pb.printIncrement()
 
-        name_u = row['name'].decode('utf8', 'ignore')
+        name_u = row["name"].decode("utf8", "ignore")
         name_fixed = name_u
-        if len(row['name']) != len(name_u):
+        if len(row["name"]) != len(name_u):
             name_fixed = convert(name_u)
         if name_fixed != name_u:
             if debug and verbose:
-                log.writeMessage("Fixing record %s: name: '%s'" % (row['id'], row['name']))
-            update_name.execute(id=row['id'], name=name_fixed)
+                log.writeMessage(
+                    # pylint: disable-next=consider-using-f-string
+                    "Fixing record %s: name: '%s'"
+                    % (row["id"], row["name"])
+                )
+            update_name.execute(id=row["id"], name=name_fixed)
 
-        text_u = row['text'].decode('utf8', 'ignore')
+        text_u = row["text"].decode("utf8", "ignore")
         text_fixed = text_u
-        if len(row['text']) != len(text_u):
+        if len(row["text"]) != len(text_u):
             text_fixed = convert(text_u)
         if text_fixed != text_u:
             if debug and verbose:
-                log.writeMessage("Fixing record %s: text: '%s'" % (row['id'], row['text']))
-            update_text.execute(id=row['id'], text=text_fixed)
+                log.writeMessage(
+                    # pylint: disable-next=consider-using-f-string
+                    "Fixing record %s: text: '%s'"
+                    % (row["id"], row["text"])
+                )
+            update_text.execute(id=row["id"], text=text_fixed)
 
         rhnSQL.commit()
 
     pb.printComplete()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

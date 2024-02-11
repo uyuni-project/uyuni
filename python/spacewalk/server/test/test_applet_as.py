@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -14,12 +15,15 @@
 #
 from rhn import rpclib
 
-#server = "xmlrpc.rhn.redhat.com"
+# server = "xmlrpc.rhn.redhat.com"
 server = "coyote.devel.redhat.com"
 
+# pylint: disable-next=consider-using-f-string
 s = rpclib.Server("http://%s/APPLET" % server)
 
-dict = s.applet.poll_packages('2.1AS', 'i386')
-pkg_count = len(dict['contents'])
+# pylint: disable-next=redefined-builtin
+dict = s.applet.poll_packages("2.1AS", "i386")
+pkg_count = len(dict["contents"])
+# pylint: disable-next=consider-using-f-string
 print(("Available packages: %d" % pkg_count))
 assert pkg_count > 0, "No packages available for 2.1AS"

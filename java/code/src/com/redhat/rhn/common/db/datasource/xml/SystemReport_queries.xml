@@ -15,7 +15,7 @@
 <datasource_modes>
 
 <mode name="System" class="">
-  <query params="offset, limit">
+    <query params="system_id, limit">
         SELECT rhnserver.id AS system_id
                     , rhnserver.name AS profile_name
                     , rhnserver.hostname
@@ -52,24 +52,28 @@
                     LEFT JOIN rhnserverpath ON rhnserver.id = rhnserverpath.server_id
                     INNER JOIN rhnserverarch ON rhnserver.server_arch_id = rhnserverarch.id
                     INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
-        ORDER BY system_id OFFSET :offset LIMIT :limit
-  </query>
+           WHERE rhnserver.id &gt; :system_id
+        ORDER BY system_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemConfigChannel" class="">
-    <query params="offset, limit">
+    <query params="system_id, config_channel_id, limit">
           SELECT rhnserverconfigchannel.server_id AS system_id
                     , rhnserverconfigchannel.config_channel_id
                     , rhnconfigchannel.name
                     , rhnserverconfigchannel.position
             FROM rhnserverconfigchannel
                     INNER JOIN rhnconfigchannel ON rhnserverconfigchannel.config_channel_id = rhnconfigchannel.id
-        ORDER BY system_id, config_channel_id OFFSET :offset LIMIT :limit
-  </query>
+           WHERE (rhnserverconfigchannel.server_id, rhnserverconfigchannel.config_channel_id) &gt; (:system_id, :config_channel_id)
+        ORDER BY system_id, config_channel_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemEntitlement" class="">
-    <query params="offset, limit">
+    <query params="system_id, system_group_id, limit">
           SELECT rhnservergroupmembers.server_id AS system_id
                     , rhnservergroupmembers.server_group_id AS system_group_id
                     , rhnservergroup.name
@@ -83,12 +87,14 @@
                     INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
                     INNER JOIN rhnservergrouptype ON rhnservergroup.group_type = rhnservergrouptype.id
            WHERE rhnservergroup.group_type IS NOT NULL
-        ORDER BY system_id, server_group_id OFFSET :offset LIMIT :limit
-  </query>
+                    AND (rhnservergroupmembers.server_id, rhnservergroupmembers.server_group_id) &gt; (:system_id, :system_group_id)
+        ORDER BY system_id, system_group_id
+        FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemGroupMember" class="">
-    <query params="offset, limit">
+    <query params="system_id, system_group_id, limit">
           SELECT rhnservergroupmembers.server_id AS system_id
                     , rhnservergroupmembers.server_group_id AS system_group_id
                     , rhnservergroup.name AS group_name
@@ -97,12 +103,14 @@
                     INNER JOIN rhnserver ON rhnservergroupmembers.server_id = rhnserver.id
                     INNER JOIN rhnservergroup ON rhnservergroupmembers.server_group_id = rhnservergroup.id
            WHERE rhnservergroup.group_type IS NULL
-        ORDER BY server_id, server_group_id OFFSET :offset LIMIT :limit
-  </query>
+                    AND (rhnservergroupmembers.server_id, rhnservergroupmembers.server_group_id) &gt; (:system_id, :system_group_id)
+        ORDER BY system_id, system_group_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemNetInterface" class="">
-    <query params="offset, limit">
+    <query params="system_id, interface_id, limit">
           SELECT server_id AS system_id
                     , id AS interface_id
                     , name
@@ -110,12 +118,14 @@
                     , module
                     , COALESCE(is_primary, 'N') = 'Y' AS primary_interface
             FROM rhnservernetinterface
-        ORDER BY system_id, interface_id OFFSET :offset LIMIT :limit
+           WHERE (server_id, id) &gt; (:system_id, :interface_id)
+        ORDER BY system_id, interface_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="SystemNetAddressV4" class="">
-    <query params="offset, limit">
+    <query params="system_id, interface_id, address, limit">
           SELECT rhnservernetinterface.server_id AS system_id
                     , rhnservernetinterface.id AS interface_id
                     , rhnservernetaddress4.address
@@ -123,12 +133,14 @@
                     , rhnservernetaddress4.broadcast
             FROM rhnservernetinterface
                     INNER JOIN rhnservernetaddress4 ON rhnservernetinterface.id = rhnservernetaddress4.interface_id
-        ORDER BY system_id, interface_id, address OFFSET :offset LIMIT :limit
+           WHERE (rhnservernetinterface.server_id, rhnservernetinterface.id, rhnservernetaddress4.address) &gt; (:system_id, :interface_id, :address)
+        ORDER BY system_id, interface_id, address
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="SystemNetAddressV6" class="">
-    <query params="offset, limit">
+    <query params="system_id, interface_id, address, limit">
           SELECT rhnservernetinterface.server_id AS system_id
                     , rhnservernetinterface.id AS interface_id
                     , rhnservernetaddress6.address
@@ -136,12 +148,14 @@
                     , rhnservernetaddress6.scope
             FROM rhnservernetinterface
                     INNER JOIN rhnservernetaddress6 ON rhnservernetinterface.id = rhnservernetaddress6.interface_id
-        ORDER BY system_id, interface_id, address OFFSET :offset LIMIT :limit
+        WHERE (rhnservernetinterface.server_id, rhnservernetinterface.id, rhnservernetaddress6.address) &gt; (:system_id, :interface_id, :address)
+        ORDER BY system_id, interface_id, address
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="SystemVirtualData" class="">
-    <query params="offset, limit">
+    <query params="instance_id, limit">
           SELECT rhnvirtualinstance.id AS instance_id
                     , rhnvirtualinstance.host_system_id
                     , rhnvirtualinstance.virtual_system_id
@@ -156,12 +170,14 @@
                     INNER JOIN rhnvirtualinstanceinfo ON rhnvirtualinstance.id = rhnvirtualinstanceinfo.instance_id
                     INNER JOIN rhnvirtualinstancetype ON rhnvirtualinstanceinfo.instance_type = rhnvirtualinstancetype.id
                     INNER JOIN rhnvirtualinstancestate ON rhnvirtualinstanceinfo.state = rhnvirtualinstancestate.id
-        ORDER BY host_system_id, virtual_system_id OFFSET :offset LIMIT :limit
-  </query>
+           WHERE rhnvirtualinstance.id &gt; :instance_id
+        ORDER BY instance_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemChannel" class="">
-    <query params="offset, limit">
+    <query params="system_id, channel_id, limit">
           SELECT rhnserverchannel.server_id AS system_id
                     , rhnserverchannel.channel_id
                     , rhnchannel.name
@@ -173,28 +189,33 @@
                     INNER JOIN rhnchannel ON rhnserverchannel.channel_id=rhnchannel.id
                     INNER JOIN rhnchannelarch ON rhnchannel.channel_arch_id=rhnchannelarch.id
                     LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel=rhnparentchannel.id
-        ORDER BY system_id, channel_id OFFSET :offset LIMIT :limit
+           WHERE (rhnserverchannel.server_id, rhnserverchannel.channel_id) &gt; (:system_id, :channel_id)
+        ORDER BY system_id, channel_id
+           FETCH FIRST :limit ROWS WITH TIES
   </query>
 </mode>
 
 <mode name="SystemOutdated" class="">
-    <query params="offset, limit">
+    <query params="system_id, limit">
           SELECT rhnserverneededcache.server_id AS system_id
                     , count(distinct rhnpackage.name_id) AS packages_out_of_date
                     , count(distinct rhnserverneededcache.errata_id) AS errata_out_of_date
             FROM rhnpackage, rhnserverneededcache
            WHERE rhnserverneededcache.package_id = rhnpackage.id
+                    AND rhnserverneededcache.server_id &gt; :system_id
         GROUP BY rhnserverneededcache.server_id
-        ORDER BY system_id OFFSET :offset LIMIT :limit
-  </query>
+        ORDER BY system_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemAction" class="">
-    <query params="offset, limit">
+    <query params="system_id, action_id, limit">
           WITH action_errata AS (
             SELECT rhnactionerrataupdate.action_id, rhnerrata.advisory
               FROM rhnactionerrataupdate
                         INNER JOIN rhnerrata ON rhnactionerrataupdate.errata_id = rhnerrata.id
+             WHERE rhnactionerrataupdate.action_id &gt; :action_id
           ), action_package AS (
             SELECT rhnactionpackage.action_id
                       , CONCAT(rhnpackagename.name, '-' || evr_t_as_vre_simple(rhnpackageevr.evr), '.' || rhnpackagearch.label) AS package_name
@@ -202,21 +223,25 @@
                       INNER JOIN rhnpackagename ON rhnactionpackage.name_id = rhnpackagename.id
                       LEFT JOIN rhnpackageevr ON rhnactionpackage.evr_id = rhnpackageevr.id
                       LEFT JOIN rhnpackagearch ON rhnactionpackage.package_arch_id = rhnpackagearch.id
+             WHERE rhnactionpackage.action_id &gt; :action_id
           ), action_configfiles AS (
             SELECT rhnactionconfigrevision.action_id, rhnactionconfigrevision.server_id, rhnconfigfilename.path
               FROM rhnactionconfigrevision
                       LEFT JOIN rhnconfigrevision ON rhnactionconfigrevision.config_revision_id = rhnconfigrevision.id
                       LEFT JOIN rhnconfigfile ON rhnconfigrevision.config_file_id = rhnconfigfile.id
                       LEFT JOIN rhnconfigfilename ON rhnconfigfile.config_file_name_id = rhnconfigfilename.id
+             WHERE (rhnactionconfigrevision.server_id, rhnactionconfigrevision.action_id) &gt; (:system_id, :action_id)
           ), action_ksdata AS (
             SELECT DISTINCT rhnkickstartsessionhistory.action_id, rhnksdata.label
               FROM rhnkickstartsessionhistory
                       INNER JOIN rhnkickstartsession ON rhnkickstartsessionhistory.kickstart_session_id = rhnkickstartsession.id
                       INNER JOIN rhnksdata ON rhnkickstartsession.kickstart_id = rhnksdata.id
+             WHERE rhnkickstartsessionhistory.action_id &gt; :action_id
           ), action_xccdtestresult AS (
             SELECT rhnactionscap.action_id, rhnxccdftestresult.server_id, rhnxccdftestresult.identifier
               FROM rhnactionscap
                       LEFT JOIN rhnxccdftestresult ON rhnxccdftestresult.action_scap_id = rhnactionscap.id
+             WHERE (rhnxccdftestresult.server_id, rhnactionscap.action_id) &gt; (:system_id, :action_id)
           )
           SELECT rhnserveraction.server_id AS system_id
                       , rhnserveraction.action_id
@@ -263,12 +288,14 @@
                       LEFT JOIN rhnactionstatus ON rhnserveraction.status = rhnactionstatus.id
                       LEFT JOIN rhnactiontype ON rhnaction.action_type = rhnactiontype.id
                       LEFT JOIN action_xccdtestresult ON action_xccdtestresult.server_id = rhnserveraction.server_id AND action_xccdtestresult.action_id = rhnserveraction.action_id
-        ORDER BY system_id, action_id OFFSET :offset LIMIT :limit
-  </query>
+           WHERE (rhnserveraction.server_id, rhnserveraction.action_id) &gt; (:system_id, :action_id)
+        ORDER BY system_id, action_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemHistory" class="">
-    <query params="offset, limit">
+    <query params="system_id, history_id, limit">
           SELECT rhnserverhistory.server_id AS system_id
                       , rhnserverhistory.id as history_id
                       , rhnserver.hostname
@@ -288,12 +315,14 @@
 
             FROM rhnserverhistory
                       LEFT JOIN rhnserver ON rhnserverhistory.server_id = rhnserver.id
-        ORDER BY rhnserverhistory.id OFFSET :offset LIMIT :limit
-</query>
+           WHERE (rhnserverhistory.server_id, rhnserverhistory.id) &gt; (:system_id, :history_id)
+        ORDER BY system_id, history_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
 </mode>
 
 <mode name="SystemErrata" class="">
-    <query params="offset, limit">
+    <query params="system_id, errata_id, limit">
           SELECT rhnserverneedederratacache.server_id AS system_id
                       , rhnserverneedederratacache.errata_id
                       , rhnserver.hostname
@@ -302,65 +331,79 @@
             FROM rhnserverneedederratacache
                       INNER JOIN rhnserver ON rhnserverneedederratacache.server_id = rhnserver.id
                       INNER JOIN rhnerrata ON rhnserverneedederratacache.errata_id = rhnerrata.id
-        ORDER BY system_id, errata_id OFFSET :offset LIMIT :limit
-  </query>
-</mode>
-
-<mode name="SystemPackageInstalled" class="">
-    <query params="offset, limit">
-          SELECT rhnServerPackage.server_id AS system_id
-                    , rhnPackageName.name
-                    , rhnPackageEvr.epoch
-                    , rhnPackageEvr.version
-                    , rhnPackageEvr.release
-                    , rhnPackageArch.label AS arch
-                    , rhnPackageEvr.type
-            FROM rhnServerPackage
-                    INNER JOIN rhnPackageName ON rhnServerPackage.name_id = rhnPackageName.id
-                    INNER JOIN rhnPackageEvr ON rhnServerPackage.evr_id = rhnPackageEvr.id
-                    INNER JOIN rhnPackageArch ON rhnServerPackage.package_arch_id = rhnPackageArch.id
-        ORDER BY system_id, name OFFSET :offset LIMIT :limit
+           WHERE (rhnserverneedederratacache.server_id, rhnserverneedederratacache.errata_id) &gt; (:system_id, :errata_id)
+        ORDER BY system_id, errata_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
-<mode name="SystemPackageUpdateIDs" class="">
+<mode name="SystemPackageInstalled_Ids" class="">
+    <query>
+        SELECT DISTINCT server_id AS id FROM rhnserverpackage
+    </query>
+</mode>
+
+<mode name="SystemPackageInstalled_byId" class="">
+    <query params="id, name, limit">
+        SELECT rhnServerPackage.server_id AS system_id
+             , rhnPackageName.name
+             , rhnPackageEvr.epoch
+             , rhnPackageEvr.version
+             , rhnPackageEvr.release
+             , rhnPackageArch.label AS arch
+             , rhnPackageEvr.type
+        FROM rhnServerPackage
+            INNER JOIN rhnPackageName ON rhnServerPackage.name_id = rhnPackageName.id
+            INNER JOIN rhnPackageEvr ON rhnServerPackage.evr_id = rhnPackageEvr.id
+            INNER JOIN rhnPackageArch ON rhnServerPackage.package_arch_id = rhnPackageArch.id
+        WHERE rhnServerPackage.server_id = :id
+          AND rhnPackageName.name &gt; :name
+        ORDER BY name
+            FETCH FIRST :limit ROWS WITH TIES
+    </query>
+</mode>
+
+<mode name="SystemPackageUpdate_Ids" class="">
     <query>
         SELECT DISTINCT server_id AS id FROM rhnserverneededcache
     </query>
 </mode>
 
 <mode name="SystemPackageUpdate_byId" class="">
-    <query params="id, offset, limit">
+    <query params="id, package_id, limit">
         WITH latest AS (
           SELECT rhnserverneededcache.server_id, rhnPackage.name_id, MAX(rhnPackageEvr.evr) AS evr
-          FROM rhnserverneededcache
-          INNER JOIN rhnPackage ON rhnserverneededcache.package_id = rhnPackage.id
-          INNER JOIN rhnPackageEvr on rhnPackage.evr_id = rhnPackageEvr.id
-          WHERE rhnserverneededcache.server_id = :id
-          GROUP BY rhnserverneededcache.server_id, rhnPackage.name_id
+            FROM rhnserverneededcache
+                    INNER JOIN rhnPackage ON rhnserverneededcache.package_id = rhnPackage.id
+                    INNER JOIN rhnPackageEvr on rhnPackage.evr_id = rhnPackageEvr.id
+           WHERE rhnserverneededcache.server_id = :id
+                    AND rhnPackage.id &gt; :package_id
+        GROUP BY rhnserverneededcache.server_id, rhnPackage.name_id
         )
-        SELECT DISTINCT rhnserverneededcache.server_id AS system_id
-                      , rhnserverneededcache.package_id
-                      , rhnpackagename.name
-                      , rhnpackageevr.epoch
-                      , rhnpackageevr.version
-                      , rhnpackageevr.release
-                      , rhnpackagearch.label AS arch
-                      , rhnpackageevr.type
-                      , rhnpackageevr.evr = latest.evr AS is_latest
-        FROM rhnserverneededcache
-        INNER JOIN rhnpackage ON rhnserverneededcache.package_id = rhnpackage.id
-        INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
-        INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
-        INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
-        INNER JOIN latest ON (latest.server_id = rhnserverneededcache.server_id AND latest.name_id = rhnpackage.name_id)
-        WHERE rhnserverneededcache.server_id = :id
-        ORDER BY system_id, name, package_id OFFSET :offset LIMIT :limit
+          SELECT DISTINCT rhnserverneededcache.server_id AS system_id
+                    , rhnserverneededcache.package_id
+                    , rhnpackagename.name
+                    , rhnpackageevr.epoch
+                    , rhnpackageevr.version
+                    , rhnpackageevr.release
+                    , rhnpackagearch.label AS arch
+                    , rhnpackageevr.type
+                    , rhnpackageevr.evr = latest.evr AS is_latest
+            FROM rhnserverneededcache
+                    INNER JOIN rhnpackage ON rhnserverneededcache.package_id = rhnpackage.id
+                    INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
+                    INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
+                    INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
+                    INNER JOIN latest ON (latest.server_id = rhnserverneededcache.server_id AND latest.name_id = rhnpackage.name_id)
+           WHERE rhnserverneededcache.server_id = :id
+                    AND rhnserverneededcache.package_id &gt; :package_id
+        ORDER BY package_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="SystemCustomInfo" class="">
-    <query params="offset, limit">
+    <query params="organization, system_id, key, limit">
           SELECT rhnserver.id AS system_id
                     , web_customer.name AS organization
                     , rhncustomdatakey.label AS key
@@ -370,7 +413,9 @@
                     INNER JOIN web_customer ON rhnserver.org_id = web_customer.id
                     INNER JOIN rhnservercustomdatavalue ON rhnserver.id = rhnservercustomdatavalue.server_id
                     INNER JOIN rhncustomdatakey ON rhnservercustomdatavalue.key_id = rhncustomdatakey.id
-        ORDER BY organization, system_id, key OFFSET :offset LIMIT :limit
+           WHERE (web_customer.name, rhnserver.id, rhncustomdatakey.label) &gt; (:organization, :system_id, :key)
+        ORDER BY organization, system_id, key
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 

@@ -63,9 +63,9 @@ public class EditMasterSetupAction extends RhnAction {
         RequestContext ctxt = new RequestContext(request);
         DynaActionForm form = (DynaActionForm) formIn;
 
-        Long mid = ctxt.getParamAsLong(IssMaster.ID);
+        Long mid = ctxt.getParamAsLong(IssMaster.FIELD_ID);
         if (mid == null) { // Creating a new master
-            form.set(IssMaster.ID, IssMaster.NEW_MASTER_ID);
+            form.set(IssMaster.FIELD_ID, IssMaster.NEW_MASTER_ID);
         }
         else {
             IssMaster oc = IssFactory.lookupMasterById(mid);
@@ -91,15 +91,15 @@ public class EditMasterSetupAction extends RhnAction {
         request.setAttribute(DATA_SET, result);
         request.setAttribute(SLAVES, locals);
         request.setAttribute(MASTER, master.getLabel());
-        request.setAttribute(IssMaster.ID, mid);
+        request.setAttribute(IssMaster.FIELD_ID, mid);
     }
 
     protected void setupForm(ActionForm formIn, IssMaster master) {
         DynaActionForm form = (DynaActionForm) formIn;
-        form.set(IssMaster.ID, master.getId());
-        form.set(IssMaster.LABEL, master.getLabel());
-        form.set(IssMaster.DEFAULT_MASTER, master.isDefaultMaster());
-        form.set(IssMaster.CA_CERT, master.getCaCert());
+        form.set(IssMaster.FIELD_ID, master.getId());
+        form.set(IssMaster.FIELD_LABEL, master.getLabel());
+        form.set(IssMaster.FIELD_DEFAULT_MASTER, master.isDefaultMaster());
+        form.set(IssMaster.FIELD_CA_CERT, master.getCaCert());
     }
 
     protected OrgDto createOrgDto(Long id, String name) {

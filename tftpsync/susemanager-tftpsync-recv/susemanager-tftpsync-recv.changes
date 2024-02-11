@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:09:43 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Use the new apache2-mod_wsgi package name
+  * Build with Python 3 and clean up references to Python 2
+
+-------------------------------------------------------------------
 Wed Sep 28 10:44:53 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

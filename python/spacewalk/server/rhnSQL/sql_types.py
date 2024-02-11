@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -18,6 +19,7 @@
 
 
 # Data types
+# pylint: disable-next=missing-class-docstring
 class DatabaseDataType:
     type_name = None
 
@@ -31,6 +33,7 @@ class DatabaseDataType:
     def set_value(self, value):
         self.value = value
 
+    # pylint: disable-next=invalid-str-returned
     def __str__(self):
         return self.type_name
 
@@ -52,7 +55,9 @@ class BINARY(DatabaseDataType):
     type_name = "BINARY"
 
 
+# pylint: disable-next=invalid-name
 class LONG_BINARY(DatabaseDataType):
     type_name = "LONG_BINARY"
+
 
 # XXX More data types to be added as we find need for them

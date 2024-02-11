@@ -16,12 +16,14 @@ export type ComboboxItem = {
 };
 
 type ComboboxProps = {
-  id: string;
-  name: string;
-  data?: Array<ComboboxItem>;
+  id?: string;
+  name?: string;
+  options?: Array<ComboboxItem>;
   selectedId?: (number | null | undefined) | (string | null | undefined);
   onFocus?: () => void;
   onSelect: (value: ComboboxItem) => void;
+  getNewOptionData?: (userInput: string, label: string) => { id: string; value: string; label: string };
+  placeholder?: string;
 
   /** Id for testing purposes */
   "data-testid"?: string;
@@ -74,7 +76,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
     // The react-select is expecting the value to be a string, but let's keep the original id here so we can propagate
     // correctly the selected option up.
-    const options: Array<ReactSelectItem> = (this.props.data || []).map((item) => ({
+    const options: Array<ReactSelectItem> = (this.props.options || []).map((item) => ({
       value: item.id.toString(),
       id: item.id,
       label: item.text,
@@ -91,6 +93,9 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
         options={options}
         styles={colourStyles}
         menuPortalTarget={document.body}
+        formatCreateLabel={(label: string) => t("Create {label}", { label })}
+        getNewOptionData={this.props.getNewOptionData}
+        placeholder={this.props.placeholder}
         {...testAttributes}
       />
     );

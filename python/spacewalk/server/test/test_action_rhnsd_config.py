@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -14,16 +15,18 @@
 #
 from spacewalk.server import rhnSQL, rhnAction
 
-rhnSQL.initDB('rhnuser/rhnuser@webdev')
+rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
 server_id = 1003486768
 try:
-    action_id = rhnAction.schedule_server_action(server_id, 'rhnsd.configure')
+    action_id = rhnAction.schedule_server_action(server_id, "rhnsd.configure")
 
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         insert into rhnActionDaemonConfig (action_id, interval)
         values (:action_id, 10)
-    """)
+    """
+    )
     h.execute(action_id=action_id)
 
 except:

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -16,9 +17,9 @@ from rhn.rpclib import transports
 
 httplib = transports.connections.httplib
 
-#server = "rhn.webdev.redhat.com"
+# server = "rhn.webdev.redhat.com"
 server = "coyote.devel.redhat.com"
-#server = "rhn.webqa.redhat.com"
+# server = "rhn.webqa.redhat.com"
 
 data = """
     <?xml version='1.0'?>
@@ -47,7 +48,7 @@ h = httplib.HTTPConnection(server)
 
 h.putrequest("POST", "/XMLRPC")
 
-h.putheader('Content-Length', str(len(data)))
+h.putheader("Content-Length", str(len(data)))
 h.endheaders()
 
 h.send(data)

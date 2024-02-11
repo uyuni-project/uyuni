@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC.
+# Copyright (c) 2010-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -59,13 +59,7 @@ When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |tex
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -75,13 +69,7 @@ When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshin
   repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
     break if has_no_text?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -106,13 +94,8 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
       log "#{current} Still waiting for action to complete..."
       last = current
     end
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+
+    refresh_page
   end
 end
 
@@ -136,13 +119,7 @@ When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless has_content?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -157,13 +134,7 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
 
     # If the connection failed try reloading since the VM may not have been ready
     if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
-      begin
-        accept_prompt do
-          execute_script 'window.location.reload()'
-        end
-      rescue Capybara::ModalNotFound
-        # ignored
-      end
+      refresh_page
     end
   end
 end
@@ -200,15 +171,6 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
     find(:xpath, xpath_field).click
     find(:xpath, xpath_option, match: :first).click
   end
-end
-
-# select an item from any dropdown
-When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
-  # let the the select2js box filter open the hidden options
-  xpath_query = "//select[@name='#{label}']"
-  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise ScriptError, "#{label} #{selection} not found" unless find(:xpath, "//select[@name='#{label}']/option[contains(text(), '#{selection}')]").click
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
@@ -591,7 +553,7 @@ end
 Then(/^I should be logged in$/) do
   xpath_query = '//a[@href=\'/rhn/Logout.do\']'
   # Check if the user is logged in, using the specified wait_time
-  raise ScriptError, 'User is not logged in' unless has_selector?(:xpath, xpath_query, wait: Capybara.default_max_wait_time * 2)
+  raise ScriptError, 'User is not logged in' unless has_selector?(:xpath, xpath_query, wait: Capybara.default_max_wait_time * 3)
 end
 
 Then(/^I am logged in$/) do
@@ -804,8 +766,9 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I should not see a warning sign$/) do
-  raise ScriptError, 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa fa-li fa-exclamation-triangle text-warning\')]')
+Then(/^I should not see a warning nor an error sign$/) do
+  raise ScriptError, 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
+  raise ScriptError, 'Error detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
@@ -931,14 +894,12 @@ When(/^I check the first row in the list$/) do
   end
 end
 
-When(/^I check "([^"]*)" in the list$/) do |text|
-  raise 'The text to check can\'t be empty' if text.empty?
-
+When(/^I (check|uncheck) "([^"]*)" in the list$/) do |check_option, text|
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
-  raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
+  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
-  row.set(true)
+  row.set(check_option == 'check')
 end
 
 #

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -20,25 +21,33 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server.rhnLib import InvalidAction
 
 # the "exposed" functions
-__rhnexport__ = ['config', 'listTransactions', 'rollback']
+__rhnexport__ = ["config", "listTransactions", "rollback"]
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def config(serverId, actionId, dry_run=0):
     log_debug(3)
     # XXX Not working
     return 1
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def listTransactions(serverId, actionId, dry_run=0):
     log_debug(3)
     return None
 
 
+# pylint: disable-next=invalid-name
 def rollback(serverId, actionId, dry_run=0):
     log_debug(3, dry_run)
     # since rhnActionTransactions table is gone, this call have to fail
-    log_error("Invalid rollback.rollback action %s for server id %s" %
-              (actionId, serverId))
+    log_error(
+        # pylint: disable-next=consider-using-f-string
+        "Invalid rollback.rollback action %s for server id %s"
+        % (actionId, serverId)
+    )
     raise InvalidAction(
-        "Invalid rollback.rollback action %s for server id %s" %
-        (actionId, serverId))
+        # pylint: disable-next=consider-using-f-string
+        "Invalid rollback.rollback action %s for server id %s"
+        % (actionId, serverId)
+    )

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -21,30 +22,40 @@
 # Or ask gafton.
 #
 
+# pylint: disable-next=unused-import
 import string
 
 
 def build_sql_insert(table, hash_name, items):
-    """ This statement builds a sql statement for an insert
-        of 'items' into "table" indexed by "hash_name"
+    """This statement builds a sql statement for an insert
+    of 'items' into "table" indexed by "hash_name"
     """
+    # pylint: disable-next=consider-using-f-string
     sql = "insert into %s ( %s, %s ) values ( :p0, %s )" % (
-        table, hash_name,
+        table,
+        hash_name,
         ", ".join([a[0] for a in items]),
-        ", ".join([":p_%s" % a[0] for a in items]))
+        # pylint: disable-next=consider-using-f-string
+        ", ".join([":p_%s" % a[0] for a in items]),
+    )
     pdict = {"p0": None}  # This must be reset after we return from this call
+    # pylint: disable-next=consider-using-f-string
     list(map(pdict.update, [{"p_%s" % a[0]: a[1]} for a in items]))
     return sql, pdict
 
 
 def build_sql_update(table, hash_name, items):
-    """ This statement builds a sql statement for an update
-        of 'items' into "table" indexed by "hash_name"
+    """This statement builds a sql statement for an update
+    of 'items' into "table" indexed by "hash_name"
     """
+    # pylint: disable-next=consider-using-f-string
     sql = "update %s set %s where %s = :p0" % (
         table,
+        # pylint: disable-next=consider-using-f-string
         ", ".join(["%s = :p_%s" % (a, a) for a in [a[0] for a in items]]),
-        hash_name)
+        hash_name,
+    )
     pdict = {"p0": None}  # This must be reset after we return from this call
+    # pylint: disable-next=consider-using-f-string
     list(map(pdict.update, [{"p_%s" % a[0]: a[1]} for a in items]))
     return sql, pdict

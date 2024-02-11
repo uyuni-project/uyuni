@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-20 13:49+0200\n"
+"POT-Creation-Date: 2024-02-02 15:23+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/"
@@ -1539,70 +1539,70 @@ msgstr ""
 msgid "You must run the {PRODUCT_NAME} registration program as root."
 msgstr "Anda harus menjalankan program pendaftaran RHN sebagai root."
 
-#: ../src/up2date_client/up2dateErrors.py:49
-#: ../src/up2date_client/up2dateErrors.py:82
+#: ../src/up2date_client/up2dateErrors.py:48
+#: ../src/up2date_client/up2dateErrors.py:81
 #, fuzzy, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "kelas %s tidak memiliki atribut '%s'"
 
-#: ../src/up2date_client/up2dateErrors.py:109
+#: ../src/up2date_client/up2dateErrors.py:108
 #, fuzzy
 msgid "RPM error.  The message was:\n"
 msgstr "Rpm kesalahan.  Pesannya adalah:"
 
-#: ../src/up2date_client/up2dateErrors.py:116
+#: ../src/up2date_client/up2dateErrors.py:115
 #, fuzzy
 msgid "Password error. The message was:\n"
 msgstr "Kesalahan kata sandi. Pesannya adalah:"
 
-#: ../src/up2date_client/up2dateErrors.py:120
+#: ../src/up2date_client/up2dateErrors.py:119
 #, fuzzy
 msgid "RPM dependency error. The message was:\n"
 msgstr "Rpm ketergantungan kesalahan. Pesannya adalah:"
 
-#: ../src/up2date_client/up2dateErrors.py:130
+#: ../src/up2date_client/up2dateErrors.py:129
 #, fuzzy
 msgid "Error communicating with server. The message was:\n"
 msgstr "Galat saat berkomunikasi dengan server. Pesannya adalah:"
 
-#: ../src/up2date_client/up2dateErrors.py:137
+#: ../src/up2date_client/up2dateErrors.py:136
 #, fuzzy
 msgid "File Not Found: \n"
 msgstr "Berkas tidak ditemukan."
 
-#: ../src/up2date_client/up2dateErrors.py:144
+#: ../src/up2date_client/up2dateErrors.py:143
 #, fuzzy
 msgid "Delay error from server.  The message was:\n"
 msgstr "Galat penundaan dari server.  Pesannya adalah:"
 
-#: ../src/up2date_client/up2dateErrors.py:180
+#: ../src/up2date_client/up2dateErrors.py:179
 #, fuzzy
 msgid "Error validating data at server:\n"
 msgstr "Galat saat memvalidasi data di server:"
 
-#: ../src/up2date_client/up2dateErrors.py:193
+#: ../src/up2date_client/up2dateErrors.py:192
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:199
+#: ../src/up2date_client/up2dateErrors.py:198
 #, fuzzy
 msgid "The installation number is invalid"
 msgstr "Nomor instalasi tidak valid"
 
-#: ../src/up2date_client/up2dateErrors.py:202
+#: ../src/up2date_client/up2dateErrors.py:201
 #, fuzzy
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Galat parsing berkas oemInfo di kolom:"
 
-#: ../src/up2date_client/up2dateErrors.py:229
+#: ../src/up2date_client/up2dateErrors.py:228
 #, fuzzy
 msgid "Network error: "
 msgstr "Kesalahan jaringan"
 
-#: ../src/up2date_client/up2dateErrors.py:297
+#: ../src/up2date_client/up2dateErrors.py:296
 #, fuzzy
 msgid ""
 "\n"

@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -42,31 +41,31 @@ public class MinionPillarManager {
     private static final Logger LOG = LogManager.getLogger(MinionPillarManager.class);
 
     public static final MinionPillarManager INSTANCE = new MinionPillarManager(
-                    new MinionPillarFileManager(MinionGeneralPillarGenerator.INSTANCE),
-                    new MinionPillarFileManager(MinionGroupMembershipPillarGenerator.INSTANCE),
-                    new MinionPillarFileManager(MinionVirtualizationPillarGenerator.INSTANCE),
-                    new MinionPillarFileManager(MinionCustomInfoPillarGenerator.INSTANCE));
+                    MinionGeneralPillarGenerator.INSTANCE,
+                    MinionGroupMembershipPillarGenerator.INSTANCE,
+                    MinionVirtualizationPillarGenerator.INSTANCE,
+                    MinionCustomInfoPillarGenerator.INSTANCE);
 
-    private MinionPillarFileManager generalPillarFileManager;
-    private MinionPillarFileManager groupMembershipPillarFileManager;
-    private MinionPillarFileManager virtualizationPillarFileManager;
-    private MinionPillarFileManager customInfoPillarFileManager;
+    private MinionPillarGenerator generalPillarGenerator;
+    private MinionPillarGenerator groupMembershipPillarGenerator;
+    private MinionPillarGenerator virtualizationPillarGenerator;
+    private MinionPillarGenerator customInfoPillarGenerator;
 
     /**
      * Constructor for MinionPillarManager
-     * @param generalPillarFileManagerIn general pillar file manager
-     * @param groupMembershipPillarFileManagerIn group membership pillar file manager
-     * @param virtualizationPillarFileManagerIn virtualization pillar file manager
-     * @param customInfoPillarFileManagerIn custom info pillar file manager
+     * @param generalPillarGeneratorIn general pillar generator
+     * @param groupMembershipPillarGeneratorIn group membership pillar generator
+     * @param virtualizationPillarGeneratorIn virtualization pillar generator
+     * @param customInfoPillarGeneratorIn custom info pillar generator
      */
-    public MinionPillarManager(MinionPillarFileManager generalPillarFileManagerIn,
-                               MinionPillarFileManager groupMembershipPillarFileManagerIn,
-                               MinionPillarFileManager virtualizationPillarFileManagerIn,
-                               MinionPillarFileManager customInfoPillarFileManagerIn) {
-        this.generalPillarFileManager = generalPillarFileManagerIn;
-        this.groupMembershipPillarFileManager = groupMembershipPillarFileManagerIn;
-        this.virtualizationPillarFileManager = virtualizationPillarFileManagerIn;
-        this.customInfoPillarFileManager = customInfoPillarFileManagerIn;
+    public MinionPillarManager(MinionPillarGenerator generalPillarGeneratorIn,
+                               MinionPillarGenerator groupMembershipPillarGeneratorIn,
+                               MinionPillarGenerator virtualizationPillarGeneratorIn,
+                               MinionPillarGenerator customInfoPillarGeneratorIn) {
+        this.generalPillarGenerator = generalPillarGeneratorIn;
+        this.groupMembershipPillarGenerator = groupMembershipPillarGeneratorIn;
+        this.virtualizationPillarGenerator = virtualizationPillarGeneratorIn;
+        this.customInfoPillarGenerator = customInfoPillarGeneratorIn;
     }
 
     /**
@@ -91,16 +90,16 @@ public class MinionPillarManager {
         for (PillarSubset subset : subsets) {
             switch (subset) {
                 case GENERAL:
-                    generalPillarFileManager.updatePillarFile(minion);
+                    generalPillarGenerator.generatePillarData(minion);
                     break;
                 case GROUP_MEMBERSHIP:
-                    groupMembershipPillarFileManager.updatePillarFile(minion);
+                    groupMembershipPillarGenerator.generatePillarData(minion);
                     break;
                 case VIRTUALIZATION:
-                    virtualizationPillarFileManager.updatePillarFile(minion);
+                    virtualizationPillarGenerator.generatePillarData(minion);
                     break;
                 case CUSTOM_INFO:
-                    customInfoPillarFileManager.updatePillarFile(minion);
+                    customInfoPillarGenerator.generatePillarData(minion);
                     break;
                 default:
                     throw new RuntimeException("unreachable");
@@ -121,31 +120,20 @@ public class MinionPillarManager {
         if (refreshAccessTokens) {
             AccessTokenFactory.refreshTokens(minion, tokensToActivate);
         }
-        generalPillarFileManager.updatePillarFile(minion);
-        groupMembershipPillarFileManager.updatePillarFile(minion);
-        virtualizationPillarFileManager.updatePillarFile(minion);
-        customInfoPillarFileManager.updatePillarFile(minion);
+        generalPillarGenerator.generatePillarData(minion);
+        groupMembershipPillarGenerator.generatePillarData(minion);
+        virtualizationPillarGenerator.generatePillarData(minion);
+        customInfoPillarGenerator.generatePillarData(minion);
     }
 
     /**
-     * Removes the corresponding pillar files for the passed minion
+     * Removes the corresponding pillars for the passed minion
      * @param minion the salt minion server
      */
     public void removePillar(MinionServer minion) {
-        generalPillarFileManager.removePillar(minion);
-        groupMembershipPillarFileManager.removePillar(minion);
-        virtualizationPillarFileManager.removePillar(minion);
-        customInfoPillarFileManager.removePillar(minion);
+        generalPillarGenerator.removePillar(minion);
+        groupMembershipPillarGenerator.removePillar(minion);
+        virtualizationPillarGenerator.removePillar(minion);
+        customInfoPillarGenerator.removePillar(minion);
     }
-
-    /**
-     * @param pillarDataPathIn the root path where pillar files are generated
-     */
-    public void setPillarDataPath(Path pillarDataPathIn) {
-        generalPillarFileManager.setPillarDataPath(pillarDataPathIn);
-        groupMembershipPillarFileManager.setPillarDataPath(pillarDataPathIn);
-        virtualizationPillarFileManager.setPillarDataPath(pillarDataPathIn);
-        customInfoPillarFileManager.setPillarDataPath(pillarDataPathIn);
-    }
-
 }

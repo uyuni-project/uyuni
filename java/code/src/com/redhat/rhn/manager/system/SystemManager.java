@@ -42,8 +42,8 @@ import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.common.SatConfigFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
@@ -3933,16 +3933,28 @@ public class SystemManager extends BaseManager {
             // no reportdb configured
             return;
         }
-        Credentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
-                .orElse(CredentialsFactory.createCredentials(
-                        "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom()),
-                        RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()),
-                        Credentials.TYPE_REPORT_CREDS));
-        if (forcePwChange) {
-            credentials.setPassword(RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom()));
-            CredentialsFactory.storeCredentials(credentials);
-        }
+
+        String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
+        ReportDBCredentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
+            .map(existingCredentials -> {
+                if (forcePwChange) {
+                    existingCredentials.setPassword(password);
+                    CredentialsFactory.storeCredentials(existingCredentials);
+                }
+
+                return existingCredentials;
+            })
+            .orElseGet(() -> {
+                String username = "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
+
+                ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials(username, password);
+                CredentialsFactory.storeCredentials(reportCredentials);
+
+                return reportCredentials;
+            });
+
         mgrServerInfo.setReportDbCredentials(credentials);
+
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("report_db_user", credentials.getUsername());
         pillar.put("report_db_password", credentials.getPassword());

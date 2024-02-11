@@ -241,4 +241,13 @@ public class Device extends BaseDomainHelper {
     public void setProp4(String prop4In) {
         this.prop4 = prop4In;
     }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "id=" + id +
+                ", server=" + server +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

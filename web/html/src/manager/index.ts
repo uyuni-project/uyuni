@@ -29,6 +29,7 @@ import Packages from "./packages";
 import Proxy from "./proxy";
 import RecurringActions from "./recurring";
 import Salt from "./salt";
+import ScheduleOptions from "./schedule-options";
 import Shared from "./shared";
 import Highstate from "./state";
 import Systems from "./systems";
@@ -53,6 +54,7 @@ const pages = {
   ...Packages,
   ...Proxy,
   ...Salt,
+  ...ScheduleOptions,
   ...Shared,
   ...Systems,
   ...Virtualization,

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -25,27 +26,31 @@ import misc_functions
 # The Test Server class is a singleton. This allows us to avoid the long setup times between each test.
 
 
+# pylint: disable-next=missing-class-docstring
 class TestServer:
-
     # The actual implementation
+    # pylint: disable-next=missing-class-docstring
     class TestServerImplementation:
-
         def __init__(self):
-            #start_init = time.time()
+            # start_init = time.time()
 
             self.filesuploaded = False
 
-            self.options = rhnConfig.initCFG('server')
+            # pylint: disable-next=assignment-from-no-return
+            self.options = rhnConfig.initCFG("server")
             print((self.options))
 
             mytime = time.time()
+            # pylint: disable-next=undefined-variable,consider-using-f-string
             self.test_username = username or ("test_username_%.3f" % mytime)
+            # pylint: disable-next=undefined-variable,consider-using-f-string
             self.test_password = password or ("test_password_%.3f" % mytime)
+            # pylint: disable-next=undefined-variable,consider-using-f-string
             self.test_email = email or ("%s@test_domain.com" % self.test_username)
-            self.channel_arch = 'unittestarch'
+            self.channel_arch = "unittestarch"
 
-            self.roles = ['org_admin']
-            rhnFlags.set('outputTransportOptions', UserDictCase())
+            self.roles = ["org_admin"]
+            rhnFlags.set("outputTransportOptions", UserDictCase())
 
             self._init_db()
             self._init_org()
@@ -60,16 +65,22 @@ class TestServer:
 
         # creates an org
         def _init_org(self):
-            self.org_id, self.org_name, self.org_password = misc_functions.create_new_org()
+            (
+                self.org_id,
+                self.org_name,
+                self.org_password,
+            ) = misc_functions.create_new_org()
 
         # create a user. Must have called _init_client first.
         def _init_user(self, roles):
-            self.testuser = misc_functions.create_new_user(username=self.test_username,
-                                                           password=self.test_password,
-                                                           #email = self.test_email,
-                                                           org_id=self.org_id,
-                                                           #org_password = self.org_password,
-                                                           roles=roles)
+            self.testuser = misc_functions.create_new_user(
+                username=self.test_username,
+                password=self.test_password,
+                # email = self.test_email,
+                org_id=self.org_id,
+                # org_password = self.org_password,
+                roles=roles,
+            )
 
         # create a server. Must have called _init_client and _init_user.
         def _init_server(self):
@@ -83,20 +94,26 @@ class TestServer:
             self.label = self.cf.get_label()
 
             # Create a new channel using the channel family info
-            self.channel = misc_functions.create_channel(self.label, self.label, org_id=self.org_id)
+            self.channel = misc_functions.create_channel(
+                self.label, self.label, org_id=self.org_id
+            )
 
             # Associate the channel family with the organization
             _insert_channel_family = """
             INSERT INTO rhnPrivateChannelFamily( channel_family_id, org_id )
             VALUES ( :channel_family_id, :org_id )"""
             insert_channel_family = rhnSQL.prepare(_insert_channel_family)
-            insert_channel_family.execute(channel_family_id=self.cf.get_id(), org_id=self.org_id)
+            insert_channel_family.execute(
+                channel_family_id=self.cf.get_id(), org_id=self.org_id
+            )
             rhnSQL.commit()
 
             # Associate the channel with the server
             _insert_channel = "INSERT INTO rhnServerChannel( server_id, channel_id ) VALUES ( :server_id, :channel_id )"
             insert = rhnSQL.prepare(_insert_channel)
-            insert.execute(server_id=self.testserver.getid(), channel_id=self.channel.get_id())
+            insert.execute(
+                server_id=self.testserver.getid(), channel_id=self.channel.get_id()
+            )
             rhnSQL.commit()
 
         # instantiate an up2date object and make sure that entitlements aren't checked, which avoids some nastiness
@@ -111,30 +128,33 @@ class TestServer:
             return self.up2date
 
         # Uploads packages from directory.
-        def upload_packages(self,
-                            directory,
-                            channel_label=None,
-                            username=None,
-                            password=None,
-                            org_id=None,
-                            force=False,
-                            source=0):
-
+        def upload_packages(
+            self,
+            directory,
+            channel_label=None,
+            username=None,
+            password=None,
+            org_id=None,
+            force=False,
+            source=0,
+        ):
             upload_label = channel_label or self.label
             upload_username = username or self.test_username
             upload_password = password or self.test_password
             upload_org_id = org_id or self.org_id
 
-            #start_upload = time.time()
+            # start_upload = time.time()
             if not self.filesuploaded or force:
-                misc_functions.upload_packages(upload_label,
-                                               directory,
-                                               org_id=upload_org_id,
-                                               username=upload_username,
-                                               password=upload_password,
-                                               source=source)
+                misc_functions.upload_packages(
+                    upload_label,
+                    directory,
+                    org_id=upload_org_id,
+                    username=upload_username,
+                    password=upload_password,
+                    source=source,
+                )
                 self.filesuploaded = True
-            #fin_upload = time.time()
+            # fin_upload = time.time()
             # print "Upload time: %s" % ( str( fin_upload - start_upload )
 
         def getServerId(self):
@@ -162,7 +182,7 @@ class TestServer:
         if TestServer.__instance is None:
             TestServer.__instance = TestServer.TestServerImplementation()
 
-        self.__dict__['_TestServer__instance'] = TestServer.__instance
+        self.__dict__["_TestServer__instance"] = TestServer.__instance
 
     def __getattr__(self, attr):
         return getattr(TestServer.__instance, attr)
@@ -171,11 +191,13 @@ class TestServer:
         return setattr(TestServer.__instance, attr, value)
 
 
-_query_action_lookup = rhnSQL.Statement("""
+_query_action_lookup = rhnSQL.Statement(
+    """
     select *
       from rhnServerAction
      where server_id = :server_id
-""")
+"""
+)
 
 
 def look_at_actions(server_id):
@@ -187,18 +209,28 @@ def look_at_actions(server_id):
 if __name__ == "__main__":
     myserver = TestServer()
     # myserver.upload_packages('/home/devel/wregglej/rpmtest')
-    #handler = rhnHandler()
+    # handler = rhnHandler()
     # print handler.auth_system( myserver.getSystemId() )
-    #up2date = myserver.getUp2date()
-    #id = myserver.getSystemId()
+    # up2date = myserver.getUp2date()
+    # id = myserver.getSystemId()
     # print up2date.solvedep( id, ['libcaps.so'] )
     # print "Done!"
-    #rhnserver = rhnServer.Server(myserver.testuser, org_id=myserver.org_id)
+    # rhnserver = rhnServer.Server(myserver.testuser, org_id=myserver.org_id)
 
     fake_key = create_activation_key(
-        org_id=myserver.org_id, user_id=myserver.testuser.getid(), channels=[myserver.label], server_id=myserver.getServerId())
+        org_id=myserver.org_id,
+        user_id=myserver.testuser.getid(),
+        channels=[myserver.label],
+        server_id=myserver.getServerId(),
+    )
     fake_action = rhnAction.schedule_server_action(
-        myserver.getServerId(), "packages.update", action_name="Testing", delta_time=9999, org_id=myserver.org_id)
+        myserver.getServerId(),
+        "packages.update",
+        action_name="Testing",
+        delta_time=9999,
+        org_id=myserver.org_id,
+    )
+    # pylint: disable-next=protected-access
     fake_token = rhnServer.search_token(fake_key._token)
 
     print((look_at_actions(myserver.getServerId())))

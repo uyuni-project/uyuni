@@ -42,6 +42,8 @@ def process_private_and_public_ip(host, node)
 end
 
 def initialize_server(host, node)
+  # Remove /etc/motd, or any output from node.run will contain the content of /etc/motd
+  node.run('rm -f /etc/motd && touch /etc/motd')
   _out, code = node.run('which mgrctl', check_errors: false)
   node.init_has_mgrctl if code.zero?
 

@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:23:48 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Remove the requirement for pxe-default image on SUSE Linux Enterprise,
+    as it is not provided anymore for SUSE Manager 5.0
+  * Move release files from spacewalk to spacewalk web, and add
+    the Mainteanance Update or Milestone version when the package
+    is built for SUSE Manager
+
+-------------------------------------------------------------------
+Fri Dec 15 16:59:01 CET 2023 - rosuna@suse.com
+
+- version 4.4.5-1
+  * Fix postgres require macros to be installable introducing
+    postgresql_version_min and postgresql_version_max to limit
+    allowed postgresql version
+  * Allow postgresql version dependency to be set in project config
+
+-------------------------------------------------------------------
 Mon Sep 18 14:23:53 CEST 2023 - rosuna@suse.com
 
 - version 4.4.4-1

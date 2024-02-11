@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -36,6 +37,7 @@ def get_database_module(backend=None):
     try:
         module = __import__(driver_dir, globals(), locals(), [driver_mod])
         module = getattr(module, driver_mod)
+    # pylint: disable-next=try-except-raise
     except ImportError:
         raise
 

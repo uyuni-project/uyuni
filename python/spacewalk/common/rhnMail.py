@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 # Copyright (c) 2022 SUSE, LLC
@@ -27,6 +28,7 @@ from typing import NamedTuple, Union
 with cfg_component(component=None) as CFG:
     PRODUCT_NAME = CFG.PRODUCT_NAME
     FALLBACK_TRACEBACK_MAIL = CFG.TRACEBACK_MAIL
+
 
 class HeadersRecipients(NamedTuple):
     headers: dict

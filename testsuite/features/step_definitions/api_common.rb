@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the API.
@@ -176,6 +176,33 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   ret = $api_test.channel.software.get_details(label)
   assert(ret)
   assert_equal(false, ret.key?(attr))
+end
+
+Then(/^channel "([^"]*)" should be (enabled|disabled) on "([^"]*)"$/) do |channel, state, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(state == 'enabled', channels.include?(channel))
+end
+
+Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(count, channels.size)
+end
+
+Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(count, channels.select { |channel| channel.start_with?(prefix) }.size)
 end
 
 ## activationkey namespace
@@ -550,12 +577,16 @@ Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
   assert($output.select { |p| p['name'] == profile_name }.count == 1)
 end
 
-When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)" via XML-RPC$/) do |name, hostname, values|
-  system_id = $api_test.system.create_system_profile(name, 'hostname' => hostname)
-  $stdout.puts "system_id: #{system_id}"
+When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "([^"]*)" and hostname "([^"]*)" via XML-RPC$/) do |name, kslabel, hostname, values|
+  # even though it should not happen during a testsuite run, it is useful to know when debugging that
+  # this call will raise a SystemCallError if matching systems already exist, the Error message will include a list of the matchings system IDs
+  sid = $api_test.system.create_system_profile(name, 'hostname' => hostname)
+  $stdout.puts "system_id: #{sid}"
+
+  $api_test.system.create_system_record_with_sid(sid, kslabel)
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash
-  $api_test.system.set_variables(system_id, variables)
+  $api_test.system.set_variables(sid, variables)
 end
 
 When(/^I create a kickstart tree via the API$/) do

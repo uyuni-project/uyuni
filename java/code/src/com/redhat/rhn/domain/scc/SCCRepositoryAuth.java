@@ -16,7 +16,9 @@ package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.credentials.BaseCredentials;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.RemoteCredentials;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -86,7 +88,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      * Get the mirror credentials.
      * @return the credentials or null in case of fromdir
      */
-    @ManyToOne
+    @ManyToOne(targetEntity = BaseCredentials.class)
     @JoinColumn(name = "credentials_id", nullable = true)
     protected Credentials getCredentials() {
         return credentials;
@@ -98,15 +100,15 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      * @return the credentials or empty
      */
     @Transient
-    public Optional<Credentials> getOptionalCredentials() {
-        return Optional.ofNullable(credentials);
+    public Optional<RemoteCredentials> getOptionalCredentials() {
+        return Optional.ofNullable(credentials).flatMap(c -> c.castAs(RemoteCredentials.class));
     }
 
     /**
      * Set the mirror credentials this repo can be retrieved with.
      * @param credentialsIn the credentials to set
      */
-    public void setCredentials(Credentials credentialsIn) {
+    public void setCredentials(RemoteCredentials credentialsIn) {
         credentials = credentialsIn;
     }
 

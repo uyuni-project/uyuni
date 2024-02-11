@@ -20,7 +20,9 @@ import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.common.ArchType;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CloudCredentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
+import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -40,7 +42,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,12 +61,12 @@ public class PaygProductFactory extends HibernateFactory {
      * @param credentials the credentials
      * @param productInfos a collection of products associated with the credentials
      */
-    public static void updateProducts(Credentials credentials, Collection<PaygProductInfo> productInfos) {
+    public static void updateProducts(CloudCredentials credentials, Collection<PaygProductInfo> productInfos) {
         Session session = getSession();
 
         // First delete all the existing products
-        session.createNamedQuery("PaygCredentialsProduct.deleteByCredentials")
-            .setParameter("creds", credentials)
+        session.createNamedQuery("PaygCredentialsProduct.deleteByCredentialsId")
+            .setParameter("credsId", credentials.getId())
             .executeUpdate();
 
         if (CollectionUtils.isEmpty(productInfos)) {
@@ -74,7 +75,7 @@ public class PaygProductFactory extends HibernateFactory {
 
         // Store the products
         productInfos.stream()
-            .map(product -> new PaygCredentialsProduct(credentials, product))
+            .map(product -> new PaygCredentialsProduct(credentials.getId(), product))
             .forEach(session::save);
     }
 
@@ -83,9 +84,9 @@ public class PaygProductFactory extends HibernateFactory {
      * @param credentials the credentials
      * @return the list of products associated with the credentials or an empty list if none are set.
      */
-    public static List<PaygProductInfo> getProductsForCredentials(Credentials credentials) {
-        return getSession().createNamedQuery("PaygCredentialsProduct.listByCredentials", PaygCredentialsProduct.class)
-            .setParameter("creds", credentials)
+    public static List<PaygProductInfo> getProductsForCredentials(CloudRMTCredentials credentials) {
+        return getSession().createNamedQuery("PaygCredentialsProduct.listByCredentialsId", PaygCredentialsProduct.class)
+            .setParameter("credsId", credentials.getId())
             .stream()
             .map(p -> new PaygProductInfo(p.getName(), p.getVersion(), p.getArch()))
             .collect(Collectors.toList());
@@ -97,7 +98,7 @@ public class PaygProductFactory extends HibernateFactory {
      * @param products    the products
      * @return the list of authorization that have been processed
      */
-    public static List<SCCRepositoryAuth> refreshRepositoriesAuths(Credentials credentials,
+    public static List<SCCRepositoryAuth> refreshRepositoriesAuths(RemoteCredentials credentials,
                                                                    Collection<PaygProductInfo> products) {
         List<SCCRepositoryAuth> existingAuths = SCCCachingFactory.lookupRepositoryAuthByCredential(credentials);
 
@@ -105,6 +106,7 @@ public class PaygProductFactory extends HibernateFactory {
         PaygProductFactory.getRepositoryForProducts(products).forEach(repository -> {
             SCCRepositoryAuth authRepo = getOrCreateRepositoryAuth(existingAuths, repository);
 
+            //TODO: this needs some class restructuring
             authRepo.setCredentials(credentials);
             // Update content source URL, since it should be pointing to a Credentials record, and it may have changed
             if (authRepo.getContentSource() != null) {
@@ -140,25 +142,20 @@ public class PaygProductFactory extends HibernateFactory {
      * @return the set of repositories
      */
     private static Stream<SCCRepository> getRepositoryForProducts(Collection<PaygProductInfo> products) {
-        return products.stream()
-            .map(product -> {
-                if (product.getName().equalsIgnoreCase("suse-manager-proxy")) {
-                    return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
-                        product.getName(), product.getVersion(), product.getArch());
-                }
+        return products.stream().flatMap(product -> {
+            if (product.getName().equalsIgnoreCase("suse-manager-proxy")) {
+                return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
+                    product.getName(), product.getVersion(), product.getArch());
+            }
 
-                return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
-                        product.getName(), product.getArch())
-                    .stream()
-                    // We add Tools Channels directly to SLE12 products, but they are not accessible
-                    // via the SLES credentials. We need to remove them from all except the sle-manager-tools
-                    // product
-                    .filter(r -> !(!product.getName().equalsIgnoreCase("sle-manager-tools") &&
-                        r.getName().toLowerCase(Locale.ROOT).startsWith("sle-manager-tools12")))
-                    .collect(Collectors.toSet());
-
-            })
-            .flatMap(Set::stream);
+            return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
+                    product.getName(), product.getArch())
+                // We add Tools Channels directly to SLE12 products, but they are not accessible
+                // via the SLES credentials. We need to remove them from all except the sle-manager-tools
+                // product
+                .filter(r -> !(!product.getName().equalsIgnoreCase("sle-manager-tools") &&
+                    r.getName().toLowerCase(Locale.ROOT).startsWith("sle-manager-tools12")));
+        });
     }
 
     /**
@@ -189,7 +186,7 @@ public class PaygProductFactory extends HibernateFactory {
         String version = product.getVersion();
 
         return ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL.equals(family.getLabel()) &&
-            RPM_VERSION_COMPARATOR.compare(version, "4.2") >= 0;
+            RPM_VERSION_COMPARATOR.compare(version, "4.3") >= 0;
     }
 
     private static boolean isSupportedOpenSUSEProduct(SUSEProduct product) {

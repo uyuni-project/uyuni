@@ -2,6 +2,7 @@
 from contextlib import contextmanager
 from spacewalk.common.rhnConfig import CFG, initCFG
 
+
 @contextmanager
 def cfg_component(component, root=None, filename=None):
     """Context manager for rhnConfig.

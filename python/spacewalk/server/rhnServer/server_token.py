@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,6 +20,8 @@ import sys
 
 from spacewalk.common import rhnFlags
 from uyuni.common.usix import raise_with_tb
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
@@ -26,18 +29,20 @@ from spacewalk.server import rhnSQL, rhnChannel, rhnAction
 
 from .server_lib import join_server_group, check_entitlement
 
-VIRT_ENT_LABEL = 'virtualization_host'
+VIRT_ENT_LABEL = "virtualization_host"
+
 
 def token_channels(server, server_arch, tokens_obj):
-    """ Handle channel subscriptions for the registration token """
-    assert(isinstance(tokens_obj, ActivationTokens))
+    """Handle channel subscriptions for the registration token"""
+    assert isinstance(tokens_obj, ActivationTokens)
     log_debug(1, "YYY token_channels", tokens_obj)
 
-    server_id, server_arch_id = server['id'], server['server_arch_id']
+    server_id, server_arch_id = server["id"], server["server_arch_id"]
 
     # what channels are associated with this token (filter only those
     # compatible with this server)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select
         rtc.channel_id id, c.name, c.label, c.parent_channel
     from
@@ -48,22 +53,23 @@ def token_channels(server, server_arch, tokens_obj):
         and rtc.channel_id = c.id
         and c.channel_arch_id = scac.channel_arch_id
         and scac.server_arch_id = :server_arch_id
-    """)
+    """
+    )
 
     chash = {}
     base_channel_token = None
     base_channel_id = None
 
     for token in tokens_obj.tokens:
-        token_id = token['token_id']
+        token_id = token["token_id"]
         h.execute(token_id=token_id, server_arch_id=server_arch_id)
         while 1:
             row = h.fetchone_dict()
             if not row:
                 break
-            channel_id = row['id']
+            channel_id = row["id"]
             chash[channel_id] = row
-            if row['parent_channel'] is not None:
+            if row["parent_channel"] is not None:
                 # Not a base channel
                 continue
 
@@ -72,11 +78,14 @@ def token_channels(server, server_arch, tokens_obj):
                 # Base channels conflict - are they coming from the same
                 # token?
                 if base_channel_token == token:
-                    log_error("Token has multiple base channels", token_id,
-                              base_channel_id)
-                    raise rhnFault(62,
-                                   _("Token `%s' has more than one base channel assigned")
-                                   % token['note'])
+                    log_error(
+                        "Token has multiple base channels", token_id, base_channel_id
+                    )
+                    raise rhnFault(
+                        62,
+                        _("Token `%s' has more than one base channel assigned")
+                        % token["note"],
+                    )
                 raise rhnFault(63, _("Conflicting base channels"))
             base_channel_id = channel_id
             base_channel_token = token
@@ -97,12 +106,17 @@ def token_channels(server, server_arch, tokens_obj):
     if bc is None:
         if sbc is None:
             # we need at least one base channel definition
-            log_error("Server has invalid release and "
-                      "token contains no base channels", server_id,
-                      tokens_obj.tokens)
+            log_error(
+                "Server has invalid release and " "token contains no base channels",
+                server_id,
+                tokens_obj.tokens,
+            )
             ret.append("System registered without a base channel")
-            ret.append("Unsupported release-architecture combination "
-                       "(%s, %s)" % (server["release"], server_arch))
+            ret.append(
+                # pylint: disable-next=consider-using-f-string
+                "Unsupported release-architecture combination "
+                "(%s, %s)" % (server["release"], server_arch)
+            )
             return ret
     else:  # do we need to drop the one from sbc?
         if sbc and sbc["id"] != bc["id"]:  # we need to prefer the token one
@@ -112,8 +126,11 @@ def token_channels(server, server_arch, tokens_obj):
         if sbc is None:
             # no base channel subscription at this point
             rhnChannel.subscribe_sql(server_id, bc["id"], commit=0)
-            ret.append("Subscribed to base channel '%s' (%s)" % (
-                bc["name"], bc["label"]))
+            ret.append(
+                # pylint: disable-next=consider-using-f-string
+                "Subscribed to base channel '%s' (%s)"
+                % (bc["name"], bc["label"])
+            )
             sbc = bc
 
     # attempt to subscribe all non-base channels associated with this
@@ -126,9 +143,11 @@ def token_channels(server, server_arch, tokens_obj):
     for c in [a for a in list(chash.values()) if a["parent_channel"]]:
         # make sure this channel has the right parent
         if str(c["parent_channel"]) != str(sbc["id"]):
-            ret.append("NOT subscribed to channel '%s' "
-                       "(not a child of '%s')" % (
-                           c["name"], sbc["name"]))
+            ret.append(
+                # pylint: disable-next=consider-using-f-string
+                "NOT subscribed to channel '%s' "
+                "(not a child of '%s')" % (c["name"], sbc["name"])
+            )
             continue
         try:
             # don't run the EC yet
@@ -137,43 +156,54 @@ def token_channels(server, server_arch, tokens_obj):
             subscribe_channel(server_id, c["id"], 0, None)
             child = rhnChannel.Channel()
             child.load_by_id(c["id"])
+            # pylint: disable-next=protected-access
             child._load_channel_families()
+            # pylint: disable-next=protected-access
             cfamid = child._channel_families[0]
             channel_family_ids.add(cfamid)
         except rhnSQL.SQLError:
+            # pylint: disable-next=unused-variable
             e = sys.exc_info()[1]
-            log_error("Failed channel subscription", server_id,
-                      c["id"], c["label"], c["name"])
+            log_error(
+                "Failed channel subscription", server_id, c["id"], c["label"], c["name"]
+            )
+            # pylint: disable-next=consider-using-f-string
             ret.append("FAILED to subscribe to channel '%s'" % c["name"])
         else:
+            # pylint: disable-next=consider-using-f-string
             ret.append("Subscribed to channel '%s'" % c["name"])
 
+    # pylint: disable-next=consider-using-f-string
     log_debug(5, "cf ids: %s" % str(channel_family_ids))
-    log_debug(5, "Server org_id: %s" % str(server['org_id']))
+    # pylint: disable-next=consider-using-f-string
+    log_debug(5, "Server org_id: %s" % str(server["org_id"]))
 
     return ret
 
-_query_token_server_groups = rhnSQL.Statement("""
+
+_query_token_server_groups = rhnSQL.Statement(
+    """
     select rtg.server_group_id, sg.name
       from rhnRegTokenGroups rtg, rhnServerGroup sg
      where rtg.token_id = :token_id
        and sg.id = rtg.server_group_id
-""")
+"""
+)
 
 
 def token_server_groups(server_id, tokens_obj):
-    """ Handle server group subscriptions for the registration token """
-    assert(isinstance(tokens_obj, ActivationTokens))
+    """Handle server group subscriptions for the registration token"""
+    assert isinstance(tokens_obj, ActivationTokens)
     h = rhnSQL.prepare(_query_token_server_groups)
     server_groups = {}
     for token in tokens_obj.tokens:
-        token_id = token['token_id']
+        token_id = token["token_id"]
         h.execute(token_id=token_id)
         while 1:
             row = h.fetchone_dict()
             if not row:
                 break
-            server_group_id = row['server_group_id']
+            server_group_id = row["server_group_id"]
             server_groups[server_group_id] = row
 
     # Now try to subscribe server to group
@@ -184,45 +214,54 @@ def token_server_groups(server_id, tokens_obj):
         try:
             join_server_group(server_id, server_group_id)
         except rhnSQL.SQLError:
+            # pylint: disable-next=unused-variable
             e = sys.exc_info()[1]
-            log_error("Failed to add server to group", server_id,
-                      server_group_id, sg["name"])
-            raise_with_tb(rhnFault(80, _("Failed to add server to group %s") %
-                           sg["name"]), sys.exc_info()[2])
+            log_error(
+                "Failed to add server to group", server_id, server_group_id, sg["name"]
+            )
+            raise_with_tb(
+                rhnFault(80, _("Failed to add server to group %s") % sg["name"]),
+                sys.exc_info()[2],
+            )
         else:
+            # pylint: disable-next=consider-using-f-string
             ret.append("Subscribed to server group '%s'" % sg["name"])
     return ret
 
 
-_query_token_packages = rhnSQL.Statement("""
+_query_token_packages = rhnSQL.Statement(
+    """
     select pn.id as name_id, pa.id as arch_id, pn.name
     from rhnPackageName pn, rhnRegTokenPackages rtp
         left outer join rhnPackageArch pa on rtp.arch_id = pa.id
     where rtp.token_id = :token_id
         and rtp.name_id = pn.id
     order by upper(pn.name)
-""")
-_query_token_packages_insert = rhnSQL.Statement("""
+"""
+)
+_query_token_packages_insert = rhnSQL.Statement(
+    """
     insert into rhnActionPackage (id, action_id, name_id, parameter)
     values (sequence_nextval('rhn_act_p_id_seq'), :action_id, :name_id, 'upgrade')
-""")
+"""
+)
 
 
 def token_packages(server_id, tokens_obj):
-    assert(isinstance(tokens_obj, ActivationTokens))
+    assert isinstance(tokens_obj, ActivationTokens)
 
     h = rhnSQL.prepare(_query_token_packages)
     package_names = {}
     for token in tokens_obj.tokens:
-        token_id = token['token_id']
+        token_id = token["token_id"]
         h.execute(token_id=token_id)
         while True:
             row = h.fetchone_dict()
             if not row:
                 break
-            pn_id = row['name_id']
-            pa_id = row['arch_id']
-            package_names[(pn_id, pa_id)] = row['name']
+            pn_id = row["name_id"]
+            pa_id = row["arch_id"]
+            package_names[(pn_id, pa_id)] = row["name"]
 
     ret = []
     if not package_names:
@@ -230,17 +269,22 @@ def token_packages(server_id, tokens_obj):
 
     package_arch_ids = list(package_names.keys())
     # Get the latest action scheduled for this token
-    last_action_id = rhnFlags.get('token_last_action_id')
+    last_action_id = rhnFlags.get("token_last_action_id")
 
-    action_id = rhnAction.schedule_server_packages_update_by_arch(server_id,
-                                                                  package_arch_ids, org_id=token['org_id'],
-                                                                  prerequisite=last_action_id,
-                                                                  action_name="Activation Key Package Auto-Install")
+    action_id = rhnAction.schedule_server_packages_update_by_arch(
+        server_id,
+        package_arch_ids,
+        # pylint: disable-next=undefined-loop-variable
+        org_id=token["org_id"],
+        prerequisite=last_action_id,
+        action_name="Activation Key Package Auto-Install",
+    )
 
     # This action becomes the latest now
-    rhnFlags.set('token_last_action_id', action_id)
+    rhnFlags.set("token_last_action_id", action_id)
 
     for p in list(package_names.values()):
+        # pylint: disable-next=consider-using-f-string
         ret.append("Scheduled for install:  '%s'" % p)
 
     rhnSQL.commit()
@@ -253,7 +297,8 @@ def token_packages(server_id, tokens_obj):
 #  id=1,  '/etc/foo.txt',     priority=1
 #  id=27, '/etc/foo.txt',     priority=2
 #  id=53, '/var/tmp/baz.log', priority=2
-_query_token_latest_revisions = rhnSQL.Statement("""
+_query_token_latest_revisions = rhnSQL.Statement(
+    """
     select cf.latest_config_revision_id revision_id,
            cfn.path
       from rhnConfigFileName cfn,
@@ -271,16 +316,19 @@ _query_token_latest_revisions = rhnSQL.Statement("""
            -- we should protect ourselves
        and cf.latest_config_revision_id is not null
     order by cfn.path, cct.priority, scc.position
-""")
+"""
+)
 
-_query_add_revision_to_action = rhnSQL.Statement("""
+_query_add_revision_to_action = rhnSQL.Statement(
+    """
     insert into rhnActionConfigRevision (id, action_id, server_id, config_revision_id)
     values (sequence_nextval('rhn_actioncr_id_seq'), :action_id, :server_id, :config_revision_id)
-""")
+"""
+)
 
 
 def deploy_configs_if_needed(server):
-    server_id = server['id']
+    server_id = server["id"]
     log_debug(4, server_id)
     # determine if there are actually any files to be deployed...
     revisions = {}
@@ -295,26 +343,28 @@ def deploy_configs_if_needed(server):
 
         # only care about the 1st revision of a particular path due to
         # sql ordering...
-        if row['path'] not in revisions:
-            revisions[row['path']] = row['revision_id']
+        if row["path"] not in revisions:
+            revisions[row["path"]] = row["revision_id"]
 
+    # pylint: disable-next=use-implicit-booleaness-not-len
     if not len(revisions):
         return None
 
     # Get the latest action scheduled for this token
-    last_action_id = rhnFlags.get('token_last_action_id')
+    last_action_id = rhnFlags.get("token_last_action_id")
 
     action_id = rhnAction.schedule_server_action(
         server_id,
-        action_type='activation.schedule_deploy',
+        action_type="activation.schedule_deploy",
         action_name="Activation Key Config File Deployment",
-        delta_time=0, scheduler=None,
-        org_id=server['org_id'],
+        delta_time=0,
+        scheduler=None,
+        org_id=server["org_id"],
         prerequisite=last_action_id,
     )
 
     # This action becomes the latest now
-    rhnFlags.set('token_last_action_id', action_id)
+    rhnFlags.set("token_last_action_id", action_id)
 
     log_debug(4, "scheduled activation key config deploy")
 
@@ -322,14 +372,15 @@ def deploy_configs_if_needed(server):
     # XXX should use executemany()
     for revision_id in list(revisions.values()):
         log_debug(5, action_id, revision_id)
-        h.execute(server_id=server_id,
-                  action_id=action_id,
-                  config_revision_id=revision_id)
+        h.execute(
+            server_id=server_id, action_id=action_id, config_revision_id=revision_id
+        )
 
     return action_id
 
 
-_query_token_config_channels = rhnSQL.Statement("""
+_query_token_config_channels = rhnSQL.Statement(
+    """
     select rtcc.config_channel_id,
            rtcc.position, cc.name
       from rhnConfigChannel cc,
@@ -337,13 +388,16 @@ _query_token_config_channels = rhnSQL.Statement("""
      where rtcc.token_id = :token_id
        and rtcc.config_channel_id = cc.id
     order by rtcc.position
-""")
+"""
+)
 
 # XXX Same query exists in config/rhn_config_management.py
-_query_set_server_config_channels = rhnSQL.Statement("""
+_query_set_server_config_channels = rhnSQL.Statement(
+    """
     insert into rhnServerConfigChannel (server_id, config_channel_id, position)
     values (:server_id, :config_channel_id, :position)
-""")
+"""
+)
 
 
 def _get_token_config_channels(token_id):
@@ -352,12 +406,15 @@ def _get_token_config_channels(token_id):
 
     return h.fetchall_dict() or []
 
-_query_current_config_channels = rhnSQL.Statement("""
+
+_query_current_config_channels = rhnSQL.Statement(
+    """
     select config_channel_id
       from rhnServerConfigChannel
        where server_id = :server_id
            and position is not null
-""")
+"""
+)
 
 
 def _get_current_config_channels(server_id):
@@ -367,13 +424,13 @@ def _get_current_config_channels(server_id):
     current_ch = h.fetchall_dict() or []
     data = []
     for curr in current_ch:
-        data.append(curr['config_channel_id'])
+        data.append(curr["config_channel_id"])
     return data
 
 
 def token_config_channels(server, tokens_obj):
-    assert(isinstance(tokens_obj, ActivationTokens))
-    server_id = server['id']
+    assert isinstance(tokens_obj, ActivationTokens)
+    server_id = server["id"]
 
     # If this is a re-registration token, it should not have any config
     # channel associated with it (and no deploy_configs either). We'll just
@@ -391,21 +448,25 @@ def token_config_channels(server, tokens_obj):
         current_channels = _get_current_config_channels(server_id)
 
     for token in tokens_obj.tokens:
-        channels = _get_token_config_channels(token['token_id'])
+        channels = _get_token_config_channels(token["token_id"])
         # Check every token used and if any of them are set to not deploy configs
         # then we won't deploy configs for any config channels the system is subscribed to
-        deploy_configs = token['deploy_configs']
-        log_debug(2, "token_id: ", token['token_id'], " deploy_configs: ", deploy_configs)
-        if deploy_configs == 'Y':
+        deploy_configs = token["deploy_configs"]
+        log_debug(
+            2, "token_id: ", token["token_id"], " deploy_configs: ", deploy_configs
+        )
+        if deploy_configs == "Y":
             log_debug(2, "At least one token set to deploy config files")
             deployment = 1
         for c in channels:
-            config_channel_id = c['config_channel_id']
-            if not c['config_channel_id'] in current_channels and\
-                    config_channel_id not in config_channels_hash:
+            config_channel_id = c["config_channel_id"]
+            if (
+                not c["config_channel_id"] in current_channels
+                and config_channel_id not in config_channels_hash
+            ):
                 position = len(current_channels) + len(config_channels) + 1
                 # Update the position in the queue
-                c['position'] = position
+                c["position"] = position
                 config_channels.append(c)
                 config_channels_hash[config_channel_id] = None
 
@@ -413,14 +474,17 @@ def token_config_channels(server, tokens_obj):
     if config_channels:
         h = rhnSQL.prepare(_query_set_server_config_channels)
 
-        h.executemany(**{
-            'server_id': [server_id] * len(config_channels),
-            'config_channel_id': [c['config_channel_id'] for c in config_channels],
-            'position': [c['position'] for c in config_channels],
-        })
+        h.executemany(
+            **{
+                "server_id": [server_id] * len(config_channels),
+                "config_channel_id": [c["config_channel_id"] for c in config_channels],
+                "position": [c["position"] for c in config_channels],
+            }
+        )
 
         for channel in config_channels:
-            msg = "Subscribed to config channel %s" % channel['name']
+            # pylint: disable-next=consider-using-f-string
+            msg = "Subscribed to config channel %s" % channel["name"]
             log_debug(4, msg)
             ret.append(msg)
 
@@ -437,16 +501,20 @@ def token_config_channels(server, tokens_obj):
     return ret
 
 
-_query_server_token_used = rhnSQL.Statement("""
+_query_server_token_used = rhnSQL.Statement(
+    """
     insert into rhnServerTokenRegs (server_id, token_id)
     values (:server_id, :token_id)
-""")
+"""
+)
 
-_query_check_server_uses_token = rhnSQL.Statement("""
+_query_check_server_uses_token = rhnSQL.Statement(
+    """
     select 1 from rhnServerTokenRegs
     where server_id = :server_id
     and token_id = :token_id
-""")
+"""
+)
 
 
 def server_used_token(server_id, token_id):
@@ -457,21 +525,24 @@ def server_used_token(server_id, token_id):
         h = rhnSQL.prepare(_query_server_token_used)
         h.execute(server_id=server_id, token_id=token_id)
 
-_query_check_token_limits = rhnSQL.Statement("""
+
+_query_check_token_limits = rhnSQL.Statement(
+    """
     select
        rt.usage_limit max_nr,
        ( select count(server_id) from rhnServerTokenRegs
          where token_id = :token_id ) curr_nr
     from rhnRegToken rt
     where rt.id = :token_id
-""")
+"""
+)
 
 
 def check_token_limits(server_id, tokens_obj):
-    """ check the token registration limits """
+    """check the token registration limits"""
     # XXX: would be nice to have those done with triggers in the database
     # land...
-    assert(isinstance(tokens_obj, ActivationTokens))
+    assert isinstance(tokens_obj, ActivationTokens)
     rhnSQL.transaction("check_token_limits")
     for token in tokens_obj.tokens:
         try:
@@ -494,12 +565,12 @@ def _check_token_limits(server_id, token_rec):
     h.execute(token_id=token_id)
     ret = h.fetchone_dict()
     if not ret:
-        raise rhnException("Could not check usage limits for token",
-                           server_id, token_rec)
+        raise rhnException(
+            "Could not check usage limits for token", server_id, token_rec
+        )
     # See bug #79095: if usage_limit is NULL, it means unlimited reg tokens
     if ret["max_nr"] is not None and ret["max_nr"] < ret["curr_nr"]:
-        log_error("Token usage limit exceeded", token_rec,
-                  ret["max_nr"], server_id)
+        log_error("Token usage limit exceeded", token_rec, ret["max_nr"], server_id)
         raise rhnFault(61, _("Maximum usage count of %s reached") % ret["max_nr"])
     # all clean, we're below usage limits
     return 0
@@ -511,11 +582,21 @@ class ActivationTokens:
     An aggregation of activation tokens, exposing important information
     like org_id, user_id etc in a unified manner.
     """
+
     is_rereg_token = 0
     forget_rereg_token = 0
 
-    def __init__(self, tokens, user_id=None, org_id=None,
-                 kickstart_session_id=None, entitlements=[], deploy_configs=None, contact_method_id=0):
+    # pylint: disable-next=dangerous-default-value
+    def __init__(
+        self,
+        tokens,
+        user_id=None,
+        org_id=None,
+        kickstart_session_id=None,
+        entitlements=[],
+        deploy_configs=None,
+        contact_method_id=0,
+    ):
         self.tokens = tokens
         self.user_id = user_id
         self.org_id = org_id
@@ -527,7 +608,7 @@ class ActivationTokens:
         self.contact_method_id = contact_method_id
 
     def __nonzero__(self):
-        return (len(self.tokens) > 0)
+        return len(self.tokens) > 0
 
     __bool__ = __nonzero__
 
@@ -536,7 +617,7 @@ class ActivationTokens:
             return None
         # We can have only one re-activation key
         for token in self.tokens:
-            server_id = token.get('server_id')
+            server_id = token.get("server_id")
             if server_id:
                 return server_id
         # We hit this when no re-activation key
@@ -566,8 +647,8 @@ class ActivationTokens:
         return self.contact_method_id
 
     def get_names(self):
-        """ Returns a string of the entitlement names that the token grants.
-            This function is poorly named.
+        """Returns a string of the entitlement names that the token grants.
+        This function is poorly named.
         """
         token_names = [x[0] for x in self.entitlements]
         if not token_names:
@@ -577,7 +658,7 @@ class ActivationTokens:
     def get_tokens(self):
         tokens = []
         for token in self.tokens:
-            tokens.append(token['token'])
+            tokens.append(token["token"])
 
         return tokens
 
@@ -589,7 +670,7 @@ class ActivationTokens:
 
         # check for bootstrap_entitled and unentitle first
         cur = check_entitlement(server_id, True)
-        if cur and 'bootstrap_entitled' in cur:
+        if cur and "bootstrap_entitled" in cur:
             remove_ent = rhnSQL.Procedure("rhn_entitlements.remove_server_entitlement")
             remove_ent(server_id, "bootstrap_entitled")
 
@@ -598,7 +679,8 @@ class ActivationTokens:
         # twice for each successful call. Is it necessary for external error
         # handling or can we ditch it?
         can_entitle_server = rhnSQL.Function(
-            "rhn_entitlements.can_entitle_server", rhnSQL.types.NUMBER())
+            "rhn_entitlements.can_entitle_server", rhnSQL.types.NUMBER()
+        )
 
         can_ent = None
 
@@ -620,16 +702,27 @@ class ActivationTokens:
                     entitle_server(server_id, entitlement[0])
             except rhnSQL.SQLSchemaError:
                 e = sys.exc_info()[1]
-                log_error("Token failed to entitle server", server_id,
-                          self.get_names(), entitlement[0], e.errmsg)
-                #No idea what error may be here...
+                log_error(
+                    "Token failed to entitle server",
+                    server_id,
+                    self.get_names(),
+                    entitlement[0],
+                    e.errmsg,
+                )
+                # No idea what error may be here...
                 raise_with_tb(rhnFault(90, e.errmsg), sys.exc_info()[2])
             except rhnSQL.SQLError:
                 e = sys.exc_info()[1]
-                log_error("Token failed to entitle server", server_id,
-                          self.get_names(), entitlement[0], e.args)
+                log_error(
+                    "Token failed to entitle server",
+                    server_id,
+                    self.get_names(),
+                    entitlement[0],
+                    e.args,
+                )
                 raise_with_tb(rhnFault(90, str(e)), sys.exc_info()[2])
             else:
+                # pylint: disable-next=consider-using-f-string
                 history["entitlement"] = "Entitled as a %s member" % entitlement[1]
 
 
@@ -640,6 +733,7 @@ class ReRegistrationToken(ActivationTokens):
 
     (i.e. used alone and not combined with other regular activation keys)
     """
+
     is_rereg_token = 1
 
 
@@ -648,30 +742,47 @@ class ReRegistrationActivationToken(ReRegistrationToken):
     """
     Subclass for re-registration keys and activation keys used together.
     """
+
     forget_rereg_token = 1
 
-    def __init__(self, tokens, user_id=None, org_id=None,
-            kickstart_session_id=None, entitlements=[],
-            remove_entitlements=[], deploy_configs=None, contact_method_id=0):
-        ReRegistrationToken.__init__(self, tokens, user_id, org_id,
-                kickstart_session_id, entitlements, deploy_configs, contact_method_id)
-        self.remove_entitlements = remove_entitlements # list of labels
+    # pylint: disable-next=dangerous-default-value,dangerous-default-value
+    def __init__(
+        self,
+        tokens,
+        user_id=None,
+        org_id=None,
+        kickstart_session_id=None,
+        entitlements=[],
+        remove_entitlements=[],
+        deploy_configs=None,
+        contact_method_id=0,
+    ):
+        ReRegistrationToken.__init__(
+            self,
+            tokens,
+            user_id,
+            org_id,
+            kickstart_session_id,
+            entitlements,
+            deploy_configs,
+            contact_method_id,
+        )
+        self.remove_entitlements = remove_entitlements  # list of labels
 
     def entitle(self, server_id, history, virt_type=None):
         for ent in self.remove_entitlements:
             unentitle_server = rhnSQL.Procedure(
-                "rhn_entitlements.remove_server_entitlement")
+                "rhn_entitlements.remove_server_entitlement"
+            )
             try:
                 unentitle_server(server_id, ent)
             except rhnSQL.SQLSchemaError:
                 e = sys.exc_info()[1]
-                log_error("Failed to unentitle server", server_id,
-                          ent, e.errmsg)
+                log_error("Failed to unentitle server", server_id, ent, e.errmsg)
                 raise_with_tb(rhnFault(90, e.errmsg), sys.exc_info()[2])
             except rhnSQL.SQLError:
                 e = sys.exc_info()[1]
-                log_error("Failed to unentitle server", server_id,
-                          ent, e.args)
+                log_error("Failed to unentitle server", server_id, ent, e.args)
                 raise_with_tb(rhnFault(90, str(e)), sys.exc_info()[2])
 
         # Call parent method:
@@ -679,8 +790,8 @@ class ReRegistrationActivationToken(ReRegistrationToken):
 
 
 def _fetch_token_from_cursor(cursor):
-    """ Fetches a token from a prepared and executed cursor
-        Used by both fetch_token and fetch_org_token
+    """Fetches a token from a prepared and executed cursor
+    Used by both fetch_token and fetch_org_token
     """
     token_entry = None
     token_entitlements = {}
@@ -688,7 +799,7 @@ def _fetch_token_from_cursor(cursor):
         row = cursor.fetchone_dict()
         if not row:
             break
-        tup = (row['token_type'], row['token_desc'], row['is_base'])
+        tup = (row["token_type"], row["token_desc"], row["is_base"])
         token_entitlements[tup] = None
         if token_entry:
             # We've seen this token already - the only thing that can be
@@ -696,9 +807,11 @@ def _fetch_token_from_cursor(cursor):
             # saved
 
             # Double-check it's the same token
-            assert token_entry['token_id'] == row['token_id'], \
-                "Query returned different tokens - missing unique constraint" \
+            # pylint: disable-next=unsubscriptable-object
+            assert token_entry["token_id"] == row["token_id"], (
+                "Query returned different tokens - missing unique constraint"
                 " on rhnActivationKey.token?"
+            )
             continue
 
         # First entry of this type
@@ -707,15 +820,16 @@ def _fetch_token_from_cursor(cursor):
     return token_entry, token_entitlements
 
 
-def _categorize_token_entitlements(token_entitlements, entitlements_base,
-                                   entitlements_extra):
-    """ Given a hash token_entitlements, splits the base ones and puts them in
-        the entitlements_base hash, and the extras in entitlements_extra
+def _categorize_token_entitlements(
+    token_entitlements, entitlements_base, entitlements_extra
+):
+    """Given a hash token_entitlements, splits the base ones and puts them in
+    the entitlements_base hash, and the extras in entitlements_extra
     """
     for tup in list(token_entitlements.keys()):
         is_base = tup[2]
         ent = (tup[0], tup[1])
-        if is_base == 'Y':
+        if is_base == "Y":
             entitlements_base[ent] = None
         else:
             entitlements_extra[ent] = None
@@ -723,8 +837,16 @@ def _categorize_token_entitlements(token_entitlements, entitlements_base,
     return entitlements_base, entitlements_extra
 
 
-def _validate_entitlements(token_string, rereg_ents, base_entitlements,
-                           extra_entitlements, remove_entitlements):
+def _validate_entitlements(
+    token_string,
+    # pylint: disable-next=unused-argument
+    rereg_ents,
+    base_entitlements,
+    # pylint: disable-next=unused-argument
+    extra_entitlements,
+    # pylint: disable-next=unused-argument
+    remove_entitlements,
+):
     """
     Perform various checks on the final list of entitlements accumulated after
     processing all activation keys.
@@ -738,13 +860,21 @@ def _validate_entitlements(token_string, rereg_ents, base_entitlements,
     """
     # Check for exactly one base entitlement:
     if len(list(base_entitlements.keys())) != 1:
-        log_error("Tokens with different base entitlements", token_string,
-                  base_entitlements)
-        raise rhnFault(63,
-                       _("Stacking of re-registration tokens with different base entitlements "
-                         "is not supported"), explain=0)
+        log_error(
+            "Tokens with different base entitlements", token_string, base_entitlements
+        )
+        raise rhnFault(
+            63,
+            _(
+                "Stacking of re-registration tokens with different base entitlements "
+                "is not supported"
+            ),
+            explain=0,
+        )
 
-_query_token = rhnSQL.Statement("""
+
+_query_token = rhnSQL.Statement(
+    """
     select rt.id as token_id,
            sgt.label as token_type,
            sgt.name as token_desc,
@@ -764,19 +894,23 @@ _query_token = rhnSQL.Statement("""
       and rt.disabled = 0
       and rt.id = rte.reg_token_id
       and rte.server_group_type_id = sgt.id
-""")
+"""
+)
 
-_query_contact_method_ranking = rhnSQL.Statement("""
+_query_contact_method_ranking = rhnSQL.Statement(
+    """
     select id, rank
       from suseServerContactMethod
-""")
+"""
+)
+
 
 def fetch_token(token_string):
-    """ Fetches a token from the database """
+    """Fetches a token from the database"""
     log_debug(3, token_string)
     # A token should always be passed to this function
     assert token_string
-    tokens = token_string.split(',')
+    tokens = token_string.split(",")
     h = rhnSQL.prepare(_query_token)
     result = []
     rereg_token_found = 0
@@ -794,12 +928,12 @@ def fetch_token(token_string):
     rereg_ents = []
 
     # 0 = default, 1 = ssh, 2 = ssh-tunnel
-    server_contact_method = 0;
+    server_contact_method = 0
     cm_ranking = {}
 
     ranks = rhnSQL.fetchall_dict(_query_contact_method_ranking)
     for r in ranks:
-        cm_ranking[r['id']] = r['rank']
+        cm_ranking[r["id"]] = r["rank"]
 
     for token in tokens:
         h.execute(token=token)
@@ -807,12 +941,13 @@ def fetch_token(token_string):
 
         if not token_entry:
             # Unable to find the token
+            # pylint: disable-next=consider-using-f-string
             log_error("Invalid token '%s'" % token)
             raise rhnFault(60, _("Could not find token '%s'") % token, explain=0)
 
         row = token_entry
 
-        if row.get('server_id'):
+        if row.get("server_id"):
             rereg_token_found = row
             num_of_rereg += 1
 
@@ -821,14 +956,15 @@ def fetch_token(token_string):
                 rereg_ents.append(tup[0])
 
         # Check user_id
-        token_user_id = row.get('user_id')
+        token_user_id = row.get("user_id")
 
         # 4/27/05 wregglej - Commented this line out 'cause the token_user_id should
         # be allowed to be None. This line was causing problems when registering with
         # an activation key whose creator had been deleted.
-        #assert(token_user_id is not None)
+        # assert(token_user_id is not None)
 
         if same_user_id and user_id is not None and user_id != token_user_id:
+            # pylint: disable-next=consider-using-f-string
             log_debug(4, "Different user ids: %s, %s" % (same_user_id, user_id))
             # This token has a different user id than the rest
             same_user_id = 0
@@ -836,22 +972,21 @@ def fetch_token(token_string):
             user_id = token_user_id
 
         # Check org_id
-        token_org_id = row.get('org_id')
-        assert(token_org_id is not None)
+        token_org_id = row.get("org_id")
+        assert token_org_id is not None
         if org_id is not None and org_id != token_org_id:
             # Cannot use activation keys from different orgs
             raise rhnFault(63, _("Tokens from mismatching orgs"), explain=0)
         org_id = token_org_id
 
         # Check kickstart session ids
-        token_ks_session_id = row.get('kickstart_session_id')
+        token_ks_session_id = row.get("kickstart_session_id")
         if token_ks_session_id is not None:
             if ks_session_id_token is not None:
-                ks_session_id = ks_session_id_token['kickstart_session_id']
+                ks_session_id = ks_session_id_token["kickstart_session_id"]
                 if ks_session_id != token_ks_session_id:
                     # Two tokens with different kickstart sessions
-                    raise rhnFault(63, _("Kickstart session mismatch"),
-                                   explain=0)
+                    raise rhnFault(63, _("Kickstart session mismatch"), explain=0)
             else:
                 # This token has kickstart session id info
                 ks_session_id_token = row
@@ -860,47 +995,57 @@ def fetch_token(token_string):
         # and intead of picking one entitlement, create a union of
         # all the entitlemts as a list of tuples of (name, label) aka
         # (token_type, token_desc)
-        _categorize_token_entitlements(token_entitlements, entitlements_base,
-                                       entitlements_extra)
+        _categorize_token_entitlements(
+            token_entitlements, entitlements_base, entitlements_extra
+        )
 
         # Deploy configs?
-        deploy_configs = deploy_configs or (row['deploy_configs'] == 'Y')
+        deploy_configs = deploy_configs or (row["deploy_configs"] == "Y")
 
         # which contact method?
-        if cm_ranking[row['contact_method_id']] > cm_ranking[server_contact_method]:
-            server_contact_method = row['contact_method_id']
+        if cm_ranking[row["contact_method_id"]] > cm_ranking[server_contact_method]:
+            server_contact_method = row["contact_method_id"]
         result.append(row)
 
     # One should not stack re-activation tokens
     if num_of_rereg > 1:
-        raise rhnFault(63,
-                       _("Stacking of re-registration tokens is not supported"), explain=0)
+        raise rhnFault(
+            63, _("Stacking of re-registration tokens is not supported"), explain=0
+        )
 
     entitlements_remove = []
-    _validate_entitlements(token_string, rereg_ents, entitlements_base,
-                           entitlements_extra, entitlements_remove)
+    _validate_entitlements(
+        token_string,
+        rereg_ents,
+        entitlements_base,
+        entitlements_extra,
+        entitlements_remove,
+    )
+    # pylint: disable-next=consider-using-f-string
     log_debug(5, "entitlements_base = %s" % entitlements_base)
+    # pylint: disable-next=consider-using-f-string
     log_debug(5, "entitlements_extra = %s" % entitlements_extra)
 
     if ks_session_id_token:
-        ks_session_id = ks_session_id_token['kickstart_session_id']
+        ks_session_id = ks_session_id_token["kickstart_session_id"]
     else:
         ks_session_id = None
 
     # akl add entitles array constructed above to kwargs
     kwargs = {
-        'user_id': user_id,
-        'org_id': org_id,
-        'kickstart_session_id': ks_session_id,
-        'entitlements': list(entitlements_base.keys()) + list(entitlements_extra.keys()),
-        'deploy_configs': deploy_configs,
-        'contact_method_id': server_contact_method,
+        "user_id": user_id,
+        "org_id": org_id,
+        "kickstart_session_id": ks_session_id,
+        "entitlements": list(entitlements_base.keys())
+        + list(entitlements_extra.keys()),
+        "deploy_configs": deploy_configs,
+        "contact_method_id": server_contact_method,
     }
     log_debug(4, "Values", kwargs)
 
     if rereg_token_found and len(result) > 1:
         log_debug(4, "re-activation stacked with activationkeys")
-        kwargs['remove_entitlements'] = entitlements_remove
+        kwargs["remove_entitlements"] = entitlements_remove
         return ReRegistrationActivationToken(result, **kwargs)
     elif rereg_token_found:
         log_debug(4, "simple re-activation")
@@ -908,8 +1053,10 @@ def fetch_token(token_string):
 
     return ActivationTokens(result, **kwargs)
 
+
 # always be sure this query has matching columns as _query_token above...
-_query_org_default_token = rhnSQL.Statement("""
+_query_org_default_token = rhnSQL.Statement(
+    """
     select rt.id as token_id,
            sgt.label as token_type,
            sgt.name as token_desc,
@@ -934,7 +1081,8 @@ _query_org_default_token = rhnSQL.Statement("""
        and rt.disabled = 0
        and rte.server_group_type_id = sgt.id
        and ak.reg_token_id = rtod.reg_token_id
-""")
+"""
+)
 
 
 def fetch_org_token(org_id):
@@ -944,33 +1092,37 @@ def fetch_org_token(org_id):
     token_entry, token_entitlements = _fetch_token_from_cursor(h)
     entitlements_base = {}
     entitlements_extra = {}
-    _categorize_token_entitlements(token_entitlements, entitlements_base,
-                                   entitlements_extra)
+    _categorize_token_entitlements(
+        token_entitlements, entitlements_base, entitlements_extra
+    )
 
     kwargs = {}
     tokens = []
     if token_entry:
         kwargs = {
-            'user_id': token_entry['user_id'],
-            'org_id': token_entry['org_id'],
-            'kickstart_session_id': token_entry['kickstart_session_id'],
-            'entitlements': list(entitlements_base.keys()) + list(entitlements_extra.keys()),
-            'deploy_configs': token_entry['deploy_configs'] == 'Y',
+            "user_id": token_entry["user_id"],
+            "org_id": token_entry["org_id"],
+            "kickstart_session_id": token_entry["kickstart_session_id"],
+            "entitlements": list(entitlements_base.keys())
+            + list(entitlements_extra.keys()),
+            "deploy_configs": token_entry["deploy_configs"] == "Y",
         }
         tokens.append(token_entry)
 
     return ActivationTokens(tokens, **kwargs)
 
 
-_query_disable_token = rhnSQL.Statement("""
+_query_disable_token = rhnSQL.Statement(
+    """
     update rhnRegToken
        set disabled = 1
      where id = :token_id
-""")
+"""
+)
 
 
 def disable_token(tokens_obj):
-    assert(isinstance(tokens_obj, ActivationTokens))
+    assert isinstance(tokens_obj, ActivationTokens)
     h = rhnSQL.prepare(_query_disable_token)
     for token in tokens_obj.tokens:
         if token.get("server_id"):
@@ -979,9 +1131,9 @@ def disable_token(tokens_obj):
 
 
 def process_token(server, server_arch, tokens_obj, virt_type=None):
-    """ perform registration tasks for a server as indicated by a token """
-    assert(isinstance(tokens_obj, ActivationTokens))
-    server_id = server['id']
+    """perform registration tasks for a server as indicated by a token"""
+    assert isinstance(tokens_obj, ActivationTokens)
+    server_id = server["id"]
     log_debug(1, server_id, tokens_obj.get_names())
 
     # Keep track of what we're doing
@@ -991,7 +1143,7 @@ def process_token(server, server_arch, tokens_obj, virt_type=None):
     # sure we're within limits
     check_token_limits(server_id, tokens_obj)
 
-    is_reactivation = rhnFlags.test('re_registration_token')
+    is_reactivation = rhnFlags.test("re_registration_token")
 
     # channels
     history["channels"] = token_channels(server, server_arch, tokens_obj)
@@ -1004,7 +1156,7 @@ def process_token(server, server_arch, tokens_obj, virt_type=None):
 
     is_management_entitled = None
 
-    if tokens_obj.has_entitlement_label('enterprise_entitled'):
+    if tokens_obj.has_entitlement_label("enterprise_entitled"):
         is_management_entitled = 1
 
     if is_reactivation:
@@ -1016,47 +1168,62 @@ def process_token(server, server_arch, tokens_obj, virt_type=None):
         else:
             # FIXME:  better messaging about minimum service level
             history["groups"] = [
-                "Not subscribed to any system groups: not entitled for "
-                "Management"
+                "Not subscribed to any system groups: not entitled for " "Management"
             ]
 
     if is_management_entitled:
         history["packages"] = token_packages(server_id, tokens_obj)
-        history["config_channels"] = token_config_channels(server,
-                                                           tokens_obj)
+        history["config_channels"] = token_config_channels(server, tokens_obj)
     else:
-        history["packages"] = ["Insufficient service level for automatic package installation."]
-        history["config_channels"] = ["Insufficient service level for config channel subscription."]
+        history["packages"] = [
+            "Insufficient service level for automatic package installation."
+        ]
+        history["config_channels"] = [
+            "Insufficient service level for config channel subscription."
+        ]
 
     # build the report and send it back
     return history_report(history)
 
 
 def history_report(history):
-    """ build a mildly html-ized version of the history as a report """
+    """build a mildly html-ized version of the history as a report"""
     # header information
     report = "Entitlement Information:\n"
+    # pylint: disable-next=consider-using-f-string
     report += "<ul><li>%s</li></ul>" % history["entitlement"]
     report += "\n"
     # print out channels
-    report += history_subreport(history, "groups",
-                                "Channel Subscription Information:",
-                                "The token does not include default Channel Subscriptions")
+    report += history_subreport(
+        history,
+        "groups",
+        "Channel Subscription Information:",
+        "The token does not include default Channel Subscriptions",
+    )
 
     # print out the groups
-    report += history_subreport(history, "groups",
-                                "System Group Membership Information:",
-                                "The token does not include default System Group Membership")
+    report += history_subreport(
+        history,
+        "groups",
+        "System Group Membership Information:",
+        "The token does not include default System Group Membership",
+    )
 
     # auto-installed packages...
-    report += history_subreport(history, "packages",
-                                "Packages Scheduled for Installation:",
-                                "No packages scheduled for automatic installation")
+    report += history_subreport(
+        history,
+        "packages",
+        "Packages Scheduled for Installation:",
+        "No packages scheduled for automatic installation",
+    )
 
     # config channels...
-    report += history_subreport(history, 'config_channels',
-                                "Config Channel Subscription Information:",
-                                "The token does not include default configuration channels")
+    report += history_subreport(
+        history,
+        "config_channels",
+        "Config Channel Subscription Information:",
+        "The token does not include default configuration channels",
+    )
 
     return report
 
@@ -1067,9 +1234,11 @@ def history_subreport(history, key, title, emptymsg):
         subreport += "<ul>\n"
 
         for c in history[key]:
+            # pylint: disable-next=consider-using-f-string
             subreport += "<li>%s</li>\n" % c
 
         if len(history[key]) == 0:
+            # pylint: disable-next=consider-using-f-string
             subreport += "<li>%s</li>\n" % emptymsg
 
         subreport += "</ul>\n"

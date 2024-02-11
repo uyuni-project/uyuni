@@ -1,2 +1,0 @@
-- remove ssh_push_port_http default configuration as it is used only by
-  traditional clients which are now unsupported

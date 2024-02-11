@@ -32,7 +32,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -330,7 +329,7 @@ public class SystemsController {
         data.put("reportDbHost", info.getReportDbHost());
         data.put("reportDbPort", info.getReportDbPort());
         data.put("reportDbUser", Optional.ofNullable(info.getReportDbCredentials())
-                .map(Credentials::getUsername)
+                .map(c -> c.getUsername())
                 .orElse(""));
         data.put("reportDbLastSynced", info.getReportDbLastSynced());
 

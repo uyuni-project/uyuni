@@ -21,6 +21,7 @@ import static com.redhat.rhn.testing.RhnBaseTestCase.assertNotEmpty;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,8 +42,12 @@ import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.RemoteCredentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -63,6 +68,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
@@ -78,6 +85,7 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
+import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
@@ -88,6 +96,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -115,6 +126,8 @@ import java.util.stream.Stream;
  * Tests for {@link ContentSyncManager}.
  */
 public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+
+    private static final Logger LOGGER = LogManager.getLogger(ContentSyncManagerTest.class);
 
     // Files we read
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
@@ -155,9 +168,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         csm.updateSUSEProducts(products);
 
         List<SCCSubscriptionJson> subscriptions = new LinkedList<>();
-        Credentials cred1 = CredentialsFactory.createSCCCredentials();
-        cred1.setUsername("hans");
-        cred1.setPassword("pw1");
+        SCCCredentials cred1 = CredentialsFactory.createSCCCredentials("hans", "pw1");
         CredentialsFactory.storeCredentials(cred1);
 
         SCCSubscriptionJson s1 = new SCCSubscriptionJson();
@@ -180,7 +191,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         subscriptions.add(s1);
         subscriptions.add(s2);
 
-        csm.refreshSubscriptionCache(subscriptions, cred1);
+        csm.refreshSubscriptionCache(subscriptions, new SCCContentSyncSource(cred1));
         HibernateFactory.getSession().flush();
 
         com.redhat.rhn.domain.scc.SCCSubscription one = SCCCachingFactory.lookupSubscriptionBySccId(1L);
@@ -189,7 +200,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(two.getName(), two.getName());
 
         subscriptions.remove(s2);
-        csm.refreshSubscriptionCache(subscriptions, cred1);
+        csm.refreshSubscriptionCache(subscriptions, new SCCContentSyncSource(cred1));
         HibernateFactory.getSession().flush();
 
         one = SCCCachingFactory.lookupSubscriptionBySccId(1L);
@@ -293,7 +304,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         List<SCCRepositoryJson> repositories = gson.fromJson(
                 inputStreamReader3, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        Credentials credentials = CredentialsFactory.listSCCCredentials()
+        SCCCredentials credentials = CredentialsFactory.listSCCCredentials()
                 .stream()
                 .filter(c -> c.getUsername().equals("dummy"))
                 .findFirst().get();
@@ -303,7 +314,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         ContentSyncManager csm = new ContentSyncManager();
         // todo i think this doesn't mock correctly and causes timeouts
-        csm.refreshRepositoriesAuthentication(repositories, credentials, null);
+        csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(633L);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
@@ -318,10 +329,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setPassword("dummy");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("dummy", "dummy");
         credentials.setUrl("dummy");
-        credentials.setUsername("dummy");
         credentials.setUser(user);
         CredentialsFactory.storeCredentials(credentials);
 
@@ -350,18 +359,20 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         SCCCachingFactory.saveRepository(repo2);
 
         ContentSyncManager csm = new ContentSyncManager();
-        csm.refreshRepositoriesAuthentication(repositories, credentials, null);
+        csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
-        SCCRepository upRepo = upRepoOpt.get();
-        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
+        SCCRepositoryAuth upRepoBest = upRepoOpt.flatMap(SCCRepository::getBestAuth).orElse(null);
+        assertNotNull(upRepoBest);
+        assertTrue(upRepoBest instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
 
-        csm.refreshRepositoriesAuthentication(repositories, credentials, null);
+        csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
-        upRepo = upRepoOpt.get();
-        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
+        upRepoBest = upRepoOpt.flatMap(SCCRepository::getBestAuth).orElse(null);
+        assertNotNull(upRepoBest);
+        assertTrue(upRepoBest instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
     }
 
     @Test
@@ -666,11 +677,11 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
         repositoriesChanged.addAll(additionalRepos);
 
-        Credentials sccCreds = CredentialsFactory.listSCCCredentials().get(0);
+        SCCCredentials sccCreds = CredentialsFactory.listSCCCredentials().get(0);
 
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
-        csm.refreshRepositoriesAuthentication(repositoriesChanged, sccCreds, null);
+        csm.refreshRepositoriesAuthentication(repositoriesChanged, new SCCContentSyncSource(sccCreds), null);
         csm.linkAndRefreshContentSource(null);
 
         HibernateFactory.getSession().flush();
@@ -716,10 +727,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
         sles.getRepositories().stream()
+            .peek(pr -> LOGGER.info("Repository {}", pr.getRepository().getName()))
             .filter(pr -> pr.isMandatory())
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
-                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().orElse(null);
+                assertNotNull(bestAuth, "Best authorization is null for repository " + pr.getRepository().getName());
                 ContentSource cs = bestAuth.getContentSource();
                 assertNotNull(cs);
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
@@ -933,8 +946,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             assertEquals("my-fake-token", a.tokenAuth().get().getAuth());
         }
         MirrorCredentialsManager mgr = new MirrorCredentialsManager();
-        Credentials scc1st = CredentialsFactory.listSCCCredentials().get(0);
-        Credentials scc2nd = SUSEProductTestUtils.createSecondarySCCCredentials("dummy2", user);
+        SCCCredentials scc1st = CredentialsFactory.listSCCCredentials().get(0);
+        SCCCredentials scc2nd = SUSEProductTestUtils.createSecondarySCCCredentials("dummy2", user);
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -954,7 +967,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         ContentSyncManager csm = new ContentSyncManager();
         //csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
-        csm.refreshRepositoriesAuthentication(repositoriesChanged, scc2nd, null);
+        csm.refreshRepositoriesAuthentication(repositoriesChanged, new SCCContentSyncSource(scc2nd), null);
         csm.linkAndRefreshContentSource(null);
 
         HibernateFactory.getSession().flush();
@@ -1003,61 +1016,79 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
+    public void testCredentials() {
+        SCCCredentials sccCredentials = SUSEProductTestUtils.createSCCCredentials("scccred", user);
+        HibernateFactory.getSession().save(sccCredentials);
+
+        CloudRMTCredentials rmtCredential = CredentialsFactory.createCloudRmtCredentials("rmtuser", "rmtpassword",
+            "dummy");
+        rmtCredential.setUser(user);
+        HibernateFactory.getSession().save(rmtCredential);
+
+        VHMCredentials vhmCredentials = CredentialsFactory.createVHMCredentials("vhmuser", "vhmpassword");
+        vhmCredentials.setUser(user);
+        HibernateFactory.getSession().save(vhmCredentials);
+
+        List<SCCCredentials> sccCredentials1 = CredentialsFactory.listCredentialsByType(SCCCredentials.class);
+        List<CloudRMTCredentials> rmtCredentials = CredentialsFactory.listCredentialsByType(CloudRMTCredentials.class);
+        List<SCCCredentials> sccCredentials2 = CredentialsFactory.listSCCCredentials();
+        List<Credentials> credentials = CredentialsFactory.listCredentials();
+        System.out.println(sccCredentials1);
+        System.out.println(sccCredentials2);
+        System.out.println(rmtCredentials);
+        System.out.println(vhmCredentials);
+        System.out.println(credentials);
+    }
+
     /**
      * Test 2 Credentials giving access to the same repo and switching "best auth"
      */
     @Test
     public void testSwitchFromCloudRmtToScc() {
-        Credentials credentials = createCloudCredentials("dummy");
+        CloudRMTCredentials rmtCredentials = createCloudCredentials("dummy");
+        SCCCredentials sccCredentials = createSccCredentials("dummy");
 
         // Create Repositories
-        SCCRepository repo = createRepo(2707L, "SLE-Product-SLES15-Pool", "sle-15-x86_64");
-        createRepoAuth(credentials, repo);
+        SCCRepository repoUpdates = createRepo(2705L, "SLE-Product-SLES15-Updates", "sle-15-x86_64");
+        SCCRepository repoPool = createRepo(2707L, "SLE-Product-SLES15-Pool", "sle-15-x86_64");
 
-        SCCRepository repo2 = createRepo(2705L, "SLE-Product-SLES15-Updates", "sle-15-x86_64");
-        createRepoAuth(credentials, repo2);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
-        assertTrue(upRepoOpt.isPresent(), "Repo not found");
-        SCCRepository upRepo = upRepoOpt.get();
-        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryCloudRmtAuth,
-                "Best Auth is not cloud rmt auth");
-        assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
-                Credentials.TYPE_CLOUD_RMT);
-
-        upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
-        assertTrue(upRepoOpt.isPresent(), "Repo not found");
-        upRepo = upRepoOpt.get();
-        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryCloudRmtAuth,
-                "Best Auth is not cloud rmt auth");
-        assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
-                Credentials.TYPE_CLOUD_RMT);
-
-        Credentials credentialsScc = createSccCredentials("dummy");
-
-        createRepoAuth(credentialsScc, repo);
-        createRepoAuth(credentialsScc, repo2);
+        // Setup credentials access
+        createRepoAuth(sccCredentials, repoUpdates);
+        createRepoAuth(rmtCredentials, repoPool);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
-        assertTrue(upRepoOpt.isPresent(), "Repo not found");
-        upRepo = upRepoOpt.get();
-        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth,
-                "Best Auth is not token auth");
-        assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
-                Credentials.TYPE_SCC);
+        assertAuthAndCredentials(repoUpdates.getSccId(), SCCRepositoryTokenAuth.class, SCCCredentials.class);
+        assertAuthAndCredentials(repoPool.getSccId(), SCCRepositoryCloudRmtAuth.class, CloudRMTCredentials.class);
 
-        upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
+        // Add additional authentications for the repo
+        createRepoAuth(rmtCredentials, repoUpdates);
+        createRepoAuth(sccCredentials, repoPool);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // Repo for Updates should switch to RMT credentials
+        assertAuthAndCredentials(repoUpdates.getSccId(), SCCRepositoryCloudRmtAuth.class, CloudRMTCredentials.class);
+        // Repo for Pool should be unchanged
+        assertAuthAndCredentials(repoPool.getSccId(), SCCRepositoryCloudRmtAuth.class, CloudRMTCredentials.class);
+
+    }
+
+    private static void assertAuthAndCredentials(long sccId, Class<? extends SCCRepositoryAuth> authClass,
+                                                 Class<? extends RemoteCredentials> credsClass) {
+        Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(sccId);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
-        upRepo = upRepoOpt.get();
-        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
-        assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
-                Credentials.TYPE_SCC);
+
+        SCCRepositoryAuth bestAuth = upRepoOpt.flatMap(SCCRepository::getBestAuth).orElse(null);
+        assertNotNull(bestAuth, "No best authentication");
+        assertInstanceOf(authClass, bestAuth, "Best Auth is not " + authClass.getSimpleName());
+
+        RemoteCredentials credentials = bestAuth.getOptionalCredentials().orElse(null);
+        assertNotNull(credentials);
+        assertInstanceOf(credsClass, credentials, "Credentials are not " + credsClass.getSimpleName());
     }
 
     /**
@@ -1073,31 +1104,32 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         SCCRepository sle12Updates = createRepo(2701L, "SLE-Product-SLES12-Updates", "sle-12-x86_64");
 
         // First RMT Credentials: gives access to SLE-Product-SLES15-Pool and SLE-Product-SLES15-Updates
-        Credentials cloudCred1 = createCloudCredentials("cloudCred1");
+        CloudRMTCredentials cloudCred1 = createCloudCredentials("cloudCred1");
 
         SCCRepositoryAuth authRepo1 = createRepoAuth(cloudCred1, sle15Pool);
-        createRepoAuth(cloudCred1, sle15Updates);
+        SCCRepositoryAuth authRepo2 = createRepoAuth(cloudCred1, sle15Updates);
 
         // Second RMT Credentials: gives access to SLE-Product-SLES12-Pool and SLE-Product-SLES12-Updates but it's
         // invalid
-        Credentials cloudCred2 = createCloudCredentials("cloudCred2");
+        CloudRMTCredentials cloudCred2 = createCloudCredentials("cloudCred2");
         cloudCred2.invalidate();
         CredentialsFactory.storeCredentials(cloudCred2);
 
         createRepoAuth(cloudCred2, sle12Pool);
-        SCCRepositoryAuth authRepo4 = createRepoAuth(cloudCred2, sle12Updates);
+        createRepoAuth(cloudCred2, sle12Updates);
 
         // Third RMT Credentials: gives access to SLE-Product-SLES15-Pool and SLE-Product-SLES12-Pool
-        Credentials cloudCred3 = createCloudCredentials("cloudCred3");
+        CloudRMTCredentials cloudCred3 = createCloudCredentials("cloudCred3");
         CredentialsFactory.storeCredentials(cloudCred3);
 
         createRepoAuth(cloudCred3, sle15Pool);
         SCCRepositoryAuth authRepo5 = createRepoAuth(cloudCred3, sle12Pool);
 
         // SCC Repository: gives access to SLE-Product-SLES15-Updates
-        Credentials sccCred1 = createSccCredentials("sccCred1");
+        SCCCredentials sccCred1 = createSccCredentials("sccCred1");
 
-        SCCRepositoryAuth authRepo6 = createRepoAuth(sccCred1, sle15Updates);
+        createRepoAuth(sccCred1, sle15Updates);
+        SCCRepositoryAuth authRepo6 = createRepoAuth(sccCred1, sle12Updates);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1115,32 +1147,39 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Pool");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES15-Pool");
-                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
-                assertEquals(Credentials.TYPE_CLOUD_RMT, bestCred.getType().getLabel());
-                assertEquals(authRepo1.getOptionalCredentials().get().getUsername(),
-                bestRepoAuth.getOptionalCredentials().get().getUsername(),
-                    "Wrong credentials for SLE-Product-SLES15-Pool");
+                Optional<CloudRMTCredentials> bestCred = bestRepoAuth.getOptionalCredentials()
+                    .flatMap(rc -> rc.castAs(CloudRMTCredentials.class));
+                assertTrue(bestCred.isPresent());
+                assertEquals(
+                    authRepo1.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(CloudRMTCredentials.class)).get().getUsername(),
+                    bestRepoAuth.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(CloudRMTCredentials.class)).get().getUsername(),
+                    "Wrong credentials for SLE-Product-SLES15-Pool"
+                );
                 assertEquals(authRepo1.getId(), bestRepoAuth.getId(),
                     "Auth Id do not match for SLE-Product-SLES15-Pool");
             },
             () -> {
-                // SLE-Product-SLES15-Updates -> Should be scc
+                // SLE-Product-SLES15-Updates -> Should be rmt 1
                 Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
                 assertTrue(upRepoOpt.isPresent(), "SLE-Product-SLES15-Updates Repo not found");
                 assertTrue(upRepoOpt.get().getBestAuth().isPresent(),
                     "No best auth found for SLE-Product-SLES15-Updates");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryTokenAuth,
-                    "Best Auth is not token auth for SLE-Product-SLES15-Updates");
+                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
+                    "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Updates");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES15-Updates");
-                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
-                assertEquals(Credentials.TYPE_SCC, bestCred.getType().getLabel());
-                assertEquals(authRepo6.getOptionalCredentials().get().getUsername(),
-                    bestRepoAuth.getOptionalCredentials().get().getUsername(),
+                RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
+                assertTrue(bestCred.castAs(CloudRMTCredentials.class).isPresent());
+                assertEquals(authRepo2.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(CloudRMTCredentials.class)).get().getUsername(),
+                    bestRepoAuth.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(CloudRMTCredentials.class)).get().getUsername(),
                     "Wrong credentials for SLE-Product-SLES15-Updates");
-                assertEquals(authRepo6.getId(), bestRepoAuth.getId(),
+                assertEquals(authRepo2.getId(), bestRepoAuth.getId(),
                     "Auth Id do not match for SLE-Product-SLES15-Updates");
             },
             () -> {
@@ -1154,44 +1193,48 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Pool");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES12-Pool");
-                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
-                assertEquals(Credentials.TYPE_CLOUD_RMT, bestCred.getType().getLabel());
-                assertEquals(authRepo5.getOptionalCredentials().get().getUsername(),
-                    bestRepoAuth.getOptionalCredentials().get().getUsername(),
+                RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
+                assertTrue(bestCred.castAs(CloudRMTCredentials.class).isPresent());
+                assertEquals(authRepo5.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(CloudRMTCredentials.class)).get().getUsername(),
+                    bestRepoAuth.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(CloudRMTCredentials.class)).get().getUsername(),
                     "Wrong credentials for SLE-Product-SLES12-Pool");
                 assertEquals(authRepo5.getId(), bestRepoAuth.getId(),
                     "Auth Id do not match for SLE-Product-SLES12-Pool");
             },
             () -> {
-                // SLE-Product-SLES12-Updated -> Should be cloud rmt 2 even if invalid
+                // SLE-Product-SLES12-Updated -> Should be scc
                 Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2701L);
                 assertTrue(upRepoOpt.isPresent(), "SLE-Product-SLES12-Update Repo not found");
                 assertTrue(upRepoOpt.get().getBestAuth().isPresent(),
                     "No best auth found for SLE-Product-SLES12-Update");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
-                    "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Update");
+                assertTrue(bestRepoAuth instanceof SCCRepositoryTokenAuth,
+                    "Best Auth is not token auth for SLE-Product-SLES12-Update");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES12-Update");
-                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
-                assertEquals(Credentials.TYPE_CLOUD_RMT, bestCred.getType().getLabel());
-                assertEquals(authRepo4.getOptionalCredentials().get().getUsername(),
-                    bestRepoAuth.getOptionalCredentials().get().getUsername(),
+                RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
+                assertTrue(bestCred.castAs(SCCCredentials.class).isPresent());
+                assertEquals(authRepo6.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(SCCCredentials.class)).get().getUsername(),
+                    bestRepoAuth.getOptionalCredentials()
+                        .flatMap(c -> c.castAs(SCCCredentials.class)).get().getUsername(),
                     "Wrong credentials for SLE-Product-SLES12-Update");
-                assertEquals(authRepo4.getId(), bestRepoAuth.getId(),
+                assertEquals(authRepo6.getId(), bestRepoAuth.getId(),
                     "Auth Id do not match for SLE-Product-SLES12-Update");
             }
         );
     }
 
 
-    private static SCCRepositoryAuth createRepoAuth(Credentials cred, SCCRepository repo) {
+    private static SCCRepositoryAuth createRepoAuth(RemoteCredentials cred, SCCRepository repo) {
         SCCRepositoryAuth authRepo;
-        if (cred.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+        if (cred.isTypeOf(CloudRMTCredentials.class)) {
             authRepo = new SCCRepositoryCloudRmtAuth();
         }
-        else if (cred.isTypeOf(Credentials.TYPE_SCC)) {
+        else if (cred.isTypeOf(SCCCredentials.class)) {
             authRepo = new SCCRepositoryTokenAuth();
         }
         else {
@@ -1204,21 +1247,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         return authRepo;
     }
 
-    private Credentials createSccCredentials(String username) {
-        Credentials sccCred1 = CredentialsFactory.createSCCCredentials();
-        sccCred1.setPassword("dummy");
+    private SCCCredentials createSccCredentials(String username) {
+        SCCCredentials sccCred1 = CredentialsFactory.createSCCCredentials(username, "dummy");
         sccCred1.setUrl("dummy");
-        sccCred1.setUsername(username);
         sccCred1.setUser(user);
         CredentialsFactory.storeCredentials(sccCred1);
         return sccCred1;
     }
 
-    private Credentials createCloudCredentials(String username) {
-        Credentials cloudCred1 = CredentialsFactory.createCloudRmtCredentials();
-        cloudCred1.setPassword("dummy");
-        cloudCred1.setUrl("dummy");
-        cloudCred1.setUsername(username);
+    private CloudRMTCredentials createCloudCredentials(String username) {
+        CloudRMTCredentials cloudCred1 = CredentialsFactory.createCloudRmtCredentials(username, "dummy", "dummy");
         cloudCred1.setUser(user);
         CredentialsFactory.storeCredentials(cloudCred1);
         return cloudCred1;
@@ -1890,7 +1928,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testIsRefreshNeededPAYG() {
-        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
+        for (SCCCredentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }
         ManagerInfoFactory.setLastMgrSyncRefresh(0);
@@ -1898,15 +1936,14 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         mgr.setPaygInstance(true);
         mgr.setCompliant(true);
         ContentSyncManager csm = new ContentSyncManager(null, mgr);
-        Credentials rmtCreds = CredentialsFactory.createCloudRmtCredentials();
-        rmtCreds.setUsername("RMTUSER");
-        rmtCreds.setPassword("secret");
-        CredentialsFactory.storeCredentials(rmtCreds);
+        CloudRMTCredentials rmtCreds = CredentialsFactory.createCloudRmtCredentials("RMTUSER", "secret",
+            "http://example.com");
         PaygSshData sshData = PaygSshDataFactory.createPaygSshData();
         sshData.setHost("localhost");
         sshData.setUsername("admin");
         sshData.setPassword("secret");
-        sshData.setCredentials(rmtCreds);
+        rmtCreds.setPaygSshData(sshData);
+        CredentialsFactory.storeCredentials(rmtCreds);
         PaygSshDataFactory.savePaygSshData(sshData);
 
         assertTrue(csm.isRefreshNeeded(null));
@@ -1937,14 +1974,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         SUSEProduct ubuntu = SUSEProductFactory.lookupByProductId(-18L);
         ubuntu.getRepositories().stream()
-                .filter(pr -> pr.isMandatory())
-                .forEach(pr -> {
-                    assertNotNull(pr.getRepository());
-                    SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
-                    ContentSource cs = bestAuth.getContentSource();
-                    assertNotNull(cs);
-                    assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
-                });
+              .peek(pr -> LOGGER.info("Repository {}", pr.getRepository().getName()))
+              .filter(pr -> pr.isMandatory())
+              .forEach(pr -> {
+                  assertNotNull(pr.getRepository());
+                  SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().orElse(null);
+                  assertNotNull(bestAuth, "Best authorization is null for repository " + pr.getRepository().getName());
+                  ContentSource cs = bestAuth.getContentSource();
+                  assertNotNull(cs);
+                  assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+              });
 
         SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(15004L).orElse(null);
         assertNotNull(ptfRepo, "PTF repo not found");
@@ -2095,7 +2134,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 .filter(SUSEProductSCCRepository::isMandatory)
                 .forEach(pr -> {
                     assertNotNull(pr.getRepository());
-                    SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                    SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().orElse(null);
+                    assertNotNull(bestAuth, "Best auth is null for repository " + pr.getRepository().getName());
                     ContentSource cs = bestAuth.getContentSource();
                     assertNotNull(cs);
                     assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
@@ -2174,23 +2214,25 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             csm.updateSUSEProducts(csm.getProducts());
             csm.updateRepositories(null);
 
-            HibernateFactory.getSession().flush();
-            HibernateFactory.getSession().clear();
+            clearSession();
+
             SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
             SUSEProduct slewe = SUSEProductFactory.lookupByProductId(1222);
 
             SUSEProductTestUtils.addChannelsForProduct(sles);
             SUSEProductTestUtils.addChannelsForProduct(slewe);
-            HibernateFactory.getSession().flush();
-            HibernateFactory.getSession().clear();
 
             // remove "fromdir" config
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                     user, "/com/redhat/rhn/manager/content/test/smallBase", true);
-            new ContentSyncManager().linkAndRefreshContentSource(null);
-            HibernateFactory.getSession().flush();
-            HibernateFactory.getSession().clear();
+
+            clearSession();
+
+            csm = new ContentSyncManager();
+            csm.linkAndRefreshContentSource(null);
+
+            clearSession();
 
             sles = SUSEProductFactory.lookupByProductId(1117);
             slewe = SUSEProductFactory.lookupByProductId(1222);
@@ -2272,7 +2314,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      * Clear all credentials from the database.
      */
     private void clearCredentials() {
-        for (Credentials creds : CredentialsFactory.listSCCCredentials()) {
+        for (SCCCredentials creds : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(creds);
         }
     }
@@ -2360,15 +2402,15 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         String repourl = "http://localhost/pub/myrepo/";
         ContentSyncManager csm = new ContentSyncManager();
 
-        assertContains(csm.buildRepoFileUrl(repourl, rpmrepo), repourl + "repodata/repomd.xml");
-        assertEquals(1, csm.buildRepoFileUrl(repourl, rpmrepo).size());
+        assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), repourl + "repodata/repomd.xml");
+        assertEquals(1, csm.buildRepoFileUrls(repourl, rpmrepo).size());
 
-        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Packages.xz");
-        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Packages.gz");
-        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Packages");
-        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Release");
-        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "InRelease");
-        assertEquals(5, csm.buildRepoFileUrl(repourl, debrepo).size());
+        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages.xz");
+        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages.gz");
+        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages");
+        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Release");
+        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "InRelease");
+        assertEquals(5, csm.buildRepoFileUrls(repourl, debrepo).size());
 
         repourl = "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS&infra=stock";
         rpmrepo.setDistroTarget("x86_64");
@@ -2378,17 +2420,15 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 uri.getQuery(), null).toString();
         String url2 = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), "/",
                 uri.getQuery(), null).toString();
-        assertContains(csm.buildRepoFileUrl(repourl, rpmrepo), url1);
-        assertContains(csm.buildRepoFileUrl(repourl, rpmrepo), url2);
-        assertEquals(2, csm.buildRepoFileUrl(repourl, rpmrepo).size());
+        assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), url1);
+        assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), url2);
+        assertEquals(2, csm.buildRepoFileUrls(repourl, rpmrepo).size());
     }
 
     @Test
     public void updateRepositoriesForPaygDoNotCallSCC() {
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setPassword("dummy");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("dummy", "dummy");
         credentials.setUrl("dummy");
-        credentials.setUsername("dummy");
         credentials.setUser(user);
         CredentialsFactory.storeCredentials(credentials);
 
@@ -2400,7 +2440,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         ContentSyncManager csm = new ContentSyncManager() {
             @Override
-            protected SCCClient getSCCClient(Credentials credentials) {
+            protected SCCClient getSCCClient(ContentSyncSource source) throws SCCClientException {
                 return sccClient;
             }
         };
@@ -2420,5 +2460,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         clearCredentials();
         SCCCachingFactory.clearRepositories();
         renameVendorChannels();
+    }
+
+    @Override
+    @AfterEach
+    public void tearDown() throws Exception {
+        Config.clear();
+        super.tearDown();
     }
 }

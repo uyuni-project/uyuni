@@ -14,9 +14,14 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
+import com.redhat.rhn.frontend.context.Context;
+
 import com.suse.manager.virtualization.GuestCreateDetails;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * CreateAction - Class representing TYPE_VIRTUALIZATION_CREATE
@@ -40,7 +45,14 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
      * This function should only be used by hibernate.
      */
     public String getDetailsAsString() {
-        return details != null ? details.toJson() : null;
+        if (details != null) {
+            if (details.getEarliest().isEmpty()) {
+                ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+                details.setEarliest(Optional.of(LocalDateTime.ofInstant(getEarliestAction().toInstant(), zoneId)));
+            }
+            return details.toJson();
+        }
+        return null;
     }
 
     /**

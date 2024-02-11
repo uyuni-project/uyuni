@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -24,8 +25,14 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
-from spacewalk.server import rhnChannel, rhnUser, rhnSQL, rhnLib, rhnAction, \
-    rhnVirtualization
+from spacewalk.server import (
+    rhnChannel,
+    rhnUser,
+    rhnSQL,
+    rhnLib,
+    rhnAction,
+    rhnVirtualization,
+)
 from .search_notify import SearchNotify
 
 # Local Modules
@@ -38,7 +45,7 @@ from .server_wrapper import ServerWrapper
 
 class Server(ServerWrapper):
 
-    """ Main Server class """
+    """Main Server class"""
 
     def __init__(self, user, arch=None, org_id=None):
         ServerWrapper.__init__(self)
@@ -70,14 +77,16 @@ class Server(ServerWrapper):
         self.virt_uuid = None
         self.registration_number = None
 
-    _query_lookup_arch = rhnSQL.Statement("""
+    _query_lookup_arch = rhnSQL.Statement(
+        """
         select sa.id,
                case when at.label = 'rpm' then 1 else 0 end is_rpm_managed
           from rhnServerArch sa,
                rhnArchType at
          where sa.label = :archname
            and sa.arch_type_id = at.id
-    """)
+    """
+    )
 
     def set_arch(self, arch):
         self.archname = arch
@@ -91,36 +100,41 @@ class Server(ServerWrapper):
         data = h.fetchone_dict()
         if not data:
             # Log it to disk, it may show interesting things
-            log_error("Attempt to create server with invalid arch `%s'" %
-                      arch)
-            raise rhnFault(24,
-                           _("Architecture `%s' is not supported") % arch)
+            # pylint: disable-next=consider-using-f-string
+            log_error("Attempt to create server with invalid arch `%s'" % arch)
+            raise rhnFault(24, _("Architecture `%s' is not supported") % arch)
         self.server["server_arch_id"] = data["id"]
-        self.is_rpm_managed = data['is_rpm_managed']
+        self.is_rpm_managed = data["is_rpm_managed"]
 
     # set the default description...
     def default_description(self):
-        self.server["description"] = "Initial Registration Parameters:\n"\
-                                     "OS: %s\n"\
-                                     "Release: %s\n"\
-                                     "CPU Arch: %s" % (
-            self.server["os"], self.server["release"],
-            self.archname)
+        self.server["description"] = (
+            # pylint: disable-next=consider-using-f-string
+            "Initial Registration Parameters:\n"
+            "OS: %s\n"
+            "Release: %s\n"
+            "CPU Arch: %s" % (self.server["os"], self.server["release"], self.archname)
+        )
 
     def __repr__(self):
         # misa: looks like id can return negative numbers, so use %d
         # instead of %x
         # For the gory details,
         # http://mail.python.org/pipermail/python-dev/2005-February/051559.html
+        # pylint: disable-next=consider-using-f-string
         return "<Server Class at %d: %s>\n" % (
-            id(self), {
+            id(self),
+            {
                 "self.cert": self.cert,
                 "self.server": self.server.data,
-            })
+            },
+        )
+
     __str__ = __repr__
 
     def _get_active_org_admins(self, org_id):
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             SELECT login
             FROM web_contact
             WHERE id in (
@@ -135,7 +149,8 @@ class Server(ServerWrapper):
                             from rhnwebcontactenabled wc
                             where wc.id = ugm.user_id)
                 ORDER BY ugm.user_id);
-        """)
+        """
+        )
         h.execute(org_id=org_id)
         rows = h.fetchall_dict()
         return rows
@@ -154,10 +169,14 @@ class Server(ServerWrapper):
             cert["profile_name"] = self.server["name"]
             cert["description"] = self.server["description"]
             if not self.user:
-                log_debug(1, "The username is not available. Taking an active " \
-                             "administrator from the same organization")
-                self.user = rhnUser.search(self._get_active_org_admins(
-                    self.server["org_id"])[0]["login"])
+                log_debug(
+                    1,
+                    "The username is not available. Taking an active "
+                    "administrator from the same organization",
+                )
+                self.user = rhnUser.search(
+                    self._get_active_org_admins(self.server["org_id"])[0]["login"]
+                )
             cert["username"] = self.user.contact["login"]
             cert["type"] = self.type
             cert.set_secret(self.server["secret"])
@@ -168,6 +187,7 @@ class Server(ServerWrapper):
     def getid(self):
         if not self.server.has_key("id"):
             sysid = rhnSQL.Sequence("rhn_server_id_seq")()
+            # pylint: disable-next=consider-using-f-string
             self.server["digital_server_id"] = "ID-%09d" % sysid
             # we can't reset the id column, so we need to poke into
             # internals. kind of illegal, but it works...
@@ -182,7 +202,7 @@ class Server(ServerWrapper):
         old_rel = self.server["release"]
         current_channels = rhnChannel.channels_for_server(self.server["id"])
         # Extract the base channel off of
-        old_base = [x for x in current_channels if not x['parent_channel']]
+        old_base = [x for x in current_channels if not x["parent_channel"]]
 
         # Quick sanity check
         base_channels_count = len(old_base)
@@ -191,14 +211,22 @@ class Server(ServerWrapper):
         elif base_channels_count == 0:
             old_base = None
         else:
-            raise rhnException("Server %s subscribed to multiple base channels"
-                               % (self.server["id"], ))
+            raise rhnException(
+                # pylint: disable-next=consider-using-f-string
+                "Server %s subscribed to multiple base channels"
+                % (self.server["id"],)
+            )
 
         # bz 442355
         # Leave custom base channels alone, don't alter any of the channel subscriptions
-        if not CFG.RESET_BASE_CHANNEL and old_base and rhnChannel.isCustomChannel(old_base["id"]):
-            log_debug(3,
-                      "Custom base channel detected, will not alter channel subscriptions")
+        if (
+            not CFG.RESET_BASE_CHANNEL
+            and old_base
+            and rhnChannel.isCustomChannel(old_base["id"])
+        ):
+            log_debug(
+                3, "Custom base channel detected, will not alter channel subscriptions"
+            )
             self.server["release"] = new_rel
             self.server.save()
             msg = """The SUSE Manager Update Agent has detected a
@@ -207,8 +235,11 @@ class Server(ServerWrapper):
             channel as your base channel.  Due to this configuration
             your channel subscriptions will not be altered.
             """
-            self.add_history("Updated system release from %s to %s" % (
-                old_rel, new_rel), msg)
+            self.add_history(
+                # pylint: disable-next=consider-using-f-string
+                "Updated system release from %s to %s" % (old_rel, new_rel),
+                msg,
+            )
             self.save_history_byid(self.server["id"])
             return 1
 
@@ -220,21 +251,22 @@ class Server(ServerWrapper):
         # Let get_server_channels deal with the errors and raise rhnFault
         target_channels = rhnChannel.guess_channels_for_server(s, none_ok=True)
         if target_channels:
-            target_base = [x for x in target_channels if not x['parent_channel']][0]
+            target_base = [x for x in target_channels if not x["parent_channel"]][0]
         else:
             target_base = None
 
         channels_to_subscribe = []
         channels_to_unsubscribe = []
-        if old_base and target_base and old_base['id'] == target_base['id']:
+        if old_base and target_base and old_base["id"] == target_base["id"]:
             # Same base channel. Preserve the currently subscribed child
             # channels, just add the ones that are missing
+            # pylint: disable-next=redefined-builtin
             hash = {}
             for c in current_channels:
-                hash[c['id']] = c
+                hash[c["id"]] = c
 
             for c in target_channels:
-                channel_id = c['id']
+                channel_id = c["id"]
                 if channel_id in hash:
                     # Already subscribed to this one
                     del hash[channel_id]
@@ -254,18 +286,19 @@ class Server(ServerWrapper):
         self.server.save()
         if not (channels_to_subscribe or channels_to_unsubscribe):
             # Nothing to do, just add the history entry
-            self.add_history("Updated system release from %s to %s" % (
-                old_rel, new_rel))
+            self.add_history(
+                # pylint: disable-next=consider-using-f-string
+                "Updated system release from %s to %s"
+                % (old_rel, new_rel)
+            )
             self.save_history_byid(self.server["id"])
             return 1
 
         # XXX: need a way to preserve existing subscriptions to
         # families so we can restore access to non-public ones.
 
-        rhnChannel.unsubscribe_channels(self.server["id"],
-                                        channels_to_unsubscribe)
-        rhnChannel.subscribe_channels(self.server["id"],
-                                      channels_to_subscribe)
+        rhnChannel.unsubscribe_channels(self.server["id"], channels_to_unsubscribe)
+        rhnChannel.subscribe_channels(self.server["id"], channels_to_subscribe)
         # now that we changed, recompute the errata cache for this one
         rhnSQL.Procedure("queue_server")(self.server["id"])
         # Make a history note
@@ -277,30 +310,41 @@ class Server(ServerWrapper):
             on your system and has updated your channel subscriptions
             to reflect that.
             Your server has been automatically subscribed to the following
-            channels:\n%s\n""" % ("\n".join(channel_list),)
+            channels:\n%s\n""" % (
+                "\n".join(channel_list),
+            )
         else:
-            msg = """*** ERROR: ***
+            msg = (
+                # pylint: disable-next=consider-using-f-string
+                """*** ERROR: ***
             While trying to subscribe this server to software channels:
-            There are no channels serving release %s""" % new_rel
-        self.add_history("Updated system release from %s to %s" % (
-            old_rel, new_rel), msg)
+            There are no channels serving release %s"""
+                % new_rel
+            )
+        self.add_history(
+            # pylint: disable-next=consider-using-f-string
+            "Updated system release from %s to %s" % (old_rel, new_rel),
+            msg,
+        )
         self.save_history_byid(self.server["id"])
         return 1
 
     def take_snapshot(self, reason):
-        return server_lib.snapshot_server(self.server['id'], reason)
+        return server_lib.snapshot_server(self.server["id"], reason)
 
     # returns true iff the base channel assigned to this system
     # has been end-of-life'd
     def base_channel_is_eol(self):
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select 1
         from rhnChannel c, rhnServerChannel sc
         where sc.server_id = :server_id
           and sc.channel_id = c.id
           and c.parent_channel IS NULL
           and current_timestamp - c.end_of_life > 0
-        """)
+        """
+        )
         h.execute(server_id=self.getid())
         ret = h.fetchone_dict()
         if ret:
@@ -308,14 +352,16 @@ class Server(ServerWrapper):
 
         return None
 
-    _query_server_custom_info = rhnSQL.Statement("""
+    _query_server_custom_info = rhnSQL.Statement(
+        """
     select cdk.label,
            scdv.value
       from rhnCustomDataKey cdk,
            rhnServerCustomDataValue scdv
      where scdv.server_id = :server_id
        and scdv.key_id = cdk.id
-    """)
+    """
+    )
 
     def load_custom_info(self):
         self.custom_info = {}
@@ -329,7 +375,7 @@ class Server(ServerWrapper):
             return
 
         for row in rows:
-            self.custom_info[row['label']] = row['value']
+            self.custom_info[row["label"]] = row["value"]
 
     # load additional server information from the token definition
     def load_token(self):
@@ -371,8 +417,9 @@ class Server(ServerWrapper):
 
         # We get back a history of what is being done in the
         # registration process
-        history = server_token.process_token(self.server, self.archname,
-                                             tokens_obj, self.virt_type)
+        history = server_token.process_token(
+            self.server, self.archname, tokens_obj, self.virt_type
+        )
 
         if is_rereg_token:
             event_name = "Reactivation via Token"
@@ -383,9 +430,12 @@ class Server(ServerWrapper):
 
         token_name = tokens_obj.get_names()
         # now record that history nicely
-        self.add_history(event_name,
-                         "%s with token <strong>%s</strong><br />\n%s" %
-                         (event_text, token_name, history))
+        self.add_history(
+            event_name,
+            # pylint: disable-next=consider-using-f-string
+            "%s with token <strong>%s</strong><br />\n%s"
+            % (event_text, token_name, history),
+        )
         self.save_history_byid(self.server["id"])
 
         # 6/23/05 wregglej 157262, use get_kickstart session_id() to see if we're in the middle of a kickstart.
@@ -401,7 +451,7 @@ class Server(ServerWrapper):
         return 0
 
     def disable_token(self):
-        tokens_obj = rhnFlags.get('registration_token')
+        tokens_obj = rhnFlags.get("registration_token")
         if not tokens_obj:
             # Nothing to do
             return
@@ -421,7 +471,7 @@ class Server(ServerWrapper):
     # Auto-entitlement: attempt to entitle this server to the highest
     # entitlement that is available
     def autoentitle(self):
-        entitlement_hierarchy = ['enterprise_entitled']
+        entitlement_hierarchy = ["enterprise_entitled"]
 
         any_base_entitlements = 0
 
@@ -440,20 +490,26 @@ class Server(ServerWrapper):
                     continue
 
                 # Should not normally happen
-                log_error("Failed to entitle", self.server["id"], entitlement,
-                          e.errmsg)
-                raise_with_tb(server_lib.rhnSystemEntitlementException("Unable to entitle"), sys.exc_info()[2])
+                log_error("Failed to entitle", self.server["id"], entitlement, e.errmsg)
+                raise_with_tb(
+                    server_lib.rhnSystemEntitlementException("Unable to entitle"),
+                    sys.exc_info()[2],
+                )
             except rhnSQL.SQLError:
                 e = sys.exc_info()[1]
-                log_error("Failed to entitle", self.server["id"], entitlement,
-                          str(e))
-                raise_with_tb(server_lib.rhnSystemEntitlementException("Unable to entitle"), sys.exc_info()[2])
+                log_error("Failed to entitle", self.server["id"], entitlement, str(e))
+                raise_with_tb(
+                    server_lib.rhnSystemEntitlementException("Unable to entitle"),
+                    sys.exc_info()[2],
+                )
             else:
                 if any_base_entitlements:
                     # All is fine
                     return
                 else:
-                    raise_with_tb(server_lib.rhnNoSystemEntitlementsException, sys.exc_info()[2])
+                    raise_with_tb(
+                        server_lib.rhnNoSystemEntitlementsException, sys.exc_info()[2]
+                    )
 
     def _entitle(self, entitlement):
         system_entitlements = server_lib.check_entitlement(self.server["id"])
@@ -461,26 +517,30 @@ class Server(ServerWrapper):
 
         if entitlement not in system_entitlements:
             entitle_server = rhnSQL.Procedure("rhn_entitlements.entitle_server")
-            entitle_server(self.server['id'], entitlement)
+            entitle_server(self.server["id"], entitlement)
 
     def create_perm_cache(self):
         log_debug(4)
         create_perms = rhnSQL.Procedure("rhn_cache.update_perms_for_server")
-        create_perms(self.server['id'])
+        create_perms(self.server["id"])
 
     def gen_secret(self):
         # Running this invalidates the cert
         self.cert = None
         self.server["secret"] = gen_secret()
 
-    _query_update_uuid = rhnSQL.Statement("""
+    _query_update_uuid = rhnSQL.Statement(
+        """
         update rhnServerUuid set uuid = :uuid
          where server_id = :server_id
-    """)
-    _query_insert_uuid = rhnSQL.Statement("""
+    """
+    )
+    _query_insert_uuid = rhnSQL.Statement(
+        """
         insert into rhnServerUuid (server_id, uuid)
         values (:server_id, :uuid)
-    """)
+    """
+    )
 
     def update_uuid(self, uuid, commit=1):
         log_debug(3, uuid)
@@ -489,11 +549,11 @@ class Server(ServerWrapper):
         if uuid is not None:
             uuid = str(uuid)
         if not uuid:
-            log_debug(3, 'Nothing to do')
+            log_debug(3, "Nothing to do")
             return
 
         uuid = uuid[:uuid_col_length]
-        server_id = self.server['id']
+        server_id = self.server["id"]
         log_debug(4, "Trimmed uuid", uuid, server_id)
 
         # Update this server's UUID (unique client identifier)
@@ -512,8 +572,10 @@ class Server(ServerWrapper):
     def handle_virtual_guest(self):
         # Handle virtualization specific bits
         if self.virt_uuid and self.virt_type:
-            rhnVirtualization._notify_guest(self.getid(),
-                                            self.virt_uuid, self.virt_type)
+            # pylint: disable-next=protected-access
+            rhnVirtualization._notify_guest(
+                self.getid(), self.virt_uuid, self.virt_type
+            )
 
     # Save this record in the database
     def __save(self, channel):
@@ -555,12 +617,13 @@ class Server(ServerWrapper):
             # This can now throw exceptions which will be caught at a higher level
             if channel is not None:
                 channel_info = dict(rhnChannel.channel_info(channel))
+                # pylint: disable-next=consider-using-f-string
                 log_debug(4, "eus channel id %s" % str(channel_info))
-                rhnChannel.subscribe_sql(server_id, channel_info['id'])
+                rhnChannel.subscribe_sql(server_id, channel_info["id"])
             else:
-                rhnChannel.subscribe_server_channels(self,
-                                                     none_ok=tokens_obj,
-                                                     user_id=user_id)
+                rhnChannel.subscribe_server_channels(
+                    self, none_ok=tokens_obj, user_id=user_id
+                )
 
             if not tokens_obj:
                 # Attempt to auto-entitle, can throw the following exceptions:
@@ -609,6 +672,7 @@ class Server(ServerWrapper):
                 try:
                     search = SearchNotify()
                     search.notify()
+                # pylint: disable-next=broad-exception-caught
                 except Exception:
                     e = sys.exc_info()[1]
                     log_error("Exception caught from SearchNotify.notify().", e)
@@ -616,6 +680,7 @@ class Server(ServerWrapper):
 
     # Reload the current configuration from database using a server id.
     def reload(self, server, reload_all=0):
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, server, "reload_all = %d" % reload_all)
 
         if not self.server.load(int(server)):
@@ -623,16 +688,19 @@ class Server(ServerWrapper):
             raise rhnFault(29, "Could not find server record in the database")
         self.cert = None
         # it is lame that we have to do this
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select label from rhnServerArch where id = :archid
-        """)
+        """
+        )
         h.execute(archid=self.server["server_arch_id"])
         data = h.fetchone_dict()
         if not data:
-            raise rhnException("Found server with invalid numeric "
-                               "architecture reference",
-                               self.server.data)
-        self.archname = data['label']
+            raise rhnException(
+                "Found server with invalid numeric " "architecture reference",
+                self.server.data,
+            )
+        self.archname = data["label"]
         # we don't know this one anymore (well, we could look for, but
         # why would we do that?)
         self.user = None
@@ -641,6 +709,7 @@ class Server(ServerWrapper):
 
         # XXX: Fix me
         if reload_all:
+            # pylint: disable-next=unnecessary-negation
             if not self.reload_packages_byid(self.server["id"]) == 0:
                 return -1
             if not self.reload_hardware_byid(self.server["id"]) == 0:
@@ -649,28 +718,31 @@ class Server(ServerWrapper):
 
     # Reload primary IP information from database
     def fetch_addr(self):
-
         server = self.getid()
         ret = {}
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select address as ipaddr
         from rhnservernetinterface rsni
         join rhnservernetaddress4 rsna4 on rsna4.interface_id = rsni.id
         where is_primary = 'Y' and server_id = :serverid
-        """)
+        """
+        )
 
         h.execute(serverid=server)
         data = h.fetchone_dict()
         if data:
             ret.update(data)
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select address as ip6addr
         from rhnservernetinterface rsni
         join rhnservernetaddress6 rsna4 on rsna4.interface_id = rsni.id
         where is_primary = 'Y' and server_id = :serverid
-        """)
+        """
+        )
 
         h.execute(serverid=server)
         data = h.fetchone_dict()
@@ -732,28 +804,28 @@ class Server(ServerWrapper):
             return None
         log_debug(3, self.server["id"])
 
-        return server_lib.check_entitlement(self.server['id'])
+        return server_lib.check_entitlement(self.server["id"])
 
     def checkin(self, commit=1):
-        """ convenient wrapper for these thing until we clean the code up """
+        """convenient wrapper for these thing until we clean the code up"""
         if not self.server.has_key("id"):
             return 0  # meaningless if rhnFault not raised
         return server_lib.checkin(self.server["id"], commit)
 
     def throttle(self):
-        """ convenient wrapper for these thing until we clean the code up """
+        """convenient wrapper for these thing until we clean the code up"""
         if not self.server.has_key("id"):
             return 1  # meaningless if rhnFault not raised
         return server_lib.throttle(self.server)
 
     def set_qos(self):
-        """ convenient wrapper for these thing until we clean the code up """
+        """convenient wrapper for these thing until we clean the code up"""
         if not self.server.has_key("id"):
             return 1  # meaningless if rhnFault not raised
         return server_lib.set_qos(self.server["id"])
 
     def join_groups(self):
-        """ For a new server, join server groups """
+        """For a new server, join server groups"""
 
         # Sanity check - we should always have a user
         if not self.user:
@@ -762,17 +834,20 @@ class Server(ServerWrapper):
         server_id = self.getid()
         user_id = self.user.getid()
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select system_group_id
             from rhnUserDefaultSystemGroups
             where user_id = :user_id
-        """)
+        """
+        )
         h.execute(user_id=user_id)
         while 1:
             row = h.fetchone_dict()
             if not row:
                 break
-            server_group_id = row['system_group_id']
+            server_group_id = row["system_group_id"]
+            # pylint: disable-next=consider-using-f-string
             log_debug(5, "Subscribing server to group %s" % server_group_id)
 
             server_lib.join_server_group(server_id, server_group_id)
@@ -796,8 +871,12 @@ class Server(ServerWrapper):
 
         kickstart_session_id = tokens_obj.get_kickstart_session_id()
         if kickstart_session_id is None:
-            log_debug(4, "No kickstart_session_id associated with token %s (%s)"
-                      % (tokens_obj.get_names(), tokens_obj.tokens))
+            log_debug(
+                4,
+                # pylint: disable-next=consider-using-f-string
+                "No kickstart_session_id associated with token %s (%s)"
+                % (tokens_obj.get_names(), tokens_obj.tokens),
+            )
 
             # Nothing to do here
             return
@@ -806,45 +885,53 @@ class Server(ServerWrapper):
         self.flush_actions()
 
         server_id = self.getid()
-        action_id = server_kickstart.schedule_kickstart_sync(server_id,
-                                                             kickstart_session_id)
+        action_id = server_kickstart.schedule_kickstart_sync(
+            server_id, kickstart_session_id
+        )
 
-        server_kickstart.subscribe_to_tools_channel(server_id,
-                                                    kickstart_session_id)
+        server_kickstart.subscribe_to_tools_channel(server_id, kickstart_session_id)
 
-        server_kickstart.schedule_virt_pkg_install(server_id,
-                                                   kickstart_session_id)
+        server_kickstart.schedule_virt_pkg_install(server_id, kickstart_session_id)
 
         # Update the next action to the newly inserted one
-        server_kickstart.update_ks_session_table(kickstart_session_id,
-                                                 'registered', action_id, server_id)
+        server_kickstart.update_ks_session_table(
+            kickstart_session_id, "registered", action_id, server_id
+        )
 
     def flush_actions(self):
         server_id = self.getid()
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select action_id
               from rhnServerAction
              where server_id = :server_id
                and status in (0, 1) -- Queued or Picked Up
-        """)
+        """
+        )
         h.execute(server_id=server_id)
         while 1:
             row = h.fetchone_dict()
             if not row:
                 break
-            action_id = row['action_id']
-            rhnAction.update_server_action(server_id=server_id,
-                                           action_id=action_id, status=3, result_code=-100,
-                                           result_message="Action canceled: system kickstarted or reregistered")  # 4/6/05 wregglej, added the "or reregistered" part.
+            action_id = row["action_id"]
+            rhnAction.update_server_action(
+                server_id=server_id,
+                action_id=action_id,
+                status=3,
+                result_code=-100,
+                result_message="Action canceled: system kickstarted or reregistered",
+            )  # 4/6/05 wregglej, added the "or reregistered" part.
 
     def server_locked(self):
-        """ Returns true is the server is locked (for actions that are blocked) """
+        """Returns true is the server is locked (for actions that are blocked)"""
         server_id = self.getid()
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select 1
               from rhnServerLock
              where server_id = :server_id
-        """)
+        """
+        )
         h.execute(server_id=server_id)
         row = h.fetchone_dict()
         if row:
@@ -852,13 +939,13 @@ class Server(ServerWrapper):
         return 0
 
     def register_push_client(self):
-        """ insert or update rhnPushClient for this server_id """
+        """insert or update rhnPushClient for this server_id"""
         server_id = self.getid()
         ret = server_lib.update_push_client_registration(server_id)
         return ret
 
     def register_push_client_jid(self, jid):
-        """ update the JID in the corresponing entry from rhnPushClient """
+        """update the JID in the corresponing entry from rhnPushClient"""
         server_id = self.getid()
         ret = server_lib.update_push_client_jid(server_id, jid)
         return ret

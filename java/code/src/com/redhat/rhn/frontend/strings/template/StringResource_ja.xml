@@ -400,7 +400,7 @@ click the "Details" tab.
         </context-group>
         <target>{0} の @@PRODUCT_NAME@@ デイリーステータスレポート</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body" xml:space="preserve">
+      <trans-unit approved="yes" id="dailysummary.email.body" xml:space="preserve">
         <source>{7}
 This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
@@ -434,7 +434,8 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="needs-adaptation">これはアカウント {0} ({1}) の @@PRODUCT_NAME@@ ステータスレポートです。
+        <target state="final">{7}
+これはアカウント {0} ({1}) の @@PRODUCT_NAME@@ ステータスレポートです。
 
 この電子メールは以下のいずれかの状況に該当する場合に送信されます:
 
@@ -575,12 +576,14 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+      <trans-unit approved="yes" id="dailysummary.email.notpaygcompliant" xml:space="preserve">
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">警告: この @@PRODUCT_NAME@@ PAYGインスタンスは準拠していないため、一部の機能が無効になっています。
+製品の使用を続ける前に、管理者に連絡して状況を修正してください。
+          </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

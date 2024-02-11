@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2012 SUSE LLC
@@ -14,27 +15,34 @@ import sys
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from uyuni.common.usix import raise_with_tb
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnChannel import subscribe_channels, unsubscribe_channels
 from spacewalk.server.rhnLib import InvalidAction, ShadowAction
 
 # the "exposed" functions
-__rhnexport__ = ['upgrade']
+__rhnexport__ = ["upgrade"]
 
-_query_dup_data = rhnSQL.Statement("""
+_query_dup_data = rhnSQL.Statement(
+    """
     SELECT id, dry_run, allow_vendor_change, full_update
       FROM rhnActionDup
      WHERE action_id = :action_id
-""")
+"""
+)
 
-_query_channel_changes = rhnSQL.Statement("""
+_query_channel_changes = rhnSQL.Statement(
+    """
     SELECT c.id, c.label, c.parent_channel, adc.task
       FROM rhnActionDupChannel adc
       JOIN rhnChannel c ON adc.channel_id = c.id
      WHERE adc.action_dup_id = :action_dup_id
-""")
+"""
+)
 
-_query_products = rhnSQL.Statement("""
+_query_products = rhnSQL.Statement(
+    """
     SELECT p1.name,
            p1.version,
            p2.name new_name,
@@ -46,12 +54,14 @@ _query_products = rhnSQL.Statement("""
       JOIN suseProducts p2 ON adp.to_pdid = p2.id
  LEFT JOIN rhnPackageArch pa ON pa.id = p2.arch_type_id
      WHERE adp.action_dup_id = :action_dup_id
-""")
+"""
+)
 
 
 # returns the values required to execute a dist upgrade
 # change also the channel subscription
 #
+# pylint: disable-next=invalid-name
 def upgrade(serverId, actionId, dry_run=0):
     log_debug(3)
 
@@ -64,10 +74,13 @@ def upgrade(serverId, actionId, dry_run=0):
     row = h.fetchone_dict()
     if not row:
         # No dup for this action
-        raise InvalidAction("distupgrade.upgrade: No action found for action id "
-            "%s and server %s" % (actionId, serverId))
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "distupgrade.upgrade: No action found for action id "
+            "%s and server %s" % (actionId, serverId)
+        )
 
-    action_dup_id = row['id']
+    action_dup_id = row["id"]
 
     # get product info
 
@@ -81,7 +94,7 @@ def upgrade(serverId, actionId, dry_run=0):
     sle10_products = []
     do_change = False
     for product in products:
-        if product['version'] == '10':
+        if product["version"] == "10":
             do_change = True
             sle10_products.append(product)
 
@@ -97,15 +110,16 @@ def upgrade(serverId, actionId, dry_run=0):
         # we do not have the original channels anymore, so we need
         # to execute a full "dup" without channels
         params = {
-            "full_update"         : (row['full_update'] == 'Y'),
-            "change_product"      : do_change,
-            "products"            : sle10_products,
-            "allow_vendor_change" : (row['allow_vendor_change'] == 'Y'),
-            "dry_run"             : (row['dry_run'] == 'Y') }
-        return (params)
+            "full_update": (row["full_update"] == "Y"),
+            "change_product": do_change,
+            "products": sle10_products,
+            "allow_vendor_change": (row["allow_vendor_change"] == "Y"),
+            "dry_run": (row["dry_run"] == "Y"),
+        }
+        return params
 
-    to_subscribe = [x for x in channel_changes if x['task'] == 'S']
-    to_unsubscribe = [x for x in channel_changes if x['task'] == 'U']
+    to_subscribe = [x for x in channel_changes if x["task"] == "S"]
+    to_unsubscribe = [x for x in channel_changes if x["task"] == "U"]
 
     try:
         unsubscribe_channels(serverId, to_unsubscribe)
@@ -116,17 +130,18 @@ def upgrade(serverId, actionId, dry_run=0):
             pass
         else:
             raise_with_tb(InvalidAction(str(f)), sys.exc_info()[2])
+    # pylint: disable-next=broad-exception-caught
     except Exception as e:
         raise_with_tb(InvalidAction(str(e)), sys.exc_info()[2])
 
     rhnSQL.commit()
 
     params = {
-        "dup_channel_names"   : [x['label'] for x in to_subscribe],
-        "full_update"         : (row['full_update'] == 'Y'),
-        "change_product"      : do_change,
-        "products"            : sle10_products,
-        "allow_vendor_change" : (row['allow_vendor_change'] == 'Y'),
-        "dry_run"             : (row['dry_run'] == 'Y') }
-    return (params)
-
+        "dup_channel_names": [x["label"] for x in to_subscribe],
+        "full_update": (row["full_update"] == "Y"),
+        "change_product": do_change,
+        "products": sle10_products,
+        "allow_vendor_change": (row["allow_vendor_change"] == "Y"),
+        "dry_run": (row["dry_run"] == "Y"),
+    }
+    return params

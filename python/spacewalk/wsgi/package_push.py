@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2010--2015 Red Hat, Inc.
 #
@@ -18,6 +19,10 @@ from wsgi import wsgiHandler
 
 
 def application(environ, start_response):
-    return wsgiHandler.handle(environ, start_response,
-                              "package_push", "server.upload.package-push",
-                              "spacewalk.server.apacheUploadServer")
+    return wsgiHandler.handle(
+        environ,
+        start_response,
+        "package_push",
+        "server.upload.package-push",
+        "spacewalk.server.apacheUploadServer",
+    )

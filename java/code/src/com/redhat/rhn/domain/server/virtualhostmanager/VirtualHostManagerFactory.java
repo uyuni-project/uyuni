@@ -19,8 +19,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.org.Org;
 
 import com.suse.manager.gatherer.GathererRunner;
@@ -40,7 +40,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -459,18 +458,13 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param params - non-null map of gatherer parameters
      * @return new Credentials instance
      */
-    private Credentials createCredentialsFromParams(Map<String, String> params) {
+    private VHMCredentials createCredentialsFromParams(Map<String, String> params) {
         String username = params.get(CONFIG_USER);
         if (StringUtils.isBlank(username)) {
             return null;
         }
 
-        Credentials credentials = CredentialsFactory.createVHMCredentials();
-        credentials.setUsername(username);
-        credentials.setPassword(params.get(CONFIG_PASS));
-        credentials.setModified(new Date());
-
-        return credentials;
+        return CredentialsFactory.createVHMCredentials(username, params.get(CONFIG_PASS));
     }
 
     /**

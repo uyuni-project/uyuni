@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:36:43 CET 2024 - rosuna@suse.com
+
+- version 5.0.3
+  * Simplify publishing to Open Build Service
+
+-------------------------------------------------------------------
+Fri Jan 12 11:49:05 CET 2024 - marina.latini@suse.com
+
+- version 5.0.2
+  * Use product version in reference label
+  * Fix the container version labels
+
+-------------------------------------------------------------------
+Wed Jan 10 18:56:28 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * Set RemoveIPC=no for logind to stop removing IPC mechanisms by systemd
+  * Use 999 for postgresql UID/GID, same as upstream and rancher
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Mon Dec 18 14:38:42 CET 2023 - rosuna@suse.com
+
+- version 4.4.2
+  * Uyuni 2023.12 release
+
+-------------------------------------------------------------------
 Tue Nov 07 16:04:23 CET 2023 - marina.latini@suse.com
 
 - version 4.4.1

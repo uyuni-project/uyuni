@@ -15,8 +15,6 @@
 
 package com.suse.manager.webui.services.pillar;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.CustomDataValue;
@@ -30,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * Class for generating minion pillar data containing CustomInfo information of minions
  */
-public class MinionCustomInfoPillarGenerator implements MinionPillarGenerator {
+public class MinionCustomInfoPillarGenerator extends MinionPillarGeneratorBase {
 
     public static final MinionCustomInfoPillarGenerator INSTANCE = new MinionCustomInfoPillarGenerator();
 
@@ -58,12 +56,8 @@ public class MinionCustomInfoPillarGenerator implements MinionPillarGenerator {
         pillar.getPillar().clear();
         pillar.add("custom_info", minion.getCustomDataValues().stream()
                 .collect(Collectors.toMap(a -> a.getKey().getLabel(), CustomDataValue::getValue)));
-        return Optional.of(pillar);
-    }
 
-    @Override
-    public String getFilename(String minionId) {
-        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_" + CATEGORY + "." + PILLAR_DATA_FILE_EXT;
+        return Optional.of(pillar);
     }
 
     @Override

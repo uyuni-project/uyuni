@@ -11315,53 +11315,78 @@ For a detailed analysis, please refer to the log files.
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
         <target state="final">@@PRODUCT_NAME@@ 现在提供了新的更新。有关更多细节，请参见&lt;a href="{0}"&gt;发行说明&gt;a&gt;。</target>
       </trans-unit>
-    <trans-unit id="message.payg.errorbyosnoscc" xml:space="preserve">
+      <trans-unit approved="yes" id="message.payg.errorbyosnoscc" xml:space="preserve">
         <source>
           @@PRODUCT_NAME@@ is not able to manage this instance since it is Bring-your-own-subscription and no SCC credentials are set.
           To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt;.
         </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
+        <target state="final">
+          @@PRODUCT_NAME@@ 无法管理此实例，因为它属于自带订阅实例，未设置 SCC 身份凭证。
+          要改变这一状况，请在&lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;此处&lt;/a&gt;添加 SCC 身份凭证。
+        </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="message.payg.errornotcompliant" xml:space="preserve">
         <source>
           This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
           amend the situation before continuing using the product.
         </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve">
+        <target state="final">
+          此 @@PRODUCT_NAME@@ PAYG 实例不合规，部分功能将会停用。请先联系您的管理员
+          改变这一状况，然后再继续使用该产品。
+        </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="message.payg.errorbyosnosccssm" xml:space="preserve">
         <source>
 @@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
 To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt; or select in SSM just Pay-as-you-go-instances.
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">
+@@PRODUCT_NAME@@ 无法管理这些实例，因为它们具有一个或多个自带订阅，且未设置 SCC 身份凭证。
+要改变这一状况，请在&lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;此处&lt;/a&gt;添加 SCC 身份凭证，或在 SSM 中仅选择 Pay-as-you-go 实例。
+        </target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ PAYG 实例不合规。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
+        <target state="final">此 @@PRODUCT_NAME@@ PAYG 实例不合规，部分功能将会停用。请咨询您的系统管理员。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
         <source>
           The action you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
+        <target state="final">
+          无法执行您尝试的操作，因为 @@PRODUCT_NAME@@ 属于 PAYG 实例，当前操作中包含 BYOS 服务器，且目前未设置 SCC 身份凭证。
+          要改变这一状况，请为此 @@PRODUCT_NAME@@ 实例设置 SCC 身份凭证，然后重试。您也可以仅在 Pay-as-you-go 实例上执行该操作。
+          检测到自带订阅服务器：{0}。
+        </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
         <source>
           The action chain you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action chain and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action chain only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
+        <target state="final">
+          无法执行您尝试的操作链，因为 @@PRODUCT_NAME@@ 属于 PAYG 实例，当前操作中包含 BYOS 服务器，且目前未设置 SCC 身份凭证。
+          要改变这一状况，请为此 @@PRODUCT_NAME@@ 实例设置 SCC 身份凭证，然后重试。您也可以仅在 Pay-as-you-go 实例上执行该操作链。
+          检测到自带订阅服务器：{0}。
+        </target>
+      </trans-unit>
+    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+        <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <source>Perform a standalone Salt update</source>
       <target state="new"/>
   </trans-unit>
       </body>

@@ -30,6 +30,13 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.PtfFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
+import com.redhat.rhn.domain.credentials.BaseCredentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
+import com.redhat.rhn.domain.credentials.RHUICredentials;
+import com.redhat.rhn.domain.credentials.RegistryCredentials;
+import com.redhat.rhn.domain.credentials.ReportDBCredentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -169,7 +176,14 @@ public class AnnotationRegistry {
         RecurringInternalState.class,
         InternalState.class,
         PaygDimensionComputation.class,
-        PaygDimensionResult.class
+        PaygDimensionResult.class,
+        BaseCredentials.class,
+        CloudRMTCredentials.class,
+        RegistryCredentials.class,
+        ReportDBCredentials.class,
+        RHUICredentials.class,
+        SCCCredentials.class,
+        VHMCredentials.class
     );
 
     /**

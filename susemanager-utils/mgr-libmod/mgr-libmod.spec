@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-libmod
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,7 +17,7 @@
 
 
 Name:           mgr-libmod
-Version:        4.4.2
+Version:        5.0.2
 Release:        1
 Summary:        libmod app
 License:        MIT

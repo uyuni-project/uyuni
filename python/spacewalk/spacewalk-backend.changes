@@ -1,4 +1,38 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:56:53 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-1
+  * Remove normalize_orphan_vendor_packages and move it to taskomatic (bsc#1216781)
+  * Unquote HTML-encoded credentials before synchronizing repositories (bsc#1217204)
+  * Apply Black and Pylint to enforce Python style
+
+-------------------------------------------------------------------
+Thu Jan 18 11:06:01 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * schema dir moved to /usr/share/susemanager/db
+
+-------------------------------------------------------------------
+Tue Jan 16 08:26:58 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Implement new default behaviour for channel synchronisation,
+    now automatically dropping packages which are deleted from the
+    upstream repository (strict mode)
+  * Use the new apache2-mod_wsgi package name
+  * Updated query to the new credentials structure
+
+-------------------------------------------------------------------
+Fri Dec 15 17:05:00 CET 2023 - rosuna@suse.com
+
+- version 4.4.13-1
+  * Fix decompressing and renaming bzip2 comps files in reposync
+  * Skip syncing packages with incorrect metadata (bsc#1213738)
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Prevent reposync from processing failed packages
+  * Revert documentroot variable to be the common webserver location
+
+-------------------------------------------------------------------
 Wed Nov 01 20:47:46 CET 2023 - marina.latini@suse.com
 
 - version 4.4.12-1

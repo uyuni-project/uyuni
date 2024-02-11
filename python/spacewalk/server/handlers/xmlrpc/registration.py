@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -23,61 +24,88 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _, cat
+
+# pylint: disable-next=ungrouped-imports
 from uyuni.common.rhnLib import checkValue
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.server.rhnLib import normalize_server_arch
 from spacewalk.server.rhnServer import server_route, server_lib
 from spacewalk.server.rhnServer.server_certificate import Certificate
 from spacewalk.server.rhnHandler import rhnHandler
-from spacewalk.server import rhnUser, rhnServer, rhnSQL, rhnCapability, \
-    rhnChannel, rhnVirtualization
+from spacewalk.server import (
+    rhnUser,
+    rhnServer,
+    rhnSQL,
+    rhnCapability,
+    rhnChannel,
+    rhnVirtualization,
+)
 from spacewalk.common.rhnTB import add_to_seclist
 
 
 def hash_validate(data, *keylist):
-    """ verify that a hash has all the keys and those have actual values """
+    """verify that a hash has all the keys and those have actual values"""
     for k in keylist:
         if k not in data:
             return 0
         l = data[k]
         if l is None:
             return 0
+        # pylint: disable-next=unidiomatic-typecheck
         if type(l) == type("") and len(l) == 0:
             return 0
     return 1
 
 
 def parse_smbios(smbios):
-    vendor = smbios.get('smbios.bios.vendor')
-    serial = smbios.get('smbios.system.serial', '')
-    manufacturer = smbios.get('smbios.system.manufacturer')
-    product = smbios.get('smbios.system.product')
+    vendor = smbios.get("smbios.bios.vendor")
+    serial = smbios.get("smbios.system.serial", "")
+    manufacturer = smbios.get("smbios.system.manufacturer")
+    product = smbios.get("smbios.system.product")
 
     # XXX need to worry about uuid being none for other virt types and
     # available subs check
     uuid = None
-    if 'smbios.system.uuid' in smbios:
-        uuid = smbios['smbios.system.uuid']
-        uuid = uuid.replace('-', '')
+    if "smbios.system.uuid" in smbios:
+        uuid = smbios["smbios.system.uuid"]
+        uuid = uuid.replace("-", "")
 
     virttype = None
     if uuid is not None and (
-            vendor == "QEMU"
-            or manufacturer == 'QEMU'
-            or (manufacturer == 'Bochs' and product == 'Bochs') # Bochs is a virtual SUSE KVM machine
-            or (manufacturer == 'RDO' and product == 'OpenStack Compute') # Openstack compute
-            or (manufacturer == 'Google' and product == 'Google Compute Engine') # Google Compute Engine
-            or (manufacturer == 'Red Hat' and product in ('KVM', 'RHEV Hypervisor', 'OpenStack Compute'))
-            or (product == 'OpenStack Nova' and (manufacturer in ('Fedora Project', 'RDO Project') or
-                manufacturer and manufacturer.startswith('Red Hat')))
-            or (manufacturer == 'oVirt' and product in ('oVirt Node', 'RHEV Hypervisor'))
-            or (manufacturer == 'Nutanix' and product == 'AHV')):
+        vendor == "QEMU"
+        or manufacturer == "QEMU"
+        or (
+            manufacturer == "Bochs" and product == "Bochs"
+        )  # Bochs is a virtual SUSE KVM machine
+        or (
+            manufacturer == "RDO" and product == "OpenStack Compute"
+        )  # Openstack compute
+        or (
+            manufacturer == "Google" and product == "Google Compute Engine"
+        )  # Google Compute Engine
+        or (
+            manufacturer == "Red Hat"
+            and product in ("KVM", "RHEV Hypervisor", "OpenStack Compute")
+        )
+        or (
+            product == "OpenStack Nova"
+            and (
+                manufacturer in ("Fedora Project", "RDO Project")
+                or manufacturer
+                and manufacturer.startswith("Red Hat")
+            )
+        )
+        or (manufacturer == "oVirt" and product in ("oVirt Node", "RHEV Hypervisor"))
+        or (manufacturer == "Nutanix" and product == "AHV")
+    ):
         virttype = rhnVirtualization.VirtualizationType.QEMU
     else:
-        if manufacturer == 'Microsoft Corporation' and product == 'Virtual Machine':
+        if manufacturer == "Microsoft Corporation" and product == "Virtual Machine":
             virttype = rhnVirtualization.VirtualizationType.HYPERV
-        elif serial.startswith('VMware-'):
+        elif serial.startswith("VMware-"):
             virttype = rhnVirtualization.VirtualizationType.VMWARE
-        elif manufacturer == 'HITACHI' and product.endswith(' HVM LPAR'):
+        elif manufacturer == "HITACHI" and product.endswith(" HVM LPAR"):
             virttype = rhnVirtualization.VirtualizationType.VIRTAGE
         if uuid is None:
             uuid = "flex-guest"
@@ -87,13 +115,13 @@ def parse_smbios(smbios):
     elif product == "VirtualBox" and uuid is not None:
         return (rhnVirtualization.VirtualizationType.VBOX, uuid)
     elif product == "VirtualPC" and uuid is not None:
-         return (rhnVirtualization.VirtualizationType.VPC, uuid)
+        return (rhnVirtualization.VirtualizationType.VPC, uuid)
     return (None, None)
 
 
 class Registration(rhnHandler):
 
-    """ encapsulate functions that we will provide for the outside world """
+    """encapsulate functions that we will provide for the outside world"""
 
     def __init__(self):
         rhnHandler.__init__(self)
@@ -109,18 +137,18 @@ class Registration(rhnHandler):
         self.functions.append("get_possible_orgs")
         self.functions.append("new_system")
         self.functions.append("new_system_user_pass")
-# self.functions.append("new_system_activation_key")
-        self.functions.append("new_user")               # obsoleted
+        # self.functions.append("new_system_activation_key")
+        self.functions.append("new_user")  # obsoleted
         self.functions.append("privacy_statement")
         self.functions.append("refresh_hw_profile")
         self.functions.append("register_osad")
         self.functions.append("register_osad_jid")
         self.functions.append("register_product")
         self.functions.append("remaining_subscriptions")  # obsoleted
-        self.functions.append("reserve_user")           # obsoleted
+        self.functions.append("reserve_user")  # obsoleted
         self.functions.append("send_serial")
         self.functions.append("upgrade_version")
-        self.functions.append("update_contact_info")    # obsoleted
+        self.functions.append("update_contact_info")  # obsoleted
         self.functions.append("update_packages")
         self.functions.append("update_systemid")
         self.functions.append("update_transactions")
@@ -135,7 +163,7 @@ class Registration(rhnHandler):
 
         # a mapping between vendor and asset tags or serial numbers.
         # if we want to support other vendors for re
-        self.vendor_tags = {'DELL': 'smbios.system.serial'}
+        self.vendor_tags = {"DELL": "smbios.system.serial"}
 
     def reserve_user(self, username, password):
         """
@@ -158,8 +186,7 @@ class Registration(rhnHandler):
             raise rhnFault(3)
         return ret
 
-    def new_user(self, username, password, email=None,
-                 org_id=None, org_password=None):
+    def new_user(self, username, password, email=None, org_id=None, org_password=None):
         """
         Finish off creating the user.
 
@@ -179,7 +206,9 @@ class Registration(rhnHandler):
             try:
                 org_id = int(str(org_id))
             except ValueError:
-                raise_with_tb(rhnFault(30, _faultValueString(org_id, "org_id")), sys.exc_info()[2])
+                raise_with_tb(
+                    rhnFault(30, _faultValueString(org_id, "org_id")), sys.exc_info()[2]
+                )
         else:
             org_id = org_password = None
         username, password = rhnUser.check_user_password(username, password)
@@ -190,18 +219,18 @@ class Registration(rhnHandler):
         return ret
 
     def validate_system_input(self, data):
-        """ check the input data """
+        """check the input data"""
         if not hash_validate(data, "os_release", "architecture", "profile_name"):
             log_error("Incomplete data hash")
             raise rhnFault(21, _("Required data missing"))
         # we require either a username and a password or a token
-        if not hash_validate(data, "username", "password") and \
-           not hash_validate(data, "token"):
+        if not hash_validate(data, "username", "password") and not hash_validate(
+            data, "token"
+        ):
             raise rhnFault(21, _("Required members missing"))
 
     def validate_system_user(self, username, password):
-        username, password = rhnUser.check_user_password(username,
-                                                         password)
+        username, password = rhnUser.check_user_password(username, password)
         user = rhnUser.search(username)
 
         if user is None:
@@ -214,15 +243,16 @@ class Registration(rhnHandler):
             raise rhnFault(2)
 
         if rhnUser.is_user_disabled(username):
-            msg = _("""
+            msg = _(
+                """
                    %s Account has been deactivated on this server.
-                   Please contact your Org administrator for more help.""")
+                   Please contact your Org administrator for more help."""
+            )
             raise rhnFault(1, msg % username, explain=0)
 
         return user
 
-    def create_system(self, user, profile_name, release_version,
-                      architecture, data):
+    def create_system(self, user, profile_name, release_version, architecture, data):
         """
         Create a system based on the input parameters.
 
@@ -232,61 +262,77 @@ class Registration(rhnHandler):
         """
 
         if "machine_id" in data:
-            entitlements = server_lib.check_entitlement_by_machine_id(data["machine_id"])
-            log_debug(4, "found entitlements for machine_id", data["machine_id"], entitlements)
+            entitlements = server_lib.check_entitlement_by_machine_id(
+                data["machine_id"]
+            )
+            log_debug(
+                4, "found entitlements for machine_id", data["machine_id"], entitlements
+            )
             if entitlements and "salt_entitled" in entitlements:
-                raise rhnFault(48, """
+                raise rhnFault(
+                    48,
+                    """
     This system is already registered as a Salt Minion. If you want to register it as a traditional client
     please delete it first via the web UI or API and then register it using the traditional tools.
-                """)
+                """,
+                )
 
-        if profile_name is not None and not \
-           rhnFlags.test("re_registration_token") and \
-           len(profile_name) < 1:
+        if (
+            profile_name is not None
+            and not rhnFlags.test("re_registration_token")
+            and len(profile_name) < 1
+        ):
             raise rhnFault(800)
 
         # log entry point
         if "token" in data:
+            # pylint: disable-next=consider-using-f-string
             log_item = "token = '%s'" % data["token"]
         else:
+            # pylint: disable-next=consider-using-f-string
             log_item = "username = '%s'" % user.username
 
         log_debug(1, log_item, release_version, architecture)
 
         # Fetch the applet's UUID
         if "uuid" in data:
-            applet_uuid = data['uuid']
+            applet_uuid = data["uuid"]
             log_debug(3, "applet uuid", applet_uuid)
         else:
             applet_uuid = None
 
         # Fetch the up2date UUID
         if "rhnuuid" in data:
-            up2date_uuid = data['rhnuuid']
+            up2date_uuid = data["rhnuuid"]
             log_debug(3, "up2date uuid", up2date_uuid)
             # XXX Should somehow check the uuid uniqueness
-            #raise rhnFault(105, "A system cannot be registered multiple times")
+            # raise rhnFault(105, "A system cannot be registered multiple times")
         else:
             up2date_uuid = None
 
         release = str(release_version)
 
-        if 'token' in data:
-            token_string = data['token']
+        if "token" in data:
+            token_string = data["token"]
             # Look the token up; if the token does not exist or is invalid,
             # stop right here (search_token raises the appropriate rhnFault)
             tokens_obj = rhnServer.search_token(token_string)
+            # pylint: disable-next=unused-variable
             log_user_id = tokens_obj.get_user_id()
         else:
             # user should not be null here
             log_user_id = user.getid()
             tokens_obj = rhnServer.search_org_token(user.contact["org_id"])
-            log_debug(3, "universal_registration_token set as %s" %
-                      str(tokens_obj.get_tokens()))
+            log_debug(
+                3,
+                # pylint: disable-next=consider-using-f-string
+                "universal_registration_token set as %s" % str(tokens_obj.get_tokens()),
+            )
             rhnFlags.set("universal_registration_token", tokens_obj)
 
-        if 'channel' in data and len(data['channel']) > 0:
-            channel = data['channel']
+        if "channel" in data and len(data["channel"]) > 0:
+            channel = data["channel"]
+            # pylint: disable-next=consider-using-f-string
             log_debug(3, "requested EUS channel: %s" % str(channel))
         else:
             channel = None
@@ -310,19 +356,19 @@ class Registration(rhnHandler):
                 # provided for us
                 newserv.set_arch(architecture)
                 # if no creator_id use the activation key owner, else keep
-                if not newserv.server['creator_id']:
+                if not newserv.server["creator_id"]:
                     newserv.user = user
                 else:
                     newserv.user = rhnUser.User("", "")
-                    newserv.user.reload(newserv.server['creator_id'])
+                    newserv.user.reload(newserv.server["creator_id"])
                 # Generate a new secret for this server
                 newserv.gen_secret()
                 # Get rid of the old package profile - it's bogus in this case
                 newserv.dispose_packages()
                 # The new server may have a different base channel
                 suse_products = None
-                if 'suse_products' in data:
-                    suse_products = data['suse_products']
+                if "suse_products" in data:
+                    suse_products = data["suse_products"]
                 newserv.change_base_channel(release, suse_products=suse_products)
 
         if newserv is None:
@@ -331,55 +377,54 @@ class Registration(rhnHandler):
 
         # Proceed with using the rest of the data
         newserv.server["release"] = release
-        if 'release_name' in data:
-            newserv.server["os"] = data['release_name']
+        if "release_name" in data:
+            newserv.server["os"] = data["release_name"]
 
         ## add suse_products profile if available
-        if 'suse_products' in data:
-            newserv.add_suse_products( data["suse_products"] )
+        if "suse_products" in data:
+            newserv.add_suse_products(data["suse_products"])
         ## add the package list
-        if 'packages' in data:
-            for package in data['packages']:
+        if "packages" in data:
+            for package in data["packages"]:
                 newserv.add_package(package)
         # add the hardware profile
-        if 'hardware_profile' in data:
-            for hw in data['hardware_profile'][:]:
-                if hw['class'] == 'NETINFO':
+        if "hardware_profile" in data:
+            for hw in data["hardware_profile"][:]:
+                if hw["class"] == "NETINFO":
                     self.extract_and_save_netinfos(newserv, hw)
                     continue
-                if hw['class'] == 'FQDN':
+                if hw["class"] == "FQDN":
                     self.extract_and_save_fqdns(newserv, hw)
                     continue
                 newserv.add_hardware(hw)
         # fill in the other details from the data dictionary
-        if profile_name is not None and not \
-           rhnFlags.test("re_registration_token"):
+        if profile_name is not None and not rhnFlags.test("re_registration_token"):
             newserv.server["name"] = profile_name[:128]
-        if 'os' in data:
+        if "os" in data:
             newserv.server["os"] = data["os"][:64]
-        if 'description' in data:
+        if "description" in data:
             newserv.server["description"] = data["description"][:256]
         else:
             newserv.default_description()
 
         # Check for virt params
         # Get the uuid, if there is one.
-        if 'virt_uuid' in data:
-            virt_uuid = data['virt_uuid']
-            if virt_uuid is not None \
-               and not rhnVirtualization.is_host_uuid(virt_uuid):
+        if "virt_uuid" in data:
+            virt_uuid = data["virt_uuid"]
+            if virt_uuid is not None and not rhnVirtualization.is_host_uuid(virt_uuid):
                 # If we don't have a virt_type key, we'll assume PARA.
                 virt_type = None
-                if 'virt_type' in data:
-                    virt_type = data['virt_type']
-                    if virt_type == 'para':
+                if "virt_type" in data:
+                    virt_type = data["virt_type"]
+                    if virt_type == "para":
                         virt_type = rhnVirtualization.VirtualizationType.PARA
-                    elif virt_type == 'fully':
+                    elif virt_type == "fully":
                         virt_type = rhnVirtualization.VirtualizationType.FULLY
                     else:
-                        raise Exception(
-                            "Unknown virtualization type: %s" % virt_type)
+                        # pylint: disable-next=broad-exception-raised,consider-using-f-string
+                        raise Exception("Unknown virtualization type: %s" % virt_type)
                 else:
+                    # pylint: disable-next=broad-exception-raised
                     raise Exception("Virtualization type not provided")
                 newserv.virt_uuid = virt_uuid
                 newserv.virt_type = virt_type
@@ -391,9 +436,8 @@ class Registration(rhnHandler):
             newserv.virt_type = None
 
         # If we didn't find virt info from xen, check smbios
-        if 'smbios' in data and newserv.virt_uuid is None:
-            (newserv.virt_type, newserv.virt_uuid) = \
-                parse_smbios(data['smbios'])
+        if "smbios" in data and newserv.virt_uuid is None:
+            (newserv.virt_type, newserv.virt_uuid) = parse_smbios(data["smbios"])
 
         if tokens_obj.forget_rereg_token:
             # At this point we retained the server with re-activation
@@ -422,11 +466,13 @@ class Registration(rhnHandler):
             try:
                 # don't commit
                 newserv.save(0, channel)
-            except (rhnChannel.NoBaseChannelError) as channel_error:
+            # pylint: disable-next=unused-variable
+            except rhnChannel.NoBaseChannelError as channel_error:
                 raise_with_tb(rhnFault(70), sys.exc_info()[2])
             except rhnChannel.BaseChannelDeniedError as channel_error:
                 raise_with_tb(rhnFault(71), sys.exc_info()[2])
             except server_lib.rhnSystemEntitlementException:
+                # pylint: disable-next=unused-variable
                 e = sys.exc_info()[1]
                 raise_with_tb(rhnFault(90), sys.exc_info()[2])
 
@@ -440,6 +486,7 @@ class Registration(rhnHandler):
             newserv.use_token()
         else:
             # Some information
+            # pylint: disable-next=consider-using-f-string
             newserv.server["info"] = "rhn_register by %s" % log_item
             log_debug(3, "rhn_register process_kickstart_info")
             newserv.process_kickstart_info()
@@ -459,7 +506,7 @@ class Registration(rhnHandler):
         #   +--rhnNoSystemEntitlementsException
         try:
             newserv.save(1, channel)
-        except (rhnChannel.NoBaseChannelError) as channel_error:
+        except rhnChannel.NoBaseChannelError as channel_error:
             raise_with_tb(rhnFault(70), sys.exc_info()[2])
         except rhnChannel.BaseChannelDeniedError as channel_error:
             raise_with_tb(rhnFault(71), sys.exc_info()[2])
@@ -476,7 +523,9 @@ class Registration(rhnHandler):
         # store route in DB (schema for RHN 3.1+ only!)
         server_route.store_client_route(newserv.getid())
 
-        return {'server': newserv, }
+        return {
+            "server": newserv,
+        }
 
     def new_system(self, data):
         """
@@ -507,13 +556,12 @@ class Registration(rhnHandler):
         # Authorize username and password, if used.
         # Store the user object in user.
         user = None
-        if 'token' not in data:
-            user = self.validate_system_user(data["username"],
-                                             data["password"])
+        if "token" not in data:
+            user = self.validate_system_user(data["username"], data["password"])
 
-        release_version = data['os_release']
-        profile_name = data['profile_name']
-        architecture = data['architecture']
+        release_version = data["os_release"]
+        profile_name = data["profile_name"]
+        architecture = data["architecture"]
 
         # Create the system and get back the rhnServer object.
         #
@@ -525,71 +573,68 @@ class Registration(rhnHandler):
         #   rhnSystemEntitlementException
         #   |
         #   +--rhnNoSystemEntitlementsException
-        server_data = self.create_system(user, profile_name,
-                                         release_version,
-                                         architecture, data)
-        newserv = server_data['server']
+        server_data = self.create_system(
+            user, profile_name, release_version, architecture, data
+        )
+        newserv = server_data["server"]
 
         system_certificate = newserv.system_id()
 
         # Return the server certificate file down to the client.
         return system_certificate
 
-    def new_system_user_pass(self, profile_name, os_release_name,
-                             version, arch, username,
-                             password, other):
-        """ Registers a new system to an org specified by a username, password, and
-            optionally an org id.
+    def new_system_user_pass(
+        self, profile_name, os_release_name, version, arch, username, password, other
+    ):
+        """Registers a new system to an org specified by a username, password, and
+        optionally an org id.
 
-            New for RHEL 5.
+        New for RHEL 5.
 
-            All args are strings except other.
-            other is a dict with:
-            * org_id - optional. Must be a string that contains the number. If it's
-            not given, the default org is used.
+        All args are strings except other.
+        other is a dict with:
+        * org_id - optional. Must be a string that contains the number. If it's
+        not given, the default org is used.
 
-            If a profile is created it will return a dict with:
-            * system_id - the same xml as was previously returned
-            * channels - a list of the channels (as strings) the system was
-              subscribed to
-            * failed_channels - a list of channels (as strings) that
-              the system should have been subscribed to but couldn't be because they
-              don't have the necessary entitlements available. Can contain all the
-              channels including the base channel.
-            * system_slots - a list of the system slots used (as strings).
-            * failed_system_slots - a list of system slots (as strings) that they
-              should have used but couldn't because there weren't available
-              entitlements
-            * universal_activation_key - a list of universal default activation keys
-              (as strings) that were used while registering.
-            The call will try to use the highest system slot available. An entry will
-            be added to failed_system_slots for each one that is tried and fails and
-            system_slots will contain the one that succeeded if any.
+        If a profile is created it will return a dict with:
+        * system_id - the same xml as was previously returned
+        * channels - a list of the channels (as strings) the system was
+          subscribed to
+        * failed_channels - a list of channels (as strings) that
+          the system should have been subscribed to but couldn't be because they
+          don't have the necessary entitlements available. Can contain all the
+          channels including the base channel.
+        * system_slots - a list of the system slots used (as strings).
+        * failed_system_slots - a list of system slots (as strings) that they
+          should have used but couldn't because there weren't available
+          entitlements
+        * universal_activation_key - a list of universal default activation keys
+          (as strings) that were used while registering.
+        The call will try to use the highest system slot available. An entry will
+        be added to failed_system_slots for each one that is tried and fails and
+        system_slots will contain the one that succeeded if any.
 
-            If an error occurs which prevents the creation of a profile, a fault will
-            be raised:
-            TODO
+        If an error occurs which prevents the creation of a profile, a fault will
+        be raised:
+        TODO
         """
 
         add_to_seclist(password)
 
-        log_debug(4, 'in new_system_user_pass')
+        log_debug(4, "in new_system_user_pass")
 
         # release_name wasn't required in the old call, so I'm just going to
         # add it to other
-        other['release_name'] = os_release_name
+        other["release_name"] = os_release_name
 
         # Authorize the username and password. Save the returned user object.
         user = self.validate_system_user(username, password)
 
         # This creates the rhnServer record and commits it to the db.
         # It also assigns the system a base channel.
-        server_data = self.create_system(user, profile_name,
-                                         version,
-                                         arch,
-                                         other)
+        server_data = self.create_system(user, profile_name, version, arch, other)
         # Save the returned Server object
-        newserv = server_data['server']
+        newserv = server_data["server"]
 
         # Get the server db id.
         server_id = newserv.getid()
@@ -597,40 +642,44 @@ class Registration(rhnHandler):
         # Get the server certificate file
         system_certificate = newserv.system_id()
 
-        log_debug(4, 'Server id created as %s' % server_id)
+        # pylint: disable-next=consider-using-f-string
+        log_debug(4, "Server id created as %s" % server_id)
 
         failures = []
         unknowns = []
 
         # Build our return values.
+        # pylint: disable-next=unused-variable
         attempted_channels = []
         successful_channels = []
         failed_channels = []
 
         actual_channels = rhnChannel.channels_for_server(server_id)
         for channel in actual_channels:
-            successful_channels.append(channel['label'])
+            successful_channels.append(channel["label"])
 
         # If we don't have any successful channels, we know the base channel
         # failed.
         if len(successful_channels) == 0:
-            log_debug(4, 'System %s not subscribed to any channels' % server_id)
+            # pylint: disable-next=consider-using-f-string
+            log_debug(4, "System %s not subscribed to any channels" % server_id)
 
             # Look up the base channel, and store it as a failure.
             try:
                 base = rhnChannel.get_channel_for_release_arch(
-                    version,
-                    arch, newserv['org_id'])
-                failed_channels.append(base['label'])
+                    version, arch, newserv["org_id"]
+                )
+                failed_channels.append(base["label"])
             # We want to swallow exceptions here as we are just generating data
             # for the review screen in rhn_register.
+            # pylint: disable-next=bare-except
             except:
                 pass
 
         # Store any of our child channel failures
         failed_channels = failed_channels + failures
 
-        attempted_system_slots = ['enterprise_entitled']
+        attempted_system_slots = ["enterprise_entitled"]
         successful_system_slots = server_lib.check_entitlement(server_id)
         successful_system_slots = list(successful_system_slots.keys())
         failed_system_slots = []
@@ -650,14 +699,15 @@ class Registration(rhnHandler):
             token = rhnFlags.get("universal_registration_token")
             universal_activation_key = token.get_tokens()
 
-        return {'system_id': system_certificate,
-                'channels': successful_channels,
-                'failed_channels': failed_channels,
-                'failed_options': unknowns,
-                'system_slots': successful_system_slots,
-                'failed_system_slots': failed_system_slots,
-                'universal_activation_key': universal_activation_key
-                }
+        return {
+            "system_id": system_certificate,
+            "channels": successful_channels,
+            "failed_channels": failed_channels,
+            "failed_options": unknowns,
+            "system_slots": successful_system_slots,
+            "failed_system_slots": failed_system_slots,
+            "universal_activation_key": universal_activation_key,
+        }
 
     # Registers a new system to an org specified by an activation key.
     #
@@ -666,37 +716,37 @@ class Registration(rhnHandler):
     # See documentation for new_system_user_pass. This behaves the same way
     # except it takes an activation key instead of username, password, and
     # maybe org id.
-# def new_system_activation_key(self, profile_name, os_release_name,
-# os_release_version, arch, activation_key, other):
-# return { 'system_id' : self.new_system({'profile_name' : profile_name,
-# 'os_release' : os_release_version,
-# 'release_name' : os_release_name,
-# 'architecture' : arch,
-# 'token' : activation_key,
-# }),
-# 'channels' : ['UNDER CONSTRUCTION'],
-# 'failed_channels' : ['UNDER CONSTRUCTION'],
-# 'system_slots' : ['UNDER CONSTRUCTION'],
-# 'failed_system_slots' : ['UNDER CONSTRUCTION'],
-# }
+    # def new_system_activation_key(self, profile_name, os_release_name,
+    # os_release_version, arch, activation_key, other):
+    # return { 'system_id' : self.new_system({'profile_name' : profile_name,
+    # 'os_release' : os_release_version,
+    # 'release_name' : os_release_name,
+    # 'architecture' : arch,
+    # 'token' : activation_key,
+    # }),
+    # 'channels' : ['UNDER CONSTRUCTION'],
+    # 'failed_channels' : ['UNDER CONSTRUCTION'],
+    # 'system_slots' : ['UNDER CONSTRUCTION'],
+    # 'failed_system_slots' : ['UNDER CONSTRUCTION'],
+    # }
 
     def get_possible_orgs(self, username, password):
-        """ Gets all the orgs that a user belongs to.
-            In the OCS-future, users may belong to more than one org.
+        """Gets all the orgs that a user belongs to.
+        In the OCS-future, users may belong to more than one org.
 
-            New for RHEL 5.
+        New for RHEL 5.
 
-            Returns a dict like:
-            {
-                'orgs': {'19': 'Engineering', '4009': 'Finance'},
-                'default_org': '19'
-            }
-            'orgs' must have at least one pair and 'default_org' must exist and point
-            to something in 'orgs'.
+        Returns a dict like:
+        {
+            'orgs': {'19': 'Engineering', '4009': 'Finance'},
+            'default_org': '19'
+        }
+        'orgs' must have at least one pair and 'default_org' must exist and point
+        to something in 'orgs'.
 
-            TODO Pick fault number for this and document it here
-            Fault:
-            * Bad credentials
+        TODO Pick fault number for this and document it here
+        Fault:
+        * Bad credentials
         """
         user = rhnUser.auth_username_password(username, password)
 
@@ -709,40 +759,40 @@ class Registration(rhnHandler):
         org_name = user.customer["name"]
         orgs = {str(org_id): org_name}
         default_org = str(org_id)
-        return {'orgs': orgs, 'default_org': default_org}
+        return {"orgs": orgs, "default_org": default_org}
 
     def activate_registration_number(self, username, password, key, other):
-        """ Entitle a particular org using an entitlement number.
+        """Entitle a particular org using an entitlement number.
 
-            New for RHEL 5.
+        New for RHEL 5.
 
-            username, password, and key are strings.
-            other is a dict with:
-            * org_id - optional. If it's not given, the user's default org is used.
+        username, password, and key are strings.
+        other is a dict with:
+        * org_id - optional. If it's not given, the user's default org is used.
 
-            Returns a dict:
-            {
-                'status_code': <status code>,
-                'registration_number': 'EN for this system'
-                'channels' : channels,
-                'system_slots' : system_slots
-            }
-            'status_code' must be 0 for "we just activated the key" or 1 for "this
-            key was already activated."
-            'registration_number' will be the EN corresponding to this activation. If
-            we activated an EN we'll get the same thing back. If we activate an OEM
-            number (eg asset tag) and maybe a pre-rhel 5 subscription number, we'll
-            get back the EN that was generated from it.
-            'channels' is a dict of the channel susbscriptions that the key activated
-            the key/value pairs are label (string) / quantity (int)
-            'system_slots' is a dict of the system slots that the key activated
-            the key/value pairs are label (string) / quantity (int)
+        Returns a dict:
+        {
+            'status_code': <status code>,
+            'registration_number': 'EN for this system'
+            'channels' : channels,
+            'system_slots' : system_slots
+        }
+        'status_code' must be 0 for "we just activated the key" or 1 for "this
+        key was already activated."
+        'registration_number' will be the EN corresponding to this activation. If
+        we activated an EN we'll get the same thing back. If we activate an OEM
+        number (eg asset tag) and maybe a pre-rhel 5 subscription number, we'll
+        get back the EN that was generated from it.
+        'channels' is a dict of the channel susbscriptions that the key activated
+        the key/value pairs are label (string) / quantity (int)
+        'system_slots' is a dict of the system slots that the key activated
+        the key/value pairs are label (string) / quantity (int)
 
-            TODO Assign fault values and document them here
-            Faults:
-            * Invalid key (600)
-            * Bad credentials (?) - covers bad username and password, bad org id, and
-            user not in specified org
+        TODO Assign fault values and document them here
+        Faults:
+        * Invalid key (600)
+        * Bad credentials (?) - covers bad username and password, bad org id, and
+        user not in specified org
         """
         # bugzilla# 236927, jslagle
         # Clients are currently broken in that they try to activate
@@ -751,15 +801,17 @@ class Registration(rhnHandler):
         # entitling' fault.
         raise rhnFault(602)
 
+    # pylint: disable-next=invalid-name,unused-private-member
     def __findAssetTag(self, vendor, hardware_info):
-        """ Given some hardware information, we try to find the asset tag or
-            serial number.
+        """Given some hardware information, we try to find the asset tag or
+        serial number.
 
-            See activate_hardware_info below for the structure of the
-            hardware_info
+        See activate_hardware_info below for the structure of the
+        hardware_info
         """
 
         if vendor in self.vendor_tags:
+            # pylint: disable-next=unused-variable
             asset_value = ""
             key = self.vendor_tags[vendor]
             log_debug(5, "key: " + str(key))
@@ -770,6 +822,7 @@ class Registration(rhnHandler):
         log_debug(5, "no tag found for vendor: " + str(vendor))
         return None
 
+    # pylint: disable-next=unused-private-member
     def __transform_vendor_to_const(self, vendor):
         if vendor in [None, "", "Not Available", "None", "N/A"]:
             return None
@@ -779,6 +832,7 @@ class Registration(rhnHandler):
         else:
             return None
 
+    # pylint: disable-next=unused-argument
     def activate_hardware_info(self, username, password, hardware_info, other):
         """
         Given some hardware-based criteria per-vendor, try giving entitlements.
@@ -806,19 +860,21 @@ class Registration(rhnHandler):
         raise rhnFault(601)
 
     def attempt_eol_mailing(self, user, server):
-
         if not user:
+            # pylint: disable-next=broad-exception-raised
             raise Exception("user required to attempt eol mailing")
 
         if "email" in user.info:
             log_debug(4, "sending eol mail...")
-            body = EOL_EMAIL % {'server': server.server['name']}
+            body = EOL_EMAIL % {"server": server.server["name"]}
             headers = {}
-            headers['From'] = "SUSE Manager Server <dev-null@%s>" % os.uname()[1]
-            headers['To'] = user.info['email']
-            headers['Subject'] = 'End of Life SUSE Manager Channel Subscription'
+            # pylint: disable-next=consider-using-f-string
+            headers["From"] = "SUSE Manager Server <dev-null@%s>" % os.uname()[1]
+            headers["To"] = user.info["email"]
+            headers["Subject"] = "End of Life SUSE Manager Channel Subscription"
             rhnMail.send(headers, body)
 
+    # pylint: disable-next=unused-argument
     def send_serial(self, system_id, number, vendor=None):
         """
         Receive a vendor serial number from the client and tag it to the server.
@@ -830,8 +886,8 @@ class Registration(rhnHandler):
     # XXX: update this function to deal with the channels and stuff
     # TODO: Is this useful? we think not. investigate and possibly replace
     # with a NOOP.
-    def upgrade_version(self, system_id, newver, change_channel = True):
-        """ Upgrade a certificate's version to a different release. """
+    def upgrade_version(self, system_id, newver, change_channel=True):
+        """Upgrade a certificate's version to a different release."""
         log_debug(5, system_id, newver, change_channel)
         # we need to load the user because we will generate a new certificate
         self.load_user = 1
@@ -839,9 +895,10 @@ class Registration(rhnHandler):
         newver = str(newver)
         if not newver:
             raise rhnFault(21, _("Invalid system release version requested"))
-        #log the entry
+        # log the entry
         log_debug(1, server.getid(), newver, change_channel)
         if change_channel:
+            # pylint: disable-next=unused-variable
             ret = server.change_base_channel(newver)
             server.save()
         else:
@@ -849,6 +906,7 @@ class Registration(rhnHandler):
             msg = """The SUSE Manager Update Agent has detected a
             change in the base version of the operating system running
             on your system"""
+            # pylint: disable-next=consider-using-f-string
             server.add_history("Updated system release to %s" % (newver), msg)
             server.save_history_byid(server.server["id"])
             server.save()
@@ -856,13 +914,14 @@ class Registration(rhnHandler):
         return server.system_id()
 
     def add_packages(self, system_id, packages):
-        """ Add one or more package to the server profile. """
+        """Add one or more package to the server profile."""
         log_debug(5, system_id, packages)
         if CFG.DISABLE_PACKAGES:
             return 0
         packages = self._normalize_packages(system_id, packages)
         server = self.auth_system(system_id)
         # log the entry
+        # pylint: disable-next=consider-using-f-string
         log_debug(1, server.getid(), "packages: %d" % len(packages))
         check_products = False
         if len(server.get_packages()) == 0:
@@ -876,13 +935,14 @@ class Registration(rhnHandler):
         return 0
 
     def delete_packages(self, system_id, packages):
-        """ Delete one or more packages from the server profile """
+        """Delete one or more packages from the server profile"""
         log_debug(5, system_id, packages)
         if CFG.DISABLE_PACKAGES:
             return 0
         packages = self._normalize_packages(system_id, packages)
         server = self.auth_system(system_id)
         # log the entry
+        # pylint: disable-next=consider-using-f-string
         log_debug(1, server.getid(), "packages: %d" % len(packages))
         for package in packages:
             server.delete_package(package)
@@ -894,17 +954,24 @@ class Registration(rhnHandler):
         log_debug(5, system_id, packages)
         if CFG.DISABLE_PACKAGES:
             return 0
+        # pylint: disable-next=unidiomatic-typecheck
         if type(packages) != type({}):
             log_error("Invalid argument type", type(packages))
             raise rhnFault(21)
-        added_packages = self._normalize_packages(system_id, packages.get('added'), allow_none=1)
-        removed_packages = self._normalize_packages(system_id, packages.get('deleted'), allow_none=1)
+        added_packages = self._normalize_packages(
+            system_id, packages.get("added"), allow_none=1
+        )
+        removed_packages = self._normalize_packages(
+            system_id, packages.get("deleted"), allow_none=1
+        )
 
         server = self.auth_system(system_id)
         # log the entry
         if added_packages is not None:
+            # pylint: disable-next=consider-using-f-string
             log_debug(1, self.server_id, "added: %d" % len(added_packages))
         if removed_packages is not None:
+            # pylint: disable-next=consider-using-f-string
             log_debug(1, self.server_id, "deleted: %d" % len(removed_packages))
         # Update the capabilities list
         rhnCapability.update_client_capabilities(self.server_id)
@@ -916,11 +983,11 @@ class Registration(rhnHandler):
         return 0
 
     def virt_notify(self, system_id, actions):
-        """ This function fields virtualization-related notifications from the
-            client and delegates them out to the appropriate downstream handlers.
-            The 'actions' argument is formatted as follows:
+        """This function fields virtualization-related notifications from the
+        client and delegates them out to the appropriate downstream handlers.
+        The 'actions' argument is formatted as follows:
 
-            actions = [ ( timestamp, event, target, properties ), ... ]
+        actions = [ ( timestamp, event, target, properties ), ... ]
         """
         log_debug(3, "Received virt notification:", system_id, actions)
 
@@ -928,6 +995,7 @@ class Registration(rhnHandler):
         server = self.auth_system(system_id)
         server_id = server.getid()
 
+        # pylint: disable-next=protected-access
         rhnVirtualization._virt_notify(server_id, actions)
 
         rhnSQL.commit()
@@ -935,8 +1003,8 @@ class Registration(rhnHandler):
         return 0
 
     def update_packages(self, system_id, packages):
-        """ This function will update the package list associated with a server
-            to be exactly the list of packages passed on the argument list
+        """This function will update the package list associated with a server
+        to be exactly the list of packages passed on the argument list
         """
         log_debug(5, system_id, packages)
         if CFG.DISABLE_PACKAGES:
@@ -945,6 +1013,7 @@ class Registration(rhnHandler):
 
         server = self.auth_system(system_id)
         # log the entry
+        # pylint: disable-next=consider-using-f-string
         log_debug(1, server.getid(), "packages: %d" % len(packages))
         server.dispose_packages()
         for package in packages:
@@ -953,9 +1022,9 @@ class Registration(rhnHandler):
         return 0
 
     def _normalize_packages(self, system_id, packages, allow_none=0):
-        """ the function checks if list of packages is well formated
-            and also converts packages from old list of lists
-            (extended_profile >= 2) to new list of dicts (extended_profile = 2)
+        """the function checks if list of packages is well formated
+        and also converts packages from old list of lists
+        (extended_profile >= 2) to new list of dicts (extended_profile = 2)
         """
 
         if allow_none and packages is None:
@@ -963,11 +1032,13 @@ class Registration(rhnHandler):
         # we need to be paranoid about the format of the argument because
         # if we accept wrong input then we might end up disposing in error
         # of all packages registered here
+        # pylint: disable-next=unidiomatic-typecheck
         if type(packages) != type([]):
             log_error("Invalid argument type", type(packages))
             raise rhnFault(21)
 
         # Update the capabilities list
+        # pylint: disable-next=unused-variable
         server = self.auth_system(system_id)
         rhnCapability.update_client_capabilities(self.server_id)
 
@@ -976,64 +1047,78 @@ class Registration(rhnHandler):
         # use a list of dicts
         client_caps = rhnCapability.get_client_capabilities()
         package_is_dict = 0
+        # pylint: disable-next=invalid-name
         packagesV2 = []
-        if client_caps and 'packages.extended_profile' in client_caps:
-            cap_info = client_caps['packages.extended_profile']
-            if cap_info and int(cap_info['version']) >= 2:
+        if client_caps and "packages.extended_profile" in client_caps:
+            cap_info = client_caps["packages.extended_profile"]
+            if cap_info and int(cap_info["version"]) >= 2:
                 package_is_dict = 1
+                # pylint: disable-next=invalid-name
                 packagesV2 = packages
 
         for package in packages:
             if package_is_dict:
                 # extended_profile >= 2
+                # pylint: disable-next=unidiomatic-typecheck
                 if type(package) != type({}):
-                    log_error("Invalid package spec for extended_profile >= 2",
-                              type(package), "len = %d" % len(package))
+                    log_error(
+                        "Invalid package spec for extended_profile >= 2",
+                        type(package),
+                        # pylint: disable-next=consider-using-f-string
+                        "len = %d" % len(package),
+                    )
                     raise rhnFault(21)
             else:
                 # extended_profile < 2
-                if (type(package) != type([]) or len(package) < 4):
-                    log_error("Invalid package spec", type(package),
-                              "len = %d" % len(package))
+                # pylint: disable-next=unidiomatic-typecheck
+                if type(package) != type([]) or len(package) < 4:
+                    log_error(
+                        "Invalid package spec",
+                        type(package),
+                        # pylint: disable-next=consider-using-f-string
+                        "len = %d" % len(package),
+                    )
                     raise rhnFault(21)
                 else:
-                    p = {'name': package[0],
-                         'version': package[1],
-                         'release': package[2],
-                         'epoch': package[3],
-                         }
+                    p = {
+                        "name": package[0],
+                        "version": package[1],
+                        "release": package[2],
+                        "epoch": package[3],
+                    }
                     if len(package) > 4:
-                        p['arch'] = package[4]
+                        p["arch"] = package[4]
                     if len(package) > 5:
-                        p['cookie'] = package[5]
+                        p["cookie"] = package[5]
                     packagesV2.append(p)
         return packagesV2
 
     def extract_and_save_netinfos(self, server, hardware):
-        if 'hostname' in list(hardware.keys()):
+        if "hostname" in list(hardware.keys()):
             server.server["hostname"] = hardware["hostname"]
             del hardware["hostname"]
-        if 'ipaddr' in list(hardware.keys()):
+        if "ipaddr" in list(hardware.keys()):
             server.addr["ipaddr"] = hardware["ipaddr"]
             del hardware["ipaddr"]
-        if 'ip6addr' in list(hardware.keys()):
+        if "ip6addr" in list(hardware.keys()):
             server.addr["ip6addr"] = hardware["ip6addr"]
             del hardware["ip6addr"]
 
     def extract_and_save_fqdns(self, server, hardware):
         hardware_curr = hardware.copy()
-        for fqdn in hardware['name']:
-            hardware_curr['name'] = fqdn
+        for fqdn in hardware["name"]:
+            hardware_curr["name"] = fqdn
             server.add_hardware(hardware_curr)
 
     def __add_hw_profile_no_auth(self, server, hwlist):
-        """ Insert a new profile for the server, but do not authenticate """
+        """Insert a new profile for the server, but do not authenticate"""
+        # pylint: disable-next=consider-using-f-string
         log_debug(1, server.getid(), "items: %d" % len(hwlist))
         for hardware in hwlist[:]:
-            if hardware['class'] == 'NETINFO':
+            if hardware["class"] == "NETINFO":
                 self.extract_and_save_netinfos(server, hardware)
                 continue
-            if hardware['class'] == 'FQDN':
+            if hardware["class"] == "FQDN":
                 self.extract_and_save_fqdns(server, hardware)
                 continue
             server.add_hardware(hardware)
@@ -1042,7 +1127,7 @@ class Registration(rhnHandler):
         server.save()
 
     def add_hw_profile(self, system_id, hwlist):
-        """ Insert a new profile for the server """
+        """Insert a new profile for the server"""
         log_debug(5, system_id, hwlist)
         server = self.auth_system(system_id)
         self.__add_hw_profile_no_auth(server, hwlist)
@@ -1062,55 +1147,72 @@ class Registration(rhnHandler):
             ipaddr_suffix = 6
             log_debug(1, system_id, "Setting ip6addr as a primary interface")
         else:
-            raise rhnFault(22, _("Unable to find a valid network interface, both ipaddr and ip6addr not found."))
+            raise rhnFault(
+                22,
+                _(
+                    "Unable to find a valid network interface, both ipaddr and ip6addr not found."
+                ),
+            )
 
         # read the interface from the right table in the database
         # according to the primary network interface found
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            # pylint: disable-next=consider-using-f-string
+            """
             select interface_id
             from rhnServerNetAddress{0} rsna
                 left join rhnServerNetInterface rsni
                     on rsna.interface_id = rsni.id
             where address = :address and server_id = :server_id
-        """.format(ipaddr_suffix))
+        """.format(
+                ipaddr_suffix
+            )
+        )
         h.execute(address=ipaddr_value, server_id=sid)
         row = h.fetchone_dict()
         if row:
-            primif=row.get('interface_id')
+            primif = row.get("interface_id")
             if primif:
-                h = rhnSQL.prepare("""
+                h = rhnSQL.prepare(
+                    """
                     update rhnservernetinterface set is_primary = 'Y' where id = :id
-                """)
+                """
+                )
                 h.execute(id=primif)
                 rhnSQL.commit()
 
         return 0
 
     def refresh_hw_profile(self, system_id, hwlist):
-        """ Recreate the server HW profile """
+        """Recreate the server HW profile"""
         log_debug(5, system_id, hwlist)
         server = self.auth_system(system_id)
         sid = server.getid()
         # clear out the existing list first
         # the only difference between add_hw_profile and refresh_hw_profile
         # make sure primary network interface does not get reset
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select name from rhnservernetinterface where server_id = :server_id AND is_primary ='Y'
-        """)
+        """
+        )
         h.execute(server_id=sid)
         row = h.fetchone_dict()
         server.delete_hardware()
         self.__add_hw_profile_no_auth(server, hwlist)
         if row:
-            h = rhnSQL.prepare("""
+            h = rhnSQL.prepare(
+                """
                 update rhnservernetinterface set is_primary = 'Y' where server_id = :server_id AND name = :name
-            """)
-            h.execute(server_id=sid, name=row['name'])
+            """
+            )
+            h.execute(server_id=sid, name=row["name"])
             rhnSQL.commit()
         return 0
 
     def welcome_message(self, lang=None):
-        """ returns string of welcome message """
+        """returns string of welcome message"""
+        # pylint: disable-next=consider-using-f-string
         log_debug(1, "lang: %s" % lang)
         if lang:
             cat.setlangs(lang)
@@ -1120,7 +1222,8 @@ class Registration(rhnHandler):
         return msg
 
     def privacy_statement(self, lang=None):
-        """ returns string of privacy statement """
+        """returns string of privacy statement"""
+        # pylint: disable-next=consider-using-f-string
         log_debug(1, "lang: %s" % lang)
         if lang:
             cat.setlangs(lang)
@@ -1129,23 +1232,24 @@ class Registration(rhnHandler):
         rhnFlags.set("compress_response", 1)
         return msg
 
+    # pylint: disable-next=dangerous-default-value
     def register_product(self, system_id, product, oeminfo={}):
-        """ register a product and record the data sent with the registration
+        """register a product and record the data sent with the registration
 
-            bretm:  hasn't registered a product or recorded anything since 2001, near
-              as I can tell what it actually appears to be responsible for is
-              protecting us against people registering systems from t7/t9
-              countries
+        bretm:  hasn't registered a product or recorded anything since 2001, near
+          as I can tell what it actually appears to be responsible for is
+          protecting us against people registering systems from t7/t9
+          countries
 
-              actual use of registration numbers has been moved into the
-              server_class.__save stuff
+          actual use of registration numbers has been moved into the
+          server_class.__save stuff
         """
 
         log_debug(5, system_id, product, oeminfo)
+        # pylint: disable-next=unidiomatic-typecheck
         if type(product) != type({}):
             log_error("Invalid argument type", type(product))
-            raise rhnFault(21, _(
-                "Expected a dictionary as a product argument"))
+            raise rhnFault(21, _("Expected a dictionary as a product argument"))
         log_debug(4, product)
         # As per bug 129996 using an activation key should not overwrite the
         # user's info. Also, the reg number stuff doesn't work anyway
@@ -1153,8 +1257,9 @@ class Registration(rhnHandler):
         self.auth_system(system_id)
         return 0
 
+    # pylint: disable-next=dangerous-default-value
     def update_contact_info(self, username, password, info={}):
-        """ this API call is no longer used """
+        """this API call is no longer used"""
         log_debug(5, username, info)
         username, password = str(username), str(password)
         user = rhnUser.search(username)
@@ -1167,50 +1272,53 @@ class Registration(rhnHandler):
             raise rhnFault(2)
 
         if rhnUser.is_user_disabled(username):
-            msg = _("""
+            msg = _(
+                """
                    %s Account has been deactivated on this server.
-                   Please contact your Org administrator for more help.""")
+                   Please contact your Org administrator for more help."""
+            )
             raise rhnFault(1, msg % username, explain=0)
 
         return 0
 
+    # pylint: disable-next=unused-argument
     def update_transactions(self, system_id, timestamp, transactions_hash):
-        """ Updates the RPM transactions """
+        """Updates the RPM transactions"""
         log_debug(1)
         # Authenticate
+        # pylint: disable-next=unused-variable
         server = self.auth_system(system_id)
         # No op as of 20030923
         return 0
 
     def anonymous(self, release=None, arch=None):
-        """ To reduce the number of tracebacks """
+        """To reduce the number of tracebacks"""
         log_debug(1, "Disabled!", release, arch)
         raise rhnFault(28)
 
     def finish_message(self, system_id):
-        """ Presents the client with a message to display
-            Returns:
-            (returnCode, titleText, messageText)
-            titleText is the window's title, messageText is the message displayed in
-            that window by the client
+        """Presents the client with a message to display
+        Returns:
+        (returnCode, titleText, messageText)
+        titleText is the window's title, messageText is the message displayed in
+        that window by the client
 
-            if returnCode is 1, the client
-              will show the message in a window with the
-              title of titleText, and allow the user to
-              continue.
-            if returnCode is -1, the client
-              will show the message in a window with the
-              title of titleText, and not allow the user
-              to continue
-            if returnCode is 0, no message
-              screen will be shown.
+        if returnCode is 1, the client
+          will show the message in a window with the
+          title of titleText, and allow the user to
+          continue.
+        if returnCode is -1, the client
+          will show the message in a window with the
+          title of titleText, and not allow the user
+          to continue
+        if returnCode is 0, no message
+          screen will be shown.
         """
         log_debug(1)
         # Authenticate
         self.auth_system(system_id)
 
-        return_code, text_title, text_message = \
-            self.server.fetch_registration_message()
+        return_code, text_title, text_message = self.server.fetch_registration_message()
         if return_code:
             return return_code, text_title, text_message
 
@@ -1225,27 +1333,41 @@ class Registration(rhnHandler):
         text_title = CFG.REG_FINISH_MESSAGE_TITLE or ""
         text_file = CFG.REG_FINISH_MESSAGE_TEXT_FILE
         try:
+            # pylint: disable-next=unspecified-encoding
             text_message = open(text_file).read()
         except IOError:
             e = sys.exc_info()[1]
-            log_error("reg_fishish_message_return_code is set, but file "
-                      "%s invalid: %s" % (text_file, e))
+            log_error(
+                # pylint: disable-next=consider-using-f-string
+                "reg_fishish_message_return_code is set, but file "
+                "%s invalid: %s" % (text_file, e)
+            )
             return (0, "", "")
         return (return_code, text_title, text_message)
 
+    # pylint: disable-next=dangerous-default-value,unused-argument
     def register_osad(self, system_id, args={}):
         log_error("register_osad unsupported")
 
         return {}
 
+    # pylint: disable-next=dangerous-default-value,unused-argument
     def register_osad_jid(self, system_id, args={}):
         log_error("register_osad_jid unsupported")
 
         return {}
 
-    def available_eus_channels(self, username, password, arch,
-                               version, release, other=None):
-        '''
+    def available_eus_channels(
+        self,
+        username,
+        password,
+        arch,
+        version,
+        release,
+        # pylint: disable-next=unused-argument
+        other=None,
+    ):
+        """
         Given a server arch, redhat-release version, and redhat-release release
         returns the eligible channels for that system based on the entitlements
         in the org specified by username/password
@@ -1256,7 +1378,7 @@ class Registration(rhnHandler):
          'channels' : {'channel_label1' : 'channel_name1',
          'channel_lable2' : 'channel_name2'}
         }
-        '''
+        """
 
         user = rhnUser.search(username)
 
@@ -1269,48 +1391,54 @@ class Registration(rhnHandler):
             raise rhnFault(2)
 
         if rhnUser.is_user_disabled(username):
-            msg = _("""
+            msg = _(
+                """
                    %s Account has been deactivated on this server.
-                   Please contact your Org administrator for more help.""")
+                   Please contact your Org administrator for more help."""
+            )
             raise rhnFault(1, msg % username, explain=0)
 
         server_arch = normalize_server_arch(arch)
         user_id = user.getid()
-        org_id = user.contact['org_id']
+        org_id = user.contact["org_id"]
 
         channels = rhnChannel.base_eus_channel_for_ver_rel_arch(
-            version, release, server_arch,
-            org_id, user_id)
+            version, release, server_arch, org_id, user_id
+        )
 
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "EUS Channels are: %s" % str(channels))
 
-        default_channel = ''
+        default_channel = ""
         eus_channels = {}
         receiving_updates = []
 
         if channels is not None:
             eus_channels = {}
             for channel in channels:
-                eus_channels[channel['label']] = channel['name']
-                if channel['is_default'] == 'Y':
-                    default_channel = channel['label']
-                if channel['receiving_updates'] == 'Y':
-                    receiving_updates.append(channel['label'])
+                eus_channels[channel["label"]] = channel["name"]
+                if channel["is_default"] == "Y":
+                    default_channel = channel["label"]
+                if channel["receiving_updates"] == "Y":
+                    receiving_updates.append(channel["label"])
 
-        return {'default_channel': default_channel,
-                'receiving_updates': receiving_updates,
-                'channels': eus_channels}
+        return {
+            "default_channel": default_channel,
+            "receiving_updates": receiving_updates,
+            "channels": eus_channels,
+        }
 
+    # pylint: disable-next=unused-argument
     def remaining_subscriptions(self, username, password, arch, release):
-        """ This is an obsoleted API call used in old RHEL5 clients to determine
-            if they should show the "activate a subscription" page.
+        """This is an obsoleted API call used in old RHEL5 clients to determine
+        if they should show the "activate a subscription" page.
         """
         return 1
 
     def update_systemid(self, system_id):
-        """ update_systemid: update client server and certificate
-            In case the calling system is not using a certificate with a SHA-256
-            checksum, update its secret and issue it a new client certificate.
+        """update_systemid: update client server and certificate
+        In case the calling system is not using a certificate with a SHA-256
+        checksum, update its secret and issue it a new client certificate.
         """
         server = self.auth_system(system_id)
         cert = Certificate()
@@ -1318,16 +1446,17 @@ class Registration(rhnHandler):
 
         # System already uses certificate with a SHA-256 checksum,
         # we'll just return current systemid back
-        if len(server.server['secret']) == 64:
+        if len(server.server["secret"]) == 64:
             return cert.certificate()
         else:  # MD5 checksum
-            server.set_arch(cert['architecture'])
+            server.set_arch(cert["architecture"])
             server.user = rhnUser.User("", "")
-            server.user.reload(server.server['creator_id'])
+            server.user.reload(server.server["creator_id"])
             server.gen_secret()  # create new SHA-256 server secret
             server.save()
             return server.system_id()
 
+    # pylint: disable-next=unused-argument
     def suse_update_products(self, system_id, guid, secret, target, products):
         log_debug(5, system_id, guid, target, products)
         server = self.auth_system(system_id)
@@ -1335,9 +1464,10 @@ class Registration(rhnHandler):
         server.update_suse_products(products)
         return 0
 
+
+# pylint: disable-next=invalid-name
 def _faultValueString(value, name):
-    return _("Invalid value '%s' for %s (%s)") % (
-        str(value), str(name), type(value))
+    return _("Invalid value '%s' for %s (%s)") % (str(value), str(name), type(value))
 
 
 EOL_EMAIL = """
@@ -1368,4 +1498,4 @@ Thank you for using SUSE Manager.
 """
 
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -29,31 +30,33 @@ from spacewalk.server import rhnSQL
 
 class Authentication(rhnHandler):
 
-    """ Simple authentication based on hostname and configured slaves """
+    """Simple authentication based on hostname and configured slaves"""
 
     def __init__(self):
         log_debug(3)
         rhnHandler.__init__(self)
-        self.functions.append('check')
-        self.functions.append('login')
+        self.functions.append("check")
+        self.functions.append("login")
 
         # this is populated directly by server.apacheRequest.py
-        self.remote_hostname = ''
+        self.remote_hostname = ""
 
     def auth_system(self):
         if CFG.DISABLE_ISS:
-            raise rhnFault(2005, _('ISS is disabled on this server.'))
+            raise rhnFault(2005, _("ISS is disabled on this server."))
 
-        if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
-                                    hostname=idn_puny_to_unicode(self.remote_hostname)):
-            raise rhnFault(2004,
-                           _('Server "%s" is not enabled for ISS.')
-                           % self.remote_hostname)
+        if not rhnSQL.fetchone_dict(
+            "select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
+            hostname=idn_puny_to_unicode(self.remote_hostname),
+        ):
+            raise rhnFault(
+                2004, _('Server "%s" is not enabled for ISS.') % self.remote_hostname
+            )
         return self.remote_hostname
 
+    # pylint: disable-next=unused-argument
     def check(self, system_id_ignored):
-        """xmlrpc authentication.
-        """
+        """xmlrpc authentication."""
         log_debug(3)
 
         # Authenticate server
@@ -70,9 +73,10 @@ class Authentication(rhnHandler):
         return 1
 
     # Log in routine.
+    # pylint: disable-next=dangerous-default-value,unused-argument
     def login(self, system_id, extra_data={}):
         """Return a dictionary of session token/channel information.
-           Also sets this information in the headers.
+        Also sets this information in the headers.
         """
         log_debug(5, self.remote_hostname)
         # Authenticate the system certificate.
@@ -81,18 +85,20 @@ class Authentication(rhnHandler):
         # log the entry
         log_debug(1, self.remote_hostname)
 
+        # pylint: disable-next=invalid-name
         rhnServerTime = str(time.time())
+        # pylint: disable-next=invalid-name
         expireOffset = str(CFG.SATELLITE_AUTH_TIMEOUT)
-        signature = rhnLib.computeSignature(CFG.SECRET_KEY,
-                                            self.remote_hostname,
-                                            rhnServerTime,
-                                            expireOffset)
+        signature = rhnLib.computeSignature(
+            CFG.SECRET_KEY, self.remote_hostname, rhnServerTime, expireOffset
+        )
 
+        # pylint: disable-next=invalid-name
         loginDict = {
-            'X-RHN-Server-Hostname': self.remote_hostname,
-            'X-RHN-Auth': signature,
-            'X-RHN-Auth-Server-Time': rhnServerTime,
-            'X-RHN-Auth-Expire-Offset': expireOffset,
+            "X-RHN-Server-Hostname": self.remote_hostname,
+            "X-RHN-Auth": signature,
+            "X-RHN-Auth-Server-Time": rhnServerTime,
+            "X-RHN-Auth-Expire-Offset": expireOffset,
         }
 
         # XXX This request is not proxy-cacheable

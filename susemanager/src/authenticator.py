@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -23,6 +24,7 @@ except ImportError:
     import xmlrpclib as xmlrpc_client
 
 # pylint: disable=line-too-long
+
 
 class MaximumNumberOfAuthenticationFailures(Exception):
     pass
@@ -73,14 +75,20 @@ class Authenticator(object):
             try:
                 self._token = self.connection.auth.login(self.user, self.password)
             except xmlrpc_client.Fault as ex:
-                if ex.faultCode == 2950 and "Either the password or username is incorrect" in ex.faultString:
+                if (
+                    ex.faultCode == 2950
+                    and "Either the password or username is incorrect" in ex.faultString
+                ):
                     if self.has_credentials() and not self.cached_credentials_used:
                         # Try to reuse the credentials stored into the configuration file
                         # to obtain a token. However ensure these are no longer used if
                         # they are not valid.
                         self.cached_credentials_used = True
                         self._discard_credentials()
-                    elif self.credentials_prompts < Authenticator.MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED:
+                    elif (
+                        self.credentials_prompts
+                        < Authenticator.MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED
+                    ):
                         # The cached credentials are either invalid or have
                         # never been stored inside of the local configuration
                         # file. Ask the user to enter new credentials
@@ -93,6 +101,7 @@ class Authenticator(object):
                         #   new credentials but they didn't work.
                         #   The credential prompt has been shown
                         #   MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED times.
+                        # pylint: disable-next=raise-missing-from
                         raise MaximumNumberOfAuthenticationFailures
                     return self.token()
                 else:

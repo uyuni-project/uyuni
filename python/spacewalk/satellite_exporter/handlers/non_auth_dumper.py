@@ -17,6 +17,7 @@ Non-authenticated dumper
 """
 
 import os
+
 try:
     #  python 2
     import xmlrpclib
@@ -53,6 +54,7 @@ class MissingPackageError(Exception):
     pass
 
 
+# pylint: disable-next=missing-class-docstring
 class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     # pylint: disable=E1101,W0102,W0613,R0902,R0904
 
@@ -61,7 +63,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         dumper.XML_Dumper.__init__(self)
         self.headers_out = UserDictCase()
         self._raw_stream = req
-        self._raw_stream.content_type = 'application/octet-stream'
+        self._raw_stream.content_type = "application/octet-stream"
         self.compress_level = 0
         # State machine
         self._headers_sent = 0
@@ -69,32 +71,32 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         self._compressed_stream = None
 
         self.functions = [
-            'arches',
-            'arches_extra',
-            'channel_families',
-            'channels',
-            'get_comps',
-            'get_modules',
-            'channel_packages_short',
-            'packages_short',
-            'packages',
-            'source_packages',
-            'errata',
-            'blacklist_obsoletes',
-            'product_names',
-            'get_rpm',
-            'kickstartable_trees',
-            'get_ks_file',
-            'orgs',
-            'support_information',
-            'suse_products',
-            'suse_product_channels',
-            'suse_upgrade_paths',
-            'suse_product_extensions',
-            'suse_product_repositories',
-            'scc_repositories',
-            'suse_subscriptions',
-            'cloned_channels',
+            "arches",
+            "arches_extra",
+            "channel_families",
+            "channels",
+            "get_comps",
+            "get_modules",
+            "channel_packages_short",
+            "packages_short",
+            "packages",
+            "source_packages",
+            "errata",
+            "blacklist_obsoletes",
+            "product_names",
+            "get_rpm",
+            "kickstartable_trees",
+            "get_ks_file",
+            "orgs",
+            "support_information",
+            "suse_products",
+            "suse_product_channels",
+            "suse_upgrade_paths",
+            "suse_product_extensions",
+            "suse_product_repositories",
+            "scc_repositories",
+            "suse_subscriptions",
+            "cloned_channels",
         ]
 
         self.system_id = None
@@ -124,27 +126,31 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     def _send_headers(self, error=0, init_compressed_stream=1):
         log_debug(4, "is_closed", self._is_closed)
         if self._is_closed:
+            # pylint: disable-next=broad-exception-raised
             raise Exception("Trying to write to a closed connection")
         if self._headers_sent:
             return
         self._headers_sent = 1
         if self.compress_level:
-            self.headers_out['Content-Encoding'] = 'gzip'
+            self.headers_out["Content-Encoding"] = "gzip"
         # Send the headers
         if error:
             # No compression
             self.compress_level = 0
-            self._raw_stream.content_type = 'text/xml'
+            self._raw_stream.content_type = "text/xml"
         for h, v in list(self.headers_out.items()):
             self._raw_stream.headers_out[h] = str(v)
         self._raw_stream.send_http_header()
         # If need be, start gzipping
         if self.compress_level and init_compressed_stream:
+            # pylint: disable-next=consider-using-f-string
             log_debug(4, "Compressing with factor %s" % self.compress_level)
-            self._compressed_stream = gzip.GzipFile(None, "wb",
-                                                    self.compress_level, self._raw_stream)
+            self._compressed_stream = gzip.GzipFile(
+                None, "wb", self.compress_level, self._raw_stream
+            )
 
     def send(self, data):
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "Sending %d bytes" % len(data))
         try:
             self._send_headers()
@@ -183,16 +189,21 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     def set_channel_family_query(self, channel_labels=[]):
         if not channel_labels:
             # All null-pwned channel families
-            self._channel_family_query = self._channel_family_query_public % self.exportable_orgs
+            self._channel_family_query = (
+                self._channel_family_query_public % self.exportable_orgs
+            )
             return self
 
         self._channel_family_query = self._channel_family_query_template % (
-            ', '.join(["'%s'" % x for x in channel_labels]),
-            self.exportable_orgs)
+            # pylint: disable-next=consider-using-f-string
+            ", ".join(["'%s'" % x for x in channel_labels]),
+            self.exportable_orgs,
+        )
         return self
 
     def _get_channel_data(self, channels):
         writer = ContainerWriter()
+        # pylint: disable-next=unexpected-keyword-arg
         d = ChannelsDumper(writer, params=list(channels.values()))
         d.dump()
         data = writer.get_data()
@@ -202,31 +213,32 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def _cleanse_channels(channels_dom):
         channels = {}
+        # pylint: disable-next=unused-variable
         for dummy, attributes, child_elements in channels_dom:
-            channel_label = attributes['label']
+            channel_label = attributes["label"]
             channels[channel_label] = channel_entry = {}
 
-            packages = attributes['packages'].split()
-            del attributes['packages']
+            packages = attributes["packages"].split()
+            del attributes["packages"]
 
             # Get dir of the prefix
             prefix = "rhn-package-"
             prefix_len = len(prefix)
             packages = [int(x[prefix_len:]) for x in packages]
 
-            channel_entry['packages'] = packages
+            channel_entry["packages"] = packages
 
-            ks_trees = attributes['kickstartable-trees'].split()
+            ks_trees = attributes["kickstartable-trees"].split()
 
-            channel_entry['ks_trees'] = ks_trees
+            channel_entry["ks_trees"] = ks_trees
 
             # Clean up to reduce memory footprint if possible
             attributes.clear()
 
             # tag name to object prefix
             maps = {
-                'source-packages': ('source_packages', 'rhn-source-package-'),
-                'rhn-channel-errata': ('errata', 'rhn-erratum-'),
+                "source-packages": ("source_packages", "rhn-source-package-"),
+                "rhn-channel-errata": ("errata", "rhn-erratum-"),
             }
             # Now look for package sources
             for tag_name, dummy, celem in child_elements:
@@ -237,10 +249,11 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                 # Hmm. x[1] is the attributes hash; we fetch the id and we get
                 # rid of te prefix, then we run that through int()
                 objects = []
+                # pylint: disable-next=redeclared-assigned-name
                 for dummy, ceattr, dummy in celem:
-                    obj_id = ceattr['id']
+                    obj_id = ceattr["id"]
                     obj_id = int(obj_id[prefix_len:])
-                    last_modified = localtime(ceattr['last-modified'])
+                    last_modified = localtime(ceattr["last-modified"])
                     objects.append((obj_id, last_modified))
                 channel_entry[field] = objects
 
@@ -259,9 +272,14 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         h.execute()
 
         writer = self._get_xml_writer()
-        d = dumper.SatelliteDumper(writer,
-                                   exportLib.ChannelFamiliesDumper(writer,
-                                                                   data_iterator=h, null_max_members=0,),)
+        d = dumper.SatelliteDumper(
+            writer,
+            exportLib.ChannelFamiliesDumper(
+                writer,
+                data_iterator=h,
+                null_max_members=0,
+            ),
+        )
         d.dump()
         writer.flush()
         log_debug(4, "OK")
@@ -273,8 +291,9 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         channels = self._validate_channels(channel_labels=channel_labels)
 
         writer = self._get_xml_writer()
-        d = dumper.SatelliteDumper(writer, dumper.ChannelsDumperEx(writer,
-                                                                   params=list(channels.values())))
+        d = dumper.SatelliteDumper(
+            writer, dumper.ChannelsDumperEx(writer, params=list(channels.values()))
+        )
         d.dump()
         writer.flush()
         log_debug(4, "OK")
@@ -283,19 +302,28 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def dump_channel_packages_short(self, channel_label, last_modified):
         return dumper.XML_Dumper.dump_channel_packages_short(
-            self, channel_label, last_modified, filepath=None,
-            validate_channels=True, send_headers=True, open_stream=False)
+            self,
+            channel_label,
+            last_modified,
+            filepath=None,
+            validate_channels=True,
+            send_headers=True,
+            open_stream=False,
+        )
 
     def _packages(self, packages, prefix, dump_class, sources=0):
-        return dumper.XML_Dumper._packages(self, packages, prefix, dump_class, sources,
-                                           verify_packages=True)
+        # pylint: disable-next=protected-access
+        return dumper.XML_Dumper._packages(
+            self, packages, prefix, dump_class, sources, verify_packages=True
+        )
 
     def dump_errata(self, errata):
         return dumper.XML_Dumper.dump_errata(self, errata, verify_errata=True)
 
     def dump_kickstartable_trees(self, kickstart_labels=None):
-        return dumper.XML_Dumper.dump_kickstartable_trees(self, kickstart_labels,
-                                                          validate_kickstarts=True)
+        return dumper.XML_Dumper.dump_kickstartable_trees(
+            self, kickstart_labels, validate_kickstarts=True
+        )
 
     def dump_product_names(self):
         return dumper.XML_Dumper.dump_product_names(self)
@@ -348,7 +376,9 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     def dump_suse_product_repositories(self):
         log_debug(4)
         writer = self._get_xml_writer()
-        d = dumper.SatelliteDumper(writer, exportLib.SuseProductRepositoryDumper(writer))
+        d = dumper.SatelliteDumper(
+            writer, exportLib.SuseProductRepositoryDumper(writer)
+        )
         d.dump()
         writer.flush()
         self.close()
@@ -483,31 +513,49 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         channel_comps_sth.execute(channel_label=channel, ctype_id=comps_type_id)
         row = channel_comps_sth.fetchone_dict()
         if not row:
+            # pylint: disable-next=consider-using-f-string
             raise rhnFault(3015, "No comps/modules file for channel [%s]" % channel)
-        path = os.path.join(CFG.MOUNT_POINT, row['relative_filename'])
+        path = os.path.join(CFG.MOUNT_POINT, row["relative_filename"])
         if not os.path.exists(path):
-            log_error("Missing comps/modules file [%s] for channel [%s]" % (path, channel))
-            raise rhnFault(3016, "Unable to retrieve comps/modules file for channel [%s]" % channel)
+            log_error(
+                # pylint: disable-next=consider-using-f-string
+                "Missing comps/modules file [%s] for channel [%s]"
+                % (path, channel)
+            )
+            raise rhnFault(
+                3016,
+                # pylint: disable-next=consider-using-f-string
+                "Unable to retrieve comps/modules file for channel [%s]" % channel,
+            )
         return self._send_stream(path)
 
     def get_ks_file(self, ks_label, relative_path):
         log_debug(1, ks_label, relative_path)
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select base_path
               from rhnKickstartableTree
              where label = :ks_label
                and org_id is null
-        """)
+        """
+        )
         h.execute(ks_label=ks_label)
         row = h.fetchone_dict()
         if not row:
-            raise rhnFault(3003, "No such file %s in tree %s" %
-                           (relative_path, ks_label))
-        path = os.path.join(CFG.MOUNT_POINT, row['base_path'], relative_path)
+            raise rhnFault(
+                3003,
+                # pylint: disable-next=consider-using-f-string
+                "No such file %s in tree %s" % (relative_path, ks_label),
+            )
+        path = os.path.join(CFG.MOUNT_POINT, row["base_path"], relative_path)
         if not os.path.exists(path):
+            # pylint: disable-next=consider-using-f-string
             log_error("Missing file for SUSE Manager dumper: %s" % path)
-            raise rhnFault(3007, "Unable to retrieve file %s in tree %s" %
-                           (relative_path, ks_label))
+            raise rhnFault(
+                3007,
+                # pylint: disable-next=consider-using-f-string
+                "Unable to retrieve file %s in tree %s" % (relative_path, ks_label),
+            )
         return self._send_stream(path)
 
     # Sends a package over the wire
@@ -515,17 +563,21 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     # rhn-source-package-)
     def _send_package_stream(self, package, channel, checksum):
         log_debug(3, package, channel, checksum)
+        # pylint: disable-next=unused-variable
         path, dummy = self.get_package_path_by_filename(package, channel, checksum)
 
         log_debug(3, "Package path", path)
         if not os.path.exists(path):
+            # pylint: disable-next=consider-using-f-string
             log_error("Missing package (SUSE Manager dumper): %s" % path)
+            # pylint: disable-next=consider-using-f-string
             raise rhnFault(3007, "Unable to retrieve package %s" % package)
         return self._send_stream(path)
 
     # This query is similar to the one aove, except that we have already
     # authorized this channel (so no need for server_id)
-    _query_get_package_path_by_nvra_and_checksum = rhnSQL.Statement("""
+    _query_get_package_path_by_nvra_and_checksum = rhnSQL.Statement(
+        """
             select distinct
                    p.id, p.path
               from rhnPackage p,
@@ -542,28 +594,47 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                and p.checksum_id = ch.id
                and ch.checksum = :checksum
                and pa.label = :arch
-    """)
+    """
+    )
 
+    # pylint: disable-next=invalid-name
     def get_package_path_by_filename(self, fileName, channel, checksum):
         log_debug(3, fileName, channel, checksum)
         fileName = str(fileName)
+        # pylint: disable-next=unbalanced-tuple-unpacking
         n, e, v, r, a = rhnLib.parseRPMFilename(fileName)
         package_type = fileName[-3:].lower()
 
         h = rhnSQL.prepare(self._query_get_package_path_by_nvra_and_checksum)
-        h.execute(name=n, version=v, release=r, epoch=e, arch=a, channel=channel, checksum=checksum, package_type=package_type)
+        h.execute(
+            name=n,
+            version=v,
+            release=r,
+            epoch=e,
+            arch=a,
+            channel=channel,
+            checksum=checksum,
+            package_type=package_type,
+        )
         try:
             return _get_path_from_cursor(h)
         except InvalidPackageError:
             log_debug(4, "Error", "Non-existent package requested", fileName)
-            raise_with_tb(rhnFault(17, _("Invalid RPM package %s requested") % fileName), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(17, _("Invalid RPM package %s requested") % fileName),
+                sys.exc_info()[2],
+            )
         except NullPathPackageError:
             e = sys.exc_info()[1]
             package_id = e[0]
             log_error("Package path null for package id", package_id)
-            raise_with_tb(rhnFault(17, _("Invalid RPM package %s requested") % fileName), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(17, _("Invalid RPM package %s requested") % fileName),
+                sys.exc_info()[2],
+            )
         except MissingPackageError:
             e = sys.exc_info()[1]
+            # pylint: disable-next=invalid-name
             filePath = e[0]
             log_error("Package not found", filePath)
             raise_with_tb(rhnFault(17, _("Package not found")), sys.exc_info()[2])
@@ -575,7 +646,11 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         except IOError:
             e = sys.exc_info()[1]
             if e.errno == 2:
-                raise_with_tb(rhnFault(3007, "Missing file %s" % path), sys.exc_info()[2])
+                raise_with_tb(
+                    # pylint: disable-next=consider-using-f-string
+                    rhnFault(3007, "Missing file %s" % path),
+                    sys.exc_info()[2],
+                )
             # Let it flow so we can find it later
             raise
 
@@ -583,9 +658,9 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         file_size = stream.tell()
         stream.seek(0, 0)
         log_debug(3, "Package size", file_size)
-        self.headers_out['Content-Length'] = file_size
+        self.headers_out["Content-Length"] = file_size
         self.compress_level = 0
-        self._raw_stream.content_type = 'application/x-rpm'
+        self._raw_stream.content_type = "application/x-rpm"
         self._send_headers()
         self.send_rpm(stream)
         return 0
@@ -610,10 +685,10 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def _respond_xmlrpc(self, data):
         # Marshal
-        s = xmlrpclib.dumps((data, ))
+        s = xmlrpclib.dumps((data,))
 
-        self.headers_out['Content-Length'] = len(s)
-        self._raw_stream.content_type = 'text/xml'
+        self.headers_out["Content-Length"] = len(s)
+        self._raw_stream.content_type = "text/xml"
         for h, v in list(self.headers_out.items()):
             self._raw_stream.headers_out[h] = str(v)
         self._raw_stream.send_http_header()
@@ -621,6 +696,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         return 0
 
 
+# pylint: disable-next=missing-class-docstring
 class ContainerWriter:
     # Same interface as an XML writer, but collects data in a hash instead
 
@@ -669,13 +745,13 @@ class ContainerWriter:
         assert self._root is not None
         return self._root
 
+
 # Overwrite the ChannelsDumper class to filter packages/source packages/errata
 # based on the creation date
 # XXX No caching for now
 
 
 class ChannelsDumper(dumper.ChannelsDumper):
-
     def dump_subelement(self, data):
         c = exportLib.ChannelDumper(self._writer, data)
         c.dump()
@@ -689,16 +765,18 @@ def _get_path_from_cursor(h):
 
     max_row = rs[0]
 
-    if max_row['path'] is None:
-
-        raise NullPathPackageError(max_row['id'])
-    filePath = "%s/%s" % (CFG.MOUNT_POINT, max_row['path'])
-    pkgId = max_row['id']
+    if max_row["path"] is None:
+        raise NullPathPackageError(max_row["id"])
+    # pylint: disable-next=invalid-name,consider-using-f-string
+    filePath = "%s/%s" % (CFG.MOUNT_POINT, max_row["path"])
+    # pylint: disable-next=invalid-name
+    pkgId = max_row["id"]
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem
         raise MissingPackageError(filePath)
     return filePath, pkgId
 
+
 rpcClasses = {
-    'dump': NonAuthenticatedDumper,
+    "dump": NonAuthenticatedDumper,
 }

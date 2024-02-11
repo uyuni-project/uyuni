@@ -129,7 +129,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
                   <Combobox
                     id="inventory-path-select"
                     name="inventory-path-select"
-                    data={inventoryOpts}
+                    options={inventoryOpts}
                     selectedId={inventoryPath?.id}
                     onSelect={setInventoryPath}
                   />

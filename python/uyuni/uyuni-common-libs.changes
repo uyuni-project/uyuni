@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:55:55 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Apply Black and Pylint to enforce Python style
+
+-------------------------------------------------------------------
+Tue Jan 16 08:20:02 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
 Mon Sep 18 14:43:06 CEST 2023 - rosuna@suse.com
 
 - version 4.4.4-1

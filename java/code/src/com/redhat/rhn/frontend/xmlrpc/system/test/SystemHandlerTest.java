@@ -15,8 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -190,8 +188,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1263,13 +1259,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         val = server.getCustomDataValue(testKey);
         assertNull(val);
 
-        Path filePath = tmpPillarRoot.resolve(
-                PILLAR_DATA_FILE_PREFIX + "_" +
-                server.getMinionId() + "_custom_info." +
-                PILLAR_DATA_FILE_EXT);
-
-        assertFalse(Files.exists(filePath));
-
         try {
             pillar = readCustomInfoPillar(server);
             fail("Custom info pillar was not deleted.");
@@ -1597,6 +1586,43 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(list.size(), 1);
         ErrataOverview errata = list.get(0);
         assertEquals(e.getId().intValue(), errata.getId().intValue());
+    }
+
+    @Test
+    public void testGetRelevantErrataWithListOfSids() throws Exception {
+
+        Errata firstErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+        firstErrata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
+
+        Errata secondErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+        secondErrata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
+
+        TestUtils.flushAndEvict(firstErrata);
+        TestUtils.flushAndEvict(secondErrata);
+
+        Server firstServer = ServerFactoryTest.createTestServer(admin);
+        Server secondServer = ServerFactoryTest.createTestServer(admin);
+        ServerFactory.save(firstServer);
+        ServerFactory.save(secondServer);
+        TestUtils.flushAndEvict(firstServer);
+        TestUtils.flushAndEvict(secondServer);
+
+        UserFactory.save(admin);
+        TestUtils.flushAndEvict(admin);
+
+        Package packageOne = firstErrata.getPackages().iterator().next();
+        Package packageTwo = secondErrata.getPackages().iterator().next();
+
+        ErrataCacheManager.insertNeededErrataCache(
+                firstServer.getId(), firstErrata.getId(), packageOne.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                secondServer.getId(), secondErrata.getId(), packageTwo.getId());
+
+        List<Integer> sids = Arrays.asList(firstServer.getId().intValue(), secondServer.getId().intValue());
+
+        List<Map<String, Object>> list = handler.getRelevantErrata(admin, sids);
+
+        assertEquals(list.size(), 2);
     }
 
     @Test

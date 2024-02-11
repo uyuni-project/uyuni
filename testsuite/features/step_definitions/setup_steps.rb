@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC.
+# Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all steps concerning setting up a test environment.
@@ -61,6 +61,12 @@ When(/^I wait for the trash icon to appear for "([^"]*)"$/) do |user|
   end
 end
 
+When(/^I ask to edit the credentials for "([^"]*)"$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise ScriptError, 'Click on pencil icon failed' unless find('i.fa-pencil').click
+  end
+end
+
 When(/^I ask to delete the credentials for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
     raise ScriptError, 'Click on trash icon failed' unless find('i.fa-trash-o').click
@@ -71,14 +77,6 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
     raise ScriptError, 'Click on list icon failed' unless find('i.fa-th-list').click
   end
-end
-
-When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
-  # let the the select2js box filter open the hidden options
-  xpath_query = '//div[@id=\'s2id_product-arch-filter\']/ul/li/input'
-  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise ScriptError, "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
 When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
@@ -207,10 +205,17 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
-    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
-    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
-    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
+    And I wait until I see "System Status" text
   )
+  if get_client_type(host) == 'traditional' && is_salt.empty?
+    get_target(host).run('rhn_check -vvv')
+  else
+    steps %(
+      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Apply states" is completed
+      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Hardware List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Package List Refresh" is completed
+    )
+  end
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
@@ -397,13 +402,7 @@ When(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do
     repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
       break if has_checked_field?(arg1)
 
-      begin
-        accept_prompt do
-          execute_script 'window.location.reload()'
-        end
-      rescue Capybara::ModalNotFound
-        # ignored
-      end
+      refresh_page
     end
   end
 end

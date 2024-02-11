@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+#  pylint: disable=missing-module-docstring,invalid-name
 
 import base64
 from unittest.mock import patch
@@ -45,6 +46,7 @@ read_lob = "spacewalk.server.configFilesHandler.rhnSQL.read_lob"
 
 @patch(get_client_capabilities, my_get_client_capabilities)
 @patch(read_lob, my_read_lob)
+# pylint: disable-next=redefined-outer-name
 def test_format_file_results_utf8(skeleton_row):
     utf8_string = "Hello I am an UTF-8 string. Look at me¡¡¡"
     row = skeleton_row
@@ -60,6 +62,7 @@ def test_format_file_results_utf8(skeleton_row):
 
 @patch(get_client_capabilities, my_get_client_capabilities)
 @patch(read_lob, my_read_lob)
+# pylint: disable-next=redefined-outer-name
 def test_format_file_results_binary_blob(skeleton_row):
     blob = b"\xaa\xdb\xe3\xdc\xfd\x19\xdc\x12\xc3\x0f\x07\x03\x89\xe0\xde"
     row = skeleton_row
@@ -73,6 +76,7 @@ def test_format_file_results_binary_blob(skeleton_row):
 
 @patch(get_client_capabilities, my_get_client_capabilities)
 @patch(read_lob, my_read_lob)
+# pylint: disable-next=redefined-outer-name
 def test_format_file_results_latin1(skeleton_row):
     latin1_string = "Hello I am a Latin-1 string. Don't look at me¡¡¡"
     row = skeleton_row

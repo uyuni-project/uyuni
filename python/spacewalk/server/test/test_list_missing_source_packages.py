@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -19,10 +20,10 @@ from spacewalk.server import xp, rhnSQL
 #   Tests the functionality of the listMissingSourcePackages function of the packages.py file
 
 
+# pylint: disable-next=missing-class-docstring
 class ListMissingTestCase(unittest.TestCase):
-
     def setUp(self):
-        self.directory = '/home/devel/wregglej/downloads/srcrpms'
+        self.directory = "/home/devel/wregglej/downloads/srcrpms"
         self.myserver = TestServer()
         self.myserver.upload_packages(self.directory, source=1)
         self.packageobj = xp.packages.Packages()
@@ -36,15 +37,20 @@ class ListMissingTestCase(unittest.TestCase):
         else:
             assert 0
 
+    # pylint: disable-next=invalid-name
     def testlistMissingSourcePackages(self):
         channel = self.myserver.getChannel()
-        package_list = self.packageobj.listMissingSourcePackages([channel.get_label()],
-                                                                 self.myserver.getUsername(),
-                                                                 self.myserver.getPassword())
+        package_list = self.packageobj.listMissingSourcePackages(
+            [channel.get_label()],
+            self.myserver.getUsername(),
+            self.myserver.getPassword(),
+        )
+        # pylint: disable-next=unidiomatic-typecheck
         if type(package_list) == type([]):
             assert 1
         else:
             assert 0
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -111,10 +111,11 @@ def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_
       match_scenario = "Scenario: #{matches[2].strip}"
 
       temp_file_path = 'temp_file'
+      previous_line = ''
       File.open(temp_file_path, 'w') do |temp_file|
         File.foreach(cucumber_file_path).with_index do |line, _index|
-          feature_match = line.include? match_feature
-          scenario_match = line.include? match_scenario
+          feature_match = line.include?(match_feature) && !previous_line.include?("@#{tag}")
+          scenario_match = line.include?(match_scenario) && !previous_line.include?("@#{tag}")
 
           if feature_match
             puts "\n\e[34mMatched feature\e[0m  => #{match_feature} in #{cucumber_file_path}"
@@ -130,6 +131,7 @@ def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_
             # Do nothing
           end
           temp_file.puts(line)
+          previous_line = line
         end
       end
       File.rename(temp_file_path, cucumber_file_path)
@@ -165,21 +167,28 @@ def main
 
   organization = 'SUSE'
   project_number = 23
-  column = 'Flaky Tests'
+  regex_on_gh_card_title = /Feature:(.*)Scenario:(.*)/
   headers = {
     'Content-Type' => 'application/json',
     'Authorization' => "Bearer #{token}"
   }
-
-  gh_card_titles = fetch_github_issues(organization, project_number, column, headers)
-  puts ">> Found #{gh_card_titles.length} issues in the '#{column}' column of the GitHub project board."
-  exit(0) if gh_card_titles.empty?
-
-  tag = 'flaky'
-  regex_on_gh_card_title = /Feature:(.*)Scenario:(.*)/
-
-  features_tagged, scenarios_tagged = tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_card_title)
-  puts ">> Tagged #{features_tagged} feature and #{scenarios_tagged} scenarios with the '#{tag}' tag."
+  
+  columns = {
+    'New' => 'new_issue' ,
+    'Debugging' => 'under_debugging',
+    'Bugs' => 'bug_reported',
+    'Test Framework issues' => 'test_issue',
+    'Flaky Tests' => 'flaky'
+  }
+  
+  columns.each { |column, tag|
+    gh_card_titles = fetch_github_issues(organization, project_number, column, headers)
+    puts ">> Found #{gh_card_titles.length} issues in the '#{column}' column of the GitHub project board."
+    unless gh_card_titles.empty?
+      features_tagged, scenarios_tagged = tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_card_title)
+      puts ">> Tagged #{features_tagged} feature and #{scenarios_tagged} scenarios with the '#{tag}' tag."
+    end
+  }
 end
 
 main

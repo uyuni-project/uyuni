@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 
 import com.google.gson.Gson;
@@ -21,12 +23,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents the data stored for the VM create or update actions.
  */
 public class GuestCreateDetails extends VirtualGuestsUpdateActionJson {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .serializeNulls()
+            .create();
 
     @SerializedName("remove_disks")
     private boolean removeDisks;

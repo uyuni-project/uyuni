@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-branding-oss
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -21,7 +21,7 @@
 %global wwwdocroot %{wwwroot}/htdocs
 
 Name:           susemanager-branding-oss
-Version:        4.4.1
+Version:        5.0.3
 Release:        1
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only
@@ -30,11 +30,9 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-%if 0%{?sle_version} && !0%{?is_opensuse}
-# SUSE Manager does not support aarch64 for the server
-ExcludeArch:    aarch64
-BuildRequires:  SUSE-Manager-Server-release
-%else
+# This package is not needed for Uyuni, so we do not build it if
+# the OS is openSUSE or anything else that is not SLE
+%if 0%{?is_opensuse} || (!0%{?sle_version} && !0%{?is_opensuse})
 ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 %endif
 Provides:       susemanager-branding = %{version}
@@ -49,10 +47,12 @@ SUSE Manager oss flavors.
 %setup -q
 
 %build
-cp /usr/share/licenses/product/SUSE-Manager-Server/license.txt license.txt
-echo "<p>" > eula.html
-cat license.txt | sed 's/^$/<\/p><p>/' >> eula.html
-echo "</p>" >> eula.html
+echo "dummy" > license.txt
+echo "<html><head><title>dummy</title></head><body>dummy</body></html>" > eula.html
+#cp /usr/share/licenses/product/SUSE-Manager-Server/license.txt license.txt
+#echo "<p>" > eula.html
+#cat license.txt | sed 's/^$/<\/p><p>/' >> eula.html
+#echo "</p>" >> eula.html
 
 %install
 mkdir -p $RPM_BUILD_ROOT/%{wwwdocroot}/help/

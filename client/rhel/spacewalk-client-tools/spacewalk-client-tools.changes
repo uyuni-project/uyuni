@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:47:54 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Tue Jan 16 08:14:15 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Fri Dec 15 17:08:53 CET 2023 - rosuna@suse.com
+
+- version 4.4.7-1
+  * Remove unused and deprecated/removed platform.dist import.
+
+-------------------------------------------------------------------
 Wed Nov 01 21:00:35 CET 2023 - marina.latini@suse.com
 
 - version 4.4.6-1

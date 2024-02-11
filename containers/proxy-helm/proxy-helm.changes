@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:37:49 CET 2024 - rosuna@suse.com
+
+- version 5.0.3
+  * Simplify publishing to Open Build Service
+
+-------------------------------------------------------------------
+Fri Jan 12 13:59:53 CET 2024 - marina.latini@suse.com
+
+- version 5.0.2
+  * Tag for SUSE Manager 5.0
+
+-------------------------------------------------------------------
+Wed Jan 10 18:59:24 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * Add ingress and routes for traefik
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Mon Dec 18 14:38:06 CET 2023 - rosuna@suse.com
+
+- version 4.4.4
+  * Uyuni 2023.12 release
+
+-------------------------------------------------------------------
 Wed Nov 08 17:53:44 CET 2023 - marina.latini@suse.com
 
 - version 4.4.3

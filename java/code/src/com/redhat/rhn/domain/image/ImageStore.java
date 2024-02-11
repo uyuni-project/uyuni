@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -50,7 +50,7 @@ public class ImageStore extends BaseDomainHelper {
 
     private Org org;
 
-    private Credentials creds;
+    private RegistryCredentials creds;
 
     /**
      * @return the id
@@ -100,7 +100,7 @@ public class ImageStore extends BaseDomainHelper {
      * @return the creds
      */
     @ManyToOne(cascade = CascadeType.ALL)
-    public Credentials getCreds() {
+    public RegistryCredentials getCreds() {
         return creds;
     }
 
@@ -142,7 +142,7 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * @param credsIn the creds to set
      */
-    public void setCreds(Credentials credsIn) {
+    public void setCreds(RegistryCredentials credsIn) {
         this.creds = credsIn;
     }
 

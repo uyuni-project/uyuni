@@ -4,15 +4,19 @@ Oracle ULN (Unbreakable Linux Network) authentication library.
 """
 import os
 import configparser
+
+# pylint: disable-next=unused-import
 import urllib.parse
 
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.syncLib import RhnSyncException
 from up2date_client.rpcServer import RetryServer, ServerList
 
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common.rhnConfig import initCFG
 
 import logging
+
 log = logging.getLogger(__name__)
 
 
@@ -20,6 +24,7 @@ class ULNTokenException(Exception):
     """
     This class represent an exception getting the ULN token
     """
+
     pass
 
 
@@ -27,6 +32,7 @@ class ULNAuth:
     """
     ULN Authentication.
     """
+
     ULN_CONF_PATH = "/etc/rhn/spacewalk-repo-sync/uln.conf"
     ULN_DEFAULT_HOST = "linux-update.oracle.com"
 
@@ -64,7 +70,6 @@ class ULNAuth:
         else:
             raise RhnSyncException("URL must start with 'uln://'.")
 
-
     def get_credentials(self) -> tuple:
         """
         Get credentials from the uln.conf
@@ -73,9 +78,13 @@ class ULNAuth:
         :returns: tuple of username and password
         """
         if not os.path.exists(self.ULN_CONF_PATH):
+            # pylint: disable-next=consider-using-f-string
             raise RhnSyncException("'{}' does not exists".format(self.ULN_CONF_PATH))
         elif not os.access(self.ULN_CONF_PATH, os.R_OK):
-            raise RhnSyncException("Permission denied to '{}'".format(self.ULN_CONF_PATH))
+            raise RhnSyncException(
+                # pylint: disable-next=consider-using-f-string
+                "Permission denied to '{}'".format(self.ULN_CONF_PATH)
+            )
 
         config = configparser.ConfigParser()
         config.read(self.ULN_CONF_PATH)
@@ -84,7 +93,9 @@ class ULNAuth:
             username, password = sct.get("username"), sct.get("password")
         else:
             username = password = None
-        assert username is not None and password is not None, "Credentials were not found in the configuration"
+        assert (
+            username is not None and password is not None
+        ), "Credentials were not found in the configuration"
 
         return username, password
 
@@ -95,25 +106,32 @@ class ULNAuth:
         :raises RhnSyncException: if configuration does not contain required sections.
         :returns: ULN token
         """
-        err_msg = ''
+        err_msg = ""
         if self._uln_token is None:
             try:
                 usr, pwd = self.get_credentials()
+                # pylint: disable-next=unused-variable
                 self._uln_url, label = self.get_hostname(url)
                 px_url, px_usr, px_pwd = get_proxy(self._uln_url)
                 server_list = ServerList([self._uln_url + "/rpc/api"])
-                retry_server = RetryServer(server_list.server(),
-                                           refreshCallback=None,
-                                           proxy=px_url,
-                                           username=px_usr,
-                                           password=px_pwd,
-                                           timeout=5)
+                retry_server = RetryServer(
+                    server_list.server(),
+                    refreshCallback=None,
+                    proxy=px_url,
+                    username=px_usr,
+                    password=px_pwd,
+                    timeout=5,
+                )
                 retry_server.addServerList(server_list)
                 self._uln_token = retry_server.auth.login(usr, pwd)
+            # pylint: disable-next=broad-exception-caught
             except Exception as exc:
                 err_msg = exc
 
         if not self.token or err_msg:
-            raise ULNTokenException("Authentication failure: token was not obtained. {}".format(err_msg))
+            raise ULNTokenException(
+                # pylint: disable-next=consider-using-f-string
+                "Authentication failure: token was not obtained. {}".format(err_msg)
+            )
 
         return self.token

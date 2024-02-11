@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Wed Jan 17 19:36:21 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.3-1
+  * The license will not come from SUSE-Manager-Server release
+    as that package is installed at the host, not at the containers
+
+-------------------------------------------------------------------
+Tue Jan 16 13:28:40 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * Include a dummy license temporary, for SUSE Manager 5.0 Alpha1
+    and Alpha2, until we can figure out how to manage it
+
+-------------------------------------------------------------------
+Tue Jan 16 08:17:29 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Build susemanager-branding-oss for aarch64 and SUSE Manager
+
+-------------------------------------------------------------------
+Fri Dec 15 17:29:47 CET 2023 - rosuna@suse.com
+
+- version 4.4.2-1
+  * Fix missing folders in spec file
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Replace /usr/share with macro %{_datadir}
+
+-------------------------------------------------------------------
 Wed Sep 28 11:02:38 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

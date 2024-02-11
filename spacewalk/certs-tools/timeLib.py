@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -42,33 +43,46 @@ DAY = 24 * HOUR
 WEEK = 7 * DAY
 YEAR = 365 * DAY
 
+
 def now():
     return round(time())
 
+
+# pylint: disable-next=redefined-builtin
 def secs2str(format, secs):
     assert type(secs) in (type(1), type(1.0))
     return strftime(format, gmtime(round(secs)))
+
+
+# pylint: disable-next=redefined-builtin
 def str2secs(s, format):
     return mktime(strptime(s, format)) - timezone
 
+
 def secs2days(secs):
-    return round(secs/DAY)
+    return round(secs / DAY)
+
+
 def secs2years(secs):
     "an approximation"
-    return round(secs/YEAR)
+    return round(secs / YEAR)
 
-#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+
 
 def _test():
+    # pylint: disable-next=invalid-name
     nowS = now()
-    F = '%b %d %H:%M:%S %Y'
-    print('Right now, in seconds (epoch): ', nowS)
-    print('Right now, stringified:        ', secs2str(F, nowS))
+    # pylint: disable-next=invalid-name
+    F = "%b %d %H:%M:%S %Y"
+    print("Right now, in seconds (epoch): ", nowS)
+    print("Right now, stringified:        ", secs2str(F, nowS))
 
-    print('YEAR, WEEK, DAY, HOUR, MIN: ', YEAR, WEEK, DAY, HOUR, MIN)
-    print('secs2days(DAY):  ', secs2days(DAY))
-    print('secs2years(YEAR):', secs2years(YEAR))
+    print("YEAR, WEEK, DAY, HOUR, MIN: ", YEAR, WEEK, DAY, HOUR, MIN)
+    print("secs2days(DAY):  ", secs2days(DAY))
+    print("secs2years(YEAR):", secs2years(YEAR))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     _test()
-

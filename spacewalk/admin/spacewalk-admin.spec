@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-admin
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -22,18 +22,18 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.4.7
+Version:        5.0.3
 Release:        1
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       python3
 Requires:       lsof
 Requires:       procps
+Requires:       python3
 Requires:       python3-websockify
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
-BuildRequires:  make
 BuildRequires:  /usr/bin/pod2man
+BuildRequires:  make
 BuildRequires:  systemd
 BuildArch:      noarch
 BuildRequires:  spacewalk-config
@@ -58,7 +58,6 @@ sed -i 's/apache2.service/httpd.service/g' spacewalk-wait-for-tomcat.service
 sed -i 's/apache2.service/httpd.service/g' uyuni-check-database.service
 %endif
 
-
 make -f Makefile.admin install PREFIX=$RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8/
@@ -75,12 +74,12 @@ if [ -x /usr/bin/systemctl ]; then
     /usr/bin/systemctl daemon-reload || :
 fi
 
-
 %files
 %license LICENSE
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/uyuni-update-config
+%{_sbindir}/import-suma-build-keys
 %{_bindir}/rhn-config-satellite.pl
 %{_bindir}/rhn-config-schema.pl
 %{_bindir}/rhn-deploy-ca-cert.pl

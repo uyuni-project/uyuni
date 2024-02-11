@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-schema
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -24,7 +24,7 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.4.8
+Version:        5.0.4
 Release:        1
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/spacewalk/%{name}-rpmlintrc
@@ -50,7 +50,7 @@ Obsoletes:      rhn-satellite-schema <= 5.1.0
 BuildRequires:  fdupes
 %endif
 
-%define rhnroot /etc/sysconfig/rhn/
+%define rhnroot /usr/share/susemanager/db
 %define postgres %{rhnroot}/postgres
 %define spacewalk_folder Spacewalk
 %define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
@@ -129,11 +129,11 @@ systemctl try-restart uyuni-check-database.service ||:
 
 %files
 %defattr(-,root,root)
+%dir /usr/share/susemanager
 %dir %{rhnroot}
 %{postgres}
 %{rhnroot}/schema-upgrade
 %if 0%{?suse_version}
-%dir /usr/share/susemanager
 /usr/share/susemanager/update-messages.txt
 %ghost /var/adm/update-messages/%{name}-%{version}-%{release}
 %endif

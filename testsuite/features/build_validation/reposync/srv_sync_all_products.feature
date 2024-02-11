@@ -1,4 +1,4 @@
-# Copyright 2017-2023 SUSE LLC
+# Copyright 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -6,31 +6,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Refresh SCC
     When I refresh SCC
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-
-@sle12sp4_minion
-  Scenario: Add SUSE Linux Enterprise Server 12 SP4
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4 x86_64"
-    And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
-    And I wait until all synchronized channels for "sles12-sp4" have finished
-
-@uyuni
-@sle12sp4_minion
-  Scenario: Add SUSE Linux Enterprise Server 12 SP4 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "sles12-sp4-uyuni-client-devel" with arch "x86_64"
-
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
     And I select "SUSE Linux Enterprise Server 12 SP5 x86_64" as a product
@@ -43,10 +23,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles12-sp5-uyuni-client-devel" with arch "x86_64"
+    And I wait until the channel "sles12-sp5-uyuni-client-devel-x86_64" has been synced
 
 @sle15sp1_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP1
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
@@ -62,10 +45,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp1_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP1 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp1-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sp1-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
@@ -93,10 +79,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp2-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sp2-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP3" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP3 x86_64" as a product
@@ -125,10 +114,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp3-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sp3-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
@@ -140,6 +132,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
     And I select "Development Tools Module 15 SP4 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP4 x86_64" selected
+    When I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
@@ -155,10 +149,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp4-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sp4-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp5_minion
+@salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP5" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP5 x86_64" as a product
@@ -183,13 +181,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @sle15sp5_minion
+@salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp5-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sp5-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.1" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.1 x86_64" as a product
@@ -205,7 +207,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.1" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.1 x86_64" as a product
@@ -213,16 +217,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.1 x86_64" product has been added
+    And I wait until all synchronized channels for "suse-microos-5.1" have finished
 
 @uyuni
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "suse-microos-5.1-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "suse-microos-5.1-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.2" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.2 x86_64" as a product
@@ -238,7 +246,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.2" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.2 x86_64" as a product
@@ -246,16 +256,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.2 x86_64" product has been added
+    And I wait until all synchronized channels for "suse-microos-5.2" have finished
 
 @uyuni
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "suse-microos-5.2-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "suse-microos-5.2-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.3" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.3 x86_64" as a product
@@ -271,7 +285,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.3" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.3 x86_64" as a product
@@ -279,16 +295,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.3 x86_64" product has been added
+    And I wait until all synchronized channels for "sle-micro-5.3" have finished
 
 @uyuni
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-5.3-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sle-micro-5.3-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.4" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
@@ -304,7 +324,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.4" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
@@ -318,12 +340,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-5.4-devel-uyuni-client" with arch "x86_64"
-    And I wait until all synchronized channels for "sle-micro-5.4" have finished
+    And I wait until the channel "sle-micro-5.4-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
@@ -339,7 +363,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
@@ -353,12 +379,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-5.5-devel-uyuni-client" with arch "x86_64"
-    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+    And I wait until the channel "sle-micro-5.5-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @opensuse154arm_minion
   Scenario: Add openSUSE 15.4 for ARM
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "openSUSE Leap 15.4 aarch64" as the filtered product description
     And I select "openSUSE Leap 15.4 aarch64" as a product
@@ -377,7 +405,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @opensuse155arm_minion
   Scenario: Add openSUSE 15.5 for ARM
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "openSUSE Leap 15.5 aarch64" as the filtered product description
     And I select "openSUSE Leap 15.5 aarch64" as a product
@@ -393,36 +423,32 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-backports-updates opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-sle-updates opensuse_leap15_5-updates opensuse_leap15_5-uyuni-client-devel" with arch "aarch64"
     And I wait until all synchronized channels for "leap15.5-aarch64" have finished
 
-@sle15sp3s390_minion
-  Scenario: Add SUSE Linux Enterprise Server 15 SP3 for s390x
+@sle15sp5s390_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP5 for s390x
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP3" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP3 s390x" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP3 s390x" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 s390x"
-    And I select "SUSE Linux Enterprise Server LTSS 15 SP3 s390x" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP3 s390x" selected
-    And I open the sub-list of the product "Basesystem Module 15 SP3 s390x"
-    And I select "Desktop Applications Module 15 SP3 s390x" as a product
-    Then I should see the "Desktop Applications Module 15 SP3 s390x" selected
-    When I open the sub-list of the product "Desktop Applications Module 15 SP3 s390x"
-    And I select "Development Tools Module 15 SP3 s390x" as a product
-    Then I should see the "Development Tools Module 15 SP3 s390x" selected
+    And I enter "SUSE Linux Enterprise Server 15 SP5" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP5 s390x" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP5 s390x" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 s390x" product has been added
-    And I wait until all synchronized channels for "sles15-sp3" have finished
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP5 s390x" product has been added
+    And I wait until all synchronized channels for "sles15-sp5-s390x" have finished
 
 @uyuni
-@sle15sp3s390_minion
-  Scenario: Add SUSE Linux Enterprise Server 15 SP3 for s390x Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "sles15-sp3-devel-uyuni-client" with arch "s390x"
+@sle15sp5s390_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP5 for s390x Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles15-sp5-devel-uyuni-client" with arch "s390x"
+    And I wait until the channel "sles15-sp5-devel-uyuni-client-s390x" has been synced
 
 @susemanager
 @alma9_minion
   Scenario: Add Alma Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "AlmaLinux 9" as the filtered product description
     And I select "AlmaLinux 9 x86_64" as a product
@@ -439,14 +465,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @centos7_minion
-  Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
+  Scenario: Add SUSE Liberty Linux 7
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
-    And I select "SUSE Linux Enterprise Server with Expanded Support 7" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7" selected
+    And I enter "SUSE Liberty Linux 7" as the filtered product description
+    And I select "SUSE Liberty Linux 7 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 7 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
+    And I wait until I see "SUSE Liberty Linux 7 x86_64" product has been added
     And I wait until all synchronized channels for "res7" have finished
 
 @uyuni
@@ -458,7 +486,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @liberty9_minion
   Scenario: Add Liberty Linux 9 Base product
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL and Liberty 9 Base" as the filtered product description
     And I select "RHEL and Liberty 9 Base" as a product
@@ -470,7 +500,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @liberty9_minion
   Scenario: Add Liberty Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL and Liberty 9 Base" as the filtered product description
     And I select "RHEL and Liberty 9 Base" as a product
@@ -485,7 +517,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @oracle9_minion
   Scenario: Add Oracle Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Oracle Linux 9" as the filtered product description
     And I select "Oracle Linux 9 x86_64" as a product
@@ -502,39 +536,46 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @rhel9_minion
   Scenario: Add RHEL 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL and Liberty 9 Base" as the filtered product description
     And I select "RHEL and Liberty 9 Base" as a product
     Then I should see the "RHEL and Liberty 9 Base" selected
     When I click the Add Product button
     And I wait until I see "RHEL and Liberty 9 Base" product has been added
+    And I wait until all synchronized channels for "el9" have finished
 
 @susemanager
 @rocky8_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
-    And I select "RHEL or SLES ES or CentOS 8 Base" as a product
-    Then I should see the "RHEL or SLES ES or CentOS 8 Base" selected
-    When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base"
-    And I select "SUSE Linux Enterprise Server with Expanded Support 8" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 8" selected
+    And I enter "RHEL and Liberty 8 Base" as the filtered product description
+    And I select "RHEL and Liberty 8 Base" as a product
+    Then I should see the "RHEL and Liberty 8 Base" selected
+    When I open the sub-list of the product "RHEL and Liberty 8 Base"
+    And I select "SUSE Liberty Linux 8" as a product
+    Then I should see the "SUSE Liberty Linux 8" selected
     When I click the Add Product button
-    And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
+    And I wait until I see "RHEL and Liberty 8 Base" product has been added
     And I wait until all synchronized channels for "res8" have finished
 
 @uyuni
 @rocky8_minion
   Scenario: Add Rocky Linux 8
     When I use spacewalk-common-channel to add channel "rockylinux8 rockylinux8-appstream rockylinux8-extras rockylinux8-uyuni-client-devel" with arch "x86_64"
-    And I wait until all synchronized channels for "res8" have finished
+    And I wait until all synchronized channels for "rockylinux-8" have finished
 
 @susemanager
 @rocky9_minion
   Scenario: Add Rocky Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Rocky Linux 9" as the filtered product description
     And I select "Rocky Linux 9 x86_64" as a product
@@ -543,9 +584,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Rocky Linux 9 x86_64" product has been added
     And I wait until all synchronized channels for "rockylinux-9" have finished
 
+@uyuni
+@rocky9_minion
+  Scenario: Add Rocky Linux 9
+    When I use spacewalk-common-channel to add channel "rockylinux9 rockylinux9-appstream rockylinux9-extras rockylinux9-uyuni-client-devel" with arch "x86_64"
+    And I wait until all synchronized channels for "rockylinux-9" have finished
+
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Ubuntu 20.04" as the filtered product description
     And I select "Ubuntu 20.04" as a product
@@ -563,7 +612,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @ubuntu2204_minion
   Scenario: Add Ubuntu 22.04
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Ubuntu 22.04" as the filtered product description
     And I select "Ubuntu 22.04" as a product
@@ -581,7 +632,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @debian10_minion
   Scenario: Add Debian 10
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Debian 10" as the filtered product description
     And I select "Debian 10" as a product
@@ -599,7 +652,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @debian11_minion
   Scenario: Add Debian 11
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Debian 11" as the filtered product description
     And I select "Debian 11" as a product
@@ -612,31 +667,42 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @debian11_minion
   Scenario: Add Debian 11
     When I use spacewalk-common-channel to add channel "debian-11-pool-amd64-uyuni debian-11-amd64-main-updates-uyuni debian-11-amd64-main-security-uyuni debian-11-amd64-uyuni-client-devel" with arch "amd64-deb"
+    And I wait until all synchronized channels for "debian-11" have finished
 
 @susemanager
 @debian12_minion
   Scenario: Add Debian 12
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Debian 12" as the filtered product description
     And I select "Debian 12" as a product
     Then I should see the "Debian 12" selected
     When I click the Add Product button
     And I wait until I see "Debian 12" product has been added
+    And I wait until all synchronized channels for "debian-12" have finished
 
 @uyuni
 @debian12_minion
   Scenario: Add Debian 12
     When I use spacewalk-common-channel to add channel "debian-12-pool-amd64-uyuni debian-12-amd64-main-updates-uyuni debian-12-amd64-main-security-uyuni debian-12-amd64-uyuni-client-devel" with arch "amd64-deb"
+    And I wait until all synchronized channels for "debian-12" have finished
 
 @susemanager
 @proxy
   Scenario: Add SUSE Manager Proxy 4.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Proxy 4.3" as the filtered product description
     And I select "SUSE Manager Proxy 4.3 x86_64" as a product
     Then I should see the "SUSE Manager Proxy 4.3 x86_64" selected
+    When I open the sub-list of the product "SUSE Manager Proxy 4.3 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    And I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Proxy 4.3 x86_64" product has been added
@@ -650,24 +716,33 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @proxy
-  Scenario: Add Uyuni Leap 15.4 Proxy, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_4 opensuse_leap15_4-non-oss opensuse_leap15_4-non-oss-updates opensuse_leap15_4-updates opensuse_leap15_4-backports-updates opensuse_leap15_4-sle-updates uyuni-proxy-stable-leap-154 opensuse_leap15_4-uyuni-client-devel" with arch "x86_64"
+  Scenario: Add Uyuni Leap 15.5 Proxy, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-stable-leap-155 opensuse_leap15_5-uyuni-client-devel" with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @susemanager
 @proxy
   Scenario: Add SUSE Manager Retail Branch Server 4.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Retail Branch Server 4.3" as the filtered product description
     And I select "SUSE Manager Retail Branch Server 4.3 x86_64" as a product
     Then I should see the "SUSE Manager Retail Branch Server 4.3 x86_64" selected
+    When I open the sub-list of the product "SUSE Manager Retail Branch Server 4.3 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    And I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
     And I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
 
+# There are no channels for Retail under Uyuni
+
   Scenario: Detect product loading issues from the UI in Build Validation
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
-    And I should not see a warning sign
+    And I should not see a warning nor an error sign

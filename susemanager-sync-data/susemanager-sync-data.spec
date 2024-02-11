@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sync-data
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,7 +17,7 @@
 
 
 Name:           susemanager-sync-data
-Version:        4.4.5
+Version:        5.0.2
 Release:        1
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only

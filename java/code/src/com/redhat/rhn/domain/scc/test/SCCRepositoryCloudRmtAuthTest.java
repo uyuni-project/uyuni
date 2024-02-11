@@ -18,7 +18,8 @@ package com.redhat.rhn.domain.scc.test;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
+import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.testing.MockObjectTestCase;
@@ -26,6 +27,8 @@ import com.redhat.rhn.testing.MockObjectTestCase;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
 
@@ -79,7 +82,7 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
 
     private SCCRepositoryCloudRmtAuth createAuthFor(String repoUrl, long credentialId, String credentialUrl) {
         SCCRepository repository = mock(SCCRepository.class);
-        Credentials credentials = mock(Credentials.class);
+        CloudRMTCredentials credentials = mock(CloudRMTCredentials.class);
 
         SCCRepositoryCloudRmtAuth auth1 = new SCCRepositoryCloudRmtAuth();
         auth1.setCredentials(credentials);
@@ -91,6 +94,9 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
 
             expectations.allowing(credentials).getUrl();
             expectations.will(returnValue(credentialUrl));
+
+            expectations.allowing(credentials).castAs(RemoteCredentials.class);
+            expectations.will(returnValue(Optional.of(credentials)));
 
             expectations.allowing(credentials).getId();
             expectations.will(returnValue(credentialId));

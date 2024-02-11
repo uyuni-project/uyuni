@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-branding
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -25,7 +25,7 @@
 %global wwwdocroot %{wwwroot}/htdocs
 
 Name:           spacewalk-branding
-Version:        4.4.1
+Version:        5.0.1
 Release:        1
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only AND OFL-1.1

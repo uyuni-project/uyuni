@@ -139,7 +139,7 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
                       <Combobox
                         id="calendarSelect"
                         name="calendarSelect"
-                        data={props.calendarNames as any}
+                        options={props.calendarNames as any}
                         selectedId={selectedCalendar}
                         onSelect={onSelectCalendar}
                       />

@@ -17,7 +17,7 @@ package com.redhat.rhn.taskomatic.task.payg.test;
 
 import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,8 +28,10 @@ import com.redhat.rhn.domain.channel.SslContentSource;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CloudCredentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.RHUICredentials;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -73,6 +75,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
@@ -129,7 +132,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         SCCCachingFactory.clearRepositories();
         SCCCachingFactory.clearSubscriptions();
         SUSEProductFactory.findAllSUSEProducts().forEach(SUSEProductFactory::remove);
-        CredentialsFactory.listSCCCredentials().forEach(CredentialsFactory::removeCredentials);
+        CredentialsFactory.listCredentials().forEach(CredentialsFactory::removeCredentials);
         CloudRmtHostFactory.lookupCloudRmtHosts().forEach(CloudRmtHostFactory::deleteCloudRmtHost);
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
@@ -161,9 +164,12 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
                 case "localhost":
                     assertEquals("SUSE Manager PAYG", outPaygData.getDescription());
                     assertEquals("root", outPaygData.getUsername());
-                    assertEquals("https://smt-ec2.susecloud.net/repo", outPaygData.getCredentials().getUrl());
+                    Optional<CloudRMTCredentials> creds = outPaygData.getCredentials()
+                        .castAs(CloudRMTCredentials.class);
+                    assertTrue(creds.isPresent());
+                    assertEquals("https://smt-ec2.susecloud.net/repo", creds.get().getUrl());
                     //Fake URL for next test
-                    outPaygData.getCredentials().setUrl("http://localhost:8888/repo");
+                    creds.get().setUrl("http://localhost:8888/repo");
                     break;
                 case "my-instance":
                     assertEquals("username", outPaygData.getUsername());
@@ -250,10 +256,8 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
             }});
         paygUpdateAuthTask.execute(null);
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
-            Credentials creds = outPaygData.getCredentials();
-            assertEquals("rhui", creds.getType().getLabel());
-            assertEquals("RHUI", creds.getUsername());
-            assertEquals(" ", creds.getPassword());
+            CloudCredentials creds = outPaygData.getCredentials();
+            assertInstanceOf(RHUICredentials.class, creds);
             Map<String, String> extraAuthData = GSON.fromJson(new String(creds.getExtraAuthData()), Map.class);
             assertEquals(extraAuthData.size(), 2);
             assertEquals("PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN", extraAuthData.get("X-RHUI-ID"));
@@ -365,11 +369,11 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
-        Credentials creds = paygData.getCredentials();
-        assertNotNull(creds);
-        assertEquals("0e248802", creds.getPassword());
+        Optional<CloudRMTCredentials> creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
+        assertTrue(creds.isPresent());
+        assertEquals("0e248802", creds.get().getPassword());
         assertEquals("{\"X-Instance-Data\":\"PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN\"}",
-                new String(creds.getExtraAuthData()));
+                new String(creds.get().getExtraAuthData()));
 
         // second call failed - set status to Error, but keep credentials
         paygUpdateAuthTask.execute(null);
@@ -380,11 +384,11 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
         assertEquals(NotificationType.PaygAuthenticationUpdateFailed,
                 UserNotificationFactory.listAllNotificationMessages().get(0).getType());
-        creds = paygData.getCredentials();
-        assertNotNull(creds);
-        assertEquals("0e248802", creds.getPassword());
+        creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
+        assertTrue(creds.isPresent());
+        assertEquals("0e248802", creds.get().getPassword());
         assertEquals("{\"X-Instance-Data\":\"PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN\"}",
-                new String(creds.getExtraAuthData()));
+                new String(creds.get().getExtraAuthData()));
 
         // third call failed - invalidate credentials
         paygUpdateAuthTask.execute(null);
@@ -392,20 +396,20 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
-        creds = paygData.getCredentials();
-        assertNotNull(creds);
-        assertEquals("invalidated", creds.getPassword());
-        assertEquals("{}", new String(creds.getExtraAuthData()));
+        creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
+        assertTrue(creds.isPresent());
+        assertEquals("invalidated", creds.get().getPassword());
+        assertEquals("{}", new String(creds.get().getExtraAuthData()));
 
         // forth call successfull - restore credentials and a header again
         paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
-        creds = paygData.getCredentials();
-        assertNotNull(creds);
-        assertEquals("0e248802", creds.getPassword());
+        creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
+        assertTrue(creds.isPresent());
+        assertEquals("0e248802", creds.get().getPassword());
         assertEquals("{\"X-Instance-Data\":\"PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN\"}",
-                new String(creds.getExtraAuthData()));
+                new String(creds.get().getExtraAuthData()));
     }
 
     @Test

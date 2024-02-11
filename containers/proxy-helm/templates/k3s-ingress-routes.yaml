@@ -1,0 +1,73 @@
+{{- if eq .Values.ingress "traefik" }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: ssl-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-proxy-tcp
+        port: 443
+  tls:
+    passthrough: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: ssh-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - ssh 
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-proxy-tcp
+        port: 8022
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: salt-publish-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - salt-publish
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-proxy-tcp
+        port: 4505
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: salt-request-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - salt-request
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-proxy-tcp
+        port: 4506
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  name: tftp-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - tftp
+  routes:
+    - services:
+      - name: uyuni-proxy-udp
+        port: 69
+{{- end }}
+

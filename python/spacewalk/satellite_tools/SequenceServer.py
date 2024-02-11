@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -58,19 +59,18 @@ class SequenceServer:
         nevermorethan = nevermorethan or self.NEVER_MORE_THAN
 
         self.seq = seq
-        self.chunksize = int(min(max(len(seq) / divisor, neverlessthan),
-                             nevermorethan))
+        self.chunksize = int(min(max(len(seq) / divisor, neverlessthan), nevermorethan))
         self.oneYN = 0
         self.alwaysOneYN = 0
         self.returnedChunksize = 0
-        self.chunk = self.seq[:self.chunksize]
+        self.chunk = self.seq[: self.chunksize]
 
     def getChunk(self):
         """fetch a chunk from the sequence.
         Does not refresh the chunk until you self.clearChunk()"""
 
         if not self.chunk:
-            self.chunk = self.seq[:self.chunksize]
+            self.chunk = self.seq[: self.chunksize]
         if self.oneYN or self.alwaysOneYN:
             _chunk = self.chunk[:1]
         else:
@@ -81,8 +81,8 @@ class SequenceServer:
     def clearChunk(self):
         """zero the self.chunk you were working with."""
 
-        del self.chunk[:self.returnedChunksize]
-        del self.seq[:self.returnedChunksize]
+        del self.chunk[: self.returnedChunksize]
+        del self.seq[: self.returnedChunksize]
         if not self.chunk:
             self.oneYN = 0
 

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -32,7 +32,7 @@ public class MgrServerInfo {
     private String reportDbName;
     private String reportDbHost;
     private Integer reportDbPort;
-    private Credentials reportDbCredentials;
+    private ReportDBCredentials reportDbCredentials;
     private Date reportDbLastSynced;
     private Long id;
 
@@ -122,7 +122,7 @@ public class MgrServerInfo {
     /**
      * @return Returns the reportDbCredentials.
      */
-    public Credentials getReportDbCredentials() {
+    public ReportDBCredentials getReportDbCredentials() {
         return reportDbCredentials;
     }
 
@@ -130,7 +130,7 @@ public class MgrServerInfo {
     /**
      * @param reportDbCredentialsIn The reportDbCredentials to set.
      */
-    public void setReportDbCredentials(Credentials reportDbCredentialsIn) {
+    public void setReportDbCredentials(ReportDBCredentials reportDbCredentialsIn) {
         reportDbCredentials = reportDbCredentialsIn;
     }
 

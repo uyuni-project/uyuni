@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -29,13 +30,22 @@ from . import sql_row
 from . import sql_sequence
 from . import dbi
 from . import sql_types
+
 types = sql_types
 
+# pylint: disable-next=wrong-import-position
 from .const import POSTGRESQL, SUPPORTED_BACKENDS
 
 # expose exceptions
-from .sql_base import SQLError, SQLSchemaError, SQLConnectError, \
-    SQLStatementPrepareError, Statement, ModifiedRowError
+# pylint: disable-next=wrong-import-position
+from .sql_base import (
+    SQLError,
+    SQLSchemaError,
+    SQLConnectError,
+    SQLStatementPrepareError,
+    Statement,
+    ModifiedRowError,
+)
 
 # ths module works with a private global __DB object that is
 # instantiated by the initDB call. This object/instance should NEVER,
@@ -48,8 +58,10 @@ def __init__DB(backend, host, port, username, password, database, sslmode, sslro
     exceptions.
     """
     # __DB global object created here and pushed into the global namespace.
+    # pylint: disable-next=global-variable-undefined
     global __DB
     try:
+        # pylint: disable-next=used-before-assignment
         my_db = __DB
     except NameError:  # __DB has not been set up
         db_class = dbi.get_database_class(backend=backend)
@@ -59,8 +71,9 @@ def __init__DB(backend, host, port, username, password, database, sslmode, sslro
     else:
         del my_db
 
-    if __DB.is_connected_to(backend, host, port, username, password,
-                            database, sslmode, sslrootcert):
+    if __DB.is_connected_to(
+        backend, host, port, username, password, database, sslmode, sslrootcert
+    ):
         __DB.check_connection()
         return
 
@@ -68,13 +81,23 @@ def __init__DB(backend, host, port, username, password, database, sslmode, sslro
     __DB.close()
     # now we have to get a different connection
     __DB = dbi.get_database_class(backend=backend)(
-        host, port, username, password, database, sslmode, sslrootcert)
+        host, port, username, password, database, sslmode, sslrootcert
+    )
     __DB.connect()
     return 0
 
 
-def initDB(backend=None, host=None, port=None, username=None,
-           password=None, database=None, sslmode=None, sslrootcert=None, reportdb=False):
+def initDB(
+    backend=None,
+    host=None,
+    port=None,
+    username=None,
+    password=None,
+    database=None,
+    sslmode=None,
+    sslrootcert=None,
+    reportdb=False,
+):
     """
     Initialize the database.
 
@@ -85,7 +108,7 @@ def initDB(backend=None, host=None, port=None, username=None,
 
     if backend is None:
         if CFG is None or not CFG.is_initialized():
-            initCFG('server')
+            initCFG("server")
 
         if reportdb:
             backend = CFG.REPORT_DB_BACKEND
@@ -95,7 +118,7 @@ def initDB(backend=None, host=None, port=None, username=None,
             username = CFG.REPORT_DB_USER
             password = CFG.REPORT_DB_PASSWORD
             if CFG.REPORT_DB_SSL_ENABLED:
-                sslmode = 'verify-full'
+                sslmode = "verify-full"
                 sslrootcert = CFG.REPORT_DB_SSLROOTCERT
             else:
                 sslmode = None
@@ -108,7 +131,7 @@ def initDB(backend=None, host=None, port=None, username=None,
             username = CFG.DB_USER
             password = CFG.DB_PASSWORD
             if CFG.DB_SSL_ENABLED:
-                sslmode = 'verify-full'
+                sslmode = "verify-full"
                 sslrootcert = CFG.DB_SSLROOTCERT
             else:
                 sslmode = None
@@ -123,11 +146,13 @@ def initDB(backend=None, host=None, port=None, username=None,
     # Hide the password
     add_to_seclist(password)
     try:
-        __init__DB(backend, host, port, username, password, database, sslmode, sslrootcert)
-#    except (rhnException, SQLError):
-#        raise  # pass on, we know those ones
-#    except (KeyboardInterrupt, SystemExit):
-#        raise
+        __init__DB(
+            backend, host, port, username, password, database, sslmode, sslrootcert
+        )
+    #    except (rhnException, SQLError):
+    #        raise  # pass on, we know those ones
+    #    except (KeyboardInterrupt, SystemExit):
+    #        raise
     except SQLConnectError:
         e = sys.exc_info()[1]
         try:
@@ -135,17 +160,20 @@ def initDB(backend=None, host=None, port=None, username=None,
         except NameError:
             pass
         raise_with_tb(e, sys.exc_info()[2])
+    # pylint: disable-next=try-except-raise
     except:
         raise
-        #e_type, e_value = sys.exc_info()[:2]
+        # e_type, e_value = sys.exc_info()[:2]
         # raise rhnException("Could not initialize Oracle database connection",
         #                   str(e_type), str(e_value))
     return 0
+
 
 # close the database
 
 
 def closeDB(committing=True, closing=True):
+    # pylint: disable-next=global-variable-undefined
     global __DB
     try:
         my_db = __DB
@@ -163,11 +191,13 @@ def closeDB(committing=True, closing=True):
 
 # common function for testing the connection state (ie, __DB defined
 def __test_DB():
+    # pylint: disable-next=global-variable-not-assigned
     global __DB
     try:
         return __DB
     except NameError:
         raise_with_tb(SystemError("Not connected to any database!"), sys.exc_info()[2])
+
 
 # wrapper for a Procedure callable class
 
@@ -271,6 +301,7 @@ def _fix_encoding(text):
     elif isinstance(text, bytes):
         try:
             return text.decode("utf8")
+        # pylint: disable-next=bare-except
         except:
             return text.decode("iso8859-1")
 
@@ -279,16 +310,17 @@ def read_lob(lob):
     if not lob:
         return None
     db = __test_DB()
+    # pylint: disable-next=protected-access
     return db._read_lob(lob)
 
 
 class _Callable(object):
-
     def __init__(self, name):
         self._name = name
         self._implementor = None
 
     def __getattr__(self, name):
+        # pylint: disable-next=consider-using-f-string
         return self.__class__("%s.%s" % (self._name, name))
 
     def __call__(self, *args):
@@ -297,26 +329,24 @@ class _Callable(object):
 
 
 class _Procedure(_Callable):
-
     def __init__(self, name):
         _Callable.__init__(self, name)
         self._implementor = Procedure
 
 
 class _Function(_Callable):
-
     def __init__(self, name):
         _Callable.__init__(self, name)
         self._implementor = Function
 
 
 class _CallableWrapper(object):
-
     def __init__(self, wrapped):
         self._wrapped = wrapped
 
     def __getattr__(self, x):
         return self._wrapped(x)
+
 
 procedure = _CallableWrapper(_Procedure)
 function = _CallableWrapper(_Function)

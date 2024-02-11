@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -17,7 +18,6 @@
 
 
 class RPC_Base:
-
     def __init__(self):
         self.functions = []
 

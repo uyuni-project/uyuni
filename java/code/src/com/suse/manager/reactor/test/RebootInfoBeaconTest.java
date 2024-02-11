@@ -76,11 +76,13 @@ public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
     public void testRebootInfoEvent() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setMinionId("slemicro100001");
-        minion1.setRebootNeeded(false);
+        minion1.setLastBoot(System.currentTimeMillis() / 1000);
+        minion1.setRebootRequiredAfter(null);
 
         MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
         minion2.setMinionId("slemicro100002");
-        minion2.setRebootNeeded(false);
+        minion1.setLastBoot(System.currentTimeMillis() / 1000);
+        minion2.setRebootRequiredAfter(null);
 
         // Event indicating that reboot is needed for minion 1
         BeaconEvent event = buildRebootInfoEvent(minion1.getMinionId(), true);

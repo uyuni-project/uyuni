@@ -36,7 +36,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.product.ReleaseStage;
@@ -214,7 +214,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetTargetProductSets() throws Exception {
-        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SCCCredentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
@@ -302,7 +302,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         master.makeDefaultMaster();
         IssFactory.save(master);
 
-        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SCCCredentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
@@ -377,7 +377,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetTargetProductSetsMissingChannel() throws Exception {
-        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SCCCredentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
@@ -706,7 +706,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetTargetProductSetsLTSScase() throws Exception {
-        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SCCCredentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct slesSP1BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);

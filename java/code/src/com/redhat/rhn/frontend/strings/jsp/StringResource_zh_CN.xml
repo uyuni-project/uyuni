@@ -10299,8 +10299,17 @@ Please note that some manual configuration of these scripts may still be require
         <target state="translated">过滤器</target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.filters.tip" xml:space="preserve">
-        <source>-zsh*,kernel +zsh-html</source>
-        <target state="final">-zsh*,kernel +zsh-html</target>
+        <source>
+              &lt;strong&gt;Filter syntax:&lt;/strong&gt; &lt;code&gt;[+-]keyword[,keyword ...]&lt;/code&gt;&lt;br/&gt;
+              Use &lt;strong&gt;'+'&lt;/strong&gt; to include only the package names matching the keyword and
+              &lt;strong&gt;'-'&lt;/strong&gt; to exclude the package names matching the keyword. Multiple filters can be
+              separated with spaces. Filters are evaluated in the order that they are specified. Shell-style wildcards
+              are supported.&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;Example:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
+              except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
+          </source>
+        <target state="needs-adaptation">-zsh*,kernel +zsh-html</target>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
@@ -29039,9 +29048,9 @@ given channel.</source>
         <source>Where do I find my Organization Credentials?</source>
         <target>在何处可以找到我的组织身份凭证？</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.info.p2" xml:space="preserve">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
-        <target state="needs-adaptation">可以在 &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt; 中找到。</target>
+        <target state="final">可以在 &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt; 中找到。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
@@ -29919,6 +29928,13 @@ given channel.</source>
             <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
         <target state="final">这是 Pay-as-you-go 服务器</target>
+      </trans-unit>
+      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
+        <source>Do not use strict mode</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+        <target state="new"/>
       </trans-unit>
     </body>
   </file>

@@ -1,0 +1,18 @@
+-------------------------------------------------------------------
+Mon Jan 29 11:45:53 CET 2024 - rosuna@suse.com
+
+- version 5.0.3
+  * Simplify publishing to Open Build Service
+
+-------------------------------------------------------------------
+Fri Jan 12 15:03:16 CET 2024 - marina.latini@suse.com
+
+- version 5.0.2
+  * Adjust reference label to match build tag
+
+-------------------------------------------------------------------
+Fri Jan 12 11:50:24 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * First release
+  * Use product version in reference label

@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:17:58 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Fri Dec 15 17:23:13 CET 2023 - rosuna@suse.com
+
+- version 4.4.3-1
+  * Disable postgres JIT
+  * Fix postgres require macros to be installable introducing
+    postgresql_version_min and postgresql_version_max to limit
+    allowed postgresql version
+  * Allow postgresql version dependency to be set in project config
+
+-------------------------------------------------------------------
 Mon Sep 18 14:48:45 CEST 2023 - rosuna@suse.com
 
 - version 4.4.2-1

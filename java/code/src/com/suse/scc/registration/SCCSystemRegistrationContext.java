@@ -15,7 +15,7 @@
 
 package com.suse.scc.registration;
 
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
 import com.suse.scc.SCCSystemId;
@@ -32,7 +32,7 @@ public class SCCSystemRegistrationContext {
 
     private final SCCClient sccClient;
     private final List<SCCRegCacheItem> items;
-    private final Credentials primaryCredential;
+    private final SCCCredentials primaryCredential;
 
     private final Map<SCCSystemId, SCCRegCacheItem> itemsBySccSystemId;
     private final Map<SCCSystemId, SCCRegisterSystemJson> pendingRegistrationSystems;
@@ -50,7 +50,7 @@ public class SCCSystemRegistrationContext {
     public SCCSystemRegistrationContext(
             SCCClient sccClientIn,
             List<SCCRegCacheItem> itemsIn,
-            Credentials primaryCredentialIn
+            SCCCredentials primaryCredentialIn
     ) {
         this.sccClient = sccClientIn;
         this.items = itemsIn;
@@ -70,7 +70,7 @@ public class SCCSystemRegistrationContext {
         return items;
     }
 
-    public Credentials getPrimaryCredential() {
+    public SCCCredentials getPrimaryCredential() {
         return primaryCredential;
     }
 

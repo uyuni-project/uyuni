@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -20,7 +21,7 @@ from .importLib import Import
 
 
 class ArchImport(Import):
-    backend_method = ''
+    backend_method = ""
 
     def submit(self):
         meth = getattr(self.backend, self.backend_method)
@@ -29,45 +30,45 @@ class ArchImport(Import):
 
 
 class CPUArchImport(ArchImport):
-    backend_method = 'processCPUArches'
+    backend_method = "processCPUArches"
 
 
 class TypedArchImport(ArchImport):
-
     def preprocess(self):
         self.arch_types = {}
         for item in self.batch:
-            arch_type_label = item['arch-type-label']
-            arch_type_name = item['arch-type-name']
+            arch_type_label = item["arch-type-label"]
+            arch_type_name = item["arch-type-name"]
             self.arch_types[arch_type_label] = arch_type_name
 
     def fix(self):
         self.backend.lookupArchTypes(self.arch_types)
         for item in self.batch:
-            item['arch_type_id'] = self.arch_types[item['arch-type-label']]
+            item["arch_type_id"] = self.arch_types[item["arch-type-label"]]
 
 
 class ChannelArchImport(TypedArchImport):
-    backend_method = 'processChannelArches'
+    backend_method = "processChannelArches"
 
 
 class PackageArchImport(TypedArchImport):
-    backend_method = 'processPackageArches'
+    backend_method = "processPackageArches"
 
 
 class ServerArchImport(TypedArchImport):
-    backend_method = 'processServerArches'
+    backend_method = "processServerArches"
 
 
+# pylint: disable-next=missing-class-docstring
 class BaseArchCompatImport(Import):
     # Things that have to be overridden in subclasses
-    arches1_lookup_method_name = ''
-    arches2_lookup_method_name = ''
-    arches1_name = ''
-    arches2_name = ''
-    arches1_field_name = ''
-    arches2_field_name = ''
-    submit_method_name = ''
+    arches1_lookup_method_name = ""
+    arches2_lookup_method_name = ""
+    arches1_name = ""
+    arches2_name = ""
+    arches1_field_name = ""
+    arches2_field_name = ""
+    submit_method_name = ""
 
     def __init__(self, batch, backend):
         Import.__init__(self, batch, backend)
@@ -91,12 +92,14 @@ class BaseArchCompatImport(Import):
             arch1_name = entry[self.arches1_name]
             val = self.arches1.get(arch1_name)
             if not val:
+                # pylint: disable-next=consider-using-f-string
                 raise ValueError("Unsupported arch %s" % arch1_name)
             entry[self.arches1_field_name] = val
 
             arch2_name = entry[self.arches2_name]
             val = self.arches2.get(arch2_name)
             if not val:
+                # pylint: disable-next=consider-using-f-string
                 raise ValueError("Unsupported arch %s" % arch2_name)
             entry[self.arches2_field_name] = val
 
@@ -106,50 +109,58 @@ class BaseArchCompatImport(Import):
 
 
 class ServerPackageArchCompatImport(BaseArchCompatImport):
-    arches1_lookup_method_name = 'lookupServerArches'
-    arches2_lookup_method_name = 'lookupPackageArches'
-    arches1_name = 'server-arch'
-    arches2_name = 'package-arch'
-    arches1_field_name = 'server_arch_id'
-    arches2_field_name = 'package_arch_id'
-    submit_method_name = 'processServerPackageArchCompatMap'
+    arches1_lookup_method_name = "lookupServerArches"
+    arches2_lookup_method_name = "lookupPackageArches"
+    arches1_name = "server-arch"
+    arches2_name = "package-arch"
+    arches1_field_name = "server_arch_id"
+    arches2_field_name = "package_arch_id"
+    submit_method_name = "processServerPackageArchCompatMap"
 
 
 class ServerChannelArchCompatImport(BaseArchCompatImport):
-    arches1_lookup_method_name = 'lookupServerArches'
-    arches2_lookup_method_name = 'lookupChannelArches'
-    arches1_name = 'server-arch'
-    arches2_name = 'channel-arch'
-    arches1_field_name = 'server_arch_id'
-    arches2_field_name = 'channel_arch_id'
-    submit_method_name = 'processServerChannelArchCompatMap'
+    arches1_lookup_method_name = "lookupServerArches"
+    arches2_lookup_method_name = "lookupChannelArches"
+    arches1_name = "server-arch"
+    arches2_name = "channel-arch"
+    arches1_field_name = "server_arch_id"
+    arches2_field_name = "channel_arch_id"
+    submit_method_name = "processServerChannelArchCompatMap"
 
 
 class ChannelPackageArchCompatImport(BaseArchCompatImport):
-    arches1_lookup_method_name = 'lookupChannelArches'
-    arches2_lookup_method_name = 'lookupPackageArches'
-    arches1_name = 'channel-arch'
-    arches2_name = 'package-arch'
-    arches1_field_name = 'channel_arch_id'
-    arches2_field_name = 'package_arch_id'
-    submit_method_name = 'processChannelPackageArchCompatMap'
+    arches1_lookup_method_name = "lookupChannelArches"
+    arches2_lookup_method_name = "lookupPackageArches"
+    arches1_name = "channel-arch"
+    arches2_name = "package-arch"
+    arches1_field_name = "channel_arch_id"
+    arches2_field_name = "package_arch_id"
+    submit_method_name = "processChannelPackageArchCompatMap"
 
 
+# pylint: disable-next=missing-class-docstring
 class ServerGroupServerArchCompatImport(BaseArchCompatImport):
-    arches1_lookup_method_name = 'lookupServerArches'
-    arches2_lookup_method_name = 'lookupServerGroupTypes'
-    arches1_name = 'server-arch'
-    arches2_name = 'server-group-type'
-    arches1_field_name = 'server_arch_id'
-    arches2_field_name = 'server_group_type'
-    submit_method_name = 'processServerGroupServerArchCompatMap'
+    arches1_lookup_method_name = "lookupServerArches"
+    arches2_lookup_method_name = "lookupServerGroupTypes"
+    arches1_name = "server-arch"
+    arches2_name = "server-group-type"
+    arches1_field_name = "server_arch_id"
+    arches2_field_name = "server_group_type"
+    submit_method_name = "processServerGroupServerArchCompatMap"
 
     # some entitlements are no longer supported, ignore any of them for
     # backwards compatibility
     def _postprocess(self):
-        self.batch[:] = [entry for entry in self.batch if
-                         entry[self.arches2_name] not in [
-                             'monitoring_entitled', 'sw_mgr_entitled',
-                             'provisioning_entitled', 'nonlinux_entitled',
-                             'virtualization_host_platform']]
+        self.batch[:] = [
+            entry
+            for entry in self.batch
+            if entry[self.arches2_name]
+            not in [
+                "monitoring_entitled",
+                "sw_mgr_entitled",
+                "provisioning_entitled",
+                "nonlinux_entitled",
+                "virtualization_host_platform",
+            ]
+        ]
         BaseArchCompatImport._postprocess(self)

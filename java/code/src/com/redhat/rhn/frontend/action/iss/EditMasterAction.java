@@ -71,7 +71,7 @@ public class EditMasterAction extends RhnAction {
             if (validateForm(request, dynaForm)) {
                 Long mid = updateMasterDetails(mapping, dynaForm, request, response);
                 retval = mapping.findForward("success");
-                retval = getStrutsDelegate().forwardParam(retval, IssMaster.ID,
+                retval = getStrutsDelegate().forwardParam(retval, IssMaster.FIELD_ID,
                                 mid.toString());
             }
         }
@@ -84,14 +84,14 @@ public class EditMasterAction extends RhnAction {
     private void setupFormValues(HttpServletRequest request, DynaActionForm daForm) {
 
         RequestContext requestContext = new RequestContext(request);
-        Long mid = requestContext.getParamAsLong(IssMaster.ID);
+        Long mid = requestContext.getParamAsLong(IssMaster.FIELD_ID);
 
         IssMaster master = IssFactory.lookupMasterById(mid);
 
-        daForm.set(IssMaster.ID, mid);
-        daForm.set(IssMaster.LABEL, master.getLabel());
-        daForm.set(IssMaster.DEFAULT_MASTER, master.isDefaultMaster());
-        daForm.set(IssMaster.CA_CERT, master.getCaCert());
+        daForm.set(IssMaster.FIELD_ID, mid);
+        daForm.set(IssMaster.FIELD_LABEL, master.getLabel());
+        daForm.set(IssMaster.FIELD_DEFAULT_MASTER, master.isDefaultMaster());
+        daForm.set(IssMaster.FIELD_CA_CERT, master.getCaCert());
 
         request.setAttribute("mid", mid);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() +
@@ -147,7 +147,7 @@ public class EditMasterAction extends RhnAction {
 
     private boolean validateForm(HttpServletRequest request, DynaActionForm form) {
         boolean retval = true;
-        String label = form.getString(IssMaster.LABEL);
+        String label = form.getString(IssMaster.FIELD_LABEL);
         if (label == null || label.isEmpty()) {
             LocalizationService l = LocalizationService.getInstance();
             retval = false;
@@ -174,9 +174,9 @@ public class EditMasterAction extends RhnAction {
     }
 
     private void applyFormValues(DynaActionForm daForm, IssMaster master) {
-        master.setLabel(daForm.getString(IssMaster.LABEL));
+        master.setLabel(daForm.getString(IssMaster.FIELD_LABEL));
 
-        Boolean isDefault = (Boolean) daForm.get(IssMaster.DEFAULT_MASTER);
+        Boolean isDefault = (Boolean) daForm.get(IssMaster.FIELD_DEFAULT_MASTER);
         if (isDefault == null) {
             isDefault = Boolean.FALSE;
         }
@@ -187,7 +187,7 @@ public class EditMasterAction extends RhnAction {
         else {
             master.unsetAsDefault();
         }
-        master.setCaCert(daForm.getString(IssMaster.CA_CERT));
+        master.setCaCert(daForm.getString(IssMaster.FIELD_CA_CERT));
     }
 
 }

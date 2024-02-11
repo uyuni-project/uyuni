@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,6 +20,7 @@
 import os
 import sys
 import base64
+
 try:
     #  python 2
     import xmlrpclib
@@ -33,10 +35,17 @@ from spacewalk.common import apache, rhnFlags
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common import byterange
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnException import rhnFault, rhnNotFound,\
-    redirectException  # to catch redirect exception
+from spacewalk.common.rhnException import (
+    rhnFault,
+    rhnNotFound,
+    redirectException,
+)  # to catch redirect exception
 from spacewalk.common.rhnTranslate import _
+
+# pylint: disable-next=ungrouped-imports
 from uyuni.common.rhnLib import setHeaderValue
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common.rhnTB import Traceback
 
 # local modules
@@ -50,24 +59,25 @@ from . import apacheAuth
 
 
 class UnknownXML(Exception):
-
     def __init__(self, value):
         Exception.__init__(self)
         self.__value = value
 
     def __repr__(self):
         return _("Invalid request received (%s).") % self.__value
+
     __str__ = __repr__
 
 
 class HandlerNotFoundError(Exception):
     pass
 
+
 # base class for requests
 
 
+# pylint: disable-next=missing-class-docstring
 class apacheRequest:
-
     def __init__(self, client_version, req):
         self.client = client_version
         self.req = req
@@ -91,33 +101,37 @@ class apacheRequest:
         self._setup_servers()
 
     def _setup_servers(self):
-        self.servers = rhnImport.load("server/handlers",
-                                      interface_signature='rpcClasses')
+        self.servers = rhnImport.load(
+            "server/handlers", interface_signature="rpcClasses"
+        )
 
     # return a reference to a method name. The method in the base
     def method_ref(self, method):
-        raise UnknownXML("Could not find reference definition"
-                         "for method '%s'" % method)
+        raise UnknownXML(
+            # pylint: disable-next=consider-using-f-string
+            "Could not find reference definition"
+            "for method '%s'" % method
+        )
 
     # call a function with parameters
     def call_function(self, method, params):
         # short-circuit everything if sending a system-wide message.
         if CFG.SEND_MESSAGE_TO_ALL:
             # Make sure the applet doesn't see the message
-            if method == 'applet.poll_status':
-                return self.response({
-                    'checkin_interval': 3600,
-                    'server_status': 'normal'
-                })
-            if method == 'applet.poll_packages':
-                return self.response({'use_cached_copy': 1})
+            if method == "applet.poll_status":
+                return self.response(
+                    {"checkin_interval": 3600, "server_status": "normal"}
+                )
+            if method == "applet.poll_packages":
+                return self.response({"use_cached_copy": 1})
 
             # Fetch global message being sent to clients if applicable.
+            # pylint: disable-next=unspecified-encoding
             msg = open(CFG.MESSAGE_TO_ALL).read()
+            # pylint: disable-next=consider-using-f-string
             log_debug(3, "Sending message to all clients: %s" % msg)
             # Send the message as a fault.
-            response = xmlrpclib.Fault(
-                -1, _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg)
+            response = xmlrpclib.Fault(-1, _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg)
             # and now send everything back
             ret = self.response(response)
             log_debug(4, "Leave with return value", ret)
@@ -145,13 +159,18 @@ class apacheRequest:
             if exctype == UnknownXML:
                 fault = -1
             e_type, e_value = sys.exc_info()[:2]
-            response = xmlrpclib.Fault(fault, _(
-                "While running '%s': caught\n%s : %s\n") % (
-                method, e_type, e_value))
-            Traceback(method, self.req,
-                      extra="Response sent back to the caller:\n%s\n" % (
-                          response.faultString,),
-                      severity="notification")
+            response = xmlrpclib.Fault(
+                fault,
+                _("While running '%s': caught\n%s : %s\n") % (method, e_type, e_value),
+            )
+            Traceback(
+                method,
+                self.req,
+                # pylint: disable-next=consider-using-f-string
+                extra="Response sent back to the caller:\n%s\n"
+                % (response.faultString,),
+                severity="notification",
+            )
         except rhnNotFound:
             e = sys.exc_info()[1]
             return apache.HTTP_NOT_FOUND
@@ -174,19 +193,28 @@ class apacheRequest:
                 log_error("rhnSQL.SQLSchemaError caught", e)
                 rhnSQL.rollback()
                 # generate the traceback report
-                Traceback(method, self.req,
-                          extra="SQL Error generated: %s" % e,
-                          severity="schema")
+                Traceback(
+                    method,
+                    self.req,
+                    # pylint: disable-next=consider-using-f-string
+                    extra="SQL Error generated: %s" % e,
+                    severity="schema",
+                )
                 return apache.HTTP_INTERNAL_SERVER_ERROR
             response = f.getxml()
         except rhnSQL.SQLError:
             e = sys.exc_info()[1]
             log_error("rhnSQL.SQLError caught", e)
             rhnSQL.rollback()
-            Traceback(method, self.req,
-                      extra="SQL Error generated: %s" % e,
-                      severity="schema")
+            Traceback(
+                method,
+                self.req,
+                # pylint: disable-next=consider-using-f-string
+                extra="SQL Error generated: %s" % e,
+                severity="schema",
+            )
             return apache.HTTP_INTERNAL_SERVER_ERROR
+        # pylint: disable-next=broad-exception-caught
         except Exception:
             e = sys.exc_info()[1]
             log_error("Unhandled exception", e)
@@ -240,20 +268,24 @@ class apacheRequest:
         response_size = file_size
 
         # Respond to if-modified-since requests
-        if ("If-Modified-Since" in self.req.headers_in and
-                "Last-Modified" in rhnFlags.get("outputTransportOptions") and
-                rhnFlags.get("outputTransportOptions")['Last-Modified'] == self.req.headers_in['If-Modified-Since']):
+        if (
+            "If-Modified-Since" in self.req.headers_in
+            and "Last-Modified" in rhnFlags.get("outputTransportOptions")
+            and rhnFlags.get("outputTransportOptions")["Last-Modified"]
+            == self.req.headers_in["If-Modified-Since"]
+        ):
             return apache.HTTP_NOT_MODIFIED
 
         # Serve up the requested byte range
         if "Range" in self.req.headers_in:
             try:
-                range_start, range_end = \
-                    byterange.parse_byteranges(self.req.headers_in["Range"],
-                                               file_size)
+                range_start, range_end = byterange.parse_byteranges(
+                    self.req.headers_in["Range"], file_size
+                )
                 response_size = range_end - range_start
-                self.req.headers_out["Content-Range"] = \
-                    byterange.get_content_range(range_start, range_end, file_size)
+                self.req.headers_out["Content-Range"] = byterange.get_content_range(
+                    range_start, range_end, file_size
+                )
                 self.req.headers_out["Accept-Ranges"] = "bytes"
 
                 response.file_obj.seek(range_start)
@@ -278,10 +310,12 @@ class apacheRequest:
         if response.name:
             self.req.headers_out["X-Package-FileName"] = response.name
 
-        xrepcon = "X-Replace-Content-Active" in self.req.headers_in \
-            and rhnFlags.test("Download-Accelerator-Path")
+        xrepcon = "X-Replace-Content-Active" in self.req.headers_in and rhnFlags.test(
+            "Download-Accelerator-Path"
+        )
         if xrepcon:
             fpath = rhnFlags.get("Download-Accelerator-Path")
+            # pylint: disable-next=consider-using-f-string
             log_debug(1, "Serving file %s" % fpath)
             self.req.headers_out["X-Replace-Content"] = fpath
             # Only set a byte rate if xrepcon is active
@@ -297,7 +331,8 @@ class apacheRequest:
             read = 0
             while read < response_size:
                 # We check the size here in case we're not asked for the entire file.
-                if (read + CFG.BUFFER_SIZE > response_size):
+                if read + CFG.BUFFER_SIZE > response_size:
+                    # pylint: disable-next=unused-variable
                     to_read = read + CFG.BUFFER_SIZE - response_size
                 else:
                     to_read = CFG.BUFFER_SIZE
@@ -315,10 +350,12 @@ class apacheRequest:
                     return apache.HTTP_BAD_REQUEST
             response.close()
         else:
-            if 'wsgi.file_wrapper' in self.req.headers_in:
-                self.req.output = self.req.headers_in['wsgi.file_wrapper'](response, CFG.BUFFER_SIZE)
+            if "wsgi.file_wrapper" in self.req.headers_in:
+                self.req.output = self.req.headers_in["wsgi.file_wrapper"](
+                    response, CFG.BUFFER_SIZE
+                )
             else:
-                self.req.output = iter(lambda: response.read(CFG.BUFFER_SIZE), '')
+                self.req.output = iter(lambda: response.read(CFG.BUFFER_SIZE), "")
 
         return success_response
 
@@ -331,7 +368,7 @@ class apacheRequest:
         # Init an output object; we'll use it for sending data in various
         # formats
         if isinstance(response, transports.File):
-            if not hasattr(response.file_obj, 'fileno') and compress_response:
+            if not hasattr(response.file_obj, "fileno") and compress_response:
                 # This is a StringIO that has to be compressed, so read it in
                 # memory; mark that we don't have to do any xmlrpc encoding
                 response = response.file_obj.read()
@@ -345,11 +382,11 @@ class apacheRequest:
         # First, use the same encoding/transfer that the client used
         output.set_transport_flags(
             transfer=transports.lookupTransfer(self.input.transfer),
-            encoding=transports.lookupEncoding(self.input.encoding))
+            encoding=transports.lookupEncoding(self.input.encoding),
+        )
 
         if isinstance(response, xmlrpclib.Fault):
-            log_debug(4, "Return FAULT",
-                      response.faultCode, response.faultString)
+            log_debug(4, "Return FAULT", response.faultCode, response.faultString)
             # No compression for faults because we'd like them to pop
             # up in clear text on the other side just in case
             output.set_transport_flags(output.TRANSFER_NONE, output.ENCODE_NONE)
@@ -357,14 +394,12 @@ class apacheRequest:
             # check if we have to compress this result
             log_debug(4, "Compression on for client version", self.client)
             if self.client > 0:
-                output.set_transport_flags(output.TRANSFER_BINARY,
-                                           output.ENCODE_ZLIB)
+                output.set_transport_flags(output.TRANSFER_BINARY, output.ENCODE_ZLIB)
             else:  # original clients had the binary transport support broken
-                output.set_transport_flags(output.TRANSFER_BASE64,
-                                           output.ENCODE_ZLIB)
+                output.set_transport_flags(output.TRANSFER_BASE64, output.ENCODE_ZLIB)
 
         # We simply add the transport options to the output headers
-        output.headers.update(rhnFlags.get('outputTransportOptions').dict())
+        output.headers.update(rhnFlags.get("outputTransportOptions").dict())
 
         if needs_xmlrpc_encoding:
             # Normalize the response
@@ -373,31 +408,42 @@ class apacheRequest:
                 response = xmlrpclib.dumps(response, methodresponse=1)
             except TypeError:
                 e = sys.exc_info()[1]
-                log_debug(4, "Error \"%s\" encoding response = %s" % (e, response))
-                Traceback("apacheHandler.response", self.req,
-                          extra="Error \"%s\" encoding response = %s" % (e, response),
-                          severity="notification")
+                # pylint: disable-next=consider-using-f-string
+                log_debug(4, 'Error "%s" encoding response = %s' % (e, response))
+                Traceback(
+                    "apacheHandler.response",
+                    self.req,
+                    # pylint: disable-next=consider-using-f-string
+                    extra='Error "%s" encoding response = %s' % (e, response),
+                    severity="notification",
+                )
                 return apache.HTTP_INTERNAL_SERVER_ERROR
+            # pylint: disable-next=broad-exception-caught,unused-variable
             except Exception as exc:
                 # Uncaught exception; signal the error
-                Traceback("apacheHandler.response", self.req,
-                          severity="unhandled")
+                Traceback("apacheHandler.response", self.req, severity="unhandled")
                 return apache.HTTP_INTERNAL_SERVER_ERROR
 
         # we're about done here, patch up the headers
         output.process(response)
         # Copy the rest of the fields
         for k, v in list(output.headers.items()):
-            if k.lower() == 'content-type':
+            if k.lower() == "content-type":
                 # Content-type
                 self.req.content_type = v
             else:
                 setHeaderValue(self.req.headers_out, k, v)
 
         if 5 <= CFG.DEBUG < 10:
-            log_debug(5, "The response: %s[...SNIP (for sanity) SNIP...]%s" % (response[:100], response[-100:]))
+            log_debug(
+                5,
+                # pylint: disable-next=consider-using-f-string
+                "The response: %s[...SNIP (for sanity) SNIP...]%s"
+                % (response[:100], response[-100:]),
+            )
         elif CFG.DEBUG >= 10:
             # if you absolutely must have that whole response in the log file
+            # pylint: disable-next=consider-using-f-string
             log_debug(10, "The response: %s" % response)
 
         # send the headers
@@ -420,9 +466,11 @@ class apacheRequest:
     def auth_proxy(self):
         return apacheAuth.auth_proxy()
 
+
 # handles the POST requests
 
 
+# pylint: disable-next=missing-class-docstring
 class apachePOST(apacheRequest):
     # Decode the request. Returns a tuple of (params, methodName).
 
@@ -444,40 +492,56 @@ class apachePOST(apacheRequest):
         # Execute the right function (from xml-rpc request) in the right class.
         # NOTE: All functions should do their own logging
         log_debug(3, self.server, method)
-        if method[-8:] == '.__str__':
+        if method[-8:] == ".__str__":
             # Ignore these, they are just some code trying to stringify an
             # XML-RPC function
             log_error("Ignoring call for method", method)
             raise rhnFault(-1, "Ignoring call for a __str__ method", explain=0)
         if self.server is None:
-            raise UnknownXML("Method `%s' is not bound to a server "
-                             "(server = %s)" % (method, self.server))
+            raise UnknownXML(
+                # pylint: disable-next=consider-using-f-string
+                "Method `%s' is not bound to a server "
+                "(server = %s)" % (method, self.server)
+            )
         classes = self.servers[self.server]
         if classes is None:
-            raise UnknownXML("Server %s is not a valid XML-RPC receiver" %
-                             (self.server,))
+            raise UnknownXML(
+                # pylint: disable-next=consider-using-f-string
+                "Server %s is not a valid XML-RPC receiver"
+                % (self.server,)
+            )
 
         try:
-            classname, funcname = method.split('.', 1)
+            classname, funcname = method.split(".", 1)
+        # pylint: disable-next=bare-except
         except:
-            raise_with_tb(UnknownXML("method '%s' doesn't have a class and function" %
-                             (method,)), sys.exc_info()[2])
+            raise_with_tb(
+                # pylint: disable-next=consider-using-f-string
+                UnknownXML("method '%s' doesn't have a class and function" % (method,)),
+                sys.exc_info()[2],
+            )
         if not classname or not funcname:
             raise UnknownXML(method)
 
-        log_debug(4, "Class name: %s; function name: %s" % (classname,
-                                                            funcname))
+        # pylint: disable-next=consider-using-f-string
+        log_debug(4, "Class name: %s; function name: %s" % (classname, funcname))
         c = classes.get(classname)
         if c is None:
-            raise UnknownXML("class %s.%s is not defined (function = %s)" % (
-                self.server, classname, funcname))
+            raise UnknownXML(
+                # pylint: disable-next=consider-using-f-string
+                "class %s.%s is not defined (function = %s)"
+                % (self.server, classname, funcname)
+            )
 
         # Initialize the handlers object
         serverHandlers = c()
         # we need this for sat handler
-        serverHandlers.remote_hostname = self.req.get_remote_host(apache.REMOTE_DOUBLE_REV)
+        serverHandlers.remote_hostname = self.req.get_remote_host(
+            apache.REMOTE_DOUBLE_REV
+        )
         f = serverHandlers.get_function(funcname)
         if f is None:
+            # pylint: disable-next=consider-using-f-string
             raise UnknownXML("function: %s invalid" % (method,))
         # Send the client this server's capabilities
         rhnCapability.set_server_capabilities()
@@ -509,6 +573,7 @@ class apachePOST(apacheRequest):
         try:
             params, method = self.decode(_body)
         except xmlrpclib.ResponseError:
+            # pylint: disable-next=consider-using-f-string
             log_error("Got bad XML-RPC blob of len = %d" % len(_body))
             return apache.HTTP_BAD_REQUEST
         else:
@@ -518,16 +583,17 @@ class apachePOST(apacheRequest):
         return self.call_function(method, params)
 
 
+# pylint: disable-next=missing-class-docstring
 class apacheGET:
-
     def __init__(self, client_version, req):
         # extract the server we're talking to and the root directory
         # from the request configuration options
         req_config = req.get_options()
         self.server = req_config["SERVER"]
         # XXX: some day we're going to trust the timestamp stuff...
-        self.handler_classes = rhnImport.load("server/handlers",
-                                              interface_signature='getHandler')
+        self.handler_classes = rhnImport.load(
+            "server/handlers", interface_signature="getHandler"
+        )
         log_debug(3, "Handler classes", self.handler_classes)
 
         self.handler = None
@@ -545,6 +611,7 @@ class apacheGET:
         return getattr(self.handler, name)
 
 
+# pylint: disable-next=missing-class-docstring
 class GetHandler(apacheRequest):
     # we require our own init since we depend on a channel
 
@@ -561,16 +628,18 @@ class GetHandler(apacheRequest):
         log_debug(3, self.server, method)
 
         # Init the repository
-        server_id = rhnFlags.get("AUTH_SESSION_TOKEN")['X-RHN-Server-Id']
-        username = rhnFlags.get("AUTH_SESSION_TOKEN")['X-RHN-Auth-User-Id']
-        repository = rhnRepository.Repository(self.channel, server_id,
-                                              username)
+        server_id = rhnFlags.get("AUTH_SESSION_TOKEN")["X-RHN-Server-Id"]
+        username = rhnFlags.get("AUTH_SESSION_TOKEN")["X-RHN-Auth-User-Id"]
+        repository = rhnRepository.Repository(self.channel, server_id, username)
         repository.set_qos()
-        meth = method.replace('.', '_')
+        meth = method.replace(".", "_")
         f = repository.get_function(meth)
         if f is None:
-            raise UnknownXML("function '%s' invalid; path_info is %s" % (
-                method, self.req.path_info))
+            raise UnknownXML(
+                # pylint: disable-next=consider-using-f-string
+                "function '%s' invalid; path_info is %s"
+                % (method, self.req.path_info)
+            )
         return f
 
     # handle the GET requests
@@ -587,10 +656,13 @@ class GetHandler(apacheRequest):
             response = f.getxml()
             self.response(response)
             return apache.HTTP_NOT_FOUND
+        # pylint: disable-next=broad-exception-caught,unused-variable
         except Exception as exc:
+            # pylint: disable-next=unused-variable
             e = sys.exc_info()[1]
             rhnSQL.rollback()
             # otherwise we do a full stop
+            # pylint: disable-next=used-before-assignment
             Traceback(method, self.req, severity="unhandled")
             return apache.HTTP_INTERNAL_SERVER_ERROR
         # make the actual function call and return the result
@@ -600,9 +672,10 @@ class GetHandler(apacheRequest):
         # Returns the method name and params for this call
 
         # Split the request into parts
-        array = self.req.path_info.split('/')
+        array = self.req.path_info.split("/")
         if len(array) < 4:
             log_error("Invalid URI for GET request", self.req.path_info)
+            # pylint: disable-next=consider-using-f-string
             raise rhnFault(21, _("Invalid URI %s" % self.req.path_info))
 
         self.channel, method = (array[2], array[3])
@@ -617,6 +690,7 @@ class GetHandler(apacheRequest):
         log_debug(3)
         # pkilambi:if redirectException caught returns path(<str>)
         if isinstance(response, str):
+            # pylint: disable-next=unused-variable
             method, params = self._get_method_params()
             if method == "getPackage":
                 return self.redirect(self.req, response)
@@ -626,28 +700,27 @@ class GetHandler(apacheRequest):
         # and to return an Apache error code
 
         if isinstance(response, xmlrpclib.Fault):
-            log_debug(4, "Return FAULT",
-                      response.faultCode, response.faultString)
+            log_debug(4, "Return FAULT", response.faultCode, response.faultString)
             retcode = apache.HTTP_NOT_FOUND
             if abs(response.faultCode) in (33, 34, 35, 37, 39, 41):
                 retcode = apache.HTTP_UNAUTHORIZED
 
-            self.req.headers_out["X-RHN-Fault-Code"] = \
-                str(response.faultCode)
-            faultString = base64.encodestring(response.faultString.encode()).decode().strip()
+            self.req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
+            faultString = (
+                base64.encodestring(response.faultString.encode()).decode().strip()
+            )
             # Split the faultString into multiple lines
-            for line in faultString.split('\n'):
-                self.req.headers_out.add("X-RHN-Fault-String",
-                                             line.strip())
+            for line in faultString.split("\n"):
+                self.req.headers_out.add("X-RHN-Fault-String", line.strip())
             # And then send all the other things
-            for k, v in list(rhnFlags.get('outputTransportOptions').items()):
+            for k, v in list(rhnFlags.get("outputTransportOptions").items()):
                 setHeaderValue(self.req.headers_out, k, v)
             return retcode
         # Otherwise we're pretty much fine with the standard response
         # handler
 
         # Copy the fields from the transport options, if necessary
-        for k, v in list(rhnFlags.get('outputTransportOptions').items()):
+        for k, v in list(rhnFlags.get("outputTransportOptions").items()):
             setHeaderValue(self.req.headers_out, k, v)
         # and jump into the base handler
         return apacheRequest.response(self, response)
@@ -659,7 +732,9 @@ class GetHandler(apacheRequest):
             raise IOError("Cannot redirect after headers have already been sent.")
 
         # akamize the url with the new tokengen before sending the redirect response
+        # pylint: disable-next=import-outside-toplevel
         import tokengen.Generator
+
         arl = tokengen.Generator.generate_auth_url(url)
         req.headers_out["Location"] = arl
         log_debug(3, "Akamized url to redirect is ", arl)

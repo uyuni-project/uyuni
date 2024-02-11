@@ -2,8 +2,6 @@
 
 ## Init clients BEGIN ###
 
-- features/build_validation/init_clients/sle12sp4_minion.feature
-- features/build_validation/init_clients/sle12sp4_ssh_minion.feature
 - features/build_validation/init_clients/sle12sp5_minion.feature
 - features/build_validation/init_clients/sle12sp5_ssh_minion.feature
 - features/build_validation/init_clients/sle15sp1_minion.feature
@@ -49,8 +47,8 @@
 - features/build_validation/init_clients/opensuse154arm_ssh_minion.feature
 - features/build_validation/init_clients/opensuse155arm_minion.feature
 - features/build_validation/init_clients/opensuse155arm_ssh_minion.feature
-- features/build_validation/init_clients/sle15sp3s390_minion.feature
-- features/build_validation/init_clients/sle15sp3s390_ssh_minion.feature
+- features/build_validation/init_clients/sle15sp5s390_minion.feature
+- features/build_validation/init_clients/sle15sp5s390_ssh_minion.feature
 
 - features/build_validation/init_clients/slemicro51_minion.feature
 - features/build_validation/init_clients/slemicro51_ssh_minion.feature

@@ -49,7 +49,7 @@
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
       <!-- Exclude checkstyle and jacoco -->
-      <exclude name="all-8.30.jar" />
+      <exclude name="all-10.12.7.jar" />
       <exclude name="nodeps-0.8.7.jar" />
     </fileset>
   </path>
@@ -491,7 +491,7 @@
   </target>
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${lib.dir}/all-8.30.jar" />
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${lib.dir}/all-10.12.7.jar" />
     <checkstyle config="${basedir}/buildconf/checkstyle.xml">
       <classpath>
         <path location="${build.dir}/classes" />
@@ -631,5 +631,18 @@
       <arg line="-sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
     </exec>
 
+  </target>
+
+  <target name="make-eclipse-project"
+          description="Configures this checkout as an eclipse project.">
+    <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false" />
+    <copy toDir="${rhn-home}" overwrite="false">
+      <fileset dir="${rhn-home}/conf/eclipse/">
+        <include name=".checkstyle" />
+        <include name=".classpath" />
+        <include name=".settings/*" />
+        <!-- include name=".externalToolBuilders/*" /-->
+      </fileset>
+    </copy>
   </target>
 </project>

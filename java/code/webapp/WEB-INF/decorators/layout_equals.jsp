@@ -4,6 +4,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ page import="com.redhat.rhn.GlobalInstanceHolder" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,8 +14,10 @@
     <jsp:include page="layout_head.jsp" />
     <decorator:head />
   </head>
-  <body onload="<decorator:getProperty property="body.onload" />">
-    <nav class="navbar navbar-default navbar-pf" role="navigation">
+  <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
+  <c:set var="isUpdatedPage" value="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}"/>
+  <body class="theme-${webTheme} ${isUpdatedPage ? 'updated-theme' : 'old-theme'}" onload="<decorator:getProperty property="body.onload" />">
+    <nav class="navbar-pf navbar navbar-dark bg-dark" role="navigation">
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </nav>
     <div class="spacewalk-main-column-layout">

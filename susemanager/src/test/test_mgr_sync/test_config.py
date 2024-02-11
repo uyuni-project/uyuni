@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2014 Novell, Inc.
@@ -16,6 +17,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import os
+
 try:
     import unittest2 as unittest
 except ImportError:
@@ -25,7 +27,6 @@ from spacewalk.susemanager.mgr_sync.config import Config
 
 
 class ConfigTest(unittest.TestCase):
-
     def setUp(self):
         self.fake_rhn_file = os.path.join(os.getcwd(), "fake_rhn_file")
         Config.RHNFILE = self.fake_rhn_file
@@ -45,11 +46,12 @@ class ConfigTest(unittest.TestCase):
         priority to user's settings.
         """
 
-        rhn_user = 'rhn_user'
-        rhn_token = 'rhn_token'
+        rhn_user = "rhn_user"
+        rhn_token = "rhn_token"
 
-        self._create_fake_config_file(self.fake_rhn_file, user=rhn_user,
-                                      token=rhn_token)
+        self._create_fake_config_file(
+            self.fake_rhn_file, user=rhn_user, token=rhn_token
+        )
 
         # only rhn config is in place
         config = Config()
@@ -59,10 +61,11 @@ class ConfigTest(unittest.TestCase):
 
         # add user config, should get higher priority at parsing time
 
-        local_user = 'local_user'
-        local_password = 'local_password'
-        self._create_fake_config_file(self.fake_user_file, user=local_user,
-                                      password=local_password)
+        local_user = "local_user"
+        local_password = "local_password"
+        self._create_fake_config_file(
+            self.fake_user_file, user=local_user, password=local_password
+        )
 
         config = Config()
 
@@ -70,20 +73,33 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(local_password, config.password)
         self.assertEqual(rhn_token, config.token)
 
-    def _create_fake_config_file(self, filename, user=None, password=None,
-                                 host=None, port=None, uri=None, token=None):
-
-        with open(filename, 'w') as file:
+    def _create_fake_config_file(
+        self,
+        filename,
+        user=None,
+        password=None,
+        host=None,
+        port=None,
+        uri=None,
+        token=None,
+    ):
+        # pylint: disable-next=unspecified-encoding
+        with open(filename, "w") as file:
             if user:
+                # pylint: disable-next=consider-using-f-string
                 file.write("{0} = {1}\n".format(Config.USER, user))
             if password:
+                # pylint: disable-next=consider-using-f-string
                 file.write("{0} = {1}\n".format(Config.PASSWORD, password))
             if host:
+                # pylint: disable-next=consider-using-f-string
                 file.write("{0} = {1}\n".format(Config.HOST, host))
             if port:
+                # pylint: disable-next=consider-using-f-string
                 file.write("{0} = {1}\n".format(Config.PORT, port))
             if uri:
+                # pylint: disable-next=consider-using-f-string
                 file.write("{0} = {1}\n".format(Config.URI, uri))
             if token:
+                # pylint: disable-next=consider-using-f-string
                 file.write("{0} = {1}\n".format(Config.TOKEN, token))
-

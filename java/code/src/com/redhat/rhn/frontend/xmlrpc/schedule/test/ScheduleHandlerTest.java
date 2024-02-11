@@ -377,7 +377,9 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
 
         UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> handler.cancelActions(admin, List.of(child.getId().intValue())));
-        assertEquals("Cannot cancel an action with a pending prerequisite.", exception.getMessage());
+        String expected = String.format("Cannot cancel an action with a pending prerequisite.%n" +
+                "To cancel the whole chain, please cancel Action %d%n", parent.getId());
+        assertEquals(expected, exception.getMessage());
     }
 
     @Test

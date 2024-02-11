@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -26,23 +27,33 @@ except ImportError:
 from spacewalk.common.rhnLog import log_error
 
 
+# pylint: disable-next=missing-class-docstring
 class SearchNotify:
-
     def __init__(self, host="127.0.0.1", port="2828"):
+        # pylint: disable-next=consider-using-f-string
         self.addr = "http://%s:%s" % (host, port)
 
+    # pylint: disable-next=invalid-name
     def notify(self, indexName="server"):
         try:
             client = xmlrpclib.ServerProxy(self.addr)
+            # pylint: disable-next=redefined-outer-name
             result = client.admin.updateIndex(indexName)
+        # pylint: disable-next=broad-exception-caught
         except Exception:
             e = sys.exc_info()[1]
-            log_error("Failed to notify search service located at %s to update %s indexes"
-                      % (self.addr, indexName), e)
+            log_error(
+                # pylint: disable-next=consider-using-f-string
+                "Failed to notify search service located at %s to update %s indexes"
+                % (self.addr, indexName),
+                e,
+            )
             return False
         return result
+
 
 if __name__ == "__main__":
     search = SearchNotify()
     result = search.notify()
+    # pylint: disable-next=consider-using-f-string
     print(("search.notify() = %s" % (result)))

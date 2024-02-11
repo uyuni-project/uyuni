@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:55:08 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Update repository description of Open Enterprise Server 23.4 (bsc#1215514)
+
+-------------------------------------------------------------------
+Tue Jan 16 08:06:26 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * update release status of OES 23.4 (bsc#1215514)
+  * Add Debian 12 amd64
+  * add new SUSE Liberty Linux 7 LTSS channel families
+  * rename RHEL and Liberty 8 Base product to remove EOL CentOS 8 from the name
+
+-------------------------------------------------------------------
+Fri Dec 15 17:33:36 CET 2023 - rosuna@suse.com
+
+- version 4.4.6-1
+  * Change OES version from 2023.4 to 23.4 (bsc#1215514)
+
+-------------------------------------------------------------------
 Wed Nov 01 19:42:46 CET 2023 - marina.latini@suse.com
 
 - version 4.4.5-1

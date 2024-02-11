@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -29,7 +30,8 @@ from .server_token import fetch_token, fetch_org_token
 
 
 def get(system_id, load_user=1):
-    """ retrieve the server with matching certificate from the database """
+    """retrieve the server with matching certificate from the database"""
+    # pylint: disable-next=consider-using-f-string
     log_debug(3, "load_user = %s" % load_user)
     # This has to be a string
     if not isinstance(system_id, (StringType, UnicodeType)):
@@ -52,10 +54,11 @@ def get(system_id, load_user=1):
 
 
 def search(server_id, username=None):
-    """ search for a server in the database and return the Server object """
+    """search for a server in the database and return the Server object"""
     log_debug(3, server_id, username)
     s = Server(None)
     if not s.reload(server_id) == 0:
+        # pylint: disable-next=consider-using-f-string
         log_error("Reloading server id %d failed" % server_id)
         # we can't say that the server is not really found
         raise rhnFault(20)

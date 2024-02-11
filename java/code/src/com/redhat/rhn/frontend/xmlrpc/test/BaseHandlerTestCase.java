@@ -29,7 +29,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +49,6 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected String adminKey;
     protected String regularKey;
     protected String satAdminKey;
-    protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
     private boolean committed;
 
@@ -84,9 +82,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         // Setup configuration for kickstart tests (mock cobbler etc.)
         KickstartDataTest.setupTestConfiguration(admin);
 
-        tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
-        MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot.toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));

@@ -15,9 +15,6 @@
 
 package com.suse.manager.webui.services.pillar;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -34,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Class for generating pillar data containing information of the server groups memberships of minions
  */
-public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerator {
+public class MinionGroupMembershipPillarGenerator extends MinionPillarGeneratorBase {
 
     /** Logger */
     private static final Logger LOG = LogManager.getLogger(MinionGroupMembershipPillarGenerator.class);
@@ -67,11 +64,6 @@ public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerat
         pillar.add("addon_group_types", addonGroupTypes.toArray(new String[addonGroupTypes.size()]));
 
         return Optional.of(pillar);
-    }
-
-    @Override
-    public String getFilename(String minionId) {
-        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_" + CATEGORY + "." + PILLAR_DATA_FILE_EXT;
     }
 
     @Override

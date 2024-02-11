@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-web
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %define shared_path %{_datadir}/susemanager
 %define shared_www_path %{shared_path}/www
@@ -33,7 +34,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.12
+Version:        5.0.3
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -43,6 +44,7 @@ BuildArch:      noarch
 Requires(pre):  uyuni-base-common
 BuildRequires:  gettext
 BuildRequires:  make
+BuildRequires:  spacewalk-backend
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
 
@@ -195,6 +197,15 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
+if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
+  SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
+  SUMA_FULL_REL=$(sed -n 's/web\.version\s*=\s*\(.*\)/\1/p' $RPM_BUILD_ROOT%{_datadir}/rhn/config-defaults/rhn_web.conf)
+  echo "SUSE Manager release $SUMA_REL ($SUMA_FULL_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
+else
+  UYUNI_REL=$(sed -n 's/web\.version.uyuni\s*=\s*\(.*\)/\1/p' $RPM_BUILD_ROOT%{_datadir}/rhn/config-defaults/rhn_web.conf)
+  echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
+fi
+
 %{__mkdir_p} %{buildroot}/%{www_path}/css
 %{__mkdir_p} %{buildroot}/%{www_path}/fonts
 %{__mkdir_p} %{buildroot}/%{www_path}/img
@@ -227,6 +238,7 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/RHN/DBI.pm
 %{perl_vendorlib}/PXT/Config.pm
+%{_sysconfdir}/*-release
 %license LICENSE
 
 %files -n spacewalk-base-minimal-config
@@ -267,8 +279,6 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %{www_path}/javascript/manager/*.{js,js.LICENSE.txt,css}
 %dir %{www_path}/javascript/legacy
 %{www_path}/javascript/legacy/*.{js,js.LICENSE.txt,css}
-%dir %{www_path}/javascript/legacy/select2
-%{www_path}/javascript/legacy/select2/*
 %dir %{www_path}/javascript/legacy/ace-editor
 %{www_path}/javascript/legacy/ace-editor/*
 %license LICENSE

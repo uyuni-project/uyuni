@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,7 +20,7 @@ import time
 from spacewalk.server import rhnSQL
 
 print((os.getpid()))
-rhnSQL.initDB('rhnuser/rhnuser@webdev')
+rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
 h = rhnSQL.prepare("select 1 from dual")
 
@@ -29,11 +30,12 @@ i = 0
 while i < 10000:
     h.execute()
     if i % 100 == 0:
+        # pylint: disable-next=unspecified-encoding
         f = open("/proc/self/status")
         l = f.readlines()
         vmsize = l[10][10:-1]
         vmrss = l[12][10:-1]
         f.close()
-        write("%d %.3f vsz: %s rss: %s \n" % (i, time.time() - start, vmsize,
-                                              vmrss))
+        # pylint: disable-next=consider-using-f-string
+        write("%d %.3f vsz: %s rss: %s \n" % (i, time.time() - start, vmsize, vmrss))
     i = i + 1

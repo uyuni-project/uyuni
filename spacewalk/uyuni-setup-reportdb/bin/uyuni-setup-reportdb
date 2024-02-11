@@ -323,7 +323,7 @@ EOF
     fi
 
     if ! exists_schema ; then
-        /usr/bin/spacewalk-sql --reportdb /etc/sysconfig/rhn/reportdb/main.sql
+        /usr/bin/spacewalk-sql --reportdb /usr/share/susemanager/db/reportdb/main.sql
     else
 	    /usr/bin/spacewalk-schema-upgrade --reportdb -y
     fi
@@ -468,7 +468,7 @@ pg_hba_remove() {
 }
 
 postgresql_service() {
-    POSTGRESQL_SERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+    POSTGRESQL_SERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
     case $1 in
         initdb)
             if isSUSE ; then

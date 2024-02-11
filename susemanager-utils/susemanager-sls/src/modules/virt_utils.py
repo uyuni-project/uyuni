@@ -8,6 +8,7 @@ import os.path
 import re
 import subprocess
 from xml.etree import ElementTree
+
 try:
     import libvirt
 except ImportError:
@@ -25,12 +26,14 @@ log = logging.getLogger(__name__)
 __virtualname__ = "virt_utils"
 
 
+# pylint: disable-next=invalid-name
 def __virtual__():
     """
     Only if the virt module is loaded
     """
     return (
         __virtualname__
+        # pylint: disable-next=undefined-variable
         if "virt.vm_info" in __salt__
         else (False, "Module virt_utils: virt module can't be loaded")
     )
@@ -72,12 +75,14 @@ def vm_info(name=None):
     Provide additional virtual machine infos
     """
     try:
+        # pylint: disable-next=undefined-variable
         infos = __salt__["virt.vm_info"](name)
         all_vms = {}
         for vm_name in infos.keys():
             all_vms[vm_name] = {
                 "graphics_type": infos[vm_name].get("graphics", {}).get("type", None),
             }
+    # pylint: disable-next=unused-variable
     except CommandExecutionError as err:
         all_vms = {}
 
@@ -90,8 +95,10 @@ def vm_info(name=None):
             ).communicate()[0]
         )
         resource_states = {}
-        for resource in crm_status.findall(".//resources/resource[@resource_agent='ocf::heartbeat:VirtualDomain']"):
-            resource_states[resource.get('id')] = resource.get('active') == "true"
+        for resource in crm_status.findall(
+            ".//resources/resource[@resource_agent='ocf::heartbeat:VirtualDomain']"
+        ):
+            resource_states[resource.get("id")] = resource.get("active") == "true"
         crm_conf = ElementTree.fromstring(
             subprocess.Popen(
                 ["crm", "configure", "show", "xml", "type:primitive"],
@@ -108,7 +115,11 @@ def vm_info(name=None):
             desc = ElementTree.parse(path)
             name_node = desc.find("./name")
             # Provide infos on VMs managed by the cluster running on this node or not running at all
-            if name_node is not None and name_node.text in all_vms or not resource_states[primitive.get("id")]:
+            if (
+                name_node is not None
+                and name_node.text in all_vms
+                or not resource_states[primitive.get("id")]
+            ):
                 if name_node.text not in all_vms:
                     all_vms[name_node.text] = {}
                 all_vms[name_node.text]["cluster_primitive"] = primitive.get("id")
@@ -124,7 +135,9 @@ def vm_info(name=None):
                     all_vms[name_node.text]["vcpus"] = int(vcpu_node.text)
                 mem_node = desc.find("./memory")
                 if mem_node is not None and mem_node.text is not None:
-                    all_vms[name_node.text]["memory"] = _convert_unit(int(mem_node.text), mem_node.get('unit', 'KiB'))
+                    all_vms[name_node.text]["memory"] = _convert_unit(
+                        int(mem_node.text), mem_node.get("unit", "KiB")
+                    )
 
                 graphics_node = desc.find(".//devices/graphics")
                 if graphics_node is not None:
@@ -145,7 +158,12 @@ def host_info():
     """
     cluster_nodes = []
     try:
-        node_name = subprocess.Popen(["crm_node", "-n"], stdout=subprocess.PIPE).communicate()[0].strip().decode()
+        node_name = (
+            subprocess.Popen(["crm_node", "-n"], stdout=subprocess.PIPE)
+            .communicate()[0]
+            .strip()
+            .decode()
+        )
         crm_conf = ElementTree.fromstring(
             subprocess.Popen(
                 ["crm", "configure", "show", "xml", "type:node"],
@@ -161,22 +179,23 @@ def host_info():
         log.debug("Failed to get cluster configuration: %s", err)
 
     return {
+        # pylint: disable-next=undefined-variable
         "hypervisor": __salt__["virt.get_hypervisor"](),
         "cluster_other_nodes": cluster_nodes,
     }
 
 
 def _convert_unit(value, unit):
-    '''
+    """
     Convert a size with unit into MiB
-    '''
+    """
     dec = False
     if re.match(r"[kmgtpezy]b$", unit.lower()):
         dec = True
     elif not re.match(r"(b|[kmgtpezy](ib)?)$", unit.lower()):
         return None
     power = "bkmgtpezy".index(unit.lower()[0])
-    return int(value * (10 ** (power * 3) if dec else 2 ** (power * 10)) / (1024 ** 2))
+    return int(value * (10 ** (power * 3) if dec else 2 ** (power * 10)) / (1024**2))
 
 
 def vm_definition(uuid):
@@ -189,7 +208,12 @@ def vm_definition(uuid):
         cnx = libvirt.open()
         domain = cnx.lookupByUUIDString(uuid)
         name = domain.name()
-        return {"definition": __salt__["virt.get_xml"](name), "info": __salt__["virt.vm_info"](name)[name]}
+        return {
+            # pylint: disable-next=undefined-variable
+            "definition": __salt__["virt.get_xml"](name),
+            # pylint: disable-next=undefined-variable
+            "info": __salt__["virt.vm_info"](name)[name],
+        }
     except libvirt.libvirtError:
         # The VM is not defined in libvirt, may be it is defined in the cluster
         try:
@@ -204,7 +228,8 @@ def vm_definition(uuid):
                 if config_node is not None:
                     config_path = config_node.get("value")
                     if config_path is not None:
-                        with open(config_path, 'r') as desc_fd:
+                        # pylint: disable-next=unspecified-encoding
+                        with open(config_path, "r") as desc_fd:
                             desc_content = desc_fd.read()
                         desc = ElementTree.fromstring(desc_content)
                         uuid_node = desc.find("./uuid")

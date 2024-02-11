@@ -38,9 +38,9 @@ $handler.name
 #foreach( $call in $handler.calls )
 
 #if($call.deprecated)
-<h3 class="deprecated"><a name="$call.name" href="#top">Method: $call.name</a></h3>
+<h3 class="deprecated"><a name="$call.name" href="#$call.name">Method: $call.name</a></h3>
 #else
-<h3> <a name="$call.name" href="#top">Method: $call.name</a></h3>
+<h3> <a name="$call.name" href="#$call.name">Method: $call.name</a></h3>
 #end
 
 <div>

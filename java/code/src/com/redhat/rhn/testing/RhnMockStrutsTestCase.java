@@ -33,7 +33,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.AfterEach;
@@ -97,9 +96,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase implements Hiberna
         KickstartDataTest.setupTestConfiguration(user);
 
         //Set temporary Salt directories for local runs
-        Path tmpPillarRoot = Files.createTempDirectory("pillar");
         Path tmpSaltRoot = Files.createTempDirectory("salt");
-        MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());

@@ -148,6 +148,13 @@ public class Config {
         return singletonConfig;
     }
 
+    /**
+     * Clears the singleton configuration
+     */
+    public static synchronized void clear() {
+        singletonConfig = null;
+    }
+
     private static String getDefaultConfigDir() {
         String confDir = System.getProperty(CONF_DIR_PROPERTY);
 

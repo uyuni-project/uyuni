@@ -16,7 +16,7 @@ package com.suse.scc;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
@@ -54,7 +54,7 @@ public class SCCSystemRegistrationManager {
      * Update last_seen field in SCC for all registered clients
      * @param primaryCredential the primary scc credential
      */
-    public void updateLastSeen(Credentials primaryCredential) {
+    public void updateLastSeen(SCCCredentials primaryCredential) {
         List<Map<String, Object>> candidates = SCCCachingFactory.listUpdateLastSeenCandidates(primaryCredential);
 
         List<SCCUpdateSystemJson> sysList = candidates.stream()
@@ -91,7 +91,7 @@ public class SCCSystemRegistrationManager {
     public void deregister(List<SCCRegCacheItem> items, boolean forceDBDeletion) {
         items.forEach(cacheItem -> cacheItem.getOptSccId().ifPresentOrElse(
                 sccId -> {
-                    Credentials itemCredentials = cacheItem.getOptCredentials().get();
+                    SCCCredentials itemCredentials = cacheItem.getOptCredentials().get();
                     try {
                         LOG.debug("de-register system {}", cacheItem);
                         sccClient.deleteSystem(sccId, itemCredentials.getUsername(), itemCredentials.getPassword());
@@ -127,7 +127,7 @@ public class SCCSystemRegistrationManager {
      * @param items the items to register
      * @param primaryCredential the current primary organization credential
      */
-    public void register(List<SCCRegCacheItem> items, Credentials primaryCredential) {
+    public void register(List<SCCRegCacheItem> items, SCCCredentials primaryCredential) {
         new SCCSystemRegistration().register(sccClient, items, primaryCredential);
     }
 
@@ -136,7 +136,7 @@ public class SCCSystemRegistrationManager {
      * @param virtHosts the virtual host data
      * @param primaryCredential primary credential
      */
-    public void virtualInfo(List<SCCVirtualizationHostJson> virtHosts, Credentials primaryCredential) {
+    public void virtualInfo(List<SCCVirtualizationHostJson> virtHosts, SCCCredentials primaryCredential) {
         ArrayList<List<SCCVirtualizationHostJson>> batches = new ArrayList<>(
                 IntStream.range(0, virtHosts.size()).boxed().collect(
                         Collectors.groupingBy(e -> e / Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 200),

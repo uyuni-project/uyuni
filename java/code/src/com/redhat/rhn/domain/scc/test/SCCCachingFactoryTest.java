@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -76,12 +76,11 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testRefreshNeeded() {
-        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
+        for (SCCCredentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }
-        Credentials creds = CredentialsFactory.createSCCCredentials();
-        creds.setUsername(TestUtils.randomString());
-        creds.setPassword(TestUtils.randomString());
+        SCCCredentials creds = CredentialsFactory.createSCCCredentials(TestUtils.randomString(),
+            TestUtils.randomString());
         creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().save(creds);
 
@@ -104,7 +103,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         Set<SCCRepository> repos = SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
-                "sles", "12", "x86_64");
+                "sles", "12", "x86_64").collect(Collectors.toSet());
         List<String> repoNames = repos.stream().map(SCCRepository::getName).collect(Collectors.toList());
         assertContains(repoNames, "SUSE-PackageHub-12-Pool");
         assertContains(repoNames, "SLE-Module-Web-Scripting12-Pool");

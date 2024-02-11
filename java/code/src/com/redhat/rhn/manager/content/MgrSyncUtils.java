@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -201,6 +201,18 @@ public class MgrSyncUtils {
     }
 
     /**
+     * Converts the specified network url to a file system url
+     * @param urlString the url
+     * @param name the name of the repo
+     * @return the file system URI
+     */
+    public static URI urlToFSPath(String urlString, String name) {
+        return ConfigDefaults.get().getOfflineMirrorDir()
+            .map(sccDataPath -> urlToFSPath(urlString, name, Paths.get(sccDataPath)))
+            .orElseThrow(() -> new IllegalArgumentException("No value set for offline mirror directory"));
+    }
+
+    /**
      * Convert network URL to file system URL.
      *
      * 1. URL point to localhost, return the normal URL, we have access
@@ -218,9 +230,10 @@ public class MgrSyncUtils {
      *
      * @param urlString url
      * @param name repo name
+     * @param sccDataPath the expected path of the scc data, to validate the resulting url
      * @return file URI
      */
-    public static URI urlToFSPath(String urlString, String name) {
+    public static URI urlToFSPath(String urlString, String name, Path sccDataPath) {
         String host = "";
         String path = File.separator;
         try {
@@ -244,11 +257,11 @@ public class MgrSyncUtils {
         catch (URISyntaxException e) {
             LOG.warn("Unable to parse URL: {}", urlString);
         }
-        String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+        //TODO: check if this if is needed
         if (sccDataPath == null) {
             throw new ContentSyncException("No local mirror path configured");
         }
-        File dataPath = new File(sccDataPath);
+        File dataPath = sccDataPath.toFile();
         // Case 4
         File mirrorPath = new File(dataPath.getAbsolutePath(), host + File.separator + path);
 

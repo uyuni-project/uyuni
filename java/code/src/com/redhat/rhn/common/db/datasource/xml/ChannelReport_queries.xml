@@ -16,7 +16,7 @@
 
 
 <mode name="Channel" class="">
-    <query params="offset, limit">
+    <query params="channel_id, limit">
           SELECT rhnchannel.id AS channel_id
                       , rhnchannel.name
                       , rhnchannel.label
@@ -37,23 +37,25 @@
                       LEFT JOIN rhnchannel rhnparentchannel ON rhnchannel.parent_channel = rhnparentchannel.id
                       LEFT JOIN rhnchannelcloned ON rhnchannel.id = rhnchannelcloned.id
                       LEFT JOIN web_customer ON rhnchannel.org_id = web_customer.id
-        ORDER BY channel_id OFFSET :offset LIMIT :limit
+           WHERE rhnchannel.id &gt; :channel_id
+        ORDER BY channel_id
+           FETCH FIRST :limit ROWS WITH TIES
   </query>
 </mode>
 
 <mode name="ChannelPackage" class="">
-    <query params="offset, limit">
-          SELECT rhnchannel.id AS channel_id
-                      , rhnpackage.id AS package_id
-            FROM rhnchannel
-                      INNER JOIN rhnchannelpackage ON rhnchannel.id = rhnchannelpackage.channel_id
-                      INNER JOIN rhnpackage ON rhnpackage.id = rhnchannelpackage.package_id
-        ORDER BY channel_id, package_id OFFSET :offset LIMIT :limit
+    <query params="channel_id, package_id, limit">
+          SELECT rhnchannelpackage.channel_id AS channel_id
+                      , rhnchannelpackage.package_id AS package_id
+            FROM rhnchannelpackage
+           WHERE (rhnchannelpackage.channel_id, rhnchannelpackage.package_id) &gt; (:channel_id, :package_id)
+        ORDER BY channel_id, package_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="ChannelErrata" class="">
-    <query params="offset, limit">
+    <query params="channel_id, errata_id, limit">
           SELECT rhnchannel.id AS channel_id
                     , rhnerrata.id AS errata_id
                     , rhnchannel.label AS channel_label
@@ -61,24 +63,28 @@
             FROM rhnchannelerrata
                     INNER JOIN rhnchannel ON rhnchannelerrata.channel_id = rhnchannel.id
                     INNER JOIN rhnerrata ON rhnchannelerrata.errata_id = rhnerrata.id
-        ORDER BY channel_id, errata_id OFFSET :offset LIMIT :limit
+           WHERE (rhnchannel.id, rhnerrata.id) &gt; (:channel_id, :errata_id)
+        ORDER BY channel_id, errata_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="ChannelRepository" class="">
-    <query params="offset, limit">
+    <query params="channel_id, repository_id, limit">
           SELECT rhnchannelcontentsource.channel_id
                     , rhnchannelcontentsource.source_id AS repository_id
                     , rhncontentsource.label AS repository_label
             FROM rhnchannelcontentsource
                     INNER JOIN rhncontentsource ON rhnchannelcontentsource.source_id = rhncontentsource.id
                     INNER JOIN rhncontentsourcetype ON rhncontentsource.type_id = rhncontentsourcetype.id
-        ORDER BY channel_id, repository_id OFFSET :offset LIMIT :limit
+           WHERE (rhnchannelcontentsource.channel_id, rhnchannelcontentsource.source_id) &gt; (:channel_id, :repository_id)
+        ORDER BY channel_id, repository_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="Errata" class="">
-    <query params="offset, limit">
+    <query params="errata_id, limit">
           SELECT rhnerrata.id AS errata_id
                       , rhnerrata.advisory_name
                       , rhnerrata.advisory_type
@@ -106,12 +112,14 @@
                       LEFT JOIN rhnerratakeyword rb ON rhnerrata.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
                       LEFT JOIN rhnerratakeyword rs ON rhnerrata.id = rs.errata_id AND rs.keyword = 'restart_suggested'
                       LEFT JOIN web_customer ON rhnerrata.org_id = web_customer.id
-        ORDER BY errata_id OFFSET :offset LIMIT :limit
+           WHERE rhnerrata.id &gt; :errata_id
+        ORDER BY errata_id
+           FETCH FIRST :limit ROWS WITH TIES
   </query>
 </mode>
 
 <mode name="Package" class="">
-    <query params="offset, limit">
+    <query params="package_id, limit">
           SELECT rhnpackage.id AS package_id
                       , rhnpackagename.name
                       , rhnpackageevr.epoch
@@ -129,12 +137,14 @@
                       LEFT JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
                       LEFT JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
                       LEFT JOIN web_customer ON rhnpackage.org_id = web_customer.id
-        ORDER BY package_id OFFSET :offset LIMIT :limit
+           WHERE rhnpackage.id &gt; :package_id
+        ORDER BY package_id
+           FETCH FIRST :limit ROWS WITH TIES
   </query>
 </mode>
 
 <mode name="Repository" class="">
-    <query params="offset, limit">
+    <query params="repository_id, limit">
           SELECT rhncontentsource.id AS repository_id
                     , rhncontentsource.label
                     , rhncontentsource.source_url AS url
@@ -144,7 +154,9 @@
             FROM rhncontentsource
                     INNER JOIN rhncontentsourcetype ON rhncontentsource.type_id = rhncontentsourcetype.id
                     LEFT JOIN web_customer ON rhncontentsource.org_id = web_customer.id
-        ORDER BY repository_id OFFSET :offset LIMIT :limit
+           WHERE rhncontentsource.id &gt; :repository_id
+        ORDER BY repository_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 

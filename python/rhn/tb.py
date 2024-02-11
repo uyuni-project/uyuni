@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2016 Red Hat, Inc.
 #
@@ -21,10 +22,15 @@ except AttributeError:
     PY3 = False
 
 if PY3:
+
     def raise_with_tb(e):
         raise e
+
 else:
-    exec("""
+    # pylint: disable-next=exec-used
+    exec(
+        """
 def raise_with_tb(e):
     raise e, None, sys.exc_info()[2]
-""")
+"""
+    )

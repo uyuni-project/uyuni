@@ -14,11 +14,8 @@
  */
 package com.redhat.rhn.domain.scc;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
-import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.model.SCCRepositoryJson;
 
@@ -37,7 +34,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -49,26 +45,23 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "suseSCCRepository")
-@NamedQueries
-({
-    @NamedQuery(name = "SCCRepository.lookupByChannelFamily",
-                query = "select r from SCCRepository r " +
-                        " join r.products pr " +
-                        " join pr.product p " +
-                        " join p.channelFamily cf " +
-                        "where cf.label = :channelFamily"),
-        @NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
-                query = "select r from SCCRepository r " +
-                        "where r.url like :urlEndpoint"),
-        @NamedQuery(name = "SCCRepository.lookupByProductNameAndArchForPayg",
-                query = "select distinct r from SCCRepository r " +
-                        " join r.products pr " +
-                        " join pr.product p " +
-                        " join p.arch a " +
-                        " where lower(p.name) = lower(:product_name) " +
-                        " and lower(a.label) = lower(:arch_name) " +
-                        " and r.installerUpdates = 'N' ")
-})
+@NamedQuery(name = "SCCRepository.lookupByChannelFamily",
+            query = "select r from SCCRepository r " +
+                    " join r.products pr " +
+                    " join pr.product p " +
+                    " join p.channelFamily cf " +
+                    "where cf.label = :channelFamily")
+@NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
+            query = "select r from SCCRepository r " +
+                    "where r.url like :urlEndpoint")
+@NamedQuery(name = "SCCRepository.lookupByProductNameAndArchForPayg",
+            query = "select distinct r from SCCRepository r " +
+                    " join r.products pr " +
+                    " join pr.product p " +
+                    " join p.arch a " +
+                    " where lower(p.name) = lower(:product_name) " +
+                    " and lower(a.label) = lower(:arch_name) " +
+                    " and r.installerUpdates = 'N' ")
 public class SCCRepository extends BaseDomainHelper {
 
     private Long id;
@@ -269,6 +262,7 @@ public class SCCRepository extends BaseDomainHelper {
         return !getRepositoryAuth().isEmpty();
     }
 
+    // local -> rmt if valid -> scc (priority by locality) (groups ordered by id for stability)
     /**
      * @return the best authentication object if there is one for this repository.
      */
@@ -281,43 +275,7 @@ public class SCCRepository extends BaseDomainHelper {
             return result;
         }
 
-        for (SCCRepositoryAuth a : repositoryAuth) {
-            if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
-                if (a.getOptionalCredentials().isEmpty()) {
-                    return Optional.of(a);
-                }
-            }
-            // Credentials present
-            else if (a.getOptionalCredentials().isPresent()) {
-                Credentials ct = a.getOptionalCredentials().get(); //NOSONAR empty option is check in previous line
-                if (ct.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
-                    // if it's Cloud rmt authentication, we want to use it only if it's valid and we don't have any
-                    // SCC credential available
-                    if (!ct.isValid() || result.flatMap(SCCRepositoryAuth::getOptionalCredentials)
-                        .map(c -> c.isTypeOf(Credentials.TYPE_SCC))
-                        .orElse(false)) {
-                        continue;
-                    }
-                }
-                // Not RMT
-                else if (a.getOptionalCredentials().flatMap(c -> Optional.ofNullable(c.getUrl())).isPresent()) {
-                    return Optional.of(a);
-                }
-            }
-
-            if (result.isEmpty() || a.getId() < result.get().getId()) {
-                // get always the same result and use the oldest alternative if there are multiple
-                result = Optional.of(a);
-            }
-        }
-
-        // If the result is still empty it means all the auths are from invalid TYPE_CLOUD_RMT credentials
-        // Let's just return the first one
-        if (result.isEmpty()) {
-            return repositoryAuth.stream().findFirst();
-        }
-
-        return result;
+        return repositoryAuth.stream().min(new SCCRepositoryAuthComparator());
     }
 
     /**

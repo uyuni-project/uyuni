@@ -27,9 +27,8 @@ CREATE TABLE rhnPackageChangeLogData
 
 ;
 
-CREATE UNIQUE INDEX rhn_pkg_cld_ntt_idx
-    ON rhnPackageChangeLogData
-    USING btree(name, digest(text, 'sha512'::text), time)
+CREATE INDEX rhn_pkg_cld_nt_idx
+    ON rhnPackageChangeLogData (name, time)
     
     ;
 

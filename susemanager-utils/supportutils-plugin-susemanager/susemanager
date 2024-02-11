@@ -6,19 +6,22 @@
 # License:     GPLv2
 # Author:      Stefan Bogner <sbogner@suse.com>
 #              Michael Calmer <mc@suse.com>
-# Modified:    2020 November 09
+# Modified:    2024 February 03
 #############################################################
 
-SVER=4.2.0
-RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
+SVER=5.0.0
+RCFILE="/usr/lib/supportconfig/resources/supportconfig.rc"
+OF='plugin-susemanager.txt'
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
-section_header "Supportconfig Plugin for SUSE Manager, v${SVER}"
+log_write $OF
+log_entry $OF note "Supportconfig Plugin for SUSE Manager, v${SVER}"
+addHeaderFile $OF
 
-plugin_command "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
+log_cmd $OF "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
 
-plugin_command "hostname --fqdn"
+log_cmd $OF "hostname --fqdn"
 
 RPMLIST="
 susemanager-tools
@@ -29,7 +32,7 @@ sle-module-suse-manager-server-release
 salt-minion
 salt
 "
-DAEMONLIST="susemanager tomcat osa-dispatcher postgresql"
+DAEMONLIST="tomcat taskomatic postgresql rhn-search cobblerd apache2 salt-api salt-master"
 
 if ! rpm -q susemanager &>/dev/null; then
   echo "ERROR: SUSE Manager package(s) not installed"
@@ -39,69 +42,75 @@ fi
 
 for THISRPM in $RPMLIST
 do
-   validate_rpm $THISRPM
+   rpm_verify $OF $THISRPM
 done
 
 for i in $DAEMONLIST
 do
-    plugin_command "systemctl status $i"
+    log_cmd $OF "systemctl status $i"
 done
 
-plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib"
-plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib64"
+log_cmd $OF "/bin/ls -l --time-style=long-iso /usr/local/lib"
+log_cmd $OF "/bin/ls -l --time-style=long-iso /usr/local/lib64"
 
-plugin_command "find /usr/share/susemanager/www/tomcat/webapps/rhn/WEB-INF/lib/ | xargs file | grep broken"
-plugin_command "find /usr/share/spacewalk/taskomatic/ | xargs file | grep broken"
-plugin_command "find /usr/share/rhn/search/lib/ | xargs file | grep broken"
+log_cmd $OF "find /usr/share/susemanager/www/tomcat/webapps/rhn/WEB-INF/lib/ | xargs file | grep broken"
+log_cmd $OF "find /usr/share/spacewalk/taskomatic/ | xargs file | grep broken"
+log_cmd $OF "find /usr/share/rhn/search/lib/ | xargs file | grep broken"
 
-section_header "SSL Configuration"
+log_entry $OF note "SSL Configuration"
 
-pconf_files $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
-            /etc/apache2/ssl.crt/server.crt
-plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
+conf_files $OF $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
+            /etc/pki/tls/certs/spacewalk.crt
+log_cmd $OF "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
-plugin_command "/bin/ls -l --time-style=long-iso $(spacewalk-cfg-get documentroot)/pub/ | grep -i trusted"
+log_cmd $OF "/bin/ls -l --time-style=long-iso $(spacewalk-cfg-get documentroot)/pub/ | grep -i trusted"
 
-section_header "Crypto Policy"
+log_entry $OF note "Crypto Policy"
 
 if [ -f /etc/crypto-policies/config ]; then
-	plugin_command "cat /etc/crypto-policies/config"
+	log_cmd $OF "cat /etc/crypto-policies/config"
 elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
-	plugin_message "FIPS"
+	log_write $OF "FIPS"
 else
-	plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+	log_cmd $OF "grep -v '#' /usr/share/crypto-policies/default-config"
 fi
 
 
-plugin_command "psql --version"
-plugin_command "cat /var/lib/pgsql/data/PG_VERSION"
-plugin_command "zypper --no-refresh ls"
-plugin_command "zypper --no-refresh lr -u"
-plugin_command "/usr/lib/susemanager/bin/susemanager-connection-check"
-plugin_command "salt-master --versions-report"
+log_cmd $OF "psql --version"
+log_cmd $OF "cat /var/lib/pgsql/data/PG_VERSION"
+log_cmd $OF "zypper --no-refresh ls"
+log_cmd $OF "zypper --no-refresh lr -u"
+log_cmd $OF "/usr/lib/susemanager/bin/susemanager-connection-check"
+log_cmd $OF "salt-master --versions-report"
 
-plugin_command "echo \"select username scc_org from susecredentials sc join susecredentialstype sct on sct.id = sc.type_id where sct.label = 'scc';\" | spacewalk-sql --select-mode-direct -"
+log_cmd $OF "spacewalk-sql --select-mode-direct - <<< \"select username scc_org from susecredentials sc where sc.type = 'scc';\""
 
-plugin_command "echo \"Number of elements in table susesaltevent. If the next number is too high, please verify the large scale tuning guide property 'java.salt_event_thread_pool_size'.\""
-plugin_command "echo \"select count(*) from susesaltevent;\" | spacewalk-sql --select-mode-direct -"
-plugin_command "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"
+log_write $OF "# Number of elements in table susesaltevent. If the next number is too high, please verify the large scale tuning guide property 'java.salt_event_thread_pool_size'."
+log_cmd $OF "spacewalk-sql --select-mode-direct - <<< \"select count(*) from susesaltevent;\""
+log_cmd $OF "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"
 
-section_header "Cloud / PAYG"
-plugin_command "/usr/bin/instance-flavor-check"
-if [ -e /usr/bin/instance-flavor-check -a $(/usr/bin/instance-flavor-check) == "PAYG" ]; then
-        validate_rpm "python-instance-billing-flavor-check"
-        validate_rpm "billing-data-service"
-        validate_rpm "csp-billing-adapter-service"
-        validate_rpm "python3-csp-billing-adapter"
-        validate_rpm "python3-csp-billing-adapter-local"
-        validate_rpm "python3-csp-billing-adapter-amazon"
-        validate_rpm "suma-amazon-adapter-config-llc"
-        validate_rpm "suma-amazon-adapter-config-ltd"
-        validate_rpm "python3-csp-billing-adapter-azure"
-        validate_rpm "suma-azure-adapter-config-llc"
-        validate_rpm "suma-azure-adapter-config-ltd"
+log_entry $OF note "Cloud / PAYG"
+if [ -x /usr/bin/instance-flavor-check ]; then
+        log_cmd $OF "/usr/bin/instance-flavor-check"
+        if [ $(/usr/bin/instance-flavor-check) == "PAYG" ]; then
+                validate_rpm "python-instance-billing-flavor-check"
+                validate_rpm "billing-data-service"
+                validate_rpm "csp-billing-adapter-service"
+                validate_rpm "python3-csp-billing-adapter"
+                validate_rpm "python3-csp-billing-adapter-local"
+                validate_rpm "python3-csp-billing-adapter-amazon"
+                validate_rpm "suma-amazon-adapter-config-llc"
+                validate_rpm "suma-amazon-adapter-config-ltd"
+                validate_rpm "python3-csp-billing-adapter-azure"
+                validate_rpm "suma-azure-adapter-config-llc"
+                validate_rpm "suma-azure-adapter-config-ltd"
+        else
+                log_write $OF "Not a PAYG Instance"
+        fi
+else
+        log_write $OF "Not a Cloud Instance"
 fi
 
-plugin_command "/sbin/supportconfig-sumalog $LOG"
-plugin_command "cp /var/log/zypper.log $LOG"
+log_cmd $OF "/sbin/supportconfig-sumalog $LOG"
+log_cmd $OF "cp /var/log/zypper.log $LOG"
 

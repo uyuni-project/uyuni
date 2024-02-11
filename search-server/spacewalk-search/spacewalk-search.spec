@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -31,7 +31,7 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.6
+Version:        5.0.1
 Release:        1
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -49,9 +49,6 @@ BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-lang3
 BuildRequires:  apache-commons-logging
-BuildRequires:  mvn(org.mybatis:mybatis)
-BuildRequires:  mvn(org.apache.commons:commons-ognl)
-BuildRequires:  mvn(javassist:javassist)
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  javapackages-tools
@@ -65,6 +62,9 @@ BuildRequires:  simple-core
 BuildRequires:  slf4j
 BuildRequires:  systemd
 BuildRequires:  (java-devel >= %{java_version} or java-11-openjdk-devel)
+BuildRequires:  mvn(javassist:javassist)
+BuildRequires:  mvn(org.apache.commons:commons-ognl)
+BuildRequires:  mvn(org.mybatis:mybatis)
 %if 0%{?rhel}
 BuildRequires:  systemd-rpm-macros
 %endif
@@ -76,9 +76,6 @@ Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-Requires:       mvn(org.mybatis:mybatis)
-Requires:       mvn(org.apache.commons:commons-ognl)
-Requires:       mvn(javassist:javassist)
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       javapackages-tools
@@ -88,6 +85,9 @@ Requires:       picocontainer
 Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
+Requires:       mvn(javassist:javassist)
+Requires:       mvn(org.apache.commons:commons-ognl)
+Requires:       mvn(org.mybatis:mybatis)
 Obsoletes:      rhn-search < 5.3.0
 Requires:       log4j
 BuildRequires:  log4j

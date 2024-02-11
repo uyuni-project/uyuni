@@ -10,12 +10,9 @@ use Getopt::Long ();
 use Pod::Usage ();
 
 my $MIN_PG_DB_VERSION = 130001;
-my $MAX_PG_DB_VERSION = 149999;
+my $MAX_PG_DB_VERSION = 169999;
 my $MIN_PG_DB_VERSION_STRING = "13";
-my $MAX_PG_DB_VERSION_STRING = "14";
-my $OS_VERSION_CHECK = 15.4;
-my $OS_VERSION_MIN_DB_VERSION = 140000;
-my $OS_VERSION_WANTED_DB_VERSION = "14";
+my $MAX_PG_DB_VERSION_STRING = "16";
 
 my $config_file = Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
 
@@ -49,8 +46,8 @@ eval {
     die "Unable to import required module: $error";
 };
 
-my $SCHEMA_DIR = "/etc/sysconfig/rhn/" . $db_specific->DB_NAME;
-my $SCHEMA_UPGRADE_DIR = "/etc/sysconfig/rhn/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
+my $SCHEMA_DIR = "/usr/share/susemanager/db/" . $db_specific->DB_NAME;
+my $SCHEMA_UPGRADE_DIR = "/usr/share/susemanager/db/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
 my $SCHEMA_UPGRADE_LOGDIR = "/var/log/spacewalk/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
 
 my %options;
@@ -106,10 +103,6 @@ if ($server_version < $MIN_PG_DB_VERSION) {
 }
 elsif($server_version > $MAX_PG_DB_VERSION) {
     print "\nRunning postgresql $pg_version is not supported. Maximal allowed version is $MAX_PG_DB_VERSION_STRING.\n\n";
-    exit 1;
-}
-elsif($os_version >= $OS_VERSION_CHECK && $server_version < $OS_VERSION_MIN_DB_VERSION) {
-    print "\nRunning postgresql $pg_version on $os_name is unsupported. Please migrate to postgresql $OS_VERSION_WANTED_DB_VERSION.\n\n";
     exit 1;
 }
 
@@ -602,8 +595,8 @@ command in your PATH.
 
 =over 5
 
-=item F</etc/sysconfig/rhn/schema-upgrade>,
-F</etc/sysconfig/rhn/schema-reportdb-upgrade>
+=item F</usr/share/susemanager/db/schema-upgrade>,
+F</usr/share/susemanager/db/schema-reportdb-upgrade>
 
 Directory containing directories with schema upgrade scripts (one directory for
 every major upgrade step).

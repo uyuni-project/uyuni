@@ -4,13 +4,11 @@
 
 html,
 body {
-  min-height: 100%;
   height: 100%;
-  max-height: 100%;
-  min-width: 100%;
-  width: fit-content;
-  max-width: 100%;
+  min-height: 100%;
+  min-width: fit-content;
   margin: 0;
+  max-height: 100%;
   overflow: hidden;
 }
 
@@ -18,22 +16,23 @@ body {
   display: flex;
   flex-direction: column;
   background: @body-background;
-  font-family: @lato;
+  font-family: @body-font;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
- 
+
 a {
   color: @link-color;
   cursor: pointer;
 }
 
 header {
-  height:auto;
+  height: auto;
   width: 100%;
   border: none;
   border-radius: 0;
-  border-bottom: 2px solid darken(@green, 10%);
+  border-width: 0 !important;
+  border-bottom: 2px solid @header-border !important;
   margin-bottom: 0;
   background: @header;
 
@@ -83,11 +82,16 @@ header {
   }
 }
 
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 footer {
-  border-top: 1px solid @footer-border;
-  background: @footer;
+  border-top: 1px solid @aside-footer-border;
+  background: inherit;
   padding: 3px 12px;
-  color: @footer-text;
+  color: @aside-footer-text;
   font-weight: normal;
   font-size: 0.9em;
   height: auto;
@@ -99,12 +103,12 @@ footer {
   .make-row(0);
 
   a {
-    color: @footer-links;
+    color: inherit;
     text-decoration: underline;
   }
 
   a:hover {
-    color: @footer-hover;
+    color: inherit;
   }
 
   /* override spacewalk rules */
@@ -114,15 +118,14 @@ footer {
     width: 100%;
     margin: 0;
     min-height: auto;
-    text-align: left!important;
+    text-align: left !important;
     padding: 0;
   }
 
   div.wrapper {
-    background: url('/img/susemanager/suse-logo-footer.svg') no-repeat right 18px;
-    background-size: 32px 16px;
+    background: @aside-footer-logo-background;
     min-height: 28px;
-    padding-right: 55px!important;
+    padding-right: 55px !important;
     > div {
       padding: 3px 0 2px 0;
     }
@@ -131,8 +134,8 @@ footer {
 
 /* override spacewalk rules */
 section {
-  transition: none!important;
-  -webkit-transition: none!important;
+  transition: none !important;
+  -webkit-transition: none !important;
 }
 
 .spacewalk-main-column-layout {
@@ -140,12 +143,12 @@ section {
   /* override the grid row margin */
   margin-right: 0;
   margin-left: 0;
-   aside {
+  aside {
     .make-xs-column(2);
     min-width: 16.66667%;
     max-width: 16.66667%;
-    background: @aside;
-    border-right: 1px solid @aside-border;
+    background: @aside-background;
+    border-right: none;
     /* erasing the predefined paddings in the columns */
     padding: 0;
     position: fixed;
@@ -153,9 +156,11 @@ section {
       overflow-y: auto !important;
       scrollbar-color: rgba(200, 200, 200, 0.5) transparent;
       scrollbar-width: thin;
+
       &::-webkit-scrollbar {
         width: 7px;
       }
+
       &::-webkit-scrollbar-thumb {
         border-radius: 10px;
         -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.5);
@@ -167,10 +172,7 @@ section {
   /* fixing margins in the 1st and last columns */
   section {
     .make-xs-column(10);
-    padding-left:4em;
-    padding-right: 4em;
-    padding-top: 0;
-    padding-bottom: 4em;
+    padding: @content-area-padding;
     float: right;
   }
 }
@@ -181,7 +183,8 @@ section {
   span {
     vertical-align: bottom;
   }
-  span.level, a {
+  span.level,
+  a {
     padding: 0 3px;
   }
   i {
@@ -224,7 +227,8 @@ section {
   }
 }
 
-header, nav.navbar-pf {
+header,
+nav.navbar-pf {
   .navbar-toggle {
     display: inline-block;
     float: none;
@@ -244,16 +248,24 @@ header, nav.navbar-pf {
     vertical-align: top;
     margin-right: 5px;
   }
-  .navbar-utility, .navbar-primary {
+  .navbar-utility,
+  .navbar-primary {
     .navbar-right;
     font-size: 1em;
     display: inline-block;
     position: relative;
     vertical-align: middle;
-    a, .header-non-link {
+    margin-top: -2px;
+
+    a,
+    .header-non-link {
       display: inline-block;
-      padding: 4px 8px 4px 12px;
+      padding: 4px 12px;
       border-radius: 2px;
+
+      i {
+        margin: 0 !important;
+      }
     }
   }
 
@@ -293,44 +305,9 @@ header, nav.navbar-pf {
     }
   }
 
-  /* System Set Manager header box */
-  .ssm-box {
-    border: 1px solid @gray-dark;
-    #header_selcount {
-      .badge {
-        border-radius: 8px;
-        background: @gray-light;
-        display: inline-block;
-        padding: 2px 6px;
-        text-align: center;
-        color: darken(@gray-dark, 20%);
-        vertical-align: middle;
-        margin-right: 5px;
-      }
-    }
-    a {
-      display: inline-block;
-      border-radius: 0;
-      padding: 3px 5px;
-    }
-    #clear-ssm {
-      margin-left: -4px;
-      border-left: 1px dashed @gray-dark;
-      color: @gray-light;
-      background-color: transparent;
-
-      i {
-        margin: 0;
-      }
-    }
-    #clear-ssm:hover {
-      background-color: @red;
-      color: @gray-light;
-    }
-  }
-
   /* Header Logo bar */
   .navbar-brand {
+    margin: 0 !important;
     float: none;
     padding: 0;
     height: auto;
@@ -386,22 +363,25 @@ header, nav.navbar-pf {
   .nav-tool-box {
     text-align: center;
     position: relative;
-    input, button {
+
+    input,
+    button {
       margin: auto;
       vertical-align: top;
     }
+
     input {
-      background-color: @aside;
-      border-color: @aside-menu-search-border;
+      background-color: @aside-background;
+      border-color: @aside-search-border !important;
       border-style: solid;
-      border-radius: 0;
+      border-radius: 0 !important;
       border-width: 0 0 1px 0;
       padding-right: 3em;
       height: 3em;
-      color: @aside-menu-search-text-color;
+      color: @aside-search-text-color;
 
       &::placeholder {
-        color: @eos-bc-gray-900;
+        color: rgba(@aside-search-text-color, 0.75);
       }
     }
 
@@ -411,8 +391,8 @@ header, nav.navbar-pf {
     .input-right-icon {
       color: @aside-menu-search-clear;
       position: absolute;
-      top: 3px;
-      right: 0;
+      top: 6px;
+      right: 2px;
       font-size: 1.2em;
       cursor: pointer;
       padding: 0;
@@ -548,7 +528,7 @@ header, nav.navbar-pf {
 .spacewalk-list .spacewalk-list-head-addons .spacewalk-list-alphabar,
 .spacewalk-list .spacewalk-list-top-addons .spacewalk-list-alphabar {
   padding: 0;
-  padding-bottom: .5em;
+  padding-bottom: 0.5em;
   float: left;
   width: auto;
   margin-top: 5px;
@@ -589,7 +569,7 @@ header, nav.navbar-pf {
 }
 
 // Filter by system: button besides the input search
-.spacewalk-button-filter{
+.spacewalk-button-filter {
   border-left: 0;
   color: #666666;
   background-color: #ffffff;
@@ -607,30 +587,30 @@ header, nav.navbar-pf {
       min-width: 33%;
 
       input.with-bottom-margin {
-        margin-bottom: .5em;
+        margin-bottom: 0.5em;
       }
     }
   }
 }
 
 //Table's filters
-.filter-input{
-  padding: .7em;
-  .col-md-3{
-    padding-left: 0
+.filter-input {
+  padding: 0.7em;
+  .col-md-3 {
+    padding-left: 0;
   }
-  .col-md-9{
-    padding-right: 0
+  .col-md-9 {
+    padding-right: 0;
   }
 }
-.display-number{
+.display-number {
   .input-sm;
   display: inline-block;
   width: 5.2em;
   border: 1px solid #dddddd;
   background-color: @eos-bc-gray-100;
 }
-.view-systems-registered{
+.view-systems-registered {
   .input-sm;
   width: 10em;
   display: inline-block;
@@ -641,59 +621,64 @@ header, nav.navbar-pf {
 .sideleg {
   background: @icon-legend;
   color: @icon-legend-text;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   border-radius: 0px 0px 4px 4px;
   .hidden-sm;
   .hidden-xs;
   li {
     list-style: none;
     margin: 0.5em 0;
-    padding:0;
+    padding: 0;
     white-space: nowrap;
   }
   ul {
     margin: 0;
-    padding: 0
+    padding: 0;
   }
 }
 
 /* question symbol for help pop up*/
 h1 .fa-stack .fa-question {
-  font-size: .6em;
+  font-size: 0.6em;
 }
 h1 .fa-stack {
   width: 1em;
   height: 1em;
-  line-height: .7em;
+  line-height: 0.7em;
 }
 .fa-stack .fa-circle {
-  font-size: .7em;
+  font-size: 0.7em;
 }
 
 // Panels: reseting default margins and paddings in H tags
-.panel .panel-heading{
-  h1, h2, h3, h4, h5, h6{
+.panel .panel-heading {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     padding: 0;
     margin: 0;
   }
 }
 //Panels: deleting border-top in the first row of a table contained within a Panel class
-.panel-body tr:first-child{
-  td, th{
+.panel-body tr:first-child {
+  td,
+  th {
     border-top: 0;
   }
 }
-// TODO: Move to a separate file
-
 
 /* systems selected tool*/
-.spacewalk-toolbar>a, #spacewalk-bar-off i {
+.spacewalk-toolbar > a,
+#spacewalk-bar-off i {
   cursor: pointer;
 }
 #show-systems-bar {
-  padding: .5em 1.2em;
+  padding: 0.5em 1.2em;
   background: #fff;
-  border:1px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 0 0 4px 4px;
 }
 
@@ -702,16 +687,16 @@ h1 .fa-stack {
   margin-bottom: 1.5em;
   .spacewalk-toolbar {
     .pull-right;
-    padding: .5em 1em;
+    padding: 0.5em 1em;
     a {
-      border-right:1px solid @gray-light;
-      padding: 0 .5em
+      border-right: 1px solid @gray-light;
+      padding: 0 0.5em;
     }
     a:hover {
       text-decoration: none;
     }
     a:last-child {
-      border-right:0
+      border-right: 0;
     }
   }
 }
@@ -719,7 +704,7 @@ h1 .fa-stack {
 /* Margins to elements */
 //margins bottom
 .margin-bottom-xs {
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 .margin-bottom-sm {
   margin-bottom: 1em;
@@ -732,7 +717,7 @@ h1 .fa-stack {
 }
 //margins top
 .margin-top-xs {
-  margin-top: .5em;
+  margin-top: 0.5em;
 }
 .margin-top-sm {
   margin-top: 1em;
@@ -744,24 +729,28 @@ h1 .fa-stack {
   margin-top: 3em;
 }
 
-
 /* adding margin to the icons in fontawesome */
 i[class~="fa"],
 i[class^="icon-"],
 i[class*=" icon-"],
 i[class*="spacewalk-icon"],
 i[class^="spacewalk-icon"] {
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 /* if the icon is inside a H tag the margin is a bit smaller*/
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   i[class~="fa"],
   i[class^="icon-"],
   i[class*=" icon-"],
   i[class^="fa-"],
   i[class*="spacewalk-icon"],
   i[class^="spacewalk-icon"] {
-    margin-right: .3em;
+    margin-right: 0.3em;
   }
 }
 /* use this class to add text to the left of an icon */
@@ -784,7 +773,6 @@ i[class~="fa-right"] {
 // data lists
 
 .spacewalk-list {
-
   .spacewalk-list-top-addons {
     margin-bottom: 0;
     padding-top: 0;
@@ -805,21 +793,20 @@ i[class~="fa-right"] {
 
 /* btn with margin top and bottom */
 .btn.spacewalk-btn-margin-vertical {
-  margin: 1em 0
+  margin: 1em 0;
 }
 //tabs - adding a margin to all tabs
 ul.nav.nav-tabs {
-  margin-bottom: .2em
+  margin-bottom: 0.25rem;
 }
 //tabs - adding a margin button to the last UL
 ul.nav.nav-tabs:last-child {
-  margin-bottom: 1.5em
+  margin-bottom: 1rem;
 }
 
 // Rewriting
 // Jumbotron
 // --------------------------------------------------
-
 
 .jumbotron {
   padding: @jumbotron-padding;
@@ -837,11 +824,11 @@ ul.nav.nav-tabs:last-child {
   }
 
   @media screen and (min-width: @screen-tablet) {
-    padding-top:    (@jumbotron-padding * 1);
+    padding-top: (@jumbotron-padding * 1);
     padding-bottom: (@jumbotron-padding * 1);
 
     .container & {
-      padding-left:  (@jumbotron-padding * 2);
+      padding-left: (@jumbotron-padding * 2);
       padding-right: (@jumbotron-padding * 2);
     }
 
@@ -871,14 +858,14 @@ form[name="createSatelliteForm"] .panel {
 /* CVE audit */
 select[name="cveIdentifierYear"]#cveIdentifierYear {
   -webkit-appearance: button;
-    -webkit-padding-end: 20px;
-  background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+  -webkit-padding-end: 20px;
+  background: url("../../img/susemanager/dropdown-arrow.jpg") #fff no-repeat right center;
   cursor: pointer;
   display: inline-block;
   min-width: 80px;
-    -moz-appearance: none;
-    text-indent: 0.01px;
-    text-overflow: '';
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: "";
 }
 input[name="cveIdentifierId"]#cveIdentifierId {
   min-width: 120px;
@@ -887,20 +874,24 @@ input[name="cveIdentifierId"]#cveIdentifierId {
   font-weight: normal;
 }
 .popover-content ul {
-  padding: .3em;
+  padding: 0.3em;
   list-style-position: inside;
 }
 .popover-content ul li {
-  margin-top: .5em
+  margin-top: 0.5em;
 }
 
 i.spacewalk-help-link {
-  font-size: 16px
+  font-size: 16px;
 }
 
 /* after pattern fly - fixes (more like workarounds) */
 .navbar-pf {
-  ul.navbar-utility, ul.navbar-primary {
+  margin: 0;
+  border-radius: 0 !important;
+
+  ul.navbar-utility,
+  ul.navbar-primary {
     > li {
       display: inline-block;
       float: none;
@@ -910,7 +901,8 @@ i.spacewalk-help-link {
       vertical-align: top;
       border-radius: 2px;
 
-      a:hover, a:focus {
+      a:hover,
+      a:focus {
         background-color: transparent;
         text-decoration: underline;
       }
@@ -935,10 +927,11 @@ i.spacewalk-help-link {
 
 /* Override rules from bootstrap for nav-tabs*/
 .nav-tabs {
-  margin-bottom: .4em;
+  margin-bottom: 0.4em;
   li {
     min-width: 60px;
-    a, a:focus {
+    a,
+    a:focus {
       border: none;
       padding: 6px 12px 1px;
       display: inline-block;
@@ -957,7 +950,9 @@ i.spacewalk-help-link {
     }
   }
   li.active {
-    a, a:hover, a:focus {
+    a,
+    a:hover,
+    a:focus {
       border-width: 0 0 5px 0;
       border-color: @green;
       color: @gray;
@@ -971,7 +966,7 @@ i.spacewalk-help-link {
 
   .nav-tabs-indent(@i) {
     &:nth-child(@{i}) {
-        margin-left: (@i - 1) * 30px;
+      margin-left: (@i - 1) * 30px;
     }
   }
 }
@@ -980,7 +975,7 @@ i.spacewalk-help-link {
 "PatternFly-webicon" icons for alert boxes decoration */
 .alert:before,
 .alert:after {
-  font-family: 'spacewalk-icon';
+  font-family: "spacewalk-icon";
   top: 15px;
 }
 
@@ -1068,15 +1063,19 @@ a time:hover {
   .action-button-wrapper {
     float: right;
     overflow: auto;
-    margin-right: 5px;
-    button, input, .btn {
+
+    button,
+    input,
+    .btn {
       .spacewalk-section-toolbar-button;
     }
   }
   .selector-button-wrapper {
     display: inline-block;
     margin-left: 5px;
-    button, input, .btn {
+    button,
+    input,
+    .btn {
       .spacewalk-section-toolbar-button;
     }
   }
@@ -1084,7 +1083,7 @@ a time:hover {
     display: inline-block;
     margin: 1.2em 1em;
     .spacewalk-list-pagination-btns {
-      padding-left: .5em;
+      padding-left: 0.5em;
     }
   }
   > .btn-group {
@@ -1106,7 +1105,7 @@ a time:hover {
   }
 }
 .spacewalk-scheduler {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .remaining-length-wrapper {
@@ -1189,19 +1188,19 @@ i.fa.pointer {
 .table-style {
   display: table;
   border-collapse: collapse;
-  .table-row  {
+  .table-row {
     display: table-row;
     .table-col {
       display: table-cell;
       border: 1px solid @gray-light;
-      padding: .2em;
+      padding: 0.2em;
       vertical-align: middle;
     }
   }
 }
 
 .tag-base {
-  padding: 0 .5em;
+  padding: 0 0.5em;
   border-radius: 2px;
   font-size: 85%;
 }
@@ -1209,7 +1208,7 @@ i.fa.pointer {
 .recommended-tag-base {
   .tag-base;
   background-color: @yellow;
- }
+}
 
 .mandatory-tag-base {
   .tag-base;
@@ -1221,11 +1220,11 @@ i.fa.pointer {
   height: 1px;
   background-color: @gray-light;
   width: 100%;
-  margin: .5em auto;
+  margin: 0.5em auto;
   display: inline-block;
 }
 
-input:disabled+label {
+input:disabled + label {
   cursor: not-allowed;
   color: @gray;
 }
@@ -1245,8 +1244,8 @@ select.small-select {
 
 /*Colapsed pannels*/
 
-.panel-heading, .collapsible-content {
-
+.panel-heading,
+.collapsible-content {
   .collapsed {
     .hide-on-collapsed {
       display: inline;
@@ -1268,7 +1267,6 @@ select.small-select {
   .accordion-toggle {
     cursor: pointer;
   }
-
 }
 
 .panel-body .min-height-panel {
@@ -1308,7 +1306,8 @@ select.small-select {
 }
 
 // Make FullCalendar buttons use our buttons style
-.fc button.fc-button, .fc button.fc-button-primary {
+.fc button.fc-button,
+.fc button.fc-button-primary {
   .btn;
   .btn-default;
 }

@@ -31,6 +31,7 @@ def test_beacon():
         }
     )
 
+    # pylint: disable-next=pointless-string-statement
     """
     The __context__ has no pkgset data, the cache contains the same data as in the cookie.
     """
@@ -43,9 +44,11 @@ def test_beacon():
     ) as mock_cache_store:
         data = pkgset.beacon({})
         assert mock_context["pkgset"] == "test"
+        # pylint: disable-next=use-implicit-booleaness-not-comparison
         assert data == []
         mock_cache_store.assert_called_once()
 
+    # pylint: disable-next=pointless-string-statement
     """
     The __context__ has no pkgset data, the cache contains the different data than the cookie.
     """
@@ -61,6 +64,7 @@ def test_beacon():
         assert data == [{"tag": "changed"}]
         mock_cache_store.assert_called_once()
 
+    # pylint: disable-next=pointless-string-statement
     """
     The __context__ has pkgset data, but the data is different than the cookie.
     """
@@ -72,6 +76,7 @@ def test_beacon():
         assert data == [{"tag": "changed"}]
         mock_cache_store.assert_called_once()
 
+    # pylint: disable-next=pointless-string-statement
     """
     The __context__ has pkgset data, the data is the same as the cookie.
     """
@@ -80,5 +85,6 @@ def test_beacon():
     ) as mock_context, patch.object(pkgset.CACHE, "store") as mock_cache_store:
         data = pkgset.beacon({})
         assert mock_context["pkgset"] == "test"
+        # pylint: disable-next=use-implicit-booleaness-not-comparison
         assert data == []
         mock_cache_store.assert_not_called()

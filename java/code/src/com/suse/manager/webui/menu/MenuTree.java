@@ -74,7 +74,7 @@ public class MenuTree {
         if (checkAcl(user, "user_authenticated()")) {
             nodes.add(getHomeNode(adminRoles));
             nodes.add(getSystemsNode(user, adminRoles));
-            nodes.add(getSaltNode(adminRoles));
+            nodes.add(getSaltNode(user, adminRoles));
             nodes.add(getImagesNode(adminRoles));
             nodes.add(getPatchesNode(user));
             nodes.add(getSoftwareNode(user, adminRoles));
@@ -238,10 +238,11 @@ public class MenuTree {
                     .withVisibility(adminRoles.get("org")));
     }
 
-    private MenuItem getSaltNode(Map<String, Boolean> adminRoles) {
+    private MenuItem getSaltNode(User user, Map<String, Boolean> adminRoles) {
         return new MenuItem("Salt").withIcon("spacewalk-icon-salt")
                 .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/systems/keys"))
-                .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/systems/cmd"))
+                .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/systems/cmd")
+                        .withVisibility(checkAcl(user, "not is(java.disable_remote_commands_from_ui)")))
                 .addChild(new MenuItem("Formula Catalog").withPrimaryUrl("/rhn/manager/formula-catalog")
                         .withVisibility(adminRoles.get("org")));
     }

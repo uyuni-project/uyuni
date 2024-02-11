@@ -14,83 +14,52 @@
  */
 package com.redhat.rhn.domain.credentials;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Arrays;
 
 /**
- * CredentialsType
+ * The type of credentials
  */
-public class CredentialsType extends BaseDomainHelper {
+public enum CredentialsType {
+    SCC(Label.SCC),
+    VIRT_HOST_MANAGER(Label.VIRT_HOST_MANAGER),
+    REGISTRY(Label.REGISTRY),
+    CLOUD_RMT(Label.CLOUD_RMT),
+    REPORT_DATABASE(Label.REPORT_DATABASE),
+    RHUI(Label.RHUI);
 
-    private Long id;
-    private String label;
-    private String name;
+    private final String label;
 
-    /**
-     * @return Returns the id.
-     */
-    public Long getId() {
-        return id;
+    CredentialsType(String labelIn) {
+        this.label = labelIn;
     }
 
-    /**
-     * @param i The id to set.
-     */
-    public void setId(Long i) {
-        this.id = i;
-    }
-
-    /**
-     * @return Returns the label.
-     */
     public String getLabel() {
         return label;
     }
 
     /**
-     * @param l The label to set.
+     * Get a credential type instance by label
+     * @param label the label
+     * @return the {@link CredentialsType} instance
+     * @throws IllegalArgumentException if label is not found
      */
-    public void setLabel(String l) {
-        this.label = l;
+    public static CredentialsType byLabel(String label) {
+        return Arrays.stream(CredentialsType.values())
+            .filter(type -> type.getLabel().equals(label))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid label " + label));
     }
 
-    /**
-     * @return Returns the name.
-     */
-    public String getName() {
-        return name;
-    }
+    // This class specifies the labels used by the database and by the mapping annotations
+    public static class Label {
+        public static final String SCC = "scc";
+        public static final String VIRT_HOST_MANAGER = "vhm";
+        public static final String REGISTRY = "registrycreds";
+        public static final String CLOUD_RMT = "cloudrmt";
+        public static final String REPORT_DATABASE = "reportcreds";
+        public static final String RHUI = "rhui";
 
-    /**
-     * @param n The name to set.
-     */
-    public void setName(String n) {
-        this.name = n;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof CredentialsType)) {
-            return false;
+        private Label() {
         }
-        CredentialsType otherCredentialsType = (CredentialsType) other;
-        return new EqualsBuilder()
-            .append(getLabel(), otherCredentialsType.getLabel())
-            .isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getLabel())
-            .toHashCode();
     }
 }

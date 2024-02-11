@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -34,22 +35,24 @@ from . import rhnCapability
 def timer(last):
     if not last:
         return 0
+    # pylint: disable-next=consider-using-f-string
     log_debug(2, "%.2f sec" % (time.time() - last,))
     return 0
 
 
 class apacheSession(rhnApache):
 
-    """ a class that extends rhnApache with several support functions used
-     by the main handler class. This class deals with the processing of
-     the request and setup for the real action handled in the
-     apacheHandler class below. """
+    """a class that extends rhnApache with several support functions used
+    by the main handler class. This class deals with the processing of
+    the request and setup for the real action handled in the
+    apacheHandler class below."""
+
     _lang_catalog = "server"
 
 
 class apacheHandler(apacheSession):
 
-    """ main Apache XMLRPC point of entry for the server """
+    """main Apache XMLRPC point of entry for the server"""
 
     def __init__(self):
         # First call the inherited constructor:
@@ -62,7 +65,6 @@ class apacheHandler(apacheSession):
     ###
 
     def headerParserHandler(self, req):
-
         log_setreq(req)
         # We need to init CFG and Logging
         options = req.get_options()
@@ -74,6 +76,7 @@ class apacheHandler(apacheSession):
         initCFG(options["RHNComponentType"])
         initLOG(CFG.LOG_FILE, CFG.DEBUG)
 
+        # pylint: disable-next=pointless-string-statement
         """ parse the request, init database and figure out what can we call """
         log_debug(2, req.the_request)
         # call method from inherited class
@@ -92,14 +95,14 @@ class apacheHandler(apacheSession):
             rhnSQL.closeDB()
 
         # Store client capabilities
-        client_cap_header = 'X-RHN-Client-Capability'
+        client_cap_header = "X-RHN-Client-Capability"
         if client_cap_header in req.headers_in:
             client_caps = req.headers_in[client_cap_header]
-            client_caps = [_f.strip() for _f in client_caps.split(',') if _f.strip()]
+            client_caps = [_f.strip() for _f in client_caps.split(",") if _f.strip()]
             rhnCapability.set_client_capabilities(client_caps)
 
         # Enabling the input header flags associated with the redirects/newer clients
-        redirect_support_flags = ['X-RHN-Redirect', 'X-RHN-Transport-Capability']
+        redirect_support_flags = ["X-RHN-Redirect", "X-RHN-Transport-Capability"]
         for flag in redirect_support_flags:
             if flag in req.headers_in:
                 rhnFlags.set(flag, str(req.headers_in[flag]))
@@ -118,8 +121,8 @@ class apacheHandler(apacheSession):
                 self._req_processor = apacheGET(self.clientVersion, req)
             except HandlerNotFoundError:
                 e = sys.exc_info()[1]
-                log_error("Unable to handle GET request for server %s" %
-                          (e.args[0], ))
+                # pylint: disable-next=consider-using-f-string
+                log_error("Unable to handle GET request for server %s" % (e.args[0],))
                 return apache.HTTP_METHOD_NOT_ALLOWED
             token = self._setSessionToken(req.headers_in)
             if token is None:
@@ -130,12 +133,12 @@ class apacheHandler(apacheSession):
         return apache.HTTP_METHOD_NOT_ALLOWED
 
     def _cleanup_request_processor(self):
-        """ Clean up the request processor """
+        """Clean up the request processor"""
         self._req_processor = None
         return apache.OK
 
     def handler(self, req):
-        """ main Apache handler """
+        """main Apache handler"""
         log_debug(2)
         ret = apacheSession.handler(self, req)
         if ret != apache.OK:
@@ -155,17 +158,19 @@ class apacheHandler(apacheSession):
                 if not row:
                     break
 
-                templateStrings[row['label']] = row['value']
+                templateStrings[row["label"]] = row["value"]
 
             if templateStrings:
-                rhnFlags.set('templateOverrides', templateStrings)
+                rhnFlags.set("templateOverrides", templateStrings)
 
+            # pylint: disable-next=consider-using-f-string
             log_debug(4, "template strings:  %s" % templateStrings)
 
         if not CFG.SECRET_KEY:
             # Secret key not defined, complain loudly
             try:
                 raise rhnException("Secret key not found!")
+            # pylint: disable-next=bare-except
             except:
                 rhnTB.Traceback(mail=1, req=req, severity="schema")
                 req.status = 500
@@ -193,14 +198,14 @@ class apacheHandler(apacheSession):
                 return self._req_processor.response(f.getxml())
             # be safe rather than sorry
             if not ret:
-                log_error("Got a GET call, but auth_client declined",
-                          req.path_info)
+                log_error("Got a GET call, but auth_client declined", req.path_info)
                 return apache.HTTP_METHOD_NOT_ALLOWED
 
         # Avoid leaving Oracle deadlocks
         try:
             ret = self._req_processor.process()
             rhnSQL.rollback()
+        # pylint: disable-next=unused-variable
         except Exception as exc:
             if not CFG.SEND_MESSAGE_TO_ALL:
                 rhnSQL.rollback()
@@ -208,9 +213,10 @@ class apacheHandler(apacheSession):
         log_debug(4, "Leave with return value", ret)
         return ret
 
+    # pylint: disable-next=arguments-renamed
     def cleanupHandler(self, req):
-        """ Clean up stuff before we close down the session when we are called
-        from apacheServer.Cleanup() """
+        """Clean up stuff before we close down the session when we are called
+        from apacheServer.Cleanup()"""
         log_debug(2)
         # kill all of our child processes (if any)
         while 1:
@@ -220,7 +226,7 @@ class apacheHandler(apacheSession):
             except OSError:
                 break
             else:
-                log_error("Reaped child process %d with status %d" % (
-                          pid, status))
+                # pylint: disable-next=consider-using-f-string
+                log_error("Reaped child process %d with status %d" % (pid, status))
         ret = apacheSession.cleanupHandler(self, req)
         return ret

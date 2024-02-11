@@ -10297,6 +10297,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+        <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <source>Perform a standalone Salt update</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

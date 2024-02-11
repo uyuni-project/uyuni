@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-reportdb-schema
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -24,7 +24,7 @@ Summary:        Report DB SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.4.5
+Version:        5.0.3
 Release:        1
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/reportdb/%{name}-rpmlintrc
@@ -45,7 +45,7 @@ BuildRequires:  fdupes
 
 Requires:       susemanager-schema-utility
 
-%define rhnroot /etc/sysconfig/rhn/
+%define rhnroot /usr/share/susemanager/db/
 
 %define postgres %{rhnroot}/reportdb
 
@@ -70,6 +70,7 @@ install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade
 
 %files
 %defattr(-,root,root)
+%dir /usr/share/susemanager
 %dir %{rhnroot}
 %{postgres}
 %{rhnroot}/reportdb-schema-upgrade

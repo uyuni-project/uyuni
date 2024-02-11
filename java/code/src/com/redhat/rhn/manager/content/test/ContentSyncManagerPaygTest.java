@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -114,10 +115,14 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
         PAYG_DATA_TASK.setSccRefreshLock(new MockFileLocks());
     }
 
+    private int portNumber;
+
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
+
+        portNumber = 7777;
     }
 
     @Override
@@ -131,7 +136,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
         SCCCachingFactory.clearRepositories();
         SCCCachingFactory.clearSubscriptions();
         SUSEProductFactory.findAllSUSEProducts().forEach(SUSEProductFactory::remove);
-        CredentialsFactory.listSCCCredentials().forEach(CredentialsFactory::removeCredentials);
+        CredentialsFactory.listCredentials().forEach(CredentialsFactory::removeCredentials);
         CloudRmtHostFactory.lookupCloudRmtHosts().forEach(CloudRmtHostFactory::deleteCloudRmtHost);
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
@@ -157,7 +162,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
         Path tmpLogDir = Files.createTempDirectory("scc-data");
         try {
             // first run required to have an Cloud RMT Server to download products from
-            runPaygUpdateAuthTaskAndSetHost("http://localhost:8888/repo");
+            runPaygUpdateAuthTaskAndSetHost("http://localhost:" + portNumber + "/repo");
 
             // download the product data from Cloud RMT
             ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
@@ -173,7 +178,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             HibernateFactory.closeSession();
 
             // second run required to have the repository auth data for Cloud RMT products
-            runPaygUpdateAuthTaskAndSetHost("http://localhost:8888/repo");
+            runPaygUpdateAuthTaskAndSetHost("http://localhost:" + portNumber + "/repo");
 
             // enable free products
             csm.updateChannelFamilies(csm.readChannelFamilies());
@@ -245,7 +250,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             switch (outPaygData.getHost()) {
                 case "localhost":
                     //Fake URL for next test
-                    outPaygData.getCredentials().setUrl(url);
+                    outPaygData.getCredentials().castAs(CloudRMTCredentials.class).ifPresent(rmt -> rmt.setUrl(url));
                     break;
                 default:
                     fail("unexpected result");
@@ -253,10 +258,10 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
         }
     }
     private WireMockServer setupWireMockServer() {
-        WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(8888));
+        WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(portNumber));
         wireMockServer.start();
 
-        WireMock.configureFor("localhost", 8888);
+        WireMock.configureFor("localhost", portNumber);
         String productsUnscoped = new BufferedReader(new InputStreamReader(
                 PaygUpdateAuthTaskTest.class.getResourceAsStream(PRODUCTS_UNSCOPED)))
                 .lines().collect(Collectors.joining("\n"));

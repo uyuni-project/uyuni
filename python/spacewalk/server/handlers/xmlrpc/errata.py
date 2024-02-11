@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -21,6 +22,8 @@ import re
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common import rhnFlags
 from uyuni.common.rhnLib import parseRPMName
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 
@@ -31,40 +34,45 @@ from spacewalk.server import rhnSQL, rhnCapability
 
 class Errata(rhnHandler):
 
-    """ Errata class --- retrieve (via xmlrpc) package errata. """
+    """Errata class --- retrieve (via xmlrpc) package errata."""
 
     def __init__(self):
         rhnHandler.__init__(self)
         # Exposed Errata functions:
         self.functions = []
-        self.functions.append('GetByPackage')      # Clients v1-
-        self.functions.append('getPackageErratum')  # Clients v2+
-        self.functions.append('getErrataInfo')     # clients v2+
-        self.functions.append('getErrataNamesById')
+        self.functions.append("GetByPackage")  # Clients v1-
+        self.functions.append("getPackageErratum")  # Clients v2+
+        self.functions.append("getErrataInfo")  # clients v2+
+        self.functions.append("getErrataNamesById")
 
+    # pylint: disable-next=invalid-name
     def GetByPackage(self, pkg, osRel):
-        """ Clients v1- Get errata for a package given "n-v-r" format
-            IN:  pkg:   "n-v-r" (old client call)
-                        or [n,v,r]
-                 osRel: OS release
-            RET: a hash by errata that applies to this package
-                 (ie, newer packages are available). We also limit the scope
-                 for a particular osRel.
+        """Clients v1- Get errata for a package given "n-v-r" format
+        IN:  pkg:   "n-v-r" (old client call)
+                    or [n,v,r]
+             osRel: OS release
+        RET: a hash by errata that applies to this package
+             (ie, newer packages are available). We also limit the scope
+             for a particular osRel.
         """
-        if type(pkg) == type(''):  # Old client support.
+        # pylint: disable-next=unidiomatic-typecheck
+        if type(pkg) == type(""):  # Old client support.
             pkg = parseRPMName(pkg)
         log_debug(1, pkg, osRel)
         # Stuff the action in the headers:
-        transport = rhnFlags.get('outputTransportOptions')
-        transport['X-RHN-Action'] = 'GetByPackage'
+        transport = rhnFlags.get("outputTransportOptions")
+        transport["X-RHN-Action"] = "GetByPackage"
 
         # now look up the errata
-        if type(pkg[0]) != type(''):
+        # pylint: disable-next=unidiomatic-typecheck
+        if type(pkg[0]) != type(""):
+            # pylint: disable-next=consider-using-f-string
             log_error("Invalid package name: %s %s" % (type(pkg[0]), pkg[0]))
             raise rhnFault(30, _("Expected a package name, not: %s") % pkg[0])
         # bug#186996:adding synopsis field to advisory info
         # client side changes are needed to access this data.
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select distinct
                     e.id            errata_id,
                     e.advisory_type errata_type,
@@ -98,19 +106,23 @@ class Errata(rhnHandler):
                 and cfm.channel_family_id = pcf.channel_family_id
                 -- and get the erratum
                 and e.id = ce.errata_id
-        """)
+        """
+        )
         h.execute(name=pkg[0], dist=str(osRel))
         return self._sanitize_result(h)
 
+    # pylint: disable-next=invalid-name
     def getPackageErratum(self, system_id, pkg):
-        """ Clients v2+ - Get errata for a package given [n,v,r,e,a,...] format
+        """Clients v2+ - Get errata for a package given [n,v,r,e,a,...] format
 
-            Sing-along: You say erratum(sing), I say errata(pl)! :)
-            IN:  pkg:   [n,v,r,e,s,a,ch,...]
-            RET: a hash by errata that applies to this package
+        Sing-along: You say erratum(sing), I say errata(pl)! :)
+        IN:  pkg:   [n,v,r,e,s,a,ch,...]
+        RET: a hash by errata that applies to this package
         """
         log_debug(5, system_id, pkg)
+        # pylint: disable-next=unidiomatic-typecheck
         if type(pkg) != type([]) or len(pkg) < 7:
+            # pylint: disable-next=consider-using-f-string
             log_error("Got invalid package specification: %s" % str(pkg))
             raise rhnFault(30, _("Expected a package, not: %s") % pkg)
         # Authenticate and decode server id.
@@ -118,17 +130,19 @@ class Errata(rhnHandler):
         # log the entry
         log_debug(1, self.server_id, pkg)
         # Stuff the action in the headers:
-        transport = rhnFlags.get('outputTransportOptions')
-        transport['X-RHN-Action'] = 'getPackageErratum'
+        transport = rhnFlags.get("outputTransportOptions")
+        transport["X-RHN-Action"] = "getPackageErratum"
 
+        # pylint: disable-next=unused-variable
         name, ver, rel, epoch, arch, size, channel = pkg[:7]
-        if epoch in ['', 'none', 'None']:
+        if epoch in ["", "none", "None"]:
             epoch = None
 
         # XXX: also, should arch/size/channel ever be used?
         # bug#186996:adding synopsis field to errata info
         # client side changes are needed to access this data.
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select distinct
             e.id            errata_id,
             e.advisory_type errata_type,
@@ -157,11 +171,14 @@ class Errata(rhnHandler):
         -- and the server has to be subscribed to the channel
         and cp.channel_id = sc.channel_id
         and sc.server_id = :server_id
-        """)  # " emacs sucks
-        h.execute(name=name, ver=ver, rel=rel, epoch=epoch,
-                  server_id=str(self.server_id))
+        """
+        )  # " emacs sucks
+        h.execute(
+            name=name, ver=ver, rel=rel, epoch=epoch, server_id=str(self.server_id)
+        )
         return self._sanitize_result(h)
 
+    # pylint: disable-next=invalid-name
     def _sanitize_result(self, h):
         ret = []
         # sanitize the results for display in the clients
@@ -177,6 +194,7 @@ class Errata(rhnHandler):
         return ret
 
     # I don't trust this errata_id business, but chip says "trust me"
+    # pylint: disable-next=invalid-name
     def getErrataInfo(self, system_id, errata_id):
         log_debug(5, system_id, errata_id)
         # Authenticate the server certificate
@@ -188,9 +206,9 @@ class Errata(rhnHandler):
         log_debug(3, "Client Capabilities", client_caps)
         multiarch = 0
         cap_info = None
-        if client_caps and 'packages.update' in client_caps:
-            cap_info = client_caps['packages.update']
-        if cap_info and int(cap_info['version']) > 1:
+        if client_caps and "packages.update" in client_caps:
+            cap_info = client_caps["packages.update"]
+        if cap_info and int(cap_info["version"]) > 1:
             multiarch = 1
 
         statement = """
@@ -228,20 +246,25 @@ class Errata(rhnHandler):
             return []
 
         for package in packages:
-            if package['name'] is not None:
-                if package['epoch'] is None:
-                    package['epoch'] = ""
+            if package["name"] is not None:
+                if package["epoch"] is None:
+                    package["epoch"] = ""
 
-                pkg_arch = ''
+                pkg_arch = ""
                 if multiarch:
-                    pkg_arch = package['arch'] or ''
-                ret.append([package['name'],
-                            package['version'],
-                            package['release'],
-                            package['epoch'],
-                            pkg_arch])
+                    pkg_arch = package["arch"] or ""
+                ret.append(
+                    [
+                        package["name"],
+                        package["version"],
+                        package["release"],
+                        package["epoch"],
+                        pkg_arch,
+                    ]
+                )
         return ret
 
+    # pylint: disable-next=invalid-name
     def getErrataNamesById(self, system_id, errata_ids):
         """Return a list of RhnErrata tuples of (id, advisory_name)
 
@@ -260,7 +283,7 @@ class Errata(rhnHandler):
         log_debug(1, self.server_id, errata_ids)
 
         sql_list, bound_vars = _bind_list(errata_ids)
-        bound_vars.update({'server_id': self.server_id})
+        bound_vars.update({"server_id": self.server_id})
 
         sql = """SELECT DISTINCT e.id, e.advisory_name, c.update_tag
                  FROM rhnErrata e,
@@ -280,8 +303,10 @@ class Errata(rhnHandler):
         for eid, name, update_tag in errata_list:
             if update_tag:
                 if regexp.match(name):
+                    # pylint: disable-next=consider-using-f-string
                     name = name.replace("SUSE", "SUSE-%s" % update_tag, 1)
                 else:
+                    # pylint: disable-next=consider-using-f-string
                     name = "%s-%s" % (update_tag, name)
             result.append((eid, name))
         log_debug(2, self.server_id, errata_ids, result)
@@ -301,14 +326,18 @@ def _bind_list(elems):
     bound_names = []
     bound_vars = {}
     for i, elem in enumerate(elems):
-        bound_vars['p_%s' % i] = elem
-        bound_names.append(':p_%s' % i)
-    sql_list = ', '.join(bound_names)
+        # pylint: disable-next=consider-using-f-string
+        bound_vars["p_%s" % i] = elem
+        # pylint: disable-next=consider-using-f-string
+        bound_names.append(":p_%s" % i)
+    sql_list = ", ".join(bound_names)
     return sql_list, bound_vars
 
-#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
 if __name__ == "__main__":
     print("You can not run this module by itself")
     import sys
+
     sys.exit(-1)
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------

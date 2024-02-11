@@ -103,6 +103,8 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
             allowing(ctx).getJobDetail();
             will(returnValue(jobDetail));
 
+            allowing(ctx).getTrigger();
+
             JobDataMap dataMap = new JobDataMap();
             dataMap.putAsString("action_id", action.getId());
             dataMap.putAsString("user_id", user.getId());

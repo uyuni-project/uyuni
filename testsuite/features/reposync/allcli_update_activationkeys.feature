@@ -114,6 +114,7 @@ Feature: Update activation keys
 
 @scc_credentials
 @susemanager
+@proxy
   Scenario: Update the SLE Proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area

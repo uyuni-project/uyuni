@@ -8,6 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
+import { Form, Select } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
@@ -31,16 +32,6 @@ declare global {
     refreshRunning_flag_from_backend?: any;
     scc_refresh_file_locked_status?: any;
     noToolsChannelSubscription_flag_from_backend?: any;
-  }
-}
-
-type Instance = JQuery;
-type StaticProperties = {};
-type Select2 = ((...args: any[]) => Instance) & StaticProperties;
-
-declare global {
-  interface JQuery {
-    select2: Select2;
   }
 }
 
@@ -286,7 +277,7 @@ class ProductsPageWrapper extends React.Component {
               </>
             )),
             true,
-            t("The following channel installations for '{product}' failed. Please check log files.", { product })
+            t('The following channel installations for "{product}" failed. Please check log files.', { product })
           );
         }
         this.setState({
@@ -409,18 +400,20 @@ class ProductsPageWrapper extends React.Component {
             />
             <hr />
             {this.state.selectedItems.length > 0 ? (
-              <div className="text-left">
-                <h4>Selected products</h4>
-                <ul>
-                  {this.state.selectedItems.map((i) => (
-                    <li key={i.identifier}>
-                      {i.label} [{i.arch}]
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <>
+                <div className="text-left">
+                  <h4>Selected products</h4>
+                  <ul>
+                    {this.state.selectedItems.map((i) => (
+                      <li key={i.identifier}>
+                        {i.label} [{i.arch}]
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <hr />
+              </>
             ) : null}
-            <hr />
             <h4>{t("Why aren't all products displayed in the list?")}</h4>
             <p>
               {t(
@@ -506,36 +499,10 @@ class Products extends React.Component<ProductsProps> {
     visibleSubList: [] as any[],
   };
 
-  componentDidMount() {
-    const currentObject = this;
-
-    //HACK: usage of JQuery here is needed to apply the select2js plugin
-    jQuery("select#product-arch-filter.apply-select2js-on-this").each(function () {
-      var select = jQuery(this);
-      // apply select2js only one time
-      if (!select.hasClass("select2js-applied")) {
-        select.addClass("select2js-applied");
-
-        var select2js = select.select2({ placeholder: t("Filter by architecture") });
-        select2js.on("change", function (event) {
-          currentObject.handleFilterArchChange(select.val() || []);
-        });
-      }
-    });
-  }
-
-  getDistinctArchsFromData = (data) => {
-    var archs: any[] = [];
-    Object.keys(data)
-      .map((id) => data[id])
-      .forEach(function (x) {
-        if (!archs.includes(x.arch)) archs.push(x.arch);
-      });
-    return archs;
-  };
-
-  handleFilterArchChange = (archs) => {
-    this.setState({ archCriteria: archs });
+  getDistinctArchsFromData = (data: any[] = []) => {
+    return Array.from(new Set(data.map((item) => item.arch)))
+      .filter(Boolean) // Some items don't have an arch set so pick those out
+      .sort();
   };
 
   filterDataByArch = (data: any[]) => {
@@ -587,18 +554,16 @@ class Products extends React.Component<ProductsProps> {
   render() {
     const archFilter = (
       <div className="multiple-select-wrapper">
-        <select
-          id="product-arch-filter"
-          name="product-arch-filter"
-          className="form-control d-inline-block apply-select2js-on-this"
-          multiple={true}
-        >
-          {this.getDistinctArchsFromData(this.props.data).map((a, i) => (
-            <option key={a + i} value={a}>
-              {a}
-            </option>
-          ))}
-        </select>
+        {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
+        <Form>
+          <Select
+            name="product-arch-filter"
+            placeholder={t("Filter by architecture")}
+            options={this.getDistinctArchsFromData(this.props.data)}
+            isMulti
+            onChange={(_, archCriteria) => this.setState({ archCriteria })}
+          />
+        </Form>
       </div>
     );
     return (

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # Queue functions on the server side.
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
@@ -16,6 +17,7 @@
 
 import sys
 import time
+
 try:
     #  python 2
     import xmlrpclib
@@ -23,6 +25,7 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 
+# pylint: disable-next=unused-import
 from uyuni.common.usix import IntType, TupleType, UnicodeType, raise_with_tb
 from rhn.stringutils import sstr
 
@@ -43,94 +46,105 @@ from . import getMethod
 
 class Queue(rhnHandler):
 
-    """ XMLRPC queue functions that we will provide for the outside world. """
+    """XMLRPC queue functions that we will provide for the outside world."""
 
     def __init__(self):
-        """ Add a list of functions we are willing to server out. """
+        """Add a list of functions we are willing to server out."""
         rhnHandler.__init__(self)
-        self.functions.append('get')
-        self.functions.append('get_future_actions')
-        self.functions.append('length')
-        self.functions.append('submit')
-        self.functions.append('update_status')
+        self.functions.append("get")
+        self.functions.append("get_future_actions")
+        self.functions.append("length")
+        self.functions.append("submit")
+        self.functions.append("update_status")
 
         # XXX I am not proud of this. There should be a generic way to map
         # the client's error codes into success status codes
         self.action_type_completed_codes = {
-            'errata.update': {
+            "errata.update": {
                 39: None,
             },
         }
 
+    # pylint: disable-next=invalid-name
     def __getV1(self, action):
-        """ Fetches old queued actions for the client version 1. """
+        """Fetches old queued actions for the client version 1."""
         log_debug(3, self.server_id)
-        actionId = action['id']
+        # pylint: disable-next=invalid-name
+        actionId = action["id"]
         method = action["method"]
-        if method == 'packages.update':
+        if method == "packages.update":
             xml = self.__packageUpdate(actionId)
-        elif method == 'errata.update':
+        elif method == "errata.update":
             xml = self.__errataUpdate(actionId)
-        elif method == 'hardware.refresh_list':
+        elif method == "hardware.refresh_list":
             xml = xmlrpclib.dumps(("hardware",), methodname="client.refresh")
-        elif method == 'packages.refresh_list':
+        elif method == "packages.refresh_list":
             xml = xmlrpclib.dumps(("rpmlist",), methodname="client.refresh")
         else:  # Unrecognized, skip
-            raise InvalidAction("Action method %s unsupported by "
-                                "Update Agent Client" % method)
+            raise InvalidAction(
+                # pylint: disable-next=consider-using-f-string
+                "Action method %s unsupported by "
+                "Update Agent Client" % method
+            )
         # all good
-        return {'id': actionId, 'version': 1, 'action': xml}
+        return {"id": actionId, "version": 1, "action": xml}
 
+    # pylint: disable-next=invalid-name
     def __getV2(self, action, dry_run=0):
-        """ Fetches queued actions for the clients version 2+. """
+        """Fetches queued actions for the clients version 2+."""
         log_debug(3, self.server_id)
         # Get the root dir of this install
         try:
-            method = getMethod.getMethod(action['method'],
-                                         'server.action')
+            method = getMethod.getMethod(action["method"], "server.action")
         except getMethod.GetMethodException:
             Traceback("queue.get V2")
-            raise_with_tb(EmptyAction("Could not get a valid method for %s" % (
-                action['method'],)), sys.exc_info()[2])
+            raise_with_tb(
+                EmptyAction(
+                    # pylint: disable-next=consider-using-f-string
+                    "Could not get a valid method for %s"
+                    % (action["method"],)
+                ),
+                sys.exc_info()[2],
+            )
         # Call the method
-        result = method(self.server_id, action['id'], dry_run)
+        result = method(self.server_id, action["id"], dry_run)
         if result is None:
             # None are mapped to the empty list
             result = ()
         elif not isinstance(result, TupleType):
             # Everything other than a tuple is wrapped in a tuple
-            result = (result, )
+            result = (result,)
 
-        xmlblob = xmlrpclib.dumps(result, methodname=action['method'])
+        xmlblob = xmlrpclib.dumps(result, methodname=action["method"])
         log_debug(5, "returning xmlblob for action", xmlblob)
         return {
-            'id': action['id'],
-            'action': xmlblob,
-            'version': action['version'],
+            "id": action["id"],
+            "action": xmlblob,
+            "version": action["version"],
         }
 
     def __update_status(self, status):
-        """ Update the runnng kernel and the last boot values for this
-            server from the status dictionary passed on queue checkin.
+        """Update the runnng kernel and the last boot values for this
+        server from the status dictionary passed on queue checkin.
 
-            Record last running kernel and uptime.  Only update
-            last_boot if it has changed by more than five seconds. We
-            don't know the timezone the server is in. or even if its
-            clock is right, but we do know it can properly track seconds
-             since it rebooted, and use our own clocks to keep proper
-            track of the actual time.
+        Record last running kernel and uptime.  Only update
+        last_boot if it has changed by more than five seconds. We
+        don't know the timezone the server is in. or even if its
+        clock is right, but we do know it can properly track seconds
+         since it rebooted, and use our own clocks to keep proper
+        track of the actual time.
         """
 
-        if 'uname' in status:
-            kernelver = status['uname'][2]
+        if "uname" in status:
+            kernelver = status["uname"][2]
             if kernelver != self.server.server["running_kernel"]:
                 self.server.server["running_kernel"] = kernelver
 
         # XXX:We should be using Oracle's sysdate() for this management
         # In the case of multiple app servers in mutiple time zones all the
         # results are skewed.
-        if 'uptime' in status:
-            uptime = status['uptime']
+        if "uptime" in status:
+            uptime = status["uptime"]
             if isinstance(uptime, type([])) and len(uptime):
                 # Toss the other values. For now
                 uptime = uptime[0]
@@ -149,7 +163,8 @@ class Queue(rhnHandler):
         self.server.server.save()
 
     def __set_reboot_action_to_succcess(self):
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             update rhnServerAction
             set status = 2
             where server_id = :server_id
@@ -162,7 +177,8 @@ class Queue(rhnHandler):
                      and sa.status = 1
                      and at.label = 'reboot.reboot'
             )
-        """)
+        """
+        )
         h.execute(server_id=self.server_id)
 
     def __should_snapshot(self):
@@ -179,13 +195,18 @@ class Queue(rhnHandler):
         f_action_ids = rhnAction.invalidate_action(self.server_id, action_id)
         for f_action_id in f_action_ids:
             # Invalidate any kickstart session that depends on this action
-            server_kickstart.update_kickstart_session(self.server_id,
-                                                      f_action_id, action_status=3, kickstart_state='failed',
-                                                      next_action_type=None)
+            server_kickstart.update_kickstart_session(
+                self.server_id,
+                f_action_id,
+                action_status=3,
+                kickstart_state="failed",
+                next_action_type=None,
+            )
         return f_action_ids
 
     def _invalidate_failed_prereq_actions(self):
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select sa.action_id, a.prerequisite
               from rhnServerAction sa, rhnAction a
              where sa.server_id = :server_id
@@ -199,7 +220,8 @@ class Queue(rhnHandler):
                       and action_id = a.prerequisite
                       and status = 3 -- failed
                )
-        """)
+        """
+        )
 
         h.execute(server_id=self.server_id)
         while 1:
@@ -207,26 +229,31 @@ class Queue(rhnHandler):
             if not row:
                 break
 
-            action_id, prereq_action_id = row['action_id'], row['prerequisite']
+            # pylint: disable-next=unused-variable
+            action_id, prereq_action_id = row["action_id"], row["prerequisite"]
 
             self._invalidate_child_actions(action_id)
-    _query_future_enabled = rhnSQL.Statement("""
+
+    _query_future_enabled = rhnSQL.Statement(
+        """
         select staging_content_enabled
           from rhnOrgConfiguration oc,
                rhnServer s
          where s.org_id = oc.org_id
            and s.id = :server_id
-    """)
+    """
+    )
 
     def _future_actions_enabled(self):
-        """ Returns true if staging content is enabled for this system """
+        """Returns true if staging content is enabled for this system"""
         h = rhnSQL.prepare(self._query_future_enabled)
         h.execute(server_id=self.server_id)
         row = h.fetchone_dict()
         log_debug(4, row["staging_content_enabled"])
         return row["staging_content_enabled"] == "Y"
 
-    _query_queue_future = rhnSQL.Statement("""
+    _query_queue_future = rhnSQL.Statement(
+        """
                     select sa.action_id id, a.version,
                            sa.remaining_tries, at.label as method,
                            at.unlocked_only,
@@ -242,11 +269,13 @@ class Queue(rhnHandler):
                        and at.label in ('packages.update', 'errata.update',
                             'packages.runTransaction', 'packages.fullUpdate')
                       order by a.earliest_action, a.prerequisite nulls first, a.id
-    """)
+    """
+    )
 
     def get_future_actions(self, system_id, time_window):
-        """ return actions which are scheduled within next /time_window/ hours """
+        """return actions which are scheduled within next /time_window/ hours"""
         self.auth_system(system_id)
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, "Checking for future actions within %d hours" % time_window)
         result = []
         if self._future_actions_enabled() and not self.__reboot_in_progress():
@@ -259,7 +288,8 @@ class Queue(rhnHandler):
                 action = h.fetchone_dict()
         return result
 
-    _query_queue_get = rhnSQL.Statement("""
+    _query_queue_get = rhnSQL.Statement(
+        """
                     select sa.action_id id, a.version,
                            sa.remaining_tries, at.label as method,
                            at.unlocked_only,
@@ -280,9 +310,11 @@ class Queue(rhnHandler):
                               and sap.status != 2 -- completed
                            )
                       order by a.earliest_action, a.prerequisite nulls first, a.id
-    """)
+    """
+    )
 
     # Probably we need to figure out if we really need to split these two.
+    # pylint: disable-next=dangerous-default-value
     def get(self, system_id, version=1, status={}):
         # Authenticate the system certificate
         if CFG.DISABLE_CHECKINS:
@@ -290,8 +322,13 @@ class Queue(rhnHandler):
         else:
             self.update_checkin = 1
         self.auth_system(system_id)
-        log_debug(1, self.server_id, version,
-                  "checkins %s" % ["disabled", "enabled"][self.update_checkin])
+        log_debug(
+            1,
+            self.server_id,
+            version,
+            # pylint: disable-next=consider-using-f-string
+            "checkins %s" % ["disabled", "enabled"][self.update_checkin],
+        )
         if status:
             self.__update_status(status)
 
@@ -333,25 +370,34 @@ class Queue(rhnHandler):
                 # Don't forget the commit at the end...
                 ret = ""
                 break
-            action_id = action['id']
+            action_id = action["id"]
+            # pylint: disable-next=consider-using-f-string
             log_debug(4, "Checking action %s" % action_id)
             # okay, now we have the action - process it.
-            if action['remaining_tries'] < 1:
+            if action["remaining_tries"] < 1:
+                # pylint: disable-next=consider-using-f-string
                 log_debug(4, "Action %s picked up too many times" % action_id)
                 # We've run out of pickup attempts for this action...
-                self.__update_action(action_id, status=3,
-                                     message="This action has been picked up multiple times "
-                                     "without a successful transaction; "
-                                     "this action is now failed for this system.")
+                self.__update_action(
+                    action_id,
+                    status=3,
+                    message="This action has been picked up multiple times "
+                    "without a successful transaction; "
+                    "this action is now failed for this system.",
+                )
                 # Invalidate actions that depend on this one
                 self._invalidate_child_actions(action_id)
                 # keep looking for a good action to process...
                 continue
 
-            if server_locked and action['unlocked_only'] == 'Y':
+            if server_locked and action["unlocked_only"] == "Y":
                 # This action is locked
-                log_debug(4, "server id %s locked for action id %s" % (
-                    self.server_id, action_id))
+                log_debug(
+                    4,
+                    # pylint: disable-next=consider-using-f-string
+                    "server id %s locked for action id %s"
+                    % (self.server_id, action_id),
+                )
                 continue
 
             try:
@@ -366,14 +412,14 @@ class Queue(rhnHandler):
                 should_execute = 1
                 text = e.args[0]
                 log_debug(4, "Shadow Action", text)
-                self.__update_action(action['id'], 2, 0, text)
+                self.__update_action(action["id"], 2, 0, text)
                 continue
             except InvalidAction:  # This is an invalid action
                 e = sys.exc_info()[1]
                 # Update its status so it won't bother us again
                 text = e.args[0]
                 log_debug(4, "Invalid Action", text)
-                self.__update_action(action['id'], 3, -99, text)
+                self.__update_action(action["id"], 3, -99, text)
                 continue
             except EmptyAction:
                 e = sys.exc_info()[1]
@@ -385,16 +431,21 @@ class Queue(rhnHandler):
                 break
             else:  # all fine
                 # Update the status of the action
-                h = rhnSQL.prepare("""
+                h = rhnSQL.prepare(
+                    """
                 update rhnServerAction
                     set status = 1,
                         pickup_time = current_timestamp,
                         remaining_tries = :tries - 1
                 where action_id = :action_id
                   and server_id = :server_id
-                """)
-                h.execute(action_id=action["id"], server_id=self.server_id,
-                          tries=action["remaining_tries"])
+                """
+                )
+                h.execute(
+                    action_id=action["id"],
+                    server_id=self.server_id,
+                    tries=action["remaining_tries"],
+                )
                 break
 
         # commit all changes
@@ -402,37 +453,45 @@ class Queue(rhnHandler):
 
         return ret
 
+    # pylint: disable-next=dangerous-default-value
     def submit(self, system_id, action_id, result, message="", data={}):
-        """ Submit the results of a queue run.
-            Maps old and new rhn_check behavior to new database status codes
+        """Submit the results of a queue run.
+        Maps old and new rhn_check behavior to new database status codes
 
-            The new API uses 4 slightly different status codes than the
-            old client does.  This function will "hopefully" sensibly
-            map them.  Old methodology:
-               -rhn_check retrieves an action from the top of the action queue.
-               -It attempts to execute the desired action and returns either
-                   (a) 0   -- presumed successful.
-                   (b) rhnFault object -- presumed failed
-                   (c) some other non-fault object -- *assumed* successful.
-               -Regardless of result code, action is marked as "executed"
+        The new API uses 4 slightly different status codes than the
+        old client does.  This function will "hopefully" sensibly
+        map them.  Old methodology:
+           -rhn_check retrieves an action from the top of the action queue.
+           -It attempts to execute the desired action and returns either
+               (a) 0   -- presumed successful.
+               (b) rhnFault object -- presumed failed
+               (c) some other non-fault object -- *assumed* successful.
+           -Regardless of result code, action is marked as "executed"
 
-            We try to make a smarter status selection (i.e. failed||completed).
+        We try to make a smarter status selection (i.e. failed||completed).
 
-            For reference:
-            New DB status codes:      Old DB status codes:
-                  0: Queued               0: queued
-                  1: Picked Up            1: picked up
-                  2: Completed            2: executed
-                  3: Failed               3: completed
+        For reference:
+        New DB status codes:      Old DB status codes:
+              0: Queued               0: queued
+              1: Picked Up            1: picked up
+              2: Completed            2: executed
+              3: Failed               3: completed
         """
+        # pylint: disable-next=unidiomatic-typecheck
         if type(action_id) is not IntType:
             # Convert it to int
             try:
                 action_id = int(action_id)
             except ValueError:
                 log_error("Invalid action_id", action_id)
-                raise_with_tb(rhnFault(30, _("Invalid action value type %s (%s)") %
-                               (action_id, type(action_id))), sys.exc_info()[2])
+                raise_with_tb(
+                    rhnFault(
+                        30,
+                        _("Invalid action value type %s (%s)")
+                        % (action_id, type(action_id)),
+                    ),
+                    sys.exc_info()[2],
+                )
         # bring message into correct format
         message = sstr(message)
 
@@ -441,7 +500,8 @@ class Queue(rhnHandler):
         log_debug(1, self.server_id, action_id, result)
         # check that the action is valid
         # We have a uniqueness constraint on (action_id, server_id)
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select at.label action_type,
                    at.trigger_snapshot,
                    at.name
@@ -453,24 +513,30 @@ class Queue(rhnHandler):
                and sa.status = 1
                and a.id = :action_id
                and a.action_type = at.id
-        """)
+        """
+        )
         h.execute(server_id=self.server_id, action_id=action_id)
         row = h.fetchone_dict()
         if not row:
-            log_error("Server %s does not own action %s" % (
-                self.server_id, action_id))
-            raise rhnFault(22, _("Action %s does not belong to server %s") % (
-                action_id, self.server_id))
+            # pylint: disable-next=consider-using-f-string
+            log_error("Server %s does not own action %s" % (self.server_id, action_id))
+            raise rhnFault(
+                22,
+                _("Action %s does not belong to server %s")
+                % (action_id, self.server_id),
+            )
 
-        action_type = row['action_type']
-        trigger_snapshot = (row['trigger_snapshot'] == 'Y')
+        action_type = row["action_type"]
+        trigger_snapshot = row["trigger_snapshot"] == "Y"
 
-        if 'missing_packages' in data:
-            missing_packages = "Missing-Packages: %s" % str(
-                data['missing_packages'])
+        if "missing_packages" in data:
+            # pylint: disable-next=consider-using-f-string
+            missing_packages = "Missing-Packages: %s" % str(data["missing_packages"])
+            # pylint: disable-next=consider-using-f-string
             rmsg = "%s %s" % (message, missing_packages)
-        elif 'koan' in data:
-            rmsg = "%s: %s" % (message, data['koan'])
+        elif "koan" in data:
+            # pylint: disable-next=consider-using-f-string
+            rmsg = "%s: %s" % (message, data["koan"])
         else:
             rmsg = message
 
@@ -478,13 +544,15 @@ class Queue(rhnHandler):
         # Careful with this one, result can be a very complex thing
         # and this processing is required for compatibility with old
         # rhn_check clients
+        # pylint: disable-next=unidiomatic-typecheck
         if type(rcode) == type({}):
             if "faultCode" in result:
                 rcode = result["faultCode"]
             if "faultString" in result:
                 rmsg = result["faultString"] + str(data)
-        if type(rcode) in [type({}), type(()), type([])] \
-                or type(rcode) is not IntType:
+        # pylint: disable-next=unidiomatic-typecheck
+        if type(rcode) in [type({}), type(()), type([])] or type(rcode) is not IntType:
+            # pylint: disable-next=consider-using-f-string
             rmsg = "%s [%s]" % (message, rcode)
             rcode = -1
         # map to db codes.
@@ -493,29 +561,32 @@ class Queue(rhnHandler):
         if status == 3:
             # Failed action - invalidate children
             self._invalidate_child_actions(action_id)
-        elif action_type == 'reboot.reboot':
+        elif action_type == "reboot.reboot":
             # reboot action should stay as pickup
             rhnSQL.commit()
             return 0
         elif status == 2 and trigger_snapshot and self.__should_snapshot():
             # if action status is 'Completed', snapshot if allowed and if needed
-            self.server.take_snapshot("Scheduled action completion:  %s" % row['name'])
+            # pylint: disable-next=consider-using-f-string
+            self.server.take_snapshot("Scheduled action completion:  %s" % row["name"])
 
         self.__update_action(action_id, status, rcode, rmsg)
 
         # Store the status in a flag - easier than to complicate the action
         # plugin API by adding a status
-        rhnFlags.set('action_id', action_id)
-        rhnFlags.set('action_status', status)
+        rhnFlags.set("action_id", action_id)
+        rhnFlags.set("action_status", status)
 
-        self.process_extra_data(self.server_id, action_id, data=data,
-                                action_type=action_type)
+        self.process_extra_data(
+            self.server_id, action_id, data=data, action_type=action_type
+        )
 
         # commit, because nobody else will
         rhnSQL.commit()
         return 0
 
-    def update_status(self, system_id, status = {}):
+    # pylint: disable-next=dangerous-default-value
+    def update_status(self, system_id, status={}):
         # Authenticate the system certificate
         self.auth_system(system_id)
         log_debug(1, self.server_id, status)
@@ -527,10 +598,10 @@ class Queue(rhnHandler):
         return 0
 
     def status_for_action_type_code(self, action_type, rcode):
-        """ Convert whatever the client sends as a result code into a status in the
-            database format
-            This is more complicated, since some of the client's result codes have
-            to be marked as successes.
+        """Convert whatever the client sends as a result code into a status in the
+        database format
+        This is more complicated, since some of the client's result codes have
+        to be marked as successes.
         """
         log_debug(4, action_type, rcode)
         if rcode == 0:
@@ -541,6 +612,7 @@ class Queue(rhnHandler):
             # Failed
             return 3
 
+        # pylint: disable-next=redefined-builtin
         hash = self.action_type_completed_codes[action_type]
         if rcode not in hash:
             # Failed
@@ -549,8 +621,8 @@ class Queue(rhnHandler):
         # Completed
         return 2
 
-    def process_extra_data(self, server_id, action_id, data={},
-                           action_type=None):
+    # pylint: disable-next=dangerous-default-value
+    def process_extra_data(self, server_id, action_id, data={}, action_type=None):
         log_debug(4, server_id, action_id, action_type)
 
         if not action_type:
@@ -558,22 +630,25 @@ class Queue(rhnHandler):
             return
 
         try:
-            method = getMethod.getMethod(action_type,
-                                         'server.action_extra_data')
+            method = getMethod.getMethod(action_type, "server.action_extra_data")
         except getMethod.GetMethodException:
             Traceback("queue.get V2")
-            raise_with_tb(EmptyAction("Could not get a valid method for %s" %
-                              action_type), sys.exc_info()[2])
+            raise_with_tb(
+                # pylint: disable-next=consider-using-f-string
+                EmptyAction("Could not get a valid method for %s" % action_type),
+                sys.exc_info()[2],
+            )
         # Call the method
         result = method(self.server_id, action_id, data=data)
         return result
 
     def length(self, system_id):
-        """ Return the queue length for a certain server. """
+        """Return the queue length for a certain server."""
         # Authenticate the system certificate
         self.auth_system(system_id)
         log_debug(1, self.server_id)
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select
             count(action_id) id
         from
@@ -581,7 +656,8 @@ class Queue(rhnHandler):
         where
             r.server_id = :server_id
         and r.status in (0, 1)
-        """)
+        """
+        )
         h.execute(server_id=self.server_id)
         data = h.fetchone_dict()
         if data is None:
@@ -593,7 +669,8 @@ class Queue(rhnHandler):
     def __reboot_in_progress(self):
         """check for a reboot action for this server in status Picked Up"""
         log_debug(4, self.server_id)
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select 1
               from rhnServerAction sa
               join rhnAction a on sa.action_id = a.id
@@ -601,24 +678,30 @@ class Queue(rhnHandler):
              where sa.server_id = :server_id
                and at.label = 'reboot.reboot'
                and sa.status = 1 -- Picked Up
-        """)
+        """
+        )
         h.execute(server_id=self.server_id)
         ret = h.fetchone_dict() or None
         if ret:
             return True
         return False
 
-    def __update_action(self, action_id, status,
-                        resultCode=None, message=""):
-        """ Update the status of an action. """
+    # pylint: disable-next=invalid-name
+    def __update_action(self, action_id, status, resultCode=None, message=""):
+        """Update the status of an action."""
         log_debug(4, action_id, status, resultCode, message)
-        rhnAction.update_server_action(server_id=self.server_id,
-                                       action_id=action_id, status=status,
-                                       result_code=resultCode, result_message=message)
+        rhnAction.update_server_action(
+            server_id=self.server_id,
+            action_id=action_id,
+            status=status,
+            result_code=resultCode,
+            result_message=message,
+        )
         return 0
 
+    # pylint: disable-next=invalid-name
     def __errataUpdate(self, actionId):
-        """ Old client errata retrieval. """
+        """Old client errata retrieval."""
         log_debug(3, self.server_id, actionId)
         # get the names of the packages associated with each errata and
         # look them up in channels subscribed to by the server and select
@@ -671,12 +754,13 @@ class Queue(rhnHandler):
                 break
             # older clients have issues with real epochs, se they are
             # kind of irrelevant
-            packages.append([ret["name"], ret["version"], ret["release"], ''])
-        xml = xmlrpclib.dumps((packages,), methodname='client.update_packages')
+            packages.append([ret["name"], ret["version"], ret["release"], ""])
+        xml = xmlrpclib.dumps((packages,), methodname="client.update_packages")
         return xml
 
+    # pylint: disable-next=invalid-name
     def __packageUpdate(self, actionId):
-        """ Old client package retrieval. """
+        """Old client package retrieval."""
         log_debug(3, self.server_id, actionId)
         # The SQL query is a union of:
         # - packages with a specific EVR
@@ -750,15 +834,15 @@ class Queue(rhnHandler):
         for p in ret:
             # old clients have issues dealing with real epochs, so we
             # kind of fake it for now in here
-            entry = [p['name'], p['version'], p['release'], '']
+            entry = [p["name"], p["version"], p["release"], ""]
             packages.append(entry)
-        xml = xmlrpclib.dumps((packages,), methodname='client.update_packages')
+        xml = xmlrpclib.dumps((packages,), methodname="client.update_packages")
         return xml
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 if __name__ == "__main__":
     print("You can not run this module by itself")
     q = Queue()
     sys.exit(-1)
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------

@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:48:40 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Use HTTP for localhost and HTTPS for other FQDN for spacewalk-common-channels
+
+-------------------------------------------------------------------
+Tue Jan 16 08:12:07 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Fix conflicting NAME for SLES and SLES4SAP channels of uyuni tools
+    in spacewalk-common-channels
+
+-------------------------------------------------------------------
+Fri Dec 15 17:24:43 CET 2023 - rosuna@suse.com
+
+- version 4.4.11-1
+  * Amazon Linux 2023 channels
+  * Update the openSUSE Tumbleweed and MicroOS repositories
+  * Add SUSE Linux Enterprise Micro 5.5 to spacewalk-commons-channels
+  * Add Raspberry Pi OS 12 repositories
+
+-------------------------------------------------------------------
 Mon Nov 06 13:37:46 CET 2023 - rosuna@suse.com
 
 - version 4.4.10-1

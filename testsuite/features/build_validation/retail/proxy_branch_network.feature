@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @proxy
@@ -190,6 +190,8 @@ Feature: Prepare the branch server for PXE booting
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
+    # Network takes time to stabilize
+    And I wait for "5" seconds
 
   Scenario: Let the server know about the new IP and FQDN of the proxy
     When I follow "Details" in the content area

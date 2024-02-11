@@ -38,4 +38,7 @@ const NotFound = ({ currentUrl }) => (
 );
 
 export const renderer = (id: string, { currentUrl }) =>
-  SpaRenderer.renderNavigationReact(<NotFound currentUrl={currentUrl} />, document.getElementById(id));
+  SpaRenderer.renderNavigationReact(
+    <NotFound currentUrl={decodeURIComponent(currentUrl)} />,
+    document.getElementById(id)
+  );

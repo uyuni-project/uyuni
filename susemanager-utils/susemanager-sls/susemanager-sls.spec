@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sls
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -30,7 +30,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.4.9
+Version:        5.0.2
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
@@ -127,10 +127,25 @@ py.test%{?rhel:-3}
 # been replaced by "mgrcompat.module_run" calls.
 ! grep --include "*.sls" -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
 
+%pre
+# change /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+# from symlink into a real file
+if [ -L /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
+  rm -f /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  if [ -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ]; then
+    cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
+       /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  elif [ -f /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT ]; then
+    cp /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT \
+       /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  fi
+fi
+
 %post
-# HACK! Create broken link when it will be replaces with the real file
-ln -sf %{wwwpubroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
-   /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
+# this will be filled with content when a certificate gets deployed
+if [ ! -e /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
+  touch /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+fi
 
 %posttrans
 # Run JMX exporter as Java Agent (bsc#1184617)

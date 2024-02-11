@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2014--2015 Red Hat, Inc.
 #
@@ -14,9 +15,10 @@
 
 from spacewalk.common.rhnLog import log_debug
 
-__rhnexport__ = ['update_client_cert']
+__rhnexport__ = ["update_client_cert"]
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def update_client_cert(server_id, action_id, data={}):
     log_debug(3, action_id)
     return

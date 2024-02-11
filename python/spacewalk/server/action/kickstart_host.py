@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -16,19 +17,24 @@
 import sys
 from spacewalk.common.rhnLog import log_debug
 from uyuni.common.usix import raise_with_tb
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.server.rhnLib import InvalidAction, ShadowAction
-from spacewalk.server.action.utils import SubscribedChannel,\
-    ChannelPackage, \
-    PackageInstallScheduler, \
-    NoActionInfo, \
-    PackageNotFound
+from spacewalk.server.action.utils import (
+    SubscribedChannel,
+    ChannelPackage,
+    PackageInstallScheduler,
+    NoActionInfo,
+    PackageNotFound,
+)
 from spacewalk.server.rhnChannel import subscribe_to_tools_channel
 
-__rhnexport__ = ['schedule_virt_host_pkg_install', 'add_tools_channel']
+__rhnexport__ = ["schedule_virt_host_pkg_install", "add_tools_channel"]
 
 
+# pylint: disable-next=unused-argument
 def add_tools_channel(server_id, action_id, dry_run=0):
-    if (not dry_run):
+    if not dry_run:
         subscribe_to_tools_channel(server_id)
     else:
         log_debug(4, "dry run requested")
@@ -37,8 +43,8 @@ def add_tools_channel(server_id, action_id, dry_run=0):
 
 def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
     """
-        ShadowAction that schedules a package installation action for the
-        rhn-virtualization-host and osad packages.
+    ShadowAction that schedules a package installation action for the
+    rhn-virtualization-host and osad packages.
     """
     log_debug(3)
 
@@ -62,9 +68,13 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
         raise InvalidAction("Could not find the mgr-osad package.")
 
     try:
-        rhn_v12n_install_scheduler = PackageInstallScheduler(server_id, action_id, rhn_v12n_package)
-        messaging_package = PackageInstallScheduler(server_id, action_id, messaging_package)
-        if (not dry_run):
+        rhn_v12n_install_scheduler = PackageInstallScheduler(
+            server_id, action_id, rhn_v12n_package
+        )
+        messaging_package = PackageInstallScheduler(
+            server_id, action_id, messaging_package
+        )
+        if not dry_run:
             rhn_v12n_install_scheduler.schedule_package_install()
             messaging_package.schedule_package_install()
         else:
@@ -75,9 +85,12 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
     except PackageNotFound:
         pnf = sys.exc_info()[1]
         raise_with_tb(InvalidAction(str(pnf)), sys.exc_info()[2])
+    # pylint: disable-next=broad-exception-caught
     except Exception:
         e = sys.exc_info()[1]
         raise_with_tb(InvalidAction(str(e)), sys.exc_info()[2])
 
-    log_debug(3, "Completed scheduling install of mgr-virtualization-host and mgr-osad!")
+    log_debug(
+        3, "Completed scheduling install of mgr-virtualization-host and mgr-osad!"
+    )
     raise ShadowAction("Scheduled installation of Virtualization Host packages.")

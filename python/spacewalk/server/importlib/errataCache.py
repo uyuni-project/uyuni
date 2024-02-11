@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -23,12 +24,14 @@ def schedule_errata_cache_update(channels):
     # If no channels were supplied, exit here to shortcut parsing the query
     if not channels:
         return
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         insert into rhnTaskQueue
        (id, org_id, task_name, task_data, priority, earliest)
        select nextval('rhn_task_queue_id_seq'), coalesce(c.org_id, 1), 'update_errata_cache_by_channel', c.id, 0, current_timestamp
        from rhnChannel c
        where c.label = :label
-    """)
+    """
+    )
     h.executemany(label=channels)
     rhnSQL.commit()

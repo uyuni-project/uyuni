@@ -80,6 +80,13 @@
 
         <div class="checkbox">
             <label>
+                <input type="checkbox" name="no-strict" id="no-strict"/>
+                <bean:message key="channel.manage.sync.nostrict.jsp"/>
+            </label>
+        </div>
+
+        <div class="checkbox">
+            <label>
                 <input type="checkbox" name="no-errata" id="no-errata"/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
@@ -107,12 +114,10 @@
         </div>
 
         <br/>
-
         <c:if test='${scheduleEditable}'>
             <jsp:include page="/WEB-INF/pages/common/fragments/repeat-task-picker.jspf">
                 <jsp:param name="widget" value="date"/>
             </jsp:include>
-
             <div class="text-right">
                 <button type="submit" value="<bean:message key='schedule.button'/>" class="btn btn-default"
                         name="dispatch" ${inactive ? 'disabled' : ''}>
@@ -133,7 +138,6 @@
               </div>
             </div>
         </c:if>
-
 
     </rl:listset>
 

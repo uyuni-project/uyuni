@@ -16,8 +16,8 @@
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
 import com.redhat.rhn.common.util.FileLocks;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
@@ -315,7 +315,7 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer deleteCredentials(User loggedInUser, String username)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        for (Credentials c : CredentialsFactory.listSCCCredentials()) {
+        for (SCCCredentials c : CredentialsFactory.listSCCCredentials()) {
             if (c.getUsername().equals(username)) {
                 new MirrorCredentialsManager().deleteMirrorCredentials(c.getId(), null);
                 break;

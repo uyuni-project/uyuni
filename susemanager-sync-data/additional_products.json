@@ -1,5 +1,62 @@
 [
     {
+        "id" : -43,
+        "name" : "Debian",
+        "identifier" : "Debian-Client",
+        "former_identifier" : "",
+        "version" : "12",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Debian 12",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -555,
+                "url" : "http://deb.debian.org/debian/dists/bookworm/main/binary-amd64/",
+                "name" : "debian-12-pool",
+                "distro_target" : "amd64",
+                "description" : "Debian 12 (bookworm) pool for amd64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -556,
+                "url" : "http://deb.debian.org/debian/dists/bookworm-updates/main/binary-amd64/",
+                "name" : "debian-12-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Debian 12 (bookworm) AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -557,
+                "url" : "http://security.debian.org/debian-security/dists/bookworm-security/updates/main/binary-amd64/",
+                "name" : "debian-12-main-security",
+                "distro_target" : "amd64",
+                "description" : "Debian 12 (bookworm) AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -42,
         "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
@@ -8,11 +65,11 @@
         "release_type" : null,
         "arch" : "x86_64",
         "friendly_name" : "Open Enterprise Server 23.4",
-        "product_class" : "OES2-BETA",
+        "product_class" : "OES2",
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -30,7 +87,7 @@
                 "url" : "https://nu.novell.com/repo/$RCE/OES23.4-Pool/sle-15-x86_64/",
                 "name" : "OES23.4-Pool",
                 "distro_target" : "sle-15-x86_64",
-                "description" : "Open Enterprise Server 2023.4",
+                "description" : "Open Enterprise Server 23.4",
                 "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
@@ -40,7 +97,7 @@
                 "url" : "https://nu.novell.com/repo/$RCE/OES23.4-Updates/sle-15-x86_64/",
                 "name" : "OES23.4-Updates",
                 "distro_target" : "sle-15-x86_64",
-                "description" : "Open Enterprise Server 2023.4",
+                "description" : "Open Enterprise Server 23.4",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
@@ -301,7 +358,7 @@
                 "name" : "OES23.4-SLE-Module-Desktop-Applications15-SP4-Pool",
                 "distro_target" : "sle-15-x86_64",
                 "description" : "SLE-Module-Desktop-Applications15-SP4-Pool for sle-15-x86_64",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             },
@@ -311,7 +368,7 @@
                 "name" : "OES23.4-SLE-Module-Desktop-Applications15-SP4-Updates",
                 "distro_target" : "sle-15-x86_64",
                 "description" : "SLE-Module-Desktop-Applications15-SP4-Updates for sle-15-x86_64",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
@@ -3139,8 +3196,8 @@
         ],
         "repositories" : [
             {
-                "id" : -214,
-                "url" : "http://deb.debian.org/debian/dists/stretch/main/binary-amd64/",
+                "id" : -383,
+                "url" : "https://archive.debian.org/debian/dists/stretch/main/binary-amd64/",
                 "name" : "debian-9-pool",
                 "distro_target" : "amd64",
                 "description" : "Debian 9 (stretch) pool for amd64",
@@ -3149,18 +3206,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -215,
-                "url" : "http://deb.debian.org/debian/dists/stretch-updates/main/binary-amd64/",
-                "name" : "debian-9-main-updates",
-                "distro_target" : "amd64",
-                "description" : "Debian 9 (stretch) AMD64 Main Updates",
-                "enabled" : true,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -216,
-                "url" : "http://security-cdn.debian.org/debian-security/dists/stretch/updates/main/binary-amd64/",
+                "id" : -384,
+                "url" : "https://archive.debian.org/debian-security/dists/stretch/updates/main/binary-amd64/",
                 "name" : "debian-9-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 9 (stretch) AMD64 Main Security",
@@ -4603,13 +4650,13 @@
     },
     {
         "id" : -8,
-        "name" : "RHEL or SLES ES or CentOS Base",
+        "name" : "RHEL and Liberty Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "8",
         "release_type" : null,
         "arch" : "x86_64",
-        "friendly_name" : "RHEL or SLES ES or CentOS 8 Base",
+        "friendly_name" : "RHEL and Liberty 8 Base",
         "product_class" : "SLE-M-T",
         "cpe" : null,
         "free" : false,

@@ -17,12 +17,19 @@
   &:after {
     content: none !important;
   }
+
+  a {
+    display: flex !important;
+    align-items: center;
+    padding: 4px 12px !important;
+    gap: 8px;
+  }
 }
 
 .navbar-primary {
   display: flex !important;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 
   &:before,
   &:after {
@@ -30,7 +37,71 @@
   }
 }
 
-#ssm-box {
-  margin-top: 2px;
-  margin-bottom: -2px;
+.navbar-utility,
+.navbar-primary {
+  button,
+  a {
+    i {
+      margin: 0 !important;
+    }
+  }
+}
+
+.ssm-box {
+  padding: 0;
+
+  #ssm-box-default {
+    padding: 0;
+    color: inherit !important;
+  }
+
+  #ssm-counter {
+    display: flex;
+    gap: 0px;
+  }
+
+  #header_selcount {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .badge {
+      border-radius: 8px;
+      background: @gray-light;
+      display: block;
+      padding: 2px 6px;
+      margin-bottom: -2px;
+      text-align: center;
+      color: darken(@gray-dark, 20%);
+    }
+  }
+
+  a {
+    border-radius: 0;
+    padding: 4px 12px;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      color: @green;
+    }
+  }
+
+  #clear-ssm {
+    padding: 4px 12px;
+    color: @gray-light;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 2px;
+    border-width: 0;
+
+    i {
+      margin: 0;
+    }
+  }
+
+  #clear-ssm:hover {
+    background-color: @red;
+    color: @gray-light;
+  }
 }

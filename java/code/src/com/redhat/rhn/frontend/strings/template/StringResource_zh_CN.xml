@@ -435,7 +435,8 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="needs-adaptation">截至 {1}，您帐户 {0} 的 @@PRODUCT_NAME@@ 状态报告。
+        <target state="final">{7}
+这是截至 {1} 您帐户 {0} 的 @@PRODUCT_NAME@@ 状态报告。
 
 如果发生下列情况之一，便会发送此电子邮件：
 
@@ -577,12 +578,14 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+      <trans-unit approved="yes" id="dailysummary.email.notpaygcompliant" xml:space="preserve">
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">警告：此 @@PRODUCT_NAME@@ PAYG 实例不合规，部分功能将会停用。
+请先联系您的管理员改变这一状况，然后再继续使用该产品。
+          </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

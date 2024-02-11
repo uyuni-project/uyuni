@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -31,6 +32,7 @@
 # Modify the values in data to reflect your set up.
 import TestServer
 import server.redhat_xmlrpc
+
 try:
     #  python 2
     import SimpleXMLRPCServer
@@ -40,8 +42,8 @@ except ImportError:
 from spacewalk.common import rhnConfig
 
 
+# pylint: disable-next=missing-class-docstring
 class TestRedhat(TestServer.TestServer):
-
     def __init__(self):
         TestServer.TestServer.__init__(self)
         rhnConfig.initCFG("server.redhat-xmlrpc")
@@ -59,49 +61,54 @@ class TestRedhat(TestServer.TestServer):
     def getPassword(self):
         return "password"
 
+
 if __name__ == "__main__":
     server = TestRedhat()
     rpc = server.getXmlRpc()
     rpc_downloads = rpc.downloads.Downloads()
 
     category = "RHN Test Download"
-    channel = 'rhn-test-download'
+    channel = "rhn-test-download"
     data = [
         {
-            'path': "testing/tarballs/t1/examplesT1.tar.gz",
-            'name': "examples1",
-            'channel': channel,
-            'file_size': '162671',
-            'md5sum': 'a39e4a3e8a5615b01b40598fd23d2abf',
-            'category': category,
-            'ordering': '1',
+            "path": "testing/tarballs/t1/examplesT1.tar.gz",
+            "name": "examples1",
+            "channel": channel,
+            "file_size": "162671",
+            "md5sum": "a39e4a3e8a5615b01b40598fd23d2abf",
+            "category": category,
+            "ordering": "1",
         },
         {
-            'path': "testing/tarballs/t1/examplesT2.tar.gz",
-            'name': "examples2",
-            'channel': channel,
-            'file_size': '162671',
-            'md5sum': 'a39e4a3e8a5615b01b40598fd23d2abf',
-            'category': category,
-            'ordering': '2',
+            "path": "testing/tarballs/t1/examplesT2.tar.gz",
+            "name": "examples2",
+            "channel": channel,
+            "file_size": "162671",
+            "md5sum": "a39e4a3e8a5615b01b40598fd23d2abf",
+            "category": category,
+            "ordering": "2",
         },
     ]
     info = {
-        'entries': data,
-        'username': 'test-file-upload',
-        'password': 'password',
-        'channel': channel,
-        'commit': 1,
-        'force': 1
+        "entries": data,
+        "username": "test-file-upload",
+        "password": "password",
+        "channel": channel,
+        "commit": 1,
+        "force": 1,
     }
 
     # DELETE THE DOWNLOADS
     # print rpc_downloads.delete_category_files(info)
 
     # ADD THE DOWNLOADS
-#    print rpc_downloads.add_downloadable_files(info)
-    server = SimpleXMLRPCServer.SimpleXMLRPCServer(addr=('', 8000))
+    #    print rpc_downloads.add_downloadable_files(info)
+    server = SimpleXMLRPCServer.SimpleXMLRPCServer(addr=("", 8000))
     for func in rpc_downloads.functions:
         print(func)
-        server.register_function(getattr(rpc_downloads, func), name="downloads.%s" % (func))
+        server.register_function(
+            getattr(rpc_downloads, func),
+            # pylint: disable-next=consider-using-f-string
+            name="downloads.%s" % (func),
+        )
     server.serve_forever()

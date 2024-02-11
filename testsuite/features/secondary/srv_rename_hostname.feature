@@ -57,9 +57,11 @@ Feature: Reconfigure the server's hostname
 
 @virthost_kvm
   # WORKAROUND: Use the webUI instead of Salt like with the other minions above
-  # The Salt call always failed for unknown reasons
+  # The Salt call always failed for unknown reasons.
+  # WORKAROUND: Use the webUI steps instead of the API call,
+  # as it fails due to an SSL error, even if we established a new connection.
   Scenario: Apply high state on the virthost to populate new server CA
-    Given I am on the Systems overview page of this "kvm_server"
+    Given I navigate to the Systems overview page of this "kvm_server"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text

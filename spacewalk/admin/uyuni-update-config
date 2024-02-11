@@ -4,32 +4,69 @@
 import sys
 import os.path
 import uuid
+import subprocess
 from spacewalk.common.rhnConfig import initCFG, CFG
 
 initCFG('server.susemanager')
-try:
-    if CFG.scc_backup_srv_usr:
-        # nothing to do
-        sys.exit(0)
-except AttributeError:
-    # key does not exist, we need to create it
-    pass
 
-scc_cred_file = "/etc/zypp/credentials.d/SCCcredentials"
+def initSccLogin():
 
-uuidNum = None
-if os.path.exists(scc_cred_file):
-    with open(scc_cred_file, "r") as f:
-        for line in f:
-            if line.startswith("username"):
-                _k, v = line.split("=", 2)
-                uuidNum = v.strip()
-                break
-if not uuidNum:
-    # scc expects either a SCC machine login (must exists in SCC)
-    # or a UUID4 following rfc4122 to identify a anonyme proxy
-    uuidNum = str(uuid.uuid4())
-with open("/etc/rhn/rhn.conf", "a") as r:
-    r.write("\n")
-    r.write("server.susemanager.scc_backup_srv_usr = {}\n".format(uuidNum))
+    try:
+        if CFG.scc_backup_srv_usr:
+            # nothing to do
+            return
+    except AttributeError:
+        # key does not exist, we need to create it
+        pass
+
+    scc_cred_file = "/etc/zypp/credentials.d/SCCcredentials"
+
+    uuidNum = None
+    if os.path.exists(scc_cred_file):
+        with open(scc_cred_file, "r") as f:
+            for line in f:
+                if line.startswith("username"):
+                    _k, v = line.split("=", 2)
+                    uuidNum = v.strip()
+                    break
+    if not uuidNum:
+        # scc expects either a SCC machine login (must exists in SCC)
+        # or a UUID4 following rfc4122 to identify a anonyme proxy
+        uuidNum = str(uuid.uuid4())
+    with open("/etc/rhn/rhn.conf", "a") as r:
+        r.write("\n")
+        r.write("server.susemanager.scc_backup_srv_usr = {}\n".format(uuidNum))
+
+def importSumaGPGKeyring():
+
+    result = subprocess.run(
+            ["/usr/sbin/import-suma-build-keys"],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            encoding='utf-8')
+
+    if result.returncode:
+        sys.stdout.write("Failed to import SUSE Manager Build Keys\n")
+    if result.stdout:
+        sys.stdout.write("{}\n".format(result.stdout))
+    sys.stdout.flush()
+
+def copyCA():
+    result = subprocess.run(
+            ["cp",
+             "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
+             "/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT"],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            encoding='utf-8')
+
+    if result.returncode:
+        sys.stdout.write("Failed to copy the CA certificate to the Salt Filesystem\n")
+    if result.stdout:
+        sys.stdout.write("{}\n".format(result.stdout))
+    sys.stdout.flush()
+
+
+initSccLogin()
+importSumaGPGKeyring()
+copyCA()
+
 sys.exit(0)

@@ -20,53 +20,68 @@
 """
 
 import gettext
-t = gettext.translation('spacewalk-backend-server', fallback=True)
+
+t = gettext.translation("spacewalk-backend-server", fallback=True)
 _ = t.gettext
 
-failed_step = _("""
+failed_step = _(
+    """
 ERROR: executing step %s. Error is:
 %s
-""")
+"""
+)
 
-file_dir_error = _("""
+file_dir_error = _(
+    """
 ERROR: there was a problem accessing the channel data from your temporary
        repository. Did you migrate all of the data from the channel ISOs
        do this directory? If so, please recheck the channels ISOs, ensure
        that you have them all, and then iteratively remount and repopulate
        the temporary repository (%s).
-""")
+"""
+)
 
-syncer_error = _("""
+syncer_error = _(
+    """
 ERROR: there was a problem synchronizing the information.
        Error message: %s
-""")
+"""
+)
 
-sw_iss_not_available = _("""
+sw_iss_not_available = _(
+    """
 ERROR: There was a problem communicating with the ISS Master.
        Depending on the specific error details, please review your configuration,
        basic network connectivity, and/or name resolution, and try again.
        Error message: %s
-""")
+"""
+)
 
-parent_channel_error = _("""
+parent_channel_error = _(
+    """
 ERROR: a child-channel cannot be synced without its parent being synced as
        well. A parent needs to be either (a) previously synced or (b) synced
        in tandem with the desired child-channel. Missing parents for this
        transaction:
        %s
-""")
+"""
+)
 
-invalid_channel_family_error = _("""
+invalid_channel_family_error = _(
+    """
 ERROR: you are not entitled to sync a channel in this set of channels.
 Please contact your SUSE Manager contact
-%s""")
+%s"""
+)
 
 not_enough_diskspace = _("  ERROR: not enough free space (%s KB) on device.")
 
 package_fetch_successful = _("    %3d/%s Fetch successful: %s (%s bytes)")
 package_fetch_extinct = _("    Extinct package:  %s")
 package_fetch_total_size = _("   Total size: %s")
-package_fetch_remain_size_time = _("      Downloaded %s of %s. Estimated remaining time: %s")
+package_fetch_remain_size_time = _(
+    "      Downloaded %s of %s. Estimated remaining time: %s"
+)
 package_fetch_failed = _("    Fetch unsuccessful: %s")
 package_fetch_summary = _("   RPM fetch summary: %s")
 package_fetch_summary_success = _("       success: %d")

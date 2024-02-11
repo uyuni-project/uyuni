@@ -24,7 +24,8 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CloudCredentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -392,12 +393,14 @@ public class PaygAdminManager {
     }
 
     private boolean delete(PaygSshData paygSshData) {
-        Credentials creds = paygSshData.getCredentials();
+        CloudCredentials creds = paygSshData.getCredentials();
         LOG.debug("deleting payg data {} -> {}", paygSshData.getId(), paygSshData.getHost());
-        if (creds != null && creds.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+        if (creds instanceof CloudRMTCredentials) {
             List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.lookupRepositoryAuthByCredential(creds);
-            LOG.debug("deleting repo auth ids {}",
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("deleting repo auth ids {}",
                     existingRepos.stream().map(r -> r.getId().toString()).collect(Collectors.joining(", ")));
+            }
             existingRepos.forEach(SCCCachingFactory::deleteRepositoryAuth);
         }
         else { // RHUI - some clouds have no credentials
@@ -406,14 +409,18 @@ public class PaygAdminManager {
                     .flatMap(cs -> cs.getSslSets().stream())
                     .flatMap(scs -> Stream.of(scs.getCaCert(), scs.getClientCert(), scs.getClientKey()))
                     .collect(Collectors.toSet());
-            LOG.debug("deleting repositories {}",
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("deleting repositories {}",
                     csUrls.stream().map(ContentSource::getLabel).collect(Collectors.joining(", ")));
+            }
             csUrls.forEach(ChannelFactory::remove);
-            LOG.debug("deleting crypto keys {}",
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("deleting crypto keys {}",
                     sslCryptoKeys.stream().map(CryptoKey::getDescription).collect(Collectors.joining(", ")));
+            }
             sslCryptoKeys.forEach(KickstartFactory::removeCryptoKey);
         }
-        Optional.ofNullable(paygSshData.getCredentials()).ifPresent(CredentialsFactory::removeCredentials);
+        Optional.ofNullable(creds).ifPresent(CredentialsFactory::removeCredentials);
         Optional.ofNullable(paygSshData.getRmtHosts()).ifPresent(CloudRmtHostFactory::deleteCloudRmtHost);
         PaygSshDataFactory.deletePaygSshData(paygSshData);
         return true;

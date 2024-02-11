@@ -8,7 +8,7 @@ type Props = {
   /** Object storing the data of the form.
    *  Each field name in the form needs to map to a property of this
    *  object. The value is the one displayed in the form */
-  model: any;
+  model?: any;
 
   /** Object storing form field errors */
   errors?: object;
@@ -29,7 +29,7 @@ type Props = {
   formDirection?: string;
 
   /** Children elements of the form. Usually includes fields and a submit button */
-  children: React.ReactNode;
+  children?: React.ReactNode;
 
   /** Function called when the model has been changed.
    * Takes a new model as single parameter.
@@ -58,6 +58,7 @@ export const FormContext = React.createContext<Partial<FormContextType>>({});
 
 export class Form extends React.Component<Props> {
   static defaultProps = {
+    model: {},
     onSubmit: undefined,
     formRef: undefined,
     divClass: "",

@@ -1,7 +1,7 @@
 #
 # spec file for package spacecmd
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 # Copyright (c) 2011 Aron Parsons <aronparsons@gmail.com>
 #
@@ -40,7 +40,7 @@
 %endif
 
 Name:           spacecmd
-Version:        4.4.9
+Version:        5.0.3
 Release:        1
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 License:        GPL-3.0-or-later
@@ -74,8 +74,8 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-rpm-macros
 %endif
 Requires:       python3
-Requires:       python3-rpm
 Requires:       python3-dateutil
+Requires:       python3-rpm
 %else
 BuildRequires:  %{python2prefix}
 %if "%{_vendor}" == "debbuild"
@@ -83,8 +83,8 @@ BuildRequires:  %{python2prefix}-dev
 %else
 BuildRequires:  %{python2prefix}-devel
 %endif
-Requires:       %{python2prefix}-simplejson
 Requires:       %{python2prefix}-dateutil
+Requires:       %{python2prefix}-simplejson
 %if "%{_vendor}" == "debbuild"
 Requires:       python-rpm
 %else

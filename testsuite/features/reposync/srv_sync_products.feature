@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -15,16 +15,18 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Use the products and architecture filters
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "RHEL or SLES ES" as the filtered product description
-    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
-    When I select "x86_64" in the dropdown list of the architecture filter
-    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
+    And I enter "RHEL and Liberty" as the filtered product description
+    Then I should see a "RHEL and Liberty 8 Base" text
+    When I select "x86_64" from "product-arch-filter"
+    Then I should see a "RHEL and Liberty 8 Base" text
 
 @scc_credentials
 @susemanager
   Scenario: View the channels list in the products page
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
@@ -38,6 +40,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
@@ -69,6 +72,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
@@ -105,6 +109,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add SUSE Manager Proxy 4.3
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Proxy 4.3" as the filtered product description
     And I select "SUSE Manager Proxy 4.3 x86_64" as a product
@@ -119,6 +124,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add SUSE Manager Retail Branch Server
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Retail Branch Server 4.3" as the filtered product description
     And I select "SUSE Manager Retail Branch Server 4.3 x86_64" as a product
@@ -139,7 +145,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
-    And I should not see a warning sign
+    And I should not see a warning nor an error sign
 
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC

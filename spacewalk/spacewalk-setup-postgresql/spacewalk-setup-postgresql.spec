@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup-postgresql
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-setup-postgresql
-Version:        4.4.2
+Version:        5.0.1
 Release:        1
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 License:        GPL-2.0-only
@@ -31,10 +31,10 @@ BuildArch:      noarch
 # Actual version set by prjconf, default is 14
 %{!?postgresql_version_min: %global postgresql_version_min 14}
 %{!?postgresql_version_max: %global postgresql_version_max 15}
-Requires:       postgresql-server-implementation >= %{postgresql_version_min}
 Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-server-implementation > %{postgresql_version_max}
+Requires:       postgresql-server-implementation >= %{postgresql_version_min}
 Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
+Conflicts:      postgresql-server-implementation > %{postgresql_version_max}
 
 %else
 Requires:       postgresql-contrib >= 12

@@ -22,7 +22,10 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndSer
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -166,6 +169,9 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView cmd(Request request, Response response) {
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_REMOTE_COMMANDS_FROM_UI)) {
+            throw new PermissionException("Remote command is disabled");
+        }
         request.session().removeAttribute(MinionsAPI.SALT_CMD_RUN_TARGETS);
         return new ModelAndView(new HashMap<>(), "templates/minion/cmd.jade");
     }

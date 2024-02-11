@@ -1,1 +1,0 @@
-- Fixes createSystemRecord XML-RPC API call so the Cobbler UID is persisted (bsc#1207532)

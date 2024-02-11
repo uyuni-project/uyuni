@@ -1,1 +1,0 @@
-- Enforce minimum build version for apache-commons-io to ensure successful build of FileUtils.java.

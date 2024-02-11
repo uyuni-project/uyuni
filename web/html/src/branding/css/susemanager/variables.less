@@ -3,128 +3,136 @@
  *
  * We can't use `eos-ds` as a dependency directly since they use Sass and we use Less
  */
-@eos-bc-green-100:      #e4f6ee;
-@eos-bc-green-500:      #30ba78;
-@eos-bc-green-900:      #0e7e3c;
-@eos-bc-pine-500:       #0c322c;
-@eos-bc-cerulean-100:   #b3e8f6;
-@eos-bc-cerulean-500:   #00b2e2;
-@eos-bc-cerulean-900:   #008acf;
-@eos-bc-red-100:        #f5c2c7;
-@eos-bc-red-500:        #dc3545;
-@eos-bc-red-900:        #c5161f;
-@eos-bc-yellow-100:     #ffecb5;
-@eos-bc-yellow-500:     #ffc107;
-@eos-bc-yellow-900:     #ff9e02;
-@eos-bc-blue-500:       #2453ff;
-@eos-bc-persimmon-500:  #fe7c3f;
-@eos-bc-gray-50:        #f2f2f2;
-@eos-bc-gray-100:       #e0dfdf;
-@eos-bc-gray-300:       #b6b4b4;
-@eos-bc-gray-500:       #969494;
-@eos-bc-gray-700:       #757575;
-@eos-bc-gray-900:       #686565;
-@eos-bc-gray-1000:      #141823;
-@eos-bc-white:          #fff;
-@eos-bc-dt-gray-100:    #2b2e38;
-@eos-bc-dt-gray-200:    #1f222b;
+@eos-bc-green-100: #e4f6ee;
+@eos-bc-green-500: #30ba78;
+@eos-bc-green-900: #0e7e3c;
+@eos-bc-pine-500: #0c322c;
+@eos-bc-cerulean-100: #b3e8f6;
+@eos-bc-cerulean-500: #00b2e2;
+@eos-bc-cerulean-900: #008acf;
+@eos-bc-red-100: #f5c2c7;
+@eos-bc-red-500: #dc3545;
+@eos-bc-red-900: #c5161f;
+@eos-bc-yellow-100: #ffecb5;
+@eos-bc-yellow-500: #ffc107;
+@eos-bc-yellow-900: #ff9e02;
+@eos-bc-blue-500: #2453ff;
+@eos-bc-persimmon-500: #fe7c3f;
+@eos-bc-gray-50: #f2f2f2;
+@eos-bc-gray-100: #e0dfdf;
+@eos-bc-gray-300: #b6b4b4;
+@eos-bc-gray-500: #969494;
+@eos-bc-gray-700: #757575;
+@eos-bc-gray-900: #686565;
+@eos-bc-gray-1000: #141823;
+@eos-bc-white: #fff;
+@eos-bc-dt-gray-100: #2b2e38;
+@eos-bc-dt-gray-200: #1f222b;
 @eos-bc-waterhole-blue: #2453ff;
 
+@uyuni-blue-900: #0d2c40;
+@uyuni-blue-100: #314c5d;
+@uyuni-gray-100: #dcddde;
+@uyuni-gray-300: #cccccc;
+
 /* Tags colours for Bootstrap */
-@green-dark:             @eos-bc-green-900;
-@green:                  @eos-bc-green-500;
-@green-light:            @eos-bc-green-100;
-@gray-dark:              @eos-bc-gray-1000;
-@gray-dark-1:            @eos-bc-gray-700;
-@gray:                   @eos-bc-gray-500;
-@gray-light:             @eos-bc-gray-100;
-@gray-light-1:           @eos-bc-gray-50;
-@orange:                 @eos-bc-yellow-900;
-@orange-light:           #fd9a2b;
-@yellow-dark:            #c5b345;
-@yellow:                 @eos-bc-yellow-500;
-@red:                    @eos-bc-red-500;
-@white:                  @eos-bc-white;
-@blue:                   @eos-bc-cerulean-900;
-@blue-light:             @eos-bc-cerulean-500;
-@violet:                 #841781;
-@black:                  @eos-bc-gray-1000;
+@green-dark: @eos-bc-green-900;
+@green: @eos-bc-green-500;
+@green-light: @eos-bc-green-100;
+// This variable set controls the body color
+@body-color: #000;
+@gray-dark: @body-color;
+@gray-dark-1: @eos-bc-gray-700;
+@gray: @eos-bc-gray-500;
+@gray-light: @eos-bc-gray-100;
+@gray-light-1: @eos-bc-gray-50;
+@orange: @eos-bc-yellow-900;
+@orange-light: #fd9a2b;
+@yellow-dark: #c5b345;
+@yellow: @eos-bc-yellow-500;
+@red: @eos-bc-red-500;
+@white: @eos-bc-white;
+@blue: @eos-bc-cerulean-900;
+@blue-light: @eos-bc-cerulean-500;
+@violet: #841781;
+@black: @eos-bc-gray-1000;
 
 /* Basic text */
-@font-size-base:          14px;
-@font-size-large:         18.2px;
-@font-size-small:         12px;
+@font-size-base: 14px;
+@font-size-large: 18.2px;
+@font-size-small: 12px;
 
-@font-size-h1:            24.5px;
-@font-size-h2:            21px;
-@font-size-h3:            18.2px;
-@font-size-h4:            16.1px;
-@font-size-h5:            14px;
-@font-size-h6:            14px;
+@font-size-h1: 24.5px;
+@font-size-h2: 21px;
+@font-size-h3: 18.2px;
+@font-size-h4: 16.1px;
+@font-size-h5: 14px;
+@font-size-h6: 14px;
 
 @line-height-base: 1.5;
 @headings-line-height: 1.5;
 
 /* Header */
-@header:          @eos-bc-pine-500;
-@header-text:     @eos-bc-white;
+@header: @eos-bc-pine-500;
+@header-text: @eos-bc-white;
+// This is a one-off color not used elsewhere?
+@header-border: #26915e;
+
+// TODO: Clean this section up and merge all aside variables into one block
+/* Left menu */
+@aside-background: @eos-bc-gray-50;
+@aside-menu-text: @eos-bc-gray-1000;
+@aside-search-border: @eos-bc-gray-900;
+@aside-search-text-color: @eos-bc-gray-1000;
+@aside-footer-text: @eos-bc-gray-900;
+@aside-footer-border: @eos-bc-gray-100;
+@aside-footer-logo-background: url("/img/susemanager/suse-logo-footer.svg") right center / 32px 16px no-repeat;
 
 /* Colours for the menu in the first column on the left */
-@aside:                        @eos-bc-gray-50;
-@aside-border:                 lighten(@aside, 8%);
-@aside-menu-text:              @eos-bc-gray-1000;
-@aside-menu-active:            @green;
+@aside-border: lighten(@aside-background, 8%);
+@aside-menu-active: @green;
 
 /* aside menu search box */
-@aside-menu-search-border:         @eos-bc-gray-100;
-@aside-menu-search-clear:          fade(@eos-bc-gray-300, 60%);
-@aside-menu-search-clear-hover:    @eos-bc-gray-700;
-@aside-menu-search-text-color: @eos-bc-gray-1000;
+@aside-menu-search-clear: fade(@eos-bc-gray-300, 60%);
+@aside-menu-search-clear-hover: @eos-bc-gray-700;
 
 /* Icons legend */
-@icon-legend:       @header;
-@icon-legend-text:  @header-text;
-
-/* Footer colours */
-@footer:            @aside;
-@footer-text:       @eos-bc-gray-900;
-@footer-links:      @eos-bc-gray-900;
-@footer-hover:      @eos-bc-gray-900;
-@footer-border:     @eos-bc-gray-100;
+@icon-legend: @header;
+@icon-legend-text: @header-text;
 
 /* Input */
-@input-placeholder:  @gray;
+@input-placeholder: @gray;
 :root {
   --input-selected: @eos-bc-green-500;
 }
+@input-border-color: @eos-bc-gray-700;
 
 /* Modals */
-@modal-color:           @white;
-@modal-backdrop-color:  fade(@eos-bc-gray-1000, 50%);
+@modal-color: @white;
+@modal-backdrop-color: fade(@eos-bc-gray-1000, 50%);
 
 /* Other elements */
-@border-radius-base:  0;
-@border-radius-large: 0;
-@border-radius-small: 0;
-@notification-badge:     @orange-light;
-@box-shadow:             @gray-light;
-@inactive:               @eos-bc-gray-100;
-@link-color:             @eos-bc-blue-500;
+@body-background: @white;
+@notification-badge: @orange-light;
+@box-shadow: @gray-light;
+@inactive: @eos-bc-gray-100;
 // TODO: This should be selection green instead?
-@table-row-selected:     lighten(@eos-bc-yellow-100, 5%);
+@table-row-selected: lighten(@eos-bc-yellow-100, 5%);
 @badge-bg: @eos-bc-gray-1000;
- 
+
 /**
 * FONTS
 */
 
 /* Lato variable: font variable to be applied in different text elements */
-@lato: 'Lato', arial, helvetica, sans-serif;
-@lato-bold: 'Lato Bold', arial, helvetica, sans-serif;
+@lato: "Lato", arial, helvetica, sans-serif;
+@lato-bold: "Lato Bold", arial, helvetica, sans-serif;
 
 /* WorkSans variable: font variable to be applied in different text elements */
-@worksans: 'WorkSans', arial, helvetica, sans-serif;
-@worksans-bold: 'WorkSans Bold', arial, helvetica, sans-serif;
+@worksans: "WorkSans", arial, helvetica, sans-serif;
+@worksans-bold: "WorkSans Bold", arial, helvetica, sans-serif;
+
+@helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 /* Manually map Bootstrap's fonts since our setup is a bit unorthodox */
 @icon-font-path: "../../bootstrap/fonts/";

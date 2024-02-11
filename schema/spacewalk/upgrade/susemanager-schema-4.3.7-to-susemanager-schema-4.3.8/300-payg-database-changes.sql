@@ -68,9 +68,17 @@ CREATE SEQUENCE IF NOT EXISTS susecloudrmthost_id_seq;
 ---------------------------
 -- Add new credentials type
 ---------------------------
-insert into suseCredentialsType (id, label, name)
-  select sequence_nextval('suse_credtype_id_seq'), 'cloudrmt', 'Cloud RMT network'
-  where not exists(select 1 from suseCredentialsType where label = 'cloudrmt');
+DO $$
+  BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'susecredentialstype') THEN
+      insert into suseCredentialsType (id, label, name)
+        select sequence_nextval('suse_credtype_id_seq'), 'cloudrmt', 'Cloud RMT network'
+        where not exists(select 1 from suseCredentialsType where label = 'cloudrmt');
+    ELSE
+      RAISE NOTICE 'suseCredentialsType does not exists';
+    END IF;
+  END;
+$$;
 
 --------------------------------
 -- Update suse credentials Table

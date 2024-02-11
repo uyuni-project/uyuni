@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:25:02 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Fri Dec 15 17:09:43 CET 2023 - rosuna@suse.com
+
+- version 4.4.5-1
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Adapt Enterprise Linux for /usr/share/susemanager structure
+
+-------------------------------------------------------------------
 Wed Nov 01 20:39:27 CET 2023 - marina.latini@suse.com
 
 - version 4.4.4-1

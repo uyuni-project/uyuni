@@ -16,11 +16,29 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.frontend.dto.BaseTupleDto;
+
+import javax.persistence.Tuple;
 
 /**
  * Simple JSON representation of a Salt Minion.
  */
-public class SimpleMinionJson {
+public class SimpleMinionJson extends BaseTupleDto {
+
+    /**
+     * Default constructor
+     */
+    public SimpleMinionJson() { }
+
+    /**
+     * Constructor used to populate using DTO projection from the data of query that list simple minions
+     *
+     * @param tuple JPA tuple
+     */
+    public SimpleMinionJson(Tuple tuple) {
+        setId(getTupleValue(tuple, "id", Number.class).map(Number::longValue).orElse(null));
+        setName(getTupleValue(tuple, "name", String.class).orElse("-"));
+    }
 
     private Long id;
     private String name;
@@ -52,6 +70,24 @@ public class SimpleMinionJson {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Sets the minion id
+     *
+     * @param idIn the minion id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
+
+    /**
+     * Set the minion name
+     *
+     * @param nameIn the minion name
+     */
+    public void setName(String nameIn) {
+        name = nameIn;
     }
 
     /**

@@ -54,6 +54,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -136,6 +137,10 @@ public abstract class AbstractMinionBootstrapper {
 
         try {
             if (prc.waitFor() != 0) {
+                String error = new String(prc.getErrorStream().readAllBytes(), StandardCharsets.UTF_8);
+                if (error.contains("No such file or directory")) {
+                    return true;
+                }
                 throw new CommandExecutionException("Error running command: " + cmd, prc);
             }
         }

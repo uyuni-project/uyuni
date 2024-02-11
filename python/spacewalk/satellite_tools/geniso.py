@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,51 +20,65 @@ import sys
 import tempfile
 import time
 from stat import ST_SIZE
+
+# pylint: disable-next=deprecated-module
 from optparse import Option, OptionParser
 from spacewalk.common.rhnConfig import PRODUCT_NAME
 
-MOUNT_POINT = '/tmp'
+MOUNT_POINT = "/tmp"
 IMAGE_SIZE = "630M"
 DVD_IMAGE_SIZE = "4380M"
 
 
 def main(arglist):
+    # pylint: disable-next=invalid-name
     optionsTable = [
-        Option('-m', '--mountpoint',    action='store',
-               help="mount point"),
-        Option('-s', '--size',          action='store',
-               help="image size (eg. 630M)"),
-        Option('-p', '--file-prefix',   action='store',
-               help='Filename prefix'),
-        Option('-o', '--output',        action='store',
-               help='output directory'),
-        Option('-v', '--version',       action='store',
-               help='version string'),
-        Option('-r', '--release',       action='store',
-               help='release string'),
-        Option('--copy-iso-dir',        action='store',
-               help='directory to copy the isos to after they have been generated.'),
-        Option('-t', '--type',          action='store',
-               help='the type of iso being generated.\
-                  this flag is optional, but can be set to spanning, non-spanning, or base.'),
+        Option("-m", "--mountpoint", action="store", help="mount point"),
+        Option("-s", "--size", action="store", help="image size (eg. 630M)"),
+        Option("-p", "--file-prefix", action="store", help="Filename prefix"),
+        Option("-o", "--output", action="store", help="output directory"),
+        Option("-v", "--version", action="store", help="version string"),
+        Option("-r", "--release", action="store", help="release string"),
+        Option(
+            "--copy-iso-dir",
+            action="store",
+            help="directory to copy the isos to after they have been generated.",
+        ),
+        Option(
+            "-t",
+            "--type",
+            action="store",
+            help="the type of iso being generated.\
+                  this flag is optional, but can be set to spanning, non-spanning, or base.",
+        ),
     ]
     parser = OptionParser(option_list=optionsTable)
+    # pylint: disable-next=invalid-name,unused-variable
     options, _args = parser.parse_args(arglist)
 
     # Check to see if mkisofs is installed
-    if not os.path.exists('/usr/bin/mkisofs'):
-        print(("ERROR:: mkisofs is not Installed. Cannot Proceed iso build. " \
-              + "Please install mkisofs and rerun this command."))
+    if not os.path.exists("/usr/bin/mkisofs"):
+        print(
+            (
+                "ERROR:: mkisofs is not Installed. Cannot Proceed iso build. "
+                + "Please install mkisofs and rerun this command."
+            )
+        )
         return
 
+    # pylint: disable-next=invalid-name
     mountPoint = options.mountpoint or MOUNT_POINT
     if options.type == "dvd":
         print("Building  DVD Iso ...")
+        # pylint: disable-next=invalid-name
         sizeStr = options.size or DVD_IMAGE_SIZE
     else:
+        # pylint: disable-next=invalid-name
         sizeStr = options.size or IMAGE_SIZE
+    # pylint: disable-next=invalid-name
     imageSize = sizeStrToInt(sizeStr)
     if imageSize == 0:
+        # pylint: disable-next=consider-using-f-string
         print(("Unknown size %s" % sizeStr))
         return
 
@@ -71,7 +86,7 @@ def main(arglist):
         options.version = time.strftime("%Y%m%d", time.gmtime(time.time()))
 
     if options.release is None:
-        options.release = '0'
+        options.release = "0"
 
     if options.output is None:
         options.output = "/tmp/satellite-isos"
@@ -85,6 +100,7 @@ def main(arglist):
         os.unlink(os.path.join(options.output, f))
 
     # Normalize the directory name
+    # pylint: disable-next=invalid-name
     mountPoint = os.path.normpath(mountPoint)
 
     # Generate the listings for each CD
@@ -94,6 +110,7 @@ def main(arglist):
         cd = []
         sz = 0
         while files:
+            # pylint: disable-next=invalid-name
             filePath, fileSize = files[0]
             if sz + fileSize > imageSize:
                 # Overflow
@@ -109,32 +126,44 @@ def main(arglist):
     cdcount = len(cds)
 
     # Create an empty temp file
-    fd, empty_file_path = tempfile.mkstemp(dir='/tmp', prefix='empty.file-')
+    fd, empty_file_path = tempfile.mkstemp(dir="/tmp", prefix="empty.file-")
     os.close(fd)
 
     # command-line template
-    mkisofsTemplate = "mkisofs -r -J -D -file-mode 0444 -new-dir-mode 0555 -dir-mode 0555 " \
+    # pylint: disable-next=invalid-name
+    mkisofsTemplate = (
+        "mkisofs -r -J -D -file-mode 0444 -new-dir-mode 0555 -dir-mode 0555 "
         + "-graft-points %s -o %s /DISK_%s_OF_%s=%s"
+    )
     for i in range(cdcount):
+        # pylint: disable-next=consider-using-f-string
         print(("---------- %s/%s" % (i + 1, cdcount)))
 
         # if options.type is None:
-        filename = "%s/%s-%s.%s-%02d.iso" % (options.output, file_prefix,
-                                             options.version, options.release, i + 1)
+        # pylint: disable-next=consider-using-f-string
+        filename = "%s/%s-%s.%s-%02d.iso" % (
+            options.output,
+            file_prefix,
+            options.version,
+            options.release,
+            i + 1,
+        )
         # else:
         #    filename = "%s/%s-%s-%s.%s-%02d.iso" % (options.output, file_prefix,
         #        options.type, options.version, options.release, i+1)
 
         # Create a temp file to store the path specs
-        pathfiles_fd, pathfiles = tempfile.mkstemp(dir='/tmp', prefix='geniso-')
+        pathfiles_fd, pathfiles = tempfile.mkstemp(dir="/tmp", prefix="geniso-")
 
         # Command-line options; the keys are supposed to start with a dash
         opts = {
-            'preparer': PRODUCT_NAME,
-            'publisher': PRODUCT_NAME,
-            'volid': "SM_%s/%s" % (i + 1, cdcount),
-            'path-list': pathfiles,
+            "preparer": PRODUCT_NAME,
+            "publisher": PRODUCT_NAME,
+            # pylint: disable-next=consider-using-f-string
+            "volid": "SM_%s/%s" % (i + 1, cdcount),
+            "path-list": pathfiles,
         }
+        # pylint: disable-next=consider-using-f-string
         opts = ['-%s "%s"' % x for x in list(opts.items())]
 
         # Generate the file list that will go into the CD
@@ -146,11 +175,17 @@ def main(arglist):
             relpath = os.path.relpath(f, mountPoint)
             # Append to the graft list: relative=real
             relpath = os.path.dirname(relpath)
+            # pylint: disable-next=consider-using-f-string
             grafts.append("%s/=%s" % (relpath, f))
 
         # Generate the command line
-        cmd = mkisofsTemplate % (' '.join(opts), filename, i + 1, cdcount,
-                                 empty_file_path)
+        cmd = mkisofsTemplate % (
+            " ".join(opts),
+            filename,
+            i + 1,
+            cdcount,
+            empty_file_path,
+        )
 
         # Write the path specs in pathfiles
         for graft in grafts:
@@ -158,17 +193,22 @@ def main(arglist):
             os.write(pathfiles_fd, "\n")
         os.close(pathfiles_fd)
 
+        # pylint: disable-next=consider-using-f-string
         print(("Creating %s" % filename))
         # And run it
         fd = os.popen(cmd, "r")
         print((fd.read()))
 
         if options.copy_iso_dir is not None:
-            copy_iso_path = os.path.join(options.copy_iso_dir, os.path.basename(os.path.dirname(filename)))
+            copy_iso_path = os.path.join(
+                options.copy_iso_dir, os.path.basename(os.path.dirname(filename))
+            )
             if not os.path.exists(copy_iso_path):
                 os.mkdir(copy_iso_path)
+            # pylint: disable-next=consider-using-f-string
             fd = os.popen("mv %s %s" % (filename, copy_iso_path), "r")
             print((fd.read()))
+            # pylint: disable-next=consider-using-f-string
             fd = os.popen("rm %s" % filename)
             print((fd.read()))
 
@@ -179,6 +219,7 @@ def main(arglist):
     os.unlink(empty_file_path)
 
 
+# pylint: disable-next=invalid-name
 def sizeStrToInt(s):
     # Converts s to an int
     if s is None or s == "":
@@ -187,7 +228,7 @@ def sizeStrToInt(s):
 
     s = str(s)
     # Strip the dashes in front - we don't want the number to be negative
-    while s and s[0] == '-':
+    while s and s[0] == "-":
         s = s[1:]
 
     try:
@@ -196,9 +237,9 @@ def sizeStrToInt(s):
         # not an int
         pass
 
-    if s[-1] in ('k', 'K', 'm', 'M'):
+    if s[-1] in ("k", "K", "m", "M"):
         # Specified a multiplier
-        if s[-1].lower() == 'k':
+        if s[-1].lower() == "k":
             mult = 1024
         else:
             mult = 1024 * 1024
@@ -211,11 +252,14 @@ def sizeStrToInt(s):
     # Don't know how to interpret it
     return 0
 
+
 # The visitfunc argument for os.path.walk
 
 
+# pylint: disable-next=invalid-name
 def __visitfunc(arg, dirname, names):
     for f in names:
+        # pylint: disable-next=consider-using-f-string
         filename = os.path.normpath("%s/%s" % (dirname, f))
         if os.path.isdir(filename):
             # walk will process it later
@@ -225,15 +269,17 @@ def __visitfunc(arg, dirname, names):
         # Append the filename and size to the list
         arg.append((filename, sz))
 
+
 # Given a directory name, returns the paths of all the files from that
 # directory, together with the file size
 
 
+# pylint: disable-next=invalid-name
 def findFiles(start):
     a = []
     os.path.walk(start, __visitfunc, a)
     return a
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(sys.argv)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 14:40+0200\n"
+"POT-Creation-Date: 2024-02-02 15:23+0100\n"
 "PO-Revision-Date: 2011-03-04 16:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Urdu <trans-urdu@lists.fedoraproject.org>\n"
@@ -17,48 +17,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../server/apacheAuth.py:66
+#: ../server/apacheAuth.py:72
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr ""
 
-#: ../server/apacheAuth.py:84
+#: ../server/apacheAuth.py:103
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr ""
 
-#: ../server/apacheAuth.py:119
+#: ../server/apacheAuth.py:142
 msgid "declined proxy authentication"
 msgstr ""
 
-#: ../server/apacheRequest.py:59
+#: ../server/apacheRequest.py:67
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr ""
 
-#: ../server/apacheRequest.py:120
+#. Send the message as a fault.
+#: ../server/apacheRequest.py:134
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
 
-#: ../server/apacheRequest.py:149
+#: ../server/apacheRequest.py:164
 #, python-format
 msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
 
-#: ../server/apacheRequest.py:606
+#. pylint: disable-next=consider-using-f-string
+#: ../server/apacheRequest.py:679
 #, python-format
 msgid "Invalid URI %s"
 msgstr ""
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:217
-#: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1272
+#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
+#: ../server/handlers/xmlrpc/registration.py:247
+#: ../server/handlers/xmlrpc/registration.py:1276
+#: ../server/handlers/xmlrpc/registration.py:1395
 #, python-format
 msgid ""
 "\n"
@@ -66,121 +68,124 @@ msgid ""
 "                   Please contact your Org administrator for more help."
 msgstr ""
 
-#: ../server/handlers/applet/applet.py:78
+#: ../server/handlers/applet/applet.py:84
 #, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr ""
 
-#: ../server/handlers/sat/auth.py:45
+#: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
 msgstr ""
 
-#: ../server/handlers/sat/auth.py:50
+#: ../server/handlers/sat/auth.py:53
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr ""
 
-#: ../server/handlers/xmlrpc/errata.py:64
+#: ../server/handlers/xmlrpc/errata.py:71
 #, python-format
 msgid "Expected a package name, not: %s"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/errata.py:115
+#: ../server/handlers/xmlrpc/errata.py:127
 #, python-format
 msgid "Expected a package, not: %s"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/proxy.py:65
+#: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
 
-#: ../server/handlers/xmlrpc/proxy.py:85
+#: ../server/handlers/xmlrpc/proxy.py:92
 msgid "Invalid session key"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/proxy.py:93
+#: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/queue.py:434
+#: ../server/handlers/xmlrpc/queue.py:490
 #, python-format
 msgid "Invalid action value type %s (%s)"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/queue.py:462
+#: ../server/handlers/xmlrpc/queue.py:525
 #, python-format
 msgid "Action %s does not belong to server %s"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:196
+#: ../server/handlers/xmlrpc/registration.py:225
 msgid "Required data missing"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:200
+#: ../server/handlers/xmlrpc/registration.py:230
 msgid "Required members missing"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:209
+#: ../server/handlers/xmlrpc/registration.py:238
 msgid "Attempt to register a system to an invalid username"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:841
+#: ../server/handlers/xmlrpc/registration.py:897
 msgid "Invalid system release version requested"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:1065
+#: ../server/handlers/xmlrpc/registration.py:1153
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:1117
+#: ../server/handlers/xmlrpc/registration.py:1219
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:1127
+#: ../server/handlers/xmlrpc/registration.py:1230
 msgid "Privacy Statement"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:1148
+#: ../server/handlers/xmlrpc/registration.py:1252
 msgid "Expected a dictionary as a product argument"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:1339
+#: ../server/handlers/xmlrpc/registration.py:1470
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/scap.py:104
+#: ../server/handlers/xmlrpc/scap.py:125
 msgid "Invalid system_id/action_id pair."
 msgstr ""
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#. pylint: disable-next=invalid-name
+#: ../server/handlers/xmlrpc/up2date.py:264
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:98
+#: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:103
+#: ../server/importlib/userAuth.py:115
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:121
+#. ok, you're a regular user who doesn't manage any channels.
+#. take a hike.
+#: ../server/importlib/userAuth.py:132
 msgid "You are not allowed to perform administrative tasks"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:144
+#: ../server/importlib/userAuth.py:159
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr ""
 
-#: ../server/importlib/userAuth.py:204
+#: ../server/importlib/userAuth.py:229
 #, python-format
 msgid ""
 "\n"
@@ -188,14 +193,14 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 
-#: ../server/rhnChannel.py:1999
+#: ../server/rhnChannel.py:2216
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 
-#: ../server/rhnChannel.py:2014
+#: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr ""
@@ -204,11 +209,11 @@ msgstr ""
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
+#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
 msgstr ""
 
-#: ../server/rhnChannel.py:2279
+#: ../server/rhnChannel.py:2551
 #, python-format
 msgid ""
 "\n"
@@ -218,7 +223,7 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2286
+#: ../server/rhnChannel.py:2560
 #, python-format
 msgid ""
 "\n"
@@ -228,7 +233,7 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2294
+#: ../server/rhnChannel.py:2570
 #, python-format
 msgid ""
 "\n"
@@ -239,216 +244,217 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 
+#. Invalid server certificate.
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
 msgstr ""
 
-#: ../server/rhnHandler.py:75
+#: ../server/rhnHandler.py:76
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr ""
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#: ../server/rhnPackage.py:52 ../server/rhnPackage.py:98
+#: ../server/rhnPackage.py:118 ../server/rhnPackage.py:179
 #, python-format
 msgid "Invalid RPM package %s requested"
 msgstr ""
 
-#: ../server/rhnPackage.py:112
+#: ../server/rhnPackage.py:124
 msgid "Package not found"
 msgstr ""
 
-#: ../server/rhnServer/server_class.py:97
+#: ../server/rhnServer/server_class.py:105
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:78
+#: ../server/rhnServer/server_token.py:86
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:80
+#: ../server/rhnServer/server_token.py:89
 msgid "Conflicting base channels"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:190
+#: ../server/rhnServer/server_token.py:223
 #, python-format
 msgid "Failed to add server to group %s"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:503
+#: ../server/rhnServer/server_token.py:574
 #, python-format
 msgid "Maximum usage count of %s reached"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:744
+#: ../server/rhnServer/server_token.py:869
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:811
+#: ../server/rhnServer/server_token.py:946
 #, python-format
 msgid "Could not find token '%s'"
 msgstr ""
 
 #. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
+#: ../server/rhnServer/server_token.py:979
 msgid "Tokens from mismatching orgs"
 msgstr ""
 
 #. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
+#: ../server/rhnServer/server_token.py:989
 msgid "Kickstart session mismatch"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:877
+#: ../server/rhnServer/server_token.py:1013
 msgid "Stacking of re-registration tokens is not supported"
 msgstr ""
 
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+#: ../server/rhnUser.py:326 ../server/rhnUser.py:329
 msgid "Invalid username/password combination"
 msgstr ""
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:467
+#: ../server/rhnUser.py:526
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr ""
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
+#: ../server/rhnUser.py:532
 msgid "E-mail address not specified"
 msgstr ""
 
-#: ../server/rhnUser.py:509
+#: ../server/rhnUser.py:574
 #, python-format
 msgid "username should be at least %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:512
+#: ../server/rhnUser.py:578
 #, python-format
 msgid "username should be less than %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:523
+#: ../server/rhnUser.py:592
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr ""
 
-#: ../server/rhnUser.py:542
+#: ../server/rhnUser.py:613
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr ""
 
-#: ../server/rhnUser.py:623
+#: ../server/rhnUser.py:701
 #, python-format
 msgid "password must be at least %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:626
+#: ../server/rhnUser.py:705
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:644
+#: ../server/rhnUser.py:721
 #, python-format
 msgid "password contains character `%s'"
 msgstr ""
 
-#: ../server/rhnUser.py:651
+#: ../server/rhnUser.py:730
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr ""
 
-#: ../server/rhnUser.py:662
+#: ../server/rhnUser.py:741
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
-#: ../common/rhnException.py:53
+#: ../common/rhnException.py:55
 msgid "This does not appear to be a valid username."
 msgstr ""
 
-#: ../common/rhnException.py:54
+#: ../common/rhnException.py:56
 msgid "Invalid username and password combination."
 msgstr ""
 
-#: ../common/rhnException.py:55
+#: ../common/rhnException.py:57
 msgid "This login is already taken, or the password is incorrect."
 msgstr ""
 
-#: ../common/rhnException.py:56
+#: ../common/rhnException.py:58
 msgid "Permission denied."
 msgstr ""
 
-#: ../common/rhnException.py:57
+#: ../common/rhnException.py:59
 msgid "Object not found."
 msgstr ""
 
-#: ../common/rhnException.py:58
+#: ../common/rhnException.py:60
 msgid "Invalid System Digital ID."
 msgstr ""
 
-#: ../common/rhnException.py:59
+#: ../common/rhnException.py:61
 msgid "Invalid System Credentials."
 msgstr ""
 
-#: ../common/rhnException.py:60
+#: ../common/rhnException.py:62
 msgid "Could not retrieve user data from database."
 msgstr ""
 
-#: ../common/rhnException.py:61
+#: ../common/rhnException.py:63
 msgid "Valid username required."
 msgstr ""
 
-#: ../common/rhnException.py:62
+#: ../common/rhnException.py:64
 msgid "Valid password required."
 msgstr ""
 
-#: ../common/rhnException.py:63
+#: ../common/rhnException.py:65
 msgid "Minimum username length violation."
 msgstr ""
 
-#: ../common/rhnException.py:64
+#: ../common/rhnException.py:66
 msgid "Minimum password length violation."
 msgstr ""
 
-#: ../common/rhnException.py:65
+#: ../common/rhnException.py:67
 msgid "The username contains invalid characters."
 msgstr ""
 
-#: ../common/rhnException.py:66
+#: ../common/rhnException.py:68
 msgid "File not found."
 msgstr ""
 
-#: ../common/rhnException.py:67
+#: ../common/rhnException.py:69
 msgid "Architecture and OS version combination is not supported."
 msgstr ""
 
-#: ../common/rhnException.py:68
+#: ../common/rhnException.py:70
 msgid "Could not retrieve system data from database."
 msgstr ""
 
-#: ../common/rhnException.py:69
+#: ../common/rhnException.py:71
 msgid "Invalid arguments passed to function."
 msgstr ""
 
-#: ../common/rhnException.py:70
+#: ../common/rhnException.py:72
 msgid "Unable to retrieve requested entry."
 msgstr ""
 
-#: ../common/rhnException.py:71
+#: ../common/rhnException.py:73
 msgid "Could not update database entry."
 msgstr ""
 
-#: ../common/rhnException.py:72
+#: ../common/rhnException.py:74
 msgid "Unsupported server architecture."
 msgstr ""
 
-#: ../common/rhnException.py:73
+#: ../common/rhnException.py:76
 #, python-format
 msgid ""
 "\n"
@@ -462,15 +468,15 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:81
+#: ../common/rhnException.py:85
 msgid "Record not available in the database."
 msgstr ""
 
-#: ../common/rhnException.py:82
+#: ../common/rhnException.py:86
 msgid "Invalid value for entry."
 msgstr ""
 
-#: ../common/rhnException.py:83
+#: ../common/rhnException.py:88
 #, python-format
 msgid ""
 "\n"
@@ -482,47 +488,47 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:89
+#: ../common/rhnException.py:95
 msgid "Channel error"
 msgstr ""
 
-#: ../common/rhnException.py:90
+#: ../common/rhnException.py:96
 msgid "Client session token is invalid."
 msgstr ""
 
-#: ../common/rhnException.py:91
+#: ../common/rhnException.py:97
 msgid "Client session token has expired."
 msgstr ""
 
-#: ../common/rhnException.py:92
+#: ../common/rhnException.py:98
 msgid "You are not authorized to retrieve the requested object."
 msgstr ""
 
-#: ../common/rhnException.py:93
+#: ../common/rhnException.py:99
 msgid "Invalid action"
 msgstr ""
 
-#: ../common/rhnException.py:94
+#: ../common/rhnException.py:101
 msgid "You are not allowed to perform administrative tasks on this system."
 msgstr ""
 
-#: ../common/rhnException.py:96
+#: ../common/rhnException.py:104
 msgid "The system is already subscribed to the specified channel."
 msgstr ""
 
-#: ../common/rhnException.py:97
+#: ../common/rhnException.py:105
 msgid "The system is not currently subscribed to the specified channel."
 msgstr ""
 
-#: ../common/rhnException.py:98
+#: ../common/rhnException.py:106
 msgid "The specified channel does not exist."
 msgstr ""
 
-#: ../common/rhnException.py:99
+#: ../common/rhnException.py:107
 msgid "Invalid channel version."
 msgstr ""
 
-#: ../common/rhnException.py:100
+#: ../common/rhnException.py:109
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -536,7 +542,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:108
+#: ../common/rhnException.py:119
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -550,7 +556,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:116
+#: ../common/rhnException.py:129
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -559,11 +565,11 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:121
+#: ../common/rhnException.py:136
 msgid "Invalid RPM header"
 msgstr ""
 
-#: ../common/rhnException.py:122
+#: ../common/rhnException.py:138
 msgid ""
 "\n"
 "    This system is already registered as a Salt Minion. If you want to "
@@ -574,15 +580,15 @@ msgid ""
 msgstr ""
 
 #. For the uploading tools
-#: ../common/rhnException.py:127
+#: ../common/rhnException.py:144
 msgid "Invalid information uploaded to the server"
 msgstr ""
 
-#: ../common/rhnException.py:128
+#: ../common/rhnException.py:145
 msgid "Error uploading network interfaces configuration."
 msgstr ""
 
-#: ../common/rhnException.py:129
+#: ../common/rhnException.py:147
 msgid ""
 "\n"
 "     Package Upload Failed due to uniqueness constraint violation.\n"
@@ -591,7 +597,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:134
+#: ../common/rhnException.py:154
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -599,8 +605,7 @@ msgid ""
 "     "
 msgstr ""
 
-#. 60-70: token errors
-#: ../common/rhnException.py:140
+#: ../common/rhnException.py:161
 msgid ""
 "\n"
 "     The activation token specified could not be found on the server.\n"
@@ -608,27 +613,26 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:144
+#: ../common/rhnException.py:166
 msgid "Too many systems registered using this registration token"
 msgstr ""
 
-#: ../common/rhnException.py:145
+#: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
 msgstr ""
 
-#: ../common/rhnException.py:146
+#: ../common/rhnException.py:168
 msgid "Conflicting activation tokens"
 msgstr ""
 
-#. 70-80: channel subscription errors
-#: ../common/rhnException.py:149
+#: ../common/rhnException.py:171
 msgid ""
 "\n"
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:152
+#: ../common/rhnException.py:176
 msgid ""
 "\n"
 "     You do not have subscription permission to the designated channel.\n"
@@ -637,85 +641,84 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:157
+#: ../common/rhnException.py:182
 msgid "You can not unsubscribe from base channel."
 msgstr ""
 
-#: ../common/rhnException.py:158
+#: ../common/rhnException.py:183
 msgid "SUSE Manager or Proxy channel can not be subscribed."
 msgstr ""
 
 #. 80-90: server group errors
-#: ../common/rhnException.py:161
+#: ../common/rhnException.py:185
 msgid "There was an error while trying to join the system to its groups"
 msgstr ""
 
 #. 90-100: entitlement errors
-#: ../common/rhnException.py:164
+#: ../common/rhnException.py:187
 msgid "Unable to entitle system"
 msgstr ""
 
 #. 100-109: e-mail and uuid related faults
-#: ../common/rhnException.py:167
+#: ../common/rhnException.py:189
 msgid "Maximum e-mail length violation."
 msgstr ""
 
-#: ../common/rhnException.py:168
+#: ../common/rhnException.py:190
 msgid "This system has been previously registered."
 msgstr ""
 
-#: ../common/rhnException.py:169
+#: ../common/rhnException.py:191
 msgid "Invalid username"
 msgstr ""
 
 #. 140-159 applet errors
-#: ../common/rhnException.py:172
+#: ../common/rhnException.py:193
 msgid "Unable to look up server"
 msgstr ""
 
 #. 160-179: OSAD errors
-#: ../common/rhnException.py:175
+#: ../common/rhnException.py:195
 msgid "Required argument is missing"
 msgstr ""
 
 #. 600-699: RHEL5+ EN errors
-#: ../common/rhnException.py:178
+#: ../common/rhnException.py:197
 msgid "No entitlement information tied to hardware"
 msgstr ""
 
-#: ../common/rhnException.py:179
+#: ../common/rhnException.py:198
 msgid "Installation number is not entitling"
 msgstr ""
 
 #. 700-799: Additional user input verification errors.
-#: ../common/rhnException.py:182
+#: ../common/rhnException.py:200
 msgid "Maximum username length violation"
 msgstr ""
 
-#: ../common/rhnException.py:183
+#: ../common/rhnException.py:201
 msgid "Maximum password length violation"
 msgstr ""
 
-#: ../common/rhnException.py:184
+#: ../common/rhnException.py:202
 msgid "This user has read only API access. Action denied."
 msgstr ""
 
-#: ../common/rhnException.py:186
+#: ../common/rhnException.py:203
 msgid "System Name cannot be less than 1 character"
 msgstr ""
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
-#: ../common/rhnException.py:190
+#: ../common/rhnException.py:206
 msgid "SUSE Manager Proxy error."
 msgstr ""
 
-#: ../common/rhnException.py:191
+#: ../common/rhnException.py:207
 msgid "SUSE Manager Proxy unable to login."
 msgstr ""
 
-#. issued by a SUSE Manager Server/Satellite to the proxy
-#: ../common/rhnException.py:193
+#: ../common/rhnException.py:210
 msgid ""
 "\n"
 "     SUSE Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
@@ -723,16 +726,15 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:197
+#: ../common/rhnException.py:215
 msgid "SUSE Manager Proxy session token is invalid."
 msgstr ""
 
-#: ../common/rhnException.py:198
+#: ../common/rhnException.py:216
 msgid "SUSE Manager Proxy session token has expired."
 msgstr ""
 
-#. 2000-2999: Red Hat Satellite specific errors:
-#: ../common/rhnException.py:202
+#: ../common/rhnException.py:220
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -740,7 +742,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:206
+#: ../common/rhnException.py:226
 msgid ""
 "\n"
 "     This SUSE Manager server is not allowed to use Inter Server Sync on "
@@ -748,7 +750,7 @@ msgid ""
 "     "
 msgstr ""
 
-#: ../common/rhnException.py:209
+#: ../common/rhnException.py:231
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
@@ -756,141 +758,141 @@ msgid ""
 msgstr ""
 
 #. 3000-3999: XML dumper errors:
-#: ../common/rhnException.py:214
+#: ../common/rhnException.py:236
 msgid "Invalid datatype passed"
 msgstr ""
 
-#: ../common/rhnException.py:215
+#: ../common/rhnException.py:237
 msgid "Unable to retrieve channel"
 msgstr ""
 
-#: ../common/rhnException.py:216
+#: ../common/rhnException.py:238
 msgid "Unable to retrieve package"
 msgstr ""
 
-#: ../common/rhnException.py:217
+#: ../common/rhnException.py:239
 msgid "Unable to retrieve erratum"
 msgstr ""
 
-#: ../common/rhnException.py:218
+#: ../common/rhnException.py:240
 msgid "File is missing"
 msgstr ""
 
-#: ../common/rhnException.py:219
+#: ../common/rhnException.py:241
 msgid "Function retrieval error"
 msgstr ""
 
-#: ../common/rhnException.py:220
+#: ../common/rhnException.py:242
 msgid "Function execution error"
 msgstr ""
 
-#: ../common/rhnException.py:221
+#: ../common/rhnException.py:243
 msgid "Missing version string"
 msgstr ""
 
-#: ../common/rhnException.py:222
+#: ../common/rhnException.py:244
 msgid "Invalid version string"
 msgstr ""
 
-#: ../common/rhnException.py:223
+#: ../common/rhnException.py:245
 msgid "Mismatching versions"
 msgstr ""
 
-#: ../common/rhnException.py:224
+#: ../common/rhnException.py:246
 msgid "Invalid channel version"
 msgstr ""
 
-#: ../common/rhnException.py:225
+#: ../common/rhnException.py:247
 msgid "No comps file for channel"
 msgstr ""
 
-#: ../common/rhnException.py:226
+#: ../common/rhnException.py:248
 msgid "Unable to retrieve comps file"
 msgstr ""
 
 #. 4000 - 4999: config management errors
-#: ../common/rhnException.py:229
+#: ../common/rhnException.py:250
 msgid "Configuration action missing"
 msgstr ""
 
-#: ../common/rhnException.py:230
+#: ../common/rhnException.py:251
 msgid "File too large"
 msgstr ""
 
-#: ../common/rhnException.py:231
+#: ../common/rhnException.py:252
 msgid "File contains binary data"
 msgstr ""
 
-#: ../common/rhnException.py:232
+#: ../common/rhnException.py:253
 msgid "Configuration channel is not empty"
 msgstr ""
 
-#: ../common/rhnException.py:233
+#: ../common/rhnException.py:254
 msgid "Permission error"
 msgstr ""
 
-#: ../common/rhnException.py:234
+#: ../common/rhnException.py:255
 msgid "Content missing for configuration file"
 msgstr ""
 
-#: ../common/rhnException.py:235
+#: ../common/rhnException.py:256
 msgid "Template delimiters not specified"
 msgstr ""
 
-#: ../common/rhnException.py:236
+#: ../common/rhnException.py:257
 msgid "Configuration channel does not exist"
 msgstr ""
 
-#: ../common/rhnException.py:237
+#: ../common/rhnException.py:258
 msgid "Configuration channel already exists"
 msgstr ""
 
-#: ../common/rhnException.py:238
+#: ../common/rhnException.py:259
 msgid "File missing from configuration channel"
 msgstr ""
 
-#: ../common/rhnException.py:239
+#: ../common/rhnException.py:260
 msgid "Different revision of this file is uploaded"
 msgstr ""
 
-#: ../common/rhnException.py:240
+#: ../common/rhnException.py:261
 msgid "File already uploaded to configuration channel"
 msgstr ""
 
-#: ../common/rhnException.py:241
+#: ../common/rhnException.py:262
 msgid "File size exceeds remaining quota space"
 msgstr ""
 
-#: ../common/rhnException.py:242
+#: ../common/rhnException.py:263
 msgid "Full path of file must be specified"
 msgstr ""
 
-#: ../common/rhnException.py:243
+#: ../common/rhnException.py:264
 msgid "Invalid revision number"
 msgstr ""
 
-#: ../common/rhnException.py:244
+#: ../common/rhnException.py:265
 msgid "Cannot compare files of different file type"
 msgstr ""
 
 #. 5100 - 5199: scap results reporting error
-#: ../common/rhnException.py:247
+#: ../common/rhnException.py:267
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr ""
 
-#: ../common/rhnException.py:248
+#: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
 
-#: ../common/rhnException.py:249
+#: ../common/rhnException.py:269
 msgid "Error composing file path for detailed SCAP results"
 msgstr ""
 
-#: ../common/rhnException.py:250
+#: ../common/rhnException.py:270
 msgid "Invalid content encoding"
 msgstr ""
 
-#: ../common/rhnException.py:297
+#: ../common/rhnException.py:319
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -900,45 +902,45 @@ msgid ""
 "     details on how to reproduce this problem.\n"
 msgstr ""
 
-#: ../common/rhnException.py:349
+#: ../common/rhnException.py:371
 #, python-format
 msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:351
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:354
+#: ../common/rhnException.py:376
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:356
+#: ../common/rhnException.py:378
 #, python-format
 msgid "Explanation: %s"
 msgstr ""
 
-#: ../common/rhnTB.py:201
+#: ../common/rhnTB.py:220
 #, python-format
 msgid "ERROR: %s %s: %s"
 msgstr ""
 
-#: ../common/rhnTB.py:203
+#: ../common/rhnTB.py:221
 #, python-format
 msgid "TRACEBACK: %s"
 msgstr ""
 
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
+#: ../satellite_tools/disk_dumper/iss.py:1636
+#: ../satellite_tools/disk_dumper/iss.py:1642
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:26
+#: ../satellite_tools/messages.py:28
 #, python-format
 msgid ""
 "\n"
@@ -946,7 +948,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:31
+#: ../satellite_tools/messages.py:35
 #, python-format
 msgid ""
 "\n"
@@ -957,7 +959,7 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:39
+#: ../satellite_tools/messages.py:45
 #, python-format
 msgid ""
 "\n"
@@ -965,7 +967,7 @@ msgid ""
 "       Error message: %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:44
+#: ../satellite_tools/messages.py:52
 #, python-format
 msgid ""
 "\n"
@@ -976,7 +978,7 @@ msgid ""
 "       Error message: %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:51
+#: ../satellite_tools/messages.py:61
 #, python-format
 msgid ""
 "\n"
@@ -988,7 +990,7 @@ msgid ""
 "       %s\n"
 msgstr ""
 
-#: ../satellite_tools/messages.py:59
+#: ../satellite_tools/messages.py:71
 #, python-format
 msgid ""
 "\n"
@@ -997,141 +999,141 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:64
+#: ../satellite_tools/messages.py:77
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
 msgstr ""
 
-#: ../satellite_tools/messages.py:66
+#: ../satellite_tools/messages.py:79
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:67
+#: ../satellite_tools/messages.py:80
 #, python-format
 msgid "    Extinct package:  %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:68
+#: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Total size: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:69
+#: ../satellite_tools/messages.py:83
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:70
+#: ../satellite_tools/messages.py:85
 #, python-format
 msgid "    Fetch unsuccessful: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:71
+#: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   RPM fetch summary: %s"
 msgstr ""
 
-#: ../satellite_tools/messages.py:72
+#: ../satellite_tools/messages.py:87
 #, python-format
 msgid "       success: %d"
 msgstr ""
 
-#: ../satellite_tools/messages.py:73
+#: ../satellite_tools/messages.py:88
 #, python-format
 msgid "       failed:  %d"
 msgstr ""
 
-#: ../satellite_tools/messages.py:74
+#: ../satellite_tools/messages.py:89
 #, python-format
 msgid "       extinct: %d"
 msgstr ""
 
-#: ../satellite_tools/messages.py:76
+#: ../satellite_tools/messages.py:91
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:77
+#: ../satellite_tools/messages.py:92
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:78
+#: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:79
+#: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:80
+#: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:81
+#: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
 msgstr ""
 
-#: ../satellite_tools/messages.py:82
+#: ../satellite_tools/messages.py:97
 msgid "Linking packages to channels"
 msgstr ""
 
-#: ../satellite_tools/messages.py:83
+#: ../satellite_tools/messages.py:98
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:84
+#: ../satellite_tools/messages.py:99
 msgid "   No new kickstartable tree to import"
 msgstr ""
 
-#: ../satellite_tools/messages.py:85
+#: ../satellite_tools/messages.py:100
 #, python-format
 msgid "Importing kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/messages.py:86
+#: ../satellite_tools/messages.py:101
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:110 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:113
+#: ../satellite_tools/reposync.py:139
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:121 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:258
+#: ../satellite_tools/satsync.py:305
 #, python-format
 msgid "No handler for step %s"
 msgstr ""
 
 #. Try one more time - this time it should be faster since
 #. everything should be cached
-#: ../satellite_tools/satsync.py:270
+#: ../satellite_tools/satsync.py:317
 msgid "Environment changed, trying again..."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:277
+#: ../satellite_tools/satsync.py:325
 msgid "ERROR: Encountered IntegrityError: \n"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:285
+#: ../satellite_tools/satsync.py:334
 msgid "Repeated failures"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:290
+#: ../satellite_tools/satsync.py:343
 #, python-format
 msgid ""
 "    Import complete:\n"
@@ -1141,48 +1143,46 @@ msgid ""
 "          "
 msgstr ""
 
-#: ../satellite_tools/satsync.py:311
+#: ../satellite_tools/satsync.py:369
 msgid "hours"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:311
+#: ../satellite_tools/satsync.py:369
 msgid "minutes"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:311
+#: ../satellite_tools/satsync.py:369
 msgid "seconds"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:357
+#: ../satellite_tools/satsync.py:422
 msgid ""
 "ERROR: The dump is missing package data, use --no-rpms to skip this step or "
 "fix the content to include package data."
 msgstr ""
 
-#. the orgs() method doesn't exist; that's fine we just
-#. won't sync the orgs
-#: ../satellite_tools/satsync.py:404
+#: ../satellite_tools/satsync.py:477
 msgid "The SUSE Manager master does not support syncing orgs data."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:404
+#: ../satellite_tools/satsync.py:478
 msgid "Skipping..."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:442
+#: ../satellite_tools/satsync.py:519
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:520
+#: ../satellite_tools/satsync.py:607
 msgid " - file-system synchronization"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:532 ../satellite_tools/satsync.py:540
+#: ../satellite_tools/satsync.py:623 ../satellite_tools/satsync.py:639
 msgid " - live synchronization"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:533
+#: ../satellite_tools/satsync.py:627
 #, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
@@ -1192,234 +1192,234 @@ msgid ""
 "content on disk via Channel Dump ISOs."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:541
+#: ../satellite_tools/satsync.py:640
 #, python-format
 msgid "   url: %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:542
+#: ../satellite_tools/satsync.py:641
 #, python-format
 msgid "   debug/output level: %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:552
+#: ../satellite_tools/satsync.py:657
 msgid "ERROR: this server must be registered with SUSE Manager."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:574
+#: ../satellite_tools/satsync.py:683
 #, python-format
 msgid "Retrieving / parsing %s data"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:584 ../satellite_tools/satsync.py:599
+#: ../satellite_tools/satsync.py:693 ../satellite_tools/satsync.py:712
 msgid "*** SYSTEM INTERRUPT CALLED ***"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:592
+#: ../satellite_tools/satsync.py:706
 msgid "ERROR: fatal parser exception occurred "
 msgstr ""
 
-#: ../satellite_tools/satsync.py:593
+#: ../satellite_tools/satsync.py:707
 #, python-format
 msgid "(line: %s, col: %s msg: %s)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:597
+#: ../satellite_tools/satsync.py:710
 #, python-format
 msgid "ERROR: parser exception occurred: %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:602
+#: ../satellite_tools/satsync.py:715
 msgid "ERROR: exception (during parse) occurred: "
 msgstr ""
 
-#: ../satellite_tools/satsync.py:603
+#: ../satellite_tools/satsync.py:719
 #, python-format
 msgid ""
 "   Encountered some errors with %s data (see logs (%s) for more information)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:605
+#: ../satellite_tools/satsync.py:728
 #, python-format
 msgid "   Encountered some errors with %s data:"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:606
+#: ../satellite_tools/satsync.py:729
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:608
+#: ../satellite_tools/satsync.py:732
 msgid "   ---------------------------------------"
-msgstr ""
-
-#: ../satellite_tools/satsync.py:611
-#, python-format
-msgid "%s data complete"
-msgstr ""
-
-#: ../satellite_tools/satsync.py:664
-msgid "Retrieving / parsing channel data"
-msgstr ""
-
-#: ../satellite_tools/satsync.py:717
-msgid "Channel data complete"
-msgstr ""
-
-#: ../satellite_tools/satsync.py:735
-#, python-format
-msgid "%10s import from %s"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:738
 #, python-format
+msgid "%s data complete"
+msgstr ""
+
+#: ../satellite_tools/satsync.py:817
+msgid "Retrieving / parsing channel data"
+msgstr ""
+
+#: ../satellite_tools/satsync.py:892
+msgid "Channel data complete"
+msgstr ""
+
+#: ../satellite_tools/satsync.py:911
+#, python-format
+msgid "%10s import from %s"
+msgstr ""
+
+#: ../satellite_tools/satsync.py:913
+#, python-format
 msgid "%10s import from %s - %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:742
+#: ../satellite_tools/satsync.py:919
 #, python-format
 msgid "%10s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:749
+#: ../satellite_tools/satsync.py:927
 msgid "p"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:751
+#: ../satellite_tools/satsync.py:929
 msgid "."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:757
+#: ../satellite_tools/satsync.py:945
 msgid "   p = previously imported/synced channel"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:758
+#: ../satellite_tools/satsync.py:946
 msgid "   . = channel not yet imported/synced"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:764
+#: ../satellite_tools/satsync.py:952
 msgid "   e = channel no longer supported (end-of-service)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:766
+#: ../satellite_tools/satsync.py:954
 msgid "   ? = channel label invalid --- typo?"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:770
+#: ../satellite_tools/satsync.py:958
 #, python-format
 msgid "   %s:"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:771
+#: ../satellite_tools/satsync.py:959
 #, python-format
 msgid "      %s %-40s %4s %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:772
+#: ../satellite_tools/satsync.py:960
 msgid "base-channels"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:785 ../satellite_tools/satsync.py:1619
+#: ../satellite_tools/satsync.py:974 ../satellite_tools/satsync.py:1962
 msgid "NONE RELEVANT"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:807
+#: ../satellite_tools/satsync.py:999
 msgid "end-of-service"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:808
+#: ../satellite_tools/satsync.py:1000
 msgid "e"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:814
+#: ../satellite_tools/satsync.py:1006
 msgid "   typos:"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:815
+#: ../satellite_tools/satsync.py:1007
 msgid "?"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:830
+#: ../satellite_tools/satsync.py:1024
 #, python-format
 msgid "XXX: imported channels: %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:831
+#: ../satellite_tools/satsync.py:1025
 #, python-format
 msgid "XXX:   cached channels: %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:836
+#: ../satellite_tools/satsync.py:1030
 msgid "XXX: list channels called"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:854
+#: ../satellite_tools/satsync.py:1054
 msgid "ERROR: these channels either do not exist or are not available:"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:858
+#: ../satellite_tools/satsync.py:1061
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:903
+#: ../satellite_tools/satsync.py:1118
 #, python-format
 msgid "   Retrieving / parsing short package metadata: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:981
+#: ../satellite_tools/satsync.py:1208
 #, python-format
 msgid "Diffing package metadata (what's missing locally?): %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:987 ../satellite_tools/satsync.py:1270
+#: ../satellite_tools/satsync.py:1218 ../satellite_tools/satsync.py:1560
 msgid "Diffing:    "
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1004
+#: ../satellite_tools/satsync.py:1238
 msgid "ERROR: incremental dump skipped"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1095
+#: ../satellite_tools/satsync.py:1346
 msgid "Downloading rpm packages"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1100
+#: ../satellite_tools/satsync.py:1355
 #, python-format
 msgid "   Fetching any missing RPMs: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1101 ../satellite_tools/satsync.py:1169
+#: ../satellite_tools/satsync.py:1356 ../satellite_tools/satsync.py:1441
 msgid "NONE MISSING"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1110
+#: ../satellite_tools/satsync.py:1366
 msgid "Processing rpm packages complete"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1137
+#: ../satellite_tools/satsync.py:1396
 msgid "Downloading package metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1162
+#: ../satellite_tools/satsync.py:1430
 msgid "Downloading srpm packages"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1168
+#: ../satellite_tools/satsync.py:1440
 #, python-format
 msgid "   Fetching any missing SRPMs: %s (%s)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1265
+#: ../satellite_tools/satsync.py:1550
 #, python-format
 msgid "Diffing source package metadata (what's missing locally?): %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1276
+#: ../satellite_tools/satsync.py:1569
 msgid "Downloading source package metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1354 ../satellite_tools/satsync.py:2049
+#: ../satellite_tools/satsync.py:1655 ../satellite_tools/satsync.py:2477
 #, python-format
 msgid "Unable to save file %s: %s"
 msgstr ""
@@ -1427,422 +1427,419 @@ msgstr ""
 #. for
 #. Retried a number of times and it still failed; log the
 #. file as being failed and move on
-#: ../satellite_tools/satsync.py:1361
+#: ../satellite_tools/satsync.py:1661
 #, python-format
 msgid "Failed to fetch file %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1366
+#: ../satellite_tools/satsync.py:1666
 msgid "Downloading kickstartable trees metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1381
+#: ../satellite_tools/satsync.py:1684
 msgid "Downloading kickstartable trees files"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1520
+#: ../satellite_tools/satsync.py:1841
 #, python-format
 msgid "Grabbing all patches for channel %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1570
+#: ../satellite_tools/satsync.py:1895
 msgid "Downloading patch data"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1572
+#: ../satellite_tools/satsync.py:1897
 msgid "Forcing download of all patch data for requested channels."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1587
+#: ../satellite_tools/satsync.py:1915
 msgid "Downloading patch data complete"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1592 ../satellite_tools/satsync.py:1613
+#: ../satellite_tools/satsync.py:1924 ../satellite_tools/satsync.py:1955
 msgid "Downloading:"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1595
+#: ../satellite_tools/satsync.py:1930
 msgid " - complete"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1640
+#: ../satellite_tools/satsync.py:1984
 msgid "Importing source package metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1643
+#: ../satellite_tools/satsync.py:1987
 msgid "Importing package metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1651
+#: ../satellite_tools/satsync.py:1999
 msgid "Importing:  "
 msgstr ""
 
-#. not in the cache
-#: ../satellite_tools/satsync.py:1725
+#: ../satellite_tools/satsync.py:2088
 msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1731
+#: ../satellite_tools/satsync.py:2096
 msgid "Importing channel patches"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:1736
+#: ../satellite_tools/satsync.py:2103
 #, python-format
 msgid "Importing %s patches for channel %s."
 msgstr ""
 
 #. Incomplete configuration
-#: ../satellite_tools/satsync.py:2135
+#: ../satellite_tools/satsync.py:2563
 msgid "ERROR: server.mount_point not set in the configuration file"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2139
+#: ../satellite_tools/satsync.py:2569
 #, python-format
 msgid "ERROR: server.mount_point %s do not exist"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2144
+#: ../satellite_tools/satsync.py:2579
 #, python-format
 msgid "ERROR: path under server.mount_point (%s)  do not exist"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2221
+#: ../satellite_tools/satsync.py:2663
 #, python-format
 msgid "Commandline: %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2224
+#: ../satellite_tools/satsync.py:2670
 #, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2227
+#: ../satellite_tools/satsync.py:2678
 msgid "alternative SSL CA Cert (fullpath to cert file)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2229
+#: ../satellite_tools/satsync.py:2684
 msgid "process data for this channel only"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2231
+#: ../satellite_tools/satsync.py:2690
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2234
+#: ../satellite_tools/satsync.py:2697
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2236
+#: ../satellite_tools/satsync.py:2703
 #, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2238
+#: ../satellite_tools/satsync.py:2710
 #, python-format
 msgid "requested version of XML dump (default: %s)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2240
+#: ../satellite_tools/satsync.py:2716
 msgid "e-mail a report of what was synced/imported"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2242
+#: ../satellite_tools/satsync.py:2721
 msgid "forcibly process all (not a diff of) patch metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2244
+#: ../satellite_tools/satsync.py:2726
 msgid "Do not use an http proxy under any circumstances."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2246
+#: ../satellite_tools/satsync.py:2731
 msgid "alternative http proxy (hostname:port)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2248
+#: ../satellite_tools/satsync.py:2736
 msgid "alternative http proxy username"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2250
+#: ../satellite_tools/satsync.py:2741
 msgid "alternative http proxy password"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2252
+#: ../satellite_tools/satsync.py:2746
 msgid "parent SUSE Manager to import content from"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2254
+#: ../satellite_tools/satsync.py:2752
 msgid "list all available channels and exit"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2256
+#: ../satellite_tools/satsync.py:2757
 msgid "help on all error codes mgr-inter-sync returns"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2258
+#: ../satellite_tools/satsync.py:2763
 msgid "source mount point for import - disk update only"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2260
+#: ../satellite_tools/satsync.py:2765
 msgid "do not process patch data"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2262
+#: ../satellite_tools/satsync.py:2769
 msgid "do not process kickstart data (provisioning only)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2264
+#: ../satellite_tools/satsync.py:2774
 msgid "do not process full package metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2266
+#: ../satellite_tools/satsync.py:2779
 msgid "do not download, or process any RPMs"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2268
+#: ../satellite_tools/satsync.py:2784
 msgid "org to which the sync imports data. defaults to the admin account"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2270
+#: ../satellite_tools/satsync.py:2790
 msgid "print the configuration and exit"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2272
+#: ../satellite_tools/satsync.py:2796
 msgid "alternative server with which to connect (hostname)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2274
+#: ../satellite_tools/satsync.py:2801
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2276
+#: ../satellite_tools/satsync.py:2807
 msgid "write complete data to tempfile before streaming to remainder of app"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2278
+#: ../satellite_tools/satsync.py:2813
 msgid "DEBUG ONLY: alternative path to digital system id"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2280
+#: ../satellite_tools/satsync.py:2818
 msgid "alternative email address(es) for sync output (--email option)"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2282
+#: ../satellite_tools/satsync.py:2823
 msgid "do not remove rpms when importing from local dump"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2284
+#: ../satellite_tools/satsync.py:2829
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2294
+#: ../satellite_tools/satsync.py:2843
 #, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
 msgstr ""
 
 #. An SQL error is fatal... crash and burn
-#: ../satellite_tools/satsync.py:2306
+#: ../satellite_tools/satsync.py:2856
 #, python-format
 msgid "ERROR: Can't connect to the database: %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2307
+#: ../satellite_tools/satsync.py:2857
 msgid "ERROR: Check if your database is running."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2340
+#: ../satellite_tools/satsync.py:2906
 #, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2342
+#: ../satellite_tools/satsync.py:2908
 msgid "  0  - little logging/messaging."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2343
+#: ../satellite_tools/satsync.py:2909
 msgid "  1  - minimal logging/messaging."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2344
+#: ../satellite_tools/satsync.py:2910
 msgid "  2  - normal level of logging/messaging."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2345
+#: ../satellite_tools/satsync.py:2911
 msgid "  3  - lots of logging/messaging."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2346
+#: ../satellite_tools/satsync.py:2912
 msgid "  4+ - excessive logging/messaging."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2359
+#: ../satellite_tools/satsync.py:2927
 msgid "ERROR: The --master option is only valid with the --mount-point option"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2369
+#: ../satellite_tools/satsync.py:2938
 #, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2378
+#: ../satellite_tools/satsync.py:2951
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2393
+#: ../satellite_tools/satsync.py:2972
 #, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2425
+#: ../satellite_tools/satsync.py:3009
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
 
-#. int(None) --> TypeError
-#. int('a')  --> ValueError
-#: ../satellite_tools/satsync.py:2474 ../satellite_tools/satsync.py:2478
+#: ../satellite_tools/satsync.py:3064 ../satellite_tools/satsync.py:3071
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2486
+#: ../satellite_tools/satsync.py:3081
 #, python-format
 msgid "ERROR: no such directory %s"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2491
+#: ../satellite_tools/satsync.py:3087
 msgid "Error Codes: Returned codes means:"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2492
+#: ../satellite_tools/satsync.py:3088
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2493
+#: ../satellite_tools/satsync.py:3089
 msgid "  0  - User interrupted or intentional exit"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2494
+#: ../satellite_tools/satsync.py:3090
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2495
+#: ../satellite_tools/satsync.py:3091
 msgid "  2  - Unable to find synchronization tools."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2496
+#: ../satellite_tools/satsync.py:3092
 msgid "  3  - a general socket exception occurred"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2497
+#: ../satellite_tools/satsync.py:3093
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2498
+#: ../satellite_tools/satsync.py:3094
 msgid "  5  - ISS error"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2499
+#: ../satellite_tools/satsync.py:3095
 msgid "  6  - unhandled exception occurred"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2500
+#: ../satellite_tools/satsync.py:3096
 msgid "  7  - unknown sync error"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2501
+#: ../satellite_tools/satsync.py:3097
 msgid "  8  - ERROR: must be root to execute"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2502
+#: ../satellite_tools/satsync.py:3098
 msgid "  9  - rpclib fault during synchronization init"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2503
+#: ../satellite_tools/satsync.py:3099
 msgid "  10 - synchronization init error"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2504
+#: ../satellite_tools/satsync.py:3100
 msgid "  11 - Error parsing XML stream"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2505
+#: ../satellite_tools/satsync.py:3101
 msgid "  12 - Channel do not exist"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2506
+#: ../satellite_tools/satsync.py:3102
 msgid "  13 - SQL error during importing package metadata"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2507
+#: ../satellite_tools/satsync.py:3103
 msgid "  14 - SQL error during linking channel packages"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2508
+#: ../satellite_tools/satsync.py:3104
 msgid "  15 - SQL error during xml processing"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2509
+#: ../satellite_tools/satsync.py:3105
 msgid "  16 - server.mount_point not set in the configuration file"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2510
+#: ../satellite_tools/satsync.py:3107
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2511
+#: ../satellite_tools/satsync.py:3109
 msgid "  18 - Wrong db connection string in rhn.conf"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2512
+#: ../satellite_tools/satsync.py:3110
 msgid "  19 - Bad arguments"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2513
+#: ../satellite_tools/satsync.py:3111
 msgid "  20 - Could not connect to db."
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2514
+#: ../satellite_tools/satsync.py:3112
 msgid "  21 - Bad debug level"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2515
+#: ../satellite_tools/satsync.py:3113
 msgid "  22 - Not valid step"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2516
+#: ../satellite_tools/satsync.py:3114
 msgid "  24 - no such file"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2517
+#: ../satellite_tools/satsync.py:3115
 msgid "  25 - no such directory"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2518
+#: ../satellite_tools/satsync.py:3116
 msgid "  26 - mount_point does not exist"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2519
+#: ../satellite_tools/satsync.py:3117
 msgid "  27 - No such org"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2520
+#: ../satellite_tools/satsync.py:3118
 msgid "  28 - error: --master is only valid with --mount-point"
 msgstr ""
 
-#: ../satellite_tools/satsync.py:2527
+#: ../satellite_tools/satsync.py:3127
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023 SUSE LLC.
+# Copyright (c) 2013-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -50,8 +50,8 @@ def product_version
 end
 
 def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
-  product == 'Uyuni' || %w[head 4.3 4.2].include?(product_version)
+  # Use venv-salt-minion in Uyuni, or SUMA Head, 5.0, 4.2 and 4.3
+  product == 'Uyuni' || %w[head 5.0 4.3 4.2].include?(product_version)
 end
 
 # WARN: It's working for /24 mask, but couldn't not work properly with others
@@ -96,17 +96,21 @@ rescue StandardError => e
 end
 
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+  return has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout)) unless $catch_timeout_message
+
   start_time = Time.now
   repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
     while Time.now - start_time <= timeout
       return true if has_text?(text1, wait: 4)
       return true if !text2.nil? && has_text?(text2, wait: 4)
+
       next unless has_text?('Request has timed out', wait: 0)
 
       log 'Request timeout found, performing reload'
       click_button('reload the page')
       start_time = Time.now
-      raise TimeoutError, "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+
     end
     return false
   end
@@ -116,6 +120,14 @@ def format_detail(message, last_result, report_result)
   formatted_message = "#{': ' unless message.nil?}#{message}"
   formatted_result = "#{', last result was: ' unless last_result.nil?}#{last_result}" if report_result
   "#{formatted_message}#{formatted_result}"
+end
+
+def refresh_page
+  accept_prompt do
+    execute_script 'window.location.reload()'
+  end
+rescue Capybara::ModalNotFound
+  # ignored
 end
 
 def click_button_and_wait(locator = nil, **options)
@@ -154,6 +166,14 @@ module CapybaraNodeElementExtension
     rescue StandardError => e
       $stdout.puts e.message # Skip errors related to .senna-loading element
     end
+  end
+end
+
+def get_client_type(name)
+  if name.include? '_client'
+    'traditional'
+  else
+    'salt'
   end
 end
 
@@ -420,13 +440,6 @@ def channel_is_synced(channel)
     log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
     new_code.zero?
   end
-end
-
-# This function deletes the client tools channels from a different product
-def sanitize_client_tools(channels)
-  channels.delete_if { |channel| channel.include? 'manager-tools' } if product == 'Uyuni'
-  channels.delete_if { |channel| channel.include? 'uyuni-client' } if product == 'SUSE Manager'
-  channels
 end
 
 # This function initializes the API client

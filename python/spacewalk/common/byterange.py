@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -101,6 +102,7 @@ def get_content_range(start, end, total_length=None):
     if total_length is None:
         total_length = "*"
     end = end - 1
+    # pylint: disable-next=consider-using-f-string
     content_range = "bytes %d-%d/%s" % (start, end, total_length)
     return content_range
 

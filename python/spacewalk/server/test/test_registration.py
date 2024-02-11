@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -18,15 +19,16 @@ from spacewalk.server.rhnSQL import initDB
 from spacewalk.server.xmlrpc import registration
 
 initCFG("server.xmlrpc")
-initDB('rhnuser/rhnuser@webdev')
+initDB("rhnuser/rhnuser@webdev")
 
 r = registration.Registration()
 
 data = {
-    'os_release': '8.0',
-    'profile_name': 'test local',
-    'architecture': 'i686',
-    'token': '382c712e94b2505f6070f011e8ec1a7e',
+    "os_release": "8.0",
+    "profile_name": "test local",
+    "architecture": "i686",
+    "token": "382c712e94b2505f6070f011e8ec1a7e",
 }
 
+# pylint: disable-next=unspecified-encoding
 open("/tmp/rereg-systemid", "w+").write(r.new_system(data))

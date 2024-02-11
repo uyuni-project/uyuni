@@ -11,13 +11,14 @@ def get_version_changelog():
     Get a version from the current changelog.
     """
     changelog = None
-    version = "4.4.9"
+    version = "5.0.3"
     for fname in os.listdir(os.path.dirname(os.path.abspath(__file__))):
         if fname.endswith(".changes"):
             changelog = fname
             break
 
     if changelog:
+        # pylint: disable-next=unspecified-encoding
         with open(changelog, "r") as hcl:
             for line in hcl.readlines():
                 if "version" in line:
@@ -25,11 +26,12 @@ def get_version_changelog():
                     break
     return version
 
+
 setup(
-    name='spacecmd',
+    name="spacecmd",
     version=get_version_changelog(),
     packages=find_packages(where="src"),
     package_dir={
         "": "src",
-    }
+    },
 )

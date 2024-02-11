@@ -1,6 +1,11 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 from spacewalk.common.rhnConfig import initCFG, CFG
 from spacewalk.common.rhnLog import log_debug
+
+# pylint: disable-next=unused-import
 from spacewalk.server import rhnSQL
+
+# pylint: disable-next=unused-import
 import json
 
 try:
@@ -9,7 +14,7 @@ except ImportError:
     import xmlrpclib as xmlrpc_client
 
 # see TaskoXmlRpcHandler.java for available methods
-TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
+TASKOMATIC_XMLRPC_URL = "http://localhost:2829/RPC2"
 
 
 def getNotificationsTypeDisabled():
@@ -22,8 +27,9 @@ def getNotificationsTypeDisabled():
     initCFG(comp)
     return disabledTypes
 
-class CreateBootstrapRepoFailed:
 
+# pylint: disable-next=missing-class-docstring
+class CreateBootstrapRepoFailed:
     def __init__(self, ident, detail=""):
         self.identifier = ident
         self.details = detail
@@ -37,5 +43,13 @@ class CreateBootstrapRepoFailed:
 
     def _create_bootstrap_repo_failed_notification(self):
         client = xmlrpc_client.Server(TASKOMATIC_XMLRPC_URL)
-        log_debug(2, "Calling createBootstrapRepoFailedNotification({0}, {1})".format(self.identifier, self.details))
-        return client.tasko.createBootstrapRepoFailedNotification(self.identifier, self.details)
+        log_debug(
+            2,
+            # pylint: disable-next=consider-using-f-string
+            "Calling createBootstrapRepoFailedNotification({0}, {1})".format(
+                self.identifier, self.details
+            ),
+        )
+        return client.tasko.createBootstrapRepoFailedNotification(
+            self.identifier, self.details
+        )

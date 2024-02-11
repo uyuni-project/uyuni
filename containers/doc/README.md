@@ -10,14 +10,14 @@ Note that in the case of a k3s or rke2 cluster the kubeconfig will be discovered
 ## Podman specific setup
 
 Podman stores its volumes in `/var/lib/containers/storage/volumes/`.
-In order to provide custom storage for the volumes, mount disks on that path oreven the expected volume path inside it like `/var/lib/containers/storage/volumes/var-spacewalk`. 
+In order to provide custom storage for the volumes, mount disks on that path or even the expected volume path inside it like `/var/lib/containers/storage/volumes/var-spacewalk`.
 
 **This needs to be performed before installing Uyuni as the volumes will be populated at that time.**
 
 ## RKE2 specific setup
 
 RKE2 doesn't have automatically provisioning Persistent Volume by default.
-Either the expected Persisten Volumes need to be created before hand or a storage class with automatic provisioning has to be defined before installing Uyuni.
+Either the expected Persistent Volumes need to be created before hand or a storage class with automatic provisioning has to be defined before installing Uyuni.
 
 ## K3s specific setup
 
@@ -33,7 +33,7 @@ With K3s it is possible to preload the container images and avoid it to be fetch
 For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
 For example:
 
-```
+```bash
 cert_manager_version=$(helm show chart --repo https://charts.jetstack.io/ cert-manager | grep '^version:' | cut -f 2 -d ' ')
 for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl cert-manager-webhook; do
   podman pull quay.io/jetstack/$image:$cert_manager_version
@@ -47,7 +47,7 @@ podman save --output server.tar registry.opensuse.org/uyuni/server:latest
 
 or
 
-```
+```bash
 cert_manager_version=$(helm show chart --repo https://charts.jetstack.io/ cert-manager | grep '^version:' | cut -f 2 -d ' ')
 for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl cert-manager-webhook; do
     skopeo copy docker://quay.io/jetstack/$image:$cert_manager_version docker-archive:$image.tar:quay.io/jetstack/$image:$cert_manager_version
@@ -59,33 +59,33 @@ skopeo copy docker://registry.opensuse.org/uyuni/server:latest docker-archive:se
 If using K3S's default local-path-provider, also pull the helper pod image for offline use:
 Run the following command on the K3S node to find out the name of the image to pull:
 
-```
+```bash
 grep helper-pod -A1 /var/lib/rancher/k3s/server/manifests/local-storage.yaml | grep image | sed 's/^ \+image: //'
 ```
 
 Then set the `helper_pod_image` variable with the returned output on the machine having internet access and run the next commands to pull the image:
 
-```
+```bash
 podman pull $helper_pod_image
 podman save --output helper_pod.tar $helper_pod_image
 ```
 
 or
 
-```
+```bash
 skopeo copy docker://$(helper_pod_image) docker-archive:helper-pod.tar:$(helper_pod_image)
 ```
 
 Copy the `cert-manager` and `uyuni/server` helm charts locally:
 
-```
+```bash
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
 helm pull --destination . oci://registry.opensuse.org/uyuni/server-helm
 ```
 
 Transfer the resulting `*.tar` images to the K3s node and load them using the following command:
 
-```
+```bash
 for archive in `ls *.tar`; do
     k3s ctr images import $archive 
 done
@@ -98,7 +98,7 @@ To prevent Helm from pulling the images pass the `--image-pullPolicy=never` para
 
 To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-helm-2023.10.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `mgradm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
 
-```
+```yaml
 helm:
   uyuni:
     chart: server-helm-2023.10.0.tgz
@@ -108,7 +108,7 @@ helm:
 
 If using K3S's default local-path-provisioner, set the helper-pod `imagePullPolicy` to `Never` in `/var/lib/rancher/k3s/server/manifests/local-storage.yaml` using the following command:
 
-```
+```bash
 sed 's/imagePullPolicy: IfNotPresent/imagePullPolicy: Never/' -i /var/lib/rancher/k3s/server/manifests/local-storage.yaml
 ```
 
@@ -121,7 +121,7 @@ Instead, use `skopeo` to import the images in a local registry and use this one 
 
 Copy the `cert-manager` and `uyuni/server-helm` helm charts locally:
 
-```
+```bash
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
 helm pull --destination . oci://registry.opensuse.org/uyuni/server-helm
 ```
@@ -138,20 +138,20 @@ With Podman it is possible to preload the container images and avoid it to be fe
 For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
 For example:
 
-```
+```bash
 podman pull registry.opensuse.org/uyuni/server:latest
 podman save --output server.tar registry.opensuse.org/uyuni/server:latest
 ```
 
 or
 
-```
+```bash
 skopeo copy docker://registry.opensuse.org/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/uyuni/server:latest
 ```
 
 Transfer the resulting `server-image.tar` to the server and load it using the following command:
 
-```
+```bash
 podman load -i server.tar
 ```
 
@@ -172,7 +172,7 @@ This means the DNS records need to be adjusted after the migration to use the ne
 
 Stop the source services:
 
-```
+```bash
 spacewalk-service stop
 systemctl stop postgresql
 ```
@@ -206,13 +206,13 @@ Refer to the installation section for more details on the volumes preparation.
 Run the following command to install a new Uyuni server from the source one after replacing the `uyuni.source.fqdn` by the proper source server FQDN:
 This command will synchronize all the data from the source server to the new one: this can take time!
 
-```
+```bash
 mgradm migrate podman uyuni.source.fqdn
 ```
 
 or
 
-```
+```bash
 mgradm migrate kubernetes uyuni.source.fqdn
 ```
 
@@ -225,7 +225,7 @@ For security reason, using command line parameters to specify passwords should b
 
 Prepare an `mgradm.yaml` file like the following:
 
-```
+```yaml
 db:
   password: MySuperSecretDBPass
 cert:
@@ -236,13 +236,13 @@ To dismiss the email prompts add the `email` and `emailFrom` configurations to t
 
 Run one of the following command to install after replacing the `uyuni.example.com` by the FQDN of the server to install:
 
-```
+```bash
 mgradm -c mgradm.yaml install podman uyuni.example.com
 ```
 
 or
 
-```
+```bash
 mgradm -c mgradm.yaml install kubernetes uyuni.example.com
 ```
 
@@ -255,18 +255,17 @@ Additional parameters can be passed to Podman using `--podman-arg` parameters.
 The `mgradm install` command comes with parameters and thus configuration values for advanced helm chart configuration.
 To pass additional values to the Uyuni helm chart at installation time, use the `--helm-uyuni-values chart-values.yaml` parameter or a configuration like the following:
 
-```
+```yaml
 helm:
   uyuni:
     values: chart-values.yaml
 ```
 
 The path set as value for this configuration is a YAML file passed to the Uyuni Helm chart.
-Be aware that some of the values in this file will be overriden by the `mgradm install` parameters.
+Be aware that some of the values in this file will be overridden by the `mgradm install` parameters.
 
 Note that the Helm chart installs a deployment with one replica.
 The pod name is automatically generated by Kubernetes and changes at every start.
-
 
 # Using Uyuni in containers
 
@@ -278,11 +277,11 @@ Conversely to copy files from the server use `mgrctl cp server:<remote_path> <lo
 
 # Developping with the containers
 
-##  Deploying code
+## Deploying code
 
 To deploy java code on the pod change to the `java` directory and run:
 
-```
+```bash
 ant -f manager-build.xml refresh-branding-jar deploy-restart-container
 ```
 
@@ -292,13 +291,13 @@ ant -f manager-build.xml refresh-branding-jar deploy-restart-container
 
 In order to attach a Java debugger Uyuni need to have been installed using the `--debug-java` option to setup the container to listen on JDWP ports and expose them.
 
-The debugger can now be attached to the usual ports (8003 for tomcat and 8001 for taskomatic and 8002 for the search server) on the host FQDN.
+The debugger can now be attached to the usual ports (`8003` for tomcat and `8001` for Taskomatic and `8002` for the search server) on the host FQDN.
 
 # Uninstalling
 
 To remove everything including the volumes, run the following command:
 
-```
+```bash
 mgradm uninstall --purge-volumes
 ```
 

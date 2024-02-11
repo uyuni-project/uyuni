@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -23,24 +24,26 @@ MAX_SUMMARY = 128
 MAX_DETAILS = 4000
 
 
+# pylint: disable-next=missing-class-docstring
 class History:
-
     def __init__(self):
         self.__h = []
 
     def add_history(self, summary, details=""):
-        """ Add a history event to the server. """
+        """Add a history event to the server."""
         log_debug(4, summary)
-        if details == '':
+        if details == "":
             self.__h.append((summary[:MAX_SUMMARY], None))
         else:
             self.__h.append((summary[:MAX_SUMMARY], details[:MAX_DETAILS]))
 
     def save_history_byid(self, server_id):
+        # pylint: disable-next=consider-using-f-string
         log_debug(3, server_id, "%d history events" % len(self.__h))
         if not self.__h:
             return 0
-        hist = rhnSQL.prepare("""
+        hist = rhnSQL.prepare(
+            """
             insert into rhnServerHistory
                 (id,
                  server_id,
@@ -51,12 +54,12 @@ class History:
                  :server_id,
                  :summary,
                  :details)
-        """)
+        """
+        )
         summaries = [x[0] for x in self.__h]
         details = [x[1] for x in self.__h]
         server_ids = [server_id] * len(self.__h)
-        hist.executemany(server_id=server_ids, summary=summaries,
-                         details=details)
+        hist.executemany(server_id=server_ids, summary=summaries, details=details)
         # Clear the history cache
         self.__h = []
         return 0

@@ -86,6 +86,8 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
             List<String> newLines = new ArrayList<>();
             List<String> hostLines = Files.readAllLines(Paths.get(HOSTS));
             boolean commentStart = false;
+
+            // remove all SUMA created lines from /etc/hosts
             for (String line : hostLines) {
                 if (line.startsWith(HOST_COMMENT_START)) {
                     commentStart = true;
@@ -97,6 +99,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
                     commentStart = false;
                 }
             }
+
             try (FileWriter fw = new FileWriter(HOSTS, false)) {
                 try (BufferedWriter bw = new BufferedWriter(fw)) {
                     for (String nl : newLines) {
@@ -107,6 +110,13 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
                     if (!hostToUpdate.isEmpty()) {
                         bw.write(HOST_COMMENT_START + RETAIN_COMMENT);
                         for (CloudRmtHost host : hostToUpdate) {
+                            // search for already existing RMT Host definition
+                            if (newLines.stream().anyMatch(l -> l.contains(host.getHost()))) {
+                                // registercloudguest has added already this hostname.
+                                // defining multiple IP addresses for the same name can result in problems.
+                                // We write out only commented entries here
+                                bw.write("# ");
+                            }
                             bw.write(String.format("%s\t%s%n", host.getIp(), host.getHost()));
                         }
                         bw.write(HOST_COMMENT_END + RETAIN_COMMENT);

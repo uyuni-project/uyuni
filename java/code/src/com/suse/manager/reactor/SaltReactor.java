@@ -76,6 +76,7 @@ import com.suse.salt.netapi.event.MinionStartEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -326,7 +327,9 @@ public class SaltReactor {
             Optional<MinionServer> minion = MinionServerFactory.findByMinionId(beaconEvent.getMinionId());
             minion.ifPresent(
                 m -> {
-                    m.setRebootNeeded((Boolean) beaconEvent.getData().get("reboot_needed"));
+                    Boolean rebootRequired = (Boolean) beaconEvent.getData().get("reboot_needed");
+                    Date rebootRequiredAfter = rebootRequired ? new Date() : null;
+                    m.setRebootRequiredAfter(rebootRequiredAfter);
                     SystemManager.updateSystemOverview(m);
                 }
             );

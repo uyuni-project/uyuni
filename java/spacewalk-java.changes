@@ -1,4 +1,118 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:58:20 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-1
+  * Update help text for the custom repo filter field (bsc#1217874)
+  * Reduce UI inconsistencies between the SUSE Manager and Uyuni themes
+  * Fix issue with disabling token check not working (bsc#1218669)
+  * Fix issue when checking for credential duplication (bsc#1218957)
+  * Handle not existing known_host file in permission check
+  * Change org for orphan vendor packages that an admin can delete (bsc#1216781)
+  * To prepare for the next SUSE Manager version, set product_tree tag to
+    Beta and change the config value to SUMA5.0
+  * Add one-shot action execution to recurring custom state create/edit
+  * Drop obsolete redirect mechanism (RedirectServlet)
+  * Include reboot required indication for non-Suse distros
+  * New API endpoint for getRelevantErrata, taking multiple servers as argument
+
+-------------------------------------------------------------------
+Thu Jan 18 11:06:32 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * update checkstyle to version 10.12.7
+
+-------------------------------------------------------------------
+Tue Jan 16 08:31:04 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Update allowed postgres version
+  * Remove SUSE Manager proxy 4.2 product channel for PAYG instance (bsc#1215412)
+  * Add config option to disable remote commands from web UI (bsc#1217869)
+  * provide total number of CPUs for SLE Micro systems to subscription matcher
+    when it is not used as hypervisor to match vCore subscriptions correctly
+    (bsc#1218074)
+  * fix XSS in taskomatic XML RPC handler (bsc#1210911)
+  * Drop handling of legacy pillar and formula files
+  * Update shared page layouts
+  * Refactor Credentials to a proper class hierarchy
+  * Add user information to system organization transfer message (bsc#1216753)
+  * Fix issue of non-installed package listed as errata package
+    update candidates (bsc#1212904)
+  * Fix the use of page size preference in systems and packages lists (bsc#1217209)
+  * fix apidoc link from #top to $call.name (bsc#1213507)
+  * fix exception when removing a debian package (bsc#1216781)
+  * expose the monitoring data for the salt queue handling the salt results
+  * Add no-strict checkbox to channel sync page allowing to disable strict mode for package synchronisation
+  * Avoid blocking Taskomatic thread when waiting for queued action (bsc#1211560)
+  * Do not require entitlement for PAYG SLES for SAP (bsc#1217069)
+  * Use the base product file to show the correct SUSE Manager
+    product in the subscription matching results page
+  * Do not require entitlements if Uyuni or SUSE Manager is PAYG
+  * Exclude Uyuni and SUSE Manager if it's PAYG from subscription
+    matching
+  * improve logging for Product Migration (bsc#1218490)
+
+-------------------------------------------------------------------
+Fri Dec 15 17:10:30 CET 2023 - rosuna@suse.com
+
+- version 4.4.22-1
+  * Fix unit test about duplicated packages
+  * Prevent installation of packages with same name 
+    in a single action (bsc#1214791)
+  * When canceling an action which has prerequisites, return hints to
+    get the first action id which can be canceled (bsc#1216988)
+  * Add only 1 IP for Cloud RMT Host in /etc/hosts
+  * Try to download compressed ubuntu usn database
+  * Add notification in daily email as well as in SUMA home page when
+    SUMA Pay-as-you-go is not compliant
+  * Address high rating sonar issues
+  * Refactor SCC registration flow
+  * Fix modify kickstart profile when using "Always newest tree"
+    option (bsc#1215813)
+  * Configure reboot method for SUSE Linux Enterprise Micro when
+    applying bootstrap state (bsc#1213981)
+  * Fix filter ID comparison when attaching filters to a CLM project
+    (bsc#1215949)
+  * Fix validation of lists with empty defaults in formulas
+    (bsc#1216555)
+  * Safeguard request URLs against tempering (bsc#1216754)
+  * Do not store reposync stdout in taskomatic logs
+  * Remove Select2
+  * Enable detection for Amazon Linux 2023
+  * Enforce snakeyaml version requirement (bsc#1215166)
+  * Improve the performances of paginated queries when syncing the 
+    reporting database (bsc#1211912, bsc#1213079)
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Sanitize token before logging it CVE-2023-22644 (bsc#1210930)
+  * Use 600 permissions for logfiles CVE-2023-22644 (bsc#1210928)
+  * Log potential sensitive information only in debug mode
+    CVE-2023-22644 (bsc#1210928)
+  * Fix SUSE Linux Enterprise Micro Pay-as-you-go detection
+  * Rename SSHPush Task into SSHService Task
+  * Fix url pointing to SCC (bsc#1216690)
+  * Prevent download when a Pay-as-you-go Server is not compliant
+  * Include "uuid" as system search xmlrpc results (bsc#1216380)
+  * Prevent losing Remote Command action result if returned JSON
+    cannot be parsed
+  * Add management restrictions to SUSE Manager Pay-as-you-go when
+    dealing with Bring-your-own-subscription instances when no SCC
+    credentials are set.
+  * Fix conversion to string if branchid is numeric in PXEEvent
+  * Prevent NullPointerException in updateSystemInfo (bsc#1217224)
+  * Address high rating sonar issues
+  * Address sonar reliability bug at scc system registration system
+    data acquisitor
+  * Enhance hardware data sent to SCC by memory
+  * Enforce minimum build version for apache-commons-io to ensure
+    successful build of FileUtils.java
+  * Adapte Enterprise Linux for /usr/share/susemanager structure
+  * Fix NullPointerException when creating PXE config for an unmanaged
+    profile (bsc#1217223)
+  * Add option to filter packages by build time in CLM (jsc#SUMA-282)
+  * Fix createSystemRecord XML-RPC API call so that the Cobbler UID
+    is persistent (bsc#1207532)
+
+-------------------------------------------------------------------
 Wed Nov 01 20:23:38 CET 2023 - marina.latini@suse.com
 
 - version 4.4.21-1

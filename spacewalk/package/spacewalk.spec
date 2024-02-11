@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk
-Version:        4.4.4
+Version:        5.0.1
 Release:        1
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -70,7 +70,7 @@ Requires:       spacewalk-backend-xmlrpc
 Requires:       spacewalk-certs-tools
 
 # Misc
-%if !0%{?rhel}
+%if 0%{?opensuse}
 Requires:       pxe-default-image
 %endif
 Requires:       spacewalk-config
@@ -86,14 +86,14 @@ Requires:       susemanager-jsp_en
 
 # weakremover used on SUSE to get rid of orphan packages which are
 # unsupported and do not have a dependency anymore
-Provides:	weakremover(jabberd)
-Provides:	weakremover(jabberd-sqlite)
-Provides:	weakremover(jabberd-db)
-Provides:	weakremover(spacewalk-setup-jabberd)
-Provides:	weakremover(python3-jabberpy)
-Provides:	weakremover(mgr-osa-dispatcher)
-Provides:	weakremover(python3-mgr-osa-dispatcher)
-Provides:	weakremover(python3-mgr-osa-common)
+Provides:       weakremover(jabberd)
+Provides:       weakremover(jabberd-db)
+Provides:       weakremover(jabberd-sqlite)
+Provides:       weakremover(mgr-osa-dispatcher)
+Provides:       weakremover(python3-jabberpy)
+Provides:       weakremover(python3-mgr-osa-common)
+Provides:       weakremover(python3-mgr-osa-dispatcher)
+Provides:       weakremover(spacewalk-setup-jabberd)
 
 %description common
 Spacewalk is a systems management application that will
@@ -113,10 +113,10 @@ Requires:       perl(DBD::Pg)
 # Actual version set by prjconf, default is 14
 %{!?postgresql_version_min: %global postgresql_version_min 14}
 %{!?postgresql_version_max: %global postgresql_version_max 15}
-Requires:       postgresql-implementation >= %{postgresql_version_min}
 Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-implementation > %{postgresql_version_max}
+Requires:       postgresql-implementation >= %{postgresql_version_min}
 Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
+Conflicts:      postgresql-implementation > %{postgresql_version_max}
 %else # not a supported SUSE version or alternative OS.
 Requires:       postgresql14
 Requires:       postgresql14-contrib
@@ -140,12 +140,6 @@ Version for PostgreSQL database backend.
 %install
 RDBMS="postgresql"
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
-SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
-UYUNI_REL=$(grep -F 'web.version.uyuni' %{_datadir}/rhn/config-defaults/rhn_web.conf | sed 's/^.*= *\([[:digit:]\.]\+\) *$/\1/')
-echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
-if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
-  echo "SUSE Manager release $SUMA_REL ($UYUNI_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
-fi
 install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
 for i in ${RDBMS} ; do
     cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
@@ -159,7 +153,6 @@ ln -s /usr/pgsql-14/bin/initdb $RPM_BUILD_ROOT/%{_bindir}/initdb
 %endif
 
 %files common
-%{_sysconfdir}/*-release
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %if 0%{?suse_version}

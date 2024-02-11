@@ -84,6 +84,15 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       .catch(this.props.onError);
   };
 
+  executeCustom = (schedule) => {
+    return Network.post("/rhn/manager/api/recurringactions/custom/execute", schedule)
+      .then((_) => {
+        const successMsg = <span>{t("Action scheduled on selected minions")}</span>;
+        this.props.onSetMessages(MessagesUtils.info(successMsg));
+      })
+      .catch(this.props.onError);
+  };
+
   matchUrl = (target?: string) => {
     const id = this.state.recurringActionId;
     return "/rhn/manager/api/recurringactions/states?" + (id ? "id=" + id : "") + (target ? "&target=" + target : "");
@@ -130,6 +139,13 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       cron: this.state.cron,
       details: this.state.details,
       actionType: this.getActionTypeFromString(this.state.actionTypeDescription),
+    });
+  };
+
+  onClickExecute = (items) => {
+    return this.executeCustom({
+      details: this.state.details,
+      memberIds: items,
     });
   };
 
@@ -244,7 +260,12 @@ class RecurringActionsEdit extends React.Component<Props, State> {
               {t("Configure states to execute")}
               &nbsp;
             </h3>
-            <StatesPicker type={"state"} matchUrl={this.matchUrl} saveRequest={this.onSaveStates} />
+            <StatesPicker
+              type={"state"}
+              matchUrl={this.matchUrl}
+              saveRequest={this.onSaveStates}
+              applyRequest={this.onClickExecute}
+            />
           </span>
         )}
       </InnerPanel>

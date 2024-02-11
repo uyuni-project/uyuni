@@ -18,7 +18,8 @@ package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.frontend.xmlrpc.serializer.VirtualHostManagerSerializer;
@@ -77,9 +78,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testWithCreds() {
-        Credentials creds = new Credentials();
-        creds.setUsername("Somebody");
-        creds.setPassword("strongpass");
+        VHMCredentials creds = CredentialsFactory.createVHMCredentials("Somebody", "strongpass");
         manager.setCredentials(creds);
 
         VirtualHostManagerSerializer serializer = new VirtualHostManagerSerializer();

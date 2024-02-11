@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:34:26 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * update dependencies after package rename
+
+-------------------------------------------------------------------
+Fri Dec 15 17:22:12 CET 2023 - rosuna@suse.com
+
+- version 4.4.7-1
+  * Include "uuid" as system search result attribute (bsc#1216380)
+
+-------------------------------------------------------------------
 Wed Nov 01 21:01:45 CET 2023 - marina.latini@suse.com
 
 - version 4.4.6-1

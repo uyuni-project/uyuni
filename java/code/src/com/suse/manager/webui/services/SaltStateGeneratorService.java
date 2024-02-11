@@ -14,14 +14,12 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_RECURRING_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_RECURRING_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
@@ -657,10 +655,6 @@ public enum SaltStateGeneratorService {
      * Expose some global configuration options as pillar data.
      */
     public static void generateMgrConfPillar() {
-        // Remove legacy file if present
-        Path filePath = Paths.get(SUMA_PILLAR_DATA_PATH).resolve("mgr_conf." + PILLAR_DATA_FILE_EXT);
-        FileUtils.deleteFile(filePath);
-
         boolean metataSigningEnabled = ConfigDefaults.get().isMetadataSigningEnabled();
         Map<String, Object> data = Map.of("mgr_metadata_signing_enabled", metataSigningEnabled);
         Pillar.getGlobalPillars().stream()

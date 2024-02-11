@@ -34,6 +34,11 @@ jobs:
             
               * https://github.com/uyuni-project/uyuni/actions/workflows/acceptance_tests_secondary.yml?query=event%3Aschedule
 
+            KNOWN ISSUES
+
+            Sometimes the build can fail when pulling new jar files from download.opensuse.org . This is a known limitation. Given this happens rarely, when it does, all you need to do is rerun the test. Sorry for the inconvenience.
+
+
             For more tips on troubleshooting, see the [troubleshooting guide](https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR#troubleshooting).
 
             Happy hacking!

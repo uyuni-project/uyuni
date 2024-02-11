@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2023-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize extra products in the products page of the Setup Wizard
@@ -19,6 +19,7 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
 @susemanager
   Scenario: Add Rocky 8 product with recommended sub-products
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Rocky" as the filtered product description
     And I wait until I see "Rocky Linux 8 x86_64" text
@@ -35,9 +36,10 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
 @susemanager
   Scenario: Add Ubuntu 22.04 product with recommended sub-products
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Ubuntu" as the filtered product description
-    And I select "amd64-deb" in the dropdown list of the architecture filter
+    And I select "amd64-deb" from "product-arch-filter"
     And I wait until I see "Ubuntu 22.04" text
     And I select "Ubuntu 22.04" as a product
     Then I should see the "Ubuntu 22.04" selected

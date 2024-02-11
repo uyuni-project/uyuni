@@ -7,10 +7,6 @@
   display: inline-block;
 }
 
-.no-bold {
-  font-weight: normal!important;
-}
-
 .inline-icon {
   i {
     width: 1em;
@@ -49,7 +45,6 @@
 
 #visualization-filter-wrapper {
   display: none;
-  overflow-y: auto;
   background: lighten(@gray-light, 8%);
   font-size: 0.9em;
   border: 1px solid #ddd;
@@ -83,10 +78,9 @@
     vertical-align: top;
     padding: 3px 10px;
     > .filter-title {
-      max-width: 250px;
       font-weight: bold;
-      padding: 4px 2px;
       margin-right: 4px;
+      margin-bottom: 4px;
     }
     label {
       font-weight: normal;
@@ -108,14 +102,6 @@
       margin-right: 5px;
       vertical-align: sub;
     }
-    .select2-container-multi .select2-choices .select2-search-field input {
-      height: 28px;
-      padding: 2px 4px;
-    }
-    .select2-container-multi .select2-choices .select2-search-choice {
-      margin-top: 4px;
-      margin-bottom: 1px;
-    }
     .toggle-grouping-level i{
       margin: 0px 4px;
       vertical-align: middle;
@@ -123,6 +109,32 @@
     }
     .grpCriterion {
       margin-top: 1px;
+    }
+
+    .btn-group {
+      margin-top: 8px;
+      display: block;
+    }
+
+    .combobox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 250px;
+      margin-top: 4px;
+
+      > form {
+        flex: 1;
+        display: block;
+
+        .form-group {
+          margin: 0 !important;
+        }
+
+        .help-block {
+          display: none !important;
+        }
+      }
     }
   }
   select {

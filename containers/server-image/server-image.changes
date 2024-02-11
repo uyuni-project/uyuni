@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:44:50 CET 2024 - rosuna@suse.com
+
+- version 5.0.3
+  * Simplify publishing to Open Build Service
+  * Add dependencies for Salt's GitFS
+  * Add warning message for interactive shells
+  * Add healthcheck.sh script
+
+-------------------------------------------------------------------
+Mon Jan 15 15:31:05 CET 2024 - marina.latini@suse.com
+
+- version 5.0.2
+  * Make shim an optional package as it is not available for all
+    architectures
+
+-------------------------------------------------------------------
+Fri Jan 12 12:16:19 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * Bump version to 5.0.0
+  * Use product version in reference label
+
+-------------------------------------------------------------------
+Mon Dec 18 14:31:38 CET 2023 - rosuna@suse.com
+
+- version 4.4.2
+  * Uyuni 2023.12 release
+
+-------------------------------------------------------------------
 Tue Nov 07 16:06:41 CET 2023 - marina.latini@suse.com
 
 - version 4.4.1

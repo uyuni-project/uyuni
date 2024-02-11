@@ -28,12 +28,11 @@ module "registry" {
 }
 ```
 
-More information at https://github.com/uyuni-project/sumaform/blob/master/README_ADVANCED.md.
-
+More information can be found in the [advanced README](https://github.com/uyuni-project/sumaform/blob/master/README_ADVANCED.md) of sumaform.
 
 ## Running a local registry (as a container)
 
-```
+```bash
 mkdir registry_storage
 podman run --publish 5000:5000 -v `pwd`/registry_storage:/var/lib/registry docker.io/library/registry:2
 ```
@@ -41,12 +40,14 @@ podman run --publish 5000:5000 -v `pwd`/registry_storage:/var/lib/registry docke
 Registry will be available on port 5000. If `wget <hostname_or_IP>:5000/` does not work, check that port is open in your firewall.
 
 In case you get into this error while pulling:
-```
+
+```bash
 Error processing tar file(exit status 1): there might not be enough IDs available in the namespace (requested 0:42 for /etc/shadow): lchown /etc/shadow: invalid argument
 ```
 
 Use the following commands to fix the problem:
-```
+
+```bash
 sudo touch /etc/sub{u,g}id
 sudo usermod --add-subuids 10000-75535 $(whoami)
 sudo usermod --add-subgids 10000-75535 $(whoami)

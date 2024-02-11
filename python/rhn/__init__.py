@@ -6,4 +6,3 @@
 """
 rhn - A collection of modules used by Red Hat Network Classic
 """
-

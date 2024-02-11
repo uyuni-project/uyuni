@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC.
+# Copyright (c) 2010-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all step definitions concerning general product funtionality
@@ -103,24 +103,34 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   eleven_hours_in_seconds = 39_600 # 11 hours * 60 minutes * 60 seconds
   rounded_uptime_days = ((uptime[:seconds] + eleven_hours_in_seconds) / 86_400.0).round # 60 seconds * 60 minutes * 24 hours
 
+  # select the text in the time HTML element associated with 'Last Booted'
+  ui_uptime_text = find(:xpath, '//td[contains(text(), "Last Booted")]/following-sibling::td/time').text
+  raise ScriptError, "Uptime text for host '#{host}' not found" unless ui_uptime_text
+
+  # we may have to accept as valid slightly different messages to account for rounding operations resulting in off by one errors
+  valid_uptime_messages = []
+  diffs = [-1, 0, +1]
   # the moment.js library being used has some weird rules, which these conditionals follow
   if (uptime[:days] >= 1 && rounded_uptime_days < 2) || (uptime[:days] < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
-    step 'I should see a "a day ago" text'
+    valid_uptime_messages << 'a day ago'
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
-    step %(I should see a "#{rounded_uptime_hours} hours ago" text)
+    valid_uptime_messages = diffs.map { |n| "#{rounded_uptime_hours + n} hours ago" }
   elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
-    step 'I should see a "an hour ago" text'
+    valid_uptime_messages << 'an hour ago'
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours <= 1
-    step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
+    valid_uptime_messages += diffs.map { |n| "#{rounded_uptime_minutes + n} minutes ago" }
   elsif uptime[:seconds] >= 45 && rounded_uptime_minutes == 1
-    step 'I should see a "a minute ago" text'
+    valid_uptime_messages << 'a minute ago'
   elsif uptime[:seconds] < 45
-    step 'I should see a "a few seconds ago" text'
-  elsif rounded_uptime_days < 25
-    step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
+    valid_uptime_messages << 'a few seconds ago'
+  elsif rounded_uptime_days < 25 # shows "a month ago" from 25 days onwards
+    valid_uptime_messages += diffs.map { |n| "#{rounded_uptime_days + n} days ago" }
   else
-    step 'I should see a "a month ago" text'
+    valid_uptime_messages << 'a month ago'
   end
+
+  check = valid_uptime_messages.find { |message| message == ui_uptime_text }
+  raise ScriptError, "Expected uptime message to be one of #{valid_uptime_messages} - found '#{ui_uptime_text}'" unless check
 end
 
 Then(/^I should see several text fields$/) do
@@ -163,7 +173,7 @@ When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until
 end
 
 When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
-  step %(I wait 90 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
+  step %(I wait 180 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
@@ -176,13 +186,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     rescue Capybara::ElementNotFound
       # ignored - pending actions cannot be found
     end
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -476,31 +480,6 @@ When(/^I install the needed packages for highstate in build host$/) do
   xorriso
   xtables-plugins'
   get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
-end
-
-Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  node.run("zypper lr -E | grep '#{channel}'")
-end
-
-Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  _out, code = node.run("zypper lr -E | grep '#{channel}'", check_errors: false)
-  raise ScriptError, "'#{channel}' was not expected but was found." if code.to_i.zero?
-end
-
-Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
-  node = get_target(host)
-  node.run('zypper lr -E | tail -n +5', verbose: true)
-  out, _code = node.run('zypper lr -E | tail -n +5 | wc -l')
-  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
-end
-
-Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
-  node = get_target(host)
-  node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
-  out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 # metadata steps

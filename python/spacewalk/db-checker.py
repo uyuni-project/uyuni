@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -22,22 +23,26 @@ _topdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 if _topdir not in sys.path:
     sys.path.append(_topdir)
 
+# pylint: disable-next=wrong-import-position
 from spacewalk.server import rhnSQL
 
 
 def main():
     rhnSQL.initDB()
 
+    # pylint: disable-next=undefined-variable
     if not args:
         print("No module specified")
         return 0
 
-    if '.' not in sys.path:
-        sys.path.append('.')
+    if "." not in sys.path:
+        sys.path.append(".")
 
     g = globals()
 
+    # pylint: disable-next=undefined-variable
     for module_name in args:
+        # pylint: disable-next=consider-using-f-string
         print(("Checking module %s" % module_name))
         pmn = proper_module_name(module_name)
         try:
@@ -45,10 +50,11 @@ def main():
             g[module_name] = m
         except ImportError:
             e = sys.exc_info()[1]
+            # pylint: disable-next=consider-using-f-string
             print(("Unable to import module %s: %s" % (module_name, e)))
             continue
 
-        comps = pmn.split('.')
+        comps = pmn.split(".")
         for c in comps[1:]:
             m = getattr(m, c)
 
@@ -57,15 +63,17 @@ def main():
                 rhnSQL.prepare(statement)
             except rhnSQL.SQLStatementPrepareError:
                 e = sys.exc_info()[1]
+                # pylint: disable-next=consider-using-f-string
                 print(("Error: %s.%s: %s" % (mod.__name__, name, e)))
 
 
 def proper_module_name(module_name):
-    suffix = '.py'
+    suffix = ".py"
     if module_name.endswith(suffix):
-        module_name = module_name[:-len(suffix)]
+        module_name = module_name[: -len(suffix)]
 
-    return os.path.normpath(module_name).replace('/', '.')
+    return os.path.normpath(module_name).replace("/", ".")
+
 
 _objs_seen = {}
 
@@ -85,5 +93,6 @@ def get_class_instances(obj, class_obj):
             result.extend(get_class_instances(v, class_obj))
     return result
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main() or 0)

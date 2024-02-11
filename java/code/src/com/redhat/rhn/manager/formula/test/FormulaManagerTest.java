@@ -93,7 +93,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
         metadataDir = Files.createTempDirectory("metadata");
         manager = new FormulaManager(saltServiceMock);
-        FormulaFactory.setDataDir(tmpSaltRoot.toString());
         FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
         createMetadataFiles();
     }
@@ -157,7 +156,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         ManagedServerGroup managed = ServerGroupTestUtils.createManaged(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
@@ -200,7 +198,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
@@ -225,7 +222,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.addGroup(group);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
@@ -261,7 +257,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         User testUser = UserTestUtils.createUser("test-user", user.getOrg().getId());
         try {
@@ -324,7 +319,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
 
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
         manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
 
         combinedPrometheusExportersFormulas = this.manager
@@ -345,7 +339,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String formulaValues = TestUtils.readAll(TestUtils.findTestData(PROMETHEUS_EXPORTERS_FORMULA_DATA));
         Map<String, Object> formulaValuesMap = Json.GSON.fromJson(formulaValues, Map.class);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});

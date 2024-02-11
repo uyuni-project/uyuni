@@ -15,7 +15,6 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -25,12 +24,14 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.quartz.JobExecutionContext;
+import org.quartz.SchedulerException;
 
 import java.time.Duration;
 import java.time.ZoneId;
@@ -44,8 +45,7 @@ import java.util.Optional;
  */
 public class MinionActionExecutor extends RhnJavaJob {
 
-    public static final int ACTION_DATABASE_GRACE_TIME = 600_000;
-    public static final int ACTION_DATABASE_POLL_TIME = 100;
+    public static final int MAX_RETRIES = 25;
     public static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
     private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
@@ -119,27 +119,21 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
-        // COMMITted in the database. Wait for some minutes checking if it appears
-        int waitedTime = 0;
-        while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
-            if (action != null) {
-                HibernateFactory.getSession().flush();
-                HibernateFactory.getSession().evict(action);
-            }
+        // COMMITted in the database. If it is the case, reschedule the Job.
+        int retryCount = (Integer) context.getTrigger().getJobDataMap().getOrDefault("retryCount", 1);
 
-            action = ActionFactory.lookupById(actionId);
-
-            if (log.isDebugEnabled()) {
-                log.debug("Number of Queued Server Actions for {}: {}", actionId, countQueuedServerActions(action));
-            }
+        if (retryCount <= MAX_RETRIES && countQueuedServerActions(action) == 0) {
+            log.debug("Couldn't find queued actions for action {}, scheduling retry {} of {}",
+                actionId, retryCount, MAX_RETRIES
+            );
             try {
-                Thread.sleep(ACTION_DATABASE_POLL_TIME);
+                // The retry interval gradually increases based on the number of retries.
+                TaskoQuartzHelper.rescheduleJob(context, retryCount, retryCount);
+                return;
             }
-            catch (InterruptedException e) {
-                // never happens
-                Thread.currentThread().interrupt();
+            catch (SchedulerException e) {
+                log.error("Error scheduling retry job for action {}.", actionId, e);
             }
-            waitedTime += ACTION_DATABASE_POLL_TIME;
         }
 
         if (action == null) {
@@ -151,8 +145,6 @@ public class MinionActionExecutor extends RhnJavaJob {
             log.error("Action with id={} has no server with status QUEUED", actionId);
             return;
         }
-
-        log.debug("Action {} found after: {}ms", actionId, waitedTime);
 
         // calculate offset between scheduled time of
         // actions and (now)

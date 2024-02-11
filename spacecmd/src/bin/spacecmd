@@ -156,7 +156,8 @@ if __name__ == '__main__':
         if shell.options.server:
             shell.config['server'] = shell.options.server
         else:
-            shell.config['server'] = get_localhost_fqdn()
+            shell.config['server'] = "localhost"
+            shell.config['nossl'] = True
 
         # don't automatically create config files passed via --config
         if shell.options.config:

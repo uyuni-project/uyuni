@@ -35,7 +35,7 @@ import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 import com.redhat.rhn.frontend.dto.ReportingUser;
 
 import com.suse.cloud.CloudPaygManager;
-import com.suse.manager.maintenance.ProductEndOfLifeManager;
+import com.suse.manager.maintenance.BaseProductManager;
 import com.suse.manager.utils.MailHelper;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +44,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -57,8 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-
-import javax.xml.stream.XMLStreamException;
 
 /**
  * DailySummary task.
@@ -76,7 +73,7 @@ public class DailySummary extends RhnJavaJob {
     private static final String ERRATA_UPDATE = "Errata Update";
     private static final String ERRATA_INDENTION = StringUtils.repeat(" ", ERRATA_SPACER);
 
-    private static final ProductEndOfLifeManager END_OF_LIFE_MANAGER = new ProductEndOfLifeManager();
+    private static final BaseProductManager END_OF_LIFE_MANAGER = new BaseProductManager();
     private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
     @Override
@@ -110,23 +107,9 @@ public class DailySummary extends RhnJavaJob {
             return;
         }
 
-        final LocalDate endOfLifeDate;
-
-        try {
-            endOfLifeDate = END_OF_LIFE_MANAGER.getEndOfLifeDate();
-            if (endOfLifeDate == null) {
-                LOGGER.warn("No end of life date defined for the SUSE Manager");
-                return;
-            }
-        }
-        catch (IOException | XMLStreamException ex) {
-            LOGGER.error("Unable to retrieve end of life date for SUSE Manager", ex);
-            return;
-        }
-
-        if (END_OF_LIFE_MANAGER.isNotificationPeriod(endOfLifeDate, today)) {
+        if (END_OF_LIFE_MANAGER.isNotificationPeriod(today)) {
             NotificationMessage notification = UserNotificationFactory.createNotificationMessage(
-                new EndOfLifePeriod(endOfLifeDate));
+                new EndOfLifePeriod(END_OF_LIFE_MANAGER.getEndOfLifeDate()));
             UserNotificationFactory.storeNotificationMessageFor(notification,
                 Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
         }

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 SUSE Manager master_tops module
 -------------------------------
 
@@ -12,14 +12,14 @@ user custom data provided in /srv/salt/top.sls file.
 
     master_tops:
       mgr_master_tops: True
-'''
+"""
 
 # Import python libs
 from __future__ import absolute_import
 import logging
 
 # Define the module's virtual name
-__virtualname__ = 'mgr_master_tops'
+__virtualname__ = "mgr_master_tops"
 
 log = logging.getLogger(__name__)
 
@@ -35,24 +35,27 @@ MANAGER_BASE_TOP = [
     "services.docker",
     "services.kiwi-image-server",
     "ansible",
-    "switch_to_bundle.mgr_switch_to_venv_minion"
+    "switch_to_bundle.mgr_switch_to_venv_minion",
 ]
 
 
+# pylint: disable-next=invalid-name
 def __virtual__():
-    '''
+    """
     Ensure the module name.
-    '''
+    """
     return __virtualname__
 
 
 def top(**kwargs):
-    '''
+    """
     Returns the SUSE Manager top state information of a minion
     for the `base` salt environment.
-    '''
-    env = kwargs['opts'].get('environment') or kwargs['opts'].get('saltenv')
+    """
+    env = kwargs["opts"].get("environment") or kwargs["opts"].get("saltenv")
     if env in [None, "base"]:
-        log.debug('Loading SUSE Manager TOP state information for the "base" environment')
+        log.debug(
+            'Loading SUSE Manager TOP state information for the "base" environment'
+        )
         return {"base": MANAGER_BASE_TOP}
     return None

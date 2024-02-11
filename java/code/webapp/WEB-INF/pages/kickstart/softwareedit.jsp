@@ -19,25 +19,31 @@
     }
 
     function toggleKSTree(what) {
-        var form = document.getElementsByName("kickstartSoftwareForm")[0];
+        var form = jQuery("form[name='kickstartSoftwareForm']");
+        var select = form.find("select[id='kstree']");
+
         if(what.checked) {
-            form.tree.disabled=1;
+            select.prop("disabled", "disabled");
         } else {
-            form.tree.disabled=0;
+            select.prop("disabled", false);
         }
     }
 
     function clickNewestRHTree() {
-        var form = document.getElementsByName("kickstartSoftwareForm")[0];
-        if(form.useNewestRHTree.checked) {
-            form.useNewestTree.checked = false;
+        var form = jQuery("form[name='kickstartSoftwareForm']");
+        var treeCheckbox = form.find("input[name='useNewestTree']")
+        var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
+        if(rhTreeCheckbox.is(':checked')) {
+            treeCheckbox.attr('checked', false);
         }
     }
 
     function clickNewestTree() {
-        var form = document.getElementsByName("kickstartSoftwareForm")[0];
-        if(form.useNewestTree.checked) {
-            form.useNewestRHTree.checked = false;
+        var form = jQuery("form[name='kickstartSoftwareForm']");
+        var treeCheckbox = form.find("input[name='useNewestTree']")
+        var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
+        if(treeCheckbox.is(':checked')) {
+            rhTreeCheckbox.attr('checked', false);
         }
     }
     //-->
@@ -113,63 +119,37 @@
                                                   labelProperty="label" />
                                 </html:select>
                             </c:if>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="alert alert-warning"><bean:message key="kickstart.edit.software.notrees.jsp" /></div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
-            <c:choose>
-                <c:when test="${notrees == null}">
-                    <c:if test="${usingNewest == true or usingNewestRH == true}">
-                        <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
-                                <html:select styleClass="form-control"
-                                             property="tree"
-                                             onchange="reloadForm(this);"
-                                             styleId="kstree"
-                                             disabled="true">
-                                    <html:options collection="trees"
-                                                  property="id"
-                                                  labelProperty="label" />
-                                </html:select>
-                            </div>
-                        </div>
-                    </c:if>
-                    <c:if test="${not (usingNewest == true or usingNewestRH == true)}">
-                        <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
-                                <html:select styleClass="form-control"
-                                             property="tree"
-                                             onchange="reloadForm(this);"
-                                             styleId="kstree">
-                                    <html:options collection="trees"
-                                                  property="id"
-                                                  labelProperty="label" />
-                                </html:select>
-                            </div>
-                        </div>
-                    </c:if>
-                    <c:if test="${redHatTreesAvailable != null}">
-                        <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="useNewestRHTree" value="0"
-                                               onclick="toggleKSTree(this); clickNewestRHTree()"
-                                               <c:if test="${usingNewestRH == true}">checked=1</c:if> />
-                                        <bean:message key="kickstart.jsp.create.wizard.kstree.always_new.label"/>
-                                    </label>
-                                </div>
-                                    <div class="help-block">
-                                        <bean:message key="kickstart.jsp.create.wizard.kstree.always_new_RH"/>                                
+                            <c:if test="${not (usingNewest == true or usingNewestRH == true)}">
+                                <div class="form-group">
+                                    <div class="col-lg-6">
+                                        <html:select styleClass="form-control"
+                                                     property="tree"
+                                                     onchange="reloadForm(this);"
+                                                     styleId="kstree">
+                                            <html:options collection="trees"
+                                                          property="id"
+                                                          labelProperty="label" />
+                                        </html:select>
                                     </div>
-                            </div>
-                        </div>
-                    </c:if>
-                    <div class="form-group">
-                        <div class="col-lg-offset-3 col-lg-6">
+                                </div>
+                            </c:if>
+                            <c:if test="${redHatTreesAvailable != null}">
+                                <div class="form-group">
+                                    <div class="col-lg-6">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="useNewestRHTree" value="0"
+                                                       onclick="toggleKSTree(this); clickNewestRHTree()"
+                                                       <c:if test="${usingNewestRH == true}">checked=1</c:if> />
+                                                <bean:message key="kickstart.jsp.create.wizard.kstree.always_new.label"/>
+                                            </label>
+                                        </div>
+                                            <div class="help-block">
+                                                <bean:message key="kickstart.jsp.create.wizard.kstree.always_new_RH"/>
+                                            </div>
+                                    </div>
+                                </div>
+                            </c:if>
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox"
@@ -183,13 +163,13 @@
                             <div class="help-block">
                                 <bean:message key="kickstart.jsp.create.wizard.kstree.always_new"/>
                             </div>
-                        </div>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="alert alert-warning"><bean:message key="kickstart.edit.software.notrees.jsp" /></div>
-                </c:otherwise>
-            </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="alert alert-warning"><bean:message key="kickstart.edit.software.notrees.jsp" /></div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
 
             <div class="form-group">
                 <label class="col-lg-3 control-label">
