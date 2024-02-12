@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 12 20:03:33 CET 2024 - rosuna@suse.com
+
+- version 4.3.22-1
+  * Skip deploying the CA into the Salt directory on proxies (bsc#1219850)
+
+-------------------------------------------------------------------
 Mon Feb 05 21:49:20 CET 2024 - rosuna@suse.com
 
 - version 4.3.21-1
