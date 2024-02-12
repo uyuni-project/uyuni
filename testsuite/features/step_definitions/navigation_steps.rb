@@ -770,7 +770,7 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I should not see a warning sign$/) do
+Then(/^I should not see a warning nor an error sign$/) do
   raise 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
   raise 'Error detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
