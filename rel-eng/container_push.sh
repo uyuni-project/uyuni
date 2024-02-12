@@ -38,17 +38,24 @@ if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
   if [ "${OSCAPI}" == "https://api.suse.de" ]; then
     # SUSE Manager settings
     VERSION=$(echo ${PRODUCT_VERSION} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
-    sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}\/%ARCH%/g" -i ${SRPM_PKG_DIR}/Dockerfile
+    ARCH=
+    # OBS cannot find the dependencies with a placeholder or %_arch from the project config.
+    # The best solution is to only use the architecture in the path of the images to release,
+    # not intermediary ones.
+    if [ "${NAME}" != "init" ]; then
+        ARCH="\/%ARCH%"
+    fi
+    sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}${ARCH}/g" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^\(LABEL org.opensuse.reference=\)\"\([^:]\+:\)\([^%]\+\)%RELEASE%\"/\1\"\2${PRODUCT_VERSION}.%RELEASE%\"/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "s/^LABEL org\.opensuse\.reference=\"\${REFERENCE_PREFIX}/LABEL org.opensuse.reference=\"\${REFERENCE_PREFIX}\/%ARCH%/" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "s/^LABEL org\.opensuse\.reference=\"\${REFERENCE_PREFIX}/LABEL org.opensuse.reference=\"\${REFERENCE_PREFIX}${ARCH}/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"${EULA}\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"${RELEASE_STAGE}\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.lifecycle-url=\"https://www.suse.com/lifecycle/\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.supportlevel=\"l3\"" -i ${SRPM_PKG_DIR}/Dockerfile
-    NAME="suse\/manager\/${VERSION}\/%ARCH%\/${NAME}"
+    NAME="suse\/manager\/${VERSION}${ARCH}\/${NAME}"
   else
     NAME="uyuni\/${NAME}"
   fi
