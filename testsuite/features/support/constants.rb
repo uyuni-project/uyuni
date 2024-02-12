@@ -1141,6 +1141,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-x86_64-backports-updates
         opensuse_leap15_5-x86_64-sle-updates
         opensuse_leap15_5-uyuni-client-x86_64
+        opensuse_leap15_5-uyuni-client-devel-x86_64
+        uyuni-proxy-stable-leap-155-x86_64
       ],
     'leap15.4-aarch64' =>
       %w[
@@ -1242,6 +1244,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'el9-manager-tools-updates-x86_64-ol9' => 60,
   'el9-manager-tools-updates-x86_64-rocky' => 60,
   'el9-pool-x86_64' => 60,
+  'opensuse_leap15_5-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-x86_64' => 840,
   'res7-suse-manager-tools-x86_64' => 300,
@@ -1359,7 +1362,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-main-amd64' => 780,
   'ubuntu-2204-amd64-main-security-amd64' => 2760,
   'ubuntu-2204-amd64-main-updates-amd64' => 180,
-  'ubuntu-22.04-suse-manager-tools-amd64' => 60
+  'ubuntu-22.04-suse-manager-tools-amd64' => 60,
+  'uyuni-proxy-stable-leap-155-x86_64' => 60
 }.freeze
 
 EMPTY_CHANNELS = %w[sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64].freeze
