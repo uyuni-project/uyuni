@@ -21,7 +21,7 @@ Feature: Bootstrap a Ubuntu 22.04 Salt SSH minion
     And I enter "linux" as "password"
     And I enter "22" as "port"
     And I select "1-ubuntu2204_ssh_minion_key" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
