@@ -298,10 +298,4 @@ transactional_update_set_reboot_method_systemd:
     - unless:
       - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
-{# Use transactional reboot support -> server will be rebooted according to REBOOT_METHOD #}
-reboot_transactional_server:
-  mgrcompat.module_run:
-    - name: transactional_update.reboot
-    - require:
-      - {{ salt_minion_name }}
 {%- endif %}
