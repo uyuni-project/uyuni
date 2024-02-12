@@ -368,7 +368,7 @@ end
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
 # It waits for all the reposyncs in the allow-list to complete, and kills all others.
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
-  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version].nil?
+  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).nil?
 
   channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
   log "Killing channels:\n#{channels_to_kill}"
@@ -452,7 +452,9 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
-  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  raise ScriptError, "Synchronization error, version type #{os_product_version} in #{product} product not found" if channels_to_wait.nil?
+
   time_spent = 0
   checking_rate = 10
   timeout = 0
