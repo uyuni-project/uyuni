@@ -27,7 +27,7 @@ jobs:
               - 'java/**'
               - 'web/html/src/**'
               - 'testsuite/**'
-              - '!.github/workflows/**'
+              - '.github/workflows/acceptance_tests**'
   test-uyuni:
     runs-on: ubuntu-22.04
     needs: paths-filter
