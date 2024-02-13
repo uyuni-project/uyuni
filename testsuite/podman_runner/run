@@ -24,13 +24,10 @@ set -e
 ./15_run_salt_deblike_minion.sh
 ./16_accept_all_keys.sh
 ./17_run_init_clients_tests.sh
+./18_run_secondary_tests.sh
 ./19_split_secondary_p_tests.sh
-./19_split_secondary_tests.sh
 for i in 1 2 3 4 5;do
   ./19_run_secondary_parallelizable_tests_subset.sh ${i}
-done
-for i in 1 2 3 4 5;do
-  ./19_run_secondary_tests_subset.sh ${i}
 done
 ./20_get_server_logs.sh
 ./21_get_client_logs.sh
