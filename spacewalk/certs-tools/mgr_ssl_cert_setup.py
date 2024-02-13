@@ -603,13 +603,15 @@ def deployCAUyuni(certData):
                 f.write(ca["content"])
             os.chmod(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME), int("0644", 8))
 
-            if os.path.exists(os.path.join(SALT_CA_DIR, ROOT_CA_NAME)):
-                os.remove(os.path.join(SALT_CA_DIR, ROOT_CA_NAME))
-            with open(
-                os.path.join(SALT_CA_DIR, ROOT_CA_NAME), "w", encoding="utf-8"
-            ) as f:
-                f.write(ca["content"])
-            os.chmod(os.path.join(SALT_CA_DIR, ROOT_CA_NAME), int("0644", 8))
+            # SALT_CA_DIR exists only on the server, ignore on proxies
+            if os.path.exists(SALT_CA_DIR):
+                if os.path.exists(os.path.join(SALT_CA_DIR, ROOT_CA_NAME)):
+                    os.remove(os.path.join(SALT_CA_DIR, ROOT_CA_NAME))
+                with open(
+                    os.path.join(SALT_CA_DIR, ROOT_CA_NAME), "w", encoding="utf-8"
+                ) as f:
+                    f.write(ca["content"])
+                os.chmod(os.path.join(SALT_CA_DIR, ROOT_CA_NAME), int("0644", 8))
             break
     # in case a systemd timer try to do the same
     time.sleep(3)
