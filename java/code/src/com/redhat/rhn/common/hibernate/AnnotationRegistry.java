@@ -92,6 +92,7 @@ import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentTypeConverter;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
+import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
@@ -187,6 +188,7 @@ public class AnnotationRegistry {
         SCCCredentials.class,
         VHMCredentials.class,
         ServerCoCoAttestationConfig.class,
+        ServerCoCoAttestationReport.class,
         CoCoEnvironmentTypeConverter.class
     );
 
