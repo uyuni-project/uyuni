@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.webui.websocket.WebSocketActionIdProvider;
 
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +52,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     private ActionType actionType;
 
     private Set<ServerAction> serverActions;
+    private Set<ServerCoCoAttestationReport> cocoAttestationReports;
     private User schedulerUser;
     private Org org;
 
@@ -209,6 +211,33 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     @Override
     public void setModified(Date modifiedIn) {
         this.modified = modifiedIn;
+    }
+
+    /**
+     * Getter for CocoAttestationReports
+     * @return return the attestation reports
+     */
+    public Set<ServerCoCoAttestationReport> getCocoAttestationReports() {
+        return cocoAttestationReports;
+    }
+
+    /**
+     * Setter for CocoAttestationReports
+     * @param cocoAttestationReportsIn the reports
+     */
+    public void setCocoAttestationReports(Set<ServerCoCoAttestationReport> cocoAttestationReportsIn) {
+        cocoAttestationReports = cocoAttestationReportsIn;
+    }
+
+    /**
+     * Add CocoAttestationReport to Action
+     * @param cocoAttestationReportIn the report to add
+     */
+    public void addCocoAttestationReport(ServerCoCoAttestationReport cocoAttestationReportIn) {
+        if (cocoAttestationReports == null) {
+            cocoAttestationReports = new HashSet<>();
+        }
+        cocoAttestationReports.add(cocoAttestationReportIn);
     }
 
     /**

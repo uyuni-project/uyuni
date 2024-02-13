@@ -41,6 +41,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
+import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.utils.Opt;
 
@@ -123,6 +124,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<ConfigChannel> localChannels = new HashSet<>();
     private Location serverLocation;
     private ServerCoCoAttestationConfig cocoAttestationConfig;
+    private Set<ServerCoCoAttestationReport> cocoAttestationReports;
     private Set<VirtualInstance> guests = new HashSet<>();
     private VirtualInstance virtualInstance;
     private PushClient pushClient;
@@ -1325,6 +1327,26 @@ public class Server extends BaseDomainHelper implements Identifiable {
         cocoAttestationConfig = cocoAttestationConfigIn;
     }
 
+    /**
+     * @return Returns the Attestation Reports assosiated with the server
+     */
+    public Set<ServerCoCoAttestationReport> getCocoAttestationReports() {
+        return cocoAttestationReports;
+    }
+
+    /**
+     * @param cocoAttestationReportsIn the attestation reports to set
+     */
+    public void setCocoAttestationReports(Set<ServerCoCoAttestationReport> cocoAttestationReportsIn) {
+        cocoAttestationReports = cocoAttestationReportsIn;
+    }
+
+    /**
+     * @param cocoAttestationReportIn the attestation report to add
+     */
+    public void addCocoAttestationReports(ServerCoCoAttestationReport cocoAttestationReportIn) {
+        cocoAttestationReports.add(cocoAttestationReportIn);
+    }
     private void initializeRam() {
         if (ram == null) {
             ram = new Ram();
