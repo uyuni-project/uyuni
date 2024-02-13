@@ -15,9 +15,14 @@
 package com.suse.manager.model.attestation;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.Server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Optional;
 
 public class AttestationFactory extends HibernateFactory {
 
@@ -32,6 +37,14 @@ public class AttestationFactory extends HibernateFactory {
     }
 
     /**
+     * Save a {@link ServerCoCoAttestationReport} object
+     * @param report object to save
+     */
+    public void save(ServerCoCoAttestationReport report) {
+        saveObject(report);
+    }
+
+    /**
      * @param serverId the server id
      * @return returns the optional attestation config for the selected system
      */
@@ -42,6 +55,46 @@ public class AttestationFactory extends HibernateFactory {
                 .setParameter("serverId", serverId)
                 .uniqueResultOptional();
     }
+
+    /**
+     * @param reportId the report id
+     * @return returns the optional attestation report for the given id
+     */
+    public Optional<ServerCoCoAttestationReport> lookupReportById(long reportId) {
+        return getSession()
+                .createQuery("FROM ServerCoCoAttestationReport WHERE id = :id",
+                        ServerCoCoAttestationReport.class)
+                .setParameter("id", reportId)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * @param serverIn the server
+     * @return returns the latest attestation report for the given server
+     */
+    public Optional<ServerCoCoAttestationReport> lookupLatestReportByServer(Server serverIn) {
+        return getSession()
+                .createQuery("FROM ServerCoCoAttestationReport WHERE server = :server " +
+                        " ORDER BY created DESC", ServerCoCoAttestationReport.class)
+                .setParameter("server", serverIn)
+                .setMaxResults(1)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * @param serverIn the server
+     * @param actionIn the action
+     * @return returns the attestation report for this server and action if available
+     */
+    public Optional<ServerCoCoAttestationReport> lookupReportByServerAndAction(Server serverIn, Action actionIn) {
+        return getSession()
+                .createQuery("FROM ServerCoCoAttestationReport WHERE server = :server AND action = :action",
+                        ServerCoCoAttestationReport.class)
+                .setParameter("server", serverIn)
+                .setParameter("action", actionIn)
+                .uniqueResultOptional();
+    }
+
     /**
      * Create a Confidential Compute Attestation Config for a given Server ID
      * @param serverIn the server
@@ -60,8 +113,33 @@ public class AttestationFactory extends HibernateFactory {
         return cnf;
     }
 
+    /**
+     * Create a Confidential Compute Attestation Report entry for the given server.
+     * The entry is initialized with the environment type of the config with the
+     * status "pending".
+     * @param serverIn the server
+     * @return returns a report
+     * @throws LookupException when {@link ServerCoCoAttestationConfig} is not available or disabled
+     */
+    public ServerCoCoAttestationReport createReportForServer(Server serverIn) {
+        Optional<ServerCoCoAttestationConfig> cnf = serverIn.getOptCocoAttestationConfig();
+        if (cnf.filter(ServerCoCoAttestationConfig::isEnabled).isPresent()) {
+            ServerCoCoAttestationReport rpt = new ServerCoCoAttestationReport();
+            rpt.setServer(serverIn);
+            rpt.setEnvironmentType(cnf.get().getEnvironmentType());
+            rpt.setStatus(CoCoAttestationStatus.PENDING);
+            save(rpt);
+            serverIn.addCocoAttestationReports(rpt);
+            return rpt;
+        }
+        else {
+            throw new LookupException("CoCoAttestation Config not found or disabled");
+        }
+    }
+
     @Override
     protected Logger getLogger() {
         return LOG;
     }
+
 }
