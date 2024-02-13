@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.ContentSourceType;
@@ -700,5 +701,50 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals("b_parent1", channels.get(1).getLabel());
         assertEquals("a_child1", channels.get(2).getLabel());
         assertEquals("b_parent3", channels.get(3).getLabel());
+    }
+    @Test
+    public void testChannelSyncFlag() throws Exception {
+
+        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        ChannelFactory.save(channel);
+        long channelId = channel.getId();
+        TestUtils.flushAndEvict(channel);
+
+        Channel ch = ChannelFactory.lookupByIdAndUser(channelId, user);
+        assertNotNull(ch);
+        ChannelSyncFlag csf = ch.getChannelSyncFlag();
+
+        assertNotNull(csf);
+        assertFalse(csf.isCreateTree());
+        assertFalse(csf.isNoErrata());
+        assertFalse(csf.isNoStrict());
+        assertFalse(csf.isOnlyLatest());
+        assertFalse(csf.isQuitOnError());
+
+        ChannelSyncFlag csf2 = ChannelFactory.lookupChannelReposyncFlag(channel);
+
+        assertNotNull(csf2);
+        assertFalse(csf2.isCreateTree());
+        assertFalse(csf2.isNoErrata());
+        assertFalse(csf2.isNoStrict());
+        assertFalse(csf2.isOnlyLatest());
+        assertFalse(csf2.isQuitOnError());
+
+        csf.setCreateTree(true);
+        csf.setNoErrata(true);
+        csf.setNoStrict(true);
+        csf.setOnlyLatest(true);
+        csf.setQuitOnError(true);
+
+        ChannelFactory.save(csf);
+        flushAndEvict(csf);
+
+        assertNotNull(csf);
+        assertTrue(csf.isCreateTree());
+        assertTrue(csf.isNoErrata());
+        assertTrue(csf.isNoStrict());
+        assertTrue(csf.isOnlyLatest());
+        assertTrue(csf.isQuitOnError());
     }
 }

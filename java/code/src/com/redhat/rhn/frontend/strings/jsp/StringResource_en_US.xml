@@ -8894,6 +8894,9 @@ Please note that some manual configuration of these scripts may still be require
       <trans-unit id="repos.jsp.button-sync" xml:space="preserve">
         <source>Sync Now</source>
       </trans-unit>
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+        <source>Save</source>
+      </trans-unit>
       <trans-unit id="repos.jsp.message.schedulefailed" xml:space="preserve">
         <source>Schedule of Repo Sync failed. Check logs for more information.</source>
       </trans-unit>

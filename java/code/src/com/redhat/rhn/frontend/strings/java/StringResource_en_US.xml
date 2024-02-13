@@ -8331,6 +8331,9 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="message.syncscheduled" xml:space="preserve">
         <source>Repository sync scheduled for {0}.</source>
       </trans-unit>
+      <trans-unit id="message.savereposyncflags" xml:space="preserve">
+        <source>Saved repository settings for {0}.</source>
+      </trans-unit>
       <trans-unit id="message.syncinprogress" xml:space="preserve">
         <source>Repository sync is running.</source>
       </trans-unit>
