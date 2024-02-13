@@ -39,6 +39,11 @@
                     <rhn:icon type="repo-sync"/>
                     <bean:message key='repos.jsp.button-sync'/>
                 </button>
+                <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-save'/>"
+                        class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
+                    <rhn:icon type="repo-sync"/>
+                    <bean:message key='repos.jsp.button-save'/>
+                </button>
             </div>
         </div>
 
@@ -80,40 +85,39 @@
 
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-strict" id="no-strict" <c:if test="${channel.channelSyncFlags.noStrict}">checked</c:if>/>
+                <input type="checkbox" name="no-strict" id="no-strict" ${no-strict ? 'checked' : ''}/>
                 <bean:message key="channel.manage.sync.nostrict.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-errata" id="no-errata" <c:if test="${channel.channelSyncFlags.noErrata}">checked</c:if>/>
+                <input type="checkbox" name="no-errata" id="no-errata" ${no-errata ? 'checked' : ''}/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="latest" id="latest" <c:if test="${channel.channelSyncFlags.onlyLatest}">checked</c:if>/>
+                <input type="checkbox" name="latest" id="latest" ${latest ? 'checked' : ''}/>
                 <bean:message key="channel.manage.sync.latestonly.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="sync-kickstart" id="sync-kickstart" <c:if test="${channel.channelSyncFlags.createTree}">checked</c:if>/>
+                <input type="checkbox" name="sync-kickstart" id="sync-kickstart" ${sync-kickstart ? 'checked' : ''}/>
                 <bean:message key="channel.manage.sync.synckickstart.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="fail" id="fail" <c:if test="${channel.channelSyncFlags.quitOnError}">checked</c:if>/>
+                <input type="checkbox" name="fail" id="fail" ${fail ? 'checked' : ''}/>
                 <bean:message key="channel.manage.sync.fail.jsp"/>
             </label>
         </div>
         
-
         <br/>
         <c:if test='${scheduleEditable}'>
             <jsp:include page="/WEB-INF/pages/common/fragments/repeat-task-picker.jspf">
