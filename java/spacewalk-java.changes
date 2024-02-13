@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:11:44 CET 2024 - marina.latini@suse.com
+
+- version 5.0.4-1
+  * Require latest 5.0 database schema version
+  * Update license to include the year 2024
+  * Add org/createFirst to unauthenticated HTTP API paths
+
+-------------------------------------------------------------------
 Mon Jan 29 11:58:20 CET 2024 - rosuna@suse.com
 
 - version 5.0.3-1
