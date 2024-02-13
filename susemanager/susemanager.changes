@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:08:44 CET 2024 - marina.latini@suse.com
+
+- version 5.0.3-1
+  * Add Debian 12 bootstrap data
+  * Don't change /etc/motd in the setup (bsc#1219228)
+
+-------------------------------------------------------------------
 Mon Jan 29 11:53:23 CET 2024 - rosuna@suse.com
 
 - version 5.0.2-1
