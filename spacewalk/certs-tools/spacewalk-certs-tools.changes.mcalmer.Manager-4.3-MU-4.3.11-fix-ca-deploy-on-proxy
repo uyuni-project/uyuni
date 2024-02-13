@@ -1,1 +1,0 @@
-- skip deploying the CA into the salt dir on proxies (bsc#1219850)
