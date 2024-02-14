@@ -142,6 +142,9 @@ if [ -L /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
 fi
 
 %post
+# when uyuni roster module has changed, we need to remove the cache
+rm -f /var/cache/salt/master/roster/uyuni/minions.p
+
 # this will be filled with content when a certificate gets deployed
 if [ ! -e /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
   touch /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
