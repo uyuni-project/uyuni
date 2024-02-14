@@ -17,7 +17,7 @@ import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-ap
 import ChannelsFilters from "./channels-filters";
 import { getInitialFiltersState } from "./channels-filters-state";
 import ChannelProcessor from "./channels-processor";
-import styles from "./channels-selection.css";
+import styles from "./channels-selection.module.css";
 
 type PropsType = {
   isSourcesApiLoading: boolean;

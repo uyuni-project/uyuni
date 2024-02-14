@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -41,7 +41,14 @@ jobs:
 
     # We only install production dependencies here to simulate a situation similar to OBS/IBS
     - name: Install production dependencies
-      run: yarn --cwd web/html/src install --force --ignore-optional --production=true --frozen-lockfile --prefer-offline
+      run: yarn install --force --ignore-optional --production=true --frozen-lockfile --prefer-offline
 
     - name: Build application
-      run: yarn --cwd web/html/src build
+      run: yarn build
+
+    # See https://github.com/mxschmitt/action-tmate?tab=readme-ov-file#only-on-failure
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
+      with:
+        limit-access-to-actor: true

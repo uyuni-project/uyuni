@@ -68,15 +68,17 @@
                            headerkey="systemlist.jsp.entitlement"
                            attr="entitlementLevel"/>
 </rl:list>
-  <span class="full-width-note-left">
-        ${paginationMessage}
-  </span>
-
-  <span class="full-width-note-right">
-        <a class="js-spa" href="/rhn/manager/systems/list/all?qc=created_days">
-                <bean:message key="yourrhn.jsp.recentlyregistered.all" />
-        </a>
-  </span>
+  <div class="row">
+    <div class="col-md-6 text-left">
+      ${paginationMessage}
+    </div>
+    <div class="col-md-6 text-right">
+      <a class="js-spa" href="/rhn/manager/systems/list/all?qc=created_days">
+        <bean:message key="yourrhn.jsp.recentlyregistered.all" />
+      </a>
+    </div>
+    <hr />
+  </div>
 
 </rl:listset>
 

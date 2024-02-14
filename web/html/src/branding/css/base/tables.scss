@@ -1,0 +1,95 @@
+.table {
+  border-color: $eos-bc-gray-100;
+
+  > :not(caption) > * > * {
+    padding: 8px;
+    border-bottom-width: 1px;
+  }
+
+  > tbody > tr:last-child > * {
+    border-bottom-width: 0;
+  }
+}
+
+.table > thead > tr.active > th {
+  background: $gray-lighter;
+}
+
+td {
+  overflow: hidden;
+}
+
+.table-framed td,
+.table-framed th {
+  border: 2px solid $gray-lighter;
+  padding: 5px;
+}
+.table-framed hr {
+  margin: 0px;
+}
+
+.table thead > tr > td {
+  padding: 0;
+}
+
+// colour to the head, except for when it is the last TR in the thead (it will be white)
+thead tr {
+  background: #e7e7e7;
+  &:last-of-type {
+    background: #ffffff;
+  }
+}
+// Colour to the tfoot
+tfoot {
+  background: #f3f3f3;
+}
+.panel .table {
+  margin-bottom: 0;
+}
+
+tr.alphaResult td.sortedCol:before {
+  content: "\f054\a0";
+  font-family: "FontAwesome";
+}
+
+th.ascSort a:after,
+th.ascSort button:after {
+  content: "  \f160";
+  font-family: "FontAwesome";
+}
+
+th.descSort a:after,
+th.descSort button:after {
+  content: "  \f161";
+  font-family: "FontAwesome";
+}
+
+th button.btn-link {
+  font-weight: bold;
+}
+
+.compare-list {
+  border: 1px solid #dddddd;
+  width: 100%;
+}
+
+.compare-list th {
+  padding: 10px 0px 10px 10px;
+}
+
+.compare-list input[type="submit"] {
+  margin: 5px 0px 5px 15px;
+}
+
+.compare-list td:first-child {
+  background-color: #e2e2e2 !important;
+  border-right: 1px solid #dddddd;
+}
+
+.span-ssm-marg {
+  margin-left: 7px;
+}
+
+.vertical-middle td {
+  vertical-align: middle !important;
+}

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import styles from "./build.css";
+import styles from "./build-version.module.css";
 
 type Props = {
   id: string;
