@@ -951,6 +951,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-desktop-applications15-sp4-updates-x86_64
         sle-module-desktop-applications15-sp4-pool-x86_64
+        sle-product-sles15-sp4-ltss-updates-x86_64
         sle-module-devtools15-sp4-pool-x86_64
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-containers15-sp4-pool-x86_64
