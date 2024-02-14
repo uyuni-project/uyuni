@@ -14,7 +14,7 @@ import statesEnum from "../../../business/states.enum";
 import { ProjectMessageType, ProjectSoftwareSourceType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
 import ChannelsSelection from "./channels/channels-selection";
-import styles from "./sources.css";
+import styles from "./sources.module.css";
 
 type SourcesProps = {
   projectId: string;

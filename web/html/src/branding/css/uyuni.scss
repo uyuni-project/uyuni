@@ -1,0 +1,24 @@
+$theme: "uyuni";
+
+@import "./body.scss";
+@import "./fonts.scss";
+
+.new-theme {
+  @import "bootstrap5/scss/bootstrap";
+
+  @import "mixins.scss";
+  @import "susemanager/variables.scss";
+  @import "uyuni-variables.scss";
+
+  display: flex;
+  flex-direction: column;
+  background: $body-background;
+  font-family: $body-font;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  color: $body-color;
+
+  @import "susemanager/index.scss";  
+}

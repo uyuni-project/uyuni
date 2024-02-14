@@ -1,0 +1,22 @@
+.panel {
+  background: $eos-bc-gray-50;
+  box-shadow: none;
+
+  &-default {
+    border: none;
+
+    > .panel-heading {
+      padding: 1rem;
+      background: transparent;
+      border-bottom: 1px solid $eos-bc-gray-100;
+    }
+
+    .list-group-item {
+      border-bottom: 1px solid $eos-bc-gray-100;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
