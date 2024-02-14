@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.SCCSystemId;
@@ -97,12 +98,16 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
             cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwInfo.setSockets(c.intValue()));
             hwInfo.setArch(srv.getServerArch().getLabel().split("-")[0]);
             if (srv.isVirtualGuest()) {
-                hwInfo.setHypervisor(srv.getVirtualInstance().getType().getHypervisor().orElse(""));
-                hwInfo.setCloudProvider(srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
-                ofNullable(srv.getVirtualInstance().getUuid())
+                VirtualInstance virtualInstance = srv.getVirtualInstance();
+
+                hwInfo.setHypervisor(virtualInstance.getType().getHypervisor().orElse(""));
+                hwInfo.setCloudProvider(virtualInstance.getType().getCloudProvider().orElse(""));
+                ofNullable(virtualInstance.getUuid())
                         .ifPresent(u -> hwInfo.setUuid(u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
                                 "$1-$2-$3-$4-$5")));
-                hwInfo.setMemTotal(srv.getVirtualInstance().getTotalMemory().intValue());
+
+                ofNullable(virtualInstance.getTotalMemory())
+                        .ifPresent(totalMemory -> hwInfo.setMemTotal(totalMemory.intValue()));
             }
             else {
                 hwInfo.setMemTotal((int) srv.getRam());
