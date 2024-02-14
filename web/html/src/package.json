@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "all": "yarn install && npm-run-all -clps --aggregate-output build lint test tsc",
+    "install:production": "yarn install --force --ignore-optional --production=true --frozen-lockfile --prefer-offline",
     "audit-production-dependencies": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" node build/audit.js",
     "check-package": "node build/check-package.mjs",
     "dev": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" webpack --config build/webpack.config.js --mode development",
