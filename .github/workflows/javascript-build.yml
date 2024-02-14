@@ -11,6 +11,13 @@ on:
     paths:
       - 'web/html/src/**'
       - '.github/workflows/javascript-build.yml'
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 jobs:
   javascript_build:
@@ -48,7 +55,7 @@ jobs:
 
     # See https://github.com/mxschmitt/action-tmate?tab=readme-ov-file#only-on-failure
     - name: Setup tmate session
-      if: ${{ failure() }}
+      if: ${{ failure() && github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       uses: mxschmitt/action-tmate@v3
       with:
         limit-access-to-actor: true
