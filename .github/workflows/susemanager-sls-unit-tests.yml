@@ -1,5 +1,9 @@
 name: Run unit tests for susemanager-sls
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths: 'susemanager-utils/susemanager-sls/**/*'

@@ -1,5 +1,9 @@
 name: Frontend dependency audit
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   # This is intentionally not run on `pull_request` since we don't want to block unrelated PRs with fresh audit issues
   push:
