@@ -850,32 +850,36 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   node = get_target(host)
   os_family = node.os_family
   cmd = ''
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+
+  case os_family
+  when /^opensuse/, /^sles/, /^suse/
     mand_repos = ''
-    repos.split(' ').map do |repo|
+    repos.split.map do |repo|
       mand_repos = "#{mand_repos} #{repo}"
     end
     cmd = "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
-  elsif os_family =~ /^centos/
-    repos.split(' ').each do |repo|
+  when /^centos/, /^rocky/
+    repos.split.each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
-      cmd = if action == 'enable'
-              "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-            else
-              "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-            end
+      cmd =
+        if action == 'enable'
+          "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+        else
+          "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+        end
     end
-  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
-    repos.split(' ').each do |repo|
+  when /^ubuntu/, /^debian/
+    repos.split.each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
-      cmd = if action == 'enable'
-              "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
-            else
-              "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
-            end
+      cmd =
+        if action == 'enable'
+          "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+        else
+          "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
+        end
     end
   end
-  node.run(cmd, check_errors: error_control.empty?)
+  node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 
 When(/^I enable source package syncing$/) do
@@ -1796,6 +1800,11 @@ When(/^I reboot the server through SSH$/) do
     end
     sleep 1
   end
+end
+
+When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+  node = get_target(host)
+  node.run('reboot')
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|

@@ -7,6 +7,9 @@
 @slemicro51_ssh_minion
 Feature: Bootstrap a SLE Micro 5.1 Salt SSH minion
 
+  Scenario: Clean up sumaform leftovers on a SLE Micro 5.1 SSH minion
+    When I perform a full salt minion cleanup on "slemicro51_ssh_minion"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
