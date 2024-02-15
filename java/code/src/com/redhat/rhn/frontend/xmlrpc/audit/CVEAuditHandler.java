@@ -102,7 +102,13 @@ public class CVEAuditHandler extends BaseHandler {
         else {
             for (String label : patchStatusLabels) {
                 try {
-                    patchStatuses.add(PatchStatus.valueOf(label));
+                    // TODO: Adapt to use new patch statuses
+                    if (label.equals("AFFECTED_PATCH_APPLICABLE")) {
+                        patchStatuses.add(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
+                    }
+                    else {
+                        patchStatuses.add(PatchStatus.valueOf(label));
+                    }
                 }
                 catch (IllegalArgumentException e) {
                     throw new MethodInvalidParamException(e);
@@ -189,7 +195,13 @@ public class CVEAuditHandler extends BaseHandler {
         else {
             for (String label : patchStatusLabels) {
                 try {
-                    patchStatuses.add(PatchStatus.valueOf(label));
+                    // TODO: Adapt to use new patch statuses
+                    if (label.equals("AFFECTED_PATCH_APPLICABLE")) {
+                        patchStatuses.add(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
+                    }
+                    else {
+                        patchStatuses.add(PatchStatus.valueOf(label));
+                    }
                 }
                 catch (IllegalArgumentException e) {
                     throw new MethodInvalidParamException(e);
