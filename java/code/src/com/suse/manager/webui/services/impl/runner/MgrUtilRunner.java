@@ -169,11 +169,13 @@ public class MgrUtilRunner {
     /**
      * Generate a ssh key pair.
      * @param path path where to generate the keys or null to return them
+     * @param pubkeyCopy create a copy of the pubkey at this place. Set NULL when no copy should be created
      * @return the execution result
      */
-    public static RunnerCall<SshKeygenResult> generateSSHKey(String path) {
+    public static RunnerCall<SshKeygenResult> generateSSHKey(String path, String pubkeyCopy) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
+        args.put("pubkeycopy", pubkeyCopy);
         return new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args), new TypeToken<>() { });
     }
 

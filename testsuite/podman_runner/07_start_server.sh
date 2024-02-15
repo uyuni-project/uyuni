@@ -12,6 +12,8 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/branding:/branding \
     -v ${src_dir}/java:/java \
     -v ${src_dir}/client:/client \
+    -v ${src_dir}/susemanager-utils:/susemanager-utils \
+    -v ${src_dir}/susemanager:/susemanager \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/test-all-in-one:/tmp \
     --cgroupns=host \
