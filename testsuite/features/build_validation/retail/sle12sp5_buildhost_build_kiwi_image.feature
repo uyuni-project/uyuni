@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@proxy
 @sle12sp5_buildhost
 Feature: Prepare buildhost and build OS image for SLES 12 SP5
 
