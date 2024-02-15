@@ -1,6 +1,7 @@
 """
 Read in the roster from Uyuni DB
 """
+
 from collections import namedtuple
 import hashlib
 
@@ -172,12 +173,11 @@ class UyuniRoster:
                     ssh_port=proxy.port or 22,
                     ssh_key_path=SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
                     ssh_push_user=PROXY_SSH_PUSH_USER,
-                    # pylint: disable-next=consider-using-f-string
-                    in_out_forward="-W {host}:{port}".format(
-                        host=minion_id, port=ssh_push_port
-                    )
-                    if not tunnel and i == len(proxies) - 1
-                    else "",
+                    in_out_forward=(
+                        f"-W {minion_id}:{ssh_push_port}"
+                        if not tunnel and i == len(proxies) - 1
+                        else ""
+                    ),
                     proxy_host=proxy.hostname,
                 )
             )
