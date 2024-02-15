@@ -1,4 +1,4 @@
-# Copyright 2015-2023 SUSE LLC
+# Copyright 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains all step definitions concerning Salt and bootstrapping
@@ -503,7 +503,9 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if use_salt_bundle
-    if rh_host?(host)
+    if slemicro_host?(host)
+      node.run('transactional-update --continue -n pkg rm venv-salt-minion', check_errors: false)
+    elsif rh_host?(host)
       node.run('yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion', check_errors: false)
     elsif deb_host?(host)
       node.run('apt-get --assume-yes remove venv-salt-minion && apt-get --assume-yes purge venv-salt-minion && apt-get --assume-yes autoremove', check_errors: false)
@@ -512,7 +514,9 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
     end
     node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
   else
-    if rh_host?(host)
+    if slemicro_host?(host)
+      node.run('transactional-update --continue -n pkg rm salt salt-minion', check_errors: false)
+    elsif rh_host?(host)
       node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
     elsif deb_host?(host)
       node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
