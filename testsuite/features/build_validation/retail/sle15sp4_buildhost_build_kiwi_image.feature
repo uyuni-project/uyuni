@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@proxy
 @sle15sp4_buildhost
 Feature: Prepare buildhost and build OS image for SLES 15 SP4
 
@@ -56,7 +57,6 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "sle15sp4_terminal"
 
-@proxy
   Scenario: Move the SLES 15 SP4 image to the branch server
     When I apply state "image-sync" to "proxy"
     Then the image for "sle15sp4_terminal" should exist on the branch server
