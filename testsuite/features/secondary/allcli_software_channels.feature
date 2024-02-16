@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_changing_software_channels
@@ -80,7 +80,7 @@ Feature: Channel subscription via SSM
     And I wait until I do not see "Loading..." text
     Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as unchecked
+    And I should see "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)" as unchecked
 
 @sle_minion
 @susemanager
@@ -239,7 +239,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be disabled on "sle_minion"
+    Then channel "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)" should be disabled on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
     When I click on the clear SSM button

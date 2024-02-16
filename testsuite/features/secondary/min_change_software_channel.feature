@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -32,7 +32,7 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as unchecked
+    And I should see "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)" as unchecked
 
 # susemanager has the Client Tools channels more than uyuni. (+2)
 # in Head also Beta Client Tools Channels (+2)
@@ -71,14 +71,14 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     And I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be enabled on "sle_minion"
+    Then channel "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
 
   Scenario: Check channel change has completed for the system
     Given I am on the Systems overview page of this "sle_minion"
@@ -101,7 +101,7 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as checked
+    And I should see "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)" as checked
 
 @susemanager
   Scenario: Check the new channels are enabled on the system
@@ -115,7 +115,7 @@ Feature: Assign child channel to a system
     When I refresh the metadata for "sle_minion"
     Then "9" channels should be enabled on "sle_minion"
     And channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
-    And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be enabled on "sle_minion"
+    And channel "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
 
 @susemanager
   Scenario: Cleanup: subscribe the system back to previous channels
@@ -152,11 +152,11 @@ Feature: Assign child channel to a system
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
     And I check "Fake-RPM-SUSE-Channel"
-    And I uncheck "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I uncheck "Uyuni Proxy Stable for openSUSE Leap 15.5 (x86_64)"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be disabled on "sle_minion"
+    Then channel "Uyuni Proxy Stabl for openSUSE Leap 15.5 (x86_64)" should be disabled on "sle_minion"
