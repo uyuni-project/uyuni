@@ -15,21 +15,32 @@
 package com.suse.manager.model.attestation;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum CoCoEnvironmentType {
-    NONE(0),
-    KVM_AMD_EPYC_MILAN(1),
-    KVM_AMD_EPYC_GENOA(2),
-    AZURE(3);
+    NONE(0, List.of()),
+    KVM_AMD_EPYC_MILAN(1, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
+    KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
+    AZURE(3, List.of(CoCoResultType.AZURE_SEV_SNP, CoCoResultType.AZURE_SECURE_BOOT,
+                    CoCoResultType.AZURE_DISK_ENCRYPTED));
 
     private final long value;
+    private final List<CoCoResultType> supportedResultTypes;
 
-    CoCoEnvironmentType(long valueIn) {
+    CoCoEnvironmentType(long valueIn, List<CoCoResultType> supportedResultTypesIn) {
         value = valueIn;
+        supportedResultTypes = supportedResultTypesIn;
     }
 
     public long getValue() {
         return value;
+    }
+
+    /**
+     * @return returns the list of supported {@link CoCoResultType} for this environment
+     */
+    public List<CoCoResultType> getSupportedResultTypes() {
+        return supportedResultTypes;
     }
 
     /**
@@ -41,5 +52,12 @@ public enum CoCoEnvironmentType {
                      .filter(e -> e.getValue() == valueIn)
                      .findFirst()
                      .orElseThrow(() -> new IllegalArgumentException("Invalid CoCoEnvironmentType value " + valueIn));
+    }
+
+    /**
+     * @return returns if a nonce value is required
+     */
+    public boolean isNonceRequired() {
+        return List.of(KVM_AMD_EPYC_MILAN, KVM_AMD_EPYC_GENOA).contains(this);
     }
 }
