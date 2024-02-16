@@ -23,6 +23,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -31,11 +33,13 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -50,6 +54,7 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     private CoCoAttestationStatus status;
     private Map<String, Object> inData = new TreeMap<>();
     private Map<String, Object> outData = new TreeMap<>();
+    private List<CoCoAttestationResult> results = new ArrayList<>();
 
     /**
      * @return return the ID
@@ -103,6 +108,11 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
         return outData;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
+    public List<CoCoAttestationResult> getResults() {
+        return results;
+    }
+
     /**
      * @param idIn set the id
      */
@@ -151,6 +161,20 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
      */
     public void setOutData(Map<String, Object> outDataIn) {
         outData = outDataIn;
+    }
+
+    /**
+     * @param resultsIn the results to set
+     */
+    public void setResults(List<CoCoAttestationResult> resultsIn) {
+        results = resultsIn;
+    }
+
+    /**
+     * @param resultIn the results to add
+     */
+    public void addResults(CoCoAttestationResult resultIn) {
+        results.add(resultIn);
     }
 
     @Override
