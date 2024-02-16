@@ -74,6 +74,7 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -440,22 +441,28 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .orElseThrow(() -> new SaltException("Missing systeminfo result. Aborting registration."));
 
             ValueMap grains = systemInfo.getGrains();
-
-            if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.hasSCCCredentials() &&
-                    !RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains)) {
-
-                Object[] args = {minionId};
-                // If the minion is not in the cloud
-                if (grains.getValueAsString("instance_id").length() == 0) {
-                    // DC instances are not allowed to be onboarded without SCC credentials
-                    throw new RegisterMinionException(minionId, org, "bootstrap.minion.error.payg.dcregistered", args);
-                }
-                else {
-                    // BYOS in cloud instances is not allowed to register on a pure SUMA PAYG
-                    // exception: free products or SUSE Manager Proxy
-                    // Attention: minion could be PAYG, so it might lack of package `instance-flavor-check`
-                    throw new RegisterMinionException(minionId, org,
-                            "bootstrap.minion.error.payg.byosregistered", args);
+            if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.hasSCCCredentials()) {
+                LocalCall<String> call = new LocalCall<>("sumautil.instance_flavor",
+                                                         Optional.empty(),
+                                                         Optional.empty(),
+                                                         new TypeToken<>() { });
+                String clientInstanceFlavor = saltApi.callSync(call, minionId).orElse("");
+                if (!RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains,
+                                                       clientInstanceFlavor)) {
+                    Object[] args = {minionId};
+                    // If the minion is not in the cloud
+                    if (grains.getValueAsString("instance_id").isEmpty()) {
+                        // DC instances are not allowed to be onboarded without SCC credentials
+                        throw new RegisterMinionException(minionId, org, "bootstrap.minion.error.payg.dcregistered",
+                                                          args);
+                    }
+                    else {
+                        // BYOS in cloud instances is not allowed to register on a pure SUMA PAYG
+                        // exception: free products or SUSE Manager Proxy
+                        // Attention: minion could be PAYG, so it might lack of package `instance-flavor-check`
+                        throw new RegisterMinionException(minionId, org,
+                                                          "bootstrap.minion.error.payg.byosregistered", args);
+                    }
                 }
             }
 

@@ -354,12 +354,12 @@ public class RegistrationUtils {
      * @param minionId the minionId
      * @param channels assigned channels
      * @param grains the system grains
+     * @param instanceFlavor public cloud instance flavor
      * @return true if the use is allowed
      */
-    public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId,
-                                          Set<Channel> channels, ValueMap grains) {
-        boolean isPaygClient = grains.getOptionalAsBoolean("is_payg_instance").orElse(false);
-        if (isPaygClient) {
+    public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId, Set<Channel> channels,
+                                          ValueMap grains, String instanceFlavor) {
+        if ("PAYG".equals(instanceFlavor)) {
             return true;
         }
         return identifyProduct(systemQuery, minionId, grains.getValueAsString("osarch"), channels, grains)

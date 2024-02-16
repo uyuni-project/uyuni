@@ -25,7 +25,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 # Import python libs
 import os
 import socket
-import subprocess
 from multiprocessing.pool import ThreadPool
 import logging
 
@@ -141,24 +140,3 @@ def instance_id():
         log.error("The obtained public cloud instance id doesn't seems correct: {}".format(INSTANCE_ID))
         log.error("Skipping")
     return ret
-
-
-def is_payg_instance():
-    ret = {}
-    flavor_check = "/usr/bin/instance-flavor-check"
-    if not os.path.isfile(flavor_check) or not os.access(flavor_check, os.X_OK):
-        return ret
-
-    try:
-        result = subprocess.run(flavor_check, check=False, stdout=subprocess.PIPE, universal_newlines=True).stdout.strip()
-    except subprocess.CalledProcessError:
-        return ret
-
-    if result == "PAYG":
-        log.debug("This minion is a PAYG instance. Adding grains: is_payg_instance = True")
-        ret['is_payg_instance'] = True
-    else:
-        log.debug("This minion is a BYOS instance.")
-
-    return ret
-
