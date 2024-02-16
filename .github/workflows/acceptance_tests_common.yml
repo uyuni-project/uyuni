@@ -28,6 +28,7 @@ jobs:
               - 'web/html/src/**'
               - 'testsuite/**'
               - '!.github/workflows/**'
+              - '!testsuite/features/build_validation/**'
   test-uyuni:
     runs-on: ubuntu-22.04
     needs: paths-filter
