@@ -3132,6 +3132,43 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Get system IDs and last check in information for the given list of system names.
+     * @param loggedInUser The current user
+     * @param names of the servers
+     * @return Map Array containing maps with system Ids with the given name and the associated
+     * overview
+     *
+     * @apidoc.doc Get system IDs and last check in information for a given
+     * list of system names.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("string", "names")
+     * @apidoc.returntype
+     *      #return_array_begin()
+     *          #struct_begin("servers_list")
+     *              #prop_desc("string", "name", "The name of the queried system")
+     *              #prop_array_begin_desc("overview", "A list of systems found with the name")
+     *                  $SystemOverviewSerializer
+     *              #prop_array_end()
+     *          #struct_end()
+     *      #array_end()
+     */
+    @ReadOnly
+    public List<Map<String, Object>> getId(User loggedInUser, List<String> names) {
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (String name : names) {
+            Map<String, Object> systemInfoMap = new HashMap<>();
+            List<SystemOverview> systemOverview = SystemManager.listSystemsByName(loggedInUser, name);
+            systemInfoMap.put("name", name);
+            systemInfoMap.put("overview", systemOverview);
+            result.add(systemInfoMap);
+        }
+
+        return result;
+    }
+
+    /**
      * Get system name and last check in information for the given system ID.
      * @param loggedInUser The current user
      * @param sid of the server

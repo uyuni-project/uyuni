@@ -1350,6 +1350,25 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void testGetIdWithListOfNames() {
+        Server firstServer = ServerFactoryTest.createTestServer(admin, true);
+        Server secondServer = ServerFactoryTest.createTestServer(admin, true);
+
+        List<String> names = Arrays.asList(firstServer.getName(), secondServer.getName());
+
+        List<Map<String, Object>> resultList = handler.getId(admin, names);
+        assertEquals(2, resultList.size());
+        List<SystemOverview> firstSmap = (List<SystemOverview>)resultList.get(0).get("overview");
+        List<SystemOverview> secondSmap = (List<SystemOverview>)resultList.get(1).get("overview");
+        assertEquals(firstServer.getId(), firstSmap.get(0).getId());
+        assertEquals(firstServer.getName(), firstSmap.get(0).getName());
+        assertNotNull(firstSmap.get(0).getLastCheckin());
+        assertEquals(secondServer.getId(), secondSmap.get(0).getId());
+        assertEquals(secondServer.getName(), secondSmap.get(0).getName());
+        assertNotNull(secondSmap.get(0).getLastCheckin());
+    }
+
+    @Test
     public void testGetName() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
