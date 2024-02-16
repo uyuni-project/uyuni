@@ -143,7 +143,7 @@ Feature: Update activation keys
     And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
-    And I check "Uyuni Proxy Stable for openSUSE Leap 15.4 (x86_64)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64)"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 

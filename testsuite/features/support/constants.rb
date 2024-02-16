@@ -1195,7 +1195,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-x86_64-sle-updates
         opensuse_leap15_5-uyuni-client-x86_64
         opensuse_leap15_5-uyuni-client-devel-x86_64
-        uyuni-proxy-stable-leap-155-x86_64
+        uyuni-proxy-devel-leap-x86_64
       ],
     'leap15.4-aarch64' =>
       %w[
@@ -1492,5 +1492,5 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-main-security-amd64' => 2760,
   'ubuntu-2204-amd64-main-updates-amd64' => 180,
   'ubuntu-22.04-suse-manager-tools-amd64' => 60,
-  'uyuni-proxy-stable-leap-155-x86_64' => 60
+  'uyuni-proxy-devel-leap-x86_64' => 60
 }.freeze
