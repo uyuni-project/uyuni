@@ -38,10 +38,10 @@ if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
     sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^ARG REFERENCE_PREFIX=.*$/aARG EULA" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^ARG REFERENCE_PREFIX=.*$/aARG RELEASE_STAGE" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"\${EULA}\"" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"\${RELEASE_STAGE}\"" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
+    sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
+    sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"sle-eula\"" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"released\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.lifecycle-url=\"https://www.suse.com/lifecycle/\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.supportlevel=\"l3\"" -i ${SRPM_PKG_DIR}/Dockerfile
     NAME="suse\/manager\/${VERSION}\/${NAME}"
