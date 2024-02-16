@@ -45,6 +45,14 @@ public class AttestationFactory extends HibernateFactory {
     }
 
     /**
+     * Save a {@link CoCoAttestationResult} object
+     * @param result object to save
+     */
+    public void save(CoCoAttestationResult result) {
+        saveObject(result);
+    }
+
+    /**
      * @param serverId the server id
      * @return returns the optional attestation config for the selected system
      */
@@ -96,6 +104,18 @@ public class AttestationFactory extends HibernateFactory {
     }
 
     /**
+     * @param resultId the result id
+     * @return returns the optional attestation result for the given id
+     */
+    public Optional<CoCoAttestationResult> lookupResultById(long resultId) {
+        return getSession()
+                .createQuery("FROM CoCoAttestationResult WHERE id = :id",
+                        CoCoAttestationResult.class)
+                .setParameter("id", resultId)
+                .uniqueResultOptional();
+    }
+
+    /**
      * Create a Confidential Compute Attestation Config for a given Server ID
      * @param serverIn the server
      * @param typeIn the environment type
@@ -134,6 +154,23 @@ public class AttestationFactory extends HibernateFactory {
         }
         else {
             throw new LookupException("CoCoAttestation Config not found or disabled");
+        }
+    }
+
+    /**
+     * Initialize expected results for a given report.
+     * @param report the report
+     */
+    public void initResultsForReport(ServerCoCoAttestationReport report) {
+        CoCoEnvironmentType envType = report.getEnvironmentType();
+        for (CoCoResultType t : envType.getSupportedResultTypes()) {
+            CoCoAttestationResult result = new CoCoAttestationResult();
+            result.setResultType(t);
+            result.setReport(report);
+            result.setStatus(CoCoAttestationStatus.PENDING);
+            result.setDescription(t.getTypeDescription());
+            save(result);
+            report.addResults(result);
         }
     }
 

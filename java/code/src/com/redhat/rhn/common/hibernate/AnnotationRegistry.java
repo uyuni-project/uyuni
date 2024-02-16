@@ -90,7 +90,9 @@ import com.redhat.rhn.domain.task.Task;
 
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
+import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentTypeConverter;
+import com.suse.manager.model.attestation.CoCoResultTypeConverter;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
@@ -189,7 +191,9 @@ public class AnnotationRegistry {
         VHMCredentials.class,
         ServerCoCoAttestationConfig.class,
         ServerCoCoAttestationReport.class,
-        CoCoEnvironmentTypeConverter.class
+        CoCoEnvironmentTypeConverter.class,
+        CoCoAttestationResult.class,
+        CoCoResultTypeConverter.class
     );
 
     /**
