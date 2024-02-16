@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @rocky8_minion
@@ -39,7 +39,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "rocky-8-iso-appstream" as "label"
-    And I enter "http://127.0.0.1/rocky-8-iso/AppStream" as "url"
+    And I enter "file:///srv/www/htdocs/pub/rocky-8-iso/AppStream" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
@@ -48,7 +48,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "rocky-8-iso-baseos" as "label"
-    And I enter "http://127.0.0.1/rocky-8-iso/BaseOS" as "url"
+    And I enter "file:///srv/www/htdocs/pub/rocky-8-iso/BaseOS" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
