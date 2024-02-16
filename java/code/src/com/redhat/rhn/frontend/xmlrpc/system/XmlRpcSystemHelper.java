@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.xmlrpc.BootstrapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -28,9 +29,7 @@ import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -128,14 +127,14 @@ public class XmlRpcSystemHelper {
      * server object.. This is what will be retuned
      * in most cases when some one requests a server..
      * @param server server to format
-     * @return a Map with just enough info to get details on a server
+     * @return a short system info to get details on a server
      */
-    public Map<String, Object> format(Server server) {
-        Map<String, Object> serverMap = new HashMap<>();
-        serverMap.put("id", server.getId());
-        serverMap.put("name", server.getName());
-        serverMap.put("uuid", server.getServerUuid());
-        serverMap.put("last_checkin", server.getLastCheckin());
+    public ShortSystemInfo format(Server server) {
+        ShortSystemInfo serverMap = new ShortSystemInfo();
+        serverMap.setId(server.getId());
+        serverMap.setName(server.getName());
+        serverMap.setLastCheckin(server.getLastCheckin().toString());
+        serverMap.setLastBoot(server.getLastBoot());
         return serverMap;
     }
 
