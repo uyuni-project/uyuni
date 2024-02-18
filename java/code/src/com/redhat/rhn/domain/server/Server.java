@@ -65,7 +65,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -2612,16 +2611,20 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     getRelease().replace("\\..*", "")));
         }
         else if (isSLES() && OsFamily.SUSE_LINUX_ENTERPRISE_SERVER.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_SERVER, getRelease()));
+            return Optional.of(
+                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_SERVER, getRelease()));
         }
         else if (isSLED() && OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP, getRelease()));
+            return Optional.of(
+                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP, getRelease()));
         }
         else if (isLeapMicro() && OsFamily.LEAP_MICRO.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, getRelease()));
+            return Optional.of(
+                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, getRelease()));
         }
         else if (isSLEMicro() && OsFamily.SUSE_LINUX_ENTERPRISE_MICRO.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, getRelease()));
+            return Optional.of(
+                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, getRelease()));
         }
 
         return Optional.empty();

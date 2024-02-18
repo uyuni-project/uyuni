@@ -48,10 +48,21 @@ public enum OsFamily {
         legalReleasePattern = Pattern.compile(legalReleaseRegex);
     }
 
+    /**
+     * Returns the full name of the OS family.
+     *
+     * @return OS family fullname
+     * */
     public String fullname() {
         return fullname;
     }
 
+    /**
+     * Checks if the given OS release version is valid for this OS family.
+     *
+     * @param release the release version to check
+     * @return weather the given OS release version is valid for this OS family.
+     * */
     public boolean isSupportedRelease(String release) {
         return legalReleasePattern.matcher(release).matches();
     }
