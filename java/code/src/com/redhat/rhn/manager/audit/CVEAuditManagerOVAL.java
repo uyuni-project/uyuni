@@ -25,11 +25,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.ShallowSystemPackage;
-
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
+import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.config.OVALConfigLoader;
 import com.suse.oval.ovaldownloader.OVALDownloadResult;
 import com.suse.oval.ovaldownloader.OVALDownloader;
@@ -100,7 +99,8 @@ public class CVEAuditManagerOVAL {
                     CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
 
             if (checkOVALAvailability(clientServer)) {
-                systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
+                systemAuditResult =
+                        doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
                 systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
                 systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
                 systemAuditResult.setScannedWithOVAL(true);
@@ -390,25 +390,30 @@ public class CVEAuditManagerOVAL {
         private OsFamily osFamily;
         private String osVersion;
 
-        public OVALProduct(OsFamily osFamily, String osVersion) {
-            this.osFamily = osFamily;
-            this.osVersion = osVersion;
+        /**
+         * Default constructor
+         * @param osFamilyIn the os family
+         * @param osVersionIn the os version
+         * */
+        public OVALProduct(OsFamily osFamilyIn, String osVersionIn) {
+            this.osFamily = osFamilyIn;
+            this.osVersion = osVersionIn;
         }
 
         public OsFamily getOsFamily() {
             return osFamily;
         }
 
-        public void setOsFamily(OsFamily osFamily) {
-            this.osFamily = osFamily;
+        public void setOsFamily(OsFamily osFamilyIn) {
+            this.osFamily = osFamilyIn;
         }
 
         public String getOsVersion() {
             return osVersion;
         }
 
-        public void setOsVersion(String osVersion) {
-            this.osVersion = osVersion;
+        public void setOsVersion(String osVersionIn) {
+            this.osVersion = osVersionIn;
         }
 
         @Override
