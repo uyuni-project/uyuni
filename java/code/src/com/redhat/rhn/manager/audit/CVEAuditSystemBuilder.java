@@ -187,6 +187,7 @@ public class CVEAuditSystemBuilder {
 
     /**
      * Returns {@code True} if server was scanned with OVAL and {@code False} otherwise
+     * @return {@code True} if server was scanned with OVAL and {@code False} otherwise
      * */
     public boolean isScannedWithOVAL() {
         return scannedWithOVAL;
