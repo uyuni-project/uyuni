@@ -173,7 +173,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         if (osProduct == OsFamily.LEAP) {
             return deriveOpenSUSELeapCpe();
         }
-        else if (osProduct == OsFamily.openSUSE_LEAP_MICRO) {
+        else if (osProduct == OsFamily.LEAP_MICRO) {
             return deriveOpenSUSELeapMicroCpe();
         }
         else if (osProduct == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO) {
@@ -250,7 +250,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     public boolean isValidDefinition(DefinitionType definitionTypeIn) {
         OsFamily osFamily = definitionTypeIn.getOsFamily();
         boolean definitionFromASupportedFamily = osFamily == OsFamily.LEAP ||
-                osFamily == OsFamily.openSUSE_LEAP_MICRO ||
+                osFamily == OsFamily.LEAP_MICRO ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO;
