@@ -86,7 +86,7 @@ public class OVALCleaner {
         switch (osFamily) {
             case REDHAT_ENTERPRISE_LINUX:
             case LEAP:
-            case openSUSE_LEAP_MICRO:
+            case LEAP_MICRO:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
             case SUSE_LINUX_ENTERPRISE_MICRO:

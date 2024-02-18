@@ -20,7 +20,7 @@
         }
       }
     },
-    "openSUSE_LEAP_MICRO": {
+    "LEAP_MICRO": {
       "content": {
         "5.2": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.micro.5.2-affected.xml.gz",

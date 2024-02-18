@@ -99,4 +99,8 @@ public class OVALConfigTest {
             assertEquals(HttpURLConnection.HTTP_OK, responseCode, () -> "Can't connect to URL: " + sourceURL);
         }
     }
+
+    public void testOsFamilies() {
+        // TODO: Test that all os families in the config file are in OsFamily enum
+    }
 }
