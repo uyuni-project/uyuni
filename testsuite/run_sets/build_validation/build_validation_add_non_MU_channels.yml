@@ -1,5 +1,6 @@
 ## Add non_MU repositories BEGIN ###
 
+- features/build_validation/add_non_MU_repositories/alma8_minion_build_clm.feature
 - features/build_validation/add_non_MU_repositories/alma9_minion_build_clm.feature
 - features/build_validation/add_non_MU_repositories/centos7_minion_add_iso.feature
 - features/build_validation/add_non_MU_repositories/liberty9_minion_build_clm.feature

@@ -444,6 +444,26 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sles15-sp5-devel-uyuni-client-s390x" has been synced
 
 @susemanager
+@alma8_minion
+  Scenario: Add Alma Linux 8
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "AlmaLinux 8" as the filtered product description
+    And I select "AlmaLinux 8 x86_64" as a product
+    Then I should see the "AlmaLinux 8 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "AlmaLinux 8 x86_64" product has been added
+    And I wait until all synchronized channels for "almalinux8" have finished
+
+@uyuni
+@alma8_minion
+  Scenario: Add Alma Linux 8
+    When I use spacewalk-common-channel to add channel "almalinux8 almalinux8-appstream almalinux8-extras almalinux8-uyuni-client-devel" with arch "x86_64"
+    And I wait until all synchronized channels for "almalinux8" have finished
+
+@susemanager
 @alma9_minion
   Scenario: Add Alma Linux 9
     Given I am authorized for the "Admin" section
