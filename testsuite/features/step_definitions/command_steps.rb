@@ -1445,12 +1445,12 @@ When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the serv
     end
 
     command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
     # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
     command = 'echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert' \
-              " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
+              " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname} #{get_target('server').full_hostname}" \
               ' 2048 galaxy-noise@suse.de --ca-pass cert_pass' \
               ' && rm cert_pass'
   end
