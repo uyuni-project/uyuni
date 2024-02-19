@@ -124,6 +124,9 @@ public class PageControlHelper {
             pc.setFilterData(query);
             pc.setFilterColumn(queryColumn);
         }
+
+        pc.setSortColumn(sortColumn);
+        pc.setSortDescending("-1".equals(sortDirection));
         return pc;
     }
 

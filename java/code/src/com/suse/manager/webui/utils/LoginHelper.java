@@ -143,7 +143,7 @@ public class LoginHelper {
                 }
                 if (newUserOrg == null) {
                     Long defaultOrgId = SatConfigFactory.getSatConfigLongValue(
-                            SatConfigFactory.EXT_AUTH_DEFAULT_ORGID);
+                            SatConfigFactory.EXT_AUTH_DEFAULT_ORGID, 1L);
                     if (defaultOrgId != null) {
                         newUserOrg = OrgFactory.lookupById(defaultOrgId);
                         if (newUserOrg == null) {
