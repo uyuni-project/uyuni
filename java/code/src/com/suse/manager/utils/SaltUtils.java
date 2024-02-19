@@ -697,14 +697,10 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
             handleSubscribeChannels(serverAction, jsonResult, action);
         }
-        else if (action instanceof BaseVirtualizationGuestAction) {
-            // Tell VirtNotifications that we got a change, passing actionId
-            VirtNotifications.spreadActionUpdate(action);
-            // Dump the whole message since the failure could be anywhere in the chain
-            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-        }
-        else if (action instanceof BaseVirtualizationPoolAction || action instanceof BaseVirtualizationNetworkAction) {
-            // Tell VirtNotifications that we got a pool action change, passing action
+        else if (action instanceof BaseVirtualizationGuestAction ||
+                action instanceof BaseVirtualizationPoolAction ||
+                action instanceof BaseVirtualizationNetworkAction) {
+            // Tell VirtNotifications that we got an action change, passing action
             VirtNotifications.spreadActionUpdate(action);
             // Intentionally don't get only the comment since the changes value could be interesting
             serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));

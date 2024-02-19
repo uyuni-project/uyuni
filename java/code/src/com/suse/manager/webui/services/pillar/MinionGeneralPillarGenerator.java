@@ -94,9 +94,9 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
         Map<String, Object> beaconConfig = new HashMap<>();
         // this add the configuration for the beacon that tell us when the
         // minion packages are modified locally
-        if (minion.getOsFamily().toLowerCase().equals("suse") ||
-                minion.getOsFamily().toLowerCase().equals("redhat") ||
-                minion.getOsFamily().toLowerCase().equals("debian")) {
+        if (minion.getOsFamily().equalsIgnoreCase("suse") ||
+                minion.getOsFamily().equalsIgnoreCase("redhat") ||
+                minion.getOsFamily().equalsIgnoreCase("debian")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
             beaconConfig.put("reboot_info", REBOOT_INFO_BEACON_PROPS);
         }
