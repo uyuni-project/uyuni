@@ -247,6 +247,20 @@ Feature: Sanity checks
     And "slemicro55_ssh_minion" should communicate with the server using public interface
     And the clock from "slemicro55_ssh_minion" should be exact
 
+@alma8_minion
+  Scenario: The Alma 8 Salt minion is healthy
+    Then "alma8_minion" should have a FQDN
+    And reverse resolution should work for "alma8_minion"
+    And "alma8_minion" should communicate with the server using public interface
+    And the clock from "alma8_minion" should be exact
+
+@alma8_ssh_minion
+  Scenario: The Alma 8 Salt SSH minion is healthy
+    Then "alma8_ssh_minion" should have a FQDN
+    And reverse resolution should work for "alma8_ssh_minion"
+    And "alma8_ssh_minion" should communicate with the server using public interface
+    And the clock from "alma8_ssh_minion" should be exact
+
 @alma9_minion
   Scenario: The Alma 9 Salt minion is healthy
     Then "alma9_minion" should have a FQDN
