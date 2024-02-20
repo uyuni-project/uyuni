@@ -78,3 +78,52 @@ authorize_own_key:
 
 {% include 'channels/gpg-keys.sls' %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
+
+{%- set transactional = grains['transactional'] %}
+{%- if transactional %}
+
+{{ salt_minion_name }}:
+  mgrcompat.module_run:
+    - name: transactional_update.run
+    - command: systemctl enable {{ salt_minion_name }}
+    - snapshot: continue
+    - require:
+      - salt-minion-package
+      - host: mgr_server_localhost_alias_absent
+      - file: {{ salt_config_dir }}/minion_id
+      - file: {{ salt_config_dir }}/minion.d/susemanager.conf
+  {%- if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
+      - file: {{ salt_config_dir }}/pki/minion/minion.pem
+      - file: {{ salt_config_dir }}/pki/minion/minion.pub
+  {%- endif %}
+
+{# Change REBOOT_METHOD to systemd if it is default, otherwise don't change it #}
+
+{%- if not salt['file.file_exists']('/etc/transactional-update.conf') %}
+copy_conf_file_to_etc:
+  file.copy:
+    - name: /etc/transactional-update.conf
+    - source: /usr/etc/transactional-update.conf
+{%- endif %}
+
+transactional_update_set_reboot_method_systemd:
+  file.keyvalue:
+    - name: /etc/transactional-update.conf
+    - key_values:
+        REBOOT_METHOD: 'systemd'
+    - separator: '='
+    - uncomment: '# '
+    - append_if_not_found: True
+    - require:
+      - file: copy_conf_file_to_etc
+    - unless:
+      - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
+
+{# Use transactional reboot support -> server will be rebooted according to REBOOT_METHOD #}
+reboot_transactional_server:
+  mgrcompat.module_run:
+    - name: transactional_update.reboot
+    - require:
+      - {{ salt_minion_name }}
+
+{%- endif %}
