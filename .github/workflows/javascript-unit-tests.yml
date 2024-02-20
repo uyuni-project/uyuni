@@ -35,7 +35,7 @@ jobs:
 
     # FYI, caching node_modules directly instead of Yarn's cache offers no considerable speed benefit and increases the cache size
     - name: Use Yarn cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: yarn-cache
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
