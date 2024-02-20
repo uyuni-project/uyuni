@@ -43,7 +43,9 @@ General template for new joiners of the SUSE Manager team.
   - Lists at [suse.com](https://lists.suse.com/mailman/listinfo)  (whatever is interesting for the user, such as for example `sle-security-updates`, `sle-container-updates`, or `suma-updates`)
 - [ ] Slack
   - [ ] Update workflows (daily standup, meetings, etc.)
-  - [ ] Add to user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)
+  - [ ] Add to groups (ticket on https://sd.suse.com)
+    - [ ] `susemanager-engineers`
+    - [ ] Squad specific group
 - [ ] Add the user to the Google [SUSE Manager Engineering Team](https://groups.google.com/a/suse.com/g/suma-all/members) and squad groups (if available), to get access to the calendar (PHP, Retrospective, and all other events), and to emails send to the mailing list for the group
 - [ ] Add SSH public key to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
 - [ ] Provide default passwords if applicable (testsuite VMs, maybe https://gitlab.suse.de/galaxy/credentials)
