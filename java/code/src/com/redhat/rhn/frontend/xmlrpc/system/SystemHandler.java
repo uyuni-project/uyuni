@@ -187,6 +187,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
@@ -229,6 +230,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * SystemHandler
@@ -2921,38 +2924,34 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
      * on error")
      */
+    @ApiIgnore(ApiType.HTTP)
     public int provisionSystem(User loggedInUser, Integer sid, String profileName)
             throws FaultException {
-        log.debug("provisionSystem called.");
+       return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, profileName, new Date());
+    }
 
-        // Lookup the server so we can validate it exists and throw error if not.
-        Server server = lookupServer(loggedInUser, sid);
-        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
-            throw new FaultException(-2, "provisionError",
-                    "System does not have required entitlement");
-        }
-
-        KickstartData ksdata = KickstartFactory.
-                lookupKickstartDataByLabelAndOrgId(profileName,
-                        loggedInUser.getOrg().getId());
-        if (ksdata == null) {
-            throw new FaultException(-3, "kickstartProfileNotFound",
-                    "No Kickstart Profile found with label: " + profileName);
-        }
-
-        KickstartHelper helper = new KickstartHelper(RhnXmlRpcServer.getRequest());
-        String host = helper.getKickstartHost();
-
-
-        KickstartScheduleCommand cmd = new KickstartScheduleCommand(
-                Long.valueOf(sid),
-                ksdata.getId(), loggedInUser, new Date(), host);
-        ValidatorError ve = cmd.store();
-        if (ve != null) {
-            throw new FaultException(-2, "provisionError",
-                    LocalizationService.getInstance().getMessage(ve.getKey()));
-        }
-        return cmd.getScheduledAction().getId().intValue();
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile.
+     *
+     * @param loggedInUser The current user
+     * @param request the spark request
+     * @param sid of the system to be provisioned
+     * @param profileName of Profile to be used.
+     * @return Returns 1 if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid, String profileName)
+            throws FaultException {
+        return provisionSystem(loggedInUser, request, sid, profileName, new Date());
     }
 
     /**
@@ -2974,9 +2973,37 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
      * on error")
      */
+    @ApiIgnore(ApiType.HTTP)
     public int provisionSystem(User loggedInUser, Integer sid,
             String profileName, Date earliestDate)
                     throws FaultException {
+        return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, profileName, earliestDate);
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param request the request
+     * @param sid of the system to be provisioned
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @return Returns 1 if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
+                                String profileName, Date earliestDate)
+            throws FaultException {
         log.debug("provisionSystem called.");
 
         // Lookup the server so we can validate it exists and throw error if not.
@@ -2994,8 +3021,9 @@ public class SystemHandler extends BaseHandler {
                     "No Kickstart Profile found with label: " + profileName);
         }
 
-        KickstartHelper helper = new KickstartHelper(RhnXmlRpcServer.getRequest());
+        KickstartHelper helper = new KickstartHelper(request);
         String host = helper.getKickstartHost();
+
 
         KickstartScheduleCommand cmd = new KickstartScheduleCommand(
                 Long.valueOf(sid),
