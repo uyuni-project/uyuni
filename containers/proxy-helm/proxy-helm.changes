@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 20 11:33:46 CET 2024 - rosuna@suse.com
+
+- version 4.3.12
+  * Remove statically defined image tags (bsc#1220001)
+  * Simplify publishing to Open Build Service (bsc#1220001)
+
+-------------------------------------------------------------------
 Tue Jan 23 14:24:52 CET 2024 - rosuna@suse.com
 
 - version 4.3.11
