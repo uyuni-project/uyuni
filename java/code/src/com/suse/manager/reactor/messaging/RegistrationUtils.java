@@ -55,6 +55,7 @@ import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil.PublicCloudInstanceFlavor;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
 
@@ -356,8 +357,8 @@ public class RegistrationUtils {
      * @return true if the use is allowed
      */
     public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId, Set<Channel> channels,
-                                          ValueMap grains, String instanceFlavor) {
-        if ("PAYG".equals(instanceFlavor)) {
+                                          ValueMap grains, PublicCloudInstanceFlavor instanceFlavor) {
+        if (instanceFlavor == PublicCloudInstanceFlavor.PAYG) {
             return true;
         }
         return identifyProduct(systemQuery, minionId, grains.getValueAsString(OS_ARCH), channels, grains)

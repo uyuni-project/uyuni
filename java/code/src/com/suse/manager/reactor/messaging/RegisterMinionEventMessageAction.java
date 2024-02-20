@@ -75,8 +75,8 @@ import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil.PublicCloudInstanceFlavor;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
-import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -445,13 +445,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             ValueMap grains = systemInfo.getGrains();
             if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.hasSCCCredentials()) {
-                LocalCall<String> call = new LocalCall<>("sumautil.instance_flavor",
-                                                         Optional.empty(),
-                                                         Optional.empty(),
-                                                         new TypeToken<>() { });
-                String clientInstanceFlavor = saltApi.callSync(call, minionId).orElse("");
+                PublicCloudInstanceFlavor instanceFlavor = saltApi.getInstanceFlavor(minionId);
                 if (!RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains,
-                                                       clientInstanceFlavor)) {
+                                                       instanceFlavor)) {
                     Object[] args = {minionId};
                     // If the minion is not in the cloud
                     if (grains.getValueAsString("instance_id").isEmpty()) {

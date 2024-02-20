@@ -24,6 +24,7 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -134,6 +135,13 @@ public interface SaltApi {
      * @return the SystemInfo result
      */
     Optional<SystemInfo> getSystemInfoFull(String minion);
+
+    /**
+     * Call sumautil.instance_flavor.
+     * @param minionId of the target minion.
+     * @return PublicCloudInstanceFlavor result
+     */
+    SumaUtil.PublicCloudInstanceFlavor getInstanceFlavor(String minionId);
 
     /**
      * Store the files uploaded by a minion to the SCAP storage directory.
