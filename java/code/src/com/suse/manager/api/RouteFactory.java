@@ -48,6 +48,9 @@ import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
+import spark.Request;
 import spark.Route;
 import spark.Spark;
 
@@ -164,7 +167,7 @@ public class RouteFactory {
             String sessionKey = new RequestContext(req.raw()).getWebSession().getKey();
             try {
                 // Find an overload matching the parameter names and types
-                MethodCall call = findMethod(methods, requestParams, sessionKey);
+                MethodCall call = findMethod(methods, requestParams, sessionKey, req);
                 HttpApiResponse response = HttpApiResponse.success(call.invoke(handler));
                 return SparkApplicationHelper.json(gson, res, response);
             }
@@ -198,17 +201,20 @@ public class RouteFactory {
      * @param methods list of methods
      * @param jsonArgs the JSON arguments
      * @param sessionKey the session key
+     * @param request the spark request
      * @return the matched method, if exists
      * @throws NoSuchMethodException if no match is found
      */
-    private MethodCall findMethod(List<Method> methods, Map<String, JsonElement> jsonArgs, String sessionKey)
+    private MethodCall findMethod(List<Method> methods, Map<String, JsonElement> jsonArgs,
+                                  String sessionKey, Request request)
             throws NoSuchMethodException {
         User user = SessionManager.loadSession(sessionKey).getUser();
         // Filter methods with parameter names that match the request parameters, excluding the User parameter
         return methods.stream()
                 .filter(m -> jsonArgs.keySet().equals(
                         Arrays.stream(m.getParameters())
-                                .filter(p -> !User.class.equals(p.getType()))
+                                .filter(p -> !(User.class.equals(p.getType()) ||
+                                        HttpServletRequest.class.equals(p.getType())))
                                 .map(Parameter::getName)
                                 .filter(p -> !"sessionKey".equals(p))
                                 .collect(Collectors.toSet())))
@@ -219,6 +225,9 @@ public class RouteFactory {
                         // If the method contains a User parameter, add the current user to the argument list
                         if (User.class.equals(param.getType())) {
                             args.add(user);
+                        }
+                        else if (HttpServletRequest.class.equals(param.getType())) {
+                            args.add(request.raw());
                         }
                         else if ("sessionKey".equals(param.getName())) {
                             args.add(sessionKey);
