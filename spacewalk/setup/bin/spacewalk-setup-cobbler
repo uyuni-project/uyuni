@@ -76,6 +76,7 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
     filecontent["pxe_just_once"] = True
     filecontent["redhat_management_server"] = fqdn or socket.getfqdn()
     filecontent["client_use_localhost"] = True
+    filecontent["uyuni_authentication_endpoint"] = "http://localhost"
     yaml_dump = yaml.safe_dump(filecontent)
     with open(full_path, "w") as settings_file:
         settings_file.write(yaml_dump)

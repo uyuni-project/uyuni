@@ -257,7 +257,7 @@ sub setup_cobbler {
   if (!$skip_rhnconf) {
     open(FILE, ">>" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
     print FILE "#cobbler host name\n";
-    print FILE "cobbler.host = " . $answers->{'hostname'} . "\n";
+    print FILE "cobbler.host = localhost \n";
     close(FILE);
   }
   if ( system("ps -A | grep cobblerd") == 0 ) {
@@ -820,7 +820,7 @@ sub populate_initial_configs {
      traceback_mail => $answers->{'admin-email'},
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
-     cobblerDOThost => $answers->{hostname},
+     cobblerDOThost => 'localhost',
      report_db_backend => $answers->{'db-backend'},
      report_db_user => $answers->{'report-db-user'},
      report_db_password => $answers->{'report-db-password'},
