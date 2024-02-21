@@ -225,11 +225,12 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         return proxy;
     }
     /**
-     * @param isProxy flag indicating if the system is a proxy
+     * @param serverId The server id, null if not a proxy
      */
-    public void setIsProxy(Boolean isProxy) {
-        this.proxy = Optional.ofNullable(isProxy).orElse(false);
+    public void setIsProxy(Long serverId) {
+        this.proxy = (serverId != null);
     }
+
     /**
      * @return Returns the isMgrServer.
      */
@@ -237,10 +238,10 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         return mgrServer;
     }
     /**
-     * @param isMgrServer flag indicating if the server is an Uyuni server
+     * @param serverId The server id, null if not a uyuni server
      */
-    public void setIsMgrServer(Boolean isMgrServer) {
-        this.mgrServer = Optional.ofNullable(isMgrServer).orElse(false);
+    public void setIsMgrServer(Long serverId) {
+        this.mgrServer = (serverId != null);
     }
     /**
      * @return Returns the bugErrata.
