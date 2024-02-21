@@ -241,6 +241,7 @@ public class SaltServerActionService {
     private static final String SYSTEM_REBOOT = "system.reboot";
     private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
     private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
+    private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
@@ -466,6 +467,9 @@ public class SaltServerActionService {
         }
         else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
             return singletonMap(executePlaybookActionCall((PlaybookAction) actionIn), minions);
+        }
+        else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
+            return cocoAttestationAction(minions);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -2310,6 +2314,13 @@ public class SaltServerActionService {
         pillarData.put("flush_cache", details.isFlushCache());
         return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {
+        return Map.of(
+                State.apply(Collections.singletonList(COCOATTEST_REQUESTDATA), Optional.empty()),
+                minionSummaries
+        );
     }
 
     /**
