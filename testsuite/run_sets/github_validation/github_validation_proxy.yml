@@ -8,11 +8,7 @@
 
 # IMMUTABLE ORDER
 
-# Proxy
-  # one of: proxy_register_as_minion_with_script.feature
-  #         proxy_register_as_minion_with_gui.feature
-  #         proxy_register_as_pod.feature
-- features/init_clients/proxy_register_as_minion_with_script.feature
-- features/init_clients/proxy_branch_network.feature
+- features/init_clients/proxy.feature
+#- features/init_clients/proxy_branch_network.feature
 
 ## Core features END ###

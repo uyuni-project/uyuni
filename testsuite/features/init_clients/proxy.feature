@@ -1,11 +1,11 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if:
 # * there is no proxy ($proxy is nil)
 # * there is no scope @scope_containerized_proxy
 #
-# Alternative: Bootstrap the proxy as a Pod
+# Bootstrap the proxy as a Pod
 
 @scope_containerized_proxy
 @proxy
@@ -16,15 +16,6 @@ Feature: Setup Containerized Proxy
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-
-  Scenario: Pre-requisite: Stop traditional proxy service
-    When I stop salt-minion on "proxy"
-    And I run "spacewalk-proxy stop" on "proxy"
-    # workaround for bsc#1205976
-    And I stop the "tftp" service on "proxy"
-    And I wait until "squid" service is inactive on "proxy"
-    And I wait until "apache2" service is inactive on "proxy"
-    And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of Containerized Proxy on the server
@@ -49,7 +40,7 @@ Feature: Setup Containerized Proxy
 
   Scenario: Containerized Proxy should be registered automatically
     When I follow the left menu "Systems"
-    And I wait until I see the name of "containerized_proxy", refreshing the page
+    And I wait until I see the name of "proxy", refreshing the page
 
   Scenario: Remove the offending key in salt known hosts
-    When I remove offending SSH key of "containerized_proxy" at port "8022" for "/var/lib/salt/.ssh/known_hosts" on "server"
+    When I remove offending SSH key of "proxy" at port "8022" for "/var/lib/salt/.ssh/known_hosts" on "server"
