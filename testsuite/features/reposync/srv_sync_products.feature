@@ -129,7 +129,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @proxy
 @susemanager
-  Scenario: Add SUSE Manager Retail Branch Server
+  Scenario: Add SUSE Manager Retail Branch Server 4.3
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -144,7 +144,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
-    And  I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
+    And I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
 
 @scc_credentials
 @susemanager
