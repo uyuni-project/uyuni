@@ -1,1 +1,0 @@
-- Fix issue in "spacewalk-repo-sync" when RPM packages contains files with size greater than 4GB (bsc#1219151)

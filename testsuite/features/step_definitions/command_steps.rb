@@ -838,7 +838,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   os_family = node.os_family
   cmd = ''
   case os_family
-  when /^opensuse/, /^sles/
+  when /^opensuse/, /^sles/, /^suse/
     mand_repos = ''
     repos.split.map do |repo|
       mand_repos = "#{mand_repos} #{repo}"
@@ -1511,6 +1511,11 @@ When(/^I reboot the server through SSH$/) do
     end
     sleep 1
   end
+end
+
+When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+  node = get_target(host)
+  node.run('reboot')
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|

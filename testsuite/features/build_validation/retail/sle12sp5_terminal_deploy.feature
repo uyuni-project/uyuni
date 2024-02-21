@@ -1,5 +1,9 @@
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature depends on:
+# - features/build_validation/retail/proxy_branch_network.feature
+# - features/build_validation/retail/sle12sp5_buildhost_build_kiwi_image.feature
 
 @proxy
 @private_net

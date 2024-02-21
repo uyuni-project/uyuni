@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:17:10 CET 2024 - marina.latini@suse.com
+
+- version 5.0.3
+  * Stop services and database in kubernetes gracefully
+
+-------------------------------------------------------------------
 Mon Jan 29 11:44:08 CET 2024 - rosuna@suse.com
 
 - version 5.0.2

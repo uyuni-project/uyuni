@@ -3,7 +3,13 @@ include:
 
 {%- if grains['os_family'] == 'Suse' %}
 mgr_keep_system_up2date_updatestack:
-  pkg.uptodate:
+  cmd.run:
+    - name: zypper --non-interactive patch --updatestack-only
+    - success_retcodes:
+      - 104
+      - 103
+      - 106
+      - 0
     - onlyif: 'zypper patch-check --updatestack-only; r=$?; test $r -eq 100 || test $r -eq 101'
     - require:
       - sls: channels
@@ -20,16 +26,13 @@ mgr_keep_system_up2date_updatestack:
 {%- else %}
       - salt-minion
 {%- endif %}
-{%- if grains.os_family == 'Suse' %}
-      - zypper
-      - libzypp
-{%- elif grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' %}
 {%- if grains['osmajorrelease'] >= 8 %}
       - dnf
 {%- else %}
       - yum
 {%- endif %}
-{%- else %}
+{%- elif grains.os_family == 'Debian' %}
       - apt
 {%- endif %}
     - require:
@@ -41,7 +44,7 @@ mgr_keep_system_up2date_pkgs:
     - refresh: True
     - require:
       - sls: channels
-      - pkg: mgr_keep_system_up2date_updatestack
+      - mgr_keep_system_up2date_updatestack
 
 {%- if salt['pillar.get']('mgr_reboot_if_needed', True) and salt['pillar.get']('custom_info:mgr_reboot_if_needed', 'true')|lower in ('true', '1', 'yes', 't') %}
 mgr_reboot_if_needed:

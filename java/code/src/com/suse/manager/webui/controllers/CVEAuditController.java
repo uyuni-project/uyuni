@@ -141,12 +141,14 @@ public class CVEAuditController {
             switch (cveAuditRequest.getTarget()) {
                 case SERVER:
                     Set<Long> systemSet = RhnSetDecl.SYSTEMS.get(user).getElementValues();
+                    // TODO: Use CVEAuditManagerOVAL once it's ready
                     List<CVEAuditServer> cveAuditServers = CVEAuditManager
                     .listSystemsByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
                     cveAuditServers.forEach(serv -> serv.setSelected(systemSet.contains(serv.getId())));
                     return json(res, ResultJson.success(cveAuditServers));
                 case IMAGE:
+                    // TODO: Use CVEAuditManagerOVAL once it's ready
                     List<CVEAuditImage> cveAuditImages = CVEAuditManager
                     .listImagesByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
@@ -163,12 +165,14 @@ public class CVEAuditController {
             throws UnknownCVEIdentifierException {
         switch (request.getTarget()) {
         case SERVER:
+            // TODO: Use CVEAuditManagerOVAL once it's ready
             List<CVEAuditServer> cveAuditServers = CVEAuditManager
             .listSystemsByPatchStatus(user, request.cveIdentifier,
                     request.statuses);
             return cveAuditServers.stream().map(x -> (CVEAuditSystem)x)
                     .collect(Collectors.toList());
         case IMAGE:
+            // TODO: Use CVEAuditManagerOVAL once it's ready
             List<CVEAuditImage> cveAuditImages = CVEAuditManager
             .listImagesByPatchStatus(user, request.cveIdentifier,
                     request.statuses);

@@ -139,6 +139,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private MaintenanceSchedule maintenanceSchedule;
     private Boolean hasConfigFeature;
 
+    private String cpe;
+
     public static final String VALID_CNAMES = "valid_cnames_";
 
     /**
@@ -2484,4 +2486,21 @@ public class Server extends BaseDomainHelper implements Identifiable {
         this.osFamily = osFamilyIn;
     }
 
+    /**
+     * Getter for CPE (Common Platform Enumeration)
+     *
+     * @return cpe
+     * */
+    public String getCpe() {
+        return cpe;
+    }
+
+    /**
+     * Setter for CPE (Common Platform Enumeration)
+     *
+     * @param cpeIn to set
+     * */
+    public void setCpe(String cpeIn) {
+        this.cpe = cpeIn;
+    }
 }

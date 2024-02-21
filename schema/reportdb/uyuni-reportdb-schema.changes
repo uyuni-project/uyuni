@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 14 13:43:09 CET 2024 - marina.latini@suse.com
+
+- version 5.0.4-1
+  * Add the missing migration path to 5.0.4 for the reportdb schema
+
+-------------------------------------------------------------------
 Thu Jan 18 11:04:01 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.3-1

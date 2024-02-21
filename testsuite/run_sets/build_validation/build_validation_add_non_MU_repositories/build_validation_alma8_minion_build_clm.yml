@@ -1,0 +1,5 @@
+## Add non MU repositories for alma8 BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/alma8_minion_build_clm.feature
+
+## Add non MU repositories END ###

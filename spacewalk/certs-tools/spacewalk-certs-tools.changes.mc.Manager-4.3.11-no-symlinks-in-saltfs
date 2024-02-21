@@ -1,1 +1,0 @@
-- deploy the CA certificate also into the salt filesystem (bsc#1219577)

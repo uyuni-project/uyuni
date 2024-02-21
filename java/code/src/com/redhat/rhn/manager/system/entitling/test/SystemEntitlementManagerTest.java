@@ -116,7 +116,8 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         //Test OS Image Build Host
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
         }});
 
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
