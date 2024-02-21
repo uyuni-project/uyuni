@@ -74,6 +74,9 @@ public class SmtpMail implements Mail {
         String smtpUser = c.getString(ConfigDefaults.WEB_SMTP_USER);
         String smtpPass = c.getString(ConfigDefaults.WEB_SMTP_PASS);
         String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
+        int smtpTimeout = c.getInt(ConfigDefaults.WEB_SMTP_TIMEOUT, 5000);
+        int smtpConnectionTimeout = c.getInt(ConfigDefaults.WEB_SMTP_CONNECTION_TIMEOUT, 5000);
+        int smtpWriteTimeout = c.getInt(ConfigDefaults.WEB_SMTP_WRITE_TIMEOUT, 5000);
 
         // Get system properties
         Properties props = System.getProperties();
@@ -85,6 +88,9 @@ public class SmtpMail implements Mail {
         props.put("mail.smtp.ssl.enable", smtpSSL);
         props.put("mail.smtp.starttls.enable", smtpStartTLS);
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.connectiontimeout", smtpConnectionTimeout);
+        props.put("mail.smtp.timeout", smtpTimeout);
+        props.put("mail.smtp.writetimeout", smtpWriteTimeout);
 
         // Setup Authentication
         Authenticator auth = null;
