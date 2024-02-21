@@ -1,10 +1,14 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # We also test 'Bootstrapping using the command line' in this feature with the following script:
 # https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
 
+# TODO: To be refactored. The current implementation is not working with containerized proxy.
+#       The proxy container does not support Salt formulas, so the test is failing.
+
 @skip_if_github_validation
+@skip_if_container_server
 @proxy
 @private_net
 @pxeboot_minion

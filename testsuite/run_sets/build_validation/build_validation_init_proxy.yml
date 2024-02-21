@@ -2,6 +2,7 @@
 
 ## Init proxy BEGIN ###
 
-- features/build_validation/init_clients/proxy.feature
+- features/build_validation/init_clients/proxy_traditional.feature
+- features/build_validation/init_clients/proxy_container.feature
 
 ## Init proxy END ###

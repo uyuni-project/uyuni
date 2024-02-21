@@ -577,6 +577,11 @@ Before('@skip_if_container_server') do
   skip_this_scenario if $is_container_server
 end
 
+# skip tests if the server does not run in a container
+Before('@skip_if_not_container_server') do
+  skip_this_scenario unless $is_container_server
+end
+
 # have more infos about the errors
 def print_server_logs
   $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'

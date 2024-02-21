@@ -1,10 +1,15 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_ssh_tunnel.feature
 # If the minion fails to bootstrap
 
+# TODO: This feature is not working within a proxy containerized environment
+#       due to the fact that the mgr-bootstrap command is not available in the proxy
+#       container. The issue still under research.
+
+@skip_if_container_server
 @skip_if_github_validation
 @sle_minion
 @scope_onboarding
