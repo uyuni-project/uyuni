@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-helm:latest uyuni/proxy-helm:4.3.10 uyuni/proxy-helm:4.3.10-build%RELEASE%
+#!BuildTag: uyuni/proxy-helm:latest
 apiVersion: v2
 name: proxy-helm
 description: Uyuni proxy containers.
 type: application
 home: https://www.uyuni-project.org/
 icon: https://www.uyuni-project.org/img/uyuni-logo.svg
-version: 4.3.11
+version: 4.3.12
