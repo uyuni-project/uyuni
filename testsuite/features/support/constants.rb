@@ -936,25 +936,24 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-main-security-amd64
         ubuntu-22.04-suse-manager-tools-amd64
       ],
-    'fake' =>
+    'fake' => # CHECKED
       %w[
-        fake-base-channel-suse-like
-        fake-child-channel-suse-like
-        fake-base-channel-i586
+        fake-rpm-suse-channel
         fake-child-channel-i586
-        test-base-channel-x86_64
-        test-child-channel-x86_64
+        fake-child-channel-suse-like
         fake-base-channel-debian-like
         fake-base-channel-rh-like
       ],
-    'suma-proxy-43' =>
+    'suma-proxy-43' => # CHECKED
       %w[
         sle-product-suse-manager-proxy-4.3-pool-x86_64
         sle-product-suse-manager-proxy-4.3-updates-x86_64
         sle-module-suse-manager-proxy-4.3-pool-x86_64
+        sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
         sle-module-suse-manager-proxy-4.3-updates-x86_64
+        sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs
       ],
-    'suma-retail-branch-server-43' =>
+    'suma-retail-branch-server-43' => # CHECKED
       %w[
         sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
         sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
@@ -1340,6 +1339,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'el9-manager-tools-updates-x86_64-ol9' => 60,
   'el9-manager-tools-updates-x86_64-rocky' => 60,
   'el9-pool-x86_64' => 60,
+  'fake-base-channel-debian-like' => 60,
+  'fake-base-channel-rh-like' => 60,
+  'fake-child-channel-i586' => 60,
+  'fake-child-channel-suse-like' => 60,
+  'fake-rpm-suse-channel' => 60,
   'opensuse_leap15_4-aarch64' => 8940,
   'opensuse_leap15_4-aarch64-backports-updates' => 540,
   'opensuse_leap15_4-aarch64-non-oss' => 60,
@@ -1461,6 +1465,12 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp5-pool-x86_64' => 60,
   'sle-module-server-applications15-sp5-updates-s390x' => 120,
   'sle-module-server-applications15-sp5-updates-x86_64' => 60,
+  'sle-module-suse-manager-proxy-4.3-pool-x86_64' => 60,
+  'sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs' => 60,
+  'sle-module-suse-manager-proxy-4.3-updates-x86_64' => 60,
+  'sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs' => 60,
+  'sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64' => 60,
+  'sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64' => 60,
   'sle-product-sles15-sp1-ltss-updates-x86_64' => 1500,
   'sle-product-sles15-sp1-pool-x86_64' => 60,
   'sle-product-sles15-sp1-updates-x86_64' => 60,
@@ -1477,6 +1487,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp5-pool-x86_64' => 60,
   'sle-product-sles15-sp5-updates-s390x' => 60,
   'sle-product-sles15-sp5-updates-x86_64' => 60,
+  'sle-product-suse-manager-proxy-4.3-pool-x86_64' => 60,
+  'sle-product-suse-manager-proxy-4.3-updates-x86_64' => 60,
+  'sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64' => 60,
+  'sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64' => 60,
   'sles12-sp5-installer-updates-x86_64' => 60,
   'sles12-sp5-pool-x86_64' => 180,
   'sles12-sp5-updates-x86_64' => 2280,
