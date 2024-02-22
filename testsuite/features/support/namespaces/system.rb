@@ -187,6 +187,24 @@ class NamespaceSystem
   def set_variables(server, variables)
     @test.call('system.setVariables', sessionKey: @test.token, sid: server, netboot: true, variables: variables)
   end
+
+  ##
+  # Returns a list of all errata that are relevant to the system with the given SID
+  #
+  # Args:
+  #   id: The ID of the system
+  def get_system_errata(system_id)
+    @test.call('system.getRelevantErrata', sessionKey: @test.token, sid: system_id)
+  end
+
+  ##
+  # Returns a list of all errata that are relevant to the systems with the given SIDs
+  #
+  # Args:
+  #   system_ids: The IDs of the systems
+  def get_systems_errata(system_ids)
+    @test.call('system.getRelevantErrata', sessionKey: @test.token, sids: system_ids)
+  end
 end
 
 # System Configuration namespace

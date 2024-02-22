@@ -38,6 +38,7 @@
 - features/secondary/srv_dist_channel_mapping.feature
 - features/secondary/srv_task_status_engine.feature
 - features/secondary/srv_scc_user_credentials.feature
+- features/secondary/srv_errata_api.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
