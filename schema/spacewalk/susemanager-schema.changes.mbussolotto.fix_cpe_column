@@ -1,1 +1,2 @@
+- Move 001-oval-add-tables.sql script to new upgrade folder
 - Missing size in rhnServer CVE column
