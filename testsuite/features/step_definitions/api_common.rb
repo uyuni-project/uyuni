@@ -84,7 +84,7 @@ When(/^I retrieve the relevant errata for (.+)$/) do |raw_hosts|
     sids << get_system_id(node)
   end
   # system.getErrata is an overloaded API method accepting either a single sid or a list of them
-  sids.size == 1  ? $api_test.system.get_system_errata(sids[0]) : $api_test.system.get_systems_errata(sids)
+  sids.size == 1 ? $api_test.system.get_system_errata(sids[0]) : $api_test.system.get_systems_errata(sids)
 end
 
 ## user namespace
