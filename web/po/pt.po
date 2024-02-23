@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-26 09:35+0100\n"
+"POT-Creation-Date: 2024-02-23 15:31+0100\n"
 "PO-Revision-Date: 2021-10-15 12:11+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/"
@@ -634,7 +634,8 @@ msgstr ""
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/virtual-list.tsx:65
+#: ../html/src/manager/systems/list-filter.tsx:56
+#: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
 msgstr ""
 
@@ -1029,12 +1030,12 @@ msgstr ""
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:303
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr ""
 
@@ -1426,10 +1427,9 @@ msgid " seconds"
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
 #: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr ""
@@ -1476,52 +1476,93 @@ msgstr ""
 msgid "Server error, please check log files."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
+msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:57
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:58
 msgid "Affected, at least one patch available in an assigned channel"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:62
 msgid "Not affected"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:50
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:63
+msgid ""
+"The client is not affected because none of the known CVE vulnerable packages "
+"are installed."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:186
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
+msgid "A patch has been successfully installed on the client."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
+msgid "Affected, patch is unavailable"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
+msgid ""
+"The client is affected by a vulnerability for which a patch has not yet been "
+"released."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
+msgid "Affected, patch is unavailable in relevant channels"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
+msgid ""
+"The client is affected by a vulnerability for which a patch has been "
+"released,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
+msgid "Affected, partial patch available in assigned channel"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:193
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:232
 msgid "CVE"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:287
 msgid "Audit Servers"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:294
 msgid "Audit Images"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:312
 msgid "MITRE CVE link"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:285
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:324
 msgid "SUSE Security CVE link"
 msgstr ""
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:317
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
@@ -1542,7 +1583,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:334
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:683
@@ -1556,39 +1597,43 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:385
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
 msgid "No action required"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:344
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
 msgid "Install a new patch on this system."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:361
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:418
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:381
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:408
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:411
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+msgid "Install a new partial patch on this system."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:477
 msgid "If you see this report a bug."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:392
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:458
 #: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:400
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:466
 msgid "Patch available but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:469
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
@@ -1596,11 +1641,11 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:404
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:470
 msgid "Errata"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:496
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
 msgstr ""
@@ -3416,7 +3461,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:651
 #: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:43
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr ""
@@ -5185,6 +5230,11 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
+#: ../html/src/manager/systems/list-filter.tsx:57
+#: ../html/src/manager/systems/virtual-list.tsx:71
+msgid "Virtual System"
+msgstr ""
+
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr ""
@@ -5418,19 +5468,15 @@ msgstr ""
 msgid "Confirm Software Channel Change"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:38
 msgid "Virtual Systems"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:58
 msgid "No Virtual Systems."
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr ""
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:99
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr ""
