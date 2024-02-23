@@ -9688,8 +9688,17 @@ Tenga en cuenta que podría ser necesario configurar manualmente estos scripts. 
         <target>Filtros</target>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.tip" xml:space="preserve">
-        <source>-zsh*,kernel +zsh-html</source>
-        <target>-zsh*,kernel +zsh-html</target>
+        <source>
+              &lt;strong&gt;Filter syntax:&lt;/strong&gt; &lt;code&gt;[+-]keyword[,keyword ...]&lt;/code&gt;&lt;br/&gt;
+              Use &lt;strong&gt;'+'&lt;/strong&gt; to include only the package names matching the keyword and
+              &lt;strong&gt;'-'&lt;/strong&gt; to exclude the package names matching the keyword. Multiple filters can be
+              separated with spaces. Filters are evaluated in the order that they are specified. Shell-style wildcards
+              are supported.&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;Example:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
+              except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
+          </source>
+        <target state="needs-adaptation">-zsh*,kernel +zsh-html</target>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
@@ -16275,11 +16284,11 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <target>Implementar archivos a los sistemas seleccionados</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target>Implementar archivos de configuración: confirmar campos y sistemas a implementar</target>
+        <target state="needs-adaptation">Implementar archivos de configuración: confirmar campos y sistemas a implementar</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
