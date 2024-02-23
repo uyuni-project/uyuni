@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-26 09:35+0100\n"
+"POT-Creation-Date: 2024-02-23 15:31+0100\n"
 "PO-Revision-Date: 2024-01-16 03:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -647,7 +647,8 @@ msgstr "가상 호스트"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/virtual-list.tsx:65
+#: ../html/src/manager/systems/list-filter.tsx:56
+#: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
 msgstr "가상 호스트"
 
@@ -1059,12 +1060,12 @@ msgstr "호스트"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:303
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr "상태"
 
@@ -1468,10 +1469,9 @@ msgid " seconds"
 msgstr " 초"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
 #: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
@@ -1519,52 +1519,97 @@ msgstr ""
 msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
 msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
+msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
 msgstr "제품 마이그레이션 대상에서 사용 가능한 패치가 적용됨"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:57
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:58
 msgid "Affected, at least one patch available in an assigned channel"
 msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:62
 msgid "Not affected"
 msgstr "적용되지 않음"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:50
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:63
+msgid ""
+"The client is not affected because none of the known CVE vulnerable packages "
+"are installed."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
 msgstr "패치됨"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:186
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
+#, fuzzy
+msgid "A patch has been successfully installed on the client."
+msgstr "작업이 다음에 추가됨: "
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
+#, fuzzy
+msgid "Affected, patch is unavailable"
+msgstr "패키지 업데이트를 사용할 수 있음"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
+msgid ""
+"The client is affected by a vulnerability for which a patch has not yet been "
+"released."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
+#, fuzzy
+msgid "Affected, patch is unavailable in relevant channels"
+msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
+msgid ""
+"The client is affected by a vulnerability for which a patch has been "
+"released,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
+#, fuzzy
+msgid "Affected, partial patch available in assigned channel"
+msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
 msgstr "CVE 감사"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:193
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:232
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:287
 msgid "Audit Servers"
 msgstr "감사 서버"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:294
 msgid "Audit Images"
 msgstr "감사 이미지"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:312
 msgid "MITRE CVE link"
 msgstr "MITRE CVE 링크"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:285
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:324
 msgid "SUSE Security CVE link"
 msgstr "SUSE 보안 CVE 링크"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:317
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
@@ -1585,7 +1630,7 @@ msgstr "SUSE 보안 CVE 링크"
 msgid "Name"
 msgstr "이름"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:334
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:683
@@ -1599,39 +1644,44 @@ msgstr "이름"
 msgid "Actions"
 msgstr "작업"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:385
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
 msgid "No action required"
 msgstr "동작이 필요하지 않음"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:344
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
 msgid "Install a new patch on this system."
 msgstr "이 시스템에 새 패치를 설치합니다."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:361
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr "사용 가능한 패치지만 시스템은 최신 제품으로 마이그레이트해야 합니다."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:418
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:381
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:408
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:411
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#, fuzzy
+msgid "Install a new partial patch on this system."
+msgstr "이 시스템에 새 패치를 설치합니다."
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:477
 msgid "If you see this report a bug."
 msgstr "보게 된다면, 버그를 보고하십시오."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:392
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:458
 #: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr "다시 빌드"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:400
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:466
 msgid "Patch available but needs to be cloned into Channel."
 msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:469
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
@@ -1639,11 +1689,11 @@ msgstr "사용 가능한 패치지만 채널로 복제해야 합니다."
 msgid "Channel"
 msgstr "채널"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:404
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:470
 msgid "Errata"
 msgstr "Errata"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:496
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
 msgstr "CSV 다운로드"
@@ -3494,7 +3544,7 @@ msgstr "(사용되지 않음)"
 #: ../html/src/manager/images/image-view.tsx:651
 #: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:43
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "업데이트"
@@ -5335,6 +5385,11 @@ msgstr "등록된 시스템"
 msgid "Groups"
 msgstr "그룹"
 
+#: ../html/src/manager/systems/list-filter.tsx:57
+#: ../html/src/manager/systems/virtual-list.tsx:71
+msgid "Virtual System"
+msgstr "가상 시스템"
+
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr "미니언 목록을 선택하십시오(프록시나 기존 클라이언트 제외)."
@@ -5585,19 +5640,15 @@ msgstr "사용할 수 있는 하위 채널이 없습니다."
 msgid "Confirm Software Channel Change"
 msgstr "소프트웨어 채널 변경 확인"
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:38
 msgid "Virtual Systems"
 msgstr "가상 시스템"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:58
 msgid "No Virtual Systems."
 msgstr "가상 시스템 없음"
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr "가상 시스템"
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:99
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
@@ -6771,9 +6822,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "shortly"
 #~ msgstr "곧"
-
-#~ msgid "Action has been successfully added to the "
-#~ msgstr "작업이 다음에 추가됨: "
 
 #~ msgid "scheduled."
 #~ msgstr "예약되었습니다."
