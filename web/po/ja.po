@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-16 15:14+0100\n"
+"POT-Creation-Date: 2024-02-23 15:34+0100\n"
 "PO-Revision-Date: 2024-01-15 15:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
@@ -1030,7 +1030,7 @@ msgstr "ホスト"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr "状態"
 
@@ -1449,7 +1449,6 @@ msgstr " 秒"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:296
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
 #: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "名前でフィルタ"
@@ -3499,7 +3498,7 @@ msgid "(obsolete)"
 msgstr "(非推奨)"
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "更新"
@@ -5229,6 +5228,16 @@ msgstr "レポーティングデータベースパスワードの生成"
 msgid "Confirm Deletion"
 msgstr "削除の確認"
 
+#: ../html/src/manager/systems/list-filter.tsx:4
+#: ../html/src/manager/systems/virtual-list.tsx:63
+msgid "Virtual Host"
+msgstr "仮想ホスト"
+
+#: ../html/src/manager/systems/list-filter.tsx:5
+#: ../html/src/manager/systems/virtual-list.tsx:71
+msgid "Virtual System"
+msgstr "仮想システム"
+
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr ""
@@ -5484,23 +5493,15 @@ msgstr "利用可能な子チャンネルがありません。"
 msgid "Confirm Software Channel Change"
 msgstr "ソフトウェアチャンネルの変更確認"
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:38
 msgid "Virtual Systems"
 msgstr "仮想システム"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:58
 msgid "No Virtual Systems."
 msgstr "仮想システムがありません。"
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-msgid "Virtual Host"
-msgstr "仮想ホスト"
-
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr "仮想システム"
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:99
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "ベースソフトウェアチャンネル"
