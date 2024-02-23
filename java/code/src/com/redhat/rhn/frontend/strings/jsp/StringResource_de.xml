@@ -17201,11 +17201,11 @@ haben jedoch {0} nicht subskribiert.</target>
         <target>Dateien auf ausgewählten Systemen einsetzen</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target>Konfigurationsdateien einsetzen: Bestätigen Sie, welche Felder und Systeme eingesetzt werden sollen</target>
+        <target state="needs-adaptation">Konfigurationsdateien einsetzen: Bestätigen Sie, welche Felder und Systeme eingesetzt werden sollen</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
