@@ -996,7 +996,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-suse-manager-proxy-4.3-pool-x86_64
         sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
         sle-module-suse-manager-proxy-4.3-updates-x86_64
-        sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs
+        sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3
+        sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3
+        sle-module-containers15-sp4-pool-x86_64-proxy-4.3
+        sle-module-containers15-sp4-updates-x86_64-proxy-4.3
       ],
     'suma-retail-branch-server-43' => # CHECKED
       %w[
@@ -1004,6 +1007,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
         sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
         sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+        sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3
+        sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3
+        sle-module-server-applications15-sp4-pool-x86_64-smrbs-4.3
+        sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3
+        sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
+        sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs
       ]
   },
   'Uyuni' => {
@@ -1540,8 +1549,14 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp5-pool-x86_64' => 240,
   'sle-module-basesystem15-sp5-updates-s390x' => 600,
   'sle-module-basesystem15-sp5-updates-x86_64' => 540,
+  'sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3' => 60,
+  'sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3' => 60,
+  'sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3' => 60,
+  'sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-updates-x86_64' => 60,
+  'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
+  'sle-module-containers15-sp4-updates-x86_64-proxy-4.3' => 60,
   'sle-module-desktop-applications15-sp2-pool-x86_64' => 180,
   'sle-module-desktop-applications15-sp2-updates-x86_64' => 180,
   'sle-module-desktop-applications15-sp3-pool-x86_64' => 120,
@@ -1576,9 +1591,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp5-pool-x86_64' => 60,
   'sle-module-server-applications15-sp5-updates-s390x' => 120,
   'sle-module-server-applications15-sp5-updates-x86_64' => 60,
+  'sle-module-server-applications15-sp4-pool-x86_64-smrbs-4.3' => 60,
+  'sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-suse-manager-proxy-4.3-pool-x86_64' => 60,
-  'sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs' => 60,
   'sle-module-suse-manager-proxy-4.3-updates-x86_64' => 60,
+  'sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs' => 60,
   'sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs' => 60,
   'sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64' => 60,
   'sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64' => 60,
