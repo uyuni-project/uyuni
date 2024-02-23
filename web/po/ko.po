@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-16 15:14+0100\n"
+"POT-Creation-Date: 2024-02-23 15:34+0100\n"
 "PO-Revision-Date: 2024-01-16 03:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
@@ -1024,7 +1024,7 @@ msgstr "호스트"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr "상태"
 
@@ -1438,7 +1438,6 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:296
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
 #: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
@@ -3459,7 +3458,7 @@ msgid "(obsolete)"
 msgstr "(사용되지 않음)"
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "업데이트"
@@ -5163,6 +5162,16 @@ msgstr "데이터베이스 비밀번호 보고 생성"
 msgid "Confirm Deletion"
 msgstr "삭제 확인"
 
+#: ../html/src/manager/systems/list-filter.tsx:4
+#: ../html/src/manager/systems/virtual-list.tsx:63
+msgid "Virtual Host"
+msgstr "가상 호스트"
+
+#: ../html/src/manager/systems/list-filter.tsx:5
+#: ../html/src/manager/systems/virtual-list.tsx:71
+msgid "Virtual System"
+msgstr "가상 시스템"
+
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr "미니언 목록을 선택하십시오(프록시나 기존 클라이언트 제외)."
@@ -5408,23 +5417,15 @@ msgstr "사용할 수 있는 하위 채널이 없습니다."
 msgid "Confirm Software Channel Change"
 msgstr "소프트웨어 채널 변경 확인"
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:38
 msgid "Virtual Systems"
 msgstr "가상 시스템"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:58
 msgid "No Virtual Systems."
 msgstr "가상 시스템 없음"
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-msgid "Virtual Host"
-msgstr "가상 호스트"
-
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr "가상 시스템"
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:99
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
