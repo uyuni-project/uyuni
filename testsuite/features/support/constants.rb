@@ -1168,8 +1168,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-containers15-sp4-pool-x86_64
         sle-module-containers15-sp4-updates-x86_64
-        sle-module-public-cloud15-sp4-pool-x86_64
-        sle-module-public-cloud15-sp4-updates-x86_64
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-updates-x86_64
         sle15-sp4-installer-updates-x86_64
@@ -1185,8 +1183,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp5-updates-x86_64
         sle-module-devtools15-sp5-pool-x86_64
         sle-module-devtools15-sp5-updates-x86_64
-        sle-module-public-cloud15-sp5-pool-x86_64
-        sle-module-public-cloud15-sp5-updates-x86_64
         sle-module-python3-15-sp5-pool-x86_64
         sle-module-python3-15-sp5-updates-x86_64
         sle-module-server-applications15-sp5-pool-x86_64
@@ -1411,6 +1407,7 @@ PAYGO_DEFAULT_PRODUCTS = {
 
 # The timeouts are determining experimentally, by looking at the files in /var/log/rhn/reposync on the server
 # Formula: (end date - startup date) * 2, rounded to upper 60 seconds
+# Please keep this list sorted alphabetically
 TIMEOUT_BY_CHANNEL_NAME = {
   'almalinux8-appstream-x86_64' => 480,
   'almalinux8-uyuni-client-devel-x86_64' => 60,
@@ -1544,18 +1541,18 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp3-pool-x86_64' => 240,
   'sle-module-basesystem15-sp3-updates-x86_64' => 1020,
   'sle-module-basesystem15-sp4-pool-x86_64' => 180,
+  'sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3' => 60,
+  'sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3' => 60,
   'sle-module-basesystem15-sp4-updates-x86_64' => 900,
+  'sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3' => 60,
+  'sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-basesystem15-sp5-pool-s390x' => 360,
   'sle-module-basesystem15-sp5-pool-x86_64' => 240,
   'sle-module-basesystem15-sp5-updates-s390x' => 600,
   'sle-module-basesystem15-sp5-updates-x86_64' => 540,
-  'sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3' => 60,
-  'sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3' => 60,
-  'sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3' => 60,
-  'sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
-  'sle-module-containers15-sp4-updates-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
+  'sle-module-containers15-sp4-updates-x86_64' => 60,
   'sle-module-containers15-sp4-updates-x86_64-proxy-4.3' => 60,
   'sle-module-desktop-applications15-sp2-pool-x86_64' => 180,
   'sle-module-desktop-applications15-sp2-updates-x86_64' => 180,
@@ -1586,16 +1583,16 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp3-pool-x86_64' => 60,
   'sle-module-server-applications15-sp3-updates-x86_64' => 120,
   'sle-module-server-applications15-sp4-pool-x86_64' => 60,
+  'sle-module-server-applications15-sp4-pool-x86_64-smrbs-4.3' => 60,
   'sle-module-server-applications15-sp4-updates-x86_64' => 120,
+  'sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-server-applications15-sp5-pool-s390x' => 60,
   'sle-module-server-applications15-sp5-pool-x86_64' => 60,
   'sle-module-server-applications15-sp5-updates-s390x' => 120,
   'sle-module-server-applications15-sp5-updates-x86_64' => 60,
-  'sle-module-server-applications15-sp4-pool-x86_64-smrbs-4.3' => 60,
-  'sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-suse-manager-proxy-4.3-pool-x86_64' => 60,
-  'sle-module-suse-manager-proxy-4.3-updates-x86_64' => 60,
   'sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs' => 60,
+  'sle-module-suse-manager-proxy-4.3-updates-x86_64' => 60,
   'sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs' => 60,
   'sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64' => 60,
   'sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64' => 60,

@@ -412,9 +412,7 @@ end
 def channel_is_synced(channel)
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
-  STDOUT.puts "#{channel} -> #{result.match(/^repo size:.*/)}"
   if code.zero? && !result.include?('repo size: 0')
-    STDOUT.puts "Channel #{channel} is synced."
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
     # Channel synced if no .new files exist

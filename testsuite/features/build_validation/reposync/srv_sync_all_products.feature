@@ -181,7 +181,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sles15-sp5-devel-uyuni-client-x86_64" has been synced
 
 
-  @sleforsap15sp5_paygo_minion
+@sleforsap15sp5_paygo_minion
   Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP5
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -204,8 +204,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64" product has been added
     And I wait until all synchronized channels for "slesforsap15-sp5" have finished
 
-  @cloud
-  @sleforsap15sp5_minion
+@cloud
+@sleforsap15sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Public Cloud channels
     When I add "sle-module-public-cloud15-sp5-pool-x86_64-sap" channel
     And I wait until the channel "sle-module-public-cloud15-sp5-pool-x86_64-sap" has been synced
