@@ -102,7 +102,6 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] sles15sp5s390_ssh_minion
   - [ ] Containerized proxy passed using the aggregate namespace [please set it up](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-Finalcurrentsolution)
     Make sure to read the info and ask maint-coord to create the release requests
-
     ```
     Edit `/etc/sysconfig/uyuni-proxy-systemd-services` inside the Pod Proxy VM
     In the NAMESPACE, use this link exactly:
