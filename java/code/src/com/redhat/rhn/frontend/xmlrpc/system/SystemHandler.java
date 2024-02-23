@@ -36,6 +36,7 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
@@ -116,6 +117,7 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -189,6 +191,10 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.attestation.AttestationDisabledException;
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.CoCoEnvironmentType;
+import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
@@ -5156,6 +5162,96 @@ public class SystemHandler extends BaseHandler {
         return scheduleScriptRun(loggedInUser, label, systemIds, username, groupname,
                 timeout,
                 script, earliestOccurrence);
+    }
+
+    /**
+     * Schedule Confidential Compute Attestation Action
+     * @param loggedInUser the logged in user
+     * @param sid ID of the server to run the attestation for
+     * @param earliestOccurrence Earliest the script can run
+     * @return ID of the new script action
+     *
+     * @apidoc.doc Schedule Confidential Compute Attestation Action
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid",
+     * "ID of the server to run the script on.")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence",
+     * "Earliest the script can run.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the script run action created. Can be used to fetch
+     * results with system.getScriptResults")
+     */
+    public Integer scheduleCoCoAttestation(User loggedInUser, Integer sid, Date earliestOccurrence) {
+        MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser)
+                .asMinionServer().orElseThrow(NoSuchSystemException::new);
+        try {
+            AttestationManager mgr = new AttestationManager();
+            CoCoAttestationAction action = mgr.scheduleAttestationAction(loggedInUser, minionServer,
+                    earliestOccurrence);
+            return action.getId().intValue();
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
+        catch (AttestationDisabledException e) {
+            throw new UnsupportedOperationException(e);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Return the Confidential Compute Attestation configuration for the given system id
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @return returns {@link com.suse.manager.model.attestation.ServerCoCoAttestationConfig} values
+     *
+     * @apidoc.doc Return the Confidential Compute Attestation configuration for the given system id
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
+     * @apidoc.returntype $CoCoAttestationConfigSerializer
+     */
+    @ReadOnly
+    public ServerCoCoAttestationConfig getCoCoAttestationConfig(User loggedInUser, Integer sid) {
+        MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
+                .orElseThrow(NoSuchSystemException::new);
+        return minionServer.getOptCocoAttestationConfig()
+                .orElse(new ServerCoCoAttestationConfig());
+    }
+
+    /**
+     * Configure Confidential Compute Attestation for the given system
+     * @param loggedInUser the user
+     * @param sid the ID of the system
+     * @param enabled set the endabled state for Confidential Compute Attestation
+     * @param environmentType set the environment type of the system
+     * @return Returns 1 if successful, exception otherwise.
+     *
+     * @apidoc.doc Configure Confidential Compute Attestation for the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
+     * @apidoc.param #param_desc("boolean", "enabled", "set the endabled state for Confidential Compute Attestation")
+     * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
+     *   #options()
+     *     #item("NONE")
+     *     #item("KVM_AMD_EPYC_MILAN")
+     *     #item("KVM_AMD_EPYC_GENOA")
+     *   #options_end()
+     * @apidoc.returntype #return_int_success()
+     */
+    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType) {
+        MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
+                .orElseThrow(NoSuchSystemException::new);
+        AttestationManager mgr = new AttestationManager();
+        minionServer.getOptCocoAttestationConfig()
+                .ifPresentOrElse(
+                        c -> {
+                            c.setEnabled(enabled);
+                            c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
+                        },
+                        () -> mgr.createConfig(loggedInUser, minionServer,
+                                CoCoEnvironmentType.valueOf(environmentType), enabled));
+        return 1;
     }
 
     /**
