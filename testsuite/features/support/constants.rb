@@ -1034,16 +1034,16 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'rockylinux-8' => # CHECKED
       %w[
-        rockylinux-8-x86_64
-        rockylinux-8-appstream-x86_64
-        rockylinux-8-extras-x86_64
+        rockylinux8-x86_64
+        rockylinux8-appstream-x86_64
+        rockylinux8-extras-x86_64
         rockylinux8-uyuni-client-devel-x86_64
       ],
     'rockylinux-9' => # CHECKED
       %w[
-        rockylinux-9-x86_64
-        rockylinux-9-appstream-x86_64
-        rockylinux-9-extras-x86_64
+        rockylinux9-x86_64
+        rockylinux9-appstream-x86_64
+        rockylinux9-extras-x86_64
         rockylinux9-uyuni-client-devel-x86_64
       ],
     'oraclelinux9' => # CHECKED
@@ -1243,7 +1243,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'ubuntu-2004' => # CHECKED
       %w[
-        ubuntu-20.04-pool-amd64-uyuni
+        ubuntu-2004-pool-amd64-uyuni
         ubuntu-2004-amd64-main-uyuni
         ubuntu-2004-amd64-main-security-uyuni
         ubuntu-2004-amd64-main-updates-uyuni
@@ -1255,7 +1255,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'ubuntu-2204' => # CHECKED
       %w[
-        ubuntu-22.04-pool-amd64-uyuni
+        ubuntu-2204-pool-amd64-uyuni
         ubuntu-2204-amd64-main-security-uyuni
         ubuntu-2204-amd64-main-updates-uyuni
         ubuntu-2204-amd64-main-uyuni
