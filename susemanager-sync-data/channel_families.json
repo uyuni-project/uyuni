@@ -373,11 +373,23 @@
   },
   {
     "label" : "SMP",
-    "name" : "SUSE Manager Proxy"
+    "name" : "SUSE Manager Proxy x86_64"
+  },
+  {
+    "label" : "SMP-ARM64",
+    "name" : "SUSE Manager Proxy ARM64"
   },
   {
     "label" : "SMRBS",
-    "name" : "SUSE Manager for Retail Branch Server"
+    "name" : "SUSE Manager for Retail Branch Server x86_64"
+  },
+  {
+    "label" : "SMRBS-ARM64",
+    "name" : "SUSE Manager for Retail Branch Server ARM64"
+  },
+  {
+    "label" : "SMS-ARM64",
+    "name" : "SUSE Manager Server ARM64"
   },
   {
     "label" : "SMS-PPC",
@@ -385,7 +397,7 @@
   },
   {
     "label" : "SMS-X86",
-    "name" : "SUSE Manager Server X86-64"
+    "name" : "SUSE Manager Server X86_64"
   },
   {
     "label" : "SMS-Z",

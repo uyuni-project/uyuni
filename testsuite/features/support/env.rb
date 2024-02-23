@@ -234,6 +234,14 @@ Before('@virthost_kvm') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['kvm_server']
 end
 
+Before('@alma8_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_minion']
+end
+
+Before('@alma8_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_ssh_minion']
+end
+
 Before('@alma9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma9_minion']
 end

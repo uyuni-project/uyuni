@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:26:32 CET 2024 - marina.latini@suse.com
+
+- version 5.0.3-1
+  * Skip deploying the CA into the salt dir on proxies (bsc#1219850)
+  * Deploy the CA certificate also into the salt filesystem (bsc#1219577)
+
+-------------------------------------------------------------------
 Mon Jan 29 11:47:08 CET 2024 - rosuna@suse.com
 
 - version 5.0.2-1

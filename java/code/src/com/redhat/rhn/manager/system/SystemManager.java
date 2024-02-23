@@ -1160,9 +1160,9 @@ public class SystemManager extends BaseManager {
                             "S.channel_labels, " +
                             "S.status_type, " +
                             "VI.host_system_id, " +
-                            "(SELECT S.name FROM rhnServer S WHERE S.id = VI.host_system_id) as host_server_name, " +
                             "VI.virtual_system_id, " +
                             "VI.uuid, " +
+                            "COALESCE(RS.name, '(none)') AS host_server_name, " +
                             "COALESCE(VII.name, '(none)') AS server_name, " +
                             "COALESCE(VIS.name, '(unknown)') AS STATE_NAME, " +
                             "COALESCE(VIS.label, 'unknown') AS STATE_LABEL, " +
@@ -1175,7 +1175,8 @@ public class SystemManager extends BaseManager {
                 .from("rhnVirtualInstance VI " +
                         "    LEFT OUTER JOIN rhnVirtualInstanceInfo VII ON VI.id = VII.instance_id " +
                         "    LEFT OUTER JOIN rhnVirtualInstanceState VIS ON VII.state = VIS.id " +
-                        "    LEFT OUTER JOIN suseSystemOverview S ON S.id = VI.virtual_system_id")
+                        "    LEFT OUTER JOIN suseSystemOverview S ON S.id = VI.virtual_system_id" +
+                        "    LEFT OUTER JOIN rhnServer RS ON RS.id = VI.host_system_id")
                 .where("EXISTS ( " +
                         "   SELECT 1 " +
                         "   FROM rhnUserServerPerms USP " +
@@ -2301,7 +2302,8 @@ public class SystemManager extends BaseManager {
         Map<String, Object> sshRootConfig = new HashMap<>();
         Map<String, Object> sshConfig = new HashMap<>();
 
-        MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH)
+        MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH,
+                        SaltSSHService.SUMA_SSH_PUB_KEY)
                 .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating salt-ssh public key failed: " + result.getStderr()).get();
@@ -2309,7 +2311,8 @@ public class SystemManager extends BaseManager {
         sshConfig.put("server_ssh_key_pub", result.getPublicKey());
 
         // Create the proxy SSH keys
-        result = saltApi.generateSSHKey(null).orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
+        result = saltApi.generateSSHKey(null, null)
+                .orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + result.getStderr()).get();
         }

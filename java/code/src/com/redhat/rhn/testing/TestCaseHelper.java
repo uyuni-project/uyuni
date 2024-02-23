@@ -35,7 +35,7 @@ public class TestCaseHelper {
         if (HibernateFactory.inTransaction()) {
             try {
                 HibernateFactory.rollbackTransaction();
-                //HibernateFactory.commitTransaction();
+                // HibernateFactory.commitTransaction();
             }
             catch (TransactionException e) {
                 rollbackException = e;

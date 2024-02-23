@@ -32,10 +32,11 @@ def delete_rejected_key(minion):
     return {"retcode": 0}
 
 
-def ssh_keygen(path=None):
+def ssh_keygen(path=None, pubkeycopy=None):
     """
     Generate SSH keys using the given path.
     :param path: the path. If the None, the keys are generated in a temporary folder, returned, and removed.
+    :pubkeycopy path: the path to a file which should get a copy of the pub key
     :return: map containing retcode and stdout/stderr. Also contains key and public_key if no path was provided
     """
     temp_dir = None
@@ -55,6 +56,8 @@ def ssh_keygen(path=None):
             # pylint: disable-next=unspecified-encoding
             with open(out_path + ".pub", "r") as fd:
                 result["public_key"] = fd.read()
+            if pubkeycopy and os.path.isdir(os.path.dirname(pubkeycopy)):
+                shutil.copyfile(out_path + ".pub", pubkeycopy)
 
     return result
 

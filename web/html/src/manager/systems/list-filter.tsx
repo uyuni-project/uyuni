@@ -52,6 +52,15 @@ const allListOptions = [
   { value: "group_count", label: t("Groups") },
 ];
 
+const virtualSystemsListOptions = [
+  { value: "host_server_name", label: t("Virtual Host") },
+  { value: "server_name", label: t("Virtual System") },
+];
+
 export const SystemsListFilter = (props) => {
   return <TableFilter filterOptions={allListOptions} name="criteria" {...props} />;
+};
+
+export const VirtualSystemsListFilter = (props) => {
+  return <TableFilter filterOptions={virtualSystemsListOptions} name="criteria" {...props} />;
 };

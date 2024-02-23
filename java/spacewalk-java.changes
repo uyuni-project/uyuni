@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Feb 16 10:09:04 CET 2024 - rosuna@suse.com
+
+- version 5.0.5-1
+  * Generate server SSH key also when bootstrapping regular Minions (bsc#1219449)
+  * Fix handling of proxy SSH public keys
+  * Fix issue with Salt SSH keys for Salt SSH Minions CVE-2023-32189 (bsc#1170848)
+
+-------------------------------------------------------------------
+Tue Feb 13 17:11:44 CET 2024 - marina.latini@suse.com
+
+- version 5.0.4-1
+  * Require latest 5.0 database schema version
+  * Update license to include the year 2024
+  * Add org/createFirst to unauthenticated HTTP API paths
+
+-------------------------------------------------------------------
 Mon Jan 29 11:58:20 CET 2024 - rosuna@suse.com
 
 - version 5.0.3-1

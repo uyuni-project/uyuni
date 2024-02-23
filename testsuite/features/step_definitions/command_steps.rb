@@ -179,6 +179,17 @@ When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*
   $command_output, _code = get_target('server').run(command)
 end
 
+When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+  raise ScriptError, "Synchronization error, version type #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil?
+
+  channels_to_synchronize.each do |os_product_version_channel|
+    log "Adding channel: #{os_product_version_channel}"
+    command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
+    get_target('server').run(command)
+  end
+end
+
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
 end
@@ -323,7 +334,7 @@ end
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
 # It waits for all the reposyncs in the allow-list to complete, and kills all others.
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
-  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version].nil?
+  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).nil?
 
   channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
   log "Killing channels:\n#{channels_to_kill}"
@@ -407,7 +418,9 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
-  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  raise ScriptError, "Synchronization error, version type #{os_product_version} in #{product} product not found" if channels_to_wait.nil?
+
   time_spent = 0
   checking_rate = 10
   timeout = 0
@@ -825,7 +838,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   os_family = node.os_family
   cmd = ''
   case os_family
-  when /^opensuse/, /^sles/
+  when /^opensuse/, /^sles/, /^suse/
     mand_repos = ''
     repos.split.map do |repo|
       mand_repos = "#{mand_repos} #{repo}"
@@ -1498,6 +1511,11 @@ When(/^I reboot the server through SSH$/) do
     end
     sleep 1
   end
+end
+
+When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+  node = get_target(host)
+  node.run('reboot')
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|

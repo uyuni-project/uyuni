@@ -1,1 +1,0 @@
-- copy CA certificate to Salt filesystem during startup (bsc#1219577)

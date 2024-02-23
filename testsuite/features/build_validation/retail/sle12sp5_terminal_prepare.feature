@@ -1,6 +1,7 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@proxy
 @sle12sp5_terminal
 Feature: Prepare prerequisites for SLES 12 SP5 terminal deployment
 

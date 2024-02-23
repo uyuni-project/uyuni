@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:24:48 CET 2024 - marina.latini@suse.com
+
+- version 5.0.4-1
+  * Require latest 5.0 database schema version
+  * Fix issue in "spacewalk-repo-sync" when RPM packages contains
+    files with size greater than 4GB (bsc#1219151)
+
+-------------------------------------------------------------------
 Mon Jan 29 11:56:53 CET 2024 - rosuna@suse.com
 
 - version 5.0.3-1

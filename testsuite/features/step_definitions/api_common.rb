@@ -75,6 +75,18 @@ When(/^I wait for the OpenSCAP audit to finish$/) do
   end
 end
 
+When(/^I retrieve the relevant errata for (.+)$/) do |raw_hosts|
+  hosts = raw_hosts.split(',').map(&:strip)
+  sids = []
+
+  hosts.each do |host|
+    node = get_target(host)
+    sids << get_system_id(node)
+  end
+  # system.getErrata is an overloaded API method accepting either a single sid or a list of them
+  sids.size == 1 ? $api_test.system.get_system_errata(sids[0]) : $api_test.system.get_systems_errata(sids)
+end
+
 ## user namespace
 
 When(/^I call user\.list_users\(\)$/) do
@@ -268,7 +280,9 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'buildhost', 'minion'
   client.sub! 'terminal', 'minion'
   custom_channel =
-    if client.include? 'alma9'
+    if client.include? 'alma8'
+      'no-appstream-alma-8-result-custom_channel_alma8_minion'
+    elsif client.include? 'alma9'
       'no-appstream-alma-9-result-custom_channel_alma9_minion'
     elsif client.include? 'liberty9'
       'no-appstream-liberty-9-result-custom_channel_liberty9_minion'

@@ -61,11 +61,13 @@ namespace :parallel do
 end
 
 namespace :utils do
-  def split_secondary(sets_n, tests)
+  desc 'Split secondary parallelizable tests into separate yaml files'
+  task :split_secondary_p, [:sets] do |_t, args|
+    sets_n = args[:sets].to_i
     if sets_n < 2
       puts 'sets should be 2 or greater'
     else
-      all_secondary_p = YAML.load_file("#{tests}.yml")
+      all_secondary_p = YAML.load_file('run_sets/secondary_parallelizable.yml')
       size =
         if (all_secondary_p.length % sets_n).zero?
           all_secondary_p.length / sets_n
@@ -76,21 +78,9 @@ namespace :utils do
       puts "split_sets.length: #{split_sets.length}"
       (1..split_sets.length).each do |i|
         puts "writing #{i}"
-        File.write("#{tests}_#{i}.yml", split_sets[i - 1].to_yaml)
+        File.write("run_sets/secondary_parallelizable_#{i}.yml", split_sets[i - 1].to_yaml)
       end
     end
-  end
-  desc 'Split secondary NOT parallelizable tests into separate yaml files'
-  task :split_secondary, [:sets] do |_t, args|
-    sets_n = args[:sets].to_i
-    tests = 'run_sets/secondary'
-    split_secondary(sets_n, tests)
-  end
-  desc 'Split secondary parallelizable tests into separate yaml files'
-  task :split_secondary_p, [:sets] do |_t, args|
-    sets_n = args[:sets].to_i
-    tests = 'run_sets/secondary_parallelizable'
-    split_secondary(sets_n, tests)
   end
 
   desc 'Generate feature file for a client from a template and include it in a yaml file'

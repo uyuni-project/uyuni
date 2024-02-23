@@ -134,6 +134,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Development Tools Module 15 SP4 x86_64" selected
     When I select "Containers Module 15 SP4 x86_64" as a product
     Then I should see the "Containers Module 15 SP4 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
@@ -444,6 +446,26 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sles15-sp5-devel-uyuni-client-s390x" has been synced
 
 @susemanager
+@alma8_minion
+  Scenario: Add Alma Linux 8
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "AlmaLinux 8" as the filtered product description
+    And I select "AlmaLinux 8 x86_64" as a product
+    Then I should see the "AlmaLinux 8 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "AlmaLinux 8 x86_64" product has been added
+    And I wait until all synchronized channels for "almalinux8" have finished
+
+@uyuni
+@alma8_minion
+  Scenario: Add Alma Linux 8
+    When I use spacewalk-common-channel to add channel "almalinux8 almalinux8-appstream almalinux8-extras almalinux8-uyuni-client-devel" with arch "x86_64"
+    And I wait until all synchronized channels for "almalinux8" have finished
+
+@susemanager
 @alma9_minion
   Scenario: Add Alma Linux 9
     Given I am authorized for the "Admin" section
@@ -717,7 +739,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @proxy
   Scenario: Add Uyuni Leap 15.5 Proxy, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-stable-leap-155 opensuse_leap15_5-uyuni-client-devel" with arch "x86_64"
+    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @susemanager

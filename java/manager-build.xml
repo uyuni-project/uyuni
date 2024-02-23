@@ -276,7 +276,7 @@
       <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_modules/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/ ${deploy.user}@${deploy.host}:/usr/share/susemanager/modules/pillar/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/modules/ ${deploy.user}@${deploy.host}:/usr/share/susemanager/modules/" />
     </exec>
     <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
     <exec executable="rsync">

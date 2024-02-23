@@ -39,7 +39,7 @@ public class MgrRunner {
      * @return the runner call
      */
     public static RunnerCall<String> writeTextFile(String absolutePath, String contents) {
-        return new RunnerCall("salt.cmd", Optional.of(Map.of(
+        return new RunnerCall<>("salt.cmd", Optional.of(Map.of(
                 "fun", "file.write",
                 "path", absolutePath,
                 "args", contents)),
@@ -55,7 +55,7 @@ public class MgrRunner {
      * @return the runner call
      */
     public static RunnerCall<String> setFileMode(String absolutePath, String modeString) {
-        return new RunnerCall("salt.cmd", Optional.of(Map.of(
+        return new RunnerCall<>("salt.cmd", Optional.of(Map.of(
                 "fun", "file.set_mode",
                 "path", absolutePath,
                 "mode", modeString)),
@@ -71,7 +71,7 @@ public class MgrRunner {
      * @return the runner call
      */
     public static RunnerCall<Boolean> removeFile(String absolutePath) {
-        return new RunnerCall("salt.cmd", Optional.of(Map.of(
+        return new RunnerCall<>("salt.cmd", Optional.of(Map.of(
                 "fun", "file.remove",
                 "path", absolutePath)),
                 new TypeToken<Boolean>() { });
@@ -88,12 +88,28 @@ public class MgrRunner {
      * @return the runner call
      */
     public static RunnerCall<Boolean> copyFile(String src, String dst, boolean recurse, boolean removeExisting) {
-        return new RunnerCall("salt.cmd", Optional.of(Map.of(
+        return new RunnerCall<>("salt.cmd", Optional.of(Map.of(
                 "fun", "file.copy",
                 "src", src,
                 "dst", dst,
                 "recurse", recurse,
                 "remove_existing", removeExisting)),
+                new TypeToken<Boolean>() { });
+    }
+
+    /**
+     * {@link RunnerCall} for creating a directory with the given path.
+     * The result of the call is a boolean, which is true, if the path was successfully created.
+     *
+     * @param absolutePath the absolute path of the directory
+     * @param modeString the desired mode
+     * @return the runner call
+     */
+    public static RunnerCall<Boolean> mkDir(String absolutePath, String modeString) {
+        return new RunnerCall<>("salt.cmd", Optional.of(Map.of(
+                "fun", "file.mkdir",
+                "dir_path", absolutePath,
+                "mode", modeString)),
                 new TypeToken<Boolean>() { });
     }
 }
