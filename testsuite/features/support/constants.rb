@@ -989,14 +989,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-main-security-amd64
         ubuntu-22.04-suse-manager-tools-amd64
       ],
-    'fake' => # CHECKED
-      %w[
-        fake-rpm-suse-channel
-        fake-child-channel-i586
-        fake-child-channel-suse-like
-        fake-base-channel-debian-like
-        fake-base-channel-rh-like
-      ],
     'suma-proxy-43' => # CHECKED
       %w[
         sle-product-suse-manager-proxy-4.3-pool-x86_64
@@ -1317,17 +1309,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-universe-uyuni
         ubuntu-2204-amd64-uyuni-client-devel
       ],
-    'fake' =>
-      %w[
-        fake-base-channel-suse-like
-        fake-child-channel-suse-like
-        fake-base-channel-i586
-        fake-child-channel-i586
-        test-base-channel-x86_64
-        test-child-channel-x86_64
-        fake-base-channel-debian-like
-        fake-base-channel-rh-like
-      ],
     'uyuni-proxy' => # CHECKED
       %w[
         opensuse_leap15_5-x86_64
@@ -1473,6 +1454,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'fake-child-channel-i586' => 60,
   'fake-child-channel-suse-like' => 60,
   'fake-rpm-suse-channel' => 60,
+  'fake-rpm-terminal-channel' => 60,
   'opensuse_leap15_4-aarch64' => 8940,
   'opensuse_leap15_4-aarch64-backports-updates' => 540,
   'opensuse_leap15_4-aarch64-non-oss' => 60,
@@ -1638,6 +1620,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-microos-5.2-devel-uyuni-client-x86_64' => 60,
   'suse-microos-5.2-pool-x86_64' => 60,
   'suse-microos-5.2-updates-x86_64' => 60,
+  'test-child-channel-x86_64' => 60,
   'ubuntu-2004-amd64-main-amd64' => 480,
   'ubuntu-2004-amd64-main-security-amd64' => 3480,
   'ubuntu-2004-amd64-main-security-uyuni' => 4200,

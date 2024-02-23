@@ -97,9 +97,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
-    When I use spacewalk-common-channel to add channel "sles15-sp4-uyuni-client" with arch "x86_64"
+    When I use spacewalk-common-channel to add channel "sles15-sp4-devel-uyuni-client" with arch "x86_64"
     And I wait until all synchronized channels for "sles15-sp4" have finished
-    # TODO: Refactor the scenarios in order to don't require a full synchronization of SLES 15 SP4 product in Uyuni
+    # TODO: Refactor the scenarios in order to not require a full synchronization of SLES 15 SP4 product in Uyuni
     # When I kill running spacewalk-repo-sync for "sles15-sp4"
 
 @uyuni
