@@ -20,6 +20,8 @@ import com.redhat.rhn.frontend.filter.DepthAware;
 
 import java.util.Objects;
 
+import javax.persistence.Tuple;
+
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
@@ -67,6 +69,36 @@ public class VirtualSystemOverview extends SystemOverview
         }
     }
 
+
+    /**
+     * Default constructor
+     */
+    public VirtualSystemOverview() {
+    }
+
+    /**
+     * Construct from a query result Tuple
+     *
+     * @param tuple the row containing the data
+     */
+    public VirtualSystemOverview(Tuple tuple) {
+        super(tuple);
+
+        if (tuple.getElements().size() > 2) {
+            hostSystemId = getTupleValue(tuple, "host_system_id", Number.class).map(Number::longValue).orElse(null);
+            virtualSystemId = getTupleValue(tuple, "virtual_system_id", Number.class)
+                    .map(Number::longValue).orElse(null);
+            uuid = getTupleValue(tuple, "uuid", String.class).orElse(null);
+            stateName = getTupleValue(tuple, "state_name", String.class).orElse(null);
+            stateLabel = getTupleValue(tuple, "state_label", String.class).orElse(null);
+            vcpus = getTupleValue(tuple, "vcpus", Number.class).map(Number::longValue).orElse(0L);
+            memory = getTupleValue(tuple, "memory", Number.class).map(Number::longValue).orElse(0L);
+            hostServerName = getTupleValue(tuple, "host_server_name", String.class).orElse(null);
+            subscribable = getTupleValue(tuple, "subscribable", Number.class).map(n -> n.intValue() == 1).orElse(false);
+        }
+        setId(virtualSystemId);
+        systemId = virtualSystemId;
+    }
     /**
      * Compute the system status and update the corresponding field.
      *

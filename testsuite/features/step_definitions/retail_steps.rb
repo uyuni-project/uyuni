@@ -10,7 +10,7 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
-  repos += ' testing_overlay_devel_repo' unless $build_validation
+  repos += ' testing_overlay_devel_repo' unless $build_validation || product_version_full.include?('-released')
   log get_target('proxy').run("zypper mr --#{action} #{repos}")
 
   # Server Applications, proxy product and modules, proxy devel
@@ -18,7 +18,7 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
     repos = 'proxy_module_pool_repo proxy_module_update_repo ' \
             'proxy_product_pool_repo proxy_product_update_repo ' \
             'module_server_applications_pool_repo module_server_applications_update_repo'
-    repos += ' proxy_devel_releasenotes_repo proxy_devel_repo' unless $build_validation
+    repos += ' proxy_devel_releasenotes_repo proxy_devel_repo' unless $build_validation || product_version_full.include?('-released')
   elsif os_family =~ /^opensuse/
     repos = 'proxy_pool_repo'
   end

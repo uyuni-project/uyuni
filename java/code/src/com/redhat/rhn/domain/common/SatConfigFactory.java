@@ -41,6 +41,7 @@ public class SatConfigFactory extends HibernateFactory {
     public static final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";
     public static final String EXT_AUTH_USE_ORGUNIT = "extauth_use_orgunit";
     public static final String EXT_AUTH_KEEP_ROLES = "extauth_keep_temproles";
+    public static final String SYSTEM_CHECKIN_THRESHOLD = "system_checkin_threshold";
 
     private SatConfigFactory() {
         super();
@@ -63,9 +64,10 @@ public class SatConfigFactory extends HibernateFactory {
     /**
      * return satellite configuration long value for a specified key
      * @param key key
+     * @param defaultValue value to use if no property value could be found
      * @return value long value
      */
-    public static Long getSatConfigLongValue(String key) {
+    public static Long getSatConfigLongValue(String key, Long defaultValue) {
         String stringValue = getSatConfigValue(key);
         if (stringValue != null) {
             try {
@@ -75,7 +77,7 @@ public class SatConfigFactory extends HibernateFactory {
                 log.error("Satellite configuration '{}' value ({}) cannot be converted to Long.", key, stringValue);
             }
         }
-        return null;
+        return defaultValue;
     }
 
     /**

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # Beware: After altering the system e.g. package installation/removal, the system
@@ -6,6 +6,9 @@
 
 @slemicro54_ssh_minion
 Feature: Bootstrap a SLE Micro 5.4 Salt SSH minion
+
+  Scenario: Clean up sumaform leftovers on a SLE Micro 5.4 SSH minion
+    When I perform a full salt minion cleanup on "slemicro54_ssh_minion"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

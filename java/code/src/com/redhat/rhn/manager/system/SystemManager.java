@@ -121,6 +121,7 @@ import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -1190,19 +1191,46 @@ public class SystemManager extends BaseManager {
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
     }
 
-    /**
+     /**
      * Returns list of virtual host systems visible to user.
      * @param user Currently logged in user.
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<VirtualSystemOverview> virtualSystemsList(
-            User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "virtual_servers");
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, VirtualSystemOverview.class);
+    public static DataResult<VirtualSystemOverview> virtualSystemsList(User user, PageControl pc) {
+        return virtualSystemsListQueryBuilder()
+                .run(Map.of("user_id", user.getId()), pc, PagedSqlQueryBuilder::parseFilterAsText,
+                        VirtualSystemOverview.class);
+    }
+
+    /**
+     * @return the Paged SQL query builder used for the virtual systems list.
+     */
+    public static PagedSqlQueryBuilder virtualSystemsListQueryBuilder() {
+        return new PagedSqlQueryBuilder("VI.uuid")
+                .select("VI.host_system_id, " +
+                        "VI.virtual_system_id, " +
+                        "VI.uuid, " +
+                        "COALESCE(RS.name, '(none)') AS host_server_name, " +
+                        "COALESCE(VII.name, '(none)') AS server_name, " +
+                        "COALESCE(VIS.name, '(unknown)') AS STATE_NAME, " +
+                        "COALESCE(VIS.label, 'unknown') AS STATE_LABEL, " +
+                        "COALESCE(VII.vcpus, 0) AS VCPUS, " +
+                        "COALESCE(VII.memory_size, 0) AS MEMORY, " +
+                        "rhn_channel.user_role_check((" +
+                        "   select channel_id " +
+                        "   from rhnServerOverview " +
+                        "   where server_id = VI.virtual_system_id), :user_id, 'subscribe') AS subscribable")
+                .from("rhnVirtualInstance VI " +
+                        "    LEFT OUTER JOIN rhnVirtualInstanceInfo VII ON VI.id = VII.instance_id " +
+                        "    LEFT OUTER JOIN rhnVirtualInstanceState VIS ON VII.state = VIS.id " +
+                        "    LEFT OUTER JOIN rhnServer RS ON RS.id = VI.host_system_id")
+                .where("EXISTS ( " +
+                        "   SELECT 1 " +
+                        "   FROM rhnUserServerPerms USP " +
+                        "   WHERE USP.user_id = :user_id " +
+                        "     AND (USP.server_id = VI.host_system_id OR USP.server_id = VI.virtual_system_id) " +
+                        ") AND VI.uuid IS NOT NULL");
     }
 
     /**

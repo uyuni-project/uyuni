@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -21,6 +21,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static com.suse.utils.Predicates.isProvided;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -42,6 +44,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -53,6 +56,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.MinionActionUtils;
@@ -61,7 +65,6 @@ import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
-import com.suse.manager.webui.utils.gson.VirtualSystem;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -122,7 +125,7 @@ public class SystemsController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/list/virtual",
-                withCsrfToken(withDocsLocale(withUser(this::virtualListPage))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::virtualListPage)))), jade);
         get("/manager/systems/details/mgr-server-info/:sid",
                 withCsrfToken(withDocsLocale(withUserAndServer(this::mgrServerInfoPage))),
                 jade);
@@ -137,11 +140,42 @@ public class SystemsController {
         get("/manager/api/systems/list/virtual", asJson(withUser(this::virtualSystems)));
     }
 
-    private Object virtualSystems(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
+    /**
+     * Retrieves virtual systems applying filters and pagination.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the filtered virtual systems in json format
+     */
+    public Object virtualSystems(Request request, Response response, User user) {
+        final String defaultFilterColumn = "host_server_name";
+        PageControlHelper pageHelper = new PageControlHelper(request, defaultFilterColumn);
+        PageControl pc = pageHelper.getPageControl();
 
-        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, null);
+        Map<String, String> columnNamesMapping = Map.of(
+                defaultFilterColumn, "RS.name",
+                "server_name", "VII.name",
+                "stateName", "state_name",
+                "statusType", "S.status_type",
+                "channelLabels", "S.channel_labels"
+        );
+
+        if (isProvided(pc.getFilterColumn()) && columnNamesMapping.containsKey(pc.getFilterColumn())) {
+            pc.setFilterColumn(columnNamesMapping.get(pc.getFilterColumn()));
+        }
+
+        if (isProvided(pc.getSortColumn()) && columnNamesMapping.containsKey(pc.getSortColumn())) {
+            pc.setSortColumn(columnNamesMapping.get(pc.getSortColumn()));
+        }
+
         if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0); // Setting to zero means getting them all
+
+            List<VirtualSystemOverview> virtual = SystemManager.virtualSystemsListQueryBuilder()
+                    .select("S.id, S.selectable")
+                    .run(Map.of("user_id", user.getId()), pc, PagedSqlQueryBuilder::parseFilterAsText,
+                            VirtualSystemOverview.class);
             return json(response, virtual.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(VirtualSystemOverview::getUuid)
@@ -149,17 +183,10 @@ public class SystemsController {
             );
         }
 
-        virtual = pageHelper.processPageControl(virtual, new HashMap<>());
-        List<VirtualSystem> systems = virtual.stream()
-                .map(system -> {
-                    system.setSystemId(system.getVirtualSystemId());
-                    if (system.getSystemId() != null) {
-                        system.updateStatusType(user);
-                    }
-                    return new VirtualSystem(system);
-                })
-                .collect(Collectors.toList());
-        return json(response, new PagedDataResultJson<>(systems, virtual.getTotalSize()));
+        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, pc);
+        RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
+
+        return json(response, new PagedDataResultJson<>(virtual, virtual.getTotalSize(), ssmSet.getElementValues()));
     }
 
     /**
@@ -170,9 +197,16 @@ public class SystemsController {
      * @param userIn the user
      * @return the jade rendered template
      */
-    private ModelAndView virtualListPage(Request requestIn, Response responseIn, User userIn) {
+    public ModelAndView virtualListPage(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
+
+        PageControlHelper pageHelper = new PageControlHelper(requestIn);
+        String filterColumn = pageHelper.getQueryColumn();
+        String filterQuery = pageHelper.getQuery();
+
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("query", filterQuery != null ? String.format("'%s'", filterQuery) : "null");
+        data.put("queryColumn", filterColumn != null ? String.format("'%s'", filterColumn) : "null");
         return new ModelAndView(data, "templates/systems/virtual-list.jade");
     }
 

@@ -3,6 +3,11 @@
 
 require 'faraday'
 
+# When we pass a list of values in the query string of an HTTP request, the defaul encoder will only update the key for that param
+# As an example: sids=1000010027&sids=1000010010&sids=1000010012 maps to params={"sids"=>"1000010012"}
+# With FlatParamEncoder, it maps to params={"sids"=>["1000010027", "1000010010", "1000010012"]}
+Faraday::Utils.default_params_encoder = Faraday::FlatParamsEncoder
+
 # Wrapper class for HTTP client library (Faraday)
 class HttpClient
   ##
@@ -39,7 +44,12 @@ class HttpClient
       unless params.nil?
         params.each do |key, value|
           url += '&' unless url[-1] == '?'
-          url += "#{key}=#{value}"
+          url +=
+            if value.is_a?(Array)
+              value.map { |v| "#{key}=#{v}" }.join('&')
+            else
+              "#{key}=#{value}"
+            end
         end
       end
     end

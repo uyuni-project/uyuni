@@ -175,7 +175,7 @@ When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  product_key = $is_container_provider ? 'Fake' : product
+  product_key = $is_container_provider && !$build_validation ? 'Fake' : product
   select(BASE_CHANNEL_BY_CLIENT[product_key][client], from: from, exact: false)
 end
 
@@ -770,7 +770,7 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I should not see a warning sign$/) do
+Then(/^I should not see a warning nor an error sign$/) do
   raise 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
   raise 'Error detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end

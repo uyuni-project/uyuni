@@ -112,7 +112,7 @@
                         <div class="col-lg-6">
                             <html:text property="filters" styleClass="form-control"/>
                             <span class="help-block">
-                                <rhn:tooltip key="repos.jsp.filters.tip"/>
+                                <bean:message key="repos.jsp.filters.tip"/>
                             </span>
                         </div>
             </div>

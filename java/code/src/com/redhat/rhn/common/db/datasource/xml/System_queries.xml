@@ -1054,37 +1054,6 @@ ORDER BY NAME, VI.virtual_system_id, VI.uuid DESC
   <elaborator name="virtual_system_entitlements" />
 </mode>
 
-<mode name="virtual_servers" class="com.redhat.rhn.frontend.dto.VirtualSystemOverview">
-    <query params="user_id">
-        SELECT
-        DISTINCT VI.id,
-        VI.host_system_id,
-        (SELECT S.name FROM rhnServer S WHERE S.id = VI.host_system_id) as host_server_name,
-        VI.virtual_system_id,
-        VI.uuid,
-        COALESCE(VII.name, '(none)') AS NAME,
-        COALESCE(VIS.name, '(unknown)') AS STATE_NAME,
-        COALESCE(VIS.label, 'unknown') AS STATE_LABEL,
-        COALESCE(VII.vcpus, 0) AS VCPUS,
-        COALESCE(VII.memory_size, 0) AS MEMORY,
-        COALESCE(((SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = VI.virtual_system_id)), 0 ) as accessible,
-        rhn_channel.user_role_check((select channel_id from rhnServerOverview where server_id = VI.virtual_system_id), :user_id, 'subscribe') AS subscribable,
-        COALESCE((SELECT 1 FROM rhnServerFeaturesView SFV WHERE (SFV.server_id = VI.virtual_system_id OR (VI.uuid IS NULL AND SFV.server_id = VI.host_system_id)) AND SFV.label = 'ftr_system_grouping'), 0) AS selectable
-        FROM rhnVirtualInstance VI
-        LEFT OUTER JOIN rhnVirtualInstanceInfo VII ON VI.id = VII.instance_id
-        LEFT OUTER JOIN rhnVirtualInstanceState VIS ON VII.state = VIS.id
-        WHERE EXISTS (SELECT 1
-        FROM rhnUserServerPerms USP
-        WHERE USP.user_id = :user_id
-        AND (USP.server_id = VI.host_system_id OR VI.host_system_id IS NULL))
-        AND VI.uuid IS NOT NULL
-        ORDER BY NAME, VI.virtual_system_id, VI.uuid DESC
-    </query>
-    <elaborator name="virtual_system_overview"/>
-    <elaborator name="system_config_files_with_diffs" />
-    <elaborator name="virtual_system_entitlements" />
-</mode>
-
 <query name="total_virtual_instances" params="">
   SELECT VI.id,
          COUNT(VI2.id) AS COUNT_TOTAL_INSTANCES

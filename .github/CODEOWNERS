@@ -56,10 +56,10 @@ branding/ @uyuni-project/frontend
 .yarnrc @uyuni-project/frontend
 
 # QE
-testsuite/ @uyuni-project/qe
-.github/Maintenance_Update.md @uyuni-project/qe
-.github/workflows/rubocop.yml @uyuni-project/qe
-.rubocop.yml @uyuni-project/qe
+testsuite/ @SUSE/suse-manager-qe
+.github/ISSUE_TEMPLATE/qe-bv.md @SUSE/suse-manager-qe
+.github/ISSUE_TEMPLATE/qe-rrtg.md @SUSE/suse-manager-qe
+.rubocop.yml @SUSE/suse-manager-qe
 
 # mgr-libmod
 susemanager-utils/mgr-libmod/ @cbbayburt

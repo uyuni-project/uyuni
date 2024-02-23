@@ -2,8 +2,14 @@
 name: Uyuni Community Hours
 about: Use this template for planning a new Uyuni Community Hours
 title: 'Uyuni Community Hours DD.MM.YYYY'
-labels: vega-squad
+labels: ["vega-squad", "uyuni"]
+projects: SUSE/35
 ---
+
+# Links
+- Share meeting link for guests: https://meet.jit.si/moderated/08658cae0e2eefa6e84ef2229a34e339e1b3b473449ae06e4610cfaad5a32b0b
+- Share this page with other moderators: https://moderated.jitsi.net/f07d64e4664c4b359fa675d524c78648d28904678a1d4c57aa2f2acb9b9a4f5e
+
 
 # Tasks to be done before the meeting
 
