@@ -347,9 +347,9 @@ public class CVEAuditManagerOVAL {
             }
             LOG.debug("Downloading finished");
 
-            LOG.debug("OVAL vulnerability file: " +
+            LOG.debug("OVAL vulnerability file: {}",
                     downloadResult.getVulnerabilityFile().map(File::getAbsoluteFile).orElse(null));
-            LOG.debug("OVAL patch file: " + downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
+            LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
 
             downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
                 OvalParser ovalParser = new OvalParser();
