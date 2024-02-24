@@ -1373,6 +1373,30 @@ DATA = {
         'PDID' : [2474, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/5/bootstrap/'
     },
+    "SLE-15-SP6-aarch64": {
+        "PDID": [2615, 1709],
+        "BETAPDID": [1925],
+        "PKGLIST": ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
+    },
+    "SLE-15-SP6-ppc64le": {
+        "PDID": [2616, 1710],
+        "BETAPDID": [1926],
+        "PKGLIST": ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
+    },
+    "SLE-15-SP6-s390x": {
+        "PDID": [2617, 1711],
+        "BETAPDID": [1927],
+        "PKGLIST": ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
+    },
+    "SLE-15-SP6-x86_64": {
+        "PDID": [2618, 1712],
+        "BETAPDID": [1928],
+        "PKGLIST": ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
+    },
     # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!
     'SUMA-43-PROXY-x86_64' : {
         'PDID' : [2299, 2384], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
