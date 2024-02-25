@@ -32,10 +32,6 @@ public class OVALDistributionSourceInfo {
         return content == null ? Collections.emptyMap() : content;
     }
 
-    public void setContent(Map<String, OVALSourceInfo> contentIn) {
-        this.content = contentIn;
-    }
-
     /**
      * Returns the version source info
      *

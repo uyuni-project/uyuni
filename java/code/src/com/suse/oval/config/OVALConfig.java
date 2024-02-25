@@ -30,10 +30,6 @@ public class OVALConfig {
         return sources;
     }
 
-    private void setSources(Map<OsFamily, OVALDistributionSourceInfo> sourcesIn) {
-        this.sources = sourcesIn;
-    }
-
     /**
      * Finds the location or URL of the OVAL vulnerability and/or patch files for the given OVAL product
      * identified by the given os family and version.
