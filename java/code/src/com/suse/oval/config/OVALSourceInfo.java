@@ -30,16 +30,8 @@ public class OVALSourceInfo {
         return vulnerabilitiesInfoSource;
     }
 
-    public void setVulnerabilitiesInfoSource(String vulnerabilitiesInfoSourceIn) {
-        this.vulnerabilitiesInfoSource = vulnerabilitiesInfoSourceIn;
-    }
-
     public String getPatchInfoSource() {
         return patchInfoSource;
-    }
-
-    public void setPatchInfoSource(String patchInfoSourceIn) {
-        this.patchInfoSource = patchInfoSourceIn;
     }
 
     @Override

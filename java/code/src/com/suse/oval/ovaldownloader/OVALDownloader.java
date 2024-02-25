@@ -42,6 +42,7 @@ import java.util.zip.GZIPInputStream;
 public class OVALDownloader {
     /**
      * The path where downloaded OVAL files will be stored.
+     * TODO: Decide on a better location to cache OVAL files
      * */
     private static final String DOWNLOAD_PATH = "/var/log/rhn/ovals/";
     /**
