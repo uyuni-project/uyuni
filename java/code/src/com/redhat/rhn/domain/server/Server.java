@@ -2596,38 +2596,37 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * (for example product maintainers don't produce OVAL data)
      * */
     public Optional<CVEAuditManagerOVAL.OVALProduct> toOVALProduct() {
-        if (isDebian() && OsFamily.DEBIAN.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.DEBIAN, getRelease()));
+        String osRelease = getRelease();
+
+        CVEAuditManagerOVAL.OVALProduct ovalProduct = null;
+        if (isDebian() && OsFamily.DEBIAN.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.DEBIAN, osRelease);
         }
-        else if (isUbuntu() && OsFamily.UBUNTU.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.UBUNTU, getRelease()));
+        else if (isUbuntu() && OsFamily.UBUNTU.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.UBUNTU, osRelease);
         }
-        else if (isLeap() && OsFamily.LEAP.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.LEAP, getRelease()));
+        else if (isLeap() && OsFamily.LEAP.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.LEAP, osRelease);
         }
-        else if (isRHEL() && OsFamily.REDHAT_ENTERPRISE_LINUX.isSupportedRelease(getRelease())) {
-            return Optional.of(new CVEAuditManagerOVAL.OVALProduct(OsFamily.REDHAT_ENTERPRISE_LINUX,
+        else if (isRHEL() && OsFamily.REDHAT_ENTERPRISE_LINUX.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.REDHAT_ENTERPRISE_LINUX,
                     // Removing the fractional part from the version .e.g. '9.2' to '9'
-                    getRelease().replace("\\..*", "")));
+                    osRelease.replace("\\..*", ""));
         }
-        else if (isSLES() && OsFamily.SUSE_LINUX_ENTERPRISE_SERVER.isSupportedRelease(getRelease())) {
-            return Optional.of(
-                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_SERVER, getRelease()));
+        else if (isSLES() && OsFamily.SUSE_LINUX_ENTERPRISE_SERVER.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_SERVER, osRelease);
         }
-        else if (isSLED() && OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP.isSupportedRelease(getRelease())) {
-            return Optional.of(
-                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP, getRelease()));
+        else if (isSLED() && OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP, osRelease);
         }
-        else if (isLeapMicro() && OsFamily.LEAP_MICRO.isSupportedRelease(getRelease())) {
-            return Optional.of(
-                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, getRelease()));
+        else if (isLeapMicro() && OsFamily.LEAP_MICRO.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, osRelease);
         }
-        else if (isSLEMicro() && OsFamily.SUSE_LINUX_ENTERPRISE_MICRO.isSupportedRelease(getRelease())) {
-            return Optional.of(
-                    new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, getRelease()));
+        else if (isSLEMicro() && OsFamily.SUSE_LINUX_ENTERPRISE_MICRO.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, osRelease);
         }
 
-        return Optional.empty();
+        return Optional.ofNullable(ovalProduct);
     }
 
     /**
