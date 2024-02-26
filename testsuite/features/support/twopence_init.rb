@@ -86,7 +86,7 @@ def twopence_init(host)
 
   # Initialize hostname
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
+
   # special handling for nested VMs since they will only be created later in the test suite
   # we to a late hostname initialization in a special step for those
   unless hostname.empty? || host == 'salt_migration_minion'

@@ -6,8 +6,8 @@ Feature: Reposync works as expected
 @scc_credentials
 @susemanager
   Scenario: Check reposync of Rocky Linux 8 channels being finished
-    Then I wait until the channel "rockylinux-8-x86_64" has been synced
-    And I wait until the channel "rockylinux-8-appstream-x86_64" has been synced
+    Then I wait until the channel "rockylinux8-x86_64" has been synced
+    And I wait until the channel "rockylinux8-appstream-x86_64" has been synced
 
 @uyuni
   Scenario: Check reposync of Rocky Linux 8 channels being finished
