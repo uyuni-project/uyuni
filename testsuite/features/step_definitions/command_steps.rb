@@ -181,7 +181,7 @@ end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
   channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
-  raise ScriptError, "Synchronization error, version type #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil?
+  raise ScriptError, "Synchronization error, channels for #{channel}-#{architecture} in #{product} not found" if channels_to_synchronize.nil?
 
   channels_to_synchronize.each do |os_product_version_channel|
     log "Adding channel: #{os_product_version_channel}"
@@ -419,7 +419,7 @@ end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
   channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
-  raise ScriptError, "Synchronization error, version type #{os_product_version} in #{product} product not found" if channels_to_wait.nil?
+  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
 
   time_spent = 0
   checking_rate = 10
@@ -434,14 +434,13 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
   end
   begin
     repeat_until_timeout(timeout: timeout, message: 'Product not fully synced') do
-      break if channels_to_wait.empty?
-
       channels_to_wait.each do |channel|
         if channel_is_synced(channel)
           channels_to_wait.delete(channel)
           log "Channel #{channel} finished syncing"
         end
       end
+      break if channels_to_wait.empty?
 
       log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate

@@ -1,0 +1,1 @@
+- Commit salt event removal in case of process failure (bsc#1218931)
