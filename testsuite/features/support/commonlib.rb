@@ -49,6 +49,13 @@ def product_version
   raise NotImplementedError, 'Could not determine product version'
 end
 
+# returns the full product version, e.g. 4.3-released or uyuni-master
+def product_version_full
+  cmd = 'salt-call --local grains.get product_version | tail -n 1'
+  out, code = get_target('server').run(cmd)
+  return out.strip if code.zero? && !out.nil?
+end
+
 def use_salt_bundle
   # Use venv-salt-minion in Uyuni, or SUMA Head, 5.0, 4.2 and 4.3
   product == 'Uyuni' || %w[head 5.0 4.3 4.2].include?(product_version)
