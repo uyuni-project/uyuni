@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.util.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -22,6 +23,7 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.file.Path;
 
 
 /**
@@ -64,5 +66,35 @@ public class FileUtilsTest  {
         tail = FileUtils.getTailOfFile(
                 TestUtils.findTestData("test.file").getPath(), 3);
         assertEquals("ABCDEFGHIJ\nKLMNOPQRST\nUVXYZ!@#$%\n", tail);
+    }
+
+    @Test
+    public void testValidateCanonicalPath() {
+        Path verifiedPath = Path.of("/", "tmp", "mydir", "testfile");
+
+        // Valid paths
+        assertEquals(verifiedPath, FileUtils.validateCanonicalPath("/tmp", "mydir/testfile"));
+        assertEquals(verifiedPath, FileUtils.validateCanonicalPath("/tmp/mydir", "testfile"));
+        assertEquals(verifiedPath, FileUtils.validateCanonicalPath("/tmp/mydir", "./testfile"));
+        assertEquals(verifiedPath, FileUtils.validateCanonicalPath("/tmp", "anotherdir/../mydir/testfile"));
+
+        // Invalid paths
+        IllegalArgumentException ex;
+
+        ex = assertThrows(IllegalArgumentException.class,
+            () -> FileUtils.validateCanonicalPath("./myfolder", "anotherfile"));
+        assertEquals("targetDirectory must be an absolute path", ex.getMessage());
+
+        ex = assertThrows(IllegalArgumentException.class,
+            () -> FileUtils.validateCanonicalPath("/tmp/mydir", "../subdir/file"));
+        assertEquals("Entry is outside of the target directory", ex.getMessage());
+
+        ex = assertThrows(IllegalArgumentException.class,
+            () -> FileUtils.validateCanonicalPath("/tmp", "../etc/rhn/rhn.conf"));
+        assertEquals("Entry is outside of the target directory", ex.getMessage());
+
+        ex = assertThrows(IllegalArgumentException.class,
+            () -> FileUtils.validateCanonicalPath("/tmp", "/etc/rhn/rhn.conf"));
+        assertEquals("Entry is outside of the target directory", ex.getMessage());
     }
 }
