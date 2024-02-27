@@ -192,7 +192,6 @@ When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "(
       command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel}"
       get_target('server').run(command)
       log "Channel #{os_product_version_channel} added"
-    end
   end
 end
 
