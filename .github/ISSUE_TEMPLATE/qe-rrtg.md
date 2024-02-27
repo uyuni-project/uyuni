@@ -13,8 +13,9 @@ assignees: ''
 *Blockers found in a CI of a branch that impedes to submit that branch*
 
 **Version reviewed to be submitted:** 4.x / Uyuni
-  - Keep in mind that depending on the week, we need to be more focused on some branches due to MU submissions being prepared.
-  - Please, check the [calendar](https://confluence.suse.com/display/SUSEMANAGER/Release+calendar) and edit the field above.
+
+- Keep in mind that depending on the week, we need to be more focused on some branches due to MU submissions being prepared.
+- Please, check the [calendar](https://confluence.suse.com/display/SUSEMANAGER/Release+calendar) and edit the field above.
 
 **Lists of blockers:**
 
