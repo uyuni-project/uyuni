@@ -29,3 +29,7 @@ The following scripts cover most day-to-day uses, see `web/html/src/package.json
  - Run lint, tests, Typescript checker, and build the application: `yarn all`  
  - Audit production dependencies: `yarn audit-production-dependencies`
  - Run a development proxy against a server: `yarn proxy https://server.example.com`  
+
+## VSCode
+
+If you use VSCode for development, please install [the ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
