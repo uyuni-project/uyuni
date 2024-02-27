@@ -16426,11 +16426,11 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <target>પસંદ કરેલ સિસ્ટમોમાં ફાઈલો જમાવો</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target>રૂપરેખાંકન ફાઈલો જમાવો: જમાવટ માટે ક્ષેત્રો અને સિસ્ટમોની ખાતરી કરો</target>
+        <target state="needs-adaptation">રૂપરેખાંકન ફાઈલો જમાવો: જમાવટ માટે ક્ષેત્રો અને સિસ્ટમોની ખાતરી કરો</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.

@@ -73,7 +73,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2 Public Cloud channels
     When I add "sle-module-public-cloud15-sp2-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp2-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp2-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp2-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp2_minion
@@ -108,7 +110,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3 Public Cloud channels
     When I add "sle-module-public-cloud15-sp3-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp3-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp3-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp3-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp3_minion
@@ -145,7 +149,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4 Public Cloud channels
     When I add "sle-module-public-cloud15-sp4-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp4-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp4_minion
@@ -179,7 +185,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Public Cloud channels
     When I add "sle-module-public-cloud15-sp5-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp5-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp5-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp5-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp5_minion
@@ -734,7 +742,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @proxy
   Scenario: Add Manager Proxy 4.3 Public Cloud channels
     When I add "sle-module-public-cloud15-sp4-pool-x86_64-proxy-4.3" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-pool-x86_64-proxy-4.3" has been synced
     And I add "sle-module-public-cloud15-sp4-updates-x86_64-proxy-4.3" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-updates-x86_64-proxy-4.3" has been synced
 
 @uyuni
 @proxy
