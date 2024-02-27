@@ -43,9 +43,8 @@ describe("capitalize", () => {
 describe("cancelable", () => {
   const { cancelable } = Utils;
 
-  test("has a promise and cancel property for backwards compatibility", () => {
+  test("has a cancel property", () => {
     const instance = cancelable(new Promise(() => undefined));
-    expect(Object.prototype.hasOwnProperty.call(instance, "promise")).toEqual(true);
     expect(Object.prototype.hasOwnProperty.call(instance, "cancel")).toEqual(true);
   });
 
@@ -67,7 +66,7 @@ describe("cancelable", () => {
 
     const instance = cancelable(promise, onCancel);
     setTimeout(() => resolve(), 100);
-    await instance.promise;
+    await instance;
 
     expect(onSuccess).toBeCalledTimes(1);
     expect(onCancel).toBeCalledTimes(0);
@@ -81,24 +80,36 @@ describe("cancelable", () => {
 
     const instance = cancelable(promise, onCancel);
     setTimeout(() => resolve(), 100);
+    setTimeout(() => instance.cancel("testing cancellation"), 200);
     await instance;
-
     expect(onSuccess).toBeCalledTimes(1);
+
+    await new Promise((resolve) => {
+      setTimeout(() => resolve(undefined), 300);
+    });
     expect(onCancel).toBeCalledTimes(0);
   });
 
   // TODO: Fix the test to work with nodejs17
   // See: https://github.com/SUSE/spacewalk/issues/16912#issuecomment-1033692446
   //
-  // test("cancelling works", async (done) => {
-  //   const onSuccess = jest.fn();
-  //   const onCancel = () => {
-  //     expect(onSuccess).toBeCalledTimes(0);
-  //     done();
-  //   };
-  //   const promise = new Promise(() => undefined).then(() => onSuccess());
+  test("cancelling works", async () => {
+    const onSuccess = jest.fn();
+    const onCancel = jest.fn();
+    const promise = new Promise((resolve) => {
+      setTimeout(() => resolve("resolve value"), 200);
+    });
 
-  //   const instance = cancelable(promise, onCancel);
-  //   setTimeout(() => instance.cancel(), 100);
-  // });
+    const instance = cancelable(promise, onCancel);
+    instance
+      .then(() => onSuccess())
+      // This is required to make Node.js happy about the unhandled error
+      .catch((error) => console.log(`Swallowing error: ${error}`));
+
+    setTimeout(() => instance.cancel("testing cancellation"), 100);
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(onSuccess).toBeCalledTimes(0);
+    expect(onCancel).toBeCalledTimes(1);
+  });
 });
