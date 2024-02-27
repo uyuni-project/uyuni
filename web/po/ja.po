@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-26 09:35+0100\n"
+"POT-Creation-Date: 2024-02-23 15:31+0100\n"
 "PO-Revision-Date: 2024-01-15 15:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -654,7 +654,8 @@ msgstr "仮想ホスト"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/virtual-list.tsx:65
+#: ../html/src/manager/systems/list-filter.tsx:56
+#: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
 msgstr "仮想ホスト"
 
@@ -1065,12 +1066,12 @@ msgstr "ホスト"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:303
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr "状態"
 
@@ -1478,10 +1479,9 @@ msgid " seconds"
 msgstr " 秒"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
 #: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "名前でフィルタ"
@@ -1530,53 +1530,100 @@ msgstr ""
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
 msgstr "影響を受ける、割り当てられていないチャンネルで利用可能なパッチ"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
+msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
 msgstr "影響を受ける、製品の移行ターゲットで利用可能なパッチ"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:57
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:58
 msgid "Affected, at least one patch available in an assigned channel"
 msgstr ""
 "影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:62
 msgid "Not affected"
 msgstr "影響を受けません"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:50
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:63
+msgid ""
+"The client is not affected because none of the known CVE vulnerable packages "
+"are installed."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
 msgstr "パッチ適用済み"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:186
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
+#, fuzzy
+msgid "A patch has been successfully installed on the client."
+msgstr "アクションを追加しました "
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
+#, fuzzy
+msgid "Affected, patch is unavailable"
+msgstr "パッケージの更新があります"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
+msgid ""
+"The client is affected by a vulnerability for which a patch has not yet been "
+"released."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
+#, fuzzy
+msgid "Affected, patch is unavailable in relevant channels"
+msgstr ""
+"影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
+msgid ""
+"The client is affected by a vulnerability for which a patch has been "
+"released,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
+#, fuzzy
+msgid "Affected, partial patch available in assigned channel"
+msgstr ""
+"影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
 msgstr "CVE 監査"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:193
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:232
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:287
 msgid "Audit Servers"
 msgstr "監査サーバ"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:294
 msgid "Audit Images"
 msgstr "監査イメージ"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:312
 msgid "MITRE CVE link"
 msgstr "MITRE CVEリンク"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:285
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:324
 msgid "SUSE Security CVE link"
 msgstr "SUSEセキュリティCVEリンク"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:317
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
@@ -1597,7 +1644,7 @@ msgstr "SUSEセキュリティCVEリンク"
 msgid "Name"
 msgstr "名前"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:334
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:683
@@ -1611,39 +1658,44 @@ msgstr "名前"
 msgid "Actions"
 msgstr "動作"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:385
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
 msgid "No action required"
 msgstr "アクションは必要ありません"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:344
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
 msgid "Install a new patch on this system."
 msgstr "このシステムに新しいパッチをインストールします。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:361
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr "パッチは利用可能ですが、システムを新しい製品に移行する必要があります。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:418
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:381
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:408
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:411
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#, fuzzy
+msgid "Install a new partial patch on this system."
+msgstr "このシステムに新しいパッチをインストールします。"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:477
 msgid "If you see this report a bug."
 msgstr "このレポートが表示された場合はバグです。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:392
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:458
 #: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr "再ビルド"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:400
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:466
 msgid "Patch available but needs to be cloned into Channel."
 msgstr "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:469
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
@@ -1651,11 +1703,11 @@ msgstr "パッチは利用可能ですが、チャンネルにクローンを作
 msgid "Channel"
 msgstr "チャンネル"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:404
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:470
 msgid "Errata"
 msgstr "Errata"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:496
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
 msgstr "CSV のダウンロード"
@@ -3533,7 +3585,7 @@ msgstr "(非推奨)"
 #: ../html/src/manager/images/image-view.tsx:651
 #: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:43
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "更新"
@@ -5400,6 +5452,11 @@ msgstr "登録済みシステム"
 msgid "Groups"
 msgstr "グループ"
 
+#: ../html/src/manager/systems/list-filter.tsx:57
+#: ../html/src/manager/systems/virtual-list.tsx:71
+msgid "Virtual System"
+msgstr "仮想システム"
+
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr ""
@@ -5660,19 +5717,15 @@ msgstr "利用可能な子チャンネルがありません。"
 msgid "Confirm Software Channel Change"
 msgstr "ソフトウェアチャンネルの変更確認"
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:38
 msgid "Virtual Systems"
 msgstr "仮想システム"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:58
 msgid "No Virtual Systems."
 msgstr "仮想システムがありません。"
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr "仮想システム"
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:99
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "ベースソフトウェアチャンネル"
@@ -6861,9 +6914,6 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "shortly"
 #~ msgstr "しばらくすると現われるはずです"
-
-#~ msgid "Action has been successfully added to the "
-#~ msgstr "アクションを追加しました "
 
 #~ msgid "scheduled."
 #~ msgstr "スケジュールしました。"

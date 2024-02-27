@@ -57,7 +57,7 @@ public class CVEAuditHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
-            String cveIdentifier) {
+                                                         String cveIdentifier) {
         return listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
     }
 
@@ -102,7 +102,13 @@ public class CVEAuditHandler extends BaseHandler {
         else {
             for (String label : patchStatusLabels) {
                 try {
-                    patchStatuses.add(PatchStatus.valueOf(label));
+                    // TODO: Adapt to use new patch statuses
+                    if (label.equals("AFFECTED_PATCH_APPLICABLE")) {
+                        patchStatuses.add(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
+                    }
+                    else {
+                        patchStatuses.add(PatchStatus.valueOf(label));
+                    }
                 }
                 catch (IllegalArgumentException e) {
                     throw new MethodInvalidParamException(e);
@@ -111,6 +117,7 @@ public class CVEAuditHandler extends BaseHandler {
         }
 
         try {
+            // TODO: Use CVEAuditManagerOVAL once it's ready
             List<CVEAuditServer> result = CVEAuditManager.listSystemsByPatchStatus(
                     loggedInUser, cveIdentifier, patchStatuses);
 
@@ -177,7 +184,8 @@ public class CVEAuditHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
-            String cveIdentifier, List<String> patchStatusLabels) throws FaultException {
+                                                       String cveIdentifier, List<String> patchStatusLabels)
+            throws FaultException {
 
         // Convert list of strings to patch status objects
         EnumSet<PatchStatus> patchStatuses = EnumSet.noneOf(PatchStatus.class);
@@ -187,7 +195,13 @@ public class CVEAuditHandler extends BaseHandler {
         else {
             for (String label : patchStatusLabels) {
                 try {
-                    patchStatuses.add(PatchStatus.valueOf(label));
+                    // TODO: Adapt to use new patch statuses
+                    if (label.equals("AFFECTED_PATCH_APPLICABLE")) {
+                        patchStatuses.add(PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE);
+                    }
+                    else {
+                        patchStatuses.add(PatchStatus.valueOf(label));
+                    }
                 }
                 catch (IllegalArgumentException e) {
                     throw new MethodInvalidParamException(e);
@@ -196,6 +210,7 @@ public class CVEAuditHandler extends BaseHandler {
         }
 
         try {
+            // TODO: Use CVEAuditManagerOVAL once it's ready
             List<CVEAuditImage> result = CVEAuditManager.listImagesByPatchStatus(
                     loggedInUser, cveIdentifier, patchStatuses);
 

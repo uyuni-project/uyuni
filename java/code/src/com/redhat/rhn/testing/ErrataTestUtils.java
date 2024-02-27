@@ -12,7 +12,10 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.testing;
+
+import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPackageName;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -26,6 +29,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -351,6 +355,78 @@ public class ErrataTestUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Create a {@link Package}.
+     *
+     * @param user the package owner
+     * @param errata an errata that will contain the new package
+     * @param channel the channel in which the new package is to be published
+     * @param arch the package architecture label
+     * @param name the package name
+     * @param epoch the package epoch in EVR
+     * @param version the package version in EVR
+     * @param release the package release in EVR
+     * @return the newly created patch
+     */
+    public static Package createTestPackage(User user, Errata errata, Channel channel, String arch, String name,
+                                            String epoch, String version, String release) {
+        Package result = createTestPackage(user, errata, channel, arch);
+
+        PackageEvr pevr =
+                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release, result.getPackageType());
+
+        result.setRpmVersion(result.getRpmVersion());
+        result.setDescription(result.getDescription());
+        result.setSummary(result.getSummary());
+        result.setPackageSize(result.getPackageSize());
+        result.setPayloadSize(result.getPayloadSize());
+        result.setBuildHost(result.getBuildHost());
+        result.setVendor(result.getVendor());
+        result.setPayloadFormat(result.getPayloadFormat());
+        result.setCompat(result.getCompat());
+        result.setPath(result.getPath());
+        result.setHeaderSignature(result.getHeaderSignature());
+        result.setCopyright(result.getCopyright());
+        result.setCookie(result.getCookie());
+        result.setPackageName(createTestPackageName(name));
+        result.setPackageEvr(pevr);
+        result.setPackageGroup(result.getPackageGroup());
+
+        TestUtils.saveAndFlush(result);
+
+        return result;
+    }
+
+    /**
+     * Create a {@link Package}.
+     *
+     * @param user the package owner
+     * @param channel the channel in which the new package is to be published
+     * @param arch the package architecture label
+     * @param name the package name
+     * @param epoch the package epoch in EVR
+     * @param version the package version in EVR
+     * @param release the package release in EVR
+     * @return the newly created patch
+     */
+    public static Package createTestPackage(User user, Channel channel, String arch, String name,
+                                            String epoch, String version, String release) {
+        return createTestPackage(user, null, channel, arch, name, epoch, version, release);
+    }
+
+    /**
+     * Create a {@link Package}.
+     *
+     * @param user the package owner
+     * @param channel the channel in which the new package is to be published
+     * @param arch the package architecture label
+     * @param name the package name
+     * @return the newly created patch
+     */
+    public static Package createTestPackage(User user, Channel channel, String arch, String name) {
+        return createTestPackage(user, null, channel, arch, name, "1", "0", "1");
     }
 
     /**

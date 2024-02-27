@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-26 09:35+0100\n"
+"POT-Creation-Date: 2024-02-23 15:31+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -669,7 +669,8 @@ msgstr "Virtuální hostitel"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/virtual-list.tsx:65
+#: ../html/src/manager/systems/list-filter.tsx:56
+#: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
 msgstr "Virtuální hostitel"
 
@@ -1087,12 +1088,12 @@ msgstr "Hostitel"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:303
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr "Stav"
 
@@ -1504,10 +1505,9 @@ msgid " seconds"
 msgstr " sekund"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
 #: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "Filtrovat podle názvu"
@@ -1556,52 +1556,97 @@ msgstr ""
 msgid "Server error, please check log files."
 msgstr "Chyba serveru, zkontrolujte soubory protokolu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
 msgstr "Ovlivněno: v kanálech, které nejsou přiřazeny, jsou dostupné záplaty"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
+msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Ovlivněno, záplaty dostupné v cíli Migrace produktu"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:57
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:58
 msgid "Affected, at least one patch available in an assigned channel"
 msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:62
 msgid "Not affected"
 msgstr "Neovlivněno"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:50
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:63
+msgid ""
+"The client is not affected because none of the known CVE vulnerable packages "
+"are installed."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
 msgstr "Opraveno"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:186
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
+#, fuzzy
+msgid "A patch has been successfully installed on the client."
+msgstr "Akce byla úspěšně přidána k "
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
+#, fuzzy
+msgid "Affected, patch is unavailable"
+msgstr "Jsou dostupné aktualizace balíčků"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
+msgid ""
+"The client is affected by a vulnerability for which a patch has not yet been "
+"released."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
+#, fuzzy
+msgid "Affected, patch is unavailable in relevant channels"
+msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
+msgid ""
+"The client is affected by a vulnerability for which a patch has been "
+"released,"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
+#, fuzzy
+msgid "Affected, partial patch available in assigned channel"
+msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
 msgstr "Audit CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:193
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:232
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:287
 msgid "Audit Servers"
 msgstr "Auditovat servery"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:294
 msgid "Audit Images"
 msgstr "Auditovat obrazy"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:312
 msgid "MITRE CVE link"
 msgstr "Odkaz na MITRE CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:285
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:324
 msgid "SUSE Security CVE link"
 msgstr "Odkaz na SUSE Security CVE"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:317
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
@@ -1622,7 +1667,7 @@ msgstr "Odkaz na SUSE Security CVE"
 msgid "Name"
 msgstr "Název"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:334
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:683
@@ -1636,40 +1681,45 @@ msgstr "Název"
 msgid "Actions"
 msgstr "Akce"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:338
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:385
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
 msgid "No action required"
 msgstr "Nevyžaduje se žádná akce"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:344
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
 msgid "Install a new patch on this system."
 msgstr "Instalovat novou opravu na tento systém."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:361
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
 "Záplata je k dispozici, ale systém je třeba migrovat na novější produkt."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:418
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:381
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:408
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:411
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#, fuzzy
+msgid "Install a new partial patch on this system."
+msgstr "Instalovat novou opravu na tento systém."
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:477
 msgid "If you see this report a bug."
 msgstr "Vidíte-li toto, ohlaste chybu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:392
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:458
 #: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr "Přebudovat"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:400
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:466
 msgid "Patch available but needs to be cloned into Channel."
 msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:469
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
@@ -1677,11 +1727,11 @@ msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 msgid "Channel"
 msgstr "Kanál"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:404
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:470
 msgid "Errata"
 msgstr "Opravník chyb"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:496
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
 msgstr "Stáhnout CSV"
@@ -3559,7 +3609,7 @@ msgstr "(zastaralé)"
 #: ../html/src/manager/images/image-view.tsx:651
 #: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:43
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "Aktualizace"
@@ -5427,6 +5477,11 @@ msgstr "Registrované systémy"
 msgid "Groups"
 msgstr "Skupina"
 
+#: ../html/src/manager/systems/list-filter.tsx:57
+#: ../html/src/manager/systems/virtual-list.tsx:71
+msgid "Virtual System"
+msgstr "Virtuální systém"
+
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
 msgstr "Vyberte seznam pomahačů (ani proxy serverů ani tradičních klientů)."
@@ -5680,19 +5735,15 @@ msgstr "Nejsou dostupné žádné podřízené kanály."
 msgid "Confirm Software Channel Change"
 msgstr "Potvrďte změnu softwarového kanálu"
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:38
 msgid "Virtual Systems"
 msgstr "Virtuální systémy"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:58
 msgid "No Virtual Systems."
 msgstr "Žádné virtuální systémy."
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
-msgid "Virtual System"
-msgstr "Virtuální systém"
-
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:99
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "Základní softwarový kanál"
@@ -6884,9 +6935,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "shortly"
 #~ msgstr "krátce"
-
-#~ msgid "Action has been successfully added to the "
-#~ msgstr "Akce byla úspěšně přidána k "
 
 #~ msgid "scheduled."
 #~ msgstr "naplánováno."

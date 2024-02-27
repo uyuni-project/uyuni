@@ -104,10 +104,12 @@ import java.util.stream.Stream;
  */
 public class SaltSSHService {
 
-    private static final String SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh";
+    private static final String SSH_KEY_DIR = "/var/lib/salt/.ssh";
+    private static final String PUB_SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh";
     public static final String SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id";
     public static final String SSH_PUBKEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id.pub";
-    private static final String SSH_TEMP_BOOTSTRAP_KEY_DIR = SSH_KEY_DIR + "/temp_bootstrap_keys";
+    public static final String SUMA_SSH_PUB_KEY = PUB_SSH_KEY_DIR + "/mgr_ssh_id.pub";
+    private static final Path SSH_TEMP_BOOTSTRAP_KEY_DIR = Path.of(SSH_KEY_DIR,  "temp_bootstrap_keys");
     private static final String PROXY_SSH_PUSH_USER = "mgrsshtunnel";
     private static final String PROXY_SSH_PUSH_KEY =
             "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push";
@@ -559,8 +561,12 @@ public class SaltSSHService {
 
     // create temp key absolute path
     private Path createTempKeyFilePath() {
+        if (!GlobalInstanceHolder.SALT_API.mkDir(SSH_TEMP_BOOTSTRAP_KEY_DIR, "0700").orElse(false)) {
+            LOG.error("Unable to create temp ssh bootstrap directory");
+            return null;
+        }
         String fileName = "boostrapKeyTmp-" + UUID.randomUUID();
-        return Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
+        return SSH_TEMP_BOOTSTRAP_KEY_DIR.resolve(fileName).toAbsolutePath();
     }
 
     private void cleanUpTempKeyFile(Path path) {
@@ -756,7 +762,7 @@ public class SaltSSHService {
     public static Optional<String> getOrRetrieveSSHPushProxyPubKey(long proxyId) {
         Server proxy = ServerFactory.lookupById(proxyId);
         String keyFile = proxy.getHostname() + ".pub";
-        if (Files.exists(Paths.get(SSH_KEY_DIR, keyFile))) {
+        if (Files.exists(Paths.get(PUB_SSH_KEY_DIR, keyFile))) {
             return Optional.of(keyFile);
         }
         return retrieveSSHPushProxyPubKey(proxyId);
@@ -782,7 +788,7 @@ public class SaltSSHService {
                         PROXY_SSH_PUSH_USER,
                         options,
                         "cat " + PROXY_SSH_PUSH_KEY + ".pub",
-                        SSH_KEY_DIR + "/" + keyFile);
+                        PUB_SSH_KEY_DIR + "/" + keyFile);
         if (ret.map(MgrUtilRunner.ExecResult::getReturnCode).orElse(-1) == 0) {
             return Optional.of(keyFile);
         }

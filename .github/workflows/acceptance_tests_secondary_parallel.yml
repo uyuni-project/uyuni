@@ -8,7 +8,7 @@ on:
   schedule:
     - cron: '0 */12 * * *'
 jobs:
-  acceptance-tests-secondary-parrallel:
+  acceptance-tests-secondary-parallel:
     uses: ./.github/workflows/acceptance_tests_common.yml
     strategy:
       fail-fast: false

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # Beware: After altering the system e.g. package installation/removal, the system
@@ -6,6 +6,9 @@
 
 @slemicro51_minion
 Feature: Bootstrap a SLE Micro 5.1 Salt minion
+
+  Scenario: Clean up sumaform leftovers on a SLE Micro 5.1 minion
+    When I perform a full salt minion cleanup on "slemicro51_minion"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -22,8 +25,10 @@ Feature: Bootstrap a SLE Micro 5.1 Salt minion
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-  Scenario: Reboot the SLE Micro 5.1 minion and wait until reboot is completed
-    When I reboot the "slemicro51_minion" minion through the web UI
+  # Following the bootstrapping process, automatic booting is disabled.
+  # This change was implemented due to intermittent errors with automatic reboots, which could occur before Salt could relay the results of applying the bootstrap salt state.
+  Scenario: Reboot the SLE Micro 5.1 minion through SSH
+    When I reboot the "slemicro51_minion" minion through SSH
 
   Scenario: Check the new bootstrapped SLE Micro 5.1 minion in System Overview page
     When I wait until onboarding is completed for "slemicro51_minion"

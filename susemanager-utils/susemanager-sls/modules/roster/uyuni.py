@@ -1,6 +1,7 @@
 """
 Read in the roster from Uyuni DB
 """
+
 from collections import namedtuple
 import hashlib
 
@@ -36,7 +37,7 @@ PROXY_SSH_PUSH_KEY = (
     "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push"
 )
 SALT_SSH_CONNECT_TIMEOUT = 180
-SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh"
+SSH_KEY_DIR = "/var/lib/salt/.ssh"
 SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id"
 SSH_PRE_FLIGHT_SCRIPT = None
 SSH_PUSH_PORT = 22
@@ -172,12 +173,11 @@ class UyuniRoster:
                     ssh_port=proxy.port or 22,
                     ssh_key_path=SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
                     ssh_push_user=PROXY_SSH_PUSH_USER,
-                    # pylint: disable-next=consider-using-f-string
-                    in_out_forward="-W {host}:{port}".format(
-                        host=minion_id, port=ssh_push_port
-                    )
-                    if not tunnel and i == len(proxies) - 1
-                    else "",
+                    in_out_forward=(
+                        f"-W {minion_id}:{ssh_push_port}"
+                        if not tunnel and i == len(proxies) - 1
+                        else ""
+                    ),
                     proxy_host=proxy.hostname,
                 )
             )

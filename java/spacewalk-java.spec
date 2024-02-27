@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.4
+Version:        5.0.5
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -271,6 +271,7 @@ Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
 Requires(post): %{apache2}
 Requires(post): tomcat
+Requires(post): salt-master
 
 %description config
 This package contains the configuration files for the Spacewalk Java web
@@ -536,7 +537,6 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-m
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh
-install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
@@ -692,13 +692,24 @@ if [ ! -e /var/log/rhn/gatherer.log ]; then
 fi
 chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
+if [ ! -d /var/lib/salt/.ssh ]; then
+    mkdir -p /var/lib/salt/.ssh
+    chown %{salt_user_group}:%{salt_user_group} -R /var/lib/salt/.ssh
+    chmod 700 /var/lib/salt/.ssh
+fi
+
+if [ -e /srv/susemanager/salt/salt_ssh/mgr_ssh_id ]; then
+    mv /srv/susemanager/salt/salt_ssh/mgr_ssh_id /var/lib/salt/.ssh/mgr_ssh_id
+    cp /srv/susemanager/salt/salt_ssh/mgr_ssh_id.pub /var/lib/salt/.ssh/mgr_ssh_id.pub
+    chown %{salt_user_group}:%{salt_user_group} /var/lib/salt/.ssh/mgr_ssh_id.pub
+fi
+
 %files
 %defattr(-,root,root)
 %dir %{serverdir}
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
 %attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh
-%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
 %attr(775, tomcat, tomcat) %dir %{serverdir}/tomcat/webapps
 %dir %{userserverdir}/susemanager
 %dir %{userserverdir}/susemanager/salt
@@ -720,6 +731,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/nav
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/pages
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/*.xml
+
 
 # all jars in WEB-INF/lib/
 %dir %{serverdir}/tomcat

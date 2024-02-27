@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 16 10:11:46 CET 2024 - rosuna@suse.com
+
+- version 5.0.4-1
+  * Fix issue with Salt SSH keys for Salt SSH Minions CVE-2023-32189 (bsc#1170848)
+
+-------------------------------------------------------------------
 Tue Feb 27 19:07:54 CET 2024 - rosuna@suse.com
 
 - version 5.0.4-0

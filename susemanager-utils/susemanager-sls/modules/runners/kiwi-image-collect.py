@@ -34,7 +34,7 @@ def upload_file_from_minion(minion, minion_ip, filetoupload, targetdir):
             src,
             targetdir,
             # pylint: disable-next=consider-using-f-string
-            rsh="ssh -o IdentityFile=/srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {}".format(
+            rsh="ssh -o IdentityFile=/var/lib/salt/.ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {}".format(
                 ssh_port
             ),
         )

@@ -17299,11 +17299,11 @@ ma non sono sottoscritti a {0}.</target>
         <target>Implementa file sui sistemi selezionati</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target>Implementa i file di configurazione: Conferma i campi ed i sistemi per l'impiego</target>
+        <target state="needs-adaptation">Implementa i file di configurazione: Conferma i campi ed i sistemi per l'impiego</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
