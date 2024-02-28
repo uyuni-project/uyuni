@@ -186,7 +186,6 @@ When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "(
 
   channels_to_synchronize.each do |os_product_version_channel|
     command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
-    get_target('server').run(command)
     _out, code = get_target('server').run(command, check_errors: false)
     if code.zero?
       log "Channel #{os_product_version_channel.gsub("-#{architecture}", '')} added"
