@@ -1456,6 +1456,26 @@ DATA = {
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/15/5/bootstrap/",
     },
+    "openSUSE-Leap-15.6-x86_64": {
+        "PDID": [2734, 1712],
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/15/6/bootstrap/",
+    },
+    "openSUSE-Leap-15.6-aarch64": {
+        "PDID": [2731, 1709],
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/15/6/bootstrap/",
+    },
+    "openSUSE-Leap-15.6-x86_64-uyuni": {
+        "BASECHANNEL": "opensuse_leap15_6-x86_64",
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/15/6/bootstrap/",
+    },
+    "openSUSE-Leap-15.6-aarch64-uyuni": {
+        "BASECHANNEL": "opensuse_leap15_6-aarch64",
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/15/6/bootstrap/",
+    },
     "openSUSE-Leap-Micro-5.3-x86_64-uyuni": {
         "BASECHANNEL": "opensuse_micro5_3-x86_64",
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
