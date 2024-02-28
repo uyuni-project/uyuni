@@ -305,6 +305,7 @@ public class SUSEProductFactory extends HibernateFactory {
                                     return c.allClonedChannels().filter(clone -> {
                                         List<String> cloneParts = List.of(clone.getLabel().split("-"));
                                         return cloneParts.containsAll(uniqueParts) &&
+                                                Objects.equals(clone.getParentChannel(), channel.getParentChannel()) &&
                                                 Objects.equals(clone.getOrg(), channel.getOrg());
                                     });
                                 })
@@ -318,7 +319,6 @@ public class SUSEProductFactory extends HibernateFactory {
         }
         else {
             return findSyncProductChannelByLabel(channelLabel).map(suseProductChannel -> {
-
                         SUSEProductChannel baseProductChannel = findSyncProductChannelByLabel(baseChannel.getLabel())
                                 .orElseThrow(() -> new NoSuchElementException("No product channel found for " +
                                         baseChannel + " of " + channel));
