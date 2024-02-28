@@ -16,7 +16,7 @@ package com.redhat.rhn.taskomatic.task.systems;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.task.TaskFactory;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * Driver for the threaded system overview update queue
  */
-public class SystemsOverviewUpdateDriver implements QueueDriver<Long> {
+public class SystemsOverviewUpdateDriver extends AbstractQueueDriver<Long> {
 
     public static final String TASK_NAME = "update_system_overview";
     private Logger logger = null;
@@ -43,7 +43,7 @@ public class SystemsOverviewUpdateDriver implements QueueDriver<Long> {
     }
 
     @Override
-    public List<Long> getCandidates() {
+    protected List<Long> getCandidates() {
         // Candidates are system IDs, deduplicated to avoid useless updates
         return TaskFactory.getTaskListByNameLike(TASK_NAME).stream()
             .map(task -> task.getData())
@@ -57,22 +57,7 @@ public class SystemsOverviewUpdateDriver implements QueueDriver<Long> {
     }
 
     @Override
-    public QueueWorker makeWorker(Long sid) {
+    protected QueueWorker makeWorker(Long sid) {
         return new SystemsOverviewUpdateWorker(sid, logger);
-    }
-
-    @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    @Override
-    public void initialize() {
-        // Empty
-    }
-
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }
