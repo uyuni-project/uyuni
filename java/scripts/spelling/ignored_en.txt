@@ -136,7 +136,6 @@ checkboxes
 checkin
 Checksum
 chroot
-Comfirm
 commandline
 CommitErrataPackageChanges
 CompletedActions

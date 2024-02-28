@@ -506,6 +506,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             String kernelrelease = grains.getValueAsString("kernelrelease");
             String osarch = grains.getValueAsString("osarch");
+            String cpe = grains.getValueAsString("cpe");
 
             minion.setOs(osfullname);
             minion.setOsFamily(osfamily);
@@ -518,6 +519,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setModified(minion.getCreated());
             minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
+            minion.setCpe(cpe);
             systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
 
 

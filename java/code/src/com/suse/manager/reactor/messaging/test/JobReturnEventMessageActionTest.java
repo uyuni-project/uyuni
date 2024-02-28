@@ -1693,7 +1693,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
@@ -1771,7 +1772,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
@@ -1818,7 +1820,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/image", user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
@@ -1893,7 +1896,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",

@@ -4,7 +4,7 @@
     background-color: transparent;
   }
 }
-body{
+body {
   overflow-y: auto;
 }
 
@@ -13,7 +13,7 @@ body{
   > .panel-default > .panel-body {
     padding-bottom: 0;
 
-    .panel{
+    .panel {
       box-shadow: 0px 2px 1px 0px @box-shadow;
       -moz-box-shadow: 0px 2px 1px 0px @box-shadow;
       -webkit-box-shadow: 0px 2px 1px 0px @box-shadow;
@@ -42,12 +42,13 @@ body{
     a > i.fa.text-warning {
       color: @orange;
     }
-    .text-starred, a > i.fa.text-starred {
+    .text-starred,
+    a > i.fa.text-starred {
       color: @orange;
     }
     //suse-products
     #suse-products {
-      .btn-show-channel-list, 
+      .btn-show-channel-list,
       .btn-synchronize {
         cursor: pointer;
       }
@@ -64,14 +65,14 @@ body{
       }
       .collapsible {
         cursor: pointer;
-      }  
+      }
       table tr td.text-only {
         padding-top: 14px;
       }
       table tr td [data-syncstatus="finished"],
       table tr td [data-syncstatus="in_progress"],
       table tr td [data-syncstatus="not_mirrored"] {
-        padding-top: 6px
+        padding-top: 6px;
       }
       table tr td.add-button {
         i {
@@ -83,7 +84,7 @@ body{
       }
       table td {
         .product-channels-btn {
-          color: @gray-dark
+          color: @gray-dark;
         }
       }
       .spinner-container {
@@ -98,17 +99,17 @@ body{
         min-width: 300px;
         height: 140px;
         display: inline-block;
-        padding:0; 
+        padding: 0;
         margin: 0 1.4em 1em 0;
         vertical-align: top;
         h3 {
-          margin-top: 0 ;
+          margin-top: 0;
           height: 41px;
           overflow: x-scroll;
         }
         a:hover .fa,
-        a:hover{
-          text-decoration: none
+        a:hover {
+          text-decoration: none;
         }
       }
       .panel:nth-of-type(2n) {
@@ -125,12 +126,12 @@ body{
         .fa-plus-circle {
           font-size: 4em;
           color: @gray;
-          text-shadow: -1px -1px 0px @gray-dark-1, 1px 1px 0px @white ;
+          text-shadow: -1px -1px 0px @gray-dark-1, 1px 1px 0px @white;
           margin-top: 13px;
           margin-right: 0;
         }
         a {
-          color: @gray
+          color: @gray;
         }
       }
       #wizard-faq img {
@@ -148,7 +149,8 @@ body{
       margin-top: 1em;
       margin-bottom: 1em;
     }
-    h4, p {
+    h4,
+    p {
       text-align: left;
     }
   }
@@ -173,10 +175,10 @@ ul.subscriptions-list {
 }
 
 .btn-default.text-muted {
-  .text-muted!important;
+  .text-muted !important;
 }
 
-.list-header{
+.list-header {
   border-bottom: 2px solid @gray-light!important;
   font-weight: 700;
 }
@@ -229,7 +231,7 @@ ul.product-list {
     .col {
       display: inline-block;
       vertical-align: middle;
-      padding: .7em .3em;
+      padding: 0.7em 0.3em;
       float: none;
       * {
         vertical-align: middle;
@@ -238,34 +240,35 @@ ul.product-list {
       }
       > * {
         display: inline-block;
-        margin: .2em;
+        margin: 0.2em;
       }
-      button, i {
+      button,
+      i {
         margin: 0 auto;
       }
     }
   }
   li.list-row-odd {
-    .row-odd
+    .row-odd;
   }
   li.list-row-even {
-    .row-even
+    .row-even;
   }
   ul {
     border-top: 1px solid @gray-light;
     padding: 0 0 1em 0;
     li {
-      background-color: transparent!important;
+      background-color: transparent !important;
       border: 0;
       margin-left: 3em;
       > .product-details-wrapper {
         border-top: 1px dashed @gray-light;
-        background-image: url('/img/susemanager/sub-list.png');
+        background-image: url("../../img/susemanager/sub-list.png");
         background-repeat: no-repeat;
         background-position: left center;
       }
       .col {
-        padding: .3em;
+        padding: 0.3em;
       }
       ul {
         border-left: 1px solid @gray-light;
@@ -279,7 +282,7 @@ ul.product-list {
     }
     li:last-of-type {
       > .product-details-wrapper {
-        background-image: url('/img/susemanager/sub-list-last.png');
+        background-image: url("../../img/susemanager/sub-list-last.png");
       }
       > ul {
         border-left: 0;
@@ -308,7 +311,7 @@ ul.product-list {
     border: 0;
     input {
       width: 100%;
-      height: 30px!important;
+      height: 30px !important;
       .form-control;
     }
   }

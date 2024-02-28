@@ -15,6 +15,8 @@
 - features/build_validation/init_clients/sle15sp5_minion.feature
 - features/build_validation/init_clients/sle15sp5_ssh_minion.feature
 
+- features/build_validation/init_clients/alma8_minion.feature
+- features/build_validation/init_clients/alma8_ssh_minion.feature
 - features/build_validation/init_clients/alma9_minion.feature
 - features/build_validation/init_clients/alma9_ssh_minion.feature
 - features/build_validation/init_clients/centos7_client.feature
