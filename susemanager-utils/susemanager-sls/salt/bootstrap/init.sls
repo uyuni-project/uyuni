@@ -298,7 +298,9 @@ include:
 
 {# Change REBOOT_METHOD to systemd if it is default, otherwise don't change it #}
 
-{%- if not salt['file.file_exists']('/etc/transactional-update.conf') %}
+{%- set etc_conf_file_exists = salt['file.file_exists']('/etc/transactional-update.conf') %}
+
+{%- if not etc_conf_file_exists %}
 copy_conf_file_to_etc:
   file.copy:
     - name: /etc/transactional-update.conf
@@ -313,15 +315,21 @@ transactional_update_set_reboot_method_systemd:
     - separator: '='
     - uncomment: '# '
     - append_if_not_found: True
+{%- if not etc_conf_file_exists %}
     - require:
       - file: copy_conf_file_to_etc
+{%- endif %}
     - unless:
       - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
 {# Use transactional reboot support -> server will be rebooted according to REBOOT_METHOD #}
 reboot_transactional_server:
   mgrcompat.module_run:
-    - name: transactional_update.reboot
+    - name: cmd.run
+    - cmd: "sleep 5; transactional-update reboot"
+    - python_shell: true
     - require:
+      - file: transactional_update_set_reboot_method_systemd
       - {{ salt_minion_name }}
+
 {%- endif %}

@@ -1,0 +1,1 @@
+- Add sleep time before rebooting transactional systems after bootstraping (bsc#1218146)
