@@ -1,4 +1,4 @@
-body.login-page {
+&.login-page {
   background: @uyuni-blue-100;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
@@ -14,7 +14,7 @@ body.login-page {
     height: 100%;
   }
 }
-.login-page {
+&.login-page {
   .text-left;
   .wrap {
     width: 1024px;
@@ -142,8 +142,19 @@ body.login-page {
   }
 }
 
-.keep-header {
-  .login-page {
+@media (max-width: @screen-desktop) {
+  &.login-page .wrap {
+    width: 100%;
+  }
+}
+
+@media (max-width: @screen-tablet) {
+  &.login-page section.wrap {
+    padding-right: 1em;
+    padding-left: 1em;
+  }
+  
+  &.login-page {
     header {
       height: auto !important;
       .navbar-utility {
@@ -153,18 +164,4 @@ body.login-page {
       }
     }
   }
-}
-
-@media (max-width: @screen-desktop) {
-  .login-page .wrap {
-    width: 100%;
-  }
-}
-
-@media (max-width: @screen-tablet) {
-  .login-page section.wrap {
-    padding-right: 1em;
-    padding-left: 1em;
-  }
-  .keep-header;
 }

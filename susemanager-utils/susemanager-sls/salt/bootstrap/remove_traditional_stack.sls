@@ -1,9 +1,3 @@
-{% if repos_disabled is not defined or repos_disabled.get('skip', false) == false %}
-# disable all spacewalk:* repos
-{% set repos_disabled = {'match_str': 'spacewalk:', 'matching': true} %}
-{%- include 'channels/disablelocalrepos.sls' %}
-{% endif %}
-
 include:
   - util.syncstates
 
@@ -38,10 +32,6 @@ remove_traditional_stack_all:
 {%- elif grains['os_family'] == 'Debian' %}
       - apt-transport-spacewalk
 {%- endif %}
-{%- if repos_disabled.count > 0 %}
-    - require:
-      - mgrcompat: disable_repo*
-{%- endif %}
 
 remove_traditional_stack:
   pkg.removed:
@@ -51,10 +41,6 @@ remove_traditional_stack:
       - mgr-cfg
 {%- if grains['os_family'] == 'Suse' %}
       - suseRegisterInfo
-{%- endif %}
-{%- if repos_disabled.count > 0 %}
-    - require:
-      - mgrcompat: disable_repo*
 {%- endif %}
     - unless: rpm -q spacewalk-proxy-common || rpm -q spacewalk-common
 

@@ -999,7 +999,7 @@ THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-css-loader v2.1.1 - Tobias Koppers @sokra
+css-loader v6.10.0 - Tobias Koppers @sokra
 webpack-contrib/css-loader
 --------------------------------------------------------------------------------
 
@@ -3012,8 +3012,8 @@ THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-style-loader v0.23.1 - Tobias Koppers @sokra
-https://github.com/webpack-contrib/style-loader.git
+style-loader v3.3.4 - Tobias Koppers @sokra
+webpack-contrib/style-loader
 --------------------------------------------------------------------------------
 
 Copyright JS Foundation and other contributors

@@ -62,6 +62,9 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_STARTTLS = "java.smtp_starttls";
     public static final String WEB_SMTP_USER = "java.smtp_user";
     public static final String WEB_SMTP_PASS = "java.smtp_pass";
+    public static final String WEB_SMTP_TIMEOUT = "java.smtp_timeout";
+    public static final String WEB_SMTP_CONNECTION_TIMEOUT = "java.smtp_connection_timeout";
+    public static final String WEB_SMTP_WRITE_TIMEOUT = "java.smtp_write_timeout";
     public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
     public static final String WEB_DISABLE_REMOTE_COMMANDS_FROM_UI = "java.disable_remote_commands_from_ui";
 

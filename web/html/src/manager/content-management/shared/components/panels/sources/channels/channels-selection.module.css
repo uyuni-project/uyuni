@@ -1,0 +1,56 @@
+:global(.old-theme)
+:global(.new-theme) {
+    .search_icon_container {
+        color: rgba(167, 169, 172, 0.6);
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        font-size: 1.4em;
+        cursor: pointer;
+        margin-right: 5px;
+        margin-top: 4px;
+        padding: 0px;
+    }
+
+    .initial_selected {
+        color: #02a49c !important;
+    }
+
+    .base_channel {
+        font-weight: bold;
+        display: flex;
+        max-width: 100%;
+        cursor: pointer;
+        gap: 7px;
+        padding: 10px 0 0 0;
+        margin: 0;
+    }
+
+    .child_channel {
+        display: flex;
+        max-width: 100%;
+        gap: 7px;
+        margin: 0;
+        padding: 3px 5px 3px 15px;
+    }
+
+    .child_name {
+        font-weight: normal;
+    }
+
+    .arrow {
+        /* Ensure rotating the arrow doesn't shift the layout */
+        min-width: 15px;
+        max-width: 15px;
+        text-align: center;
+        margin: 0 !important;
+    }
+
+    .collapsible {
+        flex: 0 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin: 0;
+    }
+}

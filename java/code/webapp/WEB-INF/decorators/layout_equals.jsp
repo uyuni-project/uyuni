@@ -16,8 +16,8 @@
   </head>
   <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
   <c:set var="isUpdatedPage" value="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}"/>
-  <body class="theme-${webTheme} ${isUpdatedPage ? 'updated-theme' : 'old-theme'}" onload="<decorator:getProperty property="body.onload" />">
-    <nav class="navbar-pf navbar navbar-dark bg-dark" role="navigation">
+  <body class="theme-${webTheme} ${isUpdatedPage ? 'new-theme' : 'old-theme'}" onload="<decorator:getProperty property="body.onload" />">
+    <nav class="navbar-pf navbar" role="navigation">
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </nav>
     <div class="spacewalk-main-column-layout">

@@ -1,17 +1,25 @@
 .onSuma({
-  @import url(titles.suma.less);
+  @import "titles.suma.less";
 });
 
 .onUyuni({
-  @import url(titles.uyuni.less);
+  @import "titles.uyuni.less";
 });
 
-h1, h2, h3, h4, h5, h6, .subheadline {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.subheadline {
+  line-height: 1.5;
+
   small {
     color: inherit;
     font-size: 80%;
   }
-    
+
   a:hover {
     text-decoration: underline !important;
   }

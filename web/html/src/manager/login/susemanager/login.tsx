@@ -12,7 +12,7 @@ import { flatten } from "utils";
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";
 import useLoginApi from "../use-login-api";
-import styles from "./login.less";
+import styles from "./login.module.less";
 import logo from "./logo.svg";
 import mobileLogo from "./mobile-logo.svg";
 

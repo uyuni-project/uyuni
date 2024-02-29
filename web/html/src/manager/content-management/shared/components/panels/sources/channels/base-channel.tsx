@@ -5,7 +5,7 @@ import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channel
 import { Highlight } from "components/table/Highlight";
 
 import ChannelProcessor from "./channels-processor";
-import styles from "./channels-selection.css";
+import styles from "./channels-selection.module.css";
 import ChildChannel from "./child-channel";
 import EmptyChild from "./empty-child";
 import RecommendedToggle from "./recommended-toggle";

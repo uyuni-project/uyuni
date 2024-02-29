@@ -12,7 +12,7 @@ import { getClmFilterDescription } from "../../../business/filters.enum";
 import statesEnum from "../../../business/states.enum";
 import { ProjectFilterServerType, ProjectMessageType } from "../../../type";
 import getRenderedMessages from "../../messages/messages";
-import styles from "./filters-project.css";
+import styles from "./filters-project.module.css";
 import FiltersProjectSelection from "./filters-project-selection";
 
 type FiltersProps = {

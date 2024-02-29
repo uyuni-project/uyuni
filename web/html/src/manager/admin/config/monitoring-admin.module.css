@@ -1,0 +1,33 @@
+:global(.old-theme)
+:global(.new-theme) {
+    .gap_right {
+        margin-right: 10px
+    }
+
+    .placeholder {
+        list-style: none;
+        padding-left: 0px;
+        color: #dddddd;
+        filter: blur(2px);
+        animation: preload 5s infinite cubic-bezier(.65, .05, .36, 1);
+    }
+
+    .placeholder_item {
+        margin: 5px 0px 5px 0px
+    }
+
+    .placeholder_separator {
+        display: inline-block;
+        width: 200px;
+        height: 1em;
+        background-color: #dddddd
+    }
+
+    @keyframes preload {
+        0%   { opacity: .5; }
+        25%  { opacity: .15; }
+        50%  { opacity: 1; }
+        75%  { opacity: .15; }
+        100% { opacity: .5; }
+    }
+}

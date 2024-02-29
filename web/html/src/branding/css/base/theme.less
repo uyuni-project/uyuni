@@ -2,31 +2,18 @@
  * This file is the old core theme file, over time we can hopefully clean this up and separate the logic accordingly
  */
 
-html,
-body {
-  height: 100%;
-  min-height: 100%;
-  min-width: fit-content;
-  margin: 0;
-  max-height: 100%;
-  overflow: hidden;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  background: @body-background;
-  font-family: @body-font;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-}
-
 a {
   color: @link-color;
   cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 header {
+  min-height: fit-content !important;
   height: auto;
   width: 100%;
   border: none;
@@ -82,10 +69,11 @@ header {
   }
 }
 
-.row {
-  margin-left: 0;
-  margin-right: 0;
-}
+// TODO: Check if we need this?
+// .row {
+//   margin-left: 0;
+//   margin-right: 0;
+// }
 
 footer {
   border-top: 1px solid @aside-footer-border;
@@ -234,6 +222,8 @@ nav.navbar-pf {
     float: none;
     margin: 0;
     padding: 0;
+    border: none;
+
     i {
       margin: 0;
       font-size: 1.5em;
@@ -278,7 +268,7 @@ nav.navbar-pf {
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @eos-bc-pine-500;
+    background-color: @header;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
     box-shadow: 0px 4px 4px 0px @gray;
@@ -302,6 +292,15 @@ nav.navbar-pf {
     input[type="search"],
     select.form-control {
       width: 100%;
+    }
+    button {
+      text-align: center;
+      background: transparent;
+
+      &,
+      &:hover {
+        color: @header-text;
+      }
     }
   }
 
@@ -1328,4 +1327,10 @@ tr.changed > td {
   width: 100%;
   border: none;
   text-align: left;
+}
+
+// We can reenable these after the theme migration is complete
+#scroll-top,
+#legend-box-wrapper {
+  display: none !important;
 }

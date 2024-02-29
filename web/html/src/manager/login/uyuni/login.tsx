@@ -20,7 +20,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
 
   return (
     <React.Fragment>
-      <header className="navbar-pf navbar navbar-dark bg-dark" role="presentation" />
+      <header className="navbar-pf navbar" role="presentation" />
       <div className={`spacewalk-main-column-layout`}>
         <section id="spacewalk-content">
           <div className="wrap">

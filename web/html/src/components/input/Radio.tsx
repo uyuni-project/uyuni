@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { FormContext } from "./Form";
 import { InputBase, InputBaseProps } from "./InputBase";
-import styles from "./Radio.css";
+import styles from "./Radio.module.css";
 
 type Props = InputBaseProps & {
   /** Items to display in an array of objects with label and value properties. */
