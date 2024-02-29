@@ -123,14 +123,14 @@ class Responder:
             conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(
                 **db_config
             )
-        log.debug("%s: connecting to database", __name__)
+        log.debug("connecting to database")
         while True:
             try:
                 self.connection = psycopg2.connect(conn_string)
                 break
             except psycopg2.OperationalError as err:
-                log.error("%s: %s", __name__, err)
-                log.error("%s: Retrying in 5 seconds.", __name__)
+                log.error("DB Error: %s", err)
+                log.error("Retrying in 5 seconds.")
                 time.sleep(5)
         self.cursor = self.connection.cursor()
 
@@ -157,7 +157,7 @@ class Responder:
             # Pass all significant events also
             try:
                 queue = self._get_queue(data.get("id"))
-                log.debug("%s: Adding event to queue %d -> %s", __name__, queue, tag)
+                log.debug("Adding event to queue %d -> %s", queue, tag)
                 self.cursor.execute(
                     "INSERT INTO suseSaltEvent (minion_id, data, queue) VALUES (%s, %s, %s);",
                     (data.get("id"), json.dumps({"tag": tag, "data": data}), queue),
@@ -166,17 +166,17 @@ class Responder:
                 self.counters[queue] += 1
             # pylint: disable-next=broad-exception-caught
             except Exception as err:
-                log.error("%s: %s", __name__, err)
+                log.error("Error while inserting data to the table: %s", err)
                 try:
                     self.connection.commit()
                 # pylint: disable-next=broad-exception-caught
                 except Exception as err2:
-                    log.error("%s: Error commiting: %s", __name__, err2)
+                    log.error("Error commiting: %s", err2)
                     self.connection.close()
             finally:
-                log.debug("%s: %s", __name__, self.cursor.query)
+                log.debug("Cursor query: %s", self.cursor.query)
         else:
-            log.debug("%s: Discarding event -> %s", __name__, tag)
+            log.debug("Discarding event -> %s", tag)
 
     def _get_queue(self, minion_id):
         if minion_id:
@@ -203,7 +203,7 @@ class Responder:
 
     def trace_log(self):
         if self.counter or self._queue:
-            log.trace("%s: queues sizes [%d] -> %s", __name__, len(self._queue), self.counters)
+            log.trace("queues sizes [%d] -> %s", len(self._queue), self.counters)
 
     def push_events_from_queue(self):
         while self._queue and (
@@ -223,7 +223,7 @@ class Responder:
 
     def db_keepalive(self):
         if self.connection.closed:
-            log.error("%s: Diconnected from database. Trying to reconnect...", __name__)
+            log.error("Diconnected from database. Trying to reconnect...")
             self._connect_to_database()
 
     def queue_thread(self):
@@ -245,7 +245,7 @@ class Responder:
         Committing to the database.
         """
         if self.counter > 0:
-            log.debug("%s: commit", __name__)
+            log.debug("DB: commit")
             self.cursor.execute(
                 # pylint: disable-next=consider-using-f-string
                 "NOTIFY {}, '{}';".format(
