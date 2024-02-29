@@ -150,7 +150,7 @@ Feature: Assign child channel to a system
     And I check "openSUSE Leap 15.5 Updates (x86_64)"
     And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I uncheck "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
     And I click on "Next"

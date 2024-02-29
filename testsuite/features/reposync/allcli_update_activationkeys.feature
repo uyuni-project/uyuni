@@ -45,7 +45,7 @@ Feature: Update activation keys
     And I check "openSUSE Leap 15.5 Updates (x86_64)"
     And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
@@ -76,7 +76,7 @@ Feature: Update activation keys
     And I check "openSUSE Leap 15.5 Updates (x86_64)"
     And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been modified" text
@@ -107,7 +107,7 @@ Feature: Update activation keys
     And I check "openSUSE Leap 15.5 Updates (x86_64)"
     And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE SSH Tunnel Test Key x86_64 has been modified" text
@@ -143,7 +143,7 @@ Feature: Update activation keys
     And I check "openSUSE Leap 15.5 Updates (x86_64)"
     And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64)"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
