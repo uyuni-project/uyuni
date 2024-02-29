@@ -82,7 +82,7 @@ Feature: Register a salt-ssh system via API
     And I wait until I do not see "Loading..." text
     And I check radio button "openSUSE Leap 15.5 (x86_64)"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
