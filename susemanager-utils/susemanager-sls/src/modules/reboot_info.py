@@ -21,8 +21,8 @@ def __virtual__():
 
 
 def _check_cmd_exit_code(cmd, code):
-    output = __salt__["cmd.run_all"](cmd, python_shell=True)
-    if "stderr" in output and output["stderr"]:
+    output = __salt__["cmd.run_all"](cmd, ignore_retcode=True)
+    if output.get("stderr"):
         log.error(output["stderr"])
     return output["retcode"] == code
 
