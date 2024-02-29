@@ -45,6 +45,7 @@ Feature: Reposync works as expected
     And I wait until the channel "opensuse_leap15_5-updates-x86_64" has been synced
     And I wait until the channel "opensuse_leap15_5-backports-updates-x86_64" has been synced
     And I wait until the channel "opensuse_leap15_5-sle-updates-x86_64" has been synced
+    And I wait until the channel "opensuse_leap15_5-uyuni-client-devel-x86_64" has been synced
     And I wait until the channel "uyuni-proxy-devel-leap-x86_64" has been synced
 
 @scc_credentials
@@ -52,6 +53,8 @@ Feature: Reposync works as expected
   Scenario: Check reposync of Client Tools being finished
     Then I wait until the channel "sle-manager-tools15-pool-x86_64-sp4" has been synced
     And I wait until the channel "sle-manager-tools15-updates-x86_64-sp4" has been synced
+    And I wait until the channel "sle-manager-tools15-beta-pool-x86_64-sp4" has been synced
+    And I wait until the channel "sle-manager-tools15-beta-updates-x86_64-sp4" has been synced
     And I wait until the channel "res8-manager-tools-updates-x86_64-rocky" has been synced
     And I wait until the channel "res8-manager-tools-pool-x86_64-rocky" has been synced
     And I wait until the channel "ubuntu-2204-suse-manager-tools-amd64" has been synced
