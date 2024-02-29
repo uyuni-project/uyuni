@@ -823,10 +823,31 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             if (optMinionServer.isPresent()) {
                 return optMinionServer.get();
             }
+            optMinionServer = migrateFromContainerProxy(minionId, fqdn);
+            if (optMinionServer.isPresent()) {
+                return optMinionServer.get();
+            }
         }
 
         //if not create a new server
         return new MinionServer();
+    }
+
+    private Optional<MinionServer> migrateFromContainerProxy(String minionId, Optional<String> fqdn) {
+        if (fqdn.isPresent()) {
+            Optional<Server> proxyServer = ServerFactory.findByFqdn(fqdn.get());
+            if (proxyServer.isPresent()) {
+                Server s = proxyServer.get();
+                if (s.asMinionServer().isEmpty()) {
+                    // change the type of the hibernate entity from Server to MinionServer
+                    SystemManager.addMinionInfoToServer(s.getId(), minionId);
+                    // need to clear the session to avoid NonUniqueObjectException
+                    HibernateFactory.getSession().clear();
+                }
+                return MinionServerFactory.lookupById(s.getId());
+            }
+        }
+        return Optional.empty();
     }
 
     private Optional<MinionServer> findMatchingEmptyProfiles(Optional<String> hostname, Set<String> hwAddrs) {
