@@ -180,13 +180,20 @@ When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*
 end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
-  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
-  raise ScriptError, "Synchronization error, channels for #{channel}-#{architecture} in #{product} not found" if channels_to_synchronize.nil?
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel) ||
+                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+  raise ScriptError, "Synchronization error, channel #{channel} or #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil? || channels_to_synchronize.empty?
 
   channels_to_synchronize.each do |os_product_version_channel|
-    log "Adding channel: #{os_product_version_channel}"
     command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
-    get_target('server').run(command)
+    _out, code = get_target('server').run(command, check_errors: false)
+    if code.zero?
+      log "Channel #{os_product_version_channel.gsub("-#{architecture}", '')} added"
+    else
+      command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel}"
+      get_target('server').run(command)
+      log "Channel #{os_product_version_channel} added"
+    end
   end
 end
 

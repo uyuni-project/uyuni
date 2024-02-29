@@ -6,8 +6,8 @@ Feature: Reposync works as expected
 @scc_credentials
 @susemanager
   Scenario: Check reposync of Rocky Linux 8 channels being finished
-    Then I wait until the channel "rockylinux-8-x86_64" has been synced
-    And I wait until the channel "rockylinux-8-appstream-x86_64" has been synced
+    Then I wait until the channel "rockylinux8-x86_64" has been synced
+    And I wait until the channel "rockylinux8-appstream-x86_64" has been synced
 
 @uyuni
   Scenario: Check reposync of Rocky Linux 8 channels being finished
@@ -23,7 +23,7 @@ Feature: Reposync works as expected
 
 @uyuni
   Scenario: Check reposync of Ubuntu 22.04 channels being finished
-    Then I wait until the channel "ubuntu-22.04-pool-amd64-uyuni" has been synced
+    Then I wait until the channel "ubuntu-2204-pool-amd64-uyuni" has been synced
     And I wait until the channel "ubuntu-2204-amd64-main-uyuni" has been synced
     And I wait until the channel "ubuntu-2204-amd64-main-updates-uyuni" has been synced
     And I wait until the channel "ubuntu-2204-amd64-main-security-uyuni" has been synced
@@ -54,7 +54,7 @@ Feature: Reposync works as expected
     And I wait until the channel "sle-manager-tools15-updates-x86_64-sp4" has been synced
     And I wait until the channel "res8-manager-tools-updates-x86_64-rocky" has been synced
     And I wait until the channel "res8-manager-tools-pool-x86_64-rocky" has been synced
-    And I wait until the channel "ubuntu-22.04-suse-manager-tools-amd64" has been synced
+    And I wait until the channel "ubuntu-2204-suse-manager-tools-amd64" has been synced
 
 @uyuni
   Scenario: Check reposync of Client Tools being finished
