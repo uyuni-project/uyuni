@@ -1047,7 +1047,7 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
     end
   # debian based systems don't come with curl installed
   if (os_family.include? 'debian') || (os_family.include? 'ubuntu')
-    node.run_until_ok("wget --no-check-certificate -qO- #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
+    node.run_until_ok("curl --insecure -s #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
   else
     node.run_until_ok("curl -s -k #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
   end

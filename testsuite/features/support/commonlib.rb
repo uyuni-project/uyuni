@@ -416,7 +416,7 @@ def update_controller_ca
 
   puts `certutil -d sql:/root/.pki/nssdb -t TC -n "susemanager" -D;
   rm /etc/pki/trust/anchors/*;
-  wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/#{server_name}.cert &&
+  curl http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -o /etc/pki/trust/anchors/#{server_name}.cert &&
   update-ca-certificates &&
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
 end
