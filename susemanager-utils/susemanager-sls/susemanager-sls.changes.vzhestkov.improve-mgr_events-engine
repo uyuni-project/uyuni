@@ -1,0 +1,1 @@
+- Make mgr_events salt engine non-blocking on reading events
