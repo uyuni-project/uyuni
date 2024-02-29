@@ -50,9 +50,9 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
-BuildRequires:  nodejs-default
+BuildRequires:  nodejs20
 %else
-BuildRequires:  nodejs
+BuildRequires:  nodejs >= 20
 BuildRequires:  perl-macros
 BuildRequires:  perl-srpm-macros
 %endif
