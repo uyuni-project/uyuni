@@ -47,12 +47,11 @@ BuildRequires:  make
 BuildRequires:  spacewalk-backend
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  nodejs >= 20
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
-BuildRequires:  nodejs20
 %else
-BuildRequires:  nodejs >= 20
 BuildRequires:  perl-macros
 BuildRequires:  perl-srpm-macros
 %endif
