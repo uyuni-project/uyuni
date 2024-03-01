@@ -27,7 +27,7 @@
         <dependency org="manager-43" name="commons-lang3" rev="3.8.1" />
         <dependency org="manager-43" name="commons-logging" rev="1.2" />
         <dependency org="manager-43" name="commons-validator" rev="1.1.4" />
-        <dependency org="manager-43" name="commons-compress" rev="1.21" />
+        <dependency org="manager-43" name="commons-compress" rev="1.26.0" />
         <dependency org="manager-43" name="concurrent" rev="1.3.4" />
         <dependency org="manager-43" name="concurrentlinkedhashmap-lru" rev="1.3.1" />
         <dependency org="manager-43" name="dom4j" rev="1.6.1" />
