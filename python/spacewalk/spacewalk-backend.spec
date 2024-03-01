@@ -69,6 +69,7 @@ Requires:       python3-uyuni-common-libs
 Requires(pre):  %{apache_pkg}
 Requires:       %{apache_pkg}
 Requires:       python3-pycurl
+Requires:       python3-libmodulemd
 # for Debian support
 Requires:       python3-debian >= 0.1.44
 BuildRequires:  %{m2crypto}
