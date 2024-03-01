@@ -69,6 +69,7 @@ Requires:       python3-uyuni-common-libs
 Requires(pre):  %{apache_pkg}
 Requires:       %{apache_pkg}
 Requires:       python3-pycurl
+Requires:       python3-libmodulemd
 # for Debian support
 Requires:       python3-debian >= 0.1.44
 BuildRequires:  %{m2crypto}
@@ -690,6 +691,7 @@ fi
 %{python3rhnroot}/satellite_tools/constants.py*
 %{python3rhnroot}/satellite_tools/download.py*
 %{python3rhnroot}/satellite_tools/ulnauth.py*
+%{python3rhnroot}/satellite_tools/appstreams.py*
 %dir %{python3rhnroot}/satellite_tools/disk_dumper
 %{python3rhnroot}/satellite_tools/disk_dumper/__init__.py*
 %{python3rhnroot}/satellite_tools/disk_dumper/iss.py*
