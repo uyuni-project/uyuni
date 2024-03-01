@@ -1,0 +1,1314 @@
+---
+document: modulemd-defaults
+version: 1
+data:
+    module: ruby
+    profiles:
+        "3.1":
+            - common
+...
+---
+document: modulemd-defaults
+version: 1
+data:
+    module: php
+    profiles:
+        "8.1":
+            - common
+...
+---
+document: modulemd-defaults
+version: 1
+data:
+    module: nginx
+    profiles:
+        "1.22":
+            - common
+...
+---
+document: modulemd-defaults
+version: 1
+data:
+    module: maven
+    profiles:
+        "3.8":
+            - common
+...
+---
+document: modulemd-defaults
+version: 1
+data:
+    module: redis
+    profiles:
+        "7":
+            - common
+...
+---
+document: modulemd-defaults
+version: 1
+data:
+    module: postgresql
+    profiles:
+        "15":
+            - server
+...
+---
+document: modulemd-defaults
+version: 1
+data:
+    module: nodejs
+    profiles:
+        "18":
+            - common
+        "20":
+            - common
+...
+---
+document: modulemd
+version: 2
+data:
+    name: maven
+    stream: "3.8"
+    version: "9020020230511160017"
+    static_context: true
+    context: 4b0b4b45
+    arch: x86_64
+    summary: Java project management and project comprehension tool
+    description: Maven is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information.
+    license:
+        module:
+            - MIT
+        content:
+            - ASL 2.0
+            - EPL-2.0 or GPLv2 with exceptions
+            - BSD and CC-BY
+            - ASL 2.0 and Plexus
+            - ASL 2.0 and MIT and xpp
+            - MIT and ASL 2.0
+            - ASL 2.0 and ASL 1.1 and MIT
+            - ASL 1.1 and ASL 2.0 and xpp and BSD and Public Domain
+            - ASL 2.0 and CC0
+            - EPL-1.0 and BSD
+            - ASL 2.0 and MIT
+    dependencies:
+        - buildrequires:
+            javapackages-tools:
+                - "202201"
+            platform:
+                - el9.2.0
+          requires:
+            platform:
+                - el9
+    profiles:
+        common:
+            rpms:
+                - maven-openjdk11
+    api:
+        rpms:
+            - maven
+            - maven-openjdk8
+            - maven-openjdk11
+            - maven-openjdk17
+    filter:
+        rpms:
+            - apache-commons-cli-javadoc
+            - apache-commons-codec-javadoc
+            - apache-commons-io-javadoc
+            - apache-commons-lang3-javadoc
+            - atinject-javadoc
+            - cdi-api-javadoc
+            - google-guice-javadoc
+            - guava-javadoc
+            - guava-testlib
+            - guice-assistedinject
+            - guice-bom
+            - guice-extensions
+            - guice-grapher
+            - guice-jmx
+            - guice-jndi
+            - guice-multibindings
+            - guice-parent
+            - guice-servlet
+            - guice-throwingproviders
+            - httpcomponents-client-javadoc
+            - httpcomponents-core-javadoc
+            - jakarta-annotations-javadoc
+            - jansi-javadoc
+            - jsr-305-javadoc
+            - jul-to-slf4j
+            - log4j-over-slf4j
+            - maven-javadoc
+            - maven-resolver-javadoc
+            - maven-shared-utils-javadoc
+            - maven-wagon-javadoc
+            - plexus-cipher-javadoc
+            - plexus-classworlds-javadoc
+            - plexus-containers
+            - plexus-containers-component-metadata
+            - plexus-containers-container-default
+            - plexus-containers-javadoc
+            - plexus-interpolation-javadoc
+            - plexus-sec-dispatcher-javadoc
+            - plexus-utils-javadoc
+            - sisu-javadoc
+            - slf4j-javadoc
+            - slf4j-jcl
+            - slf4j-jdk14
+            - slf4j-manual
+            - slf4j-migrator
+            - slf4j-sources
+    buildopts:
+        rpms:
+            macros: |
+                %_without_maven_resolver_extra_modules 1
+                %java_arches aarch64 ppc64le s390x x86_64
+    components:
+        rpms:
+            apache-commons-cli:
+                name: apache-commons-cli
+                rationale: Runtime dependency of maven.
+                ref: 5b402450129fb2c9b4e00da653e50c72f0de4410
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            apache-commons-codec:
+                name: apache-commons-codec
+                rationale: Runtime dependency of maven.
+                ref: 320359cc588ab4ba11d92fc946ba1c8c51fc8e65
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            apache-commons-io:
+                name: apache-commons-io
+                rationale: Runtime dependency of maven.
+                ref: 5e77848be66afa63ebb95cea2125601cb533022c
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            apache-commons-lang3:
+                name: apache-commons-lang3
+                rationale: Runtime dependency of maven.
+                ref: df866242c1f00cb855f3c0433c93f020d4d53dc7
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            atinject:
+                name: atinject
+                rationale: Runtime dependency of maven.
+                ref: 816d120434d58c7527adbab9d5d7f00ece9d5d46
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            cdi-api:
+                name: cdi-api
+                rationale: Runtime dependency of maven.
+                ref: 56549572598fb5dbd495e70df0516e568e9dbb52
+                buildorder: 20
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            google-guice:
+                name: google-guice
+                rationale: Runtime dependency of maven.
+                ref: c732bbbbd0262febf9d96022e6ae2006af1c0f07
+                buildorder: 30
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            guava:
+                name: guava
+                rationale: Runtime dependency of maven.
+                ref: 4bce5d2f3d9b98eb3699e609d187b33ff969a593
+                buildorder: 20
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            httpcomponents-client:
+                name: httpcomponents-client
+                rationale: Runtime dependency of maven.
+                ref: adb06ecc30cad1b0ee9f767bb565548819ca9226
+                buildorder: 20
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            httpcomponents-core:
+                name: httpcomponents-core
+                rationale: Runtime dependency of maven.
+                ref: f6c855f3dbc17194719ee1ef6f0dc5c952d8edbc
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            jakarta-annotations:
+                name: jakarta-annotations
+                rationale: Runtime dependency of maven.
+                ref: d715ee47fc81731fe1c34db52395116dc9db938f
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            jansi:
+                name: jansi
+                rationale: Runtime dependency of maven.
+                ref: 41cdb3375f8544ecfb3dd1bbe42204179d0f4b52
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            jsr-305:
+                name: jsr-305
+                rationale: Runtime dependency of maven.
+                ref: 719b6032f83a0e3fd89164f1d4a6656c5e62dc87
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            maven:
+                name: maven
+                rationale: Module API.
+                ref: e270457cf67e670d729d58a431b9747a6456c86d
+                buildorder: 50
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            maven-resolver:
+                name: maven-resolver
+                rationale: Runtime dependency of maven.
+                ref: bf46bd92089bd873a3da80c85014678e047d9c59
+                buildorder: 40
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            maven-shared-utils:
+                name: maven-shared-utils
+                rationale: Runtime dependency of maven.
+                ref: a1a9bbf4f846a435a9a576b602309d725f147126
+                buildorder: 20
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            maven-wagon:
+                name: maven-wagon
+                rationale: Runtime dependency of maven.
+                ref: 73b987abbd1fb1598f9e60420df199250d0f4168
+                buildorder: 30
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            plexus-cipher:
+                name: plexus-cipher
+                rationale: Runtime dependency of maven.
+                ref: 9fa3381b9e870c3b5c71b0ea17c2c3e917598e61
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            plexus-classworlds:
+                name: plexus-classworlds
+                rationale: Runtime dependency of maven.
+                ref: 706aa76a1b6668a8e264913f9a6289ea6dad36b7
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            plexus-containers:
+                name: plexus-containers
+                rationale: Runtime dependency of maven.
+                ref: 7ac1983e2affc7573734c8c042f56d067790ab6b
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            plexus-interpolation:
+                name: plexus-interpolation
+                rationale: Runtime dependency of maven.
+                ref: a1fdb9a0cb5733a9a5f1b8f38a02f510604d29ea
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            plexus-sec-dispatcher:
+                name: plexus-sec-dispatcher
+                rationale: Runtime dependency of maven.
+                ref: e120f788202a2cb16288026e5a3081762c4ea65b
+                buildorder: 20
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            plexus-utils:
+                name: plexus-utils
+                rationale: Runtime dependency of maven.
+                ref: 3e5d58bc1aed195ccf20558acd952d64daa8e747
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            sisu:
+                name: sisu
+                rationale: Runtime dependency of maven.
+                ref: 633edfccdf3e7f923bd4f45121696ec5b38de0cd
+                buildorder: 30
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            slf4j:
+                name: slf4j
+                rationale: Runtime dependency of maven.
+                ref: 89f64f0e3e374e80bba3e367b5c2ec7c660aedb7
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - apache-commons-cli-0:1.5.0-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - apache-commons-codec-0:1.15-7.module+el9.2.0+14755+4b0b4b45.noarch
+            - apache-commons-io-1:2.11.0-2.module+el9.2.0+14755+4b0b4b45.noarch
+            - apache-commons-lang3-0:3.12.0-7.module+el9.2.0+14755+4b0b4b45.noarch
+            - atinject-0:1.0.5-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - cdi-api-0:2.0.2-6.module+el9.2.0+14755+4b0b4b45.noarch
+            - google-guice-0:4.2.3-9.module+el9.2.0+14755+4b0b4b45.noarch
+            - guava-0:31.0.1-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - httpcomponents-client-0:4.5.13-5.module+el9.2.0+14755+4b0b4b45.noarch
+            - httpcomponents-core-0:4.4.13-7.module+el9.2.0+14755+4b0b4b45.noarch
+            - jakarta-annotations-0:1.3.5-14.module+el9.2.0+14755+4b0b4b45.noarch
+            - jansi-0:2.4.0-6.module+el9.2.0+14755+4b0b4b45.x86_64
+            - jansi-debuginfo-0:2.4.0-6.module+el9.2.0+14755+4b0b4b45.x86_64
+            - jansi-debugsource-0:2.4.0-6.module+el9.2.0+14755+4b0b4b45.x86_64
+            - jcl-over-slf4j-0:1.7.32-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - jsr-305-0:3.0.2-6.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-1:3.8.5-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-lib-1:3.8.5-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-openjdk11-1:3.8.5-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-openjdk17-1:3.8.5-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-openjdk8-1:3.8.5-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-resolver-1:1.7.3-5.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-shared-utils-0:3.3.4-5.module+el9.2.0+14755+4b0b4b45.noarch
+            - maven-wagon-0:3.5.1-2.module+el9.2.0+14755+4b0b4b45.noarch
+            - plexus-cipher-0:2.0-2.module+el9.2.0+14755+4b0b4b45.noarch
+            - plexus-classworlds-0:2.6.0-12.module+el9.2.0+14755+4b0b4b45.noarch
+            - plexus-containers-component-annotations-0:2.1.1-2.module+el9.2.0+14755+4b0b4b45.noarch
+            - plexus-interpolation-0:1.26-12.module+el9.2.0+14755+4b0b4b45.noarch
+            - plexus-sec-dispatcher-0:2.0-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - plexus-utils-0:3.3.0-10.module+el9.2.0+14755+4b0b4b45.noarch
+            - sisu-1:0.3.5-2.module+el9.2.0+14755+4b0b4b45.noarch
+            - slf4j-0:1.7.32-4.module+el9.2.0+14755+4b0b4b45.noarch
+            - apache-commons-cli-0:1.5.0-4.module+el9.2.0+14755+4b0b4b45.src
+            - apache-commons-codec-0:1.15-7.module+el9.2.0+14755+4b0b4b45.src
+            - apache-commons-io-1:2.11.0-2.module+el9.2.0+14755+4b0b4b45.src
+            - apache-commons-lang3-0:3.12.0-7.module+el9.2.0+14755+4b0b4b45.src
+            - atinject-0:1.0.5-4.module+el9.2.0+14755+4b0b4b45.src
+            - cdi-api-0:2.0.2-6.module+el9.2.0+14755+4b0b4b45.src
+            - google-guice-0:4.2.3-9.module+el9.2.0+14755+4b0b4b45.src
+            - guava-0:31.0.1-4.module+el9.2.0+14755+4b0b4b45.src
+            - httpcomponents-client-0:4.5.13-5.module+el9.2.0+14755+4b0b4b45.src
+            - httpcomponents-core-0:4.4.13-7.module+el9.2.0+14755+4b0b4b45.src
+            - jakarta-annotations-0:1.3.5-14.module+el9.2.0+14755+4b0b4b45.src
+            - jansi-0:2.4.0-6.module+el9.2.0+14755+4b0b4b45.src
+            - slf4j-0:1.7.32-4.module+el9.2.0+14755+4b0b4b45.src
+            - jsr-305-0:3.0.2-6.module+el9.2.0+14755+4b0b4b45.src
+            - maven-1:3.8.5-4.module+el9.2.0+14755+4b0b4b45.src
+            - maven-resolver-1:1.7.3-5.module+el9.2.0+14755+4b0b4b45.src
+            - maven-shared-utils-0:3.3.4-5.module+el9.2.0+14755+4b0b4b45.src
+            - maven-wagon-0:3.5.1-2.module+el9.2.0+14755+4b0b4b45.src
+            - plexus-cipher-0:2.0-2.module+el9.2.0+14755+4b0b4b45.src
+            - plexus-classworlds-0:2.6.0-12.module+el9.2.0+14755+4b0b4b45.src
+            - plexus-containers-0:2.1.1-2.module+el9.2.0+14755+4b0b4b45.src
+            - plexus-interpolation-0:1.26-12.module+el9.2.0+14755+4b0b4b45.src
+            - plexus-sec-dispatcher-0:2.0-4.module+el9.2.0+14755+4b0b4b45.src
+            - plexus-utils-0:3.3.0-10.module+el9.2.0+14755+4b0b4b45.src
+            - sisu-1:0.3.5-2.module+el9.2.0+14755+4b0b4b45.src
+...
+---
+document: modulemd
+version: 2
+data:
+    name: ruby
+    stream: "3.1"
+    version: "9010020221119221509"
+    context: 8d1baf64
+    arch: x86_64
+    summary: An interpreter of object-oriented scripting language
+    description: Ruby is the interpreted scripting language for quick and easy object-oriented programming.  It has many features to process text files and to do system management tasks (as in Perl).  It is simple, straight-forward, and extensible.
+    license:
+        module:
+            - MIT
+        content:
+            - Ruby or BSD
+            - MIT
+            - (Ruby or GPLv2) and UCD
+            - (Ruby or BSD) and Public Domain and MIT and CC0 and zlib and UCD
+            - Ruby or MIT
+            - (Ruby or BSD) and (Ruby or BSD or Python) and (Ruby or BSD or LGPLv2+)
+            - BSD
+            - GPLv2 and Ruby and MIT and OFL
+            - (BSD or Ruby) and PostgreSQL
+    dependencies:
+        - buildrequires:
+            platform:
+                - el9.1.0
+    references:
+        community: http://ruby-lang.org/
+        documentation: https://www.ruby-lang.org/en/documentation/
+        tracker: https://bugs.ruby-lang.org/
+    profiles:
+        common:
+            rpms:
+                - ruby
+    api:
+        rpms:
+            - ruby
+            - ruby-bundled-gems
+            - ruby-default-gems
+            - ruby-devel
+            - ruby-libs
+            - rubygem-bigdecimal
+            - rubygem-bundler
+            - rubygem-io-console
+            - rubygem-irb
+            - rubygem-json
+            - rubygem-minitest
+            - rubygem-mysql2
+            - rubygem-pg
+            - rubygem-power_assert
+            - rubygem-psych
+            - rubygem-rake
+            - rubygem-rbs
+            - rubygem-rexml
+            - rubygem-rss
+            - rubygem-rdoc
+            - rubygem-test-unit
+            - rubygem-typeprof
+            - rubygems
+            - rubygems-devel
+    components:
+        rpms:
+            ruby:
+                name: ruby
+                rationale: An interpreter of object-oriented scripting language
+                ref: fd0d0708cda86e48d9e75f24ec5e475dad2d8e94
+                buildorder: 101
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+                multilib:
+                    - x86_64
+            rubygem-mysql2:
+                name: rubygem-mysql2
+                rationale: A simple, fast Mysql library for Ruby, binding to libmysql
+                ref: ff4570d503647a0da6015c26e00210e23e29b3b9
+                buildorder: 102
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            rubygem-pg:
+                name: rubygem-pg
+                rationale: A Ruby interface to the PostgreSQL RDBMS
+                ref: 92a94f1f95843391f35b703daaf743f02d04c9ed
+                buildorder: 102
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - ruby-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - ruby-bundled-gems-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-bundled-gems-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - ruby-bundled-gems-debuginfo-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-bundled-gems-debuginfo-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - ruby-debuginfo-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-debuginfo-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - ruby-debugsource-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-debugsource-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - ruby-default-gems-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.noarch
+            - ruby-devel-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-devel-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - ruby-doc-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.noarch
+            - ruby-libs-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-libs-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - ruby-libs-debuginfo-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
+            - ruby-libs-debuginfo-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-bigdecimal-0:3.1.1-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-bigdecimal-0:3.1.1-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-bigdecimal-debuginfo-0:3.1.1-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-bigdecimal-debuginfo-0:3.1.1-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-bundler-0:2.3.7-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-io-console-0:0.5.11-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-io-console-0:0.5.11-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-io-console-debuginfo-0:0.5.11-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-io-console-debuginfo-0:0.5.11-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-irb-0:1.4.1-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-json-0:2.6.1-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-json-0:2.6.1-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-json-debuginfo-0:2.6.1-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-json-debuginfo-0:2.6.1-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-minitest-0:5.15.0-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-mysql2-0:0.5.4-1.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-mysql2-debuginfo-0:0.5.4-1.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-mysql2-debugsource-0:0.5.4-1.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-mysql2-doc-0:0.5.4-1.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-pg-0:1.3.5-1.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-pg-debuginfo-0:1.3.5-1.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-pg-debugsource-0:1.3.5-1.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-pg-doc-0:1.3.5-1.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-power_assert-0:2.0.1-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-psych-0:4.0.3-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-psych-0:4.0.3-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-psych-debuginfo-0:4.0.3-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-psych-debuginfo-0:4.0.3-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-rake-0:13.0.6-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-rbs-0:2.1.0-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-rbs-0:2.1.0-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-rbs-debuginfo-0:2.1.0-141.module+el9.1.0+13172+8d1baf64.i686
+            - rubygem-rbs-debuginfo-0:2.1.0-141.module+el9.1.0+13172+8d1baf64.x86_64
+            - rubygem-rdoc-0:6.4.0-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-rexml-0:3.2.5-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-rss-0:0.2.9-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-test-unit-0:3.5.3-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygem-typeprof-0:0.21.2-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygems-0:3.3.7-141.module+el9.1.0+13172+8d1baf64.noarch
+            - rubygems-devel-0:3.3.7-141.module+el9.1.0+13172+8d1baf64.noarch
+            - ruby-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.src
+            - rubygem-mysql2-0:0.5.4-1.module+el9.1.0+13172+8d1baf64.src
+            - rubygem-pg-0:1.3.5-1.module+el9.1.0+13172+8d1baf64.src
+...
+---
+document: modulemd
+version: 2
+data:
+    name: nodejs
+    stream: "18"
+    version: "9030020231110024632"
+    context: 4ff8d002
+    arch: x86_64
+    summary: Javascript runtime
+    description: Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
+    license:
+        module:
+            - MIT
+        content:
+            - MIT
+            - MIT and ASL 2.0 and ISC and BSD
+    dependencies:
+        - {}
+        - buildrequires:
+            platform:
+                - el9.3.0
+    references:
+        community: http://nodejs.org
+        documentation: http://nodejs.org/en/docs
+        tracker: https://github.com/nodejs/node/issues
+    profiles:
+        common:
+            rpms:
+                - nodejs
+                - npm
+        development:
+            rpms:
+                - nodejs
+                - nodejs-devel
+                - npm
+        minimal:
+            rpms:
+                - nodejs
+        s2i:
+            rpms:
+                - nodejs
+                - npm
+                - nodejs-nodemon
+    api:
+        rpms:
+            - nodejs
+            - nodejs-devel
+            - npm
+    buildopts:
+        rpms:
+            macros: |
+                %_with_bundled 1
+                %_with_python3_fixup 0
+    components:
+        rpms:
+            nodejs:
+                name: nodejs
+                rationale: Javascript runtime and npm package manager.
+                ref: 8e5aab50abcaaabf83e264eee7c9ab8f4be5d47a
+                buildorder: 100
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            nodejs-nodemon:
+                name: nodejs-nodemon
+                rationale: Simple monitor script for use during development of a node.js app
+                ref: 2a98aa07faf4ab42e4b3db7a06611aa6cc3abf15
+                buildorder: 200
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            nodejs-packaging:
+                name: nodejs-packaging
+                rationale: RPM Macros and Utilities for Node.js Packaging
+                ref: e81987078ce2cc6bc874cf57a25961af71f7bdd0
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - nodejs-1:18.18.2-2.module+el9.3.0+15867+4ff8d002.x86_64
+            - nodejs-debuginfo-1:18.18.2-2.module+el9.3.0+15867+4ff8d002.x86_64
+            - nodejs-debugsource-1:18.18.2-2.module+el9.3.0+15867+4ff8d002.x86_64
+            - nodejs-devel-1:18.18.2-2.module+el9.3.0+15867+4ff8d002.x86_64
+            - nodejs-docs-1:18.18.2-2.module+el9.3.0+15867+4ff8d002.noarch
+            - nodejs-full-i18n-1:18.18.2-2.module+el9.3.0+15867+4ff8d002.x86_64
+            - nodejs-nodemon-0:3.0.1-1.module+el9.3.0+15867+4ff8d002.noarch
+            - nodejs-packaging-0:2021.06-4.module+el9.3.0+15867+4ff8d002.noarch
+            - nodejs-packaging-bundler-0:2021.06-4.module+el9.3.0+15867+4ff8d002.noarch
+            - npm-1:9.8.1-1.18.18.2.2.module+el9.3.0+15867+4ff8d002.x86_64
+            - nodejs-1:18.18.2-2.module+el9.3.0+15867+4ff8d002.src
+            - nodejs-nodemon-0:3.0.1-1.module+el9.3.0+15867+4ff8d002.src
+            - nodejs-packaging-0:2021.06-4.module+el9.3.0+15867+4ff8d002.src
+...
+---
+document: modulemd
+version: 2
+data:
+    name: php
+    stream: "8.1"
+    version: "9030020240124164708"
+    context: d5cd6ed5
+    arch: x86_64
+    summary: PHP scripting language
+    description: php 8.1 module
+    license:
+        module:
+            - GPLv2+
+        content:
+            - PHP
+            - PHP and LGPLv2 and OpenLDAP
+            - PHP and Zend and BSD and MIT and ASL 1.0 and NCSA and Boost
+            - PHP and BSD
+            - PHP and Zend and BSD and MIT and ASL 1.0 and NCSA and PostgreSQL
+            - PHP and LGPLv2+
+            - BSD
+    dependencies:
+        - buildrequires:
+            platform:
+                - el9.3.0
+    references:
+        documentation: http://php.net/
+        tracker: https://bugs.php.net/
+    profiles:
+        common:
+            rpms:
+                - php-cli
+                - php-common
+                - php-fpm
+                - php-mbstring
+                - php-xml
+        devel:
+            rpms:
+                - php-cli
+                - php-common
+                - php-devel
+                - php-fpm
+                - php-mbstring
+                - php-pecl-zip
+                - php-process
+                - php-xml
+        minimal:
+            rpms:
+                - php-cli
+                - php-common
+    api:
+        rpms:
+            - php-fpm
+    components:
+        rpms:
+            php:
+                name: php
+                rationale: Module API.
+                ref: 944e5b0f13c6443e18c48759bc2352f651d66de3
+                buildorder: 1
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            php-pecl-apcu:
+                name: php-pecl-apcu
+                rationale: APCu extension
+                ref: 2ff502b117339999b716ad770f2098ede0e2110b
+                buildorder: 2
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            php-pecl-rrd:
+                name: php-pecl-rrd
+                rationale: RRD extension
+                ref: c687b41e1b525af26828dd21d3c9e66d207047b4
+                buildorder: 2
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            php-pecl-xdebug3:
+                name: php-pecl-xdebug3
+                rationale: Xdebug extension
+                ref: b4f9e938daaafc5fe08db0d184131c9c0ecc3e9c
+                buildorder: 2
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            php-pecl-zip:
+                name: php-pecl-zip
+                rationale: ZIP extension
+                ref: 250d191079a8ae8501f150822f95f8ed68f2b3cc
+                buildorder: 2
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - apcu-panel-0:5.1.21-1.module+el9.3.0+16050+d5cd6ed5.noarch
+            - php-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-bcmath-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-bcmath-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-cli-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-cli-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-common-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-common-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-dba-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-dba-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-dbg-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-dbg-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-debugsource-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-devel-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-embedded-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-embedded-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-enchant-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-enchant-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-ffi-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-ffi-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-fpm-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-fpm-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-gd-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-gd-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-gmp-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-gmp-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-intl-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-intl-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-ldap-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-ldap-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-mbstring-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-mbstring-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-mysqlnd-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-mysqlnd-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-odbc-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-odbc-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-opcache-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-opcache-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pdo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pdo-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-apcu-0:5.1.21-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-apcu-debuginfo-0:5.1.21-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-apcu-debugsource-0:5.1.21-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-apcu-devel-0:5.1.21-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-rrd-0:2.0.3-4.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-rrd-debuginfo-0:2.0.3-4.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-rrd-debugsource-0:2.0.3-4.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-xdebug3-0:3.1.4-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-xdebug3-debuginfo-0:3.1.4-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-xdebug3-debugsource-0:3.1.4-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-zip-0:1.20.1-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-zip-debuginfo-0:1.20.1-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-zip-debugsource-0:1.20.1-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pgsql-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pgsql-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-process-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-process-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-snmp-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-snmp-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-soap-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-soap-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-xml-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-xml-debuginfo-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.x86_64
+            - php-pecl-apcu-0:5.1.21-1.module+el9.3.0+16050+d5cd6ed5.src
+            - php-0:8.1.27-1.module+el9.3.0+16050+d5cd6ed5.src
+            - php-pecl-rrd-0:2.0.3-4.module+el9.3.0+16050+d5cd6ed5.src
+            - php-pecl-xdebug3-0:3.1.4-1.module+el9.3.0+16050+d5cd6ed5.src
+            - php-pecl-zip-0:1.20.1-1.module+el9.3.0+16050+d5cd6ed5.src
+...
+---
+document: modulemd
+version: 2
+data:
+    name: nginx
+    stream: "1.22"
+    version: "9030020231109235939"
+    context: c068dd99
+    arch: x86_64
+    summary: nginx webserver
+    description: nginx 1.22 webserver module
+    license:
+        module:
+            - MIT
+        content:
+            - BSD
+    dependencies:
+        - buildrequires:
+            platform:
+                - el9.3.0
+    references:
+        documentation: http://nginx.org/en/docs/
+        tracker: https://trac.nginx.org/nginx/
+    profiles:
+        common:
+            rpms:
+                - nginx
+                - nginx-all-modules
+                - nginx-filesystem
+                - nginx-mod-http-image-filter
+                - nginx-mod-http-perl
+                - nginx-mod-http-xslt-filter
+                - nginx-mod-mail
+                - nginx-mod-stream
+    api:
+        rpms:
+            - nginx
+            - nginx-all-modules
+            - nginx-filesystem
+            - nginx-mod-http-image-filter
+            - nginx-mod-http-perl
+            - nginx-mod-http-xslt-filter
+            - nginx-mod-mail
+            - nginx-mod-stream
+    components:
+        rpms:
+            nginx:
+                name: nginx
+                rationale: Module API.
+                ref: 90d705640e45687ea5d20340add3e37ca512f8ea
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - nginx-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-all-modules-1:1.22.1-5.module+el9.3.0+15865+c068dd99.noarch
+            - nginx-core-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-core-debuginfo-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-debuginfo-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-debugsource-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-filesystem-1:1.22.1-5.module+el9.3.0+15865+c068dd99.noarch
+            - nginx-mod-devel-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-http-image-filter-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-http-image-filter-debuginfo-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-http-perl-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-http-perl-debuginfo-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-http-xslt-filter-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-http-xslt-filter-debuginfo-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-mail-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-mail-debuginfo-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-stream-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-mod-stream-debuginfo-1:1.22.1-5.module+el9.3.0+15865+c068dd99.x86_64
+            - nginx-1:1.22.1-5.module+el9.3.0+15865+c068dd99.src
+...
+---
+document: modulemd
+version: 2
+data:
+    name: postgresql
+    stream: "15"
+    version: "9030020240223202607"
+    context: 52b853ae
+    arch: x86_64
+    summary: PostgreSQL server and client module
+    description: PostgreSQL is an advanced Object-Relational database management system (DBMS). The postgresql-server package contains the programs needed to create and run a PostgreSQL server, which will in turn allow you to create and maintain PostgreSQL databases. The base postgresql package contains the client programs that you'll need to access a PostgreSQL DBMS server.
+    license:
+        module:
+            - MIT
+        content:
+            - PostgreSQL
+            - BSD
+            - MIT
+    dependencies:
+        - buildrequires:
+            platform:
+                - el9.3.0
+    references:
+        community: https://www.postgresql.org
+        documentation: https://www.postgresql.org/docs/15/index.html
+        tracker: http://bugzilla.redhat.com
+    profiles:
+        client:
+            rpms:
+                - postgresql
+        server:
+            rpms:
+                - postgresql-server
+    api:
+        rpms:
+            - postgresql
+            - postgresql-server
+    components:
+        rpms:
+            pg_repack:
+                name: pg_repack
+                rationale: pg_repack extension
+                ref: 47e6bb9718d164d8f96ae70f5582676c0fdd8a84
+                buildorder: 1
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            pgaudit:
+                name: pgaudit
+                rationale: pgaudit extension
+                ref: a28215e312bd0c7e58a7b778f2ec7c0fc54b69e6
+                buildorder: 1
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            postgres-decoderbufs:
+                name: postgres-decoderbufs
+                rationale: postgres-decoderbufs extension
+                ref: 1c021589c959b19f4024e4443fe083b510338557
+                buildorder: 1
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            postgresql:
+                name: postgresql
+                rationale: Module API.
+                ref: 4caf38c3474e807739130d826b9a68703379d1bb
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - pg_repack-0:1.4.8-1.module+el9.3.0+16128+52b853ae.x86_64
+            - pg_repack-debuginfo-0:1.4.8-1.module+el9.3.0+16128+52b853ae.x86_64
+            - pg_repack-debugsource-0:1.4.8-1.module+el9.3.0+16128+52b853ae.x86_64
+            - pgaudit-0:1.7.0-1.module+el9.3.0+16128+52b853ae.x86_64
+            - pgaudit-debuginfo-0:1.7.0-1.module+el9.3.0+16128+52b853ae.x86_64
+            - pgaudit-debugsource-0:1.7.0-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgres-decoderbufs-0:1.9.7-1.Final.module+el9.3.0+16128+52b853ae.x86_64
+            - postgres-decoderbufs-debuginfo-0:1.9.7-1.Final.module+el9.3.0+16128+52b853ae.x86_64
+            - postgres-decoderbufs-debugsource-0:1.9.7-1.Final.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-contrib-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-contrib-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-debugsource-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-docs-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-docs-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-plperl-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-plperl-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-plpython3-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-plpython3-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-pltcl-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-pltcl-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-private-devel-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-private-libs-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-private-libs-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-server-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-server-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-server-devel-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-server-devel-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-static-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-test-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-test-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-test-rpm-macros-0:15.6-1.module+el9.3.0+16128+52b853ae.noarch
+            - postgresql-upgrade-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-upgrade-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-upgrade-devel-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - postgresql-upgrade-devel-debuginfo-0:15.6-1.module+el9.3.0+16128+52b853ae.x86_64
+            - pg_repack-0:1.4.8-1.module+el9.3.0+16128+52b853ae.src
+            - pgaudit-0:1.7.0-1.module+el9.3.0+16128+52b853ae.src
+            - postgres-decoderbufs-0:1.9.7-1.Final.module+el9.3.0+16128+52b853ae.src
+            - postgresql-0:15.6-1.module+el9.3.0+16128+52b853ae.src
+...
+---
+document: modulemd
+version: 2
+data:
+    name: redis
+    stream: "7"
+    version: "9030020231107062649"
+    context: e7b53f1b
+    arch: x86_64
+    summary: Redis persistent key-value database
+    description: redis 7 module
+    license:
+        module:
+            - GPLv2+
+        content:
+            - BSD-3-Clause AND BSD-2-Clause AND MIT
+            - CC-BY-SA-4.0
+    dependencies:
+        - buildrequires:
+            platform:
+                - el9.3.0
+    references:
+        documentation: https://redis.io/documentation
+        tracker: https://github.com/redis/redis/issues
+    profiles:
+        common:
+            rpms:
+                - redis
+    api:
+        rpms:
+            - redis
+    components:
+        rpms:
+            redis:
+                name: redis
+                rationale: Module API.
+                ref: 0ecc02a3d530cfcf5459255426dcf9ca0faea6fd
+                buildorder: 1
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - redis-0:7.0.12-1.module+el9.3.0+15782+e7b53f1b.x86_64
+            - redis-debuginfo-0:7.0.12-1.module+el9.3.0+15782+e7b53f1b.x86_64
+            - redis-debugsource-0:7.0.12-1.module+el9.3.0+15782+e7b53f1b.x86_64
+            - redis-devel-0:7.0.12-1.module+el9.3.0+15782+e7b53f1b.x86_64
+            - redis-doc-0:7.0.12-1.module+el9.3.0+15782+e7b53f1b.noarch
+            - redis-0:7.0.12-1.module+el9.3.0+15782+e7b53f1b.src
+...
+---
+document: modulemd
+version: 2
+data:
+    name: nodejs
+    stream: "20"
+    version: "9030020231115214738"
+    context: 0a70ceb7
+    arch: x86_64
+    summary: Javascript runtime
+    description: Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
+    license:
+        module:
+            - MIT
+        content:
+            - MIT
+            - MIT and ASL 2.0 and ISC and BSD
+    dependencies:
+        - {}
+        - buildrequires:
+            platform:
+                - el9.3.0
+    references:
+        community: http://nodejs.org
+        documentation: http://nodejs.org/en/docs
+        tracker: https://github.com/nodejs/node/issues
+    profiles:
+        common:
+            rpms:
+                - nodejs
+                - npm
+        development:
+            rpms:
+                - nodejs
+                - nodejs-devel
+                - npm
+        minimal:
+            rpms:
+                - nodejs
+        s2i:
+            rpms:
+                - nodejs
+                - npm
+                - nodejs-nodemon
+    api:
+        rpms:
+            - nodejs
+            - nodejs-devel
+            - npm
+    buildopts:
+        rpms:
+            macros: |
+                %_with_bundled 1
+                %_with_python3_fixup 0
+    components:
+        rpms:
+            nodejs:
+                name: nodejs
+                rationale: Javascript runtime and npm package manager.
+                ref: a8c32a6970644ab935ad4025618d17eb9dd13130
+                buildorder: 100
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            nodejs-nodemon:
+                name: nodejs-nodemon
+                rationale: Simple monitor script for use during development of a node.js app
+                ref: 1ecb96576309ccced84a26a9c4c4921167df7b05
+                buildorder: 200
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+            nodejs-packaging:
+                name: nodejs-packaging
+                rationale: RPM Macros and Utilities for Node.js Packaging
+                ref: ffebe8bfc94fc1a9d654392bd2c3942de6f26d88
+                buildorder: 10
+                arches:
+                    - i686
+                    - x86_64
+                    - aarch64
+                    - ppc64le
+                    - s390x
+    artifacts:
+        rpms:
+            - nodejs-1:20.9.0-1.module+el9.3.0+15899+0a70ceb7.x86_64
+            - nodejs-debuginfo-1:20.9.0-1.module+el9.3.0+15899+0a70ceb7.x86_64
+            - nodejs-debugsource-1:20.9.0-1.module+el9.3.0+15899+0a70ceb7.x86_64
+            - nodejs-devel-1:20.9.0-1.module+el9.3.0+15899+0a70ceb7.x86_64
+            - nodejs-docs-1:20.9.0-1.module+el9.3.0+15899+0a70ceb7.noarch
+            - nodejs-full-i18n-1:20.9.0-1.module+el9.3.0+15899+0a70ceb7.x86_64
+            - nodejs-nodemon-0:3.0.1-1.module+el9.3.0+15899+0a70ceb7.noarch
+            - nodejs-packaging-0:2021.06-4.module+el9.3.0+15899+0a70ceb7.noarch
+            - nodejs-packaging-bundler-0:2021.06-4.module+el9.3.0+15899+0a70ceb7.noarch
+            - npm-1:10.1.0-1.20.9.0.1.module+el9.3.0+15899+0a70ceb7.x86_64
+            - nodejs-1:20.9.0-1.module+el9.3.0+15899+0a70ceb7.src
+            - nodejs-nodemon-0:3.0.1-1.module+el9.3.0+15899+0a70ceb7.src
+            - nodejs-packaging-0:2021.06-4.module+el9.3.0+15899+0a70ceb7.src
+...
