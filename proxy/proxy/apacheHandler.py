@@ -38,50 +38,11 @@ from spacewalk.common import byterange
 from rhn import rpclib, connections
 from rhn.UserDictCase import UserDictCase
 from uyuni.common.rhnLib import setHeaderValue
-from proxy.rhnProxyAuth import get_proxy_auth
 
 
 from .rhnConstants import HEADER_ACTUAL_URI, HEADER_EFFECTIVE_URI, \
     HEADER_CHECKSUM, SCHEME_HTTP, SCHEME_HTTPS, URI_PREFIX_KS, \
     URI_PREFIX_KS_CHECKSUM, COMPONENT_BROKER, COMPONENT_REDIRECT
-
-
-def getComponentType(req):
-    """
-        Are we a 'proxy.broker' or a 'proxy.redirect'.
-
-        Checks to see if the last visited Spacewalk Proxy was itself. If so, we
-        are a 'proxy.redirect'. If not, then we must be a 'proxy.broker'.
-    """
-
-    # NOTE: X-RHN-Proxy-Auth described in broker/rhnProxyAuth.py
-    if 'X-RHN-Proxy-Auth' not in req.headers_in:
-        # Request comes from a client, Must be the broker
-        return COMPONENT_BROKER
-
-    # Might be obsolete if proxy is traditionally registered
-    if 'X-Suse-Auth-Token' in req.headers_in:
-        return COMPONENT_REDIRECT
-
-    # pull server id out of "t:o:k:e:n:hostname1,t:o:k:e:n:hostname2,..."
-    proxy_auth = req.headers_in['X-RHN-Proxy-Auth']
-    last_auth = proxy_auth.split(',')[-1]
-    last_visited = last_auth.split(':')[0]
-    proxy_server_id = get_proxy_auth().getProxyServerId()
-    # is it the same box?
-    try:
-        log_debug(4, "last_visited", last_visited, "; proxy server id",
-                  proxy_server_id)
-    # pylint: disable=W0702
-    except:
-        # pylint: disable=W0702
-        # incase called prior to the log files being initialized
-        pass
-    if last_visited == proxy_server_id:
-        # XXX this assumes redirect runs on the same box as the broker
-        return COMPONENT_REDIRECT
-
-    return COMPONENT_BROKER
 
 
 class apacheHandler(rhnApache):
