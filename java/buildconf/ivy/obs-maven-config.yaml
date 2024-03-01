@@ -76,7 +76,7 @@ artifacts:
     repository: Leap
   - artifact: commons-compress
     package: apache-commons-compress
-    repository: Leap
+    repository: Leap_sle
   - artifact: concurrent
     repository: Uyuni_Other
   - artifact: concurrentlinkedhashmap-lru
