@@ -38,11 +38,7 @@ class HandlerWrap:
         #       req object.
 
         if self.__init:
-            from .apacheHandler import getComponentType
-            # We cannot trust the config files to tell us if we are in the
-            # broker or in the redirect because we try to always pass
-            # upstream all requests
-            componentType = getComponentType(req)
+            componentType = req.options["RHNComponentType"]
             initCFG(componentType)
             initLOG(CFG.LOG_FILE, CFG.DEBUG, f"wsgi_{componentType}")
             log_debug(2, 'New request, component %s' % (componentType, ))
