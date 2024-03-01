@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 28 16:59:17 CET 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Remove automatic reboot from transactional systems bootstrap (bsc#1218146)
+
+-------------------------------------------------------------------
 Fri Feb 16 10:11:46 CET 2024 - rosuna@suse.com
 
 - version 5.0.4-1

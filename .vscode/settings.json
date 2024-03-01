@@ -3,11 +3,13 @@
     "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
         "editor.tabSize": 2,
         "files.insertFinalNewline": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
         "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
     },
     "css.lint.emptyRules": "ignore",
     "less.lint.emptyRules": "ignore",
     "scss.lint.emptyRules": "ignore",
-    "prettier.requireConfig": true,
 }

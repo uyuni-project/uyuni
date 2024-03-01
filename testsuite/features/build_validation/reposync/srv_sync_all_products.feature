@@ -73,7 +73,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2 Public Cloud channels
     When I add "sle-module-public-cloud15-sp2-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp2-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp2-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp2-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp2_minion
@@ -108,7 +110,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3 Public Cloud channels
     When I add "sle-module-public-cloud15-sp3-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp3-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp3-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp3-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp3_minion
@@ -145,7 +149,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4 Public Cloud channels
     When I add "sle-module-public-cloud15-sp4-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp4-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp4_minion
@@ -179,7 +185,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Public Cloud channels
     When I add "sle-module-public-cloud15-sp5-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp5-pool-x86_64" has been synced
     And I add "sle-module-public-cloud15-sp5-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp5-updates-x86_64" has been synced
 
 @uyuni
 @sle15sp5_minion
@@ -401,7 +409,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @opensuse154arm_minion
   Scenario: Add openSUSE 15.4 for ARM Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_4 opensuse_leap15_4-backports-updates opensuse_leap15_4-non-oss opensuse_leap15_4-non-oss-updates opensuse_leap15_4-sle-updates opensuse_leap15_4-updates opensuse_leap15_4-uyuni-client-devel" with arch "aarch64"
+    When I use spacewalk-common-channel to add all "leap15.4" channels with arch "aarch64"
     And I wait until all synchronized channels for "leap15.4-aarch64" have finished
 
 @susemanager
@@ -422,7 +430,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @opensuse155arm_minion
   Scenario: Add openSUSE 15.5 for ARM Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-backports-updates opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-sle-updates opensuse_leap15_5-updates opensuse_leap15_5-uyuni-client-devel" with arch "aarch64"
+    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "aarch64"
     And I wait until all synchronized channels for "leap15.5-aarch64" have finished
 
 @sle15sp5s390_minion
@@ -462,7 +470,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @alma8_minion
   Scenario: Add Alma Linux 8
-    When I use spacewalk-common-channel to add channel "almalinux8 almalinux8-appstream almalinux8-extras almalinux8-uyuni-client-devel" with arch "x86_64"
+    When I use spacewalk-common-channel to add all "almalinux8" channels with arch "x86_64"
     And I wait until all synchronized channels for "almalinux8" have finished
 
 @susemanager
@@ -482,7 +490,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @alma9_minion
   Scenario: Add Alma Linux 9
-    When I use spacewalk-common-channel to add channel "almalinux9 almalinux9-appstream almalinux9-extras almalinux9-uyuni-client-devel" with arch "x86_64"
+    When I use spacewalk-common-channel to add all "almalinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "almalinux9" have finished
 
 @susemanager
@@ -502,7 +510,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @centos7_minion
   Scenario: Add CentOS 7
-    When I use spacewalk-common-channel to add channel "centos7 centos7-extras centos7-uyuni-client-devel" with arch "x86_64"
+    When I use spacewalk-common-channel to add all "centos7" channels with arch "x86_64"
     And I wait until all synchronized channels for "res7" have finished
 
 @susemanager
@@ -553,7 +561,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @oracle9_minion
   Scenario: Add Oracle Linux 9
-    When I use spacewalk-common-channel to add channel "oraclelinux9 oraclelinux9-appstream oraclelinux9-uyuni-client-devel" with arch "x86_64"
+    When I use spacewalk-common-channel to add all "oraclelinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "oraclelinux9" have finished
 
 @rhel9_minion
@@ -589,8 +597,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @rocky8_minion
   Scenario: Add Rocky Linux 8
-    When I use spacewalk-common-channel to add channel "rockylinux8 rockylinux8-appstream rockylinux8-extras rockylinux8-uyuni-client-devel" with arch "x86_64"
-    And I wait until all synchronized channels for "rockylinux-8" have finished
+    When I use spacewalk-common-channel to add all "rockylinux8" channels with arch "x86_64"
+    And I wait until all synchronized channels for "rockylinux8" have finished
 
 @susemanager
 @rocky9_minion
@@ -604,13 +612,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Rocky Linux 9 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Rocky Linux 9 x86_64" product has been added
-    And I wait until all synchronized channels for "rockylinux-9" have finished
+    And I wait until all synchronized channels for "rockylinux9" have finished
 
 @uyuni
 @rocky9_minion
   Scenario: Add Rocky Linux 9
-    When I use spacewalk-common-channel to add channel "rockylinux9 rockylinux9-appstream rockylinux9-extras rockylinux9-uyuni-client-devel" with arch "x86_64"
-    And I wait until all synchronized channels for "rockylinux-9" have finished
+    When I use spacewalk-common-channel to add all "rockylinux9" channels with arch "x86_64"
+    And I wait until all synchronized channels for "rockylinux9" have finished
 
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
@@ -628,7 +636,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
-    When I use spacewalk-common-channel to add channel "ubuntu-2004-pool-amd64-uyuni ubuntu-2004-amd64-main-uyuni ubuntu-2004-amd64-main-updates-uyuni ubuntu-2004-amd64-main-security-uyuni ubuntu-2004-amd64-universe-uyuni ubuntu-2004-amd64-universe-updates-uyuni ubuntu-2004-amd64-universe-security-uyuni ubuntu-2004-amd64-universe-backports-uyuni ubuntu-2004-amd64-uyuni-client-devel" with arch "amd64-deb"
+    When I use spacewalk-common-channel to add all "ubuntu-2004" channels with arch "amd64-deb"
     And I wait until all synchronized channels for "ubuntu-2004" have finished
 
 @susemanager
@@ -648,7 +656,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @ubuntu2204_minion
   Scenario: Add Ubuntu 22.04
-    When I use spacewalk-common-channel to add channel "ubuntu-2204-pool-amd64-uyuni ubuntu-2204-amd64-main-uyuni ubuntu-2204-amd64-main-updates-uyuni ubuntu-2204-amd64-main-security-uyuni ubuntu-2204-amd64-universe-uyuni ubuntu-2204-amd64-universe-updates-uyuni ubuntu-2204-amd64-universe-security-uyuni ubuntu-2204-amd64-universe-backports-uyuni ubuntu-2204-amd64-uyuni-client-devel" with arch "amd64-deb"
+    When I use spacewalk-common-channel to add all "ubuntu-2204" channels with arch "amd64-deb"
     And I wait until all synchronized channels for "ubuntu-2204" have finished
 
 @susemanager
@@ -668,7 +676,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @debian10_minion
   Scenario: Add Debian 10
-    When I use spacewalk-common-channel to add channel "debian-10-pool-amd64-uyuni debian-10-amd64-main-updates-uyuni debian-10-amd64-main-security-uyuni debian-10-amd64-uyuni-client-devel" with arch "amd64-deb"
+    When I use spacewalk-common-channel to add all "debian-10" channels with arch "amd64-deb"
     And I wait until all synchronized channels for "debian-10" have finished
 
 @susemanager
@@ -688,7 +696,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @debian11_minion
   Scenario: Add Debian 11
-    When I use spacewalk-common-channel to add channel "debian-11-pool-amd64-uyuni debian-11-amd64-main-updates-uyuni debian-11-amd64-main-security-uyuni debian-11-amd64-uyuni-client-devel" with arch "amd64-deb"
+    When I use spacewalk-common-channel to add all "debian-11" channels with arch "amd64-deb"
     And I wait until all synchronized channels for "debian-11" have finished
 
 @susemanager
@@ -708,7 +716,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @debian12_minion
   Scenario: Add Debian 12
-    When I use spacewalk-common-channel to add channel "debian-12-pool-amd64-uyuni debian-12-amd64-main-updates-uyuni debian-12-amd64-main-security-uyuni debian-12-amd64-uyuni-client-devel" with arch "amd64-deb"
+    When I use spacewalk-common-channel to add all "debian-12" channels with arch "amd64-deb"
     And I wait until all synchronized channels for "debian-12" have finished
 
 @susemanager
@@ -734,7 +742,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @proxy
   Scenario: Add Manager Proxy 4.3 Public Cloud channels
     When I add "sle-module-public-cloud15-sp4-pool-x86_64-proxy-4.3" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-pool-x86_64-proxy-4.3" has been synced
     And I add "sle-module-public-cloud15-sp4-updates-x86_64-proxy-4.3" channel
+    And I wait until the channel "sle-module-public-cloud15-sp4-updates-x86_64-proxy-4.3" has been synced
 
 @uyuni
 @proxy

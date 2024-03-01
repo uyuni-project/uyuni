@@ -15,7 +15,7 @@ import { HelpLink } from "components/utils/HelpLink";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-import styles from "./monitoring-admin.css";
+import styles from "./monitoring-admin.module.css";
 import useMonitoringApi from "./use-monitoring-api";
 
 const { capitalize } = Utils;

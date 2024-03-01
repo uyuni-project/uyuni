@@ -26,11 +26,15 @@ jobs:
       uses: Ana06/get-changed-files@v2.2.0
       with:
         filter: '*.py'
+    
+    - id: filter-files
+      run: |
+        echo added_modified_renamed="$( echo '${{ steps.files.outputs.added_modified_renamed }}' | tr ' ' '\n' | grep -E 'python|spacewalk|susemanager' | tr '\n' ' ')" >> $GITHUB_ENV
 
     - name: Run black on files
       run: |
-        black --check --diff -t py36 ${{ steps.files.outputs.added_modified_renamed }}
+        black --check --diff -t py36 $added_modified_renamed
 
     - name: Run pylint on files
       run: |
-        pylint --rcfile=/root/.pylintrc ${{ steps.files.outputs.added_modified_renamed }}
+        pylint --rcfile=/root/.pylintrc $added_modified_renamed
