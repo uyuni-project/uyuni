@@ -158,8 +158,8 @@ module LavandaBasic
   #   successcodes: An array with the values to be accepted as success codes from the command run.
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
-  def run(cmd, mgrctl_cmd: 'exec', separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @in_has_mgrctl ? "mgrctl #{mgrctl_cmd} -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
+  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
+    cmd_prefixed = @in_has_mgrctl ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 

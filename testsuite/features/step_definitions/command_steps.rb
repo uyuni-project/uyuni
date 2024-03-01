@@ -1455,7 +1455,7 @@ When(/^I generate the configuration "([^"]*)" of containerized proxy on the serv
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
 
-    command = "echo spacewalk > ca_pass && spacecmd --nossl -u admin -p admin proxy_container_config_generate_cert -- -o #{file_path} #{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de --ca-pass ca_pass"
+    command = "echo spacewalk > ca_pass && spacecmd --nossl -u admin -p admin proxy_container_config_generate_cert -- -o #{file_path} #{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de --ca-pass ca_pass && rm ca_pass"
   end
   get_target('server').run(command)
 end
