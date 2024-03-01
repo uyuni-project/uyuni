@@ -76,11 +76,11 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
 
         ChannelSyncFlag csf = chan.getChannelSyncFlag();
 
-        request.setAttribute("no-errata", csf.isNoErrata());
-        request.setAttribute("no-strict", csf.isNoStrict());
-        request.setAttribute("only-latest", csf.isOnlyLatest());
-        request.setAttribute("sync-kickstart", csf.isCreateTree());
-        request.setAttribute("fail", csf.isQuitOnError());
+        request.setAttribute("no-errata", new Boolean(csf.isNoErrata()));
+        request.setAttribute("no-strict", new Boolean(csf.isNoStrict()));
+        request.setAttribute("only-latest", new Boolean(csf.isOnlyLatest()));
+        request.setAttribute("sync-kickstart", new Boolean(csf.isCreateTree()));
+        request.setAttribute("fail", new Boolean(csf.isQuitOnError()));
 
         boolean inProgress = isSyncInProgress(chan);
         if (inProgress) {
