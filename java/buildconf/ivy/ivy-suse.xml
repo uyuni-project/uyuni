@@ -16,13 +16,13 @@
         <dependency org="suse" name="saslprep" rev="1.1" />
         <dependency org="suse" name="commons-beanutils" rev="1.9.4" />
         <dependency org="suse" name="commons-cli" rev="1.5.0" />
-        <dependency org="suse" name="commons-codec" rev="1.15" />
+        <dependency org="suse" name="commons-codec" rev="1.16.1" />
         <dependency org="suse" name="commons-collections" rev="3.2.2" />
         <dependency org="suse" name="commons-digester" rev="2.1" />
-        <dependency org="suse" name="commons-discovery" rev="0.4" />
+        <dependency org="suse" name="commons-discovery" rev="0.5" />
         <dependency org="suse" name="commons-el" rev="1.0" />
-        <dependency org="suse" name="commons-fileupload" rev="1.4" />
-        <dependency org="suse" name="commons-io" rev="2.11.0" />
+        <dependency org="suse" name="commons-fileupload" rev="1.5" />
+        <dependency org="suse" name="commons-io" rev="2.15.1" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang3" rev="3.12.0" />
         <dependency org="suse" name="commons-logging" rev="1.2" />
