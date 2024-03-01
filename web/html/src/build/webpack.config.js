@@ -28,7 +28,11 @@ module.exports = (env, argv) => {
       // Translations
       { from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") },
       // Unimported branding assets
-      { from: path.resolve(__dirname, "../branding/fonts"), to: path.resolve(__dirname, "../dist/fonts") },
+      {
+        from: path.resolve(__dirname, "../branding/fonts/font-spacewalk"),
+        to: path.resolve(__dirname, "../dist/fonts/font-spacewalk"),
+      },
+      // TODO: Copy all font licenses too
       { from: path.resolve(__dirname, "../branding/img"), to: path.resolve(__dirname, "../dist/img") },
       // Any non-compiled CSS, Less files will be compiled by their entry points
       {
@@ -51,13 +55,9 @@ module.exports = (env, argv) => {
         from: path.resolve(__dirname, "../node_modules/jquery-ui/jquery-ui.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
-      // Font-awesome
+      // TODO: In the future it would be nice to bundle this instead of copying it
       {
-        from: path.resolve(__dirname, "../node_modules/font-awesome/fonts"),
-        to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
-      },
-      {
-        from: path.resolve(__dirname, "../node_modules/font-awesome/css"),
+        from: path.resolve(__dirname, "../node_modules/font-awesome"),
         to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
       },
       {
@@ -175,14 +175,16 @@ module.exports = (env, argv) => {
           test: /\.(png|jpe?g|gif|svg)$/i,
           type: "asset/resource",
           generator: {
-            filename: "img/[hash][ext][query]",
+            // TODO: Revert this to `fonts/[hash][ext][query]` after the Bootstrap migration is done
+            filename: "img/[base]",
           },
         },
         {
           test: /\.(eot|ttf|woff|woff2)$/i,
           type: "asset/resource",
           generator: {
-            filename: "fonts/[hash][ext][query]",
+            // TODO: Revert this to `fonts/[hash][ext][query]` after the Bootstrap migration is done
+            filename: "fonts/[base]",
           },
         },
         // See https://getbootstrap.com/docs/5.3/getting-started/webpack/
