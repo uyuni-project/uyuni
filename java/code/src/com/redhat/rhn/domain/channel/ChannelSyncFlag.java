@@ -123,7 +123,7 @@ public class ChannelSyncFlag implements Serializable {
             case "no-errata":
                 this.noErrata = value;
                 break;
-            case "only-latest":
+            case "latest":
                 this.onlyLatest = value;
                 break;
             case "sync-kickstart":
