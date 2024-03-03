@@ -85,35 +85,35 @@
 
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-strict" id="no-strict"  <c:if test="${no-strict == true}"> 'checked' </c:if>/>
+                <input type="checkbox" name="no-strict" id="no-strict"  <c:if test='${noStrict}'> checked</c:if> />
                 <bean:message key="channel.manage.sync.nostrict.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-errata" id="no-errata" <c:if test="${no-errata == true}"> 'checked' </c:if>/>
+                <input type="checkbox" name="no-errata" id="no-errata" <c:if test='${noErrata}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="latest" id="latest" <c:if test="${latest == true}"> 'checked' </c:if>/>
+                <input type="checkbox" name="latest" id="latest" <c:if test='${latest}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.latestonly.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="sync-kickstart" id="sync-kickstart" <c:if test="${sync-kickstart == true}"> 'checked' </c:if>/>
+                <input type="checkbox" name="sync-kickstart" id="sync-kickstart" <c:if test='${syncKickstart}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.synckickstart.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="fail" id="fail" <c:if test="${fail == true}"> 'checked' </c:if>/>
+                <input type="checkbox" name="fail" id="fail" <c:if test='${fail}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.fail.jsp"/>
             </label>
         </div>
