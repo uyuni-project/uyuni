@@ -104,6 +104,7 @@ describe("cancelable", () => {
     instance
       .then(() => onSuccess())
       // This is required to make Node.js happy about the unhandled error
+      // eslint-disable-next-line no-console
       .catch((error) => console.log(`Swallowing error: ${error}`));
 
     setTimeout(() => instance.cancel("testing cancellation"), 100);
