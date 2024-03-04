@@ -4,6 +4,11 @@
 # The scenarios in this feature are skipped if there is no proxy
 # ($proxy is nil) or if there is no private network ($private_net is nil)
 
+# TODO: RBS tests needs a refactor to don't use salt formulas.
+#       Card: https://github.com/SUSE/spacewalk/issues/23616
+
+@skip_if_container_server
+@skip_if_github_validation
 @sle_minion
 @scope_proxy
 @scope_retail

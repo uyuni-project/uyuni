@@ -1,9 +1,10 @@
-# Copyright (c) 2020-2023 SUSE LLC
+# Copyright (c) 2020-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
 # ($proxy is nil)
 
+@skip_if_container_server
 @proxy
 Feature: Setup SUSE Manager proxy
   In order to use a proxy with the SUSE manager server
@@ -43,8 +44,8 @@ Feature: Setup SUSE Manager proxy
 
   Scenario: Copy the server keys to the proxy
     When I copy server's keys to the proxy
-    
-  Scenario: Configure the proxy    
+
+  Scenario: Configure the proxy
     When I configure the proxy
     And I allow all SSL protocols on the proxy's apache
     And I reload the "apache2.service" service on "proxy"
@@ -56,13 +57,13 @@ Feature: Setup SUSE Manager proxy
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"
 
-@susemanager
+  @susemanager
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" short hostname
     And I wait until I see "SUSE Manager Proxy" text, refreshing the page
 
-@uyuni
+  @uyuni
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" short hostname

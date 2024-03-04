@@ -1,6 +1,12 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# TODO: This feature is not working within a proxy containerized environment
+#       due to the fact that the mgr-bootstrap command is not available in the proxy
+#       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
+
+@skip_if_container_server
+@skip_if_github_validation
 @sle_minion
 Feature: Bare metal discovery
 

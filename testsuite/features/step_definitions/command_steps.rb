@@ -1439,7 +1439,7 @@ Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node.run('iptables -F INPUT')
 end
 
-When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
+When(/^I generate the configuration "([^"]*)" of containerized proxy on the server$/) do |file_path|
   if running_k3s?
     # A server container on kubernetes has no clue about SSL certificates
     # We need to generate them using `cert-manager` and use the files as 3rd party certificate
@@ -1451,19 +1451,23 @@ When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the serv
     end
 
     command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
-    # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
-    command = 'echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert' \
-              " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
-              ' 2048 galaxy-noise@suse.de --ca-pass cert_pass' \
-              ' && rm cert_pass'
+
+    command = "echo spacewalk > ca_pass && spacecmd --nossl -u admin -p admin proxy_container_config_generate_cert -- -o #{file_path} #{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de --ca-pass ca_pass && rm ca_pass"
   end
   get_target('server').run(command)
 end
 
-When(/^I add avahi hosts in Containerized Proxy configuration$/) do
+When(/^I copy the configuration "([^"]*)" of containerized proxy from the server to the proxy$/) do |file_path|
+  get_target('server').extract(file_path, file_path)
+  get_target('proxy').inject(file_path, file_path)
+end
+
+# TODO: Refactor this step to use the new mgrpxy command
+#       For now, this step is not used to onboard our containerized proxy
+When(/^I add avahi hosts in containerized proxy configuration$/) do
   if get_target('server').full_hostname.include? 'tf.local'
     hosts_list = ''
     $host_by_node.each do |node, _host|
@@ -1473,7 +1477,7 @@ When(/^I add avahi hosts in Containerized Proxy configuration$/) do
     regex = "s/^#?EXTRA_POD_ARGS=.*$/EXTRA_POD_ARGS=#{hosts_list}/g;"
     get_target('proxy').run("sed -i.bak -Ee '#{regex}' /etc/sysconfig/uyuni-proxy-systemd-services")
     log "Avahi hosts added: #{hosts_list}"
-    log 'The Development team has not been working to support avahi in Containerized Proxy, yet. This is best effort.'
+    log 'The Development team has not been working to support avahi in containerized proxy, yet. This is best effort.'
   else
     log 'Record not added - avahi domain was not detected'
   end
