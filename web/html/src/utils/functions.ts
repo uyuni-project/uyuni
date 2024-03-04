@@ -2,7 +2,6 @@ import { getUrlParam, urlBounce } from "./url";
 
 // This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
 export class Cancelable<T = any> extends Promise<T> {
-  promise!: Promise<T>;
   cancel!: (reason?: any) => void;
 }
 
@@ -27,7 +26,6 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
    *  while also allowing using await directly on a Cancelable.
    */
   const castRace = race as Cancelable<T>;
-  castRace.promise = race;
   castRace.cancel = (reason: any) => {
     isCancelled = true;
     rejectFn(reason);
