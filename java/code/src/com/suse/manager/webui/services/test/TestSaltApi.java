@@ -24,6 +24,7 @@ import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -99,6 +100,11 @@ public class TestSaltApi implements SaltApi {
 
     @Override
     public Optional<SystemInfo> getSystemInfoFull(String minionId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public SumaUtil.PublicCloudInstanceFlavor getInstanceFlavor(String minionId) {
         throw new UnsupportedOperationException();
     }
 
