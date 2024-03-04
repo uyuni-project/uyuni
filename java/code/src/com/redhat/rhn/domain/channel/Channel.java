@@ -1056,8 +1056,11 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         this.channelSyncFlag = csf;
     }
 
+    /**
+     * @return the channels sync flag settings
+     */
     public ChannelSyncFlag getChannelSyncFlag() {
-        if (channelSyncFlag == null ) {
+        if (channelSyncFlag == null) {
             channelSyncFlag = new ChannelSyncFlag();
             channelSyncFlag.setChannel(this);
         }
