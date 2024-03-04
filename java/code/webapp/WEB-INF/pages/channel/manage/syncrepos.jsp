@@ -85,14 +85,14 @@
 
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-strict" id="no-strict"  <c:if test='${noStrict}'> checked</c:if> />
+                <input type="checkbox" name="noStrict" id="noStrict"  <c:if test='${noStrict}'> checked</c:if> />
                 <bean:message key="channel.manage.sync.nostrict.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-errata" id="no-errata" <c:if test='${noErrata}'> checked</c:if>/>
+                <input type="checkbox" name="noErrata" id="noErrata" <c:if test='${noErrata}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
         </div>
@@ -106,7 +106,7 @@
         
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="sync-kickstart" id="sync-kickstart" <c:if test='${syncKickstart}'> checked</c:if>/>
+                <input type="checkbox" name="syncKickstart" id="syncKickstart" <c:if test='${syncKickstart}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.synckickstart.jsp"/>
             </label>
         </div>
