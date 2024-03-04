@@ -262,4 +262,17 @@ public class MgrUtilRunner {
         args.put("intermediate_cas", intermediateCAs);
         return new RunnerCall<>("mgrutil.check_ssl_cert", Optional.of(args), new TypeToken<>() { });
     }
+
+    /**
+     * Call 'mgrutil.select_minions'
+     * @param target return the minions matching the target
+     * @param targetType type of target
+     * @return list of matching minions
+     */
+    public static RunnerCall<List<String>> selectMinions(String target, String targetType) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("target", target);
+        args.put("target_type", targetType);
+        return new RunnerCall<>("mgrutil.select_minions", Optional.of(args), new TypeToken<List<String>>() { });
+    }
 }

@@ -1,0 +1,8 @@
+uyuni:
+  orgs:
+    - org_id: my_org_minimal
+      org_admin_user: org_form_user
+      org_admin_password: org_form_user
+      first_name: admin org
+      last_name: admin org
+      email: admin_org@org.com

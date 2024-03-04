@@ -8,6 +8,7 @@ import os
 import shutil
 import salt.utils
 import tempfile
+from salt.utils.minions import CkMinions
 
 import certs.mgr_ssl_cert_setup
 
@@ -194,3 +195,9 @@ def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
         return {"cert": cert}
     except certs.mgr_ssl_cert_setup.CertCheckError as err:
         return {"error": str(err)}
+
+
+def select_minions(target, target_type):
+    # pylint: disable-next=undefined-variable
+    minions = CkMinions(__opts__)
+    return minions.check_minions(expr=target, tgt_type=target_type).get("minions", [])
