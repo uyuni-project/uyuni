@@ -41,7 +41,7 @@
                 </button>
                 <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-save'/>"
                         class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
-                    <rhn:icon type="repo-sync"/>
+                    <rhn:icon type="repo-save"/>
                     <bean:message key='repos.jsp.button-save'/>
                 </button>
             </div>
