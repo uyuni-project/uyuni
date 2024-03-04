@@ -29,6 +29,7 @@
     "ansi-regex": "5.0.1",
     "glob-parent": "5.1.2",
     "immer": "9.0.6",
+    "json5": "2.2.3",
     "loader-utils": "1.4.2",
     "lodash": "4.17.21",
     "minimatch": "3.0.5",
