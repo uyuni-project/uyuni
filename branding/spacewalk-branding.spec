@@ -35,17 +35,18 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:  noarch
-BuildRequires:  java-devel >= 11
-Requires:       httpd
 %if 0%{?suse_version}
-Requires(pre):  tomcat
 BuildRequires:  apache2
+%endif
+BuildRequires:  java-devel >= 11
+
+Requires:       httpd
+Requires(pre):  tomcat
 Requires:       susemanager-advanced-topics_en-pdf
 Requires:       susemanager-best-practices_en-pdf
 Requires:       susemanager-docs_en
 Requires:       susemanager-getting-started_en-pdf
 Requires:       susemanager-reference_en-pdf
-%endif
 Requires:       susemanager-frontend-libs
 
 %description
