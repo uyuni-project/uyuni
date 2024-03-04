@@ -135,7 +135,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
             }
 
             try {
-                String [] lparams = {"no-errata", "latest", "sync-kickstart", "fail", "no-strict"};
+                String [] lparams = {"noErrata", "latest", "syncKickstart", "fail", "noStrict"};
                 for (String p : lparams) {
                     csf.setFlag(p, request.getParameter(p) != null);
                 }
