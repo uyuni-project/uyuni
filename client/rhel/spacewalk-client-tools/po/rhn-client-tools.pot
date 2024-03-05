@@ -179,14 +179,6 @@ msgstr ""
 msgid "See /var/log/up2date for more information"
 msgstr ""
 
-#: ../src/up2date_client/rhnreg.py:75
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg.py:81
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr ""
-
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
 msgstr ""
@@ -1069,10 +1061,6 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:72
 msgid "Do not upload any virtualization info"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Do not start rhnsd after completion"
 msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:76

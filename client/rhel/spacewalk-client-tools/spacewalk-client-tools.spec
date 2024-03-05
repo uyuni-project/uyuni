@@ -63,7 +63,6 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 mgr-daemon
 #
 %bcond_with    test
 
@@ -378,7 +377,6 @@ Requires:       usermode >= 1.36
 Requires:       usermode-consoleonly >= 1.36
 %endif
 Requires:       %{name} = %{version}-%{release}
-Requires:       %{rhnsd}
 
 %description -n spacewalk-client-setup
 spacewalk-client-setup contains programs and utilities to configure a system to use
@@ -667,7 +665,6 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/rhn/actions/hardware.*
 %{python_sitelib}/rhn/actions/systemid.*
 %{python_sitelib}/rhn/actions/reboot.*
-%{python_sitelib}/rhn/actions/rhnsd.*
 %{python_sitelib}/rhn/actions/up2date_config.*
 %endif
 
@@ -682,7 +679,6 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/rhn/actions/hardware.*
 %{python3_sitelib}/rhn/actions/systemid.*
 %{python3_sitelib}/rhn/actions/reboot.*
-%{python3_sitelib}/rhn/actions/rhnsd.*
 %{python3_sitelib}/rhn/actions/up2date_config.*
 
 %if "%{_vendor}" != "debbuild"
@@ -692,7 +688,6 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/rhn/actions/__pycache__/hardware.*
 %{python3_sitelib}/rhn/actions/__pycache__/systemid.*
 %{python3_sitelib}/rhn/actions/__pycache__/reboot.*
-%{python3_sitelib}/rhn/actions/__pycache__/rhnsd.*
 %{python3_sitelib}/rhn/actions/__pycache__/up2date_config.*
 %endif
 %endif

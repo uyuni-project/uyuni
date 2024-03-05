@@ -58,7 +58,6 @@ pSeries
 Puerto
 redhat
 RHEL
-rhnsd
 sbin
 SearchServer
 SELinux

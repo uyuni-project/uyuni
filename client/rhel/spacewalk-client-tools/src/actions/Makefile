@@ -2,7 +2,7 @@
 #
 
 ACTIONS		= up2date_config hardware reboot \
-		  rhnsd systemid __init__
+		  systemid __init__
 PYFILES		= $(addsuffix .py, $(ACTIONS))
 OBJECTS		= $(PYFILES)
 
