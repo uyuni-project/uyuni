@@ -1,0 +1,11 @@
+github:
+    prebuilds:
+        addBadge: false
+        addComment: true
+        prevent-merge-on-error: true
+        pullRequests: true
+        pullRequestsFromForks: true
+ports:
+    - name: postgreSQL
+      port: 5432
+      onOpen: ignore
