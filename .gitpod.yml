@@ -9,3 +9,7 @@ ports:
     - name: postgreSQL
       port: 5432
       onOpen: ignore
+
+tasks:
+  - init: |
+      echo "init"
