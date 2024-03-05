@@ -562,8 +562,6 @@ make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} %{?is_deb:PLATFORM=deb}
 %endif
 
-ln -s spacewalk-channel $RPM_BUILD_ROOT%{_sbindir}/rhn-channel
-
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
@@ -635,7 +633,6 @@ for i in \
     /usr/sbin/rhn_check \
     /usr/sbin/rhn_register \
     /usr/sbin/rhnreg_ks \
-    /usr/sbin/spacewalk-channel \
 ; do
     ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
 done
@@ -876,12 +873,8 @@ make -f Makefile.rhn-client-tools test
 %files -n spacewalk-client-setup
 %defattr(-,root,root,-)
 %{_mandir}/man8/rhnreg_ks.8*
-%{_mandir}/man8/spacewalk-channel.8*
-%{_mandir}/man8/rhn-channel.8*
 
 %{_sbindir}/rhnreg_ks
-%{_sbindir}/spacewalk-channel
-%{_sbindir}/rhn-channel
 
 %if ! 0%{?without_rhn_register}
 %{_mandir}/man8/rhn_register.8*
@@ -906,7 +899,6 @@ make -f Makefile.rhn-client-tools test
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_register-%{python_version}
 %{_sbindir}/rhnreg_ks-%{python_version}
-%{_sbindir}/spacewalk-channel-%{python_version}
 %{python2_sitelib}/up2date_client/rhnreg.*
 %{python2_sitelib}/up2date_client/pmPlugin.*
 %{python2_sitelib}/up2date_client/tui.*
@@ -918,7 +910,6 @@ make -f Makefile.rhn-client-tools test
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_register-%{python3_version}
 %{_sbindir}/rhnreg_ks-%{python3_version}
-%{_sbindir}/spacewalk-channel-%{python3_version}
 %{python3_sitelib}/up2date_client/rhnreg.*
 %{python3_sitelib}/up2date_client/pmPlugin.*
 %{python3_sitelib}/up2date_client/tui.*
