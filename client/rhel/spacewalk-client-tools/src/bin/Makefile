@@ -23,7 +23,6 @@ all:
 install:: all $(DIRS)
 	$(INSTALL_BIN) rhnreg_ks.py $(SBIN_DIR)/rhnreg_ks-$(PYTHONVERSION)
 	$(INSTALL_BIN) rhn_register.py $(SBIN_DIR)/rhn_register-$(PYTHONVERSION)
-	$(INSTALL_BIN) rhn-profile-sync.py $(SBIN_DIR)/rhn-profile-sync-$(PYTHONVERSION)
 	$(INSTALL_BIN) rhn_check.py $(SBIN_DIR)/rhn_check-$(PYTHONVERSION)
 	$(INSTALL_BIN) spacewalk-channel.py $(SBIN_DIR)/spacewalk-channel-$(PYTHONVERSION)
 	$(INSTALL_BIN) spacewalk-update-status.py $(SBIN_DIR)/spacewalk-update-status

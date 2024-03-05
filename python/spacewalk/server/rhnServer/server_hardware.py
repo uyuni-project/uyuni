@@ -1399,13 +1399,11 @@ For SLES12+ and RHEL7:
   # rm -f /etc/machine-id
   # dbus-uuidgen --ensure
   # systemd-machine-id-setup
-  # rhn-profile-sync
 
 
 For SLES11 and RHEL5/RHEL6:
   # rm /var/lib/dbus/machine-id
   # dbus-uuidgen --ensure
-  # rhn-profile-sync
 
 
 For more information on generating a new machine_id for traditional systems refer to:
