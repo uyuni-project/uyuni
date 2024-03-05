@@ -32,22 +32,22 @@ public class TranslatorRegistry {
 
     private static final List<Class> TRANSLATOR_CLASSES;
     static {
-        TRANSLATOR_CLASSES = new LinkedList<Class>();
+        TRANSLATOR_CLASSES = new LinkedList<>();
         TRANSLATOR_CLASSES.add(HibernateToSearchTranslator.class);
     }
 
-    private static List<KeyTranslator> translators = new LinkedList<KeyTranslator>();
+    private static final List<KeyTranslator> TRANSLATORS = new LinkedList<>();
 
     /**
      * Returns the list of all available translators.
      * @return the list of all available translators.
      */
     public static List<KeyTranslator> getTranslators() {
-        if (translators.isEmpty() && !TRANSLATOR_CLASSES.isEmpty()) {
+        if (TRANSLATORS.isEmpty() && !TRANSLATOR_CLASSES.isEmpty()) {
             for (Class clazz : TRANSLATOR_CLASSES) {
                 try {
                         Object s = clazz.newInstance();
-                        translators.add((KeyTranslator)s);
+                        TRANSLATORS.add((KeyTranslator)s);
                 }
                 catch (Exception e) {
                     e.printStackTrace(System.out);
@@ -55,6 +55,6 @@ public class TranslatorRegistry {
             }
         }
 
-        return translators;
+        return TRANSLATORS;
     }
 }

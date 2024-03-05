@@ -19,9 +19,8 @@ import com.redhat.satellite.search.db.DatabaseManager;
 import com.redhat.satellite.search.db.Query;
 import com.redhat.satellite.search.index.IndexManager;
 import com.redhat.satellite.search.index.IndexingException;
-import com.redhat.satellite.search.index.Result;
 import com.redhat.satellite.search.index.QueryParseException;
-import com.redhat.satellite.search.scheduler.ScheduleManager;
+import com.redhat.satellite.search.index.Result;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,14 +40,12 @@ import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * XML-RPC handler which handles calls for indexing
- *
- * @version $Rev$
  */
 public class IndexHandler {
 
-    private static Logger log = LogManager.getLogger(IndexHandler.class);
-    private IndexManager indexManager;
-    private DatabaseManager databaseManager;
+    private static final Logger LOG = LogManager.getLogger(IndexHandler.class);
+    private final IndexManager indexManager;
+    private final DatabaseManager databaseManager;
     public static final int QUERY_ERROR = 100;
     public static final int INDEX_ERROR = 200;
     public static final int DB_ERROR = 300;
@@ -57,11 +54,10 @@ public class IndexHandler {
     /**
      * Constructor
      *
-     * @param idxManager
-     *            Search engine interface
+     * @param idxManager Search engine interface
+     * @param dbMgr the database manager
      */
-    public IndexHandler(IndexManager idxManager, DatabaseManager dbMgr,
-            ScheduleManager schedMgr) {
+    public IndexHandler(IndexManager idxManager, DatabaseManager dbMgr) {
         indexManager = idxManager;
         databaseManager = dbMgr;
     }
@@ -69,12 +65,10 @@ public class IndexHandler {
     /**
      * Search index - using session id as String to avoid Integer overflow
      *
-     * @param sessionId
-     *            user's application session id
-     * @param indexName
-     *            index to use
-     * @param query
-     *            search query
+     * @param sessionId user's application session id
+     * @param indexName index to use
+     * @param query search query
+     * @param isFineGrained is fine grained search
      * @return list of document ids as results
      * @throws XmlRpcFault something bad happened
      */
@@ -157,35 +151,27 @@ public class IndexHandler {
      * @return list of document ids as results
      * @throws XmlRpcFault something bad happened
      */
-    public List<Result> search(long sessionId, String indexName, String query,
-            String lang, boolean isFineGrained)
+    public List<Result> search(long sessionId, String indexName, String query, String lang, boolean isFineGrained)
             throws XmlRpcFault {
-        if (log.isDebugEnabled()) {
-            log.debug("IndexHandler:: searching for: " + query + ", indexName = " +
-                    indexName + ", lang = " + lang);
-        }
-        boolean retry = true;
-        while (retry) {
+        LOG.debug("IndexHandler:: searching for: {}, indexName = {}, lang = {}", query, indexName, lang);
+        while (true) {
             try {
-                retry = false;
-                List<Result> hits = indexManager.search(indexName, query, lang,
-                        isFineGrained);
-                if (indexName.equals("package") || indexName.equals("errata")
-                        || indexName.equals("server")) {
+                List<Result> hits = indexManager.search(indexName, query, lang, isFineGrained);
+                if (List.of("package", "errata", "server").contains(indexName)) {
                     return screenHits(sessionId, indexName, hits);
                 }
                 return hits;
             }
             catch (IndexingException e) {
-                log.error("Caught exception: ", e);
+                LOG.error("Caught index exception: ", e);
                 throw new XmlRpcFault(INDEX_ERROR, e.getMessage());
             }
             catch (QueryParseException e) {
-                log.error("Caught exception: ", e);
+                LOG.error("Caught query exception: ", e);
                 throw new XmlRpcFault(QUERY_ERROR, e.getMessage());
             }
             catch (SQLException e) {
-                log.error("Caught exception: ", e);
+                LOG.error("Caught exception: ", e);
                 throw new XmlRpcFault(DB_ERROR, e.getMessage());
             }
             catch (BooleanQuery.TooManyClauses e) {
@@ -194,11 +180,9 @@ public class IndexHandler {
                     // increase number of max clause count
                     // if there's no overflow danger
                     int newQueries = oldQueries * 2;
-                    log.error("Too many hits for query: " + oldQueries +
-                            ".  Increasing max clause count to " + newQueries +
-                            "\nexception message: " + e.getMessage());
+                    LOG.error("Too many hits for query: {}. Increasing max clause count to {}\n" +
+                            "exception message: {}", oldQueries, newQueries, e.getMessage());
                     BooleanQuery.setMaxClauseCount(newQueries);
-                    retry = true;
                 }
                 else {
                     // there's no more help
@@ -206,65 +190,61 @@ public class IndexHandler {
                 }
             }
         }
-        // return just because of compiler
-        return null;
     }
 
-    private List<Result> screenHits(long sessionId, String indexName,
-            List<Result> hits) throws SQLException {
+    private List<Result> screenHits(long sessionId, String indexName, List<Result> hits) throws SQLException {
 
-        if (hits == null || hits.size() == 0) {
-            if (log.isDebugEnabled()) {
-                log.debug("NO HITS FOUND");
+        if (hits == null || hits.isEmpty()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("NO HITS FOUND");
             }
-            return Collections.<Result>emptyList();
+            return Collections.emptyList();
         }
-        List<Long> ids = new ArrayList<Long>();
+        List<Long> ids = new ArrayList<>();
         for (Result pr : hits) {
-            ids.add(new Long(pr.getId()));
+            ids.add(Long.valueOf(pr.getId()));
         }
 
-        Query<String> query = null;
-        if ("package".equals(indexName)) {
-            query = databaseManager.getQuery("verifyPackageVisibility");
-        }
-        else if ("errata".equals(indexName)) {
-            query = databaseManager.getQuery("verifyErrataVisibility");
-        }
-        else if ("server".equals(indexName)) {
-            query = databaseManager.getQuery("verifyServerVisibility");
-        }
-        else {
-            if (log.isDebugEnabled()) {
-                log.debug("screenHits(" + indexName +
-                        ") no 'screening of results' performed");
-                log.debug("results: " + hits);
-            }
-            return hits;
+        Query<String> query;
+        switch (indexName) {
+            case "package":
+                query = databaseManager.getQuery("verifyPackageVisibility");
+                break;
+            case "errata":
+                query = databaseManager.getQuery("verifyErrataVisibility");
+                break;
+            case "server":
+                query = databaseManager.getQuery("verifyServerVisibility");
+                break;
+            default:
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("screenHits({}) no 'screening of results' performed", indexName);
+                    LOG.debug("results: {}", hits);
+                }
+                return hits;
         }
 
         try {
-           Set<String> visible = new HashSet<String>();
+           Set<String> visible = new HashSet<>();
 
            // we have to batch the visibility query in clause to no more
            // than 1000 for oracle
-           final int batch_size = 1000;
-           for (int i = 0; i < ids.size(); i += batch_size) {
-               Map<String, Object> params = new HashMap<String, Object>();
+           final int batchSize = 1000;
+           for (int i = 0; i < ids.size(); i += batchSize) {
+               Map<String, Object> params = new HashMap<>();
                params.put("session_id", sessionId);
                // sub list includes the first index and excludes the last.
                // so the proper last index of ids to pass to subList is ids.size()
-               params.put("id_list", ids.subList(i, (i + batch_size) <= ids.size() ? i +
-                       batch_size : ids.size()));
+               params.put("id_list", ids.subList(i, Math.min((i + batchSize), ids.size())));
                visible.addAll(query.loadList(params));
            }
 
-           if (log.isDebugEnabled()) {
-               log.debug("results: " + visible);
+           if (LOG.isDebugEnabled()) {
+               LOG.debug("results: {}", visible);
            }
 
            // add the PackageResults that match the visible list
-           List<Result> realResults = new ArrayList<Result>();
+           List<Result> realResults = new ArrayList<>();
            for (Result pr : hits) {
                if (visible.contains(pr.getId())) {
                    realResults.add(pr);

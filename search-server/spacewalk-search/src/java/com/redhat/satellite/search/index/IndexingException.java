@@ -17,8 +17,6 @@ package com.redhat.satellite.search.index;
 
 /**
  * Something vewy vewy bad happened while indexing content
- *
- * @version $Rev$
  */
 public class IndexingException extends Exception {
 

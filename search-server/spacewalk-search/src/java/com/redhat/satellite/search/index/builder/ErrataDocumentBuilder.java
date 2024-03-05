@@ -17,13 +17,11 @@ package com.redhat.satellite.search.index.builder;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-import java.util.Iterator;
 import java.util.Map;
 
 
 /**
  * ErrataDocumentBuilder
- * @version $Rev$
  */
 public class ErrataDocumentBuilder implements DocumentBuilder {
 
@@ -34,30 +32,28 @@ public class ErrataDocumentBuilder implements DocumentBuilder {
      */
     public Document buildDocument(Long objId, Map<String, String> metadata) {
         Document doc = new Document();
-        doc.add(new Field("id", objId.toString(), Field.Store.YES,
-                Field.Index.UN_TOKENIZED));
+        doc.add(new Field("id", objId.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
 
-        for (Iterator<String> iter = metadata.keySet().iterator(); iter.hasNext();) {
-            Field.Store store = Field.Store.NO;
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
+            Field.Store store;
             Field.Index tokenize = Field.Index.TOKENIZED;
+            String key = entry.getKey();
+            String value = entry.getValue();
 
-            String name = iter.next();
-            String value = metadata.get(name);
-
-            if (name.equals("name") || name.equals("advisoryName")) {
+            if (key.equals("name") || key.equals("advisoryName")) {
                 store = Field.Store.YES;
             }
-            else if (name.equals("synopsis") || name.equals("description") ||
-                    name.equals("topic") || name.equals("solution")) {
+            else if (key.equals("synopsis") || key.equals("description") ||
+                    key.equals("topic") || key.equals("solution")) {
                 // index, but do not store
+                store = Field.Store.NO;
             }
             else {
                 // skip - do not store or index
                 continue;
             }
 
-            doc.add(new Field(name, String.valueOf(value), store,
-                    tokenize));
+            doc.add(new Field(key, String.valueOf(value), store, tokenize));
         }
         return doc;
     }

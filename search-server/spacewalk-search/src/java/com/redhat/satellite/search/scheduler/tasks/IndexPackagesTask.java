@@ -41,22 +41,19 @@ import java.util.Map;
 
 /**
  * Task to index package information
- *
- * @version $Rev$
  */
 public class IndexPackagesTask implements Job {
 
-    private static Logger log = LogManager.getLogger(IndexPackagesTask.class);
-    private String lang = "en";
+    private static final Logger LOG = LogManager.getLogger(IndexPackagesTask.class);
+    private static final String LANG = "en";
+
     /**
      * {@inheritDoc}
      */
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         JobDataMap jobData = ctx.getJobDetail().getJobDataMap();
-        DatabaseManager databaseManager =
-            (DatabaseManager)jobData.get("databaseManager");
-        IndexManager indexManager =
-            (IndexManager)jobData.get("indexManager");
+        DatabaseManager databaseManager = (DatabaseManager)jobData.get("databaseManager");
+        IndexManager indexManager = (IndexManager)jobData.get("indexManager");
 
         try {
             if (System.getProperties().get("isTesting") != null) {
@@ -64,7 +61,7 @@ public class IndexPackagesTask implements Job {
             }
             List<RhnPackage> packages = getPackages(databaseManager);
             int count = 0;
-            log.info("found [" + packages.size() + "] packages to index");
+            LOG.info("found [{}] packages to index", packages.size());
             for (Iterator<RhnPackage> iter = packages.iterator(); iter.hasNext();) {
                 RhnPackage current = iter.next();
                 indexPackage(indexManager, current);
@@ -81,9 +78,9 @@ public class IndexPackagesTask implements Job {
             throw new JobExecutionException(e);
         }
         catch (IndexingException e) {
-            log.debug(e);
+            LOG.debug(e);
             if (e.getMessage().contains("LockObtainFailedException: Lock obtain timed out")) {
-                log.info("Indexer already running. Skipping");
+                LOG.info("Indexer already running. Skipping");
                 return;
             }
             throw new JobExecutionException(e);
@@ -97,13 +94,15 @@ public class IndexPackagesTask implements Job {
             query.delete(null);
         }
         finally {
-            query.close();
+            if (query != null) {
+                query.close();
+            }
         }
     }
 
     private void indexPackage(IndexManager indexManager, RhnPackage pkg)
             throws IndexingException {
-        Map<String, String> attrs = new HashMap<String, String>();
+        Map<String, String> attrs = new HashMap<>();
         attrs.put("name", pkg.getName());
         attrs.put("version", pkg.getVersion());
         attrs.put("release", pkg.getRelease());
@@ -111,10 +110,10 @@ public class IndexPackagesTask implements Job {
         attrs.put("description", pkg.getDescription());
         attrs.put("summary", pkg.getSummary());
         attrs.put("arch", pkg.getArch());
-        log.info("Indexing package: " + pkg.getId() + ": " + attrs.toString());
+        LOG.info("Indexing package: {}: {}", pkg.getId(), attrs);
         DocumentBuilder pdb = BuilderFactory.getBuilder(BuilderFactory.PACKAGES_TYPE);
-        Document doc = pdb.buildDocument(new Long(pkg.getId()), attrs);
-        indexManager.addToIndex("package", doc, lang);
+        Document doc = pdb.buildDocument(pkg.getId(), attrs);
+        indexManager.addToIndex("package", doc, LANG);
     }
 
     private void updateLastPackageId(DatabaseManager databaseManager,
@@ -122,7 +121,7 @@ public class IndexPackagesTask implements Job {
         WriteQuery updateQuery = databaseManager.getWriterQuery("updateLastPackage");
         WriteQuery insertQuery = databaseManager.getWriterQuery("createLastPackage");
         try {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("id", packageId);
             params.put("last_modified", Calendar.getInstance().getTime());
             if (updateQuery.update(params) == 0) {
@@ -145,9 +144,9 @@ public class IndexPackagesTask implements Job {
 
     private List<RhnPackage> getPackages(DatabaseManager databaseManager)
             throws SQLException {
-        List<RhnPackage> retval = null;
+        List<RhnPackage> retval;
         Query<Long> query = databaseManager.getQuery("getLastPackageId");
-        Long packageId = null;
+        Long packageId;
         try {
             packageId = query.load();
         }
@@ -155,7 +154,7 @@ public class IndexPackagesTask implements Job {
             query.close();
         }
         if (packageId == null) {
-            packageId = new Long(0);
+            packageId = 0L;
         }
         Query<RhnPackage> pkgQuery = databaseManager.getQuery("listPackagesFromId");
         try {

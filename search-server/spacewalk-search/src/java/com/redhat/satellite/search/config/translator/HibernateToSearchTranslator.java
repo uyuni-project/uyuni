@@ -27,7 +27,7 @@ public class HibernateToSearchTranslator implements KeyTranslator {
      * {@inheritDoc}
      */
     public String translateKey(String key) {
-        return key.replaceAll("hibernate", "search");
+        return key.replace("hibernate", "search");
     }
 
     /**

@@ -33,12 +33,12 @@ import junit.framework.TestCase;
 public class ErrataDocumentBuilderTest extends TestCase {
 
     public void testBuildDocument() {
-        Map<String,String> metadata = new HashMap<String,String>();
-        metadata.put("id", new Long(10).toString());
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("id", Long.toString(10));
         metadata.put("advisory", "Advisory");
         metadata.put("advisoryType", "AdvisoryType");
         metadata.put("advisoryName", "AdvisoryName");
-        metadata.put("advisoryRel", new Long(100).toString());
+        metadata.put("advisoryRel", Long.toString(100));
         metadata.put("product", "Product");
         metadata.put("description", "Description");
         metadata.put("synopsis", "Synopsis");
@@ -51,19 +51,19 @@ public class ErrataDocumentBuilderTest extends TestCase {
         metadata.put("created", "Created");
         metadata.put("modified", "Modified");
         metadata.put("lastModified", "LastModified");
-        metadata.put("severityId", new Long(1).toString());
+        metadata.put("severityId", Long.toString(1));
         metadata.put("name", "Advisory");
 
         DocumentBuilder db = BuilderFactory.getBuilder(BuilderFactory.ERRATA_TYPE);
         assertTrue(db instanceof ErrataDocumentBuilder);
-        Document doc = db.buildDocument(new Long(10), metadata);
+        Document doc = db.buildDocument(10L, metadata);
 
         assertNotNull(doc);
-        assertEquals(doc.getField("id").stringValue(), new Long(10).toString());
+        assertEquals(doc.getField("id").stringValue(), Long.toString(10));
         assertEquals(doc.getField("advisory").stringValue(), "Advisory");
         assertEquals(doc.getField("advisoryType").stringValue(), "AdvisoryType");
         assertEquals(doc.getField("advisoryName").stringValue(), "AdvisoryName");
-        assertEquals(doc.getField("advisoryRel").stringValue(), new Long(100).toString());
+        assertEquals(doc.getField("advisoryRel").stringValue(), Long.toString(100));
         assertEquals(doc.getField("product").stringValue(), "Product");
         assertEquals(doc.getField("description").stringValue(), "Description");
         assertEquals(doc.getField("synopsis").stringValue(), "Synopsis");
@@ -76,7 +76,7 @@ public class ErrataDocumentBuilderTest extends TestCase {
         assertEquals(doc.getField("created").stringValue(), "Created");
         assertEquals(doc.getField("modified").stringValue(), "Modified");
         assertEquals(doc.getField("lastModified").stringValue(), "LastModified");
-        assertEquals(doc.getField("severityId").stringValue(), new Long(1).toString());
+        assertEquals(doc.getField("severityId").stringValue(), Long.toString(1));
         assertEquals(doc.getField("name").stringValue(), "Advisory");
     }
 }

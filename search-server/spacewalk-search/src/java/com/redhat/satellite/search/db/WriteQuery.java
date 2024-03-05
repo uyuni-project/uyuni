@@ -21,13 +21,11 @@ import java.sql.SQLException;
 
 /**
  * Query for writing (insert, update, delete) to a database
- *
- * @version $Rev$
  */
 public class WriteQuery {
 
-    private SqlSession session;
-    private String queryName;
+    private final SqlSession session;
+    private final String queryName;
 
     WriteQuery(SqlSession sessionIn, String queryNameIn) {
         session = sessionIn;

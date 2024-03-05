@@ -39,7 +39,7 @@ public class TestUtil {
 
     @SuppressWarnings("unchecked")
     public static Class[] buildComponentsList(Class[] components) {
-        List<Class>accum = new ArrayList<Class>();
+        List<Class> accum = new ArrayList<Class>();
         for (int x = 0; x < components.length; x++) {
             processComponent(components[x], accum);
         }

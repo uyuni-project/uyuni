@@ -17,7 +17,6 @@ package com.redhat.satellite.search.db.models;
 
 /**
  * Errata
- * @version $Rev$
  */
 public class Errata {
     private long id;
@@ -43,10 +42,9 @@ public class Errata {
      * @return string representation of the errata
      */
     public String toString() {
-        StringBuffer text = new StringBuffer("Errata<" + id + ", " + product + ">: ");
-        text.append(advisoryType + ", " + advisoryName + ", " + advisory);
-        text.append(", " + topic + ", " + synopsis);
-        return text.toString();
+        return "Errata<" + id + ", " + product + ">: " +
+                advisoryType + ", " + advisoryName + ", " + advisory +
+                ", " + topic + ", " + synopsis;
     }
 
     /**

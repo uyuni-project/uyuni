@@ -16,7 +16,6 @@ package com.redhat.satellite.search.db.models;
 
 /**
  * XccdfIdent
- * @version $Rev$
  */
 public class XccdfIdent extends GenericRecord {
 

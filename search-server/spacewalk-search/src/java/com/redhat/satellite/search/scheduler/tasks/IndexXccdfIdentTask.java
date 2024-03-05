@@ -18,29 +18,22 @@ import com.redhat.satellite.search.db.models.GenericRecord;
 import com.redhat.satellite.search.db.models.XccdfIdent;
 import com.redhat.satellite.search.index.builder.BuilderFactory;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * IndexXccdfIdentTask
- * @version $Rev$
  */
 public class IndexXccdfIdentTask extends GenericIndexTask {
-
-    private static Logger log = LogManager.getLogger(IndexXccdfIdentTask.class);
 
     /**
      *  {@inheritDoc}
      */
     @Override
-    protected Map<String, String> getFieldMap(GenericRecord data)
-            throws ClassCastException {
+    protected Map<String, String> getFieldMap(GenericRecord data) throws ClassCastException {
         XccdfIdent dev = (XccdfIdent)data;
-        Map<String, String> attrs = new HashMap<String, String>();
-        attrs.put("id", new Long(dev.getId()).toString());
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("id", Long.toString(dev.getId()));
         attrs.put("identifier", dev.getIdentifier());
         return attrs;
     }

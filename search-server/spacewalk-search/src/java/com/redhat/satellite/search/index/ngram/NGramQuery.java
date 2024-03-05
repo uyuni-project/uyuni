@@ -18,11 +18,11 @@ package com.redhat.satellite.search.index.ngram;
 
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.index.Term;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -30,19 +30,20 @@ import java.io.StringReader;
 /**
  * NGramQuery
  * A custom BooleanQuery, it takes each ngram-token and adds as an OR term.
- * @version $Rev$
  */
 public class NGramQuery extends BooleanQuery {
 
    private static final long serialVersionUID = 1L;
 
    /**
-     * Constructor
-     * @param field name of the field
-     * @param queryTerms String containing a term or a series of terms to search.
-     * The string will be parsed and will be broken up into a series of NGrams.
-     * @throws IOException something went wrong parsing queryTerms
-     * */
+    * Constructor
+    * @param field name of the field
+    * @param queryTerms String containing a term or a series of terms to search.
+    * The string will be parsed and will be broken up into a series of NGrams.
+    * @param min min
+    * @param max max
+    * @throws IOException something went wrong parsing queryTerms
+    */
     public NGramQuery(String field, String queryTerms, int min, int max)
         throws IOException {
         NGramAnalyzer nga = new NGramAnalyzer(min, max);
@@ -64,12 +65,12 @@ public class NGramQuery extends BooleanQuery {
      */
     public NGramQuery(PhraseQuery pq, boolean useMust) {
         Term[] terms = pq.getTerms();
-        for (int i = 0; i < terms.length; i++) {
+        for (Term term : terms) {
             BooleanClause.Occur occur = BooleanClause.Occur.SHOULD;
             if (useMust) {
                 occur = BooleanClause.Occur.MUST;
             }
-            add(new TermQuery(terms[i]), occur);
+            add(new TermQuery(term), occur);
         }
     }
 

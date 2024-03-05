@@ -14,15 +14,14 @@
  */
 package com.redhat.satellite.search.db.models;
 
-import java.util.Date;
-
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.NumberTools;
+
+import java.util.Date;
 
 
 /**
  * Server
- * @version $Rev$
  */
 public class Server extends GenericRecord {
 
@@ -415,8 +414,7 @@ public class Server extends GenericRecord {
      */
     public void setCpuBogoMIPS(String cpuBogoMIPSIn) {
         if (cpuBogoMIPSIn != null) {
-            Float f = Float.parseFloat(cpuBogoMIPSIn);
-            this.cpuBogoMIPS = NumberTools.longToString(f.longValue());
+            this.cpuBogoMIPS = NumberTools.longToString(Math.round(Float.parseFloat(cpuBogoMIPSIn)));
         }
         else {
             this.cpuBogoMIPS = null;
@@ -463,7 +461,7 @@ public class Server extends GenericRecord {
      */
     public void setCpuMHz(String cpuMHzIn) {
         if (cpuMHzIn != null) {
-            this.cpuMHz = NumberTools.longToString(Math.round(Double.valueOf(cpuMHzIn)));
+            this.cpuMHz = NumberTools.longToString(Math.round(Double.parseDouble(cpuMHzIn)));
         }
         else {
             this.cpuMHz = null;
@@ -705,12 +703,7 @@ public class Server extends GenericRecord {
      * @param runningKernelIn the runningKernel to set
      */
     public void setRunningKernel(String runningKernelIn) {
-        if (runningKernelIn != null) {
-            this.runningKernel = runningKernelIn;
-        }
-        else {
-            this.runningKernel = null;
-        }
+        this.runningKernel = runningKernelIn;
     }
 
     /**
@@ -724,11 +717,6 @@ public class Server extends GenericRecord {
      * @param uuidIn the uuid to set
      */
     public void setUuid(String uuidIn) {
-        if (uuidIn != null) {
-            this.uuid = uuidIn;
-        }
-        else {
-            this.uuid = null;
-        }
+        this.uuid = uuidIn;
     }
 }

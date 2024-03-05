@@ -49,6 +49,7 @@ public class Result {
      * @param r rank
      * @param idIn package id
      * @param nameIn package name
+     * @param scoreIn the score
      */
     public Result(int r, String idIn, String nameIn, float scoreIn) {
         rank = r;
@@ -62,6 +63,7 @@ public class Result {
      * @param r rank
      * @param idIn package id
      * @param nameIn package name
+     * @param scoreIn the score
      * @param uuidIn uuid name
      */
     public Result(int r, String idIn, String nameIn, float scoreIn, String uuidIn) {

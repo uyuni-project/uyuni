@@ -14,20 +14,19 @@
  */
 package com.redhat.satellite.search.index.ngram;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.lucene.search.ConstantScoreRangeQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.NumberTools;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.ConstantScoreRangeQuery;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.Query;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * NGramQueryParser
@@ -37,7 +36,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class NGramQueryParser extends QueryParser {
 
-    private static Logger log = LogManager.getLogger(NGramQueryParser.class);
+    private static final Logger LOG = LogManager.getLogger(NGramQueryParser.class);
     private boolean useMust = false;
     /**
      * Constructor
@@ -81,14 +80,14 @@ public class NGramQueryParser extends QueryParser {
         useMust = value;
     }
 
-    protected Query getFieldQuery(String defaultField,
-            String queryText) throws ParseException {
+    @Override
+    protected Query getFieldQuery(String defaultField, String queryText) throws ParseException {
         Query orig = super.getFieldQuery(defaultField, queryText);
         if (!(orig instanceof PhraseQuery)) {
-            log.debug("Returning default query.  No phrase query translation.");
+            LOG.debug("Returning default query.  No phrase query translation.");
             return orig;
         }
-        /**
+        /*
          * A ngram when parsed will become a series of smaller search terms,
          * these terms are grouped together into a PhraseQuery.  We are taking
          * that PhraseQuery and breaking out each ngram term then combining all
@@ -100,15 +99,12 @@ public class NGramQueryParser extends QueryParser {
 
     /**
      *
-     * @param field
+     * @param field field
      * @return return   true if this looks to be a date string
      *                  false if this is not a date string
      */
     protected boolean isDate(String field) {
-        if (field.length() == 12) {
-            return true;
-        }
-        return false;
+        return field.length() == 12;
     }
     /**
      * This will look to see if "part1" or "part2" are strings of all digits,
@@ -118,15 +114,15 @@ public class NGramQueryParser extends QueryParser {
      * If the strings don't fit the pattern of all digits, then they get passed through
      * to the inherited getRangeQuery().
      */
+    @Override
     protected Query getRangeQuery(String field,
             String part1,
             String part2,
             boolean inclusive) throws ParseException {
         if (isDate(part1) && isDate(part2)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Detected passed in terms are dates, creating " +
-                    "ConstantScoreRangeQuery(" + field + ", " + part1 + ", " +
-                    part2 + ", " + inclusive + ", " + inclusive);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Detected passed in terms are dates, creating ConstantScoreRangeQuery({}, {}, {}, {}, {})",
+                        field, part1, part2, inclusive, inclusive);
             }
             return new ConstantScoreRangeQuery(field, part1, part2, inclusive,
                     inclusive);
@@ -140,9 +136,9 @@ public class NGramQueryParser extends QueryParser {
         if (matcher1.matches() && matcher2.matches()) {
             newPart1 = NumberTools.longToString(Long.parseLong(part1));
             newPart2 = NumberTools.longToString(Long.parseLong(part2));
-            if (log.isDebugEnabled()) {
-                log.debug("NGramQueryParser.getRangeQuery() Converted " + part1 + " to " +
-                    newPart1 + ", Converted " + part2 + " to " + newPart2);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("NGramQueryParser.getRangeQuery() Converted {} to {}, Converted {} to {}",
+                        part1, newPart1, part2, newPart2);
             }
         }
         return super.getRangeQuery(field, newPart1, newPart2, inclusive);

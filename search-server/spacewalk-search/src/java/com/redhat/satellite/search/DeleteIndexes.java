@@ -15,48 +15,54 @@
 
 package com.redhat.satellite.search;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import com.redhat.satellite.search.config.Configuration;
+import com.redhat.satellite.search.db.DatabaseManager;
+import com.redhat.satellite.search.db.WriteQuery;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.redhat.satellite.search.db.DatabaseManager;
-import com.redhat.satellite.search.db.WriteQuery;
-import com.redhat.satellite.search.config.Configuration;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 /**
  * Reindex - cleans up indexes on filesystem and database so reindexing will occur
- * @version $Rev: 1 $
  */
 public class DeleteIndexes {
-    private static Logger log = LogManager.getLogger(DeleteIndexes.class);
+    private static final Logger LOG = LogManager.getLogger(DeleteIndexes.class);
 
     private DeleteIndexes() {
     }
 
     protected static boolean deleteDirectory(File dir) {
-        File[] files = dir.listFiles();
         boolean warning = true;
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory()) {
-                deleteDirectory(files[i]);
+        File[] files = Optional.ofNullable(dir.listFiles()).orElse(ArrayUtils.toArray());
+        for (File file : files) {
+            if (file.isDirectory()) {
+                deleteDirectory(file);
             }
-            if (files[i].delete()) {
-                log.debug("Deleted: " + files[i].getAbsolutePath());
+            try {
+                Files.delete(file.toPath());
+                LOG.debug("Deleted: {}", file.getAbsolutePath());
             }
-            else {
-                log.warn("*ERROR* unable to delete: " + files[i].getAbsolutePath());
+            catch (IOException e) {
+                LOG.warn("*ERROR* unable to delete: {}: {}", file.getAbsolutePath(), e);
                 warning = false;
             }
         }
-        if (!dir.delete()) {
-            log.warn("*ERROR* unable to delete: " + dir.getAbsolutePath());
+        try {
+            Files.delete(dir.toPath());
+        }
+        catch (IOException e) {
+            LOG.warn("*ERROR* unable to delete: {}: {}", dir.getAbsolutePath(), e);
             warning = false;
         }
         return warning;
@@ -65,32 +71,31 @@ public class DeleteIndexes {
     protected static boolean deleteIndexPath(String path) {
         File dir = new File(path);
         if ("/".equals(dir.getAbsolutePath())) {
-            log.warn("Error, passed in path is <" + path + "> this looks wrong");
+            LOG.warn("Error, passed in path is <{}> this looks wrong", path);
             return false;
         }
         if (!dir.exists()) {
-            log.debug("Path <" + dir.getAbsolutePath() + "> doesn't exist");
+            LOG.debug("Path <{}> doesn't exist", dir.getAbsolutePath());
             return true;  // dir doesn't exist, so just as good as deleted
         }
         if (!dir.isDirectory()) {
-            log.warn("Error, passed in path <" + path + "> is not a directory");
+            LOG.warn("Error, passed in path <{}> is not a directory", path);
             return false;
         }
-        log.info("Attempting to delete " + dir.getAbsolutePath());
+        LOG.info("Attempting to delete {}", dir.getAbsolutePath());
         return deleteDirectory(dir);
     }
 
     protected static void deleteQuery(DatabaseManager databaseManager,
-            String queryName) throws SQLException {
-        WriteQuery query = null;
-        log.info("Running query: " + queryName);
-        query = databaseManager.getWriterQuery(queryName);
+                                      String queryName) throws SQLException {
+        LOG.info("Running query: {}", queryName);
+        WriteQuery query = databaseManager.getWriterQuery(queryName);
         query.delete(null);
         query.close();
     }
 
     /**
-     * @param args
+     * @param args Args
      */
     public static void main(String[] args) {
         try {
@@ -98,11 +103,11 @@ public class DeleteIndexes {
             DatabaseManager databaseManager = new DatabaseManager(config);
             String indexWorkDir = config.getString("search.index_work_dir", null);
             if (StringUtils.isBlank(indexWorkDir)) {
-                log.warn("Couldn't find path for where index files are stored.");
-                log.warn("Looked in config for property: search.index_work_dir");
+                LOG.warn("Couldn't find path for where index files are stored.");
+                LOG.warn("Looked in config for property: search.index_work_dir");
                 return;
             }
-            List<IndexInfo> indexes = new ArrayList<IndexInfo>();
+            List<IndexInfo> indexes = new ArrayList<>();
             indexes.add(new IndexInfo("deleteLastErrata",
                     indexWorkDir + File.separator + "errata"));
             indexes.add(new IndexInfo("deleteLastPackage",
@@ -120,24 +125,23 @@ public class DeleteIndexes {
             for (IndexInfo info : indexes) {
                 deleteQuery(databaseManager, info.getQueryName());
                 if (!deleteIndexPath(info.getDirPath())) {
-                    log.warn("Failed to delete index for " + info.getDirPath());
+                    LOG.warn("Failed to delete index for {}", info.getDirPath());
                 }
             }
         }
         catch (SQLException e) {
-            log.error("Caught Exception: ", e);
+            LOG.error("Caught Exception: ", e);
             if (e.getErrorCode() == 17002) {
-                log.error("Unable to establish database connection.");
-                log.error("Ensure database is available and connection details are " +
-                        "correct, then retry");
+                LOG.error("Unable to establish database connection.");
+                LOG.error("Ensure database is available and connection details are correct, then retry");
             }
             System.exit(1);
         }
         catch (IOException e) {
-            log.error("Caught Exception: ", e);
+            LOG.error("Caught Exception: ", e);
             System.exit(1);
         }
-        log.info("Index files have been deleted and database has been cleaned up, " +
+        LOG.info("Index files have been deleted and database has been cleaned up, " +
             "ready to reindex");
     }
 
@@ -166,8 +170,7 @@ public class DeleteIndexes {
             queryName = queryNameIn;
         }
         /**
-         * Returns the query name
-         * @return
+         * @return the query name
          */
         public String getQueryName() {
             return queryName;

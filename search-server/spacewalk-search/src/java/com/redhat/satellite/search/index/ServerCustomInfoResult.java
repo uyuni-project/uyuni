@@ -19,7 +19,6 @@ import org.apache.lucene.document.Document;
 
 /**
  * ServerCustomInfoResult
- * @version $Rev$
  */
 public class ServerCustomInfoResult extends Result {
     private String serverId;
@@ -81,6 +80,4 @@ public class ServerCustomInfoResult extends Result {
     public void setValue(String valueIn) {
         this.value = valueIn;
     }
-
-
 }

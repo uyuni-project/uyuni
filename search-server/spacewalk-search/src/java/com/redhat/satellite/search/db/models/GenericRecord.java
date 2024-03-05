@@ -16,7 +16,6 @@ package com.redhat.satellite.search.db.models;
 
 /**
  * Server
- * @version $Rev$
  */
 public abstract class GenericRecord {
     protected long id = 0;

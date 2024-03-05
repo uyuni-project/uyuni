@@ -17,7 +17,6 @@ package com.redhat.satellite.search.db.models;
 
 /**
  * ServerCustomInfo
- * @version $Rev$
  */
 public class ServerCustomInfo extends GenericRecord {
     private long keyId;
@@ -36,13 +35,14 @@ public class ServerCustomInfo extends GenericRecord {
      * @return long based on server id and key id
      */
     public static long makeUniqId(long serverIdIn, long keyIdIn) {
-        return new Long("" + serverIdIn + keyIdIn);
+        return serverIdIn + keyIdIn;
     }
 
     /**
      *
      * @return unique id for a server/custom info key pair
      */
+    @Override
     public long getId() {
         return makeUniqId(serverId, keyId);
     }

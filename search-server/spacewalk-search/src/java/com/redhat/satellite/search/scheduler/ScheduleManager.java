@@ -34,6 +34,7 @@ import com.redhat.satellite.search.scheduler.tasks.IndexXccdfIdentTask;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.picocontainer.Startable;
+import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.Scheduler;
@@ -49,16 +50,14 @@ import java.util.Date;
  * Manages all scheduled tasks for the search server
  * Right now all tasks are hardcoded -- this should be
  * changed to be more config file driven
- *
- * @version $Rev $
  */
 public class ScheduleManager implements Startable {
-    private static Logger log = LogManager.getLogger(ScheduleManager.class);
-    private Scheduler scheduler;
-    private DatabaseManager databaseManager;
-    private IndexManager indexManager;
+    private static final Logger LOG = LogManager.getLogger(ScheduleManager.class);
+    private final Scheduler scheduler;
+    private final DatabaseManager databaseManager;
+    private final IndexManager indexManager;
 
-    private final String updateIndexGroupName = "updateIndex";
+    private static final String UPDATE_INDEX_GROUP_NAME = "updateIndex";
     /**
      * Constructor
      * @param dbmgr allows ScheduleManager to access the database.
@@ -76,20 +75,18 @@ public class ScheduleManager implements Startable {
     }
 
 
-    private void scheduleJob(Scheduler sched, String name,
-            int mode, long interval, Class task, JobDataMap data)
-        throws SchedulerException {
+    private void scheduleJob(Scheduler sched, String name, int mode, long interval,
+                             Class<? extends Job> task, JobDataMap data) throws SchedulerException {
 
-        Trigger t = createTrigger(name, updateIndexGroupName, mode, interval);
+        Trigger t = createTrigger(name, UPDATE_INDEX_GROUP_NAME, mode, interval);
 
-        JobBuilder d = newJob(task).withIdentity(name, updateIndexGroupName);
+        JobBuilder d = newJob(task).withIdentity(name, UPDATE_INDEX_GROUP_NAME);
         d.usingJobData(data);
 
         sched.scheduleJob(d.build(), t);
     }
 
-    private Trigger createTrigger(String name, String group, int mode,
-            long interval) {
+    private Trigger createTrigger(String name, String group, int mode, long interval) {
 
         SimpleTrigger trigger = newTrigger()
                 .withIdentity(name, "default")
@@ -106,7 +103,7 @@ public class ScheduleManager implements Startable {
             return mtrigger;
         }
         else {
-            log.error("Cannot set MisfireInstruction since trigger is not instance of MutableTrigger: " + trigger);
+            LOG.error("Cannot set MisfireInstruction since trigger is not instance of MutableTrigger: {}", trigger);
         }
         return trigger;
     }
@@ -120,7 +117,7 @@ public class ScheduleManager implements Startable {
             Configuration config = new Configuration();
 
             long interval = config.getInt("search.schedule.interval", 300000);
-            log.info("ScheduleManager task interval is set to " + interval);
+            LOG.info("ScheduleManager task interval is set to {}", interval);
             int mode = SimpleTrigger.REPEAT_INDEFINITELY;
             if (System.getProperties().get("isTesting") != null) {
                 interval = 100;
@@ -190,7 +187,7 @@ public class ScheduleManager implements Startable {
              BuilderFactory.XCCDF_IDENT_TYPE.equals(indexName)) {
             return true;
         }
-        log.info("Unknown index: " + indexName);
+        LOG.info("Unknown index: {}", indexName);
         return false;
     }
 
@@ -199,28 +196,28 @@ public class ScheduleManager implements Startable {
      * Note: Only one trigger per indexName is allowed, if subsequent calls
      * are made before the current trigger finishes completion, this request
      * will be dropped.
-     * @param indexName
-     * @return
+     * @param indexName index name
+     * @return true when successful
      */
     public boolean triggerIndexTask(String indexName) {
         if (!isSupported(indexName)) {
-            log.info(indexName + " is not a supported for scheduler modifications.");
+            LOG.info("{} is not a supported for scheduler modifications.", indexName);
             return false;
         }
         // Define a Trigger that will fire "now" and associate it with the existing job
         Trigger trigger = newTrigger()
                 .withIdentity("immediateTrigger-" + indexName, "group1")
                 .startAt(new Date())
-                .forJob(indexName, updateIndexGroupName)
+                .forJob(indexName, UPDATE_INDEX_GROUP_NAME)
                 .build();
         try {
             // Schedule the trigger
-            log.info("Scheduling trigger: " + trigger);
+            LOG.info("Scheduling trigger: {}", trigger);
             scheduler.scheduleJob(trigger);
         }
         catch (SchedulerException e) {
-            log.warn("Scheduling trigger: " + trigger + " failed.");
-            log.warn("Exception was caught: ",  e);
+            LOG.warn("Scheduling trigger: {} failed", trigger);
+            LOG.warn("Exception was caught: ",  e);
             return false;
         }
         return true;

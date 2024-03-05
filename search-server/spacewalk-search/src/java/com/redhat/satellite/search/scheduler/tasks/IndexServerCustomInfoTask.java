@@ -23,8 +23,6 @@ import java.util.Map;
 
 /**
  * IndexServerCustomInfoTask
- * @version $Rev$
- *
  */
 public class IndexServerCustomInfoTask extends GenericIndexTask {
 
@@ -32,12 +30,11 @@ public class IndexServerCustomInfoTask extends GenericIndexTask {
      *  {@inheritDoc}
      */
     @Override
-    protected Map<String, String> getFieldMap(GenericRecord data)
-            throws ClassCastException {
+    protected Map<String, String> getFieldMap(GenericRecord data) throws ClassCastException {
         ServerCustomInfo scInfo = (ServerCustomInfo)data;
-        Map<String, String> attrs = new HashMap<String, String>();
-        attrs.put("id", new Long(scInfo.getId()).toString());
-        attrs.put("serverId", new Long(scInfo.getServerId()).toString());
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("id", Long.toString(scInfo.getId()));
+        attrs.put("serverId", Long.toString(scInfo.getServerId()));
         attrs.put("value", scInfo.getValue());
         attrs.put("label", scInfo.getLabel());
         if (scInfo.getCreatedBy() != null) {

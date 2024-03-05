@@ -24,13 +24,11 @@ import java.util.List;
 /**
  * Named Select query
  * @param <T> type returned by query
- *
- * @version $Rev$
  */
 public class Query<T> {
 
-    private SqlSession session;
-    private String queryName;
+    private final SqlSession session;
+    private final String queryName;
 
     Query(SqlSession sessionIn, String queryNameIn) {
         session = sessionIn;
@@ -54,13 +52,11 @@ public class Query<T> {
      * Load list of objects from query
      * @param param query param
      * @return list of T
-     * @throws SQLException something bad happened
      */
     @SuppressWarnings("unchecked")
-    public List<T> loadList(Object param) throws SQLException {
-        List r = session.selectList(queryName, param);
-        List<Object> results = r;
-        List<T> retval = new ArrayList<T>(results.size());
+    public List<T> loadList(Object param) {
+        List<Object> results = session.selectList(queryName, param);
+        List<T> retval = new ArrayList<>(results.size());
         for (Object item : results) {
             retval.add((T)item);
         }
@@ -71,20 +67,16 @@ public class Query<T> {
      * Load single object from query
      * @param param query apram
      * @return T
-     * @throws SQLException something bad happened
      */
-    @SuppressWarnings("unchecked")
-    public T load(Object param) throws SQLException {
-        return (T)session.selectOne(queryName, param);
+    public T load(Object param) {
+        return session.selectOne(queryName, param);
     }
 
     /**
      * Load single object from query
      * @return T
-     * @throws SQLException something bad happened
      */
-    @SuppressWarnings("unchecked")
-    public T load() throws SQLException {
-        return (T)session.selectOne(queryName);
+    public T load() {
+        return session.selectOne(queryName);
     }
 }

@@ -30,10 +30,9 @@ import java.util.StringTokenizer;
 /**
  * Purpose of this class is to guess what field in the Document is responsible
  * for this being flagged as a hit.  We will use the query and terms as hints.
- * @version $Rev$
  */
 public class MatchingField {
-    private static Logger log = LogManager.getLogger(IndexManager.class);
+    private static final Logger LOG = LogManager.getLogger(MatchingField.class);
     protected Document doc;
     protected Object[] terms;
     protected String query;
@@ -54,10 +53,9 @@ public class MatchingField {
         else {
             terms = new Term[0];
         }
-        needNumberToolsAdjust = new HashMap<String, Boolean>();
+        needNumberToolsAdjust = new HashMap<>();
         needNumberToolsAdjust.put("cpuMHz", true);
         needNumberToolsAdjust.put("cpuBogoMIPS", true);
-        needNumberToolsAdjust.put("cpuMHz", true);
         needNumberToolsAdjust.put("cpuNumberOfCpus", true);
         needNumberToolsAdjust.put("ram", true);
         needNumberToolsAdjust.put("swap", true);
@@ -82,28 +80,28 @@ public class MatchingField {
         String fieldName = getFieldName();
         Field f = doc.getField(fieldName);
         if (f == null) {
-            StringBuffer sb = new StringBuffer();
-            sb.append("[length=" + terms.length + ";  ");
+            StringBuilder sb = new StringBuilder();
+            sb.append("[length=").append(terms.length).append(";  ");
             for (Object o : terms) {
-                sb.append(o + ", ");
+                sb.append(o).append(", ");
             }
             sb.append("]");
-            log.info("Unable to get matchingFieldValue for field : " + fieldName +
-                    " with query: " + query + ", and terms = " + sb.toString());
-            log.info("Document = " + doc);
+            LOG.info("Unable to get matchingFieldValue for field : {} with query: {}, and terms = {}",
+                    fieldName, query, sb);
+            LOG.info("Document = {}", doc);
             return "";
         }
         String value = f.stringValue();
         if (needNumberToolsAdjust.containsKey(fieldName)) {
-            Long temp = NumberTools.stringToLong(value);
-            value = temp.toString();
+            long temp = NumberTools.stringToLong(value);
+            value = Long.toString(temp);
         }
         return value;
     }
 
     /**
      *
-     * @param queryIn
+     * @param queryIn the query
      * @return first term in query, which is a good guess as to being the most
      * important term in the query.
      *

@@ -17,13 +17,11 @@ package com.redhat.satellite.search.index.builder;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-import java.util.Iterator;
 import java.util.Map;
 
 
 /**
  * HardwareDeviceDocumentBuilder
- * @version $Rev$
  */
 public class HardwareDeviceDocumentBuilder implements DocumentBuilder {
 
@@ -32,26 +30,20 @@ public class HardwareDeviceDocumentBuilder implements DocumentBuilder {
      */
     public Document buildDocument(Long objId, Map<String, String> metadata) {
         Document doc = new Document();
-        doc.add(new Field("id", objId.toString(), Field.Store.YES,
-                Field.Index.UN_TOKENIZED));
+        doc.add(new Field("id", objId.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
 
-        for (Iterator<String> iter = metadata.keySet().iterator(); iter.hasNext();) {
-            Field.Store store = Field.Store.YES;
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
             Field.Index tokenize = Field.Index.TOKENIZED;
 
-            String name = iter.next();
-            String value = metadata.get(name);
+            String key = entry.getKey();
+            String value = entry.getValue();
 
-            if (name.equals("name") || (name.equals("description"))) {
-                store = Field.Store.YES;
+            if (key.equals("serverId")) {
+               tokenize = Field.Index.UN_TOKENIZED;
             }
-            else if (name.equals("serverId")) {
-                store = Field.Store.YES;
-                tokenize = Field.Index.UN_TOKENIZED;
-            }
+            // else key.equals("name") || (key.equals("description")
 
-            doc.add(new Field(name, String.valueOf(value), store,
-                    tokenize));
+            doc.add(new Field(key, String.valueOf(value), Field.Store.YES, tokenize));
         }
         return doc;
     }

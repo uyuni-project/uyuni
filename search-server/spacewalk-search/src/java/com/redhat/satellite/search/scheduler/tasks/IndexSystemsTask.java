@@ -20,7 +20,6 @@ import com.redhat.satellite.search.db.models.Server;
 import com.redhat.satellite.search.index.builder.BuilderFactory;
 
 import java.util.HashMap;
-
 import java.util.Map;
 
 
@@ -31,20 +30,18 @@ import java.util.Map;
 
 /**
  * IndexSystemsTask
- * @version $Rev$
  */
 public class IndexSystemsTask extends GenericIndexTask {
     /**
      *  {@inheritDoc}
      */
     @Override
-    protected Map<String, String> getFieldMap(GenericRecord data)
-            throws ClassCastException {
+    protected Map<String, String> getFieldMap(GenericRecord data) throws ClassCastException {
         Server srvr = (Server)data;
 
-        Map<String, String> attrs = new HashMap<String, String>();
-        attrs.put("id", new Long(srvr.getId()).toString());
-        attrs.put("system_id", new Long(srvr.getId()).toString());
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("id", Long.toString(srvr.getId()));
+        attrs.put("system_id", Long.toString(srvr.getId()));
         attrs.put("name", srvr.getName());
         attrs.put("description", srvr.getDescription());
         attrs.put("info", srvr.getInfo());
@@ -79,7 +76,7 @@ public class IndexSystemsTask extends GenericIndexTask {
         attrs.put("cpuVersion", srvr.getCpuVersion());
         attrs.put("cpuVendor", srvr.getCpuVendor());
         if (srvr.getCpuNumberOfCpus() != null) {
-            attrs.put("cpuNumberOfCpus", srvr.getCpuNumberOfCpus().toString());
+            attrs.put("cpuNumberOfCpus", srvr.getCpuNumberOfCpus());
         }
         attrs.put("cpuAcpiVersion", srvr.getCpuAcpiVersion());
         attrs.put("cpuApic", srvr.getCpuApic());

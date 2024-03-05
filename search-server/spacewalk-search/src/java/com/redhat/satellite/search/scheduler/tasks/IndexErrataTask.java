@@ -41,17 +41,16 @@ import java.util.Map;
 
 /**
  * IndexErrataTask
- * @version $Rev$
  */
 public class IndexErrataTask implements Job {
 
-    private static Logger log = LogManager.getLogger(IndexErrataTask.class);
-    private String lang = "en";
+    private static final Logger LOG = LogManager.getLogger(IndexErrataTask.class);
+    private static final String LANG = "en";
+
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext ctx)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext ctx) throws JobExecutionException {
         JobDataMap jobData = ctx.getJobDetail().getJobDataMap();
         DatabaseManager databaseManager =
             (DatabaseManager)jobData.get("databaseManager");
@@ -62,7 +61,7 @@ public class IndexErrataTask implements Job {
 
             List<Errata> errata = getErrata(databaseManager);
             int count = 0;
-            log.info("found [" + errata.size() + "] errata to index");
+            LOG.info("found [{}] errata to index", errata.size());
             for (Iterator<Errata> iter = errata.iterator(); iter.hasNext();) {
                 Errata current = iter.next();
                 indexErrata(indexManager, current);
@@ -79,17 +78,17 @@ public class IndexErrataTask implements Job {
             throw new JobExecutionException(e);
         }
         catch (IndexingException e) {
-            log.debug(e);
+            LOG.debug(e);
             if (e.getMessage().contains("LockObtainFailedException: Lock obtain timed out")) {
-                log.info("Indexer already running. Skipping");
+                LOG.info("Indexer already running. Skipping");
                 return;
             }
             throw new JobExecutionException(e);
         }
     }
     /**
-     * @param databaseManager
-     * @param sid
+     * @param databaseManager the database manager
+     * @param eid the errata id
      */
     private void updateLastErrataId(DatabaseManager databaseManager, long eid)
         throws SQLException {
@@ -98,7 +97,7 @@ public class IndexErrataTask implements Job {
         WriteQuery insertQuery = databaseManager.getWriterQuery("createLastErrata");
 
         try {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("id", eid);
             params.put("last_modified", Calendar.getInstance().getTime());
             if (updateQuery.update(params) == 0) {
@@ -120,18 +119,18 @@ public class IndexErrataTask implements Job {
     }
 
     /**
-     * @param indexManager
-     * @param current
+     * @param indexManager the index manager
+     * @param errata the errata
      */
     private void indexErrata(IndexManager indexManager, Errata errata)
         throws IndexingException {
 
-        Map<String, String> attrs = new HashMap<String, String>();
-        attrs.put("id", new Long(errata.getId()).toString());
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("id", Long.toString(errata.getId()));
         attrs.put("advisory", errata.getAdvisory());
         attrs.put("advisoryType", errata.getAdvisoryType());
         attrs.put("advisoryName", errata.getAdvisoryName());
-        attrs.put("advisoryRel", new Long(errata.getAdvisoryRel()).toString());
+        attrs.put("advisoryRel", Long.toString(errata.getAdvisoryRel()));
         attrs.put("product", errata.getProduct());
         attrs.put("description", errata.getDescription());
         attrs.put("synopsis", errata.getSynopsis());
@@ -146,22 +145,22 @@ public class IndexErrataTask implements Job {
         attrs.put("lastModified", errata.getLastModified());
         attrs.put("name", errata.getAdvisory());
 
-        log.info("Indexing errata: " + errata.getId() + ": " + attrs.toString());
+        LOG.info("Indexing errata: {}: {}", errata.getId(), attrs);
         DocumentBuilder edb = BuilderFactory.getBuilder(BuilderFactory.ERRATA_TYPE);
-        Document doc = edb.buildDocument(new Long(errata.getId()), attrs);
-        indexManager.addToIndex("errata", doc, lang);
+        Document doc = edb.buildDocument(errata.getId(), attrs);
+        indexManager.addToIndex("errata", doc, LANG);
     }
 
     /**
-     * @param databaseManager
-     * @return
+     * @param databaseManager the database manager
+     * @return list of errata
      */
     private List<Errata> getErrata(DatabaseManager databaseManager)
         throws SQLException {
 
-        List<Errata> retval = null;
+        List<Errata> retval;
         Query<Long> query = databaseManager.getQuery("getLastErrataId");
-        Long eid = null;
+        Long eid;
         try {
             eid = query.load();
         }
@@ -169,7 +168,7 @@ public class IndexErrataTask implements Job {
             query.close();
         }
         if (eid == null) {
-            eid = new Long(0);
+            eid = 0L;
         }
         Query<Errata> errataQuery = databaseManager.getQuery("listErrataFromId");
         try {
