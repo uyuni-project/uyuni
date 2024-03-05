@@ -38,7 +38,6 @@ proxy/installer/rhn-proxy-activate.py
 proxy/proxy/wsgi/xmlrpc.py
 proxy/proxy/wsgi/xmlrpc_redirect.py
 reporting/reports.py
-utils/apply_errata
 utils/cloneByDate.py
 utils/delete-old-systems-interactive
 utils/depsolver.py

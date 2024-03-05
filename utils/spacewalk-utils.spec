@@ -155,7 +155,6 @@ popd
 %files extras
 %defattr(-,root,root)
 %license COPYING.GPLv2 COPYING.GPLv3
-%attr(755,root,root) %{_bindir}/apply_errata
 %attr(755,root,root) %{_bindir}/delete-old-systems-interactive
 %attr(755,root,root) %{_bindir}/migrate-system-profile
 %attr(755,root,root) %{_bindir}/spacewalk-api
