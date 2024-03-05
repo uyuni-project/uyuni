@@ -569,7 +569,6 @@ mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 mkdir -p $RPM_BUILD_ROOT/%{_presetdir}
-install 50-spacewalk-client.preset $RPM_BUILD_ROOT/%{_presetdir}
 %endif
 
 %if 0%{?suse_version}
@@ -616,7 +615,6 @@ rm -f $RPM_BUILD_ROOT%{_bindir}/rhn_register
 
 # create mgr_check symlink
 ln -sf rhn_check $RPM_BUILD_ROOT/%{_sbindir}/mgr_check
-ln -sf spacewalk-update-status $RPM_BUILD_ROOT/%{_sbindir}/mgr-update-status
 
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
@@ -748,10 +746,6 @@ make -f Makefile.rhn-client-tools test
 
 %ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
 
-%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
-%{_presetdir}/50-spacewalk-client.preset
-%endif
-
 %if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root,-)
@@ -836,8 +830,6 @@ make -f Makefile.rhn-client-tools test
 %{_mandir}/man8/rhn_check.8*
 %{_sbindir}/rhn_check
 %{_sbindir}/mgr_check
-%{_sbindir}/spacewalk-update-status
-%{_sbindir}/mgr-update-status
 
 %if 0%{?build_py2}
 %files -n python2-spacewalk-check

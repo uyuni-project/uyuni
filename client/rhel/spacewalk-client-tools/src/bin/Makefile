@@ -25,7 +25,6 @@ install:: all $(DIRS)
 	$(INSTALL_BIN) rhn_register.py $(SBIN_DIR)/rhn_register-$(PYTHONVERSION)
 	$(INSTALL_BIN) rhn_check.py $(SBIN_DIR)/rhn_check-$(PYTHONVERSION)
 	$(INSTALL_BIN) spacewalk-channel.py $(SBIN_DIR)/spacewalk-channel-$(PYTHONVERSION)
-	$(INSTALL_BIN) spacewalk-update-status.py $(SBIN_DIR)/spacewalk-update-status
 
 # OTHER targets for internal use
 pychecker::
