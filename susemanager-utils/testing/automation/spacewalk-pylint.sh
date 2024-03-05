@@ -70,15 +70,6 @@ client/rhel/spacewalk-client-tools/src/actions/
 client/rhel/spacewalk-client-tools/src/bin/rhn_check.py
 client/rhel/spacewalk-client-tools/src/bin/rhn_register.py
 client/rhel/spacewalk-client-tools/src/bin/rhnreg_ks.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_choose_channel.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_choose_server_gui.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_create_profile_gui.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_finish_gui.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_login_gui.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_provide_certificate_gui.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_register.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_review_gui.py
-client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_start_gui.py
 client/rhel/spacewalk-client-tools/src/up2date_client/
 client/tools/spacewalk-client-cert/clientcert.py
 client/tools/mgr-cfg/actions/
