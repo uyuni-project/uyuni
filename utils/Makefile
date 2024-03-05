@@ -6,7 +6,7 @@ NAME := spacewalk-utils
 SUBDIR  = utils
 
 FILES	= __init__ systemSnapshot migrateSystemProfile depsolver cloneByDate
-SCRIPTS = sw-system-snapshot migrate-system-profile spacewalk-api apply_errata \
+SCRIPTS = sw-system-snapshot migrate-system-profile spacewalk-api \
 	  spacewalk-common-channels delete-old-systems-interactive spacewalk-hostname-rename \
 	  spacewalk-clone-by-date spacewalk-sync-setup spacewalk-manage-channel-lifecycle \
 	  spacewalk-export spacewalk-export-channels spacewalk-final-archive sw-ldap-user-sync \
