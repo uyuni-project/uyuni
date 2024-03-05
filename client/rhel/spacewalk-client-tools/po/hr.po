@@ -98,14 +98,6 @@ msgstr "Pogreška pri čitanju podataka o memoriji:"
 msgid "Error reading machine info:"
 msgstr "Pogreška pri čitanju podataka o procesoru:"
 
-#: ../src/up2date_client/messageWindow.py:106
-msgid "Error:"
-msgstr "Pogreška:"
-
-#: ../src/up2date_client/messageWindow.py:113
-msgid "Yes/No dialog:"
-msgstr "Dijalog \"Da/Ne\":"
-
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
 msgstr ""
@@ -218,273 +210,34 @@ msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr ""
 "Upozorenje: Omogućavanje rhnsd putem programa chkconfig nije bilo moguće."
 
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "Napomena"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
 msgstr "Upozorenje"
 
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr ""
-"Odredili ste nepravilan protokol. Dopušteni su samo https i http protokoli."
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "Kontaktiranje Satelita ili Proxyje pri '%s' nije bilo moguće."
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"Još jednom provjerite pruženu lokaciju. Je li adresa '%s' ispravna? Ako "
-"nije, ispravite ju i pokušajte ponovno."
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "Provjerite funkcionira li mrežna povezanost ovog sustava."
-
-#: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Došlo je do pogreške u komuniciranju s Red Hat Mrežom."
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr "Poslužitelj vjerojatno nije u funkciji. Morat ćete pokušati kasnije."
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "Možda imate pokrenut klijent koji nije kompatibilan s poslužiteljem."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
-"Unesite svoje podatke o prijavi pri %s Red Hat Mrežnom Satelitu:\n"
-"\n"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "Potrebno je unijeti prijavu."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "Potrebno je unijeti lozinku."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "Tijekom prijavljivanja došlo je do problema."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr ""
-"Tijekom komuniciranja s poslužiteljem registriranja došlo je do pogreške. "
-"Poruka je:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "Pogreška tijekom pokretanja hardverskog profila"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "Potrebno je odabrati naziv za ovaj profil."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "Registriranje sustava"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
 msgid "Problem registering system:\n"
 msgstr "Problem tijekom registriranja sustava:\n"
 
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"Pruženi instalacijski broj [ %s ] nije valjani instalacijski broj. Vratite "
-"se na prethodni zaslon i ispravite ga."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+#: ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
 msgstr "Problem tijekom registriranja sustava."
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+#: ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
 msgstr "Problem tijekom zapisivanja ID oznake sustava na disk."
 
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "Došlo je do problema tijekom registriranja ovog sustava."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "Slanje podataka o hardveru"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "Problem tijekom slanja podataka o hardveru."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "Slanje podataka o paketu"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "Problem tijekom slanja popisa paketa."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#: ../src/up2date_client/tui.py:1058
 #, python-format
 msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "Potrebno je odabrati potvrdu."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"Došlo je do SSL pogreške. Razlog bi mogao biti da datoteka koju ste odabrali "
-"nije datoteka s potvrdom."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "Tijekom instaliranja potvrde došlo je do pogreške:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "nepoznato"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#: ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "Tijekom instaliranja paketa došlo je do ozbiljne pogreške:"
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "Paket"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Arh"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"Izgrađuje se popis RPM paketa instaliranih na vaš sustav. Pričekajte..."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"Tijekom učitavanja vaše konfiguracije došlo je do pogreške.\n"
-"Provjerite imate li pristup dopuštenje čitanja mape /etc/sysconfig/rhn."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"Tijekom spremanja vaše konfiguracije došlo je do pogreške.\n"
-"Provjerite jeste li vlasnik mape %s."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"Do ove pogreške nije smjelo doći. Ako biste nam htjeli pomoći u "
-"poboljšavanju ovog programa, molimo vas da na adresi bugzilla.redhat.com "
-"prijavite nedostatak. Obuhvaćanje relevantnih dijelova izvještaja '%s' bio "
-"bi od velike pomoći. Zahvaljujemo!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -578,7 +331,7 @@ msgstr ""
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
 msgstr "Zašto bih se povezao s Red Hat Mrežom?"
 
-#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57
 msgid "Why Register"
 msgstr "Zašto se registrirati"
 
@@ -730,8 +483,7 @@ msgid "Please enter and verify a password."
 msgstr "Unesite lozinku i potom je potvrdite."
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
-#: ../data/rh_register.glade.h:142
+#: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System Release Version"
 msgstr ""
 
@@ -748,7 +500,6 @@ msgid "Limited Updates Only"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:102
-#: ../data/rh_register.glade.h:151
 msgid "All available updates"
 msgstr ""
 
@@ -822,17 +573,14 @@ msgid "*Email Address:"
 msgstr "*Adresa e-pošte:"
 
 #: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
 msgstr "Registriraj sustav čak i ako je već registriran"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
-#: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
 msgstr "Izgleda da je sustav već podešen za ažuriranja softvera:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
-#: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
 msgstr "Jeste li sigurni da želite nastaviti?"
 
@@ -904,11 +652,11 @@ msgstr ""
 "sučelja Red Hat Mreže.)"
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Review Subscription"
 msgstr "Pregled detalja o pretplati"
 
-#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169
 msgid "Please review the subscription details below:"
 msgstr "Pregledajte sljedeće detalje o pretplati:"
 
@@ -1206,12 +954,10 @@ msgid "Cancel"
 msgstr "Odustani"
 
 #: ../src/up2date_client/rhnreg_constants.py:310
-#: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
 msgstr "Ne, odustani"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
-#: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
 msgstr "Da, nastavi"
 
@@ -1398,33 +1144,9 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn-profile-sync.py:37
-msgid ""
-"You need to register this system by running `rhn_register` before using this "
-"option"
-msgstr ""
-"Ovaj je sustav potrebno registrirati pokretanjem naredbe \"rhn_register\" "
-"prije upotrebe ove opcije."
-
-#: ../src/bin/rhn-profile-sync.py:45
-msgid "Updating package profile..."
-msgstr "Ažuriranje profila paketa..."
-
-#: ../src/bin/rhn-profile-sync.py:48
-msgid "Updating hardware profile..."
-msgstr "Ažuriranje hardverskog profila..."
-
-#: ../src/bin/rhn-profile-sync.py:52
-msgid "Updating virtualization profile..."
-msgstr "Ažuriranje profila virtualizacije..."
-
 #: ../src/bin/rhn_check.py:423
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
-
-#: ../src/bin/rhn_register.py:38
-msgid "Do not attempt to use X"
-msgstr "Ne upotrebljavaj X poslužitelj"
 
 #: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
@@ -1531,819 +1253,404 @@ msgstr ""
 "Naziv profila nije određen, a naziv računala i IP adresa nisu mogli biti "
 "određeni radi njihove upotrebe kao naziva profila. Odredite naziv profila."
 
-#: ../src/bin/spacewalk-channel.py:98
-msgid "name of channel you want to (un)subscribe"
-msgstr ""
+#~ msgid "Error:"
+#~ msgstr "Pogreška:"
 
-#: ../src/bin/spacewalk-channel.py:100
-msgid "subscribe to channel"
-msgstr ""
+#~ msgid "Yes/No dialog:"
+#~ msgstr "Dijalog \"Da/Ne\":"
 
-#: ../src/bin/spacewalk-channel.py:102
-msgid "unsubscribe from channel"
-msgstr ""
+#~ msgid "Notice"
+#~ msgstr "Napomena"
 
-#: ../src/bin/spacewalk-channel.py:104
-msgid "list channels"
-msgstr ""
+#~ msgid "There was an error while applying your choice."
+#~ msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
 
-#: ../src/bin/spacewalk-channel.py:106
-msgid "show base channel of a system"
-msgstr ""
+#~ msgid "You specified an invalid protocol. Only https and http are allowed."
+#~ msgstr ""
+#~ "Odredili ste nepravilan protokol. Dopušteni su samo https i http "
+#~ "protokoli."
 
-#: ../src/bin/spacewalk-channel.py:108
-msgid "list all available child channels"
-msgstr ""
+#, fuzzy, python-brace-format
+#~ msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+#~ msgstr "Kontaktiranje Satelita ili Proxyje pri '%s' nije bilo moguće."
 
-#: ../src/bin/spacewalk-channel.py:110
-msgid "verbose output"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:112
-msgid "your user name"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:114
-msgid "your password"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:121
-msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:163
-msgid "ERROR: you have to specify at least one channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:169
-msgid "ERROR: this action does not require channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:176
 #, python-format
-msgid "Channel(s): %s successfully added"
-msgstr ""
+#~ msgid ""
+#~ "Double-check the location - is '%s' correct? If not, you can correct it "
+#~ "and try again."
+#~ msgstr ""
+#~ "Još jednom provjerite pruženu lokaciju. Je li adresa '%s' ispravna? Ako "
+#~ "nije, ispravite ju i pokušajte ponovno."
 
-#: ../src/bin/spacewalk-channel.py:178
-#, python-format
-msgid "Error during adding channel(s) %s"
-msgstr ""
+#~ msgid "Make sure the network connection on this system is operational."
+#~ msgstr "Provjerite funkcionira li mrežna povezanost ovog sustava."
 
-#: ../src/bin/spacewalk-channel.py:185
-#, python-format
-msgid "Channel(s): %s successfully removed"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:187
-#, python-format
-msgid "Error during removal of channel(s) %s"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:194
-msgid "This system is not associated with any channel."
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:196
-msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:229
-msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:234
-msgid "ERROR: must be root to execute\n"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:239
-msgid "User interrupted process."
-msgstr ""
-
-#: ../data/gui.glade.h:1
 #, fuzzy
-msgid "System registration"
-msgstr "registracijski_broj"
-
-#: ../data/gui.glade.h:2
-msgid "Set Up Software Updates"
-msgstr "Postavljanje ažuriranja softvera"
-
-#: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
-msgid "Choose Service"
-msgstr "Odaberite poslužitelj"
-
-#: ../data/gui.glade.h:4
-msgid "Provide a security certificate"
-msgstr "Pružite potvrdu o osiguranosti"
-
-#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
-msgid "Red Hat Account"
-msgstr "Red Hat prijava"
-
-#: ../data/gui.glade.h:7
-msgid "Create Profile"
-msgstr "Izradi profil"
-
-#: ../data/progress.glade.h:1
-msgid "Sending Information"
-msgstr "Slanje podataka o paketu"
-
-#: ../data/progress.glade.h:2
-msgid "progress bar"
-msgstr "Dijalog napredovanja"
-
-#: ../data/progress.glade.h:3
-msgid "progress status"
-msgstr "Dijalog napredovanja"
-
-#: ../data/rh_register.glade.h:1
-msgid ""
-"<b>The network connection on your system is not active. Your system cannot "
-"be set up for software updates at this time.</b>"
-msgstr ""
-"<b>Mrežna povezanost na vašem sustavu nije aktivna. Vaš sustav trenutno nije "
-"moguće podesiti za primanje ažuriranja softvera.</b>"
-
-#: ../data/rh_register.glade.h:2
-msgid ""
-"This system will <b>not</b> be able to successfully receive software "
-"updates, including security updates, from Red Hat without connecting to a "
-"Red Hat Satellite or Red Hat Network Classic.\n"
-"\n"
-"To keep your system updated, secure, and supported, please register this "
-"system at your earliest convenience."
-msgstr ""
-
-#: ../data/rh_register.glade.h:5
-msgid "Why Should I Connect to RHN? ..."
-msgstr "Zašto bih se povezao s Red Hat Mrežom?"
-
-#: ../data/rh_register.glade.h:7
-msgid ""
-"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:8
-msgid "Location:"
-msgstr "Lokacija _proxyja:"
-
-#: ../data/rh_register.glade.h:9
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "<small><b>Primjer:</b> https://satelit.primjer.com</small>"
-
-#: ../data/rh_register.glade.h:10
-msgid "satellite server location"
-msgstr ""
-
-#: ../data/rh_register.glade.h:11
-msgid "_Proxy Setup"
-msgstr ""
-
-#: ../data/rh_register.glade.h:12
-msgid "Proxy Setup Button"
-msgstr ""
-
-#: ../data/rh_register.glade.h:14
-msgid "Please enter your Red Hat account information:"
-msgstr "Unesite podatke o vašem nalogu"
-
-#: ../data/rh_register.glade.h:15
-msgid "RHN login field"
-msgstr "RHM prijava:"
-
-#: ../data/rh_register.glade.h:16
-msgid "RHN password field"
-msgstr ""
-
-#: ../data/rh_register.glade.h:17
-msgid "_Password:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:18
-msgid "_Login:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:19
-msgid ""
-"<small>Tip: Forgot your login or password? Contact your Satellite's "
-"<i>Organization Administrator</i>.</small>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:20
-msgid "Hardware Info"
-msgstr "Hardverski podaci"
-
-#: ../data/rh_register.glade.h:21
-msgid "Red Hat Linux Version:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:22
-msgid "Hostname:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:23
-msgid "IP Address:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:24
-msgid "ERROR"
-msgstr ""
-
-#: ../data/rh_register.glade.h:25
-msgid "CPU Model:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:26
-msgid "CPU Speed:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:27
-msgid "Memory:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:28
-msgid "Hardware Profile"
-msgstr ""
-
-#: ../data/rh_register.glade.h:29
-msgid "Package Information"
-msgstr "Podaci o paketu"
-
-#: ../data/rh_register.glade.h:30
-msgid "Start Window"
-msgstr "Početni prozor"
-
-#: ../data/rh_register.glade.h:31
-msgid ""
-"This assistant will guide you through the process of registering your system "
-"with Red Hat to receive software updates and other benefits. You will need "
-"the following to register:"
-msgstr ""
-"Ovaj će vas pomoćnik voditi kroz postupak povezivanja vašeg sustava s Red "
-"Hat mrežom (RHN) radi primanja ažuriranja softvera, kao što su:"
-
-#: ../data/rh_register.glade.h:32
-msgid "• A network connection"
-msgstr ""
-
-#: ../data/rh_register.glade.h:33
-msgid "• Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:34
-msgid "Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:35
-msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:36
-msgid "_Why Should I Register?"
-msgstr ""
-
-#: ../data/rh_register.glade.h:37
-msgid "Why Should I Register?"
-msgstr "Zašto se registrirati"
-
-#: ../data/rh_register.glade.h:38
-msgid ""
-"Would you like to register your system at this time? <b>(Strongly "
-"recommended.)</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:39
-msgid "_Yes, I'd like to register now."
-msgstr ""
-
-#: ../data/rh_register.glade.h:40
-msgid "_No, I prefer to register at a later time."
-msgstr ""
-
-#: ../data/rh_register.glade.h:41
-msgid "Link To Subscription"
-msgstr "Veza prema pretplati"
-
-#: ../data/rh_register.glade.h:42
-msgid ""
-"Your system will need to access a subscription. This will allow you to keep "
-"your system updated, secure, and supported."
-msgstr ""
-
-#: ../data/rh_register.glade.h:43
-msgid ""
-"<b>You have no active subscriptions available in your account.</b> You will "
-"need to do one of the following to create an active subscription in your "
-"account before this system can be registered:"
-msgstr ""
-"<b>U vašem nalogu ne postoje raspoložive aktivne pretplate.<b> Da biste "
-"izradili aktivnu pretplatu unutar vašeg naloga i omogućili registriranje "
-"ovog sustava, bit će potrebno ispuniti jednu od sljedećih stavki:"
-
-#: ../data/rh_register.glade.h:44
-msgid ""
-"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
-"redhat.com/store/."
-msgstr ""
-
-#: ../data/rh_register.glade.h:45
-msgid ""
-"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-msgstr ""
-
-#: ../data/rh_register.glade.h:46
-msgid ""
-"Activate a previously purchased subscription you have not yet activated."
-msgstr ""
-
-#: ../data/rh_register.glade.h:47
-msgid "•"
-msgstr ""
-
-#: ../data/rh_register.glade.h:48
-msgid "installation number field"
-msgstr "Instalacijski broj nije valjan"
-
-#: ../data/rh_register.glade.h:49
-msgid "Installation _Number:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:50
-msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:51
-msgid "_Activate a subscription now..."
-msgstr "_Aktiviraj pretplatu..."
-
-#: ../data/rh_register.glade.h:52
-msgid "Review system..."
-msgstr "Pregled sustava..."
-
-#: ../data/rh_register.glade.h:54
-msgid "Create profile"
-msgstr "Izradi profil"
-
-#: ../data/rh_register.glade.h:55
-msgid "<big><b>System Name</b></big>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:56
-msgid ""
-"A recognizable name will help you identify this system in a management "
-"interface."
-msgstr ""
-
-#: ../data/rh_register.glade.h:57
-msgid "System _Name:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:58
-msgid "system name"
-msgstr "_Naziv sustava:"
-
-#: ../data/rh_register.glade.h:59
-msgid "<big><b>Profile Data</b></big>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:60
-msgid ""
-"Send us a profile of your current hardware and packages so we can determine "
-"what updates are available."
-msgstr ""
-"Da bismo mogli odrediti koja su ažuriranja raspoloživa, morate nam poslati "
-"profil s podacima o paketima i hardveru instaliranom na vašem sustavu."
-
-#: ../data/rh_register.glade.h:61
-msgid "_View Hardware Profile ..."
-msgstr ""
-
-#: ../data/rh_register.glade.h:62
-msgid "View Hardware Profile"
-msgstr "_Prikaži hardverski profil..."
-
-#: ../data/rh_register.glade.h:63
-msgid "V_iew Package Profile ..."
-msgstr ""
-
-#: ../data/rh_register.glade.h:64
-msgid "View Package Profile"
-msgstr "_Pregled profila paketa..."
-
-#: ../data/rh_register.glade.h:65
-msgid "Send _hardware profile"
-msgstr ""
-
-#: ../data/rh_register.glade.h:66
-msgid "Send hardware profile checkbox"
-msgstr "Pošalji profil _hardvera"
-
-#: ../data/rh_register.glade.h:67
-msgid "Send _package profile"
-msgstr ""
-
-#: ../data/rh_register.glade.h:68
-msgid "Send package profile checkbox"
-msgstr "Pošalji profil _paketa"
-
-#: ../data/rh_register.glade.h:70
-msgid ""
-"Registering your system with Red Hat allows you to take full advantage of "
-"the benefits of a paid subscription, including:"
-msgstr ""
-"Povezivanje vašeg sustava na Red Hat mrežu omogućuje vam stjecanje svih "
-"prednosti plaćene pretplate, poput:"
-
-#: ../data/rh_register.glade.h:71
-msgid "_Close"
-msgstr ""
-
-#: ../data/rh_register.glade.h:72
-msgid "Close"
-msgstr "_Zatvori"
-
-#: ../data/rh_register.glade.h:73
-msgid "<b>Security &amp; Updates:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:74
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr ""
-
-#: ../data/rh_register.glade.h:75
-msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:76
-msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
-msgstr ""
-"Preuzmite instalacijske preslike izdanja Red Hat Enterprise Linuxa, "
-"uključujući i najnovija izdanja."
-
-#: ../data/rh_register.glade.h:77
-msgid "<b>Support:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:78
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
-"Pristupite tehničkoj podršci stručnjaka pri Red Hatu ili Red Hatovim "
-"partnerima i zatražite pomoć u vezi bilo kojeg problema s kojim biste se "
-"mogli suočiti na ovom sustavu"
-
-#: ../data/rh_register.glade.h:79
-msgid "<b>Management:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:80
-msgid "Management"
-msgstr ""
-
-#: ../data/rh_register.glade.h:81
-msgid ""
-"Manage subscriptions and systems registered to Customer Portal via access."
-"redhat.com or through one of our other subscription management services."
-msgstr ""
-
-#: ../data/rh_register.glade.h:82
-msgid ""
-"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html.</small>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:83
-msgid "Provide a Security Certificate"
-msgstr "Pružite potvrdu o osiguranosti"
-
-#: ../data/rh_register.glade.h:85
-#, no-c-format
-msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this "
-"system.\n"
-"\n"
-"A security certificate, using SSL technology, is necessary to ensure that "
-"data communicated between this system and Spacewalk (including your login "
-"and password) is secure."
-msgstr ""
-
-#: ../data/rh_register.glade.h:88
-msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:89
-msgid "Certificate _Location:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:90
-msgid "Select A File"
-msgstr "Odaberi datoteku"
-
-#: ../data/rh_register.glade.h:91
-msgid ""
-"I <b>_don't</b> have an SSL certificate. I will contact my system "
-"administrator for assistance and will register at a later time."
-msgstr ""
-
-#: ../data/rh_register.glade.h:92
-msgid "Your system is not setup for software updates."
-msgstr ""
-
-#: ../data/rh_register.glade.h:93
-msgid ""
-"You won't be able to receive software updates, including security updates, "
-"for this system."
-msgstr ""
-"Primite najnovija ažuriranja softvera, uključujući i sigurnosne nadogradnje, "
-"održavajući na taj način ovaj sustav Red Hat Enterprise Linuxa ažuriranim i "
-"sigurnim."
-
-#: ../data/rh_register.glade.h:94
-msgid "Proxy Configuration"
-msgstr "Lokacija _proxyja:"
-
-#: ../data/rh_register.glade.h:95
-msgid "<b>HTTP Proxy</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:96
-msgid "I would like to connect via an _HTTP proxy."
-msgstr ""
-
-#: ../data/rh_register.glade.h:97
+#~ msgid "There was an error communicating with Spacewalk server."
+#~ msgstr "Došlo je do pogreške u komuniciranju s Red Hat Mrežom."
+
+#~ msgid ""
+#~ "The server may be in outage mode. You may have to try connecting later."
+#~ msgstr ""
+#~ "Poslužitelj vjerojatno nije u funkciji. Morat ćete pokušati kasnije."
+
+#~ msgid "You may be running a client that is incompatible with the server."
+#~ msgstr ""
+#~ "Možda imate pokrenut klijent koji nije kompatibilan s poslužiteljem."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgstr ""
+#~ "Unesite svoje podatke o prijavi pri %s Red Hat Mrežnom Satelitu:\n"
+#~ "\n"
+
+#~ msgid "You must enter a login."
+#~ msgstr "Potrebno je unijeti prijavu."
+
+#~ msgid "You must enter a password."
+#~ msgstr "Potrebno je unijeti lozinku."
+
+#~ msgid "There was an error while logging in."
+#~ msgstr "Tijekom prijavljivanja došlo je do problema."
+
+#~ msgid ""
+#~ "There was an error communicating with the registration server.  The "
+#~ "message was:\n"
+#~ msgstr ""
+#~ "Tijekom komuniciranja s poslužiteljem registriranja došlo je do pogreške. "
+#~ "Poruka je:\n"
+
+#~ msgid "There was an error while assembling information for the profile."
+#~ msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
+
+#~ msgid "Error running hardware profile"
+#~ msgstr "Pogreška tijekom pokretanja hardverskog profila"
+
+#~ msgid "There was an error while populating the profile."
+#~ msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
+
+#~ msgid "You must choose a name for this profile."
+#~ msgstr "Potrebno je odabrati naziv za ovaj profil."
+
+#~ msgid "There was an error while creating the profile."
+#~ msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
+
+#~ msgid "Registering System"
+#~ msgstr "Registriranje sustava"
+
+#, python-format
+#~ msgid ""
+#~ "The installation number [ %s ] provided is not a valid installation "
+#~ "number. Please go back to the previous screen and fix it."
+#~ msgstr ""
+#~ "Pruženi instalacijski broj [ %s ] nije valjani instalacijski broj. "
+#~ "Vratite se na prethodni zaslon i ispravite ga."
+
+#~ msgid "There was a problem registering this system."
+#~ msgstr "Došlo je do problema tijekom registriranja ovog sustava."
+
+#~ msgid "Sending hardware information"
+#~ msgstr "Slanje podataka o hardveru"
+
+#~ msgid "Problem sending hardware information."
+#~ msgstr "Problem tijekom slanja podataka o hardveru."
+
+#~ msgid "Sending package information"
+#~ msgstr "Slanje podataka o paketu"
+
+#~ msgid "Problem sending package information."
+#~ msgstr "Problem tijekom slanja popisa paketa."
+
+#~ msgid "There was an error while installing the certificate."
+#~ msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
+
+#~ msgid "You must select a certificate."
+#~ msgstr "Potrebno je odabrati potvrdu."
+
+#~ msgid ""
+#~ "There was an SSL error. This could be because the file you picked was not "
+#~ "a certificate file."
+#~ msgstr ""
+#~ "Došlo je do SSL pogreške. Razlog bi mogao biti da datoteka koju ste "
+#~ "odabrali nije datoteka s potvrdom."
+
+#~ msgid "Something went wrong while installing the new certificate:\n"
+#~ msgstr "Tijekom instaliranja potvrde došlo je do pogreške:\n"
+
+#~ msgid "unknown"
+#~ msgstr "nepoznato"
+
+#~ msgid "There was an error getting the list of hardware."
+#~ msgstr "Došlo je do pogreške tijekom ispunjavanja profila."
+
+#, python-format
+#~ msgid "%s MB"
+#~ msgstr "%s MB"
+
+#~ msgid "There was an error building the list of packages."
+#~ msgstr "Tijekom instaliranja paketa došlo je do ozbiljne pogreške:"
+
+#~ msgid "Package"
+#~ msgstr "Paket"
+
+#~ msgid "Arch"
+#~ msgstr "Arh"
+
+#~ msgid ""
+#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr ""
+#~ "Izgrađuje se popis RPM paketa instaliranih na vaš sustav. Pričekajte..."
+
+#~ msgid ""
+#~ "There was an error loading your configuration.  Make sure that\n"
+#~ "you have read access to /etc/sysconfig/rhn."
+#~ msgstr ""
+#~ "Tijekom učitavanja vaše konfiguracije došlo je do pogreške.\n"
+#~ "Provjerite imate li pristup dopuštenje čitanja mape /etc/sysconfig/rhn."
+
+#, python-format
+#~ msgid ""
+#~ "There was an error saving your configuration. Make sure that\n"
+#~ "you own %s."
+#~ msgstr ""
+#~ "Tijekom spremanja vaše konfiguracije došlo je do pogreške.\n"
+#~ "Provjerite jeste li vlasnik mape %s."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "This error shouldn't have happened. If you'd like to help us improve this "
+#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
+#~ "parts of '%s' would be very helpful. Thanks!"
+#~ msgstr ""
+#~ "Do ove pogreške nije smjelo doći. Ako biste nam htjeli pomoći u "
+#~ "poboljšavanju ovog programa, molimo vas da na adresi bugzilla.redhat.com "
+#~ "prijavite nedostatak. Obuhvaćanje relevantnih dijelova izvještaja '%s' "
+#~ "bio bi od velike pomoći. Zahvaljujemo!"
+
+#~ msgid ""
+#~ "You need to register this system by running `rhn_register` before using "
+#~ "this option"
+#~ msgstr ""
+#~ "Ovaj je sustav potrebno registrirati pokretanjem naredbe \"rhn_register\" "
+#~ "prije upotrebe ove opcije."
+
+#~ msgid "Updating package profile..."
+#~ msgstr "Ažuriranje profila paketa..."
+
+#~ msgid "Updating hardware profile..."
+#~ msgstr "Ažuriranje hardverskog profila..."
+
+#~ msgid "Updating virtualization profile..."
+#~ msgstr "Ažuriranje profila virtualizacije..."
+
+#~ msgid "Do not attempt to use X"
+#~ msgstr "Ne upotrebljavaj X poslužitelj"
+
 #, fuzzy
-msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr "Želio bih se povezati na Red Hat Mrežu putem _HTTP proxyja."
+#~ msgid "System registration"
+#~ msgstr "registracijski_broj"
 
-#: ../data/rh_register.glade.h:98
-msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr ""
+#~ msgid "Set Up Software Updates"
+#~ msgstr "Postavljanje ažuriranja softvera"
 
-#: ../data/rh_register.glade.h:99
-msgid "_Proxy Location:"
-msgstr ""
+#~ msgid "Choose Service"
+#~ msgstr "Odaberite poslužitelj"
 
-#: ../data/rh_register.glade.h:100
-msgid "Enter in the format hostname(:port)"
-msgstr "Unesite u obliku nazivračunala(:port)"
+#~ msgid "Provide a security certificate"
+#~ msgstr "Pružite potvrdu o osiguranosti"
 
-#: ../data/rh_register.glade.h:101
-msgid "proxy location"
-msgstr "Lokacija _proxyja:"
+#~ msgid "Red Hat Account"
+#~ msgstr "Red Hat prijava"
 
-#: ../data/rh_register.glade.h:102
-msgid "Use Au_thentication with HTTP Proxy:"
-msgstr ""
+#~ msgid "Create Profile"
+#~ msgstr "Izradi profil"
 
-#: ../data/rh_register.glade.h:103
-msgid "Use Authentication with HTTP Proxy"
-msgstr "Upotrijebi provjeru uz HTTP proxy:"
+#~ msgid "Sending Information"
+#~ msgstr "Slanje podataka o paketu"
 
-#: ../data/rh_register.glade.h:104
-msgid "Proxy _Username:"
-msgstr ""
+#~ msgid "progress bar"
+#~ msgstr "Dijalog napredovanja"
 
-#: ../data/rh_register.glade.h:105
-msgid "Proxy P_assword:"
-msgstr ""
+#~ msgid "progress status"
+#~ msgstr "Dijalog napredovanja"
 
-#: ../data/rh_register.glade.h:106
-msgid "proxy user field"
-msgstr ""
+#~ msgid ""
+#~ "<b>The network connection on your system is not active. Your system "
+#~ "cannot be set up for software updates at this time.</b>"
+#~ msgstr ""
+#~ "<b>Mrežna povezanost na vašem sustavu nije aktivna. Vaš sustav trenutno "
+#~ "nije moguće podesiti za primanje ažuriranja softvera.</b>"
 
-#: ../data/rh_register.glade.h:107
-msgid "proxy password field"
-msgstr "Proxy lo_zinka:"
+#~ msgid "Why Should I Connect to RHN? ..."
+#~ msgstr "Zašto bih se povezao s Red Hat Mrežom?"
 
-#: ../data/rh_register.glade.h:108
-msgid "Confirm operation system release selection"
-msgstr ""
+#~ msgid "Location:"
+#~ msgstr "Lokacija _proxyja:"
 
-#: ../data/rh_register.glade.h:109
-msgid "_No, Cancel"
-msgstr ""
+#~ msgid "Example: https://satellite.example.com/XMLRPC"
+#~ msgstr "<small><b>Primjer:</b> https://satelit.primjer.com</small>"
 
-#: ../data/rh_register.glade.h:111
-msgid "_Yes, Continue"
-msgstr ""
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "Unesite podatke o vašem nalogu"
 
-#: ../data/rh_register.glade.h:113
-msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr ""
+#~ msgid "RHN login field"
+#~ msgstr "RHM prijava:"
 
-#: ../data/rh_register.glade.h:114
-msgid ""
-"Your system will be subscribed to the base software channel.  You will not "
-"be able to move this system to an earlier minor release channel if you "
-"continue (you will be able to move to a later release.)"
-msgstr ""
+#~ msgid "Hardware Info"
+#~ msgstr "Hardverski podaci"
 
-#: ../data/rh_register.glade.h:115
-msgid ""
-"\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"\n"
-"Jeste li sigurni da želite nastaviti?"
+#~ msgid "Package Information"
+#~ msgstr "Podaci o paketu"
 
-#: ../data/rh_register.glade.h:117
-msgid "Are you Sure?"
-msgstr ""
+#~ msgid "Start Window"
+#~ msgstr "Početni prozor"
 
-#: ../data/rh_register.glade.h:118
-msgid "_Go Back and Register"
-msgstr ""
+#~ msgid ""
+#~ "This assistant will guide you through the process of registering your "
+#~ "system with Red Hat to receive software updates and other benefits. You "
+#~ "will need the following to register:"
+#~ msgstr ""
+#~ "Ovaj će vas pomoćnik voditi kroz postupak povezivanja vašeg sustava s Red "
+#~ "Hat mrežom (RHN) radi primanja ažuriranja softvera, kao što su:"
 
-#: ../data/rh_register.glade.h:119
-msgid "Go Back and Register"
-msgstr ""
+#~ msgid "Why Should I Register?"
+#~ msgstr "Zašto se registrirati"
 
-#: ../data/rh_register.glade.h:120
-msgid "Register _Later"
-msgstr ""
+#~ msgid "Link To Subscription"
+#~ msgstr "Veza prema pretplati"
 
-#: ../data/rh_register.glade.h:121
-msgid "Register Later"
-msgstr "Registrirat ću se kasnije."
+#~ msgid ""
+#~ "<b>You have no active subscriptions available in your account.</b> You "
+#~ "will need to do one of the following to create an active subscription in "
+#~ "your account before this system can be registered:"
+#~ msgstr ""
+#~ "<b>U vašem nalogu ne postoje raspoložive aktivne pretplate.<b> Da biste "
+#~ "izradili aktivnu pretplatu unutar vašeg naloga i omogućili registriranje "
+#~ "ovog sustava, bit će potrebno ispuniti jednu od sljedećih stavki:"
 
-#: ../data/rh_register.glade.h:122
-msgid ""
-"Are you sure you don't want to register your system with Red Hat? You'll "
-"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr ""
-"Jeste li sigurni da svoj sustav ne želite povezani na Red Hat Mrežu? "
-"Propustit ćete sve prednosti Red Hat Enterprise Linux pretplate:"
+#~ msgid "installation number field"
+#~ msgstr "Instalacijski broj nije valjan"
 
-#: ../data/rh_register.glade.h:123
-msgid "Management:"
-msgstr ""
+#~ msgid "_Activate a subscription now..."
+#~ msgstr "_Aktiviraj pretplatu..."
 
-#: ../data/rh_register.glade.h:124
-msgid ""
-"You will not be able to take advantage of these benefits without registering."
-msgstr ""
-"Ovaj sustav <b>neće</b> imati mogućnost uspješnog primanja ažuriranja "
-"softvera od Red Hata bez povezivanja s poslužiteljem Red Hat Mreže."
+#~ msgid "Review system..."
+#~ msgstr "Pregled sustava..."
 
-#: ../data/rh_register.glade.h:127
-msgid "<b>Spacewalk Location:</b>"
-msgstr ""
+#~ msgid "Create profile"
+#~ msgstr "Izradi profil"
 
-#: ../data/rh_register.glade.h:128
-msgid "<b>Login:</b>"
-msgstr ""
+#~ msgid "system name"
+#~ msgstr "_Naziv sustava:"
 
-#: ../data/rh_register.glade.h:129
-msgid "<b>System ID:</b>"
-msgstr ""
+#~ msgid ""
+#~ "Send us a profile of your current hardware and packages so we can "
+#~ "determine what updates are available."
+#~ msgstr ""
+#~ "Da bismo mogli odrediti koja su ažuriranja raspoloživa, morate nam "
+#~ "poslati profil s podacima o paketima i hardveru instaliranom na vašem "
+#~ "sustavu."
 
-#: ../data/rh_register.glade.h:130
-msgid "label"
-msgstr ""
+#~ msgid "View Hardware Profile"
+#~ msgstr "_Prikaži hardverski profil..."
 
-#: ../data/rh_register.glade.h:132
-msgid "<b>Warning</b>"
-msgstr ""
+#~ msgid "View Package Profile"
+#~ msgstr "_Pregled profila paketa..."
 
-#: ../data/rh_register.glade.h:133
-msgid ""
-"This system has already been registered with RHN using RHN certificate-based "
-"technology."
-msgstr ""
+#~ msgid "Send hardware profile checkbox"
+#~ msgstr "Pošalji profil _hardvera"
 
-#: ../data/rh_register.glade.h:134
-msgid ""
-"Your system is being registered again using RHN Classic technology. Red Hat "
-"recommends that customers only register once."
-msgstr ""
+#~ msgid "Send package profile checkbox"
+#~ msgstr "Pošalji profil _paketa"
 
-#: ../data/rh_register.glade.h:135
-msgid ""
-"To learn more about RHN registration and technologies please consult this "
-"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
-msgstr ""
+#~ msgid ""
+#~ "Registering your system with Red Hat allows you to take full advantage of "
+#~ "the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Povezivanje vašeg sustava na Red Hat mrežu omogućuje vam stjecanje svih "
+#~ "prednosti plaćene pretplate, poput:"
 
-#: ../data/rh_register.glade.h:137
-msgid "Software update setup has been completed for this system."
-msgstr ""
+#~ msgid "Close"
+#~ msgstr "_Zatvori"
 
-#: ../data/rh_register.glade.h:138
-msgid ""
-"Your system is now ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
+#~ msgid ""
+#~ "Download installation images for Red Hat Enterprise Linux releases, "
+#~ "including new releases."
+#~ msgstr ""
+#~ "Preuzmite instalacijske preslike izdanja Red Hat Enterprise Linuxa, "
+#~ "uključujući i najnovija izdanja."
 
-#: ../data/rh_register.glade.h:141
-msgid "Aplet screenshot"
-msgstr ""
+#~ msgid ""
+#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
+#~ "for help with any issues you might encounter with this system."
+#~ msgstr ""
+#~ "Pristupite tehničkoj podršci stručnjaka pri Red Hatu ili Red Hatovim "
+#~ "partnerima i zatražite pomoć u vezi bilo kojeg problema s kojim biste se "
+#~ "mogli suočiti na ovom sustavu"
 
-#: ../data/rh_register.glade.h:143
-msgid "Select how your system will receive updates:"
-msgstr ""
+#~ msgid "Provide a Security Certificate"
+#~ msgstr "Pružite potvrdu o osiguranosti"
 
-#: ../data/rh_register.glade.h:144
-msgid "Limited updates"
-msgstr "Sjedinjene Američke Države"
+#~ msgid "Select A File"
+#~ msgstr "Odaberi datoteku"
 
-#: ../data/rh_register.glade.h:145
-msgid ""
-"<b>_Limited updates</b> will be provided to this system, maintaining "
-"compatibility with the selected minor release software channel:"
-msgstr ""
+#~ msgid ""
+#~ "You won't be able to receive software updates, including security "
+#~ "updates, for this system."
+#~ msgstr ""
+#~ "Primite najnovija ažuriranja softvera, uključujući i sigurnosne "
+#~ "nadogradnje, održavajući na taj način ovaj sustav Red Hat Enterprise "
+#~ "Linuxa ažuriranim i sigurnim."
 
-#: ../data/rh_register.glade.h:146
-msgid ""
-"Limited updates will be provided to this system, maintaining compatibility "
-"with the selected minor release software channel:"
-msgstr ""
+#~ msgid "Proxy Configuration"
+#~ msgstr "Lokacija _proxyja:"
 
-#: ../data/rh_register.glade.h:147
-msgid "_Minor release:"
-msgstr ""
+#, fuzzy
+#~ msgid "I would like to connect to Spacewalk via an _HTTP proxy."
+#~ msgstr "Želio bih se povezati na Red Hat Mrežu putem _HTTP proxyja."
 
-#: ../data/rh_register.glade.h:148
-msgid "Choose minor release"
-msgstr ""
+#~ msgid "Enter in the format hostname(:port)"
+#~ msgstr "Unesite u obliku nazivračunala(:port)"
 
-#: ../data/rh_register.glade.h:149
-msgid "       "
-msgstr ""
+#~ msgid "proxy location"
+#~ msgstr "Lokacija _proxyja:"
 
-#: ../data/rh_register.glade.h:150
-msgid ""
-"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
-"Hat."
-msgstr ""
+#~ msgid "Use Authentication with HTTP Proxy"
+#~ msgstr "Upotrijebi provjeru uz HTTP proxy:"
 
-#: ../data/rh_register.glade.h:152
-msgid ""
-"<b>_All available updates</b> will be provided to this system. If kept "
-"updated, this system will always be equivalent to the latest minor release "
-"in the main 'Red Hat Enterprise Linux x' software channel."
-msgstr ""
+#~ msgid "proxy password field"
+#~ msgstr "Proxy lo_zinka:"
 
-#: ../data/rh_register.glade.h:153
-msgid ""
-"All available updates will be provided to this system. If kept updated, this "
-"system will always be equivalent to the latest minor release in the main "
-"'Red Hat Enterprise Linux x' software channel."
-msgstr ""
+#~ msgid ""
+#~ "\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "\n"
+#~ "Jeste li sigurni da želite nastaviti?"
 
-#: ../data/rh_register.glade.h:154
-msgid ""
-"<b>Warning:</b> Using this option, your system will always be the most "
-"recent minor release and <b>cannot</b> be limited to an older release "
-"version."
-msgstr ""
+#~ msgid "Register Later"
+#~ msgstr "Registrirat ću se kasnije."
 
-#: ../data/rh_register.glade.h:155
-msgid ""
-"Warning: Using this option, your system will always be the most recent minor "
-"release and cannot be limited to an older release version."
-msgstr ""
+#~ msgid ""
+#~ "Are you sure you don't want to register your system with Red Hat? You'll "
+#~ "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
+#~ msgstr ""
+#~ "Jeste li sigurni da svoj sustav ne želite povezani na Red Hat Mrežu? "
+#~ "Propustit ćete sve prednosti Red Hat Enterprise Linux pretplate:"
 
-#: ../data/rh_register.glade.h:156
-msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr ""
+#~ msgid ""
+#~ "You will not be able to take advantage of these benefits without "
+#~ "registering."
+#~ msgstr ""
+#~ "Ovaj sustav <b>neće</b> imati mogućnost uspješnog primanja ažuriranja "
+#~ "softvera od Red Hata bez povezivanja s poslužiteljem Red Hat Mreže."
 
-#: ../data/rh_register.glade.h:157
-msgid ""
-"Your system is ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
+#~ msgid "Limited updates"
+#~ msgstr "Sjedinjene Američke Države"
 
-#: ../data/rh_register.glade.h:160
-msgid "icon of aplet"
-msgstr ""
-
-#: ../rhn_register.desktop.in.h:1
-msgid "RHN Registration"
-msgstr "registracijski_broj"
-
-#: ../rhn_register.desktop.in.h:2
-msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-
-#: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+#~ msgid "RHN Registration"
+#~ msgstr "registracijski_broj"
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."
