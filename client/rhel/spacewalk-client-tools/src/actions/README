@@ -17,7 +17,6 @@ method invocation.
         On the server side, actions are queued up into an
 actions queue.
 
-        when rhn_check is ran, either by rhnsd, or by hand,
 it connections to the RHN servers, logs in, and then checks
 it's action queue.
 

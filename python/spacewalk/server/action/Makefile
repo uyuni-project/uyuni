@@ -5,7 +5,7 @@ TOP	= ../..
 SUBDIR	= server/action
 
 SPACEWALK_FILES	= __init__ configfiles kickstart kickstart_guest packages errata hardware reboot \
-          rollback activation script rhnsd rhn_applet virt kickstart_host \
+          rollback activation script rhn_applet virt kickstart_host \
           utils scap image distupgrade clientcert channels
 
 include $(TOP)/Makefile.defs

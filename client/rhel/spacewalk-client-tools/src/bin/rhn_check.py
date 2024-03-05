@@ -79,7 +79,7 @@ ACTION_VERSION = 2
 DISABLE_FILE = "/etc/sysconfig/rhn/disable"
 
 # Actions that will run each time we execute.
-LOCAL_ACTIONS = [("packages.checkNeedUpdate", ("rhnsd=1",))]
+LOCAL_ACTIONS = [("packages.checkNeedUpdate", ())]
 
 
 class CheckCli(rhncli.RhnCli):
@@ -363,7 +363,7 @@ class CheckCli(rhncli.RhnCli):
         """
         Hit any actions that we want to always run.
 
-        If we want to run any actions everytime rhnsd runs rhn_check,
+        If we want to run any actions everytime when rhn_check runs,
         we can add them to the list LOCAL_ACTIONS
         """
 

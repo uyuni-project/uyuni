@@ -50,7 +50,6 @@ conf_files $OF \
     /etc/sysconfig/rhn/rhncfg-manager.conf \
     /etc/sysconfig/rhn/image.cfg \
     /etc/sysconfig/rhn/rhnpushrc \
-    /etc/sysconfig/rhn/rhnsd \
     /etc/sysconfig/rhn/systemid \
     /etc/salt/minion \
     /etc/salt/minion.d/susemanager.conf \
