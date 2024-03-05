@@ -1,0 +1,31 @@
+name: Gitpod Workspace on New Branch
+
+on:
+  create:
+    branches:
+      - 'dev/\*\*'
+
+jobs:
+  gitpod-workspace-creation:
+    runs-on: ubuntu-latest
+    environment: 
+      name: Workspace
+      url: https://gitpod.io/start/#${{ env.WORKSPACE_URL }}
+
+steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+-   name: Setup Gitpod CLI
+          run: |
+            wget -O gitpod https://gitpod.io/static/bin/gitpod-cli-linux-amd64
+            chmod +x gitpod
+            ./gitpod login --token ${{ secrets.GITPOD_TOKEN }} --org ${{ secrets.GITPOD_ORG }}
+
+-   name: Create a Gitpod workspace for the new branch
+          run: |
+            branchName=${GITHUB_REF#refs/heads/}
+        repoFullName=${{ github.repository }}
+            WORKSPACE_URL=$(./gitpod ws create github.com/$repoFullName/tree/$branchName --dont-wait)
+        echo "branchName=$BRANCH_NAME" >> $GITHUB_ENV
+        echo "WORKSPACE_URL=$WORKSPACE_URL" >> $GITHUB_ENV
