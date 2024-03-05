@@ -13,7 +13,6 @@ General template for leavers of the SUSE Manager team.
 **Official:** YYYY-MM-DD
 **Last work day:** YYYY-MM-DD
 
-
 # Some days before the member's last work day
 
 - [ ] **Exit interview:** Conduct an [exit interview](https://en.wikipedia.org/wiki/Exit_interview) and store the notes at [Confluence](https://confluence.suse.com/display/SUSEMANAGER/Exit+Interviews)
@@ -26,7 +25,6 @@ General template for leavers of the SUSE Manager team.
 - [ ] **Content:** Consider any content in e.g. https://w3.suse.de or Google Drive and maybe share it permanently (e.g. recordings, slides)
 
 # The day after the member leaves the team
-
 
 - [ ] GitHub
   - [ ] Remove from [SUSE Manager Team](https://github.com/orgs/SUSE/teams/suse-manager-team/members) on GitHub
