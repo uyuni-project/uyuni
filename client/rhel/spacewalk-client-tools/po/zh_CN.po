@@ -110,14 +110,6 @@ msgstr "读取系统信息时出错："
 msgid "Error reading machine info:"
 msgstr "读取计算机信息时出错："
 
-#: ../src/up2date_client/messageWindow.py:106
-msgid "Error:"
-msgstr "错误："
-
-#: ../src/up2date_client/messageWindow.py:113
-msgid "Yes/No dialog:"
-msgstr "\"是/否\" 对话框："
-
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
 msgstr "找不到 SystemId"
@@ -226,169 +218,24 @@ msgstr "警告：无法使用 systemd 启用 rhnsd"
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "警告：无法使用 chkconfig 启用 rhnsd"
 
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "注意"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "应用您的选择时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "您指定了无效协议。只允许 https 和 http。"
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr "在不联系 Spacewalk 服务器的情况下无法成功注册此系统。"
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "无法联系所选服务器"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "无法联系 ”{HOST}\" 上的 {PRODUCT_NAME} 或 Proxy。"
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr "请反复检查位置 - '%s' 是否正确？如果不正确，请更正后重试。"
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "确保此系统上的网络连接正常。"
-
-#: ../src/up2date_client/rhnregGui.py:341
-msgid "There was an error communicating with Spacewalk server."
-msgstr "与 Spacewalk 服务器通讯时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr "该服务器可能处于服务中断模式。您可以需要稍后尝试连接。"
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "您可能正在运行一个与服务器不兼容的客户端。"
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr "请输入您的 <b>%s</b> Spacewalk 服务器帐户信息："
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "必须输入登录名。"
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "必须输入口令。"
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "登录时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "与注册服务器通讯时出错。消息：\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "汇编配置文件信息时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "运行硬件配置文件时出错"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "填充配置文件时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "必须为此配置文件选择一个名称。"
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "创建配置文件时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr "正在注册系统并发送配置文件信息。请稍候。"
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "正在注册系统"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
 msgid "Problem registering system:\n"
 msgstr "注册系统时出现问题：\n"
 
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr "提供的安装号 [ %s ] 无效。请返回上一屏幕修正。"
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+#: ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
 msgstr "注册系统时出现问题。"
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+#: ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
 msgstr "将系统 ID 写出到磁盘时出现问题。"
 
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "注册此系统时出现问题。"
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "正在发送硬件信息"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "发送硬件信息时出现问题。"
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "正在发送软件包信息"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "发送软件包信息时出现问题。"
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#: ../src/up2date_client/tui.py:1058
 #, python-format
 msgid ""
 "Could not open %s\n"
@@ -397,89 +244,10 @@ msgstr ""
 "无法打开 %s\n"
 "未启用 %s。\n"
 
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "安装证书时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "必须选择一个证书。"
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr "发生 SSL 错误。这可能是因为选取的文件不是证书文件。"
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "安装新证书时出现问题：\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "未知"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "获取硬件列表时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#: ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "获取软件包列表时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "软件包"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "体系结构"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr "正在构建要在您系统上安装的 RPM 软件包列表。请稍候。"
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"装载配置时出错。请确保\n"
-"您对 /etc/sysconfig/rhn 拥有读取访问权限。"
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"保存配置时出错。请确保\n"
-"您拥有 %s。"
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"此错误不应发生。如果您想帮助我们改进此程序，请在 bugzilla.suse.com 上报告 "
-"Bug。最好是在您的报告中包含 \"%s\" 的相关部分。谢谢！"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -572,7 +340,7 @@ msgstr ""
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
 msgstr "为何要要连接到 {PRODUCT_NAME}？..."
 
-#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57
 msgid "Why Register"
 msgstr "为何要注册"
 
@@ -704,8 +472,7 @@ msgid "Please enter and verify a password."
 msgstr "请输入并确认口令。"
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
-#: ../data/rh_register.glade.h:142
+#: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System Release Version"
 msgstr "操作系统发行版"
 
@@ -722,7 +489,6 @@ msgid "Limited Updates Only"
 msgstr "仅限有限更新"
 
 #: ../src/up2date_client/rhnreg_constants.py:102
-#: ../data/rh_register.glade.h:151
 msgid "All available updates"
 msgstr "所有可用更新"
 
@@ -790,17 +556,14 @@ msgid "*Email Address:"
 msgstr "*电子邮件地址："
 
 #: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
 msgstr "系统已注册"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
-#: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
 msgstr "似乎已经为此系统设置了软件更新："
 
 #: ../src/up2date_client/rhnreg_constants.py:136
-#: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
 msgstr "您确定要继续吗？"
 
@@ -874,11 +637,11 @@ msgstr ""
 "南》中获取有关此操作的说明。）"
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Review Subscription"
 msgstr "复查订阅"
 
-#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169
 msgid "Please review the subscription details below:"
 msgstr "请复查以下订阅细节："
 
@@ -1202,12 +965,10 @@ msgid "Cancel"
 msgstr "取消"
 
 #: ../src/up2date_client/rhnreg_constants.py:310
-#: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
 msgstr "否，取消"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
-#: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
 msgstr "是，继续"
 
@@ -1401,31 +1162,9 @@ msgstr ""
 "    中将某个激活密钥设置为通用默认值，您可以\n"
 "    禁用此密钥并重试，以避免使用管理权利。"
 
-#: ../src/bin/rhn-profile-sync.py:37
-msgid ""
-"You need to register this system by running `rhn_register` before using this "
-"option"
-msgstr "在使用此选项之前，需要运行 `rhn_register` 来注册此系统"
-
-#: ../src/bin/rhn-profile-sync.py:45
-msgid "Updating package profile..."
-msgstr "正在更新软件包配置文件..."
-
-#: ../src/bin/rhn-profile-sync.py:48
-msgid "Updating hardware profile..."
-msgstr "正在更新硬件配置文件..."
-
-#: ../src/bin/rhn-profile-sync.py:52
-msgid "Updating virtualization profile..."
-msgstr "正在更新虚拟化配置文件..."
-
 #: ../src/bin/rhn_check.py:423
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "正在尝试运行多个 mgr_check 实例。正在退出。\n"
-
-#: ../src/bin/rhn_register.py:38
-msgid "Do not attempt to use X"
-msgstr "不要尝试使用 X"
 
 #: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
@@ -1533,850 +1272,869 @@ msgstr ""
 "未指定配置文件名称，并且无法确定主机名和 IP 地址是否可用作配置文件名称，请指"
 "定一个配置文件名称。"
 
-#: ../src/bin/spacewalk-channel.py:98
-msgid "name of channel you want to (un)subscribe"
-msgstr "要订阅（或取消订阅）的通道名称"
+#~ msgid "Error:"
+#~ msgstr "错误："
 
-#: ../src/bin/spacewalk-channel.py:100
-msgid "subscribe to channel"
-msgstr "订阅通道"
+#~ msgid "Yes/No dialog:"
+#~ msgstr "\"是/否\" 对话框："
 
-#: ../src/bin/spacewalk-channel.py:102
-msgid "unsubscribe from channel"
-msgstr "取消订阅通道"
+#~ msgid "Notice"
+#~ msgstr "注意"
 
-#: ../src/bin/spacewalk-channel.py:104
-msgid "list channels"
-msgstr "列出通道"
+#~ msgid "There was an error while applying your choice."
+#~ msgstr "应用您的选择时出错。"
 
-#: ../src/bin/spacewalk-channel.py:106
-msgid "show base channel of a system"
-msgstr "显示系统的基础通道"
+#~ msgid "You specified an invalid protocol. Only https and http are allowed."
+#~ msgstr "您指定了无效协议。只允许 https 和 http。"
 
-#: ../src/bin/spacewalk-channel.py:108
-msgid "list all available child channels"
-msgstr "列出所有可用的子通道"
+#~ msgid ""
+#~ "You will not be able to successfully register this system without "
+#~ "contacting a Spacewalk server."
+#~ msgstr "在不联系 Spacewalk 服务器的情况下无法成功注册此系统。"
 
-#: ../src/bin/spacewalk-channel.py:110
-msgid "verbose output"
-msgstr "详细输出"
+#~ msgid "Cannot contact selected server"
+#~ msgstr "无法联系所选服务器"
 
-#: ../src/bin/spacewalk-channel.py:112
-msgid "your user name"
-msgstr "您的用户名"
+#, python-brace-format
+#~ msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+#~ msgstr "无法联系 ”{HOST}\" 上的 {PRODUCT_NAME} 或 Proxy。"
 
-#: ../src/bin/spacewalk-channel.py:114
-msgid "your password"
-msgstr "您的口令"
-
-#: ../src/bin/spacewalk-channel.py:121
-msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr "错误：这些参数在此上下文中没有意义（请尝试 --help）"
-
-#: ../src/bin/spacewalk-channel.py:163
-msgid "ERROR: you have to specify at least one channel"
-msgstr "错误：必须至少指定一个通道"
-
-#: ../src/bin/spacewalk-channel.py:169
-msgid "ERROR: this action does not require channel"
-msgstr "ERROR：此操作不需要通道"
-
-#: ../src/bin/spacewalk-channel.py:176
 #, python-format
-msgid "Channel(s): %s successfully added"
-msgstr "已成功添加通道：%s"
+#~ msgid ""
+#~ "Double-check the location - is '%s' correct? If not, you can correct it "
+#~ "and try again."
+#~ msgstr "请反复检查位置 - '%s' 是否正确？如果不正确，请更正后重试。"
 
-#: ../src/bin/spacewalk-channel.py:178
+#~ msgid "Make sure the network connection on this system is operational."
+#~ msgstr "确保此系统上的网络连接正常。"
+
+#~ msgid "There was an error communicating with Spacewalk server."
+#~ msgstr "与 Spacewalk 服务器通讯时出错。"
+
+#~ msgid ""
+#~ "The server may be in outage mode. You may have to try connecting later."
+#~ msgstr "该服务器可能处于服务中断模式。您可以需要稍后尝试连接。"
+
+#~ msgid "You may be running a client that is incompatible with the server."
+#~ msgstr "您可能正在运行一个与服务器不兼容的客户端。"
+
 #, python-format
-msgid "Error during adding channel(s) %s"
-msgstr "添加通道 %s 期间出错"
+#~ msgid ""
+#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgstr "请输入您的 <b>%s</b> Spacewalk 服务器帐户信息："
 
-#: ../src/bin/spacewalk-channel.py:185
+#~ msgid "You must enter a login."
+#~ msgstr "必须输入登录名。"
+
+#~ msgid "You must enter a password."
+#~ msgstr "必须输入口令。"
+
+#~ msgid "There was an error while logging in."
+#~ msgstr "登录时出错。"
+
+#~ msgid ""
+#~ "There was an error communicating with the registration server.  The "
+#~ "message was:\n"
+#~ msgstr "与注册服务器通讯时出错。消息：\n"
+
+#~ msgid "There was an error while assembling information for the profile."
+#~ msgstr "汇编配置文件信息时出错。"
+
+#~ msgid "Error running hardware profile"
+#~ msgstr "运行硬件配置文件时出错"
+
+#~ msgid "There was an error while populating the profile."
+#~ msgstr "填充配置文件时出错。"
+
+#~ msgid "You must choose a name for this profile."
+#~ msgstr "必须为此配置文件选择一个名称。"
+
+#~ msgid "There was an error while creating the profile."
+#~ msgstr "创建配置文件时出错。"
+
+#~ msgid "Registering system and sending profile information.  Please wait."
+#~ msgstr "正在注册系统并发送配置文件信息。请稍候。"
+
+#~ msgid "Registering System"
+#~ msgstr "正在注册系统"
+
 #, python-format
-msgid "Channel(s): %s successfully removed"
-msgstr "已成功去除通道：%s"
+#~ msgid ""
+#~ "The installation number [ %s ] provided is not a valid installation "
+#~ "number. Please go back to the previous screen and fix it."
+#~ msgstr "提供的安装号 [ %s ] 无效。请返回上一屏幕修正。"
 
-#: ../src/bin/spacewalk-channel.py:187
+#~ msgid "There was a problem registering this system."
+#~ msgstr "注册此系统时出现问题。"
+
+#~ msgid "Sending hardware information"
+#~ msgstr "正在发送硬件信息"
+
+#~ msgid "Problem sending hardware information."
+#~ msgstr "发送硬件信息时出现问题。"
+
+#~ msgid "Sending package information"
+#~ msgstr "正在发送软件包信息"
+
+#~ msgid "Problem sending package information."
+#~ msgstr "发送软件包信息时出现问题。"
+
+#~ msgid "There was an error while installing the certificate."
+#~ msgstr "安装证书时出错。"
+
+#~ msgid "You must select a certificate."
+#~ msgstr "必须选择一个证书。"
+
+#~ msgid ""
+#~ "There was an SSL error. This could be because the file you picked was not "
+#~ "a certificate file."
+#~ msgstr "发生 SSL 错误。这可能是因为选取的文件不是证书文件。"
+
+#~ msgid "Something went wrong while installing the new certificate:\n"
+#~ msgstr "安装新证书时出现问题：\n"
+
+#~ msgid "unknown"
+#~ msgstr "未知"
+
+#~ msgid "There was an error getting the list of hardware."
+#~ msgstr "获取硬件列表时出错。"
+
 #, python-format
-msgid "Error during removal of channel(s) %s"
-msgstr "删除通道 %s 期间出错"
-
-#: ../src/bin/spacewalk-channel.py:194
-msgid "This system is not associated with any channel."
-msgstr "此系统未与任何通道相关联。"
-
-#: ../src/bin/spacewalk-channel.py:196
-msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr "找不到 SystemId 文件。此系统是否已注册？"
-
-#: ../src/bin/spacewalk-channel.py:229
-msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr "错误：请指定 --add、--remove 或 --list"
-
-#: ../src/bin/spacewalk-channel.py:234
-msgid "ERROR: must be root to execute\n"
-msgstr "错误：只有 root 用户可以执行\n"
-
-#: ../src/bin/spacewalk-channel.py:239
-msgid "User interrupted process."
-msgstr "用户中断了进程。"
-
-#: ../data/gui.glade.h:1
-msgid "System registration"
-msgstr "系统注册"
-
-#: ../data/gui.glade.h:2
-msgid "Set Up Software Updates"
-msgstr "设置软件更新"
-
-#: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
-msgid "Choose Service"
-msgstr "选择服务"
-
-#: ../data/gui.glade.h:4
-msgid "Provide a security certificate"
-msgstr "提供安全证书"
-
-#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
-msgid "Red Hat Account"
-msgstr "Red Hat 帐户"
-
-#: ../data/gui.glade.h:7
-msgid "Create Profile"
-msgstr "创建配置文件"
-
-#: ../data/progress.glade.h:1
-msgid "Sending Information"
-msgstr "正在发送信息"
-
-#: ../data/progress.glade.h:2
-msgid "progress bar"
-msgstr "进度条"
-
-#: ../data/progress.glade.h:3
-msgid "progress status"
-msgstr "进度状态"
-
-#: ../data/rh_register.glade.h:1
-msgid ""
-"<b>The network connection on your system is not active. Your system cannot "
-"be set up for software updates at this time.</b>"
-msgstr ""
-"<b>您系统上的网络连接处于非活动状态。目前无法为您的系统设置软件更新。</b>"
-
-#: ../data/rh_register.glade.h:2
-msgid ""
-"This system will <b>not</b> be able to successfully receive software "
-"updates, including security updates, from Red Hat without connecting to a "
-"Red Hat Satellite or Red Hat Network Classic.\n"
-"\n"
-"To keep your system updated, secure, and supported, please register this "
-"system at your earliest convenience."
-msgstr ""
-"在不连接到 Red Hat Satellite 或 Red Hat Network Classic 的情况下，此系统<b>无"
-"法</b>成功接收软件更新（包括安全更新）。\n"
-"\n"
-"为使您的系统保持更新、安全且受支持状态，请尽早注册此系统。"
-
-#: ../data/rh_register.glade.h:5
-msgid "Why Should I Connect to RHN? ..."
-msgstr "为何要要连接到 RHN？..."
-
-#: ../data/rh_register.glade.h:7
-msgid ""
-"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr "我想要注册到 Red Hat Satellite 或 Red Hat Satellite Proxy"
-
-#: ../data/rh_register.glade.h:8
-msgid "Location:"
-msgstr "位置："
-
-#: ../data/rh_register.glade.h:9
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "示例：https://satellite.example.com/XMLRPC"
-
-#: ../data/rh_register.glade.h:10
-msgid "satellite server location"
-msgstr "从属服务器位置"
-
-#: ../data/rh_register.glade.h:11
-msgid "_Proxy Setup"
-msgstr "代理设置(_P)"
-
-#: ../data/rh_register.glade.h:12
-msgid "Proxy Setup Button"
-msgstr "代理设置按钮"
-
-#: ../data/rh_register.glade.h:14
-msgid "Please enter your Red Hat account information:"
-msgstr "请输入您的 Red Hat 帐户信息："
-
-#: ../data/rh_register.glade.h:15
-msgid "RHN login field"
-msgstr "RHN 登录名字段"
-
-#: ../data/rh_register.glade.h:16
-msgid "RHN password field"
-msgstr "RHN 口令字段"
-
-#: ../data/rh_register.glade.h:17
-msgid "_Password:"
-msgstr "口令(_P)："
-
-#: ../data/rh_register.glade.h:18
-msgid "_Login:"
-msgstr "登录(_L)："
-
-#: ../data/rh_register.glade.h:19
-msgid ""
-"<small>Tip: Forgot your login or password? Contact your Satellite's "
-"<i>Organization Administrator</i>.</small>"
-msgstr ""
-"<small>提示：忘记了用户名或口令？请联系您的 Satellite <i>组织管理员</i>。</"
-"small>"
-
-#: ../data/rh_register.glade.h:20
-msgid "Hardware Info"
-msgstr "硬件信息"
-
-#: ../data/rh_register.glade.h:21
-msgid "Red Hat Linux Version:"
-msgstr "Red Hat Linux 版本："
-
-#: ../data/rh_register.glade.h:22
-msgid "Hostname:"
-msgstr "主机名："
-
-#: ../data/rh_register.glade.h:23
-msgid "IP Address:"
-msgstr "IP 地址："
-
-#: ../data/rh_register.glade.h:24
-msgid "ERROR"
-msgstr "错误"
-
-#: ../data/rh_register.glade.h:25
-msgid "CPU Model:"
-msgstr "CPU 型号："
-
-#: ../data/rh_register.glade.h:26
-msgid "CPU Speed:"
-msgstr "CPU 速度："
-
-#: ../data/rh_register.glade.h:27
-msgid "Memory:"
-msgstr "内存："
-
-#: ../data/rh_register.glade.h:28
-msgid "Hardware Profile"
-msgstr "硬件配置文件"
-
-#: ../data/rh_register.glade.h:29
-msgid "Package Information"
-msgstr "软件包信息"
-
-#: ../data/rh_register.glade.h:30
-msgid "Start Window"
-msgstr "开始窗口"
-
-#: ../data/rh_register.glade.h:31
-msgid ""
-"This assistant will guide you through the process of registering your system "
-"with Red Hat to receive software updates and other benefits. You will need "
-"the following to register:"
-msgstr ""
-"此助手会引导您完成将系统注册到 Red Hat 的过程，这可以让您获得软件更新和其他好"
-"处。需要准备好以下各项才能注册："
-
-#: ../data/rh_register.glade.h:32
-msgid "• A network connection"
-msgstr "• 网络连接"
-
-#: ../data/rh_register.glade.h:33
-msgid "• Your account login"
-msgstr "• 您的帐户登录名"
-
-#: ../data/rh_register.glade.h:34
-msgid "Your account login"
-msgstr "您的帐户登录名"
-
-#: ../data/rh_register.glade.h:35
-msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr "• Red Hat Satellite 或 Red Hat Satellite Proxy 的地址"
-
-#: ../data/rh_register.glade.h:36
-msgid "_Why Should I Register?"
-msgstr "为何要注册(_W)？"
-
-#: ../data/rh_register.glade.h:37
-msgid "Why Should I Register?"
-msgstr "为何要注册？"
-
-#: ../data/rh_register.glade.h:38
-msgid ""
-"Would you like to register your system at this time? <b>(Strongly "
-"recommended.)</b>"
-msgstr "您现在就要注册系统吗？<b>（强烈建议）</b>"
-
-#: ../data/rh_register.glade.h:39
-msgid "_Yes, I'd like to register now."
-msgstr "是，我想立即注册(_Y)。"
-
-#: ../data/rh_register.glade.h:40
-msgid "_No, I prefer to register at a later time."
-msgstr "否，我想以后再注册(_N)。"
-
-#: ../data/rh_register.glade.h:41
-msgid "Link To Subscription"
-msgstr "链接到订阅"
-
-#: ../data/rh_register.glade.h:42
-msgid ""
-"Your system will need to access a subscription. This will allow you to keep "
-"your system updated, secure, and supported."
-msgstr ""
-"您的系统需要访问某个订阅。这样，您就可以将系统保持更新、安全且受支持的状态。"
-
-#: ../data/rh_register.glade.h:43
-msgid ""
-"<b>You have no active subscriptions available in your account.</b> You will "
-"need to do one of the following to create an active subscription in your "
-"account before this system can be registered:"
-msgstr ""
-"<b>您的帐户中没有可用的活动订阅。</b>在可以注册此系统之前，需要执行以下操作之"
-"一，以在您的帐户中创建一个活动订阅："
-
-#: ../data/rh_register.glade.h:44
-msgid ""
-"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
-"redhat.com/store/."
-msgstr ""
-"通过 http://www.redhat.com/store/ 购买额外的 Red Hat Enterprise Linux 订阅。"
-
-#: ../data/rh_register.glade.h:45
-msgid ""
-"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-msgstr ""
-"登录到 http://rhn.redhat.com/，并通过 \"您的 RHN\" > \"订阅管理\" > \"系统权"
-"利\" 取消赋权某个非活动的系统。"
-
-#: ../data/rh_register.glade.h:46
-msgid ""
-"Activate a previously purchased subscription you have not yet activated."
-msgstr "激活以前已购买的但尚未激活的订阅。"
-
-#: ../data/rh_register.glade.h:47
-msgid "•"
-msgstr "•"
-
-#: ../data/rh_register.glade.h:48
-msgid "installation number field"
-msgstr "安装号字段"
-
-#: ../data/rh_register.glade.h:49
-msgid "Installation _Number:"
-msgstr "安装号(_N)："
-
-#: ../data/rh_register.glade.h:50
-msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr "<small><b>示例</b>：XXXX-XXXX-XXXX-XXXX</small>"
-
-#: ../data/rh_register.glade.h:51
-msgid "_Activate a subscription now..."
-msgstr "立即激活订阅(_A)..."
-
-#: ../data/rh_register.glade.h:52
-msgid "Review system..."
-msgstr "复查系统..."
-
-#: ../data/rh_register.glade.h:54
-msgid "Create profile"
-msgstr "创建配置文件"
-
-#: ../data/rh_register.glade.h:55
-msgid "<big><b>System Name</b></big>"
-msgstr "<big><b>系统名</b></big>"
-
-#: ../data/rh_register.glade.h:56
-msgid ""
-"A recognizable name will help you identify this system in a management "
-"interface."
-msgstr "可识别的名称可以帮助您在管理界面中识别此系统。"
-
-#: ../data/rh_register.glade.h:57
-msgid "System _Name:"
-msgstr "系统名(_N)："
-
-#: ../data/rh_register.glade.h:58
-msgid "system name"
-msgstr "系统名"
-
-#: ../data/rh_register.glade.h:59
-msgid "<big><b>Profile Data</b></big>"
-msgstr "<big><b>配置文件数据</b></big>"
-
-#: ../data/rh_register.glade.h:60
-msgid ""
-"Send us a profile of your current hardware and packages so we can determine "
-"what updates are available."
-msgstr "请将当前硬件和软件包的配置文件发送给我们，好让我们确定有哪些更新可用。"
-
-#: ../data/rh_register.glade.h:61
-msgid "_View Hardware Profile ..."
-msgstr "查看硬件配置文件(_V)..."
-
-#: ../data/rh_register.glade.h:62
-msgid "View Hardware Profile"
-msgstr "查看硬件配置文件"
-
-#: ../data/rh_register.glade.h:63
-msgid "V_iew Package Profile ..."
-msgstr "查看软件包配置文件(_I)..."
-
-#: ../data/rh_register.glade.h:64
-msgid "View Package Profile"
-msgstr "查看软件包配置文件"
-
-#: ../data/rh_register.glade.h:65
-msgid "Send _hardware profile"
-msgstr "发送硬件配置文件(_H)"
-
-#: ../data/rh_register.glade.h:66
-msgid "Send hardware profile checkbox"
-msgstr "\"发送硬件配置文件\" 复选框"
-
-#: ../data/rh_register.glade.h:67
-msgid "Send _package profile"
-msgstr "发送软件包配置文件(_P)"
-
-#: ../data/rh_register.glade.h:68
-msgid "Send package profile checkbox"
-msgstr "\"发送软件包配置文件\" 复选框"
-
-#: ../data/rh_register.glade.h:70
-msgid ""
-"Registering your system with Red Hat allows you to take full advantage of "
-"the benefits of a paid subscription, including:"
-msgstr "将系统注册到 Red Hat 可以充分利用付费订阅所带来的好处，包括："
-
-#: ../data/rh_register.glade.h:71
-msgid "_Close"
-msgstr "关闭(_C)"
-
-#: ../data/rh_register.glade.h:72
-msgid "Close"
-msgstr "关闭"
-
-#: ../data/rh_register.glade.h:73
-msgid "<b>Security &amp; Updates:</b>"
-msgstr "<b>安全性和更新：</b>"
-
-#: ../data/rh_register.glade.h:74
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr ""
-"接收最新的软件更新（包括安全更新），使此 Red Hat Enterprise Linux 系统保持<b>"
-"更新</b>且<b>安全</b>的状态。"
-
-#: ../data/rh_register.glade.h:75
-msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr "<b>软件下载和升级：</b>"
-
-#: ../data/rh_register.glade.h:76
-msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
-msgstr "下载 Red Hat Enterprise Linux 发行版（包括新发行版）的安装映像。"
-
-#: ../data/rh_register.glade.h:77
-msgid "<b>Support:</b>"
-msgstr "<b>支持：</b>"
-
-#: ../data/rh_register.glade.h:78
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
-"在使用此系统时如果遇到任何问题，可以向 Red Hat or Red Hat 合作伙伴的技术支持"
-"专家求助。"
-
-#: ../data/rh_register.glade.h:79
-msgid "<b>Management:</b>"
-msgstr "<b>管理：</b>"
-
-#: ../data/rh_register.glade.h:80
-msgid "Management"
-msgstr "管理"
-
-#: ../data/rh_register.glade.h:81
-msgid ""
-"Manage subscriptions and systems registered to Customer Portal via access."
-"redhat.com or through one of our other subscription management services."
-msgstr ""
-"通过 access.redhat.com 或者我们的其他订阅管理服务之一来管理已注册到客户门户的"
-"订阅和系统。"
-
-#: ../data/rh_register.glade.h:82
-msgid ""
-"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html.</small>"
-msgstr ""
-"<small><b>提示：</b>Red Hat 非常重视您的隐私：http://www.redhat.com/legal/"
-"privacy_statement.html</small>"
-
-#: ../data/rh_register.glade.h:83
-msgid "Provide a Security Certificate"
-msgstr "提供安全证书"
-
-#: ../data/rh_register.glade.h:85
+#~ msgid "%s MB"
+#~ msgstr "%s MB"
+
+#~ msgid "There was an error building the list of packages."
+#~ msgstr "获取软件包列表时出错。"
+
+#~ msgid "Package"
+#~ msgstr "软件包"
+
+#~ msgid "Arch"
+#~ msgstr "体系结构"
+
+#~ msgid ""
+#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr "正在构建要在您系统上安装的 RPM 软件包列表。请稍候。"
+
+#~ msgid ""
+#~ "There was an error loading your configuration.  Make sure that\n"
+#~ "you have read access to /etc/sysconfig/rhn."
+#~ msgstr ""
+#~ "装载配置时出错。请确保\n"
+#~ "您对 /etc/sysconfig/rhn 拥有读取访问权限。"
+
+#, python-format
+#~ msgid ""
+#~ "There was an error saving your configuration. Make sure that\n"
+#~ "you own %s."
+#~ msgstr ""
+#~ "保存配置时出错。请确保\n"
+#~ "您拥有 %s。"
+
+#, python-format
+#~ msgid ""
+#~ "This error shouldn't have happened. If you'd like to help us improve this "
+#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
+#~ "parts of '%s' would be very helpful. Thanks!"
+#~ msgstr ""
+#~ "此错误不应发生。如果您想帮助我们改进此程序，请在 bugzilla.suse.com 上报告 "
+#~ "Bug。最好是在您的报告中包含 \"%s\" 的相关部分。谢谢！"
+
+#~ msgid ""
+#~ "You need to register this system by running `rhn_register` before using "
+#~ "this option"
+#~ msgstr "在使用此选项之前，需要运行 `rhn_register` 来注册此系统"
+
+#~ msgid "Updating package profile..."
+#~ msgstr "正在更新软件包配置文件..."
+
+#~ msgid "Updating hardware profile..."
+#~ msgstr "正在更新硬件配置文件..."
+
+#~ msgid "Updating virtualization profile..."
+#~ msgstr "正在更新虚拟化配置文件..."
+
+#~ msgid "Do not attempt to use X"
+#~ msgstr "不要尝试使用 X"
+
+#~ msgid "name of channel you want to (un)subscribe"
+#~ msgstr "要订阅（或取消订阅）的通道名称"
+
+#~ msgid "subscribe to channel"
+#~ msgstr "订阅通道"
+
+#~ msgid "unsubscribe from channel"
+#~ msgstr "取消订阅通道"
+
+#~ msgid "list channels"
+#~ msgstr "列出通道"
+
+#~ msgid "show base channel of a system"
+#~ msgstr "显示系统的基础通道"
+
+#~ msgid "list all available child channels"
+#~ msgstr "列出所有可用的子通道"
+
+#~ msgid "verbose output"
+#~ msgstr "详细输出"
+
+#~ msgid "your user name"
+#~ msgstr "您的用户名"
+
+#~ msgid "your password"
+#~ msgstr "您的口令"
+
+#~ msgid "ERROR: these arguments make no sense in this context (try --help)"
+#~ msgstr "错误：这些参数在此上下文中没有意义（请尝试 --help）"
+
+#~ msgid "ERROR: you have to specify at least one channel"
+#~ msgstr "错误：必须至少指定一个通道"
+
+#~ msgid "ERROR: this action does not require channel"
+#~ msgstr "ERROR：此操作不需要通道"
+
+#, python-format
+#~ msgid "Channel(s): %s successfully added"
+#~ msgstr "已成功添加通道：%s"
+
+#, python-format
+#~ msgid "Error during adding channel(s) %s"
+#~ msgstr "添加通道 %s 期间出错"
+
+#, python-format
+#~ msgid "Channel(s): %s successfully removed"
+#~ msgstr "已成功去除通道：%s"
+
+#, python-format
+#~ msgid "Error during removal of channel(s) %s"
+#~ msgstr "删除通道 %s 期间出错"
+
+#~ msgid "This system is not associated with any channel."
+#~ msgstr "此系统未与任何通道相关联。"
+
+#~ msgid "Unable to locate SystemId file. Is this system registered?"
+#~ msgstr "找不到 SystemId 文件。此系统是否已注册？"
+
+#~ msgid "ERROR: you may want to specify --add, --remove or --list"
+#~ msgstr "错误：请指定 --add、--remove 或 --list"
+
+#~ msgid "ERROR: must be root to execute\n"
+#~ msgstr "错误：只有 root 用户可以执行\n"
+
+#~ msgid "User interrupted process."
+#~ msgstr "用户中断了进程。"
+
+#~ msgid "System registration"
+#~ msgstr "系统注册"
+
+#~ msgid "Set Up Software Updates"
+#~ msgstr "设置软件更新"
+
+#~ msgid "Choose Service"
+#~ msgstr "选择服务"
+
+#~ msgid "Provide a security certificate"
+#~ msgstr "提供安全证书"
+
+#~ msgid "Red Hat Account"
+#~ msgstr "Red Hat 帐户"
+
+#~ msgid "Create Profile"
+#~ msgstr "创建配置文件"
+
+#~ msgid "Sending Information"
+#~ msgstr "正在发送信息"
+
+#~ msgid "progress bar"
+#~ msgstr "进度条"
+
+#~ msgid "progress status"
+#~ msgstr "进度状态"
+
+#~ msgid ""
+#~ "<b>The network connection on your system is not active. Your system "
+#~ "cannot be set up for software updates at this time.</b>"
+#~ msgstr ""
+#~ "<b>您系统上的网络连接处于非活动状态。目前无法为您的系统设置软件更新。</b>"
+
+#~ msgid ""
+#~ "This system will <b>not</b> be able to successfully receive software "
+#~ "updates, including security updates, from Red Hat without connecting to a "
+#~ "Red Hat Satellite or Red Hat Network Classic.\n"
+#~ "\n"
+#~ "To keep your system updated, secure, and supported, please register this "
+#~ "system at your earliest convenience."
+#~ msgstr ""
+#~ "在不连接到 Red Hat Satellite 或 Red Hat Network Classic 的情况下，此系统"
+#~ "<b>无法</b>成功接收软件更新（包括安全更新）。\n"
+#~ "\n"
+#~ "为使您的系统保持更新、安全且受支持状态，请尽早注册此系统。"
+
+#~ msgid "Why Should I Connect to RHN? ..."
+#~ msgstr "为何要要连接到 RHN？..."
+
+#~ msgid ""
+#~ "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
+#~ msgstr "我想要注册到 Red Hat Satellite 或 Red Hat Satellite Proxy"
+
+#~ msgid "Location:"
+#~ msgstr "位置："
+
+#~ msgid "Example: https://satellite.example.com/XMLRPC"
+#~ msgstr "示例：https://satellite.example.com/XMLRPC"
+
+#~ msgid "satellite server location"
+#~ msgstr "从属服务器位置"
+
+#~ msgid "_Proxy Setup"
+#~ msgstr "代理设置(_P)"
+
+#~ msgid "Proxy Setup Button"
+#~ msgstr "代理设置按钮"
+
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "请输入您的 Red Hat 帐户信息："
+
+#~ msgid "RHN login field"
+#~ msgstr "RHN 登录名字段"
+
+#~ msgid "RHN password field"
+#~ msgstr "RHN 口令字段"
+
+#~ msgid "_Password:"
+#~ msgstr "口令(_P)："
+
+#~ msgid "_Login:"
+#~ msgstr "登录(_L)："
+
+#~ msgid ""
+#~ "<small>Tip: Forgot your login or password? Contact your Satellite's "
+#~ "<i>Organization Administrator</i>.</small>"
+#~ msgstr ""
+#~ "<small>提示：忘记了用户名或口令？请联系您的 Satellite <i>组织管理员</i>。"
+#~ "</small>"
+
+#~ msgid "Hardware Info"
+#~ msgstr "硬件信息"
+
+#~ msgid "Red Hat Linux Version:"
+#~ msgstr "Red Hat Linux 版本："
+
+#~ msgid "Hostname:"
+#~ msgstr "主机名："
+
+#~ msgid "IP Address:"
+#~ msgstr "IP 地址："
+
+#~ msgid "ERROR"
+#~ msgstr "错误"
+
+#~ msgid "CPU Model:"
+#~ msgstr "CPU 型号："
+
+#~ msgid "CPU Speed:"
+#~ msgstr "CPU 速度："
+
+#~ msgid "Memory:"
+#~ msgstr "内存："
+
+#~ msgid "Hardware Profile"
+#~ msgstr "硬件配置文件"
+
+#~ msgid "Package Information"
+#~ msgstr "软件包信息"
+
+#~ msgid "Start Window"
+#~ msgstr "开始窗口"
+
+#~ msgid ""
+#~ "This assistant will guide you through the process of registering your "
+#~ "system with Red Hat to receive software updates and other benefits. You "
+#~ "will need the following to register:"
+#~ msgstr ""
+#~ "此助手会引导您完成将系统注册到 Red Hat 的过程，这可以让您获得软件更新和其"
+#~ "他好处。需要准备好以下各项才能注册："
+
+#~ msgid "• A network connection"
+#~ msgstr "• 网络连接"
+
+#~ msgid "• Your account login"
+#~ msgstr "• 您的帐户登录名"
+
+#~ msgid "Your account login"
+#~ msgstr "您的帐户登录名"
+
+#~ msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
+#~ msgstr "• Red Hat Satellite 或 Red Hat Satellite Proxy 的地址"
+
+#~ msgid "_Why Should I Register?"
+#~ msgstr "为何要注册(_W)？"
+
+#~ msgid "Why Should I Register?"
+#~ msgstr "为何要注册？"
+
+#~ msgid ""
+#~ "Would you like to register your system at this time? <b>(Strongly "
+#~ "recommended.)</b>"
+#~ msgstr "您现在就要注册系统吗？<b>（强烈建议）</b>"
+
+#~ msgid "_Yes, I'd like to register now."
+#~ msgstr "是，我想立即注册(_Y)。"
+
+#~ msgid "_No, I prefer to register at a later time."
+#~ msgstr "否，我想以后再注册(_N)。"
+
+#~ msgid "Link To Subscription"
+#~ msgstr "链接到订阅"
+
+#~ msgid ""
+#~ "Your system will need to access a subscription. This will allow you to "
+#~ "keep your system updated, secure, and supported."
+#~ msgstr ""
+#~ "您的系统需要访问某个订阅。这样，您就可以将系统保持更新、安全且受支持的状"
+#~ "态。"
+
+#~ msgid ""
+#~ "<b>You have no active subscriptions available in your account.</b> You "
+#~ "will need to do one of the following to create an active subscription in "
+#~ "your account before this system can be registered:"
+#~ msgstr ""
+#~ "<b>您的帐户中没有可用的活动订阅。</b>在可以注册此系统之前，需要执行以下操"
+#~ "作之一，以在您的帐户中创建一个活动订阅："
+
+#~ msgid ""
+#~ "Purchase an additional Red Hat Enterprise Linux subscription at http://"
+#~ "www.redhat.com/store/."
+#~ msgstr ""
+#~ "通过 http://www.redhat.com/store/ 购买额外的 Red Hat Enterprise Linux 订"
+#~ "阅。"
+
+#~ msgid ""
+#~ "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
+#~ "RHN > Subscription Management > System Entitlements."
+#~ msgstr ""
+#~ "登录到 http://rhn.redhat.com/，并通过 \"您的 RHN\" > \"订阅管理\" > \"系统"
+#~ "权利\" 取消赋权某个非活动的系统。"
+
+#~ msgid ""
+#~ "Activate a previously purchased subscription you have not yet activated."
+#~ msgstr "激活以前已购买的但尚未激活的订阅。"
+
+#~ msgid "•"
+#~ msgstr "•"
+
+#~ msgid "installation number field"
+#~ msgstr "安装号字段"
+
+#~ msgid "Installation _Number:"
+#~ msgstr "安装号(_N)："
+
+#~ msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
+#~ msgstr "<small><b>示例</b>：XXXX-XXXX-XXXX-XXXX</small>"
+
+#~ msgid "_Activate a subscription now..."
+#~ msgstr "立即激活订阅(_A)..."
+
+#~ msgid "Review system..."
+#~ msgstr "复查系统..."
+
+#~ msgid "Create profile"
+#~ msgstr "创建配置文件"
+
+#~ msgid "<big><b>System Name</b></big>"
+#~ msgstr "<big><b>系统名</b></big>"
+
+#~ msgid ""
+#~ "A recognizable name will help you identify this system in a management "
+#~ "interface."
+#~ msgstr "可识别的名称可以帮助您在管理界面中识别此系统。"
+
+#~ msgid "System _Name:"
+#~ msgstr "系统名(_N)："
+
+#~ msgid "system name"
+#~ msgstr "系统名"
+
+#~ msgid "<big><b>Profile Data</b></big>"
+#~ msgstr "<big><b>配置文件数据</b></big>"
+
+#~ msgid ""
+#~ "Send us a profile of your current hardware and packages so we can "
+#~ "determine what updates are available."
+#~ msgstr ""
+#~ "请将当前硬件和软件包的配置文件发送给我们，好让我们确定有哪些更新可用。"
+
+#~ msgid "_View Hardware Profile ..."
+#~ msgstr "查看硬件配置文件(_V)..."
+
+#~ msgid "View Hardware Profile"
+#~ msgstr "查看硬件配置文件"
+
+#~ msgid "V_iew Package Profile ..."
+#~ msgstr "查看软件包配置文件(_I)..."
+
+#~ msgid "View Package Profile"
+#~ msgstr "查看软件包配置文件"
+
+#~ msgid "Send _hardware profile"
+#~ msgstr "发送硬件配置文件(_H)"
+
+#~ msgid "Send hardware profile checkbox"
+#~ msgstr "\"发送硬件配置文件\" 复选框"
+
+#~ msgid "Send _package profile"
+#~ msgstr "发送软件包配置文件(_P)"
+
+#~ msgid "Send package profile checkbox"
+#~ msgstr "\"发送软件包配置文件\" 复选框"
+
+#~ msgid ""
+#~ "Registering your system with Red Hat allows you to take full advantage of "
+#~ "the benefits of a paid subscription, including:"
+#~ msgstr "将系统注册到 Red Hat 可以充分利用付费订阅所带来的好处，包括："
+
+#~ msgid "_Close"
+#~ msgstr "关闭(_C)"
+
+#~ msgid "Close"
+#~ msgstr "关闭"
+
+#~ msgid "<b>Security &amp; Updates:</b>"
+#~ msgstr "<b>安全性和更新：</b>"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
+#~ msgstr ""
+#~ "接收最新的软件更新（包括安全更新），使此 Red Hat Enterprise Linux 系统保持"
+#~ "<b>更新</b>且<b>安全</b>的状态。"
+
+#~ msgid "<b>Downloads &amp; Upgrades:</b>"
+#~ msgstr "<b>软件下载和升级：</b>"
+
+#~ msgid ""
+#~ "Download installation images for Red Hat Enterprise Linux releases, "
+#~ "including new releases."
+#~ msgstr "下载 Red Hat Enterprise Linux 发行版（包括新发行版）的安装映像。"
+
+#~ msgid "<b>Support:</b>"
+#~ msgstr "<b>支持：</b>"
+
+#~ msgid ""
+#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
+#~ "for help with any issues you might encounter with this system."
+#~ msgstr ""
+#~ "在使用此系统时如果遇到任何问题，可以向 Red Hat or Red Hat 合作伙伴的技术支"
+#~ "持专家求助。"
+
+#~ msgid "<b>Management:</b>"
+#~ msgstr "<b>管理：</b>"
+
+#~ msgid "Management"
+#~ msgstr "管理"
+
+#~ msgid ""
+#~ "Manage subscriptions and systems registered to Customer Portal via access."
+#~ "redhat.com or through one of our other subscription management services."
+#~ msgstr ""
+#~ "通过 access.redhat.com 或者我们的其他订阅管理服务之一来管理已注册到客户门"
+#~ "户的订阅和系统。"
+
+#~ msgid ""
+#~ "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/"
+#~ "legal/privacy_statement.html.</small>"
+#~ msgstr ""
+#~ "<small><b>提示：</b>Red Hat 非常重视您的隐私：http://www.redhat.com/legal/"
+#~ "privacy_statement.html</small>"
+
+#~ msgid "Provide a Security Certificate"
+#~ msgstr "提供安全证书"
+
 #, no-c-format
-msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this "
-"system.\n"
-"\n"
-"A security certificate, using SSL technology, is necessary to ensure that "
-"data communicated between this system and Spacewalk (including your login "
-"and password) is secure."
-msgstr ""
-"在此系统上找不到与 <b>%s</b> 兼容的安全证书。\n"
-"\n"
-"必须提供一个使用 SSL 技术的安全证书才能确保此系统与 Spacewalk 之间传送的数据"
-"（包括您的登录名和口令）安全。"
+#~ msgid ""
+#~ "A security certificate compatible with <b>%s</b> was not found on this "
+#~ "system.\n"
+#~ "\n"
+#~ "A security certificate, using SSL technology, is necessary to ensure that "
+#~ "data communicated between this system and Spacewalk (including your login "
+#~ "and password) is secure."
+#~ msgstr ""
+#~ "在此系统上找不到与 <b>%s</b> 兼容的安全证书。\n"
+#~ "\n"
+#~ "必须提供一个使用 SSL 技术的安全证书才能确保此系统与 Spacewalk 之间传送的数"
+#~ "据（包括您的登录名和口令）安全。"
 
-#: ../data/rh_register.glade.h:88
-msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr "我已有一个可用来与 Spacewalk 通讯的 <b>SSL 证书</b>(_S)："
+#~ msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
+#~ msgstr "我已有一个可用来与 Spacewalk 通讯的 <b>SSL 证书</b>(_S)："
 
-#: ../data/rh_register.glade.h:89
-msgid "Certificate _Location:"
-msgstr "证书位置(_L)："
+#~ msgid "Certificate _Location:"
+#~ msgstr "证书位置(_L)："
 
-#: ../data/rh_register.glade.h:90
-msgid "Select A File"
-msgstr "选择文件"
+#~ msgid "Select A File"
+#~ msgstr "选择文件"
 
-#: ../data/rh_register.glade.h:91
-msgid ""
-"I <b>_don't</b> have an SSL certificate. I will contact my system "
-"administrator for assistance and will register at a later time."
-msgstr ""
-"我<b>没有</b> SSL 证书。我将联系我的系统管理员来寻求帮助，并在以后再注册"
-"(_D)。"
+#~ msgid ""
+#~ "I <b>_don't</b> have an SSL certificate. I will contact my system "
+#~ "administrator for assistance and will register at a later time."
+#~ msgstr ""
+#~ "我<b>没有</b> SSL 证书。我将联系我的系统管理员来寻求帮助，并在以后再注册"
+#~ "(_D)。"
 
-#: ../data/rh_register.glade.h:92
-msgid "Your system is not setup for software updates."
-msgstr "未为您的系统设置软件更新。"
+#~ msgid "Your system is not setup for software updates."
+#~ msgstr "未为您的系统设置软件更新。"
 
-#: ../data/rh_register.glade.h:93
-msgid ""
-"You won't be able to receive software updates, including security updates, "
-"for this system."
-msgstr "您将无法获得此系统的软件更新（包括安全更新）。"
+#~ msgid ""
+#~ "You won't be able to receive software updates, including security "
+#~ "updates, for this system."
+#~ msgstr "您将无法获得此系统的软件更新（包括安全更新）。"
 
-#: ../data/rh_register.glade.h:94
-msgid "Proxy Configuration"
-msgstr "代理配置"
+#~ msgid "Proxy Configuration"
+#~ msgstr "代理配置"
 
-#: ../data/rh_register.glade.h:95
-msgid "<b>HTTP Proxy</b>"
-msgstr "<b>HTTP 代理</b>"
+#~ msgid "<b>HTTP Proxy</b>"
+#~ msgstr "<b>HTTP 代理</b>"
 
-#: ../data/rh_register.glade.h:96
-msgid "I would like to connect via an _HTTP proxy."
-msgstr "我想通过 HTTP 代理进行连接(_H)。"
+#~ msgid "I would like to connect via an _HTTP proxy."
+#~ msgstr "我想通过 HTTP 代理进行连接(_H)。"
 
-#: ../data/rh_register.glade.h:97
-msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr "我想通过 HTTP 代理连接到 Spacewalk(_H)。"
+#~ msgid "I would like to connect to Spacewalk via an _HTTP proxy."
+#~ msgstr "我想通过 HTTP 代理连接到 Spacewalk(_H)。"
 
-#: ../data/rh_register.glade.h:98
-msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr "<small><b>示例：</b>squid.example.com:3128</small>"
+#~ msgid "<small><b>Example:</b> squid.example.com:3128</small>"
+#~ msgstr "<small><b>示例：</b>squid.example.com:3128</small>"
 
-#: ../data/rh_register.glade.h:99
-msgid "_Proxy Location:"
-msgstr "代理位置(_P)："
+#~ msgid "_Proxy Location:"
+#~ msgstr "代理位置(_P)："
 
-#: ../data/rh_register.glade.h:100
-msgid "Enter in the format hostname(:port)"
-msgstr "请以 \"主机名(:端口)\" 格式输入"
+#~ msgid "Enter in the format hostname(:port)"
+#~ msgstr "请以 \"主机名(:端口)\" 格式输入"
 
-#: ../data/rh_register.glade.h:101
-msgid "proxy location"
-msgstr "代理位置"
+#~ msgid "proxy location"
+#~ msgstr "代理位置"
 
-#: ../data/rh_register.glade.h:102
-msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "对 HTTP 代理使用身份验证(_T)："
+#~ msgid "Use Au_thentication with HTTP Proxy:"
+#~ msgstr "对 HTTP 代理使用身份验证(_T)："
 
-#: ../data/rh_register.glade.h:103
-msgid "Use Authentication with HTTP Proxy"
-msgstr "对 HTTP 代理使用身份验证"
+#~ msgid "Use Authentication with HTTP Proxy"
+#~ msgstr "对 HTTP 代理使用身份验证"
 
-#: ../data/rh_register.glade.h:104
-msgid "Proxy _Username:"
-msgstr "代理用户名(_U)："
+#~ msgid "Proxy _Username:"
+#~ msgstr "代理用户名(_U)："
 
-#: ../data/rh_register.glade.h:105
-msgid "Proxy P_assword:"
-msgstr "代理口令(_A)："
+#~ msgid "Proxy P_assword:"
+#~ msgstr "代理口令(_A)："
 
-#: ../data/rh_register.glade.h:106
-msgid "proxy user field"
-msgstr "代理用户字段"
+#~ msgid "proxy user field"
+#~ msgstr "代理用户字段"
 
-#: ../data/rh_register.glade.h:107
-msgid "proxy password field"
-msgstr "代理口令字段"
+#~ msgid "proxy password field"
+#~ msgstr "代理口令字段"
 
-#: ../data/rh_register.glade.h:108
-msgid "Confirm operation system release selection"
-msgstr "确认选择该操作系统发行版"
+#~ msgid "Confirm operation system release selection"
+#~ msgstr "确认选择该操作系统发行版"
 
-#: ../data/rh_register.glade.h:109
-msgid "_No, Cancel"
-msgstr "否，取消(_N)"
+#~ msgid "_No, Cancel"
+#~ msgstr "否，取消(_N)"
 
-#: ../data/rh_register.glade.h:111
-msgid "_Yes, Continue"
-msgstr "是，继续(_Y)"
+#~ msgid "_Yes, Continue"
+#~ msgstr "是，继续(_Y)"
 
-#: ../data/rh_register.glade.h:113
-msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr "<big><b>将无法迁移到更低的发行版</b></big>"
+#~ msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
+#~ msgstr "<big><b>将无法迁移到更低的发行版</b></big>"
 
-#: ../data/rh_register.glade.h:114
-msgid ""
-"Your system will be subscribed to the base software channel.  You will not "
-"be able to move this system to an earlier minor release channel if you "
-"continue (you will be able to move to a later release.)"
-msgstr ""
-"您的系统将订阅基础软件通道。如果您继续，则无法将此系统迁移到更低的次要发行版"
-"（可以迁移到更高的发行版。）"
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel.  You will "
+#~ "not be able to move this system to an earlier minor release channel if "
+#~ "you continue (you will be able to move to a later release.)"
+#~ msgstr ""
+#~ "您的系统将订阅基础软件通道。如果您继续，则无法将此系统迁移到更低的次要发行"
+#~ "版（可以迁移到更高的发行版。）"
 
-#: ../data/rh_register.glade.h:115
-msgid ""
-"\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"\n"
-"您确定要继续吗？"
+#~ msgid ""
+#~ "\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "\n"
+#~ "您确定要继续吗？"
 
-#: ../data/rh_register.glade.h:117
-msgid "Are you Sure?"
-msgstr "您确定吗？"
+#~ msgid "Are you Sure?"
+#~ msgstr "您确定吗？"
 
-#: ../data/rh_register.glade.h:118
-msgid "_Go Back and Register"
-msgstr "返回并注册(_G)"
+#~ msgid "_Go Back and Register"
+#~ msgstr "返回并注册(_G)"
 
-#: ../data/rh_register.glade.h:119
-msgid "Go Back and Register"
-msgstr "返回并注册"
+#~ msgid "Go Back and Register"
+#~ msgstr "返回并注册"
 
-#: ../data/rh_register.glade.h:120
-msgid "Register _Later"
-msgstr "以后注册(_L)"
+#~ msgid "Register _Later"
+#~ msgstr "以后注册(_L)"
 
-#: ../data/rh_register.glade.h:121
-msgid "Register Later"
-msgstr "以后注册"
+#~ msgid "Register Later"
+#~ msgstr "以后注册"
 
-#: ../data/rh_register.glade.h:122
-msgid ""
-"Are you sure you don't want to register your system with Red Hat? You'll "
-"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr ""
-"您确定不要将系统注册到 Red Hat 吗？您将失去 Red Hat Enterprise Linux 订阅所带"
-"来的好处："
+#~ msgid ""
+#~ "Are you sure you don't want to register your system with Red Hat? You'll "
+#~ "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
+#~ msgstr ""
+#~ "您确定不要将系统注册到 Red Hat 吗？您将失去 Red Hat Enterprise Linux 订阅"
+#~ "所带来的好处："
 
-#: ../data/rh_register.glade.h:123
-msgid "Management:"
-msgstr "管理："
+#~ msgid "Management:"
+#~ msgstr "管理："
 
-#: ../data/rh_register.glade.h:124
-msgid ""
-"You will not be able to take advantage of these benefits without registering."
-msgstr "如果不注册，您将无法利用这些好处。"
+#~ msgid ""
+#~ "You will not be able to take advantage of these benefits without "
+#~ "registering."
+#~ msgstr "如果不注册，您将无法利用这些好处。"
 
-#: ../data/rh_register.glade.h:127
-msgid "<b>Spacewalk Location:</b>"
-msgstr "<b>Spacewalk 位置：</b>"
+#~ msgid "<b>Spacewalk Location:</b>"
+#~ msgstr "<b>Spacewalk 位置：</b>"
 
-#: ../data/rh_register.glade.h:128
-msgid "<b>Login:</b>"
-msgstr "<b>登录：</b>"
+#~ msgid "<b>Login:</b>"
+#~ msgstr "<b>登录：</b>"
 
-#: ../data/rh_register.glade.h:129
-msgid "<b>System ID:</b>"
-msgstr "<b>系统 ID：</b>"
+#~ msgid "<b>System ID:</b>"
+#~ msgstr "<b>系统 ID：</b>"
 
-#: ../data/rh_register.glade.h:130
-msgid "label"
-msgstr "标签"
+#~ msgid "label"
+#~ msgstr "标签"
 
-#: ../data/rh_register.glade.h:132
-msgid "<b>Warning</b>"
-msgstr "<b>警告</b>"
+#~ msgid "<b>Warning</b>"
+#~ msgstr "<b>警告</b>"
 
-#: ../data/rh_register.glade.h:133
-msgid ""
-"This system has already been registered with RHN using RHN certificate-based "
-"technology."
-msgstr "此系统已通过基于 RHN 证书的技术注册到 RHN。"
+#~ msgid ""
+#~ "This system has already been registered with RHN using RHN certificate-"
+#~ "based technology."
+#~ msgstr "此系统已通过基于 RHN 证书的技术注册到 RHN。"
 
-#: ../data/rh_register.glade.h:134
-msgid ""
-"Your system is being registered again using RHN Classic technology. Red Hat "
-"recommends that customers only register once."
-msgstr ""
-"正在使用 RHN Classic 技术重新注册您的系统。Red Hat 建议客户仅注册一次。"
+#~ msgid ""
+#~ "Your system is being registered again using RHN Classic technology. Red "
+#~ "Hat recommends that customers only register once."
+#~ msgstr ""
+#~ "正在使用 RHN Classic 技术重新注册您的系统。Red Hat 建议客户仅注册一次。"
 
-#: ../data/rh_register.glade.h:135
-msgid ""
-"To learn more about RHN registration and technologies please consult this "
-"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
-msgstr ""
-"要详细了解 RHN 注册和技术，请查阅此知识库文章：<a href=\"https://access."
-"redhat.com/kb/docs/DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</"
-"a>\n"
+#~ msgid ""
+#~ "To learn more about RHN registration and technologies please consult this "
+#~ "Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+#~ msgstr ""
+#~ "要详细了解 RHN 注册和技术，请查阅此知识库文章：<a href=\"https://access."
+#~ "redhat.com/kb/docs/DOC-45563\">https://access.redhat.com/kb/docs/"
+#~ "DOC-45563</a>\n"
 
-#: ../data/rh_register.glade.h:137
-msgid "Software update setup has been completed for this system."
-msgstr "已完成此系统的软件更新设置。"
+#~ msgid "Software update setup has been completed for this system."
+#~ msgstr "已完成此系统的软件更新设置。"
 
-#: ../data/rh_register.glade.h:138
-msgid ""
-"Your system is now ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"您的系统现在可以接收软件更新以保持安全和受支持状态。\n"
-"\n"
-"当桌面上的通知区域（通常在右上角，如以下圆圈中所示）中显示了软件包图标时，即"
-"可知道有可用的软件更新。单击此图标（如果已显示）可根据引导应用可用的任何更"
-"新："
+#~ msgid ""
+#~ "Your system is now ready to receive the software updates that will keep "
+#~ "it secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "您的系统现在可以接收软件更新以保持安全和受支持状态。\n"
+#~ "\n"
+#~ "当桌面上的通知区域（通常在右上角，如以下圆圈中所示）中显示了软件包图标时，"
+#~ "即可知道有可用的软件更新。单击此图标（如果已显示）可根据引导应用可用的任何"
+#~ "更新："
 
-#: ../data/rh_register.glade.h:141
-msgid "Aplet screenshot"
-msgstr "Aplet 屏幕截图"
+#~ msgid "Aplet screenshot"
+#~ msgstr "Aplet 屏幕截图"
 
-#: ../data/rh_register.glade.h:143
-msgid "Select how your system will receive updates:"
-msgstr "选择系统接收更新的方式："
+#~ msgid "Select how your system will receive updates:"
+#~ msgstr "选择系统接收更新的方式："
 
-#: ../data/rh_register.glade.h:144
-msgid "Limited updates"
-msgstr "有限更新"
+#~ msgid "Limited updates"
+#~ msgstr "有限更新"
 
-#: ../data/rh_register.glade.h:145
-msgid ""
-"<b>_Limited updates</b> will be provided to this system, maintaining "
-"compatibility with the selected minor release software channel:"
-msgstr ""
-"将为此系统提供<b>有限更新</b>，以便与选定的次要发行版软件通道保持兼容(_L)："
+#~ msgid ""
+#~ "<b>_Limited updates</b> will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "将为此系统提供<b>有限更新</b>，以便与选定的次要发行版软件通道保持兼容"
+#~ "(_L)："
 
-#: ../data/rh_register.glade.h:146
-msgid ""
-"Limited updates will be provided to this system, maintaining compatibility "
-"with the selected minor release software channel:"
-msgstr "将为此系统提供有限更新，以便与选定的次要发行版软件通道保持兼容："
+#~ msgid ""
+#~ "Limited updates will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr "将为此系统提供有限更新，以便与选定的次要发行版软件通道保持兼容："
 
-#: ../data/rh_register.glade.h:147
-msgid "_Minor release:"
-msgstr "次要发行版(_M)："
+#~ msgid "_Minor release:"
+#~ msgstr "次要发行版(_M)："
 
-#: ../data/rh_register.glade.h:148
-msgid "Choose minor release"
-msgstr "选择次要发行版"
+#~ msgid "Choose minor release"
+#~ msgstr "选择次要发行版"
 
-#: ../data/rh_register.glade.h:149
-msgid "       "
-msgstr "       "
+#~ msgid "       "
+#~ msgstr "       "
 
-#: ../data/rh_register.glade.h:150
-msgid ""
-"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
-"Hat."
-msgstr "<b>提示：</b>Red Hat 目前完全支持带有 '*' 的次要发行版。"
+#~ msgid ""
+#~ "<b>Tip:</b> Minor releases with a '*' are currently fully supported by "
+#~ "Red Hat."
+#~ msgstr "<b>提示：</b>Red Hat 目前完全支持带有 '*' 的次要发行版。"
 
-#: ../data/rh_register.glade.h:152
-msgid ""
-"<b>_All available updates</b> will be provided to this system. If kept "
-"updated, this system will always be equivalent to the latest minor release "
-"in the main 'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"将为此系统提供<b>所有可用更新</b>。如果持续更新的话，此系统将始终等同于 'Red "
-"Hat Enterprise Linux x' 主要软件通道中的最新次要发行版(_A)。"
+#~ msgid ""
+#~ "<b>_All available updates</b> will be provided to this system. If kept "
+#~ "updated, this system will always be equivalent to the latest minor "
+#~ "release in the main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "将为此系统提供<b>所有可用更新</b>。如果持续更新的话，此系统将始终等同于 "
+#~ "'Red Hat Enterprise Linux x' 主要软件通道中的最新次要发行版(_A)。"
 
-#: ../data/rh_register.glade.h:153
-msgid ""
-"All available updates will be provided to this system. If kept updated, this "
-"system will always be equivalent to the latest minor release in the main "
-"'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"将为此系统提供所有可用更新。如果持续更新的话，此系统将始终等同于 'Red Hat "
-"Enterprise Linux x' 主要软件通道中的最新次要发行版。"
+#~ msgid ""
+#~ "All available updates will be provided to this system. If kept updated, "
+#~ "this system will always be equivalent to the latest minor release in the "
+#~ "main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "将为此系统提供所有可用更新。如果持续更新的话，此系统将始终等同于 'Red Hat "
+#~ "Enterprise Linux x' 主要软件通道中的最新次要发行版。"
 
-#: ../data/rh_register.glade.h:154
-msgid ""
-"<b>Warning:</b> Using this option, your system will always be the most "
-"recent minor release and <b>cannot</b> be limited to an older release "
-"version."
-msgstr ""
-"<b>警告：</b>如果使用此选项，您的系统始终采用最新的次要发行版，并且<b>无法</"
-"b>限制为接收更低的发行版。"
+#~ msgid ""
+#~ "<b>Warning:</b> Using this option, your system will always be the most "
+#~ "recent minor release and <b>cannot</b> be limited to an older release "
+#~ "version."
+#~ msgstr ""
+#~ "<b>警告：</b>如果使用此选项，您的系统始终采用最新的次要发行版，并且<b>无法"
+#~ "</b>限制为接收更低的发行版。"
 
-#: ../data/rh_register.glade.h:155
-msgid ""
-"Warning: Using this option, your system will always be the most recent minor "
-"release and cannot be limited to an older release version."
-msgstr ""
-"警告：如果使用此选项，您的系统始终采用最新的次要发行版，并且无法限制为接收更"
-"低的发行版。"
+#~ msgid ""
+#~ "Warning: Using this option, your system will always be the most recent "
+#~ "minor release and cannot be limited to an older release version."
+#~ msgstr ""
+#~ "警告：如果使用此选项，您的系统始终采用最新的次要发行版，并且无法限制为接收"
+#~ "更低的发行版。"
 
-#: ../data/rh_register.glade.h:156
-msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr "<b>在安装期间已经为您的系统注册了更新。</b>"
+#~ msgid "<b>Your system was registered for updates during installation.</b>"
+#~ msgstr "<b>在安装期间已经为您的系统注册了更新。</b>"
 
-#: ../data/rh_register.glade.h:157
-msgid ""
-"Your system is ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"您的系统可以接收软件更新以保持安全和受支持状态。\n"
-"\n"
-"当桌面上的通知区域（通常在右上角，如以下圆圈中所示）中显示了软件包图标时，即"
-"可知道有可用的软件更新。单击此图标（如果已显示）可根据引导应用可用的任何更"
-"新："
+#~ msgid ""
+#~ "Your system is ready to receive the software updates that will keep it "
+#~ "secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "您的系统可以接收软件更新以保持安全和受支持状态。\n"
+#~ "\n"
+#~ "当桌面上的通知区域（通常在右上角，如以下圆圈中所示）中显示了软件包图标时，"
+#~ "即可知道有可用的软件更新。单击此图标（如果已显示）可根据引导应用可用的任何"
+#~ "更新："
 
-#: ../data/rh_register.glade.h:160
-msgid "icon of aplet"
-msgstr "Aplet 图标"
+#~ msgid "icon of aplet"
+#~ msgstr "Aplet 图标"
 
-#: ../rhn_register.desktop.in.h:1
-msgid "RHN Registration"
-msgstr "RHN 注册"
+#~ msgid "RHN Registration"
+#~ msgstr "RHN 注册"
 
-#: ../rhn_register.desktop.in.h:2
-msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr "注册以接收来自 Spacewalk/Uyuni/SUSE Manager 的软件更新"
+#~ msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
+#~ msgstr "注册以接收来自 Spacewalk/Uyuni/SUSE Manager 的软件更新"
 
-#: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr "注册到 Spacewalk/Uyuni/SUSE Manager"
+#~ msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+#~ msgstr "注册到 Spacewalk/Uyuni/SUSE Manager"
 
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 #~ msgstr "注册到 Spacewalk/Red Hat Satellite/Red Hat Network Classic。"

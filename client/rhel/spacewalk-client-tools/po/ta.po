@@ -103,14 +103,6 @@ msgstr "கணினி நினைவக தகவலை வாசிக்க
 msgid "Error reading machine info:"
 msgstr "cpu தகவலை வாசிக்கும் போது பிழை:"
 
-#: ../src/up2date_client/messageWindow.py:106
-msgid "Error:"
-msgstr "பிழை:"
-
-#: ../src/up2date_client/messageWindow.py:113
-msgid "Yes/No dialog:"
-msgstr "ஆம்/இல்லை உரையாடல்:"
-
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
 msgstr "SystemIdஐ காண முடியவில்லை"
@@ -220,269 +212,34 @@ msgstr "எச்சரிக்கை: rhnsd யை chkconfig உடன் ச�
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "எச்சரிக்கை: rhnsd யை chkconfig உடன் செயல்படுத்த முடியவில்லை"
 
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "அறிவிப்பு"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "உங்கள் விருப்பத்தை செயல்படுத்தும் போது ஒரு பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr ""
-"நீங்கள் தவறான நெறிமுறையை குறிப்பிட்டுள்ளீர்கள். https மற்றும் http ஆகியவை மட்டுமே "
-"அனுமதிக்கப்படும்."
-
-#: ../src/up2date_client/rhnregGui.py:305
-#, fuzzy
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"இந்த கணினியை Red Hat Network சேவையகத்துடன் தொடர்பு கொள்ளாமல் பதிவு செய்ய முடியாது."
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சேவையகத்தை தொடர்புகொள்ள முடியவில்லை"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "'%s.' இல் நாம் சேட்டிலைட் அல்லது பதிலாளை தொடர்பு கொள்ள முடியாது"
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"'%s' இடம் சரியா என இருமுறை சரிபார்க்க வேண்டுமா? இல்லையெனில், அதனை சரி செய்து மீண்டும் "
-"முயற்சிக்கவும்."
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "இந்த கணினியிலுள்ள பிணைய இணைப்பு செயல்பாட்டில் உள்ளது என உறுதிபடுத்தவும்."
-
-#: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Red Hat Network உடன் தொடர்பு கொள்ளும் போது ஒரு பிழை."
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr "சேவையகம் செயலற்ற முறையில் இருக்கலாம். நீங்கள் பின்னர் இணைக்க முயற்சிக்கலாம்."
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "நீங்கள் இயக்கும் கிளையன் சேவையகத்துடன் உகந்ததாக இல்லாமல் இருக்கலாம்."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
-"உங்கள் <b>%s</b> Red Hat Network சேட்டிலைட்டிற்கு உங்கள் கணக்கு விவரங்களை உள்ளிடவும்:"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "ஒரு புகுபதிவை உள்ளிட வேண்டும்."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "நீங்கள் கடவுச்சொல்லை உள்ளிட வேண்டும்."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "புகுபதிவு செய்யும் போது ஒரு பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "பதிவு சேவையகத்துடன் தொடர்பு கொள்வதில் ஒரு பிழை.  அதன் செய்தி:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "விவரக்குறிப்புக்கு தகவலை அடுக்கும் போது ஒரு பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "வன்பொருள் விவரக்குறிப்பை இயக்கும் போது பிழை"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "விவரக்குறிப்பை எண்ணும் போது ஒரு பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "இந்த விவரக்குறிப்பிற்கு ஒரு பெயரை தேர்ந்தெடுக்க வேண்டும்."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "விவரக்குறிப்பை உருவாக்கும் போது ஒரு பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "கணினியை பதிவு செய்கிறது"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
 msgid "Problem registering system:\n"
 msgstr "கணினியை பதிவு செய்வதில் சிக்கல்:\n"
 
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"கொடுக்கப்பட்ட நிறுவல் எண் [ %s ] சரியானது அல்ல. எனவே முந்தைய திரைக்கு சென்று அதனை "
-"சரியாக உள்ளிடவும்."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+#: ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
 msgstr "கணினியை பதிவு செய்வதில் சிக்கல்."
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+#: ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
 msgstr "கணினியின் அடையாளத்தை வட்டில் எழுதும்போது பிழை"
 
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "இந்த கணினியைப் பதிவு செய்வதில் சிக்கல்."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "வன்பொருள் தகவலை அனுப்புகிறது"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "வன்பொருள் தகவலை அனுப்புவதில் சிக்கல்."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "தொகுப்பு தகவலை அனுப்புகிறது"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "தொகுப்பு பட்டியலை அனுப்புவதில் சிக்கல்."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#: ../src/up2date_client/tui.py:1058
 #, python-format
 msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "சான்றிதழை நிறுவும் போது ஒரு பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "நீங்கள் ஒரு சான்றிதழை தேர்ந்தெடுக்க வேண்டும்."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr "அங்கு ஒரு SSL பிழை உள்ளது. ஏனெனில் எடுத்த கோப்பு சான்றிதழ் கோப்பு இல்லை."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "புதிய சான்றிதழை நிறுவும் போது சில தவறுகள் நடந்துள்ளது:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "தெரியாதது"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "வன்பொருள் பட்டியலை எடுக்கும் போது ஒரு பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#: ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "தொகுப்புகளின் பட்டியலை உருவாக்கும் போது முக்கிய பிழை ஏற்பட்டது."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "தொகுப்பு"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Arch"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"உங்கள் கணினியில் நிறுவப்பட்ட RPM தொகுப்புகளின் பட்டியலை உருவாக்குகிறது.  காத்திருக்கவும்."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"உங்கள் கட்டமைப்பை ஏற்று போது பிழை. /etc/sysconfig/rhn ஐ \n"
-"வாசிக்க அனுமதி உள்ளதா என்பதை உறுதி செய்யவும்."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"உங்கள் கட்டமைப்பை சேமிக்கும் போது பிழை. %s உங்களுடையதா\n"
-"என்பதை உறுதிப்படுத்தவும்."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"இந்த பிழை வரக்கூடாது. நீங்கள் இந்த நிரலை மேம்படுத்த எங்களுக்கு உதவி எண்ணினால், bugzilla."
-"redhat.com இல் ஒரு பிழையை '%s' உடன் அறிக்கையிட்டால் உதவியாக இருக்கும். நன்றி!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -575,7 +332,7 @@ msgstr ""
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
 msgstr "எதற்காக RHN உடன் இணைக்க வேண்டும்? ..."
 
-#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57
 msgid "Why Register"
 msgstr "எதற்கு பதிவு"
 
@@ -725,8 +482,7 @@ msgid "Please enter and verify a password."
 msgstr "ஒரு கடவுச்சொல்லை உள்ளிட்டு சரிபார்க்கவும்."
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
-#: ../data/rh_register.glade.h:142
+#: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System Release Version"
 msgstr "இயக்கத்தள பதிப்பு:"
 
@@ -743,7 +499,6 @@ msgid "Limited Updates Only"
 msgstr "வரம்பிட்ட புதுப்பித்தல்கள் மட்டும்"
 
 #: ../src/up2date_client/rhnreg_constants.py:102
-#: ../data/rh_register.glade.h:151
 msgid "All available updates"
 msgstr "அனைத்து இருக்கும் புதுப்பித்தல்கள்"
 
@@ -818,17 +573,14 @@ msgid "*Email Address:"
 msgstr "*மின்னஞ்சல் முகவரி:"
 
 #: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
 msgstr "கணினி ஏற்கனவே பதிவு செய்யப்பட்டது"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
-#: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
 msgstr "கணினி ஏற்கனவே மென்பொருள் மேம்படுத்தல்களுக்கு அமைக்கப்பட்டிருப்பதாக தெரிகிறது:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
-#: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
 msgstr "தொடர வேண்டுமா?"
 
@@ -897,11 +649,11 @@ msgstr ""
 "இதற்கு முதன்மை Red Hat Network இணைய முகப்பில் உதவி பொத்தானை சொடுக்க வேண்டும்.)"
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Review Subscription"
 msgstr "சந்தாவை மறுபார்வையிடவும்"
 
-#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169
 msgid "Please review the subscription details below:"
 msgstr "கீழே சந்தா விவரங்களை மறுபார்வையிடவும்:"
 
@@ -1229,12 +981,10 @@ msgid "Cancel"
 msgstr "ரத்து"
 
 #: ../src/up2date_client/rhnreg_constants.py:310
-#: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
 msgstr "இல்லை, ரத்து செய்யவும்"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
-#: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
 msgstr "ஆம், தொடரவும்"
 
@@ -1434,35 +1184,11 @@ msgstr ""
 "   நீங்கள் இந்த விசையை செயல்நீக்கம் செய்து ஒரு மேலாண்மை உரிமம்\n"
 "   தேவையை தடுத்து மறுமுயற்சி செய்யலாம்."
 
-#: ../src/bin/rhn-profile-sync.py:37
-msgid ""
-"You need to register this system by running `rhn_register` before using this "
-"option"
-msgstr ""
-"இந்த விருப்பத்தை பயன்படுத்தும் முன் `rhn_register` ஐ இயக்கி இந்த கணினியை பதிவு செய்ய "
-"வேண்டும்"
-
-#: ../src/bin/rhn-profile-sync.py:45
-msgid "Updating package profile..."
-msgstr "தொகுப்பு விவரக்குறிப்பை மேம்படுத்துகிறது..."
-
-#: ../src/bin/rhn-profile-sync.py:48
-msgid "Updating hardware profile..."
-msgstr "வன்பொருள் விவரக்குறிப்பை மேம்படுத்துகிறது..."
-
-#: ../src/bin/rhn-profile-sync.py:52
-msgid "Updating virtualization profile..."
-msgstr "மெய்நிகராக்க விவரக்குறிப்பை மேம்படுத்துகிறது..."
-
 #: ../src/bin/rhn_check.py:423
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
 "rhn_checkஇன் ஒரு எடுத்துக்காட்டுக்கு மேல் இயக்க முயற்சிக்கிறது. வெளியேறுகிறது.\n"
-
-#: ../src/bin/rhn_register.py:38
-msgid "Do not attempt to use X"
-msgstr "X யை பயன்படுத்த முயற்சிக்க வேண்டாம்"
 
 #: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
@@ -1572,891 +1298,807 @@ msgstr ""
 "ஒரு விவரக்குறிப்பு பெயர் குறிப்பிடவில்லை, மற்றும் புரவலன் பெயர் மற்றும் IP முகவரியை "
 "விவரக்குறிப்பு பெயராக பயன்படுத்த வரையறுக்க முடியாது, எனவே ஒன்றையாவது குறிப்பிடவும்."
 
-#: ../src/bin/spacewalk-channel.py:98
-msgid "name of channel you want to (un)subscribe"
-msgstr ""
+#~ msgid "Error:"
+#~ msgstr "பிழை:"
 
-#: ../src/bin/spacewalk-channel.py:100
-msgid "subscribe to channel"
-msgstr ""
+#~ msgid "Yes/No dialog:"
+#~ msgstr "ஆம்/இல்லை உரையாடல்:"
 
-#: ../src/bin/spacewalk-channel.py:102
-msgid "unsubscribe from channel"
-msgstr ""
+#~ msgid "Notice"
+#~ msgstr "அறிவிப்பு"
 
-#: ../src/bin/spacewalk-channel.py:104
-msgid "list channels"
-msgstr ""
+#~ msgid "There was an error while applying your choice."
+#~ msgstr "உங்கள் விருப்பத்தை செயல்படுத்தும் போது ஒரு பிழை ஏற்பட்டது."
 
-#: ../src/bin/spacewalk-channel.py:106
-msgid "show base channel of a system"
-msgstr ""
+#~ msgid "You specified an invalid protocol. Only https and http are allowed."
+#~ msgstr ""
+#~ "நீங்கள் தவறான நெறிமுறையை குறிப்பிட்டுள்ளீர்கள். https மற்றும் http ஆகியவை மட்டுமே "
+#~ "அனுமதிக்கப்படும்."
 
-#: ../src/bin/spacewalk-channel.py:108
-msgid "list all available child channels"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:110
-msgid "verbose output"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:112
-msgid "your user name"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:114
-msgid "your password"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:121
-msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:163
-msgid "ERROR: you have to specify at least one channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:169
-msgid "ERROR: this action does not require channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:176
-#, python-format
-msgid "Channel(s): %s successfully added"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:178
-#, python-format
-msgid "Error during adding channel(s) %s"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:185
-#, python-format
-msgid "Channel(s): %s successfully removed"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:187
-#, python-format
-msgid "Error during removal of channel(s) %s"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:194
-msgid "This system is not associated with any channel."
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:196
-msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:229
-msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:234
-msgid "ERROR: must be root to execute\n"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:239
-msgid "User interrupted process."
-msgstr ""
-
-#: ../data/gui.glade.h:1
 #, fuzzy
-msgid "System registration"
-msgstr "RHN பதிவு செய்தல்"
+#~ msgid ""
+#~ "You will not be able to successfully register this system without "
+#~ "contacting a Spacewalk server."
+#~ msgstr ""
+#~ "இந்த கணினியை Red Hat Network சேவையகத்துடன் தொடர்பு கொள்ளாமல் பதிவு செய்ய "
+#~ "முடியாது."
 
-#: ../data/gui.glade.h:2
-msgid "Set Up Software Updates"
-msgstr "மேம்படுத்தல் அமைவு"
+#~ msgid "Cannot contact selected server"
+#~ msgstr "தேர்ந்தெடுக்கப்பட்ட சேவையகத்தை தொடர்புகொள்ள முடியவில்லை"
 
-#: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
-msgid "Choose Service"
-msgstr "சேவையகம் தேர்ந்தெடுத்தல்"
+#, fuzzy, python-brace-format
+#~ msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+#~ msgstr "'%s.' இல் நாம் சேட்டிலைட் அல்லது பதிலாளை தொடர்பு கொள்ள முடியாது"
 
-#: ../data/gui.glade.h:4
-msgid "Provide a security certificate"
-msgstr "பாதுகாப்பு சான்றிதழ் கொடுக்கவும்"
+#, python-format
+#~ msgid ""
+#~ "Double-check the location - is '%s' correct? If not, you can correct it "
+#~ "and try again."
+#~ msgstr ""
+#~ "'%s' இடம் சரியா என இருமுறை சரிபார்க்க வேண்டுமா? இல்லையெனில், அதனை சரி செய்து "
+#~ "மீண்டும் முயற்சிக்கவும்."
 
-#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
-msgid "Red Hat Account"
-msgstr "Red Hat புகுபதிவு"
+#~ msgid "Make sure the network connection on this system is operational."
+#~ msgstr "இந்த கணினியிலுள்ள பிணைய இணைப்பு செயல்பாட்டில் உள்ளது என உறுதிபடுத்தவும்."
 
-#: ../data/gui.glade.h:7
-msgid "Create Profile"
-msgstr "விவரக்குறிப்பை உருவாக்கவும்"
-
-#: ../data/progress.glade.h:1
-msgid "Sending Information"
-msgstr "தொகுப்பு தகவலை அனுப்புகிறது"
-
-#: ../data/progress.glade.h:2
-msgid "progress bar"
-msgstr "முன்னேற்ற பட்டி"
-
-#: ../data/progress.glade.h:3
-msgid "progress status"
-msgstr "முன்னேற்ற நிலை "
-
-#: ../data/rh_register.glade.h:1
-msgid ""
-"<b>The network connection on your system is not active. Your system cannot "
-"be set up for software updates at this time.</b>"
-msgstr ""
-"<b>உங்கள் கணினியிலுள்ள பிணைய இணைப்பு செயலில் இல்லை. உங்கள் கணினி மென்பொருள் "
-"மேம்படுத்தல்களுக்கு அமைக்க முடியாது.</b>"
-
-#: ../data/rh_register.glade.h:2
 #, fuzzy
-msgid ""
-"This system will <b>not</b> be able to successfully receive software "
-"updates, including security updates, from Red Hat without connecting to a "
-"Red Hat Satellite or Red Hat Network Classic.\n"
-"\n"
-"To keep your system updated, secure, and supported, please register this "
-"system at your earliest convenience."
-msgstr ""
-"Red Hat Network சேவையகத்தில் இணைக்காமல் Red Hat இலிருந்து நீங்கள் பாதுகாப்பு "
-"மேம்படுத்தல்களையும் சேர்த்து மென்பொருள் மேம்படுத்தல்களை இந்த கணினிக்குப் பெற <b>முடியாது</"
-"b>.\n"
-"\n"
-"உங்கள் கணினியை மேம்படுத்தி, பாதுகாத்து மற்றும் துணைபுரிய, இந்த கணினியை விரைவாக பதிவு "
-"செய்யவும். "
-
-#: ../data/rh_register.glade.h:5
-msgid "Why Should I Connect to RHN? ..."
-msgstr "எதற்காக RHN உடன் இணைக்க வேண்டும்? ..."
-
-#: ../data/rh_register.glade.h:7
-msgid ""
-"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:8
-msgid "Location:"
-msgstr "இடம்:"
-
-#: ../data/rh_register.glade.h:9
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "<small><b>எடுத்துக்காட்டு:</b> https://satellite.example.com</small>"
-
-#: ../data/rh_register.glade.h:10
-msgid "satellite server location"
-msgstr "சேட்டிலைட் சேவையக இடம்"
-
-#: ../data/rh_register.glade.h:11
-msgid "_Proxy Setup"
-msgstr "பதிலி அமைவு (_P)"
-
-#: ../data/rh_register.glade.h:12
-msgid "Proxy Setup Button"
-msgstr "பதிலி அமைவு பொத்தான்"
-
-#: ../data/rh_register.glade.h:14
-msgid "Please enter your Red Hat account information:"
-msgstr "உங்கள் கணக்கு தகவல் உள்ளிடவும்:"
-
-#: ../data/rh_register.glade.h:15
-msgid "RHN login field"
-msgstr "RHN புகுபதிவு புலம்"
-
-#: ../data/rh_register.glade.h:16
-msgid "RHN password field"
-msgstr "RHN கடவுச்சொல் புலம்"
-
-#: ../data/rh_register.glade.h:17
-msgid "_Password:"
-msgstr "கடவுச்சொல் (_P):"
-
-#: ../data/rh_register.glade.h:18
-msgid "_Login:"
-msgstr "புகுபதிவு (_L):"
-
-#: ../data/rh_register.glade.h:19
-msgid ""
-"<small>Tip: Forgot your login or password? Contact your Satellite's "
-"<i>Organization Administrator</i>.</small>"
-msgstr ""
-"<small>உதவிக்குறிப்பு: உங்கள் புகுபதிவு அல்லது கடவுச்சொல் மறந்து விட்டதா? உங்கள் "
-"சேட்டிலைட் <i>நிறுவன நிர்வாகியை</i> தொடர்பு கொள்ளவும்.</small>"
-
-#: ../data/rh_register.glade.h:20
-msgid "Hardware Info"
-msgstr "வன்பொருள் தகவல்"
-
-#: ../data/rh_register.glade.h:21
-msgid "Red Hat Linux Version:"
-msgstr " Red Hat Linux பதிப்பு:"
-
-#: ../data/rh_register.glade.h:22
-msgid "Hostname:"
-msgstr "புரவலன் பெயர்:"
-
-#: ../data/rh_register.glade.h:23
-msgid "IP Address:"
-msgstr "ஐபி முகவரி:"
-
-#: ../data/rh_register.glade.h:24
-msgid "ERROR"
-msgstr "பிழை"
-
-#: ../data/rh_register.glade.h:25
-msgid "CPU Model:"
-msgstr "CPU மாதிரி: "
-
-#: ../data/rh_register.glade.h:26
-msgid "CPU Speed:"
-msgstr "CPU வேகம்: "
-
-#: ../data/rh_register.glade.h:27
-msgid "Memory:"
-msgstr "நினைவகம்:"
-
-#: ../data/rh_register.glade.h:28
-msgid "Hardware Profile"
-msgstr "வன்பொருள் விவரக்குறிப்பு"
-
-#: ../data/rh_register.glade.h:29
-msgid "Package Information"
-msgstr "தொகுப்பு தகவல்"
-
-#: ../data/rh_register.glade.h:30
-msgid "Start Window"
-msgstr "சாளரத்தை துவக்கவும்"
-
-#: ../data/rh_register.glade.h:31
-msgid ""
-"This assistant will guide you through the process of registering your system "
-"with Red Hat to receive software updates and other benefits. You will need "
-"the following to register:"
-msgstr ""
-"இந்த உதவியாளர் உங்கள் கணினியை Red Hat Network (RHN) இல் மென்பொருள் மேம்படுத்தல்களுக்கு "
-"பெற உதவும், அதாவது:"
-
-#: ../data/rh_register.glade.h:32
-msgid "• A network connection"
-msgstr ""
-
-#: ../data/rh_register.glade.h:33
-msgid "• Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:34
-msgid "Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:35
-msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:36
-msgid "_Why Should I Register?"
-msgstr "எதற்காக பதிவு செய்ய வேண்டும்? (_W)"
-
-#: ../data/rh_register.glade.h:37
-msgid "Why Should I Register?"
-msgstr "எதற்கு பதிவு"
-
-#: ../data/rh_register.glade.h:38
-msgid ""
-"Would you like to register your system at this time? <b>(Strongly "
-"recommended.)</b>"
-msgstr ""
-"இந்த நேரத்தில் உங்கள் கணினியை பதிவு செய்ய வேண்டுமா? <b>(பலமாக "
-"பரிந்துரைக்கப்படுகிறது.)</b>"
-
-#: ../data/rh_register.glade.h:39
-msgid "_Yes, I'd like to register now."
-msgstr "ஆம், நான் இப்போது பதிவு செய்யப்போகிறேன் (_Y)."
-
-#: ../data/rh_register.glade.h:40
-msgid "_No, I prefer to register at a later time."
-msgstr "இல்லை, நான் பின்னர் பதிவு செய்கிறேன் (_N)."
-
-#: ../data/rh_register.glade.h:41
-msgid "Link To Subscription"
-msgstr "சந்தாவுக்கான இணைப்பு"
-
-#: ../data/rh_register.glade.h:42
-msgid ""
-"Your system will need to access a subscription. This will allow you to keep "
-"your system updated, secure, and supported."
-msgstr ""
-"உங்கள் கணினி ஒரு சந்தாவை அணுக வேண்டும். இது உங்கள் கணினியை புதுப்பித்ததாகவும் "
-"பாதுகாப்பாகவும் ஆதரவுடனும் வைத்திருக்க உதவும்."
-
-#: ../data/rh_register.glade.h:43
-msgid ""
-"<b>You have no active subscriptions available in your account.</b> You will "
-"need to do one of the following to create an active subscription in your "
-"account before this system can be registered:"
-msgstr ""
-"<b>உங்கள் கணக்கில் செயலிலுள்ள சந்தா எதுவும் இல்லை.</b> உங்கள் கணக்கில் செயலிலுள்ள சந்தாவை "
-"உருவாக்க இந்த கணினி Red Hat Network உடன் இணைக்கப்படுவதற்கு முன் பின்வருவனவற்றில் ஒன்றை "
-"செய்ய வேண்டும்:"
-
-#: ../data/rh_register.glade.h:44
-msgid ""
-"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
-"redhat.com/store/."
-msgstr ""
-"http://www.redhat.com/store/ மூலம் ஒரு கூடுதல் Red Hat Enterprise Linux சந்தாவை "
-"வாங்கவும்."
-
-#: ../data/rh_register.glade.h:45
-msgid ""
-"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-msgstr ""
-"http://rhn.redhat.com/ இல் புகுபதிவு செய்து உங்கள் RHN > சந்தா நிர்வாகம் > கணினி "
-"உரிமங்கள் என்பதில் ஒரு செயலிலா கணினியை உரிமம் நீக்கவும்."
-
-#: ../data/rh_register.glade.h:46
-msgid ""
-"Activate a previously purchased subscription you have not yet activated."
-msgstr "நீங்கள் செயல்பாடுத்தாத முன்பு வாங்கப்பட்ட சந்தாவை செயல்படுத்தவும்."
-
-#: ../data/rh_register.glade.h:47
-msgid "•"
-msgstr "•"
-
-#: ../data/rh_register.glade.h:48
-msgid "installation number field"
-msgstr "நிறுவல் எண் புலம்"
-
-#: ../data/rh_register.glade.h:49
-msgid "Installation _Number:"
-msgstr "நிறுவல் எண் (_N):"
-
-#: ../data/rh_register.glade.h:50
-msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr "<small><b>எடுத்துக்காட்டு</b>: XXXX-XXXX-XXXX-XXXX</small>"
-
-#: ../data/rh_register.glade.h:51
-msgid "_Activate a subscription now..."
-msgstr "இப்போது ஒரு சந்தாவை அணுகவும் (_A)..."
-
-#: ../data/rh_register.glade.h:52
-msgid "Review system..."
-msgstr "கணினியை மறுபார்வையிடவும்..."
-
-#: ../data/rh_register.glade.h:54
-msgid "Create profile"
-msgstr "விவரக்குறிப்பை உருவாக்கவும்"
-
-#: ../data/rh_register.glade.h:55
-msgid "<big><b>System Name</b></big>"
-msgstr "<big><b>கணினி பெயர்</b></big>"
-
-#: ../data/rh_register.glade.h:56
-msgid ""
-"A recognizable name will help you identify this system in a management "
-"interface."
-msgstr ""
-"அடையாளம் காணத்தக்க பெயர் ஒன்று இருந்தால், நிர்வாக இடைமுகத்தில் இந்தக் கணினியை நீங்கள் "
-"அடையாளம் காண உதவியாக இருக்கும்."
-
-#: ../data/rh_register.glade.h:57
-msgid "System _Name:"
-msgstr "கணினி பெயர் (_N):"
-
-#: ../data/rh_register.glade.h:58
-msgid "system name"
-msgstr "கணினி பெயர் (_N):"
-
-#: ../data/rh_register.glade.h:59
-msgid "<big><b>Profile Data</b></big>"
-msgstr "<big><b>சுயவிவர தரவு</b></big>"
-
-#: ../data/rh_register.glade.h:60
-msgid ""
-"Send us a profile of your current hardware and packages so we can determine "
-"what updates are available."
-msgstr ""
-"உங்கள் கணினியில் நிறுவப்பட்ட தொகுப்புகள் மற்றும் வன்பொருள் பற்றிய விவரக்குறிப்பை எங்களுக்கு "
-"அனுப்ப வேண்டும் அதனால் என்ன மேம்படுத்தல்கள் உள்ளன என்பதை நாங்கள் குறிப்பிடலாம்."
-
-#: ../data/rh_register.glade.h:61
-msgid "_View Hardware Profile ..."
-msgstr "வன்பொருள் விவரக்குறிப்பை பார்க்கவும் (_V)..."
-
-#: ../data/rh_register.glade.h:62
-msgid "View Hardware Profile"
-msgstr "வன்பொருள் விவரக்குறிப்பை பார்க்கவும்"
-
-#: ../data/rh_register.glade.h:63
-msgid "V_iew Package Profile ..."
-msgstr "தொகுப்பு விவரக்குறிப்பை பார்க்கவும் (_i)..."
-
-#: ../data/rh_register.glade.h:64
-msgid "View Package Profile"
-msgstr "தொகுப்பு விவரக்குறிப்பை பார்க்கவும்"
-
-#: ../data/rh_register.glade.h:65
-msgid "Send _hardware profile"
-msgstr "வன்பொருள் விவரக்குறிப்பை அனுப்பவும் (_h)"
-
-#: ../data/rh_register.glade.h:66
-msgid "Send hardware profile checkbox"
-msgstr "வன்பொருள் விவரக்குறிப்பு சரிபார்க்கும் பெட்டியை அனுப்பு"
-
-#: ../data/rh_register.glade.h:67
-msgid "Send _package profile"
-msgstr "தொகுப்பு விவரக்குறிப்பை அனுப்பவும் (_p)"
-
-#: ../data/rh_register.glade.h:68
-msgid "Send package profile checkbox"
-msgstr "தொகுப்பு விவரக்குறிப்பு சரிபார்க்கும் பெட்டியை அனுப்பு"
-
-#: ../data/rh_register.glade.h:70
-msgid ""
-"Registering your system with Red Hat allows you to take full advantage of "
-"the benefits of a paid subscription, including:"
-msgstr ""
-"உங்கள் கணினியை Red Hat Network உடன் இணைப்பது செலுத்தப்பட்ட சந்தாவின் முழு நன்மைகளை பெற "
-"அனுமதிக்கும்:"
-
-#: ../data/rh_register.glade.h:71
-msgid "_Close"
-msgstr "மூடு (_C)"
-
-#: ../data/rh_register.glade.h:72
-msgid "Close"
-msgstr "மூடவும்"
-
-#: ../data/rh_register.glade.h:73
-msgid "<b>Security &amp; Updates:</b>"
-msgstr "<b>பாதுகாப்பு &amp; புதுப்பிப்புகள்:</b>"
-
-#: ../data/rh_register.glade.h:74
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr ""
-"இந்த Red Hat Enterprise Linux கணினியை <b>புதுப்பித்ததாகவும்</b> "
-"<b>பாதுபாப்பானதாகவும்</b>வைத்திருக்கும் பாதுகாப்பு புதுப்பித்தல்கள் உட்பட சமீபத்திய "
-"மென்பொருள் புதுப்பித்தல்களைப் பெறுக."
-
-#: ../data/rh_register.glade.h:75
-msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr "<b>பதிவிறக்கங்கள் &amp; மேம்படுத்தல்கள்:</b>"
-
-#: ../data/rh_register.glade.h:76
-msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
-msgstr ""
-"Red Hat Enterprise Linux வெளியீடுகள், புதிய வெளியீடுகளையும் சேர்த்து நிறுவல் "
-"குறுவட்டு உருக்களை பதிவிறக்கம் செய்யவும்."
-
-#: ../data/rh_register.glade.h:77
-msgid "<b>Support:</b>"
-msgstr "<b>ஆதரவு:</b>"
-
-#: ../data/rh_register.glade.h:78
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
-"இந்த கணினியில் ஏதாவது சிக்கல்களை அறிந்தால், தொழில்நுட்ப துணைக்கு Red Hat அல்லது Red "
-"Hat இன் பங்காளர்களை அணுகவும்."
-
-#: ../data/rh_register.glade.h:79
-msgid "<b>Management:</b>"
-msgstr "<b>நிர்வாகம்:</b>"
-
-#: ../data/rh_register.glade.h:80
-msgid "Management"
-msgstr "மேலாண்மை"
-
-#: ../data/rh_register.glade.h:81
-msgid ""
-"Manage subscriptions and systems registered to Customer Portal via access."
-"redhat.com or through one of our other subscription management services."
-msgstr ""
-"access.redhat.com மூலம் அல்லது எங்கள் சந்தா நிர்வாக சேவைகளில் ஏதேனும் ஒன்றின் மூலம் "
-"நீங்கள் வாடிக்கையாளர் வலைவாசலில் பதிவு செய்யப்பட்டுள்ள கணினிகளையும் சந்தாக்களையும் "
-"நிர்வகிக்கலாம்."
-
-#: ../data/rh_register.glade.h:82
-msgid ""
-"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html.</small>"
-msgstr ""
-"<small><b>உதவிக்குறிப்பு:</b> Red Hat உங்கள் தனியுரிமையை மதிக்கிறது: http://www."
-"redhat.com/legal/privacy_statement.html.</small>"
-
-#: ../data/rh_register.glade.h:83
-msgid "Provide a Security Certificate"
-msgstr "ஒரு பாதுகாப்பு சான்றிதழ் கொடுக்கவும்"
-
-#: ../data/rh_register.glade.h:85
-#, no-c-format
-msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this "
-"system.\n"
-"\n"
-"A security certificate, using SSL technology, is necessary to ensure that "
-"data communicated between this system and Spacewalk (including your login "
-"and password) is secure."
-msgstr ""
-
-#: ../data/rh_register.glade.h:88
-msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:89
-msgid "Certificate _Location:"
-msgstr "சான்றிதழ் இடம் (_L):"
-
-#: ../data/rh_register.glade.h:90
-msgid "Select A File"
-msgstr "ஒரு கோப்பினை சேமிக்கவும்"
-
-#: ../data/rh_register.glade.h:91
-msgid ""
-"I <b>_don't</b> have an SSL certificate. I will contact my system "
-"administrator for assistance and will register at a later time."
-msgstr ""
-"என்னிடம் SSL சான்றிதழ் <b>இல்லை</b>. நான் உதவிக்காக என் கணினி நிர்வாகியை தொடர்பு கொண்டு "
-"பின்னர் பதிவு செய்வேன் (_S)."
-
-#: ../data/rh_register.glade.h:92
-msgid "Your system is not setup for software updates."
-msgstr "உங்கள் கணினி மென்பொருள் புதுப்பித்தல்களுக்காக அமைக்கப்படவில்லை."
-
-#: ../data/rh_register.glade.h:93
-msgid ""
-"You won't be able to receive software updates, including security updates, "
-"for this system."
-msgstr ""
-
-#: ../data/rh_register.glade.h:94
-msgid "Proxy Configuration"
-msgstr "பதிலாள் இடம்"
-
-#: ../data/rh_register.glade.h:95
-msgid "<b>HTTP Proxy</b>"
-msgstr "<b>HTTP பதிலி</b>"
-
-#: ../data/rh_register.glade.h:96
-msgid "I would like to connect via an _HTTP proxy."
-msgstr "ஒரு HTTP பதிலி வழியாக பதிவு செய்ய விரும்புகிறேன் (_H)."
-
-#: ../data/rh_register.glade.h:97
+#~ msgid "There was an error communicating with Spacewalk server."
+#~ msgstr "Red Hat Network உடன் தொடர்பு கொள்ளும் போது ஒரு பிழை."
+
+#~ msgid ""
+#~ "The server may be in outage mode. You may have to try connecting later."
+#~ msgstr "சேவையகம் செயலற்ற முறையில் இருக்கலாம். நீங்கள் பின்னர் இணைக்க முயற்சிக்கலாம்."
+
+#~ msgid "You may be running a client that is incompatible with the server."
+#~ msgstr "நீங்கள் இயக்கும் கிளையன் சேவையகத்துடன் உகந்ததாக இல்லாமல் இருக்கலாம்."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgstr ""
+#~ "உங்கள் <b>%s</b> Red Hat Network சேட்டிலைட்டிற்கு உங்கள் கணக்கு விவரங்களை உள்ளிடவும்:"
+
+#~ msgid "You must enter a login."
+#~ msgstr "ஒரு புகுபதிவை உள்ளிட வேண்டும்."
+
+#~ msgid "You must enter a password."
+#~ msgstr "நீங்கள் கடவுச்சொல்லை உள்ளிட வேண்டும்."
+
+#~ msgid "There was an error while logging in."
+#~ msgstr "புகுபதிவு செய்யும் போது ஒரு பிழை ஏற்பட்டது."
+
+#~ msgid ""
+#~ "There was an error communicating with the registration server.  The "
+#~ "message was:\n"
+#~ msgstr "பதிவு சேவையகத்துடன் தொடர்பு கொள்வதில் ஒரு பிழை.  அதன் செய்தி:\n"
+
+#~ msgid "There was an error while assembling information for the profile."
+#~ msgstr "விவரக்குறிப்புக்கு தகவலை அடுக்கும் போது ஒரு பிழை ஏற்பட்டது."
+
+#~ msgid "Error running hardware profile"
+#~ msgstr "வன்பொருள் விவரக்குறிப்பை இயக்கும் போது பிழை"
+
+#~ msgid "There was an error while populating the profile."
+#~ msgstr "விவரக்குறிப்பை எண்ணும் போது ஒரு பிழை ஏற்பட்டது."
+
+#~ msgid "You must choose a name for this profile."
+#~ msgstr "இந்த விவரக்குறிப்பிற்கு ஒரு பெயரை தேர்ந்தெடுக்க வேண்டும்."
+
+#~ msgid "There was an error while creating the profile."
+#~ msgstr "விவரக்குறிப்பை உருவாக்கும் போது ஒரு பிழை ஏற்பட்டது."
+
+#~ msgid "Registering System"
+#~ msgstr "கணினியை பதிவு செய்கிறது"
+
+#, python-format
+#~ msgid ""
+#~ "The installation number [ %s ] provided is not a valid installation "
+#~ "number. Please go back to the previous screen and fix it."
+#~ msgstr ""
+#~ "கொடுக்கப்பட்ட நிறுவல் எண் [ %s ] சரியானது அல்ல. எனவே முந்தைய திரைக்கு சென்று அதனை "
+#~ "சரியாக உள்ளிடவும்."
+
+#~ msgid "There was a problem registering this system."
+#~ msgstr "இந்த கணினியைப் பதிவு செய்வதில் சிக்கல்."
+
+#~ msgid "Sending hardware information"
+#~ msgstr "வன்பொருள் தகவலை அனுப்புகிறது"
+
+#~ msgid "Problem sending hardware information."
+#~ msgstr "வன்பொருள் தகவலை அனுப்புவதில் சிக்கல்."
+
+#~ msgid "Sending package information"
+#~ msgstr "தொகுப்பு தகவலை அனுப்புகிறது"
+
+#~ msgid "Problem sending package information."
+#~ msgstr "தொகுப்பு பட்டியலை அனுப்புவதில் சிக்கல்."
+
+#~ msgid "There was an error while installing the certificate."
+#~ msgstr "சான்றிதழை நிறுவும் போது ஒரு பிழை ஏற்பட்டது."
+
+#~ msgid "You must select a certificate."
+#~ msgstr "நீங்கள் ஒரு சான்றிதழை தேர்ந்தெடுக்க வேண்டும்."
+
+#~ msgid ""
+#~ "There was an SSL error. This could be because the file you picked was not "
+#~ "a certificate file."
+#~ msgstr "அங்கு ஒரு SSL பிழை உள்ளது. ஏனெனில் எடுத்த கோப்பு சான்றிதழ் கோப்பு இல்லை."
+
+#~ msgid "Something went wrong while installing the new certificate:\n"
+#~ msgstr "புதிய சான்றிதழை நிறுவும் போது சில தவறுகள் நடந்துள்ளது:\n"
+
+#~ msgid "unknown"
+#~ msgstr "தெரியாதது"
+
+#~ msgid "There was an error getting the list of hardware."
+#~ msgstr "வன்பொருள் பட்டியலை எடுக்கும் போது ஒரு பிழை ஏற்பட்டது."
+
+#, python-format
+#~ msgid "%s MB"
+#~ msgstr "%s MB"
+
+#~ msgid "There was an error building the list of packages."
+#~ msgstr "தொகுப்புகளின் பட்டியலை உருவாக்கும் போது முக்கிய பிழை ஏற்பட்டது."
+
+#~ msgid "Package"
+#~ msgstr "தொகுப்பு"
+
+#~ msgid "Arch"
+#~ msgstr "Arch"
+
+#~ msgid ""
+#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr ""
+#~ "உங்கள் கணினியில் நிறுவப்பட்ட RPM தொகுப்புகளின் பட்டியலை உருவாக்குகிறது.  "
+#~ "காத்திருக்கவும்."
+
+#~ msgid ""
+#~ "There was an error loading your configuration.  Make sure that\n"
+#~ "you have read access to /etc/sysconfig/rhn."
+#~ msgstr ""
+#~ "உங்கள் கட்டமைப்பை ஏற்று போது பிழை. /etc/sysconfig/rhn ஐ \n"
+#~ "வாசிக்க அனுமதி உள்ளதா என்பதை உறுதி செய்யவும்."
+
+#, python-format
+#~ msgid ""
+#~ "There was an error saving your configuration. Make sure that\n"
+#~ "you own %s."
+#~ msgstr ""
+#~ "உங்கள் கட்டமைப்பை சேமிக்கும் போது பிழை. %s உங்களுடையதா\n"
+#~ "என்பதை உறுதிப்படுத்தவும்."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "This error shouldn't have happened. If you'd like to help us improve this "
+#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
+#~ "parts of '%s' would be very helpful. Thanks!"
+#~ msgstr ""
+#~ "இந்த பிழை வரக்கூடாது. நீங்கள் இந்த நிரலை மேம்படுத்த எங்களுக்கு உதவி எண்ணினால், "
+#~ "bugzilla.redhat.com இல் ஒரு பிழையை '%s' உடன் அறிக்கையிட்டால் உதவியாக இருக்கும். "
+#~ "நன்றி!"
+
+#~ msgid ""
+#~ "You need to register this system by running `rhn_register` before using "
+#~ "this option"
+#~ msgstr ""
+#~ "இந்த விருப்பத்தை பயன்படுத்தும் முன் `rhn_register` ஐ இயக்கி இந்த கணினியை பதிவு "
+#~ "செய்ய வேண்டும்"
+
+#~ msgid "Updating package profile..."
+#~ msgstr "தொகுப்பு விவரக்குறிப்பை மேம்படுத்துகிறது..."
+
+#~ msgid "Updating hardware profile..."
+#~ msgstr "வன்பொருள் விவரக்குறிப்பை மேம்படுத்துகிறது..."
+
+#~ msgid "Updating virtualization profile..."
+#~ msgstr "மெய்நிகராக்க விவரக்குறிப்பை மேம்படுத்துகிறது..."
+
+#~ msgid "Do not attempt to use X"
+#~ msgstr "X யை பயன்படுத்த முயற்சிக்க வேண்டாம்"
+
 #, fuzzy
-msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr "ஒரு _HTTP பதிலாள் வழியாக Red Hat Network உடன் இணைக்க விரும்புகிறேன்."
+#~ msgid "System registration"
+#~ msgstr "RHN பதிவு செய்தல்"
 
-#: ../data/rh_register.glade.h:98
-msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr "<small><b>எடுத்துக்காட்டு:</b> squid.example.com:3128</small>"
+#~ msgid "Set Up Software Updates"
+#~ msgstr "மேம்படுத்தல் அமைவு"
 
-#: ../data/rh_register.glade.h:99
-msgid "_Proxy Location:"
-msgstr "பதிலி  இடம் (_P):"
+#~ msgid "Choose Service"
+#~ msgstr "சேவையகம் தேர்ந்தெடுத்தல்"
 
-#: ../data/rh_register.glade.h:100
-msgid "Enter in the format hostname(:port)"
-msgstr "வடிவு புரவலன் பெயரை உள்ளிடவும்(:port)"
+#~ msgid "Provide a security certificate"
+#~ msgstr "பாதுகாப்பு சான்றிதழ் கொடுக்கவும்"
 
-#: ../data/rh_register.glade.h:101
-msgid "proxy location"
-msgstr "பதிலாள் இடம் "
+#~ msgid "Red Hat Account"
+#~ msgstr "Red Hat புகுபதிவு"
 
-#: ../data/rh_register.glade.h:102
-msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "HTTP பதிலியுடன் அங்கீகாரத்தைப் பயன்படுத்தவும் (_t):"
+#~ msgid "Create Profile"
+#~ msgstr "விவரக்குறிப்பை உருவாக்கவும்"
 
-#: ../data/rh_register.glade.h:103
-msgid "Use Authentication with HTTP Proxy"
-msgstr "HTTP பதிலாளுடன் அங்கீகாரத்தைப் பயன்படுத்தவும்"
+#~ msgid "Sending Information"
+#~ msgstr "தொகுப்பு தகவலை அனுப்புகிறது"
 
-#: ../data/rh_register.glade.h:104
-msgid "Proxy _Username:"
-msgstr "பதிலி பயனர்பெயர் (_U):"
+#~ msgid "progress bar"
+#~ msgstr "முன்னேற்ற பட்டி"
 
-#: ../data/rh_register.glade.h:105
-msgid "Proxy P_assword:"
-msgstr "பதிலி கடவுச்சொல் (_a):"
+#~ msgid "progress status"
+#~ msgstr "முன்னேற்ற நிலை "
 
-#: ../data/rh_register.glade.h:106
-msgid "proxy user field"
-msgstr "பதிலாள் பயனர் புலம்"
+#~ msgid ""
+#~ "<b>The network connection on your system is not active. Your system "
+#~ "cannot be set up for software updates at this time.</b>"
+#~ msgstr ""
+#~ "<b>உங்கள் கணினியிலுள்ள பிணைய இணைப்பு செயலில் இல்லை. உங்கள் கணினி மென்பொருள் "
+#~ "மேம்படுத்தல்களுக்கு அமைக்க முடியாது.</b>"
 
-#: ../data/rh_register.glade.h:107
-msgid "proxy password field"
-msgstr "பதிலாள் கடவுச்சொல் புலம்"
-
-#: ../data/rh_register.glade.h:108
-msgid "Confirm operation system release selection"
-msgstr "இயக்கத்தள வெளியீடு தேர்வை உறுதிப்படுத்து"
-
-#: ../data/rh_register.glade.h:109
-msgid "_No, Cancel"
-msgstr "இல்லை, ரத்து செய்யவும் (_N)"
-
-#: ../data/rh_register.glade.h:111
-msgid "_Yes, Continue"
-msgstr "ஆம், தொடரவும் (_Y)"
-
-#: ../data/rh_register.glade.h:113
-msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr "<big><b>முந்தைய பதிப்புகளுக்கு செல்வது வாய்ப்பில்லை</b></big>"
-
-#: ../data/rh_register.glade.h:114
-msgid ""
-"Your system will be subscribed to the base software channel.  You will not "
-"be able to move this system to an earlier minor release channel if you "
-"continue (you will be able to move to a later release.)"
-msgstr ""
-"உங்கள் கணினி தள மென்பொருள் தடத்தால் சந்தாப்படுத்தப்படும். நீங்கள் தொடந்தால் முந்தைய சிறிய "
-"வெளியீடு சேனலுக்கு உங்களால் இந்த முறைமையை நகர்த்த முடியாது (ஒரு புதிய வெளியீட்டை "
-"உங்களால் நகர்த்த முடியும்.)"
-
-#: ../data/rh_register.glade.h:115
-msgid ""
-"\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"\n"
-"நீங்கள் தொடர வேண்டுமா?"
-
-#: ../data/rh_register.glade.h:117
-msgid "Are you Sure?"
-msgstr "நிச்சயமாக?"
-
-#: ../data/rh_register.glade.h:118
-msgid "_Go Back and Register"
-msgstr "பின் சென்று பதிவு செய் (_G)"
-
-#: ../data/rh_register.glade.h:119
-msgid "Go Back and Register"
-msgstr "பின் சென்று பதிவு செய்"
-
-#: ../data/rh_register.glade.h:120
-msgid "Register _Later"
-msgstr "பின்னர் பதிவு செய்க (_L)"
-
-#: ../data/rh_register.glade.h:121
-msgid "Register Later"
-msgstr "பின்னர் பதிவு செய்கிறேன்."
-
-#: ../data/rh_register.glade.h:122
-msgid ""
-"Are you sure you don't want to register your system with Red Hat? You'll "
-"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr ""
-"நீங்கள் உங்கள் கணினியை Red Hat Network உடன் இணைக்க வேண்டாமா? நீங்கள் Red Hat Enterprise "
-"Linux சந்தாவின் நன்மைகளை இழக்கக்கூடும்:"
-
-#: ../data/rh_register.glade.h:123
-msgid "Management:"
-msgstr "நிர்வாகம்:"
-
-#: ../data/rh_register.glade.h:124
-msgid ""
-"You will not be able to take advantage of these benefits without registering."
-msgstr ""
-"உங்கள் கணினியை Red Hat Network உடன் இணைக்காமல் நீங்கள் இந்த சந்தா முன்னுரிமைகளை எடுக்க "
-"முடியாது."
-
-#: ../data/rh_register.glade.h:127
-msgid "<b>Spacewalk Location:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:128
-msgid "<b>Login:</b>"
-msgstr "<b>புகுபதிவு:</b>"
-
-#: ../data/rh_register.glade.h:129
-msgid "<b>System ID:</b>"
-msgstr "<b>கணினி ID:</b>"
-
-#: ../data/rh_register.glade.h:130
-msgid "label"
-msgstr "விளக்கச்சீட்டு"
-
-#: ../data/rh_register.glade.h:132
-msgid "<b>Warning</b>"
-msgstr "<b>எச்சரிக்கை</b>"
-
-#: ../data/rh_register.glade.h:133
-msgid ""
-"This system has already been registered with RHN using RHN certificate-based "
-"technology."
-msgstr ""
-"RHN சான்றிதழ் அடிப்படையான டெக்னாலஜியைப் பயன்படுத்தி ஏற்கனவே இந்த கணினி RHN உடன் "
-"பதிவுசெய்யப்பட்டுள்ளது."
-
-#: ../data/rh_register.glade.h:134
-msgid ""
-"Your system is being registered again using RHN Classic technology. Red Hat "
-"recommends that customers only register once."
-msgstr ""
-
-#: ../data/rh_register.glade.h:135
-msgid ""
-"To learn more about RHN registration and technologies please consult this "
-"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
-msgstr ""
-"RHN பதிவு மற்றும் தொழில்நுட்பங்களைப் பற்றிய மேலும் அறிய, இந்த அறிவுக்களஞ்சியக் கட்டுரையைப் "
-"பார்க்கவும்: <a href=\"https://access.redhat.com/kb/docs/DOC-45563\">https://"
-"access.redhat.com/kb/docs/DOC-45563</a>\n"
-
-#: ../data/rh_register.glade.h:137
-msgid "Software update setup has been completed for this system."
-msgstr "இந்த கணினியில் மென்பொருள் புதுப்பித்தல் அமைவு முடிக்கப்பட்டது."
-
-#: ../data/rh_register.glade.h:138
-msgid ""
-"Your system is now ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"உங்கள் கணினி இப்போது மென்பொருள் புதுப்பித்தல்களைப் பெற தயாராக இருக்கிறது, அது கணினியை "
-"பாதுகாப்பாகவும் ஆதரவுடனும் வைக்கும்.\n"
-"\n"
-" உங்கள் பணிமேடையில் அறிவிப்பு பகுதியில் தொகுப்பு சின்னம் தோன்றும் போது மென்பொருள் "
-"புதுப்பித்தல் கிடைக்கும் என்பதை நீங்கள் அறியலாம் (பொதுவாக மேல்-வலது ஓரத்தில், கீழே "
-"வட்டமிடப்பட்டது) அவை இருக்கும் போது இந்த சின்னத்தை சொடுக்கினால் கிடைக்கக்கூடிய "
-"புதுப்பித்தல்களைப் பயன்படுத்துவதற்கு வழிகாட்டுதல்கள் வழங்கப்படும்:"
-
-#: ../data/rh_register.glade.h:141
-msgid "Aplet screenshot"
-msgstr "அப்லெட் திரைபிடிப்பு"
-
-#: ../data/rh_register.glade.h:143
-msgid "Select how your system will receive updates:"
-msgstr "உங்கள் கணினிக்கு புதுப்பிப்புகள் எப்படிக் கிடைக்கப்பெறும் எனத் தேர்வு செய்யவும்:"
-
-#: ../data/rh_register.glade.h:144
-msgid "Limited updates"
-msgstr "வரம்பிட்ட புதுப்பித்தல்கள்"
-
-#: ../data/rh_register.glade.h:145
-msgid ""
-"<b>_Limited updates</b> will be provided to this system, maintaining "
-"compatibility with the selected minor release software channel:"
-msgstr ""
-"<b>_Limited updates</b> will be provided to this system to maintain "
-"compatibility with the following eligible Red Hat Enterprise Linux minor "
-"release software channel:"
-
-#: ../data/rh_register.glade.h:146
-msgid ""
-"Limited updates will be provided to this system, maintaining compatibility "
-"with the selected minor release software channel:"
-msgstr ""
-"<b>_Limited updates</b> will be provided to this system to maintain "
-"compatibility with the following eligible Red Hat Enterprise Linux minor "
-"release software channel:"
-
-#: ../data/rh_register.glade.h:147
-msgid "_Minor release:"
-msgstr "சிறிய வெளியீடு (_M):"
-
-#: ../data/rh_register.glade.h:148
-msgid "Choose minor release"
-msgstr "சிறிய வெளியீட்டை தேர்ந்தெடு"
-
-#: ../data/rh_register.glade.h:149
-msgid "       "
-msgstr "       "
-
-#: ../data/rh_register.glade.h:150
-msgid ""
-"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
-"Hat."
-msgstr ""
-"<b>துணுக்கு:</b> ஒரு '*' உடன் உள்ள சிறிய வெளியீடுகள் Red Hatஆல் தற்போது முழுவதும் "
-"துணைபுரிகிறது."
-
-#: ../data/rh_register.glade.h:152
-msgid ""
-"<b>_All available updates</b> will be provided to this system. If kept "
-"updated, this system will always be equivalent to the latest minor release "
-"in the main 'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"<b>_All available updates</b> will be provided to this system.  This system, "
-"if kept updated, will always be equivalent to the latest available minor "
-"release of Red Hat Enterprise Linux 6.  It will be registered to the main "
-"'Red Hat Enterprise Linux 6' software channel."
-
-#: ../data/rh_register.glade.h:153
-msgid ""
-"All available updates will be provided to this system. If kept updated, this "
-"system will always be equivalent to the latest minor release in the main "
-"'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"<b>_All available updates</b> will be provided to this system.  This system, "
-"if kept updated, will always be equivalent to the latest available minor "
-"release of Red Hat Enterprise Linux 6.  It will be registered to the main "
-"'Red Hat Enterprise Linux 6' software channel."
-
-#: ../data/rh_register.glade.h:154
-msgid ""
-"<b>Warning:</b> Using this option, your system will always be the most "
-"recent minor release and <b>cannot</b> be limited to an older release "
-"version."
-msgstr ""
-"<b>எச்சரிக்கை:</b> இந்த விருப்பத்தைப் பயன்படுத்தினால், உங்கள் கணினி எப்போதும் சமீபத்திய "
-"சிறு வெளியீடாகவே இருக்கும், மேலும் அதை ஒரு பழைய வெளியீட்டுப் பதிப்புக்கு மட்டும் என "
-"வரம்புப்படுத்த <b>முடியாது</b>."
-
-#: ../data/rh_register.glade.h:155
-msgid ""
-"Warning: Using this option, your system will always be the most recent minor "
-"release and cannot be limited to an older release version."
-msgstr ""
-"எச்சரிக்கை: இந்த விருப்பத்தைப் பயன்படுத்தினால், உங்கள் கணினி எப்போதும் சமீபத்திய சிறு "
-"வெளியீடாகவே இருக்கும், மேலும் அதை ஒரு பழைய வெளியீட்டுப் பதிப்புக்கு மட்டும் என "
-"வரம்புப்படுத்த முடியாது."
-
-#: ../data/rh_register.glade.h:156
-msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr "<b>உங்கள் கணினி நிறுவலின் போது புதுப்பித்தலுக்கு பதிவு செய்யப்பட்டது.</b>"
-
-#: ../data/rh_register.glade.h:157
-msgid ""
-"Your system is ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"உங்கள் கணினி இப்போது மென்பொருள் புதுப்பித்தல்களைப் பெற தயாராக இருக்கிறது, அது கணினியை "
-"பாதுகாப்பாகவும் ஆதரவுடனும் வைக்கும்.\n"
-"\n"
-" உங்கள் பணிமேடையில் அறிவிப்பு பகுதியில் தொகுப்பு சின்னம் தோன்றும் போது மென்பொருள் "
-"புதுப்பித்தல் கிடைக்கும் என்பதை நீங்கள் அறியலாம் (பொதுவாக மேல்-வலது ஓரத்தில், கீழே "
-"வட்டமிடப்பட்டது) அவை இருக்கும் போது இந்த சின்னத்தை சொடுக்கினால் கிடைக்கக்கூடிய "
-"புதுப்பித்தல்களைப் பயன்படுத்துவதற்கு வழிகாட்டுதல்கள் வழங்கப்படும்:"
-
-#: ../data/rh_register.glade.h:160
-msgid "icon of aplet"
-msgstr "அப்லெட்டின் சின்னம்"
-
-#: ../rhn_register.desktop.in.h:1
-msgid "RHN Registration"
-msgstr "RHN பதிவு செய்தல்"
-
-#: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-"Spacewalk/Satellite/Red Hat Network இலிருந்து மென்பொருள் புதுப்பித்தல்களை பதிவு "
-"செய்யவும்"
+#~ msgid ""
+#~ "This system will <b>not</b> be able to successfully receive software "
+#~ "updates, including security updates, from Red Hat without connecting to a "
+#~ "Red Hat Satellite or Red Hat Network Classic.\n"
+#~ "\n"
+#~ "To keep your system updated, secure, and supported, please register this "
+#~ "system at your earliest convenience."
+#~ msgstr ""
+#~ "Red Hat Network சேவையகத்தில் இணைக்காமல் Red Hat இலிருந்து நீங்கள் பாதுகாப்பு "
+#~ "மேம்படுத்தல்களையும் சேர்த்து மென்பொருள் மேம்படுத்தல்களை இந்த கணினிக்குப் பெற "
+#~ "<b>முடியாது</b>.\n"
+#~ "\n"
+#~ "உங்கள் கணினியை மேம்படுத்தி, பாதுகாத்து மற்றும் துணைபுரிய, இந்த கணினியை விரைவாக "
+#~ "பதிவு செய்யவும். "
 
-#: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+#~ msgid "Why Should I Connect to RHN? ..."
+#~ msgstr "எதற்காக RHN உடன் இணைக்க வேண்டும்? ..."
+
+#~ msgid "Location:"
+#~ msgstr "இடம்:"
+
+#~ msgid "Example: https://satellite.example.com/XMLRPC"
+#~ msgstr "<small><b>எடுத்துக்காட்டு:</b> https://satellite.example.com</small>"
+
+#~ msgid "satellite server location"
+#~ msgstr "சேட்டிலைட் சேவையக இடம்"
+
+#~ msgid "_Proxy Setup"
+#~ msgstr "பதிலி அமைவு (_P)"
+
+#~ msgid "Proxy Setup Button"
+#~ msgstr "பதிலி அமைவு பொத்தான்"
+
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "உங்கள் கணக்கு தகவல் உள்ளிடவும்:"
+
+#~ msgid "RHN login field"
+#~ msgstr "RHN புகுபதிவு புலம்"
+
+#~ msgid "RHN password field"
+#~ msgstr "RHN கடவுச்சொல் புலம்"
+
+#~ msgid "_Password:"
+#~ msgstr "கடவுச்சொல் (_P):"
+
+#~ msgid "_Login:"
+#~ msgstr "புகுபதிவு (_L):"
+
+#~ msgid ""
+#~ "<small>Tip: Forgot your login or password? Contact your Satellite's "
+#~ "<i>Organization Administrator</i>.</small>"
+#~ msgstr ""
+#~ "<small>உதவிக்குறிப்பு: உங்கள் புகுபதிவு அல்லது கடவுச்சொல் மறந்து விட்டதா? உங்கள் "
+#~ "சேட்டிலைட் <i>நிறுவன நிர்வாகியை</i> தொடர்பு கொள்ளவும்.</small>"
+
+#~ msgid "Hardware Info"
+#~ msgstr "வன்பொருள் தகவல்"
+
+#~ msgid "Red Hat Linux Version:"
+#~ msgstr " Red Hat Linux பதிப்பு:"
+
+#~ msgid "Hostname:"
+#~ msgstr "புரவலன் பெயர்:"
+
+#~ msgid "IP Address:"
+#~ msgstr "ஐபி முகவரி:"
+
+#~ msgid "ERROR"
+#~ msgstr "பிழை"
+
+#~ msgid "CPU Model:"
+#~ msgstr "CPU மாதிரி: "
+
+#~ msgid "CPU Speed:"
+#~ msgstr "CPU வேகம்: "
+
+#~ msgid "Memory:"
+#~ msgstr "நினைவகம்:"
+
+#~ msgid "Hardware Profile"
+#~ msgstr "வன்பொருள் விவரக்குறிப்பு"
+
+#~ msgid "Package Information"
+#~ msgstr "தொகுப்பு தகவல்"
+
+#~ msgid "Start Window"
+#~ msgstr "சாளரத்தை துவக்கவும்"
+
+#~ msgid ""
+#~ "This assistant will guide you through the process of registering your "
+#~ "system with Red Hat to receive software updates and other benefits. You "
+#~ "will need the following to register:"
+#~ msgstr ""
+#~ "இந்த உதவியாளர் உங்கள் கணினியை Red Hat Network (RHN) இல் மென்பொருள் "
+#~ "மேம்படுத்தல்களுக்கு பெற உதவும், அதாவது:"
+
+#~ msgid "_Why Should I Register?"
+#~ msgstr "எதற்காக பதிவு செய்ய வேண்டும்? (_W)"
+
+#~ msgid "Why Should I Register?"
+#~ msgstr "எதற்கு பதிவு"
+
+#~ msgid ""
+#~ "Would you like to register your system at this time? <b>(Strongly "
+#~ "recommended.)</b>"
+#~ msgstr ""
+#~ "இந்த நேரத்தில் உங்கள் கணினியை பதிவு செய்ய வேண்டுமா? <b>(பலமாக "
+#~ "பரிந்துரைக்கப்படுகிறது.)</b>"
+
+#~ msgid "_Yes, I'd like to register now."
+#~ msgstr "ஆம், நான் இப்போது பதிவு செய்யப்போகிறேன் (_Y)."
+
+#~ msgid "_No, I prefer to register at a later time."
+#~ msgstr "இல்லை, நான் பின்னர் பதிவு செய்கிறேன் (_N)."
+
+#~ msgid "Link To Subscription"
+#~ msgstr "சந்தாவுக்கான இணைப்பு"
+
+#~ msgid ""
+#~ "Your system will need to access a subscription. This will allow you to "
+#~ "keep your system updated, secure, and supported."
+#~ msgstr ""
+#~ "உங்கள் கணினி ஒரு சந்தாவை அணுக வேண்டும். இது உங்கள் கணினியை புதுப்பித்ததாகவும் "
+#~ "பாதுகாப்பாகவும் ஆதரவுடனும் வைத்திருக்க உதவும்."
+
+#~ msgid ""
+#~ "<b>You have no active subscriptions available in your account.</b> You "
+#~ "will need to do one of the following to create an active subscription in "
+#~ "your account before this system can be registered:"
+#~ msgstr ""
+#~ "<b>உங்கள் கணக்கில் செயலிலுள்ள சந்தா எதுவும் இல்லை.</b> உங்கள் கணக்கில் செயலிலுள்ள "
+#~ "சந்தாவை உருவாக்க இந்த கணினி Red Hat Network உடன் இணைக்கப்படுவதற்கு முன் "
+#~ "பின்வருவனவற்றில் ஒன்றை செய்ய வேண்டும்:"
+
+#~ msgid ""
+#~ "Purchase an additional Red Hat Enterprise Linux subscription at http://"
+#~ "www.redhat.com/store/."
+#~ msgstr ""
+#~ "http://www.redhat.com/store/ மூலம் ஒரு கூடுதல் Red Hat Enterprise Linux "
+#~ "சந்தாவை வாங்கவும்."
+
+#~ msgid ""
+#~ "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
+#~ "RHN > Subscription Management > System Entitlements."
+#~ msgstr ""
+#~ "http://rhn.redhat.com/ இல் புகுபதிவு செய்து உங்கள் RHN > சந்தா நிர்வாகம் > கணினி "
+#~ "உரிமங்கள் என்பதில் ஒரு செயலிலா கணினியை உரிமம் நீக்கவும்."
+
+#~ msgid ""
+#~ "Activate a previously purchased subscription you have not yet activated."
+#~ msgstr "நீங்கள் செயல்பாடுத்தாத முன்பு வாங்கப்பட்ட சந்தாவை செயல்படுத்தவும்."
+
+#~ msgid "•"
+#~ msgstr "•"
+
+#~ msgid "installation number field"
+#~ msgstr "நிறுவல் எண் புலம்"
+
+#~ msgid "Installation _Number:"
+#~ msgstr "நிறுவல் எண் (_N):"
+
+#~ msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
+#~ msgstr "<small><b>எடுத்துக்காட்டு</b>: XXXX-XXXX-XXXX-XXXX</small>"
+
+#~ msgid "_Activate a subscription now..."
+#~ msgstr "இப்போது ஒரு சந்தாவை அணுகவும் (_A)..."
+
+#~ msgid "Review system..."
+#~ msgstr "கணினியை மறுபார்வையிடவும்..."
+
+#~ msgid "Create profile"
+#~ msgstr "விவரக்குறிப்பை உருவாக்கவும்"
+
+#~ msgid "<big><b>System Name</b></big>"
+#~ msgstr "<big><b>கணினி பெயர்</b></big>"
+
+#~ msgid ""
+#~ "A recognizable name will help you identify this system in a management "
+#~ "interface."
+#~ msgstr ""
+#~ "அடையாளம் காணத்தக்க பெயர் ஒன்று இருந்தால், நிர்வாக இடைமுகத்தில் இந்தக் கணினியை நீங்கள் "
+#~ "அடையாளம் காண உதவியாக இருக்கும்."
+
+#~ msgid "System _Name:"
+#~ msgstr "கணினி பெயர் (_N):"
+
+#~ msgid "system name"
+#~ msgstr "கணினி பெயர் (_N):"
+
+#~ msgid "<big><b>Profile Data</b></big>"
+#~ msgstr "<big><b>சுயவிவர தரவு</b></big>"
+
+#~ msgid ""
+#~ "Send us a profile of your current hardware and packages so we can "
+#~ "determine what updates are available."
+#~ msgstr ""
+#~ "உங்கள் கணினியில் நிறுவப்பட்ட தொகுப்புகள் மற்றும் வன்பொருள் பற்றிய விவரக்குறிப்பை "
+#~ "எங்களுக்கு அனுப்ப வேண்டும் அதனால் என்ன மேம்படுத்தல்கள் உள்ளன என்பதை நாங்கள் குறிப்பிடலாம்."
+
+#~ msgid "_View Hardware Profile ..."
+#~ msgstr "வன்பொருள் விவரக்குறிப்பை பார்க்கவும் (_V)..."
+
+#~ msgid "View Hardware Profile"
+#~ msgstr "வன்பொருள் விவரக்குறிப்பை பார்க்கவும்"
+
+#~ msgid "V_iew Package Profile ..."
+#~ msgstr "தொகுப்பு விவரக்குறிப்பை பார்க்கவும் (_i)..."
+
+#~ msgid "View Package Profile"
+#~ msgstr "தொகுப்பு விவரக்குறிப்பை பார்க்கவும்"
+
+#~ msgid "Send _hardware profile"
+#~ msgstr "வன்பொருள் விவரக்குறிப்பை அனுப்பவும் (_h)"
+
+#~ msgid "Send hardware profile checkbox"
+#~ msgstr "வன்பொருள் விவரக்குறிப்பு சரிபார்க்கும் பெட்டியை அனுப்பு"
+
+#~ msgid "Send _package profile"
+#~ msgstr "தொகுப்பு விவரக்குறிப்பை அனுப்பவும் (_p)"
+
+#~ msgid "Send package profile checkbox"
+#~ msgstr "தொகுப்பு விவரக்குறிப்பு சரிபார்க்கும் பெட்டியை அனுப்பு"
+
+#~ msgid ""
+#~ "Registering your system with Red Hat allows you to take full advantage of "
+#~ "the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "உங்கள் கணினியை Red Hat Network உடன் இணைப்பது செலுத்தப்பட்ட சந்தாவின் முழு நன்மைகளை "
+#~ "பெற அனுமதிக்கும்:"
+
+#~ msgid "_Close"
+#~ msgstr "மூடு (_C)"
+
+#~ msgid "Close"
+#~ msgstr "மூடவும்"
+
+#~ msgid "<b>Security &amp; Updates:</b>"
+#~ msgstr "<b>பாதுகாப்பு &amp; புதுப்பிப்புகள்:</b>"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
+#~ msgstr ""
+#~ "இந்த Red Hat Enterprise Linux கணினியை <b>புதுப்பித்ததாகவும்</b> "
+#~ "<b>பாதுபாப்பானதாகவும்</b>வைத்திருக்கும் பாதுகாப்பு புதுப்பித்தல்கள் உட்பட சமீபத்திய "
+#~ "மென்பொருள் புதுப்பித்தல்களைப் பெறுக."
+
+#~ msgid "<b>Downloads &amp; Upgrades:</b>"
+#~ msgstr "<b>பதிவிறக்கங்கள் &amp; மேம்படுத்தல்கள்:</b>"
+
+#~ msgid ""
+#~ "Download installation images for Red Hat Enterprise Linux releases, "
+#~ "including new releases."
+#~ msgstr ""
+#~ "Red Hat Enterprise Linux வெளியீடுகள், புதிய வெளியீடுகளையும் சேர்த்து நிறுவல் "
+#~ "குறுவட்டு உருக்களை பதிவிறக்கம் செய்யவும்."
+
+#~ msgid "<b>Support:</b>"
+#~ msgstr "<b>ஆதரவு:</b>"
+
+#~ msgid ""
+#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
+#~ "for help with any issues you might encounter with this system."
+#~ msgstr ""
+#~ "இந்த கணினியில் ஏதாவது சிக்கல்களை அறிந்தால், தொழில்நுட்ப துணைக்கு Red Hat அல்லது Red "
+#~ "Hat இன் பங்காளர்களை அணுகவும்."
+
+#~ msgid "<b>Management:</b>"
+#~ msgstr "<b>நிர்வாகம்:</b>"
+
+#~ msgid "Management"
+#~ msgstr "மேலாண்மை"
+
+#~ msgid ""
+#~ "Manage subscriptions and systems registered to Customer Portal via access."
+#~ "redhat.com or through one of our other subscription management services."
+#~ msgstr ""
+#~ "access.redhat.com மூலம் அல்லது எங்கள் சந்தா நிர்வாக சேவைகளில் ஏதேனும் ஒன்றின் மூலம் "
+#~ "நீங்கள் வாடிக்கையாளர் வலைவாசலில் பதிவு செய்யப்பட்டுள்ள கணினிகளையும் சந்தாக்களையும் "
+#~ "நிர்வகிக்கலாம்."
+
+#~ msgid ""
+#~ "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/"
+#~ "legal/privacy_statement.html.</small>"
+#~ msgstr ""
+#~ "<small><b>உதவிக்குறிப்பு:</b> Red Hat உங்கள் தனியுரிமையை மதிக்கிறது: http://"
+#~ "www.redhat.com/legal/privacy_statement.html.</small>"
+
+#~ msgid "Provide a Security Certificate"
+#~ msgstr "ஒரு பாதுகாப்பு சான்றிதழ் கொடுக்கவும்"
+
+#~ msgid "Certificate _Location:"
+#~ msgstr "சான்றிதழ் இடம் (_L):"
+
+#~ msgid "Select A File"
+#~ msgstr "ஒரு கோப்பினை சேமிக்கவும்"
+
+#~ msgid ""
+#~ "I <b>_don't</b> have an SSL certificate. I will contact my system "
+#~ "administrator for assistance and will register at a later time."
+#~ msgstr ""
+#~ "என்னிடம் SSL சான்றிதழ் <b>இல்லை</b>. நான் உதவிக்காக என் கணினி நிர்வாகியை தொடர்பு "
+#~ "கொண்டு பின்னர் பதிவு செய்வேன் (_S)."
+
+#~ msgid "Your system is not setup for software updates."
+#~ msgstr "உங்கள் கணினி மென்பொருள் புதுப்பித்தல்களுக்காக அமைக்கப்படவில்லை."
+
+#~ msgid "Proxy Configuration"
+#~ msgstr "பதிலாள் இடம்"
+
+#~ msgid "<b>HTTP Proxy</b>"
+#~ msgstr "<b>HTTP பதிலி</b>"
+
+#~ msgid "I would like to connect via an _HTTP proxy."
+#~ msgstr "ஒரு HTTP பதிலி வழியாக பதிவு செய்ய விரும்புகிறேன் (_H)."
+
+#, fuzzy
+#~ msgid "I would like to connect to Spacewalk via an _HTTP proxy."
+#~ msgstr "ஒரு _HTTP பதிலாள் வழியாக Red Hat Network உடன் இணைக்க விரும்புகிறேன்."
+
+#~ msgid "<small><b>Example:</b> squid.example.com:3128</small>"
+#~ msgstr "<small><b>எடுத்துக்காட்டு:</b> squid.example.com:3128</small>"
+
+#~ msgid "_Proxy Location:"
+#~ msgstr "பதிலி  இடம் (_P):"
+
+#~ msgid "Enter in the format hostname(:port)"
+#~ msgstr "வடிவு புரவலன் பெயரை உள்ளிடவும்(:port)"
+
+#~ msgid "proxy location"
+#~ msgstr "பதிலாள் இடம் "
+
+#~ msgid "Use Au_thentication with HTTP Proxy:"
+#~ msgstr "HTTP பதிலியுடன் அங்கீகாரத்தைப் பயன்படுத்தவும் (_t):"
+
+#~ msgid "Use Authentication with HTTP Proxy"
+#~ msgstr "HTTP பதிலாளுடன் அங்கீகாரத்தைப் பயன்படுத்தவும்"
+
+#~ msgid "Proxy _Username:"
+#~ msgstr "பதிலி பயனர்பெயர் (_U):"
+
+#~ msgid "Proxy P_assword:"
+#~ msgstr "பதிலி கடவுச்சொல் (_a):"
+
+#~ msgid "proxy user field"
+#~ msgstr "பதிலாள் பயனர் புலம்"
+
+#~ msgid "proxy password field"
+#~ msgstr "பதிலாள் கடவுச்சொல் புலம்"
+
+#~ msgid "Confirm operation system release selection"
+#~ msgstr "இயக்கத்தள வெளியீடு தேர்வை உறுதிப்படுத்து"
+
+#~ msgid "_No, Cancel"
+#~ msgstr "இல்லை, ரத்து செய்யவும் (_N)"
+
+#~ msgid "_Yes, Continue"
+#~ msgstr "ஆம், தொடரவும் (_Y)"
+
+#~ msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
+#~ msgstr "<big><b>முந்தைய பதிப்புகளுக்கு செல்வது வாய்ப்பில்லை</b></big>"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel.  You will "
+#~ "not be able to move this system to an earlier minor release channel if "
+#~ "you continue (you will be able to move to a later release.)"
+#~ msgstr ""
+#~ "உங்கள் கணினி தள மென்பொருள் தடத்தால் சந்தாப்படுத்தப்படும். நீங்கள் தொடந்தால் முந்தைய சிறிய "
+#~ "வெளியீடு சேனலுக்கு உங்களால் இந்த முறைமையை நகர்த்த முடியாது (ஒரு புதிய வெளியீட்டை "
+#~ "உங்களால் நகர்த்த முடியும்.)"
+
+#~ msgid ""
+#~ "\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "\n"
+#~ "நீங்கள் தொடர வேண்டுமா?"
+
+#~ msgid "Are you Sure?"
+#~ msgstr "நிச்சயமாக?"
+
+#~ msgid "_Go Back and Register"
+#~ msgstr "பின் சென்று பதிவு செய் (_G)"
+
+#~ msgid "Go Back and Register"
+#~ msgstr "பின் சென்று பதிவு செய்"
+
+#~ msgid "Register _Later"
+#~ msgstr "பின்னர் பதிவு செய்க (_L)"
+
+#~ msgid "Register Later"
+#~ msgstr "பின்னர் பதிவு செய்கிறேன்."
+
+#~ msgid ""
+#~ "Are you sure you don't want to register your system with Red Hat? You'll "
+#~ "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
+#~ msgstr ""
+#~ "நீங்கள் உங்கள் கணினியை Red Hat Network உடன் இணைக்க வேண்டாமா? நீங்கள் Red Hat "
+#~ "Enterprise Linux சந்தாவின் நன்மைகளை இழக்கக்கூடும்:"
+
+#~ msgid "Management:"
+#~ msgstr "நிர்வாகம்:"
+
+#~ msgid ""
+#~ "You will not be able to take advantage of these benefits without "
+#~ "registering."
+#~ msgstr ""
+#~ "உங்கள் கணினியை Red Hat Network உடன் இணைக்காமல் நீங்கள் இந்த சந்தா முன்னுரிமைகளை "
+#~ "எடுக்க முடியாது."
+
+#~ msgid "<b>Login:</b>"
+#~ msgstr "<b>புகுபதிவு:</b>"
+
+#~ msgid "<b>System ID:</b>"
+#~ msgstr "<b>கணினி ID:</b>"
+
+#~ msgid "label"
+#~ msgstr "விளக்கச்சீட்டு"
+
+#~ msgid "<b>Warning</b>"
+#~ msgstr "<b>எச்சரிக்கை</b>"
+
+#~ msgid ""
+#~ "This system has already been registered with RHN using RHN certificate-"
+#~ "based technology."
+#~ msgstr ""
+#~ "RHN சான்றிதழ் அடிப்படையான டெக்னாலஜியைப் பயன்படுத்தி ஏற்கனவே இந்த கணினி RHN உடன் "
+#~ "பதிவுசெய்யப்பட்டுள்ளது."
+
+#~ msgid ""
+#~ "To learn more about RHN registration and technologies please consult this "
+#~ "Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+#~ msgstr ""
+#~ "RHN பதிவு மற்றும் தொழில்நுட்பங்களைப் பற்றிய மேலும் அறிய, இந்த அறிவுக்களஞ்சியக் "
+#~ "கட்டுரையைப் பார்க்கவும்: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+
+#~ msgid "Software update setup has been completed for this system."
+#~ msgstr "இந்த கணினியில் மென்பொருள் புதுப்பித்தல் அமைவு முடிக்கப்பட்டது."
+
+#~ msgid ""
+#~ "Your system is now ready to receive the software updates that will keep "
+#~ "it secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "உங்கள் கணினி இப்போது மென்பொருள் புதுப்பித்தல்களைப் பெற தயாராக இருக்கிறது, அது "
+#~ "கணினியை பாதுகாப்பாகவும் ஆதரவுடனும் வைக்கும்.\n"
+#~ "\n"
+#~ " உங்கள் பணிமேடையில் அறிவிப்பு பகுதியில் தொகுப்பு சின்னம் தோன்றும் போது மென்பொருள் "
+#~ "புதுப்பித்தல் கிடைக்கும் என்பதை நீங்கள் அறியலாம் (பொதுவாக மேல்-வலது ஓரத்தில், கீழே "
+#~ "வட்டமிடப்பட்டது) அவை இருக்கும் போது இந்த சின்னத்தை சொடுக்கினால் கிடைக்கக்கூடிய "
+#~ "புதுப்பித்தல்களைப் பயன்படுத்துவதற்கு வழிகாட்டுதல்கள் வழங்கப்படும்:"
+
+#~ msgid "Aplet screenshot"
+#~ msgstr "அப்லெட் திரைபிடிப்பு"
+
+#~ msgid "Select how your system will receive updates:"
+#~ msgstr "உங்கள் கணினிக்கு புதுப்பிப்புகள் எப்படிக் கிடைக்கப்பெறும் எனத் தேர்வு செய்யவும்:"
+
+#~ msgid "Limited updates"
+#~ msgstr "வரம்பிட்ட புதுப்பித்தல்கள்"
+
+#~ msgid ""
+#~ "<b>_Limited updates</b> will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "<b>_Limited updates</b> will be provided to this system to maintain "
+#~ "compatibility with the following eligible Red Hat Enterprise Linux minor "
+#~ "release software channel:"
+
+#~ msgid ""
+#~ "Limited updates will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "<b>_Limited updates</b> will be provided to this system to maintain "
+#~ "compatibility with the following eligible Red Hat Enterprise Linux minor "
+#~ "release software channel:"
+
+#~ msgid "_Minor release:"
+#~ msgstr "சிறிய வெளியீடு (_M):"
+
+#~ msgid "Choose minor release"
+#~ msgstr "சிறிய வெளியீட்டை தேர்ந்தெடு"
+
+#~ msgid "       "
+#~ msgstr "       "
+
+#~ msgid ""
+#~ "<b>Tip:</b> Minor releases with a '*' are currently fully supported by "
+#~ "Red Hat."
+#~ msgstr ""
+#~ "<b>துணுக்கு:</b> ஒரு '*' உடன் உள்ள சிறிய வெளியீடுகள் Red Hatஆல் தற்போது முழுவதும் "
+#~ "துணைபுரிகிறது."
+
+#~ msgid ""
+#~ "<b>_All available updates</b> will be provided to this system. If kept "
+#~ "updated, this system will always be equivalent to the latest minor "
+#~ "release in the main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "<b>_All available updates</b> will be provided to this system.  This "
+#~ "system, if kept updated, will always be equivalent to the latest "
+#~ "available minor release of Red Hat Enterprise Linux 6.  It will be "
+#~ "registered to the main 'Red Hat Enterprise Linux 6' software channel."
+
+#~ msgid ""
+#~ "All available updates will be provided to this system. If kept updated, "
+#~ "this system will always be equivalent to the latest minor release in the "
+#~ "main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "<b>_All available updates</b> will be provided to this system.  This "
+#~ "system, if kept updated, will always be equivalent to the latest "
+#~ "available minor release of Red Hat Enterprise Linux 6.  It will be "
+#~ "registered to the main 'Red Hat Enterprise Linux 6' software channel."
+
+#~ msgid ""
+#~ "<b>Warning:</b> Using this option, your system will always be the most "
+#~ "recent minor release and <b>cannot</b> be limited to an older release "
+#~ "version."
+#~ msgstr ""
+#~ "<b>எச்சரிக்கை:</b> இந்த விருப்பத்தைப் பயன்படுத்தினால், உங்கள் கணினி எப்போதும் சமீபத்திய "
+#~ "சிறு வெளியீடாகவே இருக்கும், மேலும் அதை ஒரு பழைய வெளியீட்டுப் பதிப்புக்கு மட்டும் என "
+#~ "வரம்புப்படுத்த <b>முடியாது</b>."
+
+#~ msgid ""
+#~ "Warning: Using this option, your system will always be the most recent "
+#~ "minor release and cannot be limited to an older release version."
+#~ msgstr ""
+#~ "எச்சரிக்கை: இந்த விருப்பத்தைப் பயன்படுத்தினால், உங்கள் கணினி எப்போதும் சமீபத்திய சிறு "
+#~ "வெளியீடாகவே இருக்கும், மேலும் அதை ஒரு பழைய வெளியீட்டுப் பதிப்புக்கு மட்டும் என "
+#~ "வரம்புப்படுத்த முடியாது."
+
+#~ msgid "<b>Your system was registered for updates during installation.</b>"
+#~ msgstr "<b>உங்கள் கணினி நிறுவலின் போது புதுப்பித்தலுக்கு பதிவு செய்யப்பட்டது.</b>"
+
+#~ msgid ""
+#~ "Your system is ready to receive the software updates that will keep it "
+#~ "secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "உங்கள் கணினி இப்போது மென்பொருள் புதுப்பித்தல்களைப் பெற தயாராக இருக்கிறது, அது "
+#~ "கணினியை பாதுகாப்பாகவும் ஆதரவுடனும் வைக்கும்.\n"
+#~ "\n"
+#~ " உங்கள் பணிமேடையில் அறிவிப்பு பகுதியில் தொகுப்பு சின்னம் தோன்றும் போது மென்பொருள் "
+#~ "புதுப்பித்தல் கிடைக்கும் என்பதை நீங்கள் அறியலாம் (பொதுவாக மேல்-வலது ஓரத்தில், கீழே "
+#~ "வட்டமிடப்பட்டது) அவை இருக்கும் போது இந்த சின்னத்தை சொடுக்கினால் கிடைக்கக்கூடிய "
+#~ "புதுப்பித்தல்களைப் பயன்படுத்துவதற்கு வழிகாட்டுதல்கள் வழங்கப்படும்:"
+
+#~ msgid "icon of aplet"
+#~ msgstr "அப்லெட்டின் சின்னம்"
+
+#~ msgid "RHN Registration"
+#~ msgstr "RHN பதிவு செய்தல்"
+
+#, fuzzy
+#~ msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
+#~ msgstr ""
+#~ "Spacewalk/Satellite/Red Hat Network இலிருந்து மென்பொருள் புதுப்பித்தல்களை பதிவு "
+#~ "செய்யவும்"
 
 #, fuzzy
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."

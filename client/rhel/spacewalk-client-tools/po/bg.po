@@ -103,14 +103,6 @@ msgstr "Грешка при четене на информация за сист
 msgid "Error reading machine info:"
 msgstr "Грешка при четене на cpu информацията:"
 
-#: ../src/up2date_client/messageWindow.py:106
-msgid "Error:"
-msgstr "Грешка:"
-
-#: ../src/up2date_client/messageWindow.py:113
-msgid "Yes/No dialog:"
-msgstr "Да/Не диалог:"
-
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
 msgstr "Не мога да локализирам SystemId"
@@ -220,270 +212,34 @@ msgstr "Предупреждение: не може да се разреши rhn
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Предупреждение: не може да се разреши rhnsd с chkconfig"
 
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "Забележка"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "Имаше грешка при прилагане на избора Ви."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "Задали сте невалиден протокол. Позволени са само https и http."
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "Опитваме контакт с Red Hat Network сървъра на %s."
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "Убедете се, че мрежовата връзка на тази система работи."
-
-#: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Имаше грешка при комуникацията с регистриращия сървър:\n"
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "Може би работите с клиент, който не е съвместим със сървъра."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
-"Моля, въведете Вашата информация за влизане за %s Red Hat Network "
-"Satellite:\n"
-"\n"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "Трябва да въведете фамилното си име."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "Трябва да въведете и проверите парола."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "Има проблем при регистрирането на системата."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr ""
-"Получена е грешка при комуникирането с регистрационния сървър. Съобщението "
-"е:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "Получена е фатална грешка при инсталацията на пакета:"
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "Грешка при стартирането на хардуерният профил"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "Получена е фатална грешка при инсталацията на пакета:"
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "Трябва да изберете име за този профил."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "Получена е фатална грешка при инсталацията на пакета:"
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "Регистриране на системата"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
 msgid "Problem registering system:\n"
 msgstr "Проблем при регистриране на системата:\n"
 
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"Абонаментния номер [ %s ] зададен от Вас не е валиден регистстрационен номер"
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+#: ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
 msgstr "Проблем при регистриране на системата."
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+#: ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
 msgstr "Проблем при запис на системния ID на диска."
 
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "Имаше проблем при регистрирането на тази система."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "Изпращане на информация за хардуера"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "Проблем с изпращането на информация за хардуера."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "Изпращане на информация за пакетите"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "Проблем с изпращането на информация за пакетите."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#: ../src/up2date_client/tui.py:1058
 #, python-format
 msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "Имаше грешка докато се инсталираше сертификата."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "Трябва да изберете сертификат."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"Имаше SSL грешка. Това може да е, понеже избраният от Вас файл, не е файл "
-"сертификат."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "Нещо се обърка при инсталирането на новия сертификат:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "непознат"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "Имаше грешка при получаване списъка на хардуера."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#: ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "Имаше грешка при създаването на списъка с пакети."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "Пакет"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Арх"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"Създаване на списък на инсталираните на тази система RPM пакети.  Моля "
-"изчакайте."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"Получена е грешка при зареждане на конфигурацията Ви. Уверете се,\n"
-"че имате достъп за четене до /etc/sysconfig/rhn."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"Получена е грешка при запис на конфигурацията Ви. Уверете се,\n"
-"че сте собственик %s."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"Тази грешка не би трябвало да се случва. Ако искате да ни помогнете да "
-"подобрим тази програма, моля, съобщете за бъг на bugzilla.redhat.com. "
-"Включването на подходящи части от '%s' би било много полезно. Благодарим Ви!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -577,7 +333,7 @@ msgstr ""
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
 msgstr "Защо трябва да се свързвам с RHN? ..."
 
-#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57
 msgid "Why Register"
 msgstr "Защо да се регистрирам"
 
@@ -729,8 +485,7 @@ msgid "Please enter and verify a password."
 msgstr "Моля, въведете и проверете парола."
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
-#: ../data/rh_register.glade.h:142
+#: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System Release Version"
 msgstr ""
 
@@ -747,7 +502,6 @@ msgid "Limited Updates Only"
 msgstr "Само ограничени обновления"
 
 #: ../src/up2date_client/rhnreg_constants.py:102
-#: ../data/rh_register.glade.h:151
 msgid "All available updates"
 msgstr "Всички налични обновления"
 
@@ -822,20 +576,17 @@ msgid "*Email Address:"
 msgstr "*Email Адрес:"
 
 #: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
 msgstr ""
 "    --force                    - регистриране на системата дори и да е "
 "регистрирана"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
-#: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
 msgstr ""
 "Оказа се, че тази система вече е била настроена за софтуерни обновления:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
-#: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
 msgstr "Сигурни ли сте, че искате да продължите?"
 
@@ -899,11 +650,11 @@ msgid ""
 msgstr ""
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Review Subscription"
 msgstr "Преглед на регистрацията"
 
-#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169
 msgid "Please review the subscription details below:"
 msgstr "Моля, прегледайте детайлите за абонамента на системата по-долу:"
 
@@ -1208,12 +959,10 @@ msgid "Cancel"
 msgstr "Отказ"
 
 #: ../src/up2date_client/rhnreg_constants.py:310
-#: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
 msgstr "Не, Откажи"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
-#: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
 msgstr "Да, Продължи"
 
@@ -1418,33 +1167,9 @@ msgstr ""
 "опитате отново,\n"
 "    за да избегнете изискването на Management права."
 
-#: ../src/bin/rhn-profile-sync.py:37
-msgid ""
-"You need to register this system by running `rhn_register` before using this "
-"option"
-msgstr ""
-"Трябва да регистрирате тази система като стартирате `rhn_register` преди да "
-"ползвате тази опция"
-
-#: ../src/bin/rhn-profile-sync.py:45
-msgid "Updating package profile..."
-msgstr "Обновяване на пакетния профил..."
-
-#: ../src/bin/rhn-profile-sync.py:48
-msgid "Updating hardware profile..."
-msgstr "Обновяване на хардуерния профил..."
-
-#: ../src/bin/rhn-profile-sync.py:52
-msgid "Updating virtualization profile..."
-msgstr "Обновяване на виртуализиращия профил..."
-
 #: ../src/bin/rhn_check.py:423
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
-
-#: ../src/bin/rhn_register.py:38
-msgid "Do not attempt to use X"
-msgstr "Не опитвай употреба на X"
 
 #: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
@@ -1559,799 +1284,373 @@ msgstr ""
 "Не е зададено име на профил, а хост и IP адрес не могат да бъдат определени "
 "за да се ползват като име на профил, моля задайте име."
 
-#: ../src/bin/spacewalk-channel.py:98
-msgid "name of channel you want to (un)subscribe"
-msgstr ""
+#~ msgid "Error:"
+#~ msgstr "Грешка:"
 
-#: ../src/bin/spacewalk-channel.py:100
-msgid "subscribe to channel"
-msgstr ""
+#~ msgid "Yes/No dialog:"
+#~ msgstr "Да/Не диалог:"
 
-#: ../src/bin/spacewalk-channel.py:102
-msgid "unsubscribe from channel"
-msgstr ""
+#~ msgid "Notice"
+#~ msgstr "Забележка"
 
-#: ../src/bin/spacewalk-channel.py:104
-msgid "list channels"
-msgstr ""
+#~ msgid "There was an error while applying your choice."
+#~ msgstr "Имаше грешка при прилагане на избора Ви."
 
-#: ../src/bin/spacewalk-channel.py:106
-msgid "show base channel of a system"
-msgstr ""
+#~ msgid "You specified an invalid protocol. Only https and http are allowed."
+#~ msgstr "Задали сте невалиден протокол. Позволени са само https и http."
 
-#: ../src/bin/spacewalk-channel.py:108
-msgid "list all available child channels"
-msgstr ""
+#, fuzzy, python-brace-format
+#~ msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+#~ msgstr "Опитваме контакт с Red Hat Network сървъра на %s."
 
-#: ../src/bin/spacewalk-channel.py:110
-msgid "verbose output"
-msgstr ""
+#~ msgid "Make sure the network connection on this system is operational."
+#~ msgstr "Убедете се, че мрежовата връзка на тази система работи."
 
-#: ../src/bin/spacewalk-channel.py:112
-msgid "your user name"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:114
-msgid "your password"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:121
-msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:163
-msgid "ERROR: you have to specify at least one channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:169
-msgid "ERROR: this action does not require channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:176
-#, python-format
-msgid "Channel(s): %s successfully added"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:178
-#, python-format
-msgid "Error during adding channel(s) %s"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:185
-#, python-format
-msgid "Channel(s): %s successfully removed"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:187
-#, python-format
-msgid "Error during removal of channel(s) %s"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:194
-msgid "This system is not associated with any channel."
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:196
-msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:229
-msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:234
-msgid "ERROR: must be root to execute\n"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:239
-msgid "User interrupted process."
-msgstr ""
-
-#: ../data/gui.glade.h:1
 #, fuzzy
-msgid "System registration"
-msgstr "Rегистрационен номер"
-
-#: ../data/gui.glade.h:2
-msgid "Set Up Software Updates"
-msgstr ""
-
-#: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
-msgid "Choose Service"
-msgstr ""
-
-#: ../data/gui.glade.h:4
-msgid "Provide a security certificate"
-msgstr "Трябва да въведете потребителско име."
-
-#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
-msgid "Red Hat Account"
-msgstr "Ред Хат логин"
-
-#: ../data/gui.glade.h:7
-msgid "Create Profile"
-msgstr "Създайте профил"
-
-#: ../data/progress.glade.h:1
-msgid "Sending Information"
-msgstr "Изпращане _хардуерната информация:"
-
-#: ../data/progress.glade.h:2
-msgid "progress bar"
-msgstr "Прогрес"
-
-#: ../data/progress.glade.h:3
-msgid "progress status"
-msgstr "Прогрес"
-
-#: ../data/rh_register.glade.h:1
-msgid ""
-"<b>The network connection on your system is not active. Your system cannot "
-"be set up for software updates at this time.</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:2
-msgid ""
-"This system will <b>not</b> be able to successfully receive software "
-"updates, including security updates, from Red Hat without connecting to a "
-"Red Hat Satellite or Red Hat Network Classic.\n"
-"\n"
-"To keep your system updated, secure, and supported, please register this "
-"system at your earliest convenience."
-msgstr ""
-
-#: ../data/rh_register.glade.h:5
-msgid "Why Should I Connect to RHN? ..."
-msgstr "Защо трябва да се свързвам с RHN? ..."
-
-#: ../data/rh_register.glade.h:7
-msgid ""
-"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:8
-msgid "Location:"
-msgstr "Позиция:"
-
-#: ../data/rh_register.glade.h:9
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "пример: XXXX-XXXX-XXXX-XXXX (тиретата пожелание)"
-
-#: ../data/rh_register.glade.h:10
-msgid "satellite server location"
-msgstr ""
-
-#: ../data/rh_register.glade.h:11
-msgid "_Proxy Setup"
-msgstr ""
-
-#: ../data/rh_register.glade.h:12
-msgid "Proxy Setup Button"
-msgstr ""
-
-#: ../data/rh_register.glade.h:14
-msgid "Please enter your Red Hat account information:"
-msgstr "Информация за пакета"
-
-#: ../data/rh_register.glade.h:15
-msgid "RHN login field"
-msgstr "Ред Хат логин"
-
-#: ../data/rh_register.glade.h:16
-msgid "RHN password field"
-msgstr ""
-
-#: ../data/rh_register.glade.h:17
-msgid "_Password:"
-msgstr "Парола:"
-
-#: ../data/rh_register.glade.h:18
-msgid "_Login:"
-msgstr "_Логин:"
-
-#: ../data/rh_register.glade.h:19
-msgid ""
-"<small>Tip: Forgot your login or password? Contact your Satellite's "
-"<i>Organization Administrator</i>.</small>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:20
-msgid "Hardware Info"
-msgstr "Хардуерна информация"
-
-#: ../data/rh_register.glade.h:21
-msgid "Red Hat Linux Version:"
-msgstr "Red Hat Линукс - версия:"
-
-#: ../data/rh_register.glade.h:22
-msgid "Hostname:"
-msgstr "Хост(име):"
-
-#: ../data/rh_register.glade.h:23
-msgid "IP Address:"
-msgstr "IP Адрес:"
-
-#: ../data/rh_register.glade.h:24
-msgid "ERROR"
-msgstr "ГРЕШКА"
-
-#: ../data/rh_register.glade.h:25
-msgid "CPU Model:"
-msgstr "CPU модел:"
-
-#: ../data/rh_register.glade.h:26
-msgid "CPU Speed:"
-msgstr "CPU скорост:"
-
-#: ../data/rh_register.glade.h:27
-msgid "Memory:"
-msgstr "Памет:"
-
-#: ../data/rh_register.glade.h:28
-msgid "Hardware Profile"
-msgstr "Хардуерен профил"
-
-#: ../data/rh_register.glade.h:29
-msgid "Package Information"
-msgstr "Информация за пакета"
-
-#: ../data/rh_register.glade.h:30
-msgid "Start Window"
-msgstr ""
-
-#: ../data/rh_register.glade.h:31
-msgid ""
-"This assistant will guide you through the process of registering your system "
-"with Red Hat to receive software updates and other benefits. You will need "
-"the following to register:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:32
-msgid "• A network connection"
-msgstr ""
-
-#: ../data/rh_register.glade.h:33
-msgid "• Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:34
-msgid "Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:35
-msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:36
-msgid "_Why Should I Register?"
-msgstr "Вече регистриран"
-
-#: ../data/rh_register.glade.h:37
-msgid "Why Should I Register?"
-msgstr "Вече регистриран"
-
-#: ../data/rh_register.glade.h:38
-msgid ""
-"Would you like to register your system at this time? <b>(Strongly "
-"recommended.)</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:39
-msgid "_Yes, I'd like to register now."
-msgstr ""
-
-#: ../data/rh_register.glade.h:40
-msgid "_No, I prefer to register at a later time."
-msgstr ""
-
-#: ../data/rh_register.glade.h:41
-msgid "Link To Subscription"
-msgstr "Описание"
-
-#: ../data/rh_register.glade.h:42
-msgid ""
-"Your system will need to access a subscription. This will allow you to keep "
-"your system updated, secure, and supported."
-msgstr ""
-
-#: ../data/rh_register.glade.h:43
-msgid ""
-"<b>You have no active subscriptions available in your account.</b> You will "
-"need to do one of the following to create an active subscription in your "
-"account before this system can be registered:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:44
-msgid ""
-"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
-"redhat.com/store/."
-msgstr ""
-
-#: ../data/rh_register.glade.h:45
-msgid ""
-"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-msgstr ""
-"Влезте на http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-
-#: ../data/rh_register.glade.h:46
-msgid ""
-"Activate a previously purchased subscription you have not yet activated."
-msgstr ""
-
-#: ../data/rh_register.glade.h:47
-msgid "•"
-msgstr ""
-
-#: ../data/rh_register.glade.h:48
-msgid "installation number field"
-msgstr "Невалиден абонаментен номер"
-
-#: ../data/rh_register.glade.h:49
-msgid "Installation _Number:"
-msgstr "Rегистрационен номер"
-
-#: ../data/rh_register.glade.h:50
-msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:51
-msgid "_Activate a subscription now..."
-msgstr "Активиране на Вашия абонамент"
-
-#: ../data/rh_register.glade.h:52
-msgid "Review system..."
-msgstr ""
-
-#: ../data/rh_register.glade.h:54
-msgid "Create profile"
-msgstr "Хардуерен профил"
-
-#: ../data/rh_register.glade.h:55
-msgid "<big><b>System Name</b></big>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:56
-msgid ""
-"A recognizable name will help you identify this system in a management "
-"interface."
-msgstr ""
-
-#: ../data/rh_register.glade.h:57
-msgid "System _Name:"
-msgstr "Фамилия:"
-
-#: ../data/rh_register.glade.h:58
-msgid "system name"
-msgstr "Фамилия:"
-
-#: ../data/rh_register.glade.h:59
-msgid "<big><b>Profile Data</b></big>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:60
-msgid ""
-"Send us a profile of your current hardware and packages so we can determine "
-"what updates are available."
-msgstr ""
-
-#: ../data/rh_register.glade.h:61
-msgid "_View Hardware Profile ..."
-msgstr "Хардуерен профил"
-
-#: ../data/rh_register.glade.h:62
-msgid "View Hardware Profile"
-msgstr "Хардуерен профил"
-
-#: ../data/rh_register.glade.h:63
-msgid "V_iew Package Profile ..."
-msgstr "Обновяване на пакетния профил..."
-
-#: ../data/rh_register.glade.h:64
-msgid "View Package Profile"
-msgstr "Обновяване на пакетния профил"
-
-#: ../data/rh_register.glade.h:65
-msgid "Send _hardware profile"
-msgstr "Хардуерен профил"
-
-#: ../data/rh_register.glade.h:66
-msgid "Send hardware profile checkbox"
-msgstr "Хардуерен профил"
-
-#: ../data/rh_register.glade.h:67
-msgid "Send _package profile"
-msgstr "Изпращане _списъка с пакети."
-
-#: ../data/rh_register.glade.h:68
-msgid "Send package profile checkbox"
-msgstr "Изпращане _списъка с пакети."
-
-#: ../data/rh_register.glade.h:70
-msgid ""
-"Registering your system with Red Hat allows you to take full advantage of "
-"the benefits of a paid subscription, including:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:71
-msgid "_Close"
-msgstr ""
-
-#: ../data/rh_register.glade.h:72
-msgid "Close"
-msgstr ""
-
-#: ../data/rh_register.glade.h:73
-msgid "<b>Security &amp; Updates:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:74
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr ""
-
-#: ../data/rh_register.glade.h:75
-msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:76
-msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
-msgstr ""
-"Сваляте инсталационни образи за издания на Red Hat Enterprise Linux, "
-"включително нови версии."
-
-#: ../data/rh_register.glade.h:77
-msgid "<b>Support:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:78
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
-"Достъп до експертите по техническа поддръжка на Red Hat или партньори на Red "
-"Hat, за помощ при всякакъв проблем, който може да забележите с тази система."
-
-#: ../data/rh_register.glade.h:79
-msgid "<b>Management:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:80
-msgid "Management"
-msgstr ""
-
-#: ../data/rh_register.glade.h:81
-msgid ""
-"Manage subscriptions and systems registered to Customer Portal via access."
-"redhat.com or through one of our other subscription management services."
-msgstr ""
-
-#: ../data/rh_register.glade.h:82
-msgid ""
-"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html.</small>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:83
-msgid "Provide a Security Certificate"
-msgstr ""
-
-#: ../data/rh_register.glade.h:85
-#, no-c-format
-msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this "
-"system.\n"
-"\n"
-"A security certificate, using SSL technology, is necessary to ensure that "
-"data communicated between this system and Spacewalk (including your login "
-"and password) is secure."
-msgstr ""
-
-#: ../data/rh_register.glade.h:88
-msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:89
-msgid "Certificate _Location:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:90
-msgid "Select A File"
-msgstr ""
-
-#: ../data/rh_register.glade.h:91
-msgid ""
-"I <b>_don't</b> have an SSL certificate. I will contact my system "
-"administrator for assistance and will register at a later time."
-msgstr ""
-
-#: ../data/rh_register.glade.h:92
-msgid "Your system is not setup for software updates."
-msgstr ""
-
-#: ../data/rh_register.glade.h:93
-msgid ""
-"You won't be able to receive software updates, including security updates, "
-"for this system."
-msgstr ""
-
-#: ../data/rh_register.glade.h:94
-msgid "Proxy Configuration"
-msgstr "Мрежова настройка"
-
-#: ../data/rh_register.glade.h:95
-msgid "<b>HTTP Proxy</b>"
-msgstr "Включване на HTTP прокси:"
-
-#: ../data/rh_register.glade.h:96
-msgid "I would like to connect via an _HTTP proxy."
-msgstr ""
-
-#: ../data/rh_register.glade.h:97
-msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr ""
-
-#: ../data/rh_register.glade.h:98
-msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:99
-msgid "_Proxy Location:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:100
-msgid "Enter in the format hostname(:port)"
-msgstr "Въведете във формат хост(:порт)"
-
-#: ../data/rh_register.glade.h:101
-msgid "proxy location"
-msgstr ""
-
-#: ../data/rh_register.glade.h:102
-msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "Потребителска идентификация"
-
-#: ../data/rh_register.glade.h:103
-msgid "Use Authentication with HTTP Proxy"
-msgstr "Потребителска идентификация"
-
-#: ../data/rh_register.glade.h:104
-msgid "Proxy _Username:"
-msgstr "Потребител:"
-
-#: ../data/rh_register.glade.h:105
-msgid "Proxy P_assword:"
-msgstr "Парола:"
-
-#: ../data/rh_register.glade.h:106
-msgid "proxy user field"
-msgstr ""
-
-#: ../data/rh_register.glade.h:107
-msgid "proxy password field"
-msgstr "Парола:"
-
-#: ../data/rh_register.glade.h:108
-msgid "Confirm operation system release selection"
-msgstr ""
-
-#: ../data/rh_register.glade.h:109
-msgid "_No, Cancel"
-msgstr ""
-
-#: ../data/rh_register.glade.h:111
-msgid "_Yes, Continue"
-msgstr ""
-
-#: ../data/rh_register.glade.h:113
-msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:114
-msgid ""
-"Your system will be subscribed to the base software channel.  You will not "
-"be able to move this system to an earlier minor release channel if you "
-"continue (you will be able to move to a later release.)"
-msgstr ""
-
-#: ../data/rh_register.glade.h:115
-msgid ""
-"\n"
-"Are you sure you would like to continue?"
-msgstr ""
-
-#: ../data/rh_register.glade.h:117
-msgid "Are you Sure?"
-msgstr ""
-
-#: ../data/rh_register.glade.h:118
-msgid "_Go Back and Register"
-msgstr ""
-
-#: ../data/rh_register.glade.h:119
-msgid "Go Back and Register"
-msgstr ""
-
-#: ../data/rh_register.glade.h:120
-msgid "Register _Later"
-msgstr ""
-
-#: ../data/rh_register.glade.h:121
-msgid "Register Later"
-msgstr "Проблем при регистрацията на системата."
-
-#: ../data/rh_register.glade.h:122
-msgid ""
-"Are you sure you don't want to register your system with Red Hat? You'll "
-"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:123
-msgid "Management:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:124
-msgid ""
-"You will not be able to take advantage of these benefits without registering."
-msgstr ""
-
-#: ../data/rh_register.glade.h:127
-msgid "<b>Spacewalk Location:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:128
-msgid "<b>Login:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:129
-msgid "<b>System ID:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:130
-msgid "label"
-msgstr ""
-
-#: ../data/rh_register.glade.h:132
-msgid "<b>Warning</b>"
-msgstr "Предупреждение"
-
-#: ../data/rh_register.glade.h:133
-msgid ""
-"This system has already been registered with RHN using RHN certificate-based "
-"technology."
-msgstr ""
-
-#: ../data/rh_register.glade.h:134
-msgid ""
-"Your system is being registered again using RHN Classic technology. Red Hat "
-"recommends that customers only register once."
-msgstr ""
-
-#: ../data/rh_register.glade.h:135
-msgid ""
-"To learn more about RHN registration and technologies please consult this "
-"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
-msgstr ""
-
-#: ../data/rh_register.glade.h:137
-msgid "Software update setup has been completed for this system."
-msgstr ""
-
-#: ../data/rh_register.glade.h:138
-msgid ""
-"Your system is now ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:141
-msgid "Aplet screenshot"
-msgstr ""
-
-#: ../data/rh_register.glade.h:143
-msgid "Select how your system will receive updates:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:144
-msgid "Limited updates"
-msgstr "САЩ"
-
-#: ../data/rh_register.glade.h:145
-msgid ""
-"<b>_Limited updates</b> will be provided to this system, maintaining "
-"compatibility with the selected minor release software channel:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:146
-msgid ""
-"Limited updates will be provided to this system, maintaining compatibility "
-"with the selected minor release software channel:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:147
-msgid "_Minor release:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:148
-msgid "Choose minor release"
-msgstr "Пуск"
-
-#: ../data/rh_register.glade.h:149
-msgid "       "
-msgstr "      "
-
-#: ../data/rh_register.glade.h:150
-msgid ""
-"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
-"Hat."
-msgstr ""
-
-#: ../data/rh_register.glade.h:152
-msgid ""
-"<b>_All available updates</b> will be provided to this system. If kept "
-"updated, this system will always be equivalent to the latest minor release "
-"in the main 'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-
-#: ../data/rh_register.glade.h:153
-msgid ""
-"All available updates will be provided to this system. If kept updated, this "
-"system will always be equivalent to the latest minor release in the main "
-"'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-
-#: ../data/rh_register.glade.h:154
-msgid ""
-"<b>Warning:</b> Using this option, your system will always be the most "
-"recent minor release and <b>cannot</b> be limited to an older release "
-"version."
-msgstr ""
-
-#: ../data/rh_register.glade.h:155
-msgid ""
-"Warning: Using this option, your system will always be the most recent minor "
-"release and cannot be limited to an older release version."
-msgstr ""
-
-#: ../data/rh_register.glade.h:156
-msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:157
-msgid ""
-"Your system is ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:160
-msgid "icon of aplet"
-msgstr ""
-
-#: ../rhn_register.desktop.in.h:1
-msgid "RHN Registration"
-msgstr "Rегистрационен номер"
-
-#: ../rhn_register.desktop.in.h:2
-msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-
-#: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+#~ msgid "There was an error communicating with Spacewalk server."
+#~ msgstr "Имаше грешка при комуникацията с регистриращия сървър:\n"
+
+#~ msgid "You may be running a client that is incompatible with the server."
+#~ msgstr "Може би работите с клиент, който не е съвместим със сървъра."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgstr ""
+#~ "Моля, въведете Вашата информация за влизане за %s Red Hat Network "
+#~ "Satellite:\n"
+#~ "\n"
+
+#~ msgid "You must enter a login."
+#~ msgstr "Трябва да въведете фамилното си име."
+
+#~ msgid "You must enter a password."
+#~ msgstr "Трябва да въведете и проверите парола."
+
+#~ msgid "There was an error while logging in."
+#~ msgstr "Има проблем при регистрирането на системата."
+
+#~ msgid ""
+#~ "There was an error communicating with the registration server.  The "
+#~ "message was:\n"
+#~ msgstr ""
+#~ "Получена е грешка при комуникирането с регистрационния сървър. "
+#~ "Съобщението е:\n"
+
+#~ msgid "There was an error while assembling information for the profile."
+#~ msgstr "Получена е фатална грешка при инсталацията на пакета:"
+
+#~ msgid "Error running hardware profile"
+#~ msgstr "Грешка при стартирането на хардуерният профил"
+
+#~ msgid "There was an error while populating the profile."
+#~ msgstr "Получена е фатална грешка при инсталацията на пакета:"
+
+#~ msgid "You must choose a name for this profile."
+#~ msgstr "Трябва да изберете име за този профил."
+
+#~ msgid "There was an error while creating the profile."
+#~ msgstr "Получена е фатална грешка при инсталацията на пакета:"
+
+#~ msgid "Registering System"
+#~ msgstr "Регистриране на системата"
+
+#, python-format
+#~ msgid ""
+#~ "The installation number [ %s ] provided is not a valid installation "
+#~ "number. Please go back to the previous screen and fix it."
+#~ msgstr ""
+#~ "Абонаментния номер [ %s ] зададен от Вас не е валиден регистстрационен "
+#~ "номер"
+
+#~ msgid "There was a problem registering this system."
+#~ msgstr "Имаше проблем при регистрирането на тази система."
+
+#~ msgid "Sending hardware information"
+#~ msgstr "Изпращане на информация за хардуера"
+
+#~ msgid "Problem sending hardware information."
+#~ msgstr "Проблем с изпращането на информация за хардуера."
+
+#~ msgid "Sending package information"
+#~ msgstr "Изпращане на информация за пакетите"
+
+#~ msgid "Problem sending package information."
+#~ msgstr "Проблем с изпращането на информация за пакетите."
+
+#~ msgid "There was an error while installing the certificate."
+#~ msgstr "Имаше грешка докато се инсталираше сертификата."
+
+#~ msgid "You must select a certificate."
+#~ msgstr "Трябва да изберете сертификат."
+
+#~ msgid ""
+#~ "There was an SSL error. This could be because the file you picked was not "
+#~ "a certificate file."
+#~ msgstr ""
+#~ "Имаше SSL грешка. Това може да е, понеже избраният от Вас файл, не е файл "
+#~ "сертификат."
+
+#~ msgid "Something went wrong while installing the new certificate:\n"
+#~ msgstr "Нещо се обърка при инсталирането на новия сертификат:\n"
+
+#~ msgid "unknown"
+#~ msgstr "непознат"
+
+#~ msgid "There was an error getting the list of hardware."
+#~ msgstr "Имаше грешка при получаване списъка на хардуера."
+
+#, python-format
+#~ msgid "%s MB"
+#~ msgstr "%s MB"
+
+#~ msgid "There was an error building the list of packages."
+#~ msgstr "Имаше грешка при създаването на списъка с пакети."
+
+#~ msgid "Package"
+#~ msgstr "Пакет"
+
+#~ msgid "Arch"
+#~ msgstr "Арх"
+
+#~ msgid ""
+#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr ""
+#~ "Създаване на списък на инсталираните на тази система RPM пакети.  Моля "
+#~ "изчакайте."
+
+#~ msgid ""
+#~ "There was an error loading your configuration.  Make sure that\n"
+#~ "you have read access to /etc/sysconfig/rhn."
+#~ msgstr ""
+#~ "Получена е грешка при зареждане на конфигурацията Ви. Уверете се,\n"
+#~ "че имате достъп за четене до /etc/sysconfig/rhn."
+
+#, python-format
+#~ msgid ""
+#~ "There was an error saving your configuration. Make sure that\n"
+#~ "you own %s."
+#~ msgstr ""
+#~ "Получена е грешка при запис на конфигурацията Ви. Уверете се,\n"
+#~ "че сте собственик %s."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "This error shouldn't have happened. If you'd like to help us improve this "
+#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
+#~ "parts of '%s' would be very helpful. Thanks!"
+#~ msgstr ""
+#~ "Тази грешка не би трябвало да се случва. Ако искате да ни помогнете да "
+#~ "подобрим тази програма, моля, съобщете за бъг на bugzilla.redhat.com. "
+#~ "Включването на подходящи части от '%s' би било много полезно. Благодарим "
+#~ "Ви!"
+
+#~ msgid ""
+#~ "You need to register this system by running `rhn_register` before using "
+#~ "this option"
+#~ msgstr ""
+#~ "Трябва да регистрирате тази система като стартирате `rhn_register` преди "
+#~ "да ползвате тази опция"
+
+#~ msgid "Updating package profile..."
+#~ msgstr "Обновяване на пакетния профил..."
+
+#~ msgid "Updating hardware profile..."
+#~ msgstr "Обновяване на хардуерния профил..."
+
+#~ msgid "Updating virtualization profile..."
+#~ msgstr "Обновяване на виртуализиращия профил..."
+
+#~ msgid "Do not attempt to use X"
+#~ msgstr "Не опитвай употреба на X"
+
+#, fuzzy
+#~ msgid "System registration"
+#~ msgstr "Rегистрационен номер"
+
+#~ msgid "Provide a security certificate"
+#~ msgstr "Трябва да въведете потребителско име."
+
+#~ msgid "Red Hat Account"
+#~ msgstr "Ред Хат логин"
+
+#~ msgid "Create Profile"
+#~ msgstr "Създайте профил"
+
+#~ msgid "Sending Information"
+#~ msgstr "Изпращане _хардуерната информация:"
+
+#~ msgid "progress bar"
+#~ msgstr "Прогрес"
+
+#~ msgid "progress status"
+#~ msgstr "Прогрес"
+
+#~ msgid "Why Should I Connect to RHN? ..."
+#~ msgstr "Защо трябва да се свързвам с RHN? ..."
+
+#~ msgid "Location:"
+#~ msgstr "Позиция:"
+
+#~ msgid "Example: https://satellite.example.com/XMLRPC"
+#~ msgstr "пример: XXXX-XXXX-XXXX-XXXX (тиретата пожелание)"
+
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "Информация за пакета"
+
+#~ msgid "RHN login field"
+#~ msgstr "Ред Хат логин"
+
+#~ msgid "_Password:"
+#~ msgstr "Парола:"
+
+#~ msgid "_Login:"
+#~ msgstr "_Логин:"
+
+#~ msgid "Hardware Info"
+#~ msgstr "Хардуерна информация"
+
+#~ msgid "Red Hat Linux Version:"
+#~ msgstr "Red Hat Линукс - версия:"
+
+#~ msgid "Hostname:"
+#~ msgstr "Хост(име):"
+
+#~ msgid "IP Address:"
+#~ msgstr "IP Адрес:"
+
+#~ msgid "ERROR"
+#~ msgstr "ГРЕШКА"
+
+#~ msgid "CPU Model:"
+#~ msgstr "CPU модел:"
+
+#~ msgid "CPU Speed:"
+#~ msgstr "CPU скорост:"
+
+#~ msgid "Memory:"
+#~ msgstr "Памет:"
+
+#~ msgid "Hardware Profile"
+#~ msgstr "Хардуерен профил"
+
+#~ msgid "Package Information"
+#~ msgstr "Информация за пакета"
+
+#~ msgid "_Why Should I Register?"
+#~ msgstr "Вече регистриран"
+
+#~ msgid "Why Should I Register?"
+#~ msgstr "Вече регистриран"
+
+#~ msgid "Link To Subscription"
+#~ msgstr "Описание"
+
+#~ msgid ""
+#~ "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
+#~ "RHN > Subscription Management > System Entitlements."
+#~ msgstr ""
+#~ "Влезте на http://rhn.redhat.com/ and unentitle an inactive system at Your "
+#~ "RHN > Subscription Management > System Entitlements."
+
+#~ msgid "installation number field"
+#~ msgstr "Невалиден абонаментен номер"
+
+#~ msgid "Installation _Number:"
+#~ msgstr "Rегистрационен номер"
+
+#~ msgid "_Activate a subscription now..."
+#~ msgstr "Активиране на Вашия абонамент"
+
+#~ msgid "Create profile"
+#~ msgstr "Хардуерен профил"
+
+#~ msgid "System _Name:"
+#~ msgstr "Фамилия:"
+
+#~ msgid "system name"
+#~ msgstr "Фамилия:"
+
+#~ msgid "_View Hardware Profile ..."
+#~ msgstr "Хардуерен профил"
+
+#~ msgid "View Hardware Profile"
+#~ msgstr "Хардуерен профил"
+
+#~ msgid "V_iew Package Profile ..."
+#~ msgstr "Обновяване на пакетния профил..."
+
+#~ msgid "View Package Profile"
+#~ msgstr "Обновяване на пакетния профил"
+
+#~ msgid "Send _hardware profile"
+#~ msgstr "Хардуерен профил"
+
+#~ msgid "Send hardware profile checkbox"
+#~ msgstr "Хардуерен профил"
+
+#~ msgid "Send _package profile"
+#~ msgstr "Изпращане _списъка с пакети."
+
+#~ msgid "Send package profile checkbox"
+#~ msgstr "Изпращане _списъка с пакети."
+
+#~ msgid ""
+#~ "Download installation images for Red Hat Enterprise Linux releases, "
+#~ "including new releases."
+#~ msgstr ""
+#~ "Сваляте инсталационни образи за издания на Red Hat Enterprise Linux, "
+#~ "включително нови версии."
+
+#~ msgid ""
+#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
+#~ "for help with any issues you might encounter with this system."
+#~ msgstr ""
+#~ "Достъп до експертите по техническа поддръжка на Red Hat или партньори на "
+#~ "Red Hat, за помощ при всякакъв проблем, който може да забележите с тази "
+#~ "система."
+
+#~ msgid "Proxy Configuration"
+#~ msgstr "Мрежова настройка"
+
+#~ msgid "<b>HTTP Proxy</b>"
+#~ msgstr "Включване на HTTP прокси:"
+
+#~ msgid "Enter in the format hostname(:port)"
+#~ msgstr "Въведете във формат хост(:порт)"
+
+#~ msgid "Use Au_thentication with HTTP Proxy:"
+#~ msgstr "Потребителска идентификация"
+
+#~ msgid "Use Authentication with HTTP Proxy"
+#~ msgstr "Потребителска идентификация"
+
+#~ msgid "Proxy _Username:"
+#~ msgstr "Потребител:"
+
+#~ msgid "Proxy P_assword:"
+#~ msgstr "Парола:"
+
+#~ msgid "proxy password field"
+#~ msgstr "Парола:"
+
+#~ msgid "Register Later"
+#~ msgstr "Проблем при регистрацията на системата."
+
+#~ msgid "<b>Warning</b>"
+#~ msgstr "Предупреждение"
+
+#~ msgid "Limited updates"
+#~ msgstr "САЩ"
+
+#~ msgid "Choose minor release"
+#~ msgstr "Пуск"
+
+#~ msgid "       "
+#~ msgstr "      "
+
+#~ msgid "RHN Registration"
+#~ msgstr "Rегистрационен номер"
 
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 #~ msgstr "Регистриране в Red Hat Network"

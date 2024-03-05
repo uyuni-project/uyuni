@@ -106,16 +106,6 @@ msgstr "Terjadi kesalahan membaca informasi memori:"
 msgid "Error reading machine info:"
 msgstr "Terjadi kesalahan membaca informasi cpu:"
 
-#: ../src/up2date_client/messageWindow.py:106
-#, fuzzy
-msgid "Error:"
-msgstr "Kesalahan:"
-
-#: ../src/up2date_client/messageWindow.py:113
-#, fuzzy
-msgid "Yes/No dialog:"
-msgstr "Ya/Tidak:"
-
 #: ../src/up2date_client/rhnChannel.py:102
 #, fuzzy
 msgid "Unable to Locate SystemId"
@@ -238,209 +228,28 @@ msgstr "Peringatan: tidak dapat mengaktifkan rhnsd dengan systemd"
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Peringatan: tidak dapat mengaktifkan rhnsd dengan chkconfig"
 
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-#, fuzzy
-msgid "Notice"
-msgstr "Pemberitahuan"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 #, fuzzy
 msgid "Warning"
 msgstr "Peringatan"
 
-#: ../src/up2date_client/rhnregGui.py:272
-#, fuzzy
-msgid "There was an error while applying your choice."
-msgstr "Ada kesalahan saat menerapkan pilihan Anda."
-
-#: ../src/up2date_client/rhnregGui.py:291
-#, fuzzy
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr ""
-"Anda menetapkan protokol yang tidak valid. Hanya https dan http yang "
-"diizinkan."
-
-#: ../src/up2date_client/rhnregGui.py:305
-#, fuzzy
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"Anda tidak akan dapat berhasil mendaftarkan sistem ini tanpa menghubungi "
-"server Spacewalk."
-
-#: ../src/up2date_client/rhnregGui.py:325
-#, fuzzy
-msgid "Cannot contact selected server"
-msgstr "Tidak dapat menghubungi server yang dipilih"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "Kami tidak dapat menghubungi Satelit atau Proxy di '%s.'"
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, fuzzy, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"Periksa kembali lokasi - apakah '%s' benar? Jika tidak, Anda dapat "
-"memperbaikinya dan mencobanya lagi."
-
-#: ../src/up2date_client/rhnregGui.py:331
-#, fuzzy
-msgid "Make sure the network connection on this system is operational."
-msgstr "Pastikan sambungan jaringan pada sistem ini beroperasi."
-
-#: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Ada kesalahan berkomunikasi dengan spacewalk server."
-
-#: ../src/up2date_client/rhnregGui.py:342
-#, fuzzy
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr ""
-"Server mungkin dalam mode pemadaman. Anda mungkin harus mencoba "
-"menghubungkan nanti."
-
-#: ../src/up2date_client/rhnregGui.py:344
-#, fuzzy
-msgid "You may be running a client that is incompatible with the server."
-msgstr "Anda mungkin menjalankan klien yang tidak kompatibel dengan server."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr "Masukkan informasi akun Anda untuk server <b>Spacewalk %s:</b>"
-
-#: ../src/up2date_client/rhnregGui.py:416
-#, fuzzy
-msgid "You must enter a login."
-msgstr "Anda harus memasukkan login."
-
-#: ../src/up2date_client/rhnregGui.py:422
-#, fuzzy
-msgid "You must enter a password."
-msgstr "Anda harus memasukkan kata sandi."
-
-#: ../src/up2date_client/rhnregGui.py:435
-#, fuzzy
-msgid "There was an error while logging in."
-msgstr "Ada kesalahan saat masuk."
-
-#: ../src/up2date_client/rhnregGui.py:462
-#, fuzzy
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr ""
-"Ada kesalahan berkomunikasi dengan server pendaftaran.  Pesannya adalah:"
-
-#: ../src/up2date_client/rhnregGui.py:603
-#, fuzzy
-msgid "There was an error while assembling information for the profile."
-msgstr "Ada kesalahan saat merakit informasi untuk profil."
-
-#: ../src/up2date_client/rhnregGui.py:624
-#, fuzzy
-msgid "Error running hardware profile"
-msgstr "Galat saat menjalankan profil perangkat keras"
-
-#: ../src/up2date_client/rhnregGui.py:655
-#, fuzzy
-msgid "There was an error while populating the profile."
-msgstr "Ada kesalahan saat mengisi profil."
-
-#: ../src/up2date_client/rhnregGui.py:675
-#, fuzzy
-msgid "You must choose a name for this profile."
-msgstr "Anda harus memilih nama untuk profil ini."
-
-#: ../src/up2date_client/rhnregGui.py:689
-#, fuzzy
-msgid "There was an error while creating the profile."
-msgstr "Ada kesalahan saat membuat profil."
-
-#: ../src/up2date_client/rhnregGui.py:700
-#, fuzzy
-msgid "Registering system and sending profile information.  Please wait."
-msgstr "Mendaftarkan sistem dan mengirim informasi profil.  Harap tunggu."
-
-#: ../src/up2date_client/rhnregGui.py:719
-#, fuzzy
-msgid "Registering System"
-msgstr "Sistem Pendaftaran"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
 #, fuzzy
 msgid "Problem registering system:\n"
 msgstr "Ada masalah saat mendaftarkan sistem:\n"
 
-#: ../src/up2date_client/rhnregGui.py:751
-#, fuzzy, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"Nomor instalasi [ %s ] yang disediakan bukan nomor instalasi yang valid. "
-"Silakan kembali ke layar sebelumnya dan memperbaikinya."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+#: ../src/up2date_client/tui.py:1004
 #, fuzzy
 msgid "Problem registering system."
 msgstr "Masalah sistem pendaftaran."
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+#: ../src/up2date_client/tui.py:1009
 #, fuzzy
 msgid "Problem writing out system id to disk."
 msgstr "Masalah menulis id sistem ke disk."
 
-#: ../src/up2date_client/rhnregGui.py:777
-#, fuzzy
-msgid "There was a problem registering this system."
-msgstr "Ada masalah mendaftarkan sistem ini."
-
-#: ../src/up2date_client/rhnregGui.py:790
-#, fuzzy
-msgid "Sending hardware information"
-msgstr "Mengirim informasi perangkat keras"
-
-#: ../src/up2date_client/rhnregGui.py:795
-#, fuzzy
-msgid "Problem sending hardware information."
-msgstr "Masalah saat mengirim informasi perangkat keras."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-#, fuzzy
-msgid "Sending package information"
-msgstr "Mengirim informasi paket"
-
-#: ../src/up2date_client/rhnregGui.py:824
-#, fuzzy
-msgid "Problem sending package information."
-msgstr "Masalah saat mengirim informasi paket."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#: ../src/up2date_client/tui.py:1058
 #, fuzzy, python-format
 msgid ""
 "Could not open %s\n"
@@ -449,104 +258,10 @@ msgstr ""
 "Tidak dapat membuka %s\n"
 "%s tidak diaktifkan."
 
-#: ../src/up2date_client/rhnregGui.py:910
-#, fuzzy
-msgid "There was an error while installing the certificate."
-msgstr "Ada kesalahan saat menginstal sertifikat."
-
-#: ../src/up2date_client/rhnregGui.py:936
-#, fuzzy
-msgid "You must select a certificate."
-msgstr "Anda harus memilih sertifikat."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-#, fuzzy
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"Ada kesalahan SSL. Hal ini dapat karena file yang Anda pilih bukan file "
-"sertifikat."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-#, fuzzy
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "Ada yang tidak beres saat menginstal sertifikat baru:"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-#, fuzzy
-msgid "unknown"
-msgstr "tak dikenal"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-#, fuzzy
-msgid "There was an error getting the list of hardware."
-msgstr "Ada kesalahan mendapatkan daftar perangkat keras."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#: ../src/up2date_client/tui.py:785
 #, fuzzy, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, fuzzy, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-#, fuzzy
-msgid "There was an error building the list of packages."
-msgstr "Ada kesalahan membangun daftar paket."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-#, fuzzy
-msgid "Package"
-msgstr "Paket"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-#, fuzzy
-msgid "Arch"
-msgstr "Arsitektur"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-#, fuzzy
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"Membangun daftar paket RPM yang diinstal pada sistem Anda.  Harap tunggu."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-#, fuzzy
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"Terjadi galat saat memuat konfigurasi Anda.  Pastikan bahwa\n"
-"Anda memiliki akses baca ke /etc/sysconfig/rhn."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, fuzzy, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"Ada kesalahan menyimpan konfigurasi Anda. Pastikan bahwa\n"
-"Anda memiliki %s."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"Kesalahan ini seharusnya tidak terjadi. Jika Anda ingin membantu kami "
-"meningkatkan program ini, silakan mengajukan bug di bugzilla.redhat.com. "
-"Termasuk bagian yang relevan dari '%s' akan sangat membantu. Terima kasih!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -648,7 +363,7 @@ msgstr ""
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
 msgstr "Mengapa saya harus terhubung ke RHN? ..."
 
-#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57
 #, fuzzy
 msgid "Why Register"
 msgstr "Mengapa Mendaftar"
@@ -814,8 +529,7 @@ msgid "Please enter and verify a password."
 msgstr "Silakan masukkan dan verifikasi kata sandi."
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
-#: ../data/rh_register.glade.h:142
+#: ../src/up2date_client/rhnreg_constants.py:98
 #, fuzzy
 msgid "Operating System Release Version"
 msgstr "Versi Rilis Sistem Operasi"
@@ -836,7 +550,6 @@ msgid "Limited Updates Only"
 msgstr "Hanya Pembaruan Terbatas"
 
 #: ../src/up2date_client/rhnreg_constants.py:102
-#: ../data/rh_register.glade.h:151
 #, fuzzy
 msgid "All available updates"
 msgstr "Daftar semua pemutakhiran yang tersedia."
@@ -925,19 +638,16 @@ msgid "*Email Address:"
 msgstr "_Alamat Surel:"
 
 #: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:125
 #, fuzzy
 msgid "System Already Registered"
 msgstr "Sistem Sudah Terdaftar"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
-#: ../data/rh_register.glade.h:126
 #, fuzzy
 msgid "It appears this system has already been set up for software updates:"
 msgstr "Tampaknya sistem ini telah diatur untuk pembaruan perangkat lunak:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
-#: ../data/rh_register.glade.h:131
 #, fuzzy
 msgid "Are you sure you would like to continue?"
 msgstr "Apakah Anda yakin ingin melanjutkan?"
@@ -1020,12 +730,12 @@ msgstr ""
 "Hat Network Satellite utama.)"
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168
 #, fuzzy
 msgid "Review Subscription"
 msgstr "Diskripsi"
 
-#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169
 #, fuzzy
 msgid "Please review the subscription details below:"
 msgstr "Silakan tinjau detail langganan di bawah ini:"
@@ -1398,13 +1108,11 @@ msgid "Cancel"
 msgstr "Batal"
 
 #: ../src/up2date_client/rhnreg_constants.py:310
-#: ../data/rh_register.glade.h:110
 #, fuzzy
 msgid "No, Cancel"
 msgstr "_Batal"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
-#: ../data/rh_register.glade.h:112
 #, fuzzy
 msgid "Yes, Continue"
 msgstr "&Ya, Lanjutkan"
@@ -1639,39 +1347,10 @@ msgstr ""
 "dan mencoba lagi untuk menghindari\n"
 "    memerlukan hak Manajemen."
 
-#: ../src/bin/rhn-profile-sync.py:37
-#, fuzzy
-msgid ""
-"You need to register this system by running `rhn_register` before using this "
-"option"
-msgstr ""
-"Anda perlu mendaftarkan sistem ini dengan menjalankan 'rhn_register' sebelum "
-"menggunakan opsi ini"
-
-#: ../src/bin/rhn-profile-sync.py:45
-#, fuzzy
-msgid "Updating package profile..."
-msgstr "Memperbarui profil paket..."
-
-#: ../src/bin/rhn-profile-sync.py:48
-#, fuzzy
-msgid "Updating hardware profile..."
-msgstr "Memperbarui profil perangkat keras..."
-
-#: ../src/bin/rhn-profile-sync.py:52
-#, fuzzy
-msgid "Updating virtualization profile..."
-msgstr "Memperbarui profil virtualisasi..."
-
 #: ../src/bin/rhn_check.py:423
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "Mencoba menjalankan lebih dari satu contoh rhn_check. Keluar."
-
-#: ../src/bin/rhn_register.py:38
-#, fuzzy
-msgid "Do not attempt to use X"
-msgstr "Jangan mencoba menggunakan X"
 
 #: ../src/bin/rhnreg_ks.py:50
 #, fuzzy
@@ -1804,1058 +1483,1132 @@ msgstr ""
 "Nama profil tidak ditentukan, dan nama host dan alamat IP tidak dapat "
 "ditentukan untuk digunakan sebagai nama profil, tentukan satu."
 
-#: ../src/bin/spacewalk-channel.py:98
 #, fuzzy
-msgid "name of channel you want to (un)subscribe"
-msgstr "nama saluran yang ingin Anda (un)subscribe"
+#~ msgid "Error:"
+#~ msgstr "Kesalahan:"
 
-#: ../src/bin/spacewalk-channel.py:100
 #, fuzzy
-msgid "subscribe to channel"
-msgstr "berlangganan saluran"
+#~ msgid "Yes/No dialog:"
+#~ msgstr "Ya/Tidak:"
 
-#: ../src/bin/spacewalk-channel.py:102
 #, fuzzy
-msgid "unsubscribe from channel"
-msgstr "berhenti berlangganan dari saluran"
+#~ msgid "Notice"
+#~ msgstr "Pemberitahuan"
 
-#: ../src/bin/spacewalk-channel.py:104
 #, fuzzy
-msgid "list channels"
-msgstr "daftar saluran"
+#~ msgid "There was an error while applying your choice."
+#~ msgstr "Ada kesalahan saat menerapkan pilihan Anda."
 
-#: ../src/bin/spacewalk-channel.py:106
 #, fuzzy
-msgid "show base channel of a system"
-msgstr "tampilkan saluran dasar sistem"
+#~ msgid "You specified an invalid protocol. Only https and http are allowed."
+#~ msgstr ""
+#~ "Anda menetapkan protokol yang tidak valid. Hanya https dan http yang "
+#~ "diizinkan."
 
-#: ../src/bin/spacewalk-channel.py:108
 #, fuzzy
-msgid "list all available child channels"
-msgstr "daftar semua saluran anak yang tersedia"
+#~ msgid ""
+#~ "You will not be able to successfully register this system without "
+#~ "contacting a Spacewalk server."
+#~ msgstr ""
+#~ "Anda tidak akan dapat berhasil mendaftarkan sistem ini tanpa menghubungi "
+#~ "server Spacewalk."
 
-#: ../src/bin/spacewalk-channel.py:110
 #, fuzzy
-msgid "verbose output"
-msgstr "Keluaran terrinci"
+#~ msgid "Cannot contact selected server"
+#~ msgstr "Tidak dapat menghubungi server yang dipilih"
 
-#: ../src/bin/spacewalk-channel.py:112
-#, fuzzy
-msgid "your user name"
-msgstr ""
-"Ini adalah kata sandi yang lemah. Kata sandi tanpa nama pengguna Anda akan "
-"lebih kuat."
+#, fuzzy, python-brace-format
+#~ msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+#~ msgstr "Kami tidak dapat menghubungi Satelit atau Proxy di '%s.'"
 
-#: ../src/bin/spacewalk-channel.py:114
-#, fuzzy
-msgid "your password"
-msgstr "kata sandi Anda"
-
-#: ../src/bin/spacewalk-channel.py:121
-#, fuzzy
-msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr "ERROR: argumen ini tidak masuk akal dalam konteks ini (coba --help)"
-
-#: ../src/bin/spacewalk-channel.py:163
-#, fuzzy
-msgid "ERROR: you have to specify at least one channel"
-msgstr "ERROR: Anda harus menentukan setidaknya satu saluran"
-
-#: ../src/bin/spacewalk-channel.py:169
-#, fuzzy
-msgid "ERROR: this action does not require channel"
-msgstr "GALAT: tindakan ini tidak memerlukan saluran"
-
-#: ../src/bin/spacewalk-channel.py:176
 #, fuzzy, python-format
-msgid "Channel(s): %s successfully added"
-msgstr "Saluran: %s berhasil ditambahkan"
+#~ msgid ""
+#~ "Double-check the location - is '%s' correct? If not, you can correct it "
+#~ "and try again."
+#~ msgstr ""
+#~ "Periksa kembali lokasi - apakah '%s' benar? Jika tidak, Anda dapat "
+#~ "memperbaikinya dan mencobanya lagi."
 
-#: ../src/bin/spacewalk-channel.py:178
+#, fuzzy
+#~ msgid "Make sure the network connection on this system is operational."
+#~ msgstr "Pastikan sambungan jaringan pada sistem ini beroperasi."
+
+#, fuzzy
+#~ msgid "There was an error communicating with Spacewalk server."
+#~ msgstr "Ada kesalahan berkomunikasi dengan spacewalk server."
+
+#, fuzzy
+#~ msgid ""
+#~ "The server may be in outage mode. You may have to try connecting later."
+#~ msgstr ""
+#~ "Server mungkin dalam mode pemadaman. Anda mungkin harus mencoba "
+#~ "menghubungkan nanti."
+
+#, fuzzy
+#~ msgid "You may be running a client that is incompatible with the server."
+#~ msgstr "Anda mungkin menjalankan klien yang tidak kompatibel dengan server."
+
 #, fuzzy, python-format
-msgid "Error during adding channel(s) %s"
-msgstr "Galat saat menambahkan saluran %s"
+#~ msgid ""
+#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgstr "Masukkan informasi akun Anda untuk server <b>Spacewalk %s:</b>"
 
-#: ../src/bin/spacewalk-channel.py:185
+#, fuzzy
+#~ msgid "You must enter a login."
+#~ msgstr "Anda harus memasukkan login."
+
+#, fuzzy
+#~ msgid "You must enter a password."
+#~ msgstr "Anda harus memasukkan kata sandi."
+
+#, fuzzy
+#~ msgid "There was an error while logging in."
+#~ msgstr "Ada kesalahan saat masuk."
+
+#, fuzzy
+#~ msgid ""
+#~ "There was an error communicating with the registration server.  The "
+#~ "message was:\n"
+#~ msgstr ""
+#~ "Ada kesalahan berkomunikasi dengan server pendaftaran.  Pesannya adalah:"
+
+#, fuzzy
+#~ msgid "There was an error while assembling information for the profile."
+#~ msgstr "Ada kesalahan saat merakit informasi untuk profil."
+
+#, fuzzy
+#~ msgid "Error running hardware profile"
+#~ msgstr "Galat saat menjalankan profil perangkat keras"
+
+#, fuzzy
+#~ msgid "There was an error while populating the profile."
+#~ msgstr "Ada kesalahan saat mengisi profil."
+
+#, fuzzy
+#~ msgid "You must choose a name for this profile."
+#~ msgstr "Anda harus memilih nama untuk profil ini."
+
+#, fuzzy
+#~ msgid "There was an error while creating the profile."
+#~ msgstr "Ada kesalahan saat membuat profil."
+
+#, fuzzy
+#~ msgid "Registering system and sending profile information.  Please wait."
+#~ msgstr "Mendaftarkan sistem dan mengirim informasi profil.  Harap tunggu."
+
+#, fuzzy
+#~ msgid "Registering System"
+#~ msgstr "Sistem Pendaftaran"
+
 #, fuzzy, python-format
-msgid "Channel(s): %s successfully removed"
-msgstr "Saluran: %s berhasil dihapus"
+#~ msgid ""
+#~ "The installation number [ %s ] provided is not a valid installation "
+#~ "number. Please go back to the previous screen and fix it."
+#~ msgstr ""
+#~ "Nomor instalasi [ %s ] yang disediakan bukan nomor instalasi yang valid. "
+#~ "Silakan kembali ke layar sebelumnya dan memperbaikinya."
 
-#: ../src/bin/spacewalk-channel.py:187
+#, fuzzy
+#~ msgid "There was a problem registering this system."
+#~ msgstr "Ada masalah mendaftarkan sistem ini."
+
+#, fuzzy
+#~ msgid "Sending hardware information"
+#~ msgstr "Mengirim informasi perangkat keras"
+
+#, fuzzy
+#~ msgid "Problem sending hardware information."
+#~ msgstr "Masalah saat mengirim informasi perangkat keras."
+
+#, fuzzy
+#~ msgid "Sending package information"
+#~ msgstr "Mengirim informasi paket"
+
+#, fuzzy
+#~ msgid "Problem sending package information."
+#~ msgstr "Masalah saat mengirim informasi paket."
+
+#, fuzzy
+#~ msgid "There was an error while installing the certificate."
+#~ msgstr "Ada kesalahan saat menginstal sertifikat."
+
+#, fuzzy
+#~ msgid "You must select a certificate."
+#~ msgstr "Anda harus memilih sertifikat."
+
+#, fuzzy
+#~ msgid ""
+#~ "There was an SSL error. This could be because the file you picked was not "
+#~ "a certificate file."
+#~ msgstr ""
+#~ "Ada kesalahan SSL. Hal ini dapat karena file yang Anda pilih bukan file "
+#~ "sertifikat."
+
+#, fuzzy
+#~ msgid "Something went wrong while installing the new certificate:\n"
+#~ msgstr "Ada yang tidak beres saat menginstal sertifikat baru:"
+
+#, fuzzy
+#~ msgid "unknown"
+#~ msgstr "tak dikenal"
+
+#, fuzzy
+#~ msgid "There was an error getting the list of hardware."
+#~ msgstr "Ada kesalahan mendapatkan daftar perangkat keras."
+
 #, fuzzy, python-format
-msgid "Error during removal of channel(s) %s"
-msgstr "Galat selama penghapusan saluran %s"
+#~ msgid "%s MB"
+#~ msgstr "%s MB"
 
-#: ../src/bin/spacewalk-channel.py:194
 #, fuzzy
-msgid "This system is not associated with any channel."
-msgstr "Sistem ini tidak terkait dengan saluran apa pun."
+#~ msgid "There was an error building the list of packages."
+#~ msgstr "Ada kesalahan membangun daftar paket."
 
-#: ../src/bin/spacewalk-channel.py:196
 #, fuzzy
-msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr "Tidak dapat menemukan berkas SystemId. Apakah sistem ini terdaftar?"
+#~ msgid "Package"
+#~ msgstr "Paket"
 
-#: ../src/bin/spacewalk-channel.py:229
 #, fuzzy
-msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr "GALAT: Anda mungkin ingin menentukan --add, --remove atau --list"
+#~ msgid "Arch"
+#~ msgstr "Arsitektur"
 
-#: ../src/bin/spacewalk-channel.py:234
 #, fuzzy
-msgid "ERROR: must be root to execute\n"
-msgstr "GALAT: harus root untuk mengeksekusi"
+#~ msgid ""
+#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr ""
+#~ "Membangun daftar paket RPM yang diinstal pada sistem Anda.  Harap tunggu."
 
-#: ../src/bin/spacewalk-channel.py:239
 #, fuzzy
-msgid "User interrupted process."
-msgstr "Proses pengguna terganggu."
+#~ msgid ""
+#~ "There was an error loading your configuration.  Make sure that\n"
+#~ "you have read access to /etc/sysconfig/rhn."
+#~ msgstr ""
+#~ "Terjadi galat saat memuat konfigurasi Anda.  Pastikan bahwa\n"
+#~ "Anda memiliki akses baca ke /etc/sysconfig/rhn."
 
-#: ../data/gui.glade.h:1
+#, fuzzy, python-format
+#~ msgid ""
+#~ "There was an error saving your configuration. Make sure that\n"
+#~ "you own %s."
+#~ msgstr ""
+#~ "Ada kesalahan menyimpan konfigurasi Anda. Pastikan bahwa\n"
+#~ "Anda memiliki %s."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "This error shouldn't have happened. If you'd like to help us improve this "
+#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
+#~ "parts of '%s' would be very helpful. Thanks!"
+#~ msgstr ""
+#~ "Kesalahan ini seharusnya tidak terjadi. Jika Anda ingin membantu kami "
+#~ "meningkatkan program ini, silakan mengajukan bug di bugzilla.redhat.com. "
+#~ "Termasuk bagian yang relevan dari '%s' akan sangat membantu. Terima kasih!"
+
+#, fuzzy
+#~ msgid ""
+#~ "You need to register this system by running `rhn_register` before using "
+#~ "this option"
+#~ msgstr ""
+#~ "Anda perlu mendaftarkan sistem ini dengan menjalankan 'rhn_register' "
+#~ "sebelum menggunakan opsi ini"
+
+#, fuzzy
+#~ msgid "Updating package profile..."
+#~ msgstr "Memperbarui profil paket..."
+
+#, fuzzy
+#~ msgid "Updating hardware profile..."
+#~ msgstr "Memperbarui profil perangkat keras..."
+
+#, fuzzy
+#~ msgid "Updating virtualization profile..."
+#~ msgstr "Memperbarui profil virtualisasi..."
+
+#, fuzzy
+#~ msgid "Do not attempt to use X"
+#~ msgstr "Jangan mencoba menggunakan X"
+
+#, fuzzy
+#~ msgid "name of channel you want to (un)subscribe"
+#~ msgstr "nama saluran yang ingin Anda (un)subscribe"
+
+#, fuzzy
+#~ msgid "subscribe to channel"
+#~ msgstr "berlangganan saluran"
+
+#, fuzzy
+#~ msgid "unsubscribe from channel"
+#~ msgstr "berhenti berlangganan dari saluran"
+
+#, fuzzy
+#~ msgid "list channels"
+#~ msgstr "daftar saluran"
+
+#, fuzzy
+#~ msgid "show base channel of a system"
+#~ msgstr "tampilkan saluran dasar sistem"
+
+#, fuzzy
+#~ msgid "list all available child channels"
+#~ msgstr "daftar semua saluran anak yang tersedia"
+
+#, fuzzy
+#~ msgid "verbose output"
+#~ msgstr "Keluaran terrinci"
+
+#, fuzzy
+#~ msgid "your user name"
+#~ msgstr ""
+#~ "Ini adalah kata sandi yang lemah. Kata sandi tanpa nama pengguna Anda "
+#~ "akan lebih kuat."
+
+#, fuzzy
+#~ msgid "your password"
+#~ msgstr "kata sandi Anda"
+
+#, fuzzy
+#~ msgid "ERROR: these arguments make no sense in this context (try --help)"
+#~ msgstr "ERROR: argumen ini tidak masuk akal dalam konteks ini (coba --help)"
+
+#, fuzzy
+#~ msgid "ERROR: you have to specify at least one channel"
+#~ msgstr "ERROR: Anda harus menentukan setidaknya satu saluran"
+
+#, fuzzy
+#~ msgid "ERROR: this action does not require channel"
+#~ msgstr "GALAT: tindakan ini tidak memerlukan saluran"
+
+#, fuzzy, python-format
+#~ msgid "Channel(s): %s successfully added"
+#~ msgstr "Saluran: %s berhasil ditambahkan"
+
+#, fuzzy, python-format
+#~ msgid "Error during adding channel(s) %s"
+#~ msgstr "Galat saat menambahkan saluran %s"
+
+#, fuzzy, python-format
+#~ msgid "Channel(s): %s successfully removed"
+#~ msgstr "Saluran: %s berhasil dihapus"
+
+#, fuzzy, python-format
+#~ msgid "Error during removal of channel(s) %s"
+#~ msgstr "Galat selama penghapusan saluran %s"
+
+#, fuzzy
+#~ msgid "This system is not associated with any channel."
+#~ msgstr "Sistem ini tidak terkait dengan saluran apa pun."
+
+#, fuzzy
+#~ msgid "Unable to locate SystemId file. Is this system registered?"
+#~ msgstr "Tidak dapat menemukan berkas SystemId. Apakah sistem ini terdaftar?"
+
+#, fuzzy
+#~ msgid "ERROR: you may want to specify --add, --remove or --list"
+#~ msgstr "GALAT: Anda mungkin ingin menentukan --add, --remove atau --list"
+
+#, fuzzy
+#~ msgid "ERROR: must be root to execute\n"
+#~ msgstr "GALAT: harus root untuk mengeksekusi"
+
+#, fuzzy
+#~ msgid "User interrupted process."
+#~ msgstr "Proses pengguna terganggu."
+
 #, fuzzy
-msgid "System registration"
-msgstr "Up2date - Informasi Pendaftaran"
+#~ msgid "System registration"
+#~ msgstr "Up2date - Informasi Pendaftaran"
 
-#: ../data/gui.glade.h:2
 #, fuzzy
-msgid "Set Up Software Updates"
-msgstr "Mengatur Pembaruan Perangkat Lunak"
+#~ msgid "Set Up Software Updates"
+#~ msgstr "Mengatur Pembaruan Perangkat Lunak"
 
-#: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
 #, fuzzy
-msgid "Choose Service"
-msgstr "Pilih Layanan"
+#~ msgid "Choose Service"
+#~ msgstr "Pilih Layanan"
 
-#: ../data/gui.glade.h:4
 #, fuzzy
-msgid "Provide a security certificate"
-msgstr "Memberikan sertifikat keamanan"
+#~ msgid "Provide a security certificate"
+#~ msgstr "Memberikan sertifikat keamanan"
 
-#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
 #, fuzzy
-msgid "Red Hat Account"
-msgstr "Buat Login"
+#~ msgid "Red Hat Account"
+#~ msgstr "Buat Login"
 
-#: ../data/gui.glade.h:7
 #, fuzzy
-msgid "Create Profile"
-msgstr "Buat Login"
+#~ msgid "Create Profile"
+#~ msgstr "Buat Login"
 
-#: ../data/progress.glade.h:1
 #, fuzzy
-msgid "Sending Information"
-msgstr "Up2date - Informasi Rahasia"
+#~ msgid "Sending Information"
+#~ msgstr "Up2date - Informasi Rahasia"
 
-#: ../data/progress.glade.h:2
 #, fuzzy
-msgid "progress bar"
-msgstr "indikator proses"
+#~ msgid "progress bar"
+#~ msgstr "indikator proses"
 
-#: ../data/progress.glade.h:3
 #, fuzzy
-msgid "progress status"
-msgstr "status kemajuan"
+#~ msgid "progress status"
+#~ msgstr "status kemajuan"
 
-#: ../data/rh_register.glade.h:1
 #, fuzzy
-msgid ""
-"<b>The network connection on your system is not active. Your system cannot "
-"be set up for software updates at this time.</b>"
-msgstr ""
-"<b>Sambungan jaringan pada sistem Anda tidak aktif. Sistem Anda tidak dapat "
-"diatur untuk pembaruan perangkat lunak saat ini.</b>"
+#~ msgid ""
+#~ "<b>The network connection on your system is not active. Your system "
+#~ "cannot be set up for software updates at this time.</b>"
+#~ msgstr ""
+#~ "<b>Sambungan jaringan pada sistem Anda tidak aktif. Sistem Anda tidak "
+#~ "dapat diatur untuk pembaruan perangkat lunak saat ini.</b>"
 
-#: ../data/rh_register.glade.h:2
 #, fuzzy
-msgid ""
-"This system will <b>not</b> be able to successfully receive software "
-"updates, including security updates, from Red Hat without connecting to a "
-"Red Hat Satellite or Red Hat Network Classic.\n"
-"\n"
-"To keep your system updated, secure, and supported, please register this "
-"system at your earliest convenience."
-msgstr ""
-"Sistem ini tidak <b>akan</b> berhasil menerima pembaruan perangkat lunak, "
-"termasuk pembaruan keamanan, dari Red Hat tanpa terhubung ke Red Hat "
-"Satellite atau Red Hat Network Classic.\n"
-"\n"
-"Untuk menjaga sistem Anda diperbarui, aman, dan didukung, silakan daftarkan "
-"sistem ini sesegera mungkin."
+#~ msgid ""
+#~ "This system will <b>not</b> be able to successfully receive software "
+#~ "updates, including security updates, from Red Hat without connecting to a "
+#~ "Red Hat Satellite or Red Hat Network Classic.\n"
+#~ "\n"
+#~ "To keep your system updated, secure, and supported, please register this "
+#~ "system at your earliest convenience."
+#~ msgstr ""
+#~ "Sistem ini tidak <b>akan</b> berhasil menerima pembaruan perangkat lunak, "
+#~ "termasuk pembaruan keamanan, dari Red Hat tanpa terhubung ke Red Hat "
+#~ "Satellite atau Red Hat Network Classic.\n"
+#~ "\n"
+#~ "Untuk menjaga sistem Anda diperbarui, aman, dan didukung, silakan "
+#~ "daftarkan sistem ini sesegera mungkin."
 
-#: ../data/rh_register.glade.h:5
 #, fuzzy
-msgid "Why Should I Connect to RHN? ..."
-msgstr "Mengapa saya harus terhubung ke RHN? ..."
+#~ msgid "Why Should I Connect to RHN? ..."
+#~ msgstr "Mengapa saya harus terhubung ke RHN? ..."
 
-#: ../data/rh_register.glade.h:7
 #, fuzzy
-msgid ""
-"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-"Saya ingin mendaftar dengan Red Hat Satellite atau Red Hat Satellite Proxy"
+#~ msgid ""
+#~ "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
+#~ msgstr ""
+#~ "Saya ingin mendaftar dengan Red Hat Satellite atau Red Hat Satellite Proxy"
 
-#: ../data/rh_register.glade.h:8
 #, fuzzy
-msgid "Location:"
-msgstr "Lokasi:"
+#~ msgid "Location:"
+#~ msgstr "Lokasi:"
 
-#: ../data/rh_register.glade.h:9
 #, fuzzy
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "Contoh: https://satellite.example.com/XMLRPC"
+#~ msgid "Example: https://satellite.example.com/XMLRPC"
+#~ msgstr "Contoh: https://satellite.example.com/XMLRPC"
 
-#: ../data/rh_register.glade.h:10
 #, fuzzy
-msgid "satellite server location"
-msgstr "lokasi server satelit"
+#~ msgid "satellite server location"
+#~ msgstr "lokasi server satelit"
 
-#: ../data/rh_register.glade.h:11
 #, fuzzy
-msgid "_Proxy Setup"
-msgstr "_Proxy Pengaturan"
+#~ msgid "_Proxy Setup"
+#~ msgstr "_Proxy Pengaturan"
 
-#: ../data/rh_register.glade.h:12
 #, fuzzy
-msgid "Proxy Setup Button"
-msgstr "Tombol Pengaturan Proxy"
+#~ msgid "Proxy Setup Button"
+#~ msgstr "Tombol Pengaturan Proxy"
 
-#: ../data/rh_register.glade.h:14
 #, fuzzy
-msgid "Please enter your Red Hat account information:"
-msgstr "Silakan masukkan informasi akun Red Hat Anda:"
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "Silakan masukkan informasi akun Red Hat Anda:"
 
-#: ../data/rh_register.glade.h:15
 #, fuzzy
-msgid "RHN login field"
-msgstr "Buat Login"
+#~ msgid "RHN login field"
+#~ msgstr "Buat Login"
 
-#: ../data/rh_register.glade.h:16
 #, fuzzy
-msgid "RHN password field"
-msgstr "Bidang kata sandi RHN"
+#~ msgid "RHN password field"
+#~ msgstr "Bidang kata sandi RHN"
 
-#: ../data/rh_register.glade.h:17
 #, fuzzy
-msgid "_Password:"
-msgstr "_Sandi"
+#~ msgid "_Password:"
+#~ msgstr "_Sandi"
 
-#: ../data/rh_register.glade.h:18
 #, fuzzy
-msgid "_Login:"
-msgstr "_Log Masuk"
+#~ msgid "_Login:"
+#~ msgstr "_Log Masuk"
 
-#: ../data/rh_register.glade.h:19
 #, fuzzy
-msgid ""
-"<small>Tip: Forgot your login or password? Contact your Satellite's "
-"<i>Organization Administrator</i>.</small>"
-msgstr ""
-"<small>Tips: Lupa login atau kata sandi Anda? Hubungi Administrator "
-"Organisasi <i>Satelit Anda.</i></small>"
+#~ msgid ""
+#~ "<small>Tip: Forgot your login or password? Contact your Satellite's "
+#~ "<i>Organization Administrator</i>.</small>"
+#~ msgstr ""
+#~ "<small>Tips: Lupa login atau kata sandi Anda? Hubungi Administrator "
+#~ "Organisasi <i>Satelit Anda.</i></small>"
 
-#: ../data/rh_register.glade.h:20
 #, fuzzy
-msgid "Hardware Info"
-msgstr "Info Perangkat Keras"
+#~ msgid "Hardware Info"
+#~ msgstr "Info Perangkat Keras"
 
-#: ../data/rh_register.glade.h:21
 #, fuzzy
-msgid "Red Hat Linux Version:"
-msgstr "Red Hat Linux Versi:"
+#~ msgid "Red Hat Linux Version:"
+#~ msgstr "Red Hat Linux Versi:"
 
-#: ../data/rh_register.glade.h:22
 #, fuzzy
-msgid "Hostname:"
-msgstr "Nama host:"
+#~ msgid "Hostname:"
+#~ msgstr "Nama host:"
 
-#: ../data/rh_register.glade.h:23
 #, fuzzy
-msgid "IP Address:"
-msgstr "Alamat IP:"
+#~ msgid "IP Address:"
+#~ msgstr "Alamat IP:"
 
-#: ../data/rh_register.glade.h:24
 #, fuzzy
-msgid "ERROR"
-msgstr "GALAT"
+#~ msgid "ERROR"
+#~ msgstr "GALAT"
 
-#: ../data/rh_register.glade.h:25
 #, fuzzy
-msgid "CPU Model:"
-msgstr "Model CPU"
+#~ msgid "CPU Model:"
+#~ msgstr "Model CPU"
 
-#: ../data/rh_register.glade.h:26
 #, fuzzy
-msgid "CPU Speed:"
-msgstr "Kecepatan CPU:"
+#~ msgid "CPU Speed:"
+#~ msgstr "Kecepatan CPU:"
 
-#: ../data/rh_register.glade.h:27
 #, fuzzy
-msgid "Memory:"
-msgstr "_Memori"
+#~ msgid "Memory:"
+#~ msgstr "_Memori"
 
-#: ../data/rh_register.glade.h:28
 #, fuzzy
-msgid "Hardware Profile"
-msgstr "Profil Perangkat Keras"
+#~ msgid "Hardware Profile"
+#~ msgstr "Profil Perangkat Keras"
 
-#: ../data/rh_register.glade.h:29
 #, fuzzy
-msgid "Package Information"
-msgstr "Membaca informasi paket..."
+#~ msgid "Package Information"
+#~ msgstr "Membaca informasi paket..."
 
-#: ../data/rh_register.glade.h:30
 #, fuzzy
-msgid "Start Window"
-msgstr "Jendela Mulai"
+#~ msgid "Start Window"
+#~ msgstr "Jendela Mulai"
 
-#: ../data/rh_register.glade.h:31
 #, fuzzy
-msgid ""
-"This assistant will guide you through the process of registering your system "
-"with Red Hat to receive software updates and other benefits. You will need "
-"the following to register:"
-msgstr ""
-"Asisten ini akan memandu Anda melalui proses mendaftarkan sistem Anda dengan "
-"Red Hat untuk menerima pembaruan perangkat lunak dan manfaat lainnya. Anda "
-"akan memerlukan yang berikut untuk mendaftar:"
+#~ msgid ""
+#~ "This assistant will guide you through the process of registering your "
+#~ "system with Red Hat to receive software updates and other benefits. You "
+#~ "will need the following to register:"
+#~ msgstr ""
+#~ "Asisten ini akan memandu Anda melalui proses mendaftarkan sistem Anda "
+#~ "dengan Red Hat untuk menerima pembaruan perangkat lunak dan manfaat "
+#~ "lainnya. Anda akan memerlukan yang berikut untuk mendaftar:"
 
-#: ../data/rh_register.glade.h:32
 #, fuzzy
-msgid "• A network connection"
-msgstr "Tak ada koneksi jaringan"
+#~ msgid "• A network connection"
+#~ msgstr "Tak ada koneksi jaringan"
 
-#: ../data/rh_register.glade.h:33
 #, fuzzy
-msgid "• Your account login"
-msgstr "• Login akun Anda"
+#~ msgid "• Your account login"
+#~ msgstr "• Login akun Anda"
 
-#: ../data/rh_register.glade.h:34
 #, fuzzy
-msgid "Your account login"
-msgstr "Login akun Anda"
+#~ msgid "Your account login"
+#~ msgstr "Login akun Anda"
 
-#: ../data/rh_register.glade.h:35
 #, fuzzy
-msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr "• Alamat Satelit Red Hat atau Proxy Satelit Red Hat"
+#~ msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
+#~ msgstr "• Alamat Satelit Red Hat atau Proxy Satelit Red Hat"
 
-#: ../data/rh_register.glade.h:36
 #, fuzzy
-msgid "_Why Should I Register?"
-msgstr "_Why Haruskah saya Mendaftar?"
+#~ msgid "_Why Should I Register?"
+#~ msgstr "_Why Haruskah saya Mendaftar?"
 
-#: ../data/rh_register.glade.h:37
 #, fuzzy
-msgid "Why Should I Register?"
-msgstr "Mengapa saya harus mendaftar?"
+#~ msgid "Why Should I Register?"
+#~ msgstr "Mengapa saya harus mendaftar?"
 
-#: ../data/rh_register.glade.h:38
 #, fuzzy
-msgid ""
-"Would you like to register your system at this time? <b>(Strongly "
-"recommended.)</b>"
-msgstr ""
-"Apakah Anda ingin mendaftarkan sistem Anda saat ini? <b>(Sangat "
-"disarankan.)</b>"
+#~ msgid ""
+#~ "Would you like to register your system at this time? <b>(Strongly "
+#~ "recommended.)</b>"
+#~ msgstr ""
+#~ "Apakah Anda ingin mendaftarkan sistem Anda saat ini? <b>(Sangat "
+#~ "disarankan.)</b>"
 
-#: ../data/rh_register.glade.h:39
 #, fuzzy
-msgid "_Yes, I'd like to register now."
-msgstr "_Yes, saya ingin mendaftar sekarang."
+#~ msgid "_Yes, I'd like to register now."
+#~ msgstr "_Yes, saya ingin mendaftar sekarang."
 
-#: ../data/rh_register.glade.h:40
 #, fuzzy
-msgid "_No, I prefer to register at a later time."
-msgstr "_No, saya lebih suka mendaftar di lain waktu."
+#~ msgid "_No, I prefer to register at a later time."
+#~ msgstr "_No, saya lebih suka mendaftar di lain waktu."
 
-#: ../data/rh_register.glade.h:41
 #, fuzzy
-msgid "Link To Subscription"
-msgstr "Diskripsi"
+#~ msgid "Link To Subscription"
+#~ msgstr "Diskripsi"
 
-#: ../data/rh_register.glade.h:42
 #, fuzzy
-msgid ""
-"Your system will need to access a subscription. This will allow you to keep "
-"your system updated, secure, and supported."
-msgstr ""
-"Sistem Anda harus mengakses langganan. Ini akan memungkinkan Anda untuk "
-"menjaga sistem Anda diperbarui, aman, dan didukung."
+#~ msgid ""
+#~ "Your system will need to access a subscription. This will allow you to "
+#~ "keep your system updated, secure, and supported."
+#~ msgstr ""
+#~ "Sistem Anda harus mengakses langganan. Ini akan memungkinkan Anda untuk "
+#~ "menjaga sistem Anda diperbarui, aman, dan didukung."
 
-#: ../data/rh_register.glade.h:43
 #, fuzzy
-msgid ""
-"<b>You have no active subscriptions available in your account.</b> You will "
-"need to do one of the following to create an active subscription in your "
-"account before this system can be registered:"
-msgstr ""
-"<b>Anda tidak memiliki langganan aktif yang tersedia di akun Anda.</b> Anda "
-"harus melakukan salah satu hal berikut untuk membuat langganan aktif di akun "
-"Anda sebelum sistem ini dapat didaftarkan:"
+#~ msgid ""
+#~ "<b>You have no active subscriptions available in your account.</b> You "
+#~ "will need to do one of the following to create an active subscription in "
+#~ "your account before this system can be registered:"
+#~ msgstr ""
+#~ "<b>Anda tidak memiliki langganan aktif yang tersedia di akun Anda.</b> "
+#~ "Anda harus melakukan salah satu hal berikut untuk membuat langganan aktif "
+#~ "di akun Anda sebelum sistem ini dapat didaftarkan:"
 
-#: ../data/rh_register.glade.h:44
 #, fuzzy
-msgid ""
-"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
-"redhat.com/store/."
-msgstr ""
-"Beli langganan Red Hat Enterprise Linux tambahan di http://www.redhat.com/"
-"store/."
+#~ msgid ""
+#~ "Purchase an additional Red Hat Enterprise Linux subscription at http://"
+#~ "www.redhat.com/store/."
+#~ msgstr ""
+#~ "Beli langganan Red Hat Enterprise Linux tambahan di http://www.redhat.com/"
+#~ "store/."
 
-#: ../data/rh_register.glade.h:45
 #, fuzzy
-msgid ""
-"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-msgstr ""
-"Masuk ke http://rhn.redhat.com/ membatalkanentitle sistem yang tidak aktif "
-"di RHN Anda > Manajemen Langganan > Hak Sistem."
+#~ msgid ""
+#~ "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
+#~ "RHN > Subscription Management > System Entitlements."
+#~ msgstr ""
+#~ "Masuk ke http://rhn.redhat.com/ membatalkanentitle sistem yang tidak "
+#~ "aktif di RHN Anda > Manajemen Langganan > Hak Sistem."
 
-#: ../data/rh_register.glade.h:46
 #, fuzzy
-msgid ""
-"Activate a previously purchased subscription you have not yet activated."
-msgstr "Aktifkan langganan yang dibeli sebelumnya yang belum Anda aktifkan."
+#~ msgid ""
+#~ "Activate a previously purchased subscription you have not yet activated."
+#~ msgstr "Aktifkan langganan yang dibeli sebelumnya yang belum Anda aktifkan."
 
-#: ../data/rh_register.glade.h:47
 #, fuzzy
-msgid "•"
-msgstr "•"
+#~ msgid "•"
+#~ msgstr "•"
 
-#: ../data/rh_register.glade.h:48
 #, fuzzy
-msgid "installation number field"
-msgstr "bidang nomor instalasi"
+#~ msgid "installation number field"
+#~ msgstr "bidang nomor instalasi"
 
-#: ../data/rh_register.glade.h:49
 #, fuzzy
-msgid "Installation _Number:"
-msgstr "Instalasi _Number:"
+#~ msgid "Installation _Number:"
+#~ msgstr "Instalasi _Number:"
 
-#: ../data/rh_register.glade.h:50
 #, fuzzy
-msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr "<small><b>Contoh</b>: XXXX-XXXX-XXXX-XXXX</small>"
+#~ msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
+#~ msgstr "<small><b>Contoh</b>: XXXX-XXXX-XXXX-XXXX</small>"
 
-#: ../data/rh_register.glade.h:51
 #, fuzzy
-msgid "_Activate a subscription now..."
-msgstr "Diskripsi"
+#~ msgid "_Activate a subscription now..."
+#~ msgstr "Diskripsi"
 
-#: ../data/rh_register.glade.h:52
 #, fuzzy
-msgid "Review system..."
-msgstr "Sistem peninjauan..."
+#~ msgid "Review system..."
+#~ msgstr "Sistem peninjauan..."
 
-#: ../data/rh_register.glade.h:54
 #, fuzzy
-msgid "Create profile"
-msgstr "Buat Login"
+#~ msgid "Create profile"
+#~ msgstr "Buat Login"
 
-#: ../data/rh_register.glade.h:55
 #, fuzzy
-msgid "<big><b>System Name</b></big>"
-msgstr "<big><b>Nama Sistem</b></big>"
+#~ msgid "<big><b>System Name</b></big>"
+#~ msgstr "<big><b>Nama Sistem</b></big>"
 
-#: ../data/rh_register.glade.h:56
 #, fuzzy
-msgid ""
-"A recognizable name will help you identify this system in a management "
-"interface."
-msgstr ""
-"Nama yang dapat dikenali akan membantu Anda mengidentifikasi sistem ini "
-"dalam antarmuka manajemen."
+#~ msgid ""
+#~ "A recognizable name will help you identify this system in a management "
+#~ "interface."
+#~ msgstr ""
+#~ "Nama yang dapat dikenali akan membantu Anda mengidentifikasi sistem ini "
+#~ "dalam antarmuka manajemen."
 
-#: ../data/rh_register.glade.h:57
 #, fuzzy
-msgid "System _Name:"
-msgstr "Sistem _Name:"
+#~ msgid "System _Name:"
+#~ msgstr "Sistem _Name:"
 
-#: ../data/rh_register.glade.h:58
 #, fuzzy
-msgid "system name"
-msgstr "nama sistem"
+#~ msgid "system name"
+#~ msgstr "nama sistem"
 
-#: ../data/rh_register.glade.h:59
 #, fuzzy
-msgid "<big><b>Profile Data</b></big>"
-msgstr "<big><b>Data Profil</b></big>"
+#~ msgid "<big><b>Profile Data</b></big>"
+#~ msgstr "<big><b>Data Profil</b></big>"
 
-#: ../data/rh_register.glade.h:60
 #, fuzzy
-msgid ""
-"Send us a profile of your current hardware and packages so we can determine "
-"what updates are available."
-msgstr ""
-"Kirimkan profil perangkat keras dan paket Anda saat ini sehingga kami dapat "
-"menentukan pembaruan apa yang tersedia."
+#~ msgid ""
+#~ "Send us a profile of your current hardware and packages so we can "
+#~ "determine what updates are available."
+#~ msgstr ""
+#~ "Kirimkan profil perangkat keras dan paket Anda saat ini sehingga kami "
+#~ "dapat menentukan pembaruan apa yang tersedia."
 
-#: ../data/rh_register.glade.h:61
 #, fuzzy
-msgid "_View Hardware Profile ..."
-msgstr "_View Perangkat Keras ..."
+#~ msgid "_View Hardware Profile ..."
+#~ msgstr "_View Perangkat Keras ..."
 
-#: ../data/rh_register.glade.h:62
 #, fuzzy
-msgid "View Hardware Profile"
-msgstr "Buat Login"
+#~ msgid "View Hardware Profile"
+#~ msgstr "Buat Login"
 
-#: ../data/rh_register.glade.h:63
 #, fuzzy
-msgid "V_iew Package Profile ..."
-msgstr "V_iew Paket Baru ..."
+#~ msgid "V_iew Package Profile ..."
+#~ msgstr "V_iew Paket Baru ..."
 
-#: ../data/rh_register.glade.h:64
 #, fuzzy
-msgid "View Package Profile"
-msgstr "Buat Login"
+#~ msgid "View Package Profile"
+#~ msgstr "Buat Login"
 
-#: ../data/rh_register.glade.h:65
 #, fuzzy
-msgid "Send _hardware profile"
-msgstr "Kirim _hardware anda"
+#~ msgid "Send _hardware profile"
+#~ msgstr "Kirim _hardware anda"
 
-#: ../data/rh_register.glade.h:66
 #, fuzzy
-msgid "Send hardware profile checkbox"
-msgstr "Kotak centang Kirim profil perangkat keras"
+#~ msgid "Send hardware profile checkbox"
+#~ msgstr "Kotak centang Kirim profil perangkat keras"
 
-#: ../data/rh_register.glade.h:67
 #, fuzzy
-msgid "Send _package profile"
-msgstr "Kirim _package anda"
+#~ msgid "Send _package profile"
+#~ msgstr "Kirim _package anda"
 
-#: ../data/rh_register.glade.h:68
 #, fuzzy
-msgid "Send package profile checkbox"
-msgstr "Kotak centang Kirim profil paket"
+#~ msgid "Send package profile checkbox"
+#~ msgstr "Kotak centang Kirim profil paket"
 
-#: ../data/rh_register.glade.h:70
 #, fuzzy
-msgid ""
-"Registering your system with Red Hat allows you to take full advantage of "
-"the benefits of a paid subscription, including:"
-msgstr ""
-"Mendaftarkan sistem Anda dengan Red Hat memungkinkan Anda untuk mengambil "
-"keuntungan penuh dari manfaat langganan berbayar, termasuk:"
+#~ msgid ""
+#~ "Registering your system with Red Hat allows you to take full advantage of "
+#~ "the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Mendaftarkan sistem Anda dengan Red Hat memungkinkan Anda untuk mengambil "
+#~ "keuntungan penuh dari manfaat langganan berbayar, termasuk:"
 
-#: ../data/rh_register.glade.h:71
 #, fuzzy
-msgid "_Close"
-msgstr "_Tutup"
+#~ msgid "_Close"
+#~ msgstr "_Tutup"
 
-#: ../data/rh_register.glade.h:72
 #, fuzzy
-msgid "Close"
-msgstr "Tutup"
+#~ msgid "Close"
+#~ msgstr "Tutup"
 
-#: ../data/rh_register.glade.h:73
 #, fuzzy
-msgid "<b>Security &amp; Updates:</b>"
-msgstr "<b>Keamanan &amp; Pembaruan:</b>"
+#~ msgid "<b>Security &amp; Updates:</b>"
+#~ msgstr "<b>Keamanan &amp; Pembaruan:</b>"
 
-#: ../data/rh_register.glade.h:74
 #, fuzzy
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr ""
-"Menerima pembaruan perangkat lunak terbaru, termasuk pembaruan keamanan, "
-"menjaga sistem Linux Red Hat Enterprise ini <b>diperbarui</b> dan <b>aman.</"
-"b>"
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
+#~ msgstr ""
+#~ "Menerima pembaruan perangkat lunak terbaru, termasuk pembaruan keamanan, "
+#~ "menjaga sistem Linux Red Hat Enterprise ini <b>diperbarui</b> dan <b>aman."
+#~ "</b>"
 
-#: ../data/rh_register.glade.h:75
 #, fuzzy
-msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr "<b>Unduhan &amp; Peningkatan:</b>"
+#~ msgid "<b>Downloads &amp; Upgrades:</b>"
+#~ msgstr "<b>Unduhan &amp; Peningkatan:</b>"
 
-#: ../data/rh_register.glade.h:76
 #, fuzzy
-msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
-msgstr ""
-"Unduh gambar instalasi untuk rilis Red Hat Enterprise Linux, termasuk rilis "
-"baru."
+#~ msgid ""
+#~ "Download installation images for Red Hat Enterprise Linux releases, "
+#~ "including new releases."
+#~ msgstr ""
+#~ "Unduh gambar instalasi untuk rilis Red Hat Enterprise Linux, termasuk "
+#~ "rilis baru."
 
-#: ../data/rh_register.glade.h:77
 #, fuzzy
-msgid "<b>Support:</b>"
-msgstr "<b>Dukungan:</b>"
+#~ msgid "<b>Support:</b>"
+#~ msgstr "<b>Dukungan:</b>"
 
-#: ../data/rh_register.glade.h:78
 #, fuzzy
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
-"Akses ke ahli dukungan teknis di Red Hat atau mitra Red Hat untuk bantuan "
-"dengan masalah apa pun yang mungkin Anda hadapi dengan sistem ini."
+#~ msgid ""
+#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
+#~ "for help with any issues you might encounter with this system."
+#~ msgstr ""
+#~ "Akses ke ahli dukungan teknis di Red Hat atau mitra Red Hat untuk bantuan "
+#~ "dengan masalah apa pun yang mungkin Anda hadapi dengan sistem ini."
 
-#: ../data/rh_register.glade.h:79
 #, fuzzy
-msgid "<b>Management:</b>"
-msgstr "<b>Manajemen:</b>"
+#~ msgid "<b>Management:</b>"
+#~ msgstr "<b>Manajemen:</b>"
 
-#: ../data/rh_register.glade.h:80
 #, fuzzy
-msgid "Management"
-msgstr "Manajemen"
+#~ msgid "Management"
+#~ msgstr "Manajemen"
 
-#: ../data/rh_register.glade.h:81
 #, fuzzy
-msgid ""
-"Manage subscriptions and systems registered to Customer Portal via access."
-"redhat.com or through one of our other subscription management services."
-msgstr ""
-"Kelola langganan dan sistem yang terdaftar di Portal Pelanggan melalui "
-"access.redhat.com atau melalui salah satu layanan manajemen langganan kami "
-"yang lain."
+#~ msgid ""
+#~ "Manage subscriptions and systems registered to Customer Portal via access."
+#~ "redhat.com or through one of our other subscription management services."
+#~ msgstr ""
+#~ "Kelola langganan dan sistem yang terdaftar di Portal Pelanggan melalui "
+#~ "access.redhat.com atau melalui salah satu layanan manajemen langganan "
+#~ "kami yang lain."
 
-#: ../data/rh_register.glade.h:82
 #, fuzzy
-msgid ""
-"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html.</small>"
-msgstr ""
-"<small><b>Tips:</b> Red Hat menghargai privasi Anda: http://www.redhat.com/"
-"legal/privacy_statement.html.</small>"
+#~ msgid ""
+#~ "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/"
+#~ "legal/privacy_statement.html.</small>"
+#~ msgstr ""
+#~ "<small><b>Tips:</b> Red Hat menghargai privasi Anda: http://www.redhat."
+#~ "com/legal/privacy_statement.html.</small>"
 
-#: ../data/rh_register.glade.h:83
 #, fuzzy
-msgid "Provide a Security Certificate"
-msgstr "Memberikan Sertifikat Keamanan"
+#~ msgid "Provide a Security Certificate"
+#~ msgstr "Memberikan Sertifikat Keamanan"
 
-#: ../data/rh_register.glade.h:85
 #, fuzzy, no-c-format
-msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this "
-"system.\n"
-"\n"
-"A security certificate, using SSL technology, is necessary to ensure that "
-"data communicated between this system and Spacewalk (including your login "
-"and password) is secure."
-msgstr ""
-"Sertifikat keamanan yang kompatibel dengan <b>%s</b> tidak ditemukan pada "
-"sistem ini.\n"
-"\n"
-"Sertifikat keamanan, menggunakan teknologi SSL, diperlukan untuk memastikan "
-"bahwa data yang dikomunikasikan antara sistem ini dan Spacewalk (termasuk "
-"login dan kata sandi Anda) aman."
+#~ msgid ""
+#~ "A security certificate compatible with <b>%s</b> was not found on this "
+#~ "system.\n"
+#~ "\n"
+#~ "A security certificate, using SSL technology, is necessary to ensure that "
+#~ "data communicated between this system and Spacewalk (including your login "
+#~ "and password) is secure."
+#~ msgstr ""
+#~ "Sertifikat keamanan yang kompatibel dengan <b>%s</b> tidak ditemukan pada "
+#~ "sistem ini.\n"
+#~ "\n"
+#~ "Sertifikat keamanan, menggunakan teknologi SSL, diperlukan untuk "
+#~ "memastikan bahwa data yang dikomunikasikan antara sistem ini dan "
+#~ "Spacewalk (termasuk login dan kata sandi Anda) aman."
 
-#: ../data/rh_register.glade.h:88
 #, fuzzy
-msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr ""
-"Saya memiliki sertifikat <b>_SSL untuk</b> berkomunikasi dengan Spacewalk:"
+#~ msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
+#~ msgstr ""
+#~ "Saya memiliki sertifikat <b>_SSL untuk</b> berkomunikasi dengan Spacewalk:"
 
-#: ../data/rh_register.glade.h:89
 #, fuzzy
-msgid "Certificate _Location:"
-msgstr "Sertifikat _Location:"
+#~ msgid "Certificate _Location:"
+#~ msgstr "Sertifikat _Location:"
 
-#: ../data/rh_register.glade.h:90
 #, fuzzy
-msgid "Select A File"
-msgstr "Pilih Berkas"
+#~ msgid "Select A File"
+#~ msgstr "Pilih Berkas"
 
-#: ../data/rh_register.glade.h:91
 #, fuzzy
-msgid ""
-"I <b>_don't</b> have an SSL certificate. I will contact my system "
-"administrator for assistance and will register at a later time."
-msgstr ""
-"Saya <b>_don tidak</b> memiliki sertifikat SSL. Saya akan menghubungi "
-"administrator sistem saya untuk bantuan dan akan mendaftar di lain waktu."
+#~ msgid ""
+#~ "I <b>_don't</b> have an SSL certificate. I will contact my system "
+#~ "administrator for assistance and will register at a later time."
+#~ msgstr ""
+#~ "Saya <b>_don tidak</b> memiliki sertifikat SSL. Saya akan menghubungi "
+#~ "administrator sistem saya untuk bantuan dan akan mendaftar di lain waktu."
 
-#: ../data/rh_register.glade.h:92
 #, fuzzy
-msgid "Your system is not setup for software updates."
-msgstr "Sistem Anda tidak diatur untuk pembaruan perangkat lunak."
+#~ msgid "Your system is not setup for software updates."
+#~ msgstr "Sistem Anda tidak diatur untuk pembaruan perangkat lunak."
 
-#: ../data/rh_register.glade.h:93
 #, fuzzy
-msgid ""
-"You won't be able to receive software updates, including security updates, "
-"for this system."
-msgstr ""
-"Anda tidak akan dapat menerima pembaruan perangkat lunak, termasuk pembaruan "
-"keamanan, untuk sistem ini."
+#~ msgid ""
+#~ "You won't be able to receive software updates, including security "
+#~ "updates, for this system."
+#~ msgstr ""
+#~ "Anda tidak akan dapat menerima pembaruan perangkat lunak, termasuk "
+#~ "pembaruan keamanan, untuk sistem ini."
 
-#: ../data/rh_register.glade.h:94
 #, fuzzy
-msgid "Proxy Configuration"
-msgstr "(Usang) URL konfigurasi proksi otomatis"
+#~ msgid "Proxy Configuration"
+#~ msgstr "(Usang) URL konfigurasi proksi otomatis"
 
-#: ../data/rh_register.glade.h:95
 #, fuzzy
-msgid "<b>HTTP Proxy</b>"
-msgstr "<b>Proksi HTTP</b>"
+#~ msgid "<b>HTTP Proxy</b>"
+#~ msgstr "<b>Proksi HTTP</b>"
 
-#: ../data/rh_register.glade.h:96
 #, fuzzy
-msgid "I would like to connect via an _HTTP proxy."
-msgstr "Saya ingin terhubung melalui proxy _HTTP."
+#~ msgid "I would like to connect via an _HTTP proxy."
+#~ msgstr "Saya ingin terhubung melalui proxy _HTTP."
 
-#: ../data/rh_register.glade.h:97
 #, fuzzy
-msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr "Saya ingin terhubung ke Spacewalk melalui _HTTP proxy."
+#~ msgid "I would like to connect to Spacewalk via an _HTTP proxy."
+#~ msgstr "Saya ingin terhubung ke Spacewalk melalui _HTTP proxy."
 
-#: ../data/rh_register.glade.h:98
 #, fuzzy
-msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr "<small><b>Contoh: squid.example.com:3128</b></small>"
+#~ msgid "<small><b>Example:</b> squid.example.com:3128</small>"
+#~ msgstr "<small><b>Contoh: squid.example.com:3128</b></small>"
 
-#: ../data/rh_register.glade.h:99
 #, fuzzy
-msgid "_Proxy Location:"
-msgstr "_Proxy Lokasi:"
+#~ msgid "_Proxy Location:"
+#~ msgstr "_Proxy Lokasi:"
 
-#: ../data/rh_register.glade.h:100
 #, fuzzy
-msgid "Enter in the format hostname(:port)"
-msgstr "Masukkan dalam format hostname(:port)"
+#~ msgid "Enter in the format hostname(:port)"
+#~ msgstr "Masukkan dalam format hostname(:port)"
 
-#: ../data/rh_register.glade.h:101
 #, fuzzy
-msgid "proxy location"
-msgstr "lokasi proxy"
+#~ msgid "proxy location"
+#~ msgstr "lokasi proxy"
 
-#: ../data/rh_register.glade.h:102
 #, fuzzy
-msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "Gunakan Au_thentication dengan HTTP Proxy:"
+#~ msgid "Use Au_thentication with HTTP Proxy:"
+#~ msgstr "Gunakan Au_thentication dengan HTTP Proxy:"
 
-#: ../data/rh_register.glade.h:103
 #, fuzzy
-msgid "Use Authentication with HTTP Proxy"
-msgstr "Gunakan Otentikasi dengan Proxy HTTP"
+#~ msgid "Use Authentication with HTTP Proxy"
+#~ msgstr "Gunakan Otentikasi dengan Proxy HTTP"
 
-#: ../data/rh_register.glade.h:104
 #, fuzzy
-msgid "Proxy _Username:"
-msgstr "Nama pengguna proksi HTTP"
+#~ msgid "Proxy _Username:"
+#~ msgstr "Nama pengguna proksi HTTP"
 
-#: ../data/rh_register.glade.h:105
 #, fuzzy
-msgid "Proxy P_assword:"
-msgstr "Proxy P_assword:"
+#~ msgid "Proxy P_assword:"
+#~ msgstr "Proxy P_assword:"
 
-#: ../data/rh_register.glade.h:106
 #, fuzzy
-msgid "proxy user field"
-msgstr "bidang pengguna proxy"
+#~ msgid "proxy user field"
+#~ msgstr "bidang pengguna proxy"
 
-#: ../data/rh_register.glade.h:107
 #, fuzzy
-msgid "proxy password field"
-msgstr "bidang kata sandi proxy"
+#~ msgid "proxy password field"
+#~ msgstr "bidang kata sandi proxy"
 
-#: ../data/rh_register.glade.h:108
 #, fuzzy
-msgid "Confirm operation system release selection"
-msgstr "Konfirmasi pemilihan rilis sistem operasi"
+#~ msgid "Confirm operation system release selection"
+#~ msgstr "Konfirmasi pemilihan rilis sistem operasi"
 
-#: ../data/rh_register.glade.h:109
 #, fuzzy
-msgid "_No, Cancel"
-msgstr "_Batal"
+#~ msgid "_No, Cancel"
+#~ msgstr "_Batal"
 
-#: ../data/rh_register.glade.h:111
 #, fuzzy
-msgid "_Yes, Continue"
-msgstr "&Ya, Lanjutkan"
+#~ msgid "_Yes, Continue"
+#~ msgstr "&Ya, Lanjutkan"
 
-#: ../data/rh_register.glade.h:113
 #, fuzzy
-msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr "<big><b>Pindah ke rilis sebelumnya tidak akan mungkin</b></big>"
+#~ msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
+#~ msgstr "<big><b>Pindah ke rilis sebelumnya tidak akan mungkin</b></big>"
 
-#: ../data/rh_register.glade.h:114
 #, fuzzy
-msgid ""
-"Your system will be subscribed to the base software channel.  You will not "
-"be able to move this system to an earlier minor release channel if you "
-"continue (you will be able to move to a later release.)"
-msgstr ""
-"Sistem Anda akan di subscribe ke saluran perangkat lunak dasar.  Anda tidak "
-"akan dapat memindahkan sistem ini ke saluran rilis kecil sebelumnya jika "
-"Anda melanjutkan (Anda akan dapat pindah ke rilis yang lebih baru.)"
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel.  You will "
+#~ "not be able to move this system to an earlier minor release channel if "
+#~ "you continue (you will be able to move to a later release.)"
+#~ msgstr ""
+#~ "Sistem Anda akan di subscribe ke saluran perangkat lunak dasar.  Anda "
+#~ "tidak akan dapat memindahkan sistem ini ke saluran rilis kecil sebelumnya "
+#~ "jika Anda melanjutkan (Anda akan dapat pindah ke rilis yang lebih baru.)"
 
-#: ../data/rh_register.glade.h:115
 #, fuzzy
-msgid ""
-"\n"
-"Are you sure you would like to continue?"
-msgstr "Apakah Anda yakin ingin melanjutkan?"
+#~ msgid ""
+#~ "\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr "Apakah Anda yakin ingin melanjutkan?"
 
-#: ../data/rh_register.glade.h:117
 #, fuzzy
-msgid "Are you Sure?"
-msgstr "Anda yakin?"
+#~ msgid "Are you Sure?"
+#~ msgstr "Anda yakin?"
 
-#: ../data/rh_register.glade.h:118
 #, fuzzy
-msgid "_Go Back and Register"
-msgstr "_Go Kembali dan Daftar"
+#~ msgid "_Go Back and Register"
+#~ msgstr "_Go Kembali dan Daftar"
 
-#: ../data/rh_register.glade.h:119
 #, fuzzy
-msgid "Go Back and Register"
-msgstr "Kembali dan Daftar"
+#~ msgid "Go Back and Register"
+#~ msgstr "Kembali dan Daftar"
 
-#: ../data/rh_register.glade.h:120
 #, fuzzy
-msgid "Register _Later"
-msgstr "Daftar _Later"
+#~ msgid "Register _Later"
+#~ msgstr "Daftar _Later"
 
-#: ../data/rh_register.glade.h:121
 #, fuzzy
-msgid "Register Later"
-msgstr "Up2date - Informasi Pendaftaran"
+#~ msgid "Register Later"
+#~ msgstr "Up2date - Informasi Pendaftaran"
 
-#: ../data/rh_register.glade.h:122
 #, fuzzy
-msgid ""
-"Are you sure you don't want to register your system with Red Hat? You'll "
-"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr ""
-"Apakah Anda yakin tidak ingin mendaftarkan sistem Anda dengan Red Hat? Anda "
-"akan kehilangan manfaat dari Red Hat Enterprise Linux Subscription:"
+#~ msgid ""
+#~ "Are you sure you don't want to register your system with Red Hat? You'll "
+#~ "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
+#~ msgstr ""
+#~ "Apakah Anda yakin tidak ingin mendaftarkan sistem Anda dengan Red Hat? "
+#~ "Anda akan kehilangan manfaat dari Red Hat Enterprise Linux Subscription:"
 
-#: ../data/rh_register.glade.h:123
 #, fuzzy
-msgid "Management:"
-msgstr "Manajemen"
+#~ msgid "Management:"
+#~ msgstr "Manajemen"
 
-#: ../data/rh_register.glade.h:124
 #, fuzzy
-msgid ""
-"You will not be able to take advantage of these benefits without registering."
-msgstr ""
-"Anda tidak akan dapat mengambil keuntungan dari manfaat ini tanpa mendaftar."
+#~ msgid ""
+#~ "You will not be able to take advantage of these benefits without "
+#~ "registering."
+#~ msgstr ""
+#~ "Anda tidak akan dapat mengambil keuntungan dari manfaat ini tanpa "
+#~ "mendaftar."
 
-#: ../data/rh_register.glade.h:127
 #, fuzzy
-msgid "<b>Spacewalk Location:</b>"
-msgstr "<b>Lokasi Spacewalk:</b>"
+#~ msgid "<b>Spacewalk Location:</b>"
+#~ msgstr "<b>Lokasi Spacewalk:</b>"
 
-#: ../data/rh_register.glade.h:128
 #, fuzzy
-msgid "<b>Login:</b>"
-msgstr "<b>Login:</b>"
+#~ msgid "<b>Login:</b>"
+#~ msgstr "<b>Login:</b>"
 
-#: ../data/rh_register.glade.h:129
 #, fuzzy
-msgid "<b>System ID:</b>"
-msgstr "<b>ID Sistem:</b>"
+#~ msgid "<b>System ID:</b>"
+#~ msgstr "<b>ID Sistem:</b>"
 
-#: ../data/rh_register.glade.h:130
 #, fuzzy
-msgid "label"
-msgstr "label"
+#~ msgid "label"
+#~ msgstr "label"
 
-#: ../data/rh_register.glade.h:132
 #, fuzzy
-msgid "<b>Warning</b>"
-msgstr "<b>Peringatan:</b> Produk <b>%s</b> akan dihapus."
+#~ msgid "<b>Warning</b>"
+#~ msgstr "<b>Peringatan:</b> Produk <b>%s</b> akan dihapus."
 
-#: ../data/rh_register.glade.h:133
 #, fuzzy
-msgid ""
-"This system has already been registered with RHN using RHN certificate-based "
-"technology."
-msgstr ""
-"Sistem ini telah terdaftar dengan RHN menggunakan teknologi berbasis "
-"sertifikat RHN."
+#~ msgid ""
+#~ "This system has already been registered with RHN using RHN certificate-"
+#~ "based technology."
+#~ msgstr ""
+#~ "Sistem ini telah terdaftar dengan RHN menggunakan teknologi berbasis "
+#~ "sertifikat RHN."
 
-#: ../data/rh_register.glade.h:134
 #, fuzzy
-msgid ""
-"Your system is being registered again using RHN Classic technology. Red Hat "
-"recommends that customers only register once."
-msgstr ""
-"Sistem Anda sedang didaftarkan lagi menggunakan teknologi RHN Classic. Red "
-"Hat merekomendasikan agar pelanggan hanya mendaftar sekali."
+#~ msgid ""
+#~ "Your system is being registered again using RHN Classic technology. Red "
+#~ "Hat recommends that customers only register once."
+#~ msgstr ""
+#~ "Sistem Anda sedang didaftarkan lagi menggunakan teknologi RHN Classic. "
+#~ "Red Hat merekomendasikan agar pelanggan hanya mendaftar sekali."
 
-#: ../data/rh_register.glade.h:135
 #, fuzzy
-msgid ""
-"To learn more about RHN registration and technologies please consult this "
-"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
-msgstr ""
-"Untuk mempelajari lebih lanjut tentang pendaftaran RHN dan teknologi "
-"silahkan baca artikel Basis Pengetahuan ini: <a href=\"https://access.redhat."
-"com/kb/docs/DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>"
+#~ msgid ""
+#~ "To learn more about RHN registration and technologies please consult this "
+#~ "Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+#~ msgstr ""
+#~ "Untuk mempelajari lebih lanjut tentang pendaftaran RHN dan teknologi "
+#~ "silahkan baca artikel Basis Pengetahuan ini: <a href=\"https://access."
+#~ "redhat.com/kb/docs/DOC-45563\">https://access.redhat.com/kb/docs/"
+#~ "DOC-45563</a>"
 
-#: ../data/rh_register.glade.h:137
 #, fuzzy
-msgid "Software update setup has been completed for this system."
-msgstr "Penataan pembaruan perangkat lunak telah selesai untuk sistem ini."
+#~ msgid "Software update setup has been completed for this system."
+#~ msgstr "Penataan pembaruan perangkat lunak telah selesai untuk sistem ini."
 
-#: ../data/rh_register.glade.h:138
 #, fuzzy
-msgid ""
-"Your system is now ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"Sistem Anda sekarang siap untuk menerima pembaruan perangkat lunak yang akan "
-"membuatnya tetap aman dan didukung.\n"
-"\n"
-"Anda akan tahu kapan pembaruan perangkat lunak tersedia saat ikon paket "
-"muncul di area pemberitahuan desktop Anda (biasanya di sudut kanan atas, "
-"dilingkari di bawah.) Mengeklik ikon ini, bila tersedia, akan memandu Anda "
-"menerapkan pembaruan apa pun yang tersedia:"
+#~ msgid ""
+#~ "Your system is now ready to receive the software updates that will keep "
+#~ "it secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "Sistem Anda sekarang siap untuk menerima pembaruan perangkat lunak yang "
+#~ "akan membuatnya tetap aman dan didukung.\n"
+#~ "\n"
+#~ "Anda akan tahu kapan pembaruan perangkat lunak tersedia saat ikon paket "
+#~ "muncul di area pemberitahuan desktop Anda (biasanya di sudut kanan atas, "
+#~ "dilingkari di bawah.) Mengeklik ikon ini, bila tersedia, akan memandu "
+#~ "Anda menerapkan pembaruan apa pun yang tersedia:"
 
-#: ../data/rh_register.glade.h:141
 #, fuzzy
-msgid "Aplet screenshot"
-msgstr "Cuplikan layar aplet"
+#~ msgid "Aplet screenshot"
+#~ msgstr "Cuplikan layar aplet"
 
-#: ../data/rh_register.glade.h:143
 #, fuzzy
-msgid "Select how your system will receive updates:"
-msgstr "Pilih bagaimana sistem Anda akan menerima pembaruan:"
+#~ msgid "Select how your system will receive updates:"
+#~ msgstr "Pilih bagaimana sistem Anda akan menerima pembaruan:"
 
-#: ../data/rh_register.glade.h:144
 #, fuzzy
-msgid "Limited updates"
-msgstr "Pembaruan terbatas"
+#~ msgid "Limited updates"
+#~ msgstr "Pembaruan terbatas"
 
-#: ../data/rh_register.glade.h:145
 #, fuzzy
-msgid ""
-"<b>_Limited updates</b> will be provided to this system, maintaining "
-"compatibility with the selected minor release software channel:"
-msgstr ""
-"<b>_Limited ini</b> akan diberikan ke sistem ini, menjaga kompatibilitas "
-"dengan saluran perangkat lunak rilis kecil yang dipilih:"
+#~ msgid ""
+#~ "<b>_Limited updates</b> will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "<b>_Limited ini</b> akan diberikan ke sistem ini, menjaga kompatibilitas "
+#~ "dengan saluran perangkat lunak rilis kecil yang dipilih:"
 
-#: ../data/rh_register.glade.h:146
 #, fuzzy
-msgid ""
-"Limited updates will be provided to this system, maintaining compatibility "
-"with the selected minor release software channel:"
-msgstr ""
-"Pembaruan terbatas akan diberikan ke sistem ini, menjaga kompatibilitas "
-"dengan saluran perangkat lunak rilis kecil yang dipilih:"
+#~ msgid ""
+#~ "Limited updates will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "Pembaruan terbatas akan diberikan ke sistem ini, menjaga kompatibilitas "
+#~ "dengan saluran perangkat lunak rilis kecil yang dipilih:"
 
-#: ../data/rh_register.glade.h:147
 #, fuzzy
-msgid "_Minor release:"
-msgstr "_Minor rilis:"
+#~ msgid "_Minor release:"
+#~ msgstr "_Minor rilis:"
 
-#: ../data/rh_register.glade.h:148
 #, fuzzy
-msgid "Choose minor release"
-msgstr "Rilis"
+#~ msgid "Choose minor release"
+#~ msgstr "Rilis"
 
-#: ../data/rh_register.glade.h:149
 #, fuzzy
-msgid "       "
-msgstr "       "
+#~ msgid "       "
+#~ msgstr "       "
 
-#: ../data/rh_register.glade.h:150
 #, fuzzy
-msgid ""
-"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
-"Hat."
-msgstr ""
-"<b>Tips:</b> Rilis kecil dengan '*' saat ini didukung penuh oleh Red Hat."
+#~ msgid ""
+#~ "<b>Tip:</b> Minor releases with a '*' are currently fully supported by "
+#~ "Red Hat."
+#~ msgstr ""
+#~ "<b>Tips:</b> Rilis kecil dengan '*' saat ini didukung penuh oleh Red Hat."
 
-#: ../data/rh_register.glade.h:152
 #, fuzzy
-msgid ""
-"<b>_All available updates</b> will be provided to this system. If kept "
-"updated, this system will always be equivalent to the latest minor release "
-"in the main 'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"<b>_All yang</b> tersedia akan diberikan ke sistem ini. Jika terus "
-"diperbarui, sistem ini akan selalu setara dengan rilis kecil terbaru di "
-"saluran perangkat lunak utama 'Red Hat Enterprise Linux x'."
+#~ msgid ""
+#~ "<b>_All available updates</b> will be provided to this system. If kept "
+#~ "updated, this system will always be equivalent to the latest minor "
+#~ "release in the main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "<b>_All yang</b> tersedia akan diberikan ke sistem ini. Jika terus "
+#~ "diperbarui, sistem ini akan selalu setara dengan rilis kecil terbaru di "
+#~ "saluran perangkat lunak utama 'Red Hat Enterprise Linux x'."
 
-#: ../data/rh_register.glade.h:153
 #, fuzzy
-msgid ""
-"All available updates will be provided to this system. If kept updated, this "
-"system will always be equivalent to the latest minor release in the main "
-"'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"Semua pembaruan yang tersedia akan diberikan ke sistem ini. Jika terus "
-"diperbarui, sistem ini akan selalu setara dengan rilis kecil terbaru di "
-"saluran perangkat lunak utama 'Red Hat Enterprise Linux x'."
+#~ msgid ""
+#~ "All available updates will be provided to this system. If kept updated, "
+#~ "this system will always be equivalent to the latest minor release in the "
+#~ "main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "Semua pembaruan yang tersedia akan diberikan ke sistem ini. Jika terus "
+#~ "diperbarui, sistem ini akan selalu setara dengan rilis kecil terbaru di "
+#~ "saluran perangkat lunak utama 'Red Hat Enterprise Linux x'."
 
-#: ../data/rh_register.glade.h:154
 #, fuzzy
-msgid ""
-"<b>Warning:</b> Using this option, your system will always be the most "
-"recent minor release and <b>cannot</b> be limited to an older release "
-"version."
-msgstr ""
-"<b>Peringatan:</b> Dengan menggunakan opsi ini, sistem Anda akan selalu "
-"menjadi rilis minor terbaru dan tidak <b>terbatas</b> pada versi rilis yang "
-"lebih lama."
+#~ msgid ""
+#~ "<b>Warning:</b> Using this option, your system will always be the most "
+#~ "recent minor release and <b>cannot</b> be limited to an older release "
+#~ "version."
+#~ msgstr ""
+#~ "<b>Peringatan:</b> Dengan menggunakan opsi ini, sistem Anda akan selalu "
+#~ "menjadi rilis minor terbaru dan tidak <b>terbatas</b> pada versi rilis "
+#~ "yang lebih lama."
 
-#: ../data/rh_register.glade.h:155
 #, fuzzy
-msgid ""
-"Warning: Using this option, your system will always be the most recent minor "
-"release and cannot be limited to an older release version."
-msgstr ""
-"Peringatan: Menggunakan opsi ini, sistem Anda akan selalu menjadi rilis "
-"minor terbaru dan tidak terbatas pada versi rilis yang lebih lama."
+#~ msgid ""
+#~ "Warning: Using this option, your system will always be the most recent "
+#~ "minor release and cannot be limited to an older release version."
+#~ msgstr ""
+#~ "Peringatan: Menggunakan opsi ini, sistem Anda akan selalu menjadi rilis "
+#~ "minor terbaru dan tidak terbatas pada versi rilis yang lebih lama."
 
-#: ../data/rh_register.glade.h:156
 #, fuzzy
-msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr "<b>Sistem Anda terdaftar untuk pembaruan selama instalasi.</b>"
+#~ msgid "<b>Your system was registered for updates during installation.</b>"
+#~ msgstr "<b>Sistem Anda terdaftar untuk pembaruan selama instalasi.</b>"
 
-#: ../data/rh_register.glade.h:157
 #, fuzzy
-msgid ""
-"Your system is ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"Sistem Anda siap menerima pembaruan perangkat lunak yang akan membuatnya "
-"tetap aman dan didukung.\n"
-"\n"
-"Anda akan tahu kapan pembaruan perangkat lunak tersedia saat ikon paket "
-"muncul di area pemberitahuan desktop Anda (biasanya di sudut kanan atas, "
-"dilingkari di bawah.) Mengeklik ikon ini, bila tersedia, akan memandu Anda "
-"menerapkan pembaruan apa pun yang tersedia:"
+#~ msgid ""
+#~ "Your system is ready to receive the software updates that will keep it "
+#~ "secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "Sistem Anda siap menerima pembaruan perangkat lunak yang akan membuatnya "
+#~ "tetap aman dan didukung.\n"
+#~ "\n"
+#~ "Anda akan tahu kapan pembaruan perangkat lunak tersedia saat ikon paket "
+#~ "muncul di area pemberitahuan desktop Anda (biasanya di sudut kanan atas, "
+#~ "dilingkari di bawah.) Mengeklik ikon ini, bila tersedia, akan memandu "
+#~ "Anda menerapkan pembaruan apa pun yang tersedia:"
 
-#: ../data/rh_register.glade.h:160
 #, fuzzy
-msgid "icon of aplet"
-msgstr "ikon aplet"
+#~ msgid "icon of aplet"
+#~ msgstr "ikon aplet"
 
-#: ../rhn_register.desktop.in.h:1
 #, fuzzy
-msgid "RHN Registration"
-msgstr "Up2date - Informasi Pendaftaran"
+#~ msgid "RHN Registration"
+#~ msgstr "Up2date - Informasi Pendaftaran"
 
-#: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-"Daftar untuk pembaruan perangkat lunak dari Spacewalk/Red Hat Satellite/Red "
-"Hat Network Classic"
-
-#: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+#~ msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
+#~ msgstr ""
+#~ "Daftar untuk pembaruan perangkat lunak dari Spacewalk/Red Hat Satellite/"
+#~ "Red Hat Network Classic"
 
 #, fuzzy
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
