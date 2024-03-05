@@ -7,7 +7,6 @@
 # Please note that the actual code is *not* freely available.
 #
 #  Modified by Yukihiro Nakai <ynakai@redhat.com> to use pygettext.py
-#  Modified by Yukihiro Nakai <ynakai@redhat.com> to use libglade-xgettext
 #
 
 PACKAGE = rhn-client-tools
@@ -47,9 +46,7 @@ POTFILES = \
 	$(shell find ../src/up2date_client/ -name \*.py | sort) \
 	$(shell find ../src/firstboot/ -name \*.py | sort) \
 	$(shell find ../src/bin/ -name \*.py | sort) \
-	$(shell find ../src/actions/ -name \*.py | sort) \
-	$(shell find ../data/ -name \*.glade | sort) \
-	../rhn_register.desktop.in
+	$(shell find ../src/actions/ -name \*.py | sort)
 
 CATALOGS = $(GMOFILES)
 
@@ -68,13 +65,10 @@ CATALOGS = $(GMOFILES)
 	  && rm -f $$file && $(GMSGFMT) --statistics -o $$file $<
 
 
-all: all-yes desktop
+all: all-yes
 
 all-yes: $(CATALOGS)
 all-no:
-
-desktop:
-	intltool-merge -d . ../rhn_register.desktop.in ../rhn_register.desktop
 
 # Note: Target 'all' must not depend on target '$(srcdir)/$(PACKAGE).pot',
 # otherwise packages like GCC can not be built if only parts of the source

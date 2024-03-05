@@ -397,12 +397,6 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     public static void addKickstartPackagesToChannel(Channel c, boolean rhel2)
             throws Exception {
        addPackages(c, KickstartFormatter.UPDATE_PKG_NAMES);
-       if (rhel2) {
-           addPackages(c, KickstartFormatter.FRESH_PKG_NAMES_RHEL2);
-       }
-       else {
-           addPackages(c, KickstartFormatter.FRESH_PKG_NAMES_RHEL34);
-       }
        PackageManagerTest.addPackageToChannel(
                ConfigDefaults.get().getKickstartPackageNames().get(0) + "testy", c);
        PackageManagerTest.addPackageToChannel(

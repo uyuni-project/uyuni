@@ -5,7 +5,7 @@ PREFIX		?=
 MANPATH		?= /usr/share/man
 
 # Dirs we need to walk into
-SUBDIRS		= data etc-conf man po setuptool.d src
+SUBDIRS		= etc-conf man po src
 
 # Handy defines 
 VERSION         := $(shell echo `grep ^Version: spacewalk-client-tools.spec | awk '{ print $$2 }'`)

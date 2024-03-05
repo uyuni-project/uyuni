@@ -80,8 +80,6 @@ class RhnCli(object):
         self.options = None
         self.args = None
 
-        self.hasGui = False
-
     def run(self):
         # catch any uncaught exceptions and handle them nicely
         sys.excepthook = exceptionHandler
@@ -161,15 +159,7 @@ class RhnCli(object):
             return False
 
     def _warning_dialog(self, message):
-        if self.hasGui:
-            try:
-                from up2date_client import gui
-                gui.errorWindow(message)
-            except:
-                print(_("Unable to open gui. Try `up2date --nox`"))
-                print(message)
-        else:
-            print(message)
+        print(message)
 
     def __updateProxyConfig(self):
         """Update potential proxy configuration.
@@ -196,15 +186,7 @@ class RhnCli(object):
         cfg.save()
 
     def __faultError(self, errMsg):
-        if self.hasGui:
-            try:
-                from up2date_client import gui
-                gui.errorWindow(errMsg)
-            except:
-                print(_("Unable to open gui. Try `up2date --nox`"))
-                print(errMsg)
-        else:
-            print(errMsg)
+        print(errMsg)
 
     @staticmethod
     def __versionString():

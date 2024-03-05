@@ -49,7 +49,6 @@ def suite():
 ###        testUp2dateAuth.suite(),
         testUp2dateUtils.suite(),
         rhnPackageInfo.suite(),
-###        testrhnregGui.suite(),
         haltreetests.suite()
     ))
 

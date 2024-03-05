@@ -3,7 +3,7 @@
 # files need them, such as the glade files. Be sure to run make in 
 # rhn-client-tools and not here.
 
-FILES		:= config gui gtk_compat hardware progress \
+FILES		:= config hardware \
 		   haltree hardware_hal hardware_gudev \
 		   hardware_udev \
 		   up2dateUtils getMethod tui \
@@ -12,8 +12,8 @@ FILES		:= config gui gtk_compat hardware progress \
 		   rhnPackageInfo rhnChannel \
 		   rhnHardware \
 		   clientCaps capabilities \
-		   rhnregGui rhnserver \
-		   messageWindow rhncli \
+		   rhnserver \
+		   rhncli \
 		   rhnreg_constants \
                    pkgplatform debUtils pkgUtils \
                    pmPlugin
