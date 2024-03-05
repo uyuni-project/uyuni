@@ -727,14 +727,14 @@
       </trans-unit>
       <trans-unit id="Lookup Login/Password" xml:space="preserve">
         <source>Lookup Login/Password</source>
-        <target/>
+        <target>Пребарување најава/лозинка</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Errata" xml:space="preserve">
         <source>Manage Patches</source>
-        <target/>
+        <target>Управувајте со закрпи</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -762,14 +762,14 @@
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
-        <target/>
+        <target>Мапирање на каналот за дистрибуција</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Monitoring" xml:space="preserve">
         <source>Monitoring</source>
-        <target/>
+        <target>Мониторинг</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -790,21 +790,21 @@
       </trans-unit>
       <trans-unit id="system.evr" xml:space="preserve">
         <source>this system</source>
-        <target/>
+        <target>овој систем</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="other.evr" xml:space="preserve">
         <source>profile</source>
-        <target/>
+        <target>профил</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="comparison" xml:space="preserve">
         <source>difference</source>
-        <target/>
+        <target>разлика</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
@@ -11347,14 +11347,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.update-salt" xml:space="preserve">
         <source>Perform a standalone Salt update</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
