@@ -71,7 +71,6 @@ client/rhel/spacewalk-client-tools/src/actions/
 client/rhel/spacewalk-client-tools/src/bin/rhn_check.py
 client/rhel/spacewalk-client-tools/src/bin/rhn_register.py
 client/rhel/spacewalk-client-tools/src/bin/rhnreg_ks.py
-client/rhel/spacewalk-client-tools/src/bin/spacewalk-channel.py
 client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_choose_channel.py
 client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_choose_server_gui.py
 client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_create_profile_gui.py
