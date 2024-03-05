@@ -634,7 +634,6 @@ cd -
 # create links to default script version
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 for i in \
-    /usr/sbin/rhn-profile-sync \
     /usr/sbin/rhn_check \
     /usr/sbin/rhn_register \
     /usr/sbin/rhnreg_ks \
@@ -733,7 +732,6 @@ make -f Makefile.rhn-client-tools test
 %doc doc/AUTHORS
 %{!?_licensedir:%global license %doc}
 %license doc/LICENSE
-%{_mandir}/man8/rhn-profile-sync.8*
 %{_mandir}/man5/up2date.5*
 
 %dir %{_sysconfdir}/sysconfig/rhn
@@ -748,8 +746,6 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/rhn
 %dir %{_localstatedir}/spool/up2date
 
-%{_sbindir}/rhn-profile-sync
-
 %ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
 
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
@@ -759,7 +755,6 @@ make -f Makefile.rhn-client-tools test
 %if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root,-)
-%{_sbindir}/rhn-profile-sync-%{python_version}
 %dir %{python_sitelib}/up2date_client/
 %{python_sitelib}/up2date_client/__init__.*
 %{python_sitelib}/up2date_client/config.*
@@ -787,7 +782,6 @@ make -f Makefile.rhn-client-tools test
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %defattr(-,root,root,-)
-%{_sbindir}/rhn-profile-sync-%{python3_version}
 %dir %{python3_sitelib}/up2date_client/
 %{python3_sitelib}/up2date_client/__init__.*
 %{python3_sitelib}/up2date_client/config.*

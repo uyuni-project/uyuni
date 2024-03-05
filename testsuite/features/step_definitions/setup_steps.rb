@@ -195,11 +195,6 @@ end
 
 # Register client
 
-Given(/^I update the profile of "([^"]*)"$/) do |client|
-  node = get_target(client)
-  node.run('rhn-profile-sync', timeout: 500)
-end
-
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
     When I follow the left menu "Systems > System List > All"
