@@ -23,7 +23,7 @@ end
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its checksum$/) do |name, url|
   # When using a mirror it is automatically mounted at /mirror
   if $mirror
-    iso_path = $is_container_provider ? url.sub(/^https?:\/\/[^\/]+/, '/srv/mirror') : url.sub(/^https?:\/\/[^\/]+/, '/mirror')
+    iso_path = $is_containerized_server ? url.sub(/^https?:\/\/[^\/]+/, '/srv/mirror') : url.sub(/^https?:\/\/[^\/]+/, '/mirror')
   else
     iso_path = "/tmp/#{name}.iso"
     get_target('server').run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
@@ -35,7 +35,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
 
   raise 'SHA256 checksum validation failed' unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
 
-  if $is_container_provider
+  if $is_containerized_server
     mount_point = '/srv/www/distributions'
     get_target('server').run("mkdir -p #{mount_point}")
     # this needs to be run outside the container

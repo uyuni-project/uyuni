@@ -224,7 +224,7 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_container_provider
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_gh_validation
   node.run('journalctl > /var/log/messages', check_errors: false)
   node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
@@ -447,7 +447,7 @@ end
 
 # This function initializes the API client
 def new_api_client
-  ssl_verify = !$is_container_provider
+  ssl_verify = !$is_gh_validation
   if $debug_mode || product == 'SUSE Manager'
     ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
   else
