@@ -53,8 +53,8 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
-$is_container_provider = ENV['PROVIDER'].include? 'podman'
-$is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
+$is_gh_validation = ENV['PROVIDER'].include? 'podman'
+$is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
@@ -567,19 +567,19 @@ Before('@skip_if_cloud') do
   skip_this_scenario if $is_cloud_provider
 end
 
-# skip tests if executed in containers for the githug validation
+# skip tests if executed in containers for the GitHub validation
 Before('@skip_if_github_validation') do
-  skip_this_scenario if $is_container_provider
+  skip_this_scenario if $is_gh_validation
 end
 
 # skip tests if the server runs in a container
 Before('@skip_if_container_server') do
-  skip_this_scenario if $is_container_server
+  skip_this_scenario if $is_containerized_server
 end
 
 # skip tests if the server does not run in a container
 Before('@skip_if_not_container_server') do
-  skip_this_scenario unless $is_container_server
+  skip_this_scenario unless $is_containerized_server
 end
 
 # have more infos about the errors
