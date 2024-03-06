@@ -55,7 +55,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     { id: Number(7), text: t("Saturday") },
   ];
 
-  monthDays = Array.from(Array(28).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
+  monthDays = Array.from(Array(31).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
 
   constructor(props: RecurringEventPickerProps) {
     super(props);
@@ -442,7 +442,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                     id="monthly-day-picker"
                     name="date_monthly"
                     selectedId={this.state.monthDay.id}
-                    options={this.monthDays}
+                    options={this.monthDays.filter((day) => day.id < 29)}
                     onSelect={this.onSelectMonthDay}
                     onFocus={this.onFocusMonthDay}
                   />
