@@ -4,7 +4,7 @@
 # The scenarios in this feature are skipped if there is no proxy
 # ($proxy is nil)
 
-@skip_if_container_server
+@skip_if_containerized_server
 @proxy
 Feature: Setup SUSE Manager proxy
   In order to use a proxy with the SUSE manager server

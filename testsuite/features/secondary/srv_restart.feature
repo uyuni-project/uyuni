@@ -9,7 +9,7 @@
 # All features following this one if the server fails to restart.
 
 @skip_if_github_validation
-@skip_if_container_server
+@skip_if_containerized_server
 Feature: Restart the spacewalk services via UI
 
   Scenario: Restart the SUSE Manager through the WebUI Admin option

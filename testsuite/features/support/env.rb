@@ -573,7 +573,7 @@ Before('@skip_if_github_validation') do
 end
 
 # skip tests if the server runs in a container
-Before('@skip_if_container_server') do
+Before('@skip_if_containerized_server') do
   skip_this_scenario if $is_containerized_server
 end
 

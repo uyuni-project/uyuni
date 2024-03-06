@@ -16,7 +16,7 @@
 #       as it does not support Salt formulas.
 #       Additionally, we have this bug that impedes to use mgr-bootstrap command https://bugzilla.suse.com/show_bug.cgi?id=1220864
 
-@skip_if_container_server
+@skip_if_containerized_server
 @skip_if_github_validation
 @buildhost
 @proxy
