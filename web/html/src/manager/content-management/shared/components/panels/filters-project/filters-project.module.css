@@ -1,4 +1,4 @@
-:global(.old-theme)
+:global(.old-theme),
 :global(.new-theme) {
   .wrapper {
     position: relative;
