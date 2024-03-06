@@ -7,7 +7,7 @@
 #
 # Bootstrap the proxy as a Pod
 
-@skip_if_not_container_server
+@containerized_server
 @scope_containerized_proxy
 @proxy
 Feature: Setup containerized proxy

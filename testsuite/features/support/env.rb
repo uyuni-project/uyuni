@@ -577,8 +577,8 @@ Before('@skip_if_containerized_server') do
   skip_this_scenario if $is_containerized_server
 end
 
-# skip tests if the server does not run in a container
-Before('@skip_if_not_container_server') do
+# do test only if we have a containerized server
+Before('@containerized_server') do
   skip_this_scenario unless $is_containerized_server
 end
 
