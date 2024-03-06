@@ -8,7 +8,7 @@
 #       The proxy container does not support Salt formulas, so the test is failing.
 
 @skip_if_github_validation
-@skip_if_container_server
+@skip_if_containerized_server
 @proxy
 @private_net
 @pxeboot_minion

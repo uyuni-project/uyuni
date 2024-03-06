@@ -9,7 +9,7 @@
 #       due to the fact that the mgr-bootstrap command is not available in the proxy
 #       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
 
-@skip_if_container_server
+@skip_if_containerized_server
 @skip_if_github_validation
 @scope_salt_ssh
 @ssh_minion

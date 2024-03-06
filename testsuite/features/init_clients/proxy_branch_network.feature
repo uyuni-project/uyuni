@@ -7,7 +7,7 @@
 # TODO: RBS tests needs a refactor to don't use salt formulas.
 #       Card: https://github.com/SUSE/spacewalk/issues/23616
 
-@skip_if_container_server
+@skip_if_containerized_server
 @skip_if_github_validation
 @sle_minion
 @scope_proxy
@@ -26,7 +26,7 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
-@skip_if_container_server
+@skip_if_containerized_server
   Scenario: Install or update branch network formulas on the server
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
@@ -35,7 +35,7 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
 @susemanager
-@skip_if_container_server
+@skip_if_containerized_server
   Scenario: Install the Retail pattern on the SUSE Manager server
     When I refresh the metadata for "server"
     When I install pattern "suma_retail" on this "server"
@@ -45,7 +45,7 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
 @uyuni
-@skip_if_container_server
+@skip_if_containerized_server
   Scenario: Install the Retail pattern on the Uyuni server
     When I refresh the metadata for "server"
     When I install pattern "uyuni_retail" on this "server"

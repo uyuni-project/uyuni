@@ -8,7 +8,7 @@
 
 @skip_if_github_validation
 @skip_if_cloud
-@skip_if_container_server
+@skip_if_containerized_server
 Feature: Reconfigure the server's hostname
   As admin user
   In order to change the server's hostname

@@ -6,7 +6,7 @@
 #
 # Alternative: Bootstrap the proxy as Salt minion from GUI
 
-@skip_if_container_server
+@skip_if_containerized_server
 @scope_proxy
 @proxy
 Feature: Setup Uyuni proxy

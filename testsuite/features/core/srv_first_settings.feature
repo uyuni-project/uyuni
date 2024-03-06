@@ -23,7 +23,7 @@ Feature: Very first settings
     When I run "rm -Rf /srv/salt/*" on "server"
 
 
-@skip_if_container_server
+@skip_if_containerized_server
   Scenario: Create admin user and first organization
     Given I access the host the first time
     When I go to the home page
