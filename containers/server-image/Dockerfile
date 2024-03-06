@@ -85,6 +85,25 @@ RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
     systemctl enable timezone_alignment;
 
+# Provide tool to synchronize package and configuration files to persistent volumes
+COPY uyuni-configfiles-sync /usr/bin
+RUN chmod -R 755 /usr/bin/uyuni-configfiles-sync
+
+# We inject uyuni-configfiles-sync to be executed at Spacewalk target start
+COPY uyuni-configfiles-sync.service /usr/lib/systemd/system/
+RUN sed -i 's/Description=Spacewalk/Description=Spacewalk\nRequires=uyuni-configfiles-sync.service/g' /usr/lib/systemd/system/spacewalk.target
+
+# Initialize environments to sync configuration and package files to persistent volumes
+RUN uyuni-configfiles-sync init /etc/apache2/
+RUN uyuni-configfiles-sync init /etc/cobbler/
+RUN uyuni-configfiles-sync init /etc/postfix/
+RUN uyuni-configfiles-sync init /etc/rhn/
+RUN uyuni-configfiles-sync init /etc/salt/
+RUN uyuni-configfiles-sync init /etc/sysconfig/
+RUN uyuni-configfiles-sync init /etc/tomcat/
+RUN uyuni-configfiles-sync init /srv/tftpboot/
+RUN uyuni-configfiles-sync init /srv/www/
+
 # LABELs
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
