@@ -18,7 +18,7 @@ Feature: Setup containerized proxy
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap the proxy HostOS as a Salt minion
+  Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "proxy" as "hostname"
@@ -30,11 +30,11 @@ Feature: Setup containerized proxy
     And I wait until I see "Bootstrap process initiated." text
 
   # workaround for bsc#1218146
-  Scenario: Bootstrap the proxy HostOS as a Salt minion
+  Scenario: Reboot the proxy host
     When I reboot the "proxy" minion through SSH
     And I wait until port "22" is listening on "proxy" host
 
-  Scenario: Wait until the proxy HostOS appears
+  Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
 
   Scenario: Generate containerized proxy configuration

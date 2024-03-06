@@ -18,20 +18,24 @@ Feature: Setup containerized proxy
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-# TODO: Uncomment the following scenarios when this PR is merged: https://github.com/uyuni-project/uyuni/pull/8148
-#  Scenario: Bootstrap the proxy HostOS as a Salt minion
-#    When I follow the left menu "Systems > Bootstrapping"
-#    Then I should see a "Bootstrap Minions" text
-#    When I enter the hostname of "proxy" as "hostname"
-#    And I enter "22" as "port"
-#    And I enter "root" as "user"
-#    And I enter "linux" as "password"
-#    And I select "1-PROXY-KEY-x86_64" from "activationKeys"
-#    And I click on "Bootstrap"
-#    And I wait until I see "Bootstrap process initiated." text
-#
-#  Scenario: Wait until the proxy HostOS appears
-#    When I wait until onboarding is completed for "proxy"
+  Scenario: Bootstrap the proxy host as a salt minion
+    When I follow the left menu "Systems > Bootstrapping"
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "proxy" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select "1-PROXY-KEY-x86_64" from "activationKeys"
+    And I click on "Bootstrap"
+    And I wait until I see "Bootstrap process initiated." text
+
+  # workaround for bsc#1218146
+  Scenario: Reboot the proxy host
+    When I reboot the "proxy" minion through SSH
+    And I wait until port "22" is listening on "proxy" host
+
+  Scenario: Wait until the proxy host appears
+    When I wait until onboarding is completed for "proxy"
 
   Scenario: Generate containerized proxy configuration
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
