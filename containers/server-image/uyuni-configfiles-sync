@@ -17,8 +17,6 @@ Available Commands:
 }
 
 
-# FIXME: TBD: Add also non packaged files on the persistent volumes
-# there are files that are generated during %post scripts that we may want to persist
 init() {
 	pv=$(echo "$1/" | tr -s /)
 	if [ ! -f $DEFAULTS_STORAGE/.buildhash ]; then
@@ -31,7 +29,6 @@ init() {
 	# Calculate the packages that are owning the files under this path
 	PKGNAMES=$(LANG=C rpm -q -qf `find $pv` | egrep -v "^file .+ is not owned by any package" | sort -u)
 	# Sync the package files (non-configuration and configuration files) to our storage
-	# FIXME: Include also non packaged files
 	for pkg in $PKGNAMES; do
 		for cfgfile in $(rpm -ql $pkg | grep "^$pv"); do
 			echo ${cfgfile#"$pv"} | rsync -a --files-from=- --exclude={'*'} $pv $TARGET
@@ -66,10 +63,12 @@ sync() {
 	fi
 	echo "Synchronizing defaults for all initializated environments"
 	echo
+	PACKAGES=""
 	for PV_DIR in $(ls $DEFAULTS_STORAGE | grep -v "^\.buildhash$"); do
 		SOURCES=$(echo "$DEFAULTS_STORAGE/$PV_DIR/" | tr -s /)
 		PV=$(cat $SOURCES/.pv)
 		PKGNAMES=$(LANG=C rpm -q -qf `find $PV` | egrep -v "^file .+ is not owned by any package" | sort -u)
+		PACKAGES=$(echo -e "$PACKAGES\n$PKGNAMES")
 		echo "- Processing pv: $PV"
 		echo -n "  * Getting information for files to synchronize ... "
 		LIST_CONFIG_NO_REPLACE=""
@@ -170,8 +169,41 @@ sync() {
 		echo
 	done
 
+	# Run RPM scriptslets simulating a package upgrade
+	echo "- Running scriptlets for packages:"
+        PACKAGES=$(echo "$PACKAGES" | sort -u)
+	run_scripts "$PACKAGES"
+	echo "  * Completed"
+
 	# We lock the sync so it cannot run until next upgrade of the container image
 	cp $DEFAULTS_STORAGE/.buildhash $SYSCONFIG_FILE
+}
+
+run_scripts() {
+	PACKAGE_NAMES=$1
+	for PKG in $PACKAGE_NAMES; do
+		echo "  * Running scripts for $PKG ..."
+		PREIN_SCRIPT=$(rpm -q --qf "%{PREIN}" $PKG)
+		if [ ! "$PREIN_SCRIPT" = "(none)" ]; then
+			echo "$PREIN_SCRIPT" | sh -s -- 2
+		fi
+		POSTIN_SCRIPT=$(rpm -q --qf "%{POSTIN}" $PKG)
+		if [ ! "$POSTIN_SCRIPT" = "(none)" ]; then
+			echo "$POSTIN_SCRIPT" | sh -s -- 2
+		fi
+#		PREUN_SCRIPT=$(rpm -q --qf "%{PREUN}" $PKG)
+#		if [ ! "$PREUN_SCRIPT" = "(none)" ]; then
+#			echo "$PREUN_SCRIPT" | sh -s -- 1
+#		fi
+#		POSTUN_SCRIPT=$(rpm -q --qf "%{POSTUN}" $PKG)
+#		if [ ! "$POSTUN_SCRIPT" = "(none)" ]; then
+#			echo "$POSTUN_SCRIPT" | sh -s -- 1
+#		fi
+		POSTTRANS_SCRIPT=$(rpm -q --qf "%{POSTTRANS}" $PKG)
+		if [ ! "$POSTTRANS_SCRIPT" = "(none)" ]; then
+			echo "$POSTTRANS_SCRIPT" | sh -s -- 2
+		fi
+	done
 }
 
 list() {
