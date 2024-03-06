@@ -151,6 +151,7 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
+  #   runs_in_container: Whether the command should be run in the the container or in the host. Defaults to true.
   #   separated_results: Whether the results should be stored separately. Defaults to false.
   #   check_errors: Whether to check for errors or not. Defaults to true.
   #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
@@ -158,8 +159,8 @@ module LavandaBasic
   #   successcodes: An array with the values to be accepted as success codes from the command run.
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
-  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @in_has_mgrctl ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
+  def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
+    cmd_prefixed = @in_has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
@@ -196,9 +197,9 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
-  def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT)
+  def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
     repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run(cmd, check_errors: false)
+      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
       return [result, code] if code.zero?
 
       sleep 2
@@ -211,9 +212,9 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
-  def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT)
+  def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
     repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run(cmd, check_errors: false)
+      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
       return [result, code] if code.nonzero?
 
       sleep 2
