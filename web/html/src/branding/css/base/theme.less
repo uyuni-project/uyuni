@@ -133,8 +133,8 @@ section {
   margin-left: 0;
   aside {
     .make-xs-column(2);
-    min-width: 16.66667%;
-    max-width: 16.66667%;
+    min-width: max(300px, 17%);
+    max-width: min(400px, 17%);
     background: @aside-background;
     border-right: none;
     /* erasing the predefined paddings in the columns */
@@ -168,6 +168,9 @@ section {
 #breadcrumb {
   color: @header-text;
   display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   span {
     vertical-align: bottom;
   }

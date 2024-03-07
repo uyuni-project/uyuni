@@ -132,10 +132,8 @@ section {
   margin-right: 0;
   margin-left: 0;
   aside {
-    // TODO: Fix
-    // .make-xs-column(2);
-    min-width: 16.66667%;
-    max-width: 16.66667%;
+    min-width: max(300px, 17%);
+    max-width: min(400px, 17%);
     background: $aside-background;
     border-right: none;
     /* erasing the predefined paddings in the columns */
@@ -160,8 +158,6 @@ section {
 
   /* fixing margins in the 1st and last columns */
   section {
-    // TODO: Fix
-    // .make-xs-column(10);
     padding: $content-area-padding;
     float: right;
   }
@@ -170,6 +166,9 @@ section {
 #breadcrumb {
   color: $header-text;
   display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   span {
     vertical-align: bottom;
   }
