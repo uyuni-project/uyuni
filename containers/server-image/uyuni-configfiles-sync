@@ -51,6 +51,9 @@ Available Commands:
 
 init() {
     PV=$(echo "$1/" | tr -s /)
+    if [ ! -d $DEFAULTS_STORAGE ]; then
+        mkdir $DEFAULTS_STORAGE
+    fi
     if [ ! -f $DEFAULTS_STORAGE/.buildhash ]; then
         echo $RANDOM | sha256sum | head -c 64 > $DEFAULTS_STORAGE/.buildhash
     fi
