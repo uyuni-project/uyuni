@@ -39,3 +39,5 @@ sudo -i podman exec uyuni-server-all-in-one-test bash -c "rctaskomatic restart"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "cp /client/tools/mgr-push/*.py /usr/lib/python3.6/site-packages/rhnpush/"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "cp /client/tools/mgr-push/rhnpushrc /etc/sysconfig/rhn/rhnpushrc"
 
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "cd /susemanager-utils/susemanager-sls/; cp -R modules/* /usr/share/susemanager/modules; cp -R salt/* /usr/share/susemanager/salt; cp -R salt-ssh/* /usr/share/susemanager/salt-ssh"
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "cd /susemanager/; cp src/mgr-salt-ssh /usr/bin/; chmod a+x /usr/bin/mgr-salt-ssh"

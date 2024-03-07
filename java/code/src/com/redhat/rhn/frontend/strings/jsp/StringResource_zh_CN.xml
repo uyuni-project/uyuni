@@ -17414,11 +17414,11 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <target state="translated">将文件部署到所选系统</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="translated">部署配置文件：确认部署文件和系统</target>
+        <target state="needs-adaptation">部署配置文件：确认部署文件和系统</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
@@ -29048,7 +29048,7 @@ given channel.</source>
         <source>Where do I find my Organization Credentials?</source>
         <target>在何处可以找到我的组织身份凭证？</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.info.p2" xml:space="preserve">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
         <target state="final">可以在 &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt; 中找到。</target>
       </trans-unit>

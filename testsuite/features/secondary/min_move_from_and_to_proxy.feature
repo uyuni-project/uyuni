@@ -1,9 +1,5 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
-# This feature can cause failures in the following features:
-# - features/secondary/proxy_as_pod_basic_tests.feature:
-# If the minion is not properly bootstrapped again.
 
 @sle_minion
 @proxy

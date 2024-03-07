@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:23:07 CET 2024 - marina.latini@suse.com
+
+- version 5.0.3-1
+  * Use the first detected PostgreSQL service in case multiple are defined.
+
+-------------------------------------------------------------------
 Thu Jan 18 11:05:11 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.2-1

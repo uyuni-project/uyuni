@@ -179,6 +179,24 @@ When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*
   $command_output, _code = get_target('server').run(command)
 end
 
+When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel) ||
+                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+  raise ScriptError, "Synchronization error, channel #{channel} or #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil? || channels_to_synchronize.empty?
+
+  channels_to_synchronize.each do |os_product_version_channel|
+    command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
+    _out, code = get_target('server').run(command, check_errors: false)
+    if code.zero?
+      log "Channel #{os_product_version_channel.gsub("-#{architecture}", '')} added"
+    else
+      command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel}"
+      get_target('server').run(command)
+      log "Channel #{os_product_version_channel} added"
+    end
+  end
+end
+
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
 end
@@ -298,40 +316,6 @@ When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |ser
   node.run_until_ok(cmd)
 end
 
-When(/^I enable product "([^"]*)"$/) do |prd|
-  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
-  executed = false
-  linenum = 0
-  list_output.each_line do |line|
-    next unless /^ *\[ \]/ =~ line
-
-    linenum += 1
-    next unless line.include? prd
-
-    executed = true
-    $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product", check_errors: false, buffer_size: 1_000_000)
-    break
-  end
-  raise $command_output.to_s unless executed
-end
-
-When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
-  executed = false
-  linenum = 0
-  list_output.each_line do |line|
-    next unless /^ *\[ \]/ =~ line
-
-    linenum += 1
-    next unless line.include? prd
-
-    executed = true
-    $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product --no-recommends", check_errors: false, buffer_size: 1_000_000)
-    break
-  end
-  raise $command_output.to_s unless executed
-end
-
 When(/^I execute mgr-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
   get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
   $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
@@ -357,7 +341,7 @@ end
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
 # It waits for all the reposyncs in the allow-list to complete, and kills all others.
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
-  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version].nil?
+  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).nil?
 
   channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
   log "Killing channels:\n#{channels_to_kill}"
@@ -423,8 +407,8 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
   if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
-    log "Unknown timeout for channel #{channel}, assuming one hour"
-    timeout = 3600
+    log "Unknown timeout for channel #{channel}, assuming one minute"
+    timeout = 60
   else
     timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
   end
@@ -440,17 +424,36 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   end
 end
 
-When(/^I wait until all synchronized channels have finished$/) do
-  $channels_synchronized.each do |channel|
-    log "I wait until '#{channel}' synchronized channel has finished"
-    step %(I wait until the channel "#{channel}" has been synced)
-  end
-end
-
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
-  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
+
+  time_spent = 0
+  checking_rate = 10
+  timeout = 0
   channels_to_wait.each do |channel|
-    step %(I wait until the channel "#{channel}" has been synced)
+    if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+      log "Unknown timeout for channel #{channel}, assuming one minute"
+      timeout += 60
+    else
+      timeout += TIMEOUT_BY_CHANNEL_NAME[channel]
+    end
+  end
+  begin
+    repeat_until_timeout(timeout: timeout, message: 'Product not fully synced') do
+      channels_to_wait.each do |channel|
+        if channel_is_synced(channel)
+          channels_to_wait.delete(channel)
+          log "Channel #{channel} finished syncing"
+        end
+      end
+      break if channels_to_wait.empty?
+
+      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      sleep checking_rate
+    end
+  rescue StandardError => e
+    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
@@ -655,9 +658,9 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 
   case host
   when 'server'
-    get_target('server').run("configure-tftpsync.sh #{get_target('proxy').full_hostname}")
+    get_target('server').run("/usr/sbin/configure-tftpsync.sh #{get_target('proxy').full_hostname}")
   when 'proxy'
-    cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
+    cmd = "/usr/sbin/configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
 --server-fqdn=#{get_target('server').full_hostname} \
 --proxy-fqdn='proxy.example.org'"
     get_target('proxy').run(cmd)
@@ -841,7 +844,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   os_family = node.os_family
   cmd = ''
   case os_family
-  when /^opensuse/, /^sles/
+  when /^opensuse/, /^sles/, /^suse/
     mand_repos = ''
     repos.split.map do |repo|
       mand_repos = "#{mand_repos} #{repo}"
@@ -1318,7 +1321,7 @@ Given(/^I have a user with admin access to the ReportDB$/) do
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
   # extract only the line for the suma user
-  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)}/]
+  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)/]
   raise ScriptError, 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
     ['Superuser', 'Create role', 'Create DB'].all? { |permission| suma_user_permissions.include? permission }
 end
@@ -1436,7 +1439,7 @@ Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node.run('iptables -F INPUT')
 end
 
-When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
+When(/^I generate the configuration "([^"]*)" of containerized proxy on the server$/) do |file_path|
   if running_k3s?
     # A server container on kubernetes has no clue about SSL certificates
     # We need to generate them using `cert-manager` and use the files as 3rd party certificate
@@ -1448,19 +1451,23 @@ When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the serv
     end
 
     command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
-    # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
-    command = 'echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert' \
-              " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
-              ' 2048 galaxy-noise@suse.de --ca-pass cert_pass' \
-              ' && rm cert_pass'
+
+    command = "echo spacewalk > ca_pass && spacecmd --nossl -u admin -p admin proxy_container_config_generate_cert -- -o #{file_path} #{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de --ca-pass ca_pass && rm ca_pass"
   end
   get_target('server').run(command)
 end
 
-When(/^I add avahi hosts in Containerized Proxy configuration$/) do
+When(/^I copy the configuration "([^"]*)" of containerized proxy from the server to the proxy$/) do |file_path|
+  get_target('server').extract(file_path, file_path)
+  get_target('proxy').inject(file_path, file_path)
+end
+
+# TODO: Refactor this step to use the new mgrpxy command
+#       For now, this step is not used to onboard our containerized proxy
+When(/^I add avahi hosts in containerized proxy configuration$/) do
   if get_target('server').full_hostname.include? 'tf.local'
     hosts_list = ''
     $host_by_node.each do |node, _host|
@@ -1470,7 +1477,7 @@ When(/^I add avahi hosts in Containerized Proxy configuration$/) do
     regex = "s/^#?EXTRA_POD_ARGS=.*$/EXTRA_POD_ARGS=#{hosts_list}/g;"
     get_target('proxy').run("sed -i.bak -Ee '#{regex}' /etc/sysconfig/uyuni-proxy-systemd-services")
     log "Avahi hosts added: #{hosts_list}"
-    log 'The Development team has not been working to support avahi in Containerized Proxy, yet. This is best effort.'
+    log 'The Development team has not been working to support avahi in containerized proxy, yet. This is best effort.'
   else
     log 'Record not added - avahi domain was not detected'
   end
@@ -1514,6 +1521,11 @@ When(/^I reboot the server through SSH$/) do
     end
     sleep 1
   end
+end
+
+When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+  node = get_target(host)
+  node.run('reboot')
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
@@ -1707,4 +1719,12 @@ When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   os_version, os_family = get_os_version(node)
   node.init_os_family(os_family)
   node.init_os_version(os_version)
+end
+
+When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, file, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "Entry #{text} in file #{file} on #{host} not found") do
+    _output, code = node.run("tail -n 10 #{file} | grep '#{text}' ", check_errors: false)
+    break if code.zero?
+  end
 end

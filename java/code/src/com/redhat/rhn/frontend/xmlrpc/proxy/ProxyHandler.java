@@ -218,7 +218,7 @@ public class ProxyHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.returntype
      * #return_array_begin()
-     *   $SystemOverviewSerializer
+     *   $ShortSystemInfoSerializer
      * #array_end()
      */
     @ReadOnly

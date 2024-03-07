@@ -5,6 +5,7 @@ const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const webpackAlias = require("./webpack.alias");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const autoprefixer = require("autoprefixer");
 
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
@@ -27,7 +28,11 @@ module.exports = (env, argv) => {
       // Translations
       { from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") },
       // Unimported branding assets
-      { from: path.resolve(__dirname, "../branding/fonts"), to: path.resolve(__dirname, "../dist/fonts") },
+      {
+        from: path.resolve(__dirname, "../branding/fonts/font-spacewalk"),
+        to: path.resolve(__dirname, "../dist/fonts/font-spacewalk"),
+      },
+      // TODO: Copy all font licenses too
       { from: path.resolve(__dirname, "../branding/img"), to: path.resolve(__dirname, "../dist/img") },
       // Any non-compiled CSS, Less files will be compiled by their entry points
       {
@@ -50,13 +55,9 @@ module.exports = (env, argv) => {
         from: path.resolve(__dirname, "../node_modules/jquery-ui/jquery-ui.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
-      // Font-awesome
+      // TODO: In the future it would be nice to bundle this instead of copying it
       {
-        from: path.resolve(__dirname, "../node_modules/font-awesome/fonts"),
-        to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
-      },
-      {
-        from: path.resolve(__dirname, "../node_modules/font-awesome/css"),
+        from: path.resolve(__dirname, "../node_modules/font-awesome"),
         to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
       },
       {
@@ -104,9 +105,9 @@ module.exports = (env, argv) => {
       "javascript/manager/main": "./manager/index.ts",
       "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
       "css/susemanager-fullscreen": path.resolve(__dirname, "../branding/css/susemanager-fullscreen.less"),
-      "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
       // TODO: We're removing the dark theme for now
       "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
+      "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
     },
     output: {
       filename: `[name].bundle.js`,
@@ -174,15 +175,45 @@ module.exports = (env, argv) => {
           test: /\.(png|jpe?g|gif|svg)$/i,
           type: "asset/resource",
           generator: {
-            filename: "img/[hash][ext][query]",
+            // TODO: Revert this to `fonts/[hash][ext][query]` after the Bootstrap migration is done
+            filename: "img/[base]",
           },
         },
         {
           test: /\.(eot|ttf|woff|woff2)$/i,
           type: "asset/resource",
           generator: {
-            filename: "fonts/[hash][ext][query]",
+            // TODO: Revert this to `fonts/[hash][ext][query]` after the Bootstrap migration is done
+            filename: "fonts/[base]",
           },
+        },
+        // See https://getbootstrap.com/docs/5.3/getting-started/webpack/
+        {
+          test: /\.(scss)$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            // {
+            //   // Adds CSS to the DOM by injecting a `<style>` tag
+            //   loader: "style-loader",
+            // },
+            {
+              // Interprets `@import` and `url()` like `import/require()` and will resolve them
+              loader: "css-loader",
+            },
+            {
+              // Loader for webpack to process CSS with PostCSS
+              loader: "postcss-loader",
+              options: {
+                postcssOptions: {
+                  plugins: [autoprefixer],
+                },
+              },
+            },
+            {
+              // Loads a SASS/SCSS file and compiles it to CSS
+              loader: "sass-loader",
+            },
+          ],
         },
       ],
     },

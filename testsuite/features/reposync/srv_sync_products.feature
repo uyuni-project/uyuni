@@ -62,6 +62,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see the "Development Tools Module 15 SP4 x86_64" selected
     When I select "Containers Module 15 SP4 x86_64" as a product
     Then I should see the "Containers Module 15 SP4 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
@@ -91,17 +93,19 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see the "Development Tools Module 15 SP4 x86_64" selected
     When I select "Containers Module 15 SP4 x86_64" as a product
     Then I should see the "Containers Module 15 SP4 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
-    When I use spacewalk-common-channel to add channel "sles15-sp4-uyuni-client" with arch "x86_64"
+    When I use spacewalk-common-channel to add channel "sles15-sp4-devel-uyuni-client" with arch "x86_64"
     And I wait until all synchronized channels for "sles15-sp4" have finished
-    # TODO: Refactor the scenarios in order to don't require a full synchronization of SLES 15 SP4 product in Uyuni
+    # TODO: Refactor the scenarios in order to not require a full synchronization of SLES 15 SP4 product in Uyuni
     # When I kill running spacewalk-repo-sync for "sles15-sp4"
 
 @uyuni
   Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-devel-leap opensuse_leap15_5-uyuni-client" with arch "x86_64"
+    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
     And I kill running spacewalk-repo-sync for "leap15.5-x86_64"
 
 @proxy
@@ -114,6 +118,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Manager Proxy 4.3" as the filtered product description
     And I select "SUSE Manager Proxy 4.3 x86_64" as a product
     Then I should see the "SUSE Manager Proxy 4.3 x86_64" selected
+    When I open the sub-list of the product "SUSE Manager Proxy 4.3 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    And I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Proxy 4.3 x86_64" product has been added
@@ -121,7 +129,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @proxy
 @susemanager
-  Scenario: Add SUSE Manager Retail Branch Server
+  Scenario: Add SUSE Manager Retail Branch Server 4.3
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -129,10 +137,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Manager Retail Branch Server 4.3" as the filtered product description
     And I select "SUSE Manager Retail Branch Server 4.3 x86_64" as a product
     Then I should see the "SUSE Manager Retail Branch Server 4.3 x86_64" selected
+    When I open the sub-list of the product "SUSE Manager Retail Branch Server 4.3 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    And I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
-    And  I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
+    And I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
 
 @scc_credentials
 @susemanager
@@ -145,7 +157,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
-    And I should not see a warning sign
+    And I should not see a warning nor an error sign
 
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC

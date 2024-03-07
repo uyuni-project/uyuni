@@ -1,0 +1,27 @@
+-------------------------------------------------------------------
+Tue Feb 13 17:01:34 CET 2024 - marina.latini@suse.com
+
+- version 5.0.3
+  * Simplify publishing to Open Build Service
+  * Prefix the image name with server-
+
+-------------------------------------------------------------------
+Mon Jan 29 11:35:43 CET 2024 - rosuna@suse.com
+
+- version 5.0.2
+  * Change how the image is pushed to the build service
+
+-------------------------------------------------------------------
+Fri Jan 12 16:28:20 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * Rename hub-xmlrpc-api.changes to hub-xmlrpc-api-image.changes
+    and match the source package name
+  * Use product version in reference label
+  * Add missing image name label
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
+Thu Jun 22 07:30:36 UTC 2023 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- Initial image for Uyuni Hub XML-RPC API

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC.
+# Copyright (c) 2022-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 # Channel namespace
@@ -157,5 +157,15 @@ class NamespaceChannelSoftware
   def list_user_repos
     repos = @test.call('channel.software.listUserRepos', sessionKey: @test.token)
     repos.map { |key| key['label'] }
+  end
+
+  ##
+  # Lists the name of channels the system with the given system ID is subscribed to
+  #
+  # Args:
+  #   system_id: The ID of the system.
+  def list_system_channels(system_id)
+    channels = @test.call('channel.software.listSystemChannels', sessionKey: @test.token, sid: system_id)
+    channels.map { |channel| channel['name'] }
   end
 end

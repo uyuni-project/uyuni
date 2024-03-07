@@ -12,7 +12,9 @@ script(type='text/javascript').
             module.renderer(
                 'systems-virtual-list', '#{docsLocale}',
                 {
-                    isAdmin: #{is_admin}
+                    isAdmin: #{is_admin},
+                    queryColumn: #{queryColumn},
+                    query: !{query}
                 }
             )
         });

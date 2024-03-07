@@ -49,6 +49,13 @@ def product_version
   raise NotImplementedError, 'Could not determine product version'
 end
 
+# returns the full product version, e.g. 4.3-released or uyuni-master
+def product_version_full
+  cmd = 'salt-call --local grains.get product_version | tail -n 1'
+  out, code = get_target('server').run(cmd)
+  return out.strip if code.zero? && !out.nil?
+end
+
 def use_salt_bundle
   # Use venv-salt-minion in Uyuni, or SUMA Head, 5.0, 4.2 and 4.3
   product == 'Uyuni' || %w[head 5.0 4.3 4.2].include?(product_version)
@@ -120,6 +127,14 @@ def format_detail(message, last_result, report_result)
   formatted_message = "#{': ' unless message.nil?}#{message}"
   formatted_result = "#{', last result was: ' unless last_result.nil?}#{last_result}" if report_result
   "#{formatted_message}#{formatted_result}"
+end
+
+def refresh_page
+  accept_prompt do
+    execute_script 'window.location.reload()'
+  end
+rescue Capybara::ModalNotFound
+  # ignored
 end
 
 def click_button_and_wait(locator = nil, **options)
@@ -209,7 +224,7 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_container_provider
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_gh_validation
   node.run('journalctl > /var/log/messages', check_errors: false)
   node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
@@ -359,8 +374,6 @@ def get_system_name(host)
         word =~ /example.sle15sp4terminal-/
       end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
-  when 'containerized_proxy'
-    system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
   else
     begin
       node = get_target(host)
@@ -410,9 +423,7 @@ end
 def channel_is_synced(channel)
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
-  $stdout.puts "#{channel} -> #{result.match(/^repo size:.*/)}"
   if code.zero? && !result.include?('repo size: 0')
-    $stdout.puts "Channel #{channel} is synced."
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
     log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
@@ -436,7 +447,7 @@ end
 
 # This function initializes the API client
 def new_api_client
-  ssl_verify = !$is_container_provider
+  ssl_verify = !$is_gh_validation
   if $debug_mode || product == 'SUSE Manager'
     ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
   else

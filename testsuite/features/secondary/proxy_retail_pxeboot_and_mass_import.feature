@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Idempotency note:
@@ -12,6 +12,11 @@
 # * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
+# TODO: This feature needs to be refactored for RBS containerized,
+#       as it does not support Salt formulas.
+#       Additionally, we have this bug that impedes to use mgr-bootstrap command https://bugzilla.suse.com/show_bug.cgi?id=1220864
+
+@skip_if_containerized_server
 @skip_if_github_validation
 @buildhost
 @proxy
@@ -196,8 +201,10 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems page
     When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
-    # Workaround: Increase timeout temporarily get rid of timeout issues
-    And I wait at most 350 seconds until event "Apply states [saltboot]" is completed
+    And I follow "Events"
+    And I follow "History"
+    And I wait until I see the event "added system entitlement" completed during last minute, refreshing the page
+    And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page

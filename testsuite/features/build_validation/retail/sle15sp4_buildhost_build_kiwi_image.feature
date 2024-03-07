@@ -1,6 +1,13 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# TODO: This feature is not working within a proxy containerized environment
+#       due to the fact that the mgr-bootstrap command is not available in the proxy
+#       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
+
+@skip_if_containerized_server
+@skip_if_github_validation
+@proxy
 @sle15sp4_buildhost
 Feature: Prepare buildhost and build OS image for SLES 15 SP4
 
@@ -50,8 +57,8 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
 
   Scenario: Check the built SLES 15 SP4 OS image
     Given I am on the Systems overview page of this "sle15sp4_buildhost"
-    Then I should see a "[OS Image Build Host]" text
-    When I wait until the image build "suse_os_image_15" is completed
+    When I wait until I see "[OS Image Build Host]" text
+    And I wait until the image build "suse_os_image_15" is completed
     And I wait until the image inspection for "sle15sp4_terminal" is completed
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "sle15sp4_terminal"

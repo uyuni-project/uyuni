@@ -215,7 +215,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64" should not be enabled on "sle_minion"
+    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @sle_minion
 @uyuni
@@ -231,7 +231,7 @@ Feature: Channel subscription via SSM
     And I check "openSUSE Leap 15.5 Updates (x86_64)"
     And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -239,7 +239,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should not be enabled on "sle_minion"
+    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be disabled on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
     When I click on the clear SSM button

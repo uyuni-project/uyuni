@@ -16262,8 +16262,8 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
-        <target>কনফিগারেশন ফাইল স্থাপন করুন: স্থাপনার জন্য ক্ষেত্রে ও সিস্টেম নিশ্চিত করুন</target>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
+        <target state="needs-adaptation">কনফিগারেশন ফাইল স্থাপন করুন: স্থাপনার জন্য ক্ষেত্রে ও সিস্টেম নিশ্চিত করুন</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>

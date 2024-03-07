@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the API.
@@ -73,6 +73,18 @@ When(/^I wait for the OpenSCAP audit to finish$/) do
     # in the openscap test, we schedule 2 scans
     break if scans.length > 1
   end
+end
+
+When(/^I retrieve the relevant errata for (.+)$/) do |raw_hosts|
+  hosts = raw_hosts.split(',').map(&:strip)
+  sids = []
+
+  hosts.each do |host|
+    node = get_target(host)
+    sids << get_system_id(node)
+  end
+  # system.getErrata is an overloaded API method accepting either a single sid or a list of them
+  sids.size == 1 ? $api_test.system.get_system_errata(sids[0]) : $api_test.system.get_systems_errata(sids)
 end
 
 ## user namespace
@@ -178,6 +190,33 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   assert_equal(false, ret.key?(attr))
 end
 
+Then(/^channel "([^"]*)" should be (enabled|disabled) on "([^"]*)"$/) do |channel, state, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(state == 'enabled', channels.include?(channel))
+end
+
+Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(count, channels.size)
+end
+
+Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(count, channels.select { |channel| channel.start_with?(prefix) }.size)
+end
+
 ## activationkey namespace
 
 Then(/^I should get some activation keys$/) do
@@ -241,7 +280,9 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'buildhost', 'minion'
   client.sub! 'terminal', 'minion'
   custom_channel =
-    if client.include? 'alma9'
+    if client.include? 'alma8'
+      'no-appstream-alma-8-result-custom_channel_alma8_minion'
+    elsif client.include? 'alma9'
       'no-appstream-alma-9-result-custom_channel_alma9_minion'
     elsif client.include? 'liberty9'
       'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
@@ -559,7 +600,7 @@ When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "
   $api_test.system.create_system_record_with_sid(sid, kslabel)
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash
-  $api_test.system.set_variables(system_id, variables)
+  $api_test.system.set_variables(sid, variables)
 end
 
 When(/^I create a kickstart tree via the API$/) do

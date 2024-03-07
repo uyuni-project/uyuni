@@ -8,11 +8,8 @@
 
 # IMMUTABLE ORDER
 
-# initialize Uyuni proxy
-  # one of: proxy_register_as_trad_with_script.feature
-  #         proxy_register_as_minion_with_script.feature
-  #         proxy_register_as_minion_with_gui.feature
-- features/core/proxy_register_as_minion_with_script.feature
-- features/core/proxy_branch_network.feature
+- features/init_clients/proxy_traditional.feature
+- features/init_clients/proxy_container.feature
+- features/init_clients/proxy_branch_network.feature
 
 ## Core features END ###

@@ -8,6 +8,7 @@ import os
 import shutil
 import salt.utils
 import tempfile
+from salt.utils.minions import CkMinions
 
 import certs.mgr_ssl_cert_setup
 
@@ -32,10 +33,11 @@ def delete_rejected_key(minion):
     return {"retcode": 0}
 
 
-def ssh_keygen(path=None):
+def ssh_keygen(path=None, pubkeycopy=None):
     """
     Generate SSH keys using the given path.
     :param path: the path. If the None, the keys are generated in a temporary folder, returned, and removed.
+    :pubkeycopy path: the path to a file which should get a copy of the pub key
     :return: map containing retcode and stdout/stderr. Also contains key and public_key if no path was provided
     """
     temp_dir = None
@@ -55,6 +57,8 @@ def ssh_keygen(path=None):
             # pylint: disable-next=unspecified-encoding
             with open(out_path + ".pub", "r") as fd:
                 result["public_key"] = fd.read()
+            if pubkeycopy and os.path.isdir(os.path.dirname(pubkeycopy)):
+                shutil.copyfile(out_path + ".pub", pubkeycopy)
 
     return result
 
@@ -191,3 +195,9 @@ def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
         return {"cert": cert}
     except certs.mgr_ssl_cert_setup.CertCheckError as err:
         return {"error": str(err)}
+
+
+def select_minions(target, target_type):
+    # pylint: disable-next=undefined-variable
+    minions = CkMinions(__opts__)
+    return minions.check_minions(expr=target, tgt_type=target_type).get("minions", [])

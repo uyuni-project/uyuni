@@ -31,9 +31,6 @@ if ENV['REDIS_HOST']
   $stdout.puts('CODE COVERAGE MODE ENABLED.')
 end
 
-# Channels triggered by our tests to be synchronized
-$channels_synchronized = Set[]
-
 # Context per feature
 $context = {}
 
@@ -56,8 +53,8 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
-$is_container_provider = ENV['PROVIDER'].include? 'podman'
-$is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
+$is_gh_validation = ENV['PROVIDER'].include? 'podman'
+$is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
@@ -136,6 +133,8 @@ After do |scenario|
       path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
       # only click on Details when we have errors during bootstrapping and more Details available
       click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
+      # a TimeoutError may be raised while a page is still (re)loading
+      find('#page-body', wait: 3) if scenario.exception.is_a?(TimeoutError)
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
       attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
@@ -233,6 +232,14 @@ end
 
 Before('@virthost_kvm') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['kvm_server']
+end
+
+Before('@alma8_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_minion']
+end
+
+Before('@alma8_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_ssh_minion']
 end
 
 Before('@alma9_minion') do
@@ -567,12 +574,17 @@ end
 
 # skip tests if executed in containers for the githug validation
 Before('@skip_if_github_validation') do
-  skip_this_scenario if $is_container_provider
+  skip_this_scenario if $is_gh_validation
 end
 
 # skip tests if the server runs in a container
-Before('@skip_if_container_server') do
-  skip_this_scenario if $is_container_server
+Before('@skip_if_containerized_server') do
+  skip_this_scenario if $is_containerized_server
+end
+
+# do test only if we have a containerized server
+Before('@containerized_server') do
+  skip_this_scenario unless $is_containerized_server
 end
 
 # have more infos about the errors

@@ -1,2 +1,0 @@
-
-DROP SCHEMA rhn_quota CASCADE;

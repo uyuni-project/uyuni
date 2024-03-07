@@ -62,7 +62,7 @@ Feature: Manage a group of systems
     And I should see "sle_minion" as link
 
    #container already has locale formula installed
-   @skip_if_container_server 
+   @skip_if_containerized_server 
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
 
@@ -106,7 +106,7 @@ Feature: Manage a group of systems
 
   # Red Hat-like minion is intentionally not removed from group
 
-  @skip_if_container_server 
+  @skip_if_containerized_server 
   Scenario: Cleanup: uninstall formula from the server
     When I manually uninstall the "locale" formula from the server
 

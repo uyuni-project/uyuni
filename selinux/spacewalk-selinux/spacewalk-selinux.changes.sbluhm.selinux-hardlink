@@ -1,0 +1,1 @@
+- Removed absolute path for "hardlink" to allow flexible usage.

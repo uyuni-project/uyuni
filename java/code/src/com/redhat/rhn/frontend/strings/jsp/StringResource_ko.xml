@@ -17412,11 +17412,11 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <target>선택한 시스템에 파일 배치</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target>설정 파일 배치: 배치를 위한 영역 및 시스템을 확인</target>
+        <target state="needs-adaptation">설정 파일 배치: 배치를 위한 영역 및 시스템을 확인</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
@@ -29037,7 +29037,7 @@ given channel.</source>
         <source>Where do I find my Organization Credentials?</source>
         <target>조직 인증서를 어디에서 찾을 수 있습니까?</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.info.p2" xml:space="preserve">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
         <target state="final">&lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;에서 찾을 수 있습니다.</target>
       </trans-unit>

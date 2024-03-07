@@ -1,14 +1,13 @@
 /*
 How to add a new route:
-All the routes exported on the files '<*folder_name*>/index.js' will be automatically registered.
+All the routes exported on the files '<*folder_name*>/index.ts' will be automatically registered.
 Check the file content-management/index.js for an example
 */
-
 import "./polyfills";
 import "react-hot-loader";
 import "core/spa/spa-engine";
 import "core/log";
-import "core/debug";
+import "core/debugUtils";
 import "./legacy";
 
 import SpaRenderer from "core/spa/spa-renderer";

@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC.
+# Copyright (c) 2010-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all step definitions concerning general product funtionality
@@ -23,7 +23,7 @@ end
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its checksum$/) do |name, url|
   # When using a mirror it is automatically mounted at /mirror
   if $mirror
-    iso_path = url.sub(/^https?:\/\/[^\/]+/, '/mirror')
+    iso_path = $is_containerized_server ? url.sub(/^https?:\/\/[^\/]+/, '/srv/mirror') : url.sub(/^https?:\/\/[^\/]+/, '/mirror')
   else
     iso_path = "/tmp/#{name}.iso"
     get_target('server').run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
@@ -35,10 +35,19 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
 
   raise 'SHA256 checksum validation failed' unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
 
-  mount_point = "/srv/www/htdocs/#{name}"
-  get_target('server').run("mkdir -p #{mount_point}")
-  get_target('server').run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
-  get_target('server').run("umount #{iso_path}; mount #{iso_path}")
+  if $is_containerized_server
+    mount_point = '/srv/www/distributions'
+    get_target('server').run("mkdir -p #{mount_point}")
+    # this needs to be run outside the container
+    get_target('server').run_local("mgradm distro copy #{iso_path} #{name}", verbose: true)
+    get_target('server').run("ln -s #{mount_point}/#{name} /srv/www/htdocs/pub/")
+  else
+    mount_point = "/srv/www/htdocs/pub/#{name}"
+    cmd = "mkdir -p #{mount_point} && " \
+          "grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab && " \
+          "umount #{iso_path}; mount #{iso_path}"
+    get_target('server').run(cmd, verbose: true)
+  end
 end
 
 Then(/^the hostname for "([^"]*)" should be correct$/) do |host|
@@ -186,13 +195,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     rescue Capybara::ElementNotFound
       # ignored - pending actions cannot be found
     end
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -486,31 +489,6 @@ When(/^I install the needed packages for highstate in build host$/) do
   xorriso
   xtables-plugins'
   get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
-end
-
-Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  node.run("zypper lr -E | grep '#{channel}'")
-end
-
-Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  _out, code = node.run("zypper lr -E | grep '#{channel}'", check_errors: false)
-  raise ScriptError, "'#{channel}' was not expected but was found." if code.to_i.zero?
-end
-
-Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
-  node = get_target(host)
-  node.run('zypper lr -E | tail -n +5', verbose: true)
-  out, _code = node.run('zypper lr -E | tail -n +5 | wc -l')
-  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
-end
-
-Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
-  node = get_target(host)
-  node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
-  out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 # metadata steps

@@ -14,7 +14,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
         link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css?cb=#{webBuildtimestamp}')
         // import styles
         link(rel='stylesheet', href='/css/#{webTheme}.css?cb=#{webBuildtimestamp}', id='web-theme')
-        link(rel='stylesheet', href='/css/updated-#{webTheme}.css?cb=#{webBuildtimestamp}', id='updated-web-theme', disabled="disabled")
+        link(rel='stylesheet', href='/css/updated-#{webTheme}.css?cb=#{webBuildtimestamp}', id='updated-web-theme')
         script(type='text/javascript').
             window.preferredLocale = "#{preferredLocale}";
             window.docsLocale = "#{docsLocale}";
@@ -28,7 +28,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
 
         include /templates/common.jade
 
-        body(class='#{webTheme}' == "uyuni" ? "theme-#{webTheme} login-page" : "theme-#{webTheme}")
+        body(class='#{webTheme}' == "uyuni" ? "theme-#{webTheme} old-theme login-page" : "theme-#{webTheme} old-theme")
             #login
 
         +csrfToken

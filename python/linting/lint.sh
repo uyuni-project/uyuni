@@ -1,4 +1,4 @@
-#!/bin/env -S bash -euo pipefail
+#!/usr/bin/env -S bash -euo pipefail
 
 # Check pre-requisites
 if ! command -v git &>/dev/null ; then

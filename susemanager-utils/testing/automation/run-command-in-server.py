@@ -78,7 +78,7 @@ if options.insecure:
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 # pylint: disable-next=consider-using-f-string
 debug("connecting to {}".format(hostname))
-ssh.connect(hostname, options.port, options.username, options.password)
+ssh.connect(hostname, options.port, options.username, options.password, timeout = 60)
 # pylint: disable-next=consider-using-f-string
 debug("running command {}".format(options.command))
 stdin, stdout, stderr = ssh.exec_command(options.command)

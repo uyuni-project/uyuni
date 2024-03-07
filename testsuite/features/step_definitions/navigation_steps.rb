@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC.
+# Copyright (c) 2010-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -59,13 +59,7 @@ When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |tex
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -75,13 +69,7 @@ When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshin
   repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
     break if has_no_text?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -106,13 +94,8 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
       log "#{current} Still waiting for action to complete..."
       last = current
     end
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+
+    refresh_page
   end
 end
 
@@ -136,13 +119,7 @@ When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless has_content?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -157,13 +134,7 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
 
     # If the connection failed try reloading since the VM may not have been ready
     if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
-      begin
-        accept_prompt do
-          execute_script 'window.location.reload()'
-        end
-      rescue Capybara::ModalNotFound
-        # ignored
-      end
+      refresh_page
     end
   end
 end
@@ -203,7 +174,7 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  product_key = $is_container_provider ? 'Fake' : product
+  product_key = $is_gh_validation && !$build_validation ? 'Fake' : product
   select(BASE_CHANNEL_BY_CLIENT[product_key][client], from: from, exact: false)
 end
 
@@ -795,8 +766,9 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I should not see a warning sign$/) do
-  raise ScriptError, 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa fa-li fa-exclamation-triangle text-warning\')]')
+Then(/^I should not see a warning nor an error sign$/) do
+  raise ScriptError, 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
+  raise ScriptError, 'Error detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|

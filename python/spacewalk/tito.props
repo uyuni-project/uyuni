@@ -1,2 +1,2 @@
 [rhn-conf/rhn_server_xmlrpc.conf]
-min_schema_version=4.4.5
+min_schema_version=5.0.5

@@ -8,7 +8,7 @@ on:
   schedule:
     - cron: '0 */12 * * *'
 jobs:
-  test-uyuni:
+  acceptance-tests-secondary:
     uses: ./.github/workflows/acceptance_tests_common.yml
     with:
       secondary_tests: "18_run_secondary_tests.sh"

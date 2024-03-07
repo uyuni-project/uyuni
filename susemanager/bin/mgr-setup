@@ -233,7 +233,7 @@ exists_user() {
 
 setup_db_postgres() {
     if [ $EXTERNALDB = 0 ]; then
-        POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+        POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
         DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
         systemctl --quiet enable ${POSTGRESQLSERVICE} 2>&1
         if [[ "echo $(source /etc/os-release && echo ${ID_LIKE})" != *"suse"* ]]; then
@@ -708,7 +708,7 @@ check_remote_type() {
 
 postgres_fast() {
     DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
-    POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+    POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
     cp -a ${DATADIR}/postgresql.conf ${DATADIR}/postgresql.conf.migrate
     echo "fsync = off" >> ${DATADIR}/postgresql.conf
     echo "full_page_writes = off" >> ${DATADIR}/postgresql.conf
@@ -718,7 +718,7 @@ postgres_fast() {
 
 postgres_safe() {
     DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
-    POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+    POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
     if [ -f ${DATADIR}/postgresql.conf.migrate ]; then
         mv ${DATADIR}/postgresql.conf.migrate ${DATADIR}/postgresql.conf
         systemctl restart ${POSTGRESQLSERVICE}
@@ -1018,8 +1018,6 @@ if [ "$DO_SETUP" = "1" ]; then
 
     if [ -f $MANAGER_COMPLETE_HOOK ]; then
         $MANAGER_COMPLETE_HOOK
-    else
-        echo "You can access $PRODUCT_NAME via https://`hostname -f`" > /etc/motd
     fi
 fi
 wait_step
@@ -1041,7 +1039,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
 
         if [ "$EXTERNALDB" = "0" ]; then
             # Find PostgreSQL service name.
-            POSTGRESQLSERVICE=$(systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n')
+            POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
             systemctl restart $POSTGRESQLSERVICE
         fi
         /usr/sbin/spacewalk-service start

@@ -39,6 +39,8 @@ if [ -z "${obs_project}" ] || \
 fi
 
 repo_dir=$repo_dir/$obs_project/$obs_repo/$obs_arch
+echo "Clean up packages older than 30 days, to do some cleanup"
+find $repo_dir -mtime +30 | xargs rm
 
 osc -A $obs_api getbinaries $obs_project $obs_repo $obs_arch -d $repo_dir
 

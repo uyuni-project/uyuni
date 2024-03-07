@@ -28,6 +28,7 @@ jobs:
               - 'web/html/src/**'
               - 'testsuite/**'
               - '!.github/workflows/**'
+              - '!testsuite/features/build_validation/**'
   test-uyuni:
     runs-on: ubuntu-22.04
     needs: paths-filter
@@ -39,7 +40,7 @@ jobs:
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v4
       - name: Cache-jar-files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: java/buildconf/ivy/repository/
           key: ${{ runner.os }}-build-cache-uyuni-jars-${{ hashFiles('**/java/buildconf/ivy/*.xml') }}
@@ -47,14 +48,14 @@ jobs:
             ${{ runner.os }}-build-cache-uyuni-jars-
 
       - name: Cache-obs-to-maven files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: java/.obs-to-maven-cache
           key: ${{ runner.os }}-build-cache-uyuni-obs-to-maven-${{ hashFiles('**/java/buildconf/ivy/obs-maven-config.yaml') }}
           restore-keys: |
             ${{ runner.os }}-build-cache-uyuni-obs-to-maven-
       - name: Cache-nodejs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: web/html/src/node_modules
           key: ${{ runner.os }}-build-cache-uyuni-nodejs-${{ hashFiles('**/web/html/src/yarn.lock') }}

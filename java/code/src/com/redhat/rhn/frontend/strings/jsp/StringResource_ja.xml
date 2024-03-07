@@ -17413,11 +17413,11 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <target>ファイルを選択したシステムに配備</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
-        <source>Deploy Configuration Files: Comfirm Fields and Systems for Deployment</source>
+        <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target>設定ファイルを配備: 配備するシステムとフィールドを確認します</target>
+        <target state="needs-adaptation">設定ファイルを配備: 配備するシステムとフィールドを確認します</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
@@ -29049,7 +29049,7 @@ given channel.</source>
         <source>Where do I find my Organization Credentials?</source>
         <target>組織の資格情報を確認するには？</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.info.p2" xml:space="preserve">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
         <target state="final">&lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;カスタマーセンター&lt;/a&gt;でご確認ください。</target>
       </trans-unit>

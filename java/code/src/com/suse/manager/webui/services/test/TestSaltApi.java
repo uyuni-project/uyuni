@@ -77,6 +77,11 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public Optional<Boolean> mkDir(Path path, String modeString) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Boolean> copyFile(Path src, Path dst) {
         throw new UnsupportedOperationException();
     }
@@ -107,7 +112,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-        public Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path) {
+        public Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path, String pubkeyCopy) {
         throw new UnsupportedOperationException();
     }
 
@@ -299,4 +304,10 @@ public class TestSaltApi implements SaltApi {
                                          List<String> intermediateCAs) throws IllegalArgumentException {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public List<String> selectMinions(String target, String targetType) {
+        throw new UnsupportedOperationException();
+    }
+
 }

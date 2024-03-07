@@ -1,4 +1,0 @@
-# This file describes the order of features in a Build Validation test suite run.
-
-## Features supporting containerization of our product
-- features/build_validation/containerization/proxy_as_pod_basic_tests.feature

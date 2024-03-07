@@ -1,10 +1,15 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_ssh_tunnel.feature
 # If the minion fails to bootstrap
 
+# TODO: This feature is not working within a proxy containerized environment
+#       due to the fact that the mgr-bootstrap command is not available in the proxy
+#       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
+
+@skip_if_containerized_server
 @skip_if_github_validation
 @sle_minion
 @scope_onboarding
@@ -64,7 +69,7 @@ Feature: Register a Salt minion with a bootstrap script
     And I wait until I do not see "Loading..." text
     And I check radio button "openSUSE Leap 15.5 (x86_64)"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

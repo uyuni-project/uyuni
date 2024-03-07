@@ -1,5 +1,9 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature depends on:
+# - features/build_validation/retail/proxy_branch_network.feature
+# - features/build_validation/retail/sle12sp5_buildhost_build_kiwi_image.feature
 
 @proxy
 @private_net
@@ -19,11 +23,14 @@ Feature: PXE boot a SLES 12 SP5 retail terminal
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle12sp5_terminal", refreshing the page
     And I follow this "sle12sp5_terminal" link
-    And I wait until event "Apply states [saltboot] scheduled" is completed
+    And I follow "Events"
+    And I follow "History"
+    And I wait until I see the event "added system entitlement" completed during last minute, refreshing the page
+    And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLES12-SP5-Pool" is checked, refreshing the page
-    And I wait until event "Package List Refresh scheduled" is completed
+    And I wait until event "Package List Refresh" is completed
     Then "sle12sp5_terminal" should have been reformatted
 
   Scenario: Check connection from SLES 12 SP5 retail terminal to branch server

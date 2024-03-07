@@ -169,11 +169,13 @@ public class MgrUtilRunner {
     /**
      * Generate a ssh key pair.
      * @param path path where to generate the keys or null to return them
+     * @param pubkeyCopy create a copy of the pubkey at this place. Set NULL when no copy should be created
      * @return the execution result
      */
-    public static RunnerCall<SshKeygenResult> generateSSHKey(String path) {
+    public static RunnerCall<SshKeygenResult> generateSSHKey(String path, String pubkeyCopy) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
+        args.put("pubkeycopy", pubkeyCopy);
         return new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args), new TypeToken<>() { });
     }
 
@@ -259,5 +261,18 @@ public class MgrUtilRunner {
         args.put("server_key", serverCrtKey.getKey());
         args.put("intermediate_cas", intermediateCAs);
         return new RunnerCall<>("mgrutil.check_ssl_cert", Optional.of(args), new TypeToken<>() { });
+    }
+
+    /**
+     * Call 'mgrutil.select_minions'
+     * @param target return the minions matching the target
+     * @param targetType type of target
+     * @return list of matching minions
+     */
+    public static RunnerCall<List<String>> selectMinions(String target, String targetType) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("target", target);
+        args.put("target_type", targetType);
+        return new RunnerCall<>("mgrutil.select_minions", Optional.of(args), new TypeToken<List<String>>() { });
     }
 }

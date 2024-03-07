@@ -35,7 +35,8 @@ SCRIPTS = rhn-config-satellite.pl \
                rhn-install-ssl-cert.pl \
                salt-secrets-config.py
 
-SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl uyuni-update-config
+SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl uyuni-update-config \
+	       import-suma-build-keys
 
 CONF_FILES =
 

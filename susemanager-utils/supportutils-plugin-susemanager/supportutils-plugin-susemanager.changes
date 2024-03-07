@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:16:02 CET 2024 - marina.latini@suse.com
+
+- version 5.0.3-1
+  * Port to new supportconfig resource file
+
+-------------------------------------------------------------------
 Mon Jan 29 11:51:37 CET 2024 - rosuna@suse.com
 
 - version 5.0.2-1

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,6 +22,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static com.suse.utils.Predicates.isProvided;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -146,22 +147,31 @@ public class SystemsController {
         get("/manager/api/systems/list/all", asJson(withUser(this::allSystems)));
     }
 
-    private Object virtualSystems(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "VII.name");
+    /**
+     * Retrieves virtual systems applying filters and pagination.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the filtered virtual systems in json format
+     */
+    public Object virtualSystems(Request request, Response response, User user) {
+        final String defaultFilterColumn = "host_server_name";
+        PageControlHelper pageHelper = new PageControlHelper(request, defaultFilterColumn);
         PageControl pc = pageHelper.getPageControl();
-        pc.setFilterColumn("VII.name");
 
         Map<String, String> columnNamesMapping = Map.of(
-                "hostServerName", "host_server_name",
-                "name", "VII.name",
+                defaultFilterColumn, "RS.name",
+                "server_name", "VII.name",
                 "stateName", "state_name",
                 "statusType", "S.status_type",
                 "channelLabels", "S.channel_labels"
         );
-        if (columnNamesMapping.containsKey(pc.getFilterColumn())) {
+
+        if (isProvided(pc.getFilterColumn()) && columnNamesMapping.containsKey(pc.getFilterColumn())) {
             pc.setFilterColumn(columnNamesMapping.get(pc.getFilterColumn()));
         }
-        if (columnNamesMapping.containsKey(pc.getSortColumn())) {
+
+        if (isProvided(pc.getSortColumn()) && columnNamesMapping.containsKey(pc.getSortColumn())) {
             pc.setSortColumn(columnNamesMapping.get(pc.getSortColumn()));
         }
 
@@ -281,9 +291,16 @@ public class SystemsController {
      * @param userIn the user
      * @return the jade rendered template
      */
-    private ModelAndView virtualListPage(Request requestIn, Response responseIn, User userIn) {
+    public ModelAndView virtualListPage(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
+
+        PageControlHelper pageHelper = new PageControlHelper(requestIn);
+        String filterColumn = pageHelper.getQueryColumn();
+        String filterQuery = pageHelper.getQuery();
+
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("query", filterQuery != null ? String.format("'%s'", filterQuery) : "null");
+        data.put("queryColumn", filterColumn != null ? String.format("'%s'", filterColumn) : "null");
         return new ModelAndView(data, "templates/systems/virtual-list.jade");
     }
 

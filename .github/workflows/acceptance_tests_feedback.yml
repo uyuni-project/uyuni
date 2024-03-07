@@ -10,6 +10,7 @@ on:
       - '.github/workflows/acceptance_tests_feedback.yml'
       - '.github/workflows/acceptance_tests_common.yml'
       - '!java/*.changes*'
+      - '!testsuite/features/build_validation/**'
 jobs:
   comment:
     runs-on: ubuntu-latest

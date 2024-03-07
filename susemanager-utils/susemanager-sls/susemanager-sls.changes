@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Wed Feb 28 16:59:17 CET 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Remove automatic reboot from transactional systems bootstrap (bsc#1218146)
+
+-------------------------------------------------------------------
+Fri Feb 16 10:11:46 CET 2024 - rosuna@suse.com
+
+- version 5.0.4-1
+  * Fix issue with Salt SSH keys for Salt SSH Minions CVE-2023-32189 (bsc#1170848)
+
+-------------------------------------------------------------------
+Tue Feb 13 17:21:41 CET 2024 - marina.latini@suse.com
+
+- version 5.0.3-1
+  * Fix reboot needed detection for SUSE systems
+  * Change certs/RHN-ORG-TRUSTED-SSL-CERT from symlink into a real file
+    (bsc#1219577)
+  * Improve updatestack update in uptodate state
+  * Add a standalone update-salt state
+  * Add pillar check to skip reboot_if_needed state
+
+-------------------------------------------------------------------
 Mon Jan 29 11:54:33 CET 2024 - rosuna@suse.com
 
 - version 5.0.2-1

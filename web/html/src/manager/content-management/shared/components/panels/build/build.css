@@ -1,8 +1,0 @@
-.version_collapse_line {
-  padding-top: .3em;
-  padding-bottom: .3em;
-}
-
-.version_collapse_line:hover > span{
-  text-decoration: underline;
-}

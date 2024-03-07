@@ -40,6 +40,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -196,6 +197,18 @@ public abstract class AbstractMinionBootstrapper {
             LOG.error(e.getMessage(), e);
             return new BootstrapResult(false, contactMethod,
                     LOC.getMessage("bootstrap.minion.error.permcmdexec", SALT_SSH_DIR_PATH + "/known_hosts"));
+        }
+
+        Optional<MgrUtilRunner.SshKeygenResult> res = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH,
+                SaltSSHService.SUMA_SSH_PUB_KEY);
+        if (res.isEmpty()) {
+            LOG.error("Could not generate salt-ssh public key.");
+            return new BootstrapResult(false, LOC.getMessage("bootstrap.minion.error.generatekey"));
+        }
+        if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
+            LOG.error("Generating salt-ssh public key failed: {}", res.get().getStderr());
+            return new BootstrapResult(false,
+                    LOC.getMessage("bootstrap.minion.error.generatekey.failed", res.get().getStderr()));
         }
 
         try {

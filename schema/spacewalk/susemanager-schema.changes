@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 13 17:17:56 CET 2024 - marina.latini@suse.com
+
+- version 5.0.5-1
+  * Add update-salt to internal state table
+
+-------------------------------------------------------------------
 Mon Jan 29 12:00:55 CET 2024 - rosuna@suse.com
 
 - version 5.0.4-1

@@ -122,7 +122,7 @@
                                 <div class="col-sm-3 hidden-xs" id="wizard-faq">
                                     <h4><bean:message key="mirror-credentials.jsp.info.h1" /></h4>
                                     <p><bean:message key="mirror-credentials.jsp.info.p1" /></p>
-                                    <img src="../../../img/setup-wizard/credentials-help.png" />
+                                    <img src="../../../img/credentials-help.png" />
                                     <h4><bean:message key="mirror-credentials.jsp.info.h2" /></h4>
                                     <p><bean:message key="mirror-credentials.jsp.info.p2" /></p>
                                 </div>

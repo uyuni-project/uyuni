@@ -11330,14 +11330,20 @@ Ak chcete získať podrobnú analýzu, pozrite si súbory záznamov.
           This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
           amend the situation before continuing using the product.
         </source>
-        <target state="new"/>
+        <target state="translated">
+          Toto @@PRODUCT_NAME@@ PAYG nie je vyhovujúce a niektoré jeho funkcie budú vypnuté. Pred ďalším používaním produktu sa, prosím,
+          obráťte na svojho administrátora, aby situáciu napravil.
+        </target>
       </trans-unit>
       <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve">
         <source>
 @@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
 To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt; or select in SSM just Pay-as-you-go-instances.
         </source>
-        <target state="new"/>
+        <target state="translated">
+@@PRODUCT_NAME@@ nemôže spravovať tieto inštancie, pretože existuje jedno alebo viac predplatných Bring-your-own-subscription a nie sú nastavené žiadne prihlasovacie údaje SCC.
+Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;sem&lt;/a&gt; alebo vyberte v SSM len inštancie Pay-as-you-go-instance.
+        </target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
@@ -11345,7 +11351,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
-        <target state="new"/>
+        <target state="translated">Inštancia @@PRODUCT_NAME@@ PAYG nie je vyhovujúca.</target>
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
@@ -11367,10 +11373,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <source>Perform a standalone Salt update</source>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

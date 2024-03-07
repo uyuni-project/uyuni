@@ -30,8 +30,8 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.0.2
-Release:        1
+Version:        5.0.5
+Release:        0
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
@@ -127,10 +127,28 @@ py.test%{?rhel:-3}
 # been replaced by "mgrcompat.module_run" calls.
 ! grep --include "*.sls" -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
 
+%pre
+# change /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+# from symlink into a real file
+if [ -L /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
+  rm -f /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  if [ -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ]; then
+    cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
+       /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  elif [ -f /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT ]; then
+    cp /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT \
+       /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  fi
+fi
+
 %post
-# HACK! Create broken link when it will be replaces with the real file
-ln -sf %{wwwpubroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
-   /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
+# when uyuni roster module has changed, we need to remove the cache
+rm -f /var/cache/salt/master/roster/uyuni/minions.p
+
+# this will be filled with content when a certificate gets deployed
+if [ ! -e /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
+  touch /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+fi
 
 %posttrans
 # Run JMX exporter as Java Agent (bsc#1184617)

@@ -2,7 +2,7 @@
 set -xe
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
-sudo -i podman run --rm \
+sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     --tmpfs /run \
     -v ${src_dir}/schema/spacewalk/spacewalk-schema-upgrade:/usr/bin/spacewalk-schema-upgrade \
     -v ${src_dir}/testsuite:/testsuite \
@@ -12,6 +12,8 @@ sudo -i podman run --rm \
     -v ${src_dir}/branding:/branding \
     -v ${src_dir}/java:/java \
     -v ${src_dir}/client:/client \
+    -v ${src_dir}/susemanager-utils:/susemanager-utils \
+    -v ${src_dir}/susemanager:/susemanager \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/test-all-in-one:/tmp \
     --cgroupns=host \

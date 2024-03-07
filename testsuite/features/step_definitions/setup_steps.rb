@@ -402,13 +402,7 @@ When(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do
     repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
       break if has_checked_field?(arg1)
 
-      begin
-        accept_prompt do
-          execute_script 'window.location.reload()'
-        end
-      rescue Capybara::ModalNotFound
-        # ignored
-      end
+      refresh_page
     end
   end
 end

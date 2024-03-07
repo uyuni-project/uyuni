@@ -54,7 +54,10 @@
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature
 - features/secondary/minssh_move_from_and_to_proxy.feature
-- features/secondary/proxy_as_pod_basic_tests.feature
+# WORKAROUND:
+# Disabled until https://bugzilla.suse.com/show_bug.cgi?id=1218947
+# gets addressed
+# - features/secondary/srv_restart_postgres.feature
 - features/secondary/srv_logfile.feature
 - features/secondary/srv_cobbler_sync.feature
 - features/secondary/srv_cobbler_distro.feature

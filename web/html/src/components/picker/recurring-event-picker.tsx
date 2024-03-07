@@ -8,7 +8,7 @@ import { localizedMoment } from "utils";
 
 import { Combobox } from "../combobox";
 import { ComboboxItem } from "../combobox";
-import styles from "./recurring-event-picker.css";
+import styles from "./recurring-event-picker.module.css";
 
 type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
 type CronTimes = {
