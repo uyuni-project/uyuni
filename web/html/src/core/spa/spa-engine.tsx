@@ -9,7 +9,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { showErrorToastr } from "components/toastr";
 
-import { onEndNavigate } from "./theme-loader";
+import { onEndNavigate } from "./view-helper";
 
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
