@@ -1489,9 +1489,9 @@ When(/^I remove offending SSH key of "([^"]*)" at port "([^"]*)" for "([^"]*)" o
   node.run("ssh-keygen -R [#{system_name}]:#{key_port} -f #{known_hosts_path}")
 end
 
-When(/^I wait until port "([^"]*)" is listening on "([^"]*)"$/) do |port, host|
+When(/^I wait until port "([^"]*)" is listening on "([^"]*)" (host|container)$/) do |port, host, location|
   node = get_target(host)
-  node.run_until_ok("lsof  -i:#{port}")
+  node.run_until_ok("lsof  -i:#{port}", runs_in_container: location == 'container')
 end
 
 Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
