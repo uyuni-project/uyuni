@@ -1,0 +1,1 @@
+- Connect to localhost instead of FQDN from tftp wrapper (bsc#1221138)
