@@ -1604,6 +1604,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return <code>true</code> if this system has Peripheral Server entitlement,
+     * <code>false</code> otherwise.
+     * @return <code>true</code> if this system has Peripheral Server entitlement,
+     *      <code>false</code> otherwise.
+     */
+    public boolean hasPeripheralServerEntitlement() {
+        return hasEntitlement(EntitlementManager.PERIPHERAL_SERVER);
+    }
+
+    /**
      * Return <code>true</code> if this is a bare metal system.
      * @return <code>true</code> if this is bare metal
      */

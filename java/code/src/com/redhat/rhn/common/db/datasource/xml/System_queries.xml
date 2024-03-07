@@ -1477,6 +1477,7 @@ SELECT 1
               WHEN 'osimage_build_host' then 'OS Image'
               WHEN 'monitoring_entitled' then 'Monitoring'
               WHEN 'ansible_control_node' then 'Ansible Control Node'
+              WHEN 'peripheral_server' then 'Peripheral Server'
             END)
   </query>
 </write-mode>

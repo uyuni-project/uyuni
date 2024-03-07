@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,22 +12,24 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.domain.entitlement.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.entitlement.PeripheralServerEntitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
@@ -37,16 +39,12 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * BaseEntitlementTestCase
+ * Test for {@link com.redhat.rhn.domain.entitlement.PeripheralServerEntitlement}
  */
-public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
-
-    protected Entitlement ent;
-
+public class PeripheralServerEntitlementTest extends BaseEntitlementTestCase {
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
@@ -58,43 +56,36 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
     );
 
     @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-        createEntitlement();
+    protected void createEntitlement() {
+        ent = new PeripheralServerEntitlement();
     }
 
-    @Test
-    public void testLabel() {
-        assertEquals(getLabel(), ent.getLabel());
+    @Override
+    protected String getLabel() {
+        return EntitlementManager.PERIPHERAL_SERVER_ENTITLED;
     }
 
-
+    /**
+     * Tests that the entitlement is allowed on salt clients.
+     */
     @Test
-    public void testIsAllowedOnServer() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user);
+    public void testIsAllowed() throws Exception {
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
+        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        foreign.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        foreign.addFqdn("test.com");
+        minion.addFqdn("test.com");
 
-        systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
-        systemEntitlementManager.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
+        assertTrue(EntitlementManager.PERIPHERAL_SERVER.isAllowedOnServer(foreign));
+        assertTrue(EntitlementManager.PERIPHERAL_SERVER.isAllowedOnServer(minion));
 
-        assertFalse(traditional.getValidAddonEntitlementsForServer().isEmpty());
-        assertFalse(foreign.getValidAddonEntitlementsForServer().isEmpty());
+        systemEntitlementManager.addEntitlementToServer(foreign, EntitlementManager.PERIPHERAL_SERVER);
+        TestUtils.saveAndFlush(foreign);
+
+        System.out.println("foreign: " + foreign.hasEntitlement(EntitlementManager.PERIPHERAL_SERVER));
+        System.out.println("minion: " + minion.hasEntitlement(EntitlementManager.PERIPHERAL_SERVER));
+        // the entitlement can't be enabled on 2 servers with the same fqdn
+        assertFalse(EntitlementManager.PERIPHERAL_SERVER.isAllowedOnServer(minion));
     }
-
-    @Test
-    public void testIsAllowedOnServerWithGrains() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user);
-        Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
-
-        systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
-        systemEntitlementManager.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
-
-        assertTrue(ent.isAllowedOnServer(traditional, null));
-        assertTrue(ent.isAllowedOnServer(foreign, null));
-    }
-
-    protected abstract void createEntitlement();
-    protected abstract String getLabel();
-
 }

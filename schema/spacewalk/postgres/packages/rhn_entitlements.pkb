@@ -237,6 +237,7 @@ as $$
                        when 'osimage_build_host' then 'OS Image'
                        when 'monitoring_entitled' then 'Monitoring'
                        when 'ansible_control_node' then 'Ansible'
+                       when 'peripheral_server' then 'Peripheral'
                       end  );
 
             perform rhn_server.insert_into_servergroup (server_id_in, sgid);
@@ -294,6 +295,7 @@ as $$
                     when 'container_build_host' then 'Container'
                     when 'osimage_build_host' then 'OS Image'
                     when 'ansible_control_node' then 'Ansible'
+                    when 'peripheral_server' then 'Peripheral'
                    end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in, group_id);
@@ -336,6 +338,7 @@ as $$
                     when 'container_build_host' then 'Container'
                     when 'osimage_build_host' then 'OS Image'
                     when 'ansible_control_node' then 'Ansible'
+                    when 'peripheral_server' then 'Peripheral'
                    end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in,
