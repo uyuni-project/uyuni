@@ -31,6 +31,7 @@
 # until the container image has changed, triggering the "sync" again for this
 # new container image.
 #
+set -e
 
 DEFAULTS_STORAGE="/etc/uyuni-configfiles-sync/"
 SYSCONFIG_FILE="/etc/sysconfig/uyuni-configfiles-sync"
