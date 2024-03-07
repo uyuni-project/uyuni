@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
 import com.redhat.rhn.domain.entitlement.MonitoringEntitlement;
 import com.redhat.rhn.domain.entitlement.OSImageBuildHostEntitlement;
+import com.redhat.rhn.domain.entitlement.PeripheralServerEntitlement;
 import com.redhat.rhn.domain.entitlement.SaltEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.manager.BaseManager;
@@ -52,6 +53,7 @@ public class EntitlementManager extends BaseManager {
             new OSImageBuildHostEntitlement();
     public static final Entitlement MONITORING = new MonitoringEntitlement();
     public static final Entitlement ANSIBLE_CONTROL_NODE = new AnsibleControlNodeEntitlement();
+    public static final Entitlement PERIPHERAL_SERVER = new PeripheralServerEntitlement();
 
     public static final String UNENTITLED = "unentitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
@@ -63,6 +65,7 @@ public class EntitlementManager extends BaseManager {
     public static final String OSIMAGE_BUILD_HOST_ENTITLED = "osimage_build_host";
     public static final String MONITORING_ENTITLED = "monitoring_entitled";
     public static final String ANSIBLE_CONTROL_NODE_ENTITLED = "ansible_control_node";
+    public static final String PERIPHERAL_SERVER_ENTITLED = "peripheral_server";
 
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
     private static final Set<Entitlement> BASE_ENTITLEMENTS;
@@ -73,6 +76,7 @@ public class EntitlementManager extends BaseManager {
         ADDON_ENTITLEMENTS.add(OSIMAGE_BUILD_HOST);
         ADDON_ENTITLEMENTS.add(MONITORING);
         ADDON_ENTITLEMENTS.add(ANSIBLE_CONTROL_NODE);
+        ADDON_ENTITLEMENTS.add(PERIPHERAL_SERVER);
 
         BASE_ENTITLEMENTS = new LinkedHashSet<>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
@@ -113,6 +117,9 @@ public class EntitlementManager extends BaseManager {
         }
         else if (ANSIBLE_CONTROL_NODE_ENTITLED.equals(name)) {
             return ANSIBLE_CONTROL_NODE;
+        }
+        else if (PERIPHERAL_SERVER_ENTITLED.equals(name)) {
+            return PERIPHERAL_SERVER;
         }
         LOG.debug("Unknown entitlement: {}", name);
         return null;
