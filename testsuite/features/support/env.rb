@@ -18,7 +18,7 @@ require_relative 'code_coverage'
 require_relative 'twopence_env'
 require_relative 'commonlib'
 
-## code coverage analysis
+## code coverage analysis test
 # SimpleCov.start
 
 server = ENV.fetch('SERVER', nil)
