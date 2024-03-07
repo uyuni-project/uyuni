@@ -1,7 +1,6 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin");
 const webpackAlias = require("./webpack.alias");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
@@ -83,22 +82,6 @@ module.exports = (env, argv) => {
       chunkFilename: "css/[name].css",
     }),
   ];
-
-  if (isProductionMode) {
-    pluginsInUse = [
-      ...pluginsInUse,
-      new LicenseCheckerWebpackPlugin({
-        // If we want, we could check licenses at build time via https://github.com/openSUSE/obs-service-format_spec_file or similar in the future
-        // allow: [...],
-        // emitError: true,
-        outputFilename: "../vendors/npm.licenses.structured.js",
-        outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
-      }),
-      new LicenseCheckerWebpackPlugin({
-        outputFilename: "../vendors/npm.licenses.txt",
-      }),
-    ];
-  }
 
   return {
     entry: {
