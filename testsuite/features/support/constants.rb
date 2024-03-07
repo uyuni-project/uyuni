@@ -287,7 +287,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
     'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
     'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
-    'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x'
+    'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
+    'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
   },
   'Uyuni' => {
     'proxy' => 'openSUSE Leap 15.5 (x86_64)',

@@ -1,29 +1,29 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2023-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This feature depends on
 # - srv_sync_all_products.feature which syncs SLES 15 SP5 channels and the client tools.
 # We also test 'Bootstrapping using the command line' in this feature
 
-@scope_salt
-@scope_salt_ssh
 @salt_migration_minion
 Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
 
   Scenario: Log in as admin user in the Salt migration context
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap the minion without the Salt bundle in the Salt migration context
-    When I wait at most 1000 seconds until Salt master sees "salt_migration_minion" as "unaccepted"
-    And I follow the left menu "Salt > Keys"
-    Then I wait at most 120 seconds until I see "salt-migration" text
-    When I accept "salt_migration_minion" key
-    And I list all Salt keys shown on the Salt master
-    And I am on the Systems page
-    And I wait until onboarding is completed for "salt_migration_minion"
-
-  Scenario: Create the bootstrap repository for the minion in the Salt migration context
-    When I create the bootstrap repository for "salt_migration_minion" on the server
+  Scenario: Do some basic testing on the minion without Salt bundle
+    When I follow the left menu "Salt > Remote Commands"
+    Then I should see a "Remote Commands" text in the content area
+    When I enter command "file /etc/salt"
+    And I enter the hostname of "salt_migration_minion" as "target"
+    And I click on preview
+    Then I should see a "Target systems (1)" text
+    And I should see a "Stop waiting" text
+    And I click on stop waiting
+    And I click on run
+    And I wait until I do not see "pending" text
+    And I expand the results for "salt_migration_minion"
+    Then I should see "/etc/salt: directory" in the command output for "salt_migration_minion"
 
   @susemanager
   Scenario: Subscribe the minion to the SLES 15 SP5 channel and enable client tools in the Salt migration context
@@ -58,21 +58,9 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
-  Scenario: Do some basic testing on the minion without Salt bundle
+  Scenario: Install the Salt Bundle on the minion
     When I install packages "venv-salt-minion" on this "salt_migration_minion"
     Then "venv-salt-minion" should be installed on "salt_migration_minion"
-    When I follow the left menu "Salt > Remote Commands"
-    Then I should see a "Remote Commands" text in the content area
-    When I enter command "file /etc/salt"
-    And I enter the hostname of "salt_migration_minion" as "target"
-    And I click on preview
-    Then I should see a "Target systems (1)" text
-    And I should see a "Stop waiting" text
-    And I click on stop waiting
-    And I click on run
-    And I wait until I do not see "pending" text
-    And I expand the results for "salt_migration_minion"
-    Then I should see "/etc/salt: directory" in the command output for "salt_migration_minion"
 
   Scenario: Migrate the minion to the Salt bundle
     Given the Salt master can reach "salt_migration_minion"
@@ -133,4 +121,3 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     Then "salt_migration_minion" should not be registered
-
