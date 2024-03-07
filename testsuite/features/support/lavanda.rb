@@ -151,7 +151,7 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
-  #   runs_in_container: Whether the command should be run in the the container or in the host. Defaults to true.
+  #   runs_in_container: Whether the command should be run in the container or on the host. Defaults to true.
   #   separated_results: Whether the results should be stored separately. Defaults to false.
   #   check_errors: Whether to check for errors or not. Defaults to true.
   #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
