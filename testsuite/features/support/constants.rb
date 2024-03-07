@@ -72,12 +72,14 @@ ENV_VAR_BY_HOST = {
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
 }.freeze
 
-ADDRESSES = {
+# TODO: the values for pxeboot_minion, sle12sp5_terminal, sle15sp4_terminal, and proxy can now be set in sumaform
+#       remove them from this array when we read them from .bashrc
+PRIVATE_ADDRESSES = {
   'network'           => '0',
-  'sle_minion'        => '3',
   'pxeboot_minion'    => '4',
   'sle12sp5_terminal' => '5',
   'sle15sp4_terminal' => '6',
+  'dhcp_dns'          => '53',
   'range begin'       => '128',
   'range end'         => '253',
   'proxy'             => '254',

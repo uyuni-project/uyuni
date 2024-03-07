@@ -2,7 +2,9 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on:
-# - features/build_validation/retail/proxy_branch_network.feature
+# - features/build_validation/retail/proxy_traditional_branch_network.feature
+#   or
+#   features/build_validation/retail/proxy_container_branch_network.feature
 # - features/build_validation/retail/sle15sp4_buildhost_build_kiwi_image.feature
 
 @proxy

@@ -42,24 +42,6 @@ Then(/^I turn off disable_local_repos for all clients/) do
   step 'I install a salt pillar top file for "salt_bundle_config, disable_local_repos_off" with target "*" on the server'
 end
 
-Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
-  node = get_target(host)
-  _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
-  unless return_code.zero?
-    sleep 2
-    puts 're-try ping'
-    node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
-  end
-  get_target('server').run("ping -c 1 #{node.public_ip}")
-end
-
-Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
-  node = get_target(host)
-  node.run_until_fail("ping -c 1 -I #{node.private_interface} #{get_target('server').public_ip}")
-  # commented out as a machine with the same IP address might exist somewhere in our engineering network
-  # get_target('server').run_until_fail("ping -c 1 #{node.private_ip}")
-end
-
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
   node = get_target(host)
   clock_node, _rc = node.run('date +\'%s\'')
