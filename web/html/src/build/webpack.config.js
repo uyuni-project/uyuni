@@ -108,6 +108,9 @@ module.exports = (env, argv) => {
       // TODO: We're removing the dark theme for now
       "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
       "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
+      "css/updated-susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
+      "css/updated-susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
+      "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
     },
     output: {
       filename: `[name].bundle.js`,
