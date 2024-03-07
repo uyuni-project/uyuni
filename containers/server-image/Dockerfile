@@ -89,10 +89,6 @@ RUN systemctl enable prometheus-node_exporter; \
 COPY uyuni-configfiles-sync /usr/bin
 RUN chmod -R 755 /usr/bin/uyuni-configfiles-sync
 
-# We inject uyuni-configfiles-sync to be executed at Spacewalk target start
-COPY uyuni-configfiles-sync.service /usr/lib/systemd/system/
-RUN sed -i 's/Description=Spacewalk/Description=Spacewalk\nRequires=uyuni-configfiles-sync.service/g' /usr/lib/systemd/system/spacewalk.target
-
 # Initialize environments to sync configuration and package files to persistent volumes
 RUN uyuni-configfiles-sync init /etc/apache2/
 RUN uyuni-configfiles-sync init /etc/cobbler/

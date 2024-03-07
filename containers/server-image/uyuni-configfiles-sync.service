@@ -1,8 +1,0 @@
-[Unit]
-Description=Uyuni configuration files sync to persistent volumes
-Before=uyuni-check-database.service tomcat.service apache2.service rhn-search.service taskomatic.service postgresql.service postfix.service
-
-[Service]
-ExecStart=/usr/bin/uyuni-configfiles-sync sync
-Type=oneshot
-RemainAfterExit=yes
