@@ -55,7 +55,7 @@ public enum ViewHelper {
     /**
      * List of pages that are updated to newer Bootstrap.
      * @see ViewHelper#isBootstrapReady
-     * 
+     *
      * NB! This must be in sync with web/html/src/core/spa/view-helper.ts
      */
     private static final List<String> BOOTSTRAP_READY_PAGES = List.of("/rhn/YourRhn.do");
