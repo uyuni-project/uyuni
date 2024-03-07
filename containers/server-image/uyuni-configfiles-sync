@@ -4,7 +4,7 @@ DEFAULTS_STORAGE="/etc/uyuni-configfiles-sync/"
 SYSCONFIG_FILE="/etc/sysconfig/uyuni-configfiles-sync"
 
 help() {
-	printf "Uyuni config files defaults synchronization tool
+    printf "Uyuni config files defaults synchronization tool
 
 Usage:
   uyuni-configfiles-sync [command]
@@ -16,218 +16,215 @@ Available Commands:
 "
 }
 
-
 init() {
-	pv=$(echo "$1/" | tr -s /)
-	if [ ! -f $DEFAULTS_STORAGE/.buildhash ]; then
-		echo $RANDOM | sha256sum | head -c 64 > $DEFAULTS_STORAGE/.buildhash
-	fi
-	echo -n "Initializing environment for persistent volume $pv ... "
-	TARGET="$DEFAULTS_STORAGE/`echo $pv | sed 's/\//-/g'`"
-	mkdir -p $TARGET
-	echo "$pv" > $TARGET/.pv
-	# Calculate the packages that are owning the files under this path
-	PKGNAMES=$(LANG=C rpm -q -qf `find $pv` | egrep -v "^file .+ is not owned by any package" | sort -u)
-	# Sync the package files (non-configuration and configuration files) to our storage
-	for pkg in $PKGNAMES; do
-		for cfgfile in $(rpm -ql $pkg | grep "^$pv"); do
-			echo ${cfgfile#"$pv"} | rsync -a --files-from=- --exclude={'*'} $pv $TARGET
-		done
-	done
-	echo "done!"
+    PV=$(echo "$1/" | tr -s /)
+    if [ ! -f $DEFAULTS_STORAGE/.buildhash ]; then
+        echo $RANDOM | sha256sum | head -c 64 > $DEFAULTS_STORAGE/.buildhash
+    fi
+    echo -n "Initializing environment for persistent volume $PV ... "
+    TARGET="$DEFAULTS_STORAGE/$(echo $PV | sed 's/\//-/g')"
+    mkdir -p $TARGET
+    echo "$PV" > $TARGET/.pv
+    # Calculate the packages that are owning the files under this path
+    PKGNAMES=$(LANG=C rpm -q -qf $(find $PV) | egrep -v "^file .+ is not owned by any package" | sort -u)
+    # Sync the package files (non-configuration and configuration files) to our storage
+    for pkg in $PKGNAMES; do
+        for cfgfile in $(rpm -ql $pkg | grep "^$PV"); do
+            echo ${cfgfile#"$PV"} | rsync -a --files-from=- --exclude={'*'} $PV $TARGET
+        done
+    done
+    echo "done!"
 }
 
 sync_file() {
-	SOURCE_FILE=$1
-	TARGET_FILE=$2
-	# Synchronize package and config files
-	if echo $LIST_CONFIG_NO_REPLACE | egrep -q "( |^)$i( |$)"; then
-		# Configuration (no replace) files
-		echo "    - $TARGET_FILE - Contains modifications made by the user. Not replacing and saving new file content as rpmnew file"
-		rsync -a $SOURCE_FILE $TARGET_FILE.rpmnew;
-	else
-		# Config (replace) and rest of package files
-		echo "    - $TARGET_FILE - Contains modifications made by the user. Replacing and saving old file content as rpmsave file"
-		rsync -ab --suffix ".rpmsave" $SOURCE_FILE $TARGET_FILE;
-	fi
+    SOURCE_FILE=$1
+    TARGET_FILE=$2
+    # Synchronize package and config files
+    if echo $LIST_CONFIG_NO_REPLACE | egrep -q "( |^)$i( |$)"; then
+        # Configuration (no replace) files
+        echo "    - $TARGET_FILE - Contains modifications made by the user. Not replacing and saving new file content as rpmnew file"
+        rsync -a $SOURCE_FILE $TARGET_FILE.rpmnew
+    else
+        # Config (replace) and rest of package files
+        echo "    - $TARGET_FILE - Contains modifications made by the user. Replacing and saving old file content as rpmsave file"
+        rsync -ab --suffix ".rpmsave" $SOURCE_FILE $TARGET_FILE
+    fi
 }
 
 sync() {
-	# We skip the sync if already triggered on this container
-	if [ ! -f $DEFAULTS_STORAGE/.buildhash ]; then
-		echo "Missing /etc/uyuni-configfiles-sync/.buildhash file. You probably need to run 'init' command first. Skipping."
-		exit
-	elif [ -f $SYSCONFIG_FILE ] && [ "$(cat $DEFAULTS_STORAGE/.buildhash)" = "$(cat $SYSCONFIG_FILE)" ]; then
-		echo "Skipping 'sync' as it was already executed on this container"
-		exit
-	fi
-	echo "Synchronizing defaults for all initializated environments"
-	echo
-	PACKAGES=""
-	for PV_DIR in $(ls $DEFAULTS_STORAGE | grep -v "^\.buildhash$"); do
-		SOURCES=$(echo "$DEFAULTS_STORAGE/$PV_DIR/" | tr -s /)
-		PV=$(cat $SOURCES/.pv)
-		PKGNAMES=$(LANG=C rpm -q -qf `find $PV` | egrep -v "^file .+ is not owned by any package" | sort -u)
-		PACKAGES=$(echo -e "$PACKAGES\n$PKGNAMES")
-		echo "- Processing pv: $PV"
-		echo -n "  * Getting information for files to synchronize ... "
-		LIST_CONFIG_NO_REPLACE=""
-		LIST_CONFIG_REPLACE=""
-		LIST_ALL_FILES_FULL_PATH=$(rpm -ql $PKGNAMES | grep "^$PV")
-		LIST_ALL_FILES_REL_PATH="${LIST_ALL_FILES_FULL_PATH//$PV/}"
-		# For each config file, we check the noreplace flag
-		for cfgfile in $(rpm -q --configfiles $PKGNAMES | grep "^$PV"); do
-			FILEFLAG=$(rpm -q --qf '[%{filenames}: %{fileflags}\n]' $PKGNAMES | egrep "^$cfgfile: .+" | cut -d":" -f2)
-			if [ "$((FILEFLAG & 16))" = "16" ]; then
-				LIST_CONFIG_NO_REPLACE="$LIST_CONFIG_NO_REPLACE ${cfgfile#"$PV"}"
-			else
-				LIST_CONFIG_REPLACE="$LIST_CONFIG_REPLACE ${cfgfile#"$PV"}"
-			fi
-		done
-		echo "done!"
+    # We skip the sync if already triggered on this container
+    if [ ! -f $DEFAULTS_STORAGE/.buildhash ]; then
+        echo "Missing $DEFAULTS_STORAGE.buildhash file. You probably need to run 'init' command first. Skipping."
+        exit
+    elif [ -f $SYSCONFIG_FILE ] && [ "$(cat $DEFAULTS_STORAGE/.buildhash)" = "$(cat $SYSCONFIG_FILE)" ]; then
+        echo "Skipping 'sync' as it was already executed on this container"
+        exit
+    fi
+    echo "Synchronizing defaults for all initializated environments"
+    echo
+    PACKAGES_ALL=""
+    for PV_DIR in $(ls $DEFAULTS_STORAGE | grep -v "^\.buildhash$"); do
+        SOURCES=$(echo "$DEFAULTS_STORAGE/$PV_DIR/" | tr -s /)
+        PV=$(cat $SOURCES/.pv)
+        PKGNAMES=$(LANG=C rpm -q -qf $(find $PV) | egrep -v "^file .+ is not owned by any package" | sort -u)
+        PACKAGES_ALL=$(echo -e "$PACKAGES_ALL\n$PKGNAMES")
+        echo "- Processing pv: $PV"
+        echo -n "  * Getting information for files to synchronize ... "
+        LIST_CONFIG_NO_REPLACE=""
+        LIST_CONFIG_REPLACE=""
+        LIST_ALL_FILES_FULL_PATH=$(rpm -ql $PKGNAMES | grep "^$PV")
+        LIST_ALL_FILES_REL_PATH="${LIST_ALL_FILES_FULL_PATH//$PV/}"
+        # For each config file, we check the noreplace flag
+        for cfgfile in $(rpm -q --configfiles $PKGNAMES | grep "^$PV"); do
+            FILEFLAG=$(rpm -q --qf '[%{filenames}: %{fileflags}\n]' $PKGNAMES | egrep "^$cfgfile: .+" | cut -d":" -f2)
+            if [ "$((FILEFLAG & 16))" = "16" ]; then
+                LIST_CONFIG_NO_REPLACE="$LIST_CONFIG_NO_REPLACE ${cfgfile#"$PV"}"
+            else
+                LIST_CONFIG_REPLACE="$LIST_CONFIG_REPLACE ${cfgfile#"$PV"}"
+            fi
+        done
+        echo "done!"
 
-		echo -n "  * Syncing non configuration files ... "
-		RSYNC_ARGS=""
-		# We exclude configuration files as they are going to be processed later
-		# Exclude args, if apply, must has formatted as: {'file1','file2'}
-		LIST_FILES_TO_EXCLUDE="'$(echo $LIST_CONFIG_REPLACE $LIST_CONFIG_NO_REPLACE | sed "s/ /','/g")'"
-		if [ ! "$LIST_FILES_TO_EXCLUDE" = "''" ]; then
-			RSYNC_ARGS="--exclude={$LIST_FILES_TO_EXCLUDE}"
-		fi
-		# Synchronize package files from source excluding (configuration files)
-		CMD="rsync -ab $RSYNC_ARGS --exclude=".pv" --suffix ".rpmsave" $SOURCES $PV"
-		eval $CMD
-		echo "done!"
+        echo -n "  * Syncing non configuration files ... "
+        RSYNC_ARGS=""
+        # We exclude configuration files as they are going to be processed later
+        # Exclude args, if apply, must has formatted as: {'file1','file2'}
+        LIST_FILES_TO_EXCLUDE="'$(echo $LIST_CONFIG_REPLACE $LIST_CONFIG_NO_REPLACE | sed "s/ /','/g")'"
+        if [ ! "$LIST_FILES_TO_EXCLUDE" = "''" ]; then
+            RSYNC_ARGS="--exclude={$LIST_FILES_TO_EXCLUDE}"
+        fi
+        # Synchronize package files from source excluding (configuration files)
+        CMD="rsync -ab $RSYNC_ARGS --exclude=".pv" --suffix ".rpmsave" $SOURCES $PV"
+        eval $CMD
+        echo "done!"
 
-		echo "  * Syncing configuration files ..."
-		for i in $(echo $LIST_CONFIG_NO_REPLACE $LIST_CONFIG_REPLACE); do
-			SOURCE_FILE=$(echo $SOURCES/$i | tr -s /)
-			TARGET_FILE=$(echo $PV/$i | tr -s /)
-			# Some files listed in the package may be removed, we don't want to recreate them, so we skip.
-			if [ ! -f $SOURCE_FILE ]; then
-				echo "    - WARNING: $TARGET_FILE is listed as beloging to a package but it was not existing at the time the persistent volume was initializated. Skipping."
-				continue
-			fi
-			# Check possible changes to sync. Excluding changes on creation/modification times
-			# We need to parse output:
-			#   - no output or line starting with "." -> nothing to sync
-			#   - else -> changes to sync
-			CHECK_CHANGES=$(rsync --dry-run -a --itemize-changes --size-only $SOURCE_FILE $TARGET_FILE)
-			if [ -z "$CHECK_CHANGES" ] || echo $CHECK_CHANGES | grep -q "^\."; then
-				# No changes are needed for this file
-				echo "    - $TARGET_FILE - No changes needed"
-			else
-				# Changes are needed for this file.
-				# Now we need to determine if changes are coming from a package upgrade
-				# or local changes made by user in order to determine the sync strategy.
-				if [ -f $TARGET_FILE ]; then
-					# Target file does exist in persistent volume
-					# We check stored checksum to know if changes are from coming by the user or from a package upgrade
-					# NOTE: stored checksum file may not exist yet, when "sync" has been never executed yet (first start)
-					if [ -f $PV/.defaults_checksums ]; then
-						CHECKSUM=$(grep "  $SOURCE_FILE$" $PV/.defaults_checksums | awk '{print $1}')
-					else
-						CHECKSUM=""
-					fi
-					if [ ! -z "$CHECKSUM" ] && [ "$CHECKSUM" = "$(sha256sum $SOURCE_FILE | awk '{print $1}')" ]; then
-						# Checksum are equal between new defaults and cached defaults
-						# this mean changes are made by the user
-						sync_file $SOURCE_FILE $TARGET_FILE
-					elif [ ! -z "$CHECKSUM" ] && [ ! "$CHECKSUM" = "$(sha256sum $SOURCE_FILE | awk '{print $1}')" ]; then
-						# Checksum are different between new defaults and cached defaults checksums
-						# Meaning changes in file due an upgrade or local user changes
-						if [ "$CHECKSUM" = "$(sha256sum $TARGET_FILE | awk '{print $1}')" ]; then
-							# Checksum is equal between cached defaults and target file
-							# Meaning no local changes and changes are due an upgrade
-							echo "    - $TARGET_FILE - No local modifications but new changes coming from a package upgrade, replacing file"
-							rsync -a $SOURCE_FILE $TARGET_FILE;
-						else
-							# Local changes made by the user.
-							sync_file $SOURCE_FILE $TARGET_FILE
-						fi
-					else
-						# First sync - no checksums stored yet. Syncing
-						sync_file $SOURCE_FILE $TARGET_FILE
-					fi
-				else
-					# File does not exist - we synchronize it
-					echo "    - $TARGET_FILE - Does not exist, we synchronize it"
-					rsync -a $SOURCE_FILE $TARGET_FILE;
-				fi
-			fi
-		done
+        echo "  * Syncing configuration files ..."
+        for i in $(echo $LIST_CONFIG_NO_REPLACE $LIST_CONFIG_REPLACE); do
+            SOURCE_FILE=$(echo $SOURCES/$i | tr -s /)
+            TARGET_FILE=$(echo $PV/$i | tr -s /)
+            # Some files listed in the package may be removed, we don't want to recreate them, so we skip.
+            if [ ! -f $SOURCE_FILE ]; then
+                echo "    - WARNING: $TARGET_FILE is listed as beloging to a package but it was not existing at the time the persistent volume was initializated. Skipping."
+                continue
+            fi
+            # Check possible changes to sync. Excluding changes on creation/modification times
+            # We need to parse output:
+            #   - no output or line starting with "." -> nothing to sync
+            #   - else -> changes to sync
+            CHECK_CHANGES=$(rsync --dry-run -a --itemize-changes --size-only $SOURCE_FILE $TARGET_FILE)
+            if [ -z "$CHECK_CHANGES" ] || echo $CHECK_CHANGES | grep -q "^\."; then
+                # No changes are needed for this file
+                echo "    - $TARGET_FILE - No changes needed"
+            else
+                # Changes are needed for this file.
+                # Now we need to determine if changes are coming from a package upgrade
+                # or local changes made by user in order to determine the sync strategy.
+                if [ -f $TARGET_FILE ]; then
+                    # Target file does exist in persistent volume
+                    # We check stored checksum to know if changes are from coming by the user or from a package upgrade
+                    # NOTE: stored checksum file may not exist yet, when "sync" has been never executed yet (first start)
+                    if [ -f $PV/.defaults_checksums ]; then
+                        CHECKSUM=$(grep "  $SOURCE_FILE$" $PV/.defaults_checksums | awk '{print $1}')
+                    else
+                        CHECKSUM=""
+                    fi
+                    if [ ! -z "$CHECKSUM" ] && [ "$CHECKSUM" = "$(sha256sum $SOURCE_FILE | awk '{print $1}')" ]; then
+                        # Checksum are equal between new defaults and cached defaults
+                        # this mean changes are made by the user
+                        sync_file $SOURCE_FILE $TARGET_FILE
+                    elif [ ! -z "$CHECKSUM" ] && [ ! "$CHECKSUM" = "$(sha256sum $SOURCE_FILE | awk '{print $1}')" ]; then
+                        # Checksum are different between new defaults and cached defaults checksums
+                        # Meaning changes in file due an upgrade or local user changes
+                        if [ "$CHECKSUM" = "$(sha256sum $TARGET_FILE | awk '{print $1}')" ]; then
+                            # Checksum is equal between cached defaults and target file
+                            # Meaning no local changes and changes are due an upgrade
+                            echo "    - $TARGET_FILE - No local modifications but new changes coming from a package upgrade, replacing file"
+                            rsync -a $SOURCE_FILE $TARGET_FILE
+                        else
+                            # Local changes made by the user.
+                            sync_file $SOURCE_FILE $TARGET_FILE
+                        fi
+                    else
+                        # First sync - no checksums stored yet. Syncing
+                        sync_file $SOURCE_FILE $TARGET_FILE
+                    fi
+                else
+                    # File does not exist - we synchronize it
+                    echo "    - $TARGET_FILE - Does not exist, we synchronize it"
+                    rsync -a $SOURCE_FILE $TARGET_FILE
+                fi
+            fi
+        done
 
-		# Regenerate checksum cache for defaults
-		rm $PV/.defaults_checksums &> /dev/null || :
-		for i in $(echo $LIST_ALL_FILES_REL_PATH); do
-			SOURCE_FILE=$(echo $SOURCES/$i | tr -s /)
-			if [ -f "$SOURCE_FILE" ]; then
-				sha256sum $SOURCE_FILE >> $PV/.defaults_checksums
-			fi;
-		done;
-		echo "  * Completed"
-		echo
-	done
+        # Regenerate checksum cache for defaults
+        rm $PV/.defaults_checksums &> /dev/null || :
+        for i in $(echo $LIST_ALL_FILES_REL_PATH); do
+            SOURCE_FILE=$(echo $SOURCES/$i | tr -s /)
+            if [ -f "$SOURCE_FILE" ]; then
+                sha256sum $SOURCE_FILE >> $PV/.defaults_checksums
+            fi
+        done
+        echo "  * Completed"
+        echo
+    done
 
-	# Run RPM scriptslets simulating a package upgrade
-	echo "- Running scriptlets for packages:"
-        PACKAGES=$(echo "$PACKAGES" | sort -u)
-	run_scripts "$PACKAGES"
-	echo "  * Completed"
+    # Run RPM scriptslets simulating a package upgrade
+    echo "- Running scriptlets for packages:"
+    PACKAGES_ALL=$(echo "$PACKAGES_ALL" | sort -u)
+    run_scripts "$PACKAGES_ALL"
+    echo "  * Completed"
 
-	# We lock the sync so it cannot run until next upgrade of the container image
-	cp $DEFAULTS_STORAGE/.buildhash $SYSCONFIG_FILE
+    # We lock the sync so it cannot run until next upgrade of the container image
+    cp $DEFAULTS_STORAGE/.buildhash $SYSCONFIG_FILE
 }
 
 run_scripts() {
-	PACKAGE_NAMES=$1
-	for PKG in $PACKAGE_NAMES; do
-		echo "  * Running scripts for $PKG ..."
-		PREIN_SCRIPT=$(rpm -q --qf "%{PREIN}" $PKG)
-		if [ ! "$PREIN_SCRIPT" = "(none)" ]; then
-			echo "$PREIN_SCRIPT" | sh -s -- 2
-		fi
-		POSTIN_SCRIPT=$(rpm -q --qf "%{POSTIN}" $PKG)
-		if [ ! "$POSTIN_SCRIPT" = "(none)" ]; then
-			echo "$POSTIN_SCRIPT" | sh -s -- 2
-		fi
-#		PREUN_SCRIPT=$(rpm -q --qf "%{PREUN}" $PKG)
-#		if [ ! "$PREUN_SCRIPT" = "(none)" ]; then
-#			echo "$PREUN_SCRIPT" | sh -s -- 1
-#		fi
-#		POSTUN_SCRIPT=$(rpm -q --qf "%{POSTUN}" $PKG)
-#		if [ ! "$POSTUN_SCRIPT" = "(none)" ]; then
-#			echo "$POSTUN_SCRIPT" | sh -s -- 1
-#		fi
-		POSTTRANS_SCRIPT=$(rpm -q --qf "%{POSTTRANS}" $PKG)
-		if [ ! "$POSTTRANS_SCRIPT" = "(none)" ]; then
-			echo "$POSTTRANS_SCRIPT" | sh -s -- 2
-		fi
-	done
+    PACKAGE_NAMES=$1
+    for PKG in $PACKAGE_NAMES; do
+        echo "  * Running scripts for $PKG ..."
+        # RPM scriptlets ordering:
+        # https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/#ordering
+        PREIN_SCRIPT=$(rpm -q --qf "%{PREIN}" $PKG)
+        if [ ! "$PREIN_SCRIPT" = "(none)" ]; then
+            echo "$PREIN_SCRIPT" | sh -s -- 2
+        fi
+        POSTIN_SCRIPT=$(rpm -q --qf "%{POSTIN}" $PKG)
+        if [ ! "$POSTIN_SCRIPT" = "(none)" ]; then
+            echo "$POSTIN_SCRIPT" | sh -s -- 2
+        fi
+        PREUN_SCRIPT=$(rpm -q --qf "%{PREUN}" $PKG)
+        if [ ! "$PREUN_SCRIPT" = "(none)" ]; then
+            echo "$PREUN_SCRIPT" | sh -s -- 1
+        fi
+        POSTUN_SCRIPT=$(rpm -q --qf "%{POSTUN}" $PKG)
+        if [ ! "$POSTUN_SCRIPT" = "(none)" ]; then
+            echo "$POSTUN_SCRIPT" | sh -s -- 1
+        fi
+        POSTTRANS_SCRIPT=$(rpm -q --qf "%{POSTTRANS}" $PKG)
+        if [ ! "$POSTTRANS_SCRIPT" = "(none)" ]; then
+            echo "$POSTTRANS_SCRIPT" | sh -s -- 2
+        fi
+    done
 }
 
 list() {
-	echo "List of initialized persistent volumes"
-	echo "--------------------------------------"
-	echo
-	for pv in $(ls $DEFAULTS_STORAGE | grep -v "^\.buildhash$");
-	do
-		SOURCES=$(echo "$DEFAULTS_STORAGE/$pv" | tr -s /)
-		PV=$(cat $SOURCES/.pv)
-		echo "$PV - `find $SOURCES -type f | grep -v ".pv$" | wc -l` configuration and package files - $SOURCES/"
-	done
+    echo "List of initialized persistent volumes"
+    echo "--------------------------------------"
+    echo
+    for pv in $(ls $DEFAULTS_STORAGE | grep -v "^\.buildhash$"); do
+        SOURCES=$(echo "$DEFAULTS_STORAGE/$pv" | tr -s /)
+        PV=$(cat $SOURCES/.pv)
+        echo "$PV - $(find $SOURCES -type f | grep -v ".pv$" | wc -l) configuration and package files - $SOURCES/"
+    done
 }
 
-if [ "$1" == "init" ] && [ -n "$2" ];
-then
-	PV=$2;
-	init $PV;
-elif [ "$1" == "sync" ];
-then
-	sync;
-elif [ "$1" == "list" ];
-then
-	list;
+if [ "$1" == "init" ] && [ -n "$2" ]; then
+    PV=$2
+    init $PV
+elif [ "$1" == "sync" ]; then
+    sync
+elif [ "$1" == "list" ]; then
+    list
 else
-	help;
-fi;
+    help
+fi
