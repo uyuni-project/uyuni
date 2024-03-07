@@ -99,6 +99,7 @@ RUN uyuni-configfiles-sync init /etc/sysconfig/
 RUN uyuni-configfiles-sync init /etc/tomcat/
 RUN uyuni-configfiles-sync init /srv/tftpboot/
 RUN uyuni-configfiles-sync init /srv/www/
+RUN uyuni-configfiles-sync init /var/lib/cobbler/
 
 # LABELs
 ARG PRODUCT=Uyuni
