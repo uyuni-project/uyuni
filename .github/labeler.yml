@@ -1,109 +1,208 @@
-#Dev Labels
+# Development labels
 java:
-- java/*
-- java/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/*
+    - java/**/*
+
 ui:
-- web/*
-- web/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - web/*
+    - web/**/*
+
 webapp:
-- java/code/webapp/*
-- java/code/webapp/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/webapp/*
+    - java/code/webapp/**/*
+
 cobbler:
-- java/code/src/org/cobbler/*
-- java/code/src/org/cobbler/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/org/cobbler/*
+    - java/code/src/org/cobbler/**/*
+
 documentation:
-- documentation/*
-- documentation/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - documentation/*
+    - documentation/**/*
+
 proxy:
-- proxy/*
-- proxy/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - proxy/*
+    - proxy/**/*
+
 API:
-- java/code/src/com/redhat/rhn/frontend/*
-- java/code/src/com/redhat/rhn/frontend/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/redhat/rhn/frontend/*
+    - java/code/src/com/redhat/rhn/frontend/**/*
+
 Virtualization management:
-- java/code/src/com/suse/manager/virtualization/*
-- java/code/src/com/suse/manager/virtualization/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/virtualization/*
+    - java/code/src/com/suse/manager/virtualization/**/*
+
 monitoring:
-- java/code/src/com/suse/manager/webui/services/impl/test/monitoring/*
-- java/code/src/com/suse/manager/webui/services/impl/test/monitoring/**/*
-- java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/*
-- java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/webui/services/impl/test/monitoring/*
+    - java/code/src/com/suse/manager/webui/services/impl/test/monitoring/**/*
+    - java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/*
+    - java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/**/*
+
 python3:
-- java/**/*.py
-- backend/**/*.py
-- client/**/*.py
-- susemanager/**/*.py
-- spacecmd/*
-- spacecmd/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/**/*.py
+    - backend/**/*.py
+    - client/**/*.py
+    - susemanager/**/*.py
+    - spacecmd/*
+    - spacecmd/**/*
+
 database:
-- schema/spacewalk/*
-- schema/spacewalk/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - schema/spacewalk/*
+    - schema/spacewalk/**/*
+
 content-management:
-- java/code/src/com/suse/manager/webui/controllers/contentmanagement/*
-- java/code/src/com/suse/manager/webui/controllers/contentmanagement/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/webui/controllers/contentmanagement/*
+    - java/code/src/com/suse/manager/webui/controllers/contentmanagement/**/*
+
 spark-router:
-- java/code/src/com/suse/manager/webui/Router.java
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/webui/Router.java
+
 webui-templates:
-- java/code/src/com/suse/manager/webui/templates/*
-- java/code/src/com/suse/manager/webui/templates/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/webui/templates/*
+    - java/code/src/com/suse/manager/webui/templates/**/*
+
 webui-controllers:
-- java/code/src/com/suse/manager/webui/controller/*
-- java/code/src/com/suse/manager/webui/controller/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/webui/controller/*
+    - java/code/src/com/suse/manager/webui/controller/**/*
+
 salt-actions-implementations:
-- java/code/src/com/suse/manager/webui/services/SaltServerActionService.java
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/webui/services/SaltServerActionService.java
+
 salt-events-listener:
-- java/code/src/com/suse/manager/reactor/SaltReactor.java
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/suse/manager/reactor/SaltReactor.java
+
 data-model:
-- java/code/src/com/redhat/rhn/domain/*
-- java/code/src/com/redhat/rhn/domain/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/redhat/rhn/domain/*
+    - java/code/src/com/redhat/rhn/domain/**/*
+
 old-ui:
-- java/code/src/com/redhat/rhn/frontend/*
-- java/code/src/com/redhat/rhn/frontend/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/redhat/rhn/frontend/*
+    - java/code/src/com/redhat/rhn/frontend/**/*
+
 xmlrpc:
-- java/code/src/com/redhat/rhn/frontend/xmlrpc/*
-- java/code/src/com/redhat/rhn/frontend/xmlrpc/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - java/code/src/com/redhat/rhn/frontend/xmlrpc/*
+    - java/code/src/com/redhat/rhn/frontend/xmlrpc/**/*
 
-#QE Labels
+# QE labels
 testing:
-- testsuite/*
-- testsuite/**/*
-test-framework:
-- testsuite/features/support/*
-- testsuite/features/step_definitions/*
-core-features:
-- testsuite/features/core/*
-- testsuite/features/core/**/*
-build-validation-features:
-- testsuite/features/build_validation/*
-- testsuite/features/build_validation/**/*
-secondary-features:
-- testsuite/features/secondary/*
-- testsuite/features/secondary/**/*
-ci-pipelines:
-- testsuite/**/*.yml
+- changed-files:
+  - any-glob-to-any-file:
+    - testsuite/*
+    - testsuite/**/*
 
-#Unit tests
-backend_unittests_pgsql:
-- backend/*
-- backend/**/*
-javascript_lint:
-- web/*
-- web/**/*
-java_lint_checkstyle:
-- java/*
-- java/**/*
-java_pgsql_tests:
-- java/*
-- java/**/*
+test-framework:
+- changed-files:
+  - any-glob-to-any-file:
+    - testsuite/features/support/*
+    - testsuite/features/step_definitions/*
+
+core-features:
+- changed-files:
+  - any-glob-to-any-file:
+    - testsuite/features/core/*
+    - testsuite/features/core/**/*
+
+build-validation-features:
+- changed-files:
+  - any-glob-to-any-file:
+    - testsuite/features/build_validation/*
+    - testsuite/features/build_validation/**/*
+
+secondary-features:
+- changed-files:
+  - any-glob-to-any-file:
+    - testsuite/features/secondary/*
+    - testsuite/features/secondary/**/*
+
+ci-pipelines:
+- changed-files:
+  - any-glob-to-any-file:
+    - testsuite/**/*.yml
+
 ruby_rubocop:
-- testsuite/*
-- testsuite/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - testsuite/*
+    - testsuite/**/*
+
+# Unit test labels
+backend_unittests_pgsql:
+- changed-files:
+  - any-glob-to-any-file:
+    - backend/*
+    - backend/**/*
+
+javascript_lint:
+- changed-files:
+  - any-glob-to-any-file:
+    - web/*
+    - web/**/*
+
+java_lint_checkstyle:
+- changed-files:
+  - any-glob-to-any-file:
+    - java/*
+    - java/**/*
+
+java_pgsql_tests:
+- changed-files:
+  - any-glob-to-any-file:
+    - java/*
+    - java/**/*
+
 schema_migration_test_oracle:
-- schema/spacewalk/*
-- schema/spacewalk/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - schema/spacewalk/*
+    - schema/spacewalk/**/*
+
 schema_migration_test_pgsql:
-- schema/spacewalk/*
-- schema/spacewalk/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - schema/spacewalk/*
+    - schema/spacewalk/**/*
+
 susemanager_unittests:
-- susemanager/*
-- susemanager/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - susemanager/*
+    - susemanager/**/*
