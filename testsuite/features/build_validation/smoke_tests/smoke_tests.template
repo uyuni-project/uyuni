@@ -186,7 +186,6 @@ Feature: Smoke tests for <client>
     Then I should see a "1 package install has been scheduled for" text
     When I force picking pending events on "<client>" if necessary
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
-    And I reboot the "<client>" if it is a SLE Micro
 
 @skip_for_traditional
 @skip_for_sle_micro_ssh_minion
@@ -228,6 +227,7 @@ Feature: Smoke tests for <client>
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
+    And I reboot the "<client>" if it is a SLE Micro
 
 @skip_for_traditional
 @skip_for_sle_micro_ssh_minion
