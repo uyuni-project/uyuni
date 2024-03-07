@@ -66,7 +66,9 @@ init() {
     # Sync the package files (non-configuration and configuration files) to our storage
     for pkg in $PKGNAMES; do
         for cfgfile in $(rpm -ql $pkg | grep "^$PV"); do
-            echo ${cfgfile#"$PV"} | rsync -a --files-from=- --exclude={'*'} $PV $TARGET
+            if [ -f $cfgfile ]; then
+                echo ${cfgfile#"$PV"} | rsync -a --files-from=- --exclude={'*'} $PV $TARGET
+            fi
         done
     done
     echo "done!"
