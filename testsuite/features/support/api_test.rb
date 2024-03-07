@@ -15,7 +15,7 @@ require_relative 'namespaces/user'
 require_relative 'xmlrpc_client'
 require_relative 'http_client'
 
-# Abstract parent class describing an API test
+# Abstract parent class describing an API test test
 class ApiTest
   ##
   # Creates objects that are used to interact with the API.

@@ -3,7 +3,7 @@
 
 Feature: Sanity checks
   In order to use the product
-  I want to be sure to use a sane environment
+  I want to be sure to use a sane environment test
 
   Scenario: The server is healthy
     Then "server" should have a FQDN
