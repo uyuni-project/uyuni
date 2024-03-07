@@ -24,17 +24,19 @@ import semver from "semver";
         await fs.promises.readFile(path.resolve(nodeModules, dependency, "package.json"), "utf8")
       );
 
-      const satisfies = semver.satisfies(installedPkg.version, expectedVersion);
-      const satisfiesCoerced = semver.satisfies(installedPkg.version, semver.coerce(expectedVersion).version);
+      const expected = resolutions[dependency] || expectedVersion;
+      const satisfies = semver.satisfies(installedPkg.version, expected);
+      const coerced = semver.coerce(expected)?.version;
+      const satisfiesCoerced = Boolean(coerced && semver.satisfies(installedPkg.version, coerced));
       if (!satisfies && satisfiesCoerced) {
         console.warn(
-          `WARN: Currently installed ${dependency} version ${installedPkg.version} only matches expected version ${expectedVersion} when coerced`
+          `WARN: Currently installed ${dependency} version ${installedPkg.version} only matches expected version ${expected} when coerced`
         );
       }
 
       if (!satisfies && !satisfiesCoerced) {
         console.error(
-          `ERROR: Currently installed ${dependency} version ${installedPkg.version} does not satisfy expected version ${expectedVersion}`
+          `ERROR: Currently installed ${dependency} version ${installedPkg.version} does not satisfy expected version ${expected}`
         );
         process.exitCode = 1;
       }

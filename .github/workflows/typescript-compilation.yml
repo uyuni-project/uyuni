@@ -40,7 +40,7 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install dependencies
-      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
+      run: yarn install --frozen-lockfile
 
     - name: Compile Typescript
-      run: yarn --cwd web/html/src tsc
+      run: yarn tsc
