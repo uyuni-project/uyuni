@@ -4,12 +4,8 @@
 # The scenarios in this feature are skipped if there is no proxy
 # ($proxy is nil) or if there is no private network ($private_net is nil)
 
-# TODO: RBS tests needs a refactor to don't use salt formulas.
-#       Card: https://github.com/SUSE/spacewalk/issues/23616
-
 @skip_if_containerized_server
 @skip_if_github_validation
-@sle_minion
 @scope_proxy
 @scope_retail
 Feature: Setup Uyuni for Retail branch network
@@ -107,10 +103,6 @@ Feature: Setup Uyuni for Retail branch network
     And I enter the local IP address of "range end" in dynamic IP range end field
     And I enter the local IP address of "broadcast" in broadcast address field
     And I press "Remove" in the routers section
-    And I press "Add Item" in host reservations section
-    And I enter "minion" in first reserved hostname field
-    And I enter the local IP address of "sle_minion" in first reserved IP field
-    And I enter the MAC address of "sle_minion" in first reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -134,11 +126,8 @@ Feature: Setup Uyuni for Retail branch network
     And I enter "proxy" in SOA name server field of example.org zone
     And I enter "admin@example.org." in SOA contact field of example.org zone
     And I press "Add Item" in A section of example.org zone
-    And I enter "minion" in first A name field of example.org zone
-    And I enter the local IP address of "sle_minion" in first A address field of example.org zone
-    And I press "Add Item" in A section of example.org zone
-    And I enter "proxy" in second A name field of example.org zone
-    And I enter the local IP address of "proxy" in second A address field of example.org zone
+    And I enter "proxy" in first A name field of example.org zone
+    And I enter the local IP address of "proxy" in first A address field of example.org zone
     And I press "Add Item" in NS section of example.org zone
     And I enter "proxy.example.org." in first NS field of example.org zone
     # reverse zone xx.168.192.in-addr.arpa:
@@ -170,17 +159,17 @@ Feature: Setup Uyuni for Retail branch network
     And I follow first "Dhcpd" in the content area
     And I click on "Expand All Sections"
     And I press "Add Item" in host reservations section
-    And I enter "pxeboot" in second reserved hostname field
-    And I enter the local IP address of "pxeboot_minion" in second reserved IP field
-    And I enter the MAC address of "pxeboot_minion" in second reserved MAC field
+    And I enter "pxeboot" in first reserved hostname field
+    And I enter the local IP address of "pxeboot_minion" in first reserved IP field
+    And I enter the MAC address of "pxeboot_minion" in first reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
     # bind:
     When I follow first "Bind" in the content area
     And I click on "Expand All Sections"
     And I press "Add Item" in A section of example.org zone
-    And I enter "pxeboot" in third A name field of example.org zone
-    And I enter the local IP address of "pxeboot_minion" in third A address field of example.org zone
+    And I enter "pxeboot" in second A name field of example.org zone
+    And I enter the local IP address of "pxeboot_minion" in second A address field of example.org zone
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -209,18 +198,6 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: Disable repositories after installing branch services
     Given the Salt master can reach "proxy"
     When I disable repositories after installing branch server
-
-@proxy
-@private_net
-  Scenario: Set up the terminals too
-    When I set up the private network on the terminals
-    And terminal "sle_minion" should have got a retail network IP address
-    And name resolution should work on terminal "sle_minion"
-
-@proxy
-@private_net
-  Scenario: The terminals should not reach the server
-    Then "sle_minion" should not communicate with the server using private interface
 
 @proxy
 @private_net
