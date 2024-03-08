@@ -273,7 +273,8 @@ public class RecurringActionFactory extends HibernateFactory {
      * @return optional of matching recurring action
      */
     public static Optional<RecurringAction> lookupByJobName(String scheduleName) {
-        long id = Long.parseLong(scheduleName.replace(RecurringAction.RECURRING_ACTION_PREFIX, ""));
+        String scheduleNameIgnoringRetry = scheduleName.split("-retry\\d+$")[0];
+        long id = Long.parseLong(scheduleNameIgnoringRetry.replace(RecurringAction.RECURRING_ACTION_PREFIX, ""));
         return lookupById(id);
     }
 

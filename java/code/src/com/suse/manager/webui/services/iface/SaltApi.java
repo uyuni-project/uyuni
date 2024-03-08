@@ -497,4 +497,12 @@ public interface SaltApi {
      */
      String checkSSLCert(String rootCA, SSLCertPair serverCertKey, List<String> intermediateCAs)
              throws IllegalArgumentException;
+
+    /**
+     * Call 'mgrutil.select_minions'
+     * @param target return the minions matching the target
+     * @param targetType type of target
+     * @return list of matching minions
+     */
+     List<String> selectMinions(String target, String targetType);
 }

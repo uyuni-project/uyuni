@@ -1499,4 +1499,11 @@ public class SaltService implements SystemQuery, SaltApi {
         }
         return result.get("cert");
     }
+
+    @Override
+    public List<String> selectMinions(String target, String targetType)
+            throws IllegalStateException {
+        RunnerCall<List<String>> call = MgrUtilRunner.selectMinions(target, targetType);
+        return callSync(call).orElseThrow(() -> new IllegalStateException("Can't get minion list"));
+    }
 }

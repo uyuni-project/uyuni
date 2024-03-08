@@ -1,0 +1,65 @@
+uyuni:
+  xmlrpc:
+    user: admin
+    password: admin
+  orgs:
+    - org_id: my_org1
+      org_admin_user: org_form_user
+      org_admin_password: org_form_user
+      first_name: admin org
+      last_name: admin org
+      email: admin_org@org.com
+      system_groups:
+        - name: httpd_servers
+          description: httpd_servers
+          target: "*httpd*"
+      users:
+        - name: user_form_1
+          password: user_form_1
+          email: user_form_1@teest.como
+          first_name: first
+          last_name: last
+          roles: ['config_admin']
+          system_groups: ['httpd_servers']
+          manageable_channels : [MANAGEABLE_CHANNEL]
+          subscribable_channels : [SUBSCRIBABLE_CHANNEL]
+      activation_keys:
+        - name: my_key
+          description: My Activation Key created via formula
+          base_channel: BASE_CHANNEL
+          child_channels: [CHILD_CHANNEL]
+          configuration_channels: [CONFIGURATION_CHANNEL]
+          packages:
+            - name: vim
+            - name: emacs
+              arch: x86_64
+          server_groups: ['httpd_servers']
+          usage_limit: 10
+          # HACK do to limitation on the form framework we had to have a list of objects, instead of a list o string.
+          # This was needed to allow the usage of select instead of free text.
+          system_types:
+            - type: 'virtualization_host'
+            - type: 'container_build_host'
+          contact_method: 'ssh-push'
+          universal_default: false
+          configure_after_registration: true
+    - org_id: my_org2
+      org_admin_user: my_org_user
+      org_admin_password: my_org_user
+      first_name: first_name
+      last_name: last_name__
+      email: my_org_user@org.com
+      system_groups:
+        - name: httpd_servers
+          description: httpd_servers
+          target: "*httpd*"
+      users:
+        - name: user2
+          password: user2
+          email: user1@teest.como
+          first_name: first
+          last_name: last
+          roles: []
+          system_groups: ['httpd_servers']
+          manageable_channels : []
+          subscribable_channels : []

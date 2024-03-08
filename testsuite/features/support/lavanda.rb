@@ -85,7 +85,7 @@ module LavandaBasic
 
   # getter functions, executed on testsuite
   def hostname
-    raise KeyError, 'empty hostname, something wrong' if @in_hostname.empty?
+    raise KeyError, 'empty hostname, something wrong' if @in_hostname.nil? || @in_hostname.empty?
 
     @in_hostname
   end
@@ -93,7 +93,7 @@ module LavandaBasic
   ##
   # It raises an exception if the hostname is empty, otherwise it returns the hostname.
   def full_hostname
-    raise KeyError, 'empty hostname, something wrong' if @in_full_hostname.empty?
+    raise KeyError, 'empty hostname, something wrong' if @in_full_hostname.nil? || @in_full_hostname.empty?
 
     @in_full_hostname
   end
@@ -101,7 +101,7 @@ module LavandaBasic
   ##
   # It raises an exception if the private_ip is empty, otherwise it returns the private_ip.
   def private_ip
-    raise KeyError, 'empty private_ip, something wrong' if @in_private_ip.empty?
+    raise KeyError, 'empty private_ip, something wrong' if @in_private_ip.nil? || @in_private_ip.empty?
 
     @in_private_ip
   end
@@ -109,7 +109,7 @@ module LavandaBasic
   ##
   # It returns the public IP address of the machine.
   def public_ip
-    raise KeyError, 'empty public_ip, something wrong' if @in_public_ip.empty?
+    raise KeyError, 'empty public_ip, something wrong' if @in_public_ip.nil? || @in_public_ip.empty?
 
     @in_public_ip
   end
@@ -117,7 +117,7 @@ module LavandaBasic
   ##
   # Verifies the private interface instance variable. Raises an error if it's empty.
   def private_interface
-    raise KeyError, 'empty private_interface, something wrong' if @in_private_interface.empty?
+    raise KeyError, 'empty private_interface, something wrong' if @in_private_interface.nil? || @in_private_interface.empty?
 
     @in_private_interface
   end
@@ -125,7 +125,7 @@ module LavandaBasic
   ##
   # Verifies the public interface instance variable. Raises an error if it's empty.
   def public_interface
-    raise KeyError, 'empty public_interface, something wrong' if @in_public_interface.empty?
+    raise KeyError, 'empty public_interface, something wrong' if @in_public_interface.nil? || @in_public_interface.empty?
 
     @in_public_interface
   end
@@ -133,7 +133,7 @@ module LavandaBasic
   ##
   # Verifies the os_family instance variable. Raises an error if it's empty.
   def os_family
-    raise KeyError, 'empty os_family, something wrong' if @in_os_family.empty?
+    raise KeyError, 'empty os_family, something wrong' if @in_os_family.nil? || @in_os_family.empty?
 
     @in_os_family
   end
@@ -141,7 +141,7 @@ module LavandaBasic
   ##
   # Verifies the os_version instance variable. Raises an error if it's empty.
   def os_version
-    raise KeyError, 'empty os_version, something wrong' if @in_os_version.empty?
+    raise KeyError, 'empty os_version, something wrong' if @in_os_version.nil? || @in_os_version.empty?
 
     @in_os_version
   end
@@ -151,6 +151,7 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
+  #   runs_in_container: Whether the command should be run in the container or on the host. Defaults to true.
   #   separated_results: Whether the results should be stored separately. Defaults to false.
   #   check_errors: Whether to check for errors or not. Defaults to true.
   #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
@@ -158,8 +159,8 @@ module LavandaBasic
   #   successcodes: An array with the values to be accepted as success codes from the command run.
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
-  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @in_has_mgrctl ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
+  def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
+    cmd_prefixed = @in_has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
@@ -196,9 +197,9 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
-  def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT)
+  def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
     repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run(cmd, check_errors: false)
+      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
       return [result, code] if code.zero?
 
       sleep 2
@@ -211,9 +212,9 @@ module LavandaBasic
   #
   # Args:
   #   cmd: The command to run.
-  def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT)
+  def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
     repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run(cmd, check_errors: false)
+      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
       return [result, code] if code.nonzero?
 
       sleep 2

@@ -19,9 +19,13 @@ Feature: Very first settings
   As the admin user
   I want to create the organisation, the first users and set the HTTP proxy
 
+  Scenario: Cleanup Salt files
+    When I run "rm -Rf /srv/salt/*" on "server"
+
+
+@skip_if_containerized_server
   Scenario: Create admin user and first organization
     Given I access the host the first time
-    And I run "rm -Rf /srv/salt/*" on "server"
     When I go to the home page
     And I enter "SUSE Test" as "orgName"
     And I enter "admin" as "login"

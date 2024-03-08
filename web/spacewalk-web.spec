@@ -267,9 +267,7 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %dir %{www_path}/fonts
 %{www_path}/fonts/*
 %dir %{www_path}/img
-%dir %{www_path}/img/*
 %{www_path}/img/*.{gif,ico,jpeg,jpg,png,svg}
-%{www_path}/img/**/*.{gif,ico,jpeg,jpg,png,svg}
 %{www_path}/robots.txt
 %{www_path}/pub
 %dir %{www_path}/javascript
@@ -284,8 +282,10 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 
 %files -n spacewalk-html-debug
 %defattr(644,root,root,755)
+%dir %{www_path}/css
+%{www_path}/css/*.map
 %dir %{www_path}/javascript
 %dir %{www_path}/javascript/manager
-%{www_path}/javascript/manager/*.js.map
+%{www_path}/javascript/manager/*.map
 
 %changelog

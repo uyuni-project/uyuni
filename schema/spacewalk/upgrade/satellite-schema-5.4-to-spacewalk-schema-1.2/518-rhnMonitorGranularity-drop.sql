@@ -1,2 +1,0 @@
-drop table rhnMonitorGranularity;
-drop sequence rhn_monitorgranularity_id_seq;

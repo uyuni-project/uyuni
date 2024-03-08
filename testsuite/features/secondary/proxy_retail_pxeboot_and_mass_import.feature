@@ -12,6 +12,11 @@
 # * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
+# TODO: This feature needs to be refactored for RBS containerized,
+#       as it does not support Salt formulas.
+#       Additionally, we have this bug that impedes to use mgr-bootstrap command https://bugzilla.suse.com/show_bug.cgi?id=1220864
+
+@skip_if_containerized_server
 @skip_if_github_validation
 @buildhost
 @proxy

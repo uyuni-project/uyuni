@@ -1,4 +1,4 @@
-:global(.old-theme)
+:global(.old-theme),
 :global(.new-theme) {
     .search_icon_container {
         color: rgba(167, 169, 172, 0.6);

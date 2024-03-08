@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2022 SUSE LLC
+# Copyright (c) 2020-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -89,7 +89,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then "ssh_minion" should not be registered
 
   Scenario: Cleanup: register a Salt minion after SSH tunnel tests
-    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the proxy
+    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the server
     And I wait at most 10 seconds until Salt master sees "ssh_minion" as "unaccepted"
     And I accept "ssh_minion" key in the Salt master
     Then I should see "ssh_minion" via spacecmd

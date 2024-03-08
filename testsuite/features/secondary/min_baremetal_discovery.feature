@@ -1,6 +1,7 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @sle_minion
 Feature: Bare metal discovery
 
@@ -37,7 +38,8 @@ Feature: Bare metal discovery
     And the PXE default profile should be enabled
 
   Scenario: Register a SLE Minion for bare metal discovery
-    When I bootstrap "sle_minion" using bootstrap script with activation key "1-spacewalk-bootstrap-activation-key" from the proxy
+    # workaround for bsc#1220864
+    When I bootstrap "sle_minion" using bootstrap script with activation key "1-spacewalk-bootstrap-activation-key" from the server
     Then I should see "sle_minion" via spacecmd
 
   Scenario: Check registration values of SLE Minion

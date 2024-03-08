@@ -224,7 +224,7 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_container_provider
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_gh_validation
   node.run('journalctl > /var/log/messages', check_errors: false)
   node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
@@ -374,8 +374,6 @@ def get_system_name(host)
         word =~ /example.sle15sp4terminal-/
       end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
-  when 'containerized_proxy'
-    system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
   else
     begin
       node = get_target(host)
@@ -416,7 +414,7 @@ def update_controller_ca
 
   puts `certutil -d sql:/root/.pki/nssdb -t TC -n "susemanager" -D;
   rm /etc/pki/trust/anchors/*;
-  wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/#{server_name}.cert &&
+  curl http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -o /etc/pki/trust/anchors/#{server_name}.cert &&
   update-ca-certificates &&
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
 end
@@ -449,7 +447,7 @@ end
 
 # This function initializes the API client
 def new_api_client
-  ssl_verify = !$is_container_provider
+  ssl_verify = !$is_gh_validation
   if $debug_mode || product == 'SUSE Manager'
     ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
   else

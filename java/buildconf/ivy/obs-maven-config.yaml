@@ -41,7 +41,7 @@ artifacts:
     repository: Leap
   - artifact: commons-codec
     package: apache-commons-codec
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-collections
     package: apache-commons-collections
     repository: Leap
@@ -50,20 +50,20 @@ artifacts:
     repository: Leap
   - artifact: commons-discovery
     package: jakarta-commons-discovery
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-el
     package: apache-commons-el
     repository: Leap
   - artifact: commons-fileupload
     package: apache-commons-fileupload
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-io
     package: apache-commons-io
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-jexl
     package: apache-commons-jexl
     jar: commons-jexl\.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-lang3
     package: apache-commons-lang3
     repository: Leap
@@ -76,7 +76,7 @@ artifacts:
     repository: Leap
   - artifact: commons-compress
     package: apache-commons-compress
-    repository: Leap
+    repository: Leap_sle
   - artifact: concurrent
     repository: Uyuni_Other
   - artifact: concurrentlinkedhashmap-lru
@@ -156,15 +156,15 @@ artifacts:
   - artifact: log4j-core
     jar: log4j-core.jar
     package: log4j
-    repository: Leap
+    repository: Leap_sle
   - artifact: log4j-api
     jar: log4j-api.jar
     package: log4j
-    repository: Leap
+    repository: Leap_sle
   - artifact: log4j-slf4j-impl
     jar: log4j-slf4j-impl.jar
     package: log4j-slf4j
-    repository: Leap
+    repository: Leap_sle
   - artifact: jsch
     repository: Leap_sle
   - artifact: mchange-commons-java
