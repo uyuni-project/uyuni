@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AttestationResult">
+
+    <select id="listPendingForResultType" parameterType="map" resultType="long">
+          SELECT id
+            FROM suseCoCoAttestationResult
+           WHERE status = 'PENDING'
+                        AND result_type IN <foreach item="resultType" collection="supportedTypes" open="(" close=")" separator=",">#{resultType}</foreach>
+        ORDER BY id
+           LIMIT #{batchSize}
+    </select>
+
+    <select id="selectForUpdate" parameterType="long" resultType="com.suse.coco.model.AttestationResult">
+          SELECT id
+                    , report_id
+                    , result_type
+                    , status
+                    , description
+                    , details
+                    , attested
+            FROM suseCoCoAttestationResult
+           WHERE id = #{id}
+                    AND status = 'PENDING'
+        FOR NO KEY UPDATE NOWAIT
+    </select>
+
+    <select id="updateAndRetrieve" parameterType="long" resultType="com.suse.coco.model.AttestationResult">
+          UPDATE suseCoCoAttestationResult
+             SET status = 'PROCESSING'
+           WHERE id = #{id} AND status = 'PENDING'
+       RETURNING *
+    </select>
+
+    <update id="updateStatus" parameterType="com.suse.coco.model.AttestationResult">
+          UPDATE suseCoCoAttestationResult
+             SET status = #{status}
+                <if test="status == 'SUCCEEDED'">
+                    , attested = #{attested}
+                </if>
+           WHERE id = #{id}
+    </update>
+</mapper>
