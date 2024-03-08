@@ -117,16 +117,16 @@ public class ChannelSyncFlag implements Serializable {
      */
     public void setFlag(String flagName, boolean value) {
         switch (flagName) {
-            case "no-strict":
+            case "noStrict":
                 this.noStrict = value;
                 break;
-            case "no-errata":
+            case "noErrata":
                 this.noErrata = value;
                 break;
             case "latest":
                 this.onlyLatest = value;
                 break;
-            case "sync-kickstart":
+            case "syncKickstart":
                 this.createTree = value;
                 break;
             case "fail":
