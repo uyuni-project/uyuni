@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-23 15:31+0100\n"
-"PO-Revision-Date: 2024-02-11 20:42+0000\n"
+"PO-Revision-Date: 2024-02-25 16:42+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1562,9 +1562,8 @@ msgid "Patched"
 msgstr "Opravené"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
-#, fuzzy
 msgid "A patch has been successfully installed on the client."
-msgstr "Akcia bola úspešne pridaná do "
+msgstr "Oprava bola úspešne nainštalovaná na klienta."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
 #, fuzzy
