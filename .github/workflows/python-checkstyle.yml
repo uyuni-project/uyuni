@@ -33,8 +33,16 @@ jobs:
 
     - name: Run black on files
       run: |
-        black --check --diff -t py36 $added_modified_renamed
+        if [[ -z "$added_modified_renamed" ]]; then
+            echo "no files to check, OK"
+        else
+            black --check --diff -t py36 $added_modified_renamed
+        fi
 
     - name: Run pylint on files
       run: |
-        pylint --rcfile=/root/.pylintrc $added_modified_renamed
+        if [[ -z "$added_modified_renamed" ]]; then
+            echo "no files to check, OK"
+        else
+            pylint --rcfile=/root/.pylintrc $added_modified_renamed
+        fi
