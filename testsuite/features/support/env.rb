@@ -602,6 +602,7 @@ Before('@srv_scc_access_logging') do
   skip_this_scenario unless scc_access_logging_grain?
 end
 
+# check whether the server has the scc_access_logging variable set
 def scc_access_logging_grain?
   cmd = 'grep "\"scc_access_logging\": true" /etc/salt/grains'
   _out, code = get_target('server').run(cmd, check_errors: false)
