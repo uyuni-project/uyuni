@@ -1465,8 +1465,6 @@ When(/^I copy the configuration "([^"]*)" of containerized proxy from the server
   get_target('proxy').inject(file_path, file_path)
 end
 
-# TODO: Refactor this step to use the new mgrpxy command
-#       For now, this step is not used to onboard our containerized proxy
 When(/^I add avahi hosts in containerized proxy configuration$/) do
   if get_target('server').full_hostname.include? 'tf.local'
     hosts_list = ''
@@ -1474,8 +1472,7 @@ When(/^I add avahi hosts in containerized proxy configuration$/) do
       hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
     end
     hosts_list = escape_regex(hosts_list)
-    regex = "s/^#?EXTRA_POD_ARGS=.*$/EXTRA_POD_ARGS=#{hosts_list}/g;"
-    get_target('proxy').run("sed -i.bak -Ee '#{regex}' /etc/sysconfig/uyuni-proxy-systemd-services")
+    get_target('proxy').run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
     log "Avahi hosts added: #{hosts_list}"
     log 'The Development team has not been working to support avahi in containerized proxy, yet. This is best effort.'
   else
