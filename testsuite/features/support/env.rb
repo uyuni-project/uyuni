@@ -493,6 +493,16 @@ Before('@skip_for_debianlike') do |scenario|
   skip_this_scenario if (filename.include? 'ubuntu') || (filename.include? 'debian')
 end
 
+Before('@skip_for_rocky9') do |scenario|
+  filename = scenario.location.file
+  skip_this_scenario if filename.include? 'rocky9'
+end
+
+Before('@skip_for_alma9') do |scenario|
+  filename = scenario.location.file
+  skip_this_scenario if filename.include? 'alma9'
+end
+
 Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'minion'
 end
