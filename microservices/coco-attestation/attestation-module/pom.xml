@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.uyuni-project</groupId>
+        <artifactId>coco-attestation</artifactId>
+        <version>5.0.0</version>
+    </parent>
+
+    <groupId>org.uyuni-project.coco-attestation</groupId>
+    <artifactId>attestation-module</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
