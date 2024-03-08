@@ -18,7 +18,7 @@ def __virtual__():
     return __grains__['os_family'] in ['Debian', 'Suse', 'RedHat']
 
 def _check_cmd_exit_code(cmd, code):
-    output = __salt__['cmd.run_all'](cmd, python_shell=True)
+    output = __salt__['cmd.run_all'](cmd, ignore_retcode=True)
     if 'stderr' in output and output['stderr']:
         log.error(output['stderr'])
     return output['retcode'] == code

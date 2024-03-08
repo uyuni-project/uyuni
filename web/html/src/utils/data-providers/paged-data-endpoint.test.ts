@@ -108,33 +108,30 @@ describe("paged data endpoint", () => {
     endpoint.doGet(mockCallback, pageControl);
   });
 
-  // TODO: Fix the test to work with nodejs17
-  // See: https://github.com/SUSE/spacewalk/issues/16912#issuecomment-1033692446
-  //
-  // test("Cancelling obsolete requests", (done) => {
-  //   const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
-  //   const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
+  test("Cancelling obsolete requests", (done) => {
+    const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
+    const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
 
-  //   // Mock the 'Network.get' method
-  //   const mockPendingPromise = new Promise(() => {});
-  //   const mockCancelCallback = jest.fn();
-  //   MockedNetwork.get.mockReturnValue(Utils.cancelable(mockPendingPromise, mockCancelCallback));
+    // Mock the 'Network.get' method
+    const mockPendingPromise = new Promise(() => {});
+    const mockCancelCallback = jest.fn();
+    MockedNetwork.get.mockReturnValue(Utils.cancelable(mockPendingPromise, mockCancelCallback));
 
-  //   // Suppress rejections in the mock callback
-  //   // The test is done when the cancelled promise rejection is catched
-  //   const mockCallback = jest.fn((promise) =>
-  //     promise.catch((reason) => {
-  //       expect(reason).toBe("The request is cancelled due to subsequent calls");
-  //       // Cancel callback should've been called exactly once
-  //       expect(mockCancelCallback).toBeCalledTimes(1);
-  //       done();
-  //     })
-  //   );
-  //   endpoint.doGet(mockCallback, pageControl);
+    // Suppress rejections in the mock callback
+    // The test is done when the cancelled promise rejection is catched
+    const mockCallback = jest.fn((promise) =>
+      promise.catch((reason) => {
+        expect(reason).toBe("The request is cancelled due to subsequent calls");
+        // Cancel callback should've been called exactly once
+        expect(mockCancelCallback).toBeCalledTimes(1);
+        done();
+      })
+    );
+    endpoint.doGet(mockCallback, pageControl);
 
-  //   const mockPromise = Promise.resolve();
-  //   MockedNetwork.get.mockReturnValue(Utils.cancelable(mockPromise));
-  //   // The subsequent call should cancel the first promise
-  //   endpoint.doGet(mockCallback, pageControl);
-  // });
+    const mockPromise = Promise.resolve();
+    MockedNetwork.get.mockReturnValue(Utils.cancelable(mockPromise));
+    // The subsequent call should cancel the first promise
+    endpoint.doGet(mockCallback, pageControl);
+  });
 });

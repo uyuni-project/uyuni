@@ -15,5 +15,4 @@
 - features/core/srv_user_preferences.feature
 - features/core/srv_osimage.feature
 - features/core/srv_docker.feature
-
 ## Core features END ###

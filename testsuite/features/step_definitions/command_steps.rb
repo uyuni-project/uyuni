@@ -2007,3 +2007,9 @@ When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, 
     break if code.zero?
   end
 end
+
+Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
+  count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
+  occurences = count.to_i
+  raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
+end

@@ -8,7 +8,24 @@ assignees: ''
 
 General template for leavers of the SUSE Manager team.
 
-- [ ] Conduct an [exit interview](https://en.wikipedia.org/wiki/Exit_interview)
+# Leaving date
+
+**Official:** YYYY-MM-DD
+**Last work day:** YYYY-MM-DD
+
+# Some days before the member's last work day
+
+- [ ] **Exit interview:** Conduct an [exit interview](https://en.wikipedia.org/wiki/Exit_interview) and store the notes at [Confluence](https://confluence.suse.com/display/SUSEMANAGER/Exit+Interviews)
+- [ ] **Hardware:** Does this person have access to something special which also needs to get transferred to another person? (ssh access to a server, permissions to special pages on wikis, confluence, resources in the cloud, etc.)
+- [ ] **Bugzilla:** Remind the person to remove all "watches" in Bugzilla before leaving
+- [ ] **Packages:** Run `OUSER=<LEAVER>; osc search -i juliogonzalezgil; osc -A https://api.suse.de maintainer -U ${OUSER}` (replace `<LEAVER>` with the leaver's username), and if the person is a bugowner of any package, look for a new bugowner (ideally a group, not a single person, home projects can be ignored)
+- [ ] **Code:** Consider any code stored in personal accounts and create forks accordingly (e.g. in GitLab)
+- [ ] **Credentials:** Consider any credentials known only to that person (e.g. for mailing lists) and share
+- [ ] **Mailing lists:** Transfer mailing list administration to someone else
+- [ ] **Content:** Consider any content in e.g. https://w3.suse.de or Google Drive and maybe share it permanently (e.g. recordings, slides)
+
+# The day after the member leaves the team
+
 - [ ] GitHub
   - [ ] Remove from [SUSE Manager Team](https://github.com/orgs/SUSE/teams/suse-manager-team/members) on GitHub
   - [ ] Remove from [Uyuni organization](https://github.com/orgs/uyuni-project/people) and [teams](https://github.com/orgs/uyuni-project/teams). It can remain a member (but not owner), if it will keep contributing.
@@ -64,14 +81,9 @@ General template for leavers of the SUSE Manager team.
 - [ ] Internal
   - [ ] Remove SSH public key from [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
   - [ ] Remove user from SCC organization [SUSE Manager Team Playground](https://scc.suse.com/organizations/432530/users) for SCC mirror credentials
+  - [ ] Remove user from SCC organization [SUSE Manager Stable (Infra/CI/MU validation)](https://scc.suse.com/organizations/784242/users) for SCC mirror credentials
   - [ ] Remove SUMA account on [manager.mgr.suse.de](https://manager.mgr.suse.de)
   - [ ] Buildservice - Bugowner: is the person the bug owner of some packages? Find a new one and remove the mail address for maintainers and bug owners. Also projects where this person is the only maintainer needs to be transferred.
-  - [ ] Does this person have access to something special which also needs to get transferred to another person? (ssh access to a server, permissions to special pages on wikis, confluence, resources in the cloud, etc.)
-  - [ ] Bugzilla: remind the person to remove all "watches" in Bugzilla before leaving
-  - [ ] Consider any code stored in personal accounts and create forks accordingly (e.g. in GitLab)
-  - [ ] Consider any credentials known only to that person (e.g. for mailing lists) and share
-  - [ ] Transfer mailing list administration to someone else
-  - [ ] Consider any content in e.g. w3.suse.de or o365 and maybe share it permanently (e.g. recordings, slides)
   - [ ] Remove the person from our [GitLab group](https://gitlab.suse.de/groups/galaxy/-/group_members)
   - [ ] Update the [finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/galaxy.edn)
 - [ ] QE specific
