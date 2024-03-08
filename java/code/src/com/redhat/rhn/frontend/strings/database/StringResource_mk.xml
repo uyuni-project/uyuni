@@ -469,21 +469,21 @@
       </trans-unit>
       <trans-unit id="RHN_SAT_HOSTNAME" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ hostname (FQDN)</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ име на хост (FQDN)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHN_SAT_WEB_PORT" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ webserver port (80 for http, 443 for https)</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ порта за веб-сервер (80 за http, 443 за https)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="XPROTO" xml:space="preserve">
         <source>External protocol ('http' or 'https')</source>
-        <target/>
+        <target>Надворешен протокол ("http" или "https")</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
@@ -491,21 +491,21 @@
       <!-- Monitoring Probe Command Parameter descriptions -->
       <trans-unit id="Application Protocol" xml:space="preserve">
         <source>Application Protocol</source>
-        <target/>
+        <target>Протокол за апликација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Critical if Above" xml:space="preserve">
         <source>Available Space Percent Used Critical if Above</source>
-        <target/>
+        <target>Достапен простор Процентот на искористен критичен ако е погоре</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Warn if Above" xml:space="preserve">
         <source>Available Space Percent Used Warn if Above</source>
-        <target/>
+        <target>Достапен простор Процентуално искористено Предупредување ако е погоре</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
