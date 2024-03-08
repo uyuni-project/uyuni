@@ -116,7 +116,7 @@
 
         <!-- Compilation and testing -->
         <dependency org="manager-43" name="velocity-engine-core" rev="2.3"/>
-        <dependency org="manager-43" name="jetty-util" rev="9.4.53" />
+        <dependency org="manager-43" name="jetty-util" rev="9.4.54" />
         <dependency org="checkstyle" name="checkstyle" rev="8.30" transitive="false">
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.30/checkstyle-8.30-all.jar"/>
         </dependency>
