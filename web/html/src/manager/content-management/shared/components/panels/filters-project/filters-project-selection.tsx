@@ -38,6 +38,14 @@ const FiltersProjectSelection = (props: FiltersProps) => {
 
   return (
     <React.Fragment>
+      <LinkButton
+        id={`create-new-filter-link`}
+        icon="fa-plus"
+        className="btn btn-default js-spa"
+        text={t("Create New Filter")}
+        href={`/rhn/manager/contentmanagement/filters?openFilterId=-1&projectLabel=${props.projectId}`}
+      />
+
       {allFilters &&
         allFilters.length > 0 &&
         allFilters.map((filter) => (
@@ -59,13 +67,6 @@ const FiltersProjectSelection = (props: FiltersProps) => {
             </label>
           </div>
         ))}
-      <LinkButton
-        id={`create-new-filter-link`}
-        icon="fa-plus"
-        className="btn-link js-spa"
-        text={t("Create New Filter")}
-        href={`/rhn/manager/contentmanagement/filters?openFilterId=-1&projectLabel=${props.projectId}`}
-      />
     </React.Fragment>
   );
 };
