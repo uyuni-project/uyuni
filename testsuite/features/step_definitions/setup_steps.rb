@@ -206,16 +206,10 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait until I see "System Status" text
+    And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Apply states" is completed
+    And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Hardware List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Package List Refresh" is completed
   )
-  if get_client_type(host) == 'traditional' && is_salt.empty?
-    get_target(host).run('rhn_check -vvv')
-  else
-    steps %(
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Apply states" is completed
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Hardware List Refresh" is completed
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Package List Refresh" is completed
-    )
-  end
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|

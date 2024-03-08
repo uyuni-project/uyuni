@@ -1,4 +1,4 @@
-:global(.old-theme)
+:global(.old-theme),
 :global(.new-theme) {
   .version_collapse_line {
     padding-top: .3em;

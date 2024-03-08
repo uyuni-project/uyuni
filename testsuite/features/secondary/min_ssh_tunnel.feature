@@ -5,11 +5,6 @@
 # - features/secondary/min_activationkey.feature
 # If the minion fails to bootstrap again.
 
-# TODO: This feature is not working within a proxy containerized environment
-#       due to the fact that the mgr-bootstrap command is not available in the proxy
-#       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
-
-@skip_if_containerized_server
 @skip_if_github_validation
 @scope_salt_ssh
 @ssh_minion
@@ -94,7 +89,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then "ssh_minion" should not be registered
 
   Scenario: Cleanup: register a Salt minion after SSH tunnel tests
-    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the proxy
+    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the server
     And I wait at most 10 seconds until Salt master sees "ssh_minion" as "unaccepted"
     And I accept "ssh_minion" key in the Salt master
     Then I should see "ssh_minion" via spacecmd

@@ -1,4 +1,4 @@
-:global(.old-theme)
+:global(.old-theme),
 :global(.new-theme) {
     .gap_right {
         margin-right: 10px

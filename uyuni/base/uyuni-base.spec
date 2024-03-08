@@ -102,6 +102,7 @@ mkdir -p %{buildroot}/usr/share/rhn/proxy
 mkdir -p %{buildroot}/var/spacewalk
 %endif
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
+mkdir -p %{buildroot}/srv/www/distributions
 
 %if 0%{?suse_version} >= 1500 || 0%{?rhel} >= 9
 %pre server
@@ -123,6 +124,7 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %files server
 %defattr(-,root,root)
 %dir %attr(755,%{apache_user}, root) /var/spacewalk
+%dir %attr(755,root,root) /srv/www/distributions
 %endif
 
 %files proxy
