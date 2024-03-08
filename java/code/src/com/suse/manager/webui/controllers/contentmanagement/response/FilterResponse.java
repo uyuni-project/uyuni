@@ -80,6 +80,10 @@ public class FilterResponse {
         this.name = nameIn;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setProjects(List<ImmutablePair<String, String>> projectsIn) {
          this.projects = projectsIn;
     }
