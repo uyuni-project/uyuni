@@ -597,6 +597,17 @@ Before('@containerized_server') do
   skip_this_scenario unless $is_containerized_server
 end
 
+# only test for excessive SCC accesses if SCC access is being logged
+Before('@srv_scc_access_logging') do
+  skip_this_scenario unless scc_access_logging_grain?
+end
+
+def scc_access_logging_grain?
+  cmd = 'grep "\"scc_access_logging\": true" /etc/salt/grains'
+  _out, code = get_target('server').run(cmd, check_errors: false)
+  code.zero?
+end
+
 # have more infos about the errors
 def print_server_logs
   $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
