@@ -6,7 +6,7 @@
 # If the client fails to be bootstrapped again.
 
 @scope_traditional_client
-Feature: Migrate a traditional client into a Salt minion
+Feature: Migrate a traditional client into a Salt minion using Web UI
   In order to move away from traditional clients
   As an authorized user
   I want to migrate these clients to Salt minions and have everything as before

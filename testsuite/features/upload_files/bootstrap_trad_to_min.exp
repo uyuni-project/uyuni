@@ -1,0 +1,8 @@
+set bootstrap_script [lindex $argv 0]
+set address [lindex $argv 1]
+set reactivation_key [lindex $argv 2]
+
+spawn -noecho bash -c "cat $bootstrap_script | ssh -o StrictHostKeyChecking=no root@$address REACTIVATION_KEY=$reactivation_key /bin/bash"
+expect "*?assword:*" { send "linux\r" }
+set timeout 250
+expect "?bootstrap complete?"
