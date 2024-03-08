@@ -23525,7 +23525,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
-        <source>Do not use strict mode</source>
+        <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
