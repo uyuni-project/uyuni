@@ -181,6 +181,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <many-to-many column="suse_installed_product_id" class="com.redhat.rhn.domain.server.InstalledProduct"/>
         </set>
 
+        <set name="modules" table="suseServerAppstream" inverse="true" cascade="all-delete-orphan">
+            <key column="server_id"/>
+            <one-to-many class="com.redhat.rhn.domain.server.ServerModule"/>
+        </set>
+
         <joined-subclass name="com.redhat.rhn.domain.server.MinionServer"
                          table="suseMinionInfo">
             <key column="server_id"/>

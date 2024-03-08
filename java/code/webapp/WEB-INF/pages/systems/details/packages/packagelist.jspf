@@ -55,8 +55,15 @@
               </c:when>
               <c:otherwise>
                   <c:out value="${current.nvre}"/>
+
               </c:otherwise>
           </c:choose>
+          <c:if test="${current.stream != null}">
+              <span class="label label-info">
+              <c:out value="${current.stream}"/>
+              </span>
+              &nbsp;
+          </c:if>
         </rl:column>
 
         <rl:column headerkey="packagelist.jsp.packagesummary" bound="false" sortable="true" sortattr="summary">

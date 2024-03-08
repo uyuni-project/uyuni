@@ -1,0 +1,20 @@
+include ./minion-header.jade
+
+#appstreams
+
+div#init_channels_modules(style="display: none")
+    | #{channelsModules}
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.endpoint = "#{endpoint}";
+    window.title = "#{title}";
+    window.view = "#{view}";
+
+script(type='text/javascript').
+    spaImportReactPage('appstreams/appstreams')
+        .then(function(module) {
+            module.renderer('appstreams', {
+                channelsModules: document.getElementById('init_channels_modules').textContent,
+            })
+        });
