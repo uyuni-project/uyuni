@@ -43,6 +43,9 @@ Feature: Setup containerized proxy
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
     And I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server to the proxy
 
+  Scenario: Set-up the containerized proxy service to support Avahi
+    When I add avahi hosts in containerized proxy configuration
+
   Scenario: Run a containerized proxy
     When I run "mgrpxy install podman /tmp/proxy_container_config.tar.gz" on "proxy"
 
