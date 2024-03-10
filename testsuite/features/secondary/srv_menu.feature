@@ -134,7 +134,6 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Organizations" link in the left menu
     And I should see a "Restart" link in the left menu
     And I should see a "Cobbler" link in the left menu
-    And I should see a "Bare-metal systems" link in the left menu
     And I should see a "Monitoring" link in the left menu
 
   Scenario: The ISS configuration submenu of the admin menu

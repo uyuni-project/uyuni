@@ -8,7 +8,6 @@
 # - features/secondary/buildhost_docker_auth_registry.feature
 # - features/secondary/buildhost_docker_build_image.feature
 # - features/secondary/buildhost_osimage_build_image.feature
-# - features/secondary/min_baremetal_discovery.feature
 # - features/secondary/min_bootstrap_api.feature
 # - features/secondary/min_bootstrap_reactivation.feature
 # - features/secondary/min_bootstrap_script.feature
