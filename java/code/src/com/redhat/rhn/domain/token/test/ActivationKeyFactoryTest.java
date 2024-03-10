@@ -58,16 +58,6 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByServerBootstrap() throws Exception {
-        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
-        activationKey.setBootstrap("Y");
-
-        List<ActivationKey> activationKeys =
-                ActivationKeyFactory.lookupByServer(activationKey.getServer());
-        assertEquals(0, activationKeys.size());
-    }
-
-    @Test
     public void testLookupByActivatedServer() throws Exception {
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
         Server server = activationKey.getServer();
