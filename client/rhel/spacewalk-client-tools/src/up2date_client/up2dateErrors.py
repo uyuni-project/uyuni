@@ -30,7 +30,6 @@ import OpenSSL
 from rhn.stringutils import ustr
 from up2date_client import config
 from up2date_client import up2dateLog
-from up2date_client.pkgplatform import getPlatform
 
 import sys
 sys.path = sys.path[1:] + sys.path[:1]

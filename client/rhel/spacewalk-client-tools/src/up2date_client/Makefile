@@ -3,20 +3,13 @@
 # files need them, such as the glade files. Be sure to run make in 
 # rhn-client-tools and not here.
 
-FILES		:= config hardware \
-		   haltree hardware_hal hardware_gudev \
-		   hardware_udev \
-		   up2dateUtils getMethod tui \
-		   up2dateLog rpmUtils rhnreg transaction \
-		   up2dateErrors rpcServer up2dateAuth \
-		   rhnPackageInfo rhnChannel \
-		   rhnHardware \
+FILES		:= config \
+		   up2dateUtils \
+		   up2dateLog transaction \
+		   up2dateErrors rpcServer \
 		   clientCaps capabilities \
 		   rhnserver \
-		   rhncli \
-		   rhnreg_constants \
-                   pkgplatform debUtils pkgUtils \
-                   pmPlugin
+           pkgplatform
 
 PYFILES 	:= $(addsuffix .py, $(FILES))
 INITFILE	:= __init__.py
