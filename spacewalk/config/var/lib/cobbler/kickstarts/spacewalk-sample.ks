@@ -64,7 +64,7 @@ rm -Rf /tmp/ks-tree-copy
 # --End Spacewalk command section--
 
 # begin cobbler snippet
-$SNIPPET('redhat_register')
+$SNIPPET('redhat_register_using_salt')
 # end cobbler snippet
 
 rhn_check

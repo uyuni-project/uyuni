@@ -21,7 +21,6 @@ all:
 	echo "Nothing to do"
 
 install:: all $(DIRS)
-	$(INSTALL_BIN) rhnreg_ks.py $(SBIN_DIR)/rhnreg_ks-$(PYTHONVERSION)
 	$(INSTALL_BIN) rhn_check.py $(SBIN_DIR)/rhn_check-$(PYTHONVERSION)
 
 # OTHER targets for internal use

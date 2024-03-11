@@ -442,14 +442,14 @@ make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
 %if 0%{?build_py2}
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
-        PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} %{?is_deb:PLATFORM=deb}
+        PREFIX=$RPM_BUILD_ROOT %{?is_deb:PLATFORM=deb}
 %endif
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
 make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
-        PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} %{?is_deb:PLATFORM=deb}
+        PREFIX=$RPM_BUILD_ROOT %{?is_deb:PLATFORM=deb}
 %endif
 
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
@@ -511,7 +511,6 @@ cd -
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 for i in \
     /usr/sbin/rhn_check \
-    /usr/sbin/rhnreg_ks \
 ; do
     ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
 done
@@ -553,7 +552,6 @@ make -f Makefile.rhn-client-tools test
 %doc doc/AUTHORS
 %{!?_licensedir:%global license %doc}
 %license doc/LICENSE
-%{_mandir}/man5/up2date.5*
 
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
@@ -649,7 +647,6 @@ make -f Makefile.rhn-client-tools test
 
 %files -n spacewalk-check
 %defattr(-,root,root,-)
-%{_mandir}/man8/rhn_check.8*
 %{_sbindir}/rhn_check
 %{_sbindir}/mgr_check
 
@@ -694,14 +691,10 @@ make -f Makefile.rhn-client-tools test
 
 %files -n spacewalk-client-setup
 %defattr(-,root,root,-)
-%{_mandir}/man8/rhnreg_ks.8*
-
-%{_sbindir}/rhnreg_ks
 
 %if 0%{?build_py2}
 %files -n python2-spacewalk-client-setup
 %defattr(-,root,root,-)
-%{_sbindir}/rhnreg_ks-%{python_version}
 %{python2_sitelib}/up2date_client/rhnreg.*
 %{python2_sitelib}/up2date_client/pmPlugin.*
 %{python2_sitelib}/up2date_client/tui.*
@@ -711,7 +704,6 @@ make -f Makefile.rhn-client-tools test
 %if 0%{?build_py3}
 %files -n python3-spacewalk-client-setup
 %defattr(-,root,root,-)
-%{_sbindir}/rhnreg_ks-%{python3_version}
 %{python3_sitelib}/up2date_client/rhnreg.*
 %{python3_sitelib}/up2date_client/pmPlugin.*
 %{python3_sitelib}/up2date_client/tui.*
