@@ -48,11 +48,11 @@ import java.util.Set;
  */
 public class VirtualHostManagerProcessor {
 
+    private static final Logger LOGGER = LogManager.getLogger(VirtualHostManagerProcessor.class);
     private final VirtualHostManager virtualHostManager;
     private final Map<String, HostJson> virtualHosts;
     private Set<Server> serversToDelete;
     private Set<VirtualHostManagerNodeInfo> nodesToDelete;
-    private Logger log;
     private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /**
@@ -62,9 +62,7 @@ public class VirtualHostManagerProcessor {
      * @param managerIn the virtual host manager
      * @param virtualHostsIn the virtual hosts information from JSON
      */
-    public VirtualHostManagerProcessor(VirtualHostManager managerIn,
-            Map<String, HostJson> virtualHostsIn) {
-        this.log = LogManager.getLogger(VirtualHostManagerProcessor.class);
+    public VirtualHostManagerProcessor(VirtualHostManager managerIn, Map<String, HostJson> virtualHostsIn) {
         this.virtualHostManager = managerIn;
         this.virtualHosts = virtualHostsIn;
         this.serversToDelete = new HashSet<>();
@@ -79,24 +77,24 @@ public class VirtualHostManagerProcessor {
      * mapping.
      */
     public void processMapping() {
-        log.debug("Processing Virtual Host Manager: {}", virtualHostManager);
+        LOGGER.debug("Processing Virtual Host Manager: {}", virtualHostManager);
         if (virtualHosts == null) {
-            log.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.",
+            LOGGER.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.",
                     virtualHostManager.getLabel());
             return;
         }
         serversToDelete.addAll(virtualHostManager.getServers());
         nodesToDelete.addAll(virtualHostManager.getNodes());
         virtualHosts.forEach((key, value) -> {
-            log.debug("Processing host: {}", key);
+            LOGGER.debug("Processing host: {}", key);
             processVirtualHost(key, value);
         });
         serversToDelete.forEach(srv -> {
-            log.debug("Removing link to virtual host: {}", srv.getName());
+            LOGGER.debug("Removing link to virtual host: {}", srv.getName());
             virtualHostManager.removeServer(srv);
         });
         nodesToDelete.forEach(node -> {
-            log.debug("Removing virtual host node: {}", node.getName());
+            LOGGER.debug("Removing virtual host node: {}", node.getName());
             virtualHostManager.removeNode(node);
         });
     }
@@ -178,7 +176,7 @@ public class VirtualHostManagerProcessor {
                 VirtualInstanceFactory.getInstance().getVirtualInstanceType(candidate);
         if (type == null) { // fallback
             type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-            log.warn("Can't find virtual instance type for string '{}'. Defaulting to '{}'", candidate, type);
+            LOGGER.warn("Can't find virtual instance type for string '{}'. Defaulting to '{}'", candidate, type);
         }
         return type;
     }
