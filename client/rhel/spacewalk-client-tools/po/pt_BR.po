@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 15:35+0200\n"
+"POT-Creation-Date: 2024-04-08 15:38+0200\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -59,943 +59,6 @@ msgstr ""
 msgid "%s was not found"
 msgstr "%s não foi encontrado"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "Obtendo a lista de pacotes instalados no sistema"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "Erro ao ler as informações da cpu:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "Erro ao ler as informações de memória do sistema:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "Erro ao ler as informações de rede:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "Erro ao ler as informações do método de instalação:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "Erro ao ler as informações da interface de rede:"
-
-#: ../src/up2date_client/hardware.py:1118
-msgid "Error reading network FQDNs information:"
-msgstr "Erro ao ler informações de FQDNs de rede:"
-
-#: ../src/up2date_client/hardware.py:1125
-msgid "Error reading system info:"
-msgstr "Erro ao ler as informações do sistema:"
-
-#: ../src/up2date_client/hardware.py:1132
-msgid "Error reading machine info:"
-msgstr "Erro ao ler as informações da máquina:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "Incapaz de Localizar o SystemID"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr ""
-"Este sistema não poderá ser atualizado até que seja associado a um canal."
-
-#: ../src/up2date_client/rhncli.py:65
-msgid "Show additional output. Repeat for more detail."
-msgstr "Mostrar saída adicional. Repita para mais detalhes."
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "Especificar um proxy http para usar"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Especificar um nome de usuário para usar com um proxy http autenticado"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Especificar uma senha para usar com um proxy http autenticado"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"Abortado.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "Ocorreu um erro inesperado no sistema operacional: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "Uma conexão foi tentada com uma URI mal formada.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "Uma conexão foi tentada com uma URI mal formada: %s.\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Ocorreu algum tipo de erro de E/S: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "Ocorreu um erro no SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"Uma causa comum para esse erro é o relógio do sistema estar incorreto. "
-"Verifique se o relógio do sistema está correto.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "Ocorreu um erro de criptografia no SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Ocorreu um erro de autenticação: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "Você deve ser root para poder rodar %s"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licenciado sob os termos da GPLv2."
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "Ocorreu um erro:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "Verifique /var/log/up2date para maiores informações"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr "Uyuni"
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Copyright © 2006--2014 Red Hat, Inc. Todos os direitos reservados."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr "Insira seu URL do {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-"Insira a localização de seu servidor {PRODUCT_NAME} e de seu certificado "
-"SSL. O certificado SSL é necessário apenas se você for se conectar por https "
-"(recomendado)."
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr "URL {PRODUCT_NAME}:"
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr "Certificado SSL:"
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Você deve inserir um URL válido do {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-"Se você está usando https você deve entrar com a localização de um "
-"certificado SSL válido."
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Tentando contactar o servidor Spacewalk."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Estamos tentando contatar o servidor do {PRODUCT_NAME} em %s."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "Um proxy foi especificado em %s."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "Registro do sistema"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"O assistente vai guiá-lo através do processo de conexão do seu sistema ao "
-"Red Hat Satellite para receber atualizações de software, incluindo "
-"atualizações de segurança, para manter o seu sistema suportado e em "
-"conformidade.  Neste momento você precisará do seguinte:\n"
-"\n"
-" * Uma conexão de rede\n"
-" * Seu Login & senha da {PRODUCT_NAME}\n"
-" * A localização de um servidor {PRODUCT_NAME} ou Proxy\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Por que Eu Devo Conectar ao {PRODUCT_NAME}? ..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "Por que Registrar"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"Conectando seu sistema ao {PRODUCT_NAME} permite-lhe tirar o máximo de "
-"proveito dos benefícios de uma assinatura paga, incluindo:"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "Segurança & Atualizações:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "Downloads & Atualizações:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "Suporte:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "Conformidade:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"Receba as últimas atualizações de software, incluindo atualizações de "
-"segurança, mantendo este sistema atualizado e seguro."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"Baixar imagens de instalação para lançamentos do, incluindo novos "
-"lançamentos."
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"Acesso aos especialistas de suporte técnico para obter ajuda com quaisquer "
-"problemas que você possa encontrar com este sistema."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-"Esteja em conformidade com seu contrato de assinatura e gerencie suas "
-"assinaturas para sistemas conectados à sua conta."
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"Dica: A SUSE respeita a sua privacidade: https://www.suse.com/company/legal/"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "Leve-me de volta para o processo de registro"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "Atualização de Software Não Configurada"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"Tem certeza que você não quer conectar seu sistema ao {PRODUCT_NAME}? Você "
-"deixará de obter os benefícios de uma assinatura do Red Hat Enterprise "
-"Linux:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"Você não poderá usufruir destes privilégios de assinatura sem conectar o seu "
-"sistema ao {PRODUCT_NAME}.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "Leve-me de volta ao processo de configuração."
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "Registrarei depois."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr "Conta {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"Por favor entre sua informação de login para o {PRODUCT_NAME} %s:\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr "Login {PRODUCT_NAME}:"
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "Login:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "Senha:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-"Dica: Esqueceu seu nome de usuário ou senha?  Contate o Administrador da "
-"Organização do seu {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "Por favor digite um login desejado."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "Por favor digite e verifique uma senha."
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr "Versão do Lançamento do Sistema Operacional"
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "Versão do Sistema Operacional:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr " Versão Menor: "
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "Somente Atualizações Limitadas"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "Todas atualizações disponíveis"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "Confirme a seleção da versão de sistema operacional"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-"Seu sistema será subscrito ao canal base de software para receber todas as "
-"atualizações disponíveis."
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "Criar perfil - Hardware"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"Um Nome de Perfil é um nome descritivo criado por você para identificar o "
-"Perfil deste Sistema nas páginas Web do {PRODUCT_NAME}. Opcionalmente, "
-"inclua o número de série ou de identificação do computador."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"Informações adicionais de hardware incluindo dispositivos PCI, tamanhos de "
-"disco e pontos de montagem serão inclusas no perfil."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "Incluir as seguintes informações sobre hardware e rede:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "Criar Perfil - Pacotes"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"As informações sobre o RPM são importantes para determinar quais são os "
-"pacotes relevantes para este sistema."
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr ""
-"Incluir os pacotes RPM instalados neste sistema em meu Perfil de Sistema"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr "Você pode desmarcar pacotes individuais abaixo desmarcando-os."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "Criando Lista de Pacotes"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*Endereço de E-mail:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr "Sistema já registrado"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr ""
-"Parece que este sistema já foi configurado para atualizações de software:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "Tem certeza que gostaria de continuar?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-"Este sistema já foi registrado usando o Red Hat Subscription Management.\n"
-"\n"
-"Seu sistema está sendo registrado novamente usando o Red Hat Satellite ou "
-"tecnologia Red Hat Proxy Satellite. A Red Hat recomenda que os clientes só "
-"registar uma vez.\n"
-"\n"
-"Para saber mais sobre RHN Classic/Red Hat Satellite registro e tecnologias "
-"por favor consulte este artigo da Base de Conhecimento: https://access."
-"redhat.com/kb/docs/DOC-45563"
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Enviar Informações de Perfil para {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-"Nós terminamos de coletar informações para o Perfil do Sistema.\n"
-"\n"
-"Clique em \"Próximo\" para enviar este Perfil de Sistema ao {PRODUCT_NAME}. "
-"Clique em \"Cancelar\" e nenhuma informação será enviada.  Você pode "
-"executar o programa de registro mais tarde digitando `rhn_register` na linha "
-"de comandos."
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr "Enviando Perfil para {PRODUCT_NAME}"
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr "Atualizações configuradas"
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"Agora você pode executar '%s update' a partir da linha de comando do sistema "
-"para obter as atualizações de software mais recentes do {PRODUCT_NAME}. Você "
-"precisará executá-lo periodicamente para obter as atualizações mais "
-"recentes. Como alternativa, você pode configurar este sistema para "
-"atualizações automáticas de software (também conhecidas como 'atualização "
-"automática de erratas') através da interface da web do {PRODUCT_NAME}. (As "
-"instruções para isso estão no capítulo 6 do Guia de Referência da RHN, "
-"disponível no botão 'Ajuda' na principal interface da web do {PRODUCT_NAME}.)"
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "Revisar Subscrição"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "Por favor revise os detalhes da subscrição listados abaixo:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"O número de instalação %s foi ativado durante a conexão inicial deste "
-"sistema ao {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Subscrições foram ativadas para os seguintes produtos/serviços:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "Subscrições de Canal de Software:"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr "Esse sistema receberá atualizações dos seguintes canais de software:"
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-"Aviso: Apenas produtos listados acima receberão atualizações e suporte. Se "
-"você gostaria de receber atualizações para produtos adicionais, por favor "
-"autentique-se à interface web do seu {PRODUCT_NAME} e subscreva esse sistema "
-"para os canais de software apropriados."
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"Aviso: %s não está presente, não foi possível ativá-lo.\n"
-"As atualizações automáticas não funcionarão."
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr "Nota: %s foi ativado."
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"Aviso: ocorreu um erro durante a ativação de %s.\n"
-"%s não está ativado.\n"
-"As atualizações automáticas não funcionarão."
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"Não foi possível subscrevê-lo aos seguintes canais de software porque não "
-"haviam subscrições suficientes na sua conta:"
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-"Esse sistema não pode se inscrever em quaisquer canais de software. Seu "
-"sistema não receberá quaisquer atualizações de software para mantê-lo seguro "
-"e suportado. Entre em contato com o administrador do seu {PRODUCT_NAME} "
-"sobre esse problema. Uma vez que você torne a apropriada inscrição ativa "
-"disponível em sua conta, você pode navegar para o perfil desse sistema na "
-"interface web do {PRODUCT_NAME} e inscrever esse sistema em canais de "
-"software através de software > aba canais de software."
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr "Nível de Serviço:"
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-"Dependendo de quais módulos do {PRODUCT_NAME} estejam associados a um "
-"sistema, você vai experimentar diferentes benefícios. Os seguintes módulos "
-"do {PRODUCT_NAME} estão associados a este sistema:"
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"Este sistema não pôde ser associado aos seguintes módulos do {PRODUCT_NAME} "
-"porque não haviam subscrições suficientes disponíveis na sua conta:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-"Tipo de gerenciamento: atualizações automáticas, agrupamento de sistemas, "
-"permissões de sistemas, criação de perfil de pacote de sistema, "
-"provisionamento bare-metal, provisionamento de estado existente, reversões, "
-"gerenciamento de configuração"
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-"Módulo de virtualização: atualizações de software para um número limitado de "
-"convidados neste sistema."
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-"<b>Aviso:</b> Todos os sistemas convidados que você criar neste sistema e se "
-"registrar no {PRODUCT_NAME} consumirão assinaturas além da assinatura deste "
-"sistema host. Você precisará: (1) disponibilizar um direito do sistema de "
-"virtualização e (2) aplicar esse direito ao sistema na interface da Web da "
-"{PRODUCT_NAME}, se você não desejar que os convidados virtuais deste sistema "
-"consumam assinaturas adicionais."
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-"Este sistema não pôde ser associado a quaisquer módulos de nível de serviço "
-"do {PRODUCT_NAME}. Este sistema não receberá quaisquer atualizações de "
-"software para mantê-lo seguro e suportado. Informe seu administrador "
-"{PRODUCT_NAME} sobre esse problema. Uma vez que você tenha feito com que as "
-"inscrições ativas apropriadas estejam disponíveis na sua conta, você pode "
-"navegar até o perfil deste sistema na interface Web do {PRODUCT_NAME}, "
-"excluir o perfil, e reconectar este sistema ao {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-"Chave de ativação padrão Universal detectada\n"
-"A chave de ativação universal padrão foi detectada em sua conta. Isto "
-"significa que um conjunto de propriedades (subscrições de canais de "
-"software, instalações de pacotes, participações em grupos de sistemas, etc) "
-"para a conexão de seu sistema para o {PRODUCT_NAME} ou {PRODUCT_NAME} Proxy "
-"tem sido determinada pela chave de ativação, em vez de seu número de "
-"instalação. Você também pode consultar o Guia de Referência do "
-"{PRODUCT_NAME} para mais detalhes sobre as chaves de ativação.\n"
-"Chave de ativação padrão Universal: %s"
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "Erro Fatal"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Aviso"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-"Não é possível contatar o {PRODUCT_NAME}.\n"
-"\n"
-"Verifique novamente a localização fornecida - é '%s' correto?\n"
-"Se não for, você pode corrigir e tentar novamente.\n"
-"\n"
-"Certifique-se de que a conexão de rede neste sistema está operacional.\n"
-"\n"
-"Este sistema não será capaz de receber atualizações de software sem se "
-"conectar a um servidor/proxy do {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "Arquitetura: %s, Lançamento do SO: %s, Versão do SO: %s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-"Este servidor não suporta a funcionalidade requerida por esta versão do "
-"cliente de configuração de atualizações de software. Por favor tente "
-"novamente com um servidor mais novo."
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-"<b><span size=\"16000\">Arquivo de Certificado Incompatível</span></b>\n"
-"\n"
-"O certificado que você forneceu, <b>%s</b>, não é compatível com o servidor "
-"do {PRODUCT_NAME} em <b>%s</b>. Talvez você queira verificar novamente se "
-"você forneceu um arquivo de certificado válido. Tem certeza que você "
-"forneceu o certificado correto, e que o arquivo do certificado não foi "
-"corrompido?\n"
-"\n"
-"Por favor tente novamente com um arquivo de certificado diferente."
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-"<b><span size=\"12000\">Arquivo de Certificado Incompatível</span></b>\n"
-"\n"
-" O certificado está expirado. Por favor certifique-se que possui o "
-"certificado correto e a hora de seu sistema está correta."
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-"Por favor, verifique os valores de sslCACert e serverURL no arquivo /etc/"
-"sysconfig/rhn/up2date. Você pode fazer o serverURL usar http ao invés de "
-"https, ou você baixar o certificado SSL de seu {PRODUCT_NAME}, colocá-lo em /"
-"usr/share/rhn e garantir que o sslCACert aponta para ele."
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"Problema ao registrar o sistema.\n"
-"\n"
-"Uma chave de ativação de âmbito global padrão limita o número de sistemas "
-"que podem conectar à organização do {PRODUCT_NAME} associada com o seu "
-"login. Para permitir que o sistema conecte, por favor contate o seu "
-"administrador da organização do {PRODUCT_NAME} para aumentar o número de "
-"sistemas permitidos a conectar ou para desabilitar esta "
-"chave de ativação de âmbito global padrão."
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-"\n"
-" Dica: Versões menores com um '*' são atualmente suportadas pela by Red "
-"Hat.\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-"Aviso:Você não será capaz de limitar este sistema para uma versão menor que "
-"é mais antiga do que a recente versão menor se você selecionar esta opção.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"Seu sistema será subscrito a(o) %s \n"
-"canal base de software. Você não será\n"
-"capaz de mover este sistema para uma versão anterior\n"
-"(você será capaz de mover para uma versão mais nova)\n"
-"Tem certeza que quer continuar?"
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "OK"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "Erro"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "Próximo"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "Voltar"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "Não, Cancelar"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "Sim, Continuar"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "Pressione <espaço> para desmarcar esta opção."
-
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Erro: Servidor indisponível. Por favor tente novamente mais tarde."
@@ -1012,154 +75,41 @@ msgstr "Conexão interrompida pelo usuário"
 msgid "Server has refused connection due to high load"
 msgstr "O servidor recusou a conexão devido a carga elevada"
 
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr "Localização do Spacewalk:"
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "ID do Sistema:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "O servidor indicou um erro:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "Ocorreu um erro ao comunicar com o servidor de registro:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "Nome do perfil:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "Versão: "
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "Modelo da CPU: "
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "Nome de host: "
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "Velocidade da CPU: "
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "Endereço IP: "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "Memória: "
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s megabytes"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Problema ao registrar o sistema:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Problema ao registrar o sistema."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Problema ao gravar o id do sistema no disco."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "Problema ao enviar perfil do hardware:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "Problema ao enviar perfil do hardware."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "Erro ao enviar a lista de pacotes:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "Problema ao enviar a lista de pacotes."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Não foi possível abrir %s\n"
-"%s não está ativado.\n"
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "Concluir"
-
-#: ../src/up2date_client/tui.py:1210
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr ""
-"Você especificou um protocolo inválido. Apenas https e http são permitidos."
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> entre elementos  |  <Espaço> seleciona  |  <F12> próxima "
-"tela"
-
-#: ../src/up2date_client/tui.py:1345
-#, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "Você deve executar o programa de registro {PRODUCT_NAME} como root."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "a classe %s não possui atributo '%s'"
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "Erro no RPM.  A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "Erro na senha. A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "Erro de dependência de RPM. A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "Erro ao comunicar com o servidor. A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "Arquivo Não Encontrado: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "Erro de atraso do servidor.  A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "Erro ao validar os dados no servidor:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
@@ -1169,19 +119,19 @@ msgstr ""
 "O Red Hat Network Classic não é suportado.\n"
 "    "
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "O número de instalação é inválido"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Erro ao analisar a informação oem (oemInfo) no campo:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr "Erro de rede: "
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1217,9 +167,896 @@ msgstr ""
 "tentar novamente para evitar\n"
 "     exigindo um direito de gerenciamento."
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "Tentando executar mais do que uma instância do mgr_check. Saindo.\n"
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "Obtendo a lista de pacotes instalados no sistema"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "Erro ao ler as informações da cpu:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "Erro ao ler as informações de memória do sistema:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "Erro ao ler as informações de rede:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "Erro ao ler as informações do método de instalação:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "Erro ao ler as informações da interface de rede:"
+
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "Erro ao ler informações de FQDNs de rede:"
+
+#~ msgid "Error reading system info:"
+#~ msgstr "Erro ao ler as informações do sistema:"
+
+#~ msgid "Error reading machine info:"
+#~ msgstr "Erro ao ler as informações da máquina:"
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "Incapaz de Localizar o SystemID"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr ""
+#~ "Este sistema não poderá ser atualizado até que seja associado a um canal."
+
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "Mostrar saída adicional. Repita para mais detalhes."
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "Especificar um proxy http para usar"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr ""
+#~ "Especificar um nome de usuário para usar com um proxy http autenticado"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "Especificar uma senha para usar com um proxy http autenticado"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Abortado.\n"
+
+#, python-format
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "Ocorreu um erro inesperado no sistema operacional: %s\n"
+
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "Uma conexão foi tentada com uma URI mal formada.\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr "Uma conexão foi tentada com uma URI mal formada: %s.\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "Ocorreu algum tipo de erro de E/S: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "Ocorreu um erro no SSL: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "Uma causa comum para esse erro é o relógio do sistema estar incorreto. "
+#~ "Verifique se o relógio do sistema está correto.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "Ocorreu um erro de criptografia no SSL: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "Ocorreu um erro de autenticação: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "Você deve ser root para poder rodar %s"
+
+#, python-format
+#~ msgid ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licensed under the terms of the GPLv2."
+#~ msgstr ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licenciado sob os termos da GPLv2."
+
+#~ msgid "An error has occurred:"
+#~ msgstr "Ocorreu um erro:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "Verifique /var/log/up2date para maiores informações"
+
+#~ msgid "Uyuni"
+#~ msgstr "Uyuni"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "Copyright © 2006--2014 Red Hat, Inc. Todos os direitos reservados."
+
+#, python-brace-format
+#~ msgid "Enter your {PRODUCT_NAME} URL."
+#~ msgstr "Insira seu URL do {PRODUCT_NAME}."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
+#~ "certificate. The SSL certificate is only required if you will be "
+#~ "connecting over https (recommended)."
+#~ msgstr ""
+#~ "Insira a localização de seu servidor {PRODUCT_NAME} e de seu certificado "
+#~ "SSL. O certificado SSL é necessário apenas se você for se conectar por "
+#~ "https (recomendado)."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} URL:"
+#~ msgstr "URL {PRODUCT_NAME}:"
+
+#~ msgid "SSL certificate:"
+#~ msgstr "Certificado SSL:"
+
+#, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "Você deve inserir um URL válido do {PRODUCT_NAME}."
+
+#~ msgid ""
+#~ "If you are using https you must enter the location of a valid SSL "
+#~ "certificate."
+#~ msgstr ""
+#~ "Se você está usando https você deve entrar com a localização de um "
+#~ "certificado SSL válido."
+
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Tentando contactar o servidor Spacewalk."
+
+#, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "Estamos tentando contatar o servidor do {PRODUCT_NAME} em %s."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "Um proxy foi especificado em %s."
+
+#~ msgid "System Registration"
+#~ msgstr "Registro do sistema"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "O assistente vai guiá-lo através do processo de conexão do seu sistema ao "
+#~ "Red Hat Satellite para receber atualizações de software, incluindo "
+#~ "atualizações de segurança, para manter o seu sistema suportado e em "
+#~ "conformidade.  Neste momento você precisará do seguinte:\n"
+#~ "\n"
+#~ " * Uma conexão de rede\n"
+#~ " * Seu Login & senha da {PRODUCT_NAME}\n"
+#~ " * A localização de um servidor {PRODUCT_NAME} ou Proxy\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "Por que Eu Devo Conectar ao {PRODUCT_NAME}? ..."
+
+#~ msgid "Why Register"
+#~ msgstr "Por que Registrar"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Conectando seu sistema ao {PRODUCT_NAME} permite-lhe tirar o máximo de "
+#~ "proveito dos benefícios de uma assinatura paga, incluindo:"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "Segurança & Atualizações:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "Downloads & Atualizações:"
+
+#~ msgid "Support:"
+#~ msgstr "Suporte:"
+
+#~ msgid "Compliance:"
+#~ msgstr "Conformidade:"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "Receba as últimas atualizações de software, incluindo atualizações de "
+#~ "segurança, mantendo este sistema atualizado e seguro."
+
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "Baixar imagens de instalação para lançamentos do, incluindo novos "
+#~ "lançamentos."
+
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "Acesso aos especialistas de suporte técnico para obter ajuda com "
+#~ "quaisquer problemas que você possa encontrar com este sistema."
+
+#~ msgid ""
+#~ "Stay in compliance with your subscription agreement and manage "
+#~ "subscriptions for systems connected to your account."
+#~ msgstr ""
+#~ "Esteja em conformidade com seu contrato de assinatura e gerencie suas "
+#~ "assinaturas para sistemas conectados à sua conta."
+
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "Dica: A SUSE respeita a sua privacidade: https://www.suse.com/company/"
+#~ "legal/"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "Leve-me de volta para o processo de registro"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "Atualização de Software Não Configurada"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "Tem certeza que você não quer conectar seu sistema ao {PRODUCT_NAME}? "
+#~ "Você deixará de obter os benefícios de uma assinatura do Red Hat "
+#~ "Enterprise Linux:\n"
+
+#, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "Você não poderá usufruir destes privilégios de assinatura sem conectar o "
+#~ "seu sistema ao {PRODUCT_NAME}.\n"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "Leve-me de volta ao processo de configuração."
+
+#~ msgid "I'll register later."
+#~ msgstr "Registrarei depois."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Account"
+#~ msgstr "Conta {PRODUCT_NAME}"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Por favor entre sua informação de login para o {PRODUCT_NAME} %s:\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Login:"
+#~ msgstr "Login {PRODUCT_NAME}:"
+
+#~ msgid "Login:"
+#~ msgstr "Login:"
+
+#~ msgid "Password:"
+#~ msgstr "Senha:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "Dica: Esqueceu seu nome de usuário ou senha?  Contate o Administrador da "
+#~ "Organização do seu {PRODUCT_NAME}."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "Por favor digite um login desejado."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "Por favor digite e verifique uma senha."
+
+#~ msgid "Operating System Release Version"
+#~ msgstr "Versão do Lançamento do Sistema Operacional"
+
+#~ msgid "Operating System version:"
+#~ msgstr "Versão do Sistema Operacional:"
+
+#~ msgid " Minor Release: "
+#~ msgstr " Versão Menor: "
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "Somente Atualizações Limitadas"
+
+#~ msgid "All available updates"
+#~ msgstr "Todas atualizações disponíveis"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "Confirme a seleção da versão de sistema operacional"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr ""
+#~ "Seu sistema será subscrito ao canal base de software para receber todas "
+#~ "as atualizações disponíveis."
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "Criar perfil - Hardware"
+
+#, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Um Nome de Perfil é um nome descritivo criado por você para identificar o "
+#~ "Perfil deste Sistema nas páginas Web do {PRODUCT_NAME}. Opcionalmente, "
+#~ "inclua o número de série ou de identificação do computador."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "Informações adicionais de hardware incluindo dispositivos PCI, tamanhos "
+#~ "de disco e pontos de montagem serão inclusas no perfil."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "Incluir as seguintes informações sobre hardware e rede:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "Criar Perfil - Pacotes"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "As informações sobre o RPM são importantes para determinar quais são os "
+#~ "pacotes relevantes para este sistema."
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr ""
+#~ "Incluir os pacotes RPM instalados neste sistema em meu Perfil de Sistema"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr "Você pode desmarcar pacotes individuais abaixo desmarcando-os."
+
+#~ msgid "Building Package List"
+#~ msgstr "Criando Lista de Pacotes"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*Endereço de E-mail:"
+
+#~ msgid "System Already Registered"
+#~ msgstr "Sistema já registrado"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr ""
+#~ "Parece que este sistema já foi configurado para atualizações de software:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "Tem certeza que gostaria de continuar?"
+
+#~ msgid ""
+#~ "This system has already been registered using Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "Your system is being registered again using Red Hat Satellite or Red Hat "
+#~ "Satellite Proxy technology. Red Hat recommends that customers only "
+#~ "register once.\n"
+#~ "\n"
+#~ "To learn more about RHN Classic/Red Hat Satellite registration and "
+#~ "technologies please consult this Knowledge Base Article: https://access."
+#~ "redhat.com/kb/docs/DOC-45563"
+#~ msgstr ""
+#~ "Este sistema já foi registrado usando o Red Hat Subscription Management.\n"
+#~ "\n"
+#~ "Seu sistema está sendo registrado novamente usando o Red Hat Satellite ou "
+#~ "tecnologia Red Hat Proxy Satellite. A Red Hat recomenda que os clientes "
+#~ "só registar uma vez.\n"
+#~ "\n"
+#~ "Para saber mais sobre RHN Classic/Red Hat Satellite registro e "
+#~ "tecnologias por favor consulte este artigo da Base de Conhecimento: "
+#~ "https://access.redhat.com/kb/docs/DOC-45563"
+
+#, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "Enviar Informações de Perfil para {PRODUCT_NAME}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "Nós terminamos de coletar informações para o Perfil do Sistema.\n"
+#~ "\n"
+#~ "Clique em \"Próximo\" para enviar este Perfil de Sistema ao "
+#~ "{PRODUCT_NAME}. Clique em \"Cancelar\" e nenhuma informação será "
+#~ "enviada.  Você pode executar o programa de registro mais tarde digitando "
+#~ "`rhn_register` na linha de comandos."
+
+#, python-brace-format
+#~ msgid "Sending Profile to {PRODUCT_NAME}"
+#~ msgstr "Enviando Perfil para {PRODUCT_NAME}"
+
+#~ msgid "Updates Configured"
+#~ msgstr "Atualizações configuradas"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "Agora você pode executar '%s update' a partir da linha de comando do "
+#~ "sistema para obter as atualizações de software mais recentes do "
+#~ "{PRODUCT_NAME}. Você precisará executá-lo periodicamente para obter as "
+#~ "atualizações mais recentes. Como alternativa, você pode configurar este "
+#~ "sistema para atualizações automáticas de software (também conhecidas como "
+#~ "'atualização automática de erratas') através da interface da web do "
+#~ "{PRODUCT_NAME}. (As instruções para isso estão no capítulo 6 do Guia de "
+#~ "Referência da RHN, disponível no botão 'Ajuda' na principal interface da "
+#~ "web do {PRODUCT_NAME}.)"
+
+#~ msgid "Review Subscription"
+#~ msgstr "Revisar Subscrição"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "Por favor revise os detalhes da subscrição listados abaixo:"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "O número de instalação %s foi ativado durante a conexão inicial deste "
+#~ "sistema ao {PRODUCT_NAME}."
+
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "Subscrições foram ativadas para os seguintes produtos/serviços:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "Subscrições de Canal de Software:"
+
+#~ msgid ""
+#~ "This system will receive updates from the following software channels:"
+#~ msgstr ""
+#~ "Esse sistema receberá atualizações dos seguintes canais de software:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your {PRODUCT_NAME} web interface and subscribe this "
+#~ "system to the appropriate software channels."
+#~ msgstr ""
+#~ "Aviso: Apenas produtos listados acima receberão atualizações e suporte. "
+#~ "Se você gostaria de receber atualizações para produtos adicionais, por "
+#~ "favor autentique-se à interface web do seu {PRODUCT_NAME} e subscreva "
+#~ "esse sistema para os canais de software apropriados."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Aviso: %s não está presente, não foi possível ativá-lo.\n"
+#~ "As atualizações automáticas não funcionarão."
+
+#, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "Nota: %s foi ativado."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Aviso: ocorreu um erro durante a ativação de %s.\n"
+#~ "%s não está ativado.\n"
+#~ "As atualizações automáticas não funcionarão."
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "Não foi possível subscrevê-lo aos seguintes canais de software porque não "
+#~ "haviam subscrições suficientes na sua conta:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to subscribe to any software channels. Your system "
+#~ "will not receive any software updates to keep it secure and supported. "
+#~ "Contact your {PRODUCT_NAME} administrator about this problem. Once you "
+#~ "make the appropriate active subscriptions available in your account, you "
+#~ "may browse to this system's profile in the {PRODUCT_NAME} web interface "
+#~ "and subscribe this system to software channels via the software > "
+#~ "software channels tab."
+#~ msgstr ""
+#~ "Esse sistema não pode se inscrever em quaisquer canais de software. Seu "
+#~ "sistema não receberá quaisquer atualizações de software para mantê-lo "
+#~ "seguro e suportado. Entre em contato com o administrador do seu "
+#~ "{PRODUCT_NAME} sobre esse problema. Uma vez que você torne a apropriada "
+#~ "inscrição ativa disponível em sua conta, você pode navegar para o perfil "
+#~ "desse sistema na interface web do {PRODUCT_NAME} e inscrever esse sistema "
+#~ "em canais de software através de software > aba canais de software."
+
+#~ msgid "Service Level:"
+#~ msgstr "Nível de Serviço:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Depending on what {PRODUCT_NAME} system types are associated with a "
+#~ "system, you'll enjoy different benefits. The following are the "
+#~ "{PRODUCT_NAME} system types associated with this system:"
+#~ msgstr ""
+#~ "Dependendo de quais módulos do {PRODUCT_NAME} estejam associados a um "
+#~ "sistema, você vai experimentar diferentes benefícios. Os seguintes "
+#~ "módulos do {PRODUCT_NAME} estão associados a este sistema:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "Este sistema não pôde ser associado aos seguintes módulos do "
+#~ "{PRODUCT_NAME} porque não haviam subscrições suficientes disponíveis na "
+#~ "sua conta:"
+
+#~ msgid ""
+#~ "Management type: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "Tipo de gerenciamento: atualizações automáticas, agrupamento de sistemas, "
+#~ "permissões de sistemas, criação de perfil de pacote de sistema, "
+#~ "provisionamento bare-metal, provisionamento de estado existente, "
+#~ "reversões, gerenciamento de configuração"
+
+#~ msgid ""
+#~ "Virtualization type: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr ""
+#~ "Módulo de virtualização: atualizações de software para um número limitado "
+#~ "de convidados neste sistema."
+
+#, python-brace-format
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
+#~ "system's subscription. You will need to: (1) make a virtualization system "
+#~ "entitlement available and (2) apply that system entitlement to this "
+#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
+#~ "of this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>Aviso:</b> Todos os sistemas convidados que você criar neste sistema e "
+#~ "se registrar no {PRODUCT_NAME} consumirão assinaturas além da assinatura "
+#~ "deste sistema host. Você precisará: (1) disponibilizar um direito do "
+#~ "sistema de virtualização e (2) aplicar esse direito ao sistema na "
+#~ "interface da Web da {PRODUCT_NAME}, se você não desejar que os convidados "
+#~ "virtuais deste sistema consumam assinaturas adicionais."
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with any {PRODUCT_NAME} system "
+#~ "types. This system will not receive any software updates to keep it "
+#~ "secure and supported. Contace your {PRODUCT_NAME} administrator about "
+#~ "this problem. Once you make the appropriate active subscriptions "
+#~ "available in your account, you may browse to this system's profile in the "
+#~ "{PRODUCT_NAME} web interface, delete the profile, and re-connect this "
+#~ "system to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Este sistema não pôde ser associado a quaisquer módulos de nível de "
+#~ "serviço do {PRODUCT_NAME}. Este sistema não receberá quaisquer "
+#~ "atualizações de software para mantê-lo seguro e suportado. Informe seu "
+#~ "administrador {PRODUCT_NAME} sobre esse problema. Uma vez que você tenha "
+#~ "feito com que as inscrições ativas apropriadas estejam disponíveis na sua "
+#~ "conta, você pode navegar até o perfil deste sistema na interface Web do "
+#~ "{PRODUCT_NAME}, excluir o perfil, e reconectar este sistema ao "
+#~ "{PRODUCT_NAME}."
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Universal default activation key detected\n"
+#~ "A universal default activation key was detected in your account. This "
+#~ "means that a set of properties (software channel subscriptions, package "
+#~ "installations, system group memberships, etc.) for your system's "
+#~ "connection to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been "
+#~ "determined by the activation key rather than your installation number.  "
+#~ "You may also refer to the {PRODUCT_NAME} Reference Guide for more details "
+#~ "about activation keys. \n"
+#~ "Universal Default activation key: %s"
+#~ msgstr ""
+#~ "Chave de ativação padrão Universal detectada\n"
+#~ "A chave de ativação universal padrão foi detectada em sua conta. Isto "
+#~ "significa que um conjunto de propriedades (subscrições de canais de "
+#~ "software, instalações de pacotes, participações em grupos de sistemas, "
+#~ "etc) para a conexão de seu sistema para o {PRODUCT_NAME} ou "
+#~ "{PRODUCT_NAME} Proxy tem sido determinada pela chave de ativação, em vez "
+#~ "de seu número de instalação. Você também pode consultar o Guia de "
+#~ "Referência do {PRODUCT_NAME} para mais detalhes sobre as chaves de "
+#~ "ativação.\n"
+#~ "Chave de ativação padrão Universal: %s"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Erro Fatal"
+
+#~ msgid "Warning"
+#~ msgstr "Aviso"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "We can't contact {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ msgstr ""
+#~ "Não é possível contatar o {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Verifique novamente a localização fornecida - é '%s' correto?\n"
+#~ "Se não for, você pode corrigir e tentar novamente.\n"
+#~ "\n"
+#~ "Certifique-se de que a conexão de rede neste sistema está operacional.\n"
+#~ "\n"
+#~ "Este sistema não será capaz de receber atualizações de software sem se "
+#~ "conectar a um servidor/proxy do {PRODUCT_NAME}"
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr "Arquitetura: %s, Lançamento do SO: %s, Versão do SO: %s"
+
+#~ msgid ""
+#~ "This server doesn't support functionality needed by this version of the "
+#~ "software update setup client. Please try again with a newer server."
+#~ msgstr ""
+#~ "Este servidor não suporta a funcionalidade requerida por esta versão do "
+#~ "cliente de configuração de atualizações de software. Por favor tente "
+#~ "novamente com um servidor mais novo."
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the "
+#~ "{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+#~ "have provided a valid certificate file. Are you sure you have provided "
+#~ "the correct certificate, and that the certificate file has not been "
+#~ "corrupted?\n"
+#~ "\n"
+#~ "Please try again with a different certificate file."
+#~ msgstr ""
+#~ "<b><span size=\"16000\">Arquivo de Certificado Incompatível</span></b>\n"
+#~ "\n"
+#~ "O certificado que você forneceu, <b>%s</b>, não é compatível com o "
+#~ "servidor do {PRODUCT_NAME} em <b>%s</b>. Talvez você queira verificar "
+#~ "novamente se você forneceu um arquivo de certificado válido. Tem certeza "
+#~ "que você forneceu o certificado correto, e que o arquivo do certificado "
+#~ "não foi corrompido?\n"
+#~ "\n"
+#~ "Por favor tente novamente com um arquivo de certificado diferente."
+
+#~ msgid ""
+#~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ " The certificate is expired. Please ensure you have the correct  "
+#~ "certificate and your system time is correct."
+#~ msgstr ""
+#~ "<b><span size=\"12000\">Arquivo de Certificado Incompatível</span></b>\n"
+#~ "\n"
+#~ " O certificado está expirado. Por favor certifique-se que possui o "
+#~ "certificado correto e a hora de seu sistema está correta."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
+#~ "up2date. You can either make the serverURL use http instead of https, or "
+#~ "you can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/"
+#~ "share/rhn, and ensure sslCACert points to it."
+#~ msgstr ""
+#~ "Por favor, verifique os valores de sslCACert e serverURL no arquivo /etc/"
+#~ "sysconfig/rhn/up2date. Você pode fazer o serverURL usar http ao invés de "
+#~ "https, ou você baixar o certificado SSL de seu {PRODUCT_NAME}, colocá-lo "
+#~ "em /usr/share/rhn e garantir que o sslCACert aponta para ele."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "Problema ao registrar o sistema.\n"
+#~ "\n"
+#~ "Uma chave de ativação de âmbito global padrão limita o número de sistemas "
+#~ "que podem conectar à organização do {PRODUCT_NAME} associada com o seu "
+#~ "login. Para permitir que o sistema conecte, por favor contate o seu "
+#~ "administrador da organização do {PRODUCT_NAME} para aumentar o número de "
+#~ "sistemas permitidos a conectar ou para desabilitar esta "
+#~ "chave de ativação de âmbito global padrão."
+
+#~ msgid ""
+#~ "\n"
+#~ " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ " Dica: Versões menores com um '*' são atualmente suportadas pela by Red "
+#~ "Hat.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Warning:You will not be able to limit this system to minor release that "
+#~ "is older than the recent minor release if you select this option.\n"
+#~ msgstr ""
+#~ "Aviso:Você não será capaz de limitar este sistema para uma versão menor "
+#~ "que é mais antiga do que a recente versão menor se você selecionar esta "
+#~ "opção.\n"
+
+#, python-format
+#~ msgid ""
+#~ "Your system will be subscribed to %s \n"
+#~ "base software channel. You will not be\n"
+#~ "able to move this system to an earlier release\n"
+#~ "(you will be able to move to a newer release).\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "Seu sistema será subscrito a(o) %s \n"
+#~ "canal base de software. Você não será\n"
+#~ "capaz de mover este sistema para uma versão anterior\n"
+#~ "(você será capaz de mover para uma versão mais nova)\n"
+#~ "Tem certeza que quer continuar?"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Error"
+#~ msgstr "Erro"
+
+#~ msgid "Next"
+#~ msgstr "Próximo"
+
+#~ msgid "Back"
+#~ msgstr "Voltar"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancelar"
+
+#~ msgid "No, Cancel"
+#~ msgstr "Não, Cancelar"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "Sim, Continuar"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "Pressione <espaço> para desmarcar esta opção."
+
+#~ msgid "Spacewalk Location:"
+#~ msgstr "Localização do Spacewalk:"
+
+#~ msgid "System ID:"
+#~ msgstr "ID do Sistema:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "O servidor indicou um erro:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr "Ocorreu um erro ao comunicar com o servidor de registro:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "Nome do perfil:"
+
+#~ msgid "Version: "
+#~ msgstr "Versão: "
+
+#~ msgid "CPU model: "
+#~ msgstr "Modelo da CPU: "
+
+#~ msgid "Hostname: "
+#~ msgstr "Nome de host: "
+
+#~ msgid "CPU speed: "
+#~ msgstr "Velocidade da CPU: "
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "Endereço IP: "
+
+#~ msgid "Memory: "
+#~ msgstr "Memória: "
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s megabytes"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "Problema ao registrar o sistema:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "Problema ao registrar o sistema."
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "Problema ao gravar o id do sistema no disco."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "Problema ao enviar perfil do hardware:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "Problema ao enviar perfil do hardware."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "Erro ao enviar a lista de pacotes:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "Problema ao enviar a lista de pacotes."
+
+#, python-format
+#~ msgid ""
+#~ "Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Não foi possível abrir %s\n"
+#~ "%s não está ativado.\n"
+
+#~ msgid "Finish"
+#~ msgstr "Concluir"
+
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr ""
+#~ "Você especificou um protocolo inválido. Apenas https e http são "
+#~ "permitidos."
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> entre elementos  |  <Espaço> seleciona  |  <F12> "
+#~ "próxima tela"
+
+#, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "Você deve executar o programa de registro {PRODUCT_NAME} como root."
+
+#~ msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+#~ msgstr "Tentando executar mais do que uma instância do mgr_check. Saindo.\n"
 
 #~ msgid "Specify a profilename"
 #~ msgstr "Especifique um nome de perfil (profilename)"

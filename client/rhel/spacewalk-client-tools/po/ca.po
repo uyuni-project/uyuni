@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 15:35+0200\n"
+"POT-Creation-Date: 2024-04-08 15:38+0200\n"
 "PO-Revision-Date: 2024-02-22 13:42+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -43,955 +43,6 @@ msgstr ""
 msgid "%s was not found"
 msgstr "no s'ha trobat %s"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "Obtenció de la llista dels paquets instal·lats al sistema"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "Error en llegir informació de la cpu:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "Error en llegir informació de la memòria del sistema:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "Error en llegir la informació de la xarxa:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "Error en llegir la informació del mètode d'instal·lació:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "Error en llegir informació de la interfície de xarxa:"
-
-#: ../src/up2date_client/hardware.py:1118
-msgid "Error reading network FQDNs information:"
-msgstr "Error en llegir la informació dels FQDN de xarxa:"
-
-#: ../src/up2date_client/hardware.py:1125
-msgid "Error reading system info:"
-msgstr "Error en llegir la informació del sistema:"
-
-#: ../src/up2date_client/hardware.py:1132
-msgid "Error reading machine info:"
-msgstr "Error en llegir la informació de la màquina:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "No es pot localitzar el SystemId"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr ""
-"Fins que no s'associï a un canal, aquest sistema no es pot actualitzar."
-
-#: ../src/up2date_client/rhncli.py:65
-msgid "Show additional output. Repeat for more detail."
-msgstr "Mostra la sortida addicional. Repetiu-ho per obtenir-ne més detalls."
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "Especifica quin servidor intermediari d'http s'utilitza"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr ""
-"Especifica quin nom d'usuari s'utilitza amb un servidor intermediari d'http "
-"que requereixi autenticació"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr ""
-"Especifica quina contrasenya s'utilitza amb un servidor intermediari d'http "
-"que requereixi autenticació"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"S'ha avortat.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "S'ha produït un error inesperat en el SO: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "Es va intentar una connexió amb una URI amb format incorrecte.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "Es va intentar una connexió amb una URI amb format incorrecte: %s.\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Hi va haver algun tipus d'error amb l'E/S: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "Hi va haver un error d'SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"Un motiu freqüent d'aquest error és a causa d'una hora incorrecta del "
-"sistema. Verifiqueu que l'hora en aquest sistema sigui correcta.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "Hi va haver un error de xifrat SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Hi va haver un error d'autenticació: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "Heu de ser root per a executar %s"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Llicenciat sota els termes de la GPLv2."
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "S'ha produït un error:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "Consulteu /var/log/up2date per a més informació"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr "Uyuni"
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Copyright © 2006--2014 Red Hat, Inc. Tots els drets reservats."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr "Introduïu el vostre URL de {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-"Introduïu la ubicació del vostre servidor de {PRODUCT_NAME} i del seu "
-"certificat SSL. El certificat SSL només és necessari si us connecteu per "
-"https (recomanat)."
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr "URL de {PRODUCT_NAME}:"
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr "Certificat SSL:"
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Heu d'introduir un URL de {PRODUCT_NAME} vàlid."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-"Si esteu utilitzant https haureu d'introduir la ubicació d'un certificat SSL "
-"vàlid."
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-msgid "Attempting to contact the Spacewalk server."
-msgstr "S'està intentant de contactar amb el servidor d'Spacewalk."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Estem intentant contactar amb el servidor de {PRODUCT_NAME} a %s."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "Es va especificar un servidor intermediari a %s."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "Registrament del sistema"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"Aquest assistent us guiarà a través de la connexió del sistema a "
-"{PRODUCT_NAME} per rebre actualitzacions de programari, incloses les "
-"actualitzacions de seguretat, per mantenir el sistema compatible i conforme. "
-"En aquest moment necessitareu el següent:\n"
-"\n"
-" * Una connexió de xarxa\n"
-" * El vostre inici de sessió i contrasenya de {PRODUCT_NAME}\n"
-" * La ubicació d'un servidor o intermediari de {PRODUCT_NAME}\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Per què m'he de connectar a {PRODUCT_NAME}?..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "Per què registrar"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"Connectar el sistema a {PRODUCT_NAME} us permet aprofitar al màxim els "
-"avantatges d'una subscripció de pagament, per exemple:"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "Seguretat i actualitzacions:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "Baixades i actualitzacions:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "Suport:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "Conformitat:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"Rebeu les últimes actualitzacions de programari, incloses les "
-"actualitzacions de seguretat, per mantenir aquest sistema actualitzat i "
-"segur."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"Baixeu imatges d'instal·lació per a versions del sistema, incloses les "
-"versions noves."
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"Accediu als experts de suport tècnic per ajudar-vos amb qualsevol problema "
-"que pugueu trobar amb aquest sistema."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-"Romandre en compliment amb el vostre acord de subscripció i gestionar les "
-"subscripcions per als sistemes connectats al vostre compte."
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"Consell: SUSE valora la vostra privadesa: https://www.suse.com/company/legal/"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "Torna'm a portar al registrament"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "No s'ha configurat l'actualització de programari"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"Segur que no voleu connectar el sistema a {PRODUCT_NAME}? Us perdreu els "
-"avantatges d'una subscripció d'SLES / RHEL:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"No podreu aprofitar aquests privilegis de subscripció sense connectar el "
-"sistema a {PRODUCT_NAME}.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "Torna'm a portar al procés de configuració."
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "Registraré més tard."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr "Compte de {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"Introduïu la informació d'inici de sessió per a %s {PRODUCT_NAME}:\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr "Inici de sessió a {PRODUCT_NAME}:"
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "Usuari:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "Contrasenya:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-"Consell: has oblidat el nom d'usuari o la contrasenya? Contacteu amb "
-"l'administrador de l'organització {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "Introduïu l'usuari que voleu utilitzar."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "Si us plau, introduïu una contrasenya i verifiqueu-la."
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr "Versió del llançament del sistema operatiu"
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "Versió del sistema operatiu:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr " Publicació menor: "
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "Tan sols actualitzacions limitades"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "Totes les actualitzacions disponibles"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "Confirmació de la selecció del llançament del sistema operatiu"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-"Es subscriurà el vostre sistema al canal de programari base per a rebre "
-"totes les actualitzacions disponibles."
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "Creació del perfil - maquinari"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"Un nom de perfil és un nom descriptiu que trieu per identificar aquest "
-"perfil de sistema a les pàgines web de {PRODUCT_NAME}. Opcionalment, inclou "
-"un número de sèrie o d'identificació de l'ordinador."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"S'inclourà al perfil a informació addicional del maquinari, que inclou els "
-"dispositius PCI, les mides dels discs i els punts de muntatge."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "Inclou la següent informació quant al maquinari i la xarxa:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "Creació del perfil - paquets"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"La informació dels RPM és important per determinar quins paquets de "
-"programari actualitzats són necessaris per al vostre sistema."
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr ""
-"Inclou al meu perfil del sistema els paquets RPM instal·lats en aquest "
-"sistema"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr ""
-"Podeu de-seleccionar paquets individuals desactivant-los a continuació."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "Construcció de la llista dels paquets"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*Adreça de correu electrònic:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr "El sistema ja es va registrar"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr ""
-"Pel que sembla aquest sistema ja ha estat configurat per a les "
-"actualitzacions de programari:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "Segur que voleu continuar?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-"Aquest sistema ja ha estat registrat mitjançant Red Hat Subscription "
-"Management.\n"
-"\n"
-"El vostre sistema s'està registrant de nou mitjançant la tecnologia del Red "
-"Hat Satellite o del Red Hat Satellite Proxy. Red Hat recomana que els "
-"clients tan sols es registrin una vegada.\n"
-"\n"
-"Per a conèixer més detalls quant al registrament i les tecnologies de RHN "
-"Classic/Red Hat Satellite, podeu consultar aquest article de la base de "
-"coneixement: https://access.redhat.com/kb/docs/DOC-45563"
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Envieu la informació del perfil a {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-"Hem acabat de recopilar informació per al perfil del sistema.\n"
-"\n"
-"Premeu Següent per enviar aquest perfil del sistema a {PRODUCT_NAME}. Feu "
-"clic a Cancel·la i no s'enviarà cap informació. Podeu executar el programa "
-"de registre més tard escrivint rhn_register a la línia d'ordres."
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr "S'envia el perfil a {PRODUCT_NAME}"
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr "Es van configurar les actualitzacions"
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"Ara podeu executar \"%s update\" des de la línia d'ordres d'aquest sistema "
-"per obtenir les últimes actualitzacions de programari de {PRODUCT_NAME}. "
-"Haureu d'executar-la periòdicament per obtenir les últimes actualitzacions. "
-"Com a alternativa, podeu configurar aquest sistema per a actualitzacions "
-"automàtiques de programari (també conegudes com a \"actualització automàtica "
-"d'errates\") mitjançant la interfície web de {PRODUCT_NAME}. (Les "
-"instruccions per fer-ho són a la Guia de referència de {PRODUCT_NAME}, "
-"disponible al botó d'Ajuda de la interfície web principal de {PRODUCT_NAME})."
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "Revisa la subscripció"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "Reviseu a sota els detalls de la subscripció:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"El número d'instal·lació %s es va activar durant la connexió inicial "
-"d'aquest sistema a {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "S'han activat les subscripcions per als productes / serveis següents:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "Subscripcions als canals de programari:"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr ""
-"Aquest sistema rebrà les actualitzacions des dels següents canals de "
-"programari:"
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-"Avís: només el producte instal·lat indicat anteriorment rebrà "
-"actualitzacions i assistència. Si voleu rebre actualitzacions de productes "
-"addicionals, inicieu sessió a la interfície web de {PRODUCT_NAME} i "
-"subscriviu aquest sistema als canals de programari adequats."
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"Avís: %s no és present, no s'ha pogut habilitar.\n"
-"Les actualitzacions automàtiques no funcionaran."
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr "Nota: %s s'ha habilitat."
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"Avís: hi ha hagut un error durant l'habilitació de %s.\n"
-"%s no s'ha habilitat.\n"
-"Les actualitzacions automàtiques no funcionaran."
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"No us vàreu poder subscriure als següents canals de programari perquè no hi "
-"havien suficients subscripcions disponibles en el vostre compte:"
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-"Aquest sistema no s'ha pogut subscriure a cap canal de programari. El "
-"sistema no rebrà cap actualització de programari per mantenir-lo segur i "
-"compatible. Contacteu amb l'administrador de {PRODUCT_NAME} sobre aquest "
-"problema. Un cop hàgiu fet les subscripcions actives adequades disponibles "
-"al vostre compte, podeu navegar fins al perfil d'aquest sistema a la "
-"interfície web de {PRODUCT_NAME} i subscriure'l als canals de programari "
-"mitjançant la pestanya Programari > Canals de programari."
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr "Nivell del servei:"
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-"En funció dels tipus de sistemes de {PRODUCT_NAME} associats a un sistema, "
-"gaudireu de diferents avantatges. Els següents són els tipus de sistemes de "
-"{PRODUCT_NAME} associats a aquest sistema:"
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"Aquest sistema no s'ha pogut associar amb els tipus de sistema de "
-"{PRODUCT_NAME} següents perquè no hi havia prou subscripcions disponibles al "
-"vostre compte:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-"Tipus de gestió: actualitzacions automàtiques, agrupació de sistemes, "
-"permisos de sistemes, perfils de paquets del sistema, subministrament "
-"complet, subministrament d'estat existent, retrocessos, gestió de la "
-"configuració"
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-"Tipus de virtualització: actualitzacions de programari per a un nombre "
-"limitat de convidats virtuals en aquest sistema."
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-"<b>Avís:</b> qualsevol sistema convidat que creeu en aquest sistema i "
-"registreu a {PRODUCT_NAME} consumirà subscripcions més enllà de la "
-"subscripció d'aquest sistema amfitrió. Haureu de (1) fer disponible un dret "
-"de sistema de virtualització i (2) aplicar aquest dret de sistema a aquest "
-"sistema a la interfície web de {PRODUCT_NAME} si no voleu que els convidats "
-"virtuals d'aquest sistema consumeixin subscripcions addicionals."
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-"Aquest sistema no s'ha pogut associar amb cap tipus de sistema de "
-"{PRODUCT_NAME}. Aquest sistema no rebrà cap actualització de programari per "
-"mantenir-lo segur i compatible. Contacteu amb l'administrador de "
-"{PRODUCT_NAME} sobre aquest problema. Un cop hàgiu fet que les subscripcions "
-"actives adequades estiguin disponibles al compte, podeu navegar fins al "
-"perfil d'aquest sistema a la interfície web de {PRODUCT_NAME}, suprimir-lo i "
-"tornar a connectar-lo a {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-"S'ha detectat la clau d'activació predeterminada universal.\n"
-"S'ha detectat una clau d'activació predeterminada universal al vostre "
-"compte. Això vol dir que un conjunt de propietats (subscripcions a canals de "
-"programari, instal·lacions de paquets, membres de grups de sistemes, etc.) "
-"per a la connexió del vostre sistema al servidor de {PRODUCT_NAME} o al "
-"servidor intermediari de {PRODUCT_NAME} s'han determinat per la clau "
-"d'activació en lloc del vostre número d'instal·lació. També podeu consultar "
-"la Guia de referència de {PRODUCT_NAME} per obtenir més detalls sobre les "
-"claus d'activació.\n"
-"Clau d'activació per defecte universal: %s"
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "Error fatal"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Advertència"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-"No podem contactar amb {PRODUCT_NAME}.\n"
-"\n"
-"Comproveu la ubicació proporcionada. És correcte \"%s\"?\n"
-"Si no, podeu corregir-ho i tornar-ho a provar.\n"
-"\n"
-"Assegureu-vos que la connexió de xarxa d'aquest sistema estigui operativa.\n"
-"\n"
-"Aquest sistema no podrà rebre correctament actualitzacions de programari "
-"sense connectar-se a un servidor / intermediari de {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "Arquitectura: %s, Llançament del SO: %s, Versió del SO: %s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-"Aquest servidor no suporta la funcionalitat requerida per aquesta versió del "
-"client de configuració de l'actualització de programari. Torneu-ho a "
-"intentar amb un servidor més nou."
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-"<b><span size=\"16000\">Fitxer de certificat incompatible</span></b>\n"
-"\n"
-"El certificat que heu proporcionat, <b>%s</b>, no és compatible amb el "
-"servidor de {PRODUCT_NAME} a <b>%s</b>. És possible que vulgueu tornar a "
-"comprovar que heu proporcionat un fitxer de certificat vàlid. Segur que heu "
-"proporcionat el certificat correcte i que el fitxer de certificat no s'ha "
-"fet malbé?\n"
-"\n"
-"Torneu-ho a provar amb un fitxer de certificat diferent."
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-"<b><span size=\"12000\">El fitxer del certificat no és compatible</span></"
-"b>\n"
-"\n"
-" El certificat ha vençut. Assegureu-vos que teniu el certificat correcte i "
-"que l'hora del sistema sigui correcta."
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-"Verifiqueu els valors de sslCACert i serverURL a /etc/sysconfig/rhn/up2date. "
-"Podeu fer que l'URL del servidor usi http en comptes d'https, o bé podeu "
-"baixar el certificat SSL de {PRODUCT_NAME}, col·locar-lo a /usr/share/rhn i "
-"assegurar-vos que sslCACert hi apunti."
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"Problema amb el sistema de registre\n"
-"\n"
-"Una clau d'activació predeterminada universal limita el nombre de sistemes "
-"que es poden connectar a l'organització {PRODUCT_NAME} associada amb el "
-"vostre inici de sessió. Per permetre que aquest sistema es connecti, poseu-"
-"vos en contacte amb l'administrador de l'organització de {PRODUCT_NAME} per "
-"augmentar el nombre de sistemes autoritzats a connectar-s'hi o per "
-"desactivar aquesta clau d'activació predeterminada universal."
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-"\n"
-" Consell: Els llançaments menors amb un '*' estan suportats actualment per "
-"Red Hat.\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-"Advertència: Si seleccioneu aquesta opció, no podreu limitar aquest sistema "
-"al llançament menor que sigui més antic que l'actual llançament menor.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"El vostre sistema se subscriurà al canal de \n"
-"programari base %s. No podreu moure\n"
-"aquest sistema a un llançament anterior\n"
-"(podreu moure'l a un llançament posterior).\n"
-"Segur que voleu continuar?"
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "D'acord"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "Error"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "Següent"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "Anterior"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "Cancel·la"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "No, cancel·la"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "Sí, continua"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "Premeu <espai> per a de-seleccionar l'opció."
-
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Error: El servidor no està disponible. Si us plau, proveu-ho més tard."
@@ -1008,153 +59,41 @@ msgstr "La connexió va ser avortada per l'usuari"
 msgid "Server has refused connection due to high load"
 msgstr "El servidor ha refusat la connexió a causa d'una càrrega elevada"
 
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr "Ubicació de l'Spacewalk:"
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "Id. del sistema:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "El servidor ha indicat un error:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "Hi va haver un error en comunicar amb el servidor de registrament:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "Nom del perfil:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "Versió: "
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "Model de CPU: "
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "Nom d'amfitrió: "
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "Velocitat de la CPU: "
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "Adreça IP: "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "Memòria: "
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s megabytes"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Problema en registrar el sistema:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Hi ha hagut un problema en registrar el sistema."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Hi ha hagut un problema en escriure l'id. del sistema al disc."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "Problema en enviar el perfil del maquinari:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "Hi ha hagut un problema en enviar el perfil del maquinari."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "Problema en enviar la llista dels paquets:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "Hi ha hagut un problema en enviar la llista dels paquets."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"No s'ha pogut obrir %s\n"
-"%s no està habilitat.\n"
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "Finalitza"
-
-#: ../src/up2date_client/tui.py:1210
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr "Heu especificat un protocol no vàlid. Només es permeten https i http."
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> entre elements  |  <Espai> selecciona  |  <F12> pantalla "
-"següent"
-
-#: ../src/up2date_client/tui.py:1345
-#, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "Heu d'executar el programa de registre de {PRODUCT_NAME} com a arrel."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "la classe %s no té cap atribut '%s'"
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "S'ha produït un error en l'RPM. El missatge era:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "S'ha produït un error en la contrasenya. El missatge era:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "S'ha produït un error de dependències d'RPM. El missatge era:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "S'ha produït un error en comunicar amb el servidor. El missatge era:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "No s'ha trobat el fitxer: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "S'ha produït un error de retard del servidor. El missatge era:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "Error en validar les dades al servidor:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
@@ -1164,19 +103,19 @@ msgstr ""
 "Red Hat Network Classic no és compatible.\n"
 "    "
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "El número d'instal·lació no és vàlid"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Error en analitzar sintàcticament el fitxer oemInfo al camp:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr "Error de xarxa: "
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1212,9 +151,910 @@ msgstr ""
 "ho a intentar per evitar\n"
 "    que requereixin un dret de gestió."
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "S'intenta executar més d'una instància de mgr_check. Se surt.\n"
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "Obtenció de la llista dels paquets instal·lats al sistema"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "Error en llegir informació de la cpu:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "Error en llegir informació de la memòria del sistema:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "Error en llegir la informació de la xarxa:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "Error en llegir la informació del mètode d'instal·lació:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "Error en llegir informació de la interfície de xarxa:"
+
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "Error en llegir la informació dels FQDN de xarxa:"
+
+#~ msgid "Error reading system info:"
+#~ msgstr "Error en llegir la informació del sistema:"
+
+#~ msgid "Error reading machine info:"
+#~ msgstr "Error en llegir la informació de la màquina:"
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "No es pot localitzar el SystemId"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr ""
+#~ "Fins que no s'associï a un canal, aquest sistema no es pot actualitzar."
+
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr ""
+#~ "Mostra la sortida addicional. Repetiu-ho per obtenir-ne més detalls."
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "Especifica quin servidor intermediari d'http s'utilitza"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr ""
+#~ "Especifica quin nom d'usuari s'utilitza amb un servidor intermediari "
+#~ "d'http que requereixi autenticació"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr ""
+#~ "Especifica quina contrasenya s'utilitza amb un servidor intermediari "
+#~ "d'http que requereixi autenticació"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "S'ha avortat.\n"
+
+#, python-format
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "S'ha produït un error inesperat en el SO: %s\n"
+
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "Es va intentar una connexió amb una URI amb format incorrecte.\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr ""
+#~ "Es va intentar una connexió amb una URI amb format incorrecte: %s.\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "Hi va haver algun tipus d'error amb l'E/S: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "Hi va haver un error d'SSL: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "Un motiu freqüent d'aquest error és a causa d'una hora incorrecta del "
+#~ "sistema. Verifiqueu que l'hora en aquest sistema sigui correcta.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "Hi va haver un error de xifrat SSL: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "Hi va haver un error d'autenticació: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "Heu de ser root per a executar %s"
+
+#, python-format
+#~ msgid ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licensed under the terms of the GPLv2."
+#~ msgstr ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Llicenciat sota els termes de la GPLv2."
+
+#~ msgid "An error has occurred:"
+#~ msgstr "S'ha produït un error:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "Consulteu /var/log/up2date per a més informació"
+
+#~ msgid "Uyuni"
+#~ msgstr "Uyuni"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "Copyright © 2006--2014 Red Hat, Inc. Tots els drets reservats."
+
+#, python-brace-format
+#~ msgid "Enter your {PRODUCT_NAME} URL."
+#~ msgstr "Introduïu el vostre URL de {PRODUCT_NAME}."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
+#~ "certificate. The SSL certificate is only required if you will be "
+#~ "connecting over https (recommended)."
+#~ msgstr ""
+#~ "Introduïu la ubicació del vostre servidor de {PRODUCT_NAME} i del seu "
+#~ "certificat SSL. El certificat SSL només és necessari si us connecteu per "
+#~ "https (recomanat)."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} URL:"
+#~ msgstr "URL de {PRODUCT_NAME}:"
+
+#~ msgid "SSL certificate:"
+#~ msgstr "Certificat SSL:"
+
+#, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "Heu d'introduir un URL de {PRODUCT_NAME} vàlid."
+
+#~ msgid ""
+#~ "If you are using https you must enter the location of a valid SSL "
+#~ "certificate."
+#~ msgstr ""
+#~ "Si esteu utilitzant https haureu d'introduir la ubicació d'un certificat "
+#~ "SSL vàlid."
+
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "S'està intentant de contactar amb el servidor d'Spacewalk."
+
+#, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "Estem intentant contactar amb el servidor de {PRODUCT_NAME} a %s."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "Es va especificar un servidor intermediari a %s."
+
+#~ msgid "System Registration"
+#~ msgstr "Registrament del sistema"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Aquest assistent us guiarà a través de la connexió del sistema a "
+#~ "{PRODUCT_NAME} per rebre actualitzacions de programari, incloses les "
+#~ "actualitzacions de seguretat, per mantenir el sistema compatible i "
+#~ "conforme. En aquest moment necessitareu el següent:\n"
+#~ "\n"
+#~ " * Una connexió de xarxa\n"
+#~ " * El vostre inici de sessió i contrasenya de {PRODUCT_NAME}\n"
+#~ " * La ubicació d'un servidor o intermediari de {PRODUCT_NAME}\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "Per què m'he de connectar a {PRODUCT_NAME}?..."
+
+#~ msgid "Why Register"
+#~ msgstr "Per què registrar"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Connectar el sistema a {PRODUCT_NAME} us permet aprofitar al màxim els "
+#~ "avantatges d'una subscripció de pagament, per exemple:"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "Seguretat i actualitzacions:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "Baixades i actualitzacions:"
+
+#~ msgid "Support:"
+#~ msgstr "Suport:"
+
+#~ msgid "Compliance:"
+#~ msgstr "Conformitat:"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "Rebeu les últimes actualitzacions de programari, incloses les "
+#~ "actualitzacions de seguretat, per mantenir aquest sistema actualitzat i "
+#~ "segur."
+
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "Baixeu imatges d'instal·lació per a versions del sistema, incloses les "
+#~ "versions noves."
+
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "Accediu als experts de suport tècnic per ajudar-vos amb qualsevol "
+#~ "problema que pugueu trobar amb aquest sistema."
+
+#~ msgid ""
+#~ "Stay in compliance with your subscription agreement and manage "
+#~ "subscriptions for systems connected to your account."
+#~ msgstr ""
+#~ "Romandre en compliment amb el vostre acord de subscripció i gestionar les "
+#~ "subscripcions per als sistemes connectats al vostre compte."
+
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "Consell: SUSE valora la vostra privadesa: https://www.suse.com/company/"
+#~ "legal/"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "Torna'm a portar al registrament"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "No s'ha configurat l'actualització de programari"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "Segur que no voleu connectar el sistema a {PRODUCT_NAME}? Us perdreu els "
+#~ "avantatges d'una subscripció d'SLES / RHEL:\n"
+
+#, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "No podreu aprofitar aquests privilegis de subscripció sense connectar el "
+#~ "sistema a {PRODUCT_NAME}.\n"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "Torna'm a portar al procés de configuració."
+
+#~ msgid "I'll register later."
+#~ msgstr "Registraré més tard."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Account"
+#~ msgstr "Compte de {PRODUCT_NAME}"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Introduïu la informació d'inici de sessió per a %s {PRODUCT_NAME}:\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Login:"
+#~ msgstr "Inici de sessió a {PRODUCT_NAME}:"
+
+#~ msgid "Login:"
+#~ msgstr "Usuari:"
+
+#~ msgid "Password:"
+#~ msgstr "Contrasenya:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "Consell: has oblidat el nom d'usuari o la contrasenya? Contacteu amb "
+#~ "l'administrador de l'organització {PRODUCT_NAME}."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "Introduïu l'usuari que voleu utilitzar."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "Si us plau, introduïu una contrasenya i verifiqueu-la."
+
+#~ msgid "Operating System Release Version"
+#~ msgstr "Versió del llançament del sistema operatiu"
+
+#~ msgid "Operating System version:"
+#~ msgstr "Versió del sistema operatiu:"
+
+#~ msgid " Minor Release: "
+#~ msgstr " Publicació menor: "
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "Tan sols actualitzacions limitades"
+
+#~ msgid "All available updates"
+#~ msgstr "Totes les actualitzacions disponibles"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "Confirmació de la selecció del llançament del sistema operatiu"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr ""
+#~ "Es subscriurà el vostre sistema al canal de programari base per a rebre "
+#~ "totes les actualitzacions disponibles."
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "Creació del perfil - maquinari"
+
+#, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Un nom de perfil és un nom descriptiu que trieu per identificar aquest "
+#~ "perfil de sistema a les pàgines web de {PRODUCT_NAME}. Opcionalment, "
+#~ "inclou un número de sèrie o d'identificació de l'ordinador."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "S'inclourà al perfil a informació addicional del maquinari, que inclou "
+#~ "els dispositius PCI, les mides dels discs i els punts de muntatge."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "Inclou la següent informació quant al maquinari i la xarxa:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "Creació del perfil - paquets"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "La informació dels RPM és important per determinar quins paquets de "
+#~ "programari actualitzats són necessaris per al vostre sistema."
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr ""
+#~ "Inclou al meu perfil del sistema els paquets RPM instal·lats en aquest "
+#~ "sistema"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr ""
+#~ "Podeu de-seleccionar paquets individuals desactivant-los a continuació."
+
+#~ msgid "Building Package List"
+#~ msgstr "Construcció de la llista dels paquets"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*Adreça de correu electrònic:"
+
+#~ msgid "System Already Registered"
+#~ msgstr "El sistema ja es va registrar"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr ""
+#~ "Pel que sembla aquest sistema ja ha estat configurat per a les "
+#~ "actualitzacions de programari:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "Segur que voleu continuar?"
+
+#~ msgid ""
+#~ "This system has already been registered using Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "Your system is being registered again using Red Hat Satellite or Red Hat "
+#~ "Satellite Proxy technology. Red Hat recommends that customers only "
+#~ "register once.\n"
+#~ "\n"
+#~ "To learn more about RHN Classic/Red Hat Satellite registration and "
+#~ "technologies please consult this Knowledge Base Article: https://access."
+#~ "redhat.com/kb/docs/DOC-45563"
+#~ msgstr ""
+#~ "Aquest sistema ja ha estat registrat mitjançant Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "El vostre sistema s'està registrant de nou mitjançant la tecnologia del "
+#~ "Red Hat Satellite o del Red Hat Satellite Proxy. Red Hat recomana que els "
+#~ "clients tan sols es registrin una vegada.\n"
+#~ "\n"
+#~ "Per a conèixer més detalls quant al registrament i les tecnologies de RHN "
+#~ "Classic/Red Hat Satellite, podeu consultar aquest article de la base de "
+#~ "coneixement: https://access.redhat.com/kb/docs/DOC-45563"
+
+#, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "Envieu la informació del perfil a {PRODUCT_NAME}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "Hem acabat de recopilar informació per al perfil del sistema.\n"
+#~ "\n"
+#~ "Premeu Següent per enviar aquest perfil del sistema a {PRODUCT_NAME}. Feu "
+#~ "clic a Cancel·la i no s'enviarà cap informació. Podeu executar el "
+#~ "programa de registre més tard escrivint rhn_register a la línia d'ordres."
+
+#, python-brace-format
+#~ msgid "Sending Profile to {PRODUCT_NAME}"
+#~ msgstr "S'envia el perfil a {PRODUCT_NAME}"
+
+#~ msgid "Updates Configured"
+#~ msgstr "Es van configurar les actualitzacions"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "Ara podeu executar \"%s update\" des de la línia d'ordres d'aquest "
+#~ "sistema per obtenir les últimes actualitzacions de programari de "
+#~ "{PRODUCT_NAME}. Haureu d'executar-la periòdicament per obtenir les "
+#~ "últimes actualitzacions. Com a alternativa, podeu configurar aquest "
+#~ "sistema per a actualitzacions automàtiques de programari (també conegudes "
+#~ "com a \"actualització automàtica d'errates\") mitjançant la interfície "
+#~ "web de {PRODUCT_NAME}. (Les instruccions per fer-ho són a la Guia de "
+#~ "referència de {PRODUCT_NAME}, disponible al botó d'Ajuda de la interfície "
+#~ "web principal de {PRODUCT_NAME})."
+
+#~ msgid "Review Subscription"
+#~ msgstr "Revisa la subscripció"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "Reviseu a sota els detalls de la subscripció:"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "El número d'instal·lació %s es va activar durant la connexió inicial "
+#~ "d'aquest sistema a {PRODUCT_NAME}."
+
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr ""
+#~ "S'han activat les subscripcions per als productes / serveis següents:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "Subscripcions als canals de programari:"
+
+#~ msgid ""
+#~ "This system will receive updates from the following software channels:"
+#~ msgstr ""
+#~ "Aquest sistema rebrà les actualitzacions des dels següents canals de "
+#~ "programari:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your {PRODUCT_NAME} web interface and subscribe this "
+#~ "system to the appropriate software channels."
+#~ msgstr ""
+#~ "Avís: només el producte instal·lat indicat anteriorment rebrà "
+#~ "actualitzacions i assistència. Si voleu rebre actualitzacions de "
+#~ "productes addicionals, inicieu sessió a la interfície web de "
+#~ "{PRODUCT_NAME} i subscriviu aquest sistema als canals de programari "
+#~ "adequats."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Avís: %s no és present, no s'ha pogut habilitar.\n"
+#~ "Les actualitzacions automàtiques no funcionaran."
+
+#, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "Nota: %s s'ha habilitat."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Avís: hi ha hagut un error durant l'habilitació de %s.\n"
+#~ "%s no s'ha habilitat.\n"
+#~ "Les actualitzacions automàtiques no funcionaran."
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "No us vàreu poder subscriure als següents canals de programari perquè no "
+#~ "hi havien suficients subscripcions disponibles en el vostre compte:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to subscribe to any software channels. Your system "
+#~ "will not receive any software updates to keep it secure and supported. "
+#~ "Contact your {PRODUCT_NAME} administrator about this problem. Once you "
+#~ "make the appropriate active subscriptions available in your account, you "
+#~ "may browse to this system's profile in the {PRODUCT_NAME} web interface "
+#~ "and subscribe this system to software channels via the software > "
+#~ "software channels tab."
+#~ msgstr ""
+#~ "Aquest sistema no s'ha pogut subscriure a cap canal de programari. El "
+#~ "sistema no rebrà cap actualització de programari per mantenir-lo segur i "
+#~ "compatible. Contacteu amb l'administrador de {PRODUCT_NAME} sobre aquest "
+#~ "problema. Un cop hàgiu fet les subscripcions actives adequades "
+#~ "disponibles al vostre compte, podeu navegar fins al perfil d'aquest "
+#~ "sistema a la interfície web de {PRODUCT_NAME} i subscriure'l als canals "
+#~ "de programari mitjançant la pestanya Programari > Canals de programari."
+
+#~ msgid "Service Level:"
+#~ msgstr "Nivell del servei:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Depending on what {PRODUCT_NAME} system types are associated with a "
+#~ "system, you'll enjoy different benefits. The following are the "
+#~ "{PRODUCT_NAME} system types associated with this system:"
+#~ msgstr ""
+#~ "En funció dels tipus de sistemes de {PRODUCT_NAME} associats a un "
+#~ "sistema, gaudireu de diferents avantatges. Els següents són els tipus de "
+#~ "sistemes de {PRODUCT_NAME} associats a aquest sistema:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "Aquest sistema no s'ha pogut associar amb els tipus de sistema de "
+#~ "{PRODUCT_NAME} següents perquè no hi havia prou subscripcions disponibles "
+#~ "al vostre compte:"
+
+#~ msgid ""
+#~ "Management type: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "Tipus de gestió: actualitzacions automàtiques, agrupació de sistemes, "
+#~ "permisos de sistemes, perfils de paquets del sistema, subministrament "
+#~ "complet, subministrament d'estat existent, retrocessos, gestió de la "
+#~ "configuració"
+
+#~ msgid ""
+#~ "Virtualization type: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr ""
+#~ "Tipus de virtualització: actualitzacions de programari per a un nombre "
+#~ "limitat de convidats virtuals en aquest sistema."
+
+#, python-brace-format
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
+#~ "system's subscription. You will need to: (1) make a virtualization system "
+#~ "entitlement available and (2) apply that system entitlement to this "
+#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
+#~ "of this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>Avís:</b> qualsevol sistema convidat que creeu en aquest sistema i "
+#~ "registreu a {PRODUCT_NAME} consumirà subscripcions més enllà de la "
+#~ "subscripció d'aquest sistema amfitrió. Haureu de (1) fer disponible un "
+#~ "dret de sistema de virtualització i (2) aplicar aquest dret de sistema a "
+#~ "aquest sistema a la interfície web de {PRODUCT_NAME} si no voleu que els "
+#~ "convidats virtuals d'aquest sistema consumeixin subscripcions addicionals."
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with any {PRODUCT_NAME} system "
+#~ "types. This system will not receive any software updates to keep it "
+#~ "secure and supported. Contace your {PRODUCT_NAME} administrator about "
+#~ "this problem. Once you make the appropriate active subscriptions "
+#~ "available in your account, you may browse to this system's profile in the "
+#~ "{PRODUCT_NAME} web interface, delete the profile, and re-connect this "
+#~ "system to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Aquest sistema no s'ha pogut associar amb cap tipus de sistema de "
+#~ "{PRODUCT_NAME}. Aquest sistema no rebrà cap actualització de programari "
+#~ "per mantenir-lo segur i compatible. Contacteu amb l'administrador de "
+#~ "{PRODUCT_NAME} sobre aquest problema. Un cop hàgiu fet que les "
+#~ "subscripcions actives adequades estiguin disponibles al compte, podeu "
+#~ "navegar fins al perfil d'aquest sistema a la interfície web de "
+#~ "{PRODUCT_NAME}, suprimir-lo i tornar a connectar-lo a {PRODUCT_NAME}."
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Universal default activation key detected\n"
+#~ "A universal default activation key was detected in your account. This "
+#~ "means that a set of properties (software channel subscriptions, package "
+#~ "installations, system group memberships, etc.) for your system's "
+#~ "connection to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been "
+#~ "determined by the activation key rather than your installation number.  "
+#~ "You may also refer to the {PRODUCT_NAME} Reference Guide for more details "
+#~ "about activation keys. \n"
+#~ "Universal Default activation key: %s"
+#~ msgstr ""
+#~ "S'ha detectat la clau d'activació predeterminada universal.\n"
+#~ "S'ha detectat una clau d'activació predeterminada universal al vostre "
+#~ "compte. Això vol dir que un conjunt de propietats (subscripcions a canals "
+#~ "de programari, instal·lacions de paquets, membres de grups de sistemes, "
+#~ "etc.) per a la connexió del vostre sistema al servidor de {PRODUCT_NAME} "
+#~ "o al servidor intermediari de {PRODUCT_NAME} s'han determinat per la clau "
+#~ "d'activació en lloc del vostre número d'instal·lació. També podeu "
+#~ "consultar la Guia de referència de {PRODUCT_NAME} per obtenir més detalls "
+#~ "sobre les claus d'activació.\n"
+#~ "Clau d'activació per defecte universal: %s"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Error fatal"
+
+#~ msgid "Warning"
+#~ msgstr "Advertència"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "We can't contact {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ msgstr ""
+#~ "No podem contactar amb {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Comproveu la ubicació proporcionada. És correcte \"%s\"?\n"
+#~ "Si no, podeu corregir-ho i tornar-ho a provar.\n"
+#~ "\n"
+#~ "Assegureu-vos que la connexió de xarxa d'aquest sistema estigui "
+#~ "operativa.\n"
+#~ "\n"
+#~ "Aquest sistema no podrà rebre correctament actualitzacions de programari "
+#~ "sense connectar-se a un servidor / intermediari de {PRODUCT_NAME}"
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr "Arquitectura: %s, Llançament del SO: %s, Versió del SO: %s"
+
+#~ msgid ""
+#~ "This server doesn't support functionality needed by this version of the "
+#~ "software update setup client. Please try again with a newer server."
+#~ msgstr ""
+#~ "Aquest servidor no suporta la funcionalitat requerida per aquesta versió "
+#~ "del client de configuració de l'actualització de programari. Torneu-ho a "
+#~ "intentar amb un servidor més nou."
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the "
+#~ "{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+#~ "have provided a valid certificate file. Are you sure you have provided "
+#~ "the correct certificate, and that the certificate file has not been "
+#~ "corrupted?\n"
+#~ "\n"
+#~ "Please try again with a different certificate file."
+#~ msgstr ""
+#~ "<b><span size=\"16000\">Fitxer de certificat incompatible</span></b>\n"
+#~ "\n"
+#~ "El certificat que heu proporcionat, <b>%s</b>, no és compatible amb el "
+#~ "servidor de {PRODUCT_NAME} a <b>%s</b>. És possible que vulgueu tornar a "
+#~ "comprovar que heu proporcionat un fitxer de certificat vàlid. Segur que "
+#~ "heu proporcionat el certificat correcte i que el fitxer de certificat no "
+#~ "s'ha fet malbé?\n"
+#~ "\n"
+#~ "Torneu-ho a provar amb un fitxer de certificat diferent."
+
+#~ msgid ""
+#~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ " The certificate is expired. Please ensure you have the correct  "
+#~ "certificate and your system time is correct."
+#~ msgstr ""
+#~ "<b><span size=\"12000\">El fitxer del certificat no és compatible</span></"
+#~ "b>\n"
+#~ "\n"
+#~ " El certificat ha vençut. Assegureu-vos que teniu el certificat correcte "
+#~ "i que l'hora del sistema sigui correcta."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
+#~ "up2date. You can either make the serverURL use http instead of https, or "
+#~ "you can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/"
+#~ "share/rhn, and ensure sslCACert points to it."
+#~ msgstr ""
+#~ "Verifiqueu els valors de sslCACert i serverURL a /etc/sysconfig/rhn/"
+#~ "up2date. Podeu fer que l'URL del servidor usi http en comptes d'https, o "
+#~ "bé podeu baixar el certificat SSL de {PRODUCT_NAME}, col·locar-lo a /usr/"
+#~ "share/rhn i assegurar-vos que sslCACert hi apunti."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "Problema amb el sistema de registre\n"
+#~ "\n"
+#~ "Una clau d'activació predeterminada universal limita el nombre de "
+#~ "sistemes que es poden connectar a l'organització {PRODUCT_NAME} associada "
+#~ "amb el vostre inici de sessió. Per permetre que aquest sistema es "
+#~ "connecti, poseu-vos en contacte amb l'administrador de l'organització de "
+#~ "{PRODUCT_NAME} per augmentar el nombre de sistemes autoritzats a "
+#~ "connectar-s'hi o per desactivar aquesta clau d'activació predeterminada "
+#~ "universal."
+
+#~ msgid ""
+#~ "\n"
+#~ " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ " Consell: Els llançaments menors amb un '*' estan suportats actualment "
+#~ "per Red Hat.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Warning:You will not be able to limit this system to minor release that "
+#~ "is older than the recent minor release if you select this option.\n"
+#~ msgstr ""
+#~ "Advertència: Si seleccioneu aquesta opció, no podreu limitar aquest "
+#~ "sistema al llançament menor que sigui més antic que l'actual llançament "
+#~ "menor.\n"
+
+#, python-format
+#~ msgid ""
+#~ "Your system will be subscribed to %s \n"
+#~ "base software channel. You will not be\n"
+#~ "able to move this system to an earlier release\n"
+#~ "(you will be able to move to a newer release).\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "El vostre sistema se subscriurà al canal de \n"
+#~ "programari base %s. No podreu moure\n"
+#~ "aquest sistema a un llançament anterior\n"
+#~ "(podreu moure'l a un llançament posterior).\n"
+#~ "Segur que voleu continuar?"
+
+#~ msgid "OK"
+#~ msgstr "D'acord"
+
+#~ msgid "Error"
+#~ msgstr "Error"
+
+#~ msgid "Next"
+#~ msgstr "Següent"
+
+#~ msgid "Back"
+#~ msgstr "Anterior"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancel·la"
+
+#~ msgid "No, Cancel"
+#~ msgstr "No, cancel·la"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "Sí, continua"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "Premeu <espai> per a de-seleccionar l'opció."
+
+#~ msgid "Spacewalk Location:"
+#~ msgstr "Ubicació de l'Spacewalk:"
+
+#~ msgid "System ID:"
+#~ msgstr "Id. del sistema:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "El servidor ha indicat un error:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr ""
+#~ "Hi va haver un error en comunicar amb el servidor de registrament:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "Nom del perfil:"
+
+#~ msgid "Version: "
+#~ msgstr "Versió: "
+
+#~ msgid "CPU model: "
+#~ msgstr "Model de CPU: "
+
+#~ msgid "Hostname: "
+#~ msgstr "Nom d'amfitrió: "
+
+#~ msgid "CPU speed: "
+#~ msgstr "Velocitat de la CPU: "
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "Adreça IP: "
+
+#~ msgid "Memory: "
+#~ msgstr "Memòria: "
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s megabytes"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "Problema en registrar el sistema:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "Hi ha hagut un problema en registrar el sistema."
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "Hi ha hagut un problema en escriure l'id. del sistema al disc."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "Problema en enviar el perfil del maquinari:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "Hi ha hagut un problema en enviar el perfil del maquinari."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "Problema en enviar la llista dels paquets:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "Hi ha hagut un problema en enviar la llista dels paquets."
+
+#, python-format
+#~ msgid ""
+#~ "Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "No s'ha pogut obrir %s\n"
+#~ "%s no està habilitat.\n"
+
+#~ msgid "Finish"
+#~ msgstr "Finalitza"
+
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr ""
+#~ "Heu especificat un protocol no vàlid. Només es permeten https i http."
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> entre elements  |  <Espai> selecciona  |  <F12> "
+#~ "pantalla següent"
+
+#, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr ""
+#~ "Heu d'executar el programa de registre de {PRODUCT_NAME} com a arrel."
+
+#~ msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+#~ msgstr "S'intenta executar més d'una instància de mgr_check. Se surt.\n"
 
 #~ msgid "Specify a profilename"
 #~ msgstr "Especifica un nom de perfil"

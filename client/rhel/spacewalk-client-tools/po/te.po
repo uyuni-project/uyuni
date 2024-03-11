@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 15:35+0200\n"
+"POT-Creation-Date: 2024-04-08 15:38+0200\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Telugu (http://www.transifex.com/projects/p/spacewalk/"
@@ -44,882 +44,6 @@ msgstr "కక్షిదారు %sకి మద్దతివ్వటా�
 msgid "%s was not found"
 msgstr "%s కనుగొనబడలేదు"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "కంప్యూటరులో సంస్థాపించబడ్డ ప్యాకేజీల జాబితాను పొందుతోంది"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "దోషాన్ని చదివే cpu సమాచారం:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "దోషాన్ని చదివే కంప్యూటరు మెమోరీ సమాచారం:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "దీషాన్ని చదివే నెట్వర్కింగు సమాచారం:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "దోషాన్ని చదివే సంస్థాపనావిధాన సమాచారం:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "దోషాన్ని చదివే నెట్వర్కు అంతర్ముఖీన సమాచారం:"
-
-#: ../src/up2date_client/hardware.py:1118
-#, fuzzy
-msgid "Error reading network FQDNs information:"
-msgstr "దీషాన్ని చదివే నెట్వర్కింగు సమాచారం:"
-
-#: ../src/up2date_client/hardware.py:1125
-#, fuzzy
-msgid "Error reading system info:"
-msgstr "దోషాన్ని చదివే కంప్యూటరు మెమోరీ సమాచారం:"
-
-#: ../src/up2date_client/hardware.py:1132
-#, fuzzy
-msgid "Error reading machine info:"
-msgstr "దోషాన్ని చదివే cpu సమాచారం:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "SystemIdను గుర్తించలేక పోయింది"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "ఈ కంప్యూటరు ఒక చానలుతో కూడి ఉండేదాకా నవీకరించలేదు."
-
-#: ../src/up2date_client/rhncli.py:65
-#, fuzzy
-msgid "Show additional output. Repeat for more detail."
-msgstr "అదనపు ఉద్గాతాన్ని చూపించు"
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "ఒక http proxyని ఉపయోగించటానికి తెలుపు"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "అధికారపూర్వక http proxyతో ఉపయోగించటానికి ఒక వినియోగదారుని పేరును తెలుపు"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "అధికారపూర్వక http proxyతో ఉపయోగించటానికి ఒక అనుమతిపదాన్ని తెలుపు"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"నిష్ఫల.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "ఒక ఊహించని OS దోషం సంభవించింది: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "ఒక అనుసంధానము తప్పుగారూపొందిన URI చేత ప్రయత్నించబడింది.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "ఒక అనుసంధానము తప్పుగారూపొందిన URIతో ప్రయత్నించబడింది: %s.\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "కొంత I/O దోషం: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "ఒక SSL దోషం: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"ఈ దోషాలకు సామాన్య కారణం కంప్యూటరు సమయం సరిగా లేకపోవటం. ఈ కంప్యూటరులో సరిగా ఉందో లేదో "
-"సరిచూసుకోండి.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "ఒక SSL crypto దోషం: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "ఒక వాస్తవిక దోషం ఉంది: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "మీరు %s ఉపయోగించటానికి తప్పక రూటులో ఉండాలి"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "ఒక దోషం సంభవించింది"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "అధిక సమాచారం కోసం /var/log/up2date చూడు"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "కాపీరైట్ Â© 2006--2014  Red Hat, Inc. అన్ని హక్కులూ కేటాయించబడ్డాయి."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "మీరు తప్పక ఒక ప్రవేశా ఇవ్వాలి."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-#, fuzzy
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Red Hat Network సర్వరును సంప్రదించటానికి ప్రయత్నిస్తోంది."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Red Hat Network సర్వరును %s యందు సంప్రదించటానికి ప్రయత్నిసస్తున్నాం."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "ప్రోక్సి %s యందు తెల్పబడింది."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "సిస్టమ్న మోదీకరణ"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, fuzzy, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"ఈ సహాయం మిమ్మల్ని Red Hat Network (RHN)కు సాఫ్టువేరు నవీకరణలను పొందటానికి సూచనలను ఇస్తుంది, "
-"మీ కంప్యూటరు రక్షణలకు సంబంధించిన రక్షణ నవీకరణలతోసహా.  మీరు ఈ సమయంలో కింది వాటిని అనుసరించవలసి "
-"ఉంది:\n"
-"\n"
-" * ఒక నెట్వర్కు అనుసంధానం\n"
-" * మీ Red Hat ప్రవేశం & అనుమతిపదం\n"
-" * Red Hat Network Satellite లేదా Proxy (ఐచ్చికం) యొక్క స్థానం\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "నేను ఎందుకని RHNకి అనుసంధించబడాలి? ..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "నమోదు ఎందుకు"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"మీ కంప్యూటరును Red Hat Networkకి అనుసంధించటం మిమ్మల్ని paid subscription లాభాల వినియోగానికి "
-"అనుమతిస్తుంది, వీటితోపా:"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "రక్షణ & నవీకరణలు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "దిగుమతులు & ఎగుమతులు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "మద్దతు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "అమలు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-#, fuzzy
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"కొత్త సాఫ్టువేర్ నవీకరణలను తీసుకో, రక్షణ నవీకరణలుతోసహా, ఈ Red Hat Enterprise Linux system "
-"<b>నవీకరణ</b> మరియూ <b>రక్షణ</b>."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-#, fuzzy
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"Red Hat Enterprise Linux విడుదల సంస్థాపక CD చిత్రాలను దిగుమతిచేయి, కొత్త విడుదలలతో సహా."
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-#, fuzzy
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"ఈ విధానంతో మీరు ఎదుర్కొంటున్న ఏసమస్యకైనా సహాయంకోసం Red Hat లేదా Red Hat యొక్క భాగస్వామ్య సాంకేతిక "
-"మద్దతునిచ్చే నిపుణులకు అందుబాటులో ఉండండి."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-#, fuzzy
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"సూచన: Red Hat విలువలు మీ గోప్యత: http://www.redhat.com/legal/privacy_statement."
-"html"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "నన్ను తిరిగి నమోదుకు తీసుకుని వెళ్లు"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "సాఫ్ట్వేర్ అప్డేట్ సెట్ చేయబడలేదు"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, fuzzy, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"మీరు నిజంగా మీ కంప్యూటరుని Red Hat Networkకి అనుసంధించ దలచుకోలేదా? మీరు Red Hat "
-"Enterprise Linux సబ్ స్క్రిప్షన్ లాభాలను జారవిడుచుకుంటారు:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, fuzzy, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"మీరు మీ కంప్యూటరును Red Hat Networkకి అనుసంధించకుండా ఈ సబ్ స్క్రిప్షన్ విశేషాధికారాలను "
-"పొందలేరు.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "నన్ను తిరిగి అమర్పు విధానానికి తీసుకుని వెళ్లు."
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "నేను తరువాత నమోదు చేస్తాను."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"దయచేసి మీ ప్రవేశ సమాచారాన్ని %s Red Hat Network Satellite కోసం ఇవ్వండి:\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "ప్రవేశం:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "అనుమతిపదం:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr "సూచన: మీ ప్రవేశ నామం లేదా అనుమతిపదాన్ని మర్చిపోయారా?  మీ శాటిలైట్ నిర్వహణాధికారిని సంప్రదించండి."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "దయచేసి వేరే కావలసిన ప్రవేశాన్ని ఇవ్వండి."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "దయచేసి ప్రవేశించండి మరియూ మీ అనుమతిపదాన్ని సరిచూసుకోండి"
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr "ఆపరేటింగ్ సిస్టమ్ వర్షన్:"
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "ఆపరేటింగ్ సిస్టమ్ వర్షన్:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr " చిన్న విడుదల: "
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "పరిమిత నవీకరణలు మాత్రమే"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "అందుబాటులో వున్న అన్ని నవీకరణలు"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "ఆపరేటింగ్ సిస్టమ్ విడుదల విభాగాన్ని ఖాయపరచుము"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-"మీ సిస్టమ్ అందుబాటులోని అన్ని నవీకరణలను పొందుటకు ప్రాధమిక సాఫ్టువేర్ చానల్‌కు సబ్‌స్క్రైబ్ చేయబడును."
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "ప్రొఫైలుని సృష్టించండి - హార్డువేర్"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"ప్రొఫయిల్ పేరు ఒక వర్ణనాత్మక నామం అది మీరు ఈ కంప్యూటరు ప్రొఫైలును Red Hat Network వెబ్ పుటలో "
-"గుర్తించటానికి వాడతారు. ఐచ్ఛికంగా, ఒక కంప్యూటరు క్రమాన్ని లేదా గుర్తింపుంఖ్యని కలిగి ఉంటుంది."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"అదనపు హార్డువేరు సమాచారం PCI సాధనాలతో కూడి, డిస్కు పరిమాణాలు మరియూ మౌంటు కేంద్రాలు ఈ ఆకృతిలో "
-"చేర్చబడాతాయి."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "హార్డువేరు మరియూ నెట్వర్కు గురించిన కింది సమాచారంతో:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "ప్రొఫైలుని సృష్టించండి - ప్యాకేజీలు"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"RPM సమాచారం ఈ కంప్యూటరుకి ఏ నవీకరించబడ్డ సాఫ్టువేరు ప్యాకేజీలు సంబంధించబడ్డవో నిర్ణయించటానికి "
-"ముఖ్యమైనవి."
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr "RPM ప్యాకేజీలను ఈ కంప్యూటరులోని కంప్యూటరు రూపులో సంస్థాపించబడ్డ వాటితోసహా"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr "మీరు విలువలేని ప్యాకేజీలను కింద పరిశీలించకుండా ఎన్నుకుని ఉంటారు."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "ప్యాకేజీ జాబితాను నిర్మిస్తోంది"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*ఈటపా చిరునామా:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr "సిస్టమ్ యిప్పటికే నమోదైంది"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr "కంప్యూటరు సాఫ్టువేరు నవీకరణలకోసం ఇప్పటికే అమర్చబడి ఉండవచ్చు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "మీరు నిజంగా కొనసాగించాలనుకుంటున్నారా?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "రూప సమాచారాన్ని Red Hat నెట్వర్కుకి పంపు"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, fuzzy, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-"మేము కంప్యూటరు ప్రొఫైలుకోసం సమాచార సేకరణను ముగించాము.\n"
-"\n"
-"ఈ కంప్యూటరు ప్రొఫైలును Red Hat Networkకు పంపటానికి \"తరువాత\"ను నొక్కండి.  ఏ సమాచారాన్ని "
-"పంపకుండా ఉండటానికి \"రద్దు\"ను నొక్కండి.  మీరు కమాండు లైనులో `rhn_register`ను టైపుచేయటం "
-"ద్వారా నమోదు పరిక్రమాన్ని ఉపయోగించవ."
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr "నవీకరణలు ఆకృతీకరించబడెను"
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"మీరు ఇప్పుడు ఈ వ్యవస్థ కమాండు లైను నుండీ 'yum update'ను ఉపయోగించి Red Hat Network యొక్క "
-"కొత్త నవీకరణలను పొందవచ్చు. మీరు కొత్త నవీకరణలను పొందటానికి periodicalగా దీన్ని ఉపయోగించవలసి ఉంది. "
-"ప్రత్యామ్నాయంగా, మీరు ఈ వ్యవస్థను Red Hat Network web అంతర్ముఖం ద్వారా స్వయంచాలక నవీకరణలను "
-"పొందటానికి ఆకృతీకరించవలసి ఉంటుంది('auto errata update'గా కూడా ప్రసిద్ధిచెందింది).  (దీనికోసం "
-"సూచనలకు RHN Reference గైడు 6 అధ్యాయంలో ఉన్నాయి, Red Hat Network web అంతర్ముఖంలో ప్రధాన "
-"'సహాయం' కీ ద్వారా అందుబాటులో ఉంది .)"
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "సబ్ స్క్రిప్షన్ను సమీక్షించు"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "దయచేసి కింది సబ్ స్క్రిప్షన్ వివరాలను పరిశీలించు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"సంస్థాపక సంఖ్య %s కంప్యూటరు యొక్క సంస్థాపక అనుసంధానం Red Hat Networkకి చేస్తున్నప్పుడు "
-"క్రియాశీలంగా చేయబడింది."
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Subscriptionలు కింది Red Hat ఉత్పత్తులు/సేవలకోసం క్రియాశీలంచేయడుతున్నా:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "సాఫ్టువేరు చానల్ సబ్ స్క్రిప్షన్లు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, fuzzy, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-"హెచ్చరిక: పైన జాబితా చేసిన సంస్థాపించిన ఉత్పత్తి మాత్రమే నవీకరణలను మరియు తోడ్పాటును పొందును. ఉత్పత్తి "
-"నవీకరణలను పొందాలనుకుంటే, దయచేసి మీ శాటిలైట్ వెబ్ ఇంటర్ఫేసునకు ప్రవేశించండి మరియూ ఉత్పత్తులనుండీ "
-"నవీకరణలను పొందటానికి వ్యవస్థను తగిన సాఫ్టువేరు చానళ్లతో సబ్‌స్క్రైబ్ చేయండి. ఎక్కువ వివరాలకు Kbase "
-"వ్యాసం 11313ను చూడండి. (http://kbase.redhat.com/faq/docs/DOC-11313)"
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, fuzzy, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"హెచ్చరిక: yum-rhn-plugin లేదు, దానిని చేతనము చేయలేదు.\n"
-"స్వయంచాలక నవీకరణలు పనిచేయవు."
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, fuzzy, python-format
-msgid "Note: %s has been enabled."
-msgstr "గమనిక: yum-rhn-plugin చేతనము చేయబడింది."
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, fuzzy, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"హెచ్చరిక: yum-rhn-plugin చేతనము చేయునప్పుడు వొక దోషము యెదురైంది.\n"
-"yum-rhn-plugin చేతనము కాలేదు.\n"
-"స్వయంచాలక నవీకరణలు పనిచేయవు."
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"మీరు ఈ కింది సాఫ్టువేరు చానళ్లకు subscrib అవ్వటానికి కుదరదు ఎందుకంటే మీ ఖాతాలో తగినన్ని "
-"subscriptionలను కలిగిలేరు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, fuzzy, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"ఈ కంప్యూటరు ఈ కింది RHN గుణకం(లు)తో కూడి ఉండటానికి వీలుకాదు ఎందుకంటే మీ ఖాతాలో చాలినన్ని "
-"subscriptionలు అందుబాటులోలేవు:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-#, fuzzy
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-"నిర్వహణా గుణకం: స్వయంచాలక నవీకరణలు, కంప్యూటరు సమూహీకరణ, కంప్యూటర్ల అనుమతులు, కంప్యూటరు "
-"ప్యాకేజీ ప్రొఫైలింగ్"
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-#, fuzzy
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr "వాస్తవీకరణ గుణకాలు: ఈ కంప్యూటరులో పరిమితికల వాస్తవిక ఆతిధేయులకు సాఫ్టువేరు నవీకరణలు."
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, fuzzy, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-"<b>హెచ్చరిక:</b> మీరు ఈ కంప్యూటారులో సృష్టించిన ఏ ఆతిధేయ కంప్యూటారు విధానం మరియూ RHNకి నమోదైనది "
-"Red Hat Enterprise Linux సబ్ సిటంలో భాగం అవుతుంది. మీరు చేయవలసిందల్లా: (1) వాస్తవీకరణ లేదా "
-"వాస్తవీకరణ ఫ్లాట్ ఫాం విభాగాన్ని అందుబాటులో ఉంచండి మరియూ (2) ఆ కంప్యూటరు యొక్క ఎన్ టైటిల్ మెంటుని ఈ ఈ "
-"కంప్యూటరుకి RHN యొక్క వెబ్ అంతర్ముఖంలో మీరు వాస్తవిక ఆతిధేయాలను కోరుకో పోతే అదనపు సబ్ స్క్రిప్షన్లకు "
-"అప్లై చేయండి."
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "పెద్ద దోషం"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "హెచ్చరిక"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-"మేము Red Hat Network Serverను సంప్రదించలేము.\n"
-"\n"
-"సమకూర్చిన స్థానాన్ని రెండుసార్లు శోధించండి - ఉన్నదో లేదో '%s'?\n"
-"లేకపోతే, మీరుదాన్ని సరిచేసి మళ్లీ ప్రయత్నించండి.\n"
-"\n"
-"నెట్వర్కు అనుసంధానం ఈ కంప్యూటరులో క్రియాశీలమైందేనేమో చూడండి.\n"
-"\n"
-"ఈ కంప్యూటరుRed Hatనుండీ Red Hat Network సర్వరుతో అనుసంధించకుండా నవీకరణలను పొందలే"
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "నిర్మాణం: %s, OS విడుదల: %s, OS ప్రతి: %s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-"ఈ సర్వరు ఈ సాఫ్టువేరు నవీకరణ అమర్పు కక్షిదారుని చేత అవసరమైన క్రియాశీలతకి మద్దతివ్వదు. దయచేసి కొత్త "
-"సర్వరుతో ప్రయత్నించండి."
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-"<b><span size=\"16000\">పొందికలేని ధృవీకృత ఫైలు</span></b>\n"
-"\n"
-"మీరు సమకూర్చిన ధృవీకరణ పత్రం, <b>%s</b>,  Red Hat Network సర్వరుతో <b>%s</b> యందు "
-"పొందికలేనిదిగా ఉంది.మీరు సరైన ధృవీకృత ఫైలును  సమకూర్చినారో లేదో వొకటికి-రెండుసార్లు సరిచూసుకొనండి. మీరు "
-"ఖచ్చితంగా సరైన ధృవీకరణపత్రమును సమకూర్చినారని, మరియూ ఆ ధృవీకరణ ఫైలు పాడవలేదని చెప్పగలరా?\n"
-"\n"
-"దయచేసి వేరే ధృవీకరణ ఫైలుతో ప్రయత్నించండి."
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-"<b><span size=\"12000\">సారూప్యంలేని ధృవీకరణ పత్రము</span></b>\n"
-"\n"
-" ధృవీకరణపత్రము కాలము చెల్లినది. దయచేసి మీరు సరైన ధృవీకరణపత్రము కలిగివుండునట్లు మరియు మీ సిస్టమ్ "
-"సమయం సరిగా వుండునట్లు చూచుకొనుము."
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, fuzzy, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"కంప్యూటరును నమోదుచేయటంలో ఇబ్బం.\n"
-"\n"
-"మీ ప్రవేశంతో కూడిన RHN నిర్వహణకు అనుసంధించబడిన కంప్యూటర్ల సంఖ్యలనఒక సార్వజనిక సిద్ధ కీలను "
-"నియంత్రిస్తుంది. సంప్రదింపులకి ఈ కంప్యూటరును అనుమతించటాని, దయచేసి మీ  RHN నిర్వహణాధికారిని అనుసంధాన "
-"కంప్యూటర్ల సంఖ్యను పెంచటానికి లేదా ఈ సార్వజనిక కీని అసాధ్యం చేయటానికి సంప్రదించండి. ఎక్కువ సమాచారాన్ని "
-"Red Hat Knowledgebase Article #7924 at http://kbase.redhat.com/faq/"
-"FAQ_61_7924.shtm లో చూడవచ్చు "
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-"\n"
-" చిట్కా: '*' తో చిన్న విడుదలలు ప్రస్తుతం Red Hat చేత మద్దతించబడుచున్నవి.\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-"హెచ్చరిక: మీరు ఈ ఐచ్చికమును యెంచుకొనినట్లైతే  యిటీవలి చిన్న విడుదల కన్నా చిన్నదైన విడుదలకు మీరు మీ "
-"సిస్టమ్‌ను పరిమితం చేయలేరు.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"మీ సిస్టమ్ %s ప్రాధమిక సాఫ్టువేర్ చానల్‌కు సబ్‌స్క్రైబ్ \n"
-"అగును. మీరు ఈ సిస్టమ్‌ను మునుపటి విడుదలకు కదల్చ లేరు\n"
-"(మీరు కొత్త విడుదలకు కదల్చగలరు.)\n"
-"మీరు ఖచ్చితంగా కొనసాగాలని అనుకొనుచున్నారా?"
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "సరే"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "దోషం"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "తరువాత"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "వెనుక"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "రద్దు"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "కాదు, రద్దు"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "అవును, కొనసాగించు"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "ఐచ్ఛికాన్ని ఎన్నుకోకపోవటానికి <space>ని నొక్కండి."
-
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "దోషము: సేవిక అందుబాటులో లేదు. దయచేసి తరువాత ప్రయత్నించుము."
@@ -937,170 +61,60 @@ msgstr "వినియోగదారుని చేత అనుసంధా�
 msgid "Server has refused connection due to high load"
 msgstr "సర్వరు అధిక భారంవల్ల అనుసంధించటానికి తిరస్కరిస్తోంది"
 
-#: ../src/up2date_client/tui.py:138
-#, fuzzy
-msgid "Spacewalk Location:"
-msgstr "Red Hat Network స్థానం:"
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "సిస్టమ్ ID:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "ఈ సర్వరు ఒక దోషాన్ని సూచిస్తోంది:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "నమోదీకరణ సేవికతో సంప్రదించుటలో అక్కడ వొక దోషము వుంది:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "రూపం పేరు:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "ప్రతి: "
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "CPU మాదిరి: "
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "ఆతిధేయనామం: "
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "CPU వేగం: "
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP చిరునామా: "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "మెమోరీ: "
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s మెగాబైట్లు"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "సమస్య నమోదు విధానం:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "సమస్యని నమోదుచేసే విధానం"
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "సమస్యని రాసే విధానం id నుండీ డిస్కుకి."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "సమస్యను హార్డువేరు రూపానికి పంపుతోంది:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "హార్డువేరు రూపాన్ని పంపటంలో ఇబ్బంది."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "ప్యాకేజీ జాబితాను పంపటంలో ఇబ్బంది:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "ప్యాకేజీ జాబితాను పంపటంలో ఇబ్బంది."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "ముగించు"
-
-#: ../src/up2date_client/tui.py:1210
-#, fuzzy
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr "మీరు విలువలేని చట్టాన్ని తెలిపారు. కేవలం https మరియూ http మాత్రమే అనుమతించబడతాయి."
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr "  <Tab>/<Alt-Tab> మూలకాల మధ్య  |  <Space> selects  |  <F12> next screen"
-
-#: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "మీరు తప్పక RHN నమోదు పరిక్రమాన్ని రూటుగా ప్రయోగించాలి."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "తరగతి %s యెటువంటి యాట్రిబ్యూట్‌ '%s'ను కలిగిలేదు"
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "RPM దోషం.  ఈ సమాచారం:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "అనుమతిపద దోషం. ఆ సమాచారం:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM ఆధారభూత దోషం. ఆ సమాచారం:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "సర్వరుతో దోష సంబంధం. ఆ సమాచారం:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "ఫైలు కనుగొనబడలేదు: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "సర్వరునుండీ ఆలస్య దోషం.  ఆ సమాచారం:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "సర్వరులోని దోష క్రమబద్ధీకరణ సమాచారం:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "ఈ సంస్థాప సంఖ్య సరైనదికాదు"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "క్షేత్రంలో oemInfo ఫైలుని నిరూపించటంలో దోషం:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr "నెట్వర్కు దోషం:"
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 #, fuzzy
 msgid ""
 "\n"
@@ -1135,10 +149,700 @@ msgstr ""
 "యెన్‌టైటిల్మెంట్‌ను\n"
 "    తప్పించుటకు పనఃప్రయత్నించవచ్చును."
 
-#: ../src/bin/rhn_check.py:423
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "కంప్యూటరులో సంస్థాపించబడ్డ ప్యాకేజీల జాబితాను పొందుతోంది"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "దోషాన్ని చదివే cpu సమాచారం:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "దోషాన్ని చదివే కంప్యూటరు మెమోరీ సమాచారం:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "దీషాన్ని చదివే నెట్వర్కింగు సమాచారం:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "దోషాన్ని చదివే సంస్థాపనావిధాన సమాచారం:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "దోషాన్ని చదివే నెట్వర్కు అంతర్ముఖీన సమాచారం:"
+
 #, fuzzy
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "ఒకటి కన్నా యెక్కువ rhn_check సంభవాన్ని నడుపుటకు ప్రయత్నిస్తోంది. ఇప్పటికేవుంది.\n"
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "దీషాన్ని చదివే నెట్వర్కింగు సమాచారం:"
+
+#, fuzzy
+#~ msgid "Error reading system info:"
+#~ msgstr "దోషాన్ని చదివే కంప్యూటరు మెమోరీ సమాచారం:"
+
+#, fuzzy
+#~ msgid "Error reading machine info:"
+#~ msgstr "దోషాన్ని చదివే cpu సమాచారం:"
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "SystemIdను గుర్తించలేక పోయింది"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr "ఈ కంప్యూటరు ఒక చానలుతో కూడి ఉండేదాకా నవీకరించలేదు."
+
+#, fuzzy
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "అదనపు ఉద్గాతాన్ని చూపించు"
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "ఒక http proxyని ఉపయోగించటానికి తెలుపు"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "అధికారపూర్వక http proxyతో ఉపయోగించటానికి ఒక వినియోగదారుని పేరును తెలుపు"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "అధికారపూర్వక http proxyతో ఉపయోగించటానికి ఒక అనుమతిపదాన్ని తెలుపు"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "నిష్ఫల.\n"
+
+#, python-format
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "ఒక ఊహించని OS దోషం సంభవించింది: %s\n"
+
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "ఒక అనుసంధానము తప్పుగారూపొందిన URI చేత ప్రయత్నించబడింది.\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr "ఒక అనుసంధానము తప్పుగారూపొందిన URIతో ప్రయత్నించబడింది: %s.\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "కొంత I/O దోషం: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "ఒక SSL దోషం: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "ఈ దోషాలకు సామాన్య కారణం కంప్యూటరు సమయం సరిగా లేకపోవటం. ఈ కంప్యూటరులో సరిగా ఉందో లేదో "
+#~ "సరిచూసుకోండి.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "ఒక SSL crypto దోషం: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "ఒక వాస్తవిక దోషం ఉంది: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "మీరు %s ఉపయోగించటానికి తప్పక రూటులో ఉండాలి"
+
+#~ msgid "An error has occurred:"
+#~ msgstr "ఒక దోషం సంభవించింది"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "అధిక సమాచారం కోసం /var/log/up2date చూడు"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "కాపీరైట్ Â© 2006--2014  Red Hat, Inc. అన్ని హక్కులూ కేటాయించబడ్డాయి."
+
+#, fuzzy, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "మీరు తప్పక ఒక ప్రవేశా ఇవ్వాలి."
+
+#, fuzzy
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Red Hat Network సర్వరును సంప్రదించటానికి ప్రయత్నిస్తోంది."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "Red Hat Network సర్వరును %s యందు సంప్రదించటానికి ప్రయత్నిసస్తున్నాం."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "ప్రోక్సి %s యందు తెల్పబడింది."
+
+#~ msgid "System Registration"
+#~ msgstr "సిస్టమ్న మోదీకరణ"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "ఈ సహాయం మిమ్మల్ని Red Hat Network (RHN)కు సాఫ్టువేరు నవీకరణలను పొందటానికి సూచనలను "
+#~ "ఇస్తుంది, మీ కంప్యూటరు రక్షణలకు సంబంధించిన రక్షణ నవీకరణలతోసహా.  మీరు ఈ సమయంలో కింది వాటిని "
+#~ "అనుసరించవలసి ఉంది:\n"
+#~ "\n"
+#~ " * ఒక నెట్వర్కు అనుసంధానం\n"
+#~ " * మీ Red Hat ప్రవేశం & అనుమతిపదం\n"
+#~ " * Red Hat Network Satellite లేదా Proxy (ఐచ్చికం) యొక్క స్థానం\n"
+#~ "\n"
+
+#, fuzzy, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "నేను ఎందుకని RHNకి అనుసంధించబడాలి? ..."
+
+#~ msgid "Why Register"
+#~ msgstr "నమోదు ఎందుకు"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "మీ కంప్యూటరును Red Hat Networkకి అనుసంధించటం మిమ్మల్ని paid subscription లాభాల "
+#~ "వినియోగానికి అనుమతిస్తుంది, వీటితోపా:"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "రక్షణ & నవీకరణలు:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "దిగుమతులు & ఎగుమతులు:"
+
+#~ msgid "Support:"
+#~ msgstr "మద్దతు:"
+
+#~ msgid "Compliance:"
+#~ msgstr "అమలు:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "కొత్త సాఫ్టువేర్ నవీకరణలను తీసుకో, రక్షణ నవీకరణలుతోసహా, ఈ Red Hat Enterprise Linux "
+#~ "system <b>నవీకరణ</b> మరియూ <b>రక్షణ</b>."
+
+#, fuzzy
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "Red Hat Enterprise Linux విడుదల సంస్థాపక CD చిత్రాలను దిగుమతిచేయి, కొత్త విడుదలలతో సహా."
+
+#, fuzzy
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "ఈ విధానంతో మీరు ఎదుర్కొంటున్న ఏసమస్యకైనా సహాయంకోసం Red Hat లేదా Red Hat యొక్క భాగస్వామ్య "
+#~ "సాంకేతిక మద్దతునిచ్చే నిపుణులకు అందుబాటులో ఉండండి."
+
+#, fuzzy
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "సూచన: Red Hat విలువలు మీ గోప్యత: http://www.redhat.com/legal/"
+#~ "privacy_statement.html"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "నన్ను తిరిగి నమోదుకు తీసుకుని వెళ్లు"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "సాఫ్ట్వేర్ అప్డేట్ సెట్ చేయబడలేదు"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "మీరు నిజంగా మీ కంప్యూటరుని Red Hat Networkకి అనుసంధించ దలచుకోలేదా? మీరు Red Hat "
+#~ "Enterprise Linux సబ్ స్క్రిప్షన్ లాభాలను జారవిడుచుకుంటారు:\n"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "మీరు మీ కంప్యూటరును Red Hat Networkకి అనుసంధించకుండా ఈ సబ్ స్క్రిప్షన్ విశేషాధికారాలను "
+#~ "పొందలేరు.\n"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "నన్ను తిరిగి అమర్పు విధానానికి తీసుకుని వెళ్లు."
+
+#~ msgid "I'll register later."
+#~ msgstr "నేను తరువాత నమోదు చేస్తాను."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "దయచేసి మీ ప్రవేశ సమాచారాన్ని %s Red Hat Network Satellite కోసం ఇవ్వండి:\n"
+#~ "\n"
+
+#~ msgid "Login:"
+#~ msgstr "ప్రవేశం:"
+
+#~ msgid "Password:"
+#~ msgstr "అనుమతిపదం:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr "సూచన: మీ ప్రవేశ నామం లేదా అనుమతిపదాన్ని మర్చిపోయారా?  మీ శాటిలైట్ నిర్వహణాధికారిని సంప్రదించండి."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "దయచేసి వేరే కావలసిన ప్రవేశాన్ని ఇవ్వండి."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "దయచేసి ప్రవేశించండి మరియూ మీ అనుమతిపదాన్ని సరిచూసుకోండి"
+
+#~ msgid "Operating System Release Version"
+#~ msgstr "ఆపరేటింగ్ సిస్టమ్ వర్షన్:"
+
+#~ msgid "Operating System version:"
+#~ msgstr "ఆపరేటింగ్ సిస్టమ్ వర్షన్:"
+
+#~ msgid " Minor Release: "
+#~ msgstr " చిన్న విడుదల: "
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "పరిమిత నవీకరణలు మాత్రమే"
+
+#~ msgid "All available updates"
+#~ msgstr "అందుబాటులో వున్న అన్ని నవీకరణలు"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "ఆపరేటింగ్ సిస్టమ్ విడుదల విభాగాన్ని ఖాయపరచుము"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr ""
+#~ "మీ సిస్టమ్ అందుబాటులోని అన్ని నవీకరణలను పొందుటకు ప్రాధమిక సాఫ్టువేర్ చానల్‌కు సబ్‌స్క్రైబ్ చేయబడును."
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "ప్రొఫైలుని సృష్టించండి - హార్డువేర్"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "ప్రొఫయిల్ పేరు ఒక వర్ణనాత్మక నామం అది మీరు ఈ కంప్యూటరు ప్రొఫైలును Red Hat Network వెబ్ "
+#~ "పుటలో గుర్తించటానికి వాడతారు. ఐచ్ఛికంగా, ఒక కంప్యూటరు క్రమాన్ని లేదా గుర్తింపుంఖ్యని కలిగి ఉంటుంది."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "అదనపు హార్డువేరు సమాచారం PCI సాధనాలతో కూడి, డిస్కు పరిమాణాలు మరియూ మౌంటు కేంద్రాలు ఈ ఆకృతిలో "
+#~ "చేర్చబడాతాయి."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "హార్డువేరు మరియూ నెట్వర్కు గురించిన కింది సమాచారంతో:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "ప్రొఫైలుని సృష్టించండి - ప్యాకేజీలు"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "RPM సమాచారం ఈ కంప్యూటరుకి ఏ నవీకరించబడ్డ సాఫ్టువేరు ప్యాకేజీలు సంబంధించబడ్డవో నిర్ణయించటానికి "
+#~ "ముఖ్యమైనవి."
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr "RPM ప్యాకేజీలను ఈ కంప్యూటరులోని కంప్యూటరు రూపులో సంస్థాపించబడ్డ వాటితోసహా"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr "మీరు విలువలేని ప్యాకేజీలను కింద పరిశీలించకుండా ఎన్నుకుని ఉంటారు."
+
+#~ msgid "Building Package List"
+#~ msgstr "ప్యాకేజీ జాబితాను నిర్మిస్తోంది"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*ఈటపా చిరునామా:"
+
+#~ msgid "System Already Registered"
+#~ msgstr "సిస్టమ్ యిప్పటికే నమోదైంది"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr "కంప్యూటరు సాఫ్టువేరు నవీకరణలకోసం ఇప్పటికే అమర్చబడి ఉండవచ్చు:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "మీరు నిజంగా కొనసాగించాలనుకుంటున్నారా?"
+
+#, fuzzy, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "రూప సమాచారాన్ని Red Hat నెట్వర్కుకి పంపు"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "మేము కంప్యూటరు ప్రొఫైలుకోసం సమాచార సేకరణను ముగించాము.\n"
+#~ "\n"
+#~ "ఈ కంప్యూటరు ప్రొఫైలును Red Hat Networkకు పంపటానికి \"తరువాత\"ను నొక్కండి.  ఏ సమాచారాన్ని "
+#~ "పంపకుండా ఉండటానికి \"రద్దు\"ను నొక్కండి.  మీరు కమాండు లైనులో `rhn_register`ను టైపుచేయటం "
+#~ "ద్వారా నమోదు పరిక్రమాన్ని ఉపయోగించవ."
+
+#~ msgid "Updates Configured"
+#~ msgstr "నవీకరణలు ఆకృతీకరించబడెను"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "మీరు ఇప్పుడు ఈ వ్యవస్థ కమాండు లైను నుండీ 'yum update'ను ఉపయోగించి Red Hat Network "
+#~ "యొక్క కొత్త నవీకరణలను పొందవచ్చు. మీరు కొత్త నవీకరణలను పొందటానికి periodicalగా దీన్ని "
+#~ "ఉపయోగించవలసి ఉంది. ప్రత్యామ్నాయంగా, మీరు ఈ వ్యవస్థను Red Hat Network web అంతర్ముఖం ద్వారా "
+#~ "స్వయంచాలక నవీకరణలను పొందటానికి ఆకృతీకరించవలసి ఉంటుంది('auto errata update'గా కూడా "
+#~ "ప్రసిద్ధిచెందింది).  (దీనికోసం సూచనలకు RHN Reference గైడు 6 అధ్యాయంలో ఉన్నాయి, Red Hat "
+#~ "Network web అంతర్ముఖంలో ప్రధాన 'సహాయం' కీ ద్వారా అందుబాటులో ఉంది .)"
+
+#~ msgid "Review Subscription"
+#~ msgstr "సబ్ స్క్రిప్షన్ను సమీక్షించు"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "దయచేసి కింది సబ్ స్క్రిప్షన్ వివరాలను పరిశీలించు:"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "సంస్థాపక సంఖ్య %s కంప్యూటరు యొక్క సంస్థాపక అనుసంధానం Red Hat Networkకి చేస్తున్నప్పుడు "
+#~ "క్రియాశీలంగా చేయబడింది."
+
+#, fuzzy
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "Subscriptionలు కింది Red Hat ఉత్పత్తులు/సేవలకోసం క్రియాశీలంచేయడుతున్నా:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "సాఫ్టువేరు చానల్ సబ్ స్క్రిప్షన్లు:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your {PRODUCT_NAME} web interface and subscribe this "
+#~ "system to the appropriate software channels."
+#~ msgstr ""
+#~ "హెచ్చరిక: పైన జాబితా చేసిన సంస్థాపించిన ఉత్పత్తి మాత్రమే నవీకరణలను మరియు తోడ్పాటును పొందును. ఉత్పత్తి "
+#~ "నవీకరణలను పొందాలనుకుంటే, దయచేసి మీ శాటిలైట్ వెబ్ ఇంటర్ఫేసునకు ప్రవేశించండి మరియూ ఉత్పత్తులనుండీ "
+#~ "నవీకరణలను పొందటానికి వ్యవస్థను తగిన సాఫ్టువేరు చానళ్లతో సబ్‌స్క్రైబ్ చేయండి. ఎక్కువ వివరాలకు Kbase "
+#~ "వ్యాసం 11313ను చూడండి. (http://kbase.redhat.com/faq/docs/DOC-11313)"
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "హెచ్చరిక: yum-rhn-plugin లేదు, దానిని చేతనము చేయలేదు.\n"
+#~ "స్వయంచాలక నవీకరణలు పనిచేయవు."
+
+#, fuzzy, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "గమనిక: yum-rhn-plugin చేతనము చేయబడింది."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "హెచ్చరిక: yum-rhn-plugin చేతనము చేయునప్పుడు వొక దోషము యెదురైంది.\n"
+#~ "yum-rhn-plugin చేతనము కాలేదు.\n"
+#~ "స్వయంచాలక నవీకరణలు పనిచేయవు."
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "మీరు ఈ కింది సాఫ్టువేరు చానళ్లకు subscrib అవ్వటానికి కుదరదు ఎందుకంటే మీ ఖాతాలో తగినన్ని "
+#~ "subscriptionలను కలిగిలేరు:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "ఈ కంప్యూటరు ఈ కింది RHN గుణకం(లు)తో కూడి ఉండటానికి వీలుకాదు ఎందుకంటే మీ ఖాతాలో చాలినన్ని "
+#~ "subscriptionలు అందుబాటులోలేవు:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Management type: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "నిర్వహణా గుణకం: స్వయంచాలక నవీకరణలు, కంప్యూటరు సమూహీకరణ, కంప్యూటర్ల అనుమతులు, "
+#~ "కంప్యూటరు ప్యాకేజీ ప్రొఫైలింగ్"
+
+#, fuzzy
+#~ msgid ""
+#~ "Virtualization type: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr "వాస్తవీకరణ గుణకాలు: ఈ కంప్యూటరులో పరిమితికల వాస్తవిక ఆతిధేయులకు సాఫ్టువేరు నవీకరణలు."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
+#~ "system's subscription. You will need to: (1) make a virtualization system "
+#~ "entitlement available and (2) apply that system entitlement to this "
+#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
+#~ "of this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>హెచ్చరిక:</b> మీరు ఈ కంప్యూటారులో సృష్టించిన ఏ ఆతిధేయ కంప్యూటారు విధానం మరియూ RHNకి "
+#~ "నమోదైనది Red Hat Enterprise Linux సబ్ సిటంలో భాగం అవుతుంది. మీరు చేయవలసిందల్లా: (1) "
+#~ "వాస్తవీకరణ లేదా వాస్తవీకరణ ఫ్లాట్ ఫాం విభాగాన్ని అందుబాటులో ఉంచండి మరియూ (2) ఆ కంప్యూటరు యొక్క ఎన్ "
+#~ "టైటిల్ మెంటుని ఈ ఈ కంప్యూటరుకి RHN యొక్క వెబ్ అంతర్ముఖంలో మీరు వాస్తవిక ఆతిధేయాలను కోరుకో పోతే "
+#~ "అదనపు సబ్ స్క్రిప్షన్లకు అప్లై చేయండి."
+
+#~ msgid "Fatal Error"
+#~ msgstr "పెద్ద దోషం"
+
+#~ msgid "Warning"
+#~ msgstr "హెచ్చరిక"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "We can't contact {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ msgstr ""
+#~ "మేము Red Hat Network Serverను సంప్రదించలేము.\n"
+#~ "\n"
+#~ "సమకూర్చిన స్థానాన్ని రెండుసార్లు శోధించండి - ఉన్నదో లేదో '%s'?\n"
+#~ "లేకపోతే, మీరుదాన్ని సరిచేసి మళ్లీ ప్రయత్నించండి.\n"
+#~ "\n"
+#~ "నెట్వర్కు అనుసంధానం ఈ కంప్యూటరులో క్రియాశీలమైందేనేమో చూడండి.\n"
+#~ "\n"
+#~ "ఈ కంప్యూటరుRed Hatనుండీ Red Hat Network సర్వరుతో అనుసంధించకుండా నవీకరణలను పొందలే"
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr "నిర్మాణం: %s, OS విడుదల: %s, OS ప్రతి: %s"
+
+#~ msgid ""
+#~ "This server doesn't support functionality needed by this version of the "
+#~ "software update setup client. Please try again with a newer server."
+#~ msgstr ""
+#~ "ఈ సర్వరు ఈ సాఫ్టువేరు నవీకరణ అమర్పు కక్షిదారుని చేత అవసరమైన క్రియాశీలతకి మద్దతివ్వదు. దయచేసి "
+#~ "కొత్త సర్వరుతో ప్రయత్నించండి."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the "
+#~ "{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+#~ "have provided a valid certificate file. Are you sure you have provided "
+#~ "the correct certificate, and that the certificate file has not been "
+#~ "corrupted?\n"
+#~ "\n"
+#~ "Please try again with a different certificate file."
+#~ msgstr ""
+#~ "<b><span size=\"16000\">పొందికలేని ధృవీకృత ఫైలు</span></b>\n"
+#~ "\n"
+#~ "మీరు సమకూర్చిన ధృవీకరణ పత్రం, <b>%s</b>,  Red Hat Network సర్వరుతో <b>%s</b> "
+#~ "యందు పొందికలేనిదిగా ఉంది.మీరు సరైన ధృవీకృత ఫైలును  సమకూర్చినారో లేదో వొకటికి-రెండుసార్లు "
+#~ "సరిచూసుకొనండి. మీరు ఖచ్చితంగా సరైన ధృవీకరణపత్రమును సమకూర్చినారని, మరియూ ఆ ధృవీకరణ ఫైలు "
+#~ "పాడవలేదని చెప్పగలరా?\n"
+#~ "\n"
+#~ "దయచేసి వేరే ధృవీకరణ ఫైలుతో ప్రయత్నించండి."
+
+#~ msgid ""
+#~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ " The certificate is expired. Please ensure you have the correct  "
+#~ "certificate and your system time is correct."
+#~ msgstr ""
+#~ "<b><span size=\"12000\">సారూప్యంలేని ధృవీకరణ పత్రము</span></b>\n"
+#~ "\n"
+#~ " ధృవీకరణపత్రము కాలము చెల్లినది. దయచేసి మీరు సరైన ధృవీకరణపత్రము కలిగివుండునట్లు మరియు మీ "
+#~ "సిస్టమ్ సమయం సరిగా వుండునట్లు చూచుకొనుము."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "కంప్యూటరును నమోదుచేయటంలో ఇబ్బం.\n"
+#~ "\n"
+#~ "మీ ప్రవేశంతో కూడిన RHN నిర్వహణకు అనుసంధించబడిన కంప్యూటర్ల సంఖ్యలనఒక సార్వజనిక సిద్ధ కీలను "
+#~ "నియంత్రిస్తుంది. సంప్రదింపులకి ఈ కంప్యూటరును అనుమతించటాని, దయచేసి మీ  RHN నిర్వహణాధికారిని "
+#~ "అనుసంధాన కంప్యూటర్ల సంఖ్యను పెంచటానికి లేదా ఈ సార్వజనిక కీని అసాధ్యం చేయటానికి సంప్రదించండి. "
+#~ "ఎక్కువ సమాచారాన్ని Red Hat Knowledgebase Article #7924 at http://kbase.redhat."
+#~ "com/faq/FAQ_61_7924.shtm లో చూడవచ్చు "
+
+#~ msgid ""
+#~ "\n"
+#~ " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ " చిట్కా: '*' తో చిన్న విడుదలలు ప్రస్తుతం Red Hat చేత మద్దతించబడుచున్నవి.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Warning:You will not be able to limit this system to minor release that "
+#~ "is older than the recent minor release if you select this option.\n"
+#~ msgstr ""
+#~ "హెచ్చరిక: మీరు ఈ ఐచ్చికమును యెంచుకొనినట్లైతే  యిటీవలి చిన్న విడుదల కన్నా చిన్నదైన విడుదలకు మీరు మీ "
+#~ "సిస్టమ్‌ను పరిమితం చేయలేరు.\n"
+
+#, python-format
+#~ msgid ""
+#~ "Your system will be subscribed to %s \n"
+#~ "base software channel. You will not be\n"
+#~ "able to move this system to an earlier release\n"
+#~ "(you will be able to move to a newer release).\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "మీ సిస్టమ్ %s ప్రాధమిక సాఫ్టువేర్ చానల్‌కు సబ్‌స్క్రైబ్ \n"
+#~ "అగును. మీరు ఈ సిస్టమ్‌ను మునుపటి విడుదలకు కదల్చ లేరు\n"
+#~ "(మీరు కొత్త విడుదలకు కదల్చగలరు.)\n"
+#~ "మీరు ఖచ్చితంగా కొనసాగాలని అనుకొనుచున్నారా?"
+
+#~ msgid "OK"
+#~ msgstr "సరే"
+
+#~ msgid "Error"
+#~ msgstr "దోషం"
+
+#~ msgid "Next"
+#~ msgstr "తరువాత"
+
+#~ msgid "Back"
+#~ msgstr "వెనుక"
+
+#~ msgid "Cancel"
+#~ msgstr "రద్దు"
+
+#~ msgid "No, Cancel"
+#~ msgstr "కాదు, రద్దు"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "అవును, కొనసాగించు"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "ఐచ్ఛికాన్ని ఎన్నుకోకపోవటానికి <space>ని నొక్కండి."
+
+#, fuzzy
+#~ msgid "Spacewalk Location:"
+#~ msgstr "Red Hat Network స్థానం:"
+
+#~ msgid "System ID:"
+#~ msgstr "సిస్టమ్ ID:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "ఈ సర్వరు ఒక దోషాన్ని సూచిస్తోంది:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr "నమోదీకరణ సేవికతో సంప్రదించుటలో అక్కడ వొక దోషము వుంది:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "రూపం పేరు:"
+
+#~ msgid "Version: "
+#~ msgstr "ప్రతి: "
+
+#~ msgid "CPU model: "
+#~ msgstr "CPU మాదిరి: "
+
+#~ msgid "Hostname: "
+#~ msgstr "ఆతిధేయనామం: "
+
+#~ msgid "CPU speed: "
+#~ msgstr "CPU వేగం: "
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP చిరునామా: "
+
+#~ msgid "Memory: "
+#~ msgstr "మెమోరీ: "
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s మెగాబైట్లు"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "సమస్య నమోదు విధానం:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "సమస్యని నమోదుచేసే విధానం"
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "సమస్యని రాసే విధానం id నుండీ డిస్కుకి."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "సమస్యను హార్డువేరు రూపానికి పంపుతోంది:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "హార్డువేరు రూపాన్ని పంపటంలో ఇబ్బంది."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "ప్యాకేజీ జాబితాను పంపటంలో ఇబ్బంది:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "ప్యాకేజీ జాబితాను పంపటంలో ఇబ్బంది."
+
+#~ msgid "Finish"
+#~ msgstr "ముగించు"
+
+#, fuzzy
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr "మీరు విలువలేని చట్టాన్ని తెలిపారు. కేవలం https మరియూ http మాత్రమే అనుమతించబడతాయి."
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> మూలకాల మధ్య  |  <Space> selects  |  <F12> next screen"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "మీరు తప్పక RHN నమోదు పరిక్రమాన్ని రూటుగా ప్రయోగించాలి."
+
+#, fuzzy
+#~ msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+#~ msgstr "ఒకటి కన్నా యెక్కువ rhn_check సంభవాన్ని నడుపుటకు ప్రయత్నిస్తోంది. ఇప్పటికేవుంది.\n"
 
 #~ msgid "Specify a profilename"
 #~ msgstr "ఒక ఆకృతి పేరును తెల్పండి"

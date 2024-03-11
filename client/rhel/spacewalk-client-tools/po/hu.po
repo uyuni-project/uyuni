@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 15:35+0200\n"
+"POT-Creation-Date: 2024-04-08 15:38+0200\n"
 "PO-Revision-Date: 2018-03-16 11:01+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/spacewalk/"
@@ -44,817 +44,6 @@ msgstr ""
 msgid "%s was not found"
 msgstr "%s nem található"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "A rendszerre telepített csomagok listájának elkészítése"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "Hiba történt a processzorjellemzők lekérdezésekor:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "Hiba történt a rendszermemória lekérdezésekor:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "Hiba történt a hálózati adatok lekérdezésekor:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "Hiba történt a telepítési mód lekérdezésekor:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "Hiba történt a hálózati csatolók adatainak lekérdezésekor:"
-
-#: ../src/up2date_client/hardware.py:1118
-#, fuzzy
-msgid "Error reading network FQDNs information:"
-msgstr "Hiba történt a hálózati adatok lekérdezésekor:"
-
-#: ../src/up2date_client/hardware.py:1125
-#, fuzzy
-msgid "Error reading system info:"
-msgstr "Hiba történt a rendszermemória lekérdezésekor:"
-
-#: ../src/up2date_client/hardware.py:1132
-#, fuzzy
-msgid "Error reading machine info:"
-msgstr "Hiba történt a processzorjellemzők lekérdezésekor:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "SystemID nem található"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "A rendszer nem frissíthető, amíg nincs hozzárendelve egy csatorna."
-
-#: ../src/up2date_client/rhncli.py:65
-#, fuzzy
-msgid "Show additional output. Repeat for more detail."
-msgstr "További kimenet megjelenítése"
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "Adja meg a használandó HTTP-proxy adatait"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Adja meg a HTTP-proxyhoz használandó felhasználónevet"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Adja meg a HTTP-proxyhoz használandó jelszót"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"Megszakítva.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "Váratlan hiba történt az operációs rendszerben: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "A kapcsolódást egy rendellenes url által lett kezdeményezve.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
-"A kapcsolódást egy rendellenes url által lett kezdeményezve: %s\n"
-"\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Beviteli/kiviteli (I/O) hiba történt: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "SSL-hiba történt: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"A hiba oka gyakran a helytelen rendszeridő. Ellenőrizze, hogy ezen a "
-"rendszeren helyesen van-e beállítva a rendszeridő.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "SSL titkosítási hiba történt: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Azonosítási hiba történt: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "Rootnak kell lenned hogy futtathasd %s"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "Hiba történt:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "Tekintsd meg a /var/log/up2date-t a további információkért"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Copyright © 2006--2014 Red Hat, Inc. Minden jog fenntartva."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Meg kell adni a vezetéknevet."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-msgid "Attempting to contact the Spacewalk server."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr ""
-"Most megpróbálunk kapcsolatba lépni a Red Hat Hálózati Szerverrel a %s "
-"helyen."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "Egy proxy lett megadva a %s helyen."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "regisztrációsSzám"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Miért kapcsolódjak az RHN-hez?..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "Miért regisztráljak"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "Biztonság & Frissítések :"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "Letöltések & Frissítések :"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "Támogatás:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "Megfelelés:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-#, fuzzy
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"A legújabb szoftver frissítések fogadása, ebbe beletartoznak a biztonsági "
-"frissítések, ezt a Red Hat Enterprise Linux rendszert frissítve tartani és "
-"biztonságosan."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-#, fuzzy
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"A telepítési képfájlok letöltése a Red Hat Linux Vállalati kiadásaihoz, "
-"amelybe beletartoznak az új kiadások is."
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-#, fuzzy
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"Kapcsolat a technikai szakértőkkel a Red Hat-nél vagy a Red hat partnereinél "
-"bármilyen hibával kapcsolatban amivel találkozhat ennél a rendszernél."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-#, fuzzy
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"Tipp: A Red Hat tiszteletben tartja a személyes információkat: http://www."
-"redhat.com/legal/privacy_statement.html"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "Vigyen vissza a regisztrációhoz"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "Az Up2date újraindítása"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "Vigyen vissza a beállítási folyamathoz."
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "Később fogok regisztrálni."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"Kérem adja meg a belépési információkat a %s Red Hat Hálózati Satellite-"
-"hoz:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "Bejelentkezés:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "Jelszó:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-"Tipp: Elfelejtett a felhasználói nevet vagy a jelszót? Lépjen kapcsolatba az "
-"Ön Satellite's Organization Adminisztrátorával."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "Kérem adja meg a kivánt felhasználói nevet."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "Kérem adja meg és ellenőrizze is a jelszavát."
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "Operációs rendszer verzió:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr "Kisebb kiadás:"
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "Csak Limitált Frissítések"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "Minden elérhető frissítés"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "Operációs rendszer kiadási szelekciójának megerősítése"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-"Az Ön rendszere fel lesz iratkozva az alap szoftver csatornára hogy "
-"megkapjon minden elérhető frissítést."
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "A rendszer kapcsolása"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"A profilnév egy beszédes név, amelyet Ön választ ezen rendszerprofilnak a "
-"Red Hat Network weblapokon való azonosítására. Beleteheti a számítógép "
-"sorozatszámát vagy azonosítószámát is."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"További hardverinformáció - többek közt PCI-eszközök, lemezméretek és "
-"csatlakoztatási pontok - kerül csatolásra a profilhoz."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "A következő hardver- illetve hálózatinformáció csatolása:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "A rendszer kapcsolása"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"Az RPM-csomagokra vonatkozó információ fontos ahhoz, hogy meghatározható "
-"legyen, mely csomagfrissítések vonatkoznak erre a rendszerre."
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr ""
-"A rendszerre telepített RPM-csomagok listájának csatolása a rendszerprofilhoz"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr ""
-"Csomagok kihagyásához törölje a megfelelő csomagok kijelölését lentebb."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "A csomaglista elkészítése"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*Email Cím:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr ""
-"    --force                    - a rendszer regisztrálása akkor is, ha az "
-"már regisztrálva van"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr "Az Up2date újraindítása"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "Biztos hogy tovább akar lépni?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "A profilinformáció elküldése a Red Hat Networkre"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "Leírás"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "Kérem ellenőrizze a feliratkozás részleteit lentebb:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr ""
-"A feliratkozások aktiválva lettek a következő Red Hat termékekre/"
-"szolgáltatásokra:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "Csatornainformáció"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, fuzzy, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"Figyelmeztetés: A yum-rhn plugin nincs jelen, így nem lehet engedélyeztetni "
-"azt.\n"
-"Az automatikus frissítések nem fognak működni."
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, fuzzy, python-format
-msgid "Note: %s has been enabled."
-msgstr "Megjegyzés: A yum-rhn-plugin engedélyezve lett."
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, fuzzy, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"Figyelmeztetés: Egy hiba lépett fel a yum-rhn-plugin engedélyezése közben.\n"
-"A yum-rhn-plugin nem lett engedélyezve.\n"
-"Az automatikus frissítések nem fognak működni."
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "Súlyos hiba"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Figyelmeztetés"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "OK"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "Hiba"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "Tovább"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "Vissza"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "Mégsem"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "Mégsem"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr ""
-
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
@@ -872,172 +61,60 @@ msgstr "A kapcsolat megszakítva a felhasználó által"
 msgid "Server has refused connection due to high load"
 msgstr "A kiszolgáló elutasította a kapcsolódást túlterheltség miatt"
 
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "Vezetéknév:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "A kiszolgáló hibát jelzett:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr ""
-"Hiba lépett fel a regisztrációs kiszolgálóval való kommunikációban. Az "
-"üzenet:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "Profilnév:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "Verzió:"
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "CPU-típus:"
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "Gépnév:"
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "CPU-sebesség:"
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP-cím:"
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "Memória:"
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s MB"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Probléma lépett fel a rendszer regisztrálásakor:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Probléma lépett fel a rendszer regisztrálásakor."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Probléma lépett fel a rendszerazonosító lemezre való írása közben."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "Probléma lépett fel a hardverprofil küldésekor:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "Probléma lépett fel a hardverprofil küldésekor."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "Probléma lépett fel a csomaglista küldésekor:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "Probléma lépett fel a csomaglista küldésekor."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "Befejezés"
-
-#: ../src/up2date_client/tui.py:1210
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> lépegetés  |  <Szóköz> kijelölés  |  <F12> következő "
-"képernyő"
-
-#: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "Az RHN regisztrációs programot rendszergazdaként kell futtatni."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "RPM-hiba. Az üzenet:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "Jelszóhiba. Az üzenet:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM-csomagfüggőségi hiba. Az üzenet:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "Hiba lépett fel a kiszolgálóval való kommunikációban. Az üzenet:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "A fájl nem található: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "Késleltetési hiba a kiszolgálón. Az üzenet:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "Hiba történt az adatoknak a kiszolgálón való érvényesítése közben:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "Az előfizetési szám érvénytelen"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Hiba történt az oemInfo fájl elemzésekor a következő mezőnél:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1057,9 +134,442 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "A rendszerre telepített csomagok listájának elkészítése"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "Hiba történt a processzorjellemzők lekérdezésekor:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "Hiba történt a rendszermemória lekérdezésekor:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "Hiba történt a hálózati adatok lekérdezésekor:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "Hiba történt a telepítési mód lekérdezésekor:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "Hiba történt a hálózati csatolók adatainak lekérdezésekor:"
+
+#, fuzzy
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "Hiba történt a hálózati adatok lekérdezésekor:"
+
+#, fuzzy
+#~ msgid "Error reading system info:"
+#~ msgstr "Hiba történt a rendszermemória lekérdezésekor:"
+
+#, fuzzy
+#~ msgid "Error reading machine info:"
+#~ msgstr "Hiba történt a processzorjellemzők lekérdezésekor:"
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "SystemID nem található"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr "A rendszer nem frissíthető, amíg nincs hozzárendelve egy csatorna."
+
+#, fuzzy
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "További kimenet megjelenítése"
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "Adja meg a használandó HTTP-proxy adatait"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "Adja meg a HTTP-proxyhoz használandó felhasználónevet"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "Adja meg a HTTP-proxyhoz használandó jelszót"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Megszakítva.\n"
+
+#, python-format
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "Váratlan hiba történt az operációs rendszerben: %s\n"
+
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "A kapcsolódást egy rendellenes url által lett kezdeményezve.\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr ""
+#~ "A kapcsolódást egy rendellenes url által lett kezdeményezve: %s\n"
+#~ "\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "Beviteli/kiviteli (I/O) hiba történt: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "SSL-hiba történt: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "A hiba oka gyakran a helytelen rendszeridő. Ellenőrizze, hogy ezen a "
+#~ "rendszeren helyesen van-e beállítva a rendszeridő.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "SSL titkosítási hiba történt: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "Azonosítási hiba történt: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "Rootnak kell lenned hogy futtathasd %s"
+
+#~ msgid "An error has occurred:"
+#~ msgstr "Hiba történt:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "Tekintsd meg a /var/log/up2date-t a további információkért"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "Copyright © 2006--2014 Red Hat, Inc. Minden jog fenntartva."
+
+#, fuzzy, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "Meg kell adni a vezetéknevet."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr ""
+#~ "Most megpróbálunk kapcsolatba lépni a Red Hat Hálózati Szerverrel a %s "
+#~ "helyen."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "Egy proxy lett megadva a %s helyen."
+
+#~ msgid "System Registration"
+#~ msgstr "regisztrációsSzám"
+
+#, fuzzy, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "Miért kapcsolódjak az RHN-hez?..."
+
+#~ msgid "Why Register"
+#~ msgstr "Miért regisztráljak"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "Biztonság & Frissítések :"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "Letöltések & Frissítések :"
+
+#~ msgid "Support:"
+#~ msgstr "Támogatás:"
+
+#~ msgid "Compliance:"
+#~ msgstr "Megfelelés:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "A legújabb szoftver frissítések fogadása, ebbe beletartoznak a biztonsági "
+#~ "frissítések, ezt a Red Hat Enterprise Linux rendszert frissítve tartani "
+#~ "és biztonságosan."
+
+#, fuzzy
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "A telepítési képfájlok letöltése a Red Hat Linux Vállalati kiadásaihoz, "
+#~ "amelybe beletartoznak az új kiadások is."
+
+#, fuzzy
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "Kapcsolat a technikai szakértőkkel a Red Hat-nél vagy a Red hat "
+#~ "partnereinél bármilyen hibával kapcsolatban amivel találkozhat ennél a "
+#~ "rendszernél."
+
+#, fuzzy
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "Tipp: A Red Hat tiszteletben tartja a személyes információkat: http://www."
+#~ "redhat.com/legal/privacy_statement.html"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "Vigyen vissza a regisztrációhoz"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "Az Up2date újraindítása"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "Vigyen vissza a beállítási folyamathoz."
+
+#~ msgid "I'll register later."
+#~ msgstr "Később fogok regisztrálni."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Kérem adja meg a belépési információkat a %s Red Hat Hálózati Satellite-"
+#~ "hoz:\n"
+
+#~ msgid "Login:"
+#~ msgstr "Bejelentkezés:"
+
+#~ msgid "Password:"
+#~ msgstr "Jelszó:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "Tipp: Elfelejtett a felhasználói nevet vagy a jelszót? Lépjen kapcsolatba "
+#~ "az Ön Satellite's Organization Adminisztrátorával."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "Kérem adja meg a kivánt felhasználói nevet."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "Kérem adja meg és ellenőrizze is a jelszavát."
+
+#~ msgid "Operating System version:"
+#~ msgstr "Operációs rendszer verzió:"
+
+#~ msgid " Minor Release: "
+#~ msgstr "Kisebb kiadás:"
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "Csak Limitált Frissítések"
+
+#~ msgid "All available updates"
+#~ msgstr "Minden elérhető frissítés"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "Operációs rendszer kiadási szelekciójának megerősítése"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr ""
+#~ "Az Ön rendszere fel lesz iratkozva az alap szoftver csatornára hogy "
+#~ "megkapjon minden elérhető frissítést."
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "A rendszer kapcsolása"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "A profilnév egy beszédes név, amelyet Ön választ ezen rendszerprofilnak a "
+#~ "Red Hat Network weblapokon való azonosítására. Beleteheti a számítógép "
+#~ "sorozatszámát vagy azonosítószámát is."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "További hardverinformáció - többek közt PCI-eszközök, lemezméretek és "
+#~ "csatlakoztatási pontok - kerül csatolásra a profilhoz."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "A következő hardver- illetve hálózatinformáció csatolása:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "A rendszer kapcsolása"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "Az RPM-csomagokra vonatkozó információ fontos ahhoz, hogy meghatározható "
+#~ "legyen, mely csomagfrissítések vonatkoznak erre a rendszerre."
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr ""
+#~ "A rendszerre telepített RPM-csomagok listájának csatolása a "
+#~ "rendszerprofilhoz"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr ""
+#~ "Csomagok kihagyásához törölje a megfelelő csomagok kijelölését lentebb."
+
+#~ msgid "Building Package List"
+#~ msgstr "A csomaglista elkészítése"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*Email Cím:"
+
+#~ msgid "System Already Registered"
+#~ msgstr ""
+#~ "    --force                    - a rendszer regisztrálása akkor is, ha az "
+#~ "már regisztrálva van"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr "Az Up2date újraindítása"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "Biztos hogy tovább akar lépni?"
+
+#, fuzzy, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "A profilinformáció elküldése a Red Hat Networkre"
+
+#~ msgid "Review Subscription"
+#~ msgstr "Leírás"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "Kérem ellenőrizze a feliratkozás részleteit lentebb:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr ""
+#~ "A feliratkozások aktiválva lettek a következő Red Hat termékekre/"
+#~ "szolgáltatásokra:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "Csatornainformáció"
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Figyelmeztetés: A yum-rhn plugin nincs jelen, így nem lehet "
+#~ "engedélyeztetni azt.\n"
+#~ "Az automatikus frissítések nem fognak működni."
+
+#, fuzzy, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "Megjegyzés: A yum-rhn-plugin engedélyezve lett."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Figyelmeztetés: Egy hiba lépett fel a yum-rhn-plugin engedélyezése "
+#~ "közben.\n"
+#~ "A yum-rhn-plugin nem lett engedélyezve.\n"
+#~ "Az automatikus frissítések nem fognak működni."
+
+#~ msgid "Fatal Error"
+#~ msgstr "Súlyos hiba"
+
+#~ msgid "Warning"
+#~ msgstr "Figyelmeztetés"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Error"
+#~ msgstr "Hiba"
+
+#~ msgid "Next"
+#~ msgstr "Tovább"
+
+#~ msgid "Back"
+#~ msgstr "Vissza"
+
+#~ msgid "Cancel"
+#~ msgstr "Mégsem"
+
+#~ msgid "No, Cancel"
+#~ msgstr "Mégsem"
+
+#~ msgid "System ID:"
+#~ msgstr "Vezetéknév:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "A kiszolgáló hibát jelzett:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr ""
+#~ "Hiba lépett fel a regisztrációs kiszolgálóval való kommunikációban. Az "
+#~ "üzenet:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "Profilnév:"
+
+#~ msgid "Version: "
+#~ msgstr "Verzió:"
+
+#~ msgid "CPU model: "
+#~ msgstr "CPU-típus:"
+
+#~ msgid "Hostname: "
+#~ msgstr "Gépnév:"
+
+#~ msgid "CPU speed: "
+#~ msgstr "CPU-sebesség:"
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP-cím:"
+
+#~ msgid "Memory: "
+#~ msgstr "Memória:"
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s MB"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "Probléma lépett fel a rendszer regisztrálásakor:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "Probléma lépett fel a rendszer regisztrálásakor."
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "Probléma lépett fel a rendszerazonosító lemezre való írása közben."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "Probléma lépett fel a hardverprofil küldésekor:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "Probléma lépett fel a hardverprofil küldésekor."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "Probléma lépett fel a csomaglista küldésekor:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "Probléma lépett fel a csomaglista küldésekor."
+
+#~ msgid "Finish"
+#~ msgstr "Befejezés"
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> lépegetés  |  <Szóköz> kijelölés  |  <F12> következő "
+#~ "képernyő"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "Az RHN regisztrációs programot rendszergazdaként kell futtatni."
 
 #~ msgid "Specify a url to use as a server"
 #~ msgstr "Adja meg a használandó kiszolgáló URL-jét"

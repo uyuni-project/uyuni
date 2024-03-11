@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 15:35+0200\n"
+"POT-Creation-Date: 2024-04-08 15:38+0200\n"
 "PO-Revision-Date: 2021-03-23 18:57+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -46,878 +46,6 @@ msgstr "Asiakas vaatii palvelimen tukevan %s, jota nykyinen palvelin ei tue"
 msgid "%s was not found"
 msgstr "%s ei löydy"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "Muodostetaan luetteloa järjestelmään asennetuista paketeista"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "Virhe luettaessa suoritintietoja:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "Virhe luettaessa järjestelmän muistitietoja:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "Virhe luettaessa verkkotietoja:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "Virhe luettaessa asennustapatietoja:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "Virhe luettaessa verkkoliitännän tietoja:"
-
-#: ../src/up2date_client/hardware.py:1118
-msgid "Error reading network FQDNs information:"
-msgstr "Virhe luettaessa verkon FQDN-tietoja:"
-
-#: ../src/up2date_client/hardware.py:1125
-msgid "Error reading system info:"
-msgstr "Virhe luettaessa järjestelmätietoja:"
-
-#: ../src/up2date_client/hardware.py:1132
-msgid "Error reading machine info:"
-msgstr "Virhe luettaessa konetietoja:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "SystemId:tä ei löydetä"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "Järjestelmää ei voi päivittää ennenkuin se on liitetty kanavaan."
-
-#: ../src/up2date_client/rhncli.py:65
-msgid "Show additional output. Repeat for more detail."
-msgstr "Näytä lisätuloste. Toista saadaksesi lisää tietoa."
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "Määritä käytettävä http-välityspalvelin"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Määritä http-välityspalvelimessa käytettävä käyttäjätunnus"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Määritä http-välityspalvelimessa käytettävä salasana"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"Keskeytetty.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "Sattui odottamaton käyttöjärjestelmävirhe: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "Yhteyttä yritettiin virheellisellä URIlla.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "Yhteyttä yritettiin virheellisellä URIlla: %s.\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Sattui jokin I/O-virhe: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "Sattui SSL-virhe: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"Usein tämän virheilmoituksen aiheuttaa väärä järjestelmän aika. Tarkista "
-"että järjestelmän aika on oikein.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "Sattui jokin SSL-salausvirhe: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Todennusvirhe: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "Ohjelma %s täytyy suorittaa pääkäyttäjänä"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Tekijänoikeudet © 1999--2014 Red Hat, Inc.\n"
-"Lisensoitu GPLv2:n ehtojen mukaisesti."
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "Sattui virhe:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "Lisätietoja löytyy tiedostosta /var/log/up2date"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr "Uyuni"
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Tekijänoikeudet © 2006--2014 Red Hat, Inc. Kaikki oikeudet pidätetään."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr "Anna tuotteen {PRODUCT_NAME} verkko-osoite."
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-"Anna {PRODUCT_NAME} -palvelimen ja sen SSL-varmenteen sijainti. SSL-"
-"varmennetta vaaditaan vain, jos käytetään https-yhteyttä (suositeltavaa)."
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr "{PRODUCT_NAME} -verkko-osoite:"
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr "SSL-varmenne:"
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Kelvollinen {PRODUCT_NAME} -verkko-osoite on annettava."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-"Jos käytössä on https, on annettava kelvollisen SSL-varmenteen sijainti."
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Yritetään yhdistää Spacewalk-palvelimeen."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Yritetään yhdistää {PRODUCT_NAME} -palvelimeen osoitteessa %s."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "Välityspalvelinosoitteeksi on asetettu %s."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "Järjestelmän rekisteröinti"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"Tämä opastettu toiminto ohjaa yhdistämään järjestelmän {PRODUCT_NAME} -"
-"verkkoon ohjelma- ja tietoturvapäivitysten saamiseksi ja järjestelmän "
-"pitämiseksi tuettuna ja yhteensopivana. Tässä vaiheessa arvitset:\n"
-"\n"
-" * verkkoyhteyden\n"
-" * {PRODUCT_NAME} -käyttäjätunnuksen ja -salasanan\n"
-" * {PRODUCT_NAME} -palvelimen tai välityspalvelimen sijainnin\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Miksi rekisteröityä {PRODUCT_NAME} -verkkoon? …"
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "Miksi rekisteröityä"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"Rekisteröimällä järjestelmäsi Red Hatille saat tukisopimuksestasi kaiken "
-"irti, mm:"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "Tietoturva ja päivitykset:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "Lataukset ja versiopäivitykset:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "Tuki:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "Vaatimusten mukaisuus:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"Nouda uusimmat ohjelmisto- ja tietoturvapäivitykset ja pidä järjestelmä ajan "
-"tasalla ja turvassa."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr "Lataa (myös uusien) järjestelmäjulkaisujen levykuvat."
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"Yhteydenotto teknisen tuen asiantuntijoihin järjestelmässä kohtaamissasi "
-"ongelmissa."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-"Pysy tilaussopimuksesi vaatimusten mukaisena ja hallitse tiliisi "
-"yhdistettyjen järjestelmien tilauksia."
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"Vihje: SUSE kunnioittaa yksityisyyttäsi: https://www.suse.com/company/legal/"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "Palaa rekisteröintiin"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "Ohjelmistopäivitystä ei ole asetettu"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"Oletko varma, ettet halua yhdistää järjestelmääsi {PRODUCT_NAME} -verkkoon? "
-"Menetät SLES/RHEL-tilauksesi edut:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"Et voi hyötyä näistä tilauseduista yhdistämättä järjestelmää {PRODUCT_NAME} -"
-"verkkoon.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "Palaa asettamiseen."
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "Rekisteröidyn myöhemmin."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr "{PRODUCT_NAME} -tili"
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"Anna kirjautumistietosi: %s {PRODUCT_NAME}:\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr "{PRODUCT_NAME} -kirjautuminen:"
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "Käyttäjätunnus:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "Salasana:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-"Vihje: Unohditko käyttäjätunnuksesi tai salasanasi? Ota yhteyttä Satelliten "
-"organisaation pääkäyttäjään."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "Anna haluamasi käyttäjätunnus:"
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "Anna salasana ja vahvista se."
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr "Käyttöjärjestelmän julkaisuversio"
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "Käyttöjärjestelmän versio:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr " Alijulkaisu: "
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "Vain rajoitetut päivitykset"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "Kaikki saatavilla olevat päivitykset"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "Vahvista käyttöjärjestelmäjulkaisun valinta"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-"Järjestelmäsi liitetään peruskanavaan. Päivitykset tulevat tästä kanavasta."
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "Laitteistoprofiili"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"Profiilin nimi on kuvaava nimi, jota käytetään tunnistamaan järjestelmän "
-"profiili {PRODUCT_NAME} -sivustossa. Siihen voi valinnaisesti sisällyttää "
-"tietokoneen sarja- tai muun tunnistenumeron."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"Profiiliin sisältyy laitteistolisätietoa (PCI-laitteet, levyjen koot sekä "
-"liitospisteet)."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "Sisällytä seuraavat laitteisto- ja verkkotiedot:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "Luo profiili – Paketit"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"RPM-tietoa tarvitaan määrittämään, mitkä ohjelmapakettipäivitykset ovat "
-"järjestelmän kannalta oleellisia."
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr "SIsällytä järjestelmäprofiiliin asennetut RPM-paketit"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr "Yksittäisten pakettien valinnan voi poistaa alta."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "Koostetaan pakettiluetteloa"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*Sähköpostiosoite:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr ""
-"    --force                    - rekisteröi järjestelmä, vaikka se olisi jo "
-"rekisteröity"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr ""
-"Vaikuttaa siltä, että järjestelmän ohjelmistopäivitykset on jo asetettu:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "Haluatko varmasti jatkaa?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-"Järjestelmä on jo rekisteröity Red Hatin tilauksenhallintaa käyttäen.\n"
-"\n"
-"Järjestelmä rekisteröidään uudelleen Red Hat Satellite- tai Red Hat "
-"Satellite Proxy -tekniikalla. Red Hat suosittelee asiakkaita "
-"rekisteröitymään vain kerran.\n"
-"\n"
-"Lisätietoa RHN Class/Red Hat Satellite -rekisteröitymisestä ja -tekniikasta "
-"saa tästä tietämyskannan artikkelista:\n"
-"https://access.redhat.com/kb/docs/DOC-45563"
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Lähetä profiilitiedot {PRODUCT_NAME} -verkkoon"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-"Tietojen keruu järjestelmäprofiilia varten on valmis.\n"
-"\n"
-"Lähetä järjestelmäprofiili {PRODUCT_NAME} -verkkoon napsauttamalla "
-"”Seuraava”. Tietoja ei lähetetä, jos napsautat ”Peru”. Rekisteröitymisen voi "
-"tehdä myöhemmin komentorivikomennolla ”rhn_register”."
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr "Lähetetään profiili {PRODUCT_NAME} -verkkoon"
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr "Päivitykset asetettu"
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"Nyt viimeisimmät {PRODUCT_NAME} -ohjelmistopäivitykset voi saada ajamalla "
-"”%s update” järjestelmän komentoriviltä. Aja se säännöllisesti saadaksesi "
-"viimeisimmät päivitykset. Vaihtoehtoisesti järjestelmän voi asettaa "
-"päivittymään automaattisesti {PRODUCT_NAME} -verkkokäyttöliittymässä. "
-"(Ohjeet tähän löytyvät {PRODUCT_NAME} -viitekäsikirjasta, jonka saa "
-"{PRODUCT_NAME} -verkkokäyttöliittymän Ohje-painikkeesta.)"
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "Tarkastele tilausta"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "Tarkista alla olevat tilaustiedot:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"Asennusnumero %s aktivoitiin yhdistettäessä järjestelmä ensi kertaa "
-"{PRODUCT_NAME} -verkkoon."
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Seuraavien tuotteiden tai palveluiden tilaukset on aktivoitu:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "Ohjelmakanavatilaukset:"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr "Järjestelmä saa päivityksiä seuraavista ohjelmakanavista:"
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-"Varoitus: Vain yllä luetellut asennetut tuotteet saavat päivityksiä ja "
-"tukea. Jos haluat päivityksiä lisätuotteille, kirjaudu {PRODUCT_NAME} -"
-"verkkokäyttöliittymään ja tilaa järjestelmään vastaavat ohjelmakanavat."
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"Varoitus: %s ei ole läsnä eikä sitä voi ottaa käyttöön.\n"
-"Automaattinen päivitys ei toimi."
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr "Huom: %s on otettu käyttöön."
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"Varoitus: Sattui virhe otettaessa %s-ohjelmaa käyttöön.\n"
-"%s ei ole käytössä.\n"
-"Automaattinen päivitys ei toimi."
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"Seuraavien ohjelmakanavien tilaaminen epäonnistui, koska tililläsi ei ole "
-"tarpeeksi tilauksia käytettävissä:"
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-"Järjestelmä ei voinut tilata yhtään ohjelmakanavaa. Järjestelmä ei saa "
-"ohjelmistopäivityksiä, jotka pitäisivät ja tuettuna ja turvallisena. Ota "
-"yhteyttä {PRODUCT_NAME} -ylläpitäjään tästä ongelmasta. Saatuasi tarvittavat "
-"aktiiviset tilaukset käyttöön tililläsi voit tarkastella järjestelmän "
-"profiilia {PRODUCT_NAME} -verkkokäyttöliittymässä ja tilata järjestelmään "
-"ohjelmakanavia vastaavalta välilehdeltä."
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr "Palvelutaso:"
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-"Edut vaihtelevat sen mukaan, mitä {PRODUCT_NAME} -järjestelmätyyppejä  "
-"järjestelmään on kytketty. Tähän järjestelmään on kytketty seuraavat "
-"{PRODUCT_NAME} -järjestelmätyypit:"
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"Järjestelmää ei voitu kytkeä seuraaviin {PRODUCT_NAME} -"
-"järjestelmätyyppeihin, koska tililläsi ei ole tarpeeksi tilauksia:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "Vakava virhe"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Varoitus"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr ""
-"Arkkitehtuuri: %s, käyttöjärjestelmän julkaisu: %s, käyttöjärjestelmän "
-"versio: %s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-"<b><span size=\"12000\">Sertifikaattitiedosto ei ole yhteensopiva</span></"
-"b>\n"
-"\n"
-" Sertifikaatti on vanhentunut. Tarkista että käytit oikeaa tiedostoa ja että "
-"järjestelmäsi kello on oikeassa ajassa."
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, fuzzy, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"Järjestelmän rekisteröinti epäonnistui.\n"
-"\n"
-"Universaali aktivointiavain rajoittaa RHN-tiliisi liitettyjen koneiden "
-"määrää. Ota yhteyttä RHN-tilisi pääkäyttäjään ja pyydä nostamaan rajoitusta "
-"tai älä käytä aktivointiavainta."
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-"\n"
-"Vihje: Minor-versiot jotka on merkitty tähdellä ovat tällä hetkellä Red "
-"Hatin tukemia.\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-"Varoitus: Et voi liittää tätä järjestelmää minor-versioon joka on vanhempi "
-"kuin nykyinen versio jos valitset tämän option.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"Järjestelmä liitetään %s\n"
-"peruskanavaan. Järjestelmää\n"
-"ei voi myöhemmin liittää minor-versioon\n"
-"mutta sen voi päivittää uudempaan versioon.\n"
-"Oletko varma että haluat jatkaa?"
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "Ok"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "Virhe"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "Seuraava"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "Takaisin"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "Peru"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "Ei, peruuta"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "Kyllä, jatka"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "Poista valinta painamalla välilyöntiä."
-
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Virhe: Palvelin ei ole saatavilla. Yrityä uudelleen myöhemmin."
@@ -935,171 +63,60 @@ msgstr "Käyttäjä katkaisi yhteyden"
 msgid "Server has refused connection due to high load"
 msgstr "Palvelin hylkäsi yhteyden koska se on ylikuormittunut"
 
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "Järjestelmän ID:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "Palvelin havaitsi virheen:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "Virhe kommunikoitaessa rekisteröintipalvelimen kanssa:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "Profiilin nimi:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "Versio:"
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "CPU:n malli:"
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "Isäntänimi:"
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "CPU:n nopeus:"
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP-osoite: "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "Muisti: "
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s megatavua"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Ongelma järjestelmän rekisteröinnissä:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Ongelma järjestelmän rekisteröimisessä."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Ongelma järjestelmä-id:n kirjoittamisessa levylle."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "Ongelma laitteistoprofiilin lähetyksessä:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "Ongelma laitteistoprofiilin lähetyksessä."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "Ongelma pakettiluettelon lähetyksessä:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "Ongelma pakettiluettelon lähetyksessä."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "Lopeta"
-
-#: ../src/up2date_client/tui.py:1210
-#, fuzzy
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr "Määritit virheellisen protokollan. Vain https ja http ovat sallittuja."
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> vaihda kohdetta  |  <Välilyönti> valitse  |  <F12> "
-"seuraava ruutu"
-
-#: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "RHN-rekisteröintiohjelma on suoritettava pääkäyttäjänä."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "RPM-virhe:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "Salasanavirhe:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM-riippuvaisuusvirhe:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "Virhe kommunikoitaessa palvelimeen:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "Tiedostoa ei löydy: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "Aikakatkaisuvirhe palvelimelta:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "Asennusnumero ei kelpaa"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1119,9 +136,728 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "Muodostetaan luetteloa järjestelmään asennetuista paketeista"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "Virhe luettaessa suoritintietoja:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "Virhe luettaessa järjestelmän muistitietoja:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "Virhe luettaessa verkkotietoja:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "Virhe luettaessa asennustapatietoja:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "Virhe luettaessa verkkoliitännän tietoja:"
+
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "Virhe luettaessa verkon FQDN-tietoja:"
+
+#~ msgid "Error reading system info:"
+#~ msgstr "Virhe luettaessa järjestelmätietoja:"
+
+#~ msgid "Error reading machine info:"
+#~ msgstr "Virhe luettaessa konetietoja:"
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "SystemId:tä ei löydetä"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr "Järjestelmää ei voi päivittää ennenkuin se on liitetty kanavaan."
+
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "Näytä lisätuloste. Toista saadaksesi lisää tietoa."
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "Määritä käytettävä http-välityspalvelin"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "Määritä http-välityspalvelimessa käytettävä käyttäjätunnus"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "Määritä http-välityspalvelimessa käytettävä salasana"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Keskeytetty.\n"
+
+#, python-format
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "Sattui odottamaton käyttöjärjestelmävirhe: %s\n"
+
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "Yhteyttä yritettiin virheellisellä URIlla.\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr "Yhteyttä yritettiin virheellisellä URIlla: %s.\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "Sattui jokin I/O-virhe: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "Sattui SSL-virhe: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "Usein tämän virheilmoituksen aiheuttaa väärä järjestelmän aika. Tarkista "
+#~ "että järjestelmän aika on oikein.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "Sattui jokin SSL-salausvirhe: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "Todennusvirhe: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "Ohjelma %s täytyy suorittaa pääkäyttäjänä"
+
+#, python-format
+#~ msgid ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licensed under the terms of the GPLv2."
+#~ msgstr ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Tekijänoikeudet © 1999--2014 Red Hat, Inc.\n"
+#~ "Lisensoitu GPLv2:n ehtojen mukaisesti."
+
+#~ msgid "An error has occurred:"
+#~ msgstr "Sattui virhe:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "Lisätietoja löytyy tiedostosta /var/log/up2date"
+
+#~ msgid "Uyuni"
+#~ msgstr "Uyuni"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr ""
+#~ "Tekijänoikeudet © 2006--2014 Red Hat, Inc. Kaikki oikeudet pidätetään."
+
+#, python-brace-format
+#~ msgid "Enter your {PRODUCT_NAME} URL."
+#~ msgstr "Anna tuotteen {PRODUCT_NAME} verkko-osoite."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
+#~ "certificate. The SSL certificate is only required if you will be "
+#~ "connecting over https (recommended)."
+#~ msgstr ""
+#~ "Anna {PRODUCT_NAME} -palvelimen ja sen SSL-varmenteen sijainti. SSL-"
+#~ "varmennetta vaaditaan vain, jos käytetään https-yhteyttä (suositeltavaa)."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} URL:"
+#~ msgstr "{PRODUCT_NAME} -verkko-osoite:"
+
+#~ msgid "SSL certificate:"
+#~ msgstr "SSL-varmenne:"
+
+#, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "Kelvollinen {PRODUCT_NAME} -verkko-osoite on annettava."
+
+#~ msgid ""
+#~ "If you are using https you must enter the location of a valid SSL "
+#~ "certificate."
+#~ msgstr ""
+#~ "Jos käytössä on https, on annettava kelvollisen SSL-varmenteen sijainti."
+
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Yritetään yhdistää Spacewalk-palvelimeen."
+
+#, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "Yritetään yhdistää {PRODUCT_NAME} -palvelimeen osoitteessa %s."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "Välityspalvelinosoitteeksi on asetettu %s."
+
+#~ msgid "System Registration"
+#~ msgstr "Järjestelmän rekisteröinti"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Tämä opastettu toiminto ohjaa yhdistämään järjestelmän {PRODUCT_NAME} -"
+#~ "verkkoon ohjelma- ja tietoturvapäivitysten saamiseksi ja järjestelmän "
+#~ "pitämiseksi tuettuna ja yhteensopivana. Tässä vaiheessa arvitset:\n"
+#~ "\n"
+#~ " * verkkoyhteyden\n"
+#~ " * {PRODUCT_NAME} -käyttäjätunnuksen ja -salasanan\n"
+#~ " * {PRODUCT_NAME} -palvelimen tai välityspalvelimen sijainnin\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "Miksi rekisteröityä {PRODUCT_NAME} -verkkoon? …"
+
+#~ msgid "Why Register"
+#~ msgstr "Miksi rekisteröityä"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Rekisteröimällä järjestelmäsi Red Hatille saat tukisopimuksestasi kaiken "
+#~ "irti, mm:"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "Tietoturva ja päivitykset:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "Lataukset ja versiopäivitykset:"
+
+#~ msgid "Support:"
+#~ msgstr "Tuki:"
+
+#~ msgid "Compliance:"
+#~ msgstr "Vaatimusten mukaisuus:"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "Nouda uusimmat ohjelmisto- ja tietoturvapäivitykset ja pidä järjestelmä "
+#~ "ajan tasalla ja turvassa."
+
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr "Lataa (myös uusien) järjestelmäjulkaisujen levykuvat."
+
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "Yhteydenotto teknisen tuen asiantuntijoihin järjestelmässä kohtaamissasi "
+#~ "ongelmissa."
+
+#~ msgid ""
+#~ "Stay in compliance with your subscription agreement and manage "
+#~ "subscriptions for systems connected to your account."
+#~ msgstr ""
+#~ "Pysy tilaussopimuksesi vaatimusten mukaisena ja hallitse tiliisi "
+#~ "yhdistettyjen järjestelmien tilauksia."
+
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "Vihje: SUSE kunnioittaa yksityisyyttäsi: https://www.suse.com/company/"
+#~ "legal/"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "Palaa rekisteröintiin"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "Ohjelmistopäivitystä ei ole asetettu"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "Oletko varma, ettet halua yhdistää järjestelmääsi {PRODUCT_NAME} -"
+#~ "verkkoon? Menetät SLES/RHEL-tilauksesi edut:\n"
+
+#, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "Et voi hyötyä näistä tilauseduista yhdistämättä järjestelmää "
+#~ "{PRODUCT_NAME} -verkkoon.\n"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "Palaa asettamiseen."
+
+#~ msgid "I'll register later."
+#~ msgstr "Rekisteröidyn myöhemmin."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Account"
+#~ msgstr "{PRODUCT_NAME} -tili"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Anna kirjautumistietosi: %s {PRODUCT_NAME}:\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Login:"
+#~ msgstr "{PRODUCT_NAME} -kirjautuminen:"
+
+#~ msgid "Login:"
+#~ msgstr "Käyttäjätunnus:"
+
+#~ msgid "Password:"
+#~ msgstr "Salasana:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "Vihje: Unohditko käyttäjätunnuksesi tai salasanasi? Ota yhteyttä "
+#~ "Satelliten organisaation pääkäyttäjään."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "Anna haluamasi käyttäjätunnus:"
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "Anna salasana ja vahvista se."
+
+#~ msgid "Operating System Release Version"
+#~ msgstr "Käyttöjärjestelmän julkaisuversio"
+
+#~ msgid "Operating System version:"
+#~ msgstr "Käyttöjärjestelmän versio:"
+
+#~ msgid " Minor Release: "
+#~ msgstr " Alijulkaisu: "
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "Vain rajoitetut päivitykset"
+
+#~ msgid "All available updates"
+#~ msgstr "Kaikki saatavilla olevat päivitykset"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "Vahvista käyttöjärjestelmäjulkaisun valinta"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr ""
+#~ "Järjestelmäsi liitetään peruskanavaan. Päivitykset tulevat tästä "
+#~ "kanavasta."
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "Laitteistoprofiili"
+
+#, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Profiilin nimi on kuvaava nimi, jota käytetään tunnistamaan järjestelmän "
+#~ "profiili {PRODUCT_NAME} -sivustossa. Siihen voi valinnaisesti sisällyttää "
+#~ "tietokoneen sarja- tai muun tunnistenumeron."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "Profiiliin sisältyy laitteistolisätietoa (PCI-laitteet, levyjen koot sekä "
+#~ "liitospisteet)."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "Sisällytä seuraavat laitteisto- ja verkkotiedot:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "Luo profiili – Paketit"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "RPM-tietoa tarvitaan määrittämään, mitkä ohjelmapakettipäivitykset ovat "
+#~ "järjestelmän kannalta oleellisia."
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr "SIsällytä järjestelmäprofiiliin asennetut RPM-paketit"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr "Yksittäisten pakettien valinnan voi poistaa alta."
+
+#~ msgid "Building Package List"
+#~ msgstr "Koostetaan pakettiluetteloa"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*Sähköpostiosoite:"
+
+#~ msgid "System Already Registered"
+#~ msgstr ""
+#~ "    --force                    - rekisteröi järjestelmä, vaikka se olisi "
+#~ "jo rekisteröity"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr ""
+#~ "Vaikuttaa siltä, että järjestelmän ohjelmistopäivitykset on jo asetettu:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "Haluatko varmasti jatkaa?"
+
+#~ msgid ""
+#~ "This system has already been registered using Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "Your system is being registered again using Red Hat Satellite or Red Hat "
+#~ "Satellite Proxy technology. Red Hat recommends that customers only "
+#~ "register once.\n"
+#~ "\n"
+#~ "To learn more about RHN Classic/Red Hat Satellite registration and "
+#~ "technologies please consult this Knowledge Base Article: https://access."
+#~ "redhat.com/kb/docs/DOC-45563"
+#~ msgstr ""
+#~ "Järjestelmä on jo rekisteröity Red Hatin tilauksenhallintaa käyttäen.\n"
+#~ "\n"
+#~ "Järjestelmä rekisteröidään uudelleen Red Hat Satellite- tai Red Hat "
+#~ "Satellite Proxy -tekniikalla. Red Hat suosittelee asiakkaita "
+#~ "rekisteröitymään vain kerran.\n"
+#~ "\n"
+#~ "Lisätietoa RHN Class/Red Hat Satellite -rekisteröitymisestä ja -"
+#~ "tekniikasta saa tästä tietämyskannan artikkelista:\n"
+#~ "https://access.redhat.com/kb/docs/DOC-45563"
+
+#, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "Lähetä profiilitiedot {PRODUCT_NAME} -verkkoon"
+
+#, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "Tietojen keruu järjestelmäprofiilia varten on valmis.\n"
+#~ "\n"
+#~ "Lähetä järjestelmäprofiili {PRODUCT_NAME} -verkkoon napsauttamalla "
+#~ "”Seuraava”. Tietoja ei lähetetä, jos napsautat ”Peru”. Rekisteröitymisen "
+#~ "voi tehdä myöhemmin komentorivikomennolla ”rhn_register”."
+
+#, python-brace-format
+#~ msgid "Sending Profile to {PRODUCT_NAME}"
+#~ msgstr "Lähetetään profiili {PRODUCT_NAME} -verkkoon"
+
+#~ msgid "Updates Configured"
+#~ msgstr "Päivitykset asetettu"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "Nyt viimeisimmät {PRODUCT_NAME} -ohjelmistopäivitykset voi saada ajamalla "
+#~ "”%s update” järjestelmän komentoriviltä. Aja se säännöllisesti saadaksesi "
+#~ "viimeisimmät päivitykset. Vaihtoehtoisesti järjestelmän voi asettaa "
+#~ "päivittymään automaattisesti {PRODUCT_NAME} -verkkokäyttöliittymässä. "
+#~ "(Ohjeet tähän löytyvät {PRODUCT_NAME} -viitekäsikirjasta, jonka saa "
+#~ "{PRODUCT_NAME} -verkkokäyttöliittymän Ohje-painikkeesta.)"
+
+#~ msgid "Review Subscription"
+#~ msgstr "Tarkastele tilausta"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "Tarkista alla olevat tilaustiedot:"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Asennusnumero %s aktivoitiin yhdistettäessä järjestelmä ensi kertaa "
+#~ "{PRODUCT_NAME} -verkkoon."
+
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "Seuraavien tuotteiden tai palveluiden tilaukset on aktivoitu:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "Ohjelmakanavatilaukset:"
+
+#~ msgid ""
+#~ "This system will receive updates from the following software channels:"
+#~ msgstr "Järjestelmä saa päivityksiä seuraavista ohjelmakanavista:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your {PRODUCT_NAME} web interface and subscribe this "
+#~ "system to the appropriate software channels."
+#~ msgstr ""
+#~ "Varoitus: Vain yllä luetellut asennetut tuotteet saavat päivityksiä ja "
+#~ "tukea. Jos haluat päivityksiä lisätuotteille, kirjaudu {PRODUCT_NAME} -"
+#~ "verkkokäyttöliittymään ja tilaa järjestelmään vastaavat ohjelmakanavat."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Varoitus: %s ei ole läsnä eikä sitä voi ottaa käyttöön.\n"
+#~ "Automaattinen päivitys ei toimi."
+
+#, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "Huom: %s on otettu käyttöön."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Varoitus: Sattui virhe otettaessa %s-ohjelmaa käyttöön.\n"
+#~ "%s ei ole käytössä.\n"
+#~ "Automaattinen päivitys ei toimi."
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "Seuraavien ohjelmakanavien tilaaminen epäonnistui, koska tililläsi ei ole "
+#~ "tarpeeksi tilauksia käytettävissä:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to subscribe to any software channels. Your system "
+#~ "will not receive any software updates to keep it secure and supported. "
+#~ "Contact your {PRODUCT_NAME} administrator about this problem. Once you "
+#~ "make the appropriate active subscriptions available in your account, you "
+#~ "may browse to this system's profile in the {PRODUCT_NAME} web interface "
+#~ "and subscribe this system to software channels via the software > "
+#~ "software channels tab."
+#~ msgstr ""
+#~ "Järjestelmä ei voinut tilata yhtään ohjelmakanavaa. Järjestelmä ei saa "
+#~ "ohjelmistopäivityksiä, jotka pitäisivät ja tuettuna ja turvallisena. Ota "
+#~ "yhteyttä {PRODUCT_NAME} -ylläpitäjään tästä ongelmasta. Saatuasi "
+#~ "tarvittavat aktiiviset tilaukset käyttöön tililläsi voit tarkastella "
+#~ "järjestelmän profiilia {PRODUCT_NAME} -verkkokäyttöliittymässä ja tilata "
+#~ "järjestelmään ohjelmakanavia vastaavalta välilehdeltä."
+
+#~ msgid "Service Level:"
+#~ msgstr "Palvelutaso:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Depending on what {PRODUCT_NAME} system types are associated with a "
+#~ "system, you'll enjoy different benefits. The following are the "
+#~ "{PRODUCT_NAME} system types associated with this system:"
+#~ msgstr ""
+#~ "Edut vaihtelevat sen mukaan, mitä {PRODUCT_NAME} -järjestelmätyyppejä  "
+#~ "järjestelmään on kytketty. Tähän järjestelmään on kytketty seuraavat "
+#~ "{PRODUCT_NAME} -järjestelmätyypit:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "Järjestelmää ei voitu kytkeä seuraaviin {PRODUCT_NAME} -"
+#~ "järjestelmätyyppeihin, koska tililläsi ei ole tarpeeksi tilauksia:"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Vakava virhe"
+
+#~ msgid "Warning"
+#~ msgstr "Varoitus"
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr ""
+#~ "Arkkitehtuuri: %s, käyttöjärjestelmän julkaisu: %s, käyttöjärjestelmän "
+#~ "versio: %s"
+
+#~ msgid ""
+#~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ " The certificate is expired. Please ensure you have the correct  "
+#~ "certificate and your system time is correct."
+#~ msgstr ""
+#~ "<b><span size=\"12000\">Sertifikaattitiedosto ei ole yhteensopiva</span></"
+#~ "b>\n"
+#~ "\n"
+#~ " Sertifikaatti on vanhentunut. Tarkista että käytit oikeaa tiedostoa ja "
+#~ "että järjestelmäsi kello on oikeassa ajassa."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "Järjestelmän rekisteröinti epäonnistui.\n"
+#~ "\n"
+#~ "Universaali aktivointiavain rajoittaa RHN-tiliisi liitettyjen koneiden "
+#~ "määrää. Ota yhteyttä RHN-tilisi pääkäyttäjään ja pyydä nostamaan "
+#~ "rajoitusta tai älä käytä aktivointiavainta."
+
+#~ msgid ""
+#~ "\n"
+#~ " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Vihje: Minor-versiot jotka on merkitty tähdellä ovat tällä hetkellä Red "
+#~ "Hatin tukemia.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Warning:You will not be able to limit this system to minor release that "
+#~ "is older than the recent minor release if you select this option.\n"
+#~ msgstr ""
+#~ "Varoitus: Et voi liittää tätä järjestelmää minor-versioon joka on "
+#~ "vanhempi kuin nykyinen versio jos valitset tämän option.\n"
+
+#, python-format
+#~ msgid ""
+#~ "Your system will be subscribed to %s \n"
+#~ "base software channel. You will not be\n"
+#~ "able to move this system to an earlier release\n"
+#~ "(you will be able to move to a newer release).\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "Järjestelmä liitetään %s\n"
+#~ "peruskanavaan. Järjestelmää\n"
+#~ "ei voi myöhemmin liittää minor-versioon\n"
+#~ "mutta sen voi päivittää uudempaan versioon.\n"
+#~ "Oletko varma että haluat jatkaa?"
+
+#~ msgid "OK"
+#~ msgstr "Ok"
+
+#~ msgid "Error"
+#~ msgstr "Virhe"
+
+#~ msgid "Next"
+#~ msgstr "Seuraava"
+
+#~ msgid "Back"
+#~ msgstr "Takaisin"
+
+#~ msgid "Cancel"
+#~ msgstr "Peru"
+
+#~ msgid "No, Cancel"
+#~ msgstr "Ei, peruuta"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "Kyllä, jatka"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "Poista valinta painamalla välilyöntiä."
+
+#~ msgid "System ID:"
+#~ msgstr "Järjestelmän ID:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "Palvelin havaitsi virheen:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr "Virhe kommunikoitaessa rekisteröintipalvelimen kanssa:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "Profiilin nimi:"
+
+#~ msgid "Version: "
+#~ msgstr "Versio:"
+
+#~ msgid "CPU model: "
+#~ msgstr "CPU:n malli:"
+
+#~ msgid "Hostname: "
+#~ msgstr "Isäntänimi:"
+
+#~ msgid "CPU speed: "
+#~ msgstr "CPU:n nopeus:"
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP-osoite: "
+
+#~ msgid "Memory: "
+#~ msgstr "Muisti: "
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s megatavua"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "Ongelma järjestelmän rekisteröinnissä:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "Ongelma järjestelmän rekisteröimisessä."
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "Ongelma järjestelmä-id:n kirjoittamisessa levylle."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "Ongelma laitteistoprofiilin lähetyksessä:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "Ongelma laitteistoprofiilin lähetyksessä."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "Ongelma pakettiluettelon lähetyksessä:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "Ongelma pakettiluettelon lähetyksessä."
+
+#~ msgid "Finish"
+#~ msgstr "Lopeta"
+
+#, fuzzy
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr ""
+#~ "Määritit virheellisen protokollan. Vain https ja http ovat sallittuja."
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> vaihda kohdetta  |  <Välilyönti> valitse  |  <F12> "
+#~ "seuraava ruutu"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "RHN-rekisteröintiohjelma on suoritettava pääkäyttäjänä."
 
 #~ msgid "Specify a username"
 #~ msgstr "Määritä käyttäjänimi"
