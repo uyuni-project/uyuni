@@ -225,7 +225,7 @@ function update_rhn_conf {
     /usr/bin/rhn-config-satellite.pl \
        --target=${SAT_LOCAL_RULES_CONF} \
        --option=javaDOThostname=$HOSTNAME \
-       --option=cobblerDOThost=$HOSTNAME \
+       --option=cobblerDOThost=localhost \
        >> $LOG 2>&1
     # but do not deploy (we'd lose actual configuration)
     # /usr/bin/satcon-deploy-tree.pl \
@@ -236,7 +236,7 @@ function update_rhn_conf {
     /usr/bin/rhn-config-satellite.pl \
         --target=${RHN_CONF_FILE} \
         --option=java.hostname=$HOSTNAME \
-        --option=cobbler.host=$HOSTNAME >> $LOG 2>&1
+        --option=cobbler.host=localhost >> $LOG 2>&1
 }
 
 function re-generate_report_db_host {
