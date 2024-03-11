@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -19,14 +19,13 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Remove DHCP packages on the proxy
+  Scenario: Remove dependencies for dhcp-server and bind packages from the proxy
     # WORKAROUND
-    When I remove package "dhcp dhcp-client" from this "proxy"
+    When I remove package "dhcp dhcp-client bind-utils python3-bind" from this "proxy"
     # End of WORKAROUND
 
 @proxy
 @private_net
-@skip_if_containerized_server
   Scenario: Install or update branch network formulas on the server
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
@@ -35,7 +34,6 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
 @susemanager
-@skip_if_containerized_server
   Scenario: Install the Retail pattern on the SUSE Manager server
     When I refresh the metadata for "server"
     When I install pattern "suma_retail" on this "server"
@@ -45,7 +43,6 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
 @uyuni
-@skip_if_containerized_server
   Scenario: Install the Retail pattern on the Uyuni server
     When I refresh the metadata for "server"
     When I install pattern "uyuni_retail" on this "server"
