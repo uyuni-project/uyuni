@@ -2,20 +2,20 @@
 
 ## SP migration BEGIN ###
 
-- features/build_validation/migration/sle15sp3_minion.feature
-- features/build_validation/migration/sle15sp3_ssh_minion.feature
+- features/build_validation/migration/sle15sp3_minion_migration.feature
+- features/build_validation/migration/sle15sp3_ssh_minion_migration.feature
 
 ## SP migration END ###
 
 ## SLE Micro migration BEGIN ###
 
-- features/build_validation/migration/slemicro54_minion.feature
-- features/build_validation/migration/slemicro54_ssh_minion.feature
+- features/build_validation/migration/slemicro54_minion_migration.feature
+- features/build_validation/migration/slemicro54_ssh_minion_migration.feature
 
 ## SLE micro migration END ###
 
 ## Salt migration BEGIN ###
 
-- features/build_validation/salt/min_salt_migration.feature
+- features/build_validation/migration/salt_migration_minion_migration.feature
 
 ## Salt migration END ###
