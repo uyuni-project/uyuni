@@ -68,8 +68,6 @@ client/debian/apt-spacewalk/post_invoke.py
 client/debian/apt-spacewalk/pre_invoke.py
 client/rhel/spacewalk-client-tools/src/actions/
 client/rhel/spacewalk-client-tools/src/bin/rhn_check.py
-client/rhel/spacewalk-client-tools/src/bin/rhn_register.py
-client/rhel/spacewalk-client-tools/src/bin/rhnreg_ks.py
 client/rhel/spacewalk-client-tools/src/up2date_client/
 client/tools/spacewalk-client-cert/clientcert.py
 client/tools/mgr-cfg/actions/
