@@ -1,1 +1,1 @@
-- set cobbler.host to localhost
+- set cobbler.host to localhost (bsc#1219887)
