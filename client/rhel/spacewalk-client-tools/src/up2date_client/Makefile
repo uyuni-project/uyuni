@@ -7,7 +7,7 @@ FILES		:= config \
 		   up2dateUtils \
 		   up2dateLog transaction \
 		   up2dateErrors rpcServer \
-           pkgplatform
+		   pkgplatform
 
 PYFILES 	:= $(addsuffix .py, $(FILES))
 INITFILE	:= __init__.py
