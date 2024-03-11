@@ -3686,7 +3686,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertFalse(details.isTest());
 
         // direct connection to SUMA
-        assertEquals(ConfigDefaults.get().getCobblerHost(), details.getPillarsMap().get().get("mgr_server"));
+        assertEquals(ConfigDefaults.get().getJavaHostname(), details.getPillarsMap().get().get("mgr_server"));
 
         actions = systemHandler.changeProxy(admin,
                              List.of(minionSsh1.getId().intValue(), minionSsh2.getId().intValue()),

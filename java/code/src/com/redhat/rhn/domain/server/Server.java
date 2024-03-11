@@ -2290,7 +2290,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public String getChannelHost() {
         return this.getFirstServerPath().map(ServerPath::getHostname)
-                .orElseGet(() -> ConfigDefaults.get().getCobblerHost());
+                .orElseGet(() -> ConfigDefaults.get().getJavaHostname());
     }
 
     public PackageType getPackageType() {

@@ -265,7 +265,7 @@ public class SaltSSHService {
                             Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                             Optional.of(Arrays.asList(
                                     proxyPath.isEmpty() ?
-                                            ConfigDefaults.get().getCobblerHost() :
+                                            ConfigDefaults.get().getJavaHostname() :
                                             proxyPath.get(proxyPath.size() - 1).split(":")[0],
                                     ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethodLabel) ?
                                             getSshPushRemotePort() : SSL_PORT,
@@ -537,7 +537,7 @@ public class SaltSSHService {
                     Optional.ofNullable(getSaltSSHPreflightScriptPath()),
                     Optional.of(Arrays.asList(
                             bootstrapProxyPath.isEmpty() ?
-                                    ConfigDefaults.get().getCobblerHost() :
+                                    ConfigDefaults.get().getJavaHostname() :
                                     bootstrapProxyPath.get(bootstrapProxyPath.size() - 1).split(":")[0],
                             ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethod) ?
                                     getSshPushRemotePort() : SSL_PORT,
@@ -589,7 +589,7 @@ public class SaltSSHService {
                                                   String sshContactMethod) {
         if (ContactMethodUtil.SSH_PUSH_TUNNEL.equals(sshContactMethod)) {
             return Optional.of(getSshPushRemotePort() + ":" +
-                    ConfigDefaults.get().getCobblerHost() + ":" + SSL_PORT);
+                    ConfigDefaults.get().getJavaHostname() + ":" + SSL_PORT);
         }
         return Optional.empty();
     }
