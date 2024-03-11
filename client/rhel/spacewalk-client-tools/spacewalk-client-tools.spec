@@ -61,8 +61,6 @@
 
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
-%define rhn_setup	 spacewalk-client-setup
-%define rhn_check	 spacewalk-check
 #
 %bcond_with    test
 
@@ -301,137 +299,6 @@ BuildRequires:  python3-rpm
 Python 3 specific files of %{name}.
 %endif
 
-%package -n spacewalk-check
-Summary:        Check for Spacewalk actions
-Provides:       rhn-check = %{version}-%{release}
-Obsoletes:      rhn-check < %{version}-%{release}
-Requires:       %{name} = %{version}-%{release}
-Requires:       %{pythonX}-spacewalk-check = %{version}-%{release}
-%if "%{_vendor}" != "debbuild"
-Group:          System Environment/Base
-%if 0%{?suse_version}
-Requires:       zypp-plugin-spacewalk >= 1.0.2
-%else
-%if 0%{?fedora} || 0%{?rhel} >= 8
-Requires:       dnf-plugin-spacewalk >= 2.4.0
-%else
-Requires:       yum-rhn-plugin >= 2.8.2
-%endif
-%endif
-%endif
-
-%if "%{_vendor}" == "debbuild"
-Requires:       apt-transport-spacewalk
-%endif
-
-%description -n spacewalk-check
-spacewalk-check polls a SUSE Manager or Spacewalk server to find and execute
-scheduled actions.
-
-%if 0%{?build_py2}
-%package -n python2-spacewalk-check
-Summary:        Check for RHN actions
-Group:          System Environment/Base
-Provides:       python-spacewalk-check = %{version}-%{release}
-Obsoletes:      python-spacewalk-check < %{version}-%{release}
-Provides:       python2-rhn-check = %{version}-%{release}
-Obsoletes:      python2-rhn-check < %{version}-%{release}
-Requires:       spacewalk-check = %{version}-%{release}
-
-%if "%{_vendor}" == "debbuild"
-Requires(preun):python-minimal
-Requires(post): python-minimal
-%endif
-
-%description -n python2-spacewalk-check
-Python 2 specific files for rhn-check.
-%endif
-
-%if 0%{?build_py3}
-%package -n python3-spacewalk-check
-Summary:        Support programs and libraries for Spacewalk
-Group:          System Environment/Base
-Provides:       python3-rhn-check = %{version}-%{release}
-Obsoletes:      python3-rhn-check < %{version}-%{release}
-Requires:       spacewalk-check = %{version}-%{release}
-
-%if "%{_vendor}" == "debbuild"
-Requires(preun):python3-minimal
-Requires(post): python3-minimal
-%endif
-
-%description -n python3-spacewalk-check
-Python 3 specific files for spacewalk-check.
-%endif
-
-%package -n spacewalk-client-setup
-Summary:        Configure and register an Spacewalk client
-Group:          System Environment/Base
-Provides:       rhn-setup = %{version}-%{release}
-Obsoletes:      rhn-setup < %{version}-%{release}
-Requires:       %{pythonX}-spacewalk-client-setup
-%if 0%{?fedora} || 0%{?rhel} || 0%{?debian} || 0%{?ubuntu}
-Requires:       usermode >= 1.36
-%endif
-%if 0%{?mageia}
-Requires:       usermode-consoleonly >= 1.36
-%endif
-Requires:       %{name} = %{version}-%{release}
-
-%description -n spacewalk-client-setup
-spacewalk-client-setup contains programs and utilities to configure a system to use
-SUSE Manager or Spacewalk.
-
-%if 0%{?build_py2}
-%package -n python2-spacewalk-client-setup
-Summary:        Configure and register an Spacewalk client
-Group:          System Environment/Base
-Provides:       python-spacewalk-client-setup = %{version}-%{release}
-Obsoletes:      python-spacewalk-client-setup < %{version}-%{release}
-Provides:       python2-rhn-setup = %{version}-%{release}
-Obsoletes:      python2-rhn-setup < %{version}-%{release}
-Requires:       spacewalk-client-setup = %{version}-%{release}
-%if 0%{?rhel} == 5
-Requires:       newt
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 5
-Requires:       newt-python
-%endif
-%if 0%{?suse_version} || 0%{?mageia} || 0%{?debian} || 0%{?ubuntu}
-Requires:       python-newt
-%endif
-
-%if "%{_vendor}" == "debbuild"
-Requires(preun):python-minimal
-Requires(post): python-minimal
-%endif
-
-%description -n python2-spacewalk-client-setup
-Python 2 specific files for spacewalk-client-setup.
-%endif
-
-%if 0%{?build_py3}
-%package -n python3-spacewalk-client-setup
-Summary:        Configure and register an Spacewalk client
-Group:          System Environment/Base
-Provides:       python3-rhn-setup = %{version}-%{release}
-Obsoletes:      python3-rhn-setup < %{version}-%{release}
-Requires:       spacewalk-client-setup = %{version}-%{release}
-%if 0%{?suse_version} || 0%{?mageia} || 0%{?debian} || 0%{?ubuntu}
-Requires:       python3-newt
-%else
-Requires:       newt-python3
-%endif
-
-%if "%{_vendor}" == "debbuild"
-Requires(preun):python3-minimal
-Requires(post): python3-minimal
-%endif
-
-%description -n python3-spacewalk-client-setup
-Python 3 specific files for spacewalk-client-setup.
-%endif
-
 %prep
 %setup -q
 
@@ -445,7 +312,7 @@ make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PREFIX=$RPM_BUILD_ROOT %{?is_deb:PLATFORM=deb}
 %endif
 %if 0%{?build_py3}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' test/*.py
 make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
@@ -458,41 +325,6 @@ touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 mkdir -p $RPM_BUILD_ROOT/%{_presetdir}
 %endif
-
-%if 0%{?suse_version}
-# zypp-plugin-spacewalk has its own action/errata.py
-rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/actions/errata.py*
-%endif
-
-%if 0%{?build_py2}
-%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1140 || 0%{?mageia} || 0%{?debian} || 0%{?ubuntu}
-rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_hal.*
-%else
-rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_gudev.*
-rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_udev.*
-%endif
-%endif
-
-%if 0%{?rhel} == 5
-%if 0%{?build_py2}
-rm -rf $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/firstboot
-%endif
-%endif
-%if 0%{?rhel} == 6
-rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
-%endif
-%if ! 0%{?rhel} || 0%{?rhel} > 6
-%if 0%{?build_py2}
-rm -rf $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/firstboot
-%endif
-rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/
-%endif
-%if 0%{?build_py3}
-rm -rf $RPM_BUILD_ROOT%{python3_sitelib}/up2date_client/firstboot
-%endif
-
-# create mgr_check symlink
-ln -sf rhn_check $RPM_BUILD_ROOT/%{_sbindir}/mgr_check
 
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
@@ -507,17 +339,8 @@ cd -
 %find_lang rhn-client-tools
 %endif
 
-# create links to default script version
-%define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
-for i in \
-    /usr/sbin/rhn_check \
-; do
-    ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
-done
-
 rm -rf $RPM_BUILD_ROOT/etc/pam.d
 rm -rf $RPM_BUILD_ROOT/etc/security/console.apps
-rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/firstboot
 
 %if 0%{?suse_version}
 %if 0%{?build_py2}
@@ -547,17 +370,12 @@ make -f Makefile.rhn-client-tools test
 %files -f rhn-client-tools.lang
 %endif
 %defattr(-,root,root,-)
-# some info about mirrors
-%doc doc/mirrors.txt
 %doc doc/AUTHORS
 %{!?_licensedir:%global license %doc}
 %license doc/LICENSE
 
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
-%dir %{_sysconfdir}/sysconfig/rhn/allowed-actions
-%dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/configfiles
-%dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/script
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
 %config(noreplace) %{_sysconfdir}/logrotate.d/up2date
 
@@ -572,24 +390,14 @@ make -f Makefile.rhn-client-tools test
 %dir %{python_sitelib}/up2date_client/
 %{python_sitelib}/up2date_client/__init__.*
 %{python_sitelib}/up2date_client/config.*
-%{python_sitelib}/up2date_client/haltree.*
-%{python_sitelib}/up2date_client/hardware*
 %{python_sitelib}/up2date_client/up2dateUtils.*
 %{python_sitelib}/up2date_client/up2dateLog.*
 %{python_sitelib}/up2date_client/up2dateErrors.*
-%{python_sitelib}/up2date_client/up2dateAuth.*
 %{python_sitelib}/up2date_client/rpcServer.*
 %{python_sitelib}/up2date_client/rhnserver.*
-%{python_sitelib}/up2date_client/pkgUtils.*
-%{python_sitelib}/up2date_client/rpmUtils.*
-%{python_sitelib}/up2date_client/debUtils.*
-%{python_sitelib}/up2date_client/rhnPackageInfo.*
-%{python_sitelib}/up2date_client/rhnChannel.*
-%{python_sitelib}/up2date_client/rhnHardware.*
 %{python_sitelib}/up2date_client/transaction.*
 %{python_sitelib}/up2date_client/clientCaps.*
 %{python_sitelib}/up2date_client/capabilities.*
-%{python_sitelib}/up2date_client/rhncli.*
 %{python_sitelib}/up2date_client/pkgplatform.*
 %endif
 
@@ -599,123 +407,32 @@ make -f Makefile.rhn-client-tools test
 %dir %{python3_sitelib}/up2date_client/
 %{python3_sitelib}/up2date_client/__init__.*
 %{python3_sitelib}/up2date_client/config.*
-%{python3_sitelib}/up2date_client/haltree.*
-%{python3_sitelib}/up2date_client/hardware*
 %{python3_sitelib}/up2date_client/up2dateUtils.*
 %{python3_sitelib}/up2date_client/up2dateLog.*
 %{python3_sitelib}/up2date_client/up2dateErrors.*
-%{python3_sitelib}/up2date_client/up2dateAuth.*
 %{python3_sitelib}/up2date_client/rpcServer.*
 %{python3_sitelib}/up2date_client/rhnserver.*
-%{python3_sitelib}/up2date_client/pkgUtils.*
-%{python3_sitelib}/up2date_client/rpmUtils.*
-%{python3_sitelib}/up2date_client/debUtils.*
-%{python3_sitelib}/up2date_client/rhnPackageInfo.*
-%{python3_sitelib}/up2date_client/rhnChannel.*
-%{python3_sitelib}/up2date_client/rhnHardware.*
 %{python3_sitelib}/up2date_client/transaction.*
 %{python3_sitelib}/up2date_client/clientCaps.*
 %{python3_sitelib}/up2date_client/capabilities.*
-%{python3_sitelib}/up2date_client/rhncli.*
 %{python3_sitelib}/up2date_client/pkgplatform.*
 
 %if "%{_vendor}" != "debbuild"
 %dir %{python3_sitelib}/up2date_client/__pycache__/
 %{python3_sitelib}/up2date_client/__pycache__/__init__.*
 %{python3_sitelib}/up2date_client/__pycache__/config.*
-%{python3_sitelib}/up2date_client/__pycache__/haltree.*
-%{python3_sitelib}/up2date_client/__pycache__/hardware*
 %{python3_sitelib}/up2date_client/__pycache__/up2dateUtils.*
 %{python3_sitelib}/up2date_client/__pycache__/up2dateLog.*
 %{python3_sitelib}/up2date_client/__pycache__/up2dateErrors.*
-%{python3_sitelib}/up2date_client/__pycache__/up2dateAuth.*
 %{python3_sitelib}/up2date_client/__pycache__/rpcServer.*
 %{python3_sitelib}/up2date_client/__pycache__/rhnserver.*
-%{python3_sitelib}/up2date_client/__pycache__/pkgUtils.*
-%{python3_sitelib}/up2date_client/__pycache__/rpmUtils.*
-%{python3_sitelib}/up2date_client/__pycache__/debUtils.*
-%{python3_sitelib}/up2date_client/__pycache__/rhnPackageInfo.*
-%{python3_sitelib}/up2date_client/__pycache__/rhnChannel.*
-%{python3_sitelib}/up2date_client/__pycache__/rhnHardware.*
 %{python3_sitelib}/up2date_client/__pycache__/transaction.*
 %{python3_sitelib}/up2date_client/__pycache__/clientCaps.*
 %{python3_sitelib}/up2date_client/__pycache__/capabilities.*
-%{python3_sitelib}/up2date_client/__pycache__/rhncli.*
 %{python3_sitelib}/up2date_client/__pycache__/pkgplatform.*
 %endif
 %endif
 
-%files -n spacewalk-check
-%defattr(-,root,root,-)
-%{_sbindir}/rhn_check
-%{_sbindir}/mgr_check
-
-%if 0%{?build_py2}
-%files -n python2-spacewalk-check
-%defattr(-,root,root,-)
-%{_sbindir}/rhn_check-%{python_version}
-%dir %{python_sitelib}/rhn
-%dir %{python_sitelib}/rhn/actions
-%{python_sitelib}/up2date_client/getMethod.*
-# actions for rhn_check to run
-%{python_sitelib}/rhn/actions/__init__.*
-%{python_sitelib}/rhn/actions/hardware.*
-%{python_sitelib}/rhn/actions/systemid.*
-%{python_sitelib}/rhn/actions/reboot.*
-%{python_sitelib}/rhn/actions/up2date_config.*
-%endif
-
-%if 0%{?build_py3}
-%files -n python3-spacewalk-check
-%defattr(-,root,root,-)
-%{_sbindir}/rhn_check-%{python3_version}
-%dir %{python3_sitelib}/rhn
-%dir %{python3_sitelib}/rhn/actions
-%{python3_sitelib}/up2date_client/getMethod.*
-%{python3_sitelib}/rhn/actions/__init__.*
-%{python3_sitelib}/rhn/actions/hardware.*
-%{python3_sitelib}/rhn/actions/systemid.*
-%{python3_sitelib}/rhn/actions/reboot.*
-%{python3_sitelib}/rhn/actions/up2date_config.*
-
-%if "%{_vendor}" != "debbuild"
-%dir %{python3_sitelib}/rhn/actions/__pycache__/
-%{python3_sitelib}/up2date_client/__pycache__/getMethod.*
-%{python3_sitelib}/rhn/actions/__pycache__/__init__.*
-%{python3_sitelib}/rhn/actions/__pycache__/hardware.*
-%{python3_sitelib}/rhn/actions/__pycache__/systemid.*
-%{python3_sitelib}/rhn/actions/__pycache__/reboot.*
-%{python3_sitelib}/rhn/actions/__pycache__/up2date_config.*
-%endif
-%endif
-
-%files -n spacewalk-client-setup
-%defattr(-,root,root,-)
-
-%if 0%{?build_py2}
-%files -n python2-spacewalk-client-setup
-%defattr(-,root,root,-)
-%{python2_sitelib}/up2date_client/rhnreg.*
-%{python2_sitelib}/up2date_client/pmPlugin.*
-%{python2_sitelib}/up2date_client/tui.*
-%{python2_sitelib}/up2date_client/rhnreg_constants.*
-%endif
-
-%if 0%{?build_py3}
-%files -n python3-spacewalk-client-setup
-%defattr(-,root,root,-)
-%{python3_sitelib}/up2date_client/rhnreg.*
-%{python3_sitelib}/up2date_client/pmPlugin.*
-%{python3_sitelib}/up2date_client/tui.*
-%{python3_sitelib}/up2date_client/rhnreg_constants.*
-
-%if "%{_vendor}" != "debbuild"
-%{python3_sitelib}/up2date_client/__pycache__/rhnreg.*
-%{python3_sitelib}/up2date_client/__pycache__/pmPlugin.*
-%{python3_sitelib}/up2date_client/__pycache__/tui.*
-%{python3_sitelib}/up2date_client/__pycache__/rhnreg_constants.*
-%endif
-%endif
 
 %if "%{_vendor}" == "debbuild"
 
@@ -728,22 +445,6 @@ pycompile -p python2-%{name} -V -3.0
 # Ensure all *.py[co] files are deleted, per debian policy
 pyclean -p python2-%{name}
 
-%post -n python2-rhn-check
-# Do late-stage bytecompilation, per debian policy
-pycompile -p python2-rhn-check -V -3.0
-
-%preun -n python2-rhn-check
-# Ensure all *.py[co] files are deleted, per debian policy
-pyclean -p python2-rhn-check
-
-%post -n python2-rhn-setup
-# Do late-stage bytecompilation, per debian policy
-pycompile -p python2-rhn-setup -V -3.0
-
-%preun -n python2-rhn-setup
-# Ensure all *.py[co] files are deleted, per debian policy
-pyclean -p python2-rhn-setup
-
 %endif
 
 %if 0%{?build_py3}
@@ -754,22 +455,6 @@ py3compile -p python3-%{name} -V -4.0
 %preun -n python3-%{name}
 # Ensure all *.py[co] files are deleted, per debian policy
 py3clean -p python3-%{name}
-
-%post -n python3-rhn-check
-# Do late-stage bytecompilation, per debian policy
-py3compile -p python3-rhn-check -V -4.0
-
-%preun -n python3-rhn-check
-# Ensure all *.py[co] files are deleted, per debian policy
-py3clean -p python3-rhn-check
-
-%post -n python3-rhn-setup
-# Do late-stage bytecompilation, per debian policy
-py3compile -p python3-rhn-setup -V -4.0
-
-%preun -n python3-rhn-setup
-# Ensure all *.py[co] files are deleted, per debian policy
-py3clean -p python3-rhn-setup
 
 %endif
 %endif
