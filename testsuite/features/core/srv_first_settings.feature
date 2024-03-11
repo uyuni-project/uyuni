@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
@@ -21,7 +21,6 @@ Feature: Very first settings
 
   Scenario: Cleanup Salt files
     When I run "rm -Rf /srv/salt/*" on "server"
-
 
 @skip_if_containerized_server
   Scenario: Create admin user and first organization
