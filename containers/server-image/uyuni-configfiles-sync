@@ -17,7 +17,7 @@
 #   b) Local changes made by the users
 #
 # The tool won't delete any files in the persistent volumes, and will
-# create "rpmsave" or "rpmnew" according to what is was defined for that
+# create "rpmsave" or "rpmnew" according to what is defined for that
 # file in its RPM SPEC.
 #
 # As a last step during "sync", this tool takes care of running the
