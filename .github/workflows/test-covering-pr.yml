@@ -18,7 +18,7 @@ jobs:
           node-version: 18
       - run: npm i ioredis
       - id: files
-        uses: Ana06/get-changed-files@v2.2.0
+        uses: Ana06/get-changed-files@v2.3.0
         with:
           filter: '*.java'
       - id: tests_covering_pr

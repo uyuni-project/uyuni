@@ -52,7 +52,7 @@ jobs:
         fetch-depth: 1
     - id: master
       name: Get modified master changelog files
-      uses: Ana06/get-changed-files@v2.2.0
+      uses: Ana06/get-changed-files@v2.3.0
       with:
         filter: '*.changes'
     - name: Fail if the master changelog files are modified
@@ -70,7 +70,7 @@ jobs:
     - id: changelogs
       name: Get modified changelog files
       if: "!contains(github.event.pull_request.body, '[x] No changelog needed')"
-      uses: Ana06/get-changed-files@v2.2.0
+      uses: Ana06/get-changed-files@v2.3.0
       with:
         filter: '*.changes.*'
     - name: Fail if no changelog entries are added
