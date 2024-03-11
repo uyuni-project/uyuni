@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -15,9 +15,9 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Remove DHCP packages on the proxy
+  Scenario: Remove dependencies for dhcp-server and bind packages from the proxy
     # WORKAROUND
-    When I remove package "dhcp dhcp-client" from this "proxy"
+    When I remove package "dhcp dhcp-client bind-utils python3-bind" from this "proxy"
     # End of WORKAROUND
 
 @proxy
