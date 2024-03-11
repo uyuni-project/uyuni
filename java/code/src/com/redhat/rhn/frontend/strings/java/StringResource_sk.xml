@@ -11463,7 +11463,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
-        <target state="new"/>
+        <target state="translated">Táto inštancia @@PRODUCT_NAME@@ PAYG nie je vyhovujúca. Niektoré funkcie @@PRODUCT_NAME@@ budú vypnuté. Prosím, obráťte sa na svojho systémového administrátora.</target>
       </trans-unit>
       <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
