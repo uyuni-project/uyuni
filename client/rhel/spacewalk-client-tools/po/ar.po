@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2016-02-18 11:03+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/spacewalk/"
@@ -1019,102 +1019,15 @@ msgstr ""
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr ""
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "تم تسجيل النظام مسبقاً. استخدم --force لتخطّي ذلك"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "تم تسجيل النظام مسبقاً. استخدم --force لتخطّي ذلك"
-
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:169
-#, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:172
-#, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"لم يتم تحديد اسم السجلّ الشّخصي، ولم يتمكن من معرفة اسم المضيف وعنوان IP "
-"لاستخدامها كاسم سجلّ شخصيّ، فرجاء قم بتحديد واحد."
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "لم يتم تحديد اسم السجلّ الشّخصي، ولم يتمكن من معرفة اسم المضيف وعنوان IP "
+#~ "لاستخدامها كاسم سجلّ شخصيّ، فرجاء قم بتحديد واحد."
 
 #, python-format
 #~ msgid "There was some sort of I/O error: %s"

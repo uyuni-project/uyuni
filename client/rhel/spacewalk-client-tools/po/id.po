@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/"
@@ -1315,131 +1315,111 @@ msgstr ""
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "Mencoba menjalankan lebih dari satu contoh rhn_check. Keluar."
 
-#: ../src/bin/rhnreg_ks.py:50
 #, fuzzy
-msgid "Specify a profilename"
-msgstr "Menentukan nama profil"
+#~ msgid "Specify a profilename"
+#~ msgstr "Menentukan nama profil"
 
-#: ../src/bin/rhnreg_ks.py:52
 #, fuzzy
-msgid "Specify a username"
-msgstr ""
-"Anda mesti menyatakan suatu nama pengguna atau terautentikasi untuk "
-"mengkuiri semua album."
+#~ msgid "Specify a username"
+#~ msgstr ""
+#~ "Anda mesti menyatakan suatu nama pengguna atau terautentikasi untuk "
+#~ "mengkuiri semua album."
 
-#: ../src/bin/rhnreg_ks.py:54
 #, fuzzy
-msgid "Specify a password"
-msgstr "Tentukan kata sandi"
+#~ msgid "Specify a password"
+#~ msgstr "Tentukan kata sandi"
 
-#: ../src/bin/rhnreg_ks.py:56
 #, fuzzy
-msgid "Specify an organizational id for this system"
-msgstr "Tentukan id organisasi untuk sistem ini"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "Tentukan id organisasi untuk sistem ini"
 
-#: ../src/bin/rhnreg_ks.py:58
 #, fuzzy
-msgid "Specify a url to use as a server"
-msgstr "Menentukan url yang akan digunakan sebagai server"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "Menentukan url yang akan digunakan sebagai server"
 
-#: ../src/bin/rhnreg_ks.py:60
 #, fuzzy
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "Tentukan file yang akan digunakan sebagai sertifikat CA ssl"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "Tentukan file yang akan digunakan sebagai sertifikat CA ssl"
 
-#: ../src/bin/rhnreg_ks.py:62
 #, fuzzy
-msgid "Specify an activation key"
-msgstr "Menentukan kunci aktivasi"
+#~ msgid "Specify an activation key"
+#~ msgstr "Menentukan kunci aktivasi"
 
-#: ../src/bin/rhnreg_ks.py:64
 #, fuzzy
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"Berlangganan sistem ini ke saluran EUS yang terkait dengan rilis redhat "
-"sistem"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "Berlangganan sistem ini ke saluran EUS yang terkait dengan rilis redhat "
+#~ "sistem"
 
-#: ../src/bin/rhnreg_ks.py:66
 #, fuzzy
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[Usang] Baca info kontak dari stdin"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[Usang] Baca info kontak dari stdin"
 
-#: ../src/bin/rhnreg_ks.py:68
 #, fuzzy
-msgid "Do not probe or upload any hardware info"
-msgstr "Jangan menyelidiki atau mengunggah info perangkat keras apa pun"
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "Jangan menyelidiki atau mengunggah info perangkat keras apa pun"
 
-#: ../src/bin/rhnreg_ks.py:70
 #, fuzzy
-msgid "Do not profile or upload any package info"
-msgstr "Jangan profil atau meng-upload info paket"
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "Jangan profil atau meng-upload info paket"
 
-#: ../src/bin/rhnreg_ks.py:72
 #, fuzzy
-msgid "Do not upload any virtualization info"
-msgstr "Jangan mengunggah info virtualisasi apa pun"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "Jangan mengunggah info virtualisasi apa pun"
 
-#: ../src/bin/rhnreg_ks.py:74
 #, fuzzy
-msgid "Register the system even if it is already registered"
-msgstr "Daftarkan sistem bahkan jika sudah terdaftar"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "Daftarkan sistem bahkan jika sudah terdaftar"
 
-#: ../src/bin/rhnreg_ks.py:84
 #, fuzzy
-msgid "A username and password are required to register a system."
-msgstr "Nama pengguna dan kata sandi diperlukan untuk mendaftarkan sistem."
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "Nama pengguna dan kata sandi diperlukan untuk mendaftarkan sistem."
 
-#: ../src/bin/rhnreg_ks.py:89
 #, fuzzy
-msgid "This system is already registered. Use --force to override"
-msgstr "Sistem ini sudah terdaftar. Gunakan --force untuk menimpa"
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "Sistem ini sudah terdaftar. Gunakan --force untuk menimpa"
 
-#: ../src/bin/rhnreg_ks.py:123
 #, fuzzy
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"Penggunaan opsi --use-eus-channel dengan --activationkey tidak didukung. "
-"Silakan gunakan nama pengguna dan kata sandi sebagai gantinya."
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "Penggunaan opsi --use-eus-channel dengan --activationkey tidak didukung. "
+#~ "Silakan gunakan nama pengguna dan kata sandi sebagai gantinya."
 
-#: ../src/bin/rhnreg_ks.py:126
 #, fuzzy
-msgid "The server you are registering against does not support EUS."
-msgstr "Server yang Anda daftarkan tidak mendukung EUS."
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "Server yang Anda daftarkan tidak mendukung EUS."
 
-#: ../src/bin/rhnreg_ks.py:152
 #, fuzzy
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"Peringatan: --contactinfo pilihan telah usang. Silakan login ke antarmuka "
-"pengguna web server dan memperbarui contactinfo Anda."
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "Peringatan: --contactinfo pilihan telah usang. Silakan login ke antarmuka "
+#~ "pengguna web server dan memperbarui contactinfo Anda."
 
-#: ../src/bin/rhnreg_ks.py:169
 #, fuzzy, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "Peringatan: %s tidak ada, tidak dapat mengaktifkannya."
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "Peringatan: %s tidak ada, tidak dapat mengaktifkannya."
 
-#: ../src/bin/rhnreg_ks.py:172
 #, fuzzy, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Peringatan: Tidak dapat membuka %s\n"
-"%s tidak diaktifkan."
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Peringatan: Tidak dapat membuka %s\n"
+#~ "%s tidak diaktifkan."
 
-#: ../src/bin/rhnreg_ks.py:200
 #, fuzzy
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"Nama profil tidak ditentukan, dan nama host dan alamat IP tidak dapat "
-"ditentukan untuk digunakan sebagai nama profil, tentukan satu."
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "Nama profil tidak ditentukan, dan nama host dan alamat IP tidak dapat "
+#~ "ditentukan untuk digunakan sebagai nama profil, tentukan satu."
 
 #, fuzzy
 #~ msgid "Finish setting up software updates"

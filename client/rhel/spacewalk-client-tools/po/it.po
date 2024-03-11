@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2020-12-26 18:27+0000\n"
 "Last-Translator: Paolo Za <zapaolo@email.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -1203,112 +1203,92 @@ msgstr ""
 "Tentativo di esecuzione di più di una istanza di  rhn_check. Uscita in "
 "corso.\n"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "Specificare un nome del profilo"
+#~ msgid "Specify a profilename"
+#~ msgstr "Specificare un nome del profilo"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "Specificare un nome utente"
+#~ msgid "Specify a username"
+#~ msgstr "Specificare un nome utente"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "Specificare una password"
+#~ msgid "Specify a password"
+#~ msgstr "Specificare una password"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "Specificare un id dell'organizzazione per questo sistema"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "Specificare un id dell'organizzazione per questo sistema"
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "Specificare un url da usare come un server"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "Specificare un url da usare come un server"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "Specificare un file da usare come cert ssl CA"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "Specificare un file da usare come cert ssl CA"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "Specificare una chiave di attivazione"
+#~ msgid "Specify an activation key"
+#~ msgstr "Specificare una chiave di attivazione"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"Sottoscrivere questo sistema al canale EUS collegato al redhat-release del "
-"sistema"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "Sottoscrivere questo sistema al canale EUS collegato al redhat-release "
+#~ "del sistema"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[Deprecato] Leggere le informazioni di contatto da stdin"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[Deprecato] Leggere le informazioni di contatto da stdin"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "Non ricercare né caricare informazioni hardware "
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "Non ricercare né caricare informazioni hardware "
 
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "Non tracciare il profilo né caricare le informazioni dei pacchetti "
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "Non tracciare il profilo né caricare le informazioni dei pacchetti "
 
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "Non caricare alcuna informazione sulla virtualizzazione"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "Non caricare alcuna informazione sulla virtualizzazione"
 
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "Registrare il sistema anche se risulta essere già registrato"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "Registrare il sistema anche se risulta essere già registrato"
 
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr ""
-"Per la registrazione del sistema sono necessari un nome utente ed una "
-"password."
+#~ msgid "A username and password are required to register a system."
+#~ msgstr ""
+#~ "Per la registrazione del sistema sono necessari un nome utente ed una "
+#~ "password."
 
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "Questo sistema è già registrato. Utilizzare --Sovrascrivi"
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "Questo sistema è già registrato. Utilizzare --Sovrascrivi"
 
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"L'uso dell'opzione --use-eus-channel con --activationkey non è supportato. "
-"Usare invece il nome utente e la password."
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "L'uso dell'opzione --use-eus-channel con --activationkey non è "
+#~ "supportato. Usare invece il nome utente e la password."
 
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "Il server utilizzato per la registrazione non supporta EUS."
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "Il server utilizzato per la registrazione non supporta EUS."
 
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"Avvertenza: l'opzione --contactinfo è stata deprecata. Eseguire il log in "
-"sulla interfaccia utente web del server ed aggiornare il contactinfo. "
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "Avvertenza: l'opzione --contactinfo è stata deprecata. Eseguire il log in "
+#~ "sulla interfaccia utente web del server ed aggiornare il contactinfo. "
 
-#: ../src/bin/rhnreg_ks.py:169
 #, fuzzy, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "Attenzione: yum-rhn-plugin non è presente, impossibile abilitarlo."
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "Attenzione: yum-rhn-plugin non è presente, impossibile abilitarlo."
 
-#: ../src/bin/rhnreg_ks.py:172
 #, fuzzy, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Attenzione: Impossibile aprire /etc/yum/pluginconf.d/rhnplugin.conf\n"
-"yum-rhn-plugin non è abilitato.\n"
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Attenzione: Impossibile aprire /etc/yum/pluginconf.d/rhnplugin.conf\n"
+#~ "yum-rhn-plugin non è abilitato.\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"Il nome del profilo non è specificato, e il nome host e l'indirizzo IP non "
-"possono essere utilizzati come nome del profilo. Specificarne uno."
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "Il nome del profilo non è specificato, e il nome host e l'indirizzo IP "
+#~ "non possono essere utilizzati come nome del profilo. Specificarne uno."
 
 #, fuzzy
 #~ msgid "Finish setting up software updates"

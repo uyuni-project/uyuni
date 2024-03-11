@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2018-03-16 11:02+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Kannada (http://www.transifex.com/projects/p/spacewalk/"
@@ -1169,112 +1169,93 @@ msgstr ""
 "rhn_check ನ ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಸನ್ನಿವೇಶವನ್ನು ಚಲಾಯಿಸಲು ಪ್ರಯತ್ನಿಸಲಾಗಿದೆ. "
 "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ.\n"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "ಒಂದು ಪರಿಚಯ ಹೆಸರನ್ನು ಸೂಚಿಸಿ"
+#~ msgid "Specify a profilename"
+#~ msgstr "ಒಂದು ಪರಿಚಯ ಹೆಸರನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "ಒಂದು ಬಳಕೆದಾರ ಹೆಸರನ್ನು ಸೂಚಿಸಿ"
+#~ msgid "Specify a username"
+#~ msgstr "ಒಂದು ಬಳಕೆದಾರ ಹೆಸರನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "ಒಂದು ಗುಪ್ತಪದವನ್ನು ಸೂಚಿಸಿ"
+#~ msgid "Specify a password"
+#~ msgstr "ಒಂದು ಗುಪ್ತಪದವನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "ಈ ಗಣಕಕ್ಕಾಗಿ ಒಂದು ಸಾಂಸ್ಥಿಕ ಐಡಿಯನ್ನು ಸೂಚಿಸಿ"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "ಈ ಗಣಕಕ್ಕಾಗಿ ಒಂದು ಸಾಂಸ್ಥಿಕ ಐಡಿಯನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "ಒಂದು ಪರಿಚಾರಕವಾಗಿ ಬಳಸಲು ಒಂದು url ಅನ್ನು ಸೂಚಿಸಿ"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "ಒಂದು ಪರಿಚಾರಕವಾಗಿ ಬಳಸಲು ಒಂದು url ಅನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "ssl CA cert ಆಗಿ ಬಳಸಲು ಒಂದು ಕಡತವನ್ನು ಸೂಚಿಸಿ"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "ssl CA cert ಆಗಿ ಬಳಸಲು ಒಂದು ಕಡತವನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "ಸಕ್ರಿಯಗೊಳಿಸುವ ಒಂದು ಕೀಲಿಯನ್ನು ಸೂಚಿಸಿ"
+#~ msgid "Specify an activation key"
+#~ msgstr "ಸಕ್ರಿಯಗೊಳಿಸುವ ಒಂದು ಕೀಲಿಯನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"ವ್ಯವಸ್ಥೆಯ redhat-ಬಿಡುಗಡೆಯೊಂದಿಗೆ ಜೋಡಿಸಲಾದ EUS ಚಾನಲ್‌ನೊಂದಿಗೆ ಈ ವ್ಯವಸ್ಥೆಯನ್ನು "
-"ಚಂದಾದಾರವಾಗಿಸಿ"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "ವ್ಯವಸ್ಥೆಯ redhat-ಬಿಡುಗಡೆಯೊಂದಿಗೆ ಜೋಡಿಸಲಾದ EUS ಚಾನಲ್‌ನೊಂದಿಗೆ ಈ ವ್ಯವಸ್ಥೆಯನ್ನು "
+#~ "ಚಂದಾದಾರವಾಗಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[ತೆಗೆದು ಹಾಕಲಾಗಿದೆ] stdin ನಲ್ಲಿ ಸಂಪರ್ಕ ಮಾಹಿತಿಯನ್ನು ಓದಿ"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[ತೆಗೆದು ಹಾಕಲಾಗಿದೆ] stdin ನಲ್ಲಿ ಸಂಪರ್ಕ ಮಾಹಿತಿಯನ್ನು ಓದಿ"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr ""
-"ಯಾವುದೇ ಯಂತ್ರಾಂಶ ಮಾಹಿತಿಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡುವುದಾಗಲಿ ಅಥವ ತನಿಖೆ ಮಾಡುವುದಾಗಲಿ ಮಾಡದಿರಿ"
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr ""
+#~ "ಯಾವುದೇ ಯಂತ್ರಾಂಶ ಮಾಹಿತಿಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡುವುದಾಗಲಿ ಅಥವ ತನಿಖೆ ಮಾಡುವುದಾಗಲಿ ಮಾಡದಿರಿ"
 
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr ""
-"ಯಾವುದೇ ಪ್ಯಾಕೇಜ್ ಮಾಹಿತಿಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡುವುದಾಗಲಿ ಅಥವ ಪರಿಚಯ ಮಾಡುವುದಾಗಲಿ ಮಾಡದಿರಿ"
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr ""
+#~ "ಯಾವುದೇ ಪ್ಯಾಕೇಜ್ ಮಾಹಿತಿಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡುವುದಾಗಲಿ ಅಥವ ಪರಿಚಯ ಮಾಡುವುದಾಗಲಿ ಮಾಡದಿರಿ"
 
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "ಯಾವುದೇ ವರ್ಚುವಲೈಸೇಶನ್ ಮಾಹಿತಿಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಬೇಡಿ"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "ಯಾವುದೇ ವರ್ಚುವಲೈಸೇಶನ್ ಮಾಹಿತಿಯನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಬೇಡಿ"
 
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "ಗಣಕವು ಈಗಾಗಲಿ ನೋಂದಾಯಿಸಿದ್ದರೂ ಸಹ ಇನ್ನೊಮ್ಮೆ ನೋಂದಾಯಿಸಿ"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "ಗಣಕವು ಈಗಾಗಲಿ ನೋಂದಾಯಿಸಿದ್ದರೂ ಸಹ ಇನ್ನೊಮ್ಮೆ ನೋಂದಾಯಿಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "ಒಂದು ಗಣಕವನ್ನು ನೋಂದಾಯಿಸಲು ಒಂದು ಬಳಕೆದಾರ ಹೆಸರು ಹಾಗು ಗುಪ್ತಪದದ ಅಗತ್ಯವಿದೆ."
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "ಒಂದು ಗಣಕವನ್ನು ನೋಂದಾಯಿಸಲು ಒಂದು ಬಳಕೆದಾರ ಹೆಸರು ಹಾಗು ಗುಪ್ತಪದದ ಅಗತ್ಯವಿದೆ."
 
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "ಗಣಕವು ಈಗಾಗಲೆ ನೋಂದಾಯಿಸಲ್ಪಟ್ಟಿದೆ. ಅತಿಕ್ರಮಿಸಲು --force ಅನ್ನು ಬಳಸಿ"
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "ಗಣಕವು ಈಗಾಗಲೆ ನೋಂದಾಯಿಸಲ್ಪಟ್ಟಿದೆ. ಅತಿಕ್ರಮಿಸಲು --force ಅನ್ನು ಬಳಸಿ"
 
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"--activationkey ನೊಂದಿಗೆ --use-eus-channel ಅನ್ನು ಬಳಸುವುದಕ್ಕೆ ಬೆಂಬಲವಿಲ್ಲ. ಬದಲಿಗೆ "
-"ದಯವಿಟ್ಟು ಬಳಕೆದಾರಹೆಸರು ಹಾಗು ಗುಪ್ತಪದವನ್ನು ಬಳಸಿ."
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "--activationkey ನೊಂದಿಗೆ --use-eus-channel ಅನ್ನು ಬಳಸುವುದಕ್ಕೆ ಬೆಂಬಲವಿಲ್ಲ. "
+#~ "ಬದಲಿಗೆ ದಯವಿಟ್ಟು ಬಳಕೆದಾರಹೆಸರು ಹಾಗು ಗುಪ್ತಪದವನ್ನು ಬಳಸಿ."
 
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "ನೀವು ನೋಂದಾಯಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ ಪರಿಚಾರಕವನ್ನು EUS ಬೆಂಬಲಿಸುವುದಿಲ್ಲ."
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "ನೀವು ನೋಂದಾಯಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ ಪರಿಚಾರಕವನ್ನು EUS ಬೆಂಬಲಿಸುವುದಿಲ್ಲ."
 
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"ಎಚ್ಚರಿಕೆ: --contactinfo ಆಯ್ಕೆಯನ್ನು ತೆಗೆದು ಹಾಕಲಾಗಿದೆ. ನಿಮ್ಮ contactinfo ಅನ್ನು "
-"ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಪರಿಚಾರಕದ ಜಾಲ ಸಂಪರ್ಕಸಾಧನಕ್ಕೆ ತೆರಳಿ. "
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "ಎಚ್ಚರಿಕೆ: --contactinfo ಆಯ್ಕೆಯನ್ನು ತೆಗೆದು ಹಾಕಲಾಗಿದೆ. ನಿಮ್ಮ contactinfo ಅನ್ನು "
+#~ "ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಪರಿಚಾರಕದ ಜಾಲ ಸಂಪರ್ಕಸಾಧನಕ್ಕೆ ತೆರಳಿ. "
 
-#: ../src/bin/rhnreg_ks.py:169
 #, fuzzy, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "ಎಚ್ಚರಿಕೆ: yum-rhn-plugin ಅಸ್ತಿತ್ವದಲ್ಲಿ ಇಲ್ಲ, ಅದನ್ನು ಶಕ್ತಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr ""
+#~ "ಎಚ್ಚರಿಕೆ: yum-rhn-plugin ಅಸ್ತಿತ್ವದಲ್ಲಿ ಇಲ್ಲ, ಅದನ್ನು ಶಕ್ತಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: ../src/bin/rhnreg_ks.py:172
 #, fuzzy, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"ಎಚ್ಚರಿಕೆ: /etc/yum/pluginconfd/rhnplugin.conf ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ\n"
-"yum-rhn-plugin ಅನ್ನು ಶಕ್ತಗೊಳಿಸಲಾಗಿಲ್ಲ.\n"
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "ಎಚ್ಚರಿಕೆ: /etc/yum/pluginconfd/rhnplugin.conf ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ\n"
+#~ "yum-rhn-plugin ಅನ್ನು ಶಕ್ತಗೊಳಿಸಲಾಗಿಲ್ಲ.\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"ಒಂದು ಪರಿಚಯ ಹೆಸರನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ, ಹಾಗು ಆತಿಥೇಯ ಹೆಸರು ಹಾಗು IP ವಿಳಾಸವನ್ನು ಒಂದು "
-"ಪರಿಚಯ ಹೆಸರನ್ನು ನಿರ್ಧರಿಸಲು ಬಳಸಲಾಗುವುದಿಲ್ಲ, ದಯವಿಟ್ಟು ಒಂದು ಪರಿಚಯ ಹೆಸರನ್ನು ಸೂಚಿಸಿ."
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "ಒಂದು ಪರಿಚಯ ಹೆಸರನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ, ಹಾಗು ಆತಿಥೇಯ ಹೆಸರು ಹಾಗು IP ವಿಳಾಸವನ್ನು ಒಂದು "
+#~ "ಪರಿಚಯ ಹೆಸರನ್ನು ನಿರ್ಧರಿಸಲು ಬಳಸಲಾಗುವುದಿಲ್ಲ, ದಯವಿಟ್ಟು ಒಂದು ಪರಿಚಯ ಹೆಸರನ್ನು ಸೂಚಿಸಿ."
 
 #, fuzzy
 #~ msgid "Finish setting up software updates"

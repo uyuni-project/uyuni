@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2024-02-22 13:42+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -1216,112 +1216,92 @@ msgstr ""
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "S'intenta executar més d'una instància de mgr_check. Se surt.\n"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "Especifica un nom de perfil"
+#~ msgid "Specify a profilename"
+#~ msgstr "Especifica un nom de perfil"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "Especifica un nom d'usuari"
+#~ msgid "Specify a username"
+#~ msgstr "Especifica un nom d'usuari"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "Especifica una contrasenya"
+#~ msgid "Specify a password"
+#~ msgstr "Especifica una contrasenya"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "Especifica un id. organitzatiu per aquest sistema"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "Especifica un id. organitzatiu per aquest sistema"
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "Especifica quin URL s'utilitza com a servidor"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "Especifica quin URL s'utilitza com a servidor"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "Especifica quin fitxer s'utilitza com a certificat ssl de l'AC"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "Especifica quin fitxer s'utilitza com a certificat ssl de l'AC"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "Especifica una clau d'activació"
+#~ msgid "Specify an activation key"
+#~ msgstr "Especifica una clau d'activació"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"Subscriu aquest sistema al canal EUS lligat al redhat-release del sistema"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "Subscriu aquest sistema al canal EUS lligat al redhat-release del sistema"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[Obsolet] Llegeix la informació de contacte des de l'stdin"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[Obsolet] Llegeix la informació de contacte des de l'stdin"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "No facis proves o pugis cap informació del maquinari"
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "No facis proves o pugis cap informació del maquinari"
 
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "No creis cap perfil o pugis cap informació del paquet"
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "No creis cap perfil o pugis cap informació del paquet"
 
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "No pugis cap informació de la virtualització"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "No pugis cap informació de la virtualització"
 
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "Registra el sistema encara que ja estigui registrat"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "Registra el sistema encara que ja estigui registrat"
 
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr ""
-"Es requereix un nom d'usuari i una contrasenya per a registrar un sistema."
+#~ msgid "A username and password are required to register a system."
+#~ msgstr ""
+#~ "Es requereix un nom d'usuari i una contrasenya per a registrar un sistema."
 
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "El sistema ja està registrat. Useu --force per sobreescriure-ho."
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "El sistema ja està registrat. Useu --force per sobreescriure-ho."
 
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"No està suportat l'ús de l'opció --use-eus-channel amb --activationkey. En "
-"lloc seu utilitzeu el nom d'usuari i la contrasenya."
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "No està suportat l'ús de l'opció --use-eus-channel amb --activationkey. "
+#~ "En lloc seu utilitzeu el nom d'usuari i la contrasenya."
 
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "El servidor sobre el que us esteu registrant no dóna suport EUS."
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "El servidor sobre el que us esteu registrant no dóna suport EUS."
 
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"Advertència: l'opció --contactinfo ha quedat en desús. Inicieu una sessió a "
-"la interfície d'usuari del servidor web i actualitzeu la vostra informació "
-"de contacte. "
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "Advertència: l'opció --contactinfo ha quedat en desús. Inicieu una sessió "
+#~ "a la interfície d'usuari del servidor web i actualitzeu la vostra "
+#~ "informació de contacte. "
 
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "Avís: %s no és present. No s'ha pogut habilitar."
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "Avís: %s no és present. No s'ha pogut habilitar."
 
-#: ../src/bin/rhnreg_ks.py:172
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Avís: no s'ha pogut obrir %s.\n"
-"%s no s'ha habilitat.\n"
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Avís: no s'ha pogut obrir %s.\n"
+#~ "%s no s'ha habilitat.\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"No es va especificar cap nom de perfil, no es va poder determinar ni el nom "
-"d'amfitrió ni l'adreça IP per a utilitzar-ho com a un nom de perfil. si us "
-"plau especifiqueu-ne un."
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "No es va especificar cap nom de perfil, no es va poder determinar ni el "
+#~ "nom d'amfitrió ni l'adreça IP per a utilitzar-ho com a un nom de perfil. "
+#~ "si us plau especifiqueu-ne un."
 
 #~ msgid "Finish setting up software updates"
 #~ msgstr "Acabeu de configurar les actualitzacions de programari"

@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2021-03-13 16:56+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -1200,111 +1200,91 @@ msgstr ""
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "Pokus o spuštění více než jedné instance mgr_check. Ukončení.\n"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "Zadejte jméno profilu"
+#~ msgid "Specify a profilename"
+#~ msgstr "Zadejte jméno profilu"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "Zadejte uživatelské jméno"
+#~ msgid "Specify a username"
+#~ msgstr "Zadejte uživatelské jméno"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "Zadejte heslo"
+#~ msgid "Specify a password"
+#~ msgstr "Zadejte heslo"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "Zadejte ID organizace pro tento systém"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "Zadejte ID organizace pro tento systém"
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "Zadejte, které URL serveru použít"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "Zadejte, které URL serveru použít"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "Zadejte soubor, který bude použit jako SSL CA certifikát"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "Zadejte soubor, který bude použit jako SSL CA certifikát"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "Zadejte aktivační klíč"
+#~ msgid "Specify an activation key"
+#~ msgstr "Zadejte aktivační klíč"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"Přihlaste tento systém ke kanálu EUS vázanému na vydání redhat, jaké je v "
-"systému"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "Přihlaste tento systém ke kanálu EUS vázanému na vydání redhat, jaké je v "
+#~ "systému"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[Zastaralé] Číst kontaktní informace ze stdin"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[Zastaralé] Číst kontaktní informace ze stdin"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "Nedetekovat a neodesílat informace o hardwaru"
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "Nedetekovat a neodesílat informace o hardwaru"
 
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "Neprofilovat a neodesílat žádné informace o balíčcích"
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "Neprofilovat a neodesílat žádné informace o balíčcích"
 
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "Neodesílejte žádné informace o virtualizaci"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "Neodesílejte žádné informace o virtualizaci"
 
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "Zaregistrovat systém, i když už je registrován"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "Zaregistrovat systém, i když už je registrován"
 
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "Uživatelské jméno a heslo je vyžadováno pro registraci systému."
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "Uživatelské jméno a heslo je vyžadováno pro registraci systému."
 
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "Tento systém je již zaregistrován. Ignorujte pomocí --force"
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "Tento systém je již zaregistrován. Ignorujte pomocí --force"
 
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"Použití volby --use-eus-channel s --activationkey není podporováno. Místo "
-"toho použijte uživatelské jméno a heslo."
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "Použití volby --use-eus-channel s --activationkey není podporováno. Místo "
+#~ "toho použijte uživatelské jméno a heslo."
 
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "Server, kam se registrujete, nepodporuje EUS."
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "Server, kam se registrujete, nepodporuje EUS."
 
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"Výstraha: volba --contactinfo je zastaralá. Přihlaste se prosím k webovému "
-"uživatelskému rozhraní serveru a aktualizujte svoji kontaktní informaci "
-"(contactinfo). "
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "Výstraha: volba --contactinfo je zastaralá. Přihlaste se prosím k "
+#~ "webovému uživatelskému rozhraní serveru a aktualizujte svoji kontaktní "
+#~ "informaci (contactinfo). "
 
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "Varování: %s není nainstalován - nelze ho aktivovat."
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "Varování: %s není nainstalován - nelze ho aktivovat."
 
-#: ../src/bin/rhnreg_ks.py:172
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Varování: nemohu otevřít %s\n"
-"%s není aktivován.\n"
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Varování: nemohu otevřít %s\n"
+#~ "%s není aktivován.\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"Název profilu nebyl zadán a jméno počítače a IP adresa nemohly být použity "
-"jako název profilu, zadejte jej prosím."
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "Název profilu nebyl zadán a jméno počítače a IP adresa nemohly být "
+#~ "použity jako název profilu, zadejte jej prosím."
 
 #~ msgid "Finish setting up software updates"
 #~ msgstr "Konec nastavování aktualizací softwaru"

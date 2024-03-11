@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2023-10-17 07:15+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -1171,108 +1171,88 @@ msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
 "mgr_check의 하나 이상의 인스턴스를 실행하려 합니다. 종료하고 있습니다.\n"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "프로파일명 지정"
+#~ msgid "Specify a profilename"
+#~ msgstr "프로파일명 지정"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "사용자명 지정"
+#~ msgid "Specify a username"
+#~ msgstr "사용자명 지정"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "암호 지정"
+#~ msgid "Specify a password"
+#~ msgstr "암호 지정"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "시스템이 속한 기관의 ID를 지정"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "시스템이 속한 기관의 ID를 지정"
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "사용할 서버의 url을 지정"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "사용할 서버의 url을 지정"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "ssl CA 인증서로 사용할 파일을 지정"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "ssl CA 인증서로 사용할 파일을 지정"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "활성화 키 지정"
+#~ msgid "Specify an activation key"
+#~ msgstr "활성화 키 지정"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr "이 시스템의 redhat-릴리즈와 연결된 EUS 채널에 시스템을 등록함"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr "이 시스템의 redhat-릴리즈와 연결된 EUS 채널에 시스템을 등록함"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[사용금지됨] stdin에서 연락 정보를 읽음"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[사용금지됨] stdin에서 연락 정보를 읽음"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "어떠한 하드웨어 정보도 검색하거나 업로드하지 않음"
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "어떠한 하드웨어 정보도 검색하거나 업로드하지 않음"
 
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "어떠한 패키지 정보도 프로파일화하거나 업로드하지 않음"
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "어떠한 패키지 정보도 프로파일화하거나 업로드하지 않음"
 
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "어떠한 가상화 정보도 업로드하지 않음"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "어떠한 가상화 정보도 업로드하지 않음"
 
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "이미 시스템이 등록되어 있어도 이를 다시 등록함"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "이미 시스템이 등록되어 있어도 이를 다시 등록함"
 
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "시스템을 등록하기 위해서는 사용자명과 암호가 필요합니다."
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "시스템을 등록하기 위해서는 사용자명과 암호가 필요합니다."
 
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "이미 등록된 시스템입니다. --force를 사용하여 덮어씀"
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "이미 등록된 시스템입니다. --force를 사용하여 덮어씀"
 
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"--use-eus-channel 옵션을 --activationkey와 함께 사용하는 것을 지원하지 않습니"
-"다. 대신 사용자명과 암호를 사용하십시오."
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "--use-eus-channel 옵션을 --activationkey와 함께 사용하는 것을 지원하지 않"
+#~ "습니다. 대신 사용자명과 암호를 사용하십시오."
 
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "등록 시 사용하려는 서버가 EUS를 지원하지 않습니다."
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "등록 시 사용하려는 서버가 EUS를 지원하지 않습니다."
 
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"경고: --contactinfo 옵션은 사용 중지되었습니다. 서버 웹 사용자 인터페이스에 "
-"로그인해서 연락처 정보를 업데이트하십시오. "
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "경고: --contactinfo 옵션은 사용 중지되었습니다. 서버 웹 사용자 인터페이스"
+#~ "에 로그인해서 연락처 정보를 업데이트하십시오. "
 
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "경고: %s이(가) 없기 때문에 이를 활성화할 수 없습니다."
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "경고: %s이(가) 없기 때문에 이를 활성화할 수 없습니다."
 
-#: ../src/bin/rhnreg_ks.py:172
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"경고: %s을(를) 열 수 없습니다.\n"
-"%s은(는) 활성화되어 있지 않습니다.\n"
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "경고: %s을(를) 열 수 없습니다.\n"
+#~ "%s은(는) 활성화되어 있지 않습니다.\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"프로파일 이름이 지정되지 않았으며 호스트명과 IP 주소를 프로파일 이름으로 사용"
-"할 수 없습니다. 프로파일 이름을 지정해 주십시오."
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "프로파일 이름이 지정되지 않았으며 호스트명과 IP 주소를 프로파일 이름으로 "
+#~ "사용할 수 없습니다. 프로파일 이름을 지정해 주십시오."
 
 #~ msgid "Finish setting up software updates"
 #~ msgstr "소프트웨어 업데이트 설정 완료"

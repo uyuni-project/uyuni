@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2021-03-10 13:38+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (Taiwan) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1119,108 +1119,88 @@ msgstr ""
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "試圖執行超過一組 rhn_check。退出中。\n"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "指定設定檔的檔名"
+#~ msgid "Specify a profilename"
+#~ msgstr "指定設定檔的檔名"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "指定使用者名稱"
+#~ msgid "Specify a username"
+#~ msgstr "指定使用者名稱"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "指定密碼"
+#~ msgid "Specify a password"
+#~ msgstr "指定密碼"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "指定這系統的組織 ID"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "指定這系統的組織 ID"
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "指定要做為伺服器的網址"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "指定要做為伺服器的網址"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "指定用作 SSL CA 證書的檔案"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "指定用作 SSL CA 證書的檔案"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "指定啟動金鑰"
+#~ msgid "Specify an activation key"
+#~ msgstr "指定啟動金鑰"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr "將這部系統註冊至與其 redhat 發行版綁定的 EUS 頻道"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr "將這部系統註冊至與其 redhat 發行版綁定的 EUS 頻道"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[已淘汰] 由標準輸入讀取聯絡資訊"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[已淘汰] 由標準輸入讀取聯絡資訊"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "不要偵測或上載任何硬體的資訊 "
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "不要偵測或上載任何硬體的資訊 "
 
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "不要歸檔或上載任何套件資訊 "
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "不要歸檔或上載任何套件資訊 "
 
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "不要上載任何虛擬資料"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "不要上載任何虛擬資料"
 
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "註冊系統；即使已經註冊過了"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "註冊系統；即使已經註冊過了"
 
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "註冊系統需要使用者名稱與密碼。"
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "註冊系統需要使用者名稱與密碼。"
 
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "這個系統已經註冊過了。 請使用 --force 來強制註冊"
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "這個系統已經註冊過了。 請使用 --force 來強制註冊"
 
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"不支援搭配使用 --use-eus-channel 選項與 --activationkey。請使用使用者名稱和密"
-"碼來代替。"
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "不支援搭配使用 --use-eus-channel 選項與 --activationkey。請使用使用者名稱"
+#~ "和密碼來代替。"
 
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "您要註冊至的伺服器不支援 EUS。"
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "您要註冊至的伺服器不支援 EUS。"
 
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"警告：--contactinfo 選項已淘汰。請登入伺服器網頁的使用者介面，以更新您的 "
-"contactinfo。"
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "警告：--contactinfo 選項已淘汰。請登入伺服器網頁的使用者介面，以更新您的 "
+#~ "contactinfo。"
 
-#: ../src/bin/rhnreg_ks.py:169
 #, fuzzy, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "警告：yum-rhn-plugin 不存在，無法將它啟用。"
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "警告：yum-rhn-plugin 不存在，無法將它啟用。"
 
-#: ../src/bin/rhnreg_ks.py:172
 #, fuzzy, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"警告：無法開啟 /etc/yum/pluginconf.d/rhnplugin.conf\n"
-"yum-rhn-plugin 未啟用。\n"
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "警告：無法開啟 /etc/yum/pluginconf.d/rhnplugin.conf\n"
+#~ "yum-rhn-plugin 未啟用。\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"未指定資料檔名稱，而且無法使用主機名稱與 IP 位址來當作資料檔名稱， 請另外指定"
-"一個。"
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "未指定資料檔名稱，而且無法使用主機名稱與 IP 位址來當作資料檔名稱， 請另外"
+#~ "指定一個。"
 
 #, fuzzy
 #~ msgid "Finish setting up software updates"

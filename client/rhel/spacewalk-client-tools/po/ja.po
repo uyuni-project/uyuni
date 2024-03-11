@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-08 15:35+0200\n"
 "PO-Revision-Date: 2023-10-15 11:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -1205,110 +1205,91 @@ msgstr ""
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "mgr_check の複数のインスタンスを実行しようとしています。終了します。\n"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "プロファイル名を指定する"
+#~ msgid "Specify a profilename"
+#~ msgstr "プロファイル名を指定する"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "ユーザー名を指定する"
+#~ msgid "Specify a username"
+#~ msgstr "ユーザー名を指定する"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "パスワードを指定する"
+#~ msgid "Specify a password"
+#~ msgstr "パスワードを指定する"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "このシステムに対して企業/組織 ID を指定する"
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "このシステムに対して企業/組織 ID を指定する"
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "サーバーとして使用する URL を指定する"
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "サーバーとして使用する URL を指定する"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "ssl CA cert として使うファイルを指定する"
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "ssl CA cert として使うファイルを指定する"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "アクティベーションキーを指定する"
+#~ msgid "Specify an activation key"
+#~ msgstr "アクティベーションキーを指定する"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"システムの redhat リリースに連結した EUS チャンネルにこのシステムをサブスクラ"
-"イブする"
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "システムの redhat リリースに連結した EUS チャンネルにこのシステムをサブス"
+#~ "クライブする"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[廃止決定] stdin から連絡先情報を読み込む"
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[廃止決定] stdin から連絡先情報を読み込む"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "ハードウェア情報の検索もアップロードもしない"
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "ハードウェア情報の検索もアップロードもしない"
 
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "パッケージ情報のプロファイル化やアップロードをしない"
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "パッケージ情報のプロファイル化やアップロードをしない"
 
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "仮想情報をアップロードしない"
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "仮想情報をアップロードしない"
 
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "すでに登録済の場合でもシステムを登録する"
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "すでに登録済の場合でもシステムを登録する"
 
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "システムの登録にはユーザー名とパスワードが必要です。"
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "システムの登録にはユーザー名とパスワードが必要です。"
 
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "このシステムは既に登録済です。 --force を使用すると強制的に実行します"
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr ""
+#~ "このシステムは既に登録済です。 --force を使用すると強制的に実行します"
 
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"--activationkey と併用して --use-eus-channel オプションを使用することはできま"
-"せん。 代わりにユーザー名とパスワードを使用して下さい。"
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "--activationkey と併用して --use-eus-channel オプションを使用することはで"
+#~ "きません。 代わりにユーザー名とパスワードを使用して下さい。"
 
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "登録先のサーバーは EUS をサポートしていません。"
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "登録先のサーバーは EUS をサポートしていません。"
 
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"警告: --contactinfo オプションは廃止予定です。サーバーのウェブログインイン"
-"ターフェイスにログインして連絡先情報を更新して下さい。 "
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "警告: --contactinfo オプションは廃止予定です。サーバーのウェブログインイン"
+#~ "ターフェイスにログインして連絡先情報を更新して下さい。 "
 
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "警告: %s は存在しません。有効化できませんでした。"
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "警告: %s は存在しません。有効化できませんでした。"
 
-#: ../src/bin/rhnreg_ks.py:172
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"警告: %s を開くことができません\n"
-"%s は有効になっていません。\n"
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "警告: %s を開くことができません\n"
+#~ "%s は有効になっていません。\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"プロファイル名が指定されていませんので、プロファイル名として使うホスト名と "
-"IP アドレスを決定が出来ません。ひとつ指定してください。"
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "プロファイル名が指定されていませんので、プロファイル名として使うホスト名"
+#~ "と IP アドレスを決定が出来ません。ひとつ指定してください。"
 
 #~ msgid "Finish setting up software updates"
 #~ msgstr "ソフトウェア更新の設定完了"
