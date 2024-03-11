@@ -82,6 +82,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "all_systems_pillar_refresh";
     public static final String PILLARS_FROM_FILES =
             UPGRADE_TASK_NAME + "pillars_from_files";
+    public static final String ALL_SYSTEMS_SYNC_ALL =
+            UPGRADE_TASK_NAME + "all_systems_sync_all";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -156,6 +158,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case REFRESH_ALL_SYSTEMS_PILLARS:
                         refreshAllSystemsPillar();
+                        break;
+                    case ALL_SYSTEMS_SYNC_ALL:
+                        allSystemsSyncAll();
                         break;
                     default:
                 }
@@ -375,6 +380,21 @@ public class UpgradeCommand extends BaseTransactionCommand {
         }
         catch (Exception e) {
             log.error("Error refreshing hosts pillar. Ignoring.", e);
+        }
+    }
+
+    /**
+     * Run sync_all on all systems
+     */
+    private void allSystemsSyncAll() {
+        try {
+            List<String> minionIds = MinionServerFactory.listMinions()
+                    .stream().map(MinionServer::getMinionId).collect(Collectors.toList());
+            GlobalInstanceHolder.SALT_API.syncAll(new MinionList(minionIds));
+            log.info("Sync all scheduled on all systems");
+        }
+        catch (Exception e) {
+            log.error("Error running sync_all. Ignoring.", e);
         }
     }
 
