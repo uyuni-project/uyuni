@@ -11347,7 +11347,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
-        <target state="new"/>
+        <target state="translated">Spravuje prihlásenia a obnovenia reťazca akcií pre klientov SSH Push</target>
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
@@ -11355,7 +11355,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
-        <target state="new"/>
+        <target state="translated">Táto inštancia @@PRODUCT_NAME@@ PAYG nie je vyhovujúca. Niektoré funkcie @@PRODUCT_NAME@@ budú vypnuté. Prosím, obráťte sa na svojho systémového administrátora.</target>
       </trans-unit>
       <trans-unit id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
         <source>
