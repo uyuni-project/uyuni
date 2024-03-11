@@ -51,9 +51,9 @@ public class VirtualHostManagerProcessor {
     private static final Logger LOGGER = LogManager.getLogger(VirtualHostManagerProcessor.class);
     private final VirtualHostManager virtualHostManager;
     private final Map<String, HostJson> virtualHosts;
-    private Set<Server> serversToDelete;
-    private Set<VirtualHostManagerNodeInfo> nodesToDelete;
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final Set<Server> serversToDelete;
+    private final Set<VirtualHostManagerNodeInfo> nodesToDelete;
+    private final SystemEntitlementManager systemEntitlementManager;
 
     /**
      * Instantiates a new virtual host manager processor, will update a virtual
@@ -67,6 +67,7 @@ public class VirtualHostManagerProcessor {
         this.virtualHosts = virtualHostsIn;
         this.serversToDelete = new HashSet<>();
         this.nodesToDelete = new HashSet<>();
+        this.systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     }
 
     /**
