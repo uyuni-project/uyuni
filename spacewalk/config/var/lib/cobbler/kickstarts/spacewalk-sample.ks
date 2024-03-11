@@ -67,8 +67,6 @@ rm -Rf /tmp/ks-tree-copy
 $SNIPPET('redhat_register_using_salt')
 # end cobbler snippet
 
-rhn_check
-
 ) >> /root/ks-post.log 2>&1
 # MOTD
 echo >> /etc/motd
