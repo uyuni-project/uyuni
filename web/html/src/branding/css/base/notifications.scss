@@ -1,7 +1,7 @@
 #notifications {
   > a:hover {
     i {
-      color: @green;
+      color: $green;
     }
   }
 
@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: @notification-badge;
+    background-color: $notification-badge;
     position: absolute;
     left: 19px;
     top: -2px;
