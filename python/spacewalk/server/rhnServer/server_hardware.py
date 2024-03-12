@@ -36,7 +36,7 @@ from spacewalk.common.rhnTB import Traceback
 # pylint: disable-next=unused-import
 from spacewalk.common import rhnMail
 from spacewalk.common import rhnFlags
-from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
+from spacewalk.server import rhnSQL, rhnUser
 
 # Local imports
 from spacewalk.server.rhnServer import server_class
@@ -1024,7 +1024,7 @@ class SystemInformation:
             host.server["release"] = hw.get("type")
             host.server["last_boot"] = time.time()
             host.default_description()
-            host.virt_type = rhnVirtualization.VirtualizationType.FULLY
+            host.virt_type = "fully_virtualized"
             host.virt_uuid = None
             fake_token = False
             if not rhnFlags.test("registration_token"):

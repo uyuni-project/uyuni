@@ -185,30 +185,6 @@ receivers and get them enabled automatically.
 
 This package contains listener for the Server XML dumper.
 
-%package config-files-common
-Summary:        Common files for the Configuration Management project
-Group:          System/Management
-Requires:       %{name}-server = %{version}-%{release}
-
-%description config-files-common
-Common files required by the Configuration Management project
-
-%package config-files
-Summary:        Handler for /CONFIG-MANAGEMENT
-Group:          System/Management
-Requires:       %{name}-config-files-common = %{version}-%{release}
-
-%description config-files
-This package contains the server-side code for configuration management.
-
-%package config-files-tool
-Summary:        Handler for /CONFIG-MANAGEMENT-TOOL
-Group:          System/Management
-Requires:       %{name}-config-files-common = %{version}-%{release}
-
-%description config-files-tool
-This package contains the server-side code for configuration management tool.
-
 %package package-push-server
 Summary:        Listener for rhnpush (non-XMLRPC version)
 Group:          System/Management
@@ -463,7 +439,6 @@ fi
 %{python3rhnroot}/server/rhnRepository.py*
 %{python3rhnroot}/server/rhnSession.py*
 %{python3rhnroot}/server/rhnUser.py*
-%{python3rhnroot}/server/rhnVirtualization.py*
 %{python3rhnroot}/server/taskomatic.py*
 %{python3rhnroot}/server/suseEula.py*
 %dir %{python3rhnroot}/server/rhnServer
@@ -495,7 +470,6 @@ fi
 %{python3rhnroot}/server/importlib/__pycache__/*
 %{python3rhnroot}/server/__pycache__/*
 %exclude %{python3rhnroot}/server/__pycache__/__init__.*
-%exclude %{python3rhnroot}/server/__pycache__/configFilesHandler.*
 %{rhnroot}/server/handlers/__init__.py*
 
 # Repomd stuff
@@ -521,8 +495,6 @@ fi
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/zz-spacewalk-server-wsgi.conf
 %{rhnroot}/wsgi/app.py*
 %{rhnroot}/wsgi/applet.py*
-%{rhnroot}/wsgi/config.py*
-%{rhnroot}/wsgi/config_tool.py*
 %{rhnroot}/wsgi/package_push.py*
 %{rhnroot}/wsgi/sat.py*
 %{rhnroot}/wsgi/sat_dump.py*
@@ -598,35 +570,6 @@ fi
 %{python3rhnroot}/satellite_exporter/__pycache__/*
 # config files
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss-export
-
-%files config-files-common
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%{python3rhnroot}/server/configFilesHandler.py*
-%{python3rhnroot}/server/__pycache__/configFilesHandler.*
-%dir %{python3rhnroot}/server/config_common
-%{python3rhnroot}/server/config_common/*
-
-%files config-files
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/config
-%{rhnroot}/server/handlers/config/*
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
-
-%files config-files-tool
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/config_mgmt
-%{rhnroot}/server/handlers/config_mgmt/*
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management-tool.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files-tool
 
 %files package-push-server
 %defattr(-,root,root)

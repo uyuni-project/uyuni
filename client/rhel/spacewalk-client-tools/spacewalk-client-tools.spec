@@ -394,10 +394,7 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/up2date_client/up2dateLog.*
 %{python_sitelib}/up2date_client/up2dateErrors.*
 %{python_sitelib}/up2date_client/rpcServer.*
-%{python_sitelib}/up2date_client/rhnserver.*
 %{python_sitelib}/up2date_client/transaction.*
-%{python_sitelib}/up2date_client/clientCaps.*
-%{python_sitelib}/up2date_client/capabilities.*
 %{python_sitelib}/up2date_client/pkgplatform.*
 %endif
 
@@ -411,10 +408,7 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/up2dateLog.*
 %{python3_sitelib}/up2date_client/up2dateErrors.*
 %{python3_sitelib}/up2date_client/rpcServer.*
-%{python3_sitelib}/up2date_client/rhnserver.*
 %{python3_sitelib}/up2date_client/transaction.*
-%{python3_sitelib}/up2date_client/clientCaps.*
-%{python3_sitelib}/up2date_client/capabilities.*
 %{python3_sitelib}/up2date_client/pkgplatform.*
 
 %if "%{_vendor}" != "debbuild"
@@ -425,10 +419,7 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/__pycache__/up2dateLog.*
 %{python3_sitelib}/up2date_client/__pycache__/up2dateErrors.*
 %{python3_sitelib}/up2date_client/__pycache__/rpcServer.*
-%{python3_sitelib}/up2date_client/__pycache__/rhnserver.*
 %{python3_sitelib}/up2date_client/__pycache__/transaction.*
-%{python3_sitelib}/up2date_client/__pycache__/clientCaps.*
-%{python3_sitelib}/up2date_client/__pycache__/capabilities.*
 %{python3_sitelib}/up2date_client/__pycache__/pkgplatform.*
 %endif
 %endif
