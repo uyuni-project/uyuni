@@ -31,6 +31,12 @@ public class HostJson {
     /** Host Identifier. */
     private String hostIdentifier;
 
+    /**
+     * For VMWare we had to change the value for the host identifier. This fields contains the value previously used,
+     * to allow the code to match and update the value.
+     */
+    private String fallbackHostIdentifier;
+
     /** Total CPU socket count. */
     private Integer totalCpuSockets;
 
@@ -84,6 +90,14 @@ public class HostJson {
      */
     public String getHostIdentifier() {
         return hostIdentifier;
+    }
+
+    /**
+     * Gets the fallback host identifier
+     * @return the fallback host identifier
+     */
+    public String getFallbackHostIdentifier() {
+        return fallbackHostIdentifier;
     }
 
     /**
@@ -206,6 +220,14 @@ public class HostJson {
      */
     public void setHostIdentifier(String hostIdentifierIn) {
         this.hostIdentifier = hostIdentifierIn;
+    }
+
+    /**
+     * Sets the fallback host identifier.
+     * @param hostUuidIn the fallback host identifier
+     */
+    public void setFallbackHostIdentifier(String hostUuidIn) {
+        this.fallbackHostIdentifier = hostUuidIn;
     }
 
     /**
