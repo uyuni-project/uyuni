@@ -1,0 +1,1 @@
+- use java.hostname variable for setting mgr_server and mgr_orig_server

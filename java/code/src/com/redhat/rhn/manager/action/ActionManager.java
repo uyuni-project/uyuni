@@ -2519,7 +2519,7 @@ public class ActionManager extends BaseManager {
         if (!normalIds.isEmpty()) {
             // action for normal minions - update salt master, the channels will be updated after minion restart
             Map<String, Object> pillar = new HashMap<>();
-            pillar.put("mgr_server", proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getCobblerHost()));
+            pillar.put("mgr_server", proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getJavaHostname()));
 
             Action a = scheduleApplyStates(loggedInUser, normalIds,
                        Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),

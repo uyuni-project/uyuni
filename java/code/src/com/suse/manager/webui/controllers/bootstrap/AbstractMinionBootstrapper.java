@@ -316,13 +316,13 @@ public abstract class AbstractMinionBootstrapper {
         String mgrServer = input.getProxyId()
                 .map(ServerFactory::lookupById)
                 .map(Server::getHostname)
-                .orElse(ConfigDefaults.get().getCobblerHost());
+                .orElse(ConfigDefaults.get().getJavaHostname());
 
         pillarData.put("mgr_server", mgrServer);
         if ("ssh-push-tunnel".equals(contactMethod)) {
             pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
         }
-        pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_origin_server", ConfigDefaults.get().getJavaHostname());
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);
         pillarData.put("mgr_sudo_user", SaltSSHService.getSSHUser());

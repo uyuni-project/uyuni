@@ -74,7 +74,7 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
             pillar.add("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
         }
 
-        pillar.add("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
+        pillar.add("mgr_origin_server", ConfigDefaults.get().getJavaHostname());
         pillar.add("mgr_server_is_uyuni", ConfigDefaults.get().isUyuni());
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
