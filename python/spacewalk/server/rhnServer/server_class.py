@@ -31,7 +31,6 @@ from spacewalk.server import (
     rhnSQL,
     rhnLib,
     rhnAction,
-    rhnVirtualization,
 )
 from .search_notify import SearchNotify
 
@@ -44,7 +43,6 @@ from .server_wrapper import ServerWrapper
 
 
 class Server(ServerWrapper):
-
     """Main Server class"""
 
     def __init__(self, user, arch=None, org_id=None):
@@ -569,14 +567,6 @@ class Server(ServerWrapper):
         if commit:
             rhnSQL.commit()
 
-    def handle_virtual_guest(self):
-        # Handle virtualization specific bits
-        if self.virt_uuid and self.virt_type:
-            # pylint: disable-next=protected-access
-            rhnVirtualization._notify_guest(
-                self.getid(), self.virt_uuid, self.virt_type
-            )
-
     # Save this record in the database
     def __save(self, channel):
         tokens_obj = rhnFlags.get("registration_token")
@@ -603,8 +593,6 @@ class Server(ServerWrapper):
             # and create the server entry
             self.server.create(server_id)
             server_lib.create_server_setup(server_id, org_id)
-
-            self.handle_virtual_guest()
 
             # if we're using a token, then the following channel
             # subscription request can allow no matches since the
@@ -637,10 +625,6 @@ class Server(ServerWrapper):
                 self.join_groups()
 
             server_lib.join_rhn(org_id)
-
-        # Update virtual guest attributes on re-registration
-        if getattr(tokens_obj, "is_rereg_token", False):
-            self.handle_virtual_guest()
 
         # Update the uuid - but don't commit yet
         self.update_uuid(self.uuid, commit=0)

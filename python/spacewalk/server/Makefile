@@ -17,7 +17,7 @@ SPACEWALK_FILES		= __init__ \
                   rhnAction \
                   rhnHandler rhnImport rhnMapping rhnLib rhnPackage \
                   rhnPackageUpload basePackageUpload rhnRepository \
-                  rhnSession rhnUser rhnVirtualization taskomatic \
+                  rhnSession rhnUser taskomatic \
                   suseEula
 SUBDIRS		= rhnSQL rhnServer action \
 			  handlers importlib action_extra_data \

@@ -7,8 +7,6 @@ FILES		:= config \
 		   up2dateUtils \
 		   up2dateLog transaction \
 		   up2dateErrors rpcServer \
-		   clientCaps capabilities \
-		   rhnserver \
            pkgplatform
 
 PYFILES 	:= $(addsuffix .py, $(FILES))

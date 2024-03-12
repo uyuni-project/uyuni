@@ -19,8 +19,6 @@
 import unittest
 import settestpath
 
-import testByteRangeRpcServer
-import testClientCaps
 import testConfig
 import testTransactions
 import testUp2dateUtils
@@ -30,8 +28,6 @@ from unittest import TestSuite
 def suite():
     # Append all test suites here:
     return TestSuite((
-        testByteRangeRpcServer.suite(),
-        testClientCaps.suite(),
         testConfig.suite(),
         testTransactions.suite(),
         testUp2dateUtils.suite(),

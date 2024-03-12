@@ -463,7 +463,6 @@ fi
 %{python3rhnroot}/server/rhnRepository.py*
 %{python3rhnroot}/server/rhnSession.py*
 %{python3rhnroot}/server/rhnUser.py*
-%{python3rhnroot}/server/rhnVirtualization.py*
 %{python3rhnroot}/server/taskomatic.py*
 %{python3rhnroot}/server/suseEula.py*
 %dir %{python3rhnroot}/server/rhnServer
@@ -613,8 +612,6 @@ fi
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/config
-%{rhnroot}/server/handlers/config/*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
 
@@ -623,8 +620,6 @@ fi
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/config_mgmt
-%{rhnroot}/server/handlers/config_mgmt/*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management-tool.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files-tool
 
