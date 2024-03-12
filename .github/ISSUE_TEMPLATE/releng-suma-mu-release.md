@@ -2,7 +2,8 @@
 name: SUSE Manager MU release
 about: Use this template for SUSE Manager MU releases (announcements)
 title: 'X.Y.Z Maintenance Update release'
-labels: vega-squad
+labels: ["vega-squad"]
+projects: ["SUSE/35"]
 assignees: ''
 
 ---
