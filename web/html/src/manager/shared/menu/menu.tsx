@@ -10,7 +10,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type LinkProps = {
   url: string;
-  cssClass?: string;
+  className?: string;
   target?: string;
   title?: string;
   responsiveLabel?: React.ReactNode;
@@ -18,7 +18,7 @@ type LinkProps = {
 };
 
 const Link = (props: LinkProps) => (
-  <a href={props.url} className={flatten([props.cssClass, "js-spa"])} target={props.target} title={props.title}>
+  <a href={props.url} className={flatten([props.className, "js-spa"])} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
   </a>
@@ -236,7 +236,7 @@ class Breadcrumb extends React.Component {
     const product_name_link = window._IS_UYUNI ? (
       <Link
         key="home"
-        cssClass="navbar-brand"
+        className="navbar-brand"
         url="/"
         label={<span>{t("Uyuni")}</span>}
         target=""
@@ -245,7 +245,7 @@ class Breadcrumb extends React.Component {
     ) : (
       <Link
         key="home"
-        cssClass="navbar-brand"
+        className="navbar-brand"
         url="/"
         label={
           <span>
@@ -261,16 +261,17 @@ class Breadcrumb extends React.Component {
     return (
       <div>
         {product_name_link}
-        <span>&gt;</span>
+        <span className="hidden-sm d-none d-md-inline">&gt;</span>
         {breadcrumbArray.map((a, i) => {
           return (
             <span key={a.label + "_" + i}>
               <Link
+                className="hidden-sm d-none d-md-inline"
                 url={a.submenu ? a.submenu[0].primaryUrl : a.primaryUrl}
                 label={stringToReact(a.label)}
                 target={a.target}
               />
-              {DEPRECATED_unsafeEquals(i, breadcrumbArray.length - 1) ? null : ">"}
+              {i === breadcrumbArray.length - 1 ? null : <span className="hidden-sm d-none d-md-inline">&gt;</span>}
             </span>
           );
         })}

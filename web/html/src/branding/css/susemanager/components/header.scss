@@ -1,3 +1,7 @@
+#messages-container {
+  width: 100%;
+}
+
 .header-content {
   display: flex;
   align-items: center;
@@ -78,12 +82,12 @@
 
     .badge {
       border-radius: 8px;
-      background: @gray-light;
+      background: $gray-light;
       display: block;
       padding: 2px 6px;
       margin-bottom: -2px;
       text-align: center;
-      color: darken(@gray-dark, 20%);
+      color: darken($gray-dark, 20%);
     }
   }
 
@@ -94,13 +98,13 @@
 
     &:hover,
     &:focus {
-      color: @green;
+      color: $green;
     }
   }
 
   #clear-ssm {
     padding: 4px 12px;
-    color: @gray-light;
+    color: $gray-light;
     background-color: transparent;
     cursor: pointer;
     border-radius: 2px;
@@ -112,7 +116,7 @@
   }
 
   #clear-ssm:hover {
-    background-color: @red;
-    color: @gray-light;
+    background-color: $red;
+    color: $gray-light;
   }
 }

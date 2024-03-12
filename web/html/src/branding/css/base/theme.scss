@@ -3,7 +3,7 @@
  */
 
 a {
-  color: @link-color;
+  color: $link-color;
   cursor: pointer;
   text-decoration: none;
 
@@ -19,9 +19,9 @@ header {
   border: none;
   border-radius: 0;
   border-width: 0 !important;
-  border-bottom: 2px solid @header-border !important;
+  border-bottom: 2px solid $header-border !important;
   margin-bottom: 0;
-  background: @header;
+  background: $header !important;
 
   .header-content {
     padding: 12px 10px;
@@ -29,11 +29,11 @@ header {
   }
 
   a {
-    color: @header-text;
+    color: $header-text;
   }
 
   a:hover {
-    color: @header-text;
+    color: $header-text;
   }
 
   img {
@@ -69,17 +69,17 @@ header {
   }
 }
 
-// TODO: Check if we need this?
+// TODO: Check this with grid.scss
 // .row {
 //   margin-left: 0;
 //   margin-right: 0;
 // }
 
 footer {
-  border-top: 1px solid @aside-footer-border;
+  border-top: 1px solid $aside-footer-border;
   background: inherit;
   padding: 3px 12px;
-  color: @aside-footer-text;
+  color: $aside-footer-text;
   font-weight: normal;
   font-size: 0.9em;
   height: auto;
@@ -88,7 +88,7 @@ footer {
   position: absolute;
   bottom: 0px;
   width: 100%;
-  .make-row(0);
+  @include make-row;
 
   a {
     color: inherit;
@@ -111,7 +111,7 @@ footer {
   }
 
   div.wrapper {
-    background: @aside-footer-logo-background;
+    background: $aside-footer-logo-background;
     min-height: 28px;
     padding-right: 55px !important;
     > div {
@@ -127,15 +127,14 @@ section {
 }
 
 .spacewalk-main-column-layout {
-  .make-row(0);
+  @include make-row;
   /* override the grid row margin */
   margin-right: 0;
   margin-left: 0;
   aside {
-    .make-xs-column(2);
     min-width: max(300px, 17%);
     max-width: min(400px, 17%);
-    background: @aside-background;
+    background: $aside-background;
     border-right: none;
     /* erasing the predefined paddings in the columns */
     padding: 0;
@@ -159,14 +158,13 @@ section {
 
   /* fixing margins in the 1st and last columns */
   section {
-    .make-xs-column(10);
-    padding: @content-area-padding;
+    padding: $content-area-padding;
     float: right;
   }
 }
 
 #breadcrumb {
-  color: @header-text;
+  color: $header-text;
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -196,6 +194,7 @@ section {
     flex-direction: column;
     flex: 1 1 auto;
     overflow: hidden;
+    width: 100%;
 
     nav {
       display: flex;
@@ -220,6 +219,8 @@ section {
 
 header,
 nav.navbar-pf {
+  padding: 0 !important;
+
   .navbar-toggle {
     display: inline-block;
     float: none;
@@ -233,7 +234,7 @@ nav.navbar-pf {
     }
   }
   .navbar-toggle:hover {
-    color: @green;
+    color: $green;
   }
   .navbar-header {
     float: none;
@@ -243,7 +244,8 @@ nav.navbar-pf {
   }
   .navbar-utility,
   .navbar-primary {
-    .navbar-right;
+    // TODO: Check
+    @extend .navbar-right;
     font-size: 1em;
     display: inline-block;
     position: relative;
@@ -266,15 +268,15 @@ nav.navbar-pf {
   a.toggle-box.open,
   .manual-toggle-box:hover,
   .manual-toggle-box.open {
-    color: @green;
+    color: $green;
   }
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @header;
+    background-color: $header;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
-    box-shadow: 0px 4px 4px 0px @gray;
+    box-shadow: 0px 4px 4px 0px $gray;
     margin-top: 5px;
   }
 
@@ -302,7 +304,7 @@ nav.navbar-pf {
 
       &,
       &:hover {
-        color: @header-text;
+        color: $header-text;
       }
     }
   }
@@ -317,7 +319,7 @@ nav.navbar-pf {
     font-size: 1.6em;
     display: inline-block;
     vertical-align: baseline;
-    color: @header-text;
+    color: $header-text;
     > i {
       display: none;
     }
@@ -327,7 +329,7 @@ nav.navbar-pf {
     }
   }
   .navbar-brand:hover {
-    color: @header-text;
+    color: $header-text;
   }
 }
 
@@ -345,7 +347,7 @@ nav.navbar-pf {
   padding: 0;
   text-align: center;
   background-color: rgba(77, 211, 167, 0.2);
-  color: @gray-dark;
+  color: $gray-dark;
   border: 1px solid rgba(0, 192, 129, 0.2);
   i {
     margin: 0 auto;
@@ -354,8 +356,8 @@ nav.navbar-pf {
 }
 #scroll-top:hover {
   background-color: rgba(0, 192, 129, 0.9);
-  color: @gray-light;
-  border: 1px solid darken(@green, 10%);
+  color: $gray-light;
+  border: 1px solid darken($green, 10%);
 }
 
 //Nav menu in left column
@@ -373,17 +375,17 @@ nav.navbar-pf {
     }
 
     input {
-      background-color: @aside-background;
-      border-color: @aside-search-border !important;
-      border-style: solid;
+      background-color: $aside-background;
+      border: none !important;
+      border-bottom: 1px solid $aside-search-border !important;
       border-radius: 0 !important;
       border-width: 0 0 1px 0;
       padding-right: 3em;
       height: 3em;
-      color: @aside-search-text-color;
+      color: $aside-search-text-color;
 
       &::placeholder {
-        color: rgba(@aside-search-text-color, 0.75);
+        color: rgba($aside-search-text-color, 0.75);
       }
     }
 
@@ -391,7 +393,7 @@ nav.navbar-pf {
       box-shadow: none;
     }
     .input-right-icon {
-      color: @aside-menu-search-clear;
+      color: $aside-menu-search-clear;
       position: absolute;
       top: 6px;
       right: 2px;
@@ -400,7 +402,7 @@ nav.navbar-pf {
       padding: 0;
     }
     .input-right-icon:hover {
-      color: @aside-menu-search-clear-hover;
+      color: $aside-menu-search-clear-hover;
     }
   }
   //Menu
@@ -427,12 +429,12 @@ nav.navbar-pf {
       }
       // active
       li.active > .leafLink {
-        border-left-color: @aside-menu-active;
+        border-left-color: $aside-menu-active;
       }
       // nodeLink and leafLink
       div.nodeLink,
       div.leafLink {
-        color: @aside-menu-text;
+        color: $aside-menu-text;
         border-left: 5px solid transparent;
         a {
           display: block;
@@ -442,7 +444,7 @@ nav.navbar-pf {
       }
       div.nodeLink:hover,
       div.leafLink:hover {
-        border-left-color: @green;
+        border-left-color: $green;
       }
       // nodeLink only
       div.nodeLink {
@@ -461,7 +463,7 @@ nav.navbar-pf {
           display: inline-block;
         }
         > a:hover {
-          color: @aside-menu-text;
+          color: $aside-menu-text;
         }
       }
     }
@@ -550,7 +552,7 @@ nav.navbar-pf {
       a {
         display: block;
         border: 0px;
-        color: @link-color;
+        color: $link-color;
         padding: 2px 20px;
       }
     }
@@ -606,14 +608,16 @@ nav.navbar-pf {
   }
 }
 .display-number {
-  .input-sm;
+  // TODO: Fix
+  //  @extend .input-sm;
   display: inline-block;
   width: 5.2em;
   border: 1px solid #dddddd;
-  background-color: @eos-bc-gray-100;
+  background-color: $eos-bc-gray-100;
 }
 .view-systems-registered {
-  .input-sm;
+  // TODO: Fix
+  //  @extend .input-sm;
   width: 10em;
   display: inline-block;
   border: 1px solid #dddddd;
@@ -621,12 +625,14 @@ nav.navbar-pf {
 
 /* Icons Legend */
 .sideleg {
-  background: @icon-legend;
-  color: @icon-legend-text;
+  background: $icon-legend;
+  color: $icon-legend-text;
   padding: 0.5em 1em;
   border-radius: 0px 0px 4px 4px;
-  .hidden-sm;
-  .hidden-xs;
+  // TODO: Fix
+  //  @extend .hidden-sm;
+  // TODO: Fix
+  //  @extend .hidden-xs;
   li {
     list-style: none;
     margin: 0.5em 0;
@@ -688,10 +694,11 @@ h1 .fa-stack {
 .spacewalk-toolbar-h1 {
   margin-bottom: 1.5em;
   .spacewalk-toolbar {
-    .pull-right;
+    // TODO: Check
+    @extend .pull-right;
     padding: 0.5em 1em;
     a {
-      border-right: 1px solid @gray-light;
+      border-right: 1px solid $gray-light;
       padding: 0 0.5em;
     }
     a:hover {
@@ -781,16 +788,18 @@ i[class~="fa-right"] {
   }
 
   .spacewalk-list-footer-addons {
-    .make-row(0);
+    @include make-row;
     .spacewalk-list-footer-addons-extra {
-      .pull-left;
-      .text-left;
+      // TODO: Check
+      @extend .pull-left;
+      @extend .text-left;
     }
   }
 }
 
 .spacewalk-csv-download {
-  .pull-right;
+  // TODO: Check
+  @extend .pull-right;
 }
 
 /* btn with margin top and bottom */
@@ -810,11 +819,13 @@ ul.nav.nav-tabs:last-child {
 // Jumbotron
 // --------------------------------------------------
 
+//  TODO: Do we even use this anywhere at all?
+$jumbotron-padding: 30px;
 .jumbotron {
-  padding: @jumbotron-padding;
-  margin-bottom: @jumbotron-padding;
-  font-size: (@font-size-base * 1.3);
-  line-height: (@line-height-base * 1.5);
+  padding: $jumbotron-padding;
+  margin-bottom: $jumbotron-padding;
+  font-size: ($font-size-base * 1.3);
+  line-height: ($line-height-base * 1.5);
   background-color: transparent;
   border: 1px solid #ccc;
 
@@ -825,17 +836,18 @@ ul.nav.nav-tabs:last-child {
     line-height: 1.4;
   }
 
-  @media screen and (min-width: @screen-tablet) {
-    padding-top: (@jumbotron-padding * 1);
-    padding-bottom: (@jumbotron-padding * 1);
+// min-width: $screen-tablet
+  @include media-breakpoint-up(md) {
+    padding-top: ($jumbotron-padding * 1);
+    padding-bottom: ($jumbotron-padding * 1);
 
     .container & {
-      padding-left: (@jumbotron-padding * 2);
-      padding-right: (@jumbotron-padding * 2);
+      padding-left: ($jumbotron-padding * 2);
+      padding-right: ($jumbotron-padding * 2);
     }
 
     h1 {
-      font-size: (@font-size-base * 3.5);
+      font-size: ($font-size-base * 3.5);
     }
   }
 }
@@ -861,7 +873,7 @@ form[name="createSatelliteForm"] .panel {
 select[name="cveIdentifierYear"]#cveIdentifierYear {
   -webkit-appearance: button;
   -webkit-padding-end: 20px;
-  background: url("../../img/dropdown-arrow.jpg") #fff no-repeat right center;
+  background: url("../img/dropdown-arrow.jpg") #fff no-repeat right center;
   cursor: pointer;
   display: inline-block;
   min-width: 80px;
@@ -899,7 +911,7 @@ i.spacewalk-help-link {
       float: none;
       margin: 0;
       clear: none;
-      color: @header-text;
+      color: $header-text;
       vertical-align: top;
       border-radius: 2px;
 
@@ -910,15 +922,15 @@ i.spacewalk-help-link {
       }
       a[role="button"]:hover,
       a[role="button"]:focus {
-        color: @green;
+        color: $green;
       }
       button.is-plain {
         background-color: transparent;
-        color: @header-text;
+        color: $header-text;
       }
       button.is-plain:hover {
         background-color: transparent;
-        color: @green;
+        color: $green;
       }
     }
   }
@@ -937,7 +949,7 @@ i.spacewalk-help-link {
       border: none;
       padding: 6px 12px 1px;
       display: inline-block;
-      color: @link-color;
+      color: $link-color;
       font-size: 1.1em;
       border-width: 0 0 5px 0;
       border-style: solid;
@@ -947,7 +959,7 @@ i.spacewalk-help-link {
     a:hover {
       background: inherit;
       border-width: 0 0 3px 0;
-      border-color: @eos-bc-gray-500;
+      border-color: $eos-bc-gray-500;
       padding-bottom: 3px;
     }
   }
@@ -956,21 +968,24 @@ i.spacewalk-help-link {
     a:hover,
     a:focus {
       border-width: 0 0 5px 0;
-      border-color: @green;
-      color: @gray;
+      border-color: $green;
+      color: $gray;
       background: inherit;
       padding-bottom: 1px;
     }
   }
-  .nav-tabs-indent(1);
-  .nav-tabs-indent(2);
-  .nav-tabs-indent(3);
 
-  .nav-tabs-indent(@i) {
-    &:nth-child(@{i}) {
-      margin-left: (@i - 1) * 30px;
-    }
-  }
+// TODO: Fix
+// See https://stackoverflow.com/a/77366360/1470607
+//  .nav-tabs-indent(1);
+//  .nav-tabs-indent(2);
+//  .nav-tabs-indent(3);
+
+//  .nav-tabs-indent($i) {
+//    &:nth-child(${i}) {
+//      margin-left: ($i - 1) * 30px;
+//    }
+//  }
 }
 
 /* Override rules from theme.less that uses
@@ -1061,7 +1076,7 @@ a time:hover {
   padding: 0 5px;
   margin-top: 15px;
   margin-bottom: 5px;
-  background: @eos-bc-gray-50;
+  background: $eos-bc-gray-50;
   .action-button-wrapper {
     float: right;
     overflow: auto;
@@ -1069,7 +1084,8 @@ a time:hover {
     button,
     input,
     .btn {
-      .spacewalk-section-toolbar-button;
+      // TODO: Check
+      @extend .spacewalk-section-toolbar-button;
     }
   }
   .selector-button-wrapper {
@@ -1078,7 +1094,8 @@ a time:hover {
     button,
     input,
     .btn {
-      .spacewalk-section-toolbar-button;
+      // TODO: Check
+      @extend .spacewalk-section-toolbar-button;
     }
   }
   .spacewalk-list-pagination {
@@ -1114,24 +1131,24 @@ a time:hover {
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: -18px;
-  color: @gray-dark;
+  color: $gray-dark;
 }
 
 // overrides errata icon styles
 .errata-low {
-  color: @gray;
+  color: $gray;
 }
 .errata-moderate {
-  color: @yellow;
+  color: $yellow;
 }
 .errata-important {
-  color: @orange;
+  color: $orange;
 }
 .errata-critical {
-  color: @red;
+  color: $red;
 }
 .errata-retracted {
-  color: @red;
+  color: $red;
 }
 
 /**
@@ -1180,7 +1197,7 @@ i.fa.pointer {
     left: 0;
   }
   .progress-bar {
-    background-color: @green;
+    background-color: $green;
   }
 }
 
@@ -1194,7 +1211,7 @@ i.fa.pointer {
     display: table-row;
     .table-col {
       display: table-cell;
-      border: 1px solid @gray-light;
+      border: 1px solid $gray-light;
       padding: 0.2em;
       vertical-align: middle;
     }
@@ -1208,19 +1225,21 @@ i.fa.pointer {
 }
 
 .recommended-tag-base {
-  .tag-base;
-  background-color: @yellow;
+  // TODO: Check
+  @extend .tag-base;
+  background-color: $yellow;
 }
 
 .mandatory-tag-base {
-  .tag-base;
-  background-color: @red;
+  // TODO: Check
+  @extend .tag-base;
+  background-color: $red;
   color: white;
 }
 
 .line-separator {
   height: 1px;
-  background-color: @gray-light;
+  background-color: $gray-light;
   width: 100%;
   margin: 0.5em auto;
   display: inline-block;
@@ -1228,7 +1247,7 @@ i.fa.pointer {
 
 input:disabled + label {
   cursor: not-allowed;
-  color: @gray;
+  color: $gray;
 }
 
 select.small-select {
@@ -1310,18 +1329,20 @@ select.small-select {
 // Make FullCalendar buttons use our buttons style
 .fc button.fc-button,
 .fc button.fc-button-primary {
-  .btn;
-  .btn-default;
+  // TODO: Check
+  @extend .btn;
+  // TODO: Check
+  @extend .btn-default;
 }
 
 // Highlight FullCalendar month grid cells on hover
 .fc-daygrid-day-frame:hover {
   cursor: pointer;
-  background-color: fadeout(@gray, 70%);
+  background-color: fadeout($gray, 70%);
 }
 
 tr.changed > td {
-  background-color: @table-row-selected!important;
+  background-color: $table-row-selected!important;
 }
 
 // let a button has a div style
@@ -1330,6 +1351,10 @@ tr.changed > td {
   width: 100%;
   border: none;
   text-align: left;
+}
+
+.badge {
+  font-size: 12px;
 }
 
 // We can reenable these after the theme migration is complete
