@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.suse.manager.gatherer.HostJson;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,6 +39,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -115,7 +117,7 @@ public class VirtualHostManagerProcessor {
                 VirtualHostManagerFactory.KUBERNETES);
         if (server == null) {
             VirtualHostManagerNodeInfo nodeInfo = updateAndGetNodeInfo(hostLabel, host);
-            if (!virtualHostManager.getNodes().contains(nodeInfo)) {
+            if (isNewInPersistentSet(virtualHostManager.getNodes(), nodeInfo)) {
                 virtualHostManager.getNodes().add(nodeInfo);
             }
             else {
@@ -125,7 +127,7 @@ public class VirtualHostManagerProcessor {
             // if one doesn't already exist
             return;
         }
-        if (!virtualHostManager.getServers().contains(server)) {
+        if (isNewInPersistentSet(virtualHostManager.getServers(), server)) {
             virtualHostManager.addServer(server);
         }
         else {
@@ -166,6 +168,18 @@ public class VirtualHostManagerProcessor {
     }
 
     /**
+     * For a Hibernate PersistentSet, contains() doesn't always work as expected. So it's better to lookup explicitly
+     * @param persistedElements the PersistentSet
+     * @param itemToCheck the item to check
+     * @return true if the item is not part of the set
+     * @param <T> the type of the elements in the set
+     */
+    private <T> boolean isNewInPersistentSet(Set<T> persistedElements, T itemToCheck) {
+        return persistedElements.stream()
+            .noneMatch(e -> Objects.equals(e, itemToCheck));
+    }
+
+    /**
      * Extracts virtual instance type from string. Falls back to para virtualization if the
      * requested string doesn't match to any existing virtualization type.
 
@@ -195,8 +209,7 @@ public class VirtualHostManagerProcessor {
     private Server updateAndGetServer(String hostId,
                                       HostJson host,
                                       String skipCreateForType) {
-        Server server = ServerFactory.lookupForeignSystemByDigitalServerId(
-                buildServerFullDigitalId(host.getHostIdentifier()));
+        Server server = getServerByHost(host.getHostIdentifier(), host.getFallbackHostIdentifier());
         if (server == null) {
             if (skipCreateForType.equalsIgnoreCase(host.getType())) {
                 return null;
@@ -214,6 +227,32 @@ public class VirtualHostManagerProcessor {
         if (server.getBaseEntitlement() == null) {
             systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         }
+        return server;
+    }
+
+    /**
+     * For VMWare we had to change the value for the host identifier. This method retrieves the server using the new
+     * value and falling back to the old one, if available. If the server is retrieve using the old identifier, the
+     * digital host id is updated to reflect the new identifier.
+     * @param hostIdentifier the host identifier
+     * @param fallback the fallback value, used by VMWare module before the change
+     * @return the server if found, null otherwise.
+     */
+    private Server getServerByHost(String hostIdentifier, String fallback) {
+        // First use the hostIdentifier field
+        String digitalId = buildServerFullDigitalId(hostIdentifier);
+        Server server = ServerFactory.lookupForeignSystemByDigitalServerId(digitalId);
+        if (server != null || StringUtils.isEmpty(fallback)) {
+            return server;
+        }
+
+        // Fallback to the old host identifier field
+        server = ServerFactory.lookupForeignSystemByDigitalServerId(buildServerFullDigitalId(fallback));
+        // Update to the digital id to use the current host identifier
+        if (server != null) {
+            server.setDigitalServerId(digitalId);
+        }
+
         return server;
     }
 
