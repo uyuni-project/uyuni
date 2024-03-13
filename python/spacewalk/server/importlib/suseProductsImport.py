@@ -104,14 +104,14 @@ class SuseUpgradePathsImport(GenericPackageImport):
         pid_trans = {}
         for item in self.batch:
             if item["from_product_id"] not in pid_trans:
-                pid_trans[
-                    item["from_product_id"]
-                ] = self.backend.lookupSuseProductIdByProductId(item["from_product_id"])
+                pid_trans[item["from_product_id"]] = (
+                    self.backend.lookupSuseProductIdByProductId(item["from_product_id"])
+                )
             item["from_pdid"] = pid_trans[item["from_product_id"]]
             if item["to_product_id"] not in pid_trans:
-                pid_trans[
-                    item["to_product_id"]
-                ] = self.backend.lookupSuseProductIdByProductId(item["to_product_id"])
+                pid_trans[item["to_product_id"]] = (
+                    self.backend.lookupSuseProductIdByProductId(item["to_product_id"])
+                )
             item["to_pdid"] = pid_trans[item["to_product_id"]]
             self._data.append(item)
 
@@ -138,14 +138,14 @@ class SuseProductExtensionsImport(GenericPackageImport):
         pid_trans = {}
         for item in self.batch:
             if item["product_id"] not in pid_trans:
-                pid_trans[
-                    item["product_id"]
-                ] = self.backend.lookupSuseProductIdByProductId(item["product_id"])
+                pid_trans[item["product_id"]] = (
+                    self.backend.lookupSuseProductIdByProductId(item["product_id"])
+                )
             item["product_pdid"] = pid_trans[item["product_id"]]
             if item["root_id"] not in pid_trans:
-                pid_trans[
-                    item["root_id"]
-                ] = self.backend.lookupSuseProductIdByProductId(item["root_id"])
+                pid_trans[item["root_id"]] = (
+                    self.backend.lookupSuseProductIdByProductId(item["root_id"])
+                )
             item["root_pdid"] = pid_trans[item["root_id"]]
             if item["ext_id"] not in pid_trans:
                 pid_trans[item["ext_id"]] = self.backend.lookupSuseProductIdByProductId(
@@ -178,9 +178,9 @@ class SuseProductRepositoriesImport(GenericPackageImport):
         rid_trans = {}
         for item in self.batch:
             if item["product_id"] not in pid_trans:
-                pid_trans[
-                    item["product_id"]
-                ] = self.backend.lookupSuseProductIdByProductId(item["product_id"])
+                pid_trans[item["product_id"]] = (
+                    self.backend.lookupSuseProductIdByProductId(item["product_id"])
+                )
             item["product_pdid"] = pid_trans[item["product_id"]]
             if item["rootid"] not in pid_trans:
                 pid_trans[item["rootid"]] = self.backend.lookupSuseProductIdByProductId(
@@ -192,10 +192,10 @@ class SuseProductRepositoriesImport(GenericPackageImport):
                     item["repo_id"]
                 )
             item["repo_pdid"] = rid_trans[item["repo_id"]]
-            if item['parent_channel_label'] == 'None':
-                item['parent_channel_label'] = None
-            if item['update_tag'] == 'None':
-                item['update_tag'] = None
+            if item["parent_channel_label"] == "None":
+                item["parent_channel_label"] = None
+            if item["update_tag"] == "None":
+                item["update_tag"] = None
             self._data.append(item)
 
     def fix(self):
