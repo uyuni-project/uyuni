@@ -269,6 +269,15 @@ namespace :jenkins do
     instances = []
     ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') || k.include?('CLIENT') || k.include?('MONITORING') }.each do |key, _value|
       # Convert ENV variables into testsuite variables
+      # Proxy can be either containerized or traditional
+      if key == 'PROXY'
+        key =
+          if is_containerized_server
+            'PROXY_CONTAINER'
+          else
+            'PROXY_TRADITIONAL'
+          end
+      end
       instance = key.to_s.downcase
       instances << instance.gsub('sshminion', 'ssh_minion')
     end
