@@ -420,7 +420,11 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       sleep checking_rate
     end
   rescue StandardError => e
-    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+    log e.message
+    unless $build_validation
+      # It might be that the MU repository is wrong, but we want to continue in any case
+      raise ScriptError, "This channel was not fully synced: #{channel}"
+    end
   end
 end
 
@@ -453,7 +457,11 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       sleep checking_rate
     end
   rescue StandardError => e
-    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+    log e.message
+    unless $build_validation
+      # It might be that the MU repository is wrong, but we want to continue in any case
+      raise ScriptError, "These channels were not fully synced:\n #{channels_to_wait}"
+    end
   end
 end
 
