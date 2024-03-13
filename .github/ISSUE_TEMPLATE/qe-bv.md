@@ -1,6 +1,6 @@
 ---
-name:  Build Validation
-about: Use this template for a new build validation
+name: QE - Build Validation
+about: QE - Use this template for a new build validation
 title: "BV "
 labels: ["qe-squad", "build validation", "high-priority"]
 projects: ["SUSE/32"]

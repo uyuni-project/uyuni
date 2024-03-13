@@ -1,5 +1,5 @@
 ---
-name:  RRTG
+name: QE - RRTG
 about: Use this template for the RRTG role
 title: "RRTG Week "
 labels: ["qe-squad", "testsuite review", "testsuite"]
