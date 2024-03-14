@@ -321,7 +321,7 @@ public class SCCCachingFactory extends HibernateFactory {
         return getSession()
                 .createNamedQuery("BaseCredentials.getLastSCCRefreshDate", Date.class)
                 .uniqueResultOptional()
-                .map(lastModified -> {
+                .map(credsLastModified -> {
                     // When was the cache last modified?
                     return Opt.fold(
                             lastRefreshDateIn,
@@ -330,9 +330,9 @@ public class SCCCachingFactory extends HibernateFactory {
                                 return true;
                             },
                             modifiedCache -> {
-                                log.debug("COMPARE: {} and {} : {}", modifiedCache, lastModified,
-                                        lastModified.compareTo(modifiedCache));
-                                return lastModified.compareTo(modifiedCache) > 0;
+                                log.debug("COMPARE: {} and {} : {}", modifiedCache, credsLastModified,
+                                        credsLastModified.compareTo(modifiedCache));
+                                return credsLastModified.compareTo(modifiedCache) > 0;
                             }
                     );
                 })
