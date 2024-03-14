@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -75,24 +76,32 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
      * Test refreshNeeded().
      */
     @Test
-    public void testRefreshNeeded() {
+    public void testRefreshNeeded() throws InterruptedException {
         for (SCCCredentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }
         SCCCredentials creds = CredentialsFactory.createSCCCredentials(TestUtils.randomString(),
             TestUtils.randomString());
+
         creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().save(creds);
 
+        HibernateFactory.getSession().flush();
+
+        TimeUnit.SECONDS.sleep(1);
         ManagerInfoFactory.setLastMgrSyncRefresh();
         Optional<Date> lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
 
         // Repos are newer than credentials -> no refresh
         assertFalse(SCCCachingFactory.refreshNeeded(lastRefreshDate));
 
+        TimeUnit.SECONDS.sleep(1);
+
         // Newer credentials -> refresh
         creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().save(creds);
+
+        HibernateFactory.getSession().flush();
         assertTrue(SCCCachingFactory.refreshNeeded(lastRefreshDate));
     }
 
