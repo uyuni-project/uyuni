@@ -11383,11 +11383,11 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-        <target state="new"/>
+        <target state="translated">Jeden alebo viac vybraných systémov nemá v aktuálnom čase pridelené okno údržby. Obmedzte výber na systémy, ktoré sú v režime údržby.</target>
       </trans-unit>
       <trans-unit id="internal_state.update-salt" xml:space="preserve">
         <source>Perform a standalone Salt update</source>
-        <target state="new"/>
+        <target state="translated">Vykonanie samostatnej aktualizácie Salt</target>
       </trans-unit>
     </body>
   </file>
