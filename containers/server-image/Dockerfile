@@ -51,7 +51,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     spacecmd \
     javamail \
     libyui-ncurses-pkg16 \
-    virtual-host-gatherer-Kubernetes \
     virtual-host-gatherer-libcloud \
     virtual-host-gatherer-Libvirt \
     virtual-host-gatherer-Nutanix \
