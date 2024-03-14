@@ -45,6 +45,7 @@ header {
   display: flex;
   flex: 1 1 auto;
   overflow: hidden;
+  max-width: 100vw;
 
   aside {
     overflow: auto !important;
@@ -133,8 +134,9 @@ section {
   margin-left: 0;
   aside {
     .make-xs-column(2);
-    min-width: max(300px, 17%);
-    max-width: min(400px, 17%);
+    width: 17%;
+    min-width: 300px;
+    max-width: 400px;
     background: @aside-background;
     border-right: none;
     /* erasing the predefined paddings in the columns */
