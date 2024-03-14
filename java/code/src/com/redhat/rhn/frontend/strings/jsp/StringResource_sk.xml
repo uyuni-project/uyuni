@@ -2692,7 +2692,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actiondetails.jsp.actiontype" xml:space="preserve">
         <source>Action Type</source>
-        <target/>
+        <target>Typ akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
@@ -29644,13 +29644,13 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
+      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
         <source>Do not use strict mode</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
