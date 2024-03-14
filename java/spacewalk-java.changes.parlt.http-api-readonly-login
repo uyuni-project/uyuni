@@ -1,0 +1,1 @@
+- Fix login for read-only users when using http api (bsc#1221111)
