@@ -62,12 +62,6 @@ branches:
         IP: <NET_PREFIX><PXEBOOT>
         hwAddress: "<PXEBOOT_MAC>"
         hwtype: Intel-Genuine
-      client:
-        IP: <NET_PREFIX><CLIENT>
-        hwAddress: "<CLIENT_MAC>"
-      minion:
-        IP: <NET_PREFIX><MINION>
-        hwAddress: "<MINION_MAC>"
 
 hwtypes:
   Intel-Genuine:

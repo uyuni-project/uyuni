@@ -13,6 +13,7 @@
   #         proxy_register_as_minion_with_script.feature
   #         proxy_register_as_minion_with_gui.feature
 - features/core/proxy_register_as_minion_with_script.feature
-- features/core/proxy_branch_network.feature
+- features/core/proxy_traditional_branch_network.feature
+# Retail on top of containerized proxy is untested in 4.3
 
 ## Core features END ###

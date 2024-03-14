@@ -11,7 +11,8 @@
   #         proxy_register_as_minion_with_gui.feature
   #         proxy_register_as_pod.feature
 - features/init_clients/proxy_register_as_minion_with_script.feature
-- features/init_clients/proxy_branch_network.feature
+- features/init_clients/proxy_traditional_branch_network.feature
+# Retail on top of containerized proxy is untested in 4.3
 
 - features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature

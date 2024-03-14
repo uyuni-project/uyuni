@@ -31,8 +31,8 @@ end
 
 # Retrieve and set private and public IPs of a node
 def process_private_and_public_ip(host, node)
-  if (ADDRESSES.key? host) && !$private_net.nil?
-    node.init_private_ip(net_prefix + ADDRESSES[host])
+  if (PRIVATE_ADDRESSES.key? host) && !$private_net.nil?
+    node.init_private_ip(net_prefix + PRIVATE_ADDRESSES[host])
     node.init_private_interface('eth1')
   end
 
