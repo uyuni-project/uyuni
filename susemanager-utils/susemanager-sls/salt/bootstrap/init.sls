@@ -298,12 +298,12 @@ include:
 
 {# Change REBOOT_METHOD to systemd if it is default, otherwise don't change it #}
 
-{%- if not salt['file.file_exists']('/etc/transactional-update.conf') %}
-copy_conf_file_to_etc:
+copy_transactional_conf_file_to_etc:
   file.copy:
     - name: /etc/transactional-update.conf
     - source: /usr/etc/transactional-update.conf
-{%- endif %}
+    - unless:
+      - test -f /etc/transactional-update.conf
 
 transactional_update_set_reboot_method_systemd:
   file.keyvalue:
@@ -314,7 +314,7 @@ transactional_update_set_reboot_method_systemd:
     - uncomment: '# '
     - append_if_not_found: True
     - require:
-      - file: copy_conf_file_to_etc
+      - file: copy_transactional_conf_file_to_etc
     - unless:
       - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
