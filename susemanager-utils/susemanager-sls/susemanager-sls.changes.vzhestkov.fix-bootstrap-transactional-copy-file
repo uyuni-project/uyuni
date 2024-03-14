@@ -1,0 +1,1 @@
+- Fix the case of missing requisites on bootstrap (bsc#1220705)
