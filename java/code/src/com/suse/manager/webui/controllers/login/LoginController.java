@@ -147,13 +147,35 @@ public class LoginController {
     }
 
     /**
-     * Perform the login.
+     * Perform the webUI login.
      *
      * @param request the request object
      * @param response the response object
      * @return the JSON result of the login operation
      */
     public static String login(Request request, Response response) {
+        return performLogin(request, response, false);
+    }
+
+    /**
+     * Perform the http api login.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the JSON result of the login operation
+     */
+    public static String apiLogin(Request request, Response response) {
+        return performLogin(request, response, true);
+    }
+
+    /**
+     * Perform the login.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the JSON result of the login operation
+     */
+    private static String performLogin(Request request, Response response, boolean allowReadOnly) {
         Optional<String> errorMsg = Optional.empty();
         LoginCredentials creds = GSON.fromJson(request.body(), LoginCredentials.class);
         User user = LoginHelper.checkExternalAuthentication(request.raw(), new ArrayList<>(), new ArrayList<>());
@@ -165,7 +187,12 @@ public class LoginController {
             }
             else {
                 try {
-                    user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
+                    if (allowReadOnly) {
+                        user = UserManager.loginReadOnlyUser(creds.getLogin(), creds.getPassword());
+                    }
+                    else {
+                        user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
+                    }
                     log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
                 }
                 catch (LoginException e) {
