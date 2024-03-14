@@ -192,6 +192,9 @@ salt-minion-package:
     - require:
       - file: bootstrap_repo
 
+{%- if not use_venv_salt %}
+{# transactional_update executor module is required for classic salt-minion only #}
+{# venv-salt-minion has its own venv executor module which invokes transactional_update if needed #}
 {{ salt_config_dir }}/minion.d/transactional_update.conf:
   file.managed:
     - source:
@@ -201,6 +204,7 @@ salt-minion-package:
     - makedirs: True
     - require:
       - file: {{ salt_config_dir }}/minion.d/susemanager.conf
+{%- endif %}
 {%- endif %}
 
 {# We must install "python3-contextvars" on DEB based distros, running Salt 3004, with Python version < 3.7, like Ubuntu 18.04 #}
