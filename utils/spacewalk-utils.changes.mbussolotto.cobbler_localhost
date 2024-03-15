@@ -1,0 +1,1 @@
+- spacewalk-hostname-rename should always set cobbler.host to localhost (bsc#1219887)

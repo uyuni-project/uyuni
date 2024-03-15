@@ -662,6 +662,14 @@ public class ConfigDefaults {
     }
 
     /**
+     * Get just the java hostname
+     * @return the java hostname
+     */
+    public String getJavaHostname() {
+        return Config.get().getString("java.hostname", "localhost");
+    }
+
+    /**
      * get the text to print at the top of a kickstart template
      * @return the header
      */

@@ -99,14 +99,6 @@ msgstr "Chyba čtení informací o systému:"
 msgid "Error reading machine info:"
 msgstr "Chyba čtení informací o počítači:"
 
-#: ../src/up2date_client/messageWindow.py:106
-msgid "Error:"
-msgstr "Chyba:"
-
-#: ../src/up2date_client/messageWindow.py:113
-msgid "Yes/No dialog:"
-msgstr "Dialog Ano/Ne:"
-
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
 msgstr "Nepodařilo se nalézt ID systému"
@@ -223,175 +215,24 @@ msgstr "Výstraha: nelze povolit rhnsd pomocí systemd"
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Varování: nemohu povolit rhnsd pomocí chkconfig"
 
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "Upozornění"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
 msgstr "Výstraha"
 
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "Chyba při aplikaci Vaší volby."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "Uvedly jste neplatný protokol. Jsou povolené pouze https nebo http."
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"Nebudete moci úspěšně registrovat tento systém bez kontaktování serveru "
-"Spacewalk."
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "Vybraný server nelze kontaktovat"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "Nemůžeme kontaktovat {PRODUCT_NAME} nebo Proxy na '{HOST}'."
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"Znovu zkontrolujte umístění - je '%s' správné? Ne-li, můžete je opravit a "
-"zkusit to znovu."
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "Ujistěte se, že vaše síťové připojení je funkční."
-
-#: ../src/up2date_client/rhnregGui.py:341
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Došlo k chybě komunikace se serverem Spacewalk."
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr "Server je asi v odstávce. Můžete se zkusit připojit později."
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "Váš klient, který právě spouštíte, je nekompatibilní se serverem."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr "Zadejte údaje o svém účtu pro server Spacewalk <b>%s</b>:"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "Musíte zadat váš login."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "Musíte zadat heslo."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "V průběhu přihlašování nastal problém."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "Při komunikaci s registračním serverem došlo k chybě. Zpráva byla:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "Při sbírání informací pro profil nastala chyba."
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "Chyba při spouštění profilu hardware"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "Při plnění vašeho profilu nastala chyba."
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "Musíte zvolit název tohoto profilu."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "Nastala chyba při vytváření profilu."
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr "Registruji systém a odesílám informace vašeho profilu. Čekejte prosím."
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "Registrace systému"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
 msgid "Problem registering system:\n"
 msgstr "Problém při registrování systému:\n"
 
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"Zadané instalační číslo [ %s ] není platným instalačním číslem. Prosím "
-"vraťte se na předchozí obrazovku a opravte to."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+#: ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
 msgstr "Problém při registrování systému."
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+#: ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
 msgstr "Problém při zapisování ID systému na disk."
 
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "Došlo k problému při registrování systému."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "Odesílání informací o hardware"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "Problém při odesílání informací o hardware."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "Odesílání informací o balíčcích"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "Problém při odesílání seznamu balíčků."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#: ../src/up2date_client/tui.py:1058
 #, python-format
 msgid ""
 "Could not open %s\n"
@@ -400,94 +241,10 @@ msgstr ""
 "Nelze otevřít %s\n"
 "%s není povoleno.\n"
 
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "Nastala chyba při instalaci certifikátu."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "Musíte vybrat certifikát."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"Došlo k chybě SSL. Může to být tím, že vybraný soubor nebyl souborem "
-"certifikátu."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "Něco se pokazilo při instalaci nového certifikátu:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "neznámý"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "Chyba při získávání seznamu hardwaru."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#: ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "Nastala chyba při vytváření seznamu balíků."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "Balíček"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Arch"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"Sestavuji seznam balíčků RPM nainstalovaných na vašem systému. Čekejte "
-"prosím."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"Při načítání konfigurace došlo k chybě. Ujistěte se, že máte právo číst\n"
-"soubor /etc/sysconfig/rhn."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"Při ukládání vaší konfigurace došlo k chybě. Ujistěte se, že\n"
-"vlastníte %s."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"Tato chyba neměla nastat. Chcete-li nám pomoci vylepšit tento program, "
-"ohlaste prosím chybu na adrese bugzilla.suse.com. Velmi užitečné by bylo "
-"připojit příslušné částí '%s'. Díky!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -583,7 +340,7 @@ msgstr ""
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
 msgstr "Proč bych se měl k {PRODUCT_NAME} připojit? ..."
 
-#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57
 msgid "Why Register"
 msgstr "Proč se registrovat"
 
@@ -727,8 +484,7 @@ msgid "Please enter and verify a password."
 msgstr "Prosím zadejte a potvrďte heslo."
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
-#: ../data/rh_register.glade.h:142
+#: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System Release Version"
 msgstr "Verze vydání operačního systému"
 
@@ -745,7 +501,6 @@ msgid "Limited Updates Only"
 msgstr "Jen omezené aktualizace"
 
 #: ../src/up2date_client/rhnreg_constants.py:102
-#: ../data/rh_register.glade.h:151
 msgid "All available updates"
 msgstr "Všechny dostupné aktualizace"
 
@@ -822,17 +577,14 @@ msgid "*Email Address:"
 msgstr "*Emailová adresa:"
 
 #: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
 msgstr "Systém je již registrován"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
-#: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
 msgstr "Tento systém zřejmě již byl nastaven na aktualizace softwaru:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
-#: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
 msgstr "Jste si jisti, že chcete pokračovat?"
 
@@ -913,11 +665,11 @@ msgstr ""
 "{PRODUCT_NAME}.)"
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Review Subscription"
 msgstr "Popis"
 
-#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169
 msgid "Please review the subscription details below:"
 msgstr "Zkontrolujte prosím podrobnosti o odběru níže:"
 
@@ -1270,12 +1022,10 @@ msgid "Cancel"
 msgstr "Zrušit"
 
 #: ../src/up2date_client/rhnreg_constants.py:310
-#: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
 msgstr "Ne, zrušit"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
-#: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
 msgstr "Ano, pokračovat"
 
@@ -1477,33 +1227,9 @@ msgstr ""
 "vyhnout nutnosti\n"
 "    žádat o koupi oprávnění Management."
 
-#: ../src/bin/rhn-profile-sync.py:37
-msgid ""
-"You need to register this system by running `rhn_register` before using this "
-"option"
-msgstr ""
-"Před použitím této volby musíte svůj systém zaregistrovat spuštěním `up2date "
-"--register`"
-
-#: ../src/bin/rhn-profile-sync.py:45
-msgid "Updating package profile..."
-msgstr "Aktualizuji seznam balíčků v profilu..."
-
-#: ../src/bin/rhn-profile-sync.py:48
-msgid "Updating hardware profile..."
-msgstr "Aktualizuji profil hardware..."
-
-#: ../src/bin/rhn-profile-sync.py:52
-msgid "Updating virtualization profile..."
-msgstr "Aktualizuji seznam balíčků v profilu..."
-
 #: ../src/bin/rhn_check.py:423
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "Pokus o spuštění více než jedné instance mgr_check. Ukončení.\n"
-
-#: ../src/bin/rhn_register.py:38
-msgid "Do not attempt to use X"
-msgstr "Nezkoušejte použít X"
 
 #: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
@@ -1615,886 +1341,926 @@ msgstr ""
 "Název profilu nebyl zadán a jméno počítače a IP adresa nemohly být použity "
 "jako název profilu, zadejte jej prosím."
 
-#: ../src/bin/spacewalk-channel.py:98
-msgid "name of channel you want to (un)subscribe"
-msgstr "jméno kanálu, který chcete (od|při)hlásit"
+#~ msgid "Error:"
+#~ msgstr "Chyba:"
 
-#: ../src/bin/spacewalk-channel.py:100
-msgid "subscribe to channel"
-msgstr "přihlásit do kanálu"
+#~ msgid "Yes/No dialog:"
+#~ msgstr "Dialog Ano/Ne:"
 
-#: ../src/bin/spacewalk-channel.py:102
-msgid "unsubscribe from channel"
-msgstr "odhlásit se z kanálu"
+#~ msgid "Notice"
+#~ msgstr "Upozornění"
 
-#: ../src/bin/spacewalk-channel.py:104
-msgid "list channels"
-msgstr "seznam kanálů"
+#~ msgid "There was an error while applying your choice."
+#~ msgstr "Chyba při aplikaci Vaší volby."
 
-#: ../src/bin/spacewalk-channel.py:106
-msgid "show base channel of a system"
-msgstr "zobrazit základní kanál systému"
+#~ msgid "You specified an invalid protocol. Only https and http are allowed."
+#~ msgstr "Uvedly jste neplatný protokol. Jsou povolené pouze https nebo http."
 
-#: ../src/bin/spacewalk-channel.py:108
-msgid "list all available child channels"
-msgstr "vypsat všechny dostupné \"child\" kanály"
+#~ msgid ""
+#~ "You will not be able to successfully register this system without "
+#~ "contacting a Spacewalk server."
+#~ msgstr ""
+#~ "Nebudete moci úspěšně registrovat tento systém bez kontaktování serveru "
+#~ "Spacewalk."
 
-#: ../src/bin/spacewalk-channel.py:110
-msgid "verbose output"
-msgstr "podrobnější výstup"
+#~ msgid "Cannot contact selected server"
+#~ msgstr "Vybraný server nelze kontaktovat"
 
-#: ../src/bin/spacewalk-channel.py:112
-msgid "your user name"
-msgstr "vaše uživatelské jméno"
+#, python-brace-format
+#~ msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+#~ msgstr "Nemůžeme kontaktovat {PRODUCT_NAME} nebo Proxy na '{HOST}'."
 
-#: ../src/bin/spacewalk-channel.py:114
-msgid "your password"
-msgstr "vaše heslo"
-
-#: ../src/bin/spacewalk-channel.py:121
-msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr ""
-"CHYBA: tyto parametry nedávají žádný smysl v tomto kontextu (zkuste --help)"
-
-#: ../src/bin/spacewalk-channel.py:163
-msgid "ERROR: you have to specify at least one channel"
-msgstr "CHYBA: musíte uvést aspoň jeden kanál"
-
-#: ../src/bin/spacewalk-channel.py:169
-msgid "ERROR: this action does not require channel"
-msgstr "CHYBA: tato akce nevyžaduje kanál"
-
-#: ../src/bin/spacewalk-channel.py:176
 #, python-format
-msgid "Channel(s): %s successfully added"
-msgstr "Kanály: %s úspěšně přidány"
+#~ msgid ""
+#~ "Double-check the location - is '%s' correct? If not, you can correct it "
+#~ "and try again."
+#~ msgstr ""
+#~ "Znovu zkontrolujte umístění - je '%s' správné? Ne-li, můžete je opravit a "
+#~ "zkusit to znovu."
 
-#: ../src/bin/spacewalk-channel.py:178
+#~ msgid "Make sure the network connection on this system is operational."
+#~ msgstr "Ujistěte se, že vaše síťové připojení je funkční."
+
+#~ msgid "There was an error communicating with Spacewalk server."
+#~ msgstr "Došlo k chybě komunikace se serverem Spacewalk."
+
+#~ msgid ""
+#~ "The server may be in outage mode. You may have to try connecting later."
+#~ msgstr "Server je asi v odstávce. Můžete se zkusit připojit později."
+
+#~ msgid "You may be running a client that is incompatible with the server."
+#~ msgstr "Váš klient, který právě spouštíte, je nekompatibilní se serverem."
+
 #, python-format
-msgid "Error during adding channel(s) %s"
-msgstr "Chyba při přidávání kanálů %s"
+#~ msgid ""
+#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgstr "Zadejte údaje o svém účtu pro server Spacewalk <b>%s</b>:"
 
-#: ../src/bin/spacewalk-channel.py:185
+#~ msgid "You must enter a login."
+#~ msgstr "Musíte zadat váš login."
+
+#~ msgid "You must enter a password."
+#~ msgstr "Musíte zadat heslo."
+
+#~ msgid "There was an error while logging in."
+#~ msgstr "V průběhu přihlašování nastal problém."
+
+#~ msgid ""
+#~ "There was an error communicating with the registration server.  The "
+#~ "message was:\n"
+#~ msgstr ""
+#~ "Při komunikaci s registračním serverem došlo k chybě. Zpráva byla:\n"
+
+#~ msgid "There was an error while assembling information for the profile."
+#~ msgstr "Při sbírání informací pro profil nastala chyba."
+
+#~ msgid "Error running hardware profile"
+#~ msgstr "Chyba při spouštění profilu hardware"
+
+#~ msgid "There was an error while populating the profile."
+#~ msgstr "Při plnění vašeho profilu nastala chyba."
+
+#~ msgid "You must choose a name for this profile."
+#~ msgstr "Musíte zvolit název tohoto profilu."
+
+#~ msgid "There was an error while creating the profile."
+#~ msgstr "Nastala chyba při vytváření profilu."
+
+#~ msgid "Registering system and sending profile information.  Please wait."
+#~ msgstr ""
+#~ "Registruji systém a odesílám informace vašeho profilu. Čekejte prosím."
+
+#~ msgid "Registering System"
+#~ msgstr "Registrace systému"
+
 #, python-format
-msgid "Channel(s): %s successfully removed"
-msgstr "Kanál(y): %s - úspěšně odstraněn(y)"
+#~ msgid ""
+#~ "The installation number [ %s ] provided is not a valid installation "
+#~ "number. Please go back to the previous screen and fix it."
+#~ msgstr ""
+#~ "Zadané instalační číslo [ %s ] není platným instalačním číslem. Prosím "
+#~ "vraťte se na předchozí obrazovku a opravte to."
 
-#: ../src/bin/spacewalk-channel.py:187
+#~ msgid "There was a problem registering this system."
+#~ msgstr "Došlo k problému při registrování systému."
+
+#~ msgid "Sending hardware information"
+#~ msgstr "Odesílání informací o hardware"
+
+#~ msgid "Problem sending hardware information."
+#~ msgstr "Problém při odesílání informací o hardware."
+
+#~ msgid "Sending package information"
+#~ msgstr "Odesílání informací o balíčcích"
+
+#~ msgid "Problem sending package information."
+#~ msgstr "Problém při odesílání seznamu balíčků."
+
+#~ msgid "There was an error while installing the certificate."
+#~ msgstr "Nastala chyba při instalaci certifikátu."
+
+#~ msgid "You must select a certificate."
+#~ msgstr "Musíte vybrat certifikát."
+
+#~ msgid ""
+#~ "There was an SSL error. This could be because the file you picked was not "
+#~ "a certificate file."
+#~ msgstr ""
+#~ "Došlo k chybě SSL. Může to být tím, že vybraný soubor nebyl souborem "
+#~ "certifikátu."
+
+#~ msgid "Something went wrong while installing the new certificate:\n"
+#~ msgstr "Něco se pokazilo při instalaci nového certifikátu:\n"
+
+#~ msgid "unknown"
+#~ msgstr "neznámý"
+
+#~ msgid "There was an error getting the list of hardware."
+#~ msgstr "Chyba při získávání seznamu hardwaru."
+
 #, python-format
-msgid "Error during removal of channel(s) %s"
-msgstr "Chyba při odstraňování kanálů %s"
-
-#: ../src/bin/spacewalk-channel.py:194
-msgid "This system is not associated with any channel."
-msgstr "Tento systém není asociován s žádným kanálem."
-
-#: ../src/bin/spacewalk-channel.py:196
-msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr "Nemohu najít soubor se SystemId. Je tento systém zaregistrován?"
-
-#: ../src/bin/spacewalk-channel.py:229
-msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr "CHYBA: asi chcete uvést --add, --remove nebo --list"
-
-#: ../src/bin/spacewalk-channel.py:234
-msgid "ERROR: must be root to execute\n"
-msgstr "CHYBA: Musíte být root, abyste toto mohl spustit.\n"
-
-#: ../src/bin/spacewalk-channel.py:239
-msgid "User interrupted process."
-msgstr "Proces přerušen uživatelem."
-
-#: ../data/gui.glade.h:1
-msgid "System registration"
-msgstr "Registrace systému"
-
-#: ../data/gui.glade.h:2
-msgid "Set Up Software Updates"
-msgstr "Nastavit aktualizace softwaru"
-
-#: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
-msgid "Choose Service"
-msgstr "Zvolte službu"
-
-#: ../data/gui.glade.h:4
-msgid "Provide a security certificate"
-msgstr "Dodejte bezpečnostní certifikát"
-
-#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
-msgid "Red Hat Account"
-msgstr "Přihlášení u Red Hat"
-
-#: ../data/gui.glade.h:7
-msgid "Create Profile"
-msgstr "Vytvoření profilu"
-
-#: ../data/progress.glade.h:1
-msgid "Sending Information"
-msgstr "Odeslat informace o _hardware"
-
-#: ../data/progress.glade.h:2
-msgid "progress bar"
-msgstr "Dialog průběhu"
-
-#: ../data/progress.glade.h:3
-msgid "progress status"
-msgstr "stav"
-
-#: ../data/rh_register.glade.h:1
-msgid ""
-"<b>The network connection on your system is not active. Your system cannot "
-"be set up for software updates at this time.</b>"
-msgstr ""
-"<b>Síťové připojení ve vašem systému není aktivní. Váš systém nelze v tuto "
-"chvíli nastavit na aktualizace softwaru.</b>"
-
-#: ../data/rh_register.glade.h:2
-msgid ""
-"This system will <b>not</b> be able to successfully receive software "
-"updates, including security updates, from Red Hat without connecting to a "
-"Red Hat Satellite or Red Hat Network Classic.\n"
-"\n"
-"To keep your system updated, secure, and supported, please register this "
-"system at your earliest convenience."
-msgstr ""
-"Tento systém <b>nebude</b> moci úspěšně přijímat aktualizace softwaru, "
-"včetně aktualizací zabezpečení, od společnosti Red Hat, aniž se připojí k "
-"Red Hat Satellite nebo Red Hat Network Classic.\n"
-"\n"
-"Chcete-li, aby byl váš systém aktualizován, zabezpečen a podporován, "
-"zaregistrujte tento systém co nejdříve."
-
-#: ../data/rh_register.glade.h:5
-msgid "Why Should I Connect to RHN? ..."
-msgstr "Proč bych se měl k RHN připojit? ..."
-
-#: ../data/rh_register.glade.h:7
-msgid ""
-"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-"Chtěl bych se zaregistrovat u Red Hat Satellite nebo Red Hat Satellite Proxy"
-
-#: ../data/rh_register.glade.h:8
-msgid "Location:"
-msgstr "Umístění:"
-
-#: ../data/rh_register.glade.h:9
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "Příklad: https://satellite.example.com/XMLRPC"
-
-#: ../data/rh_register.glade.h:10
-msgid "satellite server location"
-msgstr "umístnění satellite serveru"
-
-#: ../data/rh_register.glade.h:11
-msgid "_Proxy Setup"
-msgstr "Nastavení _proxy"
-
-#: ../data/rh_register.glade.h:12
-msgid "Proxy Setup Button"
-msgstr "Tlačítko nastavení proxy"
-
-#: ../data/rh_register.glade.h:14
-msgid "Please enter your Red Hat account information:"
-msgstr "Zadejte prosím údaje o svém účtu Red Hat:"
-
-#: ../data/rh_register.glade.h:15
-msgid "RHN login field"
-msgstr "pole RHN login"
-
-#: ../data/rh_register.glade.h:16
-msgid "RHN password field"
-msgstr "RHN - pole pro heslo"
-
-#: ../data/rh_register.glade.h:17
-msgid "_Password:"
-msgstr "_Heslo:"
-
-#: ../data/rh_register.glade.h:18
-msgid "_Login:"
-msgstr "_Login:"
-
-#: ../data/rh_register.glade.h:19
-msgid ""
-"<small>Tip: Forgot your login or password? Contact your Satellite's "
-"<i>Organization Administrator</i>.</small>"
-msgstr ""
-"<small>Tip: Zapomněli jste přihlašovací jméno nebo heslo? Obraťte se na "
-"<i>správce organizace</i> Vaší Satellite.</small>"
-
-#: ../data/rh_register.glade.h:20
-msgid "Hardware Info"
-msgstr "Informace o hardware"
-
-#: ../data/rh_register.glade.h:21
-msgid "Red Hat Linux Version:"
-msgstr "Verze distribuce Red Hat Linux:"
-
-#: ../data/rh_register.glade.h:22
-msgid "Hostname:"
-msgstr "Jméno počítače:"
-
-#: ../data/rh_register.glade.h:23
-msgid "IP Address:"
-msgstr "IP adresa:"
-
-#: ../data/rh_register.glade.h:24
-msgid "ERROR"
-msgstr "CHYBA"
-
-#: ../data/rh_register.glade.h:25
-msgid "CPU Model:"
-msgstr "Model CPU:"
-
-#: ../data/rh_register.glade.h:26
-msgid "CPU Speed:"
-msgstr "Rychlost CPU:"
-
-#: ../data/rh_register.glade.h:27
-msgid "Memory:"
-msgstr "Paměť:"
-
-#: ../data/rh_register.glade.h:28
-msgid "Hardware Profile"
-msgstr "Profil hardware"
-
-#: ../data/rh_register.glade.h:29
-msgid "Package Information"
-msgstr "Informace o balíčku"
-
-#: ../data/rh_register.glade.h:30
-msgid "Start Window"
-msgstr "Startovací okno"
-
-#: ../data/rh_register.glade.h:31
-msgid ""
-"This assistant will guide you through the process of registering your system "
-"with Red Hat to receive software updates and other benefits. You will need "
-"the following to register:"
-msgstr ""
-"Tento průvodce Vás provede procesem registrace Vašeho systému u Red Hat, aby "
-"dostával aktualizace softwaru a další výhody. K registraci budete potřebovat "
-"následující:"
-
-#: ../data/rh_register.glade.h:32
-msgid "• A network connection"
-msgstr "• Síťové připojení"
-
-#: ../data/rh_register.glade.h:33
-msgid "• Your account login"
-msgstr "• Přihlašovací údaje k Vašemu účtu"
-
-#: ../data/rh_register.glade.h:34
-msgid "Your account login"
-msgstr "Přihlašovací údaje k Vašemu účtu"
-
-#: ../data/rh_register.glade.h:35
-msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr "• Adresa Red Hat Satellite nebo Red Hat Satellite Proxy"
-
-#: ../data/rh_register.glade.h:36
-msgid "_Why Should I Register?"
-msgstr "Proč se registrovat?"
-
-#: ../data/rh_register.glade.h:37
-msgid "Why Should I Register?"
-msgstr "Proč se registrovat?"
-
-#: ../data/rh_register.glade.h:38
-msgid ""
-"Would you like to register your system at this time? <b>(Strongly "
-"recommended.)</b>"
-msgstr "Chcete nyní zaregistrovat svůj systém? <b>(Důrazně se doporučuje.)</b>"
-
-#: ../data/rh_register.glade.h:39
-msgid "_Yes, I'd like to register now."
-msgstr "Ano, rád bych se těď registroval."
-
-#: ../data/rh_register.glade.h:40
-msgid "_No, I prefer to register at a later time."
-msgstr "_Ne. Raději se zaregistruji později."
-
-#: ../data/rh_register.glade.h:41
-msgid "Link To Subscription"
-msgstr "Odkaz na předplatné"
-
-#: ../data/rh_register.glade.h:42
-msgid ""
-"Your system will need to access a subscription. This will allow you to keep "
-"your system updated, secure, and supported."
-msgstr ""
-"Váš systém bude muset získat přístup k předplatnému. To vám umožní udržovat "
-"váš systém aktualizovaný, zabezpečený a podporovaný."
-
-#: ../data/rh_register.glade.h:43
-msgid ""
-"<b>You have no active subscriptions available in your account.</b> You will "
-"need to do one of the following to create an active subscription in your "
-"account before this system can be registered:"
-msgstr ""
-"<b>Ve svém účtu nemáte k dispozici žádná aktivní předplatná.</b> Před "
-"registrací tohoto systému budete muset ve svém účtu vytvořit aktivní "
-"předplatné jedním z následujících úkonů:"
-
-#: ../data/rh_register.glade.h:44
-msgid ""
-"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
-"redhat.com/store/."
-msgstr ""
-"Kupte si další předplatné Red Hat Enterprise Linux na adrese http://www."
-"redhat.com/store/."
-
-#: ../data/rh_register.glade.h:45
-msgid ""
-"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-msgstr ""
-"Přihlaste se na adrese http://rhn.redhat.com/ a zrušte oprávnění některého "
-"neaktivního systému ve Vašem RHN > Správa předplatného > Systémová oprávnění."
-
-#: ../data/rh_register.glade.h:46
-msgid ""
-"Activate a previously purchased subscription you have not yet activated."
-msgstr "Aktivujte dříve zakoupené předplatné, které jste dosud neaktivovali."
-
-#: ../data/rh_register.glade.h:47
-msgid "•"
-msgstr "•"
-
-#: ../data/rh_register.glade.h:48
-msgid "installation number field"
-msgstr "instalační číslo"
-
-#: ../data/rh_register.glade.h:49
-msgid "Installation _Number:"
-msgstr "I_nstalační číslo:"
-
-#: ../data/rh_register.glade.h:50
-msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr "<small><b>Příklad</b>: XXXX-XXXX-XXXX-XXXX</small>"
-
-#: ../data/rh_register.glade.h:51
-msgid "_Activate a subscription now..."
-msgstr "_Aktivovat vaše předplatné..."
-
-#: ../data/rh_register.glade.h:52
-msgid "Review system..."
-msgstr "Prohlídka systému..."
-
-#: ../data/rh_register.glade.h:54
-msgid "Create profile"
-msgstr "Vytvořit profil"
-
-#: ../data/rh_register.glade.h:55
-msgid "<big><b>System Name</b></big>"
-msgstr "<big><b>Jméno systému</b></big>"
-
-#: ../data/rh_register.glade.h:56
-msgid ""
-"A recognizable name will help you identify this system in a management "
-"interface."
-msgstr "Popisný název vám pomůže rozpoznat tento systém v rozhraní správy."
-
-#: ../data/rh_register.glade.h:57
-msgid "System _Name:"
-msgstr "ID systému:"
-
-#: ../data/rh_register.glade.h:58
-msgid "system name"
-msgstr "jméno systému"
-
-#: ../data/rh_register.glade.h:59
-msgid "<big><b>Profile Data</b></big>"
-msgstr "<big><b>Data profilu</b></big>"
-
-#: ../data/rh_register.glade.h:60
-msgid ""
-"Send us a profile of your current hardware and packages so we can determine "
-"what updates are available."
-msgstr ""
-"Pošlete nám profil vašeho aktuálního hardwaru a balíčků, abychom mohli "
-"určit, jaké aktualizace jsou k dispozici."
-
-#: ../data/rh_register.glade.h:61
-msgid "_View Hardware Profile ..."
-msgstr "_Zobrazit hardwarový profil ..."
-
-#: ../data/rh_register.glade.h:62
-msgid "View Hardware Profile"
-msgstr "Zobrazit hardwarový profil"
-
-#: ../data/rh_register.glade.h:63
-msgid "V_iew Package Profile ..."
-msgstr "Zobraz_it seznam balíčků ..."
-
-#: ../data/rh_register.glade.h:64
-msgid "View Package Profile"
-msgstr "Zobrazit seznam balíků"
-
-#: ../data/rh_register.glade.h:65
-msgid "Send _hardware profile"
-msgstr "Odeslat _hardwarový profil"
-
-#: ../data/rh_register.glade.h:66
-msgid "Send hardware profile checkbox"
-msgstr "Profil hardware"
-
-#: ../data/rh_register.glade.h:67
-msgid "Send _package profile"
-msgstr "Odeslat seznam _balíků"
-
-#: ../data/rh_register.glade.h:68
-msgid "Send package profile checkbox"
-msgstr "Odeslat _seznam balíčků"
-
-#: ../data/rh_register.glade.h:70
-msgid ""
-"Registering your system with Red Hat allows you to take full advantage of "
-"the benefits of a paid subscription, including:"
-msgstr ""
-"Připojení systému k RHN (Red Hat Network) umožňuje naplno využít výhody "
-"předplaceného přístupu včetně:"
-
-#: ../data/rh_register.glade.h:71
-msgid "_Close"
-msgstr "_Zavřít"
-
-#: ../data/rh_register.glade.h:72
-msgid "Close"
-msgstr "Zavřít"
-
-#: ../data/rh_register.glade.h:73
-msgid "<b>Security &amp; Updates:</b>"
-msgstr "<b>Bezpečnost &amp; Aktualizace:</b>"
-
-#: ../data/rh_register.glade.h:74
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr ""
-"Získejte nejnovější aktualizace softwaru, včetně aktualizací zabezpečení, a "
-"udržujte tento systém Red Hat Enterprise Linux <b>aktualizovaný</b> a "
-"<b>zabezpečený</b>."
-
-#: ../data/rh_register.glade.h:75
-msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr "<b>Downloady &amp; aktualizace:</b>"
-
-#: ../data/rh_register.glade.h:76
-msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
-msgstr ""
-"Stáhněte si instalační obrazy Red Hat Enterprise Linuxu včetně nových verzí."
-
-#: ../data/rh_register.glade.h:77
-msgid "<b>Support:</b>"
-msgstr "<b>Podpora:</b>"
-
-#: ../data/rh_register.glade.h:78
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
-"Přístup k expertům technické pomoci ve firmě Red Hat nebo jejím partnerům, "
-"kteří vám pomohou vyřešit problémy, které mohou v systému nastat."
-
-#: ../data/rh_register.glade.h:79
-msgid "<b>Management:</b>"
-msgstr "<b>Správa:</b>"
-
-#: ../data/rh_register.glade.h:80
-msgid "Management"
-msgstr "Správa"
-
-#: ../data/rh_register.glade.h:81
-msgid ""
-"Manage subscriptions and systems registered to Customer Portal via access."
-"redhat.com or through one of our other subscription management services."
-msgstr ""
-"Spravujte předplatné a systémy registrované na portálu zákazníků pomocí "
-"access.redhat.com nebo jedné z našich dalších služeb správy předplatného."
-
-#: ../data/rh_register.glade.h:82
-msgid ""
-"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html.</small>"
-msgstr ""
-"<small><b>Tip:</b> Red Hat si váží vašeho soukromí: http://www.redhat.com/"
-"legal/privacy_statement.html.</small>"
-
-#: ../data/rh_register.glade.h:83
-msgid "Provide a Security Certificate"
-msgstr "Poskytněte bezpečnostní certifikát"
-
-#: ../data/rh_register.glade.h:85
+#~ msgid "%s MB"
+#~ msgstr "%s MB"
+
+#~ msgid "There was an error building the list of packages."
+#~ msgstr "Nastala chyba při vytváření seznamu balíků."
+
+#~ msgid "Package"
+#~ msgstr "Balíček"
+
+#~ msgid "Arch"
+#~ msgstr "Arch"
+
+#~ msgid ""
+#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr ""
+#~ "Sestavuji seznam balíčků RPM nainstalovaných na vašem systému. Čekejte "
+#~ "prosím."
+
+#~ msgid ""
+#~ "There was an error loading your configuration.  Make sure that\n"
+#~ "you have read access to /etc/sysconfig/rhn."
+#~ msgstr ""
+#~ "Při načítání konfigurace došlo k chybě. Ujistěte se, že máte právo číst\n"
+#~ "soubor /etc/sysconfig/rhn."
+
+#, python-format
+#~ msgid ""
+#~ "There was an error saving your configuration. Make sure that\n"
+#~ "you own %s."
+#~ msgstr ""
+#~ "Při ukládání vaší konfigurace došlo k chybě. Ujistěte se, že\n"
+#~ "vlastníte %s."
+
+#, python-format
+#~ msgid ""
+#~ "This error shouldn't have happened. If you'd like to help us improve this "
+#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
+#~ "parts of '%s' would be very helpful. Thanks!"
+#~ msgstr ""
+#~ "Tato chyba neměla nastat. Chcete-li nám pomoci vylepšit tento program, "
+#~ "ohlaste prosím chybu na adrese bugzilla.suse.com. Velmi užitečné by bylo "
+#~ "připojit příslušné částí '%s'. Díky!"
+
+#~ msgid ""
+#~ "You need to register this system by running `rhn_register` before using "
+#~ "this option"
+#~ msgstr ""
+#~ "Před použitím této volby musíte svůj systém zaregistrovat spuštěním "
+#~ "`up2date --register`"
+
+#~ msgid "Updating package profile..."
+#~ msgstr "Aktualizuji seznam balíčků v profilu..."
+
+#~ msgid "Updating hardware profile..."
+#~ msgstr "Aktualizuji profil hardware..."
+
+#~ msgid "Updating virtualization profile..."
+#~ msgstr "Aktualizuji seznam balíčků v profilu..."
+
+#~ msgid "Do not attempt to use X"
+#~ msgstr "Nezkoušejte použít X"
+
+#~ msgid "name of channel you want to (un)subscribe"
+#~ msgstr "jméno kanálu, který chcete (od|při)hlásit"
+
+#~ msgid "subscribe to channel"
+#~ msgstr "přihlásit do kanálu"
+
+#~ msgid "unsubscribe from channel"
+#~ msgstr "odhlásit se z kanálu"
+
+#~ msgid "list channels"
+#~ msgstr "seznam kanálů"
+
+#~ msgid "show base channel of a system"
+#~ msgstr "zobrazit základní kanál systému"
+
+#~ msgid "list all available child channels"
+#~ msgstr "vypsat všechny dostupné \"child\" kanály"
+
+#~ msgid "verbose output"
+#~ msgstr "podrobnější výstup"
+
+#~ msgid "your user name"
+#~ msgstr "vaše uživatelské jméno"
+
+#~ msgid "your password"
+#~ msgstr "vaše heslo"
+
+#~ msgid "ERROR: these arguments make no sense in this context (try --help)"
+#~ msgstr ""
+#~ "CHYBA: tyto parametry nedávají žádný smysl v tomto kontextu (zkuste --"
+#~ "help)"
+
+#~ msgid "ERROR: you have to specify at least one channel"
+#~ msgstr "CHYBA: musíte uvést aspoň jeden kanál"
+
+#~ msgid "ERROR: this action does not require channel"
+#~ msgstr "CHYBA: tato akce nevyžaduje kanál"
+
+#, python-format
+#~ msgid "Channel(s): %s successfully added"
+#~ msgstr "Kanály: %s úspěšně přidány"
+
+#, python-format
+#~ msgid "Error during adding channel(s) %s"
+#~ msgstr "Chyba při přidávání kanálů %s"
+
+#, python-format
+#~ msgid "Channel(s): %s successfully removed"
+#~ msgstr "Kanál(y): %s - úspěšně odstraněn(y)"
+
+#, python-format
+#~ msgid "Error during removal of channel(s) %s"
+#~ msgstr "Chyba při odstraňování kanálů %s"
+
+#~ msgid "This system is not associated with any channel."
+#~ msgstr "Tento systém není asociován s žádným kanálem."
+
+#~ msgid "Unable to locate SystemId file. Is this system registered?"
+#~ msgstr "Nemohu najít soubor se SystemId. Je tento systém zaregistrován?"
+
+#~ msgid "ERROR: you may want to specify --add, --remove or --list"
+#~ msgstr "CHYBA: asi chcete uvést --add, --remove nebo --list"
+
+#~ msgid "ERROR: must be root to execute\n"
+#~ msgstr "CHYBA: Musíte být root, abyste toto mohl spustit.\n"
+
+#~ msgid "User interrupted process."
+#~ msgstr "Proces přerušen uživatelem."
+
+#~ msgid "System registration"
+#~ msgstr "Registrace systému"
+
+#~ msgid "Set Up Software Updates"
+#~ msgstr "Nastavit aktualizace softwaru"
+
+#~ msgid "Choose Service"
+#~ msgstr "Zvolte službu"
+
+#~ msgid "Provide a security certificate"
+#~ msgstr "Dodejte bezpečnostní certifikát"
+
+#~ msgid "Red Hat Account"
+#~ msgstr "Přihlášení u Red Hat"
+
+#~ msgid "Create Profile"
+#~ msgstr "Vytvoření profilu"
+
+#~ msgid "Sending Information"
+#~ msgstr "Odeslat informace o _hardware"
+
+#~ msgid "progress bar"
+#~ msgstr "Dialog průběhu"
+
+#~ msgid "progress status"
+#~ msgstr "stav"
+
+#~ msgid ""
+#~ "<b>The network connection on your system is not active. Your system "
+#~ "cannot be set up for software updates at this time.</b>"
+#~ msgstr ""
+#~ "<b>Síťové připojení ve vašem systému není aktivní. Váš systém nelze v "
+#~ "tuto chvíli nastavit na aktualizace softwaru.</b>"
+
+#~ msgid ""
+#~ "This system will <b>not</b> be able to successfully receive software "
+#~ "updates, including security updates, from Red Hat without connecting to a "
+#~ "Red Hat Satellite or Red Hat Network Classic.\n"
+#~ "\n"
+#~ "To keep your system updated, secure, and supported, please register this "
+#~ "system at your earliest convenience."
+#~ msgstr ""
+#~ "Tento systém <b>nebude</b> moci úspěšně přijímat aktualizace softwaru, "
+#~ "včetně aktualizací zabezpečení, od společnosti Red Hat, aniž se připojí k "
+#~ "Red Hat Satellite nebo Red Hat Network Classic.\n"
+#~ "\n"
+#~ "Chcete-li, aby byl váš systém aktualizován, zabezpečen a podporován, "
+#~ "zaregistrujte tento systém co nejdříve."
+
+#~ msgid "Why Should I Connect to RHN? ..."
+#~ msgstr "Proč bych se měl k RHN připojit? ..."
+
+#~ msgid ""
+#~ "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
+#~ msgstr ""
+#~ "Chtěl bych se zaregistrovat u Red Hat Satellite nebo Red Hat Satellite "
+#~ "Proxy"
+
+#~ msgid "Location:"
+#~ msgstr "Umístění:"
+
+#~ msgid "Example: https://satellite.example.com/XMLRPC"
+#~ msgstr "Příklad: https://satellite.example.com/XMLRPC"
+
+#~ msgid "satellite server location"
+#~ msgstr "umístnění satellite serveru"
+
+#~ msgid "_Proxy Setup"
+#~ msgstr "Nastavení _proxy"
+
+#~ msgid "Proxy Setup Button"
+#~ msgstr "Tlačítko nastavení proxy"
+
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "Zadejte prosím údaje o svém účtu Red Hat:"
+
+#~ msgid "RHN login field"
+#~ msgstr "pole RHN login"
+
+#~ msgid "RHN password field"
+#~ msgstr "RHN - pole pro heslo"
+
+#~ msgid "_Password:"
+#~ msgstr "_Heslo:"
+
+#~ msgid "_Login:"
+#~ msgstr "_Login:"
+
+#~ msgid ""
+#~ "<small>Tip: Forgot your login or password? Contact your Satellite's "
+#~ "<i>Organization Administrator</i>.</small>"
+#~ msgstr ""
+#~ "<small>Tip: Zapomněli jste přihlašovací jméno nebo heslo? Obraťte se na "
+#~ "<i>správce organizace</i> Vaší Satellite.</small>"
+
+#~ msgid "Hardware Info"
+#~ msgstr "Informace o hardware"
+
+#~ msgid "Red Hat Linux Version:"
+#~ msgstr "Verze distribuce Red Hat Linux:"
+
+#~ msgid "Hostname:"
+#~ msgstr "Jméno počítače:"
+
+#~ msgid "IP Address:"
+#~ msgstr "IP adresa:"
+
+#~ msgid "ERROR"
+#~ msgstr "CHYBA"
+
+#~ msgid "CPU Model:"
+#~ msgstr "Model CPU:"
+
+#~ msgid "CPU Speed:"
+#~ msgstr "Rychlost CPU:"
+
+#~ msgid "Memory:"
+#~ msgstr "Paměť:"
+
+#~ msgid "Hardware Profile"
+#~ msgstr "Profil hardware"
+
+#~ msgid "Package Information"
+#~ msgstr "Informace o balíčku"
+
+#~ msgid "Start Window"
+#~ msgstr "Startovací okno"
+
+#~ msgid ""
+#~ "This assistant will guide you through the process of registering your "
+#~ "system with Red Hat to receive software updates and other benefits. You "
+#~ "will need the following to register:"
+#~ msgstr ""
+#~ "Tento průvodce Vás provede procesem registrace Vašeho systému u Red Hat, "
+#~ "aby dostával aktualizace softwaru a další výhody. K registraci budete "
+#~ "potřebovat následující:"
+
+#~ msgid "• A network connection"
+#~ msgstr "• Síťové připojení"
+
+#~ msgid "• Your account login"
+#~ msgstr "• Přihlašovací údaje k Vašemu účtu"
+
+#~ msgid "Your account login"
+#~ msgstr "Přihlašovací údaje k Vašemu účtu"
+
+#~ msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
+#~ msgstr "• Adresa Red Hat Satellite nebo Red Hat Satellite Proxy"
+
+#~ msgid "_Why Should I Register?"
+#~ msgstr "Proč se registrovat?"
+
+#~ msgid "Why Should I Register?"
+#~ msgstr "Proč se registrovat?"
+
+#~ msgid ""
+#~ "Would you like to register your system at this time? <b>(Strongly "
+#~ "recommended.)</b>"
+#~ msgstr ""
+#~ "Chcete nyní zaregistrovat svůj systém? <b>(Důrazně se doporučuje.)</b>"
+
+#~ msgid "_Yes, I'd like to register now."
+#~ msgstr "Ano, rád bych se těď registroval."
+
+#~ msgid "_No, I prefer to register at a later time."
+#~ msgstr "_Ne. Raději se zaregistruji později."
+
+#~ msgid "Link To Subscription"
+#~ msgstr "Odkaz na předplatné"
+
+#~ msgid ""
+#~ "Your system will need to access a subscription. This will allow you to "
+#~ "keep your system updated, secure, and supported."
+#~ msgstr ""
+#~ "Váš systém bude muset získat přístup k předplatnému. To vám umožní "
+#~ "udržovat váš systém aktualizovaný, zabezpečený a podporovaný."
+
+#~ msgid ""
+#~ "<b>You have no active subscriptions available in your account.</b> You "
+#~ "will need to do one of the following to create an active subscription in "
+#~ "your account before this system can be registered:"
+#~ msgstr ""
+#~ "<b>Ve svém účtu nemáte k dispozici žádná aktivní předplatná.</b> Před "
+#~ "registrací tohoto systému budete muset ve svém účtu vytvořit aktivní "
+#~ "předplatné jedním z následujících úkonů:"
+
+#~ msgid ""
+#~ "Purchase an additional Red Hat Enterprise Linux subscription at http://"
+#~ "www.redhat.com/store/."
+#~ msgstr ""
+#~ "Kupte si další předplatné Red Hat Enterprise Linux na adrese http://www."
+#~ "redhat.com/store/."
+
+#~ msgid ""
+#~ "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
+#~ "RHN > Subscription Management > System Entitlements."
+#~ msgstr ""
+#~ "Přihlaste se na adrese http://rhn.redhat.com/ a zrušte oprávnění "
+#~ "některého neaktivního systému ve Vašem RHN > Správa předplatného > "
+#~ "Systémová oprávnění."
+
+#~ msgid ""
+#~ "Activate a previously purchased subscription you have not yet activated."
+#~ msgstr ""
+#~ "Aktivujte dříve zakoupené předplatné, které jste dosud neaktivovali."
+
+#~ msgid "•"
+#~ msgstr "•"
+
+#~ msgid "installation number field"
+#~ msgstr "instalační číslo"
+
+#~ msgid "Installation _Number:"
+#~ msgstr "I_nstalační číslo:"
+
+#~ msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
+#~ msgstr "<small><b>Příklad</b>: XXXX-XXXX-XXXX-XXXX</small>"
+
+#~ msgid "_Activate a subscription now..."
+#~ msgstr "_Aktivovat vaše předplatné..."
+
+#~ msgid "Review system..."
+#~ msgstr "Prohlídka systému..."
+
+#~ msgid "Create profile"
+#~ msgstr "Vytvořit profil"
+
+#~ msgid "<big><b>System Name</b></big>"
+#~ msgstr "<big><b>Jméno systému</b></big>"
+
+#~ msgid ""
+#~ "A recognizable name will help you identify this system in a management "
+#~ "interface."
+#~ msgstr "Popisný název vám pomůže rozpoznat tento systém v rozhraní správy."
+
+#~ msgid "System _Name:"
+#~ msgstr "ID systému:"
+
+#~ msgid "system name"
+#~ msgstr "jméno systému"
+
+#~ msgid "<big><b>Profile Data</b></big>"
+#~ msgstr "<big><b>Data profilu</b></big>"
+
+#~ msgid ""
+#~ "Send us a profile of your current hardware and packages so we can "
+#~ "determine what updates are available."
+#~ msgstr ""
+#~ "Pošlete nám profil vašeho aktuálního hardwaru a balíčků, abychom mohli "
+#~ "určit, jaké aktualizace jsou k dispozici."
+
+#~ msgid "_View Hardware Profile ..."
+#~ msgstr "_Zobrazit hardwarový profil ..."
+
+#~ msgid "View Hardware Profile"
+#~ msgstr "Zobrazit hardwarový profil"
+
+#~ msgid "V_iew Package Profile ..."
+#~ msgstr "Zobraz_it seznam balíčků ..."
+
+#~ msgid "View Package Profile"
+#~ msgstr "Zobrazit seznam balíků"
+
+#~ msgid "Send _hardware profile"
+#~ msgstr "Odeslat _hardwarový profil"
+
+#~ msgid "Send hardware profile checkbox"
+#~ msgstr "Profil hardware"
+
+#~ msgid "Send _package profile"
+#~ msgstr "Odeslat seznam _balíků"
+
+#~ msgid "Send package profile checkbox"
+#~ msgstr "Odeslat _seznam balíčků"
+
+#~ msgid ""
+#~ "Registering your system with Red Hat allows you to take full advantage of "
+#~ "the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Připojení systému k RHN (Red Hat Network) umožňuje naplno využít výhody "
+#~ "předplaceného přístupu včetně:"
+
+#~ msgid "_Close"
+#~ msgstr "_Zavřít"
+
+#~ msgid "Close"
+#~ msgstr "Zavřít"
+
+#~ msgid "<b>Security &amp; Updates:</b>"
+#~ msgstr "<b>Bezpečnost &amp; Aktualizace:</b>"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
+#~ msgstr ""
+#~ "Získejte nejnovější aktualizace softwaru, včetně aktualizací zabezpečení, "
+#~ "a udržujte tento systém Red Hat Enterprise Linux <b>aktualizovaný</b> a "
+#~ "<b>zabezpečený</b>."
+
+#~ msgid "<b>Downloads &amp; Upgrades:</b>"
+#~ msgstr "<b>Downloady &amp; aktualizace:</b>"
+
+#~ msgid ""
+#~ "Download installation images for Red Hat Enterprise Linux releases, "
+#~ "including new releases."
+#~ msgstr ""
+#~ "Stáhněte si instalační obrazy Red Hat Enterprise Linuxu včetně nových "
+#~ "verzí."
+
+#~ msgid "<b>Support:</b>"
+#~ msgstr "<b>Podpora:</b>"
+
+#~ msgid ""
+#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
+#~ "for help with any issues you might encounter with this system."
+#~ msgstr ""
+#~ "Přístup k expertům technické pomoci ve firmě Red Hat nebo jejím "
+#~ "partnerům, kteří vám pomohou vyřešit problémy, které mohou v systému "
+#~ "nastat."
+
+#~ msgid "<b>Management:</b>"
+#~ msgstr "<b>Správa:</b>"
+
+#~ msgid "Management"
+#~ msgstr "Správa"
+
+#~ msgid ""
+#~ "Manage subscriptions and systems registered to Customer Portal via access."
+#~ "redhat.com or through one of our other subscription management services."
+#~ msgstr ""
+#~ "Spravujte předplatné a systémy registrované na portálu zákazníků pomocí "
+#~ "access.redhat.com nebo jedné z našich dalších služeb správy předplatného."
+
+#~ msgid ""
+#~ "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/"
+#~ "legal/privacy_statement.html.</small>"
+#~ msgstr ""
+#~ "<small><b>Tip:</b> Red Hat si váží vašeho soukromí: http://www.redhat.com/"
+#~ "legal/privacy_statement.html.</small>"
+
+#~ msgid "Provide a Security Certificate"
+#~ msgstr "Poskytněte bezpečnostní certifikát"
+
 #, no-c-format
-msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this "
-"system.\n"
-"\n"
-"A security certificate, using SSL technology, is necessary to ensure that "
-"data communicated between this system and Spacewalk (including your login "
-"and password) is secure."
-msgstr ""
-"V tomto systému nebyl nalezen bezpečnostní certifikát kompatibilní s <b>%s</"
-"b>.\n"
-"\n"
-"Bezpečnostní certifikát používající technologii SSL je nezbytný k zajištění "
-"bezpečnosti dat přenášených mezi tímto systémem a Spacewalk (včetně Vašeho "
-"přihlašovacího jména a hesla)."
+#~ msgid ""
+#~ "A security certificate compatible with <b>%s</b> was not found on this "
+#~ "system.\n"
+#~ "\n"
+#~ "A security certificate, using SSL technology, is necessary to ensure that "
+#~ "data communicated between this system and Spacewalk (including your login "
+#~ "and password) is secure."
+#~ msgstr ""
+#~ "V tomto systému nebyl nalezen bezpečnostní certifikát kompatibilní s "
+#~ "<b>%s</b>.\n"
+#~ "\n"
+#~ "Bezpečnostní certifikát používající technologii SSL je nezbytný k "
+#~ "zajištění bezpečnosti dat přenášených mezi tímto systémem a Spacewalk "
+#~ "(včetně Vašeho přihlašovacího jména a hesla)."
 
-#: ../data/rh_register.glade.h:88
-msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr "Mám <b>_SSL certifikát</b> pro komunikaci se Spacewalk:"
+#~ msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
+#~ msgstr "Mám <b>_SSL certifikát</b> pro komunikaci se Spacewalk:"
 
-#: ../data/rh_register.glade.h:89
-msgid "Certificate _Location:"
-msgstr "Umístění certifikátu:"
+#~ msgid "Certificate _Location:"
+#~ msgstr "Umístění certifikátu:"
 
-#: ../data/rh_register.glade.h:90
-msgid "Select A File"
-msgstr "Vyberte soubor"
+#~ msgid "Select A File"
+#~ msgstr "Vyberte soubor"
 
-#: ../data/rh_register.glade.h:91
-msgid ""
-"I <b>_don't</b> have an SSL certificate. I will contact my system "
-"administrator for assistance and will register at a later time."
-msgstr ""
-"<b>Nemám</b> certifikát SSL. Požádám o pomoc svého správce systému a "
-"zaregistruji se později."
+#~ msgid ""
+#~ "I <b>_don't</b> have an SSL certificate. I will contact my system "
+#~ "administrator for assistance and will register at a later time."
+#~ msgstr ""
+#~ "<b>Nemám</b> certifikát SSL. Požádám o pomoc svého správce systému a "
+#~ "zaregistruji se později."
 
-#: ../data/rh_register.glade.h:92
-msgid "Your system is not setup for software updates."
-msgstr "Váš systém není nastaven pro aktualizaci software."
+#~ msgid "Your system is not setup for software updates."
+#~ msgstr "Váš systém není nastaven pro aktualizaci software."
 
-#: ../data/rh_register.glade.h:93
-msgid ""
-"You won't be able to receive software updates, including security updates, "
-"for this system."
-msgstr ""
-"Přijímejte nejnovější aktualizace programů včetně bezpečnostních oprav, "
-"které budou systém Red Hat Enterprise Linux udržovat bezpečný a aktuální."
+#~ msgid ""
+#~ "You won't be able to receive software updates, including security "
+#~ "updates, for this system."
+#~ msgstr ""
+#~ "Přijímejte nejnovější aktualizace programů včetně bezpečnostních oprav, "
+#~ "které budou systém Red Hat Enterprise Linux udržovat bezpečný a aktuální."
 
-#: ../data/rh_register.glade.h:94
-msgid "Proxy Configuration"
-msgstr "Nastavení proxy"
+#~ msgid "Proxy Configuration"
+#~ msgstr "Nastavení proxy"
 
-#: ../data/rh_register.glade.h:95
-msgid "<b>HTTP Proxy</b>"
-msgstr "<b>HTTP Proxy</b>"
+#~ msgid "<b>HTTP Proxy</b>"
+#~ msgstr "<b>HTTP Proxy</b>"
 
-#: ../data/rh_register.glade.h:96
-msgid "I would like to connect via an _HTTP proxy."
-msgstr "Chtěl bych se připojit přes _HTTP proxy."
+#~ msgid "I would like to connect via an _HTTP proxy."
+#~ msgstr "Chtěl bych se připojit přes _HTTP proxy."
 
-#: ../data/rh_register.glade.h:97
-msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr "Chtěl bych se připojit ke Spacewalk přes _HTTP proxy."
+#~ msgid "I would like to connect to Spacewalk via an _HTTP proxy."
+#~ msgstr "Chtěl bych se připojit ke Spacewalk přes _HTTP proxy."
 
-#: ../data/rh_register.glade.h:98
-msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr "<small><b>Příklad:</b> squid.priklad.cz:3128</small>"
+#~ msgid "<small><b>Example:</b> squid.example.com:3128</small>"
+#~ msgstr "<small><b>Příklad:</b> squid.priklad.cz:3128</small>"
 
-#: ../data/rh_register.glade.h:99
-msgid "_Proxy Location:"
-msgstr "Umístění _proxy:"
+#~ msgid "_Proxy Location:"
+#~ msgstr "Umístění _proxy:"
 
-#: ../data/rh_register.glade.h:100
-msgid "Enter in the format hostname(:port)"
-msgstr "Vložte ve formátu jméno_počítače(:port)"
+#~ msgid "Enter in the format hostname(:port)"
+#~ msgstr "Vložte ve formátu jméno_počítače(:port)"
 
-#: ../data/rh_register.glade.h:101
-msgid "proxy location"
-msgstr "umístnění proxy"
+#~ msgid "proxy location"
+#~ msgstr "umístnění proxy"
 
-#: ../data/rh_register.glade.h:102
-msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "Použijte ověření pomocí HTTP Proxy:"
+#~ msgid "Use Au_thentication with HTTP Proxy:"
+#~ msgstr "Použijte ověření pomocí HTTP Proxy:"
 
-#: ../data/rh_register.glade.h:103
-msgid "Use Authentication with HTTP Proxy"
-msgstr "Použít autentizaci"
+#~ msgid "Use Authentication with HTTP Proxy"
+#~ msgstr "Použít autentizaci"
 
-#: ../data/rh_register.glade.h:104
-msgid "Proxy _Username:"
-msgstr "Uživatelské jméno k Proxy:"
+#~ msgid "Proxy _Username:"
+#~ msgstr "Uživatelské jméno k Proxy:"
 
-#: ../data/rh_register.glade.h:105
-msgid "Proxy P_assword:"
-msgstr "Heslo k Proxy:"
+#~ msgid "Proxy P_assword:"
+#~ msgstr "Heslo k Proxy:"
 
-#: ../data/rh_register.glade.h:106
-msgid "proxy user field"
-msgstr "uživatelské jméno k proxy"
+#~ msgid "proxy user field"
+#~ msgstr "uživatelské jméno k proxy"
 
-#: ../data/rh_register.glade.h:107
-msgid "proxy password field"
-msgstr "heslo k proxy"
+#~ msgid "proxy password field"
+#~ msgstr "heslo k proxy"
 
-#: ../data/rh_register.glade.h:108
-msgid "Confirm operation system release selection"
-msgstr "Potvrďte výběr vydání operačního systému"
+#~ msgid "Confirm operation system release selection"
+#~ msgstr "Potvrďte výběr vydání operačního systému"
 
-#: ../data/rh_register.glade.h:109
-msgid "_No, Cancel"
-msgstr "_Ne, zrušit"
+#~ msgid "_No, Cancel"
+#~ msgstr "_Ne, zrušit"
 
-#: ../data/rh_register.glade.h:111
-msgid "_Yes, Continue"
-msgstr "_Ano, pokračovat"
+#~ msgid "_Yes, Continue"
+#~ msgstr "_Ano, pokračovat"
 
-#: ../data/rh_register.glade.h:113
-msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr "<big> <b>Přechod na předchozí vydání nebude možný</b> </big>"
+#~ msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
+#~ msgstr "<big> <b>Přechod na předchozí vydání nebude možný</b> </big>"
 
-#: ../data/rh_register.glade.h:114
-msgid ""
-"Your system will be subscribed to the base software channel.  You will not "
-"be able to move this system to an earlier minor release channel if you "
-"continue (you will be able to move to a later release.)"
-msgstr ""
-"Váš systém bude přihlášen k odběru základního softwarového kanálu.  Budete-"
-"li pokračovat, nebudete moci tento systém převést na kanál předchozí "
-"modifikace (ale budete moci převést ho na pozdější verzi)."
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel.  You will "
+#~ "not be able to move this system to an earlier minor release channel if "
+#~ "you continue (you will be able to move to a later release.)"
+#~ msgstr ""
+#~ "Váš systém bude přihlášen k odběru základního softwarového kanálu.  "
+#~ "Budete-li pokračovat, nebudete moci tento systém převést na kanál "
+#~ "předchozí modifikace (ale budete moci převést ho na pozdější verzi)."
 
-#: ../data/rh_register.glade.h:115
-msgid ""
-"\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"\n"
-"Opravdu chcete pokračovat?"
+#~ msgid ""
+#~ "\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "\n"
+#~ "Opravdu chcete pokračovat?"
 
-#: ../data/rh_register.glade.h:117
-msgid "Are you Sure?"
-msgstr "Určitě?"
+#~ msgid "Are you Sure?"
+#~ msgstr "Určitě?"
 
-#: ../data/rh_register.glade.h:118
-msgid "_Go Back and Register"
-msgstr "_Vraťte se a zaregistrujte se"
+#~ msgid "_Go Back and Register"
+#~ msgstr "_Vraťte se a zaregistrujte se"
 
-#: ../data/rh_register.glade.h:119
-msgid "Go Back and Register"
-msgstr "Vraťte se a zaregistrujte se"
+#~ msgid "Go Back and Register"
+#~ msgstr "Vraťte se a zaregistrujte se"
 
-#: ../data/rh_register.glade.h:120
-msgid "Register _Later"
-msgstr "Zaregistrovat později"
+#~ msgid "Register _Later"
+#~ msgstr "Zaregistrovat později"
 
-#: ../data/rh_register.glade.h:121
-msgid "Register Later"
-msgstr "Zaregistrovat později"
+#~ msgid "Register Later"
+#~ msgstr "Zaregistrovat později"
 
-#: ../data/rh_register.glade.h:122
-msgid ""
-"Are you sure you don't want to register your system with Red Hat? You'll "
-"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr ""
-"Připojení systému k RHN (Red Hat Network) umožňuje naplno využít výhody "
-"předplaceného přístupu včetně:"
+#~ msgid ""
+#~ "Are you sure you don't want to register your system with Red Hat? You'll "
+#~ "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
+#~ msgstr ""
+#~ "Připojení systému k RHN (Red Hat Network) umožňuje naplno využít výhody "
+#~ "předplaceného přístupu včetně:"
 
-#: ../data/rh_register.glade.h:123
-msgid "Management:"
-msgstr "Správa:"
+#~ msgid "Management:"
+#~ msgstr "Správa:"
 
-#: ../data/rh_register.glade.h:124
-msgid ""
-"You will not be able to take advantage of these benefits without registering."
-msgstr "Bez registrace nebudete moci využívat těchto výhod."
+#~ msgid ""
+#~ "You will not be able to take advantage of these benefits without "
+#~ "registering."
+#~ msgstr "Bez registrace nebudete moci využívat těchto výhod."
 
-#: ../data/rh_register.glade.h:127
-msgid "<b>Spacewalk Location:</b>"
-msgstr "<b>Umísténí Spacewalk:</b>"
+#~ msgid "<b>Spacewalk Location:</b>"
+#~ msgstr "<b>Umísténí Spacewalk:</b>"
 
-#: ../data/rh_register.glade.h:128
-msgid "<b>Login:</b>"
-msgstr "<b>Login:</b>"
+#~ msgid "<b>Login:</b>"
+#~ msgstr "<b>Login:</b>"
 
-#: ../data/rh_register.glade.h:129
-msgid "<b>System ID:</b>"
-msgstr "<b>ID systému:</b>"
+#~ msgid "<b>System ID:</b>"
+#~ msgstr "<b>ID systému:</b>"
 
-#: ../data/rh_register.glade.h:130
-msgid "label"
-msgstr "jmenovka"
+#~ msgid "label"
+#~ msgstr "jmenovka"
 
-#: ../data/rh_register.glade.h:132
-msgid "<b>Warning</b>"
-msgstr "<b>Varování</b>"
+#~ msgid "<b>Warning</b>"
+#~ msgstr "<b>Varování</b>"
 
-#: ../data/rh_register.glade.h:133
-msgid ""
-"This system has already been registered with RHN using RHN certificate-based "
-"technology."
-msgstr ""
-"Tento systém byl již zaregistrován u RHN technologií založenou na "
-"certifikátu RHN."
+#~ msgid ""
+#~ "This system has already been registered with RHN using RHN certificate-"
+#~ "based technology."
+#~ msgstr ""
+#~ "Tento systém byl již zaregistrován u RHN technologií založenou na "
+#~ "certifikátu RHN."
 
-#: ../data/rh_register.glade.h:134
-msgid ""
-"Your system is being registered again using RHN Classic technology. Red Hat "
-"recommends that customers only register once."
-msgstr ""
-"Váš systém je znovu registrován technologií RHN Classic. Red Hat až na "
-"výjimky doporučuje, aby se zákazníci registrovali pouze na jedné platformě "
-"oprávnění (Entitlement Platform)."
+#~ msgid ""
+#~ "Your system is being registered again using RHN Classic technology. Red "
+#~ "Hat recommends that customers only register once."
+#~ msgstr ""
+#~ "Váš systém je znovu registrován technologií RHN Classic. Red Hat až na "
+#~ "výjimky doporučuje, aby se zákazníci registrovali pouze na jedné "
+#~ "platformě oprávnění (Entitlement Platform)."
 
-#: ../data/rh_register.glade.h:135
-msgid ""
-"To learn more about RHN registration and technologies please consult this "
-"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
-msgstr ""
-"Další informace o registraci a technologiích RHN najdete v tomto článku "
-"znalostní báze: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+#~ msgid ""
+#~ "To learn more about RHN registration and technologies please consult this "
+#~ "Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+#~ msgstr ""
+#~ "Další informace o registraci a technologiích RHN najdete v tomto článku "
+#~ "znalostní báze: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
 
-#: ../data/rh_register.glade.h:137
-msgid "Software update setup has been completed for this system."
-msgstr "Pro tento systém bylo dokončeno nastavení aktualizace softwaru."
+#~ msgid "Software update setup has been completed for this system."
+#~ msgstr "Pro tento systém bylo dokončeno nastavení aktualizace softwaru."
 
-#: ../data/rh_register.glade.h:138
-msgid ""
-"Your system is now ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"Váš systém je nyní připraven přijímat aktualizace softwaru, které zajistí "
-"jeho bezpečí a podporu.\n"
-"\n"
-"Až se objeví ikona balíčku v oznamovací oblasti na ploše (obvykle v pravém "
-"horním rohu, na snímku v kroužku), budete vědět, kdy jsou k dispozici "
-"aktualizace softwaru. Kliknutí na tuto ikonu vás provede všemi dostupnými "
-"aktualizacemi:"
+#~ msgid ""
+#~ "Your system is now ready to receive the software updates that will keep "
+#~ "it secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "Váš systém je nyní připraven přijímat aktualizace softwaru, které zajistí "
+#~ "jeho bezpečí a podporu.\n"
+#~ "\n"
+#~ "Až se objeví ikona balíčku v oznamovací oblasti na ploše (obvykle v "
+#~ "pravém horním rohu, na snímku v kroužku), budete vědět, kdy jsou k "
+#~ "dispozici aktualizace softwaru. Kliknutí na tuto ikonu vás provede všemi "
+#~ "dostupnými aktualizacemi:"
 
-#: ../data/rh_register.glade.h:141
-msgid "Aplet screenshot"
-msgstr "Snímek obrazovky apletu"
+#~ msgid "Aplet screenshot"
+#~ msgstr "Snímek obrazovky apletu"
 
-#: ../data/rh_register.glade.h:143
-msgid "Select how your system will receive updates:"
-msgstr "Vyberte způsob příjmu aktualizací Vaším systémem:"
+#~ msgid "Select how your system will receive updates:"
+#~ msgstr "Vyberte způsob příjmu aktualizací Vaším systémem:"
 
-#: ../data/rh_register.glade.h:144
-msgid "Limited updates"
-msgstr "Omezené aktualizace"
+#~ msgid "Limited updates"
+#~ msgstr "Omezené aktualizace"
 
-#: ../data/rh_register.glade.h:145
-msgid ""
-"<b>_Limited updates</b> will be provided to this system, maintaining "
-"compatibility with the selected minor release software channel:"
-msgstr ""
-"Tomuto systému budou poskytnuty <b>_limitované aktualizace</b>, přičemž je "
-"zachována kompatibilita s vybraným kanálem verze.modifikace vydání softwaru:"
+#~ msgid ""
+#~ "<b>_Limited updates</b> will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "Tomuto systému budou poskytnuty <b>_limitované aktualizace</b>, přičemž "
+#~ "je zachována kompatibilita s vybraným kanálem verze.modifikace vydání "
+#~ "softwaru:"
 
-#: ../data/rh_register.glade.h:146
-msgid ""
-"Limited updates will be provided to this system, maintaining compatibility "
-"with the selected minor release software channel:"
-msgstr ""
-"Tento systém bude poskytovat omezené aktualizace, přičemž bude zachována "
-"kompatibilita s vybraným softwarovým kanálem pro modifikaci verze vydání:"
+#~ msgid ""
+#~ "Limited updates will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "Tento systém bude poskytovat omezené aktualizace, přičemž bude zachována "
+#~ "kompatibilita s vybraným softwarovým kanálem pro modifikaci verze vydání:"
 
-#: ../data/rh_register.glade.h:147
-msgid "_Minor release:"
-msgstr "_Modifikace verze vydání:"
+#~ msgid "_Minor release:"
+#~ msgstr "_Modifikace verze vydání:"
 
-#: ../data/rh_register.glade.h:148
-msgid "Choose minor release"
-msgstr "Zvolte modifikaci verze vydání"
+#~ msgid "Choose minor release"
+#~ msgstr "Zvolte modifikaci verze vydání"
 
-#: ../data/rh_register.glade.h:149
-msgid "       "
-msgstr "       "
+#~ msgid "       "
+#~ msgstr "       "
 
-#: ../data/rh_register.glade.h:150
-msgid ""
-"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
-"Hat."
-msgstr ""
-"<b>Tip:</b> Red Hat v současnosti plně podporuje zápis modifikace verze "
-"vydání s '*'."
+#~ msgid ""
+#~ "<b>Tip:</b> Minor releases with a '*' are currently fully supported by "
+#~ "Red Hat."
+#~ msgstr ""
+#~ "<b>Tip:</b> Red Hat v současnosti plně podporuje zápis modifikace verze "
+#~ "vydání s '*'."
 
-#: ../data/rh_register.glade.h:152
-msgid ""
-"<b>_All available updates</b> will be provided to this system. If kept "
-"updated, this system will always be equivalent to the latest minor release "
-"in the main 'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"Tomuto systému budou poskytnuty <b>_všechny dostupné aktualizace</b>. Když "
-"bude systém aktualizován, bude vždy udržován na nejnovější modifikaci verze "
-"vydání na hlavním softwarovém kanálu „Red Hat Enterprise Linux x“."
+#~ msgid ""
+#~ "<b>_All available updates</b> will be provided to this system. If kept "
+#~ "updated, this system will always be equivalent to the latest minor "
+#~ "release in the main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "Tomuto systému budou poskytnuty <b>_všechny dostupné aktualizace</b>. "
+#~ "Když bude systém aktualizován, bude vždy udržován na nejnovější "
+#~ "modifikaci verze vydání na hlavním softwarovém kanálu „Red Hat Enterprise "
+#~ "Linux x“."
 
-#: ../data/rh_register.glade.h:153
-msgid ""
-"All available updates will be provided to this system. If kept updated, this "
-"system will always be equivalent to the latest minor release in the main "
-"'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"V tomto systému budou poskytovány všechny dostupné aktualizace. Pokud bude "
-"systém udržován aktuální, bude vždy rovnocenný nejnovější modifikaci verze "
-"vydání na hlavním softwarovém kanálu „Red Hat Enterprise Linux x“."
+#~ msgid ""
+#~ "All available updates will be provided to this system. If kept updated, "
+#~ "this system will always be equivalent to the latest minor release in the "
+#~ "main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "V tomto systému budou poskytovány všechny dostupné aktualizace. Pokud "
+#~ "bude systém udržován aktuální, bude vždy rovnocenný nejnovější modifikaci "
+#~ "verze vydání na hlavním softwarovém kanálu „Red Hat Enterprise Linux x“."
 
-#: ../data/rh_register.glade.h:154
-msgid ""
-"<b>Warning:</b> Using this option, your system will always be the most "
-"recent minor release and <b>cannot</b> be limited to an older release "
-"version."
-msgstr ""
-"<b>Upozornění:</b> Při použití této možnosti bude váš systém vždy poslední "
-"modifikací verze a <b>nemůže být</b> omezen na starší verzi vydání."
+#~ msgid ""
+#~ "<b>Warning:</b> Using this option, your system will always be the most "
+#~ "recent minor release and <b>cannot</b> be limited to an older release "
+#~ "version."
+#~ msgstr ""
+#~ "<b>Upozornění:</b> Při použití této možnosti bude váš systém vždy "
+#~ "poslední modifikací verze a <b>nemůže být</b> omezen na starší verzi "
+#~ "vydání."
 
-#: ../data/rh_register.glade.h:155
-msgid ""
-"Warning: Using this option, your system will always be the most recent minor "
-"release and cannot be limited to an older release version."
-msgstr ""
-"Výstraha: Při použití této možnosti bude váš systém vždy poslední modifikací "
-"verze a nemůže být omezen na starší verzi vydání."
+#~ msgid ""
+#~ "Warning: Using this option, your system will always be the most recent "
+#~ "minor release and cannot be limited to an older release version."
+#~ msgstr ""
+#~ "Výstraha: Při použití této možnosti bude váš systém vždy poslední "
+#~ "modifikací verze a nemůže být omezen na starší verzi vydání."
 
-#: ../data/rh_register.glade.h:156
-msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr "<b>Váš systém byl registrován pro aktualizace během instalace.</b>"
+#~ msgid "<b>Your system was registered for updates during installation.</b>"
+#~ msgstr "<b>Váš systém byl registrován pro aktualizace během instalace.</b>"
 
-#: ../data/rh_register.glade.h:157
-msgid ""
-"Your system is ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"Váš systém je připraven přijímat aktualizace softwaru, které zajistí jeho "
-"bezpečí a podporu.\n"
-"\n"
-"Až se objeví ikona balíčku v oznamovací oblasti na ploše (obvykle v pravém "
-"horním rohu, níže označena kroužkem), budete vědět, že jsou k dispozici "
-"aktualizace softwaru. Kliknutí na tuto ikonu vás provede všemi dostupnými "
-"aktualizacemi:"
+#~ msgid ""
+#~ "Your system is ready to receive the software updates that will keep it "
+#~ "secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "Váš systém je připraven přijímat aktualizace softwaru, které zajistí jeho "
+#~ "bezpečí a podporu.\n"
+#~ "\n"
+#~ "Až se objeví ikona balíčku v oznamovací oblasti na ploše (obvykle v "
+#~ "pravém horním rohu, níže označena kroužkem), budete vědět, že jsou k "
+#~ "dispozici aktualizace softwaru. Kliknutí na tuto ikonu vás provede všemi "
+#~ "dostupnými aktualizacemi:"
 
-#: ../data/rh_register.glade.h:160
-msgid "icon of aplet"
-msgstr "ikona apletu"
+#~ msgid "icon of aplet"
+#~ msgstr "ikona apletu"
 
-#: ../rhn_register.desktop.in.h:1
-msgid "RHN Registration"
-msgstr "RHN registrace"
+#~ msgid "RHN Registration"
+#~ msgstr "RHN registrace"
 
-#: ../rhn_register.desktop.in.h:2
-msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-"Registrujte se pro aktualizace softwaru ze Spacewalk/Uyuni/SUSE Manager"
+#~ msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
+#~ msgstr ""
+#~ "Registrujte se pro aktualizace softwaru ze Spacewalk/Uyuni/SUSE Manager"
 
-#: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr "Registrujte se u Spacewalk/Uyuni/SUSE Manager"
+#~ msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+#~ msgstr "Registrujte se u Spacewalk/Uyuni/SUSE Manager"
 
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 #~ msgstr ""

@@ -483,13 +483,6 @@ Note that the text area variant handles the new lines characters while the other
   When I create the bootstrap repository for "sle_minion" on the server
 ```
 
-* Execute spacewalk-channel
-
-```gherkin
-  When I execute spacewalk-channel and pass "--available-channels -u admin -p admin"
-  Then spacewalk-channel fails with "--add -c test_child_channel -u admin -p admin"
-```
-
 * Execute spacewalk-repo-sync
 
 ```gherkin

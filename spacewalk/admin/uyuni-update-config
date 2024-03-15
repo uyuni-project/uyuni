@@ -9,6 +9,23 @@ from spacewalk.common.rhnConfig import initCFG, CFG
 
 initCFG('server.susemanager')
 
+def run_uyuni_configfiles_sync():
+    if not os.path.isfile("/usr/bin/uyuni-configfiles-sync"):
+        return
+
+    result = subprocess.run(
+            ["/usr/bin/uyuni-configfiles-sync", "sync"],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            encoding='utf-8')
+
+    if result.stdout:
+        sys.stdout.write("{}\n".format(result.stdout))
+        sys.stdout.flush()
+    if result.returncode:
+        sys.stdout.write("Failed to synchronize files to persistent volumes. Aborting!\n")
+        sys.stdout.flush()
+        sys.exit(1)
+
 def initSccLogin():
 
     try:
@@ -64,7 +81,7 @@ def copyCA():
         sys.stdout.write("{}\n".format(result.stdout))
     sys.stdout.flush()
 
-
+run_uyuni_configfiles_sync()
 initSccLogin()
 importSumaGPGKeyring()
 copyCA()

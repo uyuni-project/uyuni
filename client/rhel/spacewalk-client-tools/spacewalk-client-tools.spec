@@ -63,9 +63,7 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 mgr-daemon
 #
-%define without_rhn_register 1
 %bcond_with    test
 
 Name:           spacewalk-client-tools
@@ -91,9 +89,6 @@ BuildRequires:  update-desktop-files
 %endif
 Provides:       rhn-client-tools = %{version}-%{release}
 Obsoletes:      rhn-client-tools < %{version}-%{release}
-%if %{without_rhn_register}
-Obsoletes:      rhn-setup-gnome
-%endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 %if "%{_vendor}" != "debbuild"
 Requires:       coreutils
@@ -382,7 +377,6 @@ Requires:       usermode >= 1.36
 Requires:       usermode-consoleonly >= 1.36
 %endif
 Requires:       %{name} = %{version}-%{release}
-Requires:       %{rhnsd}
 
 %description -n spacewalk-client-setup
 spacewalk-client-setup contains programs and utilities to configure a system to use
@@ -438,98 +432,6 @@ Requires(post): python3-minimal
 Python 3 specific files for spacewalk-client-setup.
 %endif
 
-%if ! 0%{?without_rhn_register}
-%package -n spacewalk-client-setup-gnome
-Summary:        A GUI interface for RHN/Spacewalk Registration
-Group:          System Environment/Base
-Requires:       %{name} = %{version}-%{release}
-Requires:       %{pythonX}-spacewalk-client-setup
-Requires:       spacewalk-client-setup = %{version}-%{release}
-
-%if "%{_vendor}" == "debbuild"
-Requires:       libpam-gnome-keyring
-Requires:       libpam-modules
-Requires:       libpam-runtime
-Requires:       libpam0g
-%else
-Requires:       pam >= 0.72
-%endif
-
-%description -n spacewalk-client-setup-gnome
-rhn-setup-gnome contains a GTK+ graphical interface for configuring and
-registering a system with a Red Hat Satellite or Spacewalk server.
-
-%if 0%{?build_py2}
-%package -n python2-spacewalk-client-setup-gnome
-Summary:        Configure and register an RHN/Spacewalk client
-Group:          System Environment/Base
-Provides:       python-spacewalk-client-setup-gnome = %{version}-%{release}
-Obsoletes:      python-spacewalk-client-setup-gnome < %{version}-%{release}
-Requires:       spacewalk-client-setup-gnome = %{version}-%{release}
-%if "%{_vendor}" != "debbuild"
-%if 0%{?suse_version}
-Requires:       gtk3
-Requires:       python3-gobject
-%else
-Requires:       gtk3
-Requires:       python3-gobject-base
-# gtk-builder-convert
-BuildRequires:  gtk2-devel
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 5
-Requires:       liberation-sans-fonts
-%endif
-%endif
-
-%if "%{_vendor}" == "debbuild"
-Requires:       fonts-liberation
-Requires:       python-glade2
-Requires:       python-gnome2
-Requires:       python-gtk2
-Requires:       usermode
-Requires(preun):python-minimal
-Requires(post): python-minimal
-%endif
-
-%description -n python2-spacewalk-client-setup-gnome
-Python 2 specific files for spacewalk-client-setup-gnome.
-%endif
-
-%if 0%{?build_py3}
-%package -n python3-spacewalk-client-setup-gnome
-Summary:        Configure and register an RHN/Spacewalk client
-Group:          System Environment/Base
-Requires:       spacewalk-client-setup-gnome = %{version}-%{release}
-%if "%{_vendor}" != "debbuild"
-%if 0%{?suse_version}
-Requires:       python-gnome
-Requires:       python-gtk
-%else
-Requires:       pygtk2
-Requires:       pygtk2-libglade
-Requires:       usermode-gtk
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 5
-Requires:       liberation-sans-fonts
-%endif
-%endif
-
-%if "%{_vendor}" == "debbuild"
-BuildRequires:  libgtk2.0-dev
-Requires:       gir1.2-gtk-3.0
-Requires:       libgtk-3-bin
-
-Requires:       fonts-liberation
-Requires:       python3-gi
-Requires(preun):python3-minimal
-Requires(post): python3-minimal
-%endif
-
-%description -n python3-spacewalk-client-setup-gnome
-Python 3 specific files for spacewalk-client-setup-gnome.
-%endif
-%endif
-
 %prep
 %setup -q
 
@@ -545,31 +447,16 @@ make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
 make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
-%if ! 0%{?without_rhn_register}
-for g in data/*.glade ; do
-        mv $g $g.old
-        gtk-builder-convert $g.old $g
-done
-sed -i 's/GTK_PROGRESS_LEFT_TO_RIGHT/horizontal/' data/progress.glade
-sed -i 's/GtkComboBox/GtkComboBoxText/; /property name="has_separator"/ d;' data/rh_register.glade
-sed -i '/class="GtkVBox"/ {
-                s/GtkVBox/GtkBox/;
-                a \ \ \ \ \ \ \ \ <property name="orientation">vertical</property\>
-                }' data/gui.glade
-%endif
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
         PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} %{?is_deb:PLATFORM=deb}
 %endif
-
-ln -s spacewalk-channel $RPM_BUILD_ROOT%{_sbindir}/rhn-channel
 
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
 mkdir -p $RPM_BUILD_ROOT/%{_presetdir}
-install 50-spacewalk-client.preset $RPM_BUILD_ROOT/%{_presetdir}
 %endif
 
 %if 0%{?suse_version}
@@ -590,7 +477,6 @@ rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_udev.*
 %if 0%{?build_py2}
 rm -rf $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/firstboot
 %endif
-rm -f $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_register.*
 %endif
 %if 0%{?rhel} == 6
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
@@ -605,18 +491,8 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/
 rm -rf $RPM_BUILD_ROOT%{python3_sitelib}/up2date_client/firstboot
 %endif
 
-%if ! 0%{?without_rhn_register}
-desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
-%if 0%{?suse_version}
-%suse_update_desktop_file -r rhn_register "Settings;System;SystemSetup;"
-# no usermod on SUSE
-rm -f $RPM_BUILD_ROOT%{_bindir}/rhn_register
-%endif
-%endif
-
 # create mgr_check symlink
 ln -sf rhn_check $RPM_BUILD_ROOT/%{_sbindir}/mgr_check
-ln -sf spacewalk-update-status $RPM_BUILD_ROOT/%{_sbindir}/mgr-update-status
 
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
@@ -634,45 +510,15 @@ cd -
 # create links to default script version
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 for i in \
-    /usr/sbin/rhn-profile-sync \
     /usr/sbin/rhn_check \
-    /usr/sbin/rhn_register \
     /usr/sbin/rhnreg_ks \
-    /usr/sbin/spacewalk-channel \
 ; do
     ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
 done
 
-%if 0%{?without_rhn_register}
 rm -rf $RPM_BUILD_ROOT/etc/pam.d
 rm -rf $RPM_BUILD_ROOT/etc/security/console.apps
-rm -rf $RPM_BUILD_ROOT/usr/share/setuptool
-rm -f $RPM_BUILD_ROOT/usr/bin/rhn_register
-rm -f $RPM_BUILD_ROOT/usr/sbin/rhn_register
-rm -f $RPM_BUILD_ROOT/usr/share/man/man8/rhn_register.8.gz
-#spacewalk-client-setup-gnome
-rm -rf $RPM_BUILD_ROOT/%{_datadir}/firstboot
-rm -rf $RPM_BUILD_ROOT/%{_datadir}/pixmaps
-rm -rf $RPM_BUILD_ROOT/%{_datadir}/icons
 rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/firstboot
-
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/messageWindow.*
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/rhnregGui.*
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/gtk_compat.*
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/progress.*
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/gui.*
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/rh_register.glade
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/gui.glade
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/progress.glade
-rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
-%if 0%{?build_py3}
-rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/messageWindow.*
-rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/rhnregGui.*
-rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/gtk_compat.*
-rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/progress.*
-rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/gui.*
-%endif
-%endif
 
 %if 0%{?suse_version}
 %if 0%{?build_py2}
@@ -685,32 +531,6 @@ rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/gui.*
 
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
-
-%if ! 0%{?without_rhn_register}
-%post -n spacewalk-client-setup-gnome
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-# See posttrans section below
-%if "%{_vendor}" == "debbuild"
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-%endif
-
-%postun -n spacewalk-client-setup-gnome
-%if "%{_vendor}" != "debbuild"
-if [ $1 -eq 0 ] ; then
-%endif
-%if "%{_vendor}" == "debbuild"
-if [[ "$1" == "purge" || "$1" == "remove" ]]; then
-%endif
-    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-# This macro doesn't exist for debbuild. I'm shoving this into post instead.
-%if "%{_vendor}" != "debbuild"
-%posttrans -n spacewalk-client-setup-gnome
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-%endif
-%endif
 
 %if %{with test} && 0%{?fedora}
 %check
@@ -733,7 +553,6 @@ make -f Makefile.rhn-client-tools test
 %doc doc/AUTHORS
 %{!?_licensedir:%global license %doc}
 %license doc/LICENSE
-%{_mandir}/man8/rhn-profile-sync.8*
 %{_mandir}/man5/up2date.5*
 
 %dir %{_sysconfdir}/sysconfig/rhn
@@ -745,21 +564,13 @@ make -f Makefile.rhn-client-tools test
 %config(noreplace) %{_sysconfdir}/logrotate.d/up2date
 
 # dirs
-%dir %{_datadir}/rhn
 %dir %{_localstatedir}/spool/up2date
 
-%{_sbindir}/rhn-profile-sync
-
 %ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
-
-%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
-%{_presetdir}/50-spacewalk-client.preset
-%endif
 
 %if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root,-)
-%{_sbindir}/rhn-profile-sync-%{python_version}
 %dir %{python_sitelib}/up2date_client/
 %{python_sitelib}/up2date_client/__init__.*
 %{python_sitelib}/up2date_client/config.*
@@ -787,7 +598,6 @@ make -f Makefile.rhn-client-tools test
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %defattr(-,root,root,-)
-%{_sbindir}/rhn-profile-sync-%{python3_version}
 %dir %{python3_sitelib}/up2date_client/
 %{python3_sitelib}/up2date_client/__init__.*
 %{python3_sitelib}/up2date_client/config.*
@@ -842,8 +652,6 @@ make -f Makefile.rhn-client-tools test
 %{_mandir}/man8/rhn_check.8*
 %{_sbindir}/rhn_check
 %{_sbindir}/mgr_check
-%{_sbindir}/spacewalk-update-status
-%{_sbindir}/mgr-update-status
 
 %if 0%{?build_py2}
 %files -n python2-spacewalk-check
@@ -857,7 +665,6 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/rhn/actions/hardware.*
 %{python_sitelib}/rhn/actions/systemid.*
 %{python_sitelib}/rhn/actions/reboot.*
-%{python_sitelib}/rhn/actions/rhnsd.*
 %{python_sitelib}/rhn/actions/up2date_config.*
 %endif
 
@@ -872,7 +679,6 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/rhn/actions/hardware.*
 %{python3_sitelib}/rhn/actions/systemid.*
 %{python3_sitelib}/rhn/actions/reboot.*
-%{python3_sitelib}/rhn/actions/rhnsd.*
 %{python3_sitelib}/rhn/actions/up2date_config.*
 
 %if "%{_vendor}" != "debbuild"
@@ -882,7 +688,6 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/rhn/actions/__pycache__/hardware.*
 %{python3_sitelib}/rhn/actions/__pycache__/systemid.*
 %{python3_sitelib}/rhn/actions/__pycache__/reboot.*
-%{python3_sitelib}/rhn/actions/__pycache__/rhnsd.*
 %{python3_sitelib}/rhn/actions/__pycache__/up2date_config.*
 %endif
 %endif
@@ -890,37 +695,13 @@ make -f Makefile.rhn-client-tools test
 %files -n spacewalk-client-setup
 %defattr(-,root,root,-)
 %{_mandir}/man8/rhnreg_ks.8*
-%{_mandir}/man8/spacewalk-channel.8*
-%{_mandir}/man8/rhn-channel.8*
 
 %{_sbindir}/rhnreg_ks
-%{_sbindir}/spacewalk-channel
-%{_sbindir}/rhn-channel
-
-%if ! 0%{?without_rhn_register}
-%{_mandir}/man8/rhn_register.8*
-%config(noreplace) %{_sysconfdir}/security/console.apps/rhn_register
-%config(noreplace) %{_sysconfdir}/pam.d/rhn_register
-%if 0%{?fedora} || 0%{?rhel}
-%{_bindir}/rhn_register
-%endif
-%{_sbindir}/rhn_register
-%{_datadir}/setuptool/setuptool.d/99rhn_register
-
-%if 0%{?suse_version}
-# on SUSE directories not owned by any package
-%dir %{_sysconfdir}/security/console.apps
-%dir %{_datadir}/setuptool
-%dir %{_datadir}/setuptool/setuptool.d
-%endif
-%endif
 
 %if 0%{?build_py2}
 %files -n python2-spacewalk-client-setup
 %defattr(-,root,root,-)
-%{_sbindir}/rhn_register-%{python_version}
 %{_sbindir}/rhnreg_ks-%{python_version}
-%{_sbindir}/spacewalk-channel-%{python_version}
 %{python2_sitelib}/up2date_client/rhnreg.*
 %{python2_sitelib}/up2date_client/pmPlugin.*
 %{python2_sitelib}/up2date_client/tui.*
@@ -930,9 +711,7 @@ make -f Makefile.rhn-client-tools test
 %if 0%{?build_py3}
 %files -n python3-spacewalk-client-setup
 %defattr(-,root,root,-)
-%{_sbindir}/rhn_register-%{python3_version}
 %{_sbindir}/rhnreg_ks-%{python3_version}
-%{_sbindir}/spacewalk-channel-%{python3_version}
 %{python3_sitelib}/up2date_client/rhnreg.*
 %{python3_sitelib}/up2date_client/pmPlugin.*
 %{python3_sitelib}/up2date_client/tui.*
@@ -945,91 +724,6 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/__pycache__/rhnreg_constants.*
 %endif
 %endif
-
-%if ! 0%{?without_rhn_register}
-%files -n spacewalk-client-setup-gnome
-%defattr(-,root,root,-)
-%{_datadir}/pixmaps/*png
-%{_datadir}/icons/hicolor/16x16/apps/up2date.png
-%{_datadir}/icons/hicolor/24x24/apps/up2date.png
-%{_datadir}/icons/hicolor/32x32/apps/up2date.png
-%{_datadir}/icons/hicolor/48x48/apps/up2date.png
-%if 0%{?rhel} > 6 || 0%{?fedora}
-%{_datadir}/icons/hicolor/22x22/apps/up2date.png
-%{_datadir}/icons/hicolor/256x256/apps/up2date.png
-%endif
-%{_datadir}/applications/rhn_register.desktop
-%{_datadir}/rhn/up2date_client/gui.glade
-%{_datadir}/rhn/up2date_client/progress.glade
-%{_datadir}/rhn/up2date_client/rh_register.glade
-
-%if 0%{?suse_version}
-# on SUSE these directories are part of packages not installed
-# at buildtime. OBS failed with not owned by any package
-%dir %{_datadir}/icons/hicolor
-%dir %{_datadir}/icons/hicolor/16x16
-%dir %{_datadir}/icons/hicolor/16x16/apps
-%dir %{_datadir}/icons/hicolor/24x24
-%dir %{_datadir}/icons/hicolor/24x24/apps
-%dir %{_datadir}/icons/hicolor/32x32
-%dir %{_datadir}/icons/hicolor/32x32/apps
-%dir %{_datadir}/icons/hicolor/48x48
-%dir %{_datadir}/icons/hicolor/48x48/apps
-%dir %{_datadir}/firstboot
-%dir %{_datadir}/firstboot/modules
-%endif
-
-%if 0%{?build_py2}
-%files -n python2-spacewalk-client-setup-gnome
-%defattr(-,root,root,-)
-%{python_sitelib}/up2date_client/messageWindow.*
-%{python_sitelib}/up2date_client/rhnregGui.*
-%{python_sitelib}/up2date_client/gtk_compat.*
-%{python_sitelib}/up2date_client/gui.*
-%{python_sitelib}/up2date_client/progress.*
-%if 0%{?rhel} == 5
-%{_datadir}/firstboot/modules/rhn_login_gui.*
-%{_datadir}/firstboot/modules/rhn_choose_channel.*
-%{_datadir}/firstboot/modules/rhn_register_firstboot_gui_window.*
-%{_datadir}/firstboot/modules/rhn_start_gui.*
-%{_datadir}/firstboot/modules/rhn_choose_server_gui.*
-%{_datadir}/firstboot/modules/rhn_provide_certificate_gui.*
-%{_datadir}/firstboot/modules/rhn_create_profile_gui.*
-%{_datadir}/firstboot/modules/rhn_review_gui.*
-%{_datadir}/firstboot/modules/rhn_finish_gui.*
-%else
-%if 0%{?rhel} == 6
-%{_datadir}/firstboot/modules/rhn_register.*
-%{python_sitelib}/up2date_client/firstboot/rhn_login_gui.*
-%{python_sitelib}/up2date_client/firstboot/rhn_start_gui.*
-%{python_sitelib}/up2date_client/firstboot/rhn_choose_server_gui.*
-%{python_sitelib}/up2date_client/firstboot/rhn_choose_channel.*
-%{python_sitelib}/up2date_client/firstboot/rhn_provide_certificate_gui.*
-%{python_sitelib}/up2date_client/firstboot/rhn_create_profile_gui.*
-%{python_sitelib}/up2date_client/firstboot/rhn_review_gui.*
-%{python_sitelib}/up2date_client/firstboot/rhn_finish_gui.*
-%endif # 0{?rhel} == 6
-%endif # 0{?rhel} == 5
-%endif # 0{?build_py2}
-
-%if 0%{?build_py3}
-%files -n python3-spacewalk-client-setup-gnome
-%defattr(-,root,root,-)
-%{python3_sitelib}/up2date_client/messageWindow.*
-%{python3_sitelib}/up2date_client/rhnregGui.*
-%{python3_sitelib}/up2date_client/gtk_compat.*
-%{python3_sitelib}/up2date_client/gui.*
-%{python3_sitelib}/up2date_client/progress.*
-
-%if "%{_vendor}" != "debbuild"
-%{python3_sitelib}/up2date_client/__pycache__/messageWindow.*
-%{python3_sitelib}/up2date_client/__pycache__/rhnregGui.*
-%{python3_sitelib}/up2date_client/__pycache__/gtk_compat.*
-%{python3_sitelib}/up2date_client/__pycache__/gui.*
-%{python3_sitelib}/up2date_client/__pycache__/progress.*
-%endif # {_vendor} != "debbuild"
-%endif # 0{?build_py3}
-%endif # ! 0{?without_rhn_register}
 
 %if "%{_vendor}" == "debbuild"
 
@@ -1058,13 +752,6 @@ pycompile -p python2-rhn-setup -V -3.0
 # Ensure all *.py[co] files are deleted, per debian policy
 pyclean -p python2-rhn-setup
 
-%post -n python2-rhn-setup-gnome
-# Do late-stage bytecompilation, per debian policy
-pycompile -p python2-rhn-setup-gnome -V -3.0
-
-%preun -n python2-rhn-setup-gnome
-# Ensure all *.py[co] files are deleted, per debian policy
-pyclean -p python2-rhn-setup-gnome
 %endif
 
 %if 0%{?build_py3}
@@ -1092,13 +779,6 @@ py3compile -p python3-rhn-setup -V -4.0
 # Ensure all *.py[co] files are deleted, per debian policy
 py3clean -p python3-rhn-setup
 
-%post -n python3-rhn-setup-gnome
-# Do late-stage bytecompilation, per debian policy
-py3compile -p python3-rhn-setup-gnome -V -4.0
-
-%preun -n python3-rhn-setup-gnome
-# Ensure all *.py[co] files are deleted, per debian policy
-py3clean -p python3-rhn-setup-gnome
 %endif
 %endif
 

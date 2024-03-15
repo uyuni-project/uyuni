@@ -2,12 +2,21 @@
   display: flex;
   align-items: center;
   padding: 7px 10px !important;
+  white-space: nowrap;
+  flex-wrap: nowrap !important;
+}
+
+.navbar-header,
+.navbar-utility,
+.navbar-primary {
+  flex-wrap: nowrap;
 }
 
 .navbar-header {
   display: flex !important;
   align-items: flex-end;
   margin-right: auto !important;
+  overflow: hidden;
 }
 
 .navbar-utility {

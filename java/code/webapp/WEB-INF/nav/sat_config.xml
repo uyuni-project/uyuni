@@ -15,9 +15,6 @@
   <rhn-tab name="Cobbler" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/admin/config/Cobbler.do</rhn-tab-url>
   </rhn-tab>
-  <rhn-tab name="Bare-metal systems" acl="user_role(satellite_admin)">
-    <rhn-tab-url>/rhn/admin/config/BootstrapSystems.do</rhn-tab-url>
-  </rhn-tab>
   <rhn-tab name="Monitoring" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/manager/admin/config/monitoring</rhn-tab-url>
   </rhn-tab>

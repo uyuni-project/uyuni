@@ -32,10 +32,6 @@ $(DIRS):
 	@$(INSTALL_DIR) $@
 
 install:: all $(DIRS)
-	$(INSTALL_DATA) up2date.pam $(PAMD_DIR)/rhn_register
-
-	$(INSTALL_DATA) rhn_register.console $(SECURITY_DIR)/rhn_register
-
 	[ -f $(CONFIG_DIR)/up2date ] && true || \
 		$(INSTALL_DATA) $(CONFIG) $(CONFIG_DIR)/up2date
 

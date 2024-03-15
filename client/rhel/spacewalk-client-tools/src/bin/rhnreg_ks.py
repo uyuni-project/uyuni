@@ -70,8 +70,6 @@ class RegisterKsCli(rhncli.RhnCli):
             default=False, help=_("Do not profile or upload any package info")),
         self.optparser.add_option("--novirtinfo", action="store_true",
             default=False, help=_("Do not upload any virtualization info")),
-        self.optparser.add_option("--norhnsd", action="store_true",
-            default=False, help=_("Do not start rhnsd after completion")),
         self.optparser.add_option("--force", action="store_true", default=False,
             help=_("Register the system even if it is already registered")),
 
@@ -164,10 +162,6 @@ class RegisterKsCli(rhncli.RhnCli):
         # *after* writing out the system id.
         if not self.options.novirtinfo:
             rhnreg.sendVirtInfo(systemId)
-
-        # do this after writing out system id, bug #147513
-        if not self.options.norhnsd:
-            rhnreg.startRhnsd()
 
         try:
             present, conf_changed = rhnreg.pluginEnable()

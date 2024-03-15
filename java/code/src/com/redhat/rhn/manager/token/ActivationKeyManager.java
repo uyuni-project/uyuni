@@ -565,16 +565,4 @@ public class ActivationKeyManager {
             addConfigMgmtPackages(key);
         }
     }
-
-    /**
-     * Returns all bootstrap keys from any Org.
-     *
-     * @return bootstrap keys
-     */
-    @SuppressWarnings("unchecked")
-    public List<ActivationKey> findBootstrap() {
-        return HibernateFactory.getSession()
-            .getNamedQuery("ActivationKey.findBootstrap")
-            .list();
-    }
 }

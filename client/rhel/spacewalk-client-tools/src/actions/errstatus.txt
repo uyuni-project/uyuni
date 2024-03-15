@@ -92,9 +92,6 @@ reboot.reboot
 34: could not executre shutdown
 38: noReboot config option turned on
 
-rhnsd.configure
-37: "Could not modify /etc/sysconfig/rhn/rhnsd"
-
 packages.errata:
 39: 'No packages from that errata are available'
     data structs:

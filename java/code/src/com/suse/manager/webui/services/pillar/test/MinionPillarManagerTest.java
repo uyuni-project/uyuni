@@ -82,9 +82,9 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         assertTrue(map.containsKey("org_id"));
         assertEquals(minion.getOrg().getId(), map.get("org_id"));
         assertTrue(map.containsKey("mgr_server"));
-        assertEquals(ConfigDefaults.get().getCobblerHost(), map.get("mgr_server"));
+        assertEquals(ConfigDefaults.get().getJavaHostname(), map.get("mgr_server"));
         assertTrue(map.containsKey("mgr_origin_server"));
-        assertEquals(ConfigDefaults.get().getCobblerHost(), map.get("mgr_origin_server"));
+        assertEquals(ConfigDefaults.get().getJavaHostname(), map.get("mgr_origin_server"));
         assertTrue(map.containsKey("mgr_server_is_uyuni"));
         assertEquals(ConfigDefaults.get().isUyuni(), map.get("mgr_server_is_uyuni"));
 
@@ -108,7 +108,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
             assertEquals("1", (String) values.get("autorefresh"));
 
             assertTrue(values.containsKey("host"));
-            assertEquals(ConfigDefaults.get().getCobblerHost(),
+            assertEquals(ConfigDefaults.get().getJavaHostname(),
                     (String) values.get("host"));
 
             assertTrue(values.containsKey("token"));
@@ -215,7 +215,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         assertTrue(map.containsKey("mgr_server"));
         assertEquals(proxyHostname, map.get("mgr_server"));
         assertTrue(map.containsKey("mgr_origin_server"));
-        assertEquals(ConfigDefaults.get().getCobblerHost(), map.get("mgr_origin_server"));
+        assertEquals(ConfigDefaults.get().getJavaHostname(), map.get("mgr_origin_server"));
         assertTrue(map.containsKey("mgr_server_is_uyuni"));
         assertEquals(ConfigDefaults.get().isUyuni(), map.get("mgr_server_is_uyuni"));
 

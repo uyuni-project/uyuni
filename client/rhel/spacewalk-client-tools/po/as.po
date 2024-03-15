@@ -99,14 +99,6 @@ msgstr "ব্যৱস্থাপ্ৰনালীৰ স্মৃতিশ�
 msgid "Error reading machine info:"
 msgstr "cpu ৰ তথ্য পঢ়োঁতে ভুল হ'ল:"
 
-#: ../src/up2date_client/messageWindow.py:106
-msgid "Error:"
-msgstr "ভুল:"
-
-#: ../src/up2date_client/messageWindow.py:113
-msgid "Yes/No dialog:"
-msgstr "হয়/নহয় সংলাপ:"
-
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
 msgstr "SystemId অৱস্থিত কৰিবলে অক্ষম"
@@ -219,274 +211,34 @@ msgstr "সকীয়নী: chkconfig ৰ সৈতে rhnsd সক্ষম ক
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "সকীয়নী: chkconfig ৰ সৈতে rhnsd সক্ষম কৰিব'লৈ অক্ষম"
 
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "জাননি"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
 msgstr "সকীয়নী"
 
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "আপোনাৰ পছন্দ প্ৰয়োগ কৰোতে এটা ত্ৰুটি হৈছিল।"
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr ""
-"আপুনি এটা অবৈধ আচাৰ বিধি নিৰ্দ্দিষ্ট কৰিছে । অকল https আৰু http ৰ অনুমতি আছে ।"
-
-#: ../src/up2date_client/rhnregGui.py:305
-#, fuzzy
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-"আপুনি Red Hat Network চাৰ্ভাৰক যোগাযোগ নকৰাকে এই চিস্টেমক সফলভাৱে ৰেজিস্টাৰ কৰিব "
-"নোৱাৰিব।"
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "নিৰ্বাচিত চাৰ্ভাৰৰ সৈতে সংযোগ কৰিব নোৱাৰি"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "'%s' ত থকা Satellite or Proxy যোগাযোগ কৰিব পৰা ন'গ'ল ।"
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"যোগান ধৰা স্থান পুনঃ পৰীক্ষা কৰক - '%s' শুদ্ধ নে ? যদি নহয়, শুদ্ধ কৰক আৰু পুনঃ চেষ্টা "
-"কৰক ।"
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "এই ব্যৱস্থাপ্ৰণালীৰ নে'টৱৰ্ক যোগাযোগ কাৰ্য্যকৰী হোৱাতো সুনিৰ্দ্দিষ্ট কৰক ।"
-
-#: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
-msgid "There was an error communicating with Spacewalk server."
-msgstr "Red Hat Network ৰ সৈতে যোগাযোগ কৰোঁতে ভুল হ'ল ।"
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr ""
-"সেৱকৰ কাৰ্য্যবিৰতি হ'ব পাৰে । পিছত সংযোগ কৰিব'লৈ আপুনি চেষ্টা কৰিব লগা হ'ব পাৰে ।"
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "আপুনি এনে এটা গ্ৰাহক চালব পাৰে যি সেৱকৰ সৈতে অমিল ।"
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
-"অনুগ্ৰহ কৰি <b>%s</b> Red Hat Network Satellite -ৰ কাৰণে আপোনাৰ একাওন্ট তথ্য "
-"সোমাওক:"
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "আপুনি এটা প্ৰৱেশ দিব লাগিব ।"
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "এট গুপ্তশব্দ আপুনি দিব লাগিব ।"
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "লগিন কৰোতে এটা ত্ৰুটি হৈছিল।"
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "পঞ্জিকৰণ সেৱকৰ সৈতে যোগাযোগ কৰোঁতে ভুল হ'ল । সম্বাদটো আছিল:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "আলেখ্যৰ বাবে তথ্য গোট খোৱাওতে এটা ত্ৰুটি হৈছিল।"
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "যন্ত্ৰৰ আলেখ্য চালওঁতে ভুল"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "আলেখ্য বসতি কৰোঁতে এটা ভুল হৈছে ।"
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "এই আলেখ্যৰ বাবে এটা নাম বাচিব লাগিব ।"
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "আলেখ্যটো সৃষ্টি কৰোতে এটা ত্ৰুটি হৈছিল।"
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr "আপোনাৰ আলেখ্যৰ তথ্য Red Hat Network লৈ পঠিওৱা হৈছে। অলপ অপেক্ষা কৰক।"
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "ব্যৱস্থাপ্ৰণালী পঞ্জিকৰণ কৰা হৈছে"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
 msgid "Problem registering system:\n"
 msgstr "ব্যৱস্থাপ্ৰণালী পঞ্জিকৰণ কৰোঁতে সমস্যা হৈছে:\n"
 
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"যোগান ধৰা বৰঙনিৰ সংখ্যা [ %s ] অবৈধ বৰঙনিৰ সংখ্যা । পূৰ্বৰ পৰ্দ্দালৈ যাওক আৰু ঠিক "
-"কৰক ।"
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+#: ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
 msgstr "ব্যৱস্থাপ্ৰণালীৰ পঞ্জিকৰণত সমস্যা হৈছে ।"
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+#: ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
 msgstr "ব্যৱস্থাপ্ৰণালীৰ id ডিষ্কলৈ লিখোঁতে সমস্যা হৈছে ।"
 
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "এই ব্যৱস্থাপ্ৰণালীৰ পঞ্জিকৰণত এটা সমস্যা হৈছে ।"
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "যন্ত্ৰৰ তথ্য পঠিওৱা হৈছে"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "যন্ত্ৰৰ তথ্য পঠিয়াওঁতে ভুল হ'ল ।"
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "সৰঞ্জামৰ তথ্য পঠিওৱা হৈছে"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "সৰঞ্জামৰ তথ্য পঠিয়াওঁতে সমস্যা হৈছে"
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#: ../src/up2date_client/tui.py:1058
 #, python-format
 msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "প্ৰমাণপত্ৰ ইনস্টল কৰোতে এটা ত্ৰুটি হৈছিল।"
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "এখন প্ৰমাণপত্ৰ আপুনি নিৰ্ব্বাচন কৰিব লাগিব ।"
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"এটা SSL ভুল হৈছিল । আপুনি লোৱা নথিপত্ৰ এটা প্ৰমাণপত্ৰৰ নথিপত্ৰ নোহোৱাৰ বাবেও হ'ব "
-"পাৰে ।"
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "নতুন প্ৰমাণপত্ৰ সংস্থাপন কৰোঁতে কিবা এটা ভুল হৈছিল:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "অজ্ঞাত"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "হাৰ্ডওৱেৰৰ তালিকা প্ৰাপ্ত কৰোতে এটা ত্ৰুটি হৈছিল। "
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#: ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "পেকেইজসমূহৰ তালিকা নিৰ্মান কৰোতে এটা ত্ৰুটি হৈছিল।"
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "সৰঞ্জাম"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "স্থাপত্য"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"আপোনাৰ ব্যৱস্থাপ্ৰণালীৰ RPM সৰঞ্জামৰ তালিকা বনোৱা হৈছে । অনুগ্ৰহ কৰি অপেক্ষা কৰক ।"
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"আপোনাৰ বিন্যাস তুলি লওঁতে ভুল হৈছিল ।  আপোনাৰ \n"
-" /etc/sysconfig/rhn ত পঢ়াৰ অনুমতি থকাতো নিশ্চিত কৰক ।"
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"আপোনাৰ বিন্যাস ৰক্ষা কৰোঁতে ভুল হৈছে । আপুনি\n"
-" %s ৰ গৰাকী হোৱাতো নিশ্চিত কৰক ।"
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"ই ভুল হ'ব নালাগিছিল । যদি আপুনি আমাক সহায় কৰি এই কাৰ্য্যক্ৰম উন্নত কৰিব খোজে, "
-"অনুগ্ৰহ কৰি এটা বাগ bugzilla.redhat.com ত নথিভুক্ত কৰক । '%s' ৰ প্ৰাসঙ্গিক কথা "
-"অন্তৰ্ভুক্ত থাকিলে বিশেষ সহায় হ'ব । ধন্যবাদ !"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -580,7 +332,7 @@ msgstr ""
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
 msgstr "মই কিয় RHN লৈ সংযোগ কৰোঁ ? ..."
 
-#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57
 msgid "Why Register"
 msgstr "কিয় পঞ্জিকৰণ কৰিব লাগে"
 
@@ -730,8 +482,7 @@ msgid "Please enter and verify a password."
 msgstr "আপুনি এটা গুপ্তশব্দ দি সাব্যস্ত কৰিব লাগিব ।"
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
-#: ../data/rh_register.glade.h:142
+#: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System Release Version"
 msgstr "অপাৰেটিং চিস্টেম সংস্কৰণ:"
 
@@ -748,7 +499,6 @@ msgid "Limited Updates Only"
 msgstr "কেৱল সীমিত আপডেইটসমূহ"
 
 #: ../src/up2date_client/rhnreg_constants.py:102
-#: ../data/rh_register.glade.h:151
 msgid "All available updates"
 msgstr "সকলো উপলব্ধ আপডেইট"
 
@@ -824,18 +574,15 @@ msgid "*Email Address:"
 msgstr "*ঈ‌মেল ঠিকনা:"
 
 #: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
 msgstr "চিস্টেম ইতিমধ্যে ৰেজিস্টাৰ্ড"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
-#: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
 msgstr ""
 "এই ব্যৱস্থাপ্ৰণালী ইতিমধ্যে চালনাজ্ঞানৰ উন্নয়নৰ বাবে প্ৰতিষ্ঠা কৰা হৈছে যেন লাগিছে :"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
-#: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
 msgstr "আপুনি আগবাঢ়িব'লৈ নিশ্চিত নে ?"
 
@@ -905,11 +652,11 @@ msgstr ""
 "সংযোগ মাধ্যমৰ Help' bবুটামত পোৱা যাই ।"
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Review Subscription"
 msgstr "বৰঙনি পুনঃ চাওক"
 
-#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169
 msgid "Please review the subscription details below:"
 msgstr "অনুগ্ৰহ কৰি আপোনাৰ বৰঙনিৰ বিৱৰণ তলত পুনঃ পৰীক্ষা কৰক:"
 
@@ -1237,12 +984,10 @@ msgid "Cancel"
 msgstr "বাতিল কৰক"
 
 #: ../src/up2date_client/rhnreg_constants.py:310
-#: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
 msgstr "নহয়, বাতিল কৰক"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
-#: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
 msgstr "হয়, আগবাঢ়ক"
 
@@ -1442,35 +1187,11 @@ msgstr ""
 "অবিকল্প বুলি ৰখা হৈছে, আপুনি এই চাবিক অসামৰ্থবান কৰি পুনৰ চেষ্টা কৰিব পাৰে\n"
 "    ব্যৱস্থাপক অনুজ্ঞাৰ প্ৰয়োজনীয়তা বাদ দিবলে।"
 
-#: ../src/bin/rhn-profile-sync.py:37
-msgid ""
-"You need to register this system by running `rhn_register` before using this "
-"option"
-msgstr ""
-"এই বিকল্প ব্যৱহাৰ কৰাৰ পূৰ্বে আপুনি এই ব্যৱস্থাপ্ৰণালী পঞ্জিকৰণ কৰিব লাগিব "
-"`rhn_register` চলাই"
-
-#: ../src/bin/rhn-profile-sync.py:45
-msgid "Updating package profile..."
-msgstr "সৰঞ্জামৰ আলেখ্য উন্নয়ন কৰা হৈছে..."
-
-#: ../src/bin/rhn-profile-sync.py:48
-msgid "Updating hardware profile..."
-msgstr "যন্ত্ৰৰ আলেখ্য উন্নয়ন কৰা হৈছে..."
-
-#: ../src/bin/rhn-profile-sync.py:52
-msgid "Updating virtualization profile..."
-msgstr "ভাৰচুৱেলাইজেছনৰ আলেখ্য উন্নয়ন কৰা হৈছে..."
-
 #: ../src/bin/rhn_check.py:423
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
 "rhn_check ৰ এটাতকে বেছি উদাহৰণ চলোৱাৰ চেষ্টা কৰা হৈছে। প্ৰস্থান কৰা হৈ আছে।\n"
-
-#: ../src/bin/rhn_register.py:38
-msgid "Do not attempt to use X"
-msgstr "X ব্যৱহাৰ কৰিব'লৈ চেষ্টা নকৰিব"
 
 #: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
@@ -1580,881 +1301,806 @@ msgstr ""
 "এটা আলেখ্যৰ নাম নিৰ্দ্দিষ্ট কৰা হোৱা নাছিল, আৰু গৃহস্থৰনাম আৰু IP ঠিকনা নিৰ্ধাৰিত "
 "কৰিব ৰা ন'গ'ল আলেখ্যৰ নাম হিচাপে ব্যৱহাৰ কৰিব'লৈ, অনুগ্ৰহ কৰি এটা নিৰ্দ্দিষ্ট কৰক ।"
 
-#: ../src/bin/spacewalk-channel.py:98
-msgid "name of channel you want to (un)subscribe"
-msgstr ""
+#~ msgid "Error:"
+#~ msgstr "ভুল:"
 
-#: ../src/bin/spacewalk-channel.py:100
-msgid "subscribe to channel"
-msgstr ""
+#~ msgid "Yes/No dialog:"
+#~ msgstr "হয়/নহয় সংলাপ:"
 
-#: ../src/bin/spacewalk-channel.py:102
-msgid "unsubscribe from channel"
-msgstr ""
+#~ msgid "Notice"
+#~ msgstr "জাননি"
 
-#: ../src/bin/spacewalk-channel.py:104
-msgid "list channels"
-msgstr ""
+#~ msgid "There was an error while applying your choice."
+#~ msgstr "আপোনাৰ পছন্দ প্ৰয়োগ কৰোতে এটা ত্ৰুটি হৈছিল।"
 
-#: ../src/bin/spacewalk-channel.py:106
-msgid "show base channel of a system"
-msgstr ""
+#~ msgid "You specified an invalid protocol. Only https and http are allowed."
+#~ msgstr ""
+#~ "আপুনি এটা অবৈধ আচাৰ বিধি নিৰ্দ্দিষ্ট কৰিছে । অকল https আৰু http ৰ অনুমতি আছে ।"
 
-#: ../src/bin/spacewalk-channel.py:108
-msgid "list all available child channels"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:110
-msgid "verbose output"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:112
-msgid "your user name"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:114
-msgid "your password"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:121
-msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:163
-msgid "ERROR: you have to specify at least one channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:169
-msgid "ERROR: this action does not require channel"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:176
-#, python-format
-msgid "Channel(s): %s successfully added"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:178
-#, python-format
-msgid "Error during adding channel(s) %s"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:185
-#, python-format
-msgid "Channel(s): %s successfully removed"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:187
-#, python-format
-msgid "Error during removal of channel(s) %s"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:194
-msgid "This system is not associated with any channel."
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:196
-msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:229
-msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:234
-msgid "ERROR: must be root to execute\n"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:239
-msgid "User interrupted process."
-msgstr ""
-
-#: ../data/gui.glade.h:1
 #, fuzzy
-msgid "System registration"
-msgstr "RHN ৰেজিস্ট্ৰেষণ"
+#~ msgid ""
+#~ "You will not be able to successfully register this system without "
+#~ "contacting a Spacewalk server."
+#~ msgstr ""
+#~ "আপুনি Red Hat Network চাৰ্ভাৰক যোগাযোগ নকৰাকে এই চিস্টেমক সফলভাৱে ৰেজিস্টাৰ "
+#~ "কৰিব নোৱাৰিব।"
 
-#: ../data/gui.glade.h:2
-msgid "Set Up Software Updates"
-msgstr "চালনাজ্ঞান উন্নয়নৰ প্ৰতিষ্ঠাপন"
+#~ msgid "Cannot contact selected server"
+#~ msgstr "নিৰ্বাচিত চাৰ্ভাৰৰ সৈতে সংযোগ কৰিব নোৱাৰি"
 
-#: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
-msgid "Choose Service"
-msgstr "চাৰ্ভাৰ বাচক"
+#, fuzzy, python-brace-format
+#~ msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+#~ msgstr "'%s' ত থকা Satellite or Proxy যোগাযোগ কৰিব পৰা ন'গ'ল ।"
 
-#: ../data/gui.glade.h:4
-msgid "Provide a security certificate"
-msgstr "সুৰক্ষাৰ প্ৰমাণপত্ৰৰ যোগান ধৰক"
+#, python-format
+#~ msgid ""
+#~ "Double-check the location - is '%s' correct? If not, you can correct it "
+#~ "and try again."
+#~ msgstr ""
+#~ "যোগান ধৰা স্থান পুনঃ পৰীক্ষা কৰক - '%s' শুদ্ধ নে ? যদি নহয়, শুদ্ধ কৰক আৰু পুনঃ "
+#~ "চেষ্টা কৰক ।"
 
-#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
-msgid "Red Hat Account"
-msgstr "Red Hat লগিন"
+#~ msgid "Make sure the network connection on this system is operational."
+#~ msgstr "এই ব্যৱস্থাপ্ৰণালীৰ নে'টৱৰ্ক যোগাযোগ কাৰ্য্যকৰী হোৱাতো সুনিৰ্দ্দিষ্ট কৰক ।"
 
-#: ../data/gui.glade.h:7
-msgid "Create Profile"
-msgstr "আলেখ্য সৃষ্টি কৰক"
-
-#: ../data/progress.glade.h:1
-msgid "Sending Information"
-msgstr "পেকেইজৰ তথ্য পঠিওৱা হৈছে"
-
-#: ../data/progress.glade.h:2
-msgid "progress bar"
-msgstr "প্ৰগ্ৰেচ বাৰ"
-
-#: ../data/progress.glade.h:3
-msgid "progress status"
-msgstr "প্ৰগ্ৰেচৰ অৱস্থা"
-
-#: ../data/rh_register.glade.h:1
-msgid ""
-"<b>The network connection on your system is not active. Your system cannot "
-"be set up for software updates at this time.</b>"
-msgstr ""
-"<b>এই ব্যৱস্থাপ্ৰণালীৰ নে'টৱৰ্ক যোগাযোগ কাৰ্য্যকৰী নহয় । আপোনাৰ ব্যৱস্থাপ্ৰণালী এই "
-"সময়ত চালনাজ্ঞান উন্নয়নৰ বাবে প্ৰতিষ্ঠা কৰিব নোৱাৰি ।</b>"
-
-#: ../data/rh_register.glade.h:2
 #, fuzzy
-msgid ""
-"This system will <b>not</b> be able to successfully receive software "
-"updates, including security updates, from Red Hat without connecting to a "
-"Red Hat Satellite or Red Hat Network Classic.\n"
-"\n"
-"To keep your system updated, secure, and supported, please register this "
-"system at your earliest convenience."
-msgstr ""
-"এই চিস্টেমে Red Hat Network চাৰ্ভাৰৰ লগত সংযোগ নকৰাকৈ Red Hat ৰ পৰা সফল ভাবে "
-"চফ্টওৱেৰ আপডেইটসমূহ গ্ৰহণ কৰিব <b>নোৱাৰিব।</b> \n"
-"\n"
-"আপোনাৰ চিস্টেমক আপডেইটেড, সুৰক্ষিত আৰু সমৰ্থিত ৰাখিবলৈ, অনুগ্ৰহ কৰি ইয়াক শীঘ্ৰে "
-"ৰেজিস্টাৰ কৰিব।"
-
-#: ../data/rh_register.glade.h:5
-msgid "Why Should I Connect to RHN? ..."
-msgstr "মই কিয় RHN লৈ সংযোগ কৰোঁ ? ..."
-
-#: ../data/rh_register.glade.h:7
-msgid ""
-"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:8
-msgid "Location:"
-msgstr "অৱস্থান:"
-
-#: ../data/rh_register.glade.h:9
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "উদাহৰণ: https://satellite.example.com/XMLRPC"
-
-#: ../data/rh_register.glade.h:10
-msgid "satellite server location"
-msgstr "ছেটেলাইট চাৰ্ভাৰ অৱস্থান"
-
-#: ../data/rh_register.glade.h:11
-msgid "_Proxy Setup"
-msgstr "প্ৰক্সি সংস্থাপন (_P)"
-
-#: ../data/rh_register.glade.h:12
-msgid "Proxy Setup Button"
-msgstr "প্ৰক্সি সংস্থাপন বুটাম"
-
-#: ../data/rh_register.glade.h:14
-msgid "Please enter your Red Hat account information:"
-msgstr "আপোনাৰ একাওন্টৰ তথ্য দিয়ক"
-
-#: ../data/rh_register.glade.h:15
-msgid "RHN login field"
-msgstr "RHN লগিন ফিল্ড:"
-
-#: ../data/rh_register.glade.h:16
-msgid "RHN password field"
-msgstr "RHN পাছওৱাৰ্ড ফিল্ড"
-
-#: ../data/rh_register.glade.h:17
-msgid "_Password:"
-msgstr "পাছৱাৰ্ড (_P)"
-
-#: ../data/rh_register.glade.h:18
-msgid "_Login:"
-msgstr "লগিন (_L):"
-
-#: ../data/rh_register.glade.h:19
-msgid ""
-"<small>Tip: Forgot your login or password? Contact your Satellite's "
-"<i>Organization Administrator</i>.</small>"
-msgstr ""
-"<small>সহায়: আপোনাৰ লগিন অথবা পাছৱাৰ্ড পাহৰিছে? আপোনাৰ Satellite ৰ<i>সংযঘঠন "
-"প্ৰশাসক</i> ৰ সৈতে যোগাযোগ কৰক।</small>"
-
-#: ../data/rh_register.glade.h:20
-msgid "Hardware Info"
-msgstr "যন্ত্ৰৰ আলেখ্য"
-
-#: ../data/rh_register.glade.h:21
-msgid "Red Hat Linux Version:"
-msgstr "Red Hat Linux সংস্কৰণ"
-
-#: ../data/rh_register.glade.h:22
-msgid "Hostname:"
-msgstr "হস্টনাম:"
-
-#: ../data/rh_register.glade.h:23
-msgid "IP Address:"
-msgstr "IP ঠিকনা:"
-
-#: ../data/rh_register.glade.h:24
-msgid "ERROR"
-msgstr "ত্ৰুটি"
-
-#: ../data/rh_register.glade.h:25
-msgid "CPU Model:"
-msgstr "CPU আৰ্হি:"
-
-#: ../data/rh_register.glade.h:26
-msgid "CPU Speed:"
-msgstr "CPU ৰ গতি:"
-
-#: ../data/rh_register.glade.h:27
-msgid "Memory:"
-msgstr "মেমৰি:"
-
-#: ../data/rh_register.glade.h:28
-msgid "Hardware Profile"
-msgstr "হাৰ্ডৱেৰ আলেখ্য"
-
-#: ../data/rh_register.glade.h:29
-msgid "Package Information"
-msgstr "সৰঞ্জামৰ তথ্য"
-
-#: ../data/rh_register.glade.h:30
-msgid "Start Window"
-msgstr "সংযোগক্ষেতৰ আৰম্ভ কৰক"
-
-#: ../data/rh_register.glade.h:31
-msgid ""
-"This assistant will guide you through the process of registering your system "
-"with Red Hat to receive software updates and other benefits. You will need "
-"the following to register:"
-msgstr ""
-"এই সহায়কে আপোনাৰ চিস্টেমক Red Hat ৰ সৈতে ৰেজিস্টাৰ কৰি চফ্টৱেৰ আপডেইট আৰু অন্য "
-"সুবিধাসমূহ প্ৰাপ্ত কৰিবলৈ সহায় কৰিব। ৰেজিস্টাৰ কৰিবলৈ আপোনাক নিম্নলিখিতৰ প্ৰয়োজন "
-"হ'ব:"
-
-#: ../data/rh_register.glade.h:32
-msgid "• A network connection"
-msgstr ""
-
-#: ../data/rh_register.glade.h:33
-msgid "• Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:34
-msgid "Your account login"
-msgstr ""
-
-#: ../data/rh_register.glade.h:35
-msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:36
-msgid "_Why Should I Register?"
-msgstr "মই কিয় ৰেজিস্ট্ৰাৰ কৰিম (_W)?"
-
-#: ../data/rh_register.glade.h:37
-msgid "Why Should I Register?"
-msgstr "মই কিয় ৰেজিস্ট্ৰাৰ কৰিম"
-
-#: ../data/rh_register.glade.h:38
-msgid ""
-"Would you like to register your system at this time? <b>(Strongly "
-"recommended.)</b>"
-msgstr ""
-"আপোনাৰ চিস্টেমক এতিয়া ৰেজিস্টাৰ কৰিব খোজে নেকি? <b>(দৃঢ় ভাবে পৰামৰ্শ দিয়া হয়।)</"
-"b>"
-
-#: ../data/rh_register.glade.h:39
-msgid "_Yes, I'd like to register now."
-msgstr "হয়, মই এতিয়া ৰেজিস্টাৰ কৰিব বিচাৰো (_Y)।"
-
-#: ../data/rh_register.glade.h:40
-msgid "_No, I prefer to register at a later time."
-msgstr "নহয়, মই পিছত ৰেজিস্টাৰ কৰিব'লৈ পছন্দ কৰিম (_N)।"
-
-#: ../data/rh_register.glade.h:41
-msgid "Link To Subscription"
-msgstr "বৰঙনিৰ সংযোগ"
-
-#: ../data/rh_register.glade.h:42
-msgid ""
-"Your system will need to access a subscription. This will allow you to keep "
-"your system updated, secure, and supported."
-msgstr ""
-"আপোনাৰ চিস্টেমে এটা স্বাক্ষৰণ উপক্ৰম কৰিব লাগিব। এইটোৱে আপোনাৰ চিস্টেমক আপডেইটেড, "
-"সুৰক্ষিত আৰু সমৰ্থিত ৰাখিব।"
-
-#: ../data/rh_register.glade.h:43
-msgid ""
-"<b>You have no active subscriptions available in your account.</b> You will "
-"need to do one of the following to create an active subscription in your "
-"account before this system can be registered:"
-msgstr ""
-"<b>আপোনাৰ হিচাপত কোনো সক্ৰীয় বৰঙনি নাই ।</b> আপুনি নিম্নলিখিতৰ যিকোনো এটা কৰিব "
-"লাগিব যাতে এটা সক্ৰীয় বৰঙনি আপোনাৰ হিচাপত সৃষ্টি হয় এই ব্যৱস্থাপ্ৰণালী পঞ্জিকৰণ "
-"কৰাৰ পূৰ্বে:"
-
-#: ../data/rh_register.glade.h:44
-msgid ""
-"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
-"redhat.com/store/."
-msgstr ""
-"http://www.redhat.com/store/ ত এটা অতিৰিক্ত Red Hat Enterprise Linux স্বাক্ষৰণ "
-"কিনক।"
-
-#: ../data/rh_register.glade.h:45
-msgid ""
-"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-"RHN > Subscription Management > System Entitlements."
-msgstr ""
-"http://rhn.redhat.com/ ত লগিন কৰক আৰু এটা নিষ্ক্ৰিয় চিস্টেমক আপোনাৰ RHN > "
-"স্বাক্ষৰণ ব্যৱস্থাপনা > চিস্টেম অনুজ্ঞাসমূহত অযোগ্য কৰক।"
-
-#: ../data/rh_register.glade.h:46
-msgid ""
-"Activate a previously purchased subscription you have not yet activated."
-msgstr "আপুনি আগতে সক্ৰিয় নকৰা পূৰ্বতে ক্ৰয় কৰা এটা স্বাক্ষৰণক সক্ৰিয় কৰক।"
-
-#: ../data/rh_register.glade.h:47
-msgid "•"
-msgstr "•"
-
-#: ../data/rh_register.glade.h:48
-msgid "installation number field"
-msgstr "ইনস্টল নম্বৰ ফিল্ড"
-
-#: ../data/rh_register.glade.h:49
-msgid "Installation _Number:"
-msgstr "ইনস্টলেষণ নম্বৰ (_N):"
-
-#: ../data/rh_register.glade.h:50
-msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr "<small><b>উদাহৰণ</b>: XXXX-XXXX-XXXX-XXXX</small>"
-
-#: ../data/rh_register.glade.h:51
-msgid "_Activate a subscription now..."
-msgstr "এটা বৰঙনি সক্ৰীয় কৰক (_A)..."
-
-#: ../data/rh_register.glade.h:52
-msgid "Review system..."
-msgstr "ব্যৱস্থাপ্ৰনালী পুনঃ চাওক..."
-
-#: ../data/rh_register.glade.h:54
-msgid "Create profile"
-msgstr "আলেখ্য সৃষ্টি কৰক"
-
-#: ../data/rh_register.glade.h:55
-msgid "<big><b>System Name</b></big>"
-msgstr "<big><b>চিস্টেমৰ নাম</b></big>"
-
-#: ../data/rh_register.glade.h:56
-msgid ""
-"A recognizable name will help you identify this system in a management "
-"interface."
-msgstr ""
-"এটা চিনাক্ত কৰিব পৰা নামে আপোনাক এই চিস্টেমক এটা ব্যৱস্থাপনা আন্তঃপৃষ্ঠত চিনাক্ত "
-"কৰাত সহায় কৰিব।"
-
-#: ../data/rh_register.glade.h:57
-msgid "System _Name:"
-msgstr "চিস্টেমৰ নাম (_N):"
-
-#: ../data/rh_register.glade.h:58
-msgid "system name"
-msgstr "চিস্টেমৰ নাম"
-
-#: ../data/rh_register.glade.h:59
-msgid "<big><b>Profile Data</b></big>"
-msgstr "<big><b>আলেখ্য তথ্য</b></big>"
-
-#: ../data/rh_register.glade.h:60
-msgid ""
-"Send us a profile of your current hardware and packages so we can determine "
-"what updates are available."
-msgstr ""
-"আপোনাৰ বৰ্তমান হাৰ্ডৱেৰ আৰু পেকেইজসমূহৰ এটা আলেখ্য পঠিয়াওক যাতে আমি উপলব্ধ "
-"আপডেইটসমূহ নিৰ্ধাৰণ কৰিব পাৰো।"
-
-#: ../data/rh_register.glade.h:61
-msgid "_View Hardware Profile ..."
-msgstr "হাৰ্ডৱেৰ আলেখ্য চাওক (_V) ..."
-
-#: ../data/rh_register.glade.h:62
-msgid "View Hardware Profile"
-msgstr "হাৰ্ডওৱেৰ আলেখ্য চাওক"
-
-#: ../data/rh_register.glade.h:63
-msgid "V_iew Package Profile ..."
-msgstr "পেকেইজ আলেখ্য চাওক (_i) ..."
-
-#: ../data/rh_register.glade.h:64
-msgid "View Package Profile"
-msgstr "পেকেইজ আলেখ্য চাওক"
-
-#: ../data/rh_register.glade.h:65
-msgid "Send _hardware profile"
-msgstr "হাৰ্ডৱেৰ আলেখ্য পঠাওক"
-
-#: ../data/rh_register.glade.h:66
-msgid "Send hardware profile checkbox"
-msgstr "হাৰ্ডওৱেৰ আলেখ্য চেকবক্স পঠাওক"
-
-#: ../data/rh_register.glade.h:67
-msgid "Send _package profile"
-msgstr "পেকেইজ আলেখ্য পঠাওক (_p)"
-
-#: ../data/rh_register.glade.h:68
-msgid "Send package profile checkbox"
-msgstr "পেকেইজ আলেখ্য চেকবক্স পঠাওক"
-
-#: ../data/rh_register.glade.h:70
-msgid ""
-"Registering your system with Red Hat allows you to take full advantage of "
-"the benefits of a paid subscription, including:"
-msgstr ""
-"Red Hat ৰ সৈতে আপোনাৰ চিস্টেম ৰেজিস্টাৰ কৰিলে আপুনি এটা ক্ৰম কৰা স্বাক্ষৰণৰ সম্পূৰ্ণ "
-"সুবিধা ল'ব পাৰিব, য'ত অন্তৰ্ভুক্ত হয়:"
-
-#: ../data/rh_register.glade.h:71
-msgid "_Close"
-msgstr "বন্ধ কৰক (_C)"
-
-#: ../data/rh_register.glade.h:72
-msgid "Close"
-msgstr "বন্ধ কৰক"
-
-#: ../data/rh_register.glade.h:73
-msgid "<b>Security &amp; Updates:</b>"
-msgstr "<b>সুৰক্ষা &amp; আপডেইটসমূহ:</b>"
-
-#: ../data/rh_register.glade.h:74
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr ""
-"সুৰক্ষাৰ আপডেইটসমূহ অন্তৰ্ভুক্ত কৰা শেহতীয়া চফ্টৱেৰ আপডেইট প্ৰাপ্ত কৰক, যাতে এই Red "
-"Hat Enterprise Linux চিস্টেম <b>আপডেইটেড</b> আৰু <b>সুৰক্ষিত</b> থাকে।"
-
-#: ../data/rh_register.glade.h:75
-msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr "<b>ডাউনল'ডসমূহ &amp; আপগ্ৰেইডসমূহ:</b>"
-
-#: ../data/rh_register.glade.h:76
-msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
-msgstr ""
-"Red Hat Enterprise Linux মুক্তি সমূহ আৰু নতুন মুক্তি সমূহৰ বাবে সংস্থাপক প্ৰতিমুৰ্তি "
-"ডাউনলো'ড কৰক ।"
-
-#: ../data/rh_register.glade.h:77
-msgid "<b>Support:</b>"
-msgstr "<b>সমৰ্থন:</b>"
-
-#: ../data/rh_register.glade.h:78
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
-"আপোনাৰ ব্যৱস্থাপ্ৰণালীৰ লগত থকা যিকোনো বিতৰ্কৰ বাবে  Red Hat or Red Hat ৰ "
-"সহভোগিৰ সৈতে থকা প্ৰায়োগিক সমৰ্থনৰ বিশেষজ্ঞ সকলৰ পৰা সহজলভ্য সহায় পাওক ।"
-
-#: ../data/rh_register.glade.h:79
-msgid "<b>Management:</b>"
-msgstr "<b>ব্যৱস্থাপনা:</b>"
-
-#: ../data/rh_register.glade.h:80
-msgid "Management"
-msgstr "ব্যৱস্থাপনা"
-
-#: ../data/rh_register.glade.h:81
-msgid ""
-"Manage subscriptions and systems registered to Customer Portal via access."
-"redhat.com or through one of our other subscription management services."
-msgstr ""
-"access.redhat.com অথবা আমাৰ অন্য স্বাক্ষৰণ ব্যৱস্থাপনা সেৱাসমূহৰ সৈতে গ্ৰাহক "
-"পোৰ্টেললৈ ৰেজিস্টাৰ্ড স্বাক্ষৰণ আৰু চিস্টেমসমূহ ব্যৱস্থাপনা কৰক।"
-
-#: ../data/rh_register.glade.h:82
-msgid ""
-"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html.</small>"
-msgstr ""
-"<small><b>সহায়:</b> Red Hat এ আপোনাৰ গোপনীয়তাক সন্মান কৰে: http://www.redhat."
-"com/legal/privacy_statement.html.</small>"
-
-#: ../data/rh_register.glade.h:83
-msgid "Provide a Security Certificate"
-msgstr "সুৰক্ষাৰ প্ৰমাণপত্ৰৰ যোগান ধৰক"
-
-#: ../data/rh_register.glade.h:85
-#, no-c-format
-msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this "
-"system.\n"
-"\n"
-"A security certificate, using SSL technology, is necessary to ensure that "
-"data communicated between this system and Spacewalk (including your login "
-"and password) is secure."
-msgstr ""
-
-#: ../data/rh_register.glade.h:88
-msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:89
-msgid "Certificate _Location:"
-msgstr "প্ৰমাণপত্ৰৰ অৱস্থান (_L):"
-
-#: ../data/rh_register.glade.h:90
-msgid "Select A File"
-msgstr "নথিপত্ৰ নিৰ্ব্বাচন কৰক"
-
-#: ../data/rh_register.glade.h:91
-msgid ""
-"I <b>_don't</b> have an SSL certificate. I will contact my system "
-"administrator for assistance and will register at a later time."
-msgstr ""
-"মোৰ ওচৰত এখন SSL প্ৰমাণপত্ৰ <b>নাই</b>। মই মোৰ চিস্টেম প্ৰশাসকক সহায়তাৰ বাবে "
-"যোগাযোগ কৰিম আৰু পিছত ৰেজিস্ট্ৰেষণ কৰিম।"
-
-#: ../data/rh_register.glade.h:92
-msgid "Your system is not setup for software updates."
-msgstr "আপোনাৰ চিস্টেম চফ্টৱেৰ আপডেইটৰ বাবে সংস্থাপিত নহয়।"
-
-#: ../data/rh_register.glade.h:93
-msgid ""
-"You won't be able to receive software updates, including security updates, "
-"for this system."
-msgstr ""
-
-#: ../data/rh_register.glade.h:94
-msgid "Proxy Configuration"
-msgstr "প্ৰক্সিৰ অৱস্থান "
-
-#: ../data/rh_register.glade.h:95
-msgid "<b>HTTP Proxy</b>"
-msgstr "<b>HTTP প্ৰক্সি</b>"
-
-#: ../data/rh_register.glade.h:96
-msgid "I would like to connect via an _HTTP proxy."
-msgstr "মই এটা HTTP প্ৰক্সিৰ যোগেদি সংযোগ কৰিব বিচাৰো (_H)।"
-
-#: ../data/rh_register.glade.h:97
+#~ msgid "There was an error communicating with Spacewalk server."
+#~ msgstr "Red Hat Network ৰ সৈতে যোগাযোগ কৰোঁতে ভুল হ'ল ।"
+
+#~ msgid ""
+#~ "The server may be in outage mode. You may have to try connecting later."
+#~ msgstr ""
+#~ "সেৱকৰ কাৰ্য্যবিৰতি হ'ব পাৰে । পিছত সংযোগ কৰিব'লৈ আপুনি চেষ্টা কৰিব লগা হ'ব "
+#~ "পাৰে ।"
+
+#~ msgid "You may be running a client that is incompatible with the server."
+#~ msgstr "আপুনি এনে এটা গ্ৰাহক চালব পাৰে যি সেৱকৰ সৈতে অমিল ।"
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgstr ""
+#~ "অনুগ্ৰহ কৰি <b>%s</b> Red Hat Network Satellite -ৰ কাৰণে আপোনাৰ একাওন্ট তথ্য "
+#~ "সোমাওক:"
+
+#~ msgid "You must enter a login."
+#~ msgstr "আপুনি এটা প্ৰৱেশ দিব লাগিব ।"
+
+#~ msgid "You must enter a password."
+#~ msgstr "এট গুপ্তশব্দ আপুনি দিব লাগিব ।"
+
+#~ msgid "There was an error while logging in."
+#~ msgstr "লগিন কৰোতে এটা ত্ৰুটি হৈছিল।"
+
+#~ msgid ""
+#~ "There was an error communicating with the registration server.  The "
+#~ "message was:\n"
+#~ msgstr "পঞ্জিকৰণ সেৱকৰ সৈতে যোগাযোগ কৰোঁতে ভুল হ'ল । সম্বাদটো আছিল:\n"
+
+#~ msgid "There was an error while assembling information for the profile."
+#~ msgstr "আলেখ্যৰ বাবে তথ্য গোট খোৱাওতে এটা ত্ৰুটি হৈছিল।"
+
+#~ msgid "Error running hardware profile"
+#~ msgstr "যন্ত্ৰৰ আলেখ্য চালওঁতে ভুল"
+
+#~ msgid "There was an error while populating the profile."
+#~ msgstr "আলেখ্য বসতি কৰোঁতে এটা ভুল হৈছে ।"
+
+#~ msgid "You must choose a name for this profile."
+#~ msgstr "এই আলেখ্যৰ বাবে এটা নাম বাচিব লাগিব ।"
+
+#~ msgid "There was an error while creating the profile."
+#~ msgstr "আলেখ্যটো সৃষ্টি কৰোতে এটা ত্ৰুটি হৈছিল।"
+
+#~ msgid "Registering system and sending profile information.  Please wait."
+#~ msgstr "আপোনাৰ আলেখ্যৰ তথ্য Red Hat Network লৈ পঠিওৱা হৈছে। অলপ অপেক্ষা কৰক।"
+
+#~ msgid "Registering System"
+#~ msgstr "ব্যৱস্থাপ্ৰণালী পঞ্জিকৰণ কৰা হৈছে"
+
+#, python-format
+#~ msgid ""
+#~ "The installation number [ %s ] provided is not a valid installation "
+#~ "number. Please go back to the previous screen and fix it."
+#~ msgstr ""
+#~ "যোগান ধৰা বৰঙনিৰ সংখ্যা [ %s ] অবৈধ বৰঙনিৰ সংখ্যা । পূৰ্বৰ পৰ্দ্দালৈ যাওক আৰু "
+#~ "ঠিক কৰক ।"
+
+#~ msgid "There was a problem registering this system."
+#~ msgstr "এই ব্যৱস্থাপ্ৰণালীৰ পঞ্জিকৰণত এটা সমস্যা হৈছে ।"
+
+#~ msgid "Sending hardware information"
+#~ msgstr "যন্ত্ৰৰ তথ্য পঠিওৱা হৈছে"
+
+#~ msgid "Problem sending hardware information."
+#~ msgstr "যন্ত্ৰৰ তথ্য পঠিয়াওঁতে ভুল হ'ল ।"
+
+#~ msgid "Sending package information"
+#~ msgstr "সৰঞ্জামৰ তথ্য পঠিওৱা হৈছে"
+
+#~ msgid "Problem sending package information."
+#~ msgstr "সৰঞ্জামৰ তথ্য পঠিয়াওঁতে সমস্যা হৈছে"
+
+#~ msgid "There was an error while installing the certificate."
+#~ msgstr "প্ৰমাণপত্ৰ ইনস্টল কৰোতে এটা ত্ৰুটি হৈছিল।"
+
+#~ msgid "You must select a certificate."
+#~ msgstr "এখন প্ৰমাণপত্ৰ আপুনি নিৰ্ব্বাচন কৰিব লাগিব ।"
+
+#~ msgid ""
+#~ "There was an SSL error. This could be because the file you picked was not "
+#~ "a certificate file."
+#~ msgstr ""
+#~ "এটা SSL ভুল হৈছিল । আপুনি লোৱা নথিপত্ৰ এটা প্ৰমাণপত্ৰৰ নথিপত্ৰ নোহোৱাৰ বাবেও "
+#~ "হ'ব পাৰে ।"
+
+#~ msgid "Something went wrong while installing the new certificate:\n"
+#~ msgstr "নতুন প্ৰমাণপত্ৰ সংস্থাপন কৰোঁতে কিবা এটা ভুল হৈছিল:\n"
+
+#~ msgid "unknown"
+#~ msgstr "অজ্ঞাত"
+
+#~ msgid "There was an error getting the list of hardware."
+#~ msgstr "হাৰ্ডওৱেৰৰ তালিকা প্ৰাপ্ত কৰোতে এটা ত্ৰুটি হৈছিল। "
+
+#, python-format
+#~ msgid "%s MB"
+#~ msgstr "%s MB"
+
+#~ msgid "There was an error building the list of packages."
+#~ msgstr "পেকেইজসমূহৰ তালিকা নিৰ্মান কৰোতে এটা ত্ৰুটি হৈছিল।"
+
+#~ msgid "Package"
+#~ msgstr "সৰঞ্জাম"
+
+#~ msgid "Arch"
+#~ msgstr "স্থাপত্য"
+
+#~ msgid ""
+#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr ""
+#~ "আপোনাৰ ব্যৱস্থাপ্ৰণালীৰ RPM সৰঞ্জামৰ তালিকা বনোৱা হৈছে । অনুগ্ৰহ কৰি অপেক্ষা কৰক "
+#~ "।"
+
+#~ msgid ""
+#~ "There was an error loading your configuration.  Make sure that\n"
+#~ "you have read access to /etc/sysconfig/rhn."
+#~ msgstr ""
+#~ "আপোনাৰ বিন্যাস তুলি লওঁতে ভুল হৈছিল ।  আপোনাৰ \n"
+#~ " /etc/sysconfig/rhn ত পঢ়াৰ অনুমতি থকাতো নিশ্চিত কৰক ।"
+
+#, python-format
+#~ msgid ""
+#~ "There was an error saving your configuration. Make sure that\n"
+#~ "you own %s."
+#~ msgstr ""
+#~ "আপোনাৰ বিন্যাস ৰক্ষা কৰোঁতে ভুল হৈছে । আপুনি\n"
+#~ " %s ৰ গৰাকী হোৱাতো নিশ্চিত কৰক ।"
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "This error shouldn't have happened. If you'd like to help us improve this "
+#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
+#~ "parts of '%s' would be very helpful. Thanks!"
+#~ msgstr ""
+#~ "ই ভুল হ'ব নালাগিছিল । যদি আপুনি আমাক সহায় কৰি এই কাৰ্য্যক্ৰম উন্নত কৰিব খোজে, "
+#~ "অনুগ্ৰহ কৰি এটা বাগ bugzilla.redhat.com ত নথিভুক্ত কৰক । '%s' ৰ প্ৰাসঙ্গিক কথা "
+#~ "অন্তৰ্ভুক্ত থাকিলে বিশেষ সহায় হ'ব । ধন্যবাদ !"
+
+#~ msgid ""
+#~ "You need to register this system by running `rhn_register` before using "
+#~ "this option"
+#~ msgstr ""
+#~ "এই বিকল্প ব্যৱহাৰ কৰাৰ পূৰ্বে আপুনি এই ব্যৱস্থাপ্ৰণালী পঞ্জিকৰণ কৰিব লাগিব "
+#~ "`rhn_register` চলাই"
+
+#~ msgid "Updating package profile..."
+#~ msgstr "সৰঞ্জামৰ আলেখ্য উন্নয়ন কৰা হৈছে..."
+
+#~ msgid "Updating hardware profile..."
+#~ msgstr "যন্ত্ৰৰ আলেখ্য উন্নয়ন কৰা হৈছে..."
+
+#~ msgid "Updating virtualization profile..."
+#~ msgstr "ভাৰচুৱেলাইজেছনৰ আলেখ্য উন্নয়ন কৰা হৈছে..."
+
+#~ msgid "Do not attempt to use X"
+#~ msgstr "X ব্যৱহাৰ কৰিব'লৈ চেষ্টা নকৰিব"
+
 #, fuzzy
-msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr "Red Hat Network লৈ সংযোগ কৰিব বিচাৰিম এটা _HTTP নিযুক্তকৰ যোগেদি ।"
+#~ msgid "System registration"
+#~ msgstr "RHN ৰেজিস্ট্ৰেষণ"
 
-#: ../data/rh_register.glade.h:98
-msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr "<small><b>উদাহৰণ:</b> squid.example.com:3128</small>"
+#~ msgid "Set Up Software Updates"
+#~ msgstr "চালনাজ্ঞান উন্নয়নৰ প্ৰতিষ্ঠাপন"
 
-#: ../data/rh_register.glade.h:99
-msgid "_Proxy Location:"
-msgstr "প্ৰক্সিৰ অৱস্থান (_P):"
+#~ msgid "Choose Service"
+#~ msgstr "চাৰ্ভাৰ বাচক"
 
-#: ../data/rh_register.glade.h:100
-msgid "Enter in the format hostname(:port)"
-msgstr "hostname(:port) আকৃতিত দিয়ক"
+#~ msgid "Provide a security certificate"
+#~ msgstr "সুৰক্ষাৰ প্ৰমাণপত্ৰৰ যোগান ধৰক"
 
-#: ../data/rh_register.glade.h:101
-msgid "proxy location"
-msgstr "প্ৰক্সি অৱস্থান"
+#~ msgid "Red Hat Account"
+#~ msgstr "Red Hat লগিন"
 
-#: ../data/rh_register.glade.h:102
-msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "HTTP প্ৰক্সিৰ সৈতে প্ৰমাণীকৰণ ব্যৱহাৰ কৰক (_t):"
+#~ msgid "Create Profile"
+#~ msgstr "আলেখ্য সৃষ্টি কৰক"
 
-#: ../data/rh_register.glade.h:103
-msgid "Use Authentication with HTTP Proxy"
-msgstr "HTTP প্ৰক্সিৰ সৈতে প্ৰমাণীকৰণ ব্যৱহাৰ কৰক"
+#~ msgid "Sending Information"
+#~ msgstr "পেকেইজৰ তথ্য পঠিওৱা হৈছে"
 
-#: ../data/rh_register.glade.h:104
-msgid "Proxy _Username:"
-msgstr "প্ৰক্সি ব্যৱহাৰকাৰীৰ নাম (_U):"
+#~ msgid "progress bar"
+#~ msgstr "প্ৰগ্ৰেচ বাৰ"
 
-#: ../data/rh_register.glade.h:105
-msgid "Proxy P_assword:"
-msgstr "প্ৰক্সি পাছৱাৰ্ড (_a):"
+#~ msgid "progress status"
+#~ msgstr "প্ৰগ্ৰেচৰ অৱস্থা"
 
-#: ../data/rh_register.glade.h:106
-msgid "proxy user field"
-msgstr "প্ৰক্সি ব্যৱহাৰকাৰী ফিল্ড"
+#~ msgid ""
+#~ "<b>The network connection on your system is not active. Your system "
+#~ "cannot be set up for software updates at this time.</b>"
+#~ msgstr ""
+#~ "<b>এই ব্যৱস্থাপ্ৰণালীৰ নে'টৱৰ্ক যোগাযোগ কাৰ্য্যকৰী নহয় । আপোনাৰ ব্যৱস্থাপ্ৰণালী এই "
+#~ "সময়ত চালনাজ্ঞান উন্নয়নৰ বাবে প্ৰতিষ্ঠা কৰিব নোৱাৰি ।</b>"
 
-#: ../data/rh_register.glade.h:107
-msgid "proxy password field"
-msgstr "প্ৰক্সি পাছওৱাৰ্ড ফিল্ড"
-
-#: ../data/rh_register.glade.h:108
-msgid "Confirm operation system release selection"
-msgstr "কাৰ্য্য চিস্টেম উন্মোচন বাছনি নিশ্চিত কৰক"
-
-#: ../data/rh_register.glade.h:109
-msgid "_No, Cancel"
-msgstr "নহয়, বাতিল কৰক (_N)"
-
-#: ../data/rh_register.glade.h:111
-msgid "_Yes, Continue"
-msgstr "হয়, আগবাঢ়ক (_Y)"
-
-#: ../data/rh_register.glade.h:113
-msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr "<big><b>পূৰ্বৰ উন্মোচনসমূহলে উভতি যোৱাটো সম্ভব নহব</b></big>"
-
-#: ../data/rh_register.glade.h:114
-msgid ""
-"Your system will be subscribed to the base software channel.  You will not "
-"be able to move this system to an earlier minor release channel if you "
-"continue (you will be able to move to a later release.)"
-msgstr ""
-"আপোনাৰ চিস্টেমক ভিত্তি চফ্টওৱেৰ চেনেললে স্বাক্ষৰীত কৰা হ'ব। আপুনি এই চিস্টেমক পূৰ্বৰ "
-"গৌণ উন্মোচনলে লৈ যাব নোৱাৰিব যদি আপুনি তথাপিও আগবাঢে (তেনেহলে আপুনি পৰৰ্ৱতী "
-"উন্মোচনলে গুচি যাব পাৰিব।)"
-
-#: ../data/rh_register.glade.h:115
-msgid ""
-"\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"\n"
-"আপুনি নিশ্চিত নে আপুনি আগবাঢ়িব বিচাৰে?"
-
-#: ../data/rh_register.glade.h:117
-msgid "Are you Sure?"
-msgstr "আপুনি নিশ্চিত নে?"
-
-#: ../data/rh_register.glade.h:118
-msgid "_Go Back and Register"
-msgstr "উভতি যাওক আৰু ৰেজিস্টাৰ কৰক (_G)"
-
-#: ../data/rh_register.glade.h:119
-msgid "Go Back and Register"
-msgstr "উভতি যাওক আৰু ৰেজিস্টাৰ কৰক"
-
-#: ../data/rh_register.glade.h:120
-msgid "Register _Later"
-msgstr "পিছত ৰেজিস্টাৰ কৰক (_L)"
-
-#: ../data/rh_register.glade.h:121
-msgid "Register Later"
-msgstr "পিছত ৰেজিস্টাৰ কৰক"
-
-#: ../data/rh_register.glade.h:122
-msgid ""
-"Are you sure you don't want to register your system with Red Hat? You'll "
-"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr ""
-"আপুনি আপোনাৰ চিস্টেমক Red Hat ৰ সৈতে ৰেজিস্টাৰ নকৰিবলৈ নিশ্চিত নে? আপুনি Red Hat "
-"Enterprise Linux স্বাক্ষৰণৰ সুবিধাসমূহ নাপাব:  "
-
-#: ../data/rh_register.glade.h:123
-msgid "Management:"
-msgstr "ব্যৱস্থাপনা:"
-
-#: ../data/rh_register.glade.h:124
-msgid ""
-"You will not be able to take advantage of these benefits without registering."
-msgstr "আপুনি ৰেজিস্টাৰ নকৰাকৈ এই সুবিধাসমূহ উপভোগ কৰিব নোৱাৰিব।"
-
-#: ../data/rh_register.glade.h:127
-msgid "<b>Spacewalk Location:</b>"
-msgstr ""
-
-#: ../data/rh_register.glade.h:128
-msgid "<b>Login:</b>"
-msgstr "<b>লগিন:</b>"
-
-#: ../data/rh_register.glade.h:129
-msgid "<b>System ID:</b>"
-msgstr "<b>চিস্টেম ID:</b>"
-
-#: ../data/rh_register.glade.h:130
-msgid "label"
-msgstr "লেবেল"
-
-#: ../data/rh_register.glade.h:132
-msgid "<b>Warning</b>"
-msgstr "<b>সতৰ্কবাৰ্তা</b>"
-
-#: ../data/rh_register.glade.h:133
-msgid ""
-"This system has already been registered with RHN using RHN certificate-based "
-"technology."
-msgstr ""
-"এই চিস্টেম ইতিমধ্যে RHN প্ৰমাণপত্ৰ-ভিত্তিয় প্ৰযুক্তি ব্যৱহাৰ কৰি RHN ৰ সৈতে ৰেজিস্টাৰ "
-"কৰা আছে।"
-
-#: ../data/rh_register.glade.h:134
-msgid ""
-"Your system is being registered again using RHN Classic technology. Red Hat "
-"recommends that customers only register once."
-msgstr ""
-
-#: ../data/rh_register.glade.h:135
-msgid ""
-"To learn more about RHN registration and technologies please consult this "
-"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
-"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
-msgstr ""
-"RHN ৰেজিস্ট্ৰেষণ আৰু প্ৰযুক্তিসমূহৰ বিষয়ে অধিক জানিবলে এই জ্ঞান ভিত্তিক অধ্যায়ৰ পৰামৰ্শ "
-"লওক: <a href=\"https://access.redhat.com/kb/docs/DOC-45563\">https://access."
-"redhat.com/kb/docs/DOC-45563</a>\n"
-
-#: ../data/rh_register.glade.h:137
-msgid "Software update setup has been completed for this system."
-msgstr "এই চিস্টেমৰ বাবে চফ্টেৱেৰ আপডেইট সংস্থাপন সম্পূৰ্ণ কৰা হ'ল।"
-
-#: ../data/rh_register.glade.h:138
-msgid ""
-"Your system is now ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"আপোনাৰ চিস্টেম এতিয়া চফ্টৱেৰ আপডেইট গ্ৰহণ কৰিব'লৈ সাজু যি ইয়াক সুৰক্ষিত আৰু সমৰ্থিত "
-"ৰাখিব।\n"
-"\n"
-"কেতিয়া আপডেইটেড চফ্টৱেৰ পোৱা হ'ব আপুনি জানিব যেতিয়া এটা পেকেইজৰ প্ৰতিকৃতি আপোনাৰ "
-"ডেষ্কট'পৰ জাননিৰ ক্ষেত্ৰত ওলাব (সাধাৰণতে ওপৰৰ সোঁফালৰ কোণত) পোৱা যাওঁতে, এই "
-"প্ৰতিকৃতিত টিপিলে, কোনো আপডেইট প্ৰযোজ্য কৰিব'লৈ আপোনাৰ মাৰ্গদৰ্শণ কৰিব।"
-
-#: ../data/rh_register.glade.h:141
-msgid "Aplet screenshot"
-msgstr "Aplet -ৰ স্ক্ৰিনসট"
-
-#: ../data/rh_register.glade.h:143
-msgid "Select how your system will receive updates:"
-msgstr "আপোনাৰ চিস্টেমে কিদৰে আপডেইটসমূহ গ্ৰহণ কৰিব বাছক:"
-
-#: ../data/rh_register.glade.h:144
-msgid "Limited updates"
-msgstr "সীমিত আপডেইটসমূহ"
-
-#: ../data/rh_register.glade.h:145
-msgid ""
-"<b>_Limited updates</b> will be provided to this system, maintaining "
-"compatibility with the selected minor release software channel:"
-msgstr ""
-"<b>সীমিত আপডেইটসমূহ</b> এই চিস্টেমক যোগান দিয়া হ'ব যাতে ই নিম্নলিখিত Red Hat "
-"Enterprise Linux -ৰ যোগ্য গৌণ উন্মোচন চফ্টৱেৰ চেনেলৰ লগত খাপ খাব পাৰে:"
-
-#: ../data/rh_register.glade.h:146
-msgid ""
-"Limited updates will be provided to this system, maintaining compatibility "
-"with the selected minor release software channel:"
-msgstr ""
-"<b>সীমিত আপডেইটসমূহ</b> এই চিস্টেমক যোগান দিয়া হ'ব যাতে ই নিম্নলিখিত Red Hat "
-"Enterprise Linux -ৰ যোগ্য গৌণ উন্মোচন চফ্টৱেৰ চেনেলৰ লগত খাপ খাব পাৰে:"
-
-#: ../data/rh_register.glade.h:147
-msgid "_Minor release:"
-msgstr "গৌণ উন্মোচন (_M):"
-
-#: ../data/rh_register.glade.h:148
-msgid "Choose minor release"
-msgstr "গৌণ উন্মোচন বাচক"
-
-#: ../data/rh_register.glade.h:149
-msgid "       "
-msgstr "       "
-
-#: ../data/rh_register.glade.h:150
-msgid ""
-"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
-"Hat."
-msgstr ""
-"<b>সহায়:</b> এটা '*' থকা গৌণ উন্মোচনসমূহ বৰ্তমানে Red Hat -এ সমপূৰ্ণভাৱে সমৰ্থন "
-"নকৰে।"
-
-#: ../data/rh_register.glade.h:152
-msgid ""
-"<b>_All available updates</b> will be provided to this system. If kept "
-"updated, this system will always be equivalent to the latest minor release "
-"in the main 'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"<b>সকলো উপলব্ধ আপডেইটসমূহ</b> এইখন চিস্টেমক যোগান দিয়া হ'ব। এইখন চিস্টেম, যদি "
-"আপডেইট কৰি ৰখা হয়, তেনেহলে ই সদায় Red Hat Enterprise Linux 6 -ৰ শেহতীয়াকে "
-"উপলব্ধ গৌণ উন্মোচনৰ সমসাময়িক হই থাকিব। ইয়াক মূখ্য 'Red Hat Enterprise Linux 6' -"
-"ৰ চফ্টৱেৰ চেনেললে ৰেজিস্টাৰ কৰা হ'ব।"
-
-#: ../data/rh_register.glade.h:153
-msgid ""
-"All available updates will be provided to this system. If kept updated, this "
-"system will always be equivalent to the latest minor release in the main "
-"'Red Hat Enterprise Linux x' software channel."
-msgstr ""
-"সকলো উপলব্ধ আপডেইটসমূহ এই চিস্টেমক যোগান দিয়া হ'ব। এই চিস্টেম, যদি আপডেইট কৰি "
-"ৰখা হয়, তেনেহলে ই সদায় মূখ্য 'Red Hat Enterprise Linux x' ৰ চফ্টৱেৰ চেনেলত "
-"শেহতীয়া গৌণ উন্মোচনৰ সমসাময়িক হই থাকিব।"
-
-#: ../data/rh_register.glade.h:154
-msgid ""
-"<b>Warning:</b> Using this option, your system will always be the most "
-"recent minor release and <b>cannot</b> be limited to an older release "
-"version."
-msgstr ""
-"<b>সতৰ্কবাৰ্তা:</b> এই বিকল্প ব্যৱহাৰ কৰি, আপোনাৰ চিস্টেম সদায় আটাইতকৈ শেহতীয়া "
-"গৌণ উন্মোচন হৈ থাকিব আৰু এটা পুনৰি উন্মোচন সংস্কৰণলৈ সীমিত কৰিব পৰা <b>নাযাব</b>।"
-
-#: ../data/rh_register.glade.h:155
-msgid ""
-"Warning: Using this option, your system will always be the most recent minor "
-"release and cannot be limited to an older release version."
-msgstr ""
-"সতৰ্কবাৰ্তা: এই বিকল্প ব্যৱহাৰ কৰি, আপোনাৰ চিস্টেম সদায় আটাইতকৈ শেহতীয়া গৌণ "
-"উন্মোচন হৈ থাকিব আৰু এটা পুনৰি উন্মোচন সংস্কৰণলৈ সীমিত কৰিব পৰা নাযাব।"
-
-#: ../data/rh_register.glade.h:156
-msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr ""
-"<b>আপোনাৰ চিস্টেম ইনস্টল হৈ থকা সময়ত আপডেইটসমূহৰ বাবে ৰেজিস্টাৰ কৰা হৈছিল।</b>"
-
-#: ../data/rh_register.glade.h:157
-msgid ""
-"Your system is ready to receive the software updates that will keep it "
-"secure and supported.\n"
-"\n"
-"You'll know when software updates are available when a package icon appears "
-"in the notification area of your desktop (usually in the upper-right corner, "
-"circled below.) Clicking on this icon, when available, will guide you "
-"through applying any updates that are available:"
-msgstr ""
-"আপোনাৰ চিস্টেম এতিয়া চফ্টৱেৰ আপডেইট গ্ৰহণ কৰিব'লৈ সাজু যি ইয়াক সুৰক্ষিত আৰু সমৰ্থিত "
-"ৰাখিব।\n"
-"\n"
-"কেতিয়া চফ্টৱেৰ আপডেইট পোৱা যাব আপুনি জানিব যেতিয়া এটা পেকেইজ আইকন আপোনাৰ "
-"ডেষ্কট'পৰ জাননিৰ ক্ষেত্ৰত ওলাব (সাধাৰণতে ওপৰৰ সোঁফালৰ কোণত, তলত বৃত্তিয়।) যদি "
-"উপলব্ধ আছে, তেনেহলে এই আইকনত ক্লিক কৰিলে, ই আপোনাক পথ প্ৰদৰ্শণ কৰিব কেনেধৰনে "
-"উপলব্ধ আপডেইটসমূহ ল'ব পাৰি:"
-
-#: ../data/rh_register.glade.h:160
-msgid "icon of aplet"
-msgstr "aplet -ৰ আইকন"
-
-#: ../rhn_register.desktop.in.h:1
-msgid "RHN Registration"
-msgstr "RHN ৰেজিস্ট্ৰেষণ"
-
-#: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-"Spacewalk/Satellite/Red Hat Network পৰা চফ্টওৱেৰ আপডেইটৰ কাৰণে ৰেজিস্টাৰ কৰক"
+#~ msgid ""
+#~ "This system will <b>not</b> be able to successfully receive software "
+#~ "updates, including security updates, from Red Hat without connecting to a "
+#~ "Red Hat Satellite or Red Hat Network Classic.\n"
+#~ "\n"
+#~ "To keep your system updated, secure, and supported, please register this "
+#~ "system at your earliest convenience."
+#~ msgstr ""
+#~ "এই চিস্টেমে Red Hat Network চাৰ্ভাৰৰ লগত সংযোগ নকৰাকৈ Red Hat ৰ পৰা সফল "
+#~ "ভাবে চফ্টওৱেৰ আপডেইটসমূহ গ্ৰহণ কৰিব <b>নোৱাৰিব।</b> \n"
+#~ "\n"
+#~ "আপোনাৰ চিস্টেমক আপডেইটেড, সুৰক্ষিত আৰু সমৰ্থিত ৰাখিবলৈ, অনুগ্ৰহ কৰি ইয়াক শীঘ্ৰে "
+#~ "ৰেজিস্টাৰ কৰিব।"
 
-#: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+#~ msgid "Why Should I Connect to RHN? ..."
+#~ msgstr "মই কিয় RHN লৈ সংযোগ কৰোঁ ? ..."
+
+#~ msgid "Location:"
+#~ msgstr "অৱস্থান:"
+
+#~ msgid "Example: https://satellite.example.com/XMLRPC"
+#~ msgstr "উদাহৰণ: https://satellite.example.com/XMLRPC"
+
+#~ msgid "satellite server location"
+#~ msgstr "ছেটেলাইট চাৰ্ভাৰ অৱস্থান"
+
+#~ msgid "_Proxy Setup"
+#~ msgstr "প্ৰক্সি সংস্থাপন (_P)"
+
+#~ msgid "Proxy Setup Button"
+#~ msgstr "প্ৰক্সি সংস্থাপন বুটাম"
+
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "আপোনাৰ একাওন্টৰ তথ্য দিয়ক"
+
+#~ msgid "RHN login field"
+#~ msgstr "RHN লগিন ফিল্ড:"
+
+#~ msgid "RHN password field"
+#~ msgstr "RHN পাছওৱাৰ্ড ফিল্ড"
+
+#~ msgid "_Password:"
+#~ msgstr "পাছৱাৰ্ড (_P)"
+
+#~ msgid "_Login:"
+#~ msgstr "লগিন (_L):"
+
+#~ msgid ""
+#~ "<small>Tip: Forgot your login or password? Contact your Satellite's "
+#~ "<i>Organization Administrator</i>.</small>"
+#~ msgstr ""
+#~ "<small>সহায়: আপোনাৰ লগিন অথবা পাছৱাৰ্ড পাহৰিছে? আপোনাৰ Satellite "
+#~ "ৰ<i>সংযঘঠন প্ৰশাসক</i> ৰ সৈতে যোগাযোগ কৰক।</small>"
+
+#~ msgid "Hardware Info"
+#~ msgstr "যন্ত্ৰৰ আলেখ্য"
+
+#~ msgid "Red Hat Linux Version:"
+#~ msgstr "Red Hat Linux সংস্কৰণ"
+
+#~ msgid "Hostname:"
+#~ msgstr "হস্টনাম:"
+
+#~ msgid "IP Address:"
+#~ msgstr "IP ঠিকনা:"
+
+#~ msgid "ERROR"
+#~ msgstr "ত্ৰুটি"
+
+#~ msgid "CPU Model:"
+#~ msgstr "CPU আৰ্হি:"
+
+#~ msgid "CPU Speed:"
+#~ msgstr "CPU ৰ গতি:"
+
+#~ msgid "Memory:"
+#~ msgstr "মেমৰি:"
+
+#~ msgid "Hardware Profile"
+#~ msgstr "হাৰ্ডৱেৰ আলেখ্য"
+
+#~ msgid "Package Information"
+#~ msgstr "সৰঞ্জামৰ তথ্য"
+
+#~ msgid "Start Window"
+#~ msgstr "সংযোগক্ষেতৰ আৰম্ভ কৰক"
+
+#~ msgid ""
+#~ "This assistant will guide you through the process of registering your "
+#~ "system with Red Hat to receive software updates and other benefits. You "
+#~ "will need the following to register:"
+#~ msgstr ""
+#~ "এই সহায়কে আপোনাৰ চিস্টেমক Red Hat ৰ সৈতে ৰেজিস্টাৰ কৰি চফ্টৱেৰ আপডেইট আৰু অন্য "
+#~ "সুবিধাসমূহ প্ৰাপ্ত কৰিবলৈ সহায় কৰিব। ৰেজিস্টাৰ কৰিবলৈ আপোনাক নিম্নলিখিতৰ প্ৰয়োজন "
+#~ "হ'ব:"
+
+#~ msgid "_Why Should I Register?"
+#~ msgstr "মই কিয় ৰেজিস্ট্ৰাৰ কৰিম (_W)?"
+
+#~ msgid "Why Should I Register?"
+#~ msgstr "মই কিয় ৰেজিস্ট্ৰাৰ কৰিম"
+
+#~ msgid ""
+#~ "Would you like to register your system at this time? <b>(Strongly "
+#~ "recommended.)</b>"
+#~ msgstr ""
+#~ "আপোনাৰ চিস্টেমক এতিয়া ৰেজিস্টাৰ কৰিব খোজে নেকি? <b>(দৃঢ় ভাবে পৰামৰ্শ দিয়া "
+#~ "হয়।)</b>"
+
+#~ msgid "_Yes, I'd like to register now."
+#~ msgstr "হয়, মই এতিয়া ৰেজিস্টাৰ কৰিব বিচাৰো (_Y)।"
+
+#~ msgid "_No, I prefer to register at a later time."
+#~ msgstr "নহয়, মই পিছত ৰেজিস্টাৰ কৰিব'লৈ পছন্দ কৰিম (_N)।"
+
+#~ msgid "Link To Subscription"
+#~ msgstr "বৰঙনিৰ সংযোগ"
+
+#~ msgid ""
+#~ "Your system will need to access a subscription. This will allow you to "
+#~ "keep your system updated, secure, and supported."
+#~ msgstr ""
+#~ "আপোনাৰ চিস্টেমে এটা স্বাক্ষৰণ উপক্ৰম কৰিব লাগিব। এইটোৱে আপোনাৰ চিস্টেমক "
+#~ "আপডেইটেড, সুৰক্ষিত আৰু সমৰ্থিত ৰাখিব।"
+
+#~ msgid ""
+#~ "<b>You have no active subscriptions available in your account.</b> You "
+#~ "will need to do one of the following to create an active subscription in "
+#~ "your account before this system can be registered:"
+#~ msgstr ""
+#~ "<b>আপোনাৰ হিচাপত কোনো সক্ৰীয় বৰঙনি নাই ।</b> আপুনি নিম্নলিখিতৰ যিকোনো এটা "
+#~ "কৰিব লাগিব যাতে এটা সক্ৰীয় বৰঙনি আপোনাৰ হিচাপত সৃষ্টি হয় এই ব্যৱস্থাপ্ৰণালী "
+#~ "পঞ্জিকৰণ কৰাৰ পূৰ্বে:"
+
+#~ msgid ""
+#~ "Purchase an additional Red Hat Enterprise Linux subscription at http://"
+#~ "www.redhat.com/store/."
+#~ msgstr ""
+#~ "http://www.redhat.com/store/ ত এটা অতিৰিক্ত Red Hat Enterprise Linux "
+#~ "স্বাক্ষৰণ কিনক।"
+
+#~ msgid ""
+#~ "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
+#~ "RHN > Subscription Management > System Entitlements."
+#~ msgstr ""
+#~ "http://rhn.redhat.com/ ত লগিন কৰক আৰু এটা নিষ্ক্ৰিয় চিস্টেমক আপোনাৰ RHN > "
+#~ "স্বাক্ষৰণ ব্যৱস্থাপনা > চিস্টেম অনুজ্ঞাসমূহত অযোগ্য কৰক।"
+
+#~ msgid ""
+#~ "Activate a previously purchased subscription you have not yet activated."
+#~ msgstr "আপুনি আগতে সক্ৰিয় নকৰা পূৰ্বতে ক্ৰয় কৰা এটা স্বাক্ষৰণক সক্ৰিয় কৰক।"
+
+#~ msgid "•"
+#~ msgstr "•"
+
+#~ msgid "installation number field"
+#~ msgstr "ইনস্টল নম্বৰ ফিল্ড"
+
+#~ msgid "Installation _Number:"
+#~ msgstr "ইনস্টলেষণ নম্বৰ (_N):"
+
+#~ msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
+#~ msgstr "<small><b>উদাহৰণ</b>: XXXX-XXXX-XXXX-XXXX</small>"
+
+#~ msgid "_Activate a subscription now..."
+#~ msgstr "এটা বৰঙনি সক্ৰীয় কৰক (_A)..."
+
+#~ msgid "Review system..."
+#~ msgstr "ব্যৱস্থাপ্ৰনালী পুনঃ চাওক..."
+
+#~ msgid "Create profile"
+#~ msgstr "আলেখ্য সৃষ্টি কৰক"
+
+#~ msgid "<big><b>System Name</b></big>"
+#~ msgstr "<big><b>চিস্টেমৰ নাম</b></big>"
+
+#~ msgid ""
+#~ "A recognizable name will help you identify this system in a management "
+#~ "interface."
+#~ msgstr ""
+#~ "এটা চিনাক্ত কৰিব পৰা নামে আপোনাক এই চিস্টেমক এটা ব্যৱস্থাপনা আন্তঃপৃষ্ঠত চিনাক্ত "
+#~ "কৰাত সহায় কৰিব।"
+
+#~ msgid "System _Name:"
+#~ msgstr "চিস্টেমৰ নাম (_N):"
+
+#~ msgid "system name"
+#~ msgstr "চিস্টেমৰ নাম"
+
+#~ msgid "<big><b>Profile Data</b></big>"
+#~ msgstr "<big><b>আলেখ্য তথ্য</b></big>"
+
+#~ msgid ""
+#~ "Send us a profile of your current hardware and packages so we can "
+#~ "determine what updates are available."
+#~ msgstr ""
+#~ "আপোনাৰ বৰ্তমান হাৰ্ডৱেৰ আৰু পেকেইজসমূহৰ এটা আলেখ্য পঠিয়াওক যাতে আমি উপলব্ধ "
+#~ "আপডেইটসমূহ নিৰ্ধাৰণ কৰিব পাৰো।"
+
+#~ msgid "_View Hardware Profile ..."
+#~ msgstr "হাৰ্ডৱেৰ আলেখ্য চাওক (_V) ..."
+
+#~ msgid "View Hardware Profile"
+#~ msgstr "হাৰ্ডওৱেৰ আলেখ্য চাওক"
+
+#~ msgid "V_iew Package Profile ..."
+#~ msgstr "পেকেইজ আলেখ্য চাওক (_i) ..."
+
+#~ msgid "View Package Profile"
+#~ msgstr "পেকেইজ আলেখ্য চাওক"
+
+#~ msgid "Send _hardware profile"
+#~ msgstr "হাৰ্ডৱেৰ আলেখ্য পঠাওক"
+
+#~ msgid "Send hardware profile checkbox"
+#~ msgstr "হাৰ্ডওৱেৰ আলেখ্য চেকবক্স পঠাওক"
+
+#~ msgid "Send _package profile"
+#~ msgstr "পেকেইজ আলেখ্য পঠাওক (_p)"
+
+#~ msgid "Send package profile checkbox"
+#~ msgstr "পেকেইজ আলেখ্য চেকবক্স পঠাওক"
+
+#~ msgid ""
+#~ "Registering your system with Red Hat allows you to take full advantage of "
+#~ "the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Red Hat ৰ সৈতে আপোনাৰ চিস্টেম ৰেজিস্টাৰ কৰিলে আপুনি এটা ক্ৰম কৰা স্বাক্ষৰণৰ "
+#~ "সম্পূৰ্ণ সুবিধা ল'ব পাৰিব, য'ত অন্তৰ্ভুক্ত হয়:"
+
+#~ msgid "_Close"
+#~ msgstr "বন্ধ কৰক (_C)"
+
+#~ msgid "Close"
+#~ msgstr "বন্ধ কৰক"
+
+#~ msgid "<b>Security &amp; Updates:</b>"
+#~ msgstr "<b>সুৰক্ষা &amp; আপডেইটসমূহ:</b>"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
+#~ msgstr ""
+#~ "সুৰক্ষাৰ আপডেইটসমূহ অন্তৰ্ভুক্ত কৰা শেহতীয়া চফ্টৱেৰ আপডেইট প্ৰাপ্ত কৰক, যাতে এই Red "
+#~ "Hat Enterprise Linux চিস্টেম <b>আপডেইটেড</b> আৰু <b>সুৰক্ষিত</b> থাকে।"
+
+#~ msgid "<b>Downloads &amp; Upgrades:</b>"
+#~ msgstr "<b>ডাউনল'ডসমূহ &amp; আপগ্ৰেইডসমূহ:</b>"
+
+#~ msgid ""
+#~ "Download installation images for Red Hat Enterprise Linux releases, "
+#~ "including new releases."
+#~ msgstr ""
+#~ "Red Hat Enterprise Linux মুক্তি সমূহ আৰু নতুন মুক্তি সমূহৰ বাবে সংস্থাপক প্ৰতিমুৰ্তি "
+#~ "ডাউনলো'ড কৰক ।"
+
+#~ msgid "<b>Support:</b>"
+#~ msgstr "<b>সমৰ্থন:</b>"
+
+#~ msgid ""
+#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
+#~ "for help with any issues you might encounter with this system."
+#~ msgstr ""
+#~ "আপোনাৰ ব্যৱস্থাপ্ৰণালীৰ লগত থকা যিকোনো বিতৰ্কৰ বাবে  Red Hat or Red Hat ৰ "
+#~ "সহভোগিৰ সৈতে থকা প্ৰায়োগিক সমৰ্থনৰ বিশেষজ্ঞ সকলৰ পৰা সহজলভ্য সহায় পাওক ।"
+
+#~ msgid "<b>Management:</b>"
+#~ msgstr "<b>ব্যৱস্থাপনা:</b>"
+
+#~ msgid "Management"
+#~ msgstr "ব্যৱস্থাপনা"
+
+#~ msgid ""
+#~ "Manage subscriptions and systems registered to Customer Portal via access."
+#~ "redhat.com or through one of our other subscription management services."
+#~ msgstr ""
+#~ "access.redhat.com অথবা আমাৰ অন্য স্বাক্ষৰণ ব্যৱস্থাপনা সেৱাসমূহৰ সৈতে গ্ৰাহক "
+#~ "পোৰ্টেললৈ ৰেজিস্টাৰ্ড স্বাক্ষৰণ আৰু চিস্টেমসমূহ ব্যৱস্থাপনা কৰক।"
+
+#~ msgid ""
+#~ "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/"
+#~ "legal/privacy_statement.html.</small>"
+#~ msgstr ""
+#~ "<small><b>সহায়:</b> Red Hat এ আপোনাৰ গোপনীয়তাক সন্মান কৰে: http://www."
+#~ "redhat.com/legal/privacy_statement.html.</small>"
+
+#~ msgid "Provide a Security Certificate"
+#~ msgstr "সুৰক্ষাৰ প্ৰমাণপত্ৰৰ যোগান ধৰক"
+
+#~ msgid "Certificate _Location:"
+#~ msgstr "প্ৰমাণপত্ৰৰ অৱস্থান (_L):"
+
+#~ msgid "Select A File"
+#~ msgstr "নথিপত্ৰ নিৰ্ব্বাচন কৰক"
+
+#~ msgid ""
+#~ "I <b>_don't</b> have an SSL certificate. I will contact my system "
+#~ "administrator for assistance and will register at a later time."
+#~ msgstr ""
+#~ "মোৰ ওচৰত এখন SSL প্ৰমাণপত্ৰ <b>নাই</b>। মই মোৰ চিস্টেম প্ৰশাসকক সহায়তাৰ বাবে "
+#~ "যোগাযোগ কৰিম আৰু পিছত ৰেজিস্ট্ৰেষণ কৰিম।"
+
+#~ msgid "Your system is not setup for software updates."
+#~ msgstr "আপোনাৰ চিস্টেম চফ্টৱেৰ আপডেইটৰ বাবে সংস্থাপিত নহয়।"
+
+#~ msgid "Proxy Configuration"
+#~ msgstr "প্ৰক্সিৰ অৱস্থান "
+
+#~ msgid "<b>HTTP Proxy</b>"
+#~ msgstr "<b>HTTP প্ৰক্সি</b>"
+
+#~ msgid "I would like to connect via an _HTTP proxy."
+#~ msgstr "মই এটা HTTP প্ৰক্সিৰ যোগেদি সংযোগ কৰিব বিচাৰো (_H)।"
+
+#, fuzzy
+#~ msgid "I would like to connect to Spacewalk via an _HTTP proxy."
+#~ msgstr "Red Hat Network লৈ সংযোগ কৰিব বিচাৰিম এটা _HTTP নিযুক্তকৰ যোগেদি ।"
+
+#~ msgid "<small><b>Example:</b> squid.example.com:3128</small>"
+#~ msgstr "<small><b>উদাহৰণ:</b> squid.example.com:3128</small>"
+
+#~ msgid "_Proxy Location:"
+#~ msgstr "প্ৰক্সিৰ অৱস্থান (_P):"
+
+#~ msgid "Enter in the format hostname(:port)"
+#~ msgstr "hostname(:port) আকৃতিত দিয়ক"
+
+#~ msgid "proxy location"
+#~ msgstr "প্ৰক্সি অৱস্থান"
+
+#~ msgid "Use Au_thentication with HTTP Proxy:"
+#~ msgstr "HTTP প্ৰক্সিৰ সৈতে প্ৰমাণীকৰণ ব্যৱহাৰ কৰক (_t):"
+
+#~ msgid "Use Authentication with HTTP Proxy"
+#~ msgstr "HTTP প্ৰক্সিৰ সৈতে প্ৰমাণীকৰণ ব্যৱহাৰ কৰক"
+
+#~ msgid "Proxy _Username:"
+#~ msgstr "প্ৰক্সি ব্যৱহাৰকাৰীৰ নাম (_U):"
+
+#~ msgid "Proxy P_assword:"
+#~ msgstr "প্ৰক্সি পাছৱাৰ্ড (_a):"
+
+#~ msgid "proxy user field"
+#~ msgstr "প্ৰক্সি ব্যৱহাৰকাৰী ফিল্ড"
+
+#~ msgid "proxy password field"
+#~ msgstr "প্ৰক্সি পাছওৱাৰ্ড ফিল্ড"
+
+#~ msgid "Confirm operation system release selection"
+#~ msgstr "কাৰ্য্য চিস্টেম উন্মোচন বাছনি নিশ্চিত কৰক"
+
+#~ msgid "_No, Cancel"
+#~ msgstr "নহয়, বাতিল কৰক (_N)"
+
+#~ msgid "_Yes, Continue"
+#~ msgstr "হয়, আগবাঢ়ক (_Y)"
+
+#~ msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
+#~ msgstr "<big><b>পূৰ্বৰ উন্মোচনসমূহলে উভতি যোৱাটো সম্ভব নহব</b></big>"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel.  You will "
+#~ "not be able to move this system to an earlier minor release channel if "
+#~ "you continue (you will be able to move to a later release.)"
+#~ msgstr ""
+#~ "আপোনাৰ চিস্টেমক ভিত্তি চফ্টওৱেৰ চেনেললে স্বাক্ষৰীত কৰা হ'ব। আপুনি এই চিস্টেমক "
+#~ "পূৰ্বৰ গৌণ উন্মোচনলে লৈ যাব নোৱাৰিব যদি আপুনি তথাপিও আগবাঢে (তেনেহলে আপুনি "
+#~ "পৰৰ্ৱতী উন্মোচনলে গুচি যাব পাৰিব।)"
+
+#~ msgid ""
+#~ "\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "\n"
+#~ "আপুনি নিশ্চিত নে আপুনি আগবাঢ়িব বিচাৰে?"
+
+#~ msgid "Are you Sure?"
+#~ msgstr "আপুনি নিশ্চিত নে?"
+
+#~ msgid "_Go Back and Register"
+#~ msgstr "উভতি যাওক আৰু ৰেজিস্টাৰ কৰক (_G)"
+
+#~ msgid "Go Back and Register"
+#~ msgstr "উভতি যাওক আৰু ৰেজিস্টাৰ কৰক"
+
+#~ msgid "Register _Later"
+#~ msgstr "পিছত ৰেজিস্টাৰ কৰক (_L)"
+
+#~ msgid "Register Later"
+#~ msgstr "পিছত ৰেজিস্টাৰ কৰক"
+
+#~ msgid ""
+#~ "Are you sure you don't want to register your system with Red Hat? You'll "
+#~ "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
+#~ msgstr ""
+#~ "আপুনি আপোনাৰ চিস্টেমক Red Hat ৰ সৈতে ৰেজিস্টাৰ নকৰিবলৈ নিশ্চিত নে? আপুনি Red "
+#~ "Hat Enterprise Linux স্বাক্ষৰণৰ সুবিধাসমূহ নাপাব:  "
+
+#~ msgid "Management:"
+#~ msgstr "ব্যৱস্থাপনা:"
+
+#~ msgid ""
+#~ "You will not be able to take advantage of these benefits without "
+#~ "registering."
+#~ msgstr "আপুনি ৰেজিস্টাৰ নকৰাকৈ এই সুবিধাসমূহ উপভোগ কৰিব নোৱাৰিব।"
+
+#~ msgid "<b>Login:</b>"
+#~ msgstr "<b>লগিন:</b>"
+
+#~ msgid "<b>System ID:</b>"
+#~ msgstr "<b>চিস্টেম ID:</b>"
+
+#~ msgid "label"
+#~ msgstr "লেবেল"
+
+#~ msgid "<b>Warning</b>"
+#~ msgstr "<b>সতৰ্কবাৰ্তা</b>"
+
+#~ msgid ""
+#~ "This system has already been registered with RHN using RHN certificate-"
+#~ "based technology."
+#~ msgstr ""
+#~ "এই চিস্টেম ইতিমধ্যে RHN প্ৰমাণপত্ৰ-ভিত্তিয় প্ৰযুক্তি ব্যৱহাৰ কৰি RHN ৰ সৈতে "
+#~ "ৰেজিস্টাৰ কৰা আছে।"
+
+#~ msgid ""
+#~ "To learn more about RHN registration and technologies please consult this "
+#~ "Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+#~ msgstr ""
+#~ "RHN ৰেজিস্ট্ৰেষণ আৰু প্ৰযুক্তিসমূহৰ বিষয়ে অধিক জানিবলে এই জ্ঞান ভিত্তিক অধ্যায়ৰ "
+#~ "পৰামৰ্শ লওক: <a href=\"https://access.redhat.com/kb/docs/"
+#~ "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+
+#~ msgid "Software update setup has been completed for this system."
+#~ msgstr "এই চিস্টেমৰ বাবে চফ্টেৱেৰ আপডেইট সংস্থাপন সম্পূৰ্ণ কৰা হ'ল।"
+
+#~ msgid ""
+#~ "Your system is now ready to receive the software updates that will keep "
+#~ "it secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "আপোনাৰ চিস্টেম এতিয়া চফ্টৱেৰ আপডেইট গ্ৰহণ কৰিব'লৈ সাজু যি ইয়াক সুৰক্ষিত আৰু "
+#~ "সমৰ্থিত ৰাখিব।\n"
+#~ "\n"
+#~ "কেতিয়া আপডেইটেড চফ্টৱেৰ পোৱা হ'ব আপুনি জানিব যেতিয়া এটা পেকেইজৰ প্ৰতিকৃতি "
+#~ "আপোনাৰ ডেষ্কট'পৰ জাননিৰ ক্ষেত্ৰত ওলাব (সাধাৰণতে ওপৰৰ সোঁফালৰ কোণত) পোৱা "
+#~ "যাওঁতে, এই প্ৰতিকৃতিত টিপিলে, কোনো আপডেইট প্ৰযোজ্য কৰিব'লৈ আপোনাৰ মাৰ্গদৰ্শণ "
+#~ "কৰিব।"
+
+#~ msgid "Aplet screenshot"
+#~ msgstr "Aplet -ৰ স্ক্ৰিনসট"
+
+#~ msgid "Select how your system will receive updates:"
+#~ msgstr "আপোনাৰ চিস্টেমে কিদৰে আপডেইটসমূহ গ্ৰহণ কৰিব বাছক:"
+
+#~ msgid "Limited updates"
+#~ msgstr "সীমিত আপডেইটসমূহ"
+
+#~ msgid ""
+#~ "<b>_Limited updates</b> will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "<b>সীমিত আপডেইটসমূহ</b> এই চিস্টেমক যোগান দিয়া হ'ব যাতে ই নিম্নলিখিত Red Hat "
+#~ "Enterprise Linux -ৰ যোগ্য গৌণ উন্মোচন চফ্টৱেৰ চেনেলৰ লগত খাপ খাব পাৰে:"
+
+#~ msgid ""
+#~ "Limited updates will be provided to this system, maintaining "
+#~ "compatibility with the selected minor release software channel:"
+#~ msgstr ""
+#~ "<b>সীমিত আপডেইটসমূহ</b> এই চিস্টেমক যোগান দিয়া হ'ব যাতে ই নিম্নলিখিত Red Hat "
+#~ "Enterprise Linux -ৰ যোগ্য গৌণ উন্মোচন চফ্টৱেৰ চেনেলৰ লগত খাপ খাব পাৰে:"
+
+#~ msgid "_Minor release:"
+#~ msgstr "গৌণ উন্মোচন (_M):"
+
+#~ msgid "Choose minor release"
+#~ msgstr "গৌণ উন্মোচন বাচক"
+
+#~ msgid "       "
+#~ msgstr "       "
+
+#~ msgid ""
+#~ "<b>Tip:</b> Minor releases with a '*' are currently fully supported by "
+#~ "Red Hat."
+#~ msgstr ""
+#~ "<b>সহায়:</b> এটা '*' থকা গৌণ উন্মোচনসমূহ বৰ্তমানে Red Hat -এ সমপূৰ্ণভাৱে সমৰ্থন "
+#~ "নকৰে।"
+
+#~ msgid ""
+#~ "<b>_All available updates</b> will be provided to this system. If kept "
+#~ "updated, this system will always be equivalent to the latest minor "
+#~ "release in the main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "<b>সকলো উপলব্ধ আপডেইটসমূহ</b> এইখন চিস্টেমক যোগান দিয়া হ'ব। এইখন চিস্টেম, যদি "
+#~ "আপডেইট কৰি ৰখা হয়, তেনেহলে ই সদায় Red Hat Enterprise Linux 6 -ৰ শেহতীয়াকে "
+#~ "উপলব্ধ গৌণ উন্মোচনৰ সমসাময়িক হই থাকিব। ইয়াক মূখ্য 'Red Hat Enterprise Linux "
+#~ "6' -ৰ চফ্টৱেৰ চেনেললে ৰেজিস্টাৰ কৰা হ'ব।"
+
+#~ msgid ""
+#~ "All available updates will be provided to this system. If kept updated, "
+#~ "this system will always be equivalent to the latest minor release in the "
+#~ "main 'Red Hat Enterprise Linux x' software channel."
+#~ msgstr ""
+#~ "সকলো উপলব্ধ আপডেইটসমূহ এই চিস্টেমক যোগান দিয়া হ'ব। এই চিস্টেম, যদি আপডেইট কৰি "
+#~ "ৰখা হয়, তেনেহলে ই সদায় মূখ্য 'Red Hat Enterprise Linux x' ৰ চফ্টৱেৰ চেনেলত "
+#~ "শেহতীয়া গৌণ উন্মোচনৰ সমসাময়িক হই থাকিব।"
+
+#~ msgid ""
+#~ "<b>Warning:</b> Using this option, your system will always be the most "
+#~ "recent minor release and <b>cannot</b> be limited to an older release "
+#~ "version."
+#~ msgstr ""
+#~ "<b>সতৰ্কবাৰ্তা:</b> এই বিকল্প ব্যৱহাৰ কৰি, আপোনাৰ চিস্টেম সদায় আটাইতকৈ শেহতীয়া "
+#~ "গৌণ উন্মোচন হৈ থাকিব আৰু এটা পুনৰি উন্মোচন সংস্কৰণলৈ সীমিত কৰিব পৰা <b>নাযাব</"
+#~ "b>।"
+
+#~ msgid ""
+#~ "Warning: Using this option, your system will always be the most recent "
+#~ "minor release and cannot be limited to an older release version."
+#~ msgstr ""
+#~ "সতৰ্কবাৰ্তা: এই বিকল্প ব্যৱহাৰ কৰি, আপোনাৰ চিস্টেম সদায় আটাইতকৈ শেহতীয়া গৌণ "
+#~ "উন্মোচন হৈ থাকিব আৰু এটা পুনৰি উন্মোচন সংস্কৰণলৈ সীমিত কৰিব পৰা নাযাব।"
+
+#~ msgid "<b>Your system was registered for updates during installation.</b>"
+#~ msgstr ""
+#~ "<b>আপোনাৰ চিস্টেম ইনস্টল হৈ থকা সময়ত আপডেইটসমূহৰ বাবে ৰেজিস্টাৰ কৰা হৈছিল।</b>"
+
+#~ msgid ""
+#~ "Your system is ready to receive the software updates that will keep it "
+#~ "secure and supported.\n"
+#~ "\n"
+#~ "You'll know when software updates are available when a package icon "
+#~ "appears in the notification area of your desktop (usually in the upper-"
+#~ "right corner, circled below.) Clicking on this icon, when available, will "
+#~ "guide you through applying any updates that are available:"
+#~ msgstr ""
+#~ "আপোনাৰ চিস্টেম এতিয়া চফ্টৱেৰ আপডেইট গ্ৰহণ কৰিব'লৈ সাজু যি ইয়াক সুৰক্ষিত আৰু "
+#~ "সমৰ্থিত ৰাখিব।\n"
+#~ "\n"
+#~ "কেতিয়া চফ্টৱেৰ আপডেইট পোৱা যাব আপুনি জানিব যেতিয়া এটা পেকেইজ আইকন আপোনাৰ "
+#~ "ডেষ্কট'পৰ জাননিৰ ক্ষেত্ৰত ওলাব (সাধাৰণতে ওপৰৰ সোঁফালৰ কোণত, তলত বৃত্তিয়।) যদি "
+#~ "উপলব্ধ আছে, তেনেহলে এই আইকনত ক্লিক কৰিলে, ই আপোনাক পথ প্ৰদৰ্শণ কৰিব কেনেধৰনে "
+#~ "উপলব্ধ আপডেইটসমূহ ল'ব পাৰি:"
+
+#~ msgid "icon of aplet"
+#~ msgstr "aplet -ৰ আইকন"
+
+#~ msgid "RHN Registration"
+#~ msgstr "RHN ৰেজিস্ট্ৰেষণ"
+
+#, fuzzy
+#~ msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
+#~ msgstr ""
+#~ "Spacewalk/Satellite/Red Hat Network পৰা চফ্টওৱেৰ আপডেইটৰ কাৰণে ৰেজিস্টাৰ কৰক"
 
 #, fuzzy
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."

@@ -29,22 +29,12 @@ CREATE TABLE rhnActivationKey
     created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
     modified       TIMESTAMPTZ
-                       DEFAULT (current_timestamp) NOT NULL,
-    bootstrap      CHAR(1)
-                       DEFAULT ('N') NOT NULL
-                       CONSTRAINT rhn_act_key_bootstrap_ck
-                           CHECK (bootstrap in ('Y', 'N'))
-)
-
-;
+                       DEFAULT (current_timestamp) NOT NULL
+);
 
 CREATE INDEX rhn_act_key_kssid_rtid_idx
-    ON rhnActivationKey (ks_session_id, reg_token_id)
-    
-    ;
+    ON rhnActivationKey (ks_session_id, reg_token_id);
 
 CREATE INDEX rhn_act_key_rtid_idx
-    ON rhnActivationKey (reg_token_id)
-    
-    ;
+    ON rhnActivationKey (reg_token_id);
 

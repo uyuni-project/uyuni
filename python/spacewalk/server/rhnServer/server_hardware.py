@@ -193,7 +193,6 @@ def cleanse_ip_addr(ip_addr):
 
 
 class GenericDevice:
-
     """A generic device class"""
 
     table = "override-GenericDevice"
@@ -272,7 +271,6 @@ class GenericDevice:
 
 
 class Device(GenericDevice):
-
     """This is the base Device class that supports instantiation from a
     dictionarry. the __init__ takes the dictionary as its argument,
     together with a list of valid fields to recognize and with a mapping
@@ -348,7 +346,6 @@ class Device(GenericDevice):
 
 
 class HardwareDevice(Device):
-
     """A more specific device based on the Device class"""
 
     table = "rhnDevice"
@@ -377,7 +374,6 @@ class HardwareDevice(Device):
 
 
 class CPUDevice(Device):
-
     """A class for handling CPU - mirrors the rhnCPU structure"""
 
     table = "rhnCPU"
@@ -850,7 +846,6 @@ class NetIfaceAddress(Device):
 
 
 class NetIfaceAddress6(NetIfaceAddress):
-
     """IPv6 Network interface"""
 
     key_mapping = {
@@ -867,7 +862,6 @@ class NetIfaceAddress6(NetIfaceAddress):
 
 
 class NetIfaceAddress4(NetIfaceAddress):
-
     """IPv4 Network interface"""
 
     key_mapping = {
@@ -925,7 +919,6 @@ def _transpose(hasharr):
 
 
 class MemoryInformation(Device):
-
     """Memory information"""
 
     table = "rhnRAM"
@@ -951,7 +944,6 @@ class MemoryInformation(Device):
 
 
 class DMIInformation(Device):
-
     """DMI information"""
 
     table = "rhnServerDMI"
@@ -993,7 +985,6 @@ class DMIInformation(Device):
 
 
 class InstallInformation(Device):
-
     """Install information"""
 
     table = "rhnServerInstallInfo"
@@ -1192,7 +1183,6 @@ class MachineInformation:
 
 
 class Hardware:
-
     """Support for the hardware items"""
 
     def __init__(self):
@@ -1399,13 +1389,11 @@ For SLES12+ and RHEL7:
   # rm -f /etc/machine-id
   # dbus-uuidgen --ensure
   # systemd-machine-id-setup
-  # rhn-profile-sync
 
 
 For SLES11 and RHEL5/RHEL6:
   # rm /var/lib/dbus/machine-id
   # dbus-uuidgen --ensure
-  # rhn-profile-sync
 
 
 For more information on generating a new machine_id for traditional systems refer to:

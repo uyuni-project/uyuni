@@ -41,17 +41,6 @@ public class ActivationKey extends BaseDomainHelper {
     private String key;
     private Token token = new Token();
     private KickstartSession kickstartSession;
-    /** "Y" if this key is a bootstrap key, "N" otherwise. */
-    private String bootstrap;
-    /** Suffix in bootstrap tokens. */
-    public static final String BOOTSTRAP_TOKEN = "spacewalk-bootstrap-activation-key";
-
-    /**
-     * Istantiates a new non-bootstrap activation key.
-     */
-    public ActivationKey() {
-        bootstrap = "N";
-    }
 
     /**
      * @return Returns the key.
@@ -466,24 +455,6 @@ public class ActivationKey extends BaseDomainHelper {
     public static String sanitize(Org org,  String key) {
         return makePrefix(org) +
                     Scrubber.scrub(key.trim().replace(" ", ""));
-    }
-
-    /**
-     * Gets the key's bootstrap status ("Y" or "N").
-     *
-     * @return "Y" if this is a bootstrap key
-     */
-    public String getBootstrap() {
-        return bootstrap;
-    }
-
-    /**
-     * Sets the key's bootstrap status ("Y" or "N").
-     *
-     * @param bootstrapIn the new bootstrap status
-     */
-    public void setBootstrap(String bootstrapIn) {
-        bootstrap = bootstrapIn;
     }
 
     /**

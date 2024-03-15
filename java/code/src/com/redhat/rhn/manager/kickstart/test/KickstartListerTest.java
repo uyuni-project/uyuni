@@ -29,7 +29,6 @@ import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.CryptoKeyDto;
@@ -111,21 +110,6 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetBootstrapActivationKeysInOrg() {
-        ActivationKey activationKey =
-                ActivationKeyFactory.createNewKey(user, null,
-                        "ak- " + TestUtils.randomString(), "", 1L, null, true);
-        activationKey.setBootstrap("Y");
-
-        PageControl pc = new PageControl();
-        pc.setStart(1);
-
-        DataResult<ActivationKeyDto> result =
-                KickstartLister.getInstance().getActivationKeysInOrg(user.getOrg(), pc);
-        assertEquals(0, result.size());
-    }
-
-    @Test
     public void testGetActiveActivationKeysInOrg() {
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
@@ -137,22 +121,6 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
                 KickstartLister.getInstance().getActiveActivationKeysInOrg(user.getOrg(),
                         pc);
         assertEquals(1, result.size());
-    }
-
-    @Test
-    public void testGetBootstrapActiveActivationKeysInOrg() {
-        ActivationKey activationKey =
-                ActivationKeyFactory.createNewKey(user, null,
-                        "ak- " + TestUtils.randomString(), "", 1L, null, true);
-        activationKey.setBootstrap("Y");
-
-        PageControl pc = new PageControl();
-        pc.setStart(1);
-
-        DataResult<ActivationKeyDto> result =
-                KickstartLister.getInstance().getActiveActivationKeysInOrg(user.getOrg(),
-                        pc);
-        assertEquals(0, result.size());
     }
 
     @Test

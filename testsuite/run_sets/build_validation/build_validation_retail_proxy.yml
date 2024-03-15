@@ -1,4 +1,5 @@
 # This file describes the order of features in a Build Validation test suite run.
 
 ## Prepare configuration for branch server
-- features/build_validation/retail/proxy_branch_network.feature
+- features/build_validation/retail/proxy_traditional_branch_network.feature
+# - features/build_validation/retail/proxy_container_branch_network.feature

@@ -158,8 +158,8 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         .filter(ak -> k.getKey().equals(ak.getKey()))
         .findFirst()
         .ifPresent(ak -> pillarData.put("activation_key", ak.getKey())));
-        pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
-        pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_server", ConfigDefaults.get().getJavaHostname());
+        pillarData.put("mgr_origin_server", ConfigDefaults.get().getJavaHostname());
         pillarData.put("contact_method", key
                 .map(k -> k.getContactMethod().getLabel())
                 .orElse(getDefaultContactMethod()));

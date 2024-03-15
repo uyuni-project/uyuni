@@ -1,0 +1,26 @@
+.modal-body {
+  height: auto;
+  overflow-y: auto;
+  
+  &,
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+.modal-footer {
+  margin: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: $modal-backdrop-color;
+  z-index: $zindex-modal-backdrop;
+}
+
+.ReactModal__Content {
+  background-color: $modal-color;
+  border-radius: $border-radius;
+}

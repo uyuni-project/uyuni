@@ -583,15 +583,15 @@ public class KickstartableTree extends BaseDomainHelper {
                 targets.add(Paths.get(getInitrdXenPath()));
             }
 
-            for (Path target : targets) {
-                Path source = fullDir.resolve(target.getFileName());
-                if (!pathExists(source.toString())) {
-                    Files.createSymbolicLink(source, target);
+            for (Path copyFrom : targets) {
+                Path copyTo = fullDir.resolve(copyFrom.getFileName());
+                if (!pathExists(copyTo.toString())) {
+                    Files.copy(copyFrom, copyTo);
                 }
             }
         }
         catch (IOException e) {
-            log.error("Unable to create link", e);
+            log.error("Unable to copy file", e);
         }
     }
 
