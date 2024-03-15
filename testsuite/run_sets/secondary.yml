@@ -48,7 +48,7 @@
 - features/secondary/min_change_software_channel.feature
 - features/secondary/min_retracted_patches.feature
 - features/secondary/proxy_traditional_cobbler_pxeboot.feature
-# - features/secondary/proxy_container_cobbler_pxeboot.feature
+- features/secondary/proxy_container_cobbler_pxeboot.feature
 - features/secondary/srv_restart.feature
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature
