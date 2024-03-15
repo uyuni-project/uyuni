@@ -30,7 +30,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-proxy_key" from "activationKeys"
+    And I select "1-proxy_traditional_key" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "proxy"
