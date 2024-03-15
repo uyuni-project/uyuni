@@ -5,13 +5,13 @@
 # https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
 
 @skip_if_github_validation
-@skip_if_containerized_server
+@containerized_server
 @proxy
 @private_net
 @pxeboot_minion
 @scope_cobbler
-Feature: PXE boot a terminal with Cobbler and traditional proxy
-  In order to automate client system installations with a traditional proxy
+Feature: PXE boot a terminal with Cobbler and containerized proxy
+  In order to automate client system installations with a containerized proxy
   As the system administrator
   I want to PXE boot one host with Cobbler
 
@@ -21,20 +21,6 @@ Feature: PXE boot a terminal with Cobbler and traditional proxy
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
-
-  Scenario: Configure PXE part of DHCP on the proxy
-    When I follow "Formulas" in the content area
-    And I follow first "Dhcpd" in the content area
-    And I click on "Expand All Sections"
-    And I enter the local IP address of "proxy" in pxeboot next server field
-    And I enter "pxelinux.0" in pxeboot filename field
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-  Scenario: Apply the highstate after the formula setup
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
 
   # We currently test Cobbler with SLES 15 SP4, even on Uyuni
   Scenario: Install the TFTP boot package on the server for Cobbler tests
@@ -88,18 +74,13 @@ Feature: PXE boot a terminal with Cobbler and traditional proxy
 
   Scenario: Set up tftp installation and synchronize it
     When I configure tftp on the "server"
-    And I start tftp on the proxy
-    And I configure tftp on the "proxy"
     And I run Cobbler sync with error checking
 
-  Scenario: Restart squid so proxy.example.org is recognized
-    When I restart squid service on the proxy
-
   Scenario: PXE boot the PXE boot minion
-    Given I set the default PXE menu entry to the target profile on the "proxy"
+    Given I set the default PXE menu entry to the target profile on the "server"
     When I reboot the Cobbler terminal "pxeboot_minion"
     And I wait for "60" seconds
-    And I set the default PXE menu entry to the local boot on the "proxy"
+    And I set the default PXE menu entry to the local boot on the "server"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
 
