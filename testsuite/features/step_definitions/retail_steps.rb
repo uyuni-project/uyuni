@@ -9,19 +9,19 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
   os_family = get_target('proxy').os_family
 
   # Distribution
-  repos = 'os_pool_repo os_update_repo'
-  repos += ' testing_overlay_devel_repo' unless $build_validation || product_version_full.include?('-released')
-  log get_target('proxy').run("zypper mr --#{action} #{repos}")
+  repos = 'os_pool_repo os_update_repo '
+  repos += 'testing_overlay_devel_repo ' unless $build_validation || $is_containerized_server || product_version_full.include?('-released')
 
   # Server Applications, proxy product and modules, proxy devel
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = 'proxy_module_pool_repo proxy_module_update_repo ' \
-            'proxy_product_pool_repo proxy_product_update_repo ' \
-            'module_server_applications_pool_repo module_server_applications_update_repo'
-    repos += ' proxy_devel_releasenotes_repo proxy_devel_repo ' unless $build_validation || product_version_full.include?('-released')
+    repos += 'proxy_module_pool_repo proxy_module_update_repo ' \
+             'proxy_product_pool_repo proxy_product_update_repo ' \
+             'module_server_applications_pool_repo module_server_applications_update_repo '
+    repos += 'proxy_devel_releasenotes_repo proxy_devel_repo ' unless $build_validation || product_version_full.include?('-released')
   elsif os_family =~ /^opensuse/
-    repos = 'proxy_pool_repo'
+    repos += 'proxy_pool_repo ' unless $is_containerized_server
   end
+
   get_target('proxy').run("zypper mr --#{action} #{repos}", verbose: true)
 end
 
@@ -42,15 +42,138 @@ When(/^I start tftp on the proxy$/) do
   end
 end
 
+When(/^I set up the private network on the terminals$/) do
+  proxy = net_prefix + PRIVATE_ADDRESSES['proxy']
+  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
+  nodes = [get_target('sle_minion')]
+  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
+  file = '/etc/sysconfig/network/ifcfg-eth1'
+  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  file2 = '/etc/resolv.conf'
+  nodes.each do |node|
+    next if node.nil?
+
+    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
+  end
+  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
+  nodes = [get_target('rhlike_minion')]
+  file = '/etc/sysconfig/network-scripts/ifcfg-eth1'
+  conf2 = 'GATEWAYDEV=eth0'
+  file2 = '/etc/sysconfig/network'
+  nodes.each do |node|
+    next if node.nil?
+
+    domain, _code = node.run('grep \'^search\' /etc/resolv.conf | sed \'s/^search//\'')
+    conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
+    service =
+      if node.os_family =~ /^rocky/
+        'NetworkManager'
+      else
+        'network'
+      end
+    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart #{service}")
+  end
+  # /etc/netplan/01-netcfg.yaml
+  nodes = [get_target('deblike_minion')]
+  source = "#{File.dirname(__FILE__)}/../upload_files/01-netcfg.yaml"
+  dest = '/etc/netplan/01-netcfg.yaml'
+  nodes.each do |node|
+    next if node.nil?
+
+    return_code = file_inject(node, source, dest)
+    raise ScriptError, 'File injection failed' unless return_code.zero?
+
+    node.run('netplan apply')
+  end
+  # PXE boot minion
+  if $pxeboot_mac
+    step 'I restart the network on the PXE boot minion'
+  end
+end
+
 Then(/^"([^"]*)" should communicate with the server using public interface$/) do |host|
   node = get_target(host)
-  _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
+  _result, return_code = node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
   unless return_code.zero?
     sleep 2
     puts 're-try ping'
-    node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
+    node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
   end
-  get_target('server').run("ping -c 1 #{node.public_ip}")
+  get_target('server').run("ping -n -c 1 #{node.public_ip}")
+end
+
+When(/^I connect the second interface of the proxy to the private network$/) do
+  node = get_target('proxy')
+  _result, return_code = node.run('which nmcli')
+  if return_code.zero?
+    # Network manager: we give eth1 precedence over eth0
+    #                  otherwise the name server we get from DHCP is lost at the end of the list
+    #                  (the name servers list in resolv.conf is limited to 3 entries)
+    cmd = 'nmcli connection modify "Wired connection 1" ipv4.dns-priority 20 && ' \
+          'nmcli device modify eth0 ipv4.dns-priority 20 && ' \
+          'nmcli connection modify "Wired connection 2" ipv4.dns-priority 10 && ' \
+          'nmcli device modify eth1 ipv4.dns-priority 10'
+  else
+    # Wicked: is there a way to give eth1 precedence?
+    #         we use a static setting for the name server instead
+    static_dns = net_prefix + PRIVATE_ADDRESSES['dhcp_dns']
+    cmd = 'echo -e "BOOTPROTO=dhcp\nSTARTMODE=auto\n" > /etc/sysconfig/network/ifcfg-eth1 && ' \
+          'ifup eth1 && ' \
+          "sed -i 's/^NETCONFIG_DNS_STATIC_SERVERS=\".*\"/NETCONFIG_DNS_STATIC_SERVERS=\"#{static_dns}\"/' /etc/sysconfig/network/config && " \
+          'netconfig update -f'
+  end
+  node.run(cmd)
+end
+
+When(/^I restart all proxy containers to let them pick new network configuration$/) do
+  node = get_target('proxy')
+  node.run('systemctl restart uyuni-proxy-httpd.service')
+  node.run('systemctl restart uyuni-proxy-salt-broker.service')
+  node.run('systemctl restart uyuni-proxy-squid.service')
+  node.run('systemctl restart uyuni-proxy-ssh.service')
+  node.run('systemctl restart uyuni-proxy-tftpd.service')
+end
+
+Then(/^the "([^"]*)" host should be present on private network$/) do |host|
+  node = get_target('proxy')
+  output, return_code = node.run("ping -n -c 1 -I #{node.private_interface} #{net_prefix}#{PRIVATE_ADDRESSES[host]}")
+  raise SystemCallError, "Terminal #{host} does not answer on eth1: #{output}" unless return_code.zero?
+end
+
+Then(/^name resolution should work on private network$/) do
+  node = get_target('proxy')
+  # direct name resolution
+  %w[proxy.example.org dns.google.com].each do |dest|
+    output, return_code = node.run("host #{dest}", check_errors: false)
+    raise SystemCallError, "Direct name resolution of #{dest} on proxy doesn't work: #{output}" unless return_code.zero?
+
+    log output.to_s
+  end
+  # reverse name resolution
+  [node.private_ip, '8.8.8.8'].each do |dest|
+    output, return_code = node.run("host #{dest}", check_errors: false)
+    raise SystemCallError, "Reverse name resolution of #{dest} on proxy doesn't work: #{output}" unless return_code.zero?
+
+    log output.to_s
+  end
+end
+
+When(/^I restart the network on the PXE boot minion$/) do
+  # We have no IPv4 address on that machine yet,
+  # so the only way to contact it is via IPv6 link-local.
+  # We convert MAC address to IPv6 link-local address:
+  mac = $pxeboot_mac.tr(':', '')
+  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
+  file = 'restart-network-pxeboot.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  return_code = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
+  # We have no direct access to the PXE boot minion
+  # so we run the command from the proxy
+  get_target('proxy').run("expect -f /tmp/#{file} #{ipv6}")
 end
 
 When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|

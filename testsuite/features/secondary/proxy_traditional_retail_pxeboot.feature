@@ -12,10 +12,6 @@
 # * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
-# TODO: This feature needs to be refactored for RBS containerized,
-#       as it does not support Salt formulas.
-#       Additionally, we have this bug that impedes to use mgr-bootstrap command https://bugzilla.suse.com/show_bug.cgi?id=1220864
-
 @skip_if_containerized_server
 @skip_if_github_validation
 @buildhost
@@ -23,11 +19,10 @@
 @private_net
 @pxeboot_minion
 @scope_retail
-Feature: PXE boot a Retail terminal
-  In order to use Uyuni for Retail solution
+Feature: PXE boot a Retail terminal behind a traditional proxy
+  In order to manage my terminals in a Retail context
   As the system administrator
   I PXE boot one of the terminals
-  I perform a mass import of several virtual terminals and one real minion
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -64,7 +59,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@pxeboot_minion
   Scenario: Configure PXE part of DHCP on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -72,6 +66,7 @@ Feature: PXE boot a Retail terminal
     And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in next server field
     And I enter "boot/pxelinux.0" in filename field
+    And I enter "boot/pxelinux.0" in pxeboot filename field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -242,6 +237,14 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package removal has been scheduled" text
     When I wait until event "Package Removal scheduled by admin" is completed
 
+  Scenario: Cleanup: let the terminal be reinstalled again
+    When I navigate to the Systems overview page of this "pxeboot_minion"
+    And I follow "Remote Command"
+    And I enter "#!/bin/sh\nrm /etc/ImageVersion*" as "script_body" text area
+    And I click on "Schedule"
+    Then I should see a "Remote Command has been scheduled" text
+    When I wait until event "Remote Command" is completed
+
   Scenario: Cleanup: delete the new Retail terminal
     When I navigate to the Systems overview page of this "pxeboot_minion"
     And I follow "Delete System"
@@ -297,148 +300,3 @@ Feature: PXE boot a Retail terminal
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-
-  Scenario: Enable the formulas needed for mass import on the branch server
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I check the "pxe" formula
-    And I check the "saltboot" formula
-    And I check the "tftpd" formula
-    And I check the "vsftpd" formula
-    And I click on "Save"
-    And I wait until I see "Formula saved." text
-    Then the "pxe" formula should be checked
-    And the "saltboot" formula should be checked
-    And the "tftpd" formula should be checked
-    And the "vsftpd" formula should be checked
-
-  Scenario: Mass import of terminals
-    When I prepare the retail configuration file on server
-    And I import the retail configuration using retail_yaml command
-    And I am on the Systems page
-    Then I should see the terminals imported from the configuration file
-
-  Scenario: Apply the highstate to take into account the imported formulas
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "States" in the content area
-    And I enable repositories before installing branch server
-    And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
-    And I disable repositories after installing branch server
-
-  Scenario: Bootstrap the PXE boot minion
-    When I create bootstrap script for "proxy.example.org" hostname and set the activation key "1-TERMINAL-KEY-x86_64" in the bootstrap script on the proxy
-    And I bootstrap pxeboot minion via bootstrap script on the proxy
-    # Workaround: Increase timeout temporarily get rid of timeout issues
-    And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
-    And I accept key of pxeboot minion in the Salt master
-    Then I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "pxeboot_minion", refreshing the page
-
-  Scenario: Check connection from bootstrapped terminal to proxy
-    Given I am on the Systems page
-    When I follow "pxeboot" terminal
-    And I follow "Details" in the content area
-    And I follow "Connection" in the content area
-    Then I should see a "proxy.example.org" text
-
-  Scenario: Install a package on the bootstrapped terminal
-    Given I am on the Systems page
-    When I follow "pxeboot" terminal
-    And I follow "Software" in the content area
-    And I follow "Install"
-    And I enter "virgo" as the filtered package name
-    And I click on the filter button
-    And I check "virgo-dummy-2.0-1.1" in the list
-    And I click on "Install Selected Packages"
-    And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
-
-  Scenario: Remove the package from the bootstrapped terminal
-    Given I am on the Systems page
-    When I follow "pxeboot" terminal
-    And I follow "Software" in the content area
-    And I follow "List / Remove"
-    And I enter "virgo" as the filtered package name
-    And I click on the filter button
-    And I check "virgo-dummy-2.0-1.1" in the list
-    And I click on "Remove Packages"
-    And I click on "Confirm"
-    Then I should see a "1 package removal has been scheduled" text
-    When I wait until event "Package Removal scheduled by admin" is completed
-
-  Scenario: Cleanup: delete all imported Retail terminals
-    Given I am on the Systems page
-    When I delete all the imported terminals
-    Then I should not see any terminals imported from the configuration file
-
-  Scenario: Cleanup: make sure salt-minion is stopped after mass import
-    When I wait until Salt client is inactive on the PXE boot minion
-
-  Scenario: Cleanup: delete the terminal groups generated by retail_yaml command
-    When I follow the left menu "Systems > System Groups"
-    And I follow "HWTYPE:Intel-Genuine" in the content area
-    And I follow "Delete Group" in the content area
-    And I click on "Confirm Deletion"
-    Then I should see a "deleted" text
-    When I follow "example.org" in the content area
-    And I follow "Delete Group" in the content area
-    And I click on "Confirm Deletion"
-    Then I should see a "deleted" text
-    When I follow "TERMINALS" in the content area
-    And I follow "Delete Group" in the content area
-    And I click on "Confirm Deletion"
-    Then I should see a "deleted" text
-    When I follow "SERVERS" in the content area
-    And I follow "Delete Group" in the content area
-    And I click on "Confirm Deletion"
-    Then I should see a "deleted" text
-
-  Scenario: Cleanup: remove DNS records added by mass import
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Bind" in the content area
-    And I click on "Expand All Sections"
-    # direct zone example.org:
-    And I press "Remove Item" in salt CNAME of example.org zone section
-    And I press "Remove Item" in tftp CNAME of example.org zone section
-    And I press "Remove Item" in ftp CNAME of example.org zone section
-    And I press "Remove Item" in dhcp CNAME of example.org zone section
-    And I press "Remove Item" in dns CNAME of example.org zone section
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-  Scenario: Cleanup: disable the formulas needed for mass import
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I uncheck the "pxe" formula
-    And I uncheck the "saltboot" formula
-    And I uncheck the "tftpd" formula
-    And I uncheck the "vsftpd" formula
-    And I click on "Save"
-    And I wait until I see "Formula saved." text
-    Then the "pxe" formula should be unchecked
-    And the "saltboot" formula should be unchecked
-    And the "tftpd" formula should be unchecked
-    And the "vsftpd" formula should be unchecked
-
-  Scenario: Cleanup: reset to proper branch ID for pxeboot
-    # Branch ID was changed by mass import yaml file
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Branch Network" in the content area
-    And I click on "Expand All Sections"
-    And I enter "example" in branch id field
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-  Scenario: Cleanup: apply the highstate after the mass import cleanup changes
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
-
-  Scenario: Reset TFTP defaults
-    When I stop the "tftp" service on "proxy"
-    And I reset tftp defaults on the proxy
