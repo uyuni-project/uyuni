@@ -222,7 +222,8 @@ PACKAGE_BY_CLIENT = {
 # Then take a look at the Parent Channel selections
 BASE_CHANNEL_BY_CLIENT = {
   'SUSE Manager' => {
-    'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64',
+    'proxy_container' => 'SLE-Micro-5.5-Pool for x86_64',
+    'proxy_traditional' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64',
     'sle_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'ssh_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
@@ -291,7 +292,9 @@ BASE_CHANNEL_BY_CLIENT = {
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
   },
   'Uyuni' => {
-    'proxy' => 'openSUSE Leap 15.5 (x86_64)',
+    # WORKAROUND until https://github.com/SUSE/spacewalk/issues/23053 will be done
+    'proxy_container' => 'openSUSE Leap 15.5 (x86_64)',
+    'proxy_traditional' => 'openSUSE Leap 15.5 (x86_64)',
     'sle_minion' => 'openSUSE Leap 15.5 (x86_64)',
     'ssh_minion' => 'openSUSE Leap 15.5 (x86_64)',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
