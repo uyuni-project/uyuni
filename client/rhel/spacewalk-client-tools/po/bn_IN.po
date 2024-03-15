@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-08 14:46+0100\n"
+"POT-Creation-Date: 2024-03-15 15:24+0100\n"
 "PO-Revision-Date: 2018-03-16 10:59+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Bengali (India) (http://www.transifex.com/projects/p/"
@@ -48,27 +48,6 @@ msgstr "%s পাওয়া যায়নি"
 #: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
 msgid "Getting list of packages installed on the system"
 msgstr "সিস্টেমে ইনস্টল করা প্যাকেজের তালিকা আহরণ করা হচ্ছে"
-
-#. self.druid.finish.set_label(_("_Finish"))
-#: ../src/up2date_client/gui.py:273
-#, fuzzy
-msgid "Finish setting up software updates"
-msgstr "সফ্টওয়্যার আপডেট নির্ধারণ"
-
-#. self.druid.finish.set_label(_("_Exit"))
-#: ../src/up2date_client/gui.py:276
-#, fuzzy
-msgid "Software updates setup unsuccessful"
-msgstr "সফ্টওয়্যার আপডেট নির্ধারণ"
-
-#: ../src/up2date_client/gui.py:283
-msgid "You must run rhn_register as root."
-msgstr "rhn_register চালানোর জন্য root পরিচয় আবশ্যক।"
-
-#: ../src/up2date_client/gui.py:308
-#, python-format
-msgid "There was some sort of I/O error: %s"
-msgstr "I/O ( ইনপুট/আউটপুট ) জড়িত কোনো সমস্যা উৎপন্ন হয়েছে: %s"
 
 #: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
@@ -132,7 +111,7 @@ msgstr "পরিচয়-প্রমাণিত http প্রক্সিত�
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "পরিচয়-প্রমাণিত http প্রক্সি'র সাথে ব্যবহারের জন্য একটি পাসওয়ার্ড উল্লেখ করুন"
 
-#: ../src/up2date_client/rhncli.py:93
+#: ../src/up2date_client/rhncli.py:91
 msgid ""
 "\n"
 "Aborted.\n"
@@ -140,31 +119,31 @@ msgstr ""
 "\n"
 "পরিত্যাগ করা হয়েছে।\n"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:94
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "অপারেটিং সিস্টেম সংক্রান্ত একটি অপ্রত্যাশিত সমস্যা দেখা দিয়েছে: %s\n"
 
-#: ../src/up2date_client/rhncli.py:101
+#: ../src/up2date_client/rhncli.py:99
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "ভুল গঠনের URI সহযোগে সংযোগ স্থাপনের প্রচেষ্টা করা হয়েছে।\n"
 
-#: ../src/up2date_client/rhncli.py:103
+#: ../src/up2date_client/rhncli.py:101
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "ভুল গঠনের URI সহযোগে সংযোগ স্থাপনের প্রচেষ্টা করা হয়েছে: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:105
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "কোনো ধরনের I/O ( ইনপুট/আউটপুট ) সমস্যা হয়েছে: %s\n"
 
-#: ../src/up2date_client/rhncli.py:111
+#: ../src/up2date_client/rhncli.py:109
 #, python-format
 msgid "There was an SSL error: %s\n"
 msgstr "SSL জড়িত একটি সমস্যা হয়েছে: %s\n"
 
-#: ../src/up2date_client/rhncli.py:112
+#: ../src/up2date_client/rhncli.py:110
 msgid ""
 "A common cause of this error is the system time being incorrect. Verify that "
 "the time on this system is correct.\n"
@@ -172,28 +151,22 @@ msgstr ""
 "এই সমস্যার একটি প্রধান কারণ সিস্টেমের ভুল সময়।  সুতরাং এই সিস্টেমে সঠিক সময় ধার্য "
 "করা রয়েছে কিনা তা পরীক্ষা করুন।\n"
 
-#: ../src/up2date_client/rhncli.py:119
+#: ../src/up2date_client/rhncli.py:117
 #, python-format
 msgid "There was a SSL crypto error: %s\n"
 msgstr "একটি SSL crypto জড়িত সমস্যা হয়েছে: %s\n"
 
-#: ../src/up2date_client/rhncli.py:123
+#: ../src/up2date_client/rhncli.py:121
 #, python-format
 msgid "There was an authentication error: %s\n"
 msgstr "পরিচয়-প্রমাণ প্রক্রিয়ায় একটি সমস্যা হয়েছে: %s\n"
 
-#: ../src/up2date_client/rhncli.py:139
+#: ../src/up2date_client/rhncli.py:137
 #, python-format
 msgid "You must be root to run %s"
 msgstr "%s সঞ্চালনের জন্য root পরিচয় আবশ্যক"
 
-#: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr ""
-"গ্রাফিকাল ইন্টারফেস (gui) আরম্ভ করতে ব্যর্থ। `up2date --nox` ব্যবহার করে প্রচেষ্টা "
-"করুন"
-
-#: ../src/up2date_client/rhncli.py:211
+#: ../src/up2date_client/rhncli.py:193
 #, python-format
 msgid ""
 "%%prog (Spacewalk Client Tools) %s\n"
@@ -201,51 +174,13 @@ msgid ""
 "Licensed under the terms of the GPLv2."
 msgstr ""
 
-#: ../src/up2date_client/rhncli.py:226
+#: ../src/up2date_client/rhncli.py:208
 msgid "An error has occurred:"
 msgstr "একটি সমস্যা উৎপন্ন হয়েছে:"
 
-#: ../src/up2date_client/rhncli.py:234
+#: ../src/up2date_client/rhncli.py:216
 msgid "See /var/log/up2date for more information"
 msgstr "অধিক বিবরণের জন্য /var/log/up2date দেখুন"
-
-#: ../src/up2date_client/rhnreg.py:75
-#, fuzzy
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "সতর্কবাণী: chkconfig-র সাহায্যে rhnsd সক্রিয় করা যায়নি"
-
-#: ../src/up2date_client/rhnreg.py:81
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "সতর্কবাণী: chkconfig-র সাহায্যে rhnsd সক্রিয় করা যায়নি"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "সতর্কবাণী"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "সিস্টেম নিবন্ধনে সমস্যা:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "সিস্টেম নিবন্ধনে সমস্যা।"
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "সিস্টেম id ডিস্কে লিখতে সমস্যা।"
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d মেগাহার্টজ"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -620,9 +555,9 @@ msgstr "প্রোফাইল সম্বন্ধীয় তথ্য Red Ha
 msgid ""
 "We are finished collecting information for the System Profile.\n"
 "\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
+"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel"
+"\" and no information will be sent.  You can run the registration program "
+"later by typing `rhn_register` at the command line."
 msgstr ""
 "সিস্টেম প্রোফাইলের জন্য তথ্য সংগ্রহ করা সমাপ্ত হয়েছে।\n"
 "\n"
@@ -836,6 +771,10 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:243
 msgid "Fatal Error"
 msgstr "গুরুতর সমস্যা"
+
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "সতর্কবাণী"
 
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, fuzzy, python-format, python-brace-format
@@ -1057,6 +996,11 @@ msgstr "হোস্ট-নেম: "
 msgid "CPU speed: "
 msgstr "CPU'র গতি: "
 
+#: ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%d মেগাহার্টজ"
+
 #: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
 msgstr "IP ঠিকানা: "
@@ -1069,6 +1013,19 @@ msgstr "মেমরি: "
 #, python-format
 msgid "%s megabytes"
 msgstr "%s মেগাবাইট"
+
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "সিস্টেম নিবন্ধনে সমস্যা:\n"
+
+#: ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "সিস্টেম নিবন্ধনে সমস্যা।"
+
+#: ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "সিস্টেম id ডিস্কে লিখতে সমস্যা।"
 
 #: ../src/up2date_client/tui.py:1025
 msgid "Problem sending hardware profile:\n"
@@ -1085,6 +1042,13 @@ msgstr "প্যাকেজ তালিকা প্রেরণে সমস
 #: ../src/up2date_client/tui.py:1042
 msgid "Problem sending package list."
 msgstr "প্যাকেজ তালিকা প্রেরণে সমস্যা।"
+
+#: ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
 
 #: ../src/up2date_client/tui.py:1096
 msgid "Finish"
@@ -1255,22 +1219,18 @@ msgid "Do not upload any virtualization info"
 msgstr "ভার্চুয়ালাইজেশন সংক্রান্ত কোনো তথ্য আপলোড করা হবে না"
 
 #: ../src/bin/rhnreg_ks.py:74
-msgid "Do not start rhnsd after completion"
-msgstr "সমাপ্ত হওয়ার ফলে rhnsd আরম্ভ করা হবে না"
-
-#: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
 msgstr "সিস্টেমটি পূর্বে নিবন্ধিত হয়ে থাকলেও পুনরায় নিবন্ধন করুন"
 
-#: ../src/bin/rhnreg_ks.py:86
+#: ../src/bin/rhnreg_ks.py:84
 msgid "A username and password are required to register a system."
 msgstr "সিস্টেম নিবন্ধনের জন্য ব্যবহারকারীর-নাম ও পাসওয়ার্ড প্রয়োজন।"
 
-#: ../src/bin/rhnreg_ks.py:91
+#: ../src/bin/rhnreg_ks.py:89
 msgid "This system is already registered. Use --force to override"
 msgstr "এই সিস্টেমটি পূর্বেই নিবন্ধিত করা হয়েছে। --force ব্যবহার করে উপেক্ষা করুন"
 
-#: ../src/bin/rhnreg_ks.py:125
+#: ../src/bin/rhnreg_ks.py:123
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
@@ -1278,13 +1238,13 @@ msgstr ""
 "--activationkey-র সাথে --use-eus-channel বিকল্পের ব্যবহার সমর্থিত নয়। অনুগ্রহ করে "
 "এর পরিবর্তে ব্যবহারকারীর নাম ও পাসওয়ার্ড ব্যবহার করুন।"
 
-#: ../src/bin/rhnreg_ks.py:128
+#: ../src/bin/rhnreg_ks.py:126
 msgid "The server you are registering against does not support EUS."
 msgstr ""
 "নিবন্ধনের জন্য যে সার্ভারের সাথে সংযোগের প্রয়াস করা হচ্ছে সেটির দ্বারা EUS সমর্থিত "
 "হয় না।"
 
-#: ../src/bin/rhnreg_ks.py:154
+#: ../src/bin/rhnreg_ks.py:152
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
 "server web user Interface and update your contactinfo. "
@@ -1292,12 +1252,12 @@ msgstr ""
 "সতর্কবাণী: --contactinfo বিকল্পটি অবচিত হয়েছে। অনুগ্রহ করে ওয়েব ইউজার ইন্টারফেসে "
 "লগ-ইন করে আপনার contactinfo আপডেট করুন"
 
-#: ../src/bin/rhnreg_ks.py:175
+#: ../src/bin/rhnreg_ks.py:169
 #, fuzzy, python-format
 msgid "Warning: %s is not present, could not enable it."
 msgstr "সতর্কবার্তা: yum-rhn-plugin উপস্থিত নয়, এটি সক্রিয় করা যায়নি।"
 
-#: ../src/bin/rhnreg_ks.py:178
+#: ../src/bin/rhnreg_ks.py:172
 #, fuzzy, python-format
 msgid ""
 "Warning: Could not open %s\n"
@@ -1306,7 +1266,7 @@ msgstr ""
 "সতর্কবার্তা: /etc/yum/pluginconf.d/rhnplugin.conf খোলা যায়নি\n"
 "yum-rhn-plugin সক্রিয় নয়।\n"
 
-#: ../src/bin/rhnreg_ks.py:206
+#: ../src/bin/rhnreg_ks.py:200
 msgid ""
 "A profilename was not specified, and hostname and IP address could not be "
 "determined to use as a profilename, please specify one."
@@ -1314,6 +1274,36 @@ msgstr ""
 "কোনো প্রোফাইল-নাম উল্লেখ করা হয়নি। প্রোফাইল-নাম হিসাবে ব্যবহার করার জন্য কোনো "
 "হোস্ট-নেম অথবা IP ঠিকানা নির্ণয় করা যায়নি। অনুগ্রহ করে একটি প্রোফাইল-নাম উল্লেখ "
 "করুন।"
+
+#, fuzzy
+#~ msgid "Finish setting up software updates"
+#~ msgstr "সফ্টওয়্যার আপডেট নির্ধারণ"
+
+#, fuzzy
+#~ msgid "Software updates setup unsuccessful"
+#~ msgstr "সফ্টওয়্যার আপডেট নির্ধারণ"
+
+#~ msgid "You must run rhn_register as root."
+#~ msgstr "rhn_register চালানোর জন্য root পরিচয় আবশ্যক।"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s"
+#~ msgstr "I/O ( ইনপুট/আউটপুট ) জড়িত কোনো সমস্যা উৎপন্ন হয়েছে: %s"
+
+#~ msgid "Unable to open gui. Try `up2date --nox`"
+#~ msgstr ""
+#~ "গ্রাফিকাল ইন্টারফেস (gui) আরম্ভ করতে ব্যর্থ। `up2date --nox` ব্যবহার করে "
+#~ "প্রচেষ্টা করুন"
+
+#, fuzzy
+#~ msgid "Warning: unable to enable rhnsd with systemd"
+#~ msgstr "সতর্কবাণী: chkconfig-র সাহায্যে rhnsd সক্রিয় করা যায়নি"
+
+#~ msgid "Warning: unable to enable rhnsd with chkconfig"
+#~ msgstr "সতর্কবাণী: chkconfig-র সাহায্যে rhnsd সক্রিয় করা যায়নি"
+
+#~ msgid "Do not start rhnsd after completion"
+#~ msgstr "সমাপ্ত হওয়ার ফলে rhnsd আরম্ভ করা হবে না"
 
 #~ msgid "Error:"
 #~ msgstr "সমস্যা:"

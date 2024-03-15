@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-08 14:46+0100\n"
+"POT-Creation-Date: 2024-03-15 15:24+0100\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -62,25 +62,6 @@ msgstr "%s não foi encontrado"
 #: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
 msgid "Getting list of packages installed on the system"
 msgstr "Obtendo a lista de pacotes instalados no sistema"
-
-#. self.druid.finish.set_label(_("_Finish"))
-#: ../src/up2date_client/gui.py:273
-msgid "Finish setting up software updates"
-msgstr "Conclua a configuração das atualizações de software"
-
-#. self.druid.finish.set_label(_("_Exit"))
-#: ../src/up2date_client/gui.py:276
-msgid "Software updates setup unsuccessful"
-msgstr "Falha na configuração das atualizações de software"
-
-#: ../src/up2date_client/gui.py:283
-msgid "You must run rhn_register as root."
-msgstr "Você deve executar o rhn_register como root."
-
-#: ../src/up2date_client/gui.py:308
-#, python-format
-msgid "There was some sort of I/O error: %s"
-msgstr "Ocorreu algum tipo de erro de E/S: %s"
 
 #: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
@@ -139,7 +120,7 @@ msgstr "Especificar um nome de usuário para usar com um proxy http autenticado"
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "Especificar uma senha para usar com um proxy http autenticado"
 
-#: ../src/up2date_client/rhncli.py:93
+#: ../src/up2date_client/rhncli.py:91
 msgid ""
 "\n"
 "Aborted.\n"
@@ -147,31 +128,31 @@ msgstr ""
 "\n"
 "Abortado.\n"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:94
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "Ocorreu um erro inesperado no sistema operacional: %s\n"
 
-#: ../src/up2date_client/rhncli.py:101
+#: ../src/up2date_client/rhncli.py:99
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "Uma conexão foi tentada com uma URI mal formada.\n"
 
-#: ../src/up2date_client/rhncli.py:103
+#: ../src/up2date_client/rhncli.py:101
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "Uma conexão foi tentada com uma URI mal formada: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:105
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "Ocorreu algum tipo de erro de E/S: %s\n"
 
-#: ../src/up2date_client/rhncli.py:111
+#: ../src/up2date_client/rhncli.py:109
 #, python-format
 msgid "There was an SSL error: %s\n"
 msgstr "Ocorreu um erro no SSL: %s\n"
 
-#: ../src/up2date_client/rhncli.py:112
+#: ../src/up2date_client/rhncli.py:110
 msgid ""
 "A common cause of this error is the system time being incorrect. Verify that "
 "the time on this system is correct.\n"
@@ -179,27 +160,22 @@ msgstr ""
 "Uma causa comum para esse erro é o relógio do sistema estar incorreto. "
 "Verifique se o relógio do sistema está correto.\n"
 
-#: ../src/up2date_client/rhncli.py:119
+#: ../src/up2date_client/rhncli.py:117
 #, python-format
 msgid "There was a SSL crypto error: %s\n"
 msgstr "Ocorreu um erro de criptografia no SSL: %s\n"
 
-#: ../src/up2date_client/rhncli.py:123
+#: ../src/up2date_client/rhncli.py:121
 #, python-format
 msgid "There was an authentication error: %s\n"
 msgstr "Ocorreu um erro de autenticação: %s\n"
 
-#: ../src/up2date_client/rhncli.py:139
+#: ../src/up2date_client/rhncli.py:137
 #, python-format
 msgid "You must be root to run %s"
 msgstr "Você deve ser root para poder rodar %s"
 
-#: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr ""
-"Não é possível abrir a interface gráfica. Tente o comando `up2date --nox`"
-
-#: ../src/up2date_client/rhncli.py:211
+#: ../src/up2date_client/rhncli.py:193
 #, python-format
 msgid ""
 "%%prog (Spacewalk Client Tools) %s\n"
@@ -210,52 +186,13 @@ msgstr ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "Licenciado sob os termos da GPLv2."
 
-#: ../src/up2date_client/rhncli.py:226
+#: ../src/up2date_client/rhncli.py:208
 msgid "An error has occurred:"
 msgstr "Ocorreu um erro:"
 
-#: ../src/up2date_client/rhncli.py:234
+#: ../src/up2date_client/rhncli.py:216
 msgid "See /var/log/up2date for more information"
 msgstr "Verifique /var/log/up2date para maiores informações"
-
-#: ../src/up2date_client/rhnreg.py:75
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "Aviso: não é possível ativar o rhnsd com systemd"
-
-#: ../src/up2date_client/rhnreg.py:81
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "Aviso: impossível ativar o rhnsd com o chkconfig"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Aviso"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Problema ao registrar o sistema:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Problema ao registrar o sistema."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Problema ao gravar o id do sistema no disco."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Não foi possível abrir %s\n"
-"%s não está ativado.\n"
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -639,9 +576,9 @@ msgstr "Enviar Informações de Perfil para {PRODUCT_NAME}"
 msgid ""
 "We are finished collecting information for the System Profile.\n"
 "\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
+"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel"
+"\" and no information will be sent.  You can run the registration program "
+"later by typing `rhn_register` at the command line."
 msgstr ""
 "Nós terminamos de coletar informações para o Perfil do Sistema.\n"
 "\n"
@@ -882,6 +819,10 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "Erro Fatal"
 
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "Aviso"
+
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, python-format, python-brace-format
 msgid ""
@@ -1107,6 +1048,11 @@ msgstr "Nome de host: "
 msgid "CPU speed: "
 msgstr "Velocidade da CPU: "
 
+#: ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
 #: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
 msgstr "Endereço IP: "
@@ -1119,6 +1065,19 @@ msgstr "Memória: "
 #, python-format
 msgid "%s megabytes"
 msgstr "%s megabytes"
+
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "Problema ao registrar o sistema:\n"
+
+#: ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "Problema ao registrar o sistema."
+
+#: ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "Problema ao gravar o id do sistema no disco."
 
 #: ../src/up2date_client/tui.py:1025
 msgid "Problem sending hardware profile:\n"
@@ -1135,6 +1094,15 @@ msgstr "Erro ao enviar a lista de pacotes:\n"
 #: ../src/up2date_client/tui.py:1042
 msgid "Problem sending package list."
 msgstr "Problema ao enviar a lista de pacotes."
+
+#: ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+"Não foi possível abrir %s\n"
+"%s não está ativado.\n"
 
 #: ../src/up2date_client/tui.py:1096
 msgid "Finish"
@@ -1303,23 +1271,19 @@ msgid "Do not upload any virtualization info"
 msgstr "Não carregar quaisquer informações de virtualização"
 
 #: ../src/bin/rhnreg_ks.py:74
-msgid "Do not start rhnsd after completion"
-msgstr "Não iniciar o rhnsd após o término"
-
-#: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
 msgstr "Registrar o sistema mesmo que já esteja registrado"
 
-#: ../src/bin/rhnreg_ks.py:86
+#: ../src/bin/rhnreg_ks.py:84
 msgid "A username and password are required to register a system."
 msgstr ""
 "São necessários um nome de usuário e uma senha para registrar um sistema."
 
-#: ../src/bin/rhnreg_ks.py:91
+#: ../src/bin/rhnreg_ks.py:89
 msgid "This system is already registered. Use --force to override"
 msgstr "Este sistema já está registrado. Use --force para sobrescrever"
 
-#: ../src/bin/rhnreg_ks.py:125
+#: ../src/bin/rhnreg_ks.py:123
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
@@ -1327,11 +1291,11 @@ msgstr ""
 "O uso da opção --use-eus-channel com --activationkey não é suportado. Por "
 "favor use o nome de usuário e senha."
 
-#: ../src/bin/rhnreg_ks.py:128
+#: ../src/bin/rhnreg_ks.py:126
 msgid "The server you are registering against does not support EUS."
 msgstr "O servidor que você está tentando se registrar não suporta EUS."
 
-#: ../src/bin/rhnreg_ks.py:154
+#: ../src/bin/rhnreg_ks.py:152
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
 "server web user Interface and update your contactinfo. "
@@ -1339,12 +1303,12 @@ msgstr ""
 "Aviso: a opção --contactinfo está depreciada. Por favor faça login na "
 "interface de usuário do servidor web e atualize sua contactinfo. "
 
-#: ../src/bin/rhnreg_ks.py:175
+#: ../src/bin/rhnreg_ks.py:169
 #, python-format
 msgid "Warning: %s is not present, could not enable it."
 msgstr "Aviso: %s não está presente, não foi possível ativá-lo."
 
-#: ../src/bin/rhnreg_ks.py:178
+#: ../src/bin/rhnreg_ks.py:172
 #, python-format
 msgid ""
 "Warning: Could not open %s\n"
@@ -1353,7 +1317,7 @@ msgstr ""
 "Aviso: não foi possível abrir %s\n"
 "%s não está ativado.\n"
 
-#: ../src/bin/rhnreg_ks.py:206
+#: ../src/bin/rhnreg_ks.py:200
 msgid ""
 "A profilename was not specified, and hostname and IP address could not be "
 "determined to use as a profilename, please specify one."
@@ -1361,6 +1325,32 @@ msgstr ""
 "Não foi especificado um nome de perfil. Não foi possível determinar o nome "
 "da máquina e endereço IP para usá-los como um nome de perfil. Por favor "
 "especifique um nome de perfil."
+
+#~ msgid "Finish setting up software updates"
+#~ msgstr "Conclua a configuração das atualizações de software"
+
+#~ msgid "Software updates setup unsuccessful"
+#~ msgstr "Falha na configuração das atualizações de software"
+
+#~ msgid "You must run rhn_register as root."
+#~ msgstr "Você deve executar o rhn_register como root."
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s"
+#~ msgstr "Ocorreu algum tipo de erro de E/S: %s"
+
+#~ msgid "Unable to open gui. Try `up2date --nox`"
+#~ msgstr ""
+#~ "Não é possível abrir a interface gráfica. Tente o comando `up2date --nox`"
+
+#~ msgid "Warning: unable to enable rhnsd with systemd"
+#~ msgstr "Aviso: não é possível ativar o rhnsd com systemd"
+
+#~ msgid "Warning: unable to enable rhnsd with chkconfig"
+#~ msgstr "Aviso: impossível ativar o rhnsd com o chkconfig"
+
+#~ msgid "Do not start rhnsd after completion"
+#~ msgstr "Não iniciar o rhnsd após o término"
 
 #~ msgid "Error:"
 #~ msgstr "Erro:"
@@ -1423,8 +1413,8 @@ msgstr ""
 #~ msgid ""
 #~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
 #~ msgstr ""
-#~ "Por favor digite as informações de sua conta para o servidor Spacewalk "
-#~ "<b>%s</b>:"
+#~ "Por favor digite as informações de sua conta para o servidor Spacewalk <b>"
+#~ "%s</b>:"
 
 #~ msgid "You must enter a login."
 #~ msgstr "Você deve digitar um login."
