@@ -9889,42 +9889,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <!-- Bare-metal system listing configuration -->
-      <trans-unit id="Bare-metal systems" xml:space="preserve">
-          <source>Bare-metal systems</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.toolbar" xml:space="preserve">
-          <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.header" xml:space="preserve">
-          <source>Bare-metal system management</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.summary" xml:space="preserve">
-          <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery" xml:space="preserve">
-          <source>Bare-metal systems</source>
-      </trans-unit>
-      <trans-unit id="enable" xml:space="preserve">
-          <source>Enable adding to this organization</source>
-      </trans-unit>
-      <trans-unit id="disable" xml:space="preserve">
-          <source>Disable adding to this organization</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully enabled</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully disabled</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.kernel_not_found" xml:space="preserve">
-          <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.initrd_not_found" xml:space="preserve">
-          <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
-      </trans-unit>
       <trans-unit id="bootstrapsystemlist.jsp.header" xml:space="preserve">
           <source>Unprovisioned Systems</source>
         <context-group name="ctx">

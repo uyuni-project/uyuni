@@ -10019,54 +10019,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <!-- Bare-metal system listing configuration -->
-      <trans-unit id="Bare-metal systems" xml:space="preserve">
-          <source>Bare-metal systems</source>
-        <target>ベアメタルシステム</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.toolbar" xml:space="preserve">
-          <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source>
-        <target>@@PRODUCT_NAME@@ の設定 - ベアメタルシステム</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.header" xml:space="preserve">
-          <source>Bare-metal system management</source>
-        <target>ベアメタルシステムの管理</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.summary" xml:space="preserve">
-          <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source>
-        <target>@@PRODUCT_NAME@@ に対して、組織内で PXE 起動に対応するベアメタルシステムの自動追加を有効化します。</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery" xml:space="preserve">
-          <source>Bare-metal systems</source>
-        <target>ベアメタルシステム</target>
-      </trans-unit>
-      <trans-unit id="enable" xml:space="preserve">
-          <source>Enable adding to this organization</source>
-        <target>この組織に対する追加の有効化</target>
-      </trans-unit>
-      <trans-unit id="disable" xml:space="preserve">
-          <source>Disable adding to this organization</source>
-        <target>この組織に対する追加の無効化</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully enabled</source>
-        <target>ベアメタルシステムの自動検出機能を有効化しました</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully disabled</source>
-        <target>ベアメタルシステムの自動検出機能を無効化しました</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source>
-        <target state="translated">組織 "{0}" に対して自動的なベアメタルシステムの登録が有効化されています。そのため、管理者が "{0}" に対する無効化を実施しない限り、組織 "{1}" に対する有効化は行なうことができません。 </target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.kernel_not_found" xml:space="preserve">
-          <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source>
-        <target>ブートストラップカーネルが見つかりません。 {0} が存在しているかどうかと、アクセスできるかどうかをご確認ください。</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.initrd_not_found" xml:space="preserve">
-          <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
-        <target>ブートストラップの initrd ファイルが見つかりません。 {0} が存在していて、アクセス可能であることをご確認ください。</target>
-      </trans-unit>
       <trans-unit id="bootstrapsystemlist.jsp.header" xml:space="preserve">
           <source>Unprovisioned Systems</source>
         <target>プロビジョンされていないシステム</target>
