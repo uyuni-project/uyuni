@@ -173,8 +173,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("ver", sanitize(pkgId, pkgDto.getVersion()));
         attr.addAttribute("rel", sanitize(pkgId, pkgDto.getRelease()));
-        attr.addAttribute("epoch", sanitize(pkgId, getPackageEpoch(pkgDto
-                .getEpoch())));
+        attr.addAttribute("epoch", sanitize(pkgId, getPackageEpoch(pkgDto.getEpoch())));
         localHandler.startElement("version", attr);
         localHandler.endElement("version");
 
