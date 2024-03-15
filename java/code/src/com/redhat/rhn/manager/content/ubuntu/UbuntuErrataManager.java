@@ -119,6 +119,22 @@ public class UbuntuErrataManager {
         }
     }
 
+    /**
+     * Special compare for epoch as NULL == "" == 0
+     * @param epochInA epoch A
+     * @param epochInB epoch B
+     * @return returns true if the epoch values are equal
+     */
+    private static boolean epochEquals(String epochInA, String epochInB) {
+        epochInA = Optional.ofNullable(epochInA)
+                .filter(e -> !e.equals("0"))
+                .orElse("");
+        epochInB = Optional.ofNullable(epochInB)
+                .filter(e -> !e.equals("0"))
+                .orElse("");
+        return epochInA.equals(epochInB);
+    }
+
     private static Map<String, UbuntuErrataInfo> downloadUbuntuErrataInfo(String jsonDBUrl) throws IOException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
         String bzipJsonDBUrl = jsonDBUrl + ".bz2";
@@ -276,21 +292,23 @@ public class UbuntuErrataManager {
                     TimeUtils.logTime(LOG, "matching packages for " + entry.getId(),
                             () -> packagesMap.entrySet().stream()
                                     .collect(Collectors.toMap(Map.Entry::getKey,
-                                            c -> c.getValue().stream().filter(p -> entry.getPackages().stream()
+                                            c -> c.getValue().stream()
+                                                    .filter(p -> entry.getPackages().stream()
+                                                            .anyMatch(e -> e.getA().equals(p.getName())))
+                                                    .filter(p -> entry.getPackages().stream()
                                                     .anyMatch(e -> {
 
                                     PackageEvr packageEvr = PackageEvr.parseDebian(e.getB());
                                     return e.getC().stream()
                                             .anyMatch(arch -> p.getName().equals(e.getA()) &&
-                                                archToPackageArchLabel(arch)
-                                                        .map(a -> p.getArchLabel().equals(a))
-                                                        .orElse(false) &&
-                                                p.getVersion().equals(packageEvr.getVersion()) &&
-                                                p.getRelease().equals(packageEvr.getRelease()) &&
-                                                Optional.ofNullable(p.getEpoch())
-                                                        .equals(Optional.ofNullable(packageEvr.getEpoch())));
-
-                                })).collect(Collectors.toSet()))));
+                                                    archToPackageArchLabel(arch)
+                                                            .map(a -> p.getArchLabel().equals(a))
+                                                            .orElse(false) &&
+                                                    p.getVersion().equals(packageEvr.getVersion()) &&
+                                                    p.getRelease().equals(packageEvr.getRelease()) &&
+                                                    epochEquals(p.getEpoch(), packageEvr.getEpoch())
+                                            );
+                                    })).collect(Collectors.toSet()))));
 
             Map<Optional<Org>, Map<Channel, Set<PackageDto>>> collect = matchingPackagesByChannel.entrySet().stream()
                     .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getKey().getOrg()),
