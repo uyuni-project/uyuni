@@ -65,7 +65,7 @@ Feature: Prepare the branch server for PXE booting
 
   Scenario: Create all terminals group
     When I follow the left menu "Systems > System Groups"
-    When I follow "Create Group"
+    And I follow "Create Group"
     And I enter "TERMINALS" as "name"
     And I enter "All terminals" as "description"
     And I click on "Create Group"
@@ -73,7 +73,7 @@ Feature: Prepare the branch server for PXE booting
 
   Scenario: Create all branch servers group
     When I follow the left menu "Systems > System Groups"
-    When I follow "Create Group"
+    And I follow "Create Group"
     And I enter "SERVERS" as "name"
     And I enter "All branch servers" as "description"
     And I click on "Create Group"
