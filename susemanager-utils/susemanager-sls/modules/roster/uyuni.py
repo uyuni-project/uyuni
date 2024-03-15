@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 
 Proxy = namedtuple("Proxy", ["hostname", "port"])
 
-COBBLER_HOST = "localhost"
+JAVA_HOSTNAME = "localhost"
 PROXY_SSH_PUSH_USER = "mgrsshtunnel"
 PROXY_SSH_PUSH_KEY = (
     "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push"
@@ -81,7 +81,7 @@ class UyuniRoster:
         self.ssh_connect_timeout = uyuni_roster_config.get(
             "ssh_connect_timeout", SALT_SSH_CONNECT_TIMEOUT
         )
-        self.cobbler_host = uyuni_roster_config.get("host", COBBLER_HOST)
+        self.java_hostname = uyuni_roster_config.get("host", JAVA_HOSTNAME)
 
         if "port" in db_config:
             # pylint: disable-next=consider-using-f-string
@@ -104,7 +104,7 @@ class UyuniRoster:
         log.debug("ssh_push_sudo_user: %s", self.ssh_push_sudo_user)
         log.debug("ssh_use_salt_thin: %s", self.ssh_use_salt_thin)
         log.debug("salt_ssh_connect_timeout: %d", self.ssh_connect_timeout)
-        log.debug("cobbler.host: %s", self.cobbler_host)
+        log.debug("java.hostname: %s", self.java_hostname)
 
         # pylint: disable-next=undefined-variable
         self.cache = salt.cache.Cache(__opts__)
@@ -224,7 +224,7 @@ class UyuniRoster:
                 {
                     "ssh_pre_flight": self.ssh_pre_flight_script,
                     "ssh_pre_flight_args": [
-                        proxies[-1].hostname if proxies else self.cobbler_host,
+                        proxies[-1].hostname if proxies else self.java_hostname,
                         self.ssh_push_port_https if tunnel else SSL_PORT,
                         1 if self.ssh_use_salt_thin else 0,
                     ],
@@ -247,7 +247,7 @@ class UyuniRoster:
                 {
                     # pylint: disable-next=consider-using-f-string
                     "remote_port_forwards": "%d:%s:%d"
-                    % (self.ssh_push_port_https, self.cobbler_host, SSL_PORT)
+                    % (self.ssh_push_port_https, self.java_hostname, SSL_PORT)
                 }
             )
 

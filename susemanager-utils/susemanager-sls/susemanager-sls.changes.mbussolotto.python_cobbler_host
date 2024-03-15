@@ -1,0 +1,1 @@
+- use java.hostname conf instead of cobbler.host
