@@ -20,6 +20,8 @@ import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
+import java.util.Optional;
+
 /**
  *
  * PackageSerializer
@@ -49,14 +51,9 @@ public class PackageDtoSerializer extends ApiResponseSerializer<PackageDto> {
     public SerializedApiResponse serialize(PackageDto src) {
         SerializationBuilder builder = new SerializationBuilder()
                 .add("name", src.getName())
+                .add("epoch", Optional.ofNullable(src.getEpoch()).orElse(""))
                 .add("version", src.getVersion())
-                .add("release", src.getRelease());
-
-        String epoch = src.getEpoch();
-        if (epoch == null || epoch.equals(" ")) {
-            epoch = "";
-        }
-        builder.add("epoch", epoch)
+                .add("release", src.getRelease())
                 .add("checksum", src.getChecksum())
                 .add("checksum_type", src.getChecksumType())
                 .add("id", src.getId())

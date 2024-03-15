@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 /**
  * PackageDto
@@ -150,7 +151,11 @@ public class PackageDto extends BaseDto {
      * @return the epoch
      */
     public String getEpoch() {
-        return epoch;
+        // epoch may be set to single whitespace in the query
+        // we need to strip this away, but keep NULL
+        return Optional.ofNullable(epoch)
+                .map(String::trim)
+                .orElse(null);
     }
 
     /**
