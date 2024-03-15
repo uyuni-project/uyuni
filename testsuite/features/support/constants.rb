@@ -86,13 +86,14 @@ ENV_VAR_BY_HOST = {
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
 }.freeze
 
-ADDRESSES = {
+PRIVATE_ADDRESSES = {
+  # TODO: the values for pxeboot_minion, sle12sp5_terminal, sle15sp4_terminal, and proxy can now be set in sumaform
+  #       remove them from this array when we read them from .bashrc
   'network'           => '0',
-  'sle_client'        => '2',
-  'sle_minion'        => '3',
   'pxeboot_minion'    => '4',
   'sle12sp5_terminal' => '5',
   'sle15sp4_terminal' => '6',
+  'dhcp_dns'          => '53',
   'range begin'       => '128',
   'range end'         => '253',
   'proxy'             => '254',
@@ -326,7 +327,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
     'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
     'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
-    'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x'
+    'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
+    'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
   },
   'Uyuni' => {
     'proxy' => 'openSUSE Leap 15.5 (x86_64)',
@@ -397,7 +399,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'opensuse155arm_minion' => 'openSUSE Leap 15.5 (aarch64)',
     'opensuse155arm_ssh_minion' => 'openSUSE Leap 15.5 (aarch64)',
     'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
-    'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x'
+    'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
+    'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
   },
   'Fake' => {
     'sle_minion' => 'Fake-Base-Channel-SUSE-like',
@@ -1420,6 +1423,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'almalinux9-x86_64' => 120,
   'almalinux9-x86_64-appstream' => 720,
   'almalinux9-x86_64-extras' => 60,
+  'centos-7-iso' => 300,
   'centos7-uyuni-client-devel-x86_64' => 60,
   'centos7-x86_64' => 960,
   'centos7-x86_64-extras' => 120,
@@ -1491,6 +1495,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'res7-x86_64' => 21_000,
   'rhel-x86_64-server-7' => 60,
   'rockylinux8-uyuni-client-devel-x86_64' => 60,
+  'rocky-8-iso' => 600,
   'rockylinux8-x86_64' => 600,
   'rockylinux8-x86_64-appstream' => 1260,
   'rockylinux8-x86_64-extras' => 420,

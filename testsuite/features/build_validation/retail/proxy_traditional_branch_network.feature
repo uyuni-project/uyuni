@@ -130,6 +130,7 @@ Feature: Prepare the branch server for PXE booting
     And I enter "proxy" in first A name field of example.org zone
     And I enter the local IP address of "proxy" in first A address field of example.org zone
     And I press "Add Item" in A section of example.org zone
+    # TODO: don't hardcode anymore the names in the private network once we have them in .bashrc
     And I enter "sle12sp5terminal" in second A name field of example.org zone
     And I enter the local IP address of "sle12sp5_terminal" in second A address field of example.org zone
     And I press "Add Item" in A section of example.org zone

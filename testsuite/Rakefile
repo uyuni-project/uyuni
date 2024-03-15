@@ -131,6 +131,7 @@ namespace :utils do
   desc 'Generate feature to add Activation Keys for all the clients'
   task :generate_add_activation_keys_features do
     clients = Rake::FileList['features/build_validation/init_clients/*.feature']
+    clients.reject! { |client| client.include?('salt_migration_minion') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/add_activation_keys/add_activation_key.template',

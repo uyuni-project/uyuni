@@ -163,6 +163,10 @@ class SuseProductRepositoriesImport(GenericPackageImport):
             if item['repo_id'] not in rid_trans:
                 rid_trans[item['repo_id']] = self.backend.lookupRepoIdBySCCRepoId(item['repo_id'])
             item['repo_pdid'] = rid_trans[item['repo_id']]
+            if item['parent_channel_label'] == 'None':
+                item['parent_channel_label'] = None
+            if item['update_tag'] == 'None':
+                item['update_tag'] = None
             self._data.append(item)
 
     def fix(self):
