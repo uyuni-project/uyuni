@@ -43,6 +43,10 @@ public class BatchStartedEventMessageAction implements MessageAction {
     public void execute(EventMessage msg) {
         Data eventData = ((BatchStartedEventMessage) msg).getBatchStartedEvent().getData();
         List<String> downMinions = eventData.getDownMinions();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Down Minions: {}", downMinions);
+            LOG.debug("BatchStartedEventMessage {}", eventData);
+        }
 
         if (!downMinions.isEmpty()) {
             Optional<Long> actionId = eventData.getMetadata(ScheduleMetadata.class).map(
@@ -55,7 +59,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
      * Update the action properly based on the event results from Salt.
      *
      * @param actionId the ID of the Action to handle
-     * @param minionId the ID of the Minion who performed the action
+     * @param minionIds the IDs of the Minions who performed the action
      */
     private static void handleBatchStartedAction(long actionId, List<String> minionIds) {
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
@@ -67,12 +71,12 @@ public class BatchStartedEventMessageAction implements MessageAction {
 
             Set<ServerAction> serverActions = action.get().getServerActions();
 
-            minionServerIds.entrySet().stream().forEach(entry -> {
+            minionServerIds.forEach((minionId, systemId) -> {
                 Optional<ServerAction> serverAction = serverActions.stream()
-                        .filter(sa -> sa.getServerId().equals(entry.getValue()))
+                        .filter(sa -> sa.getServerId().equals(systemId))
                         .findFirst();
 
-                serverAction.ifPresent(sa -> handleServerAction(sa, entry.getKey()));
+                serverAction.ifPresent(sa -> failServerAction(sa, minionId));
             });
         }
         else {
@@ -81,17 +85,17 @@ public class BatchStartedEventMessageAction implements MessageAction {
     }
 
     /**
-     * Update a given server action properly for a given minion.
+     * Fail the given server action properly for a given minion.
      *
      * @param serverAction the server action
-     * @param minionServer the minion who performed the server action
+     * @param minionId the minion who performed the server action
      */
-    private static void handleServerAction(ServerAction sa, String minionId) {
+    private static void failServerAction(ServerAction serverAction, String minionId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Marking server action as failed for server: {}", minionId);
         }
-        sa.fail("Minion is down or could not be contacted.");
-        ActionFactory.save(sa);
+        serverAction.fail("Minion is down or could not be contacted.");
+        ActionFactory.save(serverAction);
     }
 
     /**
