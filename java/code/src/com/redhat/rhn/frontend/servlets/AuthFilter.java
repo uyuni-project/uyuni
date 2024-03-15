@@ -18,8 +18,11 @@ package com.redhat.rhn.frontend.servlets;
 import com.redhat.rhn.common.security.CSRFTokenException;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.session.SessionManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -76,8 +79,16 @@ public class AuthFilter implements Filter {
                 (HttpServletResponse)response)) {
 
             HttpServletRequest hreq = new
-                RhnHttpServletRequest((HttpServletRequest)request);
+                    RhnHttpServletRequest((HttpServletRequest)request);
 
+            // Prevent read-only API users from using the web UI
+            RequestContext requestContext = new RequestContext(hreq);
+            User user = requestContext.getCurrentUser();
+            if (user != null && user.isReadOnly() && !hreq.getServletPath().startsWith("/manager/api")) {
+                SessionManager.purgeUserSessions(user);
+                authenticationService.redirectToLogin(hreq, (HttpServletResponse) response);
+                return;
+            }
 
             if (hreq.getMethod().equals("POST") || hreq.getMethod().equals("PUT") ||
                     hreq.getMethod().equals("DELETE")) {
