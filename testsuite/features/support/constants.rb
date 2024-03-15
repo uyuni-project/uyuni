@@ -946,7 +946,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-suse-manager-proxy-4.3-pool-x86_64
         sle-product-suse-manager-proxy-4.3-updates-x86_64
         sle-module-suse-manager-proxy-4.3-pool-x86_64
-        sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
         sle-module-suse-manager-proxy-4.3-updates-x86_64
         sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3
         sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3
