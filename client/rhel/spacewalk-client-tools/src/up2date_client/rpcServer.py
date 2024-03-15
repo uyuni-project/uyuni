@@ -6,7 +6,6 @@ import socket
 import time
 
 from up2date_client import config
-from up2date_client import clientCaps
 from up2date_client import up2dateLog
 from up2date_client import up2dateErrors
 from up2date_client import up2dateUtils
@@ -187,12 +186,6 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
             # force the validation of the SSL cert
             s.add_trusted_cert(rhns_ca_cert)
 
-    clientCaps.loadLocalCaps()
-
-    # send up the capabality info
-    headerlist = clientCaps.caps.headerFormat()
-    for (headerName, value) in headerlist:
-        s.add_header(headerName, value)
     return s
 
 

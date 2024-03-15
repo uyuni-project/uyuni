@@ -549,24 +549,14 @@ class UploadClass(uploadLib.UploadClass):
             # computing checksum and other info is expensive process and session
             # could have expired.Make sure its re-authenticated.
             self.authenticate()
-            if uploadLib.exists_getPackageChecksumBySession(self.server):
-                checksum_data = uploadLib.getPackageChecksumBySession(self.server,
-                                                                      self.session.getSessionString(), info)
-            else:
-                # old server only md5 capable
-                checksum_data = uploadLib.getPackageMD5sumBySession(self.server,
-                                                                    self.session.getSessionString(), info)
+            checksum_data = uploadLib.getPackageChecksumBySession(self.server,
+                                                                  self.session.getSessionString(), info)
         else:
             # computing checksum and other info is expensive process and session
             # could have expired.Make sure its re-authenticated.
             self.authenticate()
-            if uploadLib.exists_getPackageChecksumBySession(self.server):
-                checksum_data = uploadLib.getSourcePackageChecksumBySession(self.server,
-                                                                            self.session.getSessionString(), info)
-            else:
-                # old server only md5 capable
-                checksum_data = uploadLib.getSourcePackageMD5sumBySession(self.server,
-                                                                          self.session.getSessionString(), info)
+            checksum_data = uploadLib.getSourcePackageChecksumBySession(self.server,
+                                                                        self.session.getSessionString(), info)
 
         return (checksum_data, pkg_hash, digest_hash)
 

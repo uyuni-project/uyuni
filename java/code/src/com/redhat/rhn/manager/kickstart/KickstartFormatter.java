@@ -54,7 +54,6 @@ public class KickstartFormatter {
     private static Logger log = LogManager.getLogger(KickstartFormatter.class);
 
 
-    private static final String REDHAT_REGISTER_SNIPPET = "spacewalk/redhat_register";
     private static final String REDHAT_REGISTER_USING_SALT_SNIPPET = "spacewalk/redhat_register_using_salt";
     private static final String POST_REACTIVATION_SNIPPET = "spacewalk/post_reactivation_key";
     private static final String POST_DELETION_SNIPPET = "spacewalk/post_delete_system";
@@ -103,7 +102,6 @@ public class KickstartFormatter {
     private static final String CONFIG_CMD =
         "mkdir -p /etc/sysconfig/rhn/allowed-actions/configfiles" + NEWLINE +
         "touch /etc/sysconfig/rhn/allowed-actions/configfiles/all";
-    private static final String RHNCHECK = "rhn_check";
     private static final String RHN_NOCHROOT =
         "mkdir /mnt/sysimage/tmp/ks-tree-copy" + NEWLINE +
         "if [ -d /oldtmp/ks-tree-shadow ]; then" + NEWLINE +
@@ -678,11 +676,6 @@ public class KickstartFormatter {
 
         if (ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
             addCobblerSnippet(retval, REDHAT_REGISTER_USING_SALT_SNIPPET);
-        }
-        else {
-            addCobblerSnippet(retval, REDHAT_REGISTER_SNIPPET);
-            retval.append(NEWLINE);
-            retval.append(RHNCHECK + NEWLINE);
         }
 
         retval.append("# end cobbler snippet" + NEWLINE);

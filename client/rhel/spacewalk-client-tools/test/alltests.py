@@ -19,37 +19,18 @@
 import unittest
 import settestpath
 
-import testByteRangeRpcServer
-import testClientCaps
 import testConfig
-import testRhnChannel
-import testRpcServer
-import testRpmUtils
-import testSSLSocketTimeout
 import testTransactions
-import testUp2dateAuth
 import testUp2dateUtils
-import haltreetests
-import rhnPackageInfo
-### import testrhnregGui
 
 from unittest import TestSuite
 
 def suite():
     # Append all test suites here:
     return TestSuite((
-        testByteRangeRpcServer.suite(),
-        testClientCaps.suite(),
         testConfig.suite(),
-###        testRhnChannel.suite(),
-###        testRpcServer.suite(),
-        testRpmUtils.suite(),
-        testSSLSocketTimeout.suite(),
         testTransactions.suite(),
-###        testUp2dateAuth.suite(),
         testUp2dateUtils.suite(),
-        rhnPackageInfo.suite(),
-        haltreetests.suite()
     ))
 
 if __name__ == "__main__":
