@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-08 14:46+0100\n"
+"POT-Creation-Date: 2024-03-15 15:24+0100\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Tamil (http://www.transifex.com/projects/p/spacewalk/language/"
@@ -46,27 +46,6 @@ msgstr "%s ஐ காணவில்லை"
 #: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
 msgid "Getting list of packages installed on the system"
 msgstr "கணினியில் நிறுவப்பட்ட தொகுப்பின் பட்டியலை பெறுகிறது"
-
-#. self.druid.finish.set_label(_("_Finish"))
-#: ../src/up2date_client/gui.py:273
-#, fuzzy
-msgid "Finish setting up software updates"
-msgstr "மேம்படுத்தல் அமைவு"
-
-#. self.druid.finish.set_label(_("_Exit"))
-#: ../src/up2date_client/gui.py:276
-#, fuzzy
-msgid "Software updates setup unsuccessful"
-msgstr "மேம்படுத்தல் அமைவு"
-
-#: ../src/up2date_client/gui.py:283
-msgid "You must run rhn_register as root."
-msgstr "rhn_register ஐ root ஆக இயக்க வேண்டும்."
-
-#: ../src/up2date_client/gui.py:308
-#, python-format
-msgid "There was some sort of I/O error: %s"
-msgstr "சில I/O பிழை உள்ளது: %s"
 
 #: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
@@ -128,7 +107,7 @@ msgstr "பயனர் பெயர் அங்கீகரிக்கப்�
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "அங்கீகரிக்கப்பட்ட http பதிலாளை பயன்படுத்தும் கடவுச்சொல்லை குறிப்பிடவும்"
 
-#: ../src/up2date_client/rhncli.py:93
+#: ../src/up2date_client/rhncli.py:91
 msgid ""
 "\n"
 "Aborted.\n"
@@ -136,31 +115,31 @@ msgstr ""
 "\n"
 "நிறுத்தப்பட்டது.\n"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:94
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "எதிர்பார்க்காத OS பிழை ஏற்பட்டுள்ளது: %s\n"
 
-#: ../src/up2date_client/rhncli.py:101
+#: ../src/up2date_client/rhncli.py:99
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "தவறான URIக்கு ஒரு இணைப்பு முயற்சிக்கப்படுகிறது.\n"
 
-#: ../src/up2date_client/rhncli.py:103
+#: ../src/up2date_client/rhncli.py:101
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "தவறான URIக்கு ஒரு இணைப்பு முயற்சிக்கப்படுகிறது: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:105
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "சில I/O பிழை உள்ளது: %s\n"
 
-#: ../src/up2date_client/rhncli.py:111
+#: ../src/up2date_client/rhncli.py:109
 #, python-format
 msgid "There was an SSL error: %s\n"
 msgstr "ஒரு SSL பிழை உள்ளது: %s\n"
 
-#: ../src/up2date_client/rhncli.py:112
+#: ../src/up2date_client/rhncli.py:110
 msgid ""
 "A common cause of this error is the system time being incorrect. Verify that "
 "the time on this system is correct.\n"
@@ -168,26 +147,22 @@ msgstr ""
 "இந்த சிக்கலுக்கு காரணம் கணினியில் நேரம் தவறாக உள்ளதே ஆகும். கணினியின் நேரம் சரியாக "
 "உள்ளதா எனசரி பார்க்கவும்.\n"
 
-#: ../src/up2date_client/rhncli.py:119
+#: ../src/up2date_client/rhncli.py:117
 #, python-format
 msgid "There was a SSL crypto error: %s\n"
 msgstr "ஒரு SSL மறையாக்க பிழை ஏற்பட்டுள்ளது: %s\n"
 
-#: ../src/up2date_client/rhncli.py:123
+#: ../src/up2date_client/rhncli.py:121
 #, python-format
 msgid "There was an authentication error: %s\n"
 msgstr "ஒரு அங்கீகார பிழை ஏற்பட்டுள்ளது:%s\n"
 
-#: ../src/up2date_client/rhncli.py:139
+#: ../src/up2date_client/rhncli.py:137
 #, python-format
 msgid "You must be root to run %s"
 msgstr "%s ஐ இயக்க நீங்கள் ரூட்டாக இருக்க வேண்டும்"
 
-#: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr "gui யை திறக்க முடியவில்லை. `up2date --nox` யை முயற்சிக்கவும்"
-
-#: ../src/up2date_client/rhncli.py:211
+#: ../src/up2date_client/rhncli.py:193
 #, python-format
 msgid ""
 "%%prog (Spacewalk Client Tools) %s\n"
@@ -195,51 +170,13 @@ msgid ""
 "Licensed under the terms of the GPLv2."
 msgstr ""
 
-#: ../src/up2date_client/rhncli.py:226
+#: ../src/up2date_client/rhncli.py:208
 msgid "An error has occurred:"
 msgstr "ஒரு பிழை ஏற்பட்டுள்ளது:"
 
-#: ../src/up2date_client/rhncli.py:234
+#: ../src/up2date_client/rhncli.py:216
 msgid "See /var/log/up2date for more information"
 msgstr "மேலும் தகவலுக்கு /var/log/up2date ஐ பார்க்கவும்"
-
-#: ../src/up2date_client/rhnreg.py:75
-#, fuzzy
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "எச்சரிக்கை: rhnsd யை chkconfig உடன் செயல்படுத்த முடியவில்லை"
-
-#: ../src/up2date_client/rhnreg.py:81
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "எச்சரிக்கை: rhnsd யை chkconfig உடன் செயல்படுத்த முடியவில்லை"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "எச்சரிக்கை"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "கணினியை பதிவு செய்வதில் சிக்கல்:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "கணினியை பதிவு செய்வதில் சிக்கல்."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "கணினியின் அடையாளத்தை வட்டில் எழுதும்போது பிழை"
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -609,9 +546,9 @@ msgstr "Red Hat Network க்கு விவரக்குறிப்பு 
 msgid ""
 "We are finished collecting information for the System Profile.\n"
 "\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
+"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel"
+"\" and no information will be sent.  You can run the registration program "
+"later by typing `rhn_register` at the command line."
 msgstr ""
 "கணினி விவரக்குறிப்பு தகவல் சேமிப்பது முடிக்கப்பட்டது.\n"
 "\n"
@@ -825,6 +762,10 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:243
 msgid "Fatal Error"
 msgstr "முக்கிய பிழை"
+
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "எச்சரிக்கை"
 
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, fuzzy, python-format, python-brace-format
@@ -1046,6 +987,11 @@ msgstr "புரவலன் பெயர்: "
 msgid "CPU speed: "
 msgstr "CPU வேகம்: "
 
+#: ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
 #: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
 msgstr "IP முகவரி: "
@@ -1058,6 +1004,19 @@ msgstr "நினைவகம்: "
 #, python-format
 msgid "%s megabytes"
 msgstr "%s மெகாபைட்கள்"
+
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "கணினியை பதிவு செய்வதில் சிக்கல்:\n"
+
+#: ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "கணினியை பதிவு செய்வதில் சிக்கல்."
+
+#: ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "கணினியின் அடையாளத்தை வட்டில் எழுதும்போது பிழை"
 
 #: ../src/up2date_client/tui.py:1025
 msgid "Problem sending hardware profile:\n"
@@ -1074,6 +1033,13 @@ msgstr "தொகுப்பு பட்டியலை அனுப்பு�
 #: ../src/up2date_client/tui.py:1042
 msgid "Problem sending package list."
 msgstr "தொகுப்பு பட்டியலை அனுப்புவதில் பிழை."
+
+#: ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
 
 #: ../src/up2date_client/tui.py:1096
 msgid "Finish"
@@ -1240,23 +1206,19 @@ msgid "Do not upload any virtualization info"
 msgstr "எந்த மெய்நிகராக்க தகவலையும் ஏற்ற வேண்டாம்"
 
 #: ../src/bin/rhnreg_ks.py:74
-msgid "Do not start rhnsd after completion"
-msgstr "முடிந்தவுடன் rhnsd ஐ ஆரம்பிக்க வேண்டாம்"
-
-#: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
 msgstr "கணினி ஏற்கனவே பதிவு செய்யப்பட்டாலும் பதிவு செய்யவும்"
 
-#: ../src/bin/rhnreg_ks.py:86
+#: ../src/bin/rhnreg_ks.py:84
 msgid "A username and password are required to register a system."
 msgstr ""
 "ஒரு பயனர் பெயர், கடவுச்சொல் மற்றும் மின்னஞ்சல் முகவரி கணினியை பதிவு செய்ய தேவையாகும்."
 
-#: ../src/bin/rhnreg_ks.py:91
+#: ../src/bin/rhnreg_ks.py:89
 msgid "This system is already registered. Use --force to override"
 msgstr "இந்த கணினி ஏற்கனவே பதிவு செய்யப்பட்டது. --force ஐ பயன்படுத்தி மேலாணை செய்யவும்"
 
-#: ../src/bin/rhnreg_ks.py:125
+#: ../src/bin/rhnreg_ks.py:123
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
@@ -1264,11 +1226,11 @@ msgstr ""
 "--use-eus-channel விருப்பத்தை  --activationkey உடன் பயன்படுத்து துணைபுரியவில்லை. "
 "அதற்கு பதிலாக பயனர் பெயர் மற்றும் கடவுச்சொல்லை பயன்படுத்தவும்."
 
-#: ../src/bin/rhnreg_ks.py:128
+#: ../src/bin/rhnreg_ks.py:126
 msgid "The server you are registering against does not support EUS."
 msgstr "நீங்கள் பதிவு செய்த சேவையகம் EUSக்கு துணைபுரியாது."
 
-#: ../src/bin/rhnreg_ks.py:154
+#: ../src/bin/rhnreg_ks.py:152
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
 "server web user Interface and update your contactinfo. "
@@ -1276,12 +1238,12 @@ msgstr ""
 "எச்சரிக்கை: --contactinfo விருப்பம் நீக்கப்பட்டது. சேவையக வலை பயனர் முகப்பிற்கு "
 "புகுபதிவு செய்து உங்கள் தொடர்பு தகவலை புதுப்பிக்கவும். "
 
-#: ../src/bin/rhnreg_ks.py:175
+#: ../src/bin/rhnreg_ks.py:169
 #, fuzzy, python-format
 msgid "Warning: %s is not present, could not enable it."
 msgstr "எச்சரிக்கை: yum-rhn-plugin இல்லை, எனவே செயல்படுத்த முடியவில்லை."
 
-#: ../src/bin/rhnreg_ks.py:178
+#: ../src/bin/rhnreg_ks.py:172
 #, fuzzy, python-format
 msgid ""
 "Warning: Could not open %s\n"
@@ -1290,13 +1252,41 @@ msgstr ""
 "எச்சரிக்கை: /etc/yum/pluginconf.d/rhnplugin.conf-ஐ திறக்க முடியவில்லை\n"
 "yum-rhn-plugin செயல்படுத்தவில்லை.\n"
 
-#: ../src/bin/rhnreg_ks.py:206
+#: ../src/bin/rhnreg_ks.py:200
 msgid ""
 "A profilename was not specified, and hostname and IP address could not be "
 "determined to use as a profilename, please specify one."
 msgstr ""
 "ஒரு விவரக்குறிப்பு பெயர் குறிப்பிடவில்லை, மற்றும் புரவலன் பெயர் மற்றும் IP முகவரியை "
 "விவரக்குறிப்பு பெயராக பயன்படுத்த வரையறுக்க முடியாது, எனவே ஒன்றையாவது குறிப்பிடவும்."
+
+#, fuzzy
+#~ msgid "Finish setting up software updates"
+#~ msgstr "மேம்படுத்தல் அமைவு"
+
+#, fuzzy
+#~ msgid "Software updates setup unsuccessful"
+#~ msgstr "மேம்படுத்தல் அமைவு"
+
+#~ msgid "You must run rhn_register as root."
+#~ msgstr "rhn_register ஐ root ஆக இயக்க வேண்டும்."
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s"
+#~ msgstr "சில I/O பிழை உள்ளது: %s"
+
+#~ msgid "Unable to open gui. Try `up2date --nox`"
+#~ msgstr "gui யை திறக்க முடியவில்லை. `up2date --nox` யை முயற்சிக்கவும்"
+
+#, fuzzy
+#~ msgid "Warning: unable to enable rhnsd with systemd"
+#~ msgstr "எச்சரிக்கை: rhnsd யை chkconfig உடன் செயல்படுத்த முடியவில்லை"
+
+#~ msgid "Warning: unable to enable rhnsd with chkconfig"
+#~ msgstr "எச்சரிக்கை: rhnsd யை chkconfig உடன் செயல்படுத்த முடியவில்லை"
+
+#~ msgid "Do not start rhnsd after completion"
+#~ msgstr "முடிந்தவுடன் rhnsd ஐ ஆரம்பிக்க வேண்டாம்"
 
 #~ msgid "Error:"
 #~ msgstr "பிழை:"

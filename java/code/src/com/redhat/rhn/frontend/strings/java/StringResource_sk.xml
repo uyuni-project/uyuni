@@ -11347,7 +11347,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
-        <target state="new"/>
+        <target state="translated">Spravuje prihlásenia a obnovenia reťazca akcií pre klientov SSH Push</target>
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
@@ -11355,7 +11355,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
-        <target state="new"/>
+        <target state="translated">Táto inštancia @@PRODUCT_NAME@@ PAYG nie je vyhovujúca. Niektoré funkcie @@PRODUCT_NAME@@ budú vypnuté. Prosím, obráťte sa na svojho systémového administrátora.</target>
       </trans-unit>
       <trans-unit id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
         <source>
@@ -11363,7 +11363,11 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
-        <target state="new"/>
+        <target state="translated">
+          Akciu, o ktorú ste sa pokúsili, nebolo možné vykonať, pretože @@PRODUCT_NAME@@ je PAYG, v aktuálnej akcii sú servery BYOS a v súčasnosti nie sú nastavené žiadne prihlasovacie údaje SCC.
+          Ak chcete túto situáciu napraviť, nastavte prihlasovacie údaje SCC pre túto inštanciu @@PRODUCT_NAME@@ a skúste to znova. Akciu môžete vykonať aj len na inštanciách Pay-as-you-go.
+          Zistené servery Bring-your-own-subscription: {0}.
+        </target>
       </trans-unit>
       <trans-unit id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
         <source>
@@ -11371,15 +11375,19 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action chain only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
-        <target state="new"/>
+        <target state="translated">
+          Reťazec akcií, o ktorý ste sa pokúsili, nebolo možné vykonať, pretože @@PRODUCT_NAME@@ je PAYG, v aktuálnom reťazci akcii sú servery BYOS a v súčasnosti nie sú nastavené žiadne prihlasovacie údaje SCC.
+          Ak chcete túto situáciu napraviť, nastavte prihlasovacie údaje SCC pre túto inštanciu @@PRODUCT_NAME@@ a skúste to znova. Reťazec akcií môžete vykonať aj len na inštanciách Pay-as-you-go.
+          Zistené servery Bring-your-own-subscription: {0}.
+        </target>
       </trans-unit>
       <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-        <target state="new"/>
+        <target state="translated">Jeden alebo viac vybraných systémov nemá v aktuálnom čase pridelené okno údržby. Obmedzte výber na systémy, ktoré sú v režime údržby.</target>
       </trans-unit>
       <trans-unit id="internal_state.update-salt" xml:space="preserve">
         <source>Perform a standalone Salt update</source>
-        <target state="new"/>
+        <target state="translated">Vykonanie samostatnej aktualizácie Salt</target>
       </trans-unit>
     </body>
   </file>

@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-23 15:31+0100\n"
-"PO-Revision-Date: 2024-02-25 16:42+0000\n"
+"PO-Revision-Date: 2024-03-10 16:42+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1536,7 +1536,7 @@ msgstr "Ovplyvnené, opravy dostupné v kanáloch, ktoré nie sú priradené"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
+msgstr "Klient je ohrozený zraniteľnosťou a máme na ňu opravu,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
@@ -1556,6 +1556,8 @@ msgid ""
 "The client is not affected because none of the known CVE vulnerable packages "
 "are installed."
 msgstr ""
+"Klient nie je ovplyvnený, pretože nie je nainštalovaný žiadny zo známych "
+"zraniteľných balíkov CVE."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
@@ -1566,31 +1568,29 @@ msgid "A patch has been successfully installed on the client."
 msgstr "Oprava bola úspešne nainštalovaná na klienta."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
-#, fuzzy
 msgid "Affected, patch is unavailable"
-msgstr "K dispozícii sú aktualizácie balíkov"
+msgstr "Ovplyvnené, oprava nie je k dispozícii"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
 msgstr ""
+"Klient je ovplyvnený zraniteľnosťou, pre ktorú ešte nebola vydaná oprava."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
-#, fuzzy
 msgid "Affected, patch is unavailable in relevant channels"
-msgstr "Ovplyvnené, v priradenom kanáli je k dispozícii aspoň jedna oprava"
+msgstr "Ovplyvnené, oprava nie je k dispozícii v príslušných kanáloch"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid ""
 "The client is affected by a vulnerability for which a patch has been "
 "released,"
-msgstr ""
+msgstr "Klient je ovplyvnený zraniteľnosťou, pre ktorú bola vydaná oprava,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
-#, fuzzy
 msgid "Affected, partial patch available in assigned channel"
-msgstr "Ovplyvnené, v priradenom kanáli je k dispozícii aspoň jedna oprava"
+msgstr "Ovplyvnené, čiastočná oprava je k dispozícii v priradenom kanáli"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
@@ -1671,9 +1671,8 @@ msgid "Patch available, but needs to be cloned into Channel."
 msgstr "Oprava je k dispozícii, ale je potrebné ju naklonovať do kanála."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
-#, fuzzy
 msgid "Install a new partial patch on this system."
-msgstr "Inštalovať novú opravu na tento systém."
+msgstr "Nainštalovať novú čiastočnú opravu do tohto systému."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
