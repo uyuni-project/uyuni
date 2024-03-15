@@ -2,7 +2,8 @@
 name: SUSE Manager MU submission
 about: Use this template for SUSE Manager MU submissions
 title: 'X.Y.Z Maintenance Update submission'
-labels: vega-squad
+labels: ["vega-squad"]
+projects: ["SUSE/35"]
 assignees: ''
 ---
 

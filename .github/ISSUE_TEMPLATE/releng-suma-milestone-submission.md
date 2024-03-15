@@ -2,7 +2,8 @@
 name: SUSE Manager Milestone submission
 about: Use this template for SUSE Manager Milestone submissions
 title: 'X.Y <MILESTONE_NAME> Milestone submission'
-labels: vega-squad
+labels: ["vega-squad"]
+projects: ["SUSE/35"]
 assignees: ''
 ---
 

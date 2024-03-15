@@ -2,7 +2,7 @@
 name: SUSE Manager EOL
 about: Use this template when a product goes EOL in SUSE Manager
 title: 'Epic: XXX EOL'
-labels: vega-squad, qe-squad, doc-squad, epics
+labels: ["vega-squad", "qe-squad", "docs-squad", "epics"]
 assignees: ''
 ---
 
