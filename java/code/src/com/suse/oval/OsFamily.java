@@ -15,35 +15,40 @@
 
 package com.suse.oval;
 
+import com.redhat.rhn.domain.server.Server;
+
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public enum OsFamily {
-    LEAP("openSUSE Leap", "leap", "opensuse",
+    LEAP("openSUSE Leap", "Leap", "opensuse",
             oneOf("15.2", "15.3", "15.4", "15.5")),
-    LEAP_MICRO("openSUSELeap Micro", "leap-micro", "opensuse",
+    LEAP_MICRO("openSUSELeap Micro", "openSUE Leap Micro", "opensuse",
             oneOf("5.2", "5.3")),
-    SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse",
+    SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "SLES", "suse",
             oneOf("11", "12", "15")),
-    SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "sled", "suse",
+    SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "SLED", "suse",
             oneOf("10", "11", "12", "15")),
-    SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "sle-micro", "suse",
+    SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "SLE Micro", "suse",
             oneOf("5.0", "5.1", "5.2", "5.3")),
-    REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "enterprise_linux", "redhat",
+    REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
             withPrefix("7.", "8.", "9.")),
-    UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("18.04", "20.04", "22.04")),
-    DEBIAN("Debian", "debian", "debian", oneOf("10", "11", "12"));
+    UBUNTU("Ubuntu", "Ubuntu", "canonical", oneOf("18.04", "20.04", "22.04")),
+    DEBIAN("Debian", "Debian", "debian", oneOf("10", "11", "12"));
 
     private final String vendor;
     private final String fullname;
-    // Should consist of all lower case characters
-    private final String shortname;
+    /**
+     * Should consist of the same values as {@link Server#getOs()}
+     * */
+    private final String os;
     private final Pattern legalReleasePattern;
 
-    OsFamily(String fullnameIn, String shortnameIn, String vendorIn, String legalReleaseRegex) {
+    OsFamily(String fullnameIn, String osIn, String vendorIn, String legalReleaseRegex) {
         this.fullname = fullnameIn;
-        this.shortname = shortnameIn;
+        this.os = osIn;
         this.vendor = vendorIn;
         legalReleasePattern = Pattern.compile(legalReleaseRegex);
     }
@@ -79,5 +84,15 @@ public enum OsFamily {
 
     private static String[] escapePeriods(String ... strings) {
         return Arrays.stream(strings).map(str -> str.replace(".", "\\.")).toArray(String[]::new);
+    }
+
+    /**
+     * Creates an {@code OsFamily} object from the given os name.
+     *
+     * @param osName the os name to convert (it should consist of the same values as {@link Server#getOs()})
+     * @return the os family that correspond to the given os name.
+     * */
+    public static Optional<OsFamily> fromOsName(String osName) {
+        return Arrays.stream(values()).filter(osFamily -> osFamily.os.equalsIgnoreCase(osName)).findFirst();
     }
 }
