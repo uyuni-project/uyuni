@@ -31,14 +31,10 @@ public class OVALDataSync extends RhnJavaJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        if (log.isDebugEnabled()) {
-            log.debug("Syncing OVAL data");
-        }
+        log.info("Syncing OVAL data");
 
         CVEAuditManagerOVAL.syncOVAL();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Done syncing OVAL data");
-        }
+        log.info("Done syncing OVAL data");
     }
 }
