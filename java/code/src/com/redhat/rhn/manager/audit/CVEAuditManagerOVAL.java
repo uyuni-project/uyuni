@@ -379,9 +379,14 @@ public class CVEAuditManagerOVAL {
      * Identifies the OS products to synchronize OVAL data for.
      * */
     private static Set<OVALProduct> getProductsToSync() {
-        List<Server> allServers = ServerFactory.list(false, false);
-
-        return allServers.stream().map(Server::toOVALProduct)
+        Set<OsReleasePair> allServersOsAndRelease = ServerFactory.listAllServersOsAndRelease();
+        return allServersOsAndRelease.stream().map(osReleasePairIn -> {
+                            Server server = ServerFactory.createServer();
+                            server.setOs(osReleasePairIn.getOs());
+                            server.setRelease(osReleasePairIn.getOsRelease());
+                            return server;
+                        }
+                ).map(Server::toOVALProduct)
                 .filter(Optional::isPresent)
                 .map(Optional::get).collect(Collectors.toSet());
     }
@@ -418,8 +423,12 @@ public class CVEAuditManagerOVAL {
 
         @Override
         public boolean equals(Object oIn) {
-            if (this == oIn) return true;
-            if (oIn == null || getClass() != oIn.getClass()) return false;
+            if (this == oIn) {
+                return true;
+            }
+            if (oIn == null || getClass() != oIn.getClass()) {
+                return false;
+            }
             OVALProduct that = (OVALProduct) oIn;
             return osFamily == that.osFamily && Objects.equals(osVersion, that.osVersion);
         }
