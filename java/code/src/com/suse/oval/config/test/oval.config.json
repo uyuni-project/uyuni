@@ -1,6 +1,6 @@
 {
   "sources": {
-    "openSUSE_LEAP": {
+    "LEAP": {
       "content": {
         "15.2": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.2-affected.xml.gz",
