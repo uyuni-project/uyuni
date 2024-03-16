@@ -142,10 +142,11 @@ public class OVALCleaner {
     }
 
     /**
-     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
-     * same id but different content for different versions of Debian.
-     * <p>
-     * To work around this, we insert the codename of the version into the id string
+     * Debian Ids are not unique among different versions. For example, it is possible to find an OVAL test with
+     * {@code id = "1"} in the OVAL file of debian buster and debian bullseye. This would create a conflict between
+     * the two tests.
+     * To work around this and to have globally unique IDs for OVAL tests, we insert the codename of the version into
+     * the id string.
      */
     private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
         if (root instanceof CriteriaType) {
