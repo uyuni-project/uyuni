@@ -2509,9 +2509,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
         if (isDebian() && OsFamily.DEBIAN.isSupportedRelease(osRelease)) {
             ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.DEBIAN, osRelease);
         }
-        else if (isUbuntu() && OsFamily.UBUNTU.isSupportedRelease(osRelease)) {
-            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.UBUNTU, osRelease);
-        }
         else if (isLeap() && OsFamily.LEAP.isSupportedRelease(osRelease)) {
             ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.LEAP, osRelease);
         }
