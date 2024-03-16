@@ -378,14 +378,9 @@ public class CVEAuditManagerOVAL {
      * Identifies the OS products to synchronize OVAL data for.
      * */
     private static Set<OVALProduct> getProductsToSync() {
-        Set<OsReleasePair> allServersOsAndRelease = ServerFactory.listAllServersOsAndRelease();
-        return allServersOsAndRelease.stream().map(osReleasePairIn -> {
-                            Server server = ServerFactory.createServer();
-                            server.setOs(osReleasePairIn.getOs());
-                            server.setRelease(osReleasePairIn.getOsRelease());
-                            return server;
-                        }
-                ).map(Server::toOVALProduct)
+        return ServerFactory.listAllServersOsAndRelease()
+                .stream()
+                .map(OsReleasePair::toOVALProduct)
                 .filter(Optional::isPresent)
                 .map(Optional::get).collect(Collectors.toSet());
     }
