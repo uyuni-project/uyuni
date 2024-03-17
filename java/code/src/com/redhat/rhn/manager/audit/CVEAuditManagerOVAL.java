@@ -352,27 +352,26 @@ public class CVEAuditManagerOVAL {
             LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
 
             downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
-                OvalParser ovalParser = new OvalParser();
-                OvalRootType ovalRoot = ovalParser.parse(ovalVulnerabilityFile);
-
+                extractAndSaveOVALData(product, ovalVulnerabilityFile);
                 LOG.debug("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
-
-                OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
-                OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
             });
 
             downloadResult.getPatchFile().ifPresent(patchFile -> {
-                OvalParser ovalParser = new OvalParser();
-                OvalRootType ovalRoot = ovalParser.parse(patchFile);
-
+                extractAndSaveOVALData(product, patchFile);
                 LOG.debug("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
-
-                OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
-                OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
             });
 
             LOG.debug("Saving OVAL finished");
         }
+    }
+
+    /**
+     * Extracts OVAL metadata from the given {@code ovalFile}, clean it and save it to the database.
+     * */
+    private static void extractAndSaveOVALData(OVALProduct product, File ovalFile) {
+        OvalRootType ovalRoot = new OvalParser().parse(ovalFile);
+        OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+        OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
     }
 
     /**
