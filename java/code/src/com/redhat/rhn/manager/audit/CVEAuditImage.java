@@ -27,8 +27,11 @@ public class CVEAuditImage implements CVEAuditSystem {
     private long id;
     private String name;
     private PatchStatus patchStatus;
-    // If server was scanned wth CVEAuditManager#doAuditSystem instead of CVEAuditManagerOVAL#doAuditSystem then
-    // it's possible to get false negatives.
+    /**
+     * Why need this?
+     * If image was scanned wth CVEAuditManager#doAuditSystem instead of CVEAuditManagerOVAL#doAuditSystem then
+     * it's possible to get false negatives.
+     */
     private boolean scannedWithOVAL;
 
     private Set<AuditChannelInfo> channels;

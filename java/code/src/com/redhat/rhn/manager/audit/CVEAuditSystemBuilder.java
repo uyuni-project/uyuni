@@ -30,8 +30,11 @@ public class CVEAuditSystemBuilder {
     private long systemID;
     private String systemName;
     private PatchStatus patchStatus;
-    // If system was audited wth CVEAuditManager#doAuditSystem instead of CVEAuditManagerOVAL#doAuditSystem then
-    // it's possible to get false negatives.
+    /**
+     * Why need this?
+     * If server was scanned wth CVEAuditManager#doAuditSystem instead of CVEAuditManagerOVAL#doAuditSystem then
+     * it's possible to get false negatives.
+     */
     private boolean scannedWithOVAL;
 
     // LinkedHashSet is used to preserve insertion order when iterating
