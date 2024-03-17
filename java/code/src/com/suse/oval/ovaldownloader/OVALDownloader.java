@@ -29,7 +29,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 /**
@@ -115,17 +114,18 @@ public class OVALDownloader {
     }
 
     private File decompressIfNeeded(File file) {
-        OVALCompressionMethod compressionMethod = getCompressionMethod(file.getName());
+        String filename = file.getName();
+
         File uncompressedOVALFile;
-        if (compressionMethod == OVALCompressionMethod.BZIP2) {
-            uncompressedOVALFile = new File(file.getPath().replace(compressionMethod.extension(), ""));
+        if (filename.endsWith(".bz2")) {
+            uncompressedOVALFile = new File(FilenameUtils.removeExtension(file.getPath()));
             decompressBzip2(file, uncompressedOVALFile);
         }
-        else if (compressionMethod == OVALCompressionMethod.GZIP) {
-            uncompressedOVALFile = new File(file.getPath().replace(compressionMethod.extension(), ""));
+        else if (filename.endsWith(".gz")) {
+            uncompressedOVALFile = new File(FilenameUtils.removeExtension(file.getPath()));
             decompressGzip(file, uncompressedOVALFile);
         }
-        else if (compressionMethod == OVALCompressionMethod.NOT_COMPRESSED) {
+        else if (filename.endsWith(".xml")) {
             uncompressedOVALFile = file;
         }
         else {
@@ -133,23 +133,6 @@ public class OVALDownloader {
         }
 
         return uncompressedOVALFile;
-    }
-
-    private OVALCompressionMethod getCompressionMethod(String filename) {
-        Objects.requireNonNull(filename);
-
-        if (filename.endsWith(".bz2")) {
-            return OVALCompressionMethod.BZIP2;
-        }
-        else if (filename.endsWith("gz")) {
-            return OVALCompressionMethod.GZIP;
-        }
-        else if (filename.endsWith(".xml")) {
-            return OVALCompressionMethod.NOT_COMPRESSED;
-        }
-        else {
-            throw new IllegalStateException("OVAL file compressed with an unknown compression method");
-        }
     }
 
     /**
