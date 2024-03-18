@@ -224,23 +224,23 @@ run_scripts() {
         # https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/#ordering
         PREIN_SCRIPT=$(rpm -q --qf "%{PREIN}" $PKG)
         if [ ! "$PREIN_SCRIPT" = "(none)" ]; then
-            echo "$PREIN_SCRIPT" | sh -s -- 2
+            echo "$PREIN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 2
         fi
         POSTIN_SCRIPT=$(rpm -q --qf "%{POSTIN}" $PKG)
         if [ ! "$POSTIN_SCRIPT" = "(none)" ]; then
-            echo "$POSTIN_SCRIPT" | sh -s -- 2
+            echo "$POSTIN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 2
         fi
         PREUN_SCRIPT=$(rpm -q --qf "%{PREUN}" $PKG)
         if [ ! "$PREUN_SCRIPT" = "(none)" ]; then
-            echo "$PREUN_SCRIPT" | sh -s -- 1
+            echo "$PREUN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 1
         fi
         POSTUN_SCRIPT=$(rpm -q --qf "%{POSTUN}" $PKG)
         if [ ! "$POSTUN_SCRIPT" = "(none)" ]; then
-            echo "$POSTUN_SCRIPT" | sh -s -- 1
+            echo "$POSTUN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 1
         fi
         POSTTRANS_SCRIPT=$(rpm -q --qf "%{POSTTRANS}" $PKG)
         if [ ! "$POSTTRANS_SCRIPT" = "(none)" ]; then
-            echo "$POSTTRANS_SCRIPT" | sh -s -- 2
+            echo "$POSTTRANS_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 2
         fi
     done
 }
