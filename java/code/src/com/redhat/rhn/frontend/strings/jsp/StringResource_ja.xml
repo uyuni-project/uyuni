@@ -10261,7 +10261,15 @@ Please note that some manual configuration of these scripts may still be require
               &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
               except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
           </source>
-        <target state="needs-adaptation">-zsh*,kernel +zsh-html</target>
+        <target state="final">
+              &lt;strong&gt;フィルターの構文:&lt;/strong&gt; &lt;code&gt;[+-]keyword[,keyword ...]&lt;/code&gt;&lt;br/&gt;
+              Use &lt;strong&gt;'+'&lt;/strong&gt; to include only the package names matching the keyword and
+              &lt;strong&gt;'-'&lt;/strong&gt; to exclude the package names matching the keyword. 
+複数のフィルタはスペースで区切ることができます。フィルターは指定された順序で評価されます。シェルスタイルのワイルドカードがサポートされています。&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;Example:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
+              except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
+          </target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
@@ -17364,12 +17372,12 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
         <target>ファイルを選択したシステムに配備</target>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
+      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve" approved="yes">
         <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="needs-adaptation">設定ファイルを配備: 配備するシステムとフィールドを確認します</target>
+        <target state="final">設定ファイルを配備: 配備するフィールドとシステムを確認します</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
