@@ -33,8 +33,8 @@ import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 
-import com.suse.scc.SCCSystemId;
 import com.suse.scc.model.SCCHwInfoJson;
+import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.registration.SCCSystemRegistrationContext;
 import com.suse.scc.registration.SCCSystemRegistrationSystemDataAcquisitor;
@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ExtendWith(JUnit5Mockery.class)
 public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSystemRegistrationTest {
@@ -61,7 +62,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
 
     /**
      * Tests when no systems are provided.
-     * In this case no systems should be added to context.getPendingRegistrationSystems().
+     * In this case no systems should be added to context.getPendingRegistrationSystemsByLogin().
      */
     @Test
     public void testSuccessSCCSystemRegistrationSystemDataAcquisitorWhenNoSystemsProvided() throws Exception {
@@ -72,20 +73,20 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
 
         // pre-conditions
         assertEquals(0, sccSystemRegistrationContext.getItems().size());
-        assertEquals(0, sccSystemRegistrationContext.getPendingRegistrationSystems().size());
-        assertEquals(0, sccSystemRegistrationContext.getItemsBySccSystemId().size());
+        assertEquals(0, sccSystemRegistrationContext.getPendingRegistrationSystemsByLogin().size());
+        assertEquals(0, sccSystemRegistrationContext.getItemsByLogin().size());
 
         // execution
         new SCCSystemRegistrationSystemDataAcquisitor().handle(sccSystemRegistrationContext);
 
         // assertions
-        assertEquals(0, sccSystemRegistrationContext.getPendingRegistrationSystems().size());
-        assertEquals(0, sccSystemRegistrationContext.getItemsBySccSystemId().size());
+        assertEquals(0, sccSystemRegistrationContext.getPendingRegistrationSystemsByLogin().size());
+        assertEquals(0, sccSystemRegistrationContext.getItemsByLogin().size());
     }
 
     /**
      * Test success when 20 systems are provided and 5 of them are PayG.
-     * In this case 15 systems should be added to context.getPendingRegistrationSystems() and 5 to
+     * In this case 15 systems should be added to context.getPendingRegistrationSystemsByLogin() and 5 to
      * context.getPaygSystems().
      * At this point all systems should be marked as requiring registration.
      */
@@ -103,8 +104,8 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
                         .filter(SCCRegCacheItem::isSccRegistrationRequired)
                         .count()
         );
-        assertEquals(0, sccSystemRegistrationContext.getPendingRegistrationSystems().size());
-        assertEquals(0, sccSystemRegistrationContext.getItemsBySccSystemId().size());
+        assertEquals(0, sccSystemRegistrationContext.getPendingRegistrationSystemsByLogin().size());
+        assertEquals(0, sccSystemRegistrationContext.getItemsByLogin().size());
         assertEquals(0, sccSystemRegistrationContext.getPaygSystems().size());
 
         // execution
@@ -116,10 +117,10 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
                         .filter(SCCRegCacheItem::isSccRegistrationRequired)
                         .count()
         );
-        assertEquals(15, sccSystemRegistrationContext.getPendingRegistrationSystems().size());
+        assertEquals(15, sccSystemRegistrationContext.getPendingRegistrationSystemsByLogin().size());
         assertEquals(
-                sccSystemRegistrationContext.getPendingRegistrationSystems().keySet(),
-                sccSystemRegistrationContext.getItemsBySccSystemId().keySet()
+                sccSystemRegistrationContext.getPendingRegistrationSystemsByLogin().keySet(),
+                sccSystemRegistrationContext.getItemsByLogin().keySet()
         );
         assertEquals(5, sccSystemRegistrationContext.getPaygSystems().size());
     }
@@ -128,6 +129,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
     /**
      * Tests the scenario where getPayload processes physical server instance with minimal data provided with no
      * installed products but login and password information available.
+     *
      * @throws Exception if the test setup fails
      */
     @Test
@@ -145,9 +147,14 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
 
         SUSEProduct baseProduct =
                 SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
-        SUSEProduct addonProduct =
+        SUSEProduct addonProduct1 =
                 SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
-        Long[] targetAddonProducts = new Long[] {addonProduct.getId()};
+        SUSEProduct addonProduct2 =
+                SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
+
+        List<String> expectedProductIdentifiers =
+                Arrays.asList(baseProduct.getName(), addonProduct1.getName(), addonProduct2.getName());
+        Long[] targetAddonProducts = new Long[]{addonProduct1.getId(), addonProduct2.getId()};
         final SUSEProductSet suseProductSetMock = new SUSEProductSet(baseProduct.getId(), List.of(targetAddonProducts));
 
         SCCRegCacheItemMock sccRegCacheItemMock = new SCCRegCacheItemMockBuilder(false, true)
@@ -163,14 +170,18 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         new SCCSystemRegistrationSystemDataAcquisitor().handle(sccRegCacheItemMock.getContextMock());
 
         // Assertions
-        Map<SCCSystemId, SCCRegisterSystemJson> pendingRegistrationSystems =
-                sccRegCacheItemMock.getPendingRegistrationSystems();
-        assertEquals(1, pendingRegistrationSystems.size());
-        SCCRegisterSystemJson sccRegisterSystemJson = pendingRegistrationSystems.values().iterator().next();
+        Map<String, SCCRegisterSystemJson> pendingRegistrationSystemsByLogin =
+                sccRegCacheItemMock.getPendingRegistrationSystemsByLogin();
+        assertEquals(1, pendingRegistrationSystemsByLogin.size());
+        SCCRegisterSystemJson sccRegisterSystemJson = pendingRegistrationSystemsByLogin.values().iterator().next();
         assertEquals(SCCRegCacheItemMock.SCC_LOGIN, sccRegisterSystemJson.getLogin());
         assertEquals(SCCRegCacheItemMock.SCC_PWD, sccRegisterSystemJson.getPassword());
         assertEquals(expectedHostname, sccRegisterSystemJson.getHostname());
-        assertEquals(2, sccRegisterSystemJson.getProducts().size());
+        assertEquals(expectedProductIdentifiers.size(), sccRegisterSystemJson.getProducts().size());
+        assertTrue(sccRegisterSystemJson.getProducts().stream()
+                .map(SCCMinProductJson::getIdentifier)
+                .collect(Collectors.toList())
+                .containsAll(expectedProductIdentifiers));
         assertTrue(!sccRegisterSystemJson.getLastSeenAt().before(testBeginTimestamp));
 
         assertNotNull(sccRegisterSystemJson.getHwinfo());
@@ -184,9 +195,11 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         assertNull(hwInfo.getCloudProvider());
     }
 
+
     /**
      * Tests the scenario where getPayload processes virtual server instance with minimal data provided with no
      * installed products but login and password information available.
+     *
      * @throws Exception if the test setup fails
      */
     @Test
@@ -213,10 +226,10 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         new SCCSystemRegistrationSystemDataAcquisitor().handle(sccRegCacheItemMock.getContextMock());
 
         // Assertions
-        Map<SCCSystemId, SCCRegisterSystemJson> pendingRegistrationSystems =
-                sccRegCacheItemMock.getPendingRegistrationSystems();
-        assertEquals(1, pendingRegistrationSystems.size());
-        SCCRegisterSystemJson sccRegisterSystemJson = pendingRegistrationSystems.values().iterator().next();
+        Map<String, SCCRegisterSystemJson> pendingRegistrationSystemsByLogin =
+                sccRegCacheItemMock.getPendingRegistrationSystemsByLogin();
+        assertEquals(1, pendingRegistrationSystemsByLogin.size());
+        SCCRegisterSystemJson sccRegisterSystemJson = pendingRegistrationSystemsByLogin.values().iterator().next();
         assertEquals(SCCRegCacheItemMock.SCC_LOGIN, sccRegisterSystemJson.getLogin());
         assertEquals(SCCRegCacheItemMock.SCC_PWD, sccRegisterSystemJson.getPassword());
         assertEquals(expectedHostname, sccRegisterSystemJson.getHostname());
@@ -229,7 +242,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         assertEquals(expectedSockets, hwInfo.getSockets());
         assertEquals("server1", hwInfo.getArch());
         assertNull(hwInfo.getUuid());
-        assertEquals(0, hwInfo.getMemTotal());
+        assertEquals(1024L, hwInfo.getMemTotal());
         assertTrue(hwInfo.getHypervisor().isEmpty());
         assertTrue(hwInfo.getCloudProvider().isEmpty());
     }
@@ -237,6 +250,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
     /**
      * Tests the scenario where getPayload processes a virtual server instance with full data provided;
      * both with no installed products but login and password information available.
+     *
      * @throws Exception if the test setup fails
      */
     @Test
@@ -265,10 +279,10 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         new SCCSystemRegistrationSystemDataAcquisitor().handle(sccRegCacheItemMock.getContextMock());
 
         // Assertions
-        Map<SCCSystemId, SCCRegisterSystemJson> pendingRegistrationSystems =
-                sccRegCacheItemMock.getPendingRegistrationSystems();
-        assertEquals(1, pendingRegistrationSystems.size());
-        SCCRegisterSystemJson sccRegisterSystemJson = pendingRegistrationSystems.values().iterator().next();
+        Map<String, SCCRegisterSystemJson> pendingRegistrationSystemsByLogin =
+                sccRegCacheItemMock.getPendingRegistrationSystemsByLogin();
+        assertEquals(1, pendingRegistrationSystemsByLogin.size());
+        SCCRegisterSystemJson sccRegisterSystemJson = pendingRegistrationSystemsByLogin.values().iterator().next();
         assertEquals(SCCRegCacheItemMock.SCC_LOGIN, sccRegisterSystemJson.getLogin());
         assertEquals(SCCRegCacheItemMock.SCC_PWD, sccRegisterSystemJson.getPassword());
         assertEquals(expectedHostname, sccRegisterSystemJson.getHostname());
@@ -286,6 +300,96 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         assertEquals(expectedCloudProvider, hwInfo.getCloudProvider());
     }
 
+
+    /**
+     * Tests a specific scenario where {@link SUSEProductSet} base product is null and there are no addon products.
+     * Expect {@link SCCSystemRegistrationContext#getPendingRegistrationSystemsByLogin()} to be empty.
+     */
+    @Test
+    public void testGetPayloadWhenBaseProductsIsNull() {
+        SUSEProductSet suseProductSet = new SUSEProductSet();
+        SCCRegCacheItemMock sccRegCacheItemMock = new SCCRegCacheItemMockBuilder(false, false)
+                .suseProductSet(suseProductSet)
+                .build();
+
+        // Execute
+        new SCCSystemRegistrationSystemDataAcquisitor().handle(sccRegCacheItemMock.getContextMock());
+
+        // Assertions
+        assertNull(suseProductSet.getBaseProduct());
+        assertTrue(suseProductSet.getAddonProducts().isEmpty());
+        SCCRegisterSystemJson sccRegisterSystemJson =
+                sccRegCacheItemMock.getPendingRegistrationSystemsByLogin().values().iterator().next();
+        assertTrue(sccRegisterSystemJson.getProducts().isEmpty());
+    }
+
+    /**
+     * Tests a specific scenario where {@link SUSEProductSet} both base product and addon products are null.
+     * Expect {@link SCCSystemRegistrationContext#getPendingRegistrationSystemsByLogin()} to be empty.
+     */
+    @Test
+    public void testGetPayloadWhenBaseProductsAndAddonProductsAreNull() {
+        SUSEProductSet suseProductSet = new SUSEProductSet();
+        suseProductSet.setAddonProducts(null);
+        SCCRegCacheItemMock sccRegCacheItemMock = new SCCRegCacheItemMockBuilder(false, false)
+                .suseProductSet(suseProductSet)
+                .build();
+
+        // Execute
+        new SCCSystemRegistrationSystemDataAcquisitor().handle(sccRegCacheItemMock.getContextMock());
+
+        // Assertions
+        assertNull(suseProductSet.getBaseProduct());
+        assertNull(suseProductSet.getAddonProducts());
+        SCCRegisterSystemJson sccRegisterSystemJson =
+                sccRegCacheItemMock.getPendingRegistrationSystemsByLogin().values().iterator().next();
+        assertTrue(sccRegisterSystemJson.getProducts().isEmpty());
+    }
+
+
+    /**
+     * Tests a specific scenario where {@link SUSEProductSet} addon products has null items.
+     * Expect {@link SCCSystemRegistrationContext#getPendingRegistrationSystemsByLogin()} to contain the base product
+     * and non-null addon products.
+     *
+     * @throws Exception if the test setup fails
+     */
+    @Test
+    public void testGetPayloadWhenAddonProductsHasNullItem() throws Exception {
+        SUSEProduct baseProduct =
+                SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
+        SUSEProduct addonProduct1 =
+                SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
+        SUSEProduct addonProduct2 =
+                SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
+
+        List<String> expectedProductIdentifiers = Arrays.asList(baseProduct.getName(), addonProduct1.getName(),
+                addonProduct2.getName());
+        final SUSEProductSet suseProductSetMock =
+                new SUSEProductSet(baseProduct, Arrays.asList(addonProduct1, addonProduct2));
+        suseProductSetMock.getAddonProducts().add(null);
+
+        SCCRegCacheItemMock sccRegCacheItemMock = new SCCRegCacheItemMockBuilder(false, false)
+                .suseProductSet(suseProductSetMock)
+                .build();
+
+        // Execute
+        new SCCSystemRegistrationSystemDataAcquisitor().handle(sccRegCacheItemMock.getContextMock());
+
+        // Assertions
+        SCCRegisterSystemJson sccRegisterSystemJson =
+                sccRegCacheItemMock.getPendingRegistrationSystemsByLogin().values().iterator().next();
+        assertEquals(expectedProductIdentifiers.size(), sccRegisterSystemJson.getProducts().size());
+        assertTrue(sccRegisterSystemJson.getProducts().stream()
+                .map(SCCMinProductJson::getIdentifier)
+                .collect(Collectors.toList())
+                .containsAll(expectedProductIdentifiers));
+    }
+
+
+    /**
+     * Mock builder for {@link SCCRegCacheItem}
+     */
     class SCCRegCacheItemMockBuilder {
         private final boolean isVirtualGuest;
         private final boolean hasCpuInfo;
@@ -293,13 +397,13 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         private SUSEProductSet suseProductSet;
         private Long cpus;
         private Long sockets;
-        private String serverArchLabel;
+        private String serverArchLabel = "default-server-arch-mock";
         private String hypervisor;
         private String cloudProvider;
         private String hostname;
         private String uuid;
-        private Long totalMemory;
-        private Long ram;
+        private Long totalMemory = 1024L;
+        private Long ram = 1024L;
 
         SCCRegCacheItemMockBuilder(boolean isVirtualGuestIn, boolean hasCpuInfoIn) {
             isVirtualGuest = isVirtualGuestIn;
@@ -366,7 +470,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         public static final String SCC_PWD = "sccPasswd";
 
         // Maps we need to spy on
-        private final Map<SCCSystemId, SCCRegisterSystemJson> pendingRegistrationSystems = new HashMap<>();
+        private final Map<String, SCCRegisterSystemJson> pendingRegistrationSystemsByLogin = new HashMap<>();
 
         private final SCCSystemRegistrationContext contextMock;
 
@@ -384,7 +488,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
             final VirtualInstance virtualInstanceMock = context.mock(VirtualInstance.class);
             final VirtualInstanceType virtualInstanceTypeMock = context.mock(VirtualInstanceType.class);
 
-            final Map<SCCSystemId, SCCRegCacheItem> itemsBySccSystemId = new HashMap<>();
+            final Map<String, SCCRegCacheItem> itemsByLogin = new HashMap<>();
 
             // Mock expectations
             context.checking(new Expectations() {{
@@ -393,22 +497,23 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
                 allowing(cacheItemMock).getOptServer(); will(returnValue(Optional.of(serverMock)));
                 allowing(serverMock).isForeign(); will(returnValue(false));
                 allowing(serverMock).isPayg(); will(returnValue(false));
-                allowing(contextMock).getItemsBySccSystemId(); will(returnValue(itemsBySccSystemId));
-                allowing(contextMock).getPendingRegistrationSystems(); will(returnValue(pendingRegistrationSystems));
+                allowing(contextMock).getItemsByLogin(); will(returnValue(itemsByLogin));
+                allowing(contextMock).getPendingRegistrationSystemsByLogin();
+                will(returnValue(pendingRegistrationSystemsByLogin));
 
                 //  Installed products
                 allowing(serverMock).getInstalledProductSet(); will(returnValue(ofNullable(builder.suseProductSet)));
 
                 // CPU information
-                if(builder.hasCpuInfo) {
-                    allowing(serverMock).getCpu(); will(returnValue(cpuMock));
+                allowing(serverMock).getCpu();
+                if (builder.hasCpuInfo) {
+                    will(returnValue(cpuMock));
                 }
                 allowing(cpuMock).getNrCPU(); will(returnValue(builder.cpus));
                 allowing(cpuMock).getNrsocket(); will(returnValue(builder.sockets));
 
                 // Arch label setup
-                allowing(serverArchMock).getLabel();
-                will(returnValue(builder.serverArchLabel));
+                allowing(serverArchMock).getLabel(); will(returnValue(builder.serverArchLabel));
                 allowing(serverMock).getServerArch(); will(returnValue(serverArchMock));
 
                 // Set as virtual guest
@@ -435,8 +540,8 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
 
         }
 
-        public Map<SCCSystemId, SCCRegisterSystemJson> getPendingRegistrationSystems() {
-            return pendingRegistrationSystems;
+        public Map<String, SCCRegisterSystemJson> getPendingRegistrationSystemsByLogin() {
+            return pendingRegistrationSystemsByLogin;
         }
 
         public SCCSystemRegistrationContext getContextMock() {
