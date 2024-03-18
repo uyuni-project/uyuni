@@ -265,7 +265,7 @@ class DebRepo:
             lines = chunk.split("\n")
             checksums = {}
             for line in lines:
-                pair = line.split(" ", 1)
+                pair = tuple(p.strip() for p in line.split(" ", 1))
                 if pair[0] == "Package:":
                     package.name = pair[1]
                 elif pair[0] == "Architecture:":
