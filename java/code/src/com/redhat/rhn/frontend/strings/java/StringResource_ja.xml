@@ -11376,14 +11376,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           Bring-your-own-subscriptioサーバが検出されました: {0}。
         </target>
       </trans-unit>
-    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve" approved="yes">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <target state="final">選択した1つ以上のシステムには、現在メンテナンスウィンドウが割り当てられていません。選択をメンテナンス モードのシステムに制限してください。</target>
+      </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve" approved="yes">
         <source>Perform a standalone Salt update</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">スタンドアロンSalt更新を実行</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
