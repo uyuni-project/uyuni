@@ -37,10 +37,18 @@ def reboot_required():
         result = __salt__['transactional_update.pending_transaction']()
     elif __grains__['os_family'] == 'Debian':
         result = os.path.exists('/var/run/reboot-required')
-    elif __grains__['os_family'] == 'Suse':
-        result = os.path.exists('/run/reboot-needed') or os.path.exists('/boot/do_purge_kernels')
-    elif __grains__['os_family'] == 'RedHat':
-        cmd = 'dnf -q needs-restarting -r' if __grains__['osmajorrelease'] >= 8 else 'needs-restarting -r'
+    elif __grains__["os_family"] == "Suse":
+        result = (
+            os.path.exists("/run/reboot-needed")
+            if __grains__["osmajorrelease"] >= 12
+            else os.path.exists("/boot/do_purge_kernels")
+        )
+    elif __grains__["os_family"] == "RedHat":
+        cmd = (
+            "dnf -q needs-restarting -r"
+            if __grains__["osmajorrelease"] >= 8
+            else "needs-restarting -r"
+        )
         result = _check_cmd_exit_code(cmd, 1)
 
     return { 'reboot_required': result }
