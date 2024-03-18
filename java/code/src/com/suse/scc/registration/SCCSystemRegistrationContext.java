@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,7 +18,6 @@ package com.suse.scc.registration;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
-import com.suse.scc.SCCSystemId;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
@@ -34,8 +33,8 @@ public class SCCSystemRegistrationContext {
     private final List<SCCRegCacheItem> items;
     private final SCCCredentials primaryCredential;
 
-    private final Map<SCCSystemId, SCCRegCacheItem> itemsBySccSystemId;
-    private final Map<SCCSystemId, SCCRegisterSystemJson> pendingRegistrationSystems;
+    private final Map<String, SCCRegCacheItem> itemsByLogin;
+    private final Map<String, SCCRegisterSystemJson> pendingRegistrationSystemsByLogin;
 
     private final List<SCCRegCacheItem> paygSystems;
 
@@ -56,8 +55,8 @@ public class SCCSystemRegistrationContext {
         this.items = itemsIn;
         this.primaryCredential = primaryCredentialIn;
 
-        this.itemsBySccSystemId = new HashMap<>();
-        this.pendingRegistrationSystems = new HashMap<>();
+        this.itemsByLogin = new HashMap<>();
+        this.pendingRegistrationSystemsByLogin = new HashMap<>();
         this.registeredSystems = new ArrayList<>();
         this.paygSystems = new ArrayList<>();
     }
@@ -74,12 +73,12 @@ public class SCCSystemRegistrationContext {
         return primaryCredential;
     }
 
-    public Map<SCCSystemId, SCCRegCacheItem> getItemsBySccSystemId() {
-        return itemsBySccSystemId;
+    public Map<String, SCCRegCacheItem> getItemsByLogin() {
+        return itemsByLogin;
     }
 
-    public Map<SCCSystemId, SCCRegisterSystemJson> getPendingRegistrationSystems() {
-        return pendingRegistrationSystems;
+    public Map<String, SCCRegisterSystemJson> getPendingRegistrationSystemsByLogin() {
+        return pendingRegistrationSystemsByLogin;
     }
 
     public List<SCCSystemCredentialsJson> getRegisteredSystems() {
