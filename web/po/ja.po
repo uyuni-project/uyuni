@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-23 15:34+0100\n"
-"PO-Revision-Date: 2024-01-15 15:59+0000\n"
+"PO-Revision-Date: 2024-03-18 17:42+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -613,19 +613,16 @@ msgid "Assign"
 msgstr "割り当て"
 
 #: ../html/src/components/states-picker.tsx:483
-#, fuzzy
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
-msgstr "追加したいオプションのチャンネルを選択して確認します。"
+msgstr "即時状態実行をスケジュールするシステムを選択し、確定します。"
 
 #: ../html/src/components/states-picker.tsx:493
-#, fuzzy
 msgid "This table is empty"
-msgstr "このチャンネルは必須チャンネルです"
+msgstr "このテーブルは空です"
 
 #: ../html/src/components/states-picker.tsx:500
 #: ../html/src/components/states-picker.tsx:542
-#, fuzzy
 msgid "System Name"
 msgstr "システム名"
 
@@ -634,9 +631,8 @@ msgid "Execute States"
 msgstr "状態の実行"
 
 #: ../html/src/components/states-picker.tsx:525
-#, fuzzy
 msgid "Select Sytems"
-msgstr "インターフェイスの選択"
+msgstr "システムの選択"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -4667,7 +4663,7 @@ msgstr "スケジュールが正常に作成されました。"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
 msgid "Action scheduled on selected minions"
-msgstr ""
+msgstr "特定のminionにスケジュールされたアクション"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
