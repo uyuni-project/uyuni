@@ -16,38 +16,108 @@
 package com.suse.coco.module.snpguest;
 
 import com.suse.coco.model.AttestationResult;
+import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
+import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
+import com.suse.coco.module.snpguest.model.EpycGeneration;
 import com.suse.coco.modules.AttestationWorker;
+import com.suse.common.io.ByteSequenceFinder;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.Duration;
+import java.nio.file.Path;
 
+/**
+ * Worker class for verifying the reports with SNPGuest
+ */
 public class SNPGuestWorker implements AttestationWorker {
 
     private static final Logger LOGGER = LogManager.getLogger(SNPGuestWorker.class);
 
+    private final VerificationDirectoryProvider directoryProvider;
+
+    private final SNPGuestWrapper snpGuest;
+
+    private final ByteSequenceFinder sequenceFinder;
+
+    /**
+     * Default constructor.
+     */
+    public SNPGuestWorker() {
+        this(new VerificationDirectoryProvider(), new SNPGuestWrapper(), new ByteSequenceFinder());
+    }
+
+    /**
+     * Constructor with explicit dependencies, for unit test only.
+     * @param directoryProviderIn the verification directory provider
+     * @param snpGuestWrapperIn the snpguest executor
+     * @param sequenceFinderIn the byte sequence finder
+     */
+    SNPGuestWorker(VerificationDirectoryProvider directoryProviderIn, SNPGuestWrapper snpGuestWrapperIn,
+                   ByteSequenceFinder sequenceFinderIn) {
+        this.directoryProvider = directoryProviderIn;
+        this.snpGuest = snpGuestWrapperIn;
+        this.sequenceFinder = sequenceFinderIn;
+    }
+
     @Override
-    public boolean process(SqlSession session, AttestationResult attestationResult) {
+    public boolean process(SqlSession session, AttestationResult result) {
 
         try {
-            LOGGER.info("Processing attestation result {}", attestationResult);
+            LOGGER.debug("Processing attestation result {}", result.getId());
 
-            // Placeholder for the real logic
-            Thread.sleep(Duration.ofSeconds(10).toMillis());
+            AttestationReport report = session.selectOne("SNPGuestModule.retrieveReport", result.getReportId());
+            if (report == null) {
+                LOGGER.error("Unable to retrieve attestation report for result {}", result.getId());
+                return false;
+            }
 
-            AttestationReport report = session.selectOne("SNPGuestModule.retrieveReport", attestationResult.getReportId());
-            LOGGER.info("Loaded report {}", report);
+             LOGGER.debug("Loaded report {}", report);
+             if (report.getCpuGeneration() == EpycGeneration.UNKNOWN) {
+                LOGGER.error("Unable to identify Epyc processor generation for attestation report {}", report.getId());
+                return false;
+            }
+
+            try (var workingDir = directoryProvider.createDirectoryFor(result.getId(), report)) {
+                // Ensure the nonce is present in the report
+                sequenceFinder.setSequence(report.getRandomNonce());
+                if (sequenceFinder.search(report.getReport()) == -1) {
+                    LOGGER.error("The report does not contain the expected random nonce");
+                    return false;
+                }
+
+                // Reference to the paths snpguest needs to work with
+                Path certsPath = workingDir.getCertsPath();
+                Path reportPath = workingDir.getReportPath();
+
+                // Download the VCEK for this cpu model
+                int exitCode = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
+                if (exitCode != 0 || !workingDir.isVCEKAvailable()) {
+                    LOGGER.error("Unable to retrieve VCEK file. SNPGuest return {}", exitCode);
+                    return false;
+                }
+
+                // Verify the certificates
+                exitCode = snpGuest.verifyCertificates(certsPath);
+                if (exitCode != 0) {
+                    LOGGER.error("Unable to verify the validity of the certificates. SNPGuest return {}", exitCode);
+                    return false;
+                }
+
+                // Verify the actual attestation report
+                exitCode = snpGuest.verifyAttestation(certsPath, reportPath);
+                if (exitCode != 0) {
+                    LOGGER.error("Unable to verify the attestation report. SNPGuest return {}", exitCode);
+                    return false;
+                }
+            }
 
             return true;
         }
-        catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
         catch (Exception ex) {
-            LOGGER.error("Something went wrong", ex);
+            LOGGER.error("Unable to process attestation result {}", result.getId(), ex);
         }
 
         return false;

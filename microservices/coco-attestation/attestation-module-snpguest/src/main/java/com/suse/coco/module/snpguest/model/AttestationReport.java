@@ -15,59 +15,53 @@
 
 package com.suse.coco.module.snpguest.model;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+/**
+ * Represent the data required to verify an attestation report with SNPGuest.
+ */
 public class AttestationReport {
 
-    private Long id;
+    private long id;
 
-    private Long serverId;
+    private EpycGeneration cpuGeneration;
 
-    private Integer envType;
+    private byte[] randomNonce;
 
-    private String inData;
+    private byte[] report;
 
-    private String outData;
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long idIn) {
+    public void setId(long idIn) {
         this.id = idIn;
     }
 
-    public Long getServerId() {
-        return serverId;
+    public EpycGeneration getCpuGeneration() {
+        return cpuGeneration;
     }
 
-    public void setServerId(Long serverIdIn) {
-        this.serverId = serverIdIn;
+    public void setCpuGeneration(EpycGeneration generationIn) {
+        this.cpuGeneration = generationIn;
     }
 
-    public Integer getEnvType() {
-        return envType;
+    public byte[] getRandomNonce() {
+        return randomNonce;
     }
 
-    public void setEnvType(Integer envTypeIn) {
-        this.envType = envTypeIn;
+    public void setRandomNonce(byte[] randomNonceIn) {
+        this.randomNonce = randomNonceIn;
     }
 
-    public String getInData() {
-        return inData;
+    public byte[] getReport() {
+        return report;
     }
 
-    public void setInData(String inDataIn) {
-        this.inData = inDataIn;
-    }
-
-    public String getOutData() {
-        return outData;
-    }
-
-    public void setOutData(String outDataIn) {
-        this.outData = outDataIn;
+    public void setReport(byte[] reportIn) {
+        this.report = reportIn;
     }
 
     @Override
@@ -78,23 +72,22 @@ public class AttestationReport {
         if (!(o instanceof AttestationReport)) {
             return false;
         }
-        AttestationReport that = (AttestationReport) o;
-        return Objects.equals(serverId, that.serverId) && Objects.equals(envType, that.envType);
+        AttestationReport attestationReport = (AttestationReport) o;
+        return id == attestationReport.id &&
+            cpuGeneration == attestationReport.cpuGeneration &&
+            Arrays.equals(randomNonce, attestationReport.randomNonce);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serverId, envType);
+        return Objects.hash(id, cpuGeneration, Arrays.hashCode(randomNonce));
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", AttestationReport.class.getSimpleName() + "[", "]")
             .add("id=" + id)
-            .add("serverId=" + serverId)
-            .add("envType=" + envType)
-            .add("inData='" + inData + "'")
-            .add("outData='" + outData + "'")
+            .add("cpuGeneration=" + cpuGeneration)
             .toString();
     }
 }
