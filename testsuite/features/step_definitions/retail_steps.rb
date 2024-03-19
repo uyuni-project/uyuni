@@ -69,7 +69,7 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
   log "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('proxy'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
@@ -91,7 +91,7 @@ end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
   file = 'bootstrap-pxeboot.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('proxy'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
@@ -118,7 +118,7 @@ end
 
 When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
   file = 'wait-end-of-cleanup-pxeboot.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('proxy'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
