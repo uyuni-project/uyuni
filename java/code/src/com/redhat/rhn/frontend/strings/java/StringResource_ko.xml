@@ -11379,14 +11379,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           BYO(Bring-your-own) 구독 서버 감지됨: {0}.
         </target>
       </trans-unit>
-    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve" approved="yes">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <target state="final">현재 선택된 시스템 중 하나 이상에 유지보수 기간이 할당되어 있지 않습니다. 유지보수 모드에 있는 시스템으로 선택을 제한하십시오.</target>
+      </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve" approved="yes">
         <source>Perform a standalone Salt update</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">독립형 Salt 업데이트 수행</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
