@@ -10260,7 +10260,16 @@ Please note that some manual configuration of these scripts may still be require
               &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
               except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
           </source>
-        <target state="needs-adaptation">-zsh*,kernel +zsh-html</target>
+        <target state="final">
+              &lt;strong&gt;필터 구문:&lt;/strong&gt; &lt;code&gt;[+-]키워드[,keyword ...]&lt;/code&gt;&lt;br/&gt;
+              키워드와 일치하는 패키지 이름만 포함하려면 &lt;strong&gt;'+'&lt;/strong&gt; 를 사용하고
+              키워드와 일치하는 이름을 제외하려면 &lt;strong&gt;'-'&lt;/strong&gt; 를 사용하십시오. 다수 필터는 공백으로
+              구분할 수 있습니다. 필터는 지정된 순서대로 평가됩니다. 쉘 스타일 와일드카드가
+              지원됩니다.&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;예:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* 해당 이름이 지정된 패키지만 포함- &lt;code&gt;zsh*&lt;/code&gt;, &lt;code&gt;kernel*&lt;/code&gt;,
+              예외: &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
+          </target>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
@@ -17363,12 +17372,12 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
         <target>선택한 시스템에 파일 배치</target>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
+      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve" approved="yes">
         <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="needs-adaptation">설정 파일 배치: 배치를 위한 영역 및 시스템을 확인</target>
+        <target state="final">설정 파일 배치: 배치를 위한 필드 및 시스템 확인</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
