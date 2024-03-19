@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -116,7 +116,7 @@ Feature: Update activation keys
 @susemanager
 @proxy
 @containerized_server
-  Scenario: Update the SLE Micro Proxy Host key with synced base product
+  Scenario: Update the SLE Micro proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
@@ -132,7 +132,7 @@ Feature: Update activation keys
 @uyuni
 @proxy
 @skip_if_containerized_server
-  Scenario: Update the openSUSE Leap Proxy key with synced base product
+  Scenario: Update the openSUSE Leap proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear

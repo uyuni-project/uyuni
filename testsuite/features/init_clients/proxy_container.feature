@@ -43,7 +43,7 @@ Feature: Setup containerized proxy
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
     And I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server to the proxy
 
-  Scenario: Set-up the containerized proxy service to support Avahi
+  Scenario: Set up the containerized proxy service to support Avahi
     When I add avahi hosts in containerized proxy configuration
 
   Scenario: Run a containerized proxy
@@ -61,6 +61,6 @@ Feature: Setup containerized proxy
     And I wait until port "443" is listening on "proxy" container
     And I visit "Proxy" endpoint of this "proxy"
 
-  Scenario: containerized proxy should be registered automatically
+  Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy", refreshing the page

@@ -56,7 +56,7 @@ Feature: PXE boot a terminal with Cobbler
     And I should see a "SLE-15-SP4-TFTP" link
 
   # WORKAROUND bsc#1195842
-  # Default cobbler kernel parameters are wrong in case of proxy
+  # Default Cobbler kernel parameters are wrong in case of proxy
   Scenario: Fix kernel parameters
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "SLE-15-SP4-TFTP"
@@ -83,7 +83,7 @@ Feature: PXE boot a terminal with Cobbler
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-TFTP" text
 
-  Scenario: Migration of cobbler settings
+  Scenario: Migration of Cobbler settings
     Given cobblerd is running
     And cobbler settings are successfully migrated
     When I restart cobbler on the server
@@ -130,15 +130,15 @@ Feature: PXE boot a terminal with Cobbler
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Cleanup: remove the auto installation profile
-    Given I follow the left menu "Systems > Autoinstallation > Profiles"
-    When I follow "15-sp4-cobbler"
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "15-sp4-cobbler"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp4-cobbler" text
 
   Scenario: Cleanup: remove the auto installation distribution
-    Given I follow the left menu "Systems > Autoinstallation > Distributions"
-    When I follow "SLE-15-SP4-TFTP"
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "SLE-15-SP4-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
     Then I should not see a "SLE-15-SP4-TFTP" text
@@ -148,8 +148,8 @@ Feature: PXE boot a terminal with Cobbler
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
 
   Scenario: Cleanup: delete the PXE boot minion
-    Given I navigate to the Systems overview page of this "pxeboot_minion"
-    When I follow "Delete System"
+    When I navigate to the Systems overview page of this "pxeboot_minion"
+    And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
