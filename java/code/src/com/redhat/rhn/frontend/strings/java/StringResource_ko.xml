@@ -11463,14 +11463,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
         <target state="final">이 @@PRODUCT_NAME@@ PAYG 인스턴스는 호환되지 않습니다. @@PRODUCT_NAME@@의 일부 기능이 비활성화됩니다. 시스템 관리자에게 문의하십시오.</target>
       </trans-unit>
-    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve" approved="yes">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <target state="final">현재 선택된 시스템 중 하나 이상에 유지보수 기간이 할당되어 있지 않습니다. 유지보수 모드에 있는 시스템으로 선택을 제한하십시오.</target>
+      </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve" approved="yes">
         <source>Perform a standalone Salt update</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">독립형 Salt 업데이트 수행</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
