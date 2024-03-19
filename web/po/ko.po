@@ -18,10 +18,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-23 15:34+0100\n"
-"PO-Revision-Date: 2024-01-16 03:59+0000\n"
+"PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -606,19 +606,16 @@ msgid "Assign"
 msgstr "할당"
 
 #: ../html/src/components/states-picker.tsx:483
-#, fuzzy
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
-msgstr "추가하고 확인하려는 선택 채널을 선택합니다."
+msgstr "즉시 상태 실행을 예약할 시스템을 선택하고 확인합니다."
 
 #: ../html/src/components/states-picker.tsx:493
-#, fuzzy
 msgid "This table is empty"
-msgstr "이 채널은 필수입니다."
+msgstr "이 테이블은 비어있습니다."
 
 #: ../html/src/components/states-picker.tsx:500
 #: ../html/src/components/states-picker.tsx:542
-#, fuzzy
 msgid "System Name"
 msgstr "시스템 이름"
 
@@ -627,9 +624,8 @@ msgid "Execute States"
 msgstr "실행 상태"
 
 #: ../html/src/components/states-picker.tsx:525
-#, fuzzy
 msgid "Select Sytems"
-msgstr "인터페이스 선택"
+msgstr "시스템 선택"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -4609,7 +4605,7 @@ msgstr "일정을 생성했습니다."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
 msgid "Action scheduled on selected minions"
-msgstr ""
+msgstr "선택한 미니언에 예정된 작업"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
