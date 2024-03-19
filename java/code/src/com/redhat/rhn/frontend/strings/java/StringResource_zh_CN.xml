@@ -11381,14 +11381,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           检测到自带订阅服务器：{0}。
         </target>
       </trans-unit>
-    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve" approved="yes">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <target state="final">目前有一个或多个选定系统未指派维护时段。请仅选择处于维护模式的系统。</target>
+      </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve" approved="yes">
         <source>Perform a standalone Salt update</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">执行独立的 Salt 更新</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
