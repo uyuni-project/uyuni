@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-23 15:34+0100\n"
-"PO-Revision-Date: 2024-03-18 17:42+0000\n"
+"PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -889,7 +889,7 @@ msgstr "詳しくは "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:172
 msgid "documentation"
-msgstr "ドキュメンテーション"
+msgstr "マニュアル"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:174
 msgid " to learn how to consume these metrics."
@@ -1124,7 +1124,7 @@ msgstr "パスワード"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:413
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:531
 msgid "SSH Private Key"
-msgstr "SSH 機密鍵"
+msgstr "SSH機密鍵"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
