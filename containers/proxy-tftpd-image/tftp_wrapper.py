@@ -179,7 +179,10 @@ class TFTPHandler(BaseHandler):
         # accept only mac based config and defaults file
         if path.startswith("pxelinux.cfg/01-"):
             # request specific system configuration
-            logging.debug(f"Got request for {path}, forwarding to HTTP")
+            logging.debug(f"Got request for system PXE {path}, forwarding as is")
+            return HttpResponseData(f"{target}/tftp/{path}", capath)
+        elif path.startswith("grub/system"):
+            logging.debug(f"Got request for system GRUB {path}, forwarding as is")
             return HttpResponseData(f"{target}/tftp/{path}", capath)
         elif path.startswith("pxelinux.cfg/default"):
             # server local default
@@ -291,14 +294,17 @@ def main():
     try:
         with open(args.configFile) as source:
             config = yaml.safe_load(source)
-            args.proxyFqdn = config.get("proxy_fqdn", "localhost")
-            log_level = logging.INFO if config.get("log_level", 1) == 1 else logging.DEBUG
+            args.proxyFqdn = config["proxy_fqdn"]
+            log_level = (
+                logging.DEBUG if config.get("log_level", 1) == 5 else logging.INFO
+            )
             logging.getLogger().setLevel(log_level)
 
     except IOError as err:
         logging.warning(f"Configuration file reading error {err}, ignoring")
     except KeyError as err:
-        logging.warning(f"Invalid configuration file passed, missing {err}")
+        logging.error(f"Invalid configuration file passed, missing {err}")
+        exit(1)
 
     logging.info("Starting TFTP proxy:")
     logging.info(f"httpHost: {args.httpHost}")
