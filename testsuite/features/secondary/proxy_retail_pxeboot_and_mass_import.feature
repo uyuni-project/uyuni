@@ -114,7 +114,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Create hardware type group
     When I follow the left menu "Systems > System Groups"
-    When I follow "Create Group"
+    And I follow "Create Group"
     And I enter "HWTYPE:Intel-Genuine" as "name"
     And I enter "Terminal hardware type: genuine Intel" as "description"
     And I click on "Create Group"
@@ -122,7 +122,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Create branch terminals group
     When I follow the left menu "Systems > System Groups"
-    When I follow "Create Group"
+    And I follow "Create Group"
     And I enter "example" as "name"
     And I enter "Terminal branch: example.org" as "description"
     And I click on "Create Group"
@@ -134,7 +134,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Create all terminals group
     When I follow the left menu "Systems > System Groups"
-    When I follow "Create Group"
+    And I follow "Create Group"
     And I enter "TERMINALS" as "name"
     And I enter "All terminals" as "description"
     And I click on "Create Group"
@@ -142,7 +142,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Create all branch servers group
     When I follow the left menu "Systems > System Groups"
-    When I follow "Create Group"
+    And I follow "Create Group"
     And I enter "SERVERS" as "name"
     And I enter "All branch servers" as "description"
     And I click on "Create Group"
@@ -160,7 +160,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Enable Saltboot formula for hardware type group
     When I follow the left menu "Systems > System Groups"
-    When I follow "HWTYPE:Intel-Genuine" in the content area
+    And I follow "HWTYPE:Intel-Genuine" in the content area
     And I follow "Formulas" in the content area
     And I check the "saltboot" formula
     And I click on "Save"
@@ -169,8 +169,8 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Parametrize the Saltboot formula
     When I follow the left menu "Systems > System Groups"
-    When I follow "HWTYPE:Intel-Genuine" in the content area
-    When I follow "Formulas" in the content area
+    And I follow "HWTYPE:Intel-Genuine" in the content area
+    And I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area
     And I click on "Expand All Sections"
     And I enter "disk1" in disk id field
@@ -212,14 +212,14 @@ Feature: PXE boot a Retail terminal
     Then "pxeboot_minion" should have been reformatted
 
   Scenario: Check connection from terminal to branch server
-    Given I navigate to the Systems overview page of this "pxeboot_minion"
-    When I follow "Details" in the content area
+    When I navigate to the Systems overview page of this "pxeboot_minion"
+    And I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
   Scenario: Install a package on the new Retail terminal
-    Given I navigate to the Systems overview page of this "pxeboot_minion"
-    When I install the GPG key of the test packages repository on the PXE boot minion
+    When I navigate to the Systems overview page of this "pxeboot_minion"
+    And I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
     And I enter "virgo" as the filtered package name
@@ -230,9 +230,9 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
-  Scenario: Cleanup: remove a package on the new Retail terminal
-    Given I navigate to the Systems overview page of this "pxeboot_minion"
-    When I follow "Software" in the content area
+  Scenario: Remove the package from the new Retail terminal
+    When I navigate to the Systems overview page of this "pxeboot_minion"
+    And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "virgo" as the filtered package name
     And I click on the filter button
@@ -243,8 +243,8 @@ Feature: PXE boot a Retail terminal
     When I wait until event "Package Removal scheduled by admin" is completed
 
   Scenario: Cleanup: delete the new Retail terminal
-    Given I navigate to the Systems overview page of this "pxeboot_minion"
-    When I follow "Delete System"
+    When I navigate to the Systems overview page of this "pxeboot_minion"
+    And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
@@ -274,7 +274,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Cleanup: delete the terminal groups
     When I follow the left menu "Systems > System Groups"
-    When I follow "HWTYPE:Intel-Genuine" in the content area
+    And I follow "HWTYPE:Intel-Genuine" in the content area
     And I follow "Delete Group" in the content area
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
@@ -355,7 +355,7 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
-  Scenario: Cleanup: remove a package on the bootstrapped terminal
+  Scenario: Remove the package from the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
     And I follow "Software" in the content area
@@ -378,7 +378,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Cleanup: delete the terminal groups generated by retail_yaml command
     When I follow the left menu "Systems > System Groups"
-    When I follow "HWTYPE:Intel-Genuine" in the content area
+    And I follow "HWTYPE:Intel-Genuine" in the content area
     And I follow "Delete Group" in the content area
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
