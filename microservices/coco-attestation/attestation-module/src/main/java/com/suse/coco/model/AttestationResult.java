@@ -26,7 +26,7 @@ public class AttestationResult {
     private long id;
     private long reportId;
     private int resultType;
-    private String status;
+    private AttestationStatus status;
     private String description;
     private String details;
     private OffsetDateTime attested;
@@ -55,11 +55,11 @@ public class AttestationResult {
         this.resultType = resultTypeIn;
     }
 
-    public String getStatus() {
+    public AttestationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String statusIn) {
+    public void setStatus(AttestationStatus statusIn) {
         this.status = statusIn;
     }
 
