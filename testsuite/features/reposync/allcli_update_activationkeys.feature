@@ -115,7 +115,7 @@ Feature: Update activation keys
 @scc_credentials
 @susemanager
 @proxy
-  Scenario: Update the SLE Proxy key with synced base product
+  Scenario: Update the SLE proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
@@ -129,7 +129,7 @@ Feature: Update activation keys
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
 @uyuni
-  Scenario: Update the openSUSE Leap Proxy key with synced base product
+  Scenario: Update the openSUSE Leap proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear

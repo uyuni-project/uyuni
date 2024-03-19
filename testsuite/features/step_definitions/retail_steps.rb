@@ -42,7 +42,7 @@ When(/^I start tftp on the proxy$/) do
   end
 end
 
-Then(/^"([^"]*)" should communicate with the server using public interface$/) do |host|
+Then(/^the "([^"]*)" host should communicate with the server using public interface$/) do |host|
   node = get_target(host)
   _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
   unless return_code.zero?
