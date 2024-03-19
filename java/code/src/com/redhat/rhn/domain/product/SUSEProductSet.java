@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.product;
 
+import static com.suse.utils.Predicates.isAbsent;
+
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.server.InstalledProduct;
 
@@ -135,16 +137,14 @@ public class SUSEProductSet {
      * @param addonProduct the addonProduct to add
      */
     public void addAddonProduct(SUSEProduct addonProduct) {
-        if (addonProducts == null) {
-            addonProducts = new ArrayList<>();
+        if (addonProduct == null) {
+            return;
         }
-        if (addonProduct != null) {
-            if (PRODUCTNAME_BLACKLIST.contains(addonProduct.getName()) &&
-                    new RpmVersionComparator().compare(addonProduct.getVersion(), "15") < 0) {
-                return;
-            }
-            addonProducts.add(addonProduct);
+        if (PRODUCTNAME_BLACKLIST.contains(addonProduct.getName()) &&
+                new RpmVersionComparator().compare(addonProduct.getVersion(), "15") < 0) {
+            return;
         }
+        addonProducts.add(addonProduct);
     }
 
     /**
@@ -152,7 +152,7 @@ public class SUSEProductSet {
      * @return true if there is no products.
      */
     public boolean isEmpty() {
-        return baseProduct == null && addonProducts.isEmpty();
+        return baseProduct == null && isAbsent(addonProducts);
     }
 
     /**

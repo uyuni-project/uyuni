@@ -39,8 +39,9 @@ public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
 
     /**
      * Sets up systems for testing purposes.
-     * @param systemSize    number of systems to create
-     * @param paygSystemSize    number of aditional payg systems to create
+     *
+     * @param systemSize     number of systems to create
+     * @param paygSystemSize number of aditional payg systems to create
      * @throws Exception if createTestSystem fails
      */
     protected void setupSystems(int systemSize, int paygSystemSize) throws Exception {
