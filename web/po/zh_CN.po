@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-23 15:34+0100\n"
-"PO-Revision-Date: 2024-01-15 07:59+0000\n"
+"PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "web-4-3/zh_CN/>\n"
@@ -600,19 +600,16 @@ msgid "Assign"
 msgstr "指派"
 
 #: ../html/src/components/states-picker.tsx:483
-#, fuzzy
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
-msgstr "选择您要添加的可选通道并确认。"
+msgstr "选择要安排为立即执行状态的系统并确认。"
 
 #: ../html/src/components/states-picker.tsx:493
-#, fuzzy
 msgid "This table is empty"
-msgstr "必须使用此通道"
+msgstr "此表为空"
 
 #: ../html/src/components/states-picker.tsx:500
 #: ../html/src/components/states-picker.tsx:542
-#, fuzzy
 msgid "System Name"
 msgstr "系统名称"
 
@@ -621,9 +618,8 @@ msgid "Execute States"
 msgstr "执行状态"
 
 #: ../html/src/components/states-picker.tsx:525
-#, fuzzy
 msgid "Select Sytems"
-msgstr "选择接口"
+msgstr "选择系统"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -4530,7 +4526,7 @@ msgstr "成功创建日程安排。"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
 msgid "Action scheduled on selected minions"
-msgstr ""
+msgstr "安排要对选定受控端执行的操作"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
