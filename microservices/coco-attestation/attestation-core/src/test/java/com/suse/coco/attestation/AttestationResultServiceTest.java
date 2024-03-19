@@ -25,6 +25,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.suse.coco.model.AttestationResult;
+import com.suse.coco.model.AttestationStatus;
 import com.suse.coco.modules.AttestationWorker;
 
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -94,7 +95,7 @@ class AttestationResultServiceTest {
     void canProcessAttestationResultAndMarkAsSucceeded() {
         AttestationResult attestationResult = new AttestationResult();
         attestationResult.setId(5L);
-        attestationResult.setStatus("PENDING");
+        attestationResult.setStatus(AttestationStatus.PENDING);
         attestationResult.setAttested(null);
 
         when(session.selectOne("AttestationResult.selectForUpdate", 5L)).thenReturn(attestationResult);
@@ -114,7 +115,7 @@ class AttestationResultServiceTest {
         verifyNoMoreInteractions(worker);
 
         // Confirm the status has been updated
-        assertEquals("SUCCEEDED", attestationResult.getStatus());
+        assertEquals(AttestationStatus.SUCCEEDED, attestationResult.getStatus());
         // Verify the attestation date is correctly marked
         assertNotNull(attestationResult.getAttested());
         assertTrue(attestationResult.getAttested().isAfter(callStart));
@@ -126,7 +127,7 @@ class AttestationResultServiceTest {
     void canProcessAttestationResultAndMarkAsFailed() {
         AttestationResult attestationResult = new AttestationResult();
         attestationResult.setId(5L);
-        attestationResult.setStatus("PENDING");
+        attestationResult.setStatus(AttestationStatus.PENDING);
         attestationResult.setAttested(null);
 
         when(session.selectOne("AttestationResult.selectForUpdate", 5L)).thenReturn(attestationResult);
@@ -144,7 +145,7 @@ class AttestationResultServiceTest {
         verifyNoMoreInteractions(worker);
 
         // Confirm the status has been updated
-        assertEquals("FAILED", attestationResult.getStatus());
+        assertEquals(AttestationStatus.FAILED, attestationResult.getStatus());
         // Verify the attestation date is correctly marked
         assertNull(attestationResult.getAttested());
     }
