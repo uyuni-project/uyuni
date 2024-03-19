@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-18 12:06+0100\n"
-"PO-Revision-Date: 2022-08-30 07:13+0000\n"
+"PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "susemanager-4-3/ko/>\n"
@@ -308,13 +308,11 @@ msgstr ""
 "설치되지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:263
-#, fuzzy
 msgid ""
 "The output of 'hostname -f' does not match the hostname from a reverse DNS "
 "lookup. The product will not install correctly."
 msgstr ""
-"'hostname -f'의 출력이 실제 호스트 이름과 일치하지 않습니다. 제품이 올바르게 "
-"설치되지 않습니다."
+"역방향 DNS 조회에서 'hostname -f'의 출력이 실제 호스트 이름과 일치하지 않습니다. 제품이 올바르게 설치되지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:277
 msgid "Illegal Hostname"
