@@ -2,7 +2,7 @@
 
 /* Format of specific inputs */
 .input-ip-range {
-  .form-control;
+  @extend .form-control;
   width: 40px;
   padding: 6px 6px;
   display: inline-block;

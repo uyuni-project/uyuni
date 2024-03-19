@@ -1,7 +1,8 @@
 // TODO: This whole module will become obsolete with the visualization pages removal
+// TODO: This selector looks unused?
 .input-text {
-  .form-control;
-  .input-sm;
+  @extend .form-control;
+  // @extend .input-sm;
   padding: 2px 6px;
   height: auto;
   width: auto;
@@ -17,14 +18,14 @@
 }
 
 .security-patches {
-  color: @red;
+  color: $red;
 }
 .bug-patches {
   // TODO: Here and elsewhere, don't use lighten() and darken() but pick a color and use it
-  color: darken(@orange-light, 5%);
+  color: darken($orange-light, 5%);
 }
 .minor-patches {
-  color: darken(@green, 10%);
+  color: darken($green, 10%);
 }
 
 .toggle-filter-button {
@@ -32,8 +33,8 @@
   margin-top: -30px;
   float: right;
   padding: 5px 10px;
-  color: @gray-dark;
-  border: 1px solid @gray-light;
+  color: $gray-dark;
+  border: 1px solid $gray-light;
   border-bottom-width: 0px;
   i {
     margin-left: 6px;
@@ -46,7 +47,7 @@
 
 #visualization-filter-wrapper {
   display: none;
-  background: lighten(@gray-light, 8%);
+  background: lighten($gray-light, 8%);
   font-size: 0.9em;
   border: 1px solid #ddd;
   border-bottom: 0px;
@@ -86,12 +87,12 @@
     label {
       font-weight: normal;
       display: inline;
-      .inline-icon;
+      @extend .inline-icon;
     }
     > input[type=text],
     .partitioning-datepicker,
     .partitioning-timepicker {
-      .input-text;
+      @extend .input-text;
       margin-bottom: 1px;
     }
     .input-group {
@@ -182,7 +183,7 @@
             border: 1px solid #ddd;
             padding: 5px;
             vertical-align: top;
-            .inline-icon;
+            @extend .inline-icon;
           }
           td:first-child {
             background-color: #f5f5f5;
@@ -196,19 +197,19 @@
     a.close-popup, button.close-popup:hover {
       border: none;
       background: none;
-      color: @gray;
+      color: $gray;
       position: absolute;
       right: 4px;
       top: 0px;
       padding: 5px;
     }
     a.close-popup:hover {
-      color: @gray-dark;
+      color: $gray-dark;
       text-decoration: none;
     }
     .detail-box-button {
-      .btn;
-      .btn-default;
+      @extend .btn;
+      @extend .btn-default;
       padding: 2px 6px;
     }
     .addToSSM {
@@ -235,10 +236,10 @@ svg {
       width: 22px;
       height: 22px;
       .icon-wrapper {
-        color: @gray-light;
+        color: $gray-light;
         text-align: center;
-        background-color: lighten(@gray-light, 10%);
-        border: 1px solid @gray;
+        background-color: lighten($gray-light, 10%);
+        border: 1px solid $gray;
         padding: 3px;
         width: 100%;
         height: 100%;
@@ -252,13 +253,13 @@ svg {
     }
   }
   .node foreignObject .icon-wrapper:hover {
-    background: @yellow!important;
-    border-color: @gray-dark;
+    background: $yellow!important;
+    border-color: $gray-dark;
   }
   .node.selected foreignObject .icon-wrapper {
-    background: @yellow!important;
-    border-color: @gray-dark;
-    color: @gray-dark!important;
+    background: $yellow!important;
+    border-color: $gray-dark;
+    color: $gray-dark!important;
   }
 
   .node.root {
@@ -266,7 +267,7 @@ svg {
       width: 50px;
       height: 50px;
       .icon-wrapper {
-        color: @green;
+        color: $green;
         i {
           font-size: 42px;
         }
@@ -323,20 +324,20 @@ svg {
   }
 
   .link {
-    stroke: darken(@gray-light, 5%);
+    stroke: darken($gray-light, 5%);
     stroke-width: 0.5px;
   }
 
   .node.stroke-red foreignObject {
     .icon-wrapper {
-      background: @red;
-      color: @gray-light;
+      background: $red;
+      color: $gray-light;
     }
   }
   .node.stroke-green foreignObject {
     .icon-wrapper {
-      background: @green;
-      color: darken(@gray-dark, 10%);
+      background: $green;
+      color: darken($gray-dark, 10%);
     }
   }
 

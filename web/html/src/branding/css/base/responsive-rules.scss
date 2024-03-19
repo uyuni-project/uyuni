@@ -1,4 +1,5 @@
-@media (max-width: @screen-tablet) {
+// TODO: Move this into the buttons module
+@media (max-width: $screen-tablet) {
   // TODO: Move this into the buttons module
   form {
     .btn,

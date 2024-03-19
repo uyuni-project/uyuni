@@ -75,7 +75,7 @@
           </c:choose>
       </div>
     </div>
-    <ul class="nav navbar-nav navbar-utility d-flex flex-row">
+    <ul class="nav navbar-nav navbar-controls">
       <li>
         <a class="about-link" href="/rhn/help/about.do"><bean:message key="About Spacewalk"/></a>
       </li>

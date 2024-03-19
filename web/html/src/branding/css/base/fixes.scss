@@ -1,33 +1,34 @@
 // TODO: Make this whole file obsolete, move bugfixes into their correesponding modules instead
 .form-horizontal .text {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 7px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 7px;
 }
 
 input[type="file"].form-control {
-    height: auto;
+  height: auto;
 }
 
 /* fix for checkbox icon alignment */
 div.checkbox.icon-wrapper i.fa {
-    width: .6em;
+  width: .6em;
 }
 
-div.form-control {
-    &:extend(.old-theme .form-control[readonly]);
-}
+// TODO: Move this to the inputs module instead
+// div.form-control {
+//   @extend .form-control[readonly]
+// }
 
 /* fix for checkbox icon alignment */
 div.checkbox.icon-wrapper i.fa {
-    width: .6em;
+  width: .6em;
 }
 
 /* bsc#1009118 overlapping text when resizing */
 .auto-width {
-    width: auto;
+  width: auto;
 }
 
 .auto-overflow {
-    overflow: auto;
+  overflow: auto;
 }

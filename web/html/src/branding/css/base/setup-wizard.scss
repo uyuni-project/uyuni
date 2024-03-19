@@ -14,13 +14,13 @@ body {
     padding-bottom: 0;
 
     .panel {
-      box-shadow: 0px 2px 1px 0px @box-shadow;
-      -moz-box-shadow: 0px 2px 1px 0px @box-shadow;
-      -webkit-box-shadow: 0px 2px 1px 0px @box-shadow;
+      box-shadow: 0px 2px 1px 0px $box-shadow;
+      -moz-box-shadow: 0px 2px 1px 0px $box-shadow;
+      -webkit-box-shadow: 0px 2px 1px 0px $box-shadow;
     }
     .panel-footer {
       border-top: 0;
-      background: @gray-lighter;
+      background: $gray-lighter;
       .fa {
         font-size: 1.5em;
       }
@@ -31,20 +31,20 @@ body {
       text-align: left;
     }
     a > i.fa {
-      color: @gray-dark;
+      color: $gray-dark;
     }
     a > i.fa.text-success {
-      color: @green;
+      color: $green;
     }
     a > i.fa.text-danger {
-      color: @red;
+      color: $red;
     }
     a > i.fa.text-warning {
-      color: @orange;
+      color: $orange;
     }
     .text-starred,
     a > i.fa.text-starred {
-      color: @orange;
+      color: $orange;
     }
     //suse-products
     #suse-products {
@@ -54,8 +54,8 @@ body {
       }
       .col-sm-9 table tbody.table-content tr.addons {
         .addon-indented-icon {
-          border-left: 2px dotted @gray-dark;
-          border-bottom: 2px dotted @gray-dark;
+          border-left: 2px dotted $gray-dark;
+          border-bottom: 2px dotted $gray-dark;
           width: 10px;
           height: 10px;
           display: inline-block;
@@ -84,7 +84,7 @@ body {
       }
       table td {
         .product-channels-btn {
-          color: @gray-dark;
+          color: $gray-dark;
         }
       }
       .spinner-container {
@@ -120,18 +120,18 @@ body {
         padding-right: 0;
       }
       .panel-inactive {
-        background: @white;
-        border: 1px solid @inactive;
+        background: $white;
+        border: 1px solid $inactive;
         text-align: center;
         .fa-plus-circle {
           font-size: 4em;
-          color: @gray;
-          text-shadow: -1px -1px 0px @gray-dark-1, 1px 1px 0px @white;
+          color: $gray;
+          text-shadow: -1px -1px 0px $gray-dark-1, 1px 1px 0px $white;
           margin-top: 13px;
           margin-right: 0;
         }
         a {
-          color: @gray;
+          color: $gray;
         }
       }
       #wizard-faq img {
@@ -143,7 +143,7 @@ body {
     padding-left: 0;
   }
   #wizard-faq {
-    border-left: 1px solid @eos-bc-gray-100;
+    border-left: 1px solid $eos-bc-gray-100;
     text-align: center;
     img:first-child {
       margin-top: 1em;
@@ -175,19 +175,19 @@ ul.subscriptions-list {
 }
 
 .btn-default.text-muted {
-  .text-muted !important;
+  @extend .text-muted;
 }
 
 .list-header {
-  border-bottom: 2px solid @gray-light!important;
+  border-bottom: 2px solid $gray-light!important;
   font-weight: 700;
 }
 
 .row-odd {
-  background-color: @gray-light-1;
+  background-color: $gray-light-1;
 }
 .row-even {
-  background-color: @white;
+  background-color: $white;
 }
 
 ul.product-list {
@@ -202,30 +202,30 @@ ul.product-list {
     line-height: 2em;
     display: block;
     overflow: auto;
-    border-bottom: 1px solid @gray-light;
+    border-bottom: 1px solid $gray-light;
     .product-details-wrapper {
       .recommended-tag {
-        .recommended-tag-base;
+        @extend .recommended-tag-base;
       }
       .text-muted {
         .recommended-tag {
-          background-color: @gray-light;
+          background-color: $gray-light;
         }
       }
       .product-hover:hover {
-        color: @orange-light;
+        color: $orange-light;
       }
     }
     .product-details-wrapper:hover {
-      background-color: @gray-light;
+      background-color: $gray-light;
     }
     .product-installed {
       .product-description {
-        color: @green-dark;
+        color: $green-dark;
       }
       .recommended-tag {
-        background-color: @gray-light;
-        color: @gray-dark;
+        background-color: $gray-light;
+        color: $gray-dark;
       }
     }
     .col {
@@ -249,21 +249,21 @@ ul.product-list {
     }
   }
   li.list-row-odd {
-    .row-odd;
+    @extend .row-odd;
   }
   li.list-row-even {
-    .row-even;
+    @extend .row-even;
   }
   ul {
-    border-top: 1px solid @gray-light;
+    border-top: 1px solid $gray-light;
     padding: 0 0 1em 0;
     li {
       background-color: transparent !important;
       border: 0;
       margin-left: 3em;
       > .product-details-wrapper {
-        border-top: 1px dashed @gray-light;
-        background-image: url("../../img/sub-list.png");
+        border-top: 1px dashed $gray-light;
+        background-image: url("../img/sub-list.png");
         background-repeat: no-repeat;
         background-position: left center;
       }
@@ -271,7 +271,7 @@ ul.product-list {
         padding: 0.3em;
       }
       ul {
-        border-left: 1px solid @gray-light;
+        border-left: 1px solid $gray-light;
         border-collapse: collapse;
       }
     }
@@ -282,7 +282,7 @@ ul.product-list {
     }
     li:last-of-type {
       > .product-details-wrapper {
-        background-image: url("../../img/sub-list-last.png");
+        background-image: url("../img/sub-list-last.png");
       }
       > ul {
         border-left: 0;
@@ -304,7 +304,7 @@ ul.product-list {
 }
 
 .multiple-select-wrapper {
-  .d-inline-block;
+  @extend .d-inline-block;
   width: 35%;
   vertical-align: top;
   ul {
@@ -312,7 +312,7 @@ ul.product-list {
     input {
       width: 100%;
       height: 30px !important;
-      .form-control;
+      @extend .form-control;
     }
   }
 }
