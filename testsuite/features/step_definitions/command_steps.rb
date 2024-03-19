@@ -1319,8 +1319,8 @@ end
 
 When(/^I create a read-only user for the ReportDB$/) do
   $reportdb_ro_user = 'test_user'
-  file = 'create_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  file = 'create-user-reportdb.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless return_code.zero?
@@ -1334,8 +1334,8 @@ Then(/^I should see the read-only user listed on the ReportDB user accounts$/) d
 end
 
 When(/^I delete the read-only user for the ReportDB$/) do
-  file = 'delete_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  file = 'delete-user-reportdb.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless return_code.zero?
