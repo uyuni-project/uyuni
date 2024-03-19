@@ -133,7 +133,7 @@ section {
   margin-right: 0;
   margin-left: 0;
   aside {
-    width: 17%;
+    flex: 0 0 17%;
     min-width: 300px;
     max-width: 400px;
     background: $aside-background;
