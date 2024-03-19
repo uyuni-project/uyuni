@@ -19,11 +19,14 @@
 
     <select id="retrieveReport" parameterType="Long" resultType="com.suse.coco.module.snpguest.model.AttestationReport">
           SELECT id
-                    , server_id
-                    , env_type
-                    , in_data
-                    , out_data
-            FROM suseservercocoattestationreport
+                    , CASE
+                        WHEN env_type = 1 THEN 'MILAN'
+                        WHEN env_type = 2 THEN 'GENOA'
+                        ELSE 'UNKNOWN'
+                      END AS cpu_generation
+                    , decode(in_data->>'nonce', 'base64') AS random_nonce
+                    , decode(out_data->>'mgr_snpguest_report', 'base64') AS report
+            FROM suseServerCoCoAttestationReport
            WHERE id = #{reportId}
     </select>
 </mapper>

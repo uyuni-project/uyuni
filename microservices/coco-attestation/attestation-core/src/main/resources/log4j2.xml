@@ -4,7 +4,7 @@
 <Configuration name="Basic" status="warn">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <PatternLayout pattern="%d [%t] %-5p %c%notEmpty{:%marker} - %m%n" />
         </Console>
     </Appenders>
     <Loggers>

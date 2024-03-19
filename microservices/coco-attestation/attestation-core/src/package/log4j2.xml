@@ -19,12 +19,12 @@
 
     <Appenders>
         <RollingFile name="LogFile" fileName="/var/log/coco-attestation.log" filePattern="/var/log/coco-attestation-%i.log">
-            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <PatternLayout pattern="%d [%t] %-5p %c%notEmpty{:%marker} - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <PatternLayout pattern="%d [%t] %-5p %c%notEmpty{:%marker} - %m%n" />
         </Console>
     </Appenders>
     <Loggers>

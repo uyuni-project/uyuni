@@ -44,6 +44,7 @@ System daemon used by Uyuni to validate the results of confidential computing at
 
 %package module-snpguest
 Summary:        Confidential computing SNPGuest attestation module for Uyuni
+Requires:       snpguest
 
 %description module-snpguest
 Module for the Uyuni Confidential Computing Attestation that uses SnpGuest.
@@ -92,6 +93,14 @@ build-jar-repository -s -p $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/lib 
 # Link all the attestation jars built and installed by maven
 ln -s -f -r $RPM_BUILD_ROOT%{_javadir}/uyuni-coco-attestation/*.jar $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/lib
 
+# Install snpguest certificates
+cd attestation-module-snpguest/src/package/certs/
+for FILE in $(find -name *.pem -type f -printf '%%P\n'); do
+    echo $FILE
+    install -D -p -m 644 $FILE $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/certs/$FILE
+done
+cd -
+
 %files -f .mfiles
 %defattr(-,root,root)
 %dir /usr/share/coco-attestation/
@@ -108,7 +117,9 @@ ln -s -f -r $RPM_BUILD_ROOT%{_javadir}/uyuni-coco-attestation/*.jar $RPM_BUILD_R
 
 %files module-snpguest -f .mfiles-module-snpguest
 %defattr(-,root,root)
+%dir /usr/share/coco-attestation/certs/
 %{_prefix}/share/coco-attestation/lib/attestation-module-snpguest.jar
+%{_prefix}/share/coco-attestation/certs/*
 
 %files javadoc -f .mfiles-javadoc
 
