@@ -40,17 +40,10 @@
         FOR NO KEY UPDATE NOWAIT
     </select>
 
-    <select id="updateAndRetrieve" parameterType="long" resultType="com.suse.coco.model.AttestationResult">
-          UPDATE suseCoCoAttestationResult
-             SET status = 'PROCESSING'
-           WHERE id = #{id} AND status = 'PENDING'
-       RETURNING *
-    </select>
-
     <update id="updateStatus" parameterType="com.suse.coco.model.AttestationResult">
           UPDATE suseCoCoAttestationResult
              SET status = #{status}
-                <if test="status == 'SUCCEEDED'">
+                <if test="status.name() == 'SUCCEEDED'">
                     , attested = #{attested}
                 </if>
            WHERE id = #{id}

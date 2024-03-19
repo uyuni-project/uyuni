@@ -16,6 +16,7 @@
 package com.suse.coco.attestation;
 
 import com.suse.coco.model.AttestationResult;
+import com.suse.coco.model.AttestationStatus;
 import com.suse.coco.modules.AttestationWorker;
 import com.suse.common.database.DatabaseSessionFactory;
 
@@ -88,11 +89,12 @@ public class AttestationResultService {
             LOGGER.info("AttestationResult with id {} selected for processing", id);
             boolean success = worker.process(session, result);
             if (success) {
-                result.setStatus("SUCCEEDED");
+                result.setStatus(AttestationStatus.SUCCEEDED);
                 result.setAttested(OffsetDateTime.now());
             }
             else {
-                result.setStatus("FAILED");
+                result.setStatus(AttestationStatus.FAILED);
+                result.setAttested(null);
             }
 
             session.update("AttestationResult.updateStatus", result);
