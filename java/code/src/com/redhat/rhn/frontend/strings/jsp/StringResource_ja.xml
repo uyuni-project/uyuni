@@ -10311,12 +10311,13 @@ Please note that some manual configuration of these scripts may still be require
           </source>
         <target state="final">
               &lt;strong&gt;フィルターの構文:&lt;/strong&gt; &lt;code&gt;[+-]keyword[,keyword ...]&lt;/code&gt;&lt;br/&gt;
-              Use &lt;strong&gt;'+'&lt;/strong&gt; to include only the package names matching the keyword and
-              &lt;strong&gt;'-'&lt;/strong&gt; to exclude the package names matching the keyword. 
-複数のフィルタはスペースで区切ることができます。フィルターは指定された順序で評価されます。シェルスタイルのワイルドカードがサポートされています。&lt;br/&gt;&lt;br/&gt;
-              &lt;strong&gt;Example:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
-              &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
-              except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
+              キーワードに一致するパッケージ名のみを含めるには&lt;strong&gt;'+'&lt;/strong&gt;を使用し、
+              キーワードに一致するパッケージ名を除外するには&lt;strong&gt;'-'&lt;/strong&gt;を使用します。 
+             複数のフィルターはスペースで区切ることができます。フィルターは指定された順序で評価されます。
+             シェルスタイルのワイルドカードがサポートされています。&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;例:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* &lt;code&gt;zsh*&lt;/code&gt;および&lt;code&gt;kernel*&lt;/code&gt;という名前のパッケージのみを
+              含め、&lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;は除外します。
           </target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.filters.error" xml:space="preserve">
