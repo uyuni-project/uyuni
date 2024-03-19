@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-23 15:31+0100\n"
-"PO-Revision-Date: 2024-03-19 03:43+0000\n"
+"PO-Revision-Date: 2024-03-19 07:42+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -618,7 +618,7 @@ msgstr "割り当て"
 #: ../html/src/components/states-picker.tsx:483
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
-msgstr "即時状態実行をスケジュールするシステムを選択し、確定します。"
+msgstr "即時の状態の実行をスケジュールするシステムを選択し、確認します。"
 
 #: ../html/src/components/states-picker.tsx:493
 msgid "This table is empty"
@@ -4746,7 +4746,7 @@ msgstr "スケジュールが正常に作成されました。"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
 msgid "Action scheduled on selected minions"
-msgstr "特定のminionにスケジュールされたアクション"
+msgstr "特定のminionに対してスケジュールされたアクション"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
