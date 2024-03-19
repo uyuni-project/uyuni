@@ -44,9 +44,8 @@ public class PaygAuthDataExtractor {
     private static final String WAIT_RESPONSE_TIMEOUT_PROPEERRTY = "java.payg.repsonse_timeout";
 
     // time in milliseconds
-    private static final int DEFAULT_TIMEOUT = 5000;
-    private static final int CONNECTION_TIMEOUT = Config.get().getInt(CONNECTION_TIMEOUT_PROPEERRTY, DEFAULT_TIMEOUT);
-    private static final int RESPONSE_TIMEOUT = Config.get().getInt(WAIT_RESPONSE_TIMEOUT_PROPEERRTY, DEFAULT_TIMEOUT);
+    private static final int CONNECTION_TIMEOUT = Config.get().getInt(CONNECTION_TIMEOUT_PROPEERRTY, 5000);
+    private static final int RESPONSE_TIMEOUT = Config.get().getInt(WAIT_RESPONSE_TIMEOUT_PROPEERRTY, 20000);
 
     private static final Logger LOG = LogManager.getLogger(PaygAuthDataExtractor.class);
 
