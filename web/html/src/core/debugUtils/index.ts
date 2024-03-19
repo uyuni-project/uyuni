@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { showErrorToastr, showSuccessToastr, showWarningToastr } from "components/toastr";
 
 const debugUtils = {
