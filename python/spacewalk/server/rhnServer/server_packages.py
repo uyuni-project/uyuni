@@ -462,7 +462,7 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
     lookup_keytype_id = rhnSQL.prepare("""
        select id
          from rhnPackageKeyType
-        where LABEL in ('gpg', 'pgp')
+        where LABEL in ('gpg', 'pgp', 'rsa')
     """)
 
     lookup_pkgid_sql = rhnSQL.prepare("""
@@ -491,7 +491,7 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
     sigkeys = header.signatures
     key_id = None  # _key_ids(sigkeys)[0]
     for sig in sigkeys:
-        if sig['signature_type'] in ['gpg', 'pgp']:
+        if sig['signature_type'] in ['gpg', 'pgp', 'rsa']:
             key_id = sig['key_id']
 
     if not key_id:
