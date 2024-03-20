@@ -425,9 +425,10 @@ Thank you for using @@PRODUCT_NAME@@.
 {5}
 {6}
 </source>
-        <target state="needs-adaptation">Aquest és l'informe d'estat @@PRODUCT_NAME@@ del vostre compte {0}, a partir del dia {1}.
+        <target state="translated">{7}
+Aquest és l'informe d'estat @@PRODUCT_NAME@@ del vostre compte {0}, a partir del dia {1}.
 
-Aquest correu electrònic s'enviarà quan s'apliqui alguna de les condicions següents:
+Aquest correu electrònic s'enviarà quan s'apliqui alguna de les situacions següents:
 
 1. El sistema no pot registrar-se amb @@PRODUCT_NAME@@ en un període de 24 hores.
 2. El sistema registra l'activitat d'acció programada.
@@ -441,7 +442,7 @@ Per desactivar aquest correu electrònic per als sistemes, visiteu la pàgina Pr
 https://{4}/rhn/account/UserPreferences.do
 
 
-Gràcies per utilitzar @@PRODUCT_NAME@@.
+Gràcies per usar @@PRODUCT_NAME@@.
 {5}
 {6}
 </target>
@@ -579,12 +580,14 @@ Gràcies per utilitzar @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+      <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Avís: aquesta instància de PAYG de @@PRODUCT_NAME@@ no és compatible i algunes de les funcions estan desactivades.
+Poseu-vos en contacte amb el vostre administrador per modificar la situació abans de continuar utilitzant el producte.
+          </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
