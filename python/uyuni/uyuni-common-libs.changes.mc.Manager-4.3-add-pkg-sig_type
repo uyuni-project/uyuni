@@ -1,1 +1,2 @@
+- add support for package signature type V4 RSA/SHA384
 - add support for package signature type V4 RSA/SHA512 (bsc#1221465)
