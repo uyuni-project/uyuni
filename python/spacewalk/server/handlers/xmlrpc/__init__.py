@@ -19,18 +19,11 @@
 
 __all__ = []
 
-from . import registration
-from . import up2date
-from . import queue
-from . import errata
 from . import proxy
 from . import get_handler
-from . import scap
 
 rpcClasses = {
-    "registration": registration.Registration,
     "proxy": proxy.Proxy,
-    "servers": up2date.Servers,
 }
 
 # pylint: disable-next=invalid-name
