@@ -1,3 +1,4 @@
+
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -795,7 +796,7 @@ class Backend:
         sigkeys = rhn_rpm.RPM_Header(header).signatures
         key_id = None  # _key_ids(sigkeys)[0]
         for sig in sigkeys:
-            if sig['signature_type'] in ['gpg', 'pgp', 'rsa']:
+            if sig["signature_type"] in ("gpg", "pgp", "rsa"):
                 key_id = sig['key_id']
 
         lookup_keyid_sql.execute(key_id=key_id)

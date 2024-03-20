@@ -1,3 +1,4 @@
+
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -491,7 +492,7 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
     sigkeys = header.signatures
     key_id = None  # _key_ids(sigkeys)[0]
     for sig in sigkeys:
-        if sig['signature_type'] in ['gpg', 'pgp', 'rsa']:
+        if sig["signature_type"] in ("gpg", "pgp", "rsa"):
             key_id = sig['key_id']
 
     if not key_id:
