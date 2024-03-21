@@ -428,7 +428,7 @@ LABEL_BY_BASE_CHANNEL = {
     'Rocky Linux 8 (x86_64)' => 'no-appstream-8-result-rockylinux8-x86_64',
     'Rocky Linux 9 (x86_64)' => 'no-appstream-9-result-rockylinux-9-x86_64',
     'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-pool-amd64-uyuni',
-    'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-pool-amd64-uyuni',
+    'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-22.04-pool-amd64-uyuni',
     'Debian 10 (buster) pool for amd64 for Uyuni' => 'debian-10-pool-amd64-uyuni',
     'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian-11-pool-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian-12-pool-amd64-uyuni',
@@ -1255,7 +1255,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'ubuntu-2204' => # CHECKED
       %w[
-        ubuntu-2204-pool-amd64-uyuni
+        ubuntu-22.04-pool-amd64-uyuni
         ubuntu-2204-amd64-main-security-uyuni
         ubuntu-2204-amd64-main-updates-uyuni
         ubuntu-2204-amd64-main-uyuni
@@ -1538,7 +1538,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-universe-updates-uyuni' => 240,
   'ubuntu-2204-amd64-universe-uyuni' => 24_000,
   'ubuntu-2204-amd64-uyuni-client-devel' => 60,
-  'ubuntu-2204-pool-amd64-uyuni' => 60,
+  'ubuntu-22.04-pool-amd64-uyuni' => 60,
   'ubuntu-22.04-suse-manager-tools-amd64' => 60,
   'uyuni-proxy-devel-leap-x86_64' => 60
 }.freeze
