@@ -100,7 +100,7 @@ run_proxy_containers() {
 }
 
 cleanup () {
-  rm /tmp/test-all-in-one/id_openssh_rsa /tmp/test-all-in-one/id_openssh_rsa.pub /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT /tmp/test-all-in-one/server.crt /tmp/test-all-in-one/server.key
+  sudo --login rm /tmp/test-all-in-one/id_openssh_rsa /tmp/test-all-in-one/id_openssh_rsa.pub /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT /tmp/test-all-in-one/server.crt /tmp/test-all-in-one/server.key
 }
 
 get_server_certificates
