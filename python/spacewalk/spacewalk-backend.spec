@@ -512,10 +512,6 @@ fi
 %license LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
-%dir %{python3rhnroot}/server/action
-%{python3rhnroot}/server/action/*
-%dir %{python3rhnroot}/server/action_extra_data
-%{python3rhnroot}/server/action_extra_data/*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc

@@ -19,8 +19,6 @@ SPACEWALK_FILES		= __init__ \
                   rhnPackageUpload basePackageUpload rhnRepository \
                   rhnSession rhnUser taskomatic \
                   suseEula
-SUBDIRS		= rhnSQL rhnServer action \
-			  handlers importlib action_extra_data \
-			  config_common repomd
+SUBDIRS		= rhnSQL rhnServer handlers importlib config_common repomd
 
 include $(TOP)/Makefile.defs
