@@ -96,7 +96,7 @@ BuildRequires:  classmate
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
-BuildRequires:  glassfish-activation-api
+BuildRequires:  glassfish-activation
 BuildRequires:  glassfish-jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
@@ -184,7 +184,7 @@ Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       glassfish-activation-api
+Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
