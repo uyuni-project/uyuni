@@ -1664,3 +1664,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-22.04-suse-manager-tools-amd64' => 60,
   'uyuni-proxy-devel-leap-x86_64' => 60
 }.freeze
+
+EMPTY_CHANNELS = %w[
+  sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+  sle-manager-tools15-beta-pool-x86_64-sp4
+  fake-base-channel-suse-like
+  fake-base-channel-i586
+  test-base-channel-x86_64
+].freeze
