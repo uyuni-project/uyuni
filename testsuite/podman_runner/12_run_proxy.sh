@@ -82,6 +82,7 @@ run_proxy_containers() {
     --detach \
     --network uyuni-network-1 \
     --volume $HOME/:/etc/uyuni \
+    --volume /tmp/test-all-in-one:/tmp \
     --name proxy-ssh \
     --hostname proxy-ssh \
     --publish 8022:22 \
