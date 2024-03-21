@@ -3,7 +3,7 @@ set -euxo pipefail
 
 get_server_certificates() {
   sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp/test-all-in-one'
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp/test-all-in-one'
+  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.crt /tmp/test-all-in-one'
   sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp/test-all-in-one'
 }
 
