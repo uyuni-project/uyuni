@@ -66,6 +66,8 @@
 - features/build_validation/init_clients/slemicro54_ssh_minion.feature
 - features/build_validation/init_clients/slemicro55_minion.feature
 - features/build_validation/init_clients/slemicro55_ssh_minion.feature
+- features/build_validation/init_clients/slemicro60_minion.feature
+- features/build_validation/init_clients/slemicro60_ssh_minion.feature
 
 - features/build_validation/init_clients/salt_migration_minion.feature
 
