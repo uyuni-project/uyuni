@@ -2,9 +2,9 @@
 set -euxo pipefail
 
 get_server_certificates() {
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cat /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT" > $HOME/RHN-ORG-TRUSTED-SSL-CERT
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cat /root/ssl-build/uyuni-server-all-in-one-test/server.key" > $HOME/server.key
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cat /root/ssl-build/uyuni-server-all-in-one-test/server.key" > $HOME/server.key
+  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cat /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT' > $HOME/RHN-ORG-TRUSTED-SSL-CERT
+  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cat /root/ssl-build/uyuni-server-all-in-one-test/server.key' > $HOME/server.key
+  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cat /root/ssl-build/uyuni-server-all-in-one-test/server.key' > $HOME/server.key
 }
 
 create_proxy_configuration() {
