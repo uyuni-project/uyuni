@@ -2,9 +2,9 @@
 set -euxo pipefail
 
 get_server_certificates() {
-  podman cp uyuni-server-all-in-one-test:/root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /root
-  podman cp uyuni-server-all-in-one-test:/root/ssl-build/uyuni-server-all-in-one-test/server.crt /root
-  podman cp uyuni-server-all-in-one-test:/root/ssl-build/uyuni-server-all-in-one-test/server.key /root
+  sudo -i podman cp uyuni-server-all-in-one-test:/root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /root
+  sudo -i podman cp uyuni-server-all-in-one-test:/root/ssl-build/uyuni-server-all-in-one-test/server.crt /root
+  sudo -i podman cp uyuni-server-all-in-one-test:/root/ssl-build/uyuni-server-all-in-one-test/server.key /root
 }
 
 create_proxy_configuration() {
@@ -40,7 +40,7 @@ EOF
 }
 
 run_proxy_containers() {
-  podman run \
+  sudo -i podman run \
     --privileged \
     --rm \
     --detach \
@@ -52,7 +52,7 @@ run_proxy_containers() {
     --publish 443:443 \
       registry.suse.com/suse/manager/4.3/proxy-httpd
 
-  podman run \
+  sudo -i podman run \
     --privileged \
     --rm \
     --detach \
@@ -64,7 +64,7 @@ run_proxy_containers() {
     --publish 4556:4506 \
       registry.suse.com/suse/manager/4.3/proxy-salt-broker
 
-  podman run \
+  sudo -i podman run \
     --privileged \
     --user root \
     --rm \
@@ -76,7 +76,7 @@ run_proxy_containers() {
     --publish 8088:8088 \
       registry.suse.com/suse/manager/4.3/proxy-squid
 
-  podman run \
+  sudo -i podman run \
     --privileged \
     --rm \
     --detach \
@@ -87,7 +87,7 @@ run_proxy_containers() {
     --publish 8022:22 \
     registry.suse.com/suse/manager/4.3/proxy-ssh
 
-  podman run \
+  sudo -i podman run \
     --privileged \
     --rm \
     --detach \
