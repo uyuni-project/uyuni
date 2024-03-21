@@ -31,7 +31,7 @@ EOF
   cat <<EOF > $HOME/ssh.yaml
 ssh:
   server_ssh_key_pub: |
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBNYMZEWSmHVsuK77xotneNSiZ7kvs4jGIvhyMsHIYapk4ECQ3CHdekJjK7+KKO6fLswGNst+7f/xSK9D0A3XWvcvEU3FnIWNkYdVOO3P7F4sjiveFa+kj10ZODNfi9JpWQqD7ulu8KQsf9vuR5mGJHjx4Pqn8WcKXjzkfe+LbmKih5ZXoTBNHwruMMO3/P46tWeT9Xu9+2h7JpZzaFMY3u69OFchhH1XYjWxhVs0hBio0a4blNsItppm7IodKqwcoIy3mczZemQSvMt35Y0b22HpXAfnqdgv7Ms9gVxsp1say1P886yesFkHR39fDhEvDSvb0wF6DqB+Q08QJC5Z6cw2XhELcfvM2mcXVkW6/EXu1v03uv+RPnS+6m9Ok+lyUXZNe/xtOiLOQN8HjU4IfJvoj3YQGpGhBEz68oJ7IKxoxUfVJZ+1ccisceGQG8jjTOZxQFwEhaOYclT1+Czh7/2aOLXyDzB5gLfkyxnQEVfA5fEe5/dld21gmrt0bBPk= salt@uyuni-server-all-in-one-test
+$(sudo --login sed 's/^/    /' /tmp/test-all-in-one/ssh_host_rsa_key.pub)
   server_ssh_push: |
 $(sudo --login sed 's/^/    /' /tmp/test-all-in-one/id_openssh_rsa)
   server_ssh_push_pub: |
@@ -85,7 +85,7 @@ run_proxy_containers() {
     --name proxy-ssh \
     --hostname proxy-ssh \
     --publish 8022:22 \
-    registry.suse.com/suse/manager/4.3/proxy-ssh
+      registry.suse.com/suse/manager/4.3/proxy-ssh
 
   sudo --login podman run \
     --privileged \
@@ -96,7 +96,11 @@ run_proxy_containers() {
     --name proxy-tftpd \
     --hostname proxy-tftpd \
     --publish 69:69 \
-    registry.suse.com/suse/manager/4.3/proxy-tftpd
+      registry.suse.com/suse/manager/4.3/proxy-tftpd
+}
+
+add_ssh_configuration () {
+  sudo --login podman exec proxy-ssh bash -c "mv /tmp/ssh_host_rsa_key.pub /root/.ssh/authorized_keys"
 }
 
 cleanup () {
@@ -106,4 +110,7 @@ cleanup () {
 get_server_certificates
 create_proxy_configuration
 run_proxy_containers
+add_ssh_configuration
 cleanup
+
+sudo -i podman ps
