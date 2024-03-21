@@ -57,7 +57,8 @@ public class CoCoAttestation {
             AttestationModuleLoader moduleLoader = new AttestationModuleLoader();
             long count = moduleLoader.loadModules();
             if (count == 0) {
-                LOGGER.error("No attestation module found on the classpath. Please install at least one attestation module package.");
+                LOGGER.error("No attestation module found on the classpath. " +
+                    "Please install at least one attestation module package.");
                 System.exit(0);
                 return;
             }

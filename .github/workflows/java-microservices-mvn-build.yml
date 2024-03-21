@@ -31,10 +31,10 @@ jobs:
           java-version: '11'
 
       - name: Build Java Parent
-        run: mvn -B package --file microservices/uyuni-java-parent/pom.xml
+        run: mvn -B package checkstyle:check --file microservices/uyuni-java-parent/pom.xml
 
       - name: Build Java Common
-        run: mvn -B package --file microservices/uyuni-java-common/pom.xml
+        run: mvn -B package checkstyle:check --file microservices/uyuni-java-common/pom.xml
 
       - name: Build CoCo Attestation
-        run: mvn -B package --file microservices/coco-attestation/pom.xml
+        run: mvn -B package checkstyle:check --file microservices/coco-attestation/pom.xml
