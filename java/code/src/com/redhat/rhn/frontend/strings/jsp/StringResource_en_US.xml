@@ -24220,7 +24220,7 @@ given channel.</source>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
       </trans-unit>
-       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
