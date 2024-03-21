@@ -41,8 +41,10 @@ public class UnboundedGrowingThreadPoolExecutor extends ThreadPoolExecutor {
      *     threads will wait for new tasks before terminating.
      * @param threadNamePrefix the prefix to use for the name of the threads part of the pool
      */
-    public UnboundedGrowingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, Duration keepAlive, String threadNamePrefix) {
-        super(corePoolSize, maximumPoolSize, keepAlive.getSeconds(), TimeUnit.SECONDS, new TransferOnOfferBlockingQueue());
+    public UnboundedGrowingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, Duration keepAlive,
+                                              String threadNamePrefix) {
+        super(corePoolSize, maximumPoolSize, keepAlive.getSeconds(), TimeUnit.SECONDS,
+            new TransferOnOfferBlockingQueue());
 
         handler = new PutBackExecutionHandler();
 

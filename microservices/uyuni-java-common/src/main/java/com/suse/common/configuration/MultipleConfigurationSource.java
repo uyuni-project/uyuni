@@ -76,9 +76,10 @@ public class MultipleConfigurationSource implements ConfigurationSource {
             .findFirst();
     }
 
-    private <T> Optional<T> getFirstValue(String property, BiFunction<ConfigurationSource, String, Optional<T>> retriever) {
+    private <T> Optional<T> getFirstValue(String property,
+                                          BiFunction<ConfigurationSource, String, Optional<T>> propertyRetriever) {
         return configurationSources.stream()
-            .flatMap(source -> retriever.apply(source, property).stream())
+            .flatMap(source -> propertyRetriever.apply(source, property).stream())
             .findFirst();
     }
 
