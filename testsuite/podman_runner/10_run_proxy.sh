@@ -2,16 +2,16 @@
 set -euxo pipefail
 
 get_server_certificates() {
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp/test-all-in-one"
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cp /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp/test-all-in-one"
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cp /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp/test-all-in-one"
+  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cat /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT" > $HOME/RHN-ORG-TRUSTED-SSL-CERT
+  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cat /root/ssl-build/uyuni-server-all-in-one-test/server.key" > $HOME/server.key
+  sudo -i podman exec uyuni-server-all-in-one-test bash -c "cat /root/ssl-build/uyuni-server-all-in-one-test/server.key" > $HOME/server.key
 }
 
 create_proxy_configuration() {
   cat <<EOF > $HOME/config.yaml
 server: uyuni-server-all-in-one-test
 ca_crt: |
-$(sed 's/^/  /' /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT)
+$(sed 's/^/  /' $HOME/RHN-ORG-TRUSTED-SSL-CERT)
 proxy_fqdn: proxy-httpd
 max_cache_size_mb: 2048
 server_version: 5.0.0 Beta1
@@ -22,9 +22,9 @@ EOF
 httpd:
   system_id: <?xml version="1.0"?><params><param><value><struct><member><name>username</name><value><string>admin</string></value></member><member><name>os_release</name><value><string>(unknown)</string></value></member><member><name>operating_system</name><value><string>(unknown)</string></value></member><member><name>architecture</name><value><string>x86_64-redhat-linux</string></value></member><member><name>system_id</name><value><string>ID-1000010003</string></value></member><member><name>type</name><value><string>REAL</string></value></member><member><name>fields</name><value><array><data><value><string>system_id</string></value><value><string>os_release</string></value><value><string>operating_system</string></value><value><string>architecture</string></value><value><string>username</string></value><value><string>type</string></value></data></array></value></member><member><name>checksum</name><value><string>1d835605853e545ae07265a1b2317e14ce44162ef70581b0e4f0e044d2f17d25</string></value></member></struct></value></param></params>
   server_crt: |
-$(sed 's/^/      /' /tmp/test-all-in-one/server.crt)
+$(sed 's/^/      /' $HOME/server.crt)
   server_key: |
-$(sed 's/^/      /' /tmp/test-all-in-one/server.key)
+$(sed 's/^/      /' $HOME/server.key)
 EOF
 
   ssh-keygen -t rsa -b 4096 -C "salt@uyuni-server-all-in-one-test" -f $HOME/id_openssh_rsa -N ""
