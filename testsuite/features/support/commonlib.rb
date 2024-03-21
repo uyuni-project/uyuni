@@ -439,7 +439,7 @@ def channel_is_synced(channel)
     end
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
-    command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -s /var/cache/rhn/repodata/#{channel}/Packages"
+    command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -e /var/cache/rhn/repodata/#{channel}/Packages"
     _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
     log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
     new_code.zero?
