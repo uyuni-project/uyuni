@@ -59,6 +59,7 @@ public class AttestationResultService {
     /**
      * Retrieve the ids of the available attestation results with the given state and result type.
      * @param resultTypeList a list of possible result types to match
+     * @param batchSize the number of results to fetch at max
      * @return the ids of the attestation results matching the criteria
      */
     public List<Long> getPendingResultByType(Collection<Integer> resultTypeList, int batchSize) {

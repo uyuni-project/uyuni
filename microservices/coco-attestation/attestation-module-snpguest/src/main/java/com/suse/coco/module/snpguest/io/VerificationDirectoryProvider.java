@@ -105,7 +105,9 @@ public class VerificationDirectoryProvider {
         // Store the report in the file report.bin
         Files.write(basePath.resolve("report.bin"), report.getReport());
 
-        LOGGER.debug("Created directory {} for verifying of result {} using {} certs", basePath, resultId, cpuGeneration);
+        LOGGER.debug("Created directory {} for verifying of result {} using {} certs",
+            basePath, resultId, cpuGeneration);
+
         return new VerificationDirectory(basePath);
     }
 

@@ -70,14 +70,14 @@ public class FileConfigurationSource extends BaseConfigurationSource {
     /**
      * Builds a file configuration source.
      * @param fileSourcesIn List of files and directories to process
-     * @param commonFilePrefixIn a common prefix used by all configuration file names
+     * @param filePrefixIn a common prefix used by all configuration file names
      * @param fallbackNamespacesIn namespaces to search for, in the given order. These are used when a property,
      *     specified with no namespace, was not found.
      */
-    public FileConfigurationSource(List<Path> fileSourcesIn, String commonFilePrefixIn, List<String> fallbackNamespacesIn) {
+    public FileConfigurationSource(List<Path> fileSourcesIn, String filePrefixIn, List<String> fallbackNamespacesIn) {
         configValues = new Properties();
 
-        commonFilePrefix = commonFilePrefixIn;
+        commonFilePrefix = filePrefixIn;
         fallbackNamespaces = fallbackNamespacesIn;
 
         fileSourcesIn.stream()

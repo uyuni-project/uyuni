@@ -34,7 +34,8 @@ public class DatabaseSessionFactory {
 
     /**
      * Initialize the database session
-     * @param configResource the path of the configuration file,processable by <code>ClassLoader.getSystemResourceAsStream()</code>
+     * @param configResource the path of the configuration file, processable by an invocation of
+     * {@link ClassLoader#getSystemResourceAsStream(String)}
      * @param properties runtime configuration properties to customize the configuration
      */
     public static synchronized void initialize(String configResource, Properties properties) {

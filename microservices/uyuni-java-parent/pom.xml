@@ -101,6 +101,30 @@
                         </statelessTestsetReporter>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>10.12.7</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <includeResources>false</includeResources>
+                        <headerLocation>../../java/buildconf/LICENSE.txt</headerLocation>
+                        <configLocation>../../java/buildconf/checkstyle.xml</configLocation>
+                        <suppressionsLocation>../../java/buildconf/checkstyle-suppressions.xml</suppressionsLocation>
+                        <propertyExpansion>
+                            javadoc.method.scope=public
+                            javadoc.var.scope=package
+                            javadoc.type.scope=package
+                            javadoc.lazy=false
+                        </propertyExpansion>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
