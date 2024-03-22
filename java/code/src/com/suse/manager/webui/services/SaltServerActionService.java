@@ -2664,19 +2664,16 @@ public class SaltServerActionService {
             // set first action to failed if not already in that state
             Action action = ActionFactory.lookupById(actionId);
             Optional.ofNullable(action)
-                    .ifPresent(firstAction ->
-                            firstAction.getServerActions().stream()
-                                    .filter(sa -> sa.getServerId().equals(minion.get().getId()))
-                                    .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
-                                    .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
-                                    .findFirst()
-                                    .ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed"))));
+                    .flatMap(firstAction -> firstAction.getServerActions().stream()
+                            .filter(sa -> sa.getServerId().equals(minion.get().getId()))
+                            .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
+                            .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                            .findFirst()).ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
 
             // walk dependent server actions recursively and set them to failed
             Stack<Long> actionIdsDependencies = new Stack<>();
             actionIdsDependencies.push(actionId);
-            List<ServerAction> serverActions = ActionFactory
-                    .listServerActionsForServer(minion.get(),
+            List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(minion.get(),
                             Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
                                     ActionFactory.STATUS_FAILED), action.getCreated());
 
@@ -2846,7 +2843,7 @@ public class SaltServerActionService {
             Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
             Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
         int chunk = 1;
-        Long retActionChainId = Long.valueOf(0);
+        Long retActionChainId = 0L;
         boolean actionChainFailed = false;
         List<Long> failedActionIds = new ArrayList<>();
         for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
@@ -2904,40 +2901,36 @@ public class SaltServerActionService {
                                     .stream()
                                     .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
-                            serverAction.ifPresent(sa -> {
-                                setActionAsPickedUp(sa);
-                            });
+                            serverAction.ifPresent(this::setActionAsPickedUp);
                         }
                     }
                 });
             }
-            else if (!key.contains("schedule_next_chunk")) {
+            else {
                 LOG.warn("Could not find action id in action chain state key: {}", key);
             }
         }
 
-        if (retActionChainId != null) {
-            if (actionChainFailed) {
-                long firstFailedActionId = failedActionIds.stream().min(Long::compare).get();
-                // Set rest of actions as FAILED due to failed prerequisite
-                failDependentServerActions(firstFailedActionId, minionId, Optional.empty());
-            }
-            // Removing the generated SLS file
-            SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
-                    retActionChainId, minionId, chunk, actionChainFailed);
-
-            ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
-                // We need to reload server actions since saltssh will be in
-                // the same db session from when the action was started and
-                // won't see results of non ssh minions otherwise.
-                ac.getEntries().stream()
-                        .flatMap(ace -> ace.getAction().getServerActions().stream())
-                        .forEach(HibernateFactory::reload);
-                if (ac.isDone()) {
-                    ActionChainFactory.delete(ac);
-                }
-            });
+        if (actionChainFailed) {
+            long firstFailedActionId = failedActionIds.stream().min(Long::compare).orElseThrow();
+            // Set rest of actions as FAILED due to failed prerequisite
+            failDependentServerActions(firstFailedActionId, minionId, Optional.empty());
         }
+        // Removing the generated SLS file
+        SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
+                retActionChainId, minionId, chunk, actionChainFailed);
+
+        ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
+            // We need to reload server actions since saltssh will be in
+            // the same db session from when the action was started and
+            // won't see results of non ssh minions otherwise.
+            ac.getEntries().stream()
+                    .flatMap(ace -> ace.getAction().getServerActions().stream())
+                    .forEach(HibernateFactory::reload);
+            if (ac.isDone()) {
+                ActionChainFactory.delete(ac);
+            }
+        });
     }
 
     /**
