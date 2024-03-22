@@ -11355,6 +11355,26 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a standalone Salt update</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="riscv64-deb" xml:space="preserve">
+        <source>RISCV64 Debian</source>
+        <target>RISCV64 Debian</target>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ARM64 Debian" xml:space="preserve">
+        <source>ARM64 Debian</source>
+        <target>ARM64 Debian</target>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="armel-deb" xml:space="preserve">
+        <source>ARMEL Debian</source>
+        <target>ARMEL Debian</target>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="s390x-deb" xml:space="preserve">
+        <source>PPC64EL Debian</source>
+        <target>PPC64EL Debian</target>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
