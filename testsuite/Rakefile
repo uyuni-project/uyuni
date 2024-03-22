@@ -211,7 +211,7 @@ namespace :jenkins do
   task :generate_rake_files_init_clients, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('proxy') || minion.include?('monitoring')
+      next if minion.include?('monitoring')
 
       Rake::Task['jenkins:generate_rake_run_step'].invoke('', File.basename(minion, '.feature'), 'features/build_validation/init_clients', "run_sets/build_validation/build_validation_init_client_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
