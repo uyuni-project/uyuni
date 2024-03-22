@@ -25169,6 +25169,9 @@ given channel.</source>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>
       </trans-unit>
+      <trans-unit id="peripheral_server" xml:space="preserve">
+        <source>Peripheral Server</source>
+      </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
       </trans-unit>
