@@ -2,9 +2,9 @@
 set -euxo pipefail
 
 get_server_certificates() {
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp'
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.crt /tmp'
-  sudo -i podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
+  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp'
+  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.crt /tmp'
+  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
 }
 
 create_proxy_configuration() {
@@ -101,11 +101,17 @@ run_proxy_containers() {
 }
 
 add_ssh_configuration () {
-  sudo --login podman exec proxy-ssh bash -c "mv /tmp/ssh_host_rsa_key.pub /root/.ssh/authorized_keys"
+  sudo --login podman exec proxy-ssh bash -c 'mkdir --parents /root/.ssh && mv /tmp/ssh_host_rsa_key.pub /root/.ssh/authorized_keys'
 }
 
 cleanup () {
-  sudo --login rm /tmp/test-all-in-one/id_openssh_rsa /tmp/test-all-in-one/id_openssh_rsa.pub /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT /tmp/test-all-in-one/server.crt /tmp/test-all-in-one/server.key
+  sudo --login \
+    rm \
+      /tmp/test-all-in-one/id_openssh_rsa \
+      /tmp/test-all-in-one/id_openssh_rsa.pub \
+      /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT \
+      /tmp/test-all-in-one/server.crt \
+      /tmp/test-all-in-one/server.key
 }
 
 get_server_certificates
