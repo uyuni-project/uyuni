@@ -26997,12 +26997,6 @@ given channel.</source>
         </source>
       <target state="needs-adaptation"/>
       </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
       </trans-unit>
@@ -27800,10 +27794,18 @@ given channel.</source>
       <target state="new"/>
   </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
-        <source>Do not use strict mode</source>
+        <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
+  </trans-unit>
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+        <source>Save</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+        <source>Resume Action Chains and Checkin Salt SSH Systems </source>
       <target state="new"/>
   </trans-unit>
       </body>
