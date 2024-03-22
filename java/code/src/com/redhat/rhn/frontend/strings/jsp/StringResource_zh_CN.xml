@@ -17374,7 +17374,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
         <target state="translated">将文件部署到所选系统</target>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="deployconfirm.jsp.h2" xml:space="preserve">
         <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
@@ -29043,13 +29043,6 @@ given channel.</source>
 &lt;/p&gt;
         </target>
       </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <target>对于此系统，无法将软件包同步到以上列表。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
         <target>在选中此复选框的情况下，如果系统是通过 Salt 注册的，则注册时将执行 highstate。</target>
@@ -29891,12 +29884,20 @@ given channel.</source>
         <target state="final">这是 Pay-as-you-go 服务器</target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
-        <source>Do not use strict mode</source>
+        <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
-    </body>
+    <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+        <source>Save</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+        <source>Resume Action Chains and Checkin Salt SSH Systems </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
