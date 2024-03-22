@@ -1,8 +1,6 @@
 #!/bin/bash
 set -x
 
-echo "test"
-
 if [ -z "${UYUNI_PROJECT}" ];then
     echo "Set and export UYUNI_PROJECT variable"
     exit 1
