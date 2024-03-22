@@ -7,13 +7,8 @@
 #
 # Bootstrap the proxy as a Pod
 
-@containerized_server
-@scope_containerized_proxy
 @proxy
 Feature: Bootstrap containerized proxy
-  In order to use a containerized proxy with the server
-  As the system administrator
-  I want to register the containerized proxy on the server
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -21,7 +16,7 @@ Feature: Bootstrap containerized proxy
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "proxy" as "hostname"
+    When I enter the hostname of "proxy-ssh" as "hostname"
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"

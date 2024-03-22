@@ -50,7 +50,7 @@ run_proxy_containers() {
     --hostname proxy-httpd \
     --publish 80:80 \
     --publish 443:443 \
-      registry.suse.com/suse/manager/4.3/proxy-httpd
+      registry.opensuse.org/uyuni/proxy-httpd:2024.02
 
   sudo --login podman run \
     --privileged \
@@ -62,7 +62,7 @@ run_proxy_containers() {
     --hostname proxy-salt-broker \
     --publish 4555:4505 \
     --publish 4556:4506 \
-      registry.suse.com/suse/manager/4.3/proxy-salt-broker
+      registry.opensuse.org/uyuni/proxy-salt-broker:2024.02
 
   sudo --login podman run \
     --privileged \
@@ -74,7 +74,7 @@ run_proxy_containers() {
     --name proxy-squid \
     --hostname proxy-squid \
     --publish 8088:8088 \
-      registry.suse.com/suse/manager/4.3/proxy-squid
+      registry.opensuse.org/uyuni/proxy-squid:2024.02
 
   sudo --login podman run \
     --privileged \
@@ -86,7 +86,7 @@ run_proxy_containers() {
     --name proxy-ssh \
     --hostname proxy-ssh \
     --publish 8022:22 \
-      registry.suse.com/suse/manager/4.3/proxy-ssh
+      registry.opensuse.org/uyuni/proxy-ssh:2024.02
 
   sudo --login podman run \
     --privileged \
@@ -97,7 +97,7 @@ run_proxy_containers() {
     --name proxy-tftpd \
     --hostname proxy-tftpd \
     --publish 69:69 \
-      registry.suse.com/suse/manager/4.3/proxy-tftpd
+      registry.opensuse.org/uyuni/proxy-tftpd:2024.02
 }
 
 add_ssh_configuration () {
