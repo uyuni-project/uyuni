@@ -87,11 +87,12 @@ public class TaskoXmlRpcHandler {
 
     /**
      * lookup schedule by label
+     *
      * @param jobLabel schedule label
      * @return schedule
      */
-    public TaskoSchedule lookupScheduleByLabel(String jobLabel) {
-        return TaskoFactory.lookupScheduleByLabel(jobLabel);
+    public List<TaskoSchedule> listScheduleByLabel(String jobLabel) {
+        return TaskoFactory.listScheduleByLabel(jobLabel);
     }
 
     /**
@@ -231,7 +232,7 @@ public class TaskoXmlRpcHandler {
         // quartz unschedules job after trigger end time
         // so better handle quartz and schedules separately
         if ((scheduleList.isEmpty()) && (trigger == null)) {
-            log.error("Unscheduling of bunch {}failed: no such job label", jobLabel);
+            log.error("Unscheduling of bunch {} failed: no such job label", jobLabel);
             return 0;
         }
         for (TaskoSchedule schedule : scheduleList) {
@@ -317,8 +318,21 @@ public class TaskoXmlRpcHandler {
     public Date scheduleSingleBunchRun(Integer orgId, String bunchName, String jobLabel, Map params, Date start)
         throws NoSuchBunchTaskException, InvalidParamException, SchedulerException {
         TaskoBunch bunch = doBasicCheck(orgId, bunchName, jobLabel);
-        // create schedule
-        TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params, start, null, null);
+        List<TaskoSchedule> taskoSchedules = TaskoFactory.listScheduleByLabel(jobLabel);
+
+        TaskoSchedule schedule;
+        if (taskoSchedules.isEmpty()) {
+            // create schedule
+            schedule = new TaskoSchedule(orgId, bunch, jobLabel, params, start, null, null);
+        }
+        else {
+            // update existing schedule
+            schedule = taskoSchedules.get(0);
+            schedule.setBunch(bunch);
+            schedule.setDataMap(params);
+            schedule.setActiveFrom(start);
+            schedule.setActiveTill(start);
+        }
         TaskoFactory.save(schedule);
         TaskoFactory.commitTransaction();
         log.info("Schedule created for {}. Creating quartz Job...", jobLabel);

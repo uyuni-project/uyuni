@@ -338,15 +338,15 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     /**
-     * lookup schedule by label
+     * list schedule by label
+     *
      * @param jobLabel schedule label
-     * @return schedule
+     * @return list of schedule
      */
-    public static TaskoSchedule lookupScheduleByLabel(String jobLabel) {
+    public static List<TaskoSchedule> listScheduleByLabel(String jobLabel) {
         Map<String, Object> params = new HashMap<>();
         params.put("job_label", jobLabel);
-        return (TaskoSchedule) singleton.lookupObjectByNamedQuery(
-                                       "TaskoSchedule.lookupByLabel", params);
+        return singleton.listObjectsByNamedQuery("TaskoSchedule.lookupByLabel", params);
     }
 
     /**

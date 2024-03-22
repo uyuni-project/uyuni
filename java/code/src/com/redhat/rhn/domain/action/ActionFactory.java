@@ -857,7 +857,8 @@ public class ActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     @SuppressWarnings("unchecked")
-    public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList, Date createdDate) {
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList,
+                                                                Date createdDate) {
         Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         params.put("statusList", statusList);
