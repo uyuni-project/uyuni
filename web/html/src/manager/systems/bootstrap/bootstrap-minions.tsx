@@ -47,19 +47,40 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
           {this.props.error.standardOutput && (
             <div className="form-group">
               <label className="control-label">Standard Output:</label>
-              <textarea readOnly disabled className="form-control" value={this.props.error.standardOutput} rows={5} />
+              <textarea
+                readOnly
+                disabled
+                className="form-control"
+                data-testid="stdout"
+                value={this.props.error.standardOutput}
+                rows={5}
+              />
             </div>
           )}
           {this.props.error.standardError && (
             <div className="form-group">
               <label className="control-label">Standard Error:</label>
-              <textarea readOnly disabled className="form-control" value={this.props.error.standardError} rows={5} />
+              <textarea
+                readOnly
+                disabled
+                className="form-control"
+                data-testid="stderr"
+                value={this.props.error.standardError}
+                rows={5}
+              />
             </div>
           )}
           {this.props.error.result && (
             <div className="form-group">
               <label className="control-label">Result:</label>
-              <textarea readOnly disabled className="form-control" value={this.props.error.result} rows={5} />
+              <textarea
+                readOnly
+                disabled
+                className="form-control"
+                data-testid="result"
+                value={this.props.error.result}
+                rows={5}
+              />
             </div>
           )}
         </>

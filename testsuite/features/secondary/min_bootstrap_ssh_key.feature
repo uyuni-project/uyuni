@@ -41,7 +41,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     When I click on "Details"
     And I wait at most 10 seconds until I see modal containing "Error Details" text
     Then I should see a "Standard Error" text
-    And I should see "Permission denied, no authentication information" in the textarea
+    And I should see "Permission denied, no authentication information" or "Permission denied (publickey,password,keyboard-interactive)" in the stderr textarea
     When I close the modal dialog
 
   Scenario: Bootstrap a SLES minion using SSH key
