@@ -17457,7 +17457,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
         <target state="translated">将文件部署到所选系统</target>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="deployconfirm.jsp.h2" xml:space="preserve">
         <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
@@ -29125,13 +29125,6 @@ given channel.</source>
     有关 @@PRODUCT_NAME@@ 的细节，请访问我们的网站：&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;。
 &lt;/p&gt;
         </target>
-      </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <target>对于此系统，无法将软件包同步到以上列表。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
