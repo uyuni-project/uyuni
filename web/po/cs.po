@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-23 15:34+0100\n"
+"POT-Creation-Date: 2024-03-22 15:15+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -2610,7 +2610,7 @@ msgstr "Načítání globálních filtrů..."
 msgid "Updating project filters..."
 msgstr "Aktualizace filtrů projektu..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:45
 msgid "Create New Filter"
 msgstr "Vytvořit nový filtr"
 

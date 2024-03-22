@@ -17,11 +17,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-23 15:34+0100\n"
+"POT-Creation-Date: 2024-03-22 15:15+0100\n"
 "PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
-"\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
+">\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2548,7 +2548,7 @@ msgstr "전역 필터를 로드하는 중..."
 msgid "Updating project filters..."
 msgstr "프로젝트 필터를 업데이트하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:45
 msgid "Create New Filter"
 msgstr "새 필터 만들기"
 
