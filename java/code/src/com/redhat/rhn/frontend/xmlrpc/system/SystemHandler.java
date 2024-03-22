@@ -6820,7 +6820,12 @@ public class SystemHandler extends BaseHandler {
      */
     public int registerPeripheralServer(User loggedInUser, String fqdn) {
         ensureOrgAdmin(loggedInUser);
-        return systemManager.registerPeripheralServer(loggedInUser, fqdn).getId().intValue();
+        try {
+            return systemManager.registerPeripheralServer(loggedInUser, fqdn).getId().intValue();
+        }
+        catch (SystemsExistException e) {
+            throw new SystemsExistFaultException(e.getSystemIds());
+        }
     }
 
     /**
