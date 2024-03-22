@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-23 15:31+0100\n"
+"POT-Creation-Date: 2024-03-22 15:01+0100\n"
 "PO-Revision-Date: 2021-10-15 12:11+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/"
@@ -2567,7 +2567,7 @@ msgstr ""
 msgid "Updating project filters..."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:45
 msgid "Create New Filter"
 msgstr ""
 
