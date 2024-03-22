@@ -7,9 +7,7 @@
 #
 # Bootstrap the proxy as a Pod
 
-@containerized_server
-@scope_containerized_proxy
-@proxy
+
 Feature: Setup containerized proxy
   In order to use a containerized proxy with the server
   As the system administrator
