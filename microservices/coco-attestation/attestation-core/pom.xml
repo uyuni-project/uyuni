@@ -61,7 +61,6 @@
         <dependency>
             <groupId>org.uyuni-project</groupId>
             <artifactId>uyuni-java-common</artifactId>
-            <version>5.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.uyuni-project.coco-attestation</groupId>
