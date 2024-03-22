@@ -217,7 +217,7 @@ if [[ $REPO_HOST == "localhost" ]] && command -v selinuxenabled && selinuxenable
     if ! selinux_policy_loaded; then
         echo "(portcon tcp ${REPO_PORT} (system_u object_r ssh_port_t ((s0)(s0))))" >$SELINUX_POLICY_FILENAME
         if ! semodule -i $SELINUX_POLICY_FILENAME; then
-            exit_with_message_code "Error: Failed to install SELinux policy." 7
+            exit_with_message_code "Error: Failed to install SELinux policy with port=${REPO_PORT}." 7
         fi
     fi
 fi
