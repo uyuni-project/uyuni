@@ -3894,6 +3894,11 @@ public class SystemManager extends BaseManager {
     public Server registerPeripheralServer(User creator, String fqdn) {
         String uniqueId = createUniqueId(List.of(fqdn));
 
+        Server existing = ServerFactory.lookupForeignSystemByDigitalServerId(uniqueId);
+        if (existing != null) {
+            throw new SystemsExistException(List.of(existing.getId()));
+        }
+
         Server server = ServerFactory.createServer();
         server.setName(fqdn);
         server.setOrg(creator.getOrg());
