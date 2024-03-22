@@ -2,7 +2,8 @@
 name: New package for SUSE Manager/Uyuni
 about: Use this template to request a new package to be added to SUSE Manager/Uyuni
 title: 'New package: XXXXXX'
-labels: vega-squad
+labels: ["vega-squad"]
+projects: ["SUSE/35"]
 assignees: ''
 ---
 # Reason
@@ -30,8 +31,6 @@ This is not about the RPM package, but about the OBS package, that should be the
 - [ ] Uyuni
 - [ ] SUSE Manager Head
 - [ ] SUSE Manager 4.3
-- [ ] SUSE Manager 4.2
-- [ ] SUSE Manager 4.1
 - [ ] SLE modules
 
 

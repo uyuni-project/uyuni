@@ -3,7 +3,7 @@ name: Uyuni Community Hours
 about: Use this template for planning a new Uyuni Community Hours
 title: 'Uyuni Community Hours DD.MM.YYYY'
 labels: ["vega-squad", "uyuni"]
-projects: SUSE/35
+projects: ["SUSE/35"]
 ---
 
 # Links

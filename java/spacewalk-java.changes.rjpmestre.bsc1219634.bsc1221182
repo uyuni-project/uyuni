@@ -1,0 +1,1 @@
+- drop system password as identifier on scc system registration (bsc#1219634, bsc#1221182)

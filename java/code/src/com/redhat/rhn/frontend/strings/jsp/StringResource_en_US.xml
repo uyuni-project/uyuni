@@ -24220,7 +24220,7 @@ given channel.</source>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
       </trans-unit>
-       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
@@ -25137,12 +25137,6 @@ given channel.</source>
     For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
 &lt;/p&gt;
         </source>
-      </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>

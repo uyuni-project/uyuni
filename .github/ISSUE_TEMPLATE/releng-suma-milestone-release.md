@@ -2,7 +2,8 @@
 name: SUSE Manager Milestone release
 about: Use this template for SUSE Manager Milestone releases (announcements)
 title: 'X.Y <MILESTONE_NAME> release'
-labels: vega-squad
+labels: ["vega-squad"]
+projects: ["SUSE/35"]
 assignees: ''
 
 ---

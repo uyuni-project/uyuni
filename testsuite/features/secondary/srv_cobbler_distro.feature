@@ -155,8 +155,8 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Test for PXE environment files
     Given cobblerd is running
     When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
-    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
-    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1" on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "inst.ks=.*fedora_kickstart_profile:1" on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "inst.ks=.*fedora_kickstart_profile_upload:1" on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server
     And I wait until file "/srv/tftpboot/menu.c32" exists on server
@@ -167,7 +167,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Create a cobbler system record via API
     When I create a system record
-    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "inst.ks=.*testserver:1" on server
     Then the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"

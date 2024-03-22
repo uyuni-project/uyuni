@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -31,7 +31,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * This class is responsible for creating and executing the batch requests in SCC.
+ * This class is responsible for the registration process of the systems in SCC.
+ * It splits the systems into batches. Each batch is included in the body of a rest call is executed to the SCC API.
+ * A successful call returns a set of @{link SCCSystemCredentialsJson} objects.
  */
 public class SCCSystemRegistrationCreateUpdateSystems implements SCCSystemRegistrationContextHandler {
     private static final Logger LOG = LogManager.getLogger(SCCSystemRegistrationCreateUpdateSystems.class);
@@ -40,7 +42,7 @@ public class SCCSystemRegistrationCreateUpdateSystems implements SCCSystemRegist
     public void handle(SCCSystemRegistrationContext context) {
         final int batchSize = Config.get().getInt(ConfigDefaults.REG_BATCH_SIZE, 50);
         final List<SCCRegisterSystemJson> pendingRegistrationSystems =
-                new ArrayList<>(context.getPendingRegistrationSystems().values());
+                new ArrayList<>(context.getPendingRegistrationSystemsByLogin().values());
 
         // split items into batches
         List<List<SCCRegisterSystemJson>> systemsBatches = splitListIntoBatches(pendingRegistrationSystems, batchSize);

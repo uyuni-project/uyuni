@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.scc.SCCSystemId;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.registration.SCCSystemRegistrationContext;
 import com.suse.scc.registration.SCCSystemRegistrationUpdateCachedItems;
@@ -78,7 +77,7 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
         // pre-conditions
         assertEquals(0, context.getItems().size());
         assertEquals(0, context.getRegisteredSystems().size());
-        assertEquals(0, context.getPendingRegistrationSystems().size());
+        assertEquals(0, context.getPendingRegistrationSystemsByLogin().size());
         assertEquals(0, context.getPaygSystems().size());
 
         // execution
@@ -87,7 +86,7 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
         // assertions
         assertEquals(0, context.getItems().size());
         assertEquals(0, context.getRegisteredSystems().size());
-        assertEquals(0, context.getPendingRegistrationSystems().size());
+        assertEquals(0, context.getPendingRegistrationSystemsByLogin().size());
         assertEquals(0, context.getPaygSystems().size());
     }
 
@@ -98,10 +97,10 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
      *      - after, the 7 systems will still be in context.getRegisteredSystems() but there will be 7 items having a
      *      SccId;
      * - 7 failed to register;
-     *      - before there are 14 systems in context.getPendingRegistrationSystems() & there will be no items having a
-     *      registration error time;
-     *      - after, 7 systems will remain in context.getPendingRegistrationSystems() but there will be 7 items having a
-     *      registration error time;
+     *      - before there are 14 systems in context.getPendingRegistrationSystemsByLogin() & there will be no items
+     *      having a registration error time;
+     *      - after, 7 systems will remain in context.getPendingRegistrationSystemsByLogin() but there will be 7 items
+     *      having a registration error time;
      * - 7 are PAYG systems;
      *      - before the 7 systems will be in context.getPaygSystems() & all 21 systems are marked as requiring
      *      registration;
@@ -114,11 +113,11 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
         this.setupSystems(21);
         final SCCSystemRegistrationContext context = new SCCSystemRegistrationContext(null, testSystems, null);
         for (int i = 0; i < 14; i++) {
-            SCCSystemId sccSystemId = new SCCSystemId("login" + i, "password" + i);
-            SCCSystemCredentialsJson sccSystemCredentialsJson = new SCCSystemCredentialsJson(sccSystemId.getLogin(),
-                    sccSystemId.getPassword(), Long.valueOf(i));
-            context.getItemsBySccSystemId().put(sccSystemId, testSystems.get(i));
-            context.getPendingRegistrationSystems().put(sccSystemId, null);
+            String login = "login" + i;
+            SCCSystemCredentialsJson sccSystemCredentialsJson = new SCCSystemCredentialsJson(login, login +
+                    "_password", Long.valueOf(i));
+            context.getItemsByLogin().put(login, testSystems.get(i));
+            context.getPendingRegistrationSystemsByLogin().put(login, null);
             if (i < 7) {
                 context.getRegisteredSystems().add(sccSystemCredentialsJson);
             }
@@ -132,7 +131,7 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
         assertEquals(7, context.getRegisteredSystems().size());
         assertEquals(0, context.getItems().stream().filter(p -> p.getOptSccId().isPresent()).count());
 
-        assertEquals(14, context.getPendingRegistrationSystems().size());
+        assertEquals(14, context.getPendingRegistrationSystemsByLogin().size());
         assertEquals(0, context.getItems().stream().filter(p -> p.getOptRegistrationErrorTime().isPresent()).count());
 
 
@@ -148,7 +147,7 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
         assertEquals(7, context.getRegisteredSystems().size());
         assertEquals(7, context.getItems().stream().filter(p -> p.getOptSccId().isPresent()).count());
 
-        assertEquals(7, context.getPendingRegistrationSystems().size());
+        assertEquals(7, context.getPendingRegistrationSystemsByLogin().size());
         assertEquals(7, context.getItems().stream().filter(p -> p.getOptRegistrationErrorTime().isPresent()).count());
 
         assertEquals(7, context.getPaygSystems().size());

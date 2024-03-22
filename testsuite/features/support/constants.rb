@@ -708,8 +708,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp4-updates-x86_64
         sle-manager-tools15-pool-x86_64-sp4
         sle-manager-tools15-updates-x86_64-sp4
-        sle-manager-tools15-beta-pool-x86_64-sp4
-        sle-manager-tools15-beta-updates-x86_64-sp4
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-devtools15-sp4-pool-x86_64
         sle-module-containers15-sp4-pool-x86_64
@@ -849,8 +847,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-sles15-sp4-ltss-updates-x86_64
         sle-manager-tools15-pool-x86_64-sp4
         sle-manager-tools15-updates-x86_64-sp4
-        sle-manager-tools15-beta-pool-x86_64-sp4
-        sle-manager-tools15-beta-updates-x86_64-sp4
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-devtools15-sp4-pool-x86_64
         sle-module-containers15-sp4-pool-x86_64
@@ -998,7 +994,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-suse-manager-proxy-4.3-pool-x86_64
         sle-product-suse-manager-proxy-4.3-updates-x86_64
         sle-module-suse-manager-proxy-4.3-pool-x86_64
-        sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
         sle-module-suse-manager-proxy-4.3-updates-x86_64
         sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3
         sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3
@@ -1460,12 +1455,12 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'el9-manager-tools-updates-x86_64-ol9' => 60,
   'el9-manager-tools-updates-x86_64-rocky' => 60,
   'el9-pool-x86_64' => 60,
-  'fake-base-channel-debian-like' => 60,
-  'fake-base-channel-rh-like' => 60,
-  'fake-child-channel-i586' => 60,
-  'fake-child-channel-suse-like' => 60,
-  'fake-rpm-suse-channel' => 60,
-  'fake-rpm-terminal-channel' => 60,
+  'fake-base-channel-debian-like' => 120,
+  'fake-base-channel-rh-like' => 120,
+  'fake-child-channel-i586' => 120,
+  'fake-child-channel-suse-like' => 120,
+  'fake-rpm-suse-channel' => 120,
+  'fake-rpm-terminal-channel' => 120,
   'opensuse_leap15_4-aarch64' => 8940,
   'opensuse_leap15_4-aarch64-backports-updates' => 540,
   'opensuse_leap15_4-aarch64-non-oss' => 60,
@@ -1509,8 +1504,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle15-sp4-installer-updates-x86_64' => 60,
   'sle-manager-tools12-pool-x86_64-sp5' => 60,
   'sle-manager-tools12-updates-x86_64-sp5' => 60,
-  'sle-manager-tools15-beta-pool-x86_64-sp4' => 60,
-  'sle-manager-tools15-beta-updates-x86_64-sp4' => 60,
   'sle-manager-tools15-pool-s390x-sp5' => 60,
   'sle-manager-tools15-pool-x86_64-sp1' => 60,
   'sle-manager-tools15-pool-x86_64-sp2' => 60,
@@ -1548,12 +1541,12 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp2-updates-x86_64' => 660,
   'sle-module-basesystem15-sp3-pool-x86_64' => 240,
   'sle-module-basesystem15-sp3-updates-x86_64' => 1020,
-  'sle-module-basesystem15-sp4-pool-x86_64' => 180,
+  'sle-module-basesystem15-sp4-pool-x86_64' => 240,
   'sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3' => 60,
-  'sle-module-basesystem15-sp4-updates-x86_64' => 900,
-  'sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3' => 60,
-  'sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3' => 60,
+  'sle-module-basesystem15-sp4-updates-x86_64' => 1800,
+  'sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3' => 90,
+  'sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3' => 90,
   'sle-module-basesystem15-sp5-pool-s390x' => 360,
   'sle-module-basesystem15-sp5-pool-x86_64' => 240,
   'sle-module-basesystem15-sp5-updates-s390x' => 600,
@@ -1642,7 +1635,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-microos-5.2-devel-uyuni-client-x86_64' => 60,
   'suse-microos-5.2-pool-x86_64' => 60,
   'suse-microos-5.2-updates-x86_64' => 60,
-  'test-child-channel-x86_64' => 60,
+  'test-child-channel-x86_64' => 120,
   'ubuntu-2004-amd64-main-amd64' => 480,
   'ubuntu-2004-amd64-main-security-amd64' => 3480,
   'ubuntu-2004-amd64-main-security-uyuni' => 4200,
@@ -1671,3 +1664,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-22.04-suse-manager-tools-amd64' => 60,
   'uyuni-proxy-devel-leap-x86_64' => 60
 }.freeze
+
+EMPTY_CHANNELS = %w[
+  sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+  sle-manager-tools15-beta-pool-x86_64-sp4
+  fake-base-channel-suse-like
+  fake-base-channel-i586
+  test-base-channel-x86_64
+].freeze

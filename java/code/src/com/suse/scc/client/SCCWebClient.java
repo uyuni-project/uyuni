@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014--2021 SUSE LLC
+ * Copyright (c) 2014--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -308,7 +308,7 @@ public class SCCWebClient implements SCCClient {
 
         LOG.info("Send PUT to {}{}", config.getUrl(), "/connect/organizations/systems");
         if (LOG.isDebugEnabled()) {
-            LOG.debug(gson.toJson(payload));
+            LOG.debug("Request body: {}", gson.toJson(payload));
         }
 
         try {
@@ -316,8 +316,12 @@ public class SCCWebClient implements SCCClient {
             HttpResponse response = httpClient.executeRequest(request, username, password);
 
             int responseCode = response.getStatusLine().getStatusCode();
+            String responseBody = EntityUtils.toString(response.getEntity());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Response code: {}", responseCode);
+                LOG.debug("Response body: {}", responseBody);
+            }
             if (responseCode == HttpStatus.SC_CREATED) {
-                String responseBody = EntityUtils.toString(response.getEntity());
                 return gson.fromJson(responseBody, SCCOrganizationSystemsUpdateResponse.class);
             }
             else {

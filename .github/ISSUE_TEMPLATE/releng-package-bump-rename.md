@@ -2,7 +2,8 @@
 name: Package version bump/rename for SUSE Manager/Uyuni
 about: Use this template to notify RE about a package version bump/rename for SUSE Manager/Uyuni
 title: 'Package version bump/rename for SUSE Manager/Uyuni: XXXXXXX'
-labels: vega-squad
+labels: ["vega-squad"]
+projects: ["SUSE/35"]
 assignees: ''
 ---
 # Reason
@@ -42,8 +43,6 @@ Run `iosc bugowner <package_name>` and pick one:
 - [ ] Uyuni
 - [ ] SUSE Manager Head
 - [ ] SUSE Manager 4.3
-- [ ] SUSE Manager 4.2
-- [ ] SUSE Manager 4.1
 
 # Affected codestreams and product/modules
 

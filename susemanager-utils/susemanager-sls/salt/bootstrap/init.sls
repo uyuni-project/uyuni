@@ -172,6 +172,9 @@ salt-minion-package:
     - require:
       - file: bootstrap_repo
 
+{%- if not use_venv_salt %}
+{# transactional_update executor module is required for classic salt-minion only #}
+{# venv-salt-minion has its own venv executor module which invokes transactional_update if needed #}
 {{ salt_config_dir }}/minion.d/transactional_update.conf:
   file.managed:
     - source:
@@ -181,6 +184,7 @@ salt-minion-package:
     - makedirs: True
     - require:
       - file: {{ salt_config_dir }}/minion.d/susemanager.conf
+{%- endif %}
 {%- endif %}
 
 {# We must install "python3-contextvars" on DEB based distros, running Salt 3004, with Python version < 3.7, like Ubuntu 18.04 #}
@@ -278,12 +282,12 @@ include:
 
 {# Change REBOOT_METHOD to systemd if it is default, otherwise don't change it #}
 
-{%- if not salt['file.file_exists']('/etc/transactional-update.conf') %}
-copy_conf_file_to_etc:
+copy_transactional_conf_file_to_etc:
   file.copy:
     - name: /etc/transactional-update.conf
     - source: /usr/etc/transactional-update.conf
-{%- endif %}
+    - unless:
+      - test -f /etc/transactional-update.conf
 
 transactional_update_set_reboot_method_systemd:
   file.keyvalue:
@@ -294,7 +298,7 @@ transactional_update_set_reboot_method_systemd:
     - uncomment: '# '
     - append_if_not_found: True
     - require:
-      - file: copy_conf_file_to_etc
+      - file: copy_transactional_conf_file_to_etc
     - unless:
       - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 

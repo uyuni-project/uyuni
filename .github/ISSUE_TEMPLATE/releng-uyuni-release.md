@@ -2,7 +2,8 @@
 name: Uyuni release
 about: Use this template for Uyuni releases
 title: 'XXXX.YY Uyuni release'
-labels: vega-squad
+labels: ["vega-squad", "uyuni"]
+projects: ["SUSE/35"]
 ---
 
 # Important changes, for the release notes
