@@ -88,6 +88,7 @@
             "/usr/local/lib/python2.7/site-packages",
             "/usr/lib/python2.7/site-packages"
           ],
+          "instance_id": "aws",
           "ip_interfaces": {
             "lo": [
               "127.0.0.1",
@@ -102,7 +103,6 @@
               "fe80::5054:ff:fe4f:7102"
             ]
           },
-	  "is_payg_instance": true,
           "shell": "/bin/bash",
           "mem_total": 489,
           "saltversioninfo": [

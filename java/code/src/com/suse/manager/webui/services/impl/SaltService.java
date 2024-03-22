@@ -44,6 +44,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil.PublicCloudInstanceFlavor;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.AbstractCall;
@@ -1084,6 +1085,27 @@ public class SaltService implements SystemQuery, SaltApi {
                Optional.empty()), minionId)
                .flatMap(result -> result.result())
                .map(result -> Json.GSON.fromJson(result, SystemInfo.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PublicCloudInstanceFlavor getInstanceFlavor(String minionId) {
+        LocalCall<String> call = new LocalCall<>("sumautil.instance_flavor",
+                                                 Optional.empty(),
+                                                 Optional.empty(),
+                                                 new TypeToken<>() {  });
+        return callSync(call, minionId)
+            .map(res -> {
+                    try {
+                        return PublicCloudInstanceFlavor.valueOf(res.toUpperCase());
+                    }
+                    catch (IllegalArgumentException e) {
+                        return PublicCloudInstanceFlavor.UNKNOWN;
+                    }
+                })
+            .orElse(PublicCloudInstanceFlavor.UNKNOWN);
     }
 
     /**
