@@ -64,7 +64,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
     private String description;
     private Date endOfLife;
-    private boolean GPGCheck = true;
+    private boolean GPGCheck;
     private String GPGKeyUrl;
     private String GPGKeyId;
     private String GPGKeyFp;
@@ -73,7 +73,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private Date lastModified;
     private Date lastSynced;
     private String name;
-    private String access = PRIVATE;
+    private String access;
     private Org org;
     private Channel parentChannel;
     private ChannelProduct product;
@@ -82,20 +82,40 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private Modules modules;
     private MediaProducts mediaProducts;
     private String summary;
-    private Set<Errata> erratas = new HashSet<>();
-    private Set<Package> packages = new HashSet<>();
-    private Set<ContentSource> sources = new HashSet<>();
-    private Set<ChannelFamily> channelFamilies = new HashSet<>();
-    private Set<DistChannelMap> distChannelMaps = new HashSet<>();
-    private Set<Org> trustedOrgs = new HashSet<>();
+    private Set<Errata> erratas;
+    private Set<Package> packages;
+    private Set<ContentSource> sources;
+    private Set<ChannelFamily> channelFamilies;
+    private Set<DistChannelMap> distChannelMaps;
+    private Set<Org> trustedOrgs;
     private String maintainerName;
     private String maintainerEmail;
     private String maintainerPhone;
     private String supportPolicy;
     private String updateTag;
-    private boolean installerUpdates = false;
-    private Set<ClonedChannel> clonedChannels = new HashSet<>();
-    private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
+    private boolean installerUpdates;
+    private Set<ClonedChannel> clonedChannels;
+    private Set<SUSEProductChannel> suseProductChannels;
+    private ChannelSyncFlag channelSyncFlag;
+
+    /**
+     * Channel Object Constructor
+     */
+    public Channel() {
+        suseProductChannels = new HashSet<>();
+        clonedChannels = new HashSet<>();
+        installerUpdates = false;
+        trustedOrgs = new HashSet<>();
+        distChannelMaps = new HashSet<>();
+        channelFamilies = new HashSet<>();
+        sources = new HashSet<>();
+        packages = new HashSet<>();
+        erratas = new HashSet<>();
+        access = PRIVATE;
+        GPGCheck = true;
+        channelSyncFlag = new ChannelSyncFlag();
+        channelSyncFlag.setChannel(this);
+    }
 
     /**
      * @param orgIn what org you want to know if it is globally subscribable in
@@ -1030,6 +1050,21 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Optional<ClonedChannel> asCloned() {
         return Optional.empty();
+    }
+
+    public void setChannelSyncFlag(ChannelSyncFlag csf) {
+        this.channelSyncFlag = csf;
+    }
+
+    /**
+     * @return the channels sync flag settings
+     */
+    public ChannelSyncFlag getChannelSyncFlag() {
+        if (channelSyncFlag == null) {
+            channelSyncFlag = new ChannelSyncFlag();
+            channelSyncFlag.setChannel(this);
+        }
+        return this.channelSyncFlag;
     }
 }
 

@@ -17,6 +17,7 @@ package com.suse.manager.webui.services;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.unproxy;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static java.util.Collections.emptyMap;
@@ -194,6 +195,8 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2487,15 +2490,41 @@ public class SaltServerActionService {
                     LOG.trace("Salt call result: {}", r);
 
                     r.consume(error -> {
-                        sa.setStatus(STATUS_FAILED);
-                        sa.setResultMsg(error.fold(
-                                e -> "function " + e.getFunctionName() + " not available.",
-                                e -> "module " + e.getModuleName() + " not supported.",
-                                e -> "error parsing json.",
-                                GenericError::getMessage,
-                                e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
-                        ));
-                        sa.setCompletionTime(new Date());
+                        String errorString = error.toString();
+                        if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
+                            // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
+                            LOG.info("System is going down. Configure re-try in 3 minutes");
+                            sa.setStatus(STATUS_QUEUED);
+                            sa.setRemainingTries((sa.getRemainingTries() - 1L));
+                            sa.setPickupTime(null);
+                            sa.setCompletionTime(null);
+                            action.setEarliestAction(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)));
+                            ActionFactory.save(action);
+                            // We commit as we need to take care that the new date is in DB when we
+                            // call taskomatic to execute the action again.
+                            HibernateFactory.commitTransaction();
+                            try {
+                                taskomaticApi.scheduleActionExecution(action);
+                            }
+                            catch (TaskomaticApiException e) {
+                                LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
+                                sa.setStatus(STATUS_FAILED);
+                                sa.setResultMsg(errorString);
+                                sa.setCompletionTime(new Date());
+                            }
+                        }
+                        else {
+                            sa.setStatus(STATUS_FAILED);
+                            sa.setResultMsg(error.fold(
+                                    e -> "function " + e.getFunctionName() + " not available.",
+                                    e -> "module " + e.getModuleName() + " not supported.",
+                                    e -> "error parsing json.",
+                                    GenericError::getMessage,
+                                    e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
+                            ));
+                            LOG.error(sa.getResultMsg());
+                            sa.setCompletionTime(new Date());
+                        }
                     }, jsonResult -> {
                         String function = (String) call.getPayload().get("fun");
 

@@ -416,7 +416,8 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
 
   time_spent = 0
   checking_rate = 10
-  timeout = 0
+  # Let's start with a timeout margin aside from the sum of the timeouts for each channel
+  timeout = 600
   channels_to_wait.each do |channel|
     if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
       log "Unknown timeout for channel #{channel}, assuming one minute"

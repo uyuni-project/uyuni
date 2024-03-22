@@ -44,11 +44,17 @@ def test_reboot_required_debian(file_exists, result):
 
 
 @pytest.mark.parametrize(
-    "file_exists, result",
-    [(True, True), (False, False)],
+    "os_major_release, file_exists, result",
+    [
+        (15, True, True),
+        (15, False, False),
+        (11, True, True),
+        (11, False, False),
+    ],
 )
-def test_reboot_required_suse(file_exists, result):
+def test_reboot_required_suse(os_major_release, file_exists, result):
     reboot_info.__grains__["os_family"] = "Suse"
+    reboot_info.__grains__["osmajorrelease"] = os_major_release
     with patch("os.path.exists", return_value=file_exists):
         assert reboot_info.reboot_required()["reboot_required"] == result
 

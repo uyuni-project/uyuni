@@ -244,6 +244,7 @@ public class ResponseMappers {
                     );
                     return contentFilterResponse;
                 })
+                .sorted(Comparator.comparing(FilterResponse::getName))
                 .collect(Collectors.toList());
     }
 

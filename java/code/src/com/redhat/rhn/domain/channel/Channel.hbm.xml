@@ -132,6 +132,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <one-to-many class="com.redhat.rhn.domain.product.SUSEProductChannel"/>
         </set>
 
+        <one-to-one name="channelSyncFlag" class="com.redhat.rhn.domain.channel.ChannelSyncFlag"
+            cascade="all" outer-join="true"/>
+
         <joined-subclass
                 name="com.redhat.rhn.domain.channel.ClonedChannel"
                 table="rhnChannelCloned">

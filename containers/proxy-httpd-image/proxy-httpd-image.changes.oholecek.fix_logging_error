@@ -1,0 +1,1 @@
+- Remove 'file=sys.stderr' kwarg from logging as it does not know it

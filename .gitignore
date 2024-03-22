@@ -79,7 +79,7 @@ reports/
 *.mypy*
 
 # VS Code
-java/.vscode
+java/.vscode/launch.json
 python/.vscode
 
 # Python

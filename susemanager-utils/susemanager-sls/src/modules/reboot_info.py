@@ -43,8 +43,10 @@ def reboot_required():
     elif __grains__["os_family"] == "Debian":
         result = os.path.exists("/var/run/reboot-required")
     elif __grains__["os_family"] == "Suse":
-        result = os.path.exists("/run/reboot-needed") or os.path.exists(
-            "/boot/do_purge_kernels"
+        result = (
+            os.path.exists("/run/reboot-needed")
+            if __grains__["osmajorrelease"] >= 12
+            else os.path.exists("/boot/do_purge_kernels")
         )
     elif __grains__["os_family"] == "RedHat":
         cmd = (

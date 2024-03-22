@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,10 +15,11 @@
 
 package com.suse.scc.registration;
 
+import static com.suse.utils.Predicates.isAbsent;
+
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.ServerFactory;
 
-import com.suse.scc.SCCSystemId;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 
@@ -29,7 +30,8 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * This object is responsible for updating cached tems .
+ * This class represents the final step in the registration process for SCC systems.
+ * It analyzes which systems were successfully registered and updates the cached items accordingly.
  */
 public class SCCSystemRegistrationUpdateCachedItems implements SCCSystemRegistrationContextHandler {
     private static final Logger LOG = LogManager.getLogger(SCCSystemRegistrationUpdateCachedItems.class);
@@ -46,22 +48,28 @@ public class SCCSystemRegistrationUpdateCachedItems implements SCCSystemRegistra
 
     private void updateSuccessfullyRegisteredItems(SCCSystemRegistrationContext context) {
         for (SCCSystemCredentialsJson systemCredentials : context.getRegisteredSystems()) {
-            SCCSystemId sccSystemId = new SCCSystemId(systemCredentials.getLogin(), systemCredentials.getPassword());
-            SCCRegCacheItem cacheItem = context.getItemsBySccSystemId().get(sccSystemId);
+
+            SCCRegCacheItem cacheItem = context.getItemsByLogin().get(systemCredentials.getLogin());
+            if (LOG.isDebugEnabled() && isAbsent(cacheItem)) {
+                LOG.debug("System login {} was registered but it is not in the cache", systemCredentials.getLogin());
+            }
 
             cacheItem.setSccId(systemCredentials.getId());
             cacheItem.setSccLogin(systemCredentials.getLogin());
             cacheItem.setSccPasswd(systemCredentials.getPassword());
 
             context.setItemAsNonRegistrationRequiredItem(cacheItem);
-            context.getPendingRegistrationSystems().remove(sccSystemId);
+            context.getPendingRegistrationSystemsByLogin().remove(systemCredentials.getLogin());
         }
     }
 
     private void updateFailedRegisteredItems(SCCSystemRegistrationContext context) {
-        for (Map.Entry<SCCSystemId, SCCRegisterSystemJson> entry : context.getPendingRegistrationSystems().entrySet()) {
-            SCCRegCacheItem cacheItem = context.getItemsBySccSystemId().get(entry.getKey());
-            LOG.error("Error registering system {}", cacheItem.getId());
+        for (Map.Entry<String, SCCRegisterSystemJson> entry :
+                context.getPendingRegistrationSystemsByLogin().entrySet()) {
+            SCCRegCacheItem cacheItem = context.getItemsByLogin().get(entry.getKey());
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Error registering system {}", cacheItem);
+            }
             cacheItem.setRegistrationErrorTime(new Date());
         }
     }

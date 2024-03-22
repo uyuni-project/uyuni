@@ -236,7 +236,6 @@ public class ChannelFactory extends HibernateFactory {
         return singleton.lookupObjectByNamedQuery("ContentSource.findByIdandOrg", Map.of("id", id, "org", orgIn));
     }
 
-
     /**
      * Lookup a content source's filters by id
      * @param id source id
@@ -456,8 +455,6 @@ public class ChannelFactory extends HibernateFactory {
         c.add(Restrictions.eq(LABEL, label));
         return (Channel) c.uniqueResult();
     }
-
-
 
     /**
      * Returns true if the given channel is globally subscribable for the
@@ -768,6 +765,24 @@ public class ChannelFactory extends HibernateFactory {
         }
         Collections.sort(list);
         return list.get(0);
+    }
+
+    /**
+     * Lookup ChannelSyncFlag object for a specfic channel
+     * @param channel The channel object on which the lookup should be performed
+     * @return ChannelSyncFlag object containing all flag settings for a specfic channel
+     */
+    public static ChannelSyncFlag lookupChannelReposyncFlag(Channel channel) {
+        return getSession().createQuery("from ChannelSyncFlag where channel = :channel", ChannelSyncFlag.class)
+        .setParameter("channel", channel).uniqueResult();
+    }
+
+    /**
+     * Save a ChannelSyncFlag object for a specfic channel
+     * @param flags The ChannelSyncFlag object which should be added to channel
+     */
+    public static void save(ChannelSyncFlag flags) {
+        singleton.saveObject(flags);
     }
 
     /**
