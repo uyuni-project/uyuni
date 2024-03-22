@@ -12,9 +12,9 @@ Feature: API "user" namespace
     When I call user.list_roles() on user "admin"
     Then I should get at least one role that matches "_admin" suffix
 
-  Scenario: Create user
-    When I make sure "testuser" is not present
-    And I call user.create() with login "testuser"
+  Scenario: Create or enable user
+    When I make sure "testuser" is not active
+    And I create or enable user with login "testuser"
     And I call user.list_users()
     Then I should get at least user "testuser"
 
@@ -27,4 +27,4 @@ Feature: API "user" namespace
     Then I should not get role "org_admin"
 
   Scenario: Cleanup: user tests
-    When I delete user "testuser"
+    When I disable user "testuser"

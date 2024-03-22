@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 #  1) check users page
-#  2) create and delete users
+#  2) create and deactivate users
 #  3) Change permissions and roles in web UI
 
 @scope_visualization
@@ -23,18 +23,9 @@ Feature: Manage users
     And I should see a "Download CSV" link
 
   Scenario: Create a new user
-    When I follow the left menu "Users > User List > Active"
-    And I follow "Create User"
-    And I enter "user1" as "login"
-    And I enter "user1" as "desiredpassword"
-    And I enter "user1" as "desiredpasswordConfirm"
-    And I select "Mr." from "prefix"
-    And I enter "Test" as "firstNames"
-    And I enter "User" as "lastName"
-    And I enter "galaxy-noise@suse.de" as "email"
-    And I click on "Create Login"
-    Then I should see a "Account user1 created, login information sent to galaxy-noise@suse.de" text
-    And I should see a "user1" link
+    When I make sure "user1" is not active
+    And I create or enable user "user1" with first names "Test" and last name "User"
+    Then I should see a "user1" link
     And I should see a "normal user" text
 
   Scenario: Login as the new user
@@ -46,7 +37,6 @@ Feature: Manage users
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     Then I should see a "User Details" text
-    And I should see a "Delete User" link
     And I should see a "Deactivate User" link
     And I should see a "Details" link
     And I should see a "System Groups" link
@@ -130,9 +120,9 @@ Feature: Manage users
     When I click on "Deactivate User"
     Then I should see a "You cannot deactivate another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to deactivate their account." text
     When I follow "Deactivated"
-    Then I should see a "No deactivated users." text
+    Then I should not see a "user1" link
 
-  Scenario: Remove role
+  Scenario: Remove org admin role
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     When I uncheck "role_org_admin"
@@ -186,13 +176,26 @@ Feature: Manage users
     When I follow "Deactivated"
     Then I should not see a "user1" link
 
-  Scenario: Delete user
+  Scenario: Remove other admin roles
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
-    When I follow "Delete User"
-    Then I should see a "Confirm User Deletion" text
-    And I should see a "This will delete this user permanently." text
-    When I click on "Delete User"
+    When I uncheck "role_system_group_admin"
+    And I uncheck "role_channel_admin"
+    And I uncheck "role_activation_key_admin"
+    And I uncheck "role_config_admin"
+    And I click on "Update"
+    Then I should see "role_system_group_admin" as unchecked
+    And I should see "role_channel_admin" as unchecked
+    And I should see "role_activation_key_admin" as unchecked
+    And I should see "role_config_admin" as unchecked
+
+  Scenario: Deactivate user
+    When I follow the left menu "Users > User List > Active"
+    And I follow "user1"
+    When I follow "Deactivate User"
+    Then I should see a "Confirm User Deactivation" text
+    And I should see a "This action will deactivate this user." text
+    When I click on "Deactivate User"
     Then I should see a "Active Users" text
     And I should not see a "user1" link
 

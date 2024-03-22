@@ -1076,13 +1076,6 @@
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="user.delete" xml:space="preserve">
-        <source>Deleted user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/DeleteUser</context>
-          <context context-type="paramnotes">Deleted user ssprocket.</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="user.disable" xml:space="preserve">
         <source>Deactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
@@ -1109,12 +1102,6 @@
           <context context-type="paramnotes">Deactivated user ssprocket.</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="user.deleteself" xml:space="preserve">
-        <source>You may not delete yourself.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="user.satadmin.remove" xml:space="preserve">
         <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
@@ -1125,18 +1112,6 @@
         <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="user.deleteadmin" xml:space="preserve">
-        <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="user.cannot.delete.last.sat.admin" xml:space="preserve">
-        <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">

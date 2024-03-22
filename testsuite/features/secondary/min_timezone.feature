@@ -16,17 +16,9 @@ Feature: Correct timezone display
     Given I am authorized for the "Admin" section
 
   Scenario: Create a new user in a timezone different than server's timezone
-    When I follow the left menu "Users > User List > Active"
-    And I follow "Create User"
-    And I enter "MalaysianUser" as "login"
-    And I enter "MalaysianUser" as "desiredpassword"
-    And I enter "MalaysianUser" as "desiredpasswordConfirm"
-    And I select "Mr." from "prefix"
-    And I enter "Test" as "firstNames"
-    And I enter "User" as "lastName"
-    And I enter "galaxy-noise@suse.de" as "email"
-    And I select "(GMT+0800) Malaysia" from "timezone"
-    And I click on "Create Login"
+    When I make sure "MalaysianUser" is not active
+    And I create or enable user "MalaysianUser" with first names "Test" and last name "User"
+    Then I should see a "MalaysianUser" link
 
   Scenario: Add roles for the Malaysian user
     When I follow the left menu "Users > User List > Active"
@@ -96,12 +88,12 @@ Feature: Correct timezone display
     And I should see "role_activation_key_admin" as checked
     And I should see "role_config_admin" as checked
 
-  Scenario: Cleanup: Delete user
+  Scenario: Cleanup: Disable user
     When I follow the left menu "Users > User List > Active"
     And I follow "MalaysianUser"
-    And I follow "Delete User"
-    Then I should see a "Confirm User Deletion" text
-    And I should see a "This will delete this user permanently." text
-    When I click on "Delete User"
+    And I follow "Deactivate User"
+    Then I should see a "Confirm User Deactivation" text
+    And I should see a "This action will deactivate this user." text
+    When I click on "Deactivate User"
     Then I should see a "Active Users" text
     And I should not see a "MalaysianUser" link

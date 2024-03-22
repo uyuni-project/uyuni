@@ -21,9 +21,6 @@
  miscText="${text}"
  miscIcon="${icon}"
  miscAlt="${text}"
- deletionUrl="/rhn/users/DeleteUser.do?uid=${param.uid}"
- deletionAcl="user_role(org_admin)"
- deletionType="user"
  imgAlt="users.jsp.imgAlt">
     <c:out escapeXml="true" value="${requestScope.targetuser.login}" />
 </rhn:toolbar>

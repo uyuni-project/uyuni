@@ -665,12 +665,6 @@
         </context-group>
         <note>NO TRANSLATION NECSSARY</note>
       </trans-unit>
-      <trans-unit id="permission.jsp.title.deleteuser">
-          <source>Cannot delete user.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Permission error page</context>
-        </context-group>
-        </trans-unit>
         <trans-unit id="permission.jsp.title.channel">
           <source>Cannot edit channel.</source>
         <context-group name="ctx">
@@ -748,12 +742,6 @@
           <context-group name="ctx">
             <context context-type="paramnotes">You cannot remove the Organization Administrator role from the last Organization Administrator.</context>
           </context-group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Permission error page</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="permission.jsp.summary.deleteuser">
-          <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>

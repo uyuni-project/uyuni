@@ -41,12 +41,21 @@ class NamespaceUser
   end
 
   ##
-  # Deletes a user from the system.
+  # Disables a user on the system.
   #
   # Args:
-  #   user: The username of the user you want to delete.
-  def delete(user)
-    @test.call('user.delete', sessionKey: @test.token, login: user)
+  #   user: The username of the user you want to disable.
+  def disable(user)
+    @test.call('user.disable', sessionKey: @test.token, login: user)
+  end
+
+  ##
+  # Enables a user on the system.
+  #
+  # Args:
+  #   user: The username of the user you want to enable.
+  def enable(user)
+    @test.call('user.enable', sessionKey: @test.token, login: user)
   end
 
   ##
