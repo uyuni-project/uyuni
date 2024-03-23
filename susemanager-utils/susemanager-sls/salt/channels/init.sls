@@ -91,7 +91,13 @@ mgrchannels_repo:
 {%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
     - name: "/etc/yum.repos.d/susemanager:channels.repo"
 {%- elif grains['os_family'] == 'Debian' %}
+{%- set apt_version = salt['pkg.version']("apt") %}
+{%- set apt_sources_deb822 = apt_version and salt['pkg.version_cmp'](apt_version, "2.7.12") >= 0 %}
+{%- if apt_sources_deb822 %}
+    - name: "/etc/apt/sources.list.d/susemanager:channels.sources"
+{%- else %}
     - name: "/etc/apt/sources.list.d/susemanager:channels.list"
+{%- endif %}
 {%- endif %}
     - source:
       - salt://channels/channels.repo
