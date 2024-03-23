@@ -17,6 +17,7 @@ URIs: {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download
 URIs: {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download
 {%- endif %}
 Suites: {{ chan }}/
+Components:
 Trusted: yes
 {%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'].startswith('file:///') %}
 Signed-By: {{ args['gpgkeyurl'][7:] }}
