@@ -8,6 +8,20 @@
 {%- if grains['os_family'] == 'Debian' %}
 {%- set apt_version = salt['pkg.version']("apt") %}
 {%- set apt_support_acd = apt_version and salt['pkg.version_cmp'](apt_version, "1.6.10") > 0 %}
+{%- set apt_sources_deb822 = apt_version and salt['pkg.version_cmp'](apt_version, "2.7.12") >= 0 %}
+{%- if apt_sources_deb822 %}
+Types: deb
+{%- if apt_support_acd %}
+URIs: {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download
+{%- else %}
+URIs: {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download
+{%- endif %}
+Suites: {{ chan }}/
+Trusted: yes
+{%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'].startswith('file:///') %}
+Signed-By: {{ args['gpgkeyurl'][7:] }}
+{%- endif %}
+{%- else %}
 {%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'].startswith('file:///') %}
 {%- set trust_string = '[signed-by=' ~ args['gpgkeyurl'][7:] ~ ']' %}
 {%- else %}
@@ -18,6 +32,7 @@
 deb {{ trust_string }} {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
 {%- else %}
 deb {{ trust_string }} {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
+{%- endif %}
 {%- endif %}
 {%- else %}
 [{{ args['alias'] }}]

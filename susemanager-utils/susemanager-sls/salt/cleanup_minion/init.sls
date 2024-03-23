@@ -20,6 +20,9 @@ mgrchannels_repo_clean_all:
 mgrchannels_repo_clean_channels:
   file.absent:
     - name: /etc/apt/sources.list.d/susemanager:channels.list
+mgrchannels_repo_clean_channels_deb822:
+  file.absent:
+    - name: /etc/apt/sources.list.d/susemanager:channels.sources
 mgrchannels_repo_clean_auth:
   file.absent:
     - name: /etc/apt/auth.conf.d/susemanager.conf
