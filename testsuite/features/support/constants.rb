@@ -61,6 +61,8 @@ ENV_VAR_BY_HOST = {
   'ubuntu2004_ssh_minion' => 'UBUNTU2004_SSHMINION',
   'ubuntu2204_minion' => 'UBUNTU2204_MINION',
   'ubuntu2204_ssh_minion' => 'UBUNTU2204_SSHMINION',
+  'ubuntu2404_minion' => 'UBUNTU2404_MINION',
+  'ubuntu2404_ssh_minion' => 'UBUNTU2404_SSHMINION',
   'debian10_minion' => 'DEBIAN10_MINION',
   'debian10_ssh_minion' => 'DEBIAN10_SSHMINION',
   'debian11_minion' => 'DEBIAN11_MINION',
@@ -211,6 +213,8 @@ PACKAGE_BY_CLIENT = {
   'ubuntu2004_ssh_minion' => 'bison',
   'ubuntu2204_minion' => 'bison',
   'ubuntu2204_ssh_minion' => 'bison',
+  'ubuntu2404_minion' => 'bison',
+  'ubuntu2404_ssh_minion' => 'bison',
   'debian10_minion' => 'bison',
   'debian10_ssh_minion' => 'bison',
   'debian11_minion' => 'bison',
@@ -295,6 +299,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'ubuntu2004_ssh_minion' => 'ubuntu-2004-amd64-main for amd64',
     'ubuntu2204_minion' => 'ubuntu-2204-amd64-main for amd64',
     'ubuntu2204_ssh_minion' => 'ubuntu-2204-amd64-main for amd64',
+    'ubuntu2404_minion' => 'ubuntu-2404-amd64-main for amd64',
+    'ubuntu2404_ssh_minion' => 'ubuntu-2404-amd64-main for amd64',
     'debian10_minion' => 'debian-10-pool for amd64',
     'debian10_ssh_minion' => 'debian-10-pool for amd64',
     'debian11_minion' => 'debian-11-pool for amd64',
@@ -372,6 +378,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'ubuntu2004_ssh_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
     'ubuntu2204_minion' => 'Ubuntu 22.04 LTS AMD64 Base for Uyuni',
     'ubuntu2204_ssh_minion' => 'Ubuntu 22.04 LTS AMD64 Base for Uyuni',
+    'ubuntu2404_minion' => 'Ubuntu 24.04 LTS AMD64 Base for Uyuni',
+    'ubuntu2404_ssh_minion' => 'Ubuntu 24.04 LTS AMD64 Base for Uyuni',
     'debian10_minion' => 'Debian 10 (buster) pool for amd64 for Uyuni',
     'debian10_ssh_minion' => 'Debian 10 (buster) pool for amd64 for Uyuni',
     'debian11_minion' => 'Debian 11 (bullseye) pool for amd64 for Uyuni',
@@ -429,6 +437,7 @@ LABEL_BY_BASE_CHANNEL = {
     'rockylinux-9 for x86_64' => 'no-appstream-9-result-rockylinux-9-x86_64',
     'ubuntu-2004-amd64-main for amd64' => 'ubuntu-2004-amd64-main-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
+    'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
     'debian-10-pool for amd64' => 'debian-10-pool-amd64',
     'debian-11-pool for amd64' => 'debian-11-pool-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
@@ -464,6 +473,7 @@ LABEL_BY_BASE_CHANNEL = {
     'Rocky Linux 9 (x86_64)' => 'no-appstream-9-result-rockylinux-9-x86_64',
     'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-pool-amd64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-22.04-pool-amd64-uyuni',
+    'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-24.04-pool-amd64-uyuni',
     'Debian 10 (buster) pool for amd64 for Uyuni' => 'debian-10-pool-amd64-uyuni',
     'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian-11-pool-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian-12-pool-amd64-uyuni',
@@ -504,6 +514,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
     'ubuntu-2004-amd64-main for amd64' => 'ubuntu-20.04-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-22.04-amd64',
+    'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-10-pool for amd64' => 'debian10-amd64',
     'debian-11-pool for amd64' => 'debian11-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
@@ -538,6 +549,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64-uyuni',
     'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-amd64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
+    'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 10 (buster) pool for amd64 for Uyuni' => 'debian10-amd64-uyuni',
     'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian11-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -579,6 +591,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'rockylinux-9 for x86_64' => nil,
     'ubuntu-2004-amd64-main for amd64' => nil,
     'ubuntu-2204-amd64-main for amd64' => nil,
+    'ubuntu-2404-amd64-main for amd64' => nil,
     'debian-10-pool for amd64' => 'debian-10-pool-amd64',
     'debian-11-pool for amd64' => 'debian-11-pool-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
@@ -613,6 +626,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Rocky Linux 9 (x86_64)' => nil,
     'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => nil,
+    'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => nil,
     'Debian 10 (buster) pool for amd64 for Uyuni' => 'debian10-amd64-uyuni',
     'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian11-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -675,6 +689,8 @@ PKGARCH_BY_CLIENT = {
   'ubuntu2004_ssh_minion' => 'amd64',
   'ubuntu2204_minion' => 'amd64',
   'ubuntu2204_ssh_minion' => 'amd64',
+  'ubuntu2404_minion' => 'amd64',
+  'ubuntu2404_ssh_minion' => 'amd64',
   'debian10_minion' => 'amd64',
   'debian10_ssh_minion' => 'amd64',
   'debian11_minion' => 'amd64',
@@ -1033,6 +1049,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-main-updates-amd64
         ubuntu-2204-amd64-main-security-amd64
         ubuntu-22.04-suse-manager-tools-amd64
+      ],
+    'ubuntu-2404' => # CHECKED
+      %w[
+        ubuntu-2404-amd64-main-amd64
+        ubuntu-2404-amd64-main-updates-amd64
+        ubuntu-2404-amd64-main-security-amd64
+        ubuntu-24.04-suse-manager-tools-amd64
       ],
     'suma-proxy-extension-50' => # CHECKED
       %w[
@@ -1394,6 +1417,18 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-universe-updates-uyuni
         ubuntu-2204-amd64-universe-uyuni
         ubuntu-2204-amd64-uyuni-client-devel
+      ],
+    'ubuntu-2404' => # CHECKED
+      %w[
+        ubuntu-24.04-pool-amd64-uyuni
+        ubuntu-2404-amd64-main-security-uyuni
+        ubuntu-2404-amd64-main-updates-uyuni
+        ubuntu-2404-amd64-main-uyuni
+        ubuntu-2404-amd64-universe-backports-uyuni
+        ubuntu-2404-amd64-universe-security-uyuni
+        ubuntu-2404-amd64-universe-updates-uyuni
+        ubuntu-2404-amd64-universe-uyuni
+        ubuntu-2404-amd64-uyuni-client-devel
       ],
     'uyuni-proxy' => # CHECKED
       %w[
