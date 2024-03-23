@@ -119,15 +119,12 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "proxy" from "selectedBaseChannel"
+    And I select the parent channel for the "proxy_container" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-SUSE-Manager-Proxy-4.3-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-SUSE-Manager-Proxy-4.3-Updates for x86_64" has been checked
+    And I wait until "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" has been checked
+    And I check "SUSE-Manager-Proxy-5.0-Pool for x86_64"
+    And I check "SUSE-Manager-Proxy-5.0-Updates for x86_64"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
@@ -136,7 +133,7 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "proxy" from "selectedBaseChannel"
+    And I select the parent channel for the "proxy_traditional" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I check "openSUSE 15.5 non oss (x86_64)"
     And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
