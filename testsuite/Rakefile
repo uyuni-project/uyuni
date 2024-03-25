@@ -11,6 +11,7 @@ require 'parallel'
 junit_results = '-f junit -o results_junit'
 build_number = ENV.fetch('BUILD_NUMBER', nil)
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
+is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 
 namespace :cucumber do
   # Create results folder
@@ -272,7 +273,7 @@ namespace :jenkins do
       # Proxy can be either containerized or traditional
       if key == 'PROXY'
         key =
-          if $is_containerized_server
+          if is_containerized_server
             'PROXY_CONTAINER'
           else
             'PROXY_TRADITIONAL'
