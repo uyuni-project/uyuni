@@ -16,6 +16,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# Actual version set by prjconf, default is 14
+%{!?postgresql_version_min: %global postgresql_version_min 14}
+%{!?postgresql_version_max: %global postgresql_version_max 15}
 
 Name:           spacewalk-setup-postgresql
 Version:        5.0.1
@@ -28,17 +31,15 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version}
-# Actual version set by prjconf, default is 14
-%{!?postgresql_version_min: %global postgresql_version_min 14}
-%{!?postgresql_version_max: %global postgresql_version_max 15}
-Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
 Requires:       postgresql-server-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
-Conflicts:      postgresql-server-implementation > %{postgresql_version_max}
-
+Requires:       postgresql-server-implementation <= %{postgresql_version_max}.9999
+Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
+Requires:       postgresql-contrib-implementation <= %{postgresql_version_max}.9999
 %else
-Requires:       postgresql-contrib >= 12
-Requires:       postgresql-server > 12
+Requires:       postgresql-server >= %{postgresql_version_min}
+Requires:       postgresql-server <= %{postgresql_version_max}.9999
+Requires:       postgresql-contrib >= %{postgresql_version_min}
+Requires:       postgresql-contrib <= %{postgresql_version_max}.9999
 %endif
 Requires:       lsof
 
