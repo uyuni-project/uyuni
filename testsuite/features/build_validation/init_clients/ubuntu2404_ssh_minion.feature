@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Ubuntu minion via salt-ssh

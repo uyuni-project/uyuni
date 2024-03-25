@@ -981,7 +981,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-main-security-amd64
         ubuntu-22.04-suse-manager-tools-amd64
       ],
-    'ubuntu-2404' => # CHECKED
+    'ubuntu-2404' =>
       %w[
         ubuntu-2404-amd64-main-amd64
         ubuntu-2404-amd64-main-updates-amd64
@@ -1324,7 +1324,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-universe-uyuni
         ubuntu-2204-amd64-uyuni-client-devel
       ],
-    'ubuntu-2404' => # CHECKED
+    'ubuntu-2404' =>
       %w[
         ubuntu-24.04-pool-amd64-uyuni
         ubuntu-2404-amd64-main-security-uyuni
