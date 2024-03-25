@@ -314,6 +314,14 @@ Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_ssh_minion']
 end
 
+Before('@ubuntu2404_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_minion']
+end
+
+Before('@ubuntu2404_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_ssh_minion']
+end
+
 Before('@debian10_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_minion']
 end

@@ -98,6 +98,10 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a Ubuntu 22.04 minion
     When I create the bootstrap repository for "ubuntu2204_minion" on the server
 
+@ubuntu2404_minion
+  Scenario: Create the bootstrap repository for a Ubuntu 24.04 minion
+    When I create the bootstrap repository for "ubuntu2404_minion" on the server
+
 @debian10_minion
   Scenario: Create the bootstrap repository for a Debian 10 minion
     When I create the bootstrap repository for "debian10_minion" on the server
