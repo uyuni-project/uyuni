@@ -272,7 +272,7 @@ namespace :jenkins do
       # Proxy can be either containerized or traditional
       if key == 'PROXY'
         key =
-          if is_containerized_server
+          if $is_containerized_server
             'PROXY_CONTAINER'
           else
             'PROXY_TRADITIONAL'
