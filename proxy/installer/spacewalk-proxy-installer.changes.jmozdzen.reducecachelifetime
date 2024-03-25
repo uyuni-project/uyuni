@@ -1,0 +1,1 @@
+- refresh_pattern in squid.conf specifies (min and) max time in *minutes*, reducing to "5"
