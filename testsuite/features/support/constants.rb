@@ -1632,6 +1632,19 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-uyuni-client-devel' => 60,
   'ubuntu-22.04-pool-amd64-uyuni' => 60,
   'ubuntu-22.04-suse-manager-tools-amd64' => 60,
+  'ubuntu-2404-amd64-main-amd64' => 780,
+  'ubuntu-2404-amd64-main-security-amd64' => 2760,
+  'ubuntu-2404-amd64-main-security-uyuni' => 2040,
+  'ubuntu-2404-amd64-main-updates-amd64' => 180,
+  'ubuntu-2404-amd64-main-updates-uyuni' => 300,
+  'ubuntu-2404-amd64-main-uyuni' => 780,
+  'ubuntu-2404-amd64-universe-backports-uyuni' => 60,
+  'ubuntu-2404-amd64-universe-security-uyuni' => 1020,
+  'ubuntu-2404-amd64-universe-updates-uyuni' => 240,
+  'ubuntu-2404-amd64-universe-uyuni' => 24_000,
+  'ubuntu-2404-amd64-uyuni-client-devel' => 60,
+  'ubuntu-24.04-pool-amd64-uyuni' => 60,
+  'ubuntu-24.04-suse-manager-tools-amd64' => 60,
   'uyuni-proxy-devel-leap-x86_64' => 60
 }.freeze
 
