@@ -70,10 +70,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import net.sf.saxon.jaxp.SaxonTransformerFactory;
 
 /**
  * ScapManager
@@ -463,7 +465,10 @@ public class ScapManager extends BaseManager {
         StreamSource in = new StreamSource(resultsXml);
         try (OutputStream resumeOut = new FileOutputStream(output)) {
             StreamResult out = new StreamResult(resumeOut);
-            TransformerFactory factory = TransformerFactory.newInstance();
+            SaxonTransformerFactory factory = new SaxonTransformerFactory();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
             Transformer transformer = factory.newTransformer(xslStream);
             transformer.transform(in, out);
         }

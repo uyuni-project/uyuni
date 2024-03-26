@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xml.utils.XMLChar;
+import org.apache.xerces.util.XMLChar;
 import org.stringtree.json.JSONReader;
 import org.stringtree.json.JSONWriter;
 

@@ -175,7 +175,7 @@
         <exclude name="**/tomcat*-servlet*" />
         <exclude name="**/jspapi*" />
         <exclude name="**/websocket-api*" />
-        <exclude name="**/checkstyle*" />
+        <exclude name="**/all*" />
         <exclude name="**/jacocoant*" />
       </fileset>
     </copy>
