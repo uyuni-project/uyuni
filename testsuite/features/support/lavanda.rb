@@ -350,22 +350,24 @@ module LavandaBasic
     code
   end
 
-  # Check if the node is online
-  def node_online?
-    run_local('echo test', timeout: 1, check_errors: false).last.zero?
+  # Check if the node is offline
+  def node_offline?
+    run_local('echo test', timeout: 0, check_errors: false).first.empty?
   end
 
   # Wait until the node goes offline
   def wait_until_offline
-    sleep 1 while node_online?
+    sleep 1 until node_offline?
+    $stdout.puts "Node #{hostname} is offline."
   end
 
   # Wait until the node comes back online
   def wait_until_online(timeout: DEFAULT_TIMEOUT)
     repeat_until_timeout(timeout: timeout, report_result: true, message: "#{hostname} did not come back online within #{timeout} seconds.") do
-      return if node_online?
+      break unless node_offline?
 
       sleep 1
     end
+    $stdout.puts "Node #{hostname} is online."
   end
 end

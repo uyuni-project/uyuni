@@ -1513,7 +1513,7 @@ end
 
 When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) do |host|
   node = get_target(host)
-  node.run('reboot', runs_in_container: false)
+  node.run('reboot', check_errors: false, verbose: true, runs_in_container: false)
   node.wait_until_offline
   node.wait_until_online
 end
