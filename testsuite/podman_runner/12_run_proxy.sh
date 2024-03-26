@@ -99,7 +99,6 @@ run_proxy_containers() {
 
   sudo --login podman run \
     --privileged \
-    --user root \
     --rm \
     --detach \
     --tty \
