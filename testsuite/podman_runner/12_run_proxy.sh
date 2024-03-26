@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
+
 export PROXY_UTILS=$HOME/proxy
-export ADD_HOST=uyuni-server-all-in-one-test:$(sudo --login podman inspect -f '{{range $net, $conf := .NetworkSettings.Networks}}{{if eq $net "uyuni-network-1"}}{{$conf.IPAddress}}{{end}}{{end}}' uyuni-server-all-in-one-test)
+export ADD_HOST=uyuni-server-all-in-one-test:$(sudo --login sudo --login podman exec uyuni-server-all-in-one-test bash -c 'hostname -I')
 
 get_server_certificates() {
   sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp'
@@ -51,15 +52,15 @@ EOF
 
 run_proxy_containers() {
   sudo --login podman pod create \
-  --name uyuni-proxy-test \
-  --publish 69:69 \
-  --publish 80:80 \
-  --publish 443:443 \
-  --publish 4555:4505 \
-  --publish 4556:4506 \
-  --publish 8022:22 \
-  --publish 8088:8088 \
-  --add-host $ADD_HOST
+    --name uyuni-proxy-test \
+    --publish 69:69 \
+    --publish 80:80 \
+    --publish 443:443 \
+    --publish 4555:4505 \
+    --publish 4556:4506 \
+    --publish 8022:22 \
+    --publish 8088:8088 \
+    --add-host $ADD_HOST
 
   sudo --login podman run \
     --privileged \
