@@ -612,6 +612,18 @@ end
 #
 # Test for text in a snippet textarea
 #
+Then(/^I should see "([^"]*)" in the textarea$/) do |text|
+  within('textarea') do
+    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+  end
+end
+
+Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
+  within('textarea') do
+    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+  end
+end
+
 Then(/^I should see "([^"]*)" in the ([^ ]+) textarea$/) do |text, id|
   within(:xpath, ".//textarea[@data-testid='#{id}']") do
     raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
