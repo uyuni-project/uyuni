@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: uyuni-proxy
   namespace: "{{ .Release.Namespace }}"
+labels:
+  app: uyuni-proxy
 spec:
   replicas: 1
   selector:
