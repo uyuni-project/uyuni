@@ -73,6 +73,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -1497,6 +1498,21 @@ public class SaltUtils {
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
                 .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
+
+        // Update AppStream modules
+        Set<ServerAppStream> enabledAppStreams = result.getEnabledAppstreamModules()
+                .map(m -> m.getChanges().getRet())
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(nsvca -> {
+                    ServerAppStream appStream = new ServerAppStream(nsvca);
+                    appStream.setServer(server);
+                    return appStream;
+                })
+                .collect(Collectors.toSet());
+
+        server.getAppStreams().clear();
+        server.getAppStreams().addAll(enabledAppStreams);
 
         // Update grains
         if (!result.getGrains().isEmpty()) {
