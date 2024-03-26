@@ -194,26 +194,46 @@ def parse_kiwi_md5(path, compressed=False):
     return res
 
 
-_compression_types = [
-    {"suffix": ".gz", "compression": "gzip"},
-    {"suffix": ".bz", "compression": "bzip"},
-    {"suffix": ".xz", "compression": "xz"},
-    {"suffix": ".install.iso", "compression": None},
-    {"suffix": ".iso", "compression": None},
-    {"suffix": ".qcow2", "compression": None},
-    {"suffix": ".ova", "compression": None},
-    {"suffix": ".vmdk", "compression": None},
-    {"suffix": ".vmx", "compression": None},
-    {"suffix": ".vhd", "compression": None},
-    {"suffix": ".vhdx", "compression": None},
-    {"suffix": ".vdi", "compression": None},
-    {"suffix": ".raw", "compression": None},
-    {"suffix": ".squashfs", "compression": None},
-    {"suffix": "", "compression": None},
+_compression_types = {
+    ".gz": "gzip",
+    ".bz": "bzip",
+    ".xz": "xz",
+    "": None,
+}
+
+# suffixes for pxe/kis image type
+_pxe_image_types = [
+    ".gz",
+    ".bz",
+    ".xz",
+    "",
+]
+
+# suffixes of files we consider as image result
+_known_image_types = [
+    ".gz",
+    ".bz",
+    ".xz",
+    ".tar.xz",
+    ".install.iso",
+    ".iso",
+    ".qcow2",
+    ".ova",
+    ".vmdk",
+    ".vmx",
+    ".vhd",
+    ".vhdx",
+    ".vdi",
+    ".raw",
+    ".squashfs",
+    "",
 ]
 
 
 def image_details(dest, bundle_dest=None):
+    """
+    Gather detailed information about system image.
+    """
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
@@ -241,13 +261,17 @@ def image_details(dest, bundle_dest=None):
     filename = None
     filepath = None
     compression = None
-    for c in _compression_types:
-        path = os.path.join(dest, basename + c["suffix"])
+    image_types = _known_image_types
+    if image_type == "pxe":
+        image_types = _pxe_image_types
+
+    for c in image_types:
+        path = os.path.join(dest, basename + c)
         # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](path):
-            compression = c["compression"]
-            filename = basename + c["suffix"]
+            filename = basename + c
             filepath = path
+            compression = _compression_types.get(c, None)
             break
 
     res["image"] = {
@@ -282,6 +306,10 @@ def image_details(dest, bundle_dest=None):
 
 
 def inspect_image(dest, build_id, bundle_dest=None):
+    """
+    Image inspection stage entrypoint.
+    Provides detailed information about image and packages it contains.
+    """
     res = image_details(dest, bundle_dest)
     if not res:
         return None
@@ -307,6 +335,10 @@ def inspect_image(dest, build_id, bundle_dest=None):
 
 
 def inspect_boot_image(dest):
+    """
+    Gather information about boot image (kernel and initrd).
+    Only valid for PXE/KIS image type.
+    """
     res = None
     # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
@@ -366,9 +398,9 @@ def inspect_boot_image(dest):
 
     for c in _compression_types:
         if res["kiwi_ng"]:
-            file = basename + ".initrd" + c["suffix"]
+            file = basename + ".initrd" + c
         else:
-            file = basename + c["suffix"]
+            file = basename + c
         filepath = os.path.join(dest, file)
         # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
@@ -403,6 +435,12 @@ def inspect_boot_image(dest):
 
 
 def inspect_bundles(dest, basename):
+    """
+    Gather details about image bundle.
+    Image bundle is a compressed tarball of all image results with custom naming.
+
+    Not used by default, not compatible with containerized saltboot workflow.
+    """
     res = []
     # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
@@ -441,6 +479,9 @@ def inspect_bundles(dest, basename):
 
 
 def build_info(dest, build_id, bundle_dest=None):
+    """
+    Generates basic build info for image collection. Skips package inspection.
+    """
     res = {}
     buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
@@ -457,15 +498,35 @@ def build_info(dest, build_id, bundle_dest=None):
     )
     match = pattern.match(basename)
     if not match:
+        log.error("Unable to match Kiwi results")
         return None
+
     name = match.group("name")
     arch = match.group("arch")
     version = match.group("version")
 
     image_filepath = None
     image_filename = None
-    for c in _compression_types:
-        test_name = basename + c["suffix"]
+    image_types = _known_image_types
+
+    if image_type == "pxe":
+        r = inspect_boot_image(dest)
+        res["boot_image"] = {
+            "initrd": {
+                "filepath": r["initrd"]["filepath"],
+                "filename": r["initrd"]["filename"],
+                "hash": r["initrd"]["hash"],
+            },
+            "kernel": {
+                "filepath": r["kernel"]["filepath"],
+                "filename": r["kernel"]["filename"],
+                "hash": r["kernel"]["hash"],
+            },
+        }
+        image_types = _pxe_image_types
+
+    for c in image_types:
+        test_name = basename + c
         filepath = os.path.join(dest, test_name)
         # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
@@ -485,21 +546,6 @@ def build_info(dest, build_id, bundle_dest=None):
     # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
     # checksum is of uncompressed image. Other image types do not have checksum created at all.
     res["image"].update(get_md5(image_filepath))
-
-    if image_type == "pxe":
-        r = inspect_boot_image(dest)
-        res["boot_image"] = {
-            "initrd": {
-                "filepath": r["initrd"]["filepath"],
-                "filename": r["initrd"]["filename"],
-                "hash": r["initrd"]["hash"],
-            },
-            "kernel": {
-                "filepath": r["kernel"]["filepath"],
-                "filename": r["kernel"]["filename"],
-                "hash": r["kernel"]["hash"],
-            },
-        }
 
     if bundle_dest is not None:
         res["bundles"] = inspect_bundles(bundle_dest, basename)
