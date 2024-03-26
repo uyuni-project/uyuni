@@ -142,6 +142,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private boolean payg;
     private MaintenanceSchedule maintenanceSchedule;
     private Boolean hasConfigFeature;
+    private Set<ServerAppStream> appStreams = new HashSet<>();
 
     private String cpe;
 
@@ -2557,5 +2558,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * */
     public void setCpe(String cpeIn) {
         this.cpe = cpeIn;
+    }
+
+    /**
+     * Getter for AppStreams
+     *
+     * @return Set of ServerAppStream
+     */
+    public Set<ServerAppStream> getAppStreams() {
+        return appStreams;
+    }
+
+    /**
+     * Setter for AppStreams
+     *
+     * @param appStreamsIn to set
+     * */
+    public void setAppStreams(Set<ServerAppStream> appStreamsIn) {
+        appStreams = appStreamsIn;
     }
 }
