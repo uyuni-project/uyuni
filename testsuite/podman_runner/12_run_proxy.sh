@@ -59,7 +59,7 @@ run_proxy_containers() {
     --publish 4555:4505 \
     --publish 4556:4506 \
     --publish 8022:22 \
-    --publish 8088:8088 \
+    --publish 8088:8080 \
     --add-host $ADD_HOST
 
   sudo --login podman run \
