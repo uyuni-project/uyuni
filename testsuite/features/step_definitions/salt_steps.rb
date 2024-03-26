@@ -500,6 +500,15 @@ When(/^I enter KVM Server password$/) do
   step %(I enter "#{ENV.fetch('VIRTHOST_KVM_PASSWORD', nil)}" as "password")
 end
 
+When(/^I remove salt minion directories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  if use_salt_bundle
+    node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false, runs_in_container: false)
+  else
+    node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false, runs_in_container: false)
+  end
+end
+
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if use_salt_bundle
@@ -512,7 +521,6 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
     else
       node.run('zypper --non-interactive remove --clean-deps -y venv-salt-minion', check_errors: false)
     end
-    node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
   else
     if slemicro_host?(host)
       node.run('transactional-update --continue -n pkg rm salt salt-minion', check_errors: false)
@@ -523,8 +531,8 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
     else
       node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion', check_errors: false)
     end
-    node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
   end
+  step %(I remove salt minion directories on "#{host}")
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 

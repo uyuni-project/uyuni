@@ -15,6 +15,9 @@ Feature: Setup containerized proxy
   As the system administrator
   I want to register the containerized proxy on the server
 
+  Scenario: Pre-requisite: salt minion directories must not exist on the proxy host
+    When I remove salt minion directories on "proxy"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
