@@ -69,11 +69,13 @@ run_proxy_containers() {
     --tty \
     --pod uyuni-proxy-test \
     --network uyuni-network-1 \
+    --cgroupns host \
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume $PROXY_UTILS/proxy-rhn-cache/:/var/cache/rhn \
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-httpd \
       registry.opensuse.org/uyuni/proxy-httpd:2024.02
+      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-httpd-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -82,10 +84,12 @@ run_proxy_containers() {
     --tty \
     --pod uyuni-proxy-test \
     --network uyuni-network-1 \
+    --cgroupns host \
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume /tmp/test-all-in-one:/tmp \
     --name proxy-ssh \
       registry.opensuse.org/uyuni/proxy-ssh:2024.02
+      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-ssh-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -94,9 +98,11 @@ run_proxy_containers() {
     --tty \
     --pod uyuni-proxy-test \
     --network uyuni-network-1 \
+    --cgroupns host \
     --volume $PROXY_UTILS/:/etc/uyuni \
     --name proxy-salt-broker \
       registry.opensuse.org/uyuni/proxy-salt-broker:2024.02
+      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-salt-broker-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -105,10 +111,12 @@ run_proxy_containers() {
     --tty \
     --pod uyuni-proxy-test \
     --network uyuni-network-1 \
+    --cgroupns host \
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume $PROXY_UTILS/proxy-squid-cache/:/var/cache/squid \
     --name proxy-squid \
       registry.opensuse.org/uyuni/proxy-squid:2024.02
+      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-squid-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -117,10 +125,12 @@ run_proxy_containers() {
     --tty \
     --pod uyuni-proxy-test \
     --network uyuni-network-1 \
+    --cgroupns host \
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-tftpd \
       registry.opensuse.org/uyuni/proxy-tftpd:2024.02
+      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-tftpd-dev:$UYUNI_VERSION (see ...)
 }
 
 add_ssh_configuration () {
