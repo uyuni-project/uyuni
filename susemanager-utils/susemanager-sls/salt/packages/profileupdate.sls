@@ -16,6 +16,9 @@ products:
     - name: pkg.list_products
 {% elif grains['os_family'] == 'RedHat' %}
 {% include 'packages/redhatproductinfo.sls' %}
+modules:
+  mgrcompat.module_run:
+    - name: appstreams.get_enabled_modules
 {% elif grains['os_family'] == 'Debian' %}
 debianrelease:
   cmd.run:

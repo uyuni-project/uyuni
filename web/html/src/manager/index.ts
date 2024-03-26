@@ -13,6 +13,7 @@ import "./legacy";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import Admin from "./admin";
+import Appstreams from "./appstreams";
 import Audit from "./audit";
 import ContentManagement from "./content-management";
 import Errors from "./errors";
@@ -58,6 +59,7 @@ const pages = {
   ...Systems,
   ...Virtualization,
   ...Visualization,
+  ...Appstreams,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

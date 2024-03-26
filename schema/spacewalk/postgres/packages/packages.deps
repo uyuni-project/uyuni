@@ -22,6 +22,7 @@ rhn_channel.pkb         :: rhnChannel rhn_exception.pks rhnServer rhnServerChann
                            rhnChannelFamilyPermissions queue_server queue_image \
                            rhnChannelFamilyMembers suseImageInfoChannel \
                            rhnChannelNewestPackage rhnChannelNewestPackageView \
+                           suseChannelModuleNewestPackage suseChannelModuleNewestPackageView \
                            rhnPublicChannelFamily rhnOrgChannelFamilyPermissions \
                            rhnChannelPackage rhnChannelErrata rhnSnapshotChannel \
                            rhnServerUuid rhnChannelPermissions rhnServerEntitlementView \
@@ -62,4 +63,5 @@ rhn_server.pkb          :: rhnServerChannel rhnConfigFileName \
                            rhnPackage rhnChannelNewestPackage \
                            rhnPackageEVR rhnChannelPackage rhnErrataPackage \
                            rhnChannelErrata rhnPackageUpgradeArchCompat \
-                           susePackageExcludingPartOfPtf
+                           susePackageExcludingPartOfPtf \
+                           suseServerPackagesDisabledModulesView

@@ -86,6 +86,8 @@
     <rhn-tab name="Product Migration" acl="system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/systems/details/SPMigration.do</rhn-tab-url>
     </rhn-tab>
+
+    <rhn-tab name="AppStreams" acl="user_role(satellite_admin)" url="/rhn/manager/systems/details/appstreams" />
   </rhn-tab>
 
   <rhn-tab name="Configuration" acl="system_feature(ftr_config)" url="/rhn/systems/details/configuration/Overview.do">
