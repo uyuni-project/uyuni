@@ -75,7 +75,7 @@ export function SchedulePickerForm(props: SchedulePickerFormProps) {
       <Form model={model} onChange={onChange} onValidate={setValid}>
         <SchedulePicker schedules={props.schedules} />
         <div className="form-group">
-          <div className="col-md-offset-3 col-md-6">
+          <div className="col-md-offset-3 offset-md-3 col-md-6">
             {model.scheduleId === "0" ? (
               <AsyncButton
                 id="submit-btn"
@@ -134,7 +134,7 @@ export function SchedulePicker(props: { schedules: ScheduleType[] }) {
         options={options.concat(props.schedules.map((s) => ({ value: s.id, label: s.name })))}
       />
       {context.model.scheduleId !== "0" && (
-        <Check name="cancelActions" label={t("Cancel affected actions")} divClass="col-md-6 col-md-offset-3" />
+        <Check name="cancelActions" label={t("Cancel affected actions")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
       )}
     </>
   );

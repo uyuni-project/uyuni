@@ -252,7 +252,7 @@ export function NetworkProperties(props: Props) {
                 <Check
                   name="autostart"
                   label={t("Start during virtual host boot")}
-                  divClass="col-md-6 col-md-offset-3"
+                  divClass="col-md-6 col-md-offset-3 offset-md-3"
                 />
               </Panel>
 
@@ -329,7 +329,7 @@ export function NetworkProperties(props: Props) {
                         isMulti
                       />
                       {(model.interfaces || []).map((nic) => (
-                        <div className="col-md-6 col-md-offset-3" key={nic}>
+                        <div className="col-md-6 col-md-offset-3 offset-md-3" key={nic}>
                           <Interface device={netDevices.find((dev) => dev.name === nic)} />
                         </div>
                       ))}
@@ -366,7 +366,7 @@ export function NetworkProperties(props: Props) {
                       />
                       <div className="col-md-12">
                         {(model.vf || []).map((nic) => (
-                          <div className="col-md-6 col-md-offset-3" key={nic}>
+                          <div className="col-md-6 col-md-offset-3 offset-md-3" key={nic}>
                             <Interface device={netDevices.find((dev) => dev["PCI address"] === nic)} showPciAddress />
                           </div>
                         ))}
@@ -385,7 +385,7 @@ export function NetworkProperties(props: Props) {
                   )}
                   {FieldsData.getValue(model.type, "vlan_trunk", () => false)(model) && (
                     <>
-                      <Check name="vlantrunk" label={t("VLAN tags trunking")} divClass="col-md-6 col-md-offset-3" />
+                      <Check name="vlantrunk" label={t("VLAN tags trunking")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
                       <Vlans />
                     </>
                   )}
@@ -433,7 +433,7 @@ export function NetworkProperties(props: Props) {
               {FieldsData.getValue(model.type, "addressing", false) && (
                 <Panel key="addressing" title={t("Addressing")} headingLevel="h2">
                   <IpConfig />
-                  <Check name="ipv6-enabled" label={t("Enable IPv6")} divClass="col-md-6 col-md-offset-3" />
+                  <Check name="ipv6-enabled" label={t("Enable IPv6")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
                   {model["ipv6-enabled"] && <IpConfig ipv6 />}
                   <Text name="domain" label={t("Domain name")} labelClass="col-md-3" divClass="col-md-6" />
                   <DnsConfig />
@@ -448,7 +448,7 @@ export function NetworkProperties(props: Props) {
                   onDateTimeChanged={onDateTimeChanged}
                 />
               </Panel>
-              <div className="col-md-offset-3 col-md-6">
+              <div className="col-md-offset-3 offset-md-3 col-md-6">
                 <SubmitButton id="submit-btn" className="btn-success" text={props.submitText} disabled={invalid} />
                 <Button
                   id="clear-btn"
