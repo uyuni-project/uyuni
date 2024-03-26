@@ -50,7 +50,9 @@ EOF
   tar --create --gzip --file $PROXY_UTILS/config.tar.gz $PROXY_UTILS/config.yaml $PROXY_UTILS/httpd.yaml $PROXY_UTILS/ssh.yaml
 }
 
-podman pod create --name uyuni-proxy-test \
+run_proxy_containers() {
+  sudo --login podman pod create \
+  --name uyuni-proxy-test \
   --publish 8022:22 \
   --publish 69:69 \
   --publish 80:8080 \
@@ -59,7 +61,6 @@ podman pod create --name uyuni-proxy-test \
   --publish 4556:4506 \
   --add-host $ADD_HOST
 
-run_proxy_containers() {
   sudo --login podman run \
     --privileged \
     --rm \
