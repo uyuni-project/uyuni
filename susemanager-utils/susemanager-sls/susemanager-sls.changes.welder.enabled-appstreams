@@ -1,0 +1,2 @@
+- Introduce salt module for dealing with appstreams
+- Collect enabled AppStream modules in package profile update
