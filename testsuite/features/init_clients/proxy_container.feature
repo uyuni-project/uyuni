@@ -33,8 +33,7 @@ Feature: Setup containerized proxy
 # Once we start using Leap Micro #23811 in Uyuni Proxy, we need to remove this Cucumber tag
 @susemanager
   Scenario: Reboot the proxy host
-    When I reboot the "proxy" minion through SSH
-    And I wait until port "22" is listening on "proxy" host
+    When I reboot the "proxy" host through SSH, waiting until it comes back
 
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
