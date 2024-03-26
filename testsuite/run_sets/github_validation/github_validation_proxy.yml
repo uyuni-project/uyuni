@@ -8,7 +8,7 @@
 
 # IMMUTABLE ORDER
 
-# - features/init_clients/proxy_traditional.feature
+- features/init_clients/proxy_traditional.feature
 - features/init_clients/proxy_container.feature
 - features/init_clients/proxy_branch_network.feature
 

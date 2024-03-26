@@ -7,8 +7,6 @@
 #
 # Bootstrap the proxy as a Pod
 
-@containerized_server
-@scope_containerized_proxy
 @proxy
 Feature: Setup containerized proxy
   In order to use a containerized proxy with the server
@@ -17,6 +15,15 @@ Feature: Setup containerized proxy
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Create an activation key for the Proxy
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
+    And I enter "Proxy Key x86_64" as "description"
+    And I enter "PROXY-KEY-x86_64" as "key"
+    And I click on "Create Activation Key"
+    Then I should see a "Activation key Proxy Key x86_64 has been created" text
 
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
@@ -29,25 +36,11 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-# workaround for bsc#1218146
-# Once we start using Leap Micro #23811 in Uyuni Proxy, we need to remove this Cucumber tag
-@susemanager
-  Scenario: Reboot the proxy host
-    When I reboot the "proxy" minion through SSH
-    And I wait until port "22" is listening on "proxy" host
-
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
 
-  Scenario: Generate containerized proxy configuration
-    When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
-    And I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server to the proxy
-
   Scenario: Set-up the containerized proxy service to support Avahi
     When I add avahi hosts in containerized proxy configuration
-
-  Scenario: Run a containerized proxy
-    When I run "mgrpxy install podman /tmp/proxy_container_config.tar.gz" on "proxy"
 
   Scenario: Wait until containerized proxy service is active
     And I wait until "uyuni-proxy-pod" service is active on "proxy"
