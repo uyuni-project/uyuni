@@ -23,7 +23,7 @@ create_proxy_configuration() {
 server: uyuni-server-all-in-one-test
 ca_crt: |
 $(sudo --login sed 's/^/  /' /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT)
-proxy_fqdn: uyuni-proxy-test
+proxy_fqdn: proxy-httpd
 max_cache_size_mb: 2048
 server_version: 5.0.0 Beta1
 email: galaxy-noise@suse.de
@@ -59,7 +59,7 @@ run_proxy_containers() {
     --publish 4555:4505 \
     --publish 4556:4506 \
     --publish 8022:22 \
-    --publish 8088:8080 \
+    --publish 8088:8088 \
     --add-host $ADD_HOST
 
   sudo --login podman run \
