@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-md-offset-2 col-md-4">
+          <div class="col-md-offset-2 offset-md-2 col-md-4">
             <html:submit styleClass="btn btn-success"><bean:message key="xccdfdiff.schedulescan"/></html:submit>
           </div>
         </div>

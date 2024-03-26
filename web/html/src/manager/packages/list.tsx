@@ -112,7 +112,7 @@ export function PackageList(props: Props) {
         <Radio
           name="binary"
           inline={true}
-          divClass="col-lg-offset-3 col-lg-6"
+          divClass="col-lg-offset-3 offset-lg-3 col-lg-6"
           items={[
             { label: t("Binary packages"), value: "binary" },
             { label: t("Source packages"), value: "source" },

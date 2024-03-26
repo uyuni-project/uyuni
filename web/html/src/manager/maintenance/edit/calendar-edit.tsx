@@ -128,7 +128,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
         disabled={props.isEdit}
       />
       {props.isEdit && !props.calendar?.url && (
-        <Check name="strategy" label={<b>{t("Cancel affected actions")}</b>} divClass="col-md-6 col-md-offset-3" />
+        <Check name="strategy" label={<b>{t("Cancel affected actions")}</b>} divClass="col-md-6 col-md-offset-3 offset-md-3" />
       )}
       <div className="form-horizontal">
         <div className="form-group">
