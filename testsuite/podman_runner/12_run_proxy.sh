@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 export PROXY_UTILS=$HOME/proxy
-export ADD_HOST=uyuni-server-all-in-one-test:$(sudo --login sudo --login podman exec uyuni-server-all-in-one-test bash -c 'hostname -I')
+export ADD_HOST=uyuni-server-all-in-one-test:$(sudo --login podman exec uyuni-server-all-in-one-test bash -c 'hostname -I | awk "{print $1}"')
 
 get_server_certificates() {
   sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp'
@@ -146,10 +146,3 @@ cleanup
 
 sudo -i podman ps
 sudo -i podman pod ls
-which systemd
-find / -name containers
-ls /etc/systemd
-ls /etc/systemd/system
-
-#systemctl start uyuni-proxy-pod.service
-#systemctl status uyuni-proxy-pod.service

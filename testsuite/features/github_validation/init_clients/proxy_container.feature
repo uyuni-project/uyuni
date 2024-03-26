@@ -3,7 +3,6 @@
 #
 # The scenarios in this feature are skipped if:
 # * there is no proxy ($proxy is nil)
-# * there is no scope @scope_containerized_proxy
 #
 # Bootstrap the proxy as a Pod
 
