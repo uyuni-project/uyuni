@@ -89,6 +89,8 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
       'N', 'N'
    );
 
+commit;
+
 -- peripheral_server type ---------------------------------------------------
 
 insert into rhnServerGroupType ( id, label, name, permanent, is_base)
