@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="form-group">
-                  <div class="col-md-offset-2 col-md-8 col-lg-offset-1 col-lg-5">
+                  <div class="col-md-offset-2 offset-md-2 col-md-8 col-lg-offset-1 offset-lg-1 col-lg-5">
                       <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.viewErrata'/>">
                   </div>
                 </div>

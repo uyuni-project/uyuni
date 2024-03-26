@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-3 col-md-6">
+                <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <button type="submit" name="dispatch" class="btn btn-default"
                         value="<bean:message key="kickstart.powermanagement.jsp.save_only"/>">
                         <bean:message key="kickstart.powermanagement.jsp.save_only" />

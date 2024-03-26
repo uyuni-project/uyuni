@@ -163,7 +163,7 @@ class CreateImageStore extends React.Component<Props, State> {
             key="useCredentials"
             name="useCredentials"
             label={t("Use credentials")}
-            divClass="col-md-6 col-md-offset-3"
+            divClass="col-md-6 col-md-offset-3 offset-md-3"
           />,
           <Text
             key="username"
@@ -278,7 +278,7 @@ class CreateImageStore extends React.Component<Props, State> {
           />
           {this.renderTypeInputs(this.state.model.storeType)}
           <div className="form-group">
-            <div className="col-md-offset-3 col-md-6">{this.renderButtons()}</div>
+            <div className="col-md-offset-3 offset-md-3 col-md-6">{this.renderButtons()}</div>
           </div>
         </Form>
       </TopPanel>

@@ -190,7 +190,7 @@ export function GuestProperties(props: Props) {
                                       .filter((item, index, array) => array.indexOf(item) === index)}
                                   />
                                 )}
-                                <Check name="uefi" label={t("Enable UEFI")} divClass="col-md-6 col-md-offset-3" />
+                                <Check name="uefi" label={t("Enable UEFI")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
                                 {model["uefi"] && (
                                   <>
                                     <Text
@@ -252,7 +252,7 @@ export function GuestProperties(props: Props) {
                                     <Check
                                       name="in_cluster"
                                       label={t("Define as a cluster resource")}
-                                      divClass="col-md-6 col-md-offset-3"
+                                      divClass="col-md-6 col-md-offset-3 offset-md-3"
                                       disabled={!props.host.raCanStartResources}
                                     />
                                     <Text

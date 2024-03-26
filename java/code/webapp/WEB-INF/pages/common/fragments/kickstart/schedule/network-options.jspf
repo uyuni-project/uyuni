@@ -35,7 +35,7 @@
 
 <c:if test="${empty noStatic}">
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
+        <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
             <div class="radio">
                 <label>
                     <input type="radio" name="networkType" value="static"
@@ -74,7 +74,7 @@
 </c:if>
 
 <div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>
                 <input type="radio" name="networkType" value="link"
