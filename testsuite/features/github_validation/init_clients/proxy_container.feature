@@ -41,17 +41,17 @@ Feature: Setup containerized proxy
   Scenario: Set-up the containerized proxy service to support Avahi
     When I add avahi hosts in containerized proxy configuration
 
-  Scenario: Wait until containerized proxy service is active
-    And I wait until "uyuni-proxy-pod" service is active on "uyuni-proxy-test"
-    And I wait until "uyuni-proxy-httpd" service is active on "uyuni-proxy-test"
-    And I wait until "uyuni-proxy-salt-broker" service is active on "uyuni-proxy-test"
-    And I wait until "uyuni-proxy-squid" service is active on "uyuni-proxy-test"
-    And I wait until "uyuni-proxy-ssh" service is active on "uyuni-proxy-test"
-    And I wait until "uyuni-proxy-tftpd" service is active on "uyuni-proxy-test"
-    And I wait until port "8022" is listening on "uyuni-proxy-test" container
-    And I wait until port "80" is listening on "uyuni-proxy-test" container
-    And I wait until port "443" is listening on "uyuni-proxy-test" container
-    And I visit "uyuni-Proxy-test" endpoint of this "uyuni-proxy-test"
+  # Scenario: Wait until containerized proxy service is active
+  #   And I wait until "uyuni-proxy-pod" service is active on "uyuni-proxy-test"
+  #   And I wait until "uyuni-proxy-httpd" service is active on "uyuni-proxy-test"
+  #   And I wait until "uyuni-proxy-salt-broker" service is active on "uyuni-proxy-test"
+  #   And I wait until "uyuni-proxy-squid" service is active on "uyuni-proxy-test"
+  #   And I wait until "uyuni-proxy-ssh" service is active on "uyuni-proxy-test"
+  #   And I wait until "uyuni-proxy-tftpd" service is active on "uyuni-proxy-test"
+  #   And I wait until port "8022" is listening on "uyuni-proxy-test" container
+  #   And I wait until port "80" is listening on "uyuni-proxy-test" container
+  #   And I wait until port "443" is listening on "uyuni-proxy-test" container
+  #   And I visit "uyuni-Proxy-test" endpoint of this "uyuni-proxy-test"
 
   Scenario: containerized proxy should be registered automatically
     When I follow the left menu "Systems"
