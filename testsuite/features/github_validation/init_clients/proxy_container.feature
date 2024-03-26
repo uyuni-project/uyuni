@@ -28,8 +28,8 @@ Feature: Setup containerized proxy
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "proxy" as "hostname"
-    And I enter "22" as "port"
+    When I enter the hostname of "uyuni-proxy-test" as "hostname"
+    And I enter "8022" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-PROXY-KEY-x86_64" from "activationKeys"
@@ -37,23 +37,23 @@ Feature: Setup containerized proxy
     And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Wait until the proxy host appears
-    When I wait until onboarding is completed for "proxy"
+    When I wait until onboarding is completed for "uyuni-proxy-test"
 
   Scenario: Set-up the containerized proxy service to support Avahi
     When I add avahi hosts in containerized proxy configuration
 
   Scenario: Wait until containerized proxy service is active
-    And I wait until "uyuni-proxy-pod" service is active on "proxy"
-    And I wait until "uyuni-proxy-httpd" service is active on "proxy"
-    And I wait until "uyuni-proxy-salt-broker" service is active on "proxy"
-    And I wait until "uyuni-proxy-squid" service is active on "proxy"
-    And I wait until "uyuni-proxy-ssh" service is active on "proxy"
-    And I wait until "uyuni-proxy-tftpd" service is active on "proxy"
-    And I wait until port "8022" is listening on "proxy" container
-    And I wait until port "80" is listening on "proxy" container
-    And I wait until port "443" is listening on "proxy" container
-    And I visit "Proxy" endpoint of this "proxy"
+    And I wait until "uyuni-proxy-pod" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-httpd" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-salt-broker" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-squid" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-ssh" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-tftpd" service is active on "uyuni-proxy-test"
+    And I wait until port "8022" is listening on "uyuni-proxy-test" container
+    And I wait until port "80" is listening on "uyuni-proxy-test" container
+    And I wait until port "443" is listening on "uyuni-proxy-test" container
+    And I visit "uyuni-Proxy-test" endpoint of this "uyuni-proxy-test"
 
   Scenario: containerized proxy should be registered automatically
     When I follow the left menu "Systems"
-    And I wait until I see the name of "proxy", refreshing the page
+    And I wait until I see the name of "uyuni-proxy-test", refreshing the page

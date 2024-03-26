@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 export PROXY_UTILS=$HOME/proxy
-export ADD_HOST=uyuni-server-all-in-one-test:10.89.0.5
+export ADD_HOST=uyuni-server-all-in-one-test:$(sudo --login podman inspect -f '{{range $net, $conf := .NetworkSettings.Networks}}{{if eq $net "uyuni-network-1"}}{{$conf.IPAddress}}{{end}}{{end}}' uyuni-server-all-in-one-test)
 
 get_server_certificates() {
   sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp'
@@ -22,7 +22,7 @@ create_proxy_configuration() {
 server: uyuni-server-all-in-one-test
 ca_crt: |
 $(sudo --login sed 's/^/  /' /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT)
-proxy_fqdn: proxy
+proxy_fqdn: uyuni-proxy-test
 max_cache_size_mb: 2048
 server_version: 5.0.0 Beta1
 email: galaxy-noise@suse.de
@@ -47,18 +47,18 @@ $(sudo --login sed 's/^/    /' /tmp/test-all-in-one/id_openssh_rsa)
   server_ssh_push_pub: |
 $(sudo --login sed 's/^/    /' /tmp/test-all-in-one/id_openssh_rsa.pub)
 EOF
-  tar --create --gzip --file $PROXY_UTILS/config.tar.gz $PROXY_UTILS/config.yaml $PROXY_UTILS/httpd.yaml $PROXY_UTILS/ssh.yaml
 }
 
 run_proxy_containers() {
   sudo --login podman pod create \
   --name uyuni-proxy-test \
-  --publish 8022:22 \
   --publish 69:69 \
-  --publish 80:8080 \
+  --publish 80:80 \
   --publish 443:443 \
   --publish 4555:4505 \
   --publish 4556:4506 \
+  --publish 8022:22 \
+  --publish 8088:8088 \
   --add-host $ADD_HOST
 
   sudo --login podman run \
@@ -147,3 +147,9 @@ cleanup
 sudo -i podman ps
 sudo -i podman pod ls
 which systemd
+find / -name containers
+ls /etc/systemd
+ls /etc/systemd/system
+
+#systemctl start uyuni-proxy-pod.service
+#systemctl status uyuni-proxy-pod.service
