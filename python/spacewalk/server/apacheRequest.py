@@ -117,14 +117,6 @@ class apacheRequest:
     def call_function(self, method, params):
         # short-circuit everything if sending a system-wide message.
         if CFG.SEND_MESSAGE_TO_ALL:
-            # Make sure the applet doesn't see the message
-            if method == "applet.poll_status":
-                return self.response(
-                    {"checkin_interval": 3600, "server_status": "normal"}
-                )
-            if method == "applet.poll_packages":
-                return self.response({"use_cached_copy": 1})
-
             # Fetch global message being sent to clients if applicable.
             # pylint: disable-next=unspecified-encoding
             msg = open(CFG.MESSAGE_TO_ALL).read()

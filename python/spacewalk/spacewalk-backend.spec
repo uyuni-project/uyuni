@@ -140,15 +140,6 @@ These are the files required for running the /XMLRPC handler, which
 provide the basic support for the registration client (rhn_register)
 and the up2date clients.
 
-%package applet
-Summary:        Handler for /APPLET
-Group:          System/Management
-Requires:       %{name}-server = %{version}-%{release}
-
-%description applet
-These are the files required for running the /APPLET handler, which
-provides the functions for the Spacewalk applet.
-
 %package app
 Summary:        Handler for /APP
 Group:          System/Management
@@ -495,7 +486,6 @@ fi
 # wsgi stuff
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/zz-spacewalk-server-wsgi.conf
 %{rhnroot}/wsgi/app.py*
-%{rhnroot}/wsgi/applet.py*
 %{rhnroot}/wsgi/package_push.py*
 %{rhnroot}/wsgi/sat.py*
 %{rhnroot}/wsgi/sat_dump.py*
@@ -518,17 +508,6 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers
-
-%files applet
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/applet
-%{rhnroot}/server/handlers/applet/*
-# config files
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_applet.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-applet
 
 %files app
 %defattr(-,root,root)
