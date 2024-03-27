@@ -101,3 +101,5 @@ rhnChannelNewestPackageView      :: suseChannelPackageRetractedStatusView \
 suseChannelPackageRetractedStatusView :: rhnChannelPackage rhnChannelErrata rhnErrataPackage
 suseServerChannelsRetractedPackagesView :: rhnServerChannel rhnChannelErrata rhnErrataPackage
 susePackageExcludingPartOfPtf :: rhnPackageCapability rhnPackageProvides rhnPackage
+suseChannelModuleNewestPackageView :: susePackageExcludingPartOfPtf \
+                                      suseChannelPackageRetractedStatusView
