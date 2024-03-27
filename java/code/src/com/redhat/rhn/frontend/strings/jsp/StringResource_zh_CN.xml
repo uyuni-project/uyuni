@@ -29898,6 +29898,10 @@ given channel.</source>
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="peripheral_server" xml:space="preserve">
+        <source>Peripheral Server</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
