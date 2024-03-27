@@ -144,5 +144,3 @@ cleanup
 sudo -i podman exec controller-test bash -c "cat /root/.ssh/config && cat /root/.ssh/authorized_keys"
 sudo -i podman ps
 sudo -i podman pod ls
-
-sudo -i podman exec controller-test bash -c 'echo $RUNNER && ssh -t $RUNNER hostname'
