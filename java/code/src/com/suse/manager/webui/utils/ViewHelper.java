@@ -58,7 +58,10 @@ public enum ViewHelper {
      *
      * NB! This must be in sync with web/html/src/core/spa/view-helper.ts
      */
-    private static final List<String> BOOTSTRAP_READY_PAGES = List.of("/rhn/YourRhn.do");
+    private static final List<String> BOOTSTRAP_READY_PAGES = List.of(
+        "/rhn/YourRhn.do",
+        "/rhn/account/UserPreferences.do"
+    );
 
     ViewHelper() { }
 
