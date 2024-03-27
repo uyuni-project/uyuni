@@ -6,7 +6,7 @@
 }
 
 label {
-  // TODO: Make this `inherit` after the Bootstrap upgrade is complete
+  // TODO: Make this `inherit` after the Bootstrap upgrade is complete?
   font-weight: 700;
   margin-bottom: 0;
   max-width: 100%;
@@ -33,6 +33,7 @@ input[type="checkbox"] {
   margin: 0 5px 0 0;
 }
 
+// Here and below, these offer Bootstrap 3 compatibility
 .form-horizontal {
   .control-label {
     padding-top: 7px;
@@ -44,5 +45,19 @@ input[type="checkbox"] {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 7px;
+  }
+
+  .radio,
+  .checkbox,
+  .radio-inline,
+  .checkbox-inline {
+    padding-top: 7px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .radio,
+  .checkbox {
+    min-height: 28px;
   }
 }
