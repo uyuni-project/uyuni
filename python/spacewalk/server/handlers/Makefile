@@ -8,7 +8,6 @@ FILES	= __init__
 
 SUBDIRS = \
 		  app \
-		  applet \
           sat \
 		  xmlrpc
 
