@@ -308,7 +308,7 @@ def get_arguments():
         "--serverFqdn",
         type=str,
         default="localhost",
-        help="Hostname of the server for cobbler filtering",
+        help="Hostname of the server for Cobbler filtering",
     )
     parser.add_argument(
         "--proxyFqdn",
