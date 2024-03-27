@@ -2621,8 +2621,7 @@ public class SaltServerActionService {
                             .filter(sa -> sa.getServerId().equals(minion.get().getId()))
                             .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
                             .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
-                            .findFirst())
-                    .ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
+                            .findFirst()).ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
 
             // walk dependent server actions recursively and set them to failed
             Deque<Long> actionIdsDependencies = new ArrayDeque<>();
@@ -2858,7 +2857,7 @@ public class SaltServerActionService {
 
                                 serverAction.ifPresent(this::setActionAsPickedUp);
                             });
-                    }
+                        }
                 });
             }
             else {
