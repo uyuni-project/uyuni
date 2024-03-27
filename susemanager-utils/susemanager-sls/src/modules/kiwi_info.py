@@ -198,7 +198,6 @@ _compression_types = [
     {"suffix": ".gz", "compression": "gzip"},
     {"suffix": ".bz", "compression": "bzip"},
     {"suffix": ".xz", "compression": "xz"},
-    {"suffix": ".tar.xz", "compression": "xz"},
     {"suffix": ".install.iso", "compression": None},
     {"suffix": ".iso", "compression": None},
     {"suffix": ".qcow2", "compression": None},

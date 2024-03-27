@@ -23,11 +23,6 @@ header {
   margin-bottom: 0;
   background: $header !important;
 
-  .header-content {
-    padding: 12px 10px;
-    height: 50px;
-  }
-
   a {
     color: $header-text;
   }
@@ -42,6 +37,7 @@ header {
 }
 
 .spacewalk-main-column-layout {
+  position: relative;
   display: flex;
   flex: 1 1 auto;
   overflow: hidden;
@@ -51,6 +47,14 @@ header {
     overflow: auto !important;
     float: none !important;
     position: relative !important;
+
+    @media (max-width: $screen-tablet) {
+      position: absolute !important;
+      inset: 0;
+      z-index: 2000;
+      min-width: 100% !important;
+      max-width: none !important;
+    }
 
     footer {
       position: -webkit-sticky;
@@ -133,9 +137,9 @@ section {
   margin-right: 0;
   margin-left: 0;
   aside {
-    width: 17%;
+    flex: 0 0 17%;
     min-width: 300px;
-    max-width: 400px;
+    max-width: min(400px, 17%);
     background: $aside-background;
     border-right: none;
     /* erasing the predefined paddings in the columns */
@@ -244,8 +248,7 @@ nav.navbar-pf {
     vertical-align: top;
     margin-right: 5px;
   }
-  .navbar-utility,
-  .navbar-primary {
+  .navbar-controls {
     // TODO: Check
     @extend .navbar-right;
     font-size: 1em;
@@ -906,11 +909,8 @@ i.spacewalk-help-link {
   margin: 0;
   border-radius: 0 !important;
 
-  ul.navbar-utility,
-  ul.navbar-primary {
+  ul.navbar-controls {
     > li {
-      display: inline-block;
-      float: none;
       margin: 0;
       clear: none;
       color: $header-text;

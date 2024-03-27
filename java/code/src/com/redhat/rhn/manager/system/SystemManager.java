@@ -3883,6 +3883,93 @@ public class SystemManager extends BaseManager {
         StatesAPI.generateServerPackageState(minion);
     }
 
+
+    /**
+     * Register foreign peripheral server.
+     *
+     * @param creator the creator user
+     * @param fqdn the fqdn of the server
+     * @return the created system
+     */
+    public Server registerPeripheralServer(User creator, String fqdn) {
+        String uniqueId = createUniqueId(List.of(fqdn));
+
+        Server existing = ServerFactory.lookupForeignSystemByDigitalServerId(uniqueId);
+        if (existing != null) {
+            throw new SystemsExistException(List.of(existing.getId()));
+        }
+
+        Server server = ServerFactory.createServer();
+        server.setName(fqdn);
+        server.setOrg(creator.getOrg());
+
+        // Set network device information to the server so we have something to match with
+        server.setCreator(creator);
+        server.setHostname(fqdn);
+        server.getFqdns().add(new ServerFQDN(server, fqdn));
+        server.setDigitalServerId(uniqueId);
+        server.setMachineId(uniqueId);
+        server.setOs("(unknown)");
+        server.setOsFamily("(unknown)");
+        server.setRelease("(unknown)");
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        server.setLastBoot(System.currentTimeMillis() / 1000);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        server.updateServerInfo();
+        ServerFactory.save(server);
+        systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PERIPHERAL_SERVER);
+
+        return server;
+    }
+
+    /**
+     * Create or update peripheral server info.
+     *
+     * @param server the server
+     * @param reportDbName name of report database
+     * @param reportDbHost host of report database
+     * @param reportDbPort port of report database
+     * @param reportDbUser user of report database
+     * @param reportDbPassword password of report database
+     * @return 1 on success, 0 on failure
+     */
+    public static int updatePeripheralServerInfo(Server server, String reportDbName, String reportDbHost,
+                       int reportDbPort, String reportDbUser, String reportDbPassword) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN) &&
+            server.hasEntitlement(EntitlementManager.PERIPHERAL_SERVER)) {
+            MgrServerInfo serverInfo = Optional.ofNullable(server.getMgrServerInfo()).orElse(new MgrServerInfo());
+            serverInfo.setReportDbName(reportDbName);
+            serverInfo.setReportDbHost(reportDbHost);
+            serverInfo.setReportDbPort(reportDbPort);
+
+            ReportDBCredentials credentials = Optional.ofNullable(serverInfo.getReportDbCredentials())
+                .map(existingCredentials -> {
+                    existingCredentials.setPassword(reportDbUser);
+                    existingCredentials.setPassword(reportDbPassword);
+                    CredentialsFactory.storeCredentials(existingCredentials);
+                    return existingCredentials;
+                })
+                .orElseGet(() -> {
+                    ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials(
+                                                                        reportDbUser, reportDbPassword);
+                    CredentialsFactory.storeCredentials(reportCredentials);
+                    return reportCredentials;
+                });
+
+            serverInfo.setReportDbCredentials(credentials);
+            serverInfo.setServer(server);
+            server.setMgrServerInfo(serverInfo);
+            return 1;
+        }
+        else {
+            log.warn("Server {} does not have Foreign Peripheral Server entitlement.", server.getName());
+            return 0;
+        }
+    }
+
     /**
      * Update MgrServerInfo with current grains data
      *

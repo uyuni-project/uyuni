@@ -7,6 +7,9 @@ on:
       - synchronize
   schedule:
     - cron: '0 */12 * * *'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 jobs:
   acceptance-tests-secondary-parallel:
     uses: ./.github/workflows/acceptance_tests_common.yml

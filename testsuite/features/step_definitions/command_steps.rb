@@ -1511,9 +1511,11 @@ When(/^I reboot the server through SSH$/) do
   end
 end
 
-When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) do |host|
   node = get_target(host)
-  node.run('reboot')
+  node.run('reboot', check_errors: false, verbose: true, runs_in_container: false)
+  node.wait_until_offline
+  node.wait_until_online
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
@@ -1715,4 +1717,10 @@ When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, 
     _output, code = node.run("tail -n 10 #{file} | grep '#{text}' ", check_errors: false)
     break if code.zero?
   end
+end
+
+Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
+  count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
+  occurences = count.to_i
+  raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end

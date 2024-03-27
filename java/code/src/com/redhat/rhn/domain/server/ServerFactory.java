@@ -1039,6 +1039,15 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * List a Servers by their FQDN
+     * @param name of the FQDN to search for
+     * @return the Servers found
+     */
+    public static List<Server> listByFqdn(String name) {
+        return SINGLETON.listObjectsByNamedQuery("Server.findByFqdn", Map.of("name", name));
+    }
+
+    /**
      * Returns a global multi org spanning list of
      * servers that are config-diff enabled.
      * Basically used by taskomatic.

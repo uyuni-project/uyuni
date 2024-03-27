@@ -8,6 +8,8 @@ import { stringToReact } from "utils";
 import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
+import styles from "./menu.module.css";
+
 type LinkProps = {
   url: string;
   className?: string;
@@ -258,20 +260,21 @@ class Breadcrumb extends React.Component {
         title={t("SUSE Manager homepage")}
       />
     );
+
     return (
-      <div>
+      <div className={styles.breadcrumb}>
         {product_name_link}
-        <span className="hidden-sm d-none d-md-inline">&gt;</span>
+        <span className="menu-link">&gt;</span>
         {breadcrumbArray.map((a, i) => {
           return (
             <span key={a.label + "_" + i}>
               <Link
-                className="hidden-sm d-none d-md-inline"
+                className="menu-link"
                 url={a.submenu ? a.submenu[0].primaryUrl : a.primaryUrl}
                 label={stringToReact(a.label)}
                 target={a.target}
               />
-              {i === breadcrumbArray.length - 1 ? null : <span className="hidden-sm d-none d-md-inline">&gt;</span>}
+              {i === breadcrumbArray.length - 1 ? null : <span className="menu-link">&gt;</span>}
             </span>
           );
         })}

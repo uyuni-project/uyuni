@@ -2458,7 +2458,6 @@ public class ActionManager extends BaseManager {
      * @return Returns a list of scheduled action ids
      *
      */
-
     public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId)
         throws TaskomaticApiException {
         List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)

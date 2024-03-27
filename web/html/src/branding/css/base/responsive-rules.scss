@@ -1,0 +1,32 @@
+@media (max-width: $screen-tablet) {
+  // TODO: Move this into the buttons module
+  form {
+    .btn,
+    .btn-success {
+      width: 100%
+    }
+  }
+
+  .responsive-wizard {
+    .panel-body {
+      #mirror-credentials {
+        .panel, .panel:nth-of-type(2n) {
+          width: 100%;
+          margin-left: 0px;
+          margin-right: -15px;
+        }
+        margin-right: 0;
+        .panel-footer {
+          .row {
+            margin-right: 0;
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .sideleg {
+    display: block !important;
+  }
+}

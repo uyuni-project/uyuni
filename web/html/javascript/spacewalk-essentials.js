@@ -71,6 +71,7 @@ function scrollTopBehavior() {
 function alignContentDimensions() {
   adaptFluidColLayout();
   sstStyle();
+  navbarToggleMobile();
 }
 
 // empty function by default hooked on window.scroll event
@@ -162,9 +163,14 @@ function sstStyle() {
 }
 
 jQuery(document).on('click', '.navbar-toggle', function() {
-  jQuery('aside').toggleClass('in');
-  jQuery('aside').toggleClass('collapse');
+  jQuery('aside').toggleClass('in collapse');
 });
+
+function navbarToggleMobile() {
+  if (window.outerWidth <= 768) {
+    jQuery('aside').addClass('in collapse');
+  }
+};
 
 // returns an object that can be passed to ajax renderer as a callback
 // puts rendered HTML in #divId, opens an alert with the same text if

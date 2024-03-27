@@ -58,18 +58,14 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
-  Scenario: Install the Salt Bundle on the minion
-    When I install packages "venv-salt-minion" on this "salt_migration_minion"
-    Then "venv-salt-minion" should be installed on "salt_migration_minion"
-
   Scenario: Migrate the minion to the Salt bundle
-    Given the Salt master can reach "salt_migration_minion"
-    When I migrate "salt_migration_minion" from salt-minion to venv-salt-minion
+    When I apply highstate on "salt_migration_minion"
+    Then "venv-salt-minion" should be installed on "salt_migration_minion"
+    And I wait until "venv-salt-minion" service is active on "salt_migration_minion"
 
   Scenario: Purge the minion from the old salt-minion leftovers
     When I purge salt-minion on "salt_migration_minion" after a migration
 
-  # This will fail until bsc#1209251 will be fixed
   Scenario: Check if the Salt bundle migration was successful
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area

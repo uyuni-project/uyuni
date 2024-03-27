@@ -111,6 +111,15 @@ public class SumaUtil {
         }
     }
 
+    /**
+     * Result of sumautil.instance_flavor
+     */
+    public enum PublicCloudInstanceFlavor {
+        PAYG,
+        BYOS,
+        UNKNOWN
+    }
+
     private SumaUtil() { }
 
 }
