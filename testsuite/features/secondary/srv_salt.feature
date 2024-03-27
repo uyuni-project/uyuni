@@ -7,7 +7,7 @@ Feature: Salt is configured and running
   I want to use general Salt functionality and system registration
 
   Scenario: salt-api is properly configured
-    When I get the contents of the remote file "/etc/salt/master.d/susemanager.conf"
+    When I get the contents of the remote file "/etc/salt/master.d/susemanager.conf" from "server"
     Then it should contain a "rest_cherrypy:" text
     And it should contain a "port: 9080" text
     And it should contain a "external_auth:" text

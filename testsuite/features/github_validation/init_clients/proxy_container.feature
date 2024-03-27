@@ -13,23 +13,30 @@ Feature: Setup containerized proxy
   I want to register the containerized proxy on the server
 
   Scenario: Check if the pod is running
-    When I run "sudo --login podman pod inspect --format '{{.State}}' uyuni-proxy-test" on "runner"
+    When I run "sudo --login podman pod inspect --format '{{.State}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-state.log 2>&1" on "runner"
+    And I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy-pod-state.log" from "runner"
     Then it should contain a "Running" text
 
   Scenario: Check if all the proxy containers are running
-    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-httpd" on "runner"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-httpd > /tmp/test-all-in-one/podman-proxy-httpd.log 2>&1" on "runner"
+    And I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy-httpd.log" from "runner"
     Then it should contain a "running" text
-    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-ssh" on "runner"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-ssh > /tmp/test-all-in-one/podman-proxy-ssh.log 2>&1" on "runner"
+    And I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy-ssh.log" from "runner"
     Then it should contain a "running" text
-    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-salt-broker" on "runner"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-salt-broker > /tmp/test-all-in-one/podman-proxy-salt-broker.log 2>&1" on "runner"
+    And I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy-salt-broker.log" from "runner"
     Then it should contain a "running" text
-    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-squid" on "runner"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-squid > /tmp/test-all-in-one/podman-proxy-squid.log 2>&1" on "runner"
+    And I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy-squid.log" from "runner"
     Then it should contain a "running" text
-    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-tftpd" on "runner"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-tftpd > /tmp/test-all-in-one/podman-proxy-tftpd.log 2>&1" on "runner"
+    And I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy-tftpd.log" from "runner"
     Then it should contain a "running" text
 
   Scenario: Check if the proxy containers are attached to the pod
-    When I run "sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test" on "runner"
+    When I run "sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-containers.log 2>&1" on "runner"
+    And I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy-pod-containers.log" from "runner"
     Then it should contain a "6" text
 
   # Because of ... the rest is skipped.

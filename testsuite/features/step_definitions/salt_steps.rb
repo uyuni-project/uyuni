@@ -26,8 +26,8 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   end
 end
 
-When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
-  $output, _code = get_target('server').run("cat #{filename}")
+When(/^I get the contents of the remote file "(.*?)" from "(.*?)"$/) do |filename, host|
+  $output, _code = get_target(host).run("cat #{filename}")
 end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
