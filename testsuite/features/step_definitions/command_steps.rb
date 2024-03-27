@@ -1319,8 +1319,8 @@ end
 
 When(/^I create a read-only user for the ReportDB$/) do
   $reportdb_ro_user = 'test_user'
-  file = 'create_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  file = 'create-user-reportdb.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless return_code.zero?
@@ -1334,8 +1334,8 @@ Then(/^I should see the read-only user listed on the ReportDB user accounts$/) d
 end
 
 When(/^I delete the read-only user for the ReportDB$/) do
-  file = 'delete_user_reportdb.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  file = 'delete-user-reportdb.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless return_code.zero?
@@ -1441,12 +1441,17 @@ When(/^I generate the configuration "([^"]*)" of containerized proxy on the serv
       get_target('server').inject("/tmp/#{file}", "/tmp/#{file}")
     end
 
-    command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
+    command = "spacecmd -u admin -p admin " \
+              "proxy_container_config -- -o #{file_path} -p 8022 " \
               "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
-
-    command = "echo spacewalk > ca_pass && spacecmd --nossl -u admin -p admin proxy_container_config_generate_cert -- -o #{file_path} #{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de --ca-pass ca_pass && rm ca_pass"
+    command = "echo spacewalk > ca_pass && " \
+              "spacecmd --nossl -u admin -p admin " \
+              "proxy_container_config_generate_cert -- -o #{file_path} " \
+              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "--ssl-cname proxy.example.org --ca-pass ca_pass && " \
+              "rm ca_pass"
   end
   get_target('server').run(command)
 end

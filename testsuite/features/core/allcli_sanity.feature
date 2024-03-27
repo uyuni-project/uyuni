@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -30,49 +30,49 @@ Feature: Sanity checks
   Scenario: The proxy is healthy
     Then "proxy" should have a FQDN
     And reverse resolution should work for "proxy"
-    And "proxy" should communicate with the server using public interface
+    And the "proxy" host should communicate with the server using public interface
     And the clock from "proxy" should be exact
 
 @sle_minion
   Scenario: The minion is healthy
     Then "sle_minion" should have a FQDN
     And reverse resolution should work for "sle_minion"
-    And "sle_minion" should communicate with the server using public interface
+    And the "sle_minion" host should communicate with the server using public interface
     And the clock from "sle_minion" should be exact
 
 @buildhost
   Scenario: The build host is healthy
     Then "build_host" should have a FQDN
     And reverse resolution should work for "build_host"
-    And "build_host" should communicate with the server using public interface
+    And the "build_host" host should communicate with the server using public interface
     And the clock from "build_host" should be exact
 
 @ssh_minion
   Scenario: The SSH minion is healthy
     Then "ssh_minion" should have a FQDN
     And reverse resolution should work for "ssh_minion"
-    And "ssh_minion" should communicate with the server using public interface
+    And the "ssh_minion" host should communicate with the server using public interface
     And the clock from "ssh_minion" should be exact
 
 @rhlike_minion
   Scenario: The Red Hat-like minion is healthy
     Then "rhlike_minion" should have a FQDN
     And reverse resolution should work for "rhlike_minion"
-    And "rhlike_minion" should communicate with the server using public interface
+    And the "rhlike_minion" host should communicate with the server using public interface
     And the clock from "rhlike_minion" should be exact
 
 @deblike_minion
   Scenario: The Debian-like minion is healthy
     Then "deblike_minion" should have a FQDN
     And reverse resolution should work for "deblike_minion"
-    And "deblike_minion" should communicate with the server using public interface
+    And the "deblike_minion" host should communicate with the server using public interface
     And the clock from "deblike_minion" should be exact
 
 @virthost_kvm
   Scenario: The KVM host is healthy
     Then "kvm_server" should have a FQDN
     And reverse resolution should work for "kvm_server"
-    And "kvm_server" should communicate with the server using public interface
+    And the "kvm_server" host should communicate with the server using public interface
     And the clock from "kvm_server" should be exact
 
 @skip_if_cloud

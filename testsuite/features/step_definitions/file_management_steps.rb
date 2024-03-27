@@ -74,7 +74,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
 
   # Run bootstrap script and check for result
   boostrap_script = 'bootstrap-general.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{boostrap_script}"
+  source = "#{File.dirname(__FILE__)}/../upload_files/expect_scripts/#{boostrap_script}"
   dest = "/tmp/#{boostrap_script}"
   return_code = file_inject(target, source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?

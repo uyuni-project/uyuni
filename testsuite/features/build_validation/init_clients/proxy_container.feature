@@ -64,6 +64,6 @@ Feature: Setup containerized proxy
     And I wait until port "443" is listening on "proxy" container
     And I visit "Proxy" endpoint of this "proxy"
 
-  Scenario: containerized proxy should be registered automatically
+  Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy", refreshing the page

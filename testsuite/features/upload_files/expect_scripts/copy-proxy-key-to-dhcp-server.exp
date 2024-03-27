@@ -1,0 +1,7 @@
+set address [lindex $argv 0]
+
+spawn /usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null /root/.ssh/id_rsa.pub root@$address:/root/.ssh/authorized_keys
+expect {
+	"*?assword:*" { send "linux\r"; interact }
+	eof { exit }
+}

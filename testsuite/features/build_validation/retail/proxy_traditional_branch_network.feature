@@ -140,14 +140,11 @@ Feature: Prepare the branch server for PXE booting
     And I press "Add Item" in NS section of example.org zone
     And I enter "proxy.example.org." in first NS field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
-    And I enter "ftp" in first CNAME alias field of example.org zone
+    And I enter "tftp" in first CNAME alias field of example.org zone
     And I enter "proxy" in first CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
-    And I enter "tftp" in second CNAME alias field of example.org zone
+    And I enter "salt" in second CNAME alias field of example.org zone
     And I enter "proxy" in second CNAME name field of example.org zone
-    And I press "Add Item" in CNAME section of example.org zone
-    And I enter "salt" in third CNAME alias field of example.org zone
-    And I enter "proxy" in third CNAME name field of example.org zone
     # reverse zone xx.168.192.in-addr.arpa:
     And I press "Add Item" in available zones section
     And I enter the local zone name in second available zone name field

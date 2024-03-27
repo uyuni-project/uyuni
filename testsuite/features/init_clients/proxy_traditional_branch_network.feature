@@ -52,7 +52,7 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Show the overview page of the proxy
+  Scenario: Show the overview page of the traditional proxy
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "proxy"
 
@@ -201,7 +201,7 @@ Feature: Setup Uyuni for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Let the server know about the new IP and FQDN of the proxy
+  Scenario: Let the server know about the new IP and FQDN of the traditional proxy
     When I follow "Details" in the content area
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"

@@ -139,7 +139,8 @@ BOX_IDS = {
   'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
   'include forwarders'        => 'bind#config#include_forwarders',
   'enable route'              => 'branch_network#firewall#enable_route',
-  'enable NAT'                => 'branch_network#firewall#enable_NAT'
+  'enable NAT'                => 'branch_network#firewall#enable_NAT',
+  'containerized proxy'       => 'saltboot#containerized_proxy'
 }.freeze
 
 BULLET_STYLE = {
