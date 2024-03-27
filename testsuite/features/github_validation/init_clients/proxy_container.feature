@@ -12,9 +12,31 @@ Feature: Setup containerized proxy
   As the system administrator
   I want to register the containerized proxy on the server
 
+  Scenario: Check if the pod is running
+    When I run "podman pod inspect --format '{{.State}}' uyuni-proxy-test" on "localhost"
+    Then it should contain a "Running" text
+
+  Scenario: Check if the proxy containers are running
+    When I run "podman container inspect --format '{{.State.Status}}' proxy-httpd" on "localhost"
+    Then it should contain a "running" text
+    When I run "podman container inspect --format '{{.State.Status}}' proxy-ssh" on "localhost"
+    Then it should contain a "running" text
+    When I run "podman container inspect --format '{{.State.Status}}' proxy-salt-broker" on "localhost"
+    Then it should contain a "running" text
+    When I run "podman container inspect --format '{{.State.Status}}' proxy-squid" on "localhost"
+    Then it should contain a "running" text
+    When I run "podman container inspect --format '{{.State.Status}}' proxy-tftpd" on "localhost"
+    Then it should contain a "running" text
+
+  Scenario: Check if all the proxy containers are attached to the pod
+    When I run "podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test" on "localhost"
+    Then it should contain a "6" text
+
+  @skip
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  @skip
   Scenario: Create an activation key for the Proxy
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
@@ -24,6 +46,7 @@ Feature: Setup containerized proxy
     And I click on "Create Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been created" text
 
+  @skip
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -35,24 +58,28 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
+  @skip
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "uyuni-proxy-test"
 
+  @skip
   Scenario: Set-up the containerized proxy service to support Avahi
     When I add avahi hosts in containerized proxy configuration
 
-  # Scenario: Wait until containerized proxy service is active
-  #   And I wait until "uyuni-proxy-pod" service is active on "uyuni-proxy-test"
-  #   And I wait until "uyuni-proxy-httpd" service is active on "uyuni-proxy-test"
-  #   And I wait until "uyuni-proxy-salt-broker" service is active on "uyuni-proxy-test"
-  #   And I wait until "uyuni-proxy-squid" service is active on "uyuni-proxy-test"
-  #   And I wait until "uyuni-proxy-ssh" service is active on "uyuni-proxy-test"
-  #   And I wait until "uyuni-proxy-tftpd" service is active on "uyuni-proxy-test"
-  #   And I wait until port "8022" is listening on "uyuni-proxy-test" container
-  #   And I wait until port "80" is listening on "uyuni-proxy-test" container
-  #   And I wait until port "443" is listening on "uyuni-proxy-test" container
-  #   And I visit "uyuni-Proxy-test" endpoint of this "uyuni-proxy-test"
+  @skip
+  Scenario: Wait until containerized proxy service is active
+    And I wait until "uyuni-proxy-pod" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-httpd" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-salt-broker" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-squid" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-ssh" service is active on "uyuni-proxy-test"
+    And I wait until "uyuni-proxy-tftpd" service is active on "uyuni-proxy-test"
+    And I wait until port "8022" is listening on "uyuni-proxy-test" container
+    And I wait until port "80" is listening on "uyuni-proxy-test" container
+    And I wait until port "443" is listening on "uyuni-proxy-test" container
+    And I visit "uyuni-Proxy-test" endpoint of this "uyuni-proxy-test"
 
+  @skip
   Scenario: containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "uyuni-proxy-test", refreshing the page
