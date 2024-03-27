@@ -314,12 +314,7 @@ class NotificationMessages extends React.Component<Props, State> {
   };
 
   buildSummary = (row) => {
-    const popupLink = (
-      // eslint-disable-next-line jsx-a11y/anchor-is-valid
-      <a href="#" onClick={() => this.showDetailsPopup(row)}>
-        {"[" + t("show details") + "]"}
-      </a>
-    );
+    const popupLink = <button onClick={() => this.showDetailsPopup(row)}>{"[" + t("show details") + "]"}</button>;
 
     return (
       <span>

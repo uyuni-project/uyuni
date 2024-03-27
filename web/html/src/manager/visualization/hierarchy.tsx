@@ -277,16 +277,10 @@ class Hierarchy extends React.Component<Props, State> {
         <div id="visualization-filter-wrapper">
           <ul className="nav nav-tabs">
             <li id="filtering-tab-selector" className="filter-tab-selector active">
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a role="button" onClick={() => showFilterTab("filtering-tab")}>
-                {t("Filtering")}
-              </a>
+              <button onClick={() => showFilterTab("filtering-tab")}>{t("Filtering")}</button>
             </li>
             <li id="partitioning-tab-selector" className="filter-tab-selector">
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a role="button" onClick={() => showFilterTab("partitioning-tab")}>
-                {t("Partitioning")}
-              </a>
+              <button onClick={() => showFilterTab("partitioning-tab")}>{t("Partitioning")}</button>
             </li>
           </ul>
           <div id="filtering-tab" className="filter-tab active"></div>
@@ -326,14 +320,12 @@ class Hierarchy extends React.Component<Props, State> {
             {this.state.hasGroupingFilter ? (
               <div className="filter">
                 <div className="filter-title">{t("Split into groups")}</div>
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a
-                  href="#"
+                <button
                   className="toggle-grouping-level"
                   onClick={() => this.setState({ selectedSystemGroups: [...this.state.selectedSystemGroups, []] })}
                 >
                   {t("Add a grouping level")} <i className="fa fa-plus"></i>
-                </a>
+                </button>
                 {this.state.selectedSystemGroups.map((item, index) => {
                   return (
                     <div className="combobox" key={`combobox-${index}`}>
@@ -360,9 +352,7 @@ class Hierarchy extends React.Component<Props, State> {
                           //
                         />
                       </Form>
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <a
-                        href="#"
+                      <button
                         className="toggle-grouping-level"
                         title={t("Remove this level")}
                         onClick={() => {
@@ -380,7 +370,7 @@ class Hierarchy extends React.Component<Props, State> {
                         }}
                       >
                         <i className="fa fa-close"></i>
-                      </a>
+                      </button>
                     </div>
                   );
                 })}
