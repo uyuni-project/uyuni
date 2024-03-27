@@ -84,7 +84,7 @@ public class TaskomaticApi {
         }
     }
 
-    private Object invoke(String name, Object...args) throws TaskomaticApiException {
+    protected Object invoke(String name, Object...args) throws TaskomaticApiException {
         try {
             return getClient().invoke(name, args);
         }
