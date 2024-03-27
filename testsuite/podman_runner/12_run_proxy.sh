@@ -141,5 +141,8 @@ create_proxy_configuration
 run_proxy_containers
 cleanup
 
+sudo -i podman exec controller-test bash -c "cat /root/.ssh/config && cat /root/.ssh/authorized_keys"
 sudo -i podman ps
 sudo -i podman pod ls
+
+sudo -i podman exec controller-test bash -c 'export RUNNER=$(hostname -I | cut -d " " -f1) && ssh $RUNNER && hostname'
