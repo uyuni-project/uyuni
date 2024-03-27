@@ -695,7 +695,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 	   left join rhnErrata e on x.errata_id = e.id
           where sp.server_id = server_id_in
             and (x.errata_id IS NULL or e.advisory_status != 'retracted') -- packages which are part of a retracted errata should not be installed
-            and NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = server_id_in AND pid = p.id));
+			and NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = server_id_in AND pid = p.id));
 	end$$ language plpgsql;
 -- restore the original setting
 update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_server')+1) ) where name = 'search_path';
