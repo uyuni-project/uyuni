@@ -299,3 +299,5 @@ susePaygDimensionResult            :: billing_dimension_t susePaygDimensionCompu
 suseAppstream                      :: rhnChannel
 suseAppstreamPackage               :: suseAppstream rhnPackage
 suseAppstreamApi                   :: suseAppstream
+rhnChannelNewestPackage            :: suseAppstream rhnChannel rhnPackageName rhnPackageEVR \
+                                      rhnPackageArch

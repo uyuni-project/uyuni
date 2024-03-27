@@ -59,7 +59,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         if allowed = 0 then
             perform rhn_exception.raise_exception('no_subscribe_permissions');
         end if;
-        
+
         server_already_in_chan := rhn_channel.check_server_subscription(server_id_in, channel_id_in);
 
         IF server_already_in_chan

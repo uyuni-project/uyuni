@@ -97,7 +97,10 @@ suseChannelUserRoleView          :: rhnSharedChannelView \
                                     rhnChannelPermission \
                                     rhnChannelPermissionRole
 rhnChannelNewestPackageView      :: suseChannelPackageRetractedStatusView \
-                                    susePackageExcludingPartOfPtf
+                                    susePackageExcludingPartOfPtf \
+                                    suseAppstream \
+                                    suseAppstreamPackage
 suseChannelPackageRetractedStatusView :: rhnChannelPackage rhnChannelErrata rhnErrataPackage
 suseServerChannelsRetractedPackagesView :: rhnServerChannel rhnChannelErrata rhnErrataPackage
 susePackageExcludingPartOfPtf :: rhnPackageCapability rhnPackageProvides rhnPackage
+suseServerAppStreamHiddenPackagesView :: suseServerAppStreamPackageView

@@ -16,23 +16,27 @@
 
 CREATE TABLE rhnChannelNewestPackage
 (
-    channel_id       NUMERIC NOT NULL
-                         CONSTRAINT rhn_cnp_cid_fk
-                             REFERENCES rhnChannel (id)
-                             ON DELETE CASCADE,
-    name_id          NUMERIC NOT NULL
-                         CONSTRAINT rhn_cnp_nid_fk
-                             REFERENCES rhnPackageName (id),
-    evr_id           NUMERIC NOT NULL
-                         CONSTRAINT rhn_cnp_eid_fk
-                             REFERENCES rhnPackageEVR (id),
-    package_arch_id  NUMERIC NOT NULL
-                         CONSTRAINT rhn_cnp_paid_fk
-                             REFERENCES rhnPackageArch (id),
-    package_id       NUMERIC NOT NULL
-                         CONSTRAINT rhn_cnp_pid_fk
-                             REFERENCES rhnPackage (id)
-                             ON DELETE CASCADE
+    channel_id      NUMERIC NOT NULL
+                        CONSTRAINT rhn_cnp_cid_fk
+                            REFERENCES rhnChannel (id)
+                            ON DELETE CASCADE,
+    name_id         NUMERIC NOT NULL
+                        CONSTRAINT rhn_cnp_nid_fk
+                            REFERENCES rhnPackageName (id),
+    evr_id          NUMERIC NOT NULL
+                        CONSTRAINT rhn_cnp_eid_fk
+                            REFERENCES rhnPackageEVR (id),
+    package_arch_id NUMERIC NOT NULL
+                        CONSTRAINT rhn_cnp_paid_fk
+                            REFERENCES rhnPackageArch (id),
+    package_id      NUMERIC NOT NULL
+                        CONSTRAINT rhn_cnp_pid_fk
+                            REFERENCES rhnPackage (id)
+                            ON DELETE CASCADE,
+    appstream_id    NUMERIC
+                        CONSTRAINT rhn_cnp_aid_fk
+                            REFERENCES suseAppstream (id)
+                            ON DELETE CASCADE
 )
 
 ;
@@ -42,6 +46,10 @@ CREATE INDEX rhn_cnp_pid_idx
     ON rhnChannelNewestPackage (package_id)
     ;
 
-ALTER TABLE rhnChannelNewestPackage
-    ADD CONSTRAINT rhn_cnp_cid_nid_uq UNIQUE (channel_id, name_id, package_arch_id);
+CREATE UNIQUE INDEX rhn_cnp_cid_nid_aid_uq
+    ON rhnchannelnewestpackage (channel_id, name_id, package_arch_id, appstream_id)
+    WHERE appstream_id IS NOT NULL;
 
+CREATE UNIQUE INDEX rhn_cnp_cid_nid_uq
+    ON rhnchannelnewestpackage (channel_id, name_id, package_arch_id)
+    WHERE appstream_id IS NULL;

@@ -63,3 +63,5 @@ rhn_server.pkb          :: rhnServerChannel rhnConfigFileName \
                            rhnPackageEVR rhnChannelPackage rhnErrataPackage \
                            rhnChannelErrata rhnPackageUpgradeArchCompat \
                            susePackageExcludingPartOfPtf
+                           susePackageExcludingPartOfPtf \
+                           suseServerAppStreamHiddenPackagesView
