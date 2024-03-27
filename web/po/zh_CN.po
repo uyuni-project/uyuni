@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 15:01+0100\n"
+"POT-Creation-Date: 2024-03-27 11:48+0100\n"
 "PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -29,11 +29,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:438
+#: ../html/javascript/spacewalk-essentials.js:444
 msgid "remaining"
 msgstr "剩余"
 
-#: ../html/javascript/spacewalk-essentials.js:458
+#: ../html/javascript/spacewalk-essentials.js:464
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -649,7 +649,7 @@ msgid "Non-Virtual System"
 msgstr "虚拟系统"
 
 #: ../html/src/components/systems.tsx:44
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
 #: ../html/src/manager/systems/list-filter.tsx:6
 msgid "Proxy"
 msgstr "代理"
@@ -1028,7 +1028,7 @@ msgstr "按任意值过滤"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:455
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr "主机"
 
@@ -1109,13 +1109,13 @@ msgstr "编辑 SSH 连接时，必须重新提供所有需要的身份凭证。"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:489
 msgid "SSH Port"
 msgstr "SSH 端口"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:484
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:505
 msgid "User"
 msgstr "用户"
 
@@ -1124,22 +1124,22 @@ msgstr "用户"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
 #: ../html/src/manager/login/uyuni/login.tsx:88
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "口令"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:413
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:531
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:552
 msgid "SSH Private Key"
 msgstr "SSH 私用密钥"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:446
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 私用密钥通行口令"
 
@@ -1191,7 +1191,7 @@ msgstr "操作不成功：服务器返回了空答复"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "细节"
@@ -2911,7 +2911,7 @@ msgstr "路径"
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:231
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:574
 msgid "Activation Key"
 msgstr "激活密钥"
 
@@ -2974,7 +2974,7 @@ msgstr "导入"
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:390
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "清除字段"
@@ -4406,7 +4406,7 @@ msgid "Proxy SSH port"
 msgstr "代理 SSH 端口"
 
 #: ../html/src/manager/proxy/container-config.tsx:222
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:500
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
 
@@ -4840,31 +4840,31 @@ msgstr "按名称或指纹搜索"
 msgid "Fingerprint"
 msgstr "指纹"
 
-#: ../html/src/manager/shared/menu/menu.tsx:202
+#: ../html/src/manager/shared/menu/menu.tsx:204
 msgid "Clear Menu"
 msgstr "清除菜单"
 
-#: ../html/src/manager/shared/menu/menu.tsx:204
+#: ../html/src/manager/shared/menu/menu.tsx:206
 msgid "Filter menu"
 msgstr "过滤菜单"
 
-#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:243
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:243
+#: ../html/src/manager/shared/menu/menu.tsx:245
 msgid "Uyuni homepage"
 msgstr "Uyuni 主页"
 
-#: ../html/src/manager/shared/menu/menu.tsx:252
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "SUSE"
 msgstr "SuSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:254
+#: ../html/src/manager/shared/menu/menu.tsx:256
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/shared/menu/menu.tsx:258
+#: ../html/src/manager/shared/menu/menu.tsx:260
 msgid "SUSE Manager homepage"
 msgstr "SUSE Manager 主页"
 
@@ -4993,19 +4993,19 @@ msgstr "储存类型"
 msgid "Error Details"
 msgstr "错误细节"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 msgid "Close"
 msgstr "关闭"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
 "请求已中断，或者从服务器收到了无效响应。请检查您的受控端是否已正常引导。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
 msgid ""
 "Bootstrap process initiated. Your system should be visible at the following "
 "location shortly: <link>systems</link>. If any issues arise, you'll receive "
@@ -5016,46 +5016,46 @@ msgstr ""
 "出现任何问题，您将收到错误通知。如果您使用的是事务系统，请执行系统重引导，以"
 "完成注册过程。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
 msgid "Show additional details about this error"
 msgstr "显示关于此错误的其他细节"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
 msgid "Unable to bootstrap host. The following errors have happened:"
 msgstr "无法引导主机。发生以下错误："
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "您的系统正在引导：正在等待响应..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:390
 msgid "Loading SSH Private Key.."
 msgstr "正在装载 SSH 私用密钥..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Bootstrap"
 msgstr "引导"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:403
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:424
 msgid "e.g., ••••••••••••"
 msgstr "例如 ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:419
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:440
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr "该文件将存储在服务器上的临时文件中，在完成引导过程后将被删除"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:453
 msgid "Leave empty for no passphrase"
 msgstr "留空表示无通行口令"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:465
 msgid "Bootstrap Minions"
 msgstr "引导受控端"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
@@ -5064,11 +5064,11 @@ msgstr ""
 "只有提供 SSH 身份凭证才能添加要管理的系统。{productName} 将远程准备系统并执行"
 "注册。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:482
 msgid "e.g., host.domain.com"
 msgstr "例如 host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -5079,43 +5079,43 @@ msgstr ""
 "立。\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间 "
 "{productName} 的 SSH 密钥部署后设置。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:528
 msgid "Authentication Method"
 msgstr "身份验证方法"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:544
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:565
 msgid "Ansible control node"
 msgstr "Ansible 控制节点"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:592
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:613
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "无"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:596
 msgid "Reactivation Key"
 msgstr "重新激活密钥"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:581
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:602
 msgid "Leave empty when no reactivation is wanted"
 msgstr "如不需要重新激活，则留空"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:631
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr "代理的主机名不是完全限定的。这可能导致在访问通道时出现问题。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:627
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:648
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "在引导期间禁用 SSH 严格主机密钥检查"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:643
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:664
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "完全通过 SSH 管理系统（将不安装代理）"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:659
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:680
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "正在进行引导，您确定要关闭此页面吗？"
@@ -5331,7 +5331,7 @@ msgstr "个系统已选定"
 msgid "systems selected"
 msgstr "个系统已选定"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
 #, fuzzy
 msgid "Clear selected system set"
 msgstr "删除选定的消息"

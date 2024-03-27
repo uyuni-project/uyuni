@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 15:01+0100\n"
+"POT-Creation-Date: 2024-03-27 11:48+0100\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -29,11 +29,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:438
+#: ../html/javascript/spacewalk-essentials.js:444
 msgid "remaining"
 msgstr "restante"
 
-#: ../html/javascript/spacewalk-essentials.js:458
+#: ../html/javascript/spacewalk-essentials.js:464
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -681,7 +681,7 @@ msgid "Non-Virtual System"
 msgstr "Sistemas"
 
 #: ../html/src/components/systems.tsx:44
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
 #: ../html/src/manager/systems/list-filter.tsx:6
 msgid "Proxy"
 msgstr ""
@@ -1061,7 +1061,7 @@ msgstr ""
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:455
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr ""
 
@@ -1144,13 +1144,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:489
 msgid "SSH Port"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:484
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:505
 #, fuzzy
 msgid "User"
 msgstr "Usuários"
@@ -1160,22 +1160,22 @@ msgstr "Usuários"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
 #: ../html/src/manager/login/uyuni/login.tsx:88
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "Senha"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:413
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:531
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:552
 msgid "SSH Private Key"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:446
 msgid "SSH Private Key Passphrase"
 msgstr ""
 
@@ -1229,7 +1229,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr ""
@@ -2938,7 +2938,7 @@ msgstr ""
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:231
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:574
 msgid "Activation Key"
 msgstr ""
 
@@ -3001,7 +3001,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:390
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr ""
@@ -4445,7 +4445,7 @@ msgid "Proxy SSH port"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:222
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:500
 msgid "Port range: 1 - 65535"
 msgstr ""
 
@@ -4883,31 +4883,31 @@ msgstr ""
 msgid "Fingerprint"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:202
+#: ../html/src/manager/shared/menu/menu.tsx:204
 msgid "Clear Menu"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:204
+#: ../html/src/manager/shared/menu/menu.tsx:206
 msgid "Filter menu"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:243
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:243
+#: ../html/src/manager/shared/menu/menu.tsx:245
 msgid "Uyuni homepage"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:252
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "SUSE"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:254
+#: ../html/src/manager/shared/menu/menu.tsx:256
 msgid "Manager"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:258
+#: ../html/src/manager/shared/menu/menu.tsx:260
 msgid "SUSE Manager homepage"
 msgstr ""
 
@@ -5040,18 +5040,18 @@ msgstr "Sistemas"
 msgid "Error Details"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 msgid "Close"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
 msgid ""
 "Bootstrap process initiated. Your system should be visible at the following "
 "location shortly: <link>systems</link>. If any issues arise, you'll receive "
@@ -5059,57 +5059,57 @@ msgid ""
 "please perform a system reboot to complete the registration process."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
 msgid "Show additional details about this error"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
 msgid "Unable to bootstrap host. The following errors have happened:"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:390
 msgid "Loading SSH Private Key.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Bootstrap"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:403
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:424
 msgid "e.g., ••••••••••••"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:419
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:440
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:453
 msgid "Leave empty for no passphrase"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:465
 msgid "Bootstrap Minions"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:482
 msgid "e.g., host.domain.com"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -5117,43 +5117,43 @@ msgid ""
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:528
 msgid "Authentication Method"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:544
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:565
 msgid "Ansible control node"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:592
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:613
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:596
 msgid "Reactivation Key"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:581
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:602
 msgid "Leave empty when no reactivation is wanted"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:631
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:627
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:648
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:643
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:664
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:659
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:680
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr ""
@@ -5359,7 +5359,7 @@ msgstr ""
 msgid "systems selected"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
 msgid "Clear selected system set"
 msgstr ""
 
