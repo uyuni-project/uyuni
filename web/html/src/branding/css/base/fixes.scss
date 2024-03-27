@@ -26,3 +26,11 @@ div.checkbox.icon-wrapper i.fa {
 .auto-overflow {
   overflow: auto;
 }
+
+/**
+ * This allows us to fix layouts on Bootstrap 5 pages without affecting Bootstrap 3 pages
+ * TODO: Remove and replace its usages with just `row` after we finish the migration
+ */
+.form-group {
+  @extend .row;
+}

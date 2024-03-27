@@ -385,7 +385,11 @@ export function NetworkProperties(props: Props) {
                   )}
                   {FieldsData.getValue(model.type, "vlan_trunk", () => false)(model) && (
                     <>
-                      <Check name="vlantrunk" label={t("VLAN tags trunking")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
+                      <Check
+                        name="vlantrunk"
+                        label={t("VLAN tags trunking")}
+                        divClass="col-md-6 col-md-offset-3 offset-md-3"
+                      />
                       <Vlans />
                     </>
                   )}
