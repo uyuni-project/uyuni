@@ -33,6 +33,7 @@ SELECT * FROM
             AND  p.evr_id = pe.id
             AND  p.package_arch_id = pa.id
             AND  NOT CP.is_retracted
+            AND  NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = p.id)
        GROUP BY  p.name_id, pa.label, pa.id, pe.id
 ) avl
        left join rhnpackagename pn on pn.id = avl.name_id
@@ -61,6 +62,7 @@ SELECT PKG.id AS id,
        join rhnServerChannel SC on SC.channel_id = CP.channel_id
  WHERE SC.server_id = :sid
    AND NOT CP.is_retracted
+   AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = PKG.id)
    AND NOT EXISTS (SELECT 1
                      FROM rhnServerPackage SP
                     WHERE SP.server_id = :sid
@@ -89,6 +91,7 @@ SELECT PKG.id AS id,
        rhnServerPackage SP
  WHERE CP.channel_id = :cid
    AND SP.server_id = :sid
+   AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = PKG.id)
    AND SP.name_id = PKG.name_id
    AND SP.evr_id = PKG.evr_id
    AND SP.package_arch_id = PKG.package_arch_id
@@ -131,6 +134,7 @@ SELECT
                       AND SP.name_id = full_list.name_id
                       AND (SP.package_arch_id = full_list.arch_id or SP.package_arch_id is null))
   AND NOT rcp.is_retracted
+  AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = rp.id)
 order by upper(pn.name)
   </query>
 </mode>
@@ -901,6 +905,7 @@ SELECT rp.id AS package_id,
                     AND (SP.package_arch_id = pa.id OR SP.package_arch_id IS NULL)
             )
             AND NOT EXISTS (SELECT 1 FROM suseServerChannelsRetractedPackagesView WHERE sid = :sid AND pid = p.id)
+            AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = p.id)
        GROUP BY p.name_id, pa.label, pa.id) latest
            JOIN rhnPackageName pn ON pn.id = latest.name_id
            JOIN rhnPackage rp ON rp.name_id = latest.name_id
