@@ -121,7 +121,7 @@ const Build = ({
         }
         buttons={
           <React.Fragment>
-            <div className="col-lg-offset-6 col-lg-6">
+            <div className="col-lg-offset-6 offset-lg-6 col-lg-6">
               <div className="pull-right btn-group">
                 <Button
                   id={`cm-build-modal-cancel-button`}

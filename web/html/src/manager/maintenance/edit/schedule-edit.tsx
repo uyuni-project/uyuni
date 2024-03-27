@@ -111,10 +111,14 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
         ]}
       />
       {props.isEdit && (
-        <Check name="strategy" label={<b>{t("Cancel affected actions")}</b>} divClass="col-md-6 col-md-offset-3" />
+        <Check
+          name="strategy"
+          label={<b>{t("Cancel affected actions")}</b>}
+          divClass="col-md-6 col-md-offset-3 offset-md-3"
+        />
       )}
       <div className="form-group">
-        <div className="col-md-6 col-md-offset-3">
+        <div className="col-md-6 col-md-offset-3 offset-md-3">
           {!calendarAdded ? (
             <Button
               className="btn-default"

@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
             <div class="radio">
                 <label>
                     <html:radio property="selinuxMode" value="permissive" />
@@ -47,7 +47,7 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
             <div class="radio">
                 <label>
                     <html:radio property="selinuxMode" value="disabled" />
@@ -59,7 +59,7 @@
 
     <h3><bean:message key="kickstart.systemdetails.jsp.header3"/></h3>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="checkbox">
                     <label class="control-label">
                         <html:checkbox property="configManagement" />
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="checkbox">
                     <label class="control-label">
                         <bean:message key="kickstart.remote.cmd.jsp.label" />
@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="radio">
                     <label>
                         <html:radio property="registrationType" value="reactivation" />
@@ -105,7 +105,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="radio">
                     <label>
                         <html:radio property="registrationType" value="deletion" />
@@ -115,7 +115,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="radio">
                     <label>
                         <html:radio property="registrationType" value="none" />
@@ -146,7 +146,7 @@
             </div>
     </div>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
             <input type="submit" class="btn btn-success"
                    value="<bean:message key='kickstart.systemdetails.edit.submit.jsp.label'/>" />
         </div>

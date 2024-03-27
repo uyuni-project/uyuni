@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-3 col-md-6">
+                <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <html:submit styleClass="btn btn-success">
                         <bean:message key="kickstart.partition.jsp.update"/>
                     </html:submit>

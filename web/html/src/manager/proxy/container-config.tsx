@@ -294,7 +294,7 @@ export function ProxyConfig() {
               key="ssl-certificate"
               title={t("SSL Certificate data")}
               headingLevel="h2"
-              className="panel-default col-md-6 col-md-offset-3 no-padding"
+              className="panel-default col-md-6 col-md-offset-3 offset-md-3 no-padding"
             >
               <div className="row">
                 <FormMultiInput
@@ -304,7 +304,7 @@ export function ProxyConfig() {
                   onAdd={onAddField("cnames")}
                   onRemove={onRemoveField("cnames")}
                   panelHeading="label"
-                  panelClassName="panel-default col-md-8 col-md-offset-1 no-padding"
+                  panelClassName="panel-default col-md-8 col-md-offset-1 offset-md-1 no-padding"
                 >
                   {(index) => (
                     <Text name={`cnames${index}`} label={t("CNAME")} labelClass="col-md-3" divClass="col-md-6" />
@@ -345,7 +345,7 @@ export function ProxyConfig() {
                 prefix="intermediateCAs"
                 onAdd={onAddField("intermediateCAs")}
                 onRemove={onRemoveField("intermediateCAs")}
-                panelClassName="panel-default col-md-8 col-md-offset-1 no-padding"
+                panelClassName="panel-default col-md-8 col-md-offset-1 offset-md-1 no-padding"
                 panelHeading="label"
               >
                 {(index) => (
@@ -381,7 +381,7 @@ export function ProxyConfig() {
           </>
         )}
 
-        <div className="col-md-offset-3 col-md-6">
+        <div className="col-md-offset-3 offset-md-3 col-md-6">
           <SubmitButton id="submit-btn" className="btn-success" text={t("Generate")} disabled={!isValidated} />
           <AsyncButton
             id="clear-btn"

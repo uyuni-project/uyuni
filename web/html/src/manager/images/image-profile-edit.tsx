@@ -546,7 +546,7 @@ class CreateImageProfile extends React.Component<Props, State> {
           <hr />
           {this.renderCustomDataFields()}
           <div className="form-group">
-            <div className="col-md-offset-3 col-md-6">{this.renderButtons()}</div>
+            <div className="col-md-offset-3 offset-md-3 col-md-6">{this.renderButtons()}</div>
           </div>
         </Form>
       </TopPanel>

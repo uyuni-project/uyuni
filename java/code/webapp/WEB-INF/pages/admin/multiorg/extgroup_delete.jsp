@@ -41,7 +41,7 @@
     </div>
 
     <div class="form-group">
-      <div class="col-lg-offset-3 col-lg-6">
+      <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
         <html:submit styleClass="btn btn-default"><bean:message key="extgroup.jsp.delete"/></html:submit>
         <html:hidden property="gid" value="${gid}" />
       </div>

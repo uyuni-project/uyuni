@@ -30,7 +30,7 @@ export default function AppStreams({ matcher }) {
     return (
       <>
         <div className="form-group">
-          <div className="col-md-offset-3 col-md-6">
+          <div className="col-md-offset-3 offset-md-3 col-md-6">
             <button className="btn-link" onClick={enableBrowse}>
               {isLoading ? <i className="fa fa-refresh fa-spin fa-fw" /> : <i className="fa fa-search fa-fw" />}
               Browse available modules

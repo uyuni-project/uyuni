@@ -18,7 +18,7 @@ export function DnsConfig(props: Props) {
   return (
     <Panel title={t("DNS")} headingLevel="h3">
       <div className="col-md-12">
-        <div className="col-md-7 col-md-offset-2">
+        <div className="col-md-7 col-md-offset-2 offset-md-2">
           <FormMultiInput
             id={"dns_forwarders"}
             title={t("Forwarders")}

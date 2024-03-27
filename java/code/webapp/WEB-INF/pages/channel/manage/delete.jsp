@@ -144,7 +144,7 @@
 
                     <!-- Unsubscribe option -->
                 <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
+                    <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="unsubscribeSystems"/>
@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
+                    <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <c:choose>
                             <c:when test="${empty requestScope.disableDelete}">
                                 <html:submit property="delete_button" styleClass="btn btn-danger">

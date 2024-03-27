@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="checkbox">
                         <label>
                             <html:checkbox property="defaultMaster"
@@ -107,7 +107,7 @@
                             </rl:column>
                         </rl:list>
                         <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
+                            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <input type="submit" name="dispatch" class="btn btn-success"
                                        value='<bean:message key="iss.master.update"/>' />
                             </div>
@@ -116,7 +116,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="form-group">
-                        <div class="col-lg-offset-3 col-lg-6">
+                        <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <html:submit styleClass="btn btn-success">
                                 <bean:message key="iss.master.create" />
                             </html:submit>

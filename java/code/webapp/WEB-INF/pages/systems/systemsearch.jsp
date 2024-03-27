@@ -98,7 +98,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-9 col-sm-offset-3">
+                        <div class="col-sm-9 col-sm-offset-3 offset-sm-3">
                             <button type="submit" class="btn btn-primary">
                                 <rhn:icon type="header-search" />
                                 <bean:message key="button.search"/>

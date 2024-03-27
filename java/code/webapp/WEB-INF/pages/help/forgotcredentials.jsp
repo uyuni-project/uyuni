@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="col-md-offset-2 col-md-10">
+          <div class="col-md-offset-2 offset-md-2 col-md-10">
            <button type="submit" class="btn btn-success btn-sm" name="password_button">
              <bean:message key="help.credentials.jsp.passwordbutton"/>
           </button>
@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="col-md-offset-2 col-md-10">
+          <div class="col-md-offset-2 offset-md-2 col-md-10">
            <button type="submit" class="btn btn-success btn-sm" name="login_button">
              <bean:message key="help.credentials.jsp.loginbutton"/>
           </button>

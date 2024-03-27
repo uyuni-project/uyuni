@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="checkbox">
                         <label>
                             <html:checkbox property="enabled" styleId="enabled" />
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="checkbox">
                         <label>
                             <html:checkbox property="allowAllOrgs"
@@ -60,7 +60,7 @@
             </div>
 
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit styleClass="btn btn-success">
                         <c:choose>
                             <c:when test="${requestScope.sid > 0}">
@@ -89,7 +89,7 @@
                     </rl:column>
                 </rl:list>
                 <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
+                    <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <rhn:submitted />
                         <input type="submit" name="dispatch" class="btn btn-success"
                                value='<bean:message key="iss.slave.associate"/>' />

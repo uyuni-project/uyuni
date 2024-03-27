@@ -394,7 +394,7 @@ class BuildImage extends React.Component<Props, State> {
           />
 
           <FormGroup>
-            <div className="col-md-offset-3 col-md-9">
+            <div className="col-md-offset-3 offset-md-3 col-md-9">
               <SubmitButton
                 id="submit-btn"
                 className="btn-success"

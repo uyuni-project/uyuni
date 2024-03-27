@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="row-0">
-                    <div class="col-md-offset-3 col-md-5">
+                    <div class="col-md-offset-3 offset-md-3 col-md-5">
                         <div class="checkbox">
                             <label>
                                 <c:if test="${param.showalreadycloned == 1}">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="row-0">
-                    <div class="col-md-offset-3 col-md-5">
+                    <div class="col-md-offset-3 offset-md-3 col-md-5">
                         <html:submit styleClass="btn btn-success">
                             <bean:message key="cloneerrata.jsp.view"/>
                         </html:submit>

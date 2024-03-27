@@ -272,7 +272,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="input-group">
                         <span class="input-group-addon"><bean:message key="channel.edit.jsp.phonenumber"/>:</span>
                         <html:text property="maintainer_phone" size="20"
@@ -307,7 +307,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="radio">
                         <label>
                             <html:radio property="per_user_subscriptions" value="selected" styleId="selectedusers" />
@@ -331,7 +331,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="radio">
                         <label>
                             <html:radio property="org_sharing" value="protected" styleId="protected" />
@@ -342,7 +342,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="radio">
                         <label>
                             <html:radio property="org_sharing" value="public" styleId="public"/>
@@ -403,7 +403,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test="${not empty clone_type}">
                             <html:submit property="clone_button" styleClass="btn btn-success">

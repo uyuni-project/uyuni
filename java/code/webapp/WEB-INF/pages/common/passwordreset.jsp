@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="col-md-offset-2 col-md-10">
+          <div class="col-md-offset-2 offset-md-2 col-md-10">
            <html:submit styleClass="btn btn-success btn-sm">
              <bean:message key="passwordreset.jsp.update"/>
           </html:submit>

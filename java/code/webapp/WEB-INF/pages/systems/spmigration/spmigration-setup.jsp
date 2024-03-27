@@ -101,7 +101,7 @@
                 </div>
             </c:if>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+                <div class="col-sm-offset-2 offset-sm-2 col-sm-10">
                     <c:if test="${empty targetProducts.missingChannels}">
                         <%@ include file="/WEB-INF/pages/systems/spmigration/channel-details.jspf"%>
                     </c:if>
@@ -118,7 +118,7 @@
                </ul>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+                <div class="col-sm-offset-2 offset-sm-2 col-sm-10">
                     <button type="submit" name="dispatch"
                         class="btn btn-success" id="submitButton"
                         <c:if test="${not empty targetProducts.missingChannels}"> disabled</c:if>

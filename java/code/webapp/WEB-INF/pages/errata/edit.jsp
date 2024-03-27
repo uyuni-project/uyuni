@@ -38,7 +38,7 @@
             <h2><bean:message key="errata.edit.senderratamail"/></h2>
             <p><bean:message key="errata.edit.youmaynotify" /></p>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit property="dispatch" styleClass="btn btn-success">
                         <bean:message key="errata.edit.sendnotification" />
                     </html:submit>
@@ -149,7 +149,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <h3><bean:message key="errata.create.jsp.bugs"/></h3>
                 </div>
             </div>
@@ -188,7 +188,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-lg-offset-3 col-lg-6">
+                                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                     <a class="btn btn-danger"
                                        href="/rhn/errata/manage/DeleteBug.do?eid=<c:out value="${param.eid}"/>&amp;bid=<c:out value="${bug.id}"/>">
                                         <bean:message key="errata.edit.deletebug"/>
@@ -201,7 +201,7 @@
 
             <%-- Display an empty bug shell for input --%>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <h3><bean:message key="errata.create.jsp.newbug"/></h3>
                 </div>
             </div>
@@ -264,7 +264,7 @@
             </div>
             <rhn:hidden name="eid" value="${param.eid}" />
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit property="dispatch" styleClass="btn btn-success">
                         <bean:message key="errata.edit.updateerrata"/>
                     </html:submit>

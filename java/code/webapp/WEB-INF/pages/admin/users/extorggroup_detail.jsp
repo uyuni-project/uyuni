@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
+                    <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <button type="submit" class="btn btn-success">
                             <c:choose>
                                 <c:when test="${empty gid}">

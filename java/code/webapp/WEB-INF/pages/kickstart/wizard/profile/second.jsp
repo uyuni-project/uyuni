@@ -61,7 +61,7 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
-          <div class="col-sm-6 col-sm-offset-3">
+          <div class="col-sm-6 col-sm-offset-3 offset-sm-3">
             <div class="radio">
               <label>
                 <html:radio styleId="wizard-defaultdownloadon" property="defaultDownload" value="true" onclick="disableCtl('wizard-userdefdload');">

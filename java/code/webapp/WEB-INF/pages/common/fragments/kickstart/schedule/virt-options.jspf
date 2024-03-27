@@ -66,7 +66,7 @@
             <div class="col-sm-9">
                 <html:text property="diskPath" maxlength="64" size="20" styleId="diskPathId" styleClass="form-control" />
             </div>
-            <div class="col-sm-offset-3 col-sm-9">
+            <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
                 <bean:message key="kickstartdetails.jsp.virt_disk_path.tip" />
             </div>
         </div>
@@ -79,7 +79,7 @@
             <div class="col-sm-9">
                 <html:text property="macAddress" maxlength="17" size="17" styleId="macAddressId" styleClass="form-control" />
             </div>
-            <div class="col-sm-offset-3 col-sm-9">
+            <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
                 <bean:message key="kickstartdetails.jsp.mac_address.tip" />
             </div>
         </div>

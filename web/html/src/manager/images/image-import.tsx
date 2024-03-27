@@ -299,7 +299,7 @@ class ImageImport extends React.Component {
 
           {this.renderActivationKeySelect()}
           <div className="form-group">
-            <div className="col-md-offset-3 col-md-6">
+            <div className="col-md-offset-3 offset-md-3 col-md-6">
               <SubmitButton
                 id="update-btn"
                 className="btn-success"

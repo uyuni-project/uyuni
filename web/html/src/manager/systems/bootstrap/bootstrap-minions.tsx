@@ -667,7 +667,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             </div>
           </div>
           <div className="form-group">
-            <div className="col-md-offset-3 col-md-6">{buttons}</div>
+            <div className="col-md-offset-3 offset-md-3 col-md-6">{buttons}</div>
           </div>
         </div>
       </TopPanel>

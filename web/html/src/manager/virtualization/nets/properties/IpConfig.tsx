@@ -35,7 +35,7 @@ export function IpConfig(props: Props) {
         required
       />
       <div className="col-md-12">
-        <div className="col-md-7 col-md-offset-2">
+        <div className="col-md-7 col-md-offset-2 offset-md-2">
           <FormMultiInput
             id={`${prefix}-dhcp-range`}
             title={t(`DHCP${props.ipv6 ? "v6" : ""} Ranges`)}

@@ -83,7 +83,7 @@
             </table></div></div>
 
             <div id="action-chain-save-input" class="form-group" hidden>
-                <div class="col-md-offset-3 col-md-6">
+                <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <button class="btn btn-primary" id="save"><bean:message key="actionchain.jsp.save"/></button>
                     <button class="btn btn-default" id="cancel"><bean:message key="actionchain.jsp.cancel"/></button>
                 </div>
@@ -129,7 +129,7 @@
                             <c:when test="${maintenanceWindows == null}">
                                 <rhn:hidden name="schedule_type" value="date"/>
                                 <div class="form-group">
-                                    <div class="col-md-offset-3 col-md-6">
+                                    <div class="col-md-offset-3 offset-md-3 col-md-6">
                                         <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
                                             <jsp:param name="widget" value="date"/>
                                         </jsp:include>
@@ -144,7 +144,7 @@
                             </c:otherwise>
                         </c:choose>
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-6">
+                            <div class="col-md-offset-3 offset-md-3 col-md-6">
                                 <button type="button" class="btn btn-success" id="save-and-schedule">
                                     <bean:message key="actionchain.jsp.saveandschedule"/>
                                 </button>

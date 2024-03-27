@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="checkbox">
                         <label>
                             <input type="radio" name="whereCriteria"
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:select property="channel_filter" styleClass="form-control">
                         <html:options collection="allChannels"
                                       property="id"
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="checkbox">
                         <label>
                             <input type="radio" name="whereCriteria"
@@ -91,7 +91,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:select property="channel_arch" multiple="multiple"
                                  styleClass="form-control"
                                  size="5" onclick="javascript:highlander(this);">
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <label>
                         <html:checkbox property="fineGrained" styleId="fineGrainedlabel" />
                         <bean:message key="systemsearch.jsp.finegrained"/>

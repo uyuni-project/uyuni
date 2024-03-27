@@ -13,7 +13,7 @@ export function Vlans(props: Props) {
   const model = formContext.model || {};
   return (
     <div className="col-md-12">
-      <div className="col-md-7 col-md-offset-2">
+      <div className="col-md-7 col-md-offset-2 offset-md-2">
         <FormMultiInput
           id="vlans"
           title={t("VLANs")}
