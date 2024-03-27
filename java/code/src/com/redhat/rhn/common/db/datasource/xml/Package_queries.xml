@@ -33,6 +33,7 @@ SELECT * FROM
             AND  p.evr_id = pe.id
             AND  p.package_arch_id = pa.id
             AND  NOT CP.is_retracted
+            AND  NOT EXISTS (SELECT 1 FROM suseServerPackagesDisabledModulesView WHERE sid = :sid AND pid = p.id)
        GROUP BY  p.name_id, pa.label, pa.id, pe.id
 ) avl
        left join rhnpackagename pn on pn.id = avl.name_id
