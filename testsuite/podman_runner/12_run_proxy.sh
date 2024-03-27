@@ -141,9 +141,5 @@ create_proxy_configuration
 run_proxy_containers
 cleanup
 
-hostname
-hostname -I
-$USER
-ls -la $HOME
 sudo -i podman ps
 sudo -i podman pod ls
