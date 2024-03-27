@@ -13,23 +13,23 @@ Feature: Setup containerized proxy
   I want to register the containerized proxy on the server
 
   Scenario: Check if the pod is running
-    When I run "podman pod inspect --format '{{.State}}' uyuni-proxy-test" on "localhost"
+    When I run "sudo --login podman pod inspect --format '{{.State}}' uyuni-proxy-test" on "runner"
     Then it should contain a "Running" text
 
   Scenario: Check if all the proxy containers are running
-    When I run "podman container inspect --format '{{.State.Status}}' proxy-httpd" on "localhost"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-httpd" on "runner"
     Then it should contain a "running" text
-    When I run "podman container inspect --format '{{.State.Status}}' proxy-ssh" on "localhost"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-ssh" on "runner"
     Then it should contain a "running" text
-    When I run "podman container inspect --format '{{.State.Status}}' proxy-salt-broker" on "localhost"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-salt-broker" on "runner"
     Then it should contain a "running" text
-    When I run "podman container inspect --format '{{.State.Status}}' proxy-squid" on "localhost"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-squid" on "runner"
     Then it should contain a "running" text
-    When I run "podman container inspect --format '{{.State.Status}}' proxy-tftpd" on "localhost"
+    When I run "sudo --login podman container inspect --format '{{.State.Status}}' proxy-tftpd" on "runner"
     Then it should contain a "running" text
 
   Scenario: Check if the proxy containers are attached to the pod
-    When I run "podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test" on "localhost"
+    When I run "sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test" on "runner"
     Then it should contain a "6" text
 
   # Because of ... the rest is skipped.
