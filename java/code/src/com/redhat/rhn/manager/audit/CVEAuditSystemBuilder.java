@@ -30,6 +30,12 @@ public class CVEAuditSystemBuilder {
     private long systemID;
     private String systemName;
     private PatchStatus patchStatus;
+    /**
+     * Why need this?
+     * If server was scanned wth CVEAuditManager#doAuditSystem instead of CVEAuditManagerOVAL#doAuditSystem then
+     * it's possible to get false negatives.
+     */
+    private boolean scannedWithOVAL;
 
     // LinkedHashSet is used to preserve insertion order when iterating
     private Set<AuditChannelInfo> channels =
@@ -180,5 +186,21 @@ public class CVEAuditSystemBuilder {
     /** {@inheritDoc} */
     public Long getId() {
         return systemID;
+    }
+
+    /**
+     * Returns {@code True} if server was scanned with OVAL and {@code False} otherwise
+     * @return {@code True} if server was scanned with OVAL and {@code False} otherwise
+     * */
+    public boolean isScannedWithOVAL() {
+        return scannedWithOVAL;
+    }
+
+    /**
+     * Sets scannedWithOVAL
+     * @param scannedWithOVALIn the value to set
+     * */
+    public void setScannedWithOVAL(boolean scannedWithOVALIn) {
+        this.scannedWithOVAL = scannedWithOVALIn;
     }
 }

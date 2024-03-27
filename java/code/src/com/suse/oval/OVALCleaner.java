@@ -58,9 +58,8 @@ public class OVALCleaner {
             root.getDefinitions().removeIf(def -> def.getId().contains("unaffected"));
         }
 
-        if (osFamily == OsFamily.DEBIAN || osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
-                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP || osFamily == OsFamily.LEAP) {
-            // For the above OS families, we only need OVAL vulnerability definitions
+        // Debian OVAL files could contain patch definitions, but we're only interested in vulnerability definitions
+        if (osFamily == OsFamily.DEBIAN) {
             root.getDefinitions().removeIf(def -> def.getDefinitionClass() != DefinitionClassEnum.VULNERABILITY);
         }
 
@@ -87,8 +86,10 @@ public class OVALCleaner {
         switch (osFamily) {
             case REDHAT_ENTERPRISE_LINUX:
             case LEAP:
+            case LEAP_MICRO:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
+            case SUSE_LINUX_ENTERPRISE_MICRO:
                 List<String> cves =
                         definition.getMetadata().getAdvisory().map(Advisory::getCveList)
                                 .orElse(Collections.emptyList())
@@ -141,10 +142,11 @@ public class OVALCleaner {
     }
 
     /**
-     * Debian Ids are not unique among different versions, so it's possible to have OVAL constructs that have the
-     * same id but different content for different versions of Debian.
-     * <p>
-     * To work around this, we insert the codename of the version into the id string
+     * Debian Ids are not unique among different versions. For example, it is possible to find an OVAL test with
+     * {@code id = "1"} in the OVAL file of debian buster and debian bullseye. This would create a conflict between
+     * the two tests.
+     * To work around this and to have globally unique IDs for OVAL tests, we insert the codename of the version into
+     * the id string.
      */
     private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
         if (root instanceof CriteriaType) {

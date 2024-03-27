@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -43,6 +44,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.oval.OsFamily;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.StringUtils;
@@ -2407,6 +2409,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.SLES.equals(getOs());
     }
 
+    boolean isSLES() {
+        return ServerConstants.SLES.equalsIgnoreCase(getOs());
+    }
+    boolean isSLED() {
+        return ServerConstants.SLED.equalsIgnoreCase(getOs());
+    }
+
     /**
      * @return true if the installer type is of SLES 10
      */
@@ -2442,6 +2451,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
     }
 
+    boolean isLeap() {
+       return ServerConstants.LEAP.equalsIgnoreCase(getOs());
+    }
+
     boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
     }
@@ -2460,6 +2473,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.OPENSUSEMICROOS.equals(getOs());
     }
 
+    boolean isUbuntu() {
+        return ServerConstants.UBUNTU.equalsIgnoreCase(getOs());
+    }
+
     boolean isUbuntu1804() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
     }
@@ -2472,6 +2489,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
     }
 
+    boolean isDebian() {
+        return ServerConstants.DEBIAN.equalsIgnoreCase(getOs());
+    }
+
     boolean isDebian12() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("12");
     }
@@ -2482,6 +2503,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isDebian10() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
+    }
+
+    boolean isRHEL() {
+        return ServerConstants.RHEL.equals(getOs());
     }
 
     /**
@@ -2521,6 +2546,46 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isRocky9() {
         return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("9.");
+    }
+
+    /**
+     * Derives an {@link com.redhat.rhn.manager.audit.CVEAuditManagerOVAL.OVALProduct} object based on the server's
+     * information, including the operating system name and release version. Used by the OVAL synchronization process
+     * to identify the installed product and synchronize OVAL data for it.
+     *
+     * @return the information of the installed product to synchronize OVAL data for if the product is eligible for
+     * OVAL synchronization and {@code Optional.empty} otherwise
+     * (for example product maintainers don't produce OVAL data)
+     * */
+    public Optional<CVEAuditManagerOVAL.OVALProduct> toOVALProduct() {
+        String osRelease = getRelease();
+
+        CVEAuditManagerOVAL.OVALProduct ovalProduct = null;
+        if (isDebian() && OsFamily.DEBIAN.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.DEBIAN, osRelease);
+        }
+        else if (isLeap() && OsFamily.LEAP.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.LEAP, osRelease);
+        }
+        else if (isRHEL() && OsFamily.REDHAT_ENTERPRISE_LINUX.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.REDHAT_ENTERPRISE_LINUX,
+                    // Removing the fractional part from the version .e.g. '9.2' to '9'
+                    osRelease.replace("\\..*", ""));
+        }
+        else if (isSLES() && OsFamily.SUSE_LINUX_ENTERPRISE_SERVER.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_SERVER, osRelease);
+        }
+        else if (isSLED() && OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP, osRelease);
+        }
+        else if (isLeapMicro() && OsFamily.LEAP_MICRO.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, osRelease);
+        }
+        else if (isSLEMicro() && OsFamily.SUSE_LINUX_ENTERPRISE_MICRO.isSupportedRelease(osRelease)) {
+            ovalProduct = new CVEAuditManagerOVAL.OVALProduct(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, osRelease);
+        }
+
+        return Optional.ofNullable(ovalProduct);
     }
 
     /**

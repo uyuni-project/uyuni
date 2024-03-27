@@ -15,25 +15,69 @@
 
 package com.suse.oval;
 
+import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 public enum OsFamily {
-    LEAP("openSUSE Leap", "leap", "opensuse"),
-    SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse"),
-    SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "sled", "suse"),
-    REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "enterprise_linux", "redhat"),
-    UBUNTU("Ubuntu", "ubuntu", "canonical"),
-    DEBIAN("Debian", "debian", "debian");
+    LEAP("openSUSE Leap", "leap", "opensuse",
+            oneOf("15.2", "15.3", "15.4", "15.5")),
+    LEAP_MICRO("openSUSELeap Micro", "leap-micro", "opensuse",
+            oneOf("5.2", "5.3")),
+    SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse",
+            oneOf("11", "12", "15")),
+    SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "sled", "suse",
+            oneOf("10", "11", "12", "15")),
+    SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "sle-micro", "suse",
+            oneOf("5.0", "5.1", "5.2", "5.3")),
+    REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "enterprise_linux", "redhat",
+            withPrefix("7.", "8.", "9.")),
+    UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("18.04", "20.04", "22.04")),
+    DEBIAN("Debian", "debian", "debian", oneOf("10", "11", "12"));
 
     private final String vendor;
     private final String fullname;
     // Should consist of all lower case characters
     private final String shortname;
+    private final Pattern legalReleasePattern;
 
-    OsFamily(String fullnameIn, String shortnameIn, String vendorIn) {
+    OsFamily(String fullnameIn, String shortnameIn, String vendorIn, String legalReleaseRegex) {
         this.fullname = fullnameIn;
         this.shortname = shortnameIn;
         this.vendor = vendorIn;
+        legalReleasePattern = Pattern.compile(legalReleaseRegex);
     }
-    OsFamily(String fullnameIn, String vendorIn) {
-        this(fullnameIn, fullnameIn.toLowerCase(), vendorIn);
+
+    /**
+     * Returns the full name of the OS family.
+     *
+     * @return OS family fullname
+     * */
+    public String fullname() {
+        return fullname;
+    }
+
+    /**
+     * Checks if the given OS release version is valid for this OS family.
+     *
+     * @param release the release version to check
+     * @return weather the given OS release version is valid for this OS family.
+     * */
+    public boolean isSupportedRelease(String release) {
+        return legalReleasePattern.matcher(release).matches();
+    }
+
+    private static String oneOf(String ... legalReleases) {
+        return "(" + String.join("|", escapePeriods(legalReleases)) + ")";
+    }
+
+    private static String withPrefix(String ... legalReleasePrefixes) {
+        return "(" + Arrays.stream(escapePeriods(legalReleasePrefixes))
+                .map(prefix -> prefix + ".*")
+                .collect(Collectors.joining("|")) + ")";
+    }
+
+    private static String[] escapePeriods(String ... strings) {
+        return Arrays.stream(strings).map(str -> str.replace(".", "\\.")).toArray(String[]::new);
     }
 }
