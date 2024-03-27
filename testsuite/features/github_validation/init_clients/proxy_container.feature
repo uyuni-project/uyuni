@@ -16,7 +16,7 @@ Feature: Setup containerized proxy
     When I run "podman pod inspect --format '{{.State}}' uyuni-proxy-test" on "localhost"
     Then it should contain a "Running" text
 
-  Scenario: Check if the proxy containers are running
+  Scenario: Check if all the proxy containers are running
     When I run "podman container inspect --format '{{.State.Status}}' proxy-httpd" on "localhost"
     Then it should contain a "running" text
     When I run "podman container inspect --format '{{.State.Status}}' proxy-ssh" on "localhost"
@@ -28,10 +28,11 @@ Feature: Setup containerized proxy
     When I run "podman container inspect --format '{{.State.Status}}' proxy-tftpd" on "localhost"
     Then it should contain a "running" text
 
-  Scenario: Check if all the proxy containers are attached to the pod
+  Scenario: Check if the proxy containers are attached to the pod
     When I run "podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test" on "localhost"
     Then it should contain a "6" text
 
+  # Because of ... the rest is skipped.
   @skip
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

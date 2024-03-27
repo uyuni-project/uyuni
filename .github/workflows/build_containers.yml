@@ -39,36 +39,6 @@ jobs:
           build-args: |
             BASE=registry.opensuse.org/uyuni/server
             VERSION=2024.02
-  build-and-push-proxy-image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-proxy-dev
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./testsuite/dockerfiles/proxy-dev/
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
   build-and-push-ubuntu-minion-image:
     runs-on: ubuntu-latest
     permissions:

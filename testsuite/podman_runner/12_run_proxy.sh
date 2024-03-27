@@ -1,24 +1,18 @@
 #!/bin/bash
 set -euxo pipefail
 
-export PROXY_UTILS=$HOME/proxy
-export ADD_HOST=uyuni-server-all-in-one-test:$(sudo --login podman exec uyuni-server-all-in-one-test bash -c 'hostname -I | cut -d" " -f1')
+create_proxy_configuration() {
 
-get_server_certificates() {
-  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /tmp'
-  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.crt /tmp'
-  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
-}
+  export PROXY_UTILS=$HOME/proxy
 
-set_utility_directories() {
+  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /root/ssl-build/uyuni-server-all-in-one-test/server.crt /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
+
   mkdir --parents \
     $PROXY_UTILS \
     $PROXY_UTILS/proxy-squid-cache \
     $PROXY_UTILS/proxy-rhn-cache \
     $PROXY_UTILS/proxy-tftpboot
-}
 
-create_proxy_configuration() {
   cat <<EOF > $PROXY_UTILS/config.yaml
 server: uyuni-server-all-in-one-test
 ca_crt: |
@@ -60,7 +54,7 @@ run_proxy_containers() {
     --publish 4556:4506 \
     --publish 8022:22 \
     --publish 8088:8080 \
-    --add-host $ADD_HOST
+    --add-host uyuni-server-all-in-one-test:$(sudo --login podman exec uyuni-server-all-in-one-test bash -c 'hostname -I | cut -d" " -f1')
 
   sudo --login podman run \
     --privileged \
@@ -133,10 +127,6 @@ run_proxy_containers() {
       # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-tftpd-dev:$UYUNI_VERSION (see ...)
 }
 
-add_ssh_configuration () {
-  sudo --login podman exec proxy-ssh bash -c 'mkdir --parents /root/.ssh && mv /tmp/ssh_host_rsa_key.pub /root/.ssh/authorized_keys'
-}
-
 cleanup () {
   sudo --login \
     rm \
@@ -147,12 +137,11 @@ cleanup () {
       /tmp/test-all-in-one/server.key
 }
 
-get_server_certificates
-set_utility_directories
 create_proxy_configuration
 run_proxy_containers
-add_ssh_configuration
 cleanup
 
+hostname
+hostname -I
 sudo -i podman ps
 sudo -i podman pod ls
