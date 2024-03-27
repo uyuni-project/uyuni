@@ -52,9 +52,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
@@ -736,19 +736,33 @@ public class TaskomaticApi {
     public void deleteScheduledActions(Map<Action, Set<Server>> actionMap)
         throws TaskomaticApiException {
 
-        Stream<Action> actionsToBeUnscheduled = actionMap.entrySet().stream()
-            // select Actions that have no minions besides those in the specified set
-            // (those that have any other minion should NOT be unscheduled!)
-            .filter(e -> e.getKey().getServerActions().stream()
-                    .map(ServerAction::getServer)
-                    .filter(MinionServerUtils::isMinionServer)
-                    .allMatch(s -> e.getValue().contains(s))
-            )
-            .map(Map.Entry::getKey);
-
-        List<String> jobLabels = actionsToBeUnscheduled
-                .map(a -> MINION_ACTION_JOB_PREFIX + a.getId())
+        List<Action> actionsToBeUnscheduled = actionMap.entrySet().stream()
+                // select Actions that have no minions besides those in the specified set
+                // (those that have any other minion should NOT be unscheduled!)
+                .filter(e -> e.getKey().getServerActions().stream()
+                        .map(ServerAction::getServer)
+                        .filter(MinionServerUtils::isMinionServer)
+                        .allMatch(s -> e.getValue().contains(s))
+                )
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+
+        Set<ActionChain> affectedActionChains = actionsToBeUnscheduled.stream()
+                .map(a -> ActionChainFactory.getActionChainsByAction(a).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        List<String> jobLabels = actionsToBeUnscheduled.stream()
+                .map(a -> MINION_ACTION_JOB_PREFIX + a.getId())
+                .filter(job -> !TaskoFactory.listScheduleByLabel(job).isEmpty())
+                .collect(Collectors.toList());
+
+        affectedActionChains.forEach(ac -> {
+            List<Action> activeActionsForChain = ActionChainFactory.getActiveActionsForChain(ac);
+            if (activeActionsForChain.removeAll(actionsToBeUnscheduled) && activeActionsForChain.isEmpty()) {
+                jobLabels.add(MINION_ACTIONCHAIN_JOB_PREFIX + ac.getId());
+            }
+        });
 
         if (!jobLabels.isEmpty()) {
             LOG.debug("Unscheduling jobs: {}", jobLabels);

@@ -259,6 +259,22 @@ public class ActionChainFactory extends HibernateFactory {
                 "ActionChain.getActionChainsByServer", Map.of("id", server.getId()));
     }
 
+    /**
+     * Get the action chain scheduled for given action
+     * @param action the action
+     * @return action chains or empty when the action is not part of an action chain
+     */
+    public static Optional<ActionChain> getActionChainsByAction(Action action) {
+        return getSession().createQuery(
+                "SELECT DISTINCT ac " +
+                        "FROM ActionChain ac " +
+                        "JOIN ActionChainEntry ace" +
+                        "  ON ace.actionChain = ac " +
+                        "WHERE ace.action = :action", ActionChain.class)
+                .setParameter("action", action)
+                .uniqueResultOptional();
+    }
+
 
     /**
      * Gets the next sort order value.
@@ -372,5 +388,21 @@ public class ActionChainFactory extends HibernateFactory {
         return ((Long)singleton.lookupObjectByNamedQuery("ActionChain.countMinionsInActionChain",
             Map.of("actionchain_id", actionChain.getId())
         ) > 0);
+    }
+
+    /**
+     * Return active actions of an action chain. Always the first action of every server
+     * @param actionChainIn the action chain
+     * @return returns a list of actions which are still active
+     */
+    public static List<Action> getActiveActionsForChain(ActionChain actionChainIn) {
+        return getSession().createQuery(
+                "SELECT sa.parentAction " +
+                        "FROM ActionChainEntry entry " +
+                        "JOIN ServerAction sa ON sa.server = entry.server AND sa.parentAction = entry.action " +
+                        "WHERE entry.actionChain = :actionChain " +
+                        "AND entry.sortOrder = 0", Action.class)
+                .setParameter("actionChain", actionChainIn)
+                .list();
     }
 }
