@@ -60,6 +60,17 @@ public class PackageStateJson {
     /** Id to represent a version constraint as part of the state */
     private final Optional<Integer> versionConstraintId;
 
+    /** Default constructor used for Gson parsing */
+    public PackageStateJson() {
+        this.name = null;
+        this.epoch = null;
+        this.version = null;
+        this.release = null;
+        this.arch = null;
+        this.packageStateId = Optional.empty();
+        this.versionConstraintId = Optional.empty();
+    }
+
     /**
      * @param nameIn the package name
      * @param evrIn the package evr

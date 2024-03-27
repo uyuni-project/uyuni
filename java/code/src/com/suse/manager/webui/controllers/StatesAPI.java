@@ -126,7 +126,9 @@ public class StatesAPI {
     private final SaltApi saltApi;
     private final ServerGroupManager serverGroupManager;
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .create();
 
     /** ID of the state that installs the SUSE Manager repo file in SUSE systems. */
     public static final String ZYPPER_SUMA_CHANNEL_REPO_FILE
