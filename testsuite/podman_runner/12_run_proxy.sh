@@ -145,4 +145,4 @@ sudo -i podman exec controller-test bash -c "cat /root/.ssh/config && cat /root/
 sudo -i podman ps
 sudo -i podman pod ls
 
-sudo -i podman exec controller-test bash -c 'export RUNNER=$(hostname -I | cut -d " " -f1) && ssh $RUNNER && hostname'
+sudo -i podman exec controller-test bash -c 'export RUNNER=$(hostname -I | cut -d " " -f1) && echo $RUNNER && ssh -t $RUNNER hostname'
