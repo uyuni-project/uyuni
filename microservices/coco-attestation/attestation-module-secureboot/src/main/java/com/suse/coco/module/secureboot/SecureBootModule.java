@@ -14,8 +14,8 @@
  */
 package com.suse.coco.module.secureboot;
 
-import com.suse.coco.modules.AttestationModule;
-import com.suse.coco.modules.AttestationWorker;
+import com.suse.coco.module.AttestationModule;
+import com.suse.coco.module.AttestationWorker;
 
 import java.util.List;
 
