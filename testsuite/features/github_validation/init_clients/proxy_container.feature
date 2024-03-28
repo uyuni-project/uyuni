@@ -13,7 +13,7 @@ Feature: Setup containerized proxy
   I want to register the containerized proxy on the server
 
   Scenario: Check pod and container statuses
-    When I get the contents of the remote file "/tmp/test-all-in-one/podman-proxy.log" from "server"
+    When I get the contents of the remote file "/tmp/podman-proxy.log" from "server"
     Then it should contain a "uyuni-proxy-test-status: Running" text
     And it should contain a "proxy-http-status: running" text
     And it should contain a "proxy-ssh-status: running" text
