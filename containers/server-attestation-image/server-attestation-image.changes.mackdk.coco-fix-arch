@@ -1,0 +1,2 @@
+- Ensure the architecture specific modules are installed only for 
+  the correct container
