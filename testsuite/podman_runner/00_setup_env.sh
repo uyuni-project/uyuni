@@ -32,6 +32,3 @@ echo "Remove network"
 sudo -i podman network rm uyuni-network-1
 
 sleep 10
-
-hostname
-hostname --fqdn
