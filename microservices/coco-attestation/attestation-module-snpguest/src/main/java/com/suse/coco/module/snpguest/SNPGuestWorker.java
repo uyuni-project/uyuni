@@ -16,12 +16,12 @@
 package com.suse.coco.module.snpguest;
 
 import com.suse.coco.model.AttestationResult;
+import com.suse.coco.module.AttestationWorker;
 import com.suse.coco.module.snpguest.execution.ProcessOutput;
 import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
-import com.suse.coco.modules.AttestationWorker;
 import com.suse.common.io.ByteSequenceFinder;
 
 import org.apache.ibatis.session.SqlSession;

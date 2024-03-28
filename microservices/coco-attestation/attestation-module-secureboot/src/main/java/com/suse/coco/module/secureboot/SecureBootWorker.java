@@ -15,7 +15,7 @@
 package com.suse.coco.module.secureboot;
 
 import com.suse.coco.model.AttestationResult;
-import com.suse.coco.modules.AttestationWorker;
+import com.suse.coco.module.AttestationWorker;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
