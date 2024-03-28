@@ -5,7 +5,6 @@ ENV_VAR_BY_HOST = {
   'localhost' => 'HOSTNAME',
   'proxy' => 'PROXY',
   'server' => 'SERVER',
-  'runner' => 'RUNNER',
   'kvm_server' => 'VIRTHOST_KVM_URL',
   'sle_minion' => 'MINION',
   'ssh_minion' => 'SSH_MINION',

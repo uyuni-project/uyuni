@@ -149,16 +149,3 @@ create_proxy_configuration
 run_proxy_containers
 log_status
 cleanup
-
-sudo -i podman exec controller-test bash -c "cat /root/.ssh/config && cat /root/.ssh/authorized_keys"
-sudo -i podman ps
-sudo -i podman pod ls
-
-cat /tmp/test-all-in-one/podman-proxy.log
-# cat /tmp/test-all-in-one/podman-proxy-pod-state.log
-# cat /tmp/test-all-in-one/podman-proxy-httpd.log
-# cat /tmp/test-all-in-one/podman-proxy-ssh.log
-# cat /tmp/test-all-in-one/podman-proxy-salt-broker.log
-# cat /tmp/test-all-in-one/podman-proxy-squid.log
-# cat /tmp/test-all-in-one/podman-proxy-tftpd.log
-# cat /tmp/test-all-in-one/podman-proxy-pod-containers.log
