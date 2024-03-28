@@ -57,7 +57,9 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     virtual-host-gatherer-VMware \
     vim \
     python3-pygit2 \
-    ipmitool
+    ipmitool \
+    sssd \
+    sssd-ldap
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
