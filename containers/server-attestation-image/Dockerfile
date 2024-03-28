@@ -4,10 +4,15 @@
 ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE
 
+# Architecture specific attestation modules are specified via project configuration
+ARG ARCH_SPECIFIC_MODULES
+
 # Main packages
 RUN zypper ref && zypper --non-interactive up
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
-    uyuni-coco-attestation uyuni-coco-attestation-module-snpguest javassist apache-commons-ognl
+    uyuni-coco-attestation-core \
+    ${ARCH_SPECIFIC_MODULES} \
+    javassist apache-commons-ognl
 
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
