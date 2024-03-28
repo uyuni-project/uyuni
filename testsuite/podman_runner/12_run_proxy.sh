@@ -69,7 +69,6 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-httpd \
       registry.opensuse.org/uyuni/proxy-httpd:2024.02
-      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-httpd-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -83,7 +82,6 @@ run_proxy_containers() {
     --volume /tmp/test-all-in-one:/tmp \
     --name proxy-ssh \
       registry.opensuse.org/uyuni/proxy-ssh:2024.02
-      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-ssh-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -96,7 +94,6 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/:/etc/uyuni \
     --name proxy-salt-broker \
       registry.opensuse.org/uyuni/proxy-salt-broker:2024.02
-      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-salt-broker-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -110,7 +107,6 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/proxy-squid-cache/:/var/cache/squid \
     --name proxy-squid \
       registry.opensuse.org/uyuni/proxy-squid:2024.02
-      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-squid-dev:$UYUNI_VERSION (see ...)
 
   sudo --login podman run \
     --privileged \
@@ -124,10 +120,22 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-tftpd \
       registry.opensuse.org/uyuni/proxy-tftpd:2024.02
-      # ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-proxy-tftpd-dev:$UYUNI_VERSION (see ...)
 }
 
-cleanup () {
+log_status() {
+  cat <<- EOF | awk 'NR==1 && match($0, /^ +/){n=RLENGTH} {print substr($0, n+1)}' > /tmp/test-all-in-one/podman-proxy.log 2>&1
+    uyuni-proxy-test-status: $(sudo --login podman pod inspect --format '{{.State}}' uyuni-proxy-test)
+    proxy-http-status: $(sudo --login podman container inspect --format '{{.State.Status}}' proxy-httpd)
+    proxy-ssh-status: $(sudo --login podman container inspect --format '{{.State.Status}}' proxy-ssh)
+    proxy-squid-status: $(sudo --login podman container inspect --format '{{.State.Status}}' proxy-squid)
+    proxy-salt-broker-status: $(sudo --login podman container inspect --format '{{.State.Status}}' proxy-salt-broker)
+    proxy-tftpd-status: $(sudo --login podman container inspect --format '{{.State.Status}}' proxy-tftpd)
+    uyuni-proxy-test-containers: $(sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test)
+EOF
+}
+
+
+cleanup() {
   sudo --login \
     rm \
       /tmp/test-all-in-one/id_openssh_rsa \
@@ -139,20 +147,14 @@ cleanup () {
 
 create_proxy_configuration
 run_proxy_containers
+log_status
 cleanup
 
 sudo -i podman exec controller-test bash -c "cat /root/.ssh/config && cat /root/.ssh/authorized_keys"
 sudo -i podman ps
 sudo -i podman pod ls
 
-# sudo --login podman pod inspect --format '{{.State}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-state.log 2>&1
-# sudo --login podman container inspect --format '{{.State.Status}}' proxy-httpd > /tmp/test-all-in-one/podman-proxy-httpd.log 2>&1
-# sudo --login podman container inspect --format '{{.State.Status}}' proxy-ssh > /tmp/test-all-in-one/podman-proxy-ssh.log 2>&1
-# sudo --login podman container inspect --format '{{.State.Status}}' proxy-salt-broker > /tmp/test-all-in-one/podman-proxy-salt-broker.log 2>&1
-# sudo --login podman container inspect --format '{{.State.Status}}' proxy-squid > /tmp/test-all-in-one/podman-proxy-squid.log 2>&1
-# sudo --login podman container inspect --format '{{.State.Status}}' proxy-tftpd > /tmp/test-all-in-one/podman-proxy-tftpd.log 2>&1
-# sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-containers.log 2>&1
-
+cat /tmp/test-all-in-one/podman-proxy.log
 # cat /tmp/test-all-in-one/podman-proxy-pod-state.log
 # cat /tmp/test-all-in-one/podman-proxy-httpd.log
 # cat /tmp/test-all-in-one/podman-proxy-ssh.log
