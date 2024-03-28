@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
- * An attestation result that needs to be verified by an {@link com.suse.coco.modules.AttestationModule}.
+ * An attestation result that needs to be verified by an {@link com.suse.coco.module.AttestationModule}.
  */
 public class AttestationResult {
     private long id;
