@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.coco.modules;
+package com.suse.coco.module;
 
 import java.util.Collections;
 import java.util.List;
