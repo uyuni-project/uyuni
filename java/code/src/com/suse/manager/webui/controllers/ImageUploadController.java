@@ -16,7 +16,8 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 
 import com.redhat.rhn.GlobalInstanceHolder;
@@ -27,11 +28,12 @@ import com.redhat.rhn.manager.EntityExistsException;
 
 import com.suse.manager.webui.utils.gson.ResultJson;
 
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -108,9 +110,8 @@ public class ImageUploadController {
         }
         catch (Exception e) {
             LOG.error("Image upload error", e);
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                        ResultJson.error(e.getMessage()));
+            return internalServerError(response, e.getMessage());
         }
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 }

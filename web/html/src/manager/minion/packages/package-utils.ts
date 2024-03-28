@@ -1,12 +1,12 @@
 import { OptionalValue, Package } from "./package.type";
 
-export const UNMANAGED: any = {};
-export const INSTALLED: OptionalValue = { value: 0 };
-export const REMOVED: OptionalValue = { value: 1 };
-export const PURGED: OptionalValue = { value: 2 };
+export const UNMANAGED: OptionalValue = undefined;
+export const INSTALLED: OptionalValue = 0;
+export const REMOVED: OptionalValue = 1;
+export const PURGED: OptionalValue = 2;
 
-export const LATEST: OptionalValue = { value: 0 };
-export const ANY: OptionalValue = { value: 1 };
+export const LATEST: OptionalValue = 0;
+export const ANY: OptionalValue = 1;
 
 export function selectValue2PackageState(value: number): OptionalValue {
   switch (value) {
@@ -24,11 +24,11 @@ export function selectValue2PackageState(value: number): OptionalValue {
 }
 
 export function packageState2selectValue(ps: OptionalValue): number {
-  return ps.value !== undefined ? ps.value : -1;
+  return ps !== undefined ? ps : -1;
 }
 
 export function versionConstraints2selectValue(vc: OptionalValue): number {
-  return vc.value === undefined ? 1 : vc.value;
+  return vc !== undefined ? vc : 1;
 }
 
 export function normalizePackageState(ps: OptionalValue): OptionalValue {

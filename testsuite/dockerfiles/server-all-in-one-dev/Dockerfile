@@ -4,7 +4,7 @@ FROM ${BASE}:${VERSION}
 
 RUN zypper ref && \
       zypper -n install \
-      java-11-openjdk-devel \
+      java-17-openjdk-devel \
       openssh \
       rsync \
       apache-ivy \

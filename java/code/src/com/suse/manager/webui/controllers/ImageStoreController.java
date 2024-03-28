@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -40,6 +41,7 @@ import com.suse.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -175,11 +177,11 @@ public class ImageStoreController {
 
         List<ImageStore> stores = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (stores.size() < ids.size()) {
-            return json(res, ResultJson.error("not_found"));
+            return result(res, ResultJson.error("not_found"), new TypeToken<>() { });
         }
 
         stores.forEach(ImageStoreFactory::delete);
-        return json(res, ResultJson.success(stores.size()));
+        return result(res, ResultJson.success(stores.size()), new TypeToken<>() { });
     }
 
     /**
@@ -219,8 +221,8 @@ public class ImageStoreController {
                 json.addProperty("useCredentials", false);
             }
 
-            return json(res, ResultJson.success(json));
-        }).orElseGet(() -> json(res, ResultJson.error("not_found")));
+            return result(res, ResultJson.success(json), new TypeToken<>() { });
+        }).orElseGet(() -> result(res, ResultJson.error("not_found"), new TypeToken<>() { }));
     }
 
     /**
@@ -259,8 +261,8 @@ public class ImageStoreController {
                 json.addProperty("useCredentials", false);
             }
 
-            return json(res, ResultJson.success(json));
-        }).orElseGet(() -> json(res, ResultJson.error("not_found")));
+            return result(res, ResultJson.success(json), new TypeToken<>() { });
+        }).orElseGet(() -> result(res, ResultJson.error("not_found"), new TypeToken<>() { }));
     }
 
     /**
@@ -280,7 +282,7 @@ public class ImageStoreController {
             uriPrefix = OSImageStoreUtils.getOSImageStoreURI();
         }
 
-        return json(res, getJsonList(imageStores, uriPrefix));
+        return json(res, getJsonList(imageStores, uriPrefix), new TypeToken<>() { });
     }
 
     /**
@@ -298,7 +300,7 @@ public class ImageStoreController {
                 .filter(s -> s.getStoreType().equals(ImageStoreFactory.TYPE_REGISTRY))
                 .collect(Collectors.toList());
 
-        return json(res, getJsonList(imageStores));
+        return json(res, getJsonList(imageStores), new TypeToken<>() { });
     }
 
     /**
@@ -339,7 +341,7 @@ public class ImageStoreController {
             return ResultJson.success();
         }).orElseGet(() -> ResultJson.error("not_found"));
 
-        return json(res, result);
+        return result(res, result, new TypeToken<>() { });
     }
 
     /**
@@ -381,7 +383,7 @@ public class ImageStoreController {
 
         ImageStoreFactory.save(imageStore);
 
-        return json(res, ResultJson.success());
+        return result(res, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**

@@ -18,6 +18,7 @@ package com.suse.manager.webui.controllers.maintenance;
 import static com.suse.manager.webui.controllers.maintenance.MaintenanceController.handleRescheduleResult;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -54,6 +55,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -160,7 +162,7 @@ public class MaintenanceScheduleController {
      */
     public static String list(Request request, Response response, User user) {
         List<MaintenanceSchedule> schedules = MM.listSchedulesByUser(user);
-        return json(response, schedulesToJson(schedules));
+        return json(response, schedulesToJson(schedules), new TypeToken<>() { });
     }
 
     /**
@@ -192,7 +194,7 @@ public class MaintenanceScheduleController {
             }
             json.setCalendarName(maintenanceCalendar.getLabel());
         });
-        return json(response, json);
+        return json(response, json, new TypeToken<>() { });
     }
 
     /**
@@ -247,7 +249,7 @@ public class MaintenanceScheduleController {
             log.info(e);
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
         }
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -267,7 +269,7 @@ public class MaintenanceScheduleController {
                 () -> Spark.halt(HttpStatus.SC_BAD_REQUEST)
         );
 
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -288,7 +290,7 @@ public class MaintenanceScheduleController {
                 },
                 () -> Spark.halt(HttpStatus.SC_NOT_FOUND)
         );
-        return json(response, systemIds);
+        return json(response, systemIds, new TypeToken<>() { });
     }
 
     /**
@@ -306,11 +308,12 @@ public class MaintenanceScheduleController {
 
         if ("id".equals(pageHelper.getFunction())) {
             // Return only IDs for "select all" function
-            return json(response, systems.stream().map(SystemScheduleDto::getId).collect(Collectors.toList()));
+            return json(response, systems.stream().map(SystemScheduleDto::getId).collect(Collectors.toList()),
+                    new TypeToken<>() { });
         }
 
         systems = pageHelper.processPageControl(systems, new HashMap<>());
-        return json(response, new PagedDataResultJson<>(systems, null));
+        return json(response, new PagedDataResultJson<>(systems, null), new TypeToken<>() { });
     }
 
     private class SystemAssignmentRequest {
@@ -369,7 +372,7 @@ public class MaintenanceScheduleController {
                 },
                 () -> Spark.halt(HttpStatus.SC_NOT_FOUND)
         );
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -403,7 +406,7 @@ public class MaintenanceScheduleController {
                 },
                 () -> Spark.halt(HttpStatus.SC_NOT_FOUND)
         );
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -424,7 +427,7 @@ public class MaintenanceScheduleController {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                     "maintenance.action.assign.error.systemnotfound"))));
         }
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     private static List<MaintenanceScheduleJson> schedulesToJson(List<MaintenanceSchedule> schedules) {

@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -36,6 +36,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -146,18 +147,18 @@ public class CVEAuditController {
                     .listSystemsByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
                     cveAuditServers.forEach(serv -> serv.setSelected(systemSet.contains(serv.getId())));
-                    return json(res, ResultJson.success(cveAuditServers));
+                    return result(res, ResultJson.success(cveAuditServers), new TypeToken<>() { });
                 case IMAGE:
                     // TODO: Use CVEAuditManagerOVAL once it's ready
                     List<CVEAuditImage> cveAuditImages = CVEAuditManager
                     .listImagesByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
-                    return json(res, ResultJson.success(cveAuditImages));
+                    return result(res, ResultJson.success(cveAuditImages), new TypeToken<>() { });
                     default: throw new RuntimeException("unreachable");
             }
         }
         catch (UnknownCVEIdentifierException e) {
-            return json(res, ResultJson.error(LOC.getMessage("cveaudit.notfound")));
+            return result(res, ResultJson.error(LOC.getMessage("cveaudit.notfound")), new TypeToken<>() { });
         }
     }
 

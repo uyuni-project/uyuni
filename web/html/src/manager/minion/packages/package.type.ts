@@ -1,6 +1,4 @@
-export type OptionalValue = {
-  value?: number;
-};
+export type OptionalValue = number | undefined;
 
 export type Package = {
   arch: string;

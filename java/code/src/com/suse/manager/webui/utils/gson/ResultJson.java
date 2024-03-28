@@ -33,9 +33,10 @@ public class ResultJson<T> {
      * Create an error result with the given messages.
      *
      * @param messagesIn a list of messages
+     * @param <T> the type of data
      * @return a ResultJson
      */
-    public static ResultJson error(String... messagesIn) {
+    public static <T> ResultJson<T> error(String... messagesIn) {
         return error(Arrays.asList(messagesIn));
     }
 
@@ -43,9 +44,10 @@ public class ResultJson<T> {
      * Create an error result with the given messages.
      *
      * @param messagesIn a list of messages
+     * @param <T> the type of data
      * @return a ResultJson
      */
-    public static ResultJson error(List<String> messagesIn) {
+    public static <T> ResultJson<T> error(List<String> messagesIn) {
         return error(messagesIn, null);
     }
 
@@ -76,10 +78,10 @@ public class ResultJson<T> {
 
     /**
      * Create a success result without data.
-     *
+     * @param <T> the type of data
      * @return a ResultJson
      */
-    public static ResultJson success() {
+    public static <T> ResultJson<T> success() {
         return success(null);
     }
 

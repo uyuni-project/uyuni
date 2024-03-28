@@ -97,9 +97,9 @@ public class SetController {
         Integer newCount = results.get(results.size() - 1);
         if (newCount == null) {
             return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    Map.of("messages", List.of("Failed to change set")));
+                    Map.of("messages", List.of("Failed to change set")), new TypeToken<>() { });
         }
-        return json(GSON, response, newCount);
+        return json(GSON, response, newCount.intValue());
     }
 
     /**
@@ -128,6 +128,7 @@ public class SetController {
             return json(response, 0);
         }
 
-        return json(response, HttpStatus.SC_NOT_FOUND, Map.of("error", "No such set: " + setLabel));
+        return json(response, HttpStatus.SC_NOT_FOUND, Map.of("error", "No such set: " + setLabel),
+                new TypeToken<>() { });
     }
 }

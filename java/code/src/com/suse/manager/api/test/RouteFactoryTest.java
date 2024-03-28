@@ -731,7 +731,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
      * @return the response message
      */
     private String getExceptionResult(String response) {
-        HttpApiResponse responseObj = GSON.fromJson(response, HttpApiResponse.class);
+        HttpApiResponse<?> responseObj = GSON.fromJson(response, HttpApiResponse.class);
         assertFalse(responseObj.isSuccess());
         return responseObj.getMessage();
     }

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.virtualization;
 
+
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -33,6 +34,7 @@ import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -151,7 +153,7 @@ public abstract class AbstractVirtualizationController {
                         Collectors.toMap(Function.identity(),
                                 key -> scheduleAction(key, user, host, actionCreator, data)
                         ));
-                return json(response, actionsResults);
+                return json(response, actionsResults, new TypeToken<>() { });
             }
 
             String result = scheduleAction(null, user, host, actionCreator, data);

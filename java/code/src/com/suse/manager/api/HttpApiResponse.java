@@ -16,31 +16,34 @@ package com.suse.manager.api;
 
 /**
  * HTTP API JSON response wrapper class
+ * @param <T> type of result
  */
-public class HttpApiResponse {
+public class HttpApiResponse<T> {
 
     private final boolean success;
     private final String message;
-    private final Object result;
+    private final T result;
 
     /**
      * Creates an error result with the given message
      *
      * @param messageIn the response message
+     * @param <T> type of result
      * @return the response instance
      */
-    public static HttpApiResponse error(String messageIn) {
-        return new HttpApiResponse(false, messageIn, null);
+    public static <T> HttpApiResponse<T> error(String messageIn) {
+        return new HttpApiResponse<>(false, messageIn, null);
     }
 
     /**
      * Creates a success result with the given data
      *
      * @param dataIn the data
+     * @param <T> type of dataIn
      * @return a ResultJson
      */
-    public static HttpApiResponse success(Object dataIn) {
-        return new HttpApiResponse(true, null, dataIn);
+    public static <T> HttpApiResponse<T> success(T dataIn) {
+        return new HttpApiResponse<>(true, null, dataIn);
     }
 
     /**
@@ -50,7 +53,7 @@ public class HttpApiResponse {
      * @param messageIn the response message
      * @param resultIn the response data data
      */
-    public HttpApiResponse(boolean successIn, String messageIn, Object resultIn) {
+    public HttpApiResponse(boolean successIn, String messageIn, T resultIn) {
         this.success = successIn;
         this.message = messageIn;
         this.result = resultIn;
@@ -64,7 +67,7 @@ public class HttpApiResponse {
         return success;
     }
 
-    public Object getResult() {
+    public T getResult() {
         return result;
     }
 }

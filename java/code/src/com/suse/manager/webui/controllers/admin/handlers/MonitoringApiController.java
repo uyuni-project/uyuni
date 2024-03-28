@@ -15,7 +15,9 @@
 
 package com.suse.manager.webui.controllers.admin.handlers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -30,7 +32,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,11 +75,10 @@ public class MonitoringApiController {
     public static String status(Request request, Response response, User user) {
         Optional<MonitoringService.MonitoringStatus> status = MonitoringService.getStatus();
         if (status.isPresent()) {
-            return json(response, ResultJson.success(status.get()));
+            return result(response, ResultJson.success(status.get()), new TypeToken<>() { });
         }
         else {
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("internal_error"));
+            return internalServerError(response, "internal_error");
         }
     }
 
@@ -97,8 +97,7 @@ public class MonitoringApiController {
         }
         catch (JsonParseException e) {
             LOG.error("Error parsing JSON body", e);
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("request_error"));
+            return badRequest(response, "request_error");
         }
 
         Boolean enable = jsonRequest.get("enable");
@@ -108,17 +107,15 @@ public class MonitoringApiController {
                     MonitoringService.disableMonitoring();
 
             if (exporters.isPresent()) {
-                return json(response, ResultJson.success(exporters.get()));
+                return result(response, ResultJson.success(exporters.get()), new TypeToken<>() { });
             }
             else {
-                return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                        ResultJson.error("internal_error"));
+                return internalServerError(response, "internal_error");
             }
         }
         else {
             LOG.error("Empty json request");
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("request_error"));
+            return badRequest(response, "request_error");
         }
     }
 

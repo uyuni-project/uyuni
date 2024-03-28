@@ -24,6 +24,8 @@ import static spark.Spark.get;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.visualization.VisualizationManager;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,7 +89,8 @@ public class VisualizationController {
      * @return JSON result of the API call
      */
     public static String virtHierarchyData(Request request, Response response, User user) {
-        return json(response, VisualizationManager.virtualizationHierarchy(user));
+        return json(response, VisualizationManager.virtualizationHierarchy(user),
+                new TypeToken<>() { });
     }
 
     /**
@@ -117,7 +120,8 @@ public class VisualizationController {
      * @return JSON result of the API call
      */
     public static String proxyHierarchyData(Request request, Response response, User user) {
-        return json(response, VisualizationManager.proxyHierarchy(user));
+        return json(response, VisualizationManager.proxyHierarchy(user),
+                new TypeToken<>() { });
     }
 
     /**
@@ -149,6 +153,6 @@ public class VisualizationController {
      */
     public static String systemsWithManagedGroupsData(Request request, Response response,
             User user) {
-        return json(response, VisualizationManager.systemsWithManagedGroups(user));
+        return json(response, VisualizationManager.systemsWithManagedGroups(user), new TypeToken<>() { });
     }
 }

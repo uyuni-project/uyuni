@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers;
 
 import static com.redhat.rhn.common.hibernate.HibernateFactory.doWithoutAutoFlushing;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
@@ -49,7 +50,9 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.suse.manager.model.products.ChannelJson;
 import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
+import com.suse.manager.webui.utils.gson.ProductsPageMetadataJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.SUSEProductsJson;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
@@ -78,12 +81,6 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for the Products
  */
 public class ProductsController {
-
-    private static final String ISS_MASTER = "issMaster";
-    private static final String REFRESH_NEEDED = "refreshNeeded";
-    private static final String REFRESH_RUNNING = "refreshRunning";
-    private static final String REFRESH_FILE_LOCKED = "refreshFileLocked";
-    private static final String NO_TOOLS_CHANNEL_SUBSCRIPTION = "noToolsChannelSubscription";
 
     private static Logger log = LogManager.getLogger(ProductsController.class);
 
@@ -123,7 +120,7 @@ public class ProductsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
-        return new ModelAndView(getMetadataMap(), "templates/products/show.jade");
+        return new ModelAndView(new HashMap<>(getMetadataJson().toMap()), "templates/products/show.jade");
     }
 
     /**
@@ -135,22 +132,21 @@ public class ProductsController {
      * @return a JSON object containing the metadata
      */
     public static String getMetadata(Request request, Response response, User user) {
-        return json(response, getMetadataMap());
+        return json(response, getMetadataJson(), new TypeToken<>() { });
     }
 
-    private static Map<String, Object> getMetadataMap() {
+    private static ProductsPageMetadataJson getMetadataJson() {
         TaskoRun latestRun = TaskoFactory.getLatestRun("mgr-sync-refresh-bunch");
         ContentSyncManager csm = new ContentSyncManager();
 
-        Map<String, Object> metadataMap = new HashMap<>();
-        metadataMap.put(ISS_MASTER, IssFactory.getCurrentMaster() == null);
-        metadataMap.put(REFRESH_NEEDED, csm.isRefreshNeeded(null));
-        metadataMap.put(REFRESH_RUNNING, latestRun != null && latestRun.getEndTime() == null);
-        metadataMap.put(REFRESH_FILE_LOCKED, FileLocks.SCC_REFRESH_LOCK.isLocked());
-        metadataMap.put(NO_TOOLS_CHANNEL_SUBSCRIPTION, !(ConfigDefaults.get().isUyuni() ||
-            csm.hasToolsChannelSubscription() || csm.canSyncToolsChannelViaCloudRMT()));
-
-        return metadataMap;
+        return new ProductsPageMetadataJson(
+                IssFactory.getCurrentMaster() == null,
+                csm.isRefreshNeeded(null),
+                latestRun != null && latestRun.getEndTime() == null,
+                FileLocks.SCC_REFRESH_LOCK.isLocked(),
+                !(ConfigDefaults.get().isUyuni() ||
+                csm.hasToolsChannelSubscription() || csm.canSyncToolsChannelViaCloudRMT())
+        );
     }
 
     /**
@@ -257,7 +253,7 @@ public class ProductsController {
             return json(response, identifiers.stream().collect(Collectors.toMap(
                 Function.identity(),
                 ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
-            )));
+            )), new TypeToken<>() { });
         }
 
         log.debug("Add/Sync products: {}", identifiers);
@@ -272,7 +268,7 @@ public class ProductsController {
             resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
         });
 
-        return json(response, resultMap);
+        return json(response, resultMap, new TypeToken<>() { });
     }
 
     /**
@@ -291,7 +287,7 @@ public class ProductsController {
             return json(response, channels.stream().collect(Collectors.toMap(
                     Function.identity(),
                     ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
-            )));
+            )), new TypeToken<>() { });
         }
 
         log.debug("Add/Sync channels: {}", channels);
@@ -317,7 +313,7 @@ public class ProductsController {
             log.error(e.getMessage());
         }
 
-        return json(response, resultMap);
+        return json(response, resultMap, new TypeToken<>() { });
     }
 
     /**
@@ -345,7 +341,7 @@ public class ProductsController {
                         return channels.map(Channel::getId).collect(Collectors.toList());
                     }
             ));
-            return json(response, ResultJson.success(result));
+            return result(response, ResultJson.success(result), new TypeToken<>() { });
         });
     }
 
@@ -358,7 +354,6 @@ public class ProductsController {
      * @return JSON result of the API call
      */
     public static String data(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
         try {
             ContentSyncManager csm = new ContentSyncManager();
             ProductSyncManager psm = new ProductSyncManager();
@@ -442,13 +437,14 @@ public class ProductsController {
                         ).collect(Collectors.toSet()));
 
             }).collect(Collectors.toList()));
-            data.put("baseProducts", jsonProducts);
+            return json(response, new SUSEProductsJson(jsonProducts, null), new TypeToken<>() { });
         }
         catch (Exception e) {
             log.error("Exception while rendering products: {}", e.getMessage());
-            data.put("error", "Exception while fetching products: " + e.getMessage());
+            return json(response, new SUSEProductsJson(null, "Exception while fetching products: " + e.getMessage()),
+                    new TypeToken<>() { });
         }
 
-        return json(response, data);
     }
+
 }

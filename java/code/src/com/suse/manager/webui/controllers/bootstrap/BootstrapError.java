@@ -16,7 +16,9 @@ package com.suse.manager.webui.controllers.bootstrap;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import java.util.Map;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import java.util.Objects;
 
 /**
@@ -51,8 +53,10 @@ public class BootstrapError {
      * Converts this error to a map
      * @return a map describing the error
      */
-    public Map<String, Object> asMap() {
-        return Map.of("message", message);
+    public JsonObject asJson() {
+        JsonObject object = new JsonObject();
+        object.add("message", new JsonPrimitive(getMessage()));
+        return object;
     }
 
     @Override

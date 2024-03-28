@@ -17,7 +17,7 @@ package com.suse.manager.webui.controllers.channels;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.doWithoutAutoFlushing;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.generateChannelJson;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.getPossibleBaseChannels;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
@@ -29,6 +29,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -85,7 +87,7 @@ public class ChannelsApiController {
             );
             jsonChannelsFiltered.sort(Comparator.comparing(cIn -> cIn.getBase().getId()));
 
-            return json(res, ResultJson.success(jsonChannelsFiltered));
+            return result(res, ResultJson.success(jsonChannelsFiltered), new TypeToken<>() { });
         });
     }
 
@@ -104,7 +106,7 @@ public class ChannelsApiController {
                 .map(ChannelsJson.ChannelJson::new)
                 .collect(Collectors.toList());
 
-        return json(res, ResultJson.success(jsonChannels));
+        return result(res, ResultJson.success(jsonChannels), new TypeToken<>() { });
     }
 
 
@@ -118,6 +120,6 @@ public class ChannelsApiController {
      */
     public static String getOwnedChannels(Request req, Response res, User user) {
         List<ChannelTreeNode> channels = new ArrayList<>(ChannelManager.ownedChannelsTree(user));
-        return json(res, ResultJson.success(channels));
+        return result(res, ResultJson.success(channels), new TypeToken<>() { });
     }
 }

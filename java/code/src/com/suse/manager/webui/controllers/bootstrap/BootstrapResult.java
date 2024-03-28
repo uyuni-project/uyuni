@@ -14,9 +14,11 @@
  */
 package com.suse.manager.webui.controllers.bootstrap;
 
-import java.util.LinkedHashMap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -96,10 +98,12 @@ public class BootstrapResult {
     /**
      * @return bootstrap result converted to a map
      */
-    public Map<String, Object> asMap() {
-        Map<String, Object> ret = new LinkedHashMap<>();
-        ret.put("success", success);
-        ret.put("errors", errors.stream().map(BootstrapError::asMap).collect(Collectors.toList()));
-        return ret;
+    public JsonObject asJson() {
+        JsonObject object = new JsonObject();
+        JsonArray arr = new JsonArray();
+        errors.stream().map(e -> e.asJson()).forEach(arr::add);
+        object.add("success", new JsonPrimitive(success));
+        object.add("errors", arr);
+        return object;
     }
 }

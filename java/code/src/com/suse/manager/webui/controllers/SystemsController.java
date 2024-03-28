@@ -16,7 +16,12 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.forbidden;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -69,9 +74,9 @@ import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -193,7 +198,8 @@ public class SystemsController {
         DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, pc);
         RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
 
-        return json(response, new PagedDataResultJson<>(virtual, virtual.getTotalSize(), ssmSet.getElementValues()));
+        return json(response, new PagedDataResultJson<>(virtual, virtual.getTotalSize(), ssmSet.getElementValues()),
+                new TypeToken<>() { });
     }
 
     private Object allSystems(Request request, Response response, User user) {
@@ -274,13 +280,14 @@ public class SystemsController {
             return json(response, systems.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(SystemOverview::getId)
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList()), new TypeToken<>() { });
         }
 
         DataResult<SystemOverview> systems = SystemManager.systemListNew(user, parser, pc);
         RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
 
-        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), ssmSet.getElementValues()));
+        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), ssmSet.getElementValues()),
+                new TypeToken<>() { });
     }
 
     /**
@@ -370,7 +377,7 @@ public class SystemsController {
          }
          catch (NumberFormatException e) {
              LOG.error(String.format("SystemID (%s) not a long", StringUtil.sanitizeLogInput(sidStr)));
-             return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("invalid_systemid"));
+             return badRequest(response, "invalid_systemid");
          }
          Server server = null;
          try {
@@ -378,7 +385,7 @@ public class SystemsController {
          }
          catch (Exception e) {
              LOG.error(e.getMessage());
-             return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("unknown_system"));
+             return badRequest(response, "unknown_system");
          }
          if (server.isMgrServer()) {
              Optional<MinionServer> minion = server.asMinionServer();
@@ -386,7 +393,7 @@ public class SystemsController {
                  if (LOG.isDebugEnabled()) {
                      LOG.error("System ({}) not a minion", StringUtil.sanitizeLogInput(sidStr));
                  }
-                 return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
+                 return badRequest(response, "system_not_mgr_server");
              }
              SystemManager.setReportDbUser(minion.get(), true);
          }
@@ -394,9 +401,9 @@ public class SystemsController {
              if (LOG.isErrorEnabled()) {
                  LOG.error("System ({}) not a Mgr Server", StringUtil.sanitizeLogInput(sidStr));
              }
-             return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
+             return badRequest(response, "system_not_mgr_server");
          }
-         return json(response, ResultJson.success());
+         return result(response, ResultJson.success(), new TypeToken<>() { });
      }
 
     /**
@@ -414,7 +421,7 @@ public class SystemsController {
             sid = Long.parseLong(sidStr);
         }
         catch (NumberFormatException e) {
-            return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.success());
+            return badRequest(response, "");
         }
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         boolean isEmptyProfile = server.hasEntitlement(EntitlementManager.BOOTSTRAP);
@@ -423,7 +430,7 @@ public class SystemsController {
             Optional<List<String>> cleanupErr =
                     saltApi.cleanupMinion(server.asMinionServer().get(), 300);
             if (cleanupErr.isPresent()) {
-                return json(response, ResultJson.error(cleanupErr.get()));
+                return result(response, ResultJson.error(cleanupErr.get()), new TypeToken<>() { });
             }
         }
 
@@ -458,7 +465,7 @@ public class SystemsController {
             }
         }
         FlashScopeHelper.flash(request, "Deleted successfully");
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -478,7 +485,7 @@ public class SystemsController {
                 jsonChannels.setChildren(server.getChildChannels().stream());
             }
 
-            return json(response, ResultJson.success(jsonChannels));
+            return result(response, ResultJson.success(jsonChannels), new TypeToken<>() { });
         });
     }
 
@@ -505,7 +512,7 @@ public class SystemsController {
                             ))
                     .collect(Collectors.toList());
 
-            return json(response, ResultJson.success(baseChannels));
+            return result(response, ResultJson.success(baseChannels), new TypeToken<>() { });
         });
     }
 
@@ -515,15 +522,11 @@ public class SystemsController {
             serverId = Long.parseLong(request.params("sid"));
         }
         catch (NumberFormatException e) {
-            return json(response,
-                    HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("invalid_server_id"));
+            return badRequest(response, "invalid_server_id");
         }
         Server server = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
         if (server == null) {
-            return json(response,
-                    HttpStatus.SC_NOT_FOUND,
-                    ResultJson.error("server_not_found"));
+            return notFound(response, "server_not_found");
         }
         return handler.apply(server);
     }
@@ -541,9 +544,7 @@ public class SystemsController {
             serverId = Long.parseLong(request.params("sid"));
         }
         catch (NumberFormatException e) {
-            return json(response,
-                    HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("invalid_server_id"));
+            return badRequest(response, "invalid_server_id");
         }
         SubscribeChannelsJson json = GSON.fromJson(request.body(), SubscribeChannelsJson.class);
         Optional<Channel> base = Optional.empty();
@@ -553,9 +554,7 @@ public class SystemsController {
             base = Optional.ofNullable(ChannelFactory
                     .lookupByIdAndUser(json.getBase().get().getId(), user));
             if (base.isEmpty()) {
-                return json(response,
-                        HttpStatus.SC_FORBIDDEN,
-                        ResultJson.error("base_not_found_or_not_authorized"));
+                return forbidden(response, "base_not_found_or_not_authorized");
             }
         }
         try {
@@ -571,9 +570,7 @@ public class SystemsController {
                     .orElse(Collections.emptySet());
         }
         catch (IllegalArgumentException e) {
-            return json(response,
-                    HttpStatus.SC_FORBIDDEN,
-                    ResultJson.error("child_not_found_or_not_authorized", e.getMessage()));
+            return forbidden(response, "child_not_found_or_not_authorized", e.getMessage());
         }
 
         ActionChain actionChain = MinionActionUtils.getActionChain(json.getActionChain(), user);
@@ -586,13 +583,13 @@ public class SystemsController {
                     children,
                     earliest,
                     actionChain);
-            return json(response, ResultJson.success(
+            return result(response, ResultJson.success(
                     actionChain != null ? actionChain.getId() :
-                    sca.stream().findFirst().map(Action::getId).orElse(null)));
+                    sca.stream().findFirst().map(Action::getId).orElse(null)),
+                    new TypeToken<>() { });
         }
         catch (TaskomaticApiException e) {
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("taskomatic_error"));
+            return internalServerError(response, "taskomatic_error");
         }
     }
 
@@ -627,9 +624,7 @@ public class SystemsController {
                 channelId = Long.parseLong(request.params("channelId"));
             }
             catch (NumberFormatException e) {
-                return json(response,
-                        HttpStatus.SC_BAD_REQUEST,
-                        ResultJson.error("invalid_channel_id"));
+                return badRequest(response, "invalid_channel_id");
             }
 
             Channel oldBaseChannel =  null;
@@ -654,9 +649,7 @@ public class SystemsController {
 
                 Channel baseChannel = ChannelManager.lookupByIdAndUser(channelId, user);
                 if (!baseChannel.isBaseChannel()) {
-                    return json(response,
-                            HttpStatus.SC_BAD_REQUEST,
-                            ResultJson.error("not_a_base_channel"));
+                    return badRequest(response, "not_a_base_channel");
                 }
 
                 Map<Channel, Channel> preservationsByOldChild =
@@ -688,12 +681,10 @@ public class SystemsController {
                                 channelRecommendedFlags.get(c.getId()),
                                 preservationsByNewChild.get(c) != null ? preservationsByNewChild.get(c).getId() : null))
                         .collect(Collectors.toList());
-                return json(response, ResultJson.success(jsonList));
+                return result(response, ResultJson.success(jsonList), new TypeToken<>() { });
             }
             catch (LookupException e) {
-                return json(response,
-                        HttpStatus.SC_NOT_FOUND,
-                        ResultJson.error("invalid_channel_id"));
+                return notFound(response, "invalid_channel_id");
             }
         });
     }

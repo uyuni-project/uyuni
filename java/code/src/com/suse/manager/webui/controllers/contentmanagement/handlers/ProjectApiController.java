@@ -32,9 +32,11 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 
@@ -127,10 +129,11 @@ public class ProjectApiController {
                     req,
                     successMessage
             );
-            return json(GSON, res, ResultJson.successMessage(successMessage));
+            return SparkApplicationHelper.json(GSON, res, ResultJson.successMessage(successMessage),
+                    new TypeToken<>() { });
         }
 
-        return json(GSON, res, ResultJson.error());
+        return SparkApplicationHelper.json(GSON, res, ResultJson.error(), new TypeToken<>() { });
     }
 
     /**
