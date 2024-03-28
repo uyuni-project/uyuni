@@ -17,6 +17,8 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -60,6 +62,7 @@ import com.suse.manager.webui.utils.gson.StateConfigJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -141,7 +144,8 @@ public class RecurringActionController {
         PageControl pc = pageHelper.getPageControl();
         DataResult<RecurringActionScheduleJson> schedules =
                 RecurringActionManager.listAllRecurringActions(user, pc, PagedSqlQueryBuilder::parseFilterAsText);
-        return json(response, new PagedDataResultJson<>(schedules, schedules.getTotalSize(), Collections.emptySet()));
+        return json(response, new PagedDataResultJson<>(schedules, schedules.getTotalSize(), Collections.emptySet()),
+                new TypeToken<>() { });
     }
 
     /**
@@ -187,9 +191,9 @@ public class RecurringActionController {
         long id = Long.parseLong(request.params("id"));
         Optional<RecurringAction> action = RecurringActionManager.find(id);
         if (action.isEmpty()) {
-            return json(response, HttpStatus.SC_NOT_FOUND, ResultJson.error("Action " + id + " not found"));
+            return notFound(response, "Action " + id + " not found");
         }
-        return json(response, actionToDetailsDto(action.get()));
+        return json(response, actionToDetailsDto(action.get()), new TypeToken<>() { });
     }
 
     /**
@@ -219,7 +223,7 @@ public class RecurringActionController {
                 throw new IllegalStateException("Unsupported type " + type);
         }
 
-        return json(response, actionsToJson(schedules));
+        return json(response, actionsToJson(schedules), new TypeToken<>() { });
     }
 
     /**
@@ -241,7 +245,7 @@ public class RecurringActionController {
             Long id = Long.parseLong(idParam);
             Optional<RecurringAction> action = RecurringActionManager.find(id);
             if (action.isEmpty()) {
-                return json(response, HttpStatus.SC_NOT_FOUND, ResultJson.error("Action " + id + " not found"));
+                return notFound(response, "Action " + id + " not found");
             }
             if (!(action.get().getRecurringActionType() instanceof RecurringState)) {
                 Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
@@ -266,7 +270,7 @@ public class RecurringActionController {
                 .map(StateConfigJson::new)
                 .forEach(result::add);
 
-        return json(response, result);
+        return json(response, result, new TypeToken<>() { });
     }
 
     private static List<RecurringActionScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
@@ -330,7 +334,7 @@ public class RecurringActionController {
             Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE, GSON.toJson(ResultJson.error(errMsg)));
         }
 
-        return json(response, ResultJson.success());
+        return json(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -407,7 +411,7 @@ public class RecurringActionController {
             // Report just code. It seems that body in the DELETE response is not sent correctly
             Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
         }
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     private static Set<RecurringStateConfig> getStateConfigFromJson(Set<StateConfigJson> json, User user) {

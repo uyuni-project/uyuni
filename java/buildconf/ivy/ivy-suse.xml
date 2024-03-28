@@ -104,7 +104,6 @@
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
         <dependency org="suse" name="glassfish-jaxb-api" rev="2.4.0" />
         <dependency org="suse" name="glassfish-activation" rev="1.2.0" />
-        <dependency org="suse" name="glassfish-activation-api" rev="1.2.0" />
         <dependency org="suse" name="jaxb-runtime" rev="2.3.1" />
         <dependency org="suse" name="jaxb-impl" rev="2.3.1" />
         <dependency org="suse" name="txw2" rev="2.3.1" />

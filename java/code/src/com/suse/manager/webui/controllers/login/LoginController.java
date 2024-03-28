@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers.login;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
@@ -31,9 +30,11 @@ import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.webui.utils.LoginHelper;
+import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.SettingsException;
 
@@ -208,12 +209,12 @@ public class LoginController {
 
         if (errorMsg.isEmpty()) {
             LoginHelper.successfulLogin(request.raw(), response.raw(), user);
-            return json(response, new LoginResult(true, null));
+            return SparkApplicationHelper.json(response, new LoginResult(true, null), new TypeToken<>() { });
         }
         else {
             log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
             response.status(HttpServletResponse.SC_UNAUTHORIZED);
-            return json(response, new LoginResult(false, errorMsg.get()));
+            return SparkApplicationHelper.json(response, new LoginResult(false, errorMsg.get()), new TypeToken<>() { });
         }
     }
 
@@ -227,7 +228,7 @@ public class LoginController {
     public static String logout(Request request, Response response, User user) {
         AuthenticationServiceFactory.getInstance().getAuthenticationService().invalidate(request.raw(), response.raw());
         log.info("WEB LOGOUT: [{}]", user.getLogin());
-        return json(response, new LoginResult(true, null));
+        return SparkApplicationHelper.json(response, new LoginResult(true, null), new TypeToken<>() { });
     }
 
     /**

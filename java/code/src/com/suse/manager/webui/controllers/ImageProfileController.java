@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -52,6 +53,7 @@ import com.suse.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -205,11 +207,11 @@ public class ImageProfileController {
         List<ImageProfile> profiles =
                 ImageProfileFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (profiles.size() < ids.size()) {
-            return json(res, ResultJson.error("not_found"));
+            return result(res, ResultJson.error("not_found"), new TypeToken<>() { });
         }
 
         profiles.forEach(ImageProfileFactory::delete);
-        return json(res, ResultJson.success(profiles.size()));
+        return result(res, ResultJson.success(profiles.size()), new TypeToken<>() { });
     }
 
     /**
@@ -225,7 +227,7 @@ public class ImageProfileController {
 
         ActivationKey ak = ActivationKeyFactory.lookupByKey(key);
         ChannelsJson channelsJson = getChannelsJson(ak);
-        return json(res, channelsJson);
+        return json(res, channelsJson, new TypeToken<>() { });
     }
 
     /**
@@ -249,8 +251,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return profile.map(
-                p -> json(res, ResultJson.success(ImageProfileJson.fromImageProfile(p))))
-                .orElseGet(() -> json(res, ResultJson.error("not_found")));
+                p -> result(res, ResultJson.success(ImageProfileJson.fromImageProfile(p)), new TypeToken<>() { }))
+                .orElseGet(() -> result(res, ResultJson.error("not_found"), new TypeToken<>() { }));
     }
 
     /**
@@ -268,8 +270,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByLabelAndOrg(profileLabel, user.getOrg());
 
         return profile.map(
-                p -> json(res, ResultJson.success(ImageProfileJson.fromImageProfile(p))))
-                .orElseGet(() -> json(res, ResultJson.error("not_found")));
+                p -> json(res, ResultJson.success(ImageProfileJson.fromImageProfile(p)), new TypeToken<>() { }))
+                .orElseGet(() -> result(res, ResultJson.error("not_found"), new TypeToken<>() { }));
     }
 
     /**
@@ -283,7 +285,7 @@ public class ImageProfileController {
     public static Object list(Request req, Response res, User user) {
         List<JsonObject> result =
                 getJsonList(ImageProfileFactory.listImageProfiles(user.getOrg()));
-        return json(res, result);
+        return json(res, result, new TypeToken<>() { });
     }
 
     /**
@@ -345,7 +347,7 @@ public class ImageProfileController {
             return ResultJson.success();
         }).orElseGet(() -> ResultJson.error("not_found"));
 
-        return json(res, result);
+        return result(res, result, new TypeToken<>() { });
     }
 
     /**
@@ -368,7 +370,7 @@ public class ImageProfileController {
         // Check if the label is valid
         String label = reqData.getLabel();
         if (label.contains(":") || ImageProfileFactory.lookupByLabelAndOrg(label, user.getOrg()).isPresent()) {
-            return json(res, ResultJson.error("invalid_label"));
+            return result(res, ResultJson.error("invalid_label"), new TypeToken<>() { });
         }
 
         ImageProfile profile;
@@ -384,17 +386,17 @@ public class ImageProfileController {
             profile = kiwiProfile;
         }
         else {
-            return json(res, ResultJson.error("invalid_type"));
+            return result(res, ResultJson.error("invalid_type"), new TypeToken<>() { });
         }
 
         //Throw NoSuchElementException if not found
         ImageStore store = ImageStoreFactory.lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
 
         if (!ImageProfileFactory.getStoreTypeForProfile(profile).equals(store.getStoreType())) {
-            return json(res, ResultJson.error("invalid_store_type"));
+            return result(res, ResultJson.error("invalid_store_type"), new TypeToken<>() { });
         }
         if (profile.asKiwiProfile().isPresent() && StringUtils.isEmpty(reqData.getActivationKey())) {
-            return json(res, ResultJson.error("activation_key_required"));
+            return result(res, ResultJson.error("activation_key_required"), new TypeToken<>() { });
         }
 
         profile.setLabel(reqData.getLabel());
@@ -405,7 +407,7 @@ public class ImageProfileController {
         ImageProfileFactory.save(profile);
         updateCustomDataValues(profile, reqData, user);
 
-        return json(res, ResultJson.success());
+        return result(res, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**

@@ -282,7 +282,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         GuestDefinition definition = virtManager.getGuestDefinition(minion.getMinionId(), uuid)
                 .orElseThrow(NotFoundException::new);
 
-        return json(response, definition);
+        return json(response, definition, new TypeToken<>() { });
     }
 
     /**
@@ -313,7 +313,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 .collect(Collectors.toList()));
         allDomainCaps.put("domainsCaps", domainsCaps);
 
-        return json(response, allDomainCaps);
+        return json(response, allDomainCaps, new TypeToken<>() { });
     }
 
     /**
@@ -735,7 +735,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
                 VirtualGuestsUpdateActionJson.class);
         results.putAll(GSON.fromJson(vcpuResult, new TypeToken<Map<String, String>>() { }.getType()));
-        return json(response, results);
+        return json(response, results, new TypeToken<>() { });
     }
 
     /**

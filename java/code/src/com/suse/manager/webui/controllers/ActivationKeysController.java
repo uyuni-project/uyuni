@@ -16,8 +16,11 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.generateChannelJson;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.getPossibleBaseChannels;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.gson.ResultJson.success;
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.channel.Channel;
@@ -27,9 +30,8 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.utils.gson.ChannelsJson;
-import com.suse.manager.webui.utils.gson.ResultJson;
 
-import org.apache.http.HttpStatus;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
+
 /**
  * Controller class providing backend code for the systems page.
  */
@@ -62,15 +65,11 @@ public class ActivationKeysController {
             activationKeyId = Long.parseLong(request.params("tid"));
         }
         catch (NumberFormatException e) {
-            return json(response,
-                    HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("invalid_activation_key_id"));
+            return badRequest(response, "invalid_activation_key_id");
         }
         ActivationKey activationKey = ActivationKeyFactory.lookupById(activationKeyId, user.getOrg());
         if (activationKey == null) {
-            return json(response,
-                    HttpStatus.SC_NOT_FOUND,
-                    ResultJson.error("activation_key_not_found"));
+            return notFound(response, "activation_key_not_found");
         }
         return handler.apply(activationKey);
     }
@@ -84,10 +83,9 @@ public class ActivationKeysController {
      * @return the json response
      */
     public static String getChannels(Request request, Response response, User user) {
-        return withActivationKey(request, response, user, (activationKey) -> json(response,
-                ResultJson.success(ChannelsJson.fromChannelSet(activationKey.getChannels()))));
+        return withActivationKey(request, response, user, (activationKey) -> result(response,
+                success(ChannelsJson.fromChannelSet(activationKey.getChannels())), new TypeToken<>() { }));
     }
-
 
     /**
      * Get available base channels for a user.
@@ -98,7 +96,7 @@ public class ActivationKeysController {
      * @return the json response
      */
     public static String getAccessibleBaseChannels(Request request, Response response, User user) {
-        return json(response, ResultJson.success(
+        return result(response, success(
                 getPossibleBaseChannels(user).stream()
                         .map(b -> {
                             ChannelsJson group = new ChannelsJson();
@@ -106,7 +104,7 @@ public class ActivationKeysController {
                             return group;
                         })
                         .collect(Collectors.toList())
-        ));
+        ), new TypeToken<>() { });
     }
 
     private static String withChannel(Request request, Response response,
@@ -116,15 +114,11 @@ public class ActivationKeysController {
             channelId = Long.parseLong(request.params("cid"));
         }
         catch (NumberFormatException e) {
-            return json(response,
-                    HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("invalid_channel_id"));
+            return badRequest(response, "invalid_channel_id");
         }
         Channel channel = ChannelFactory.lookupById(channelId);
         if (channel == null) {
-            return json(response,
-                    HttpStatus.SC_NOT_FOUND,
-                    ResultJson.error("channel_not_found"));
+            return notFound(response, "channel_not_found");
         }
         return handler.apply(channel);
     }
@@ -142,12 +136,12 @@ public class ActivationKeysController {
 
         if (request.params("cid").equals("-1")) {
             getPossibleBaseChannels(user).forEach(base -> jsonChannels.add(generateChannelJson(base, user)));
-            return json(response, ResultJson.success(jsonChannels));
+            return result(response, success(jsonChannels), new TypeToken<>() { });
         }
         else {
             return withChannel(request, response, user, (base) -> {
                 jsonChannels.add(generateChannelJson(base, user));
-                return json(response, ResultJson.success(jsonChannels));
+                return result(response, success(jsonChannels), new TypeToken<>() { });
             });
         }
     }

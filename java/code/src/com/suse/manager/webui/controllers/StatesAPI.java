@@ -15,7 +15,6 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -70,6 +69,7 @@ import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
+import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.gson.ConfigChannelJson;
 import com.suse.manager.webui.utils.gson.PackageStateJson;
@@ -84,6 +84,7 @@ import com.suse.salt.netapi.results.Result;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -125,7 +126,9 @@ public class StatesAPI {
     private final SaltApi saltApi;
     private final ServerGroupManager serverGroupManager;
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .create();
 
     /** ID of the state that installs the SUSE Manager repo file in SUSE systems. */
     public static final String ZYPPER_SUMA_CHANNEL_REPO_FILE
@@ -267,7 +270,7 @@ public class StatesAPI {
                 .map(ConfigChannelJson::new)
                 .forEach(result::add);
 
-        return json(response, result);
+        return SparkApplicationHelper.json(response, result, new TypeToken<>() { });
     }
 
     /**
@@ -309,7 +312,8 @@ public class StatesAPI {
             );
             entity.setConfigChannels(channels, user);
             StateRevision revision = StateRevisionService.INSTANCE.getLatest(entity).get();
-            return json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()));
+            return SparkApplicationHelper.json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()),
+                    new TypeToken<>() { });
         }
         catch (Throwable t) {
             LOG.error(t.getMessage(), t);
@@ -754,7 +758,7 @@ public class StatesAPI {
         return MinionServerFactory
                 .lookupById(Long.valueOf(request.queryParams("sid")))
                 .map(StateSourceService::getSystemStateSources)
-                .map(stateSources -> json(response, stateSources))
+                .map(stateSources -> SparkApplicationHelper.json(response, stateSources, new TypeToken<>() { }))
                 .orElse("Server not found.");
     }
 }

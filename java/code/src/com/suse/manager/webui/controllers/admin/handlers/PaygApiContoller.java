@@ -40,6 +40,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 
@@ -105,20 +106,21 @@ public class PaygApiContoller {
                     LOC.getMessage("payg.ssh_data_created", payg.getHost())
             );
 
-            return json(GSON, response, ResultJson.success(payg.getId()));
+            return json(GSON, response, ResultJson.success(payg.getId()), new TypeToken<>() { });
 
         }
         catch (EntityExistsException error) {
             return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(LOC.getMessage("payg.host_exists")));
+                    ResultJson.error(LOC.getMessage("payg.host_exists")), new TypeToken<>() { });
         }
         catch (ValidatorException e) {
             return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error(ValidationUtils.convertValidationErrors(e),
-                            ValidationUtils.convertFieldValidationErrors(e)));
+                            ValidationUtils.convertFieldValidationErrors(e)), new TypeToken<>() { });
         }
         catch (Exception e) {
-            return json(GSON, response, HttpStatus.SC_BAD_REQUEST, ResultJson.error(e.getMessage()));
+            return json(GSON, response, HttpStatus.SC_BAD_REQUEST, ResultJson.error(e.getMessage()),
+                    new TypeToken<>() { });
         }
     }
 
@@ -136,7 +138,7 @@ public class PaygApiContoller {
         Integer id = Integer.parseInt(req.params("id"));
         Optional<PaygSshData> paygSshDataOptional = PaygSshDataFactory.lookupById(id);
         if (paygSshDataOptional.isEmpty()) {
-            return json(GSON, res, ResultJson.error());
+            return json(GSON, res, ResultJson.error(), new TypeToken<>() { });
         }
 
         boolean removingResult = paygAdminManager.delete(id);
@@ -146,9 +148,10 @@ public class PaygApiContoller {
                     req,
                     successMessage
             );
-            return json(GSON, res, ResultJson.successMessage(successMessage));
+            return json(GSON, res, ResultJson.successMessage(successMessage),
+                    new TypeToken<>() { });
         }
-        return json(GSON, res, ResultJson.error());
+        return json(GSON, res, ResultJson.error(), new TypeToken<>() { });
     }
 
     /**
@@ -166,19 +169,21 @@ public class PaygApiContoller {
         try {
             PaygProperties newDescription = GSON.fromJson(req.body(), PaygProperties.class);
             PaygSshData paygDB = paygAdminManager.setDetails(sshPaygId, newDescription);
-            return json(GSON, res, ResultJson.success(PaygResponseMappers.mapPaygPropertiesFullFromDB(paygDB)));
+            return json(GSON, res,
+                    ResultJson.success(PaygResponseMappers.mapPaygPropertiesFullFromDB(paygDB)),
+                    new TypeToken<>() { });
         }
         catch (EntityExistsException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(LOC.getMessage("payg.host_exists")));
+                    ResultJson.error(LOC.getMessage("payg.host_exists")), new TypeToken<>() { });
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error(ValidationUtils.convertValidationErrors(e),
-                            ValidationUtils.convertFieldValidationErrors(e)));
+                            ValidationUtils.convertFieldValidationErrors(e)), new TypeToken<>() { });
         }
         catch (Exception e) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(e.getMessage()));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(e.getMessage()), new TypeToken<>() { });
         }
     }
 }

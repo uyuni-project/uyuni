@@ -1,0 +1,2 @@
+- Change the states package API serialization of optional values
+  for Java 17
