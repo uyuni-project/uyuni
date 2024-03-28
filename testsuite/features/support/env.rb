@@ -127,6 +127,7 @@ end
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+
   if scenario.failed?
     begin
       Dir.mkdir('screenshots') unless File.directory?('screenshots')
@@ -143,10 +144,12 @@ After do |scenario|
     ensure
       print_server_logs
       previous_url = current_url
+      page.instance_variable_set(:@touched, false)
       step 'I am authorized for the "Admin" section'
       visit previous_url
     end
   end
+
   page.instance_variable_set(:@touched, false)
 end
 
