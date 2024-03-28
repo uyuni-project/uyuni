@@ -1,6 +1,14 @@
 #!/bin/bash
 set -xe
 
+cat /tmp/test-all-in-one/podman-proxy-pod-state.log
+cat /tmp/test-all-in-one/podman-proxy-httpd.log
+cat /tmp/test-all-in-one/podman-proxy-ssh.log
+cat /tmp/test-all-in-one/podman-proxy-salt-broker.log
+cat /tmp/test-all-in-one/podman-proxy-squid.log
+cat /tmp/test-all-in-one/podman-proxy-tftpd.log
+cat /tmp/test-all-in-one/podman-proxy-pod-containers.log
+
 if [ $# -ne 1 ];
 then
 	echo "Usage: ${0} server_id"

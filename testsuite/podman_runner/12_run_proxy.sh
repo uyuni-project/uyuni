@@ -145,18 +145,18 @@ sudo -i podman exec controller-test bash -c "cat /root/.ssh/config && cat /root/
 sudo -i podman ps
 sudo -i podman pod ls
 
-sudo --login podman pod inspect --format '{{.State}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-state.log 2>&1
-sudo --login podman container inspect --format '{{.State.Status}}' proxy-httpd > /tmp/test-all-in-one/podman-proxy-httpd.log 2>&1
-sudo --login podman container inspect --format '{{.State.Status}}' proxy-ssh > /tmp/test-all-in-one/podman-proxy-ssh.log 2>&1
-sudo --login podman container inspect --format '{{.State.Status}}' proxy-salt-broker > /tmp/test-all-in-one/podman-proxy-salt-broker.log 2>&1
-sudo --login podman container inspect --format '{{.State.Status}}' proxy-squid > /tmp/test-all-in-one/podman-proxy-squid.log 2>&1
-sudo --login podman container inspect --format '{{.State.Status}}' proxy-tftpd > /tmp/test-all-in-one/podman-proxy-tftpd.log 2>&1
-sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-containers.log 2>&1
+# sudo --login podman pod inspect --format '{{.State}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-state.log 2>&1
+# sudo --login podman container inspect --format '{{.State.Status}}' proxy-httpd > /tmp/test-all-in-one/podman-proxy-httpd.log 2>&1
+# sudo --login podman container inspect --format '{{.State.Status}}' proxy-ssh > /tmp/test-all-in-one/podman-proxy-ssh.log 2>&1
+# sudo --login podman container inspect --format '{{.State.Status}}' proxy-salt-broker > /tmp/test-all-in-one/podman-proxy-salt-broker.log 2>&1
+# sudo --login podman container inspect --format '{{.State.Status}}' proxy-squid > /tmp/test-all-in-one/podman-proxy-squid.log 2>&1
+# sudo --login podman container inspect --format '{{.State.Status}}' proxy-tftpd > /tmp/test-all-in-one/podman-proxy-tftpd.log 2>&1
+# sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test > /tmp/test-all-in-one/podman-proxy-pod-containers.log 2>&1
 
-cat /tmp/test-all-in-one/podman-proxy-pod-state.log
-cat /tmp/test-all-in-one/podman-proxy-httpd.log
-cat /tmp/test-all-in-one/podman-proxy-ssh.log
-cat /tmp/test-all-in-one/podman-proxy-salt-broker.log
-cat /tmp/test-all-in-one/podman-proxy-squid.log
-cat /tmp/test-all-in-one/podman-proxy-tftpd.log
-cat /tmp/test-all-in-one/podman-proxy-pod-containers.log
+# cat /tmp/test-all-in-one/podman-proxy-pod-state.log
+# cat /tmp/test-all-in-one/podman-proxy-httpd.log
+# cat /tmp/test-all-in-one/podman-proxy-ssh.log
+# cat /tmp/test-all-in-one/podman-proxy-salt-broker.log
+# cat /tmp/test-all-in-one/podman-proxy-squid.log
+# cat /tmp/test-all-in-one/podman-proxy-tftpd.log
+# cat /tmp/test-all-in-one/podman-proxy-pod-containers.log
