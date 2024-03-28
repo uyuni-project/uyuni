@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.channel.AppStreamModule;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
@@ -83,6 +84,7 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.ServerModule;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
@@ -195,7 +197,9 @@ public class AnnotationRegistry {
         ServerCoCoAttestationReport.class,
         CoCoEnvironmentTypeConverter.class,
         CoCoAttestationResult.class,
-        CoCoResultTypeConverter.class
+        CoCoResultTypeConverter.class,
+        AppStreamModule.class,
+        ServerModule.class
     );
 
     /**
