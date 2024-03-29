@@ -176,3 +176,25 @@ def _klp():
 
         except Exception as error:
             log.error("klp: {0}".format(str(error)))
+
+
+def instance_flavor():
+    """Check if this minion is a PAYG or BYOS instance."""
+    if "instance_id" not in __grains__:  # pylint: disable=undefined-variable
+        return "This minion does not run in a public cloud."
+
+    try:
+        result = __salt__["cmd.run_stdout"](
+            "instance-flavor-check",
+            success_retcodes=[10, 11],  # 10 => PAYG, 11 => BYOS
+        )
+    except CommandExecutionError as e:
+        log.error("/usr/bin/instance-flavor-check command failure: %s", e)
+        result = "unknown"
+
+    if result == "PAYG":
+        log.debug("This minion is a PAYG instance.")
+    else:
+        log.debug("This minion is a BYOS instance.")
+
+    return result

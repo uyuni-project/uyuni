@@ -55,6 +55,7 @@ import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil.PublicCloudInstanceFlavor;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
 
@@ -354,12 +355,12 @@ public class RegistrationUtils {
      * @param minionId the minionId
      * @param channels assigned channels
      * @param grains the system grains
+     * @param instanceFlavor public cloud instance flavor
      * @return true if the use is allowed
      */
-    public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId,
-                                          Set<Channel> channels, ValueMap grains) {
-        boolean isPaygClient = grains.getOptionalAsBoolean("is_payg_instance").orElse(false);
-        if (isPaygClient) {
+    public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId, Set<Channel> channels,
+                                          ValueMap grains, PublicCloudInstanceFlavor instanceFlavor) {
+        if (instanceFlavor == PublicCloudInstanceFlavor.PAYG) {
             return true;
         }
         return identifyProduct(systemQuery, minionId, grains.getValueAsString("osarch"), channels, grains)

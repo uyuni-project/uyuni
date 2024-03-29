@@ -88,7 +88,7 @@
             "/usr/local/lib/python2.7/site-packages",
             "/usr/lib/python2.7/site-packages"
           ],
-	  "instance_id": "aws",
+	      "instance_id": "aws",
           "ip_interfaces": {
             "lo": [
               "127.0.0.1",
