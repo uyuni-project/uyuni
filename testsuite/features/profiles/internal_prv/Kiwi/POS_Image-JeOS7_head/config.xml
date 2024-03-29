@@ -97,6 +97,7 @@
 
         <package name="kernel-default"/>
 	<package name="salt-minion"/>
+        <package name="hostname"/>
 
 	<package name="dracut-saltboot"/>
         <package name="mdadm"/>
