@@ -2282,7 +2282,7 @@ public class SystemManager extends BaseManager {
         // Check the SSL files using mgr-ssl-cert-setup
         try {
             String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair,
-                    intermediateCAs != null ? intermediateCAs : Collections.emptyList());
+                    intermediateCAs != null ? intermediateCAs : List.of());
             httpdConfig.put("server_crt", certificate);
             httpdConfig.put("server_key", proxyPair.getKey());
         }

@@ -364,7 +364,7 @@ public class ProxyHandler extends BaseHandler {
             SSLCertData certData = new SSLCertData(nullable(proxyName), cnames, nullable(country),
                     nullable(state), nullable(city), nullable(org), nullable(orgUnit), nullable(sslEmail));
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
-                    maxCache.longValue(), email, null, Collections.emptyList(), null, caCrtKey, caPassword, certData);
+                    maxCache.longValue(), email, null, List.of(), null, caCrtKey, caPassword, certData);
         }
         catch (InstantiationException e) {
             LOG.error("Failed to generate proxy system id", e);
