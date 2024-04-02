@@ -16,8 +16,8 @@ include $(TOP)/Makefile.defs
 INSTALL_DATA    = $(INSTALL_BIN)
 
 # Docker tests variables
-DOCKER_IMAGE          = systemsmanagement/uyuni/master/docker/containers/uyuni-master-spacewalkkoan
-DOCKER_REGISTRY       = registry.opensuse.org
+DOCKER_IMAGE          = devel/galaxy/manager/4.3/docker/containers/suma-4.3-spacewalkkoan
+DOCKER_REGISTRY       = registry.suse.de
 DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/tools/"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../../../:/manager"
 INITIAL_CMD           = /manager/susemanager-utils/testing/automation/initial-objects.sh
