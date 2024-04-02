@@ -35,6 +35,7 @@
 # Release Engineering
 rel-eng/ @uyuni-project/release-engineering
 tito.props @uyuni-project/release-engineering
+web/conf/rhn_web.conf @uyuni-project/release-engineering
 
 # Cobbler
 java/conf/cobbler/snippets/ @uyuni-project/python
