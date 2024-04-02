@@ -832,7 +832,7 @@
       </trans-unit>
       <trans-unit id="Overview" xml:space="preserve">
         <source>Overview</source>
-        <target/>
+        <target>Преглед</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -860,14 +860,14 @@
       </trans-unit>
       <trans-unit id="Pending Actions" xml:space="preserve">
         <source>Pending Actions</source>
-        <target/>
+        <target>Дејствија во очекување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Preferences" xml:space="preserve">
         <source>Preferences</source>
-        <target/>
+        <target>Преференци</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
