@@ -575,21 +575,21 @@
       </trans-unit>
       <trans-unit id="Critical Accesses" xml:space="preserve">
         <source>Critical Accesses</source>
-        <target/>
+        <target>Критично Пристапи</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Active Locks" xml:space="preserve">
         <source>Critical Active Locks</source>
-        <target/>
+        <target>Критично Активни Брави</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Active Sessions" xml:space="preserve">
         <source>Critical Active Sessions</source>
-        <target/>
+        <target>Критично активни сесии</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
