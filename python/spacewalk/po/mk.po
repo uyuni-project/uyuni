@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-27 11:48+0100\n"
-"PO-Revision-Date: 2024-04-02 01:43+0000\n"
+"PO-Revision-Date: 2024-04-02 06:43+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -371,12 +371,12 @@ msgstr "корисничкото име треба да содржи најма�
 #: ../server/rhnUser.py:578
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "корисничкото име треба да биде помало од %d карактери"
 
 #: ../server/rhnUser.py:592
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "корисничко име = `%s', невалиден карактер `%s'"
 
 #: ../server/rhnUser.py:613
 #, python-format
@@ -386,22 +386,22 @@ msgstr ""
 #: ../server/rhnUser.py:701
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "лозинката мора да содржи најмалку %d карактери"
 
 #: ../server/rhnUser.py:705
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "Лозинката мора да биде пократка од %d карактери"
 
 #: ../server/rhnUser.py:721
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "лозинката содржи карактер `%s'"
 
 #: ../server/rhnUser.py:730
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "корисничкото име треба да има најмалку %d карактери"
 
 #: ../server/rhnUser.py:741
 #, python-format
