@@ -3,13 +3,13 @@
 
 require 'xmlrpc/client'
 
-# Wrapper class for XML-RPC client library
+##
+# Represents an XMLRPC client object that is used to communicate with the Spacewalk server.
 class XmlrpcClient
   ##
-  # It creates an XMLRPC client object that will be used to communicate with the Spacewalk server
+  # Initializes a new XmlrpcClient object.
   #
-  # Args:
-  #   host: The hostname of the Spacewalk server.
+  # @param host [String] The hostname of the Spacewalk server.
   def initialize(host)
     puts 'Activating XML-RPC API'
     protocol = $debug_mode ? 'http://' : 'https://'
@@ -17,12 +17,13 @@ class XmlrpcClient
   end
 
   ##
-  # It calls a remote method with a list of parameters
+  # Calls a remote method with a list of parameters.
   #
-  # Args:
-  #   name: The name of the method to call.
-  #   params: A hash of parameters. The keys are the names of the parameters, and the values are the values of the
-  # parameters.
+  # @param name [String] The name of the method to call.
+  # @param params [Hash] A hash of parameters.
+  #   The keys are the names of the parameters, and the values are the values of the parameters.
+  # @return [Object] The result of the method call.
+  # @raise [SystemCallError] If there is an API failure.
   def call(name, params)
     @xmlrpc_client.call(name, *params.values)
   rescue XMLRPC::FaultException => e
