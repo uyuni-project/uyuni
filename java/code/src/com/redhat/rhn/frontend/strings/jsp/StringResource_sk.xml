@@ -2699,21 +2699,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actiondetails.jsp.scheduler" xml:space="preserve">
         <source>Scheduler</source>
-        <target/>
+        <target>Plánovač</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.earliestexecution" xml:space="preserve">
         <source>Earliest execution</source>
-        <target/>
+        <target>Najskoršie vykonanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.notes" xml:space="preserve">
         <source>Notes</source>
-        <target/>
+        <target>Poznámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
@@ -2721,7 +2721,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.action" xml:space="preserve">
         <source>Action</source>
-        <target/>
+        <target>Akcia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2730,7 +2730,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.earliest" xml:space="preserve">
         <source>Scheduled Time</source>
-        <target/>
+        <target>Plánovaný čas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2739,7 +2739,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.succeeded" xml:space="preserve">
         <source>Succeeded</source>
-        <target/>
+        <target>Úspešné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2748,7 +2748,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.failed" xml:space="preserve">
         <source>Failed</source>
-        <target/>
+        <target>Neúspešné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2758,7 +2758,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.inprogress" xml:space="preserve">
         <source>Pending</source>
-        <target/>
+        <target>Čakajúce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2767,7 +2767,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.total" xml:space="preserve">
         <source>Total</source>
-        <target/>
+        <target>Celkom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2776,7 +2776,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.deleteactions" xml:space="preserve">
         <source>Delete Actions</source>
-        <target/>
+        <target>Odstrániť akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
@@ -29596,18 +29596,18 @@ given channel.</source>
         </context-group>
         <target state="needs-adaptation"/>
       </trans-unit>
-    <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
         <source>Save</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
