@@ -22,7 +22,7 @@ ca_crt: |
 $(sudo --login sed 's/^/  /' /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT)
 proxy_fqdn: proxy-httpd
 max_cache_size_mb: 2048
-server_version: 5.0.0 Beta1
+server_version: $UYUNI_VERSION
 email: galaxy-noise@suse.de
 EOF
 
@@ -70,7 +70,7 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/proxy-rhn-cache/:/var/cache/rhn \
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-httpd \
-      registry.opensuse.org/uyuni/proxy-httpd:2024.02
+      registry.opensuse.org/uyuni/proxy-httpd:$UYUNI_VERSION
 
   sudo --login podman run \
     --privileged \
@@ -83,7 +83,7 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume /tmp/test-all-in-one:/tmp \
     --name proxy-ssh \
-      registry.opensuse.org/uyuni/proxy-ssh:2024.02
+      registry.opensuse.org/uyuni/proxy-ssh:$UYUNI_VERSION
 
   sudo --login podman run \
     --privileged \
@@ -95,7 +95,7 @@ run_proxy_containers() {
     --cgroupns host \
     --volume $PROXY_UTILS/:/etc/uyuni \
     --name proxy-salt-broker \
-      registry.opensuse.org/uyuni/proxy-salt-broker:2024.02
+      registry.opensuse.org/uyuni/proxy-salt-broker:$UYUNI_VERSION
 
   sudo --login podman run \
     --privileged \
@@ -108,7 +108,7 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume $PROXY_UTILS/proxy-squid-cache/:/var/cache/squid \
     --name proxy-squid \
-      registry.opensuse.org/uyuni/proxy-squid:2024.02
+      registry.opensuse.org/uyuni/proxy-squid:$UYUNI_VERSION
 
   sudo --login podman run \
     --privileged \
@@ -121,7 +121,7 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-tftpd \
-      registry.opensuse.org/uyuni/proxy-tftpd:2024.02
+      registry.opensuse.org/uyuni/proxy-tftpd:$UYUNI_VERSION
 }
 
 log_status() {
