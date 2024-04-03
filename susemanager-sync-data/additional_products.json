@@ -991,11 +991,11 @@
                 "installer_updates" : false
             },
             {
-                "id" : -479,
-                "url" : "https://mirrors.almalinux.org/mirrorlist/9/powertools",
-                "name" : "almalinux9-powertools",
+                "id" : -553,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/9/crb",
+                "name" : "almalinux9-crb",
                 "distro_target" : null,
-                "description" : "AlmaLinux 9 PowerTools",
+                "description" : "AlmaLinux 9 PowerTools/CRB",
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
