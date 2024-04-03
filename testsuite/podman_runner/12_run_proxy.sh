@@ -5,13 +5,16 @@ create_proxy_configuration() {
 
   export PROXY_UTILS=$HOME/proxy
 
-  sudo --login podman exec uyuni-server-all-in-one-test bash -c 'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /root/ssl-build/uyuni-server-all-in-one-test/server.crt /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
+  sudo --login podman exec uyuni-server-all-in-one-test bash -c \
+    'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /root/ssl-build/uyuni-server-all-in-one-test/server.crt /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
 
   mkdir --parents \
     $PROXY_UTILS \
     $PROXY_UTILS/proxy-squid-cache \
     $PROXY_UTILS/proxy-rhn-cache \
     $PROXY_UTILS/proxy-tftpboot
+
+  ssh-keygen -t rsa -b 4096 -C "salt@uyuni-server-all-in-one-test" -f /tmp/test-all-in-one/id_openssh_rsa -N ""
 
   cat <<EOF > $PROXY_UTILS/config.yaml
 server: uyuni-server-all-in-one-test
@@ -32,7 +35,6 @@ $(sudo --login sed 's/^/      /' /tmp/test-all-in-one/server.crt)
 $(sudo --login sed 's/^/      /' /tmp/test-all-in-one/server.key)
 EOF
 
-  ssh-keygen -t rsa -b 4096 -C "salt@uyuni-server-all-in-one-test" -f /tmp/test-all-in-one/id_openssh_rsa -N ""
   cat <<EOF > $PROXY_UTILS/ssh.yaml
 ssh:
   server_ssh_key_pub: |
@@ -133,7 +135,6 @@ log_status() {
     uyuni-proxy-test-containers: $(sudo --login podman pod inspect --format '{{.NumContainers}}' uyuni-proxy-test)
 EOF
 }
-
 
 cleanup() {
   sudo --login \
