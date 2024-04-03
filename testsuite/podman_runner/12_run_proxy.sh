@@ -3,7 +3,8 @@ set -euxo pipefail
 
 create_proxy_configuration() {
 
-  export PROXY_UTILS=$HOME/proxy
+  PROXY_UTILS=$HOME/proxy
+  PROXY_VERSION=$( [[ $UYUNI_VERSION == "master" ]] && echo "latest" || echo $UYUNI_VERSION )
 
   sudo --login podman exec uyuni-server-all-in-one-test bash -c \
     'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /root/ssl-build/uyuni-server-all-in-one-test/server.crt /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
@@ -22,7 +23,7 @@ ca_crt: |
 $(sudo --login sed 's/^/  /' /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT)
 proxy_fqdn: proxy-httpd
 max_cache_size_mb: 2048
-server_version: $UYUNI_VERSION
+server_version: 
 email: galaxy-noise@suse.de
 EOF
 
