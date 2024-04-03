@@ -92,7 +92,6 @@
         <dependency org="suse" name="spy" rev="0.8.7" />
         <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stax2-api" rev="3.1.4" />
-        <dependency org="suse" name="stringtree-json" rev="2.0.9" />
         <dependency org="suse" name="struts" rev="1.2.9" />
         <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />

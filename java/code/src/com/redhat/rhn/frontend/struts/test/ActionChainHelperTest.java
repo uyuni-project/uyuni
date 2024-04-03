@@ -29,11 +29,12 @@ import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.utils.Json;
+
 import com.mockobjects.servlet.MockHttpServletRequest;
 
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
-import org.stringtree.json.JSONWriter;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -98,9 +99,8 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
         }
 
         MockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        String s = new JSONWriter().write(result);
         request.addExpectedSetAttribute(
-            ActionChainHelper.EXISTING_ACTION_CHAINS_PROPERTY_NAME, s);
+            ActionChainHelper.EXISTING_ACTION_CHAINS_PROPERTY_NAME, Json.GSON.toJson(result));
 
         ActionChainHelper.prepopulateActionChains(request);
     }

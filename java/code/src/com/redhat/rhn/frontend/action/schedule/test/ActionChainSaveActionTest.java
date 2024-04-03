@@ -29,8 +29,11 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.utils.Json;
+
+import com.google.gson.reflect.TypeToken;
+
 import org.junit.jupiter.api.Test;
-import org.stringtree.json.JSONReader;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -81,8 +84,8 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
         String resultString = saveAction.save(actionChain.getId(), newLabel,
                 deletedEntries, deletedSortOrders, reorderedSortOrders, request);
 
-        Map<String, Object> result = (Map<String, Object>) new JSONReader()
-            .read(resultString);
+        Map<String, Object> result = Json.GSON.fromJson(resultString,
+            new TypeToken<Map<String, Object>>() { }.getType());
         assertEquals(true, result.get(ActionChainSaveAction.SUCCESS_FIELD));
         assertEquals(LocalizationService.getInstance().getMessage("actionchain.jsp.saved"),
             result.get(ActionChainSaveAction.TEXT_FIELD));

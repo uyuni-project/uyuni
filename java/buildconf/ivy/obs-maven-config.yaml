@@ -273,8 +273,6 @@ artifacts:
   - artifact: stax2-api
     package: woodstox
     repository: Uyuni_Other
-  - artifact: stringtree-json
-    repository: Uyuni_Other
   - artifact: struts
     repository: Uyuni_Other
   - artifact: taglibs-standard-impl
