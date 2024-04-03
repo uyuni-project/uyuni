@@ -1,0 +1,2 @@
+- In the source URL use a macro for specifying the release version 
+  instead of hardcoding it
