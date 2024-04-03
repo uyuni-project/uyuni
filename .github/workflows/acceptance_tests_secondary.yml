@@ -13,7 +13,7 @@ concurrency:
 jobs:
   acceptance-tests-secondary:
     # Skip running scheduled jobs on forks
-    if: (github.event_name == 'schedule' && github.repository == 'uyuni-project/uyuni') || (github.event_name != 'schedule')
+    if: (github.repository == 'uyuni-project/uyuni' || github.event_name != 'schedule')
     uses: ./.github/workflows/acceptance_tests_common.yml
     with:
       secondary_tests: "18_run_secondary_tests.sh"
