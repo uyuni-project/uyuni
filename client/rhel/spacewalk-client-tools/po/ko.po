@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-08 14:46+0100\n"
+"POT-Creation-Date: 2024-03-27 11:48+0100\n"
 "PO-Revision-Date: 2023-10-17 07:15+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -47,25 +47,6 @@ msgstr "%s을(를) 찾을 수 없음"
 #: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
 msgid "Getting list of packages installed on the system"
 msgstr "시스템에 설치된 패키지 목록을 가져옴"
-
-#. self.druid.finish.set_label(_("_Finish"))
-#: ../src/up2date_client/gui.py:273
-msgid "Finish setting up software updates"
-msgstr "소프트웨어 업데이트 설정 완료"
-
-#. self.druid.finish.set_label(_("_Exit"))
-#: ../src/up2date_client/gui.py:276
-msgid "Software updates setup unsuccessful"
-msgstr "소프트웨어 업데이트 설정 성공"
-
-#: ../src/up2date_client/gui.py:283
-msgid "You must run rhn_register as root."
-msgstr "root 계정으로 rhn_register를 실행해야 합니다."
-
-#: ../src/up2date_client/gui.py:308
-#, python-format
-msgid "There was some sort of I/O error: %s"
-msgstr "입/출력 오류 발생: %s"
 
 #: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
@@ -123,7 +104,7 @@ msgstr "인증받은 http proxy와 함께 사용할 사용자명 지정"
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "인증받은 http proxy와 함께 사용할 암호 지정"
 
-#: ../src/up2date_client/rhncli.py:93
+#: ../src/up2date_client/rhncli.py:91
 msgid ""
 "\n"
 "Aborted.\n"
@@ -131,31 +112,31 @@ msgstr ""
 "\n"
 "중지.\n"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:94
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "예상하지 못한 운영 체제 오류 발생: %s\n"
 
-#: ../src/up2date_client/rhncli.py:101
+#: ../src/up2date_client/rhncli.py:99
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "잘못된 URI에 연결을 시도함.\n"
 
-#: ../src/up2date_client/rhncli.py:103
+#: ../src/up2date_client/rhncli.py:101
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "잘못된 URI에 연결을 시도함: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:105
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "입/출력 오류 발생: %s\n"
 
-#: ../src/up2date_client/rhncli.py:111
+#: ../src/up2date_client/rhncli.py:109
 #, python-format
 msgid "There was an SSL error: %s\n"
 msgstr "SSL 오류 발생: %s\n"
 
-#: ../src/up2date_client/rhncli.py:112
+#: ../src/up2date_client/rhncli.py:110
 msgid ""
 "A common cause of this error is the system time being incorrect. Verify that "
 "the time on this system is correct.\n"
@@ -163,26 +144,22 @@ msgstr ""
 "이 오류는 시스템 시간이 잘못 설정되어 있을 경우 자주 발생합니다. 시스템 시간"
 "이 제대로 설정되었는지 확인해 주십시오.\n"
 
-#: ../src/up2date_client/rhncli.py:119
+#: ../src/up2date_client/rhncli.py:117
 #, python-format
 msgid "There was a SSL crypto error: %s\n"
 msgstr "SSL 암호 오류 발생: %s\n"
 
-#: ../src/up2date_client/rhncli.py:123
+#: ../src/up2date_client/rhncli.py:121
 #, python-format
 msgid "There was an authentication error: %s\n"
 msgstr "인증 오류 발생: %s\n"
 
-#: ../src/up2date_client/rhncli.py:139
+#: ../src/up2date_client/rhncli.py:137
 #, python-format
 msgid "You must be root to run %s"
 msgstr "root로 %s을(를) 실행해야 함"
 
-#: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr "GUI를 열 수 없습니다. `up2date --nox`를 시도해 보십시오."
-
-#: ../src/up2date_client/rhncli.py:211
+#: ../src/up2date_client/rhncli.py:193
 #, python-format
 msgid ""
 "%%prog (Spacewalk Client Tools) %s\n"
@@ -193,52 +170,13 @@ msgstr ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "GPLv2 약관에 따라 라이선스됨."
 
-#: ../src/up2date_client/rhncli.py:226
+#: ../src/up2date_client/rhncli.py:208
 msgid "An error has occurred:"
 msgstr "오류 발생:"
 
-#: ../src/up2date_client/rhncli.py:234
+#: ../src/up2date_client/rhncli.py:216
 msgid "See /var/log/up2date for more information"
 msgstr "보다 자세한 정보는 /var/log/up2date 를 참조하시기 바랍니다"
-
-#: ../src/up2date_client/rhnreg.py:75
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "경고: systemd를 사용하여 rhnsd를 활성화하는데 실패"
-
-#: ../src/up2date_client/rhnreg.py:81
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "경고: chkconfig를 사용하여 rhnsd를 활성화하는데 실패"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "경고"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "시스템을 등록하는 도중 문제 발생:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "시스템 등록 중 문제 발생."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "시스템 id를 디스크로 기록하는 도중 문제가 발생."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"%s을(를) 열 수 없습니다.\n"
-"%s이(가) 활성화되지 않았습니다.\n"
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%dMHz"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -841,6 +779,10 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "치명적 오류"
 
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "경고"
+
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, python-format, python-brace-format
 msgid ""
@@ -1060,6 +1002,11 @@ msgstr "호스트 이름: "
 msgid "CPU speed: "
 msgstr "CPU 속도: "
 
+#: ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%dMHz"
+
 #: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
 msgstr "IP 주소: "
@@ -1072,6 +1019,19 @@ msgstr "메모리: "
 #, python-format
 msgid "%s megabytes"
 msgstr "%s 메가바이트"
+
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "시스템을 등록하는 도중 문제 발생:\n"
+
+#: ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "시스템 등록 중 문제 발생."
+
+#: ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "시스템 id를 디스크로 기록하는 도중 문제가 발생."
 
 #: ../src/up2date_client/tui.py:1025
 msgid "Problem sending hardware profile:\n"
@@ -1088,6 +1048,15 @@ msgstr "패키지 목록을 보내는 도중 문제 발생:\n"
 #: ../src/up2date_client/tui.py:1042
 msgid "Problem sending package list."
 msgstr "패키지 목록을 보내는 도중 문제가 발생했습니다."
+
+#: ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+"%s을(를) 열 수 없습니다.\n"
+"%s이(가) 활성화되지 않았습니다.\n"
 
 #: ../src/up2date_client/tui.py:1096
 msgid "Finish"
@@ -1252,22 +1221,18 @@ msgid "Do not upload any virtualization info"
 msgstr "어떠한 가상화 정보도 업로드하지 않음"
 
 #: ../src/bin/rhnreg_ks.py:74
-msgid "Do not start rhnsd after completion"
-msgstr "완료 후 rhnsd를 시작하지 않음"
-
-#: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
 msgstr "이미 시스템이 등록되어 있어도 이를 다시 등록함"
 
-#: ../src/bin/rhnreg_ks.py:86
+#: ../src/bin/rhnreg_ks.py:84
 msgid "A username and password are required to register a system."
 msgstr "시스템을 등록하기 위해서는 사용자명과 암호가 필요합니다."
 
-#: ../src/bin/rhnreg_ks.py:91
+#: ../src/bin/rhnreg_ks.py:89
 msgid "This system is already registered. Use --force to override"
 msgstr "이미 등록된 시스템입니다. --force를 사용하여 덮어씀"
 
-#: ../src/bin/rhnreg_ks.py:125
+#: ../src/bin/rhnreg_ks.py:123
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
@@ -1275,11 +1240,11 @@ msgstr ""
 "--use-eus-channel 옵션을 --activationkey와 함께 사용하는 것을 지원하지 않습니"
 "다. 대신 사용자명과 암호를 사용하십시오."
 
-#: ../src/bin/rhnreg_ks.py:128
+#: ../src/bin/rhnreg_ks.py:126
 msgid "The server you are registering against does not support EUS."
 msgstr "등록 시 사용하려는 서버가 EUS를 지원하지 않습니다."
 
-#: ../src/bin/rhnreg_ks.py:154
+#: ../src/bin/rhnreg_ks.py:152
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
 "server web user Interface and update your contactinfo. "
@@ -1287,12 +1252,12 @@ msgstr ""
 "경고: --contactinfo 옵션은 사용 중지되었습니다. 서버 웹 사용자 인터페이스에 "
 "로그인해서 연락처 정보를 업데이트하십시오. "
 
-#: ../src/bin/rhnreg_ks.py:175
+#: ../src/bin/rhnreg_ks.py:169
 #, python-format
 msgid "Warning: %s is not present, could not enable it."
 msgstr "경고: %s이(가) 없기 때문에 이를 활성화할 수 없습니다."
 
-#: ../src/bin/rhnreg_ks.py:178
+#: ../src/bin/rhnreg_ks.py:172
 #, python-format
 msgid ""
 "Warning: Could not open %s\n"
@@ -1301,13 +1266,38 @@ msgstr ""
 "경고: %s을(를) 열 수 없습니다.\n"
 "%s은(는) 활성화되어 있지 않습니다.\n"
 
-#: ../src/bin/rhnreg_ks.py:206
+#: ../src/bin/rhnreg_ks.py:200
 msgid ""
 "A profilename was not specified, and hostname and IP address could not be "
 "determined to use as a profilename, please specify one."
 msgstr ""
 "프로파일 이름이 지정되지 않았으며 호스트명과 IP 주소를 프로파일 이름으로 사용"
 "할 수 없습니다. 프로파일 이름을 지정해 주십시오."
+
+#~ msgid "Finish setting up software updates"
+#~ msgstr "소프트웨어 업데이트 설정 완료"
+
+#~ msgid "Software updates setup unsuccessful"
+#~ msgstr "소프트웨어 업데이트 설정 성공"
+
+#~ msgid "You must run rhn_register as root."
+#~ msgstr "root 계정으로 rhn_register를 실행해야 합니다."
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s"
+#~ msgstr "입/출력 오류 발생: %s"
+
+#~ msgid "Unable to open gui. Try `up2date --nox`"
+#~ msgstr "GUI를 열 수 없습니다. `up2date --nox`를 시도해 보십시오."
+
+#~ msgid "Warning: unable to enable rhnsd with systemd"
+#~ msgstr "경고: systemd를 사용하여 rhnsd를 활성화하는데 실패"
+
+#~ msgid "Warning: unable to enable rhnsd with chkconfig"
+#~ msgstr "경고: chkconfig를 사용하여 rhnsd를 활성화하는데 실패"
+
+#~ msgid "Do not start rhnsd after completion"
+#~ msgstr "완료 후 rhnsd를 시작하지 않음"
 
 #~ msgid "Error:"
 #~ msgstr "오류:"

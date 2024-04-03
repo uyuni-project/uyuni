@@ -16,7 +16,6 @@ package com.suse.scc.test.registration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.suse.scc.SCCSystemId;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
@@ -171,8 +170,8 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
         final SCCSystemRegistrationContext context =
                 new SCCSystemRegistrationContext(sccWebClient, null, getCredentials());
         for (int i = 0; i < systemSize; i++) {
-            context.getPendingRegistrationSystems().put(
-                    new SCCSystemId("SCCSystemId.login" + i, "SCCSystemId.pwd" + i),
+            context.getPendingRegistrationSystemsByLogin().put(
+                    "SCCSystemId.login" + i,
                     new SCCRegisterSystemJson(
                             "SCCRegisterSystemJson.login" + i, "SCCRegisterSystemJson.pwd" + i,
                             null, null, null, null)

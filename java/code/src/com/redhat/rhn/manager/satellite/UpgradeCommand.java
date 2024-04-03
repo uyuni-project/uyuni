@@ -82,6 +82,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "all_systems_pillar_refresh";
     public static final String SYSTEM_THRESHOLD_FROM_CONFIG =
             UPGRADE_TASK_NAME + "system_threshold_conf";
+    public static final String ALL_SYSTEMS_SYNC_ALL =
+            UPGRADE_TASK_NAME + "all_systems_sync_all";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -156,6 +158,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case REFRESH_ALL_SYSTEMS_PILLARS:
                         refreshAllSystemsPillar();
+                        break;
+                    case ALL_SYSTEMS_SYNC_ALL:
+                        allSystemsSyncAll();
                         break;
                     default:
                 }
@@ -384,5 +389,20 @@ public class UpgradeCommand extends BaseTransactionCommand {
         log.warn("Converting web.system_checkin_threshold to DB config");
         SatConfigFactory.setSatConfigValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD,
                 Config.get().getString("web.system_checkin_threshold", "1"));
+    }
+
+    /**
+     * Run Sync_all on all systems
+     */
+    private void allSystemsSyncAll() {
+        try {
+            List<String> minionIds = MinionServerFactory.listMinions()
+                    .stream().map(MinionServer::getMinionId).collect(Collectors.toList());
+            GlobalInstanceHolder.SALT_API.syncAll(new MinionList(minionIds));
+            log.info("Sync all scheduled on all systems");
+        }
+        catch (Exception e) {
+            log.error("Error running sync_all. Ignoring.", e);
+        }
     }
 }

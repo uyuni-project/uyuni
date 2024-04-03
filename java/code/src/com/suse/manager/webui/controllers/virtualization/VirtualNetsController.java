@@ -41,6 +41,7 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 
@@ -175,7 +176,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 .map(entry -> new VirtualNetworkInfoJson(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
 
-        return json(response, networks);
+        return json(response, networks, new TypeToken<>() { });
     }
 
     /**
@@ -215,7 +216,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 })
                 .collect(Collectors.toList());
 
-        return json(response, netDevices);
+        return json(response, netDevices, new TypeToken<>() { });
     }
 
     /**

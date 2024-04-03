@@ -451,8 +451,6 @@ public class MenuTree {
                             .withVisibility(adminRoles.get("satellite")))
                     .addChild(new MenuItem("Cobbler").withPrimaryUrl("/rhn/admin/config/Cobbler.do")
                             .withVisibility(adminRoles.get("satellite")))
-                    .addChild(new MenuItem("Bare-metal systems").withPrimaryUrl("/rhn/admin/config/BootstrapSystems.do")
-                            .withVisibility(adminRoles.get("satellite")))
                     .addChild(new MenuItem("Monitoring").withPrimaryUrl("/rhn/manager/admin/config/monitoring")
                             .withVisibility(adminRoles.get("satellite"))))
             .addChild(new MenuItem("ISS Configuration")

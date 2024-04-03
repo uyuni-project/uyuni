@@ -68,14 +68,6 @@
                         value="<bean:message key="compare.jsp.syncpackageto" arg0="${fn:escapeXml(requestScope.profilename)}"/>" />
                 </div>
             </rhn:require>
-
-            <rhn:require acl="not system_feature(ftr_delta_action)"
-                mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-                <div align="left">
-                    <hr />
-                    <strong><bean:message key="compare.jsp.noprovisioning" /></strong>
-                </div>
-            </rhn:require>
         </c:if>
 
         <html:hidden property="sid" value="${param.sid}" />

@@ -40,9 +40,11 @@ import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -173,20 +175,23 @@ public class FilterApiController {
                 }
                 catch (ModulemdApiException e) {
                     LOG.error(e.getMessage(), e);
-                    return json(GSON, res, ResultJson.error(LOC.getMessage("contentmanagement.modules_error")));
+                    return SparkApplicationHelper.json(GSON, res,
+                            ResultJson.error(LOC.getMessage("contentmanagement.modules_error")),
+                            new TypeToken<>() { });
                 }
                 break;
             default:
                 return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Collections.emptyList(),
                         Collections.singletonMap("invalid_template",
-                                Collections.singletonList(LOC.getMessage("contentmanagement.invalid_template")))));
+                                Collections.singletonList(LOC.getMessage("contentmanagement.invalid_template")))),
+                        new TypeToken<>() { });
             }
         }
         catch (EntityExistsException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Collections.emptyList(),
                     Collections.singletonMap("filter_name",
                             Collections.singletonList(LOC.getMessage("contentmanagement.filter_exists")))
-            ));
+            ), new TypeToken<>() { });
         }
 
         if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
@@ -239,7 +244,7 @@ public class FilterApiController {
                     new LinkedList<>(),
                     Collections.singletonMap("filter_name",
                             Arrays.asList(LOC.getMessage("contentmanagement.filter_exists")))
-            ));
+            ), new TypeToken<>() { });
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,

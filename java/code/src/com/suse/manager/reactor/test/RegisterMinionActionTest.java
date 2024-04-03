@@ -89,6 +89,7 @@ import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -1782,6 +1783,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     (key) -> new Expectations() {{
                         allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                         will(returnValue(getSystemInfo(MINION_ID, "byos", key)));
+                        allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
+                        will(returnValue(SumaUtil.PublicCloudInstanceFlavor.BYOS));
                         List<ProductInfo> pil = new ArrayList<>();
                         ProductInfo pi = new ProductInfo(
                                 product.getName(),
@@ -1829,6 +1832,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     (key) -> new Expectations() {{
                         allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                         will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                        allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
+                        will(returnValue(SumaUtil.PublicCloudInstanceFlavor.UNKNOWN));
                         List<ProductInfo> pil = new ArrayList<>();
                         ProductInfo pi = new ProductInfo(
                                 product.getName(),
@@ -1874,6 +1879,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                     will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                    allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
+                    will(returnValue(SumaUtil.PublicCloudInstanceFlavor.UNKNOWN));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                             product.getName(),
@@ -1917,6 +1924,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                     will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                    allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
+                    will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                             product.getName(),
@@ -1949,6 +1958,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                     will(returnValue(getSystemInfo(MINION_ID, "slespayg", key)));
+                    allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
+                    will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
                 }},
                 ACTIVATION_KEY_SUPPLIER,
                 (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),

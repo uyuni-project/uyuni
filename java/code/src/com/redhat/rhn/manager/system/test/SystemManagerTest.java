@@ -1256,19 +1256,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetBootstrapActivationKeys() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
-            this.getClass().getSimpleName());
-
-        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
-        activationKey.setBootstrap("Y");
-        Server server = activationKey.getServer();
-        activationKey.getToken().getActivatedServers().add(server);
-        DataResult<ActivationKeyDto> result = SystemManager.getActivationKeys(server);
-        assertEquals(0, result.size());
-    }
-
-    @Test
     public void testCountSystemsInSetWithoutEntitlement() {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -90,6 +91,11 @@ import com.redhat.rhn.domain.task.Task;
 
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
+import com.suse.manager.model.attestation.CoCoAttestationResult;
+import com.suse.manager.model.attestation.CoCoEnvironmentTypeConverter;
+import com.suse.manager.model.attestation.CoCoResultTypeConverter;
+import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
+import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
@@ -183,7 +189,13 @@ public class AnnotationRegistry {
         ReportDBCredentials.class,
         RHUICredentials.class,
         SCCCredentials.class,
-        VHMCredentials.class
+        VHMCredentials.class,
+        ChannelSyncFlag.class,
+        ServerCoCoAttestationConfig.class,
+        ServerCoCoAttestationReport.class,
+        CoCoEnvironmentTypeConverter.class,
+        CoCoAttestationResult.class,
+        CoCoResultTypeConverter.class
     );
 
     /**

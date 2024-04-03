@@ -18,6 +18,8 @@ Feature: Setup containerized proxy
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+# TODO: Enable the following scenarios once the team fixes the SLE Micro bootstrapping issues
+@skip
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -25,17 +27,18 @@ Feature: Setup containerized proxy
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-proxy_key" from "activationKeys"
+    And I select "1-proxy_container_key" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
 # workaround for bsc#1218146
 # Once we start using Leap Micro #23811 in Uyuni Proxy, we need to remove this Cucumber tag
+@skip
 @susemanager
   Scenario: Reboot the proxy host
-    When I reboot the "proxy" minion through SSH
-    And I wait until port "22" is listening on "proxy" host
+    When I reboot the "proxy" host through SSH, waiting until it comes back
 
+@skip
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
 

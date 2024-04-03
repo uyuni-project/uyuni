@@ -1,6 +1,6 @@
 [Unit]
 Description=Uyuni update config
-Before=uyuni-check-database.service tomcat.service apache2.service rhn-search.service taskomatic.service
+Before=uyuni-check-database.service tomcat.service apache2.service rhn-search.service taskomatic.service postfix.service
 After=postgresql.service
 
 [Service]

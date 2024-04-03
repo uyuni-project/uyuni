@@ -36,6 +36,7 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
@@ -116,6 +117,7 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -188,7 +190,12 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.attestation.AttestationDisabledException;
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.CoCoEnvironmentType;
+import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
@@ -230,6 +237,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * SystemHandler
@@ -2911,38 +2920,34 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
      * on error")
      */
+    @ApiIgnore(ApiType.HTTP)
     public int provisionSystem(User loggedInUser, Integer sid, String profileName)
             throws FaultException {
-        log.debug("provisionSystem called.");
+       return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, profileName, new Date());
+    }
 
-        // Lookup the server so we can validate it exists and throw error if not.
-        Server server = lookupServer(loggedInUser, sid);
-        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
-            throw new FaultException(-2, "provisionError",
-                    "System does not have required entitlement");
-        }
-
-        KickstartData ksdata = KickstartFactory.
-                lookupKickstartDataByLabelAndOrgId(profileName,
-                        loggedInUser.getOrg().getId());
-        if (ksdata == null) {
-            throw new FaultException(-3, "kickstartProfileNotFound",
-                    "No Kickstart Profile found with label: " + profileName);
-        }
-
-        KickstartHelper helper = new KickstartHelper(RhnXmlRpcServer.getRequest());
-        String host = helper.getKickstartHost();
-
-
-        KickstartScheduleCommand cmd = new KickstartScheduleCommand(
-                Long.valueOf(sid),
-                ksdata.getId(), loggedInUser, new Date(), host);
-        ValidatorError ve = cmd.store();
-        if (ve != null) {
-            throw new FaultException(-2, "provisionError",
-                    LocalizationService.getInstance().getMessage(ve.getKey()));
-        }
-        return cmd.getScheduledAction().getId().intValue();
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile.
+     *
+     * @param loggedInUser The current user
+     * @param request the spark request
+     * @param sid of the system to be provisioned
+     * @param profileName of Profile to be used.
+     * @return Returns 1 if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid, String profileName)
+            throws FaultException {
+        return provisionSystem(loggedInUser, request, sid, profileName, new Date());
     }
 
     /**
@@ -2964,9 +2969,37 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
      * on error")
      */
+    @ApiIgnore(ApiType.HTTP)
     public int provisionSystem(User loggedInUser, Integer sid,
             String profileName, Date earliestDate)
                     throws FaultException {
+        return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, profileName, earliestDate);
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param request the request
+     * @param sid of the system to be provisioned
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @return Returns 1 if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
+                                String profileName, Date earliestDate)
+            throws FaultException {
         log.debug("provisionSystem called.");
 
         // Lookup the server so we can validate it exists and throw error if not.
@@ -2984,8 +3017,9 @@ public class SystemHandler extends BaseHandler {
                     "No Kickstart Profile found with label: " + profileName);
         }
 
-        KickstartHelper helper = new KickstartHelper(RhnXmlRpcServer.getRequest());
+        KickstartHelper helper = new KickstartHelper(request);
         String host = helper.getKickstartHost();
+
 
         KickstartScheduleCommand cmd = new KickstartScheduleCommand(
                 Long.valueOf(sid),
@@ -5159,6 +5193,96 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Schedule Confidential Compute Attestation Action
+     * @param loggedInUser the logged in user
+     * @param sid ID of the server to run the attestation for
+     * @param earliestOccurrence Earliest the script can run
+     * @return ID of the new script action
+     *
+     * @apidoc.doc Schedule Confidential Compute Attestation Action
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid",
+     * "ID of the server to run the script on.")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence",
+     * "Earliest the script can run.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the script run action created. Can be used to fetch
+     * results with system.getScriptResults")
+     */
+    public Integer scheduleCoCoAttestation(User loggedInUser, Integer sid, Date earliestOccurrence) {
+        MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser)
+                .asMinionServer().orElseThrow(NoSuchSystemException::new);
+        try {
+            AttestationManager mgr = new AttestationManager();
+            CoCoAttestationAction action = mgr.scheduleAttestationAction(loggedInUser, minionServer,
+                    earliestOccurrence);
+            return action.getId().intValue();
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
+        catch (AttestationDisabledException e) {
+            throw new UnsupportedOperationException(e);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Return the Confidential Compute Attestation configuration for the given system id
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @return returns {@link com.suse.manager.model.attestation.ServerCoCoAttestationConfig} values
+     *
+     * @apidoc.doc Return the Confidential Compute Attestation configuration for the given system id
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
+     * @apidoc.returntype $CoCoAttestationConfigSerializer
+     */
+    @ReadOnly
+    public ServerCoCoAttestationConfig getCoCoAttestationConfig(User loggedInUser, Integer sid) {
+        MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
+                .orElseThrow(NoSuchSystemException::new);
+        return minionServer.getOptCocoAttestationConfig()
+                .orElse(new ServerCoCoAttestationConfig());
+    }
+
+    /**
+     * Configure Confidential Compute Attestation for the given system
+     * @param loggedInUser the user
+     * @param sid the ID of the system
+     * @param enabled set the endabled state for Confidential Compute Attestation
+     * @param environmentType set the environment type of the system
+     * @return Returns 1 if successful, exception otherwise.
+     *
+     * @apidoc.doc Configure Confidential Compute Attestation for the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
+     * @apidoc.param #param_desc("boolean", "enabled", "set the endabled state for Confidential Compute Attestation")
+     * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
+     *   #options()
+     *     #item("NONE")
+     *     #item("KVM_AMD_EPYC_MILAN")
+     *     #item("KVM_AMD_EPYC_GENOA")
+     *   #options_end()
+     * @apidoc.returntype #return_int_success()
+     */
+    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType) {
+        MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
+                .orElseThrow(NoSuchSystemException::new);
+        AttestationManager mgr = new AttestationManager();
+        minionServer.getOptCocoAttestationConfig()
+                .ifPresentOrElse(
+                        c -> {
+                            c.setEnabled(enabled);
+                            c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
+                        },
+                        () -> mgr.createConfig(loggedInUser, minionServer,
+                                CoCoEnvironmentType.valueOf(environmentType), enabled));
+        return 1;
+    }
+
+    /**
      * Fetch results from a script execution. Returns an empty array if no results are
      * yet available.
      *
@@ -6775,6 +6899,64 @@ public class SystemHandler extends BaseHandler {
         catch (IllegalArgumentException e) {
             throw new InvalidParameterException("Can't create system", e);
         }
+    }
+
+    /**
+     * Register foreign peripheral server
+     *
+     * @param loggedInUser The current user
+     * @param fqdn         FQDN of the server
+     * @return 1 on success
+     *
+     * @apidoc.doc Register foreign peripheral server.
+     * This is used for registering containerized peripheral servers.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "fqdn", "FQDN of the server")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int registerPeripheralServer(User loggedInUser, String fqdn) {
+        ensureOrgAdmin(loggedInUser);
+        try {
+            return systemManager.registerPeripheralServer(loggedInUser, fqdn).getId().intValue();
+        }
+        catch (SystemsExistException e) {
+            throw new SystemsExistFaultException(e.getSystemIds());
+        }
+    }
+
+    /**
+     * Update foreign peripheral server info
+     *
+     * @param loggedInUser The current user
+     * @param sid Server ID
+     * @param reportDbName ReportDB name
+     * @param reportDbHost ReportDB host
+     * @param reportDbPort ReportDB port
+     * @param reportDbUser ReportDB user
+     * @param reportDbPassword ReportDB password
+     * @return 1 on success
+     *
+     * @apidoc.doc Update foreign peripheral server info.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "reportDbName", "ReportDB name")
+     * @apidoc.param #param_desc("string", "reportDbHost", "ReportDB host")
+     * @apidoc.param #param_desc("int", "reportDbPort", "ReportDB port")
+     * @apidoc.param #param_desc("string", "reportDbUser", "ReportDB user")
+     * @apidoc.param #param_desc("string", "reportDbPassword", "ReportDB password")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int updatePeripheralServerInfo(User loggedInUser, Integer sid, String reportDbName, String reportDbHost,
+                       Integer reportDbPort, String reportDbUser, String reportDbPassword) {
+        ensureOrgAdmin(loggedInUser);
+        Server server = null;
+        try {
+            server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException();
+        }
+        return SystemManager.updatePeripheralServerInfo(server, reportDbName, reportDbHost,
+                                               reportDbPort, reportDbUser, reportDbPassword);
     }
 
     /**

@@ -84,6 +84,9 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.CoCoAttestationStatus;
+import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -100,6 +103,7 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
@@ -697,23 +701,23 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
             handleSubscribeChannels(serverAction, jsonResult, action);
         }
-        else if (action instanceof BaseVirtualizationGuestAction) {
-            // Tell VirtNotifications that we got a change, passing actionId
-            VirtNotifications.spreadActionUpdate(action);
-            // Dump the whole message since the failure could be anywhere in the chain
-            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-        }
-        else if (action instanceof BaseVirtualizationPoolAction || action instanceof BaseVirtualizationNetworkAction) {
-            // Tell VirtNotifications that we got a pool action change, passing action
+        else if (action instanceof BaseVirtualizationGuestAction ||
+                action instanceof BaseVirtualizationPoolAction ||
+                action instanceof BaseVirtualizationNetworkAction) {
+            // Tell VirtNotifications that we got an action change, passing action
             VirtNotifications.spreadActionUpdate(action);
             // Intentionally don't get only the comment since the changes value could be interesting
             serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
+            handleCocoAttestationResult(action, serverAction, jsonResult);
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
         LOG.debug("Finished update server action for action {}", action.getId());
     }
+
 
     private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
             boolean success) {
@@ -1711,6 +1715,53 @@ public class SaltUtils {
         return packageToKey(entry.getKey(), entry.getValue());
     }
 
+    private void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
+        AttestationManager mgr = new AttestationManager();
+
+        Optional<ServerCoCoAttestationReport> optReport = mgr.lookupReportByServerAndAction(action.getSchedulerUser(),
+                serverAction.getServer(), action);
+        if (optReport.isEmpty()) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg("Failed to find a report entry");
+            return;
+        }
+        ServerCoCoAttestationReport report = optReport.get();
+
+        try {
+            CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
+            report.setOutData(requestData.asMap());
+            mgr.initializeResults(action.getSchedulerUser(), report);
+        }
+        catch (JsonSyntaxException e) {
+            String msg = "Failed to parse the attestation result:\n";
+            msg += Optional.ofNullable(jsonResult)
+                    .map(JsonElement::toString)
+                    .orElse("Got no result");
+            LOG.error(msg);
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg(msg);
+            return;
+        }
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            String msg = "Error while request attestation data from target system:\n";
+            if (jsonResult == null) {
+                msg += "Got no result from system";
+            }
+            else {
+                msg += getJsonResultWithPrettyPrint(jsonResult);
+            }
+            serverAction.setResultMsg(msg);
+            if (report.getResults().isEmpty()) {
+                // results are not initialized yet. So we need to set the report status
+                // directly to failed.
+                report.setStatus(CoCoAttestationStatus.FAILED);
+            }
+        }
+        else {
+            serverAction.setResultMsg("Successfully collected attestation data");
+        }
+    }
+
     /**
      * Update the hardware profile for a minion in the database from incoming
      * event data.
@@ -2024,6 +2075,7 @@ public class SaltUtils {
             LOG.debug("{} reboot actions set to completed", actionsChanged);
         }
     }
+
 
     private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();

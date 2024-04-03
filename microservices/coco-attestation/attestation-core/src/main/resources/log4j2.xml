@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file just provide a basic fallback configuration useful for development -->
+<!-- The actual configuration used at runtime by the packaged application is in scripts/log42.xml -->
+<Configuration name="Basic" status="warn">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d [%t] %-5p %c%notEmpty{:%marker} - %m%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.suse.coco" level="debug" />
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

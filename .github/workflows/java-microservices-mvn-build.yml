@@ -1,0 +1,40 @@
+name: Java Microservices Maven Build
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'microservices/**'
+      - '.github/workflows/java-microservices-mvn-build.yml'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      - 'microservices/**'
+      - '.github/workflows/java-microservices-mvn-build.yml'
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Build Java Parent
+        run: mvn -B package checkstyle:check --file microservices/uyuni-java-parent/pom.xml
+
+      - name: Build Java Common
+        run: mvn -B package checkstyle:check --file microservices/uyuni-java-common/pom.xml
+
+      - name: Build CoCo Attestation
+        run: mvn -B package checkstyle:check --file microservices/coco-attestation/pom.xml

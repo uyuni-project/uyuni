@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-23 15:31+0100\n"
+"POT-Creation-Date: 2024-03-27 11:48+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:438
+#: ../html/javascript/spacewalk-essentials.js:444
 msgid "remaining"
 msgstr "zbývající"
 
-#: ../html/javascript/spacewalk-essentials.js:458
+#: ../html/javascript/spacewalk-essentials.js:464
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -680,7 +680,7 @@ msgid "Non-Virtual System"
 msgstr "Virtuální systém"
 
 #: ../html/src/components/systems.tsx:44
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
 #: ../html/src/manager/systems/list-filter.tsx:6
 msgid "Proxy"
 msgstr "Proxy"
@@ -1081,7 +1081,7 @@ msgstr "Filtrovat podle libovolné hodnoty"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:455
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr "Hostitel"
 
@@ -1165,13 +1165,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:489
 msgid "SSH Port"
 msgstr "Port SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:484
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:505
 msgid "User"
 msgstr "Uživatel"
 
@@ -1180,22 +1180,22 @@ msgstr "Uživatel"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
 #: ../html/src/manager/login/uyuni/login.tsx:88
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "Heslo"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:413
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:531
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:552
 msgid "SSH Private Key"
 msgstr "Privátní klíč SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:446
 msgid "SSH Private Key Passphrase"
 msgstr "Heslo privátního klíče SSH"
 
@@ -1250,7 +1250,7 @@ msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "Podrobnosti"
@@ -2693,7 +2693,7 @@ msgstr "Načítání globálních filtrů..."
 msgid "Updating project filters..."
 msgstr "Aktualizace filtrů projektu..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:45
 msgid "Create New Filter"
 msgstr "Vytvořit nový filtr"
 
@@ -3032,7 +3032,7 @@ msgstr "Cesta"
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:231
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:574
 msgid "Activation Key"
 msgstr "Aktivační klíč"
 
@@ -3095,7 +3095,7 @@ msgstr "Import"
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:390
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "Vymazat pole"
@@ -4567,7 +4567,7 @@ msgid "Proxy SSH port"
 msgstr "Port proxy SSH"
 
 #: ../html/src/manager/proxy/container-config.tsx:222
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:500
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portů: 1 - 65535"
 
@@ -5016,31 +5016,31 @@ msgstr "Hledat podle názvu nebo otisku"
 msgid "Fingerprint"
 msgstr "Otisk prstu"
 
-#: ../html/src/manager/shared/menu/menu.tsx:202
+#: ../html/src/manager/shared/menu/menu.tsx:204
 msgid "Clear Menu"
 msgstr "Menu Vymazat"
 
-#: ../html/src/manager/shared/menu/menu.tsx:204
+#: ../html/src/manager/shared/menu/menu.tsx:206
 msgid "Filter menu"
 msgstr "Menu Filtr"
 
-#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:243
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:243
+#: ../html/src/manager/shared/menu/menu.tsx:245
 msgid "Uyuni homepage"
 msgstr "Domovská stránka Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:252
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:254
+#: ../html/src/manager/shared/menu/menu.tsx:256
 msgid "Manager"
 msgstr "Manažer"
 
-#: ../html/src/manager/shared/menu/menu.tsx:258
+#: ../html/src/manager/shared/menu/menu.tsx:260
 msgid "SUSE Manager homepage"
 msgstr "Domovská stránka Správce SUSE"
 
@@ -5173,12 +5173,12 @@ msgstr "Typ úložiště"
 msgid "Error Details"
 msgstr "Podrobnosti chyb"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 msgid "Close"
 msgstr "Zavřít"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -5186,7 +5186,7 @@ msgstr ""
 "Žádost přerušena nebo ze serveru přijata neplatná odpověď. Zkontrolujte, zda "
 "byl váš sledující klient správně zaveden."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
 msgid ""
 "Bootstrap process initiated. Your system should be visible at the following "
 "location shortly: <link>systems</link>. If any issues arise, you'll receive "
@@ -5194,32 +5194,32 @@ msgid ""
 "please perform a system reboot to complete the registration process."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
 msgid "Show additional details about this error"
 msgstr "Zobrazit další podrobnosti o této chybě"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
 msgid "Unable to bootstrap host. The following errors have happened:"
 msgstr "Nelze zavést OS hostitele. Došlo k následujícím chybám:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "Váš systém se zavádí: čekám na odpověď.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:390
 msgid "Loading SSH Private Key.."
 msgstr "Načítání privátního klíče SSH.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Bootstrap"
 msgstr "Zavést systém"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:403
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:424
 msgid "e.g., ••••••••••••"
 msgstr "např. ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:419
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:440
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -5227,15 +5227,15 @@ msgstr ""
 "Soubor bude uložen v dočasném souboru na serveru a bude odstraněn po "
 "proceduře zavedení systému"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:453
 msgid "Leave empty for no passphrase"
 msgstr "Není-li heslo, ponechte prázdné"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:465
 msgid "Bootstrap Minions"
 msgstr "Zavádění systémů u sledujících (minion) klientů"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
 #, fuzzy
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
@@ -5245,11 +5245,11 @@ msgstr ""
 "Můžete přidat systémy do správy pouze poskytnutím přihlašovacích údajů SSH. "
 "{0} připraví systém na dálku a registroje ho."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:482
 msgid "e.g., host.domain.com"
 msgstr "např. host.doman.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 #, fuzzy
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
@@ -5262,29 +5262,29 @@ msgstr ""
 "'ssh_push_sudo_user' je 'root'. Tento uživatel je nastaven, až je během "
 "bootstrapu umístěn SSH klíč {0}."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:528
 msgid "Authentication Method"
 msgstr "Metoda ověřování"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:544
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:565
 msgid "Ansible control node"
 msgstr "Řídicí uzel Ansible"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:592
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:613
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "Žádný"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:596
 msgid "Reactivation Key"
 msgstr "Re-aktivační klíč"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:581
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:602
 msgid "Leave empty when no reactivation is wanted"
 msgstr "Nechte prázdné, není-li požadována re-aktivace"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:631
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -5292,15 +5292,15 @@ msgstr ""
 "Hostitelský název proxy není plně kvalifikován. To může způsobit problémy "
 "při přístupu ke kanálům."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:627
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:648
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "Zakázat striktní kontrolu klíče hostitele SSH během zaváděcího procesu"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:643
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:664
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "Správa systému kompletně přes SSH (neinstaluje agenta)"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:659
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:680
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Skutečně chcete tuto stránku zavřít během zavádění systému?"
@@ -5516,7 +5516,7 @@ msgstr "vybraný systém"
 msgid "systems selected"
 msgstr "vybrané systémy"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
 #, fuzzy
 msgid "Clear selected system set"
 msgstr "Odstranit vybrané zprávy"

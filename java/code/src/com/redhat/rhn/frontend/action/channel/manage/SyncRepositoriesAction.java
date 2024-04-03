@@ -20,6 +20,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -73,6 +74,9 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
         request.setAttribute("channel_name", chan.getName());
         request.setAttribute("cid",  chan.getId());
 
+        ChannelSyncFlag csf = chan.getChannelSyncFlag();
+
+
         boolean inProgress = isSyncInProgress(chan);
         if (inProgress) {
             addMessage(request, "message.syncinprogress");
@@ -101,7 +105,6 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
 
         ListHelper helper = new ListHelper(this, request, params);
         helper.execute();
-
 
         TaskomaticApi taskomatic = new TaskomaticApi();
         String oldCronExpr = null;
@@ -132,28 +135,31 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
             }
 
             try {
-                Map<String, String> mparams = new HashMap<>();
-                String [] lparams = {"no-errata", "latest", "sync-kickstart", "fail", "no-strict"};
-
+                String [] lparams = {"noErrata", "latest", "syncKickstart", "fail", "noStrict"};
                 for (String p : lparams) {
-                    if  (request.getParameter(p) != null) {
-                        mparams.put(p, "true");
-                    }
+                    csf.setFlag(p, request.getParameter(p) != null);
                 }
 
                 if (context.wasDispatched("repos.jsp.button-sync")) {
-                    // schedule one time repo sync
-                    taskomatic.scheduleSingleRepoSync(chan, user, mparams);
+                    // save settings and schedule one time repo sync
+
+                    taskomatic.scheduleSingleRepoSync(chan, user);
                     createSuccessMessage(request, "message.syncscheduled", chan.getName());
 
                 }
+                else if (context.wasDispatched("repos.jsp.button-save")) {
+                    // save channels repo sync settings
+
+                    createSuccessMessage(request, "message.savereposyncflags", chan.getName());
+                }
+
                 else if (context.wasDispatched("schedule.button")) {
                     if ((picker.isDisabled() || StringUtils.isEmpty(picker.getCronEntry())) && oldCronExpr != null) {
                         taskomatic.unscheduleRepoSync(chan, user);
                         createSuccessMessage(request, "message.syncschedule.disabled", chan.getName());
                     }
                     else if (!StringUtils.isEmpty(picker.getCronEntry())) {
-                        taskomatic.scheduleRepoSync(chan, user, picker.getCronEntry(), mparams);
+                        taskomatic.scheduleRepoSync(chan, user, picker.getCronEntry(), new HashMap<>());
                         createSuccessMessage(request, "message.syncscheduled", chan.getName());
                     }
                 }
@@ -170,6 +176,11 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
 
             return getStrutsDelegate().forwardParams(mapping.findForward("success"), Map.of("cid", chan.getId()));
         }
+        request.setAttribute("noErrata", csf.isNoErrata());
+        request.setAttribute("noStrict", csf.isNoStrict());
+        request.setAttribute("latest", csf.isOnlyLatest());
+        request.setAttribute("syncKickstart", csf.isCreateTree());
+        request.setAttribute("fail", csf.isQuitOnError());
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

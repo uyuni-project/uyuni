@@ -20,17 +20,19 @@
 <c:choose>
   <c:when test="${requestScope.anyListsSelected == 'true'}">
     <div class="row">
-      <c:if test="${requestScope.tasks == 'y'}">
-      <div class="col-md-6" id="tasks-pane" >
-        <script type="text/javascript">
-          ajax("tasks", "", makeRendererHandler("tasks-pane", false).callback, "text/html")
-        </script>
-      </div>
-      </c:if>
       <c:if test="${requestScope.subscriptionWarning == 'y'}">
       <div id="subscription-warning" class="col-md-12">
         <script type="text/javascript">
           ajax("subscription-warning", "", makeRendererHandler("subscription-warning", false).callback);
+        </script>
+      </div>
+      </c:if>
+    </div>
+    <div class="row">
+      <c:if test="${requestScope.tasks == 'y'}">
+      <div class="col-md-6" id="tasks-pane" >
+        <script type="text/javascript">
+          ajax("tasks", "", makeRendererHandler("tasks-pane", false).callback, "text/html")
         </script>
       </div>
       </c:if>

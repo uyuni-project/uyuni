@@ -76,11 +76,11 @@ with cfg_component("web") as CFG:
             }
         )
 
-with redirect_stderr(io.StringIO()) as f, cfg_component("cobbler") as CFG:
+with redirect_stderr(io.StringIO()) as f, cfg_component("java") as CFG:
     try:
         uyuni_roster_config.update(
             {
-                "host": CFG.HOST,
+                "host": CFG.HOSTNAME,
             }
         )
     except AttributeError:

@@ -1,0 +1,1366 @@
+/**
+ * This file is the old core theme file, over time we can hopefully clean this up and separate the logic accordingly
+ */
+
+a {
+  color: $link-color;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+header {
+  min-height: fit-content !important;
+  height: auto;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  border-width: 0 !important;
+  border-bottom: 2px solid $header-border !important;
+  margin-bottom: 0;
+  background: $header !important;
+
+  a {
+    color: $header-text;
+  }
+
+  a:hover {
+    color: $header-text;
+  }
+
+  img {
+    float: left;
+  }
+}
+
+.spacewalk-main-column-layout {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  max-width: 100vw;
+
+  aside {
+    overflow: auto !important;
+    float: none !important;
+    position: relative !important;
+
+    @media (max-width: $screen-tablet) {
+      position: absolute !important;
+      inset: 0;
+      z-index: 2000;
+      min-width: 100% !important;
+      max-width: none !important;
+    }
+
+    footer {
+      position: -webkit-sticky;
+      position: sticky;
+      bottom: 0;
+    }
+  }
+
+  section {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  #page-body {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+}
+
+// TODO: Check this with grid.scss
+// .row {
+//   margin-left: 0;
+//   margin-right: 0;
+// }
+
+footer {
+  border-top: 1px solid $aside-footer-border;
+  background: inherit;
+  padding: 3px 12px;
+  color: $aside-footer-text;
+  font-weight: normal;
+  font-size: 0.9em;
+  height: auto;
+  min-height: auto;
+  clear: both;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  @include make-row;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  a:hover {
+    color: inherit;
+  }
+
+  /* override spacewalk rules */
+  div:nth-child(1),
+  div:nth-child(2) {
+    float: none;
+    width: 100%;
+    margin: 0;
+    min-height: auto;
+    text-align: left !important;
+    padding: 0;
+  }
+
+  div.wrapper {
+    background: $aside-footer-logo-background;
+    min-height: 28px;
+    padding-right: 55px !important;
+    > div {
+      padding: 3px 0 2px 0;
+    }
+  }
+}
+
+/* override spacewalk rules */
+section {
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+.spacewalk-main-column-layout {
+  @include make-row;
+  /* override the grid row margin */
+  margin-right: 0;
+  margin-left: 0;
+  aside {
+    flex: 0 0 17%;
+    min-width: 300px;
+    max-width: min(400px, 17%);
+    background: $aside-background;
+    border-right: none;
+    /* erasing the predefined paddings in the columns */
+    padding: 0;
+    position: fixed;
+    #nav nav ul.level1 {
+      overflow-y: auto !important;
+      scrollbar-color: rgba(200, 200, 200, 0.5) transparent;
+      scrollbar-width: thin;
+
+      &::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.5);
+        background: rgba(200, 200, 200, 0.5);
+      }
+    }
+  }
+
+  /* fixing margins in the 1st and last columns */
+  section {
+    padding: $content-area-padding;
+    float: right;
+  }
+}
+
+#breadcrumb {
+  color: $header-text;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  span {
+    vertical-align: bottom;
+  }
+  span.level,
+  a {
+    padding: 0 3px;
+  }
+  i {
+    margin-right: 0;
+  }
+}
+
+.navbar-right {
+  float: right;
+}
+
+.navbar-collapse {
+  display: flex;
+  flex-direction: column;
+
+  #nav {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    overflow: hidden;
+    width: 100%;
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      > ul {
+        flex: 1 1 auto;
+        margin: 0 !important;
+      }
+    }
+  }
+
+  &.in {
+    display: flex !important;
+  }
+
+  &.collapse {
+    display: none !important;
+  }
+}
+
+header,
+nav.navbar-pf {
+  padding: 0 !important;
+
+  .navbar-toggle {
+    display: inline-block;
+    float: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    i {
+      margin: 0;
+      font-size: 1.5em;
+    }
+  }
+  .navbar-toggle:hover {
+    color: $green;
+  }
+  .navbar-header {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+  .navbar-controls {
+    // TODO: Check
+    @extend .navbar-right;
+    font-size: 1em;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    margin-top: -2px;
+
+    a,
+    .header-non-link {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 2px;
+
+      i {
+        margin: 0 !important;
+      }
+    }
+  }
+
+  a.toggle-box:hover,
+  a.toggle-box.open,
+  .manual-toggle-box:hover,
+  .manual-toggle-box.open {
+    color: $green;
+  }
+  .box-wrapper {
+    position: absolute;
+    top: 100%;
+    background-color: $header;
+    border-radius: 0px 2px 2px 2px;
+    z-index: 1000;
+    box-shadow: 0px 4px 4px 0px $gray;
+    margin-top: 5px;
+  }
+
+  /* overwrite the padding the grid columns give */
+  &#header {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  /* Search header box */
+  form#search-form {
+    .form-group {
+      width: 200px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    input[type="search"],
+    select.form-control {
+      width: 100%;
+    }
+    button {
+      text-align: center;
+      background: transparent;
+
+      &,
+      &:hover {
+        color: $header-text;
+      }
+    }
+  }
+
+  /* Header Logo bar */
+  .navbar-brand {
+    margin: 0 !important;
+    float: none;
+    padding: 0;
+    height: auto;
+    line-height: 1.2em;
+    font-size: 1.6em;
+    display: inline-block;
+    vertical-align: baseline;
+    color: $header-text;
+    > i {
+      display: none;
+    }
+    > span > i {
+      font-size: 0.4em;
+      margin-right: 0.8em;
+    }
+  }
+  .navbar-brand:hover {
+    color: $header-text;
+  }
+}
+
+#scroll-top {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  right: 3px;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 20px;
+  width: 35px;
+  height: 35px;
+  font-size: 1.5em;
+  padding: 0;
+  text-align: center;
+  background-color: rgba(77, 211, 167, 0.2);
+  color: $gray-dark;
+  border: 1px solid rgba(0, 192, 129, 0.2);
+  i {
+    margin: 0 auto;
+    height: 26px;
+  }
+}
+#scroll-top:hover {
+  background-color: rgba(0, 192, 129, 0.9);
+  color: $gray-light;
+  border: 1px solid darken($green, 10%);
+}
+
+//Nav menu in left column
+#nav {
+  font-size: 1.1em;
+  //Search box
+  .nav-tool-box {
+    text-align: center;
+    position: relative;
+
+    input,
+    button {
+      margin: auto;
+      vertical-align: top;
+    }
+
+    input {
+      background-color: $aside-background;
+      border: none !important;
+      border-bottom: 1px solid $aside-search-border !important;
+      border-radius: 0 !important;
+      border-width: 0 0 1px 0;
+      padding-right: 3em;
+      height: 3em;
+      color: $aside-search-text-color;
+
+      &::placeholder {
+        color: rgba($aside-search-text-color, 0.75);
+      }
+    }
+
+    input:focus {
+      box-shadow: none;
+    }
+    .input-right-icon {
+      color: $aside-menu-search-clear;
+      position: absolute;
+      top: 6px;
+      right: 2px;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 0;
+    }
+    .input-right-icon:hover {
+      color: $aside-menu-search-clear-hover;
+    }
+  }
+  //Menu
+  nav {
+    ul {
+      padding: 0;
+      list-style: none;
+      display: block;
+      li {
+        padding: 0;
+        list-style: none;
+        font-size: 1em;
+        display: block;
+        div {
+          a {
+            padding: 6px 10px;
+          }
+        }
+      }
+      li.node.open {
+        > ul {
+          display: block;
+        }
+      }
+      // active
+      li.active > .leafLink {
+        border-left-color: $aside-menu-active;
+      }
+      // nodeLink and leafLink
+      div.nodeLink,
+      div.leafLink {
+        color: $aside-menu-text;
+        border-left: 5px solid transparent;
+        a {
+          display: block;
+          color: inherit;
+          width: auto;
+        }
+      }
+      div.nodeLink:hover,
+      div.leafLink:hover {
+        border-left-color: $green;
+      }
+      // nodeLink only
+      div.nodeLink {
+        position: relative;
+        > i {
+          font-size: 1.2em;
+          vertical-align: text-bottom;
+        }
+        > i.submenuIcon {
+          font-size: 1.1em;
+          position: absolute;
+          right: 0.5em;
+          top: 0.3em;
+        }
+        > a {
+          display: inline-block;
+        }
+        > a:hover {
+          color: $aside-menu-text;
+        }
+      }
+    }
+    /* First Level */
+    > ul {
+      > li {
+        > div {
+          > a {
+            padding: 10px 4px;
+          }
+        }
+        > div.nodeLink {
+          padding-left: 1em;
+          > i.submenuIcon {
+            top: 0.6em;
+          }
+        }
+        /* Second Level */
+        > ul {
+          padding-bottom: 25px;
+          > li {
+            > div {
+              > a {
+                padding-left: 3em;
+              }
+            }
+            /* Third Level */
+            > ul {
+              > li {
+                > div {
+                  > a {
+                    padding-left: 4.4em;
+                  }
+                }
+                /* Fourth Level */
+                > ul {
+                  > li {
+                    > div {
+                      > a {
+                        padding-left: 5.8em;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .collapsed {
+    ul ul {
+      display: none;
+    }
+  }
+}
+
+.spacewalk-list .spacewalk-list-top-addons .spacewalk-list-pagination {
+  float: right;
+  width: auto;
+  margin-bottom: 18px;
+}
+
+//PAGINATOR from 0 - 9 and A - Z
+.spacewalk-list .spacewalk-list-head-addons .spacewalk-list-alphabar,
+.spacewalk-list .spacewalk-list-top-addons .spacewalk-list-alphabar {
+  padding: 0;
+  padding-bottom: 0.5em;
+  float: left;
+  width: auto;
+  margin-top: 5px;
+  margin-left: 10px;
+  .dropdown-menu {
+    display: none;
+    width: auto;
+    right: 0;
+    min-width: 100px;
+    z-index: 10;
+    max-height: 250px;
+    overflow-y: auto;
+    text-align: right;
+    li {
+      display: block;
+      padding: 0 1px;
+      a {
+        display: block;
+        border: 0px;
+        color: $link-color;
+        padding: 2px 20px;
+      }
+    }
+    li.disabled {
+      a {
+        color: #aaa;
+      }
+    }
+    li:nth-child(11) {
+      border-top: 1px solid #dddddd;
+    }
+  }
+  .dropdown.dropdown-alphabar.open {
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}
+
+// Filter by system: button besides the input search
+.spacewalk-button-filter {
+  border-left: 0;
+  color: #666666;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  margin-left: 8px !important;
+}
+
+.spacewalk-list {
+  .spacewalk-list-head-addons {
+    .spacewalk-list-head-addons-extra {
+      float: right;
+      width: auto;
+    }
+    .spacewalk-list-filter {
+      min-width: 33%;
+
+      input.with-bottom-margin {
+        margin-bottom: 0.5em;
+      }
+    }
+  }
+}
+
+//Table's filters
+.filter-input {
+  padding: 0.7em;
+  .col-md-3 {
+    padding-left: 0;
+  }
+  .col-md-9 {
+    padding-right: 0;
+  }
+}
+.display-number {
+  // TODO: Fix
+  //  @extend .input-sm;
+  display: inline-block;
+  width: 5.2em;
+  border: 1px solid #dddddd;
+  background-color: $eos-bc-gray-100;
+}
+.view-systems-registered {
+  // TODO: Fix
+  //  @extend .input-sm;
+  width: 10em;
+  display: inline-block;
+  border: 1px solid #dddddd;
+}
+
+/* Icons Legend */
+.sideleg {
+  background: $icon-legend;
+  color: $icon-legend-text;
+  padding: 0.5em 1em;
+  border-radius: 0px 0px 4px 4px;
+  // TODO: Fix
+  //  @extend .hidden-sm;
+  // TODO: Fix
+  //  @extend .hidden-xs;
+  li {
+    list-style: none;
+    margin: 0.5em 0;
+    padding: 0;
+    white-space: nowrap;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* question symbol for help pop up*/
+h1 .fa-stack .fa-question {
+  font-size: 0.6em;
+}
+h1 .fa-stack {
+  width: 1em;
+  height: 1em;
+  line-height: 0.7em;
+}
+.fa-stack .fa-circle {
+  font-size: 0.7em;
+}
+
+// Panels: reseting default margins and paddings in H tags
+.panel .panel-heading {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding: 0;
+    margin: 0;
+  }
+}
+//Panels: deleting border-top in the first row of a table contained within a Panel class
+.panel-body tr:first-child {
+  td,
+  th {
+    border-top: 0;
+  }
+}
+
+/* systems selected tool*/
+.spacewalk-toolbar > a,
+#spacewalk-bar-off i {
+  cursor: pointer;
+}
+#show-systems-bar {
+  padding: 0.5em 1.2em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0 0 4px 4px;
+}
+
+/* spacewalk toolbar: contains the H1 of each page + the toolbar */
+.spacewalk-toolbar-h1 {
+  margin-bottom: 1.5em;
+  .spacewalk-toolbar {
+    // TODO: Check
+    @extend .pull-right;
+    padding: 0.5em 1em;
+    a {
+      border-right: 1px solid $gray-light;
+      padding: 0 0.5em;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    a:last-child {
+      border-right: 0;
+    }
+  }
+}
+
+/* Margins to elements */
+//margins bottom
+.margin-bottom-xs {
+  margin-bottom: 0.5em;
+}
+.margin-bottom-sm {
+  margin-bottom: 1em;
+}
+.margin-bottom-md {
+  margin-bottom: 2em;
+}
+.margin-bottom-lg {
+  margin-bottom: 3em;
+}
+//margins top
+.margin-top-xs {
+  margin-top: 0.5em;
+}
+.margin-top-sm {
+  margin-top: 1em;
+}
+.margin-top-md {
+  margin-top: 2em;
+}
+.margin-top-lg {
+  margin-top: 3em;
+}
+
+/* adding margin to the icons in fontawesome */
+i[class~="fa"],
+i[class^="icon-"],
+i[class*=" icon-"],
+i[class*="spacewalk-icon"],
+i[class^="spacewalk-icon"] {
+  margin-right: 0.5em;
+}
+/* if the icon is inside a H tag the margin is a bit smaller*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  i[class~="fa"],
+  i[class^="icon-"],
+  i[class*=" icon-"],
+  i[class^="fa-"],
+  i[class*="spacewalk-icon"],
+  i[class^="spacewalk-icon"] {
+    margin-right: 0.3em;
+  }
+}
+/* use this class to add text to the left of an icon */
+i[class~="fa-right"] {
+  margin-left: 0.5em;
+  margin-right: 0em;
+}
+
+// icon size smaller than the ones default by Font Awesome
+.fa-1-5x {
+  font-size: 1.3em;
+}
+.fa-1-5x.icon-border {
+  border-width: 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+// data lists
+
+.spacewalk-list {
+  .spacewalk-list-top-addons {
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+
+  .spacewalk-list-footer-addons {
+    @include make-row;
+    .spacewalk-list-footer-addons-extra {
+      // TODO: Check
+      @extend .pull-left;
+      @extend .text-left;
+    }
+  }
+}
+
+.spacewalk-csv-download {
+  // TODO: Check
+  @extend .pull-right;
+}
+
+/* btn with margin top and bottom */
+.btn.spacewalk-btn-margin-vertical {
+  margin: 1em 0;
+}
+//tabs - adding a margin to all tabs
+ul.nav.nav-tabs {
+  margin-bottom: 0.25rem;
+}
+//tabs - adding a margin button to the last UL
+ul.nav.nav-tabs:last-child {
+  margin-bottom: 1rem;
+}
+
+// Rewriting
+// Jumbotron
+// --------------------------------------------------
+
+//  TODO: Do we even use this anywhere at all?
+$jumbotron-padding: 30px;
+.jumbotron {
+  padding: $jumbotron-padding;
+  margin-bottom: $jumbotron-padding;
+  font-size: ($font-size-base * 1.3);
+  line-height: ($line-height-base * 1.5);
+  background-color: transparent;
+  border: 1px solid #ccc;
+
+  h1 {
+    line-height: 1;
+  }
+  p {
+    line-height: 1.4;
+  }
+
+// min-width: $screen-tablet
+  @include media-breakpoint-up(md) {
+    padding-top: ($jumbotron-padding * 1);
+    padding-bottom: ($jumbotron-padding * 1);
+
+    .container & {
+      padding-left: ($jumbotron-padding * 2);
+      padding-right: ($jumbotron-padding * 2);
+    }
+
+    h1 {
+      font-size: ($font-size-base * 3.5);
+    }
+  }
+}
+
+/* Create new Admin User form.
+This class will align the text inside the tables of each panel in the form with name="createSatelliteForm"
+*/
+form[name="createSatelliteForm"] table {
+  text-align: left;
+}
+//giving top margin to the panels
+form[name="createSatelliteForm"] .panel {
+  margin-top: 30px;
+}
+
+/* Hack for when an Aside doesnt have any content to not brake the theme */
+#aside:after {
+  content: ".";
+  color: #232526;
+}
+
+/* CVE audit */
+select[name="cveIdentifierYear"]#cveIdentifierYear {
+  -webkit-appearance: button;
+  -webkit-padding-end: 20px;
+  background: url("../img/dropdown-arrow.jpg") #fff no-repeat right center;
+  cursor: pointer;
+  display: inline-block;
+  min-width: 80px;
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: "";
+}
+input[name="cveIdentifierId"]#cveIdentifierId {
+  min-width: 120px;
+}
+.popover-content {
+  font-weight: normal;
+}
+.popover-content ul {
+  padding: 0.3em;
+  list-style-position: inside;
+}
+.popover-content ul li {
+  margin-top: 0.5em;
+}
+
+i.spacewalk-help-link {
+  font-size: 16px;
+}
+
+/* after pattern fly - fixes (more like workarounds) */
+.navbar-pf {
+  margin: 0;
+  border-radius: 0 !important;
+
+  ul.navbar-controls {
+    > li {
+      margin: 0;
+      clear: none;
+      color: $header-text;
+      vertical-align: top;
+      border-radius: 2px;
+
+      a:hover,
+      a:focus {
+        background-color: transparent;
+        text-decoration: underline;
+      }
+      a[role="button"]:hover,
+      a[role="button"]:focus {
+        color: $green;
+      }
+      button.is-plain {
+        background-color: transparent;
+        color: $header-text;
+      }
+      button.is-plain:hover {
+        background-color: transparent;
+        color: $green;
+      }
+    }
+  }
+  .wrap nav.option li.active {
+    border-bottom: 4px solid transparent;
+  }
+}
+
+/* Override rules from bootstrap for nav-tabs*/
+.nav-tabs {
+  margin-bottom: 0.4em;
+  li {
+    min-width: 60px;
+    a,
+    a:focus {
+      border: none;
+      padding: 6px 12px 1px;
+      display: inline-block;
+      color: $link-color;
+      font-size: 1.1em;
+      border-width: 0 0 5px 0;
+      border-style: solid;
+      border-color: transparent;
+      margin-right: 10px;
+    }
+    a:hover {
+      background: inherit;
+      border-width: 0 0 3px 0;
+      border-color: $eos-bc-gray-500;
+      padding-bottom: 3px;
+    }
+  }
+  li.active {
+    a,
+    a:hover,
+    a:focus {
+      border-width: 0 0 5px 0;
+      border-color: $green;
+      color: $gray;
+      background: inherit;
+      padding-bottom: 1px;
+    }
+  }
+
+// TODO: Fix
+// See https://stackoverflow.com/a/77366360/1470607
+//  .nav-tabs-indent(1);
+//  .nav-tabs-indent(2);
+//  .nav-tabs-indent(3);
+
+//  .nav-tabs-indent($i) {
+//    &:nth-child(${i}) {
+//      margin-left: ($i - 1) * 30px;
+//    }
+//  }
+}
+
+/* Override rules from theme.less that uses
+"PatternFly-webicon" icons for alert boxes decoration */
+.alert:before,
+.alert:after {
+  font-family: "spacewalk-icon";
+  top: 15px;
+}
+
+// TODO: Clean this up and separate for Uyuni and Suma
+
+.alert-info,
+.alert-success,
+.alert-warning,
+.alert-danger {
+  position: relative;
+}
+
+.alert-info:before {
+  content: "\e63e";
+  color: #306899;
+}
+
+.alert-info:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-success:before {
+  content: "\e63d";
+  color: #57a81c;
+}
+
+.alert-success:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-warning:before {
+  content: "\e63f";
+  color: #eb7720;
+}
+
+.alert-warning:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-danger:before {
+  content: "\e640";
+  color: #c90813;
+}
+
+.alert-danger:after {
+  content: "";
+  color: transparent;
+}
+
+.list-group-item-text.formula-description {
+  padding-left: 42px;
+  padding-top: 10px;
+  color: #777;
+}
+
+.input-group.small-color-picker {
+  width: 130px;
+}
+
+time:hover {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  cursor: default;
+}
+
+a time:hover {
+  cursor: pointer !important;
+}
+
+.spacewalk-section-toolbar-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: auto;
+}
+.spacewalk-section-toolbar {
+  overflow: auto;
+  border: 1px solid #ddd;
+  padding: 0 5px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  background: $eos-bc-gray-50;
+  .action-button-wrapper {
+    float: right;
+    overflow: auto;
+
+    button,
+    input,
+    .btn {
+      // TODO: Check
+      @extend .spacewalk-section-toolbar-button;
+    }
+  }
+  .selector-button-wrapper {
+    display: inline-block;
+    margin-left: 5px;
+    button,
+    input,
+    .btn {
+      // TODO: Check
+      @extend .spacewalk-section-toolbar-button;
+    }
+  }
+  .spacewalk-list-pagination {
+    display: inline-block;
+    margin: 1.2em 1em;
+    .spacewalk-list-pagination-btns {
+      padding-left: 0.5em;
+    }
+  }
+  > .btn-group {
+    margin: 10px;
+  }
+}
+.spacewalk-section-toolbar.fixed {
+  position: fixed;
+  z-index: 900;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-top: 0px;
+
+  .form-group {
+    margin-bottom: 0;
+  }
+  .spacewalk-list-pagination {
+    margin-bottom: 1.2em;
+  }
+}
+.spacewalk-scheduler {
+  margin-top: 15px;
+}
+
+.remaining-length-wrapper {
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: -18px;
+  color: $gray-dark;
+}
+
+// overrides errata icon styles
+.errata-low {
+  color: $gray;
+}
+.errata-moderate {
+  color: $yellow;
+}
+.errata-important {
+  color: $orange;
+}
+.errata-critical {
+  color: $red;
+}
+.errata-retracted {
+  color: $red;
+}
+
+/**
+* Simulate bootstrap 4 rule behavior
+*
+* Note: keep this as a single style rule
+*/
+.d-inline-block {
+  display: inline-block;
+}
+.d-block {
+  display: block;
+  overflow: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
+i.fa.pointer {
+  min-width: 1em;
+}
+
+.v-middle {
+  vertical-align: middle;
+}
+
+/**
+* use these classes to fix progress bar
+* to let the text overlaps the progress bar behind
+*/
+.progress-bar-wrapper {
+  position: relative;
+  text-align: center;
+  margin-bottom: 0;
+  line-height: 1.3em;
+  .progress-bar-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  .progress-bar {
+    background-color: $green;
+  }
+}
+
+/**
+* behave as a table
+*/
+.table-style {
+  display: table;
+  border-collapse: collapse;
+  .table-row {
+    display: table-row;
+    .table-col {
+      display: table-cell;
+      border: 1px solid $gray-light;
+      padding: 0.2em;
+      vertical-align: middle;
+    }
+  }
+}
+
+.tag-base {
+  padding: 0 0.5em;
+  border-radius: 2px;
+  font-size: 85%;
+}
+
+.recommended-tag-base {
+  // TODO: Check
+  @extend .tag-base;
+  background-color: $yellow;
+}
+
+.mandatory-tag-base {
+  // TODO: Check
+  @extend .tag-base;
+  background-color: $red;
+  color: white;
+}
+
+.line-separator {
+  height: 1px;
+  background-color: $gray-light;
+  width: 100%;
+  margin: 0.5em auto;
+  display: inline-block;
+}
+
+input:disabled + label {
+  cursor: not-allowed;
+  color: $gray;
+}
+
+select.small-select {
+  height: 1.8em;
+  line-height: 1.8em;
+  padding: 0 0.5em;
+  width: auto;
+  text-align: center;
+}
+
+.react-hot-loader-error-overlay {
+  position: fixed;
+  z-index: 1000;
+}
+
+/*Colapsed pannels*/
+
+.panel-heading,
+.collapsible-content {
+  .collapsed {
+    .hide-on-collapsed {
+      display: inline;
+    }
+
+    .show-on-collapsed {
+      display: none;
+    }
+  }
+
+  .hide-on-collapsed {
+    display: none;
+  }
+
+  .show-on-collapsed {
+    display: inline;
+  }
+
+  .accordion-toggle {
+    cursor: pointer;
+  }
+}
+
+.panel-body .min-height-panel {
+  min-height: 20px;
+}
+
+.text-truncate {
+  text-overflow: ellipsis;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.link-tag {
+  display: inline-block;
+  padding: 2px 4px;
+  border: 1px solid #ccc;
+  margin: 0 3px;
+  border-radius: 1px;
+  background-color: #eee;
+  color: inherit;
+}
+
+// Represents bootstrap 4.0+ spacing / alignment
+.pl-4 {
+  padding-left: 1.5rem;
+}
+
+.pl-0 {
+  padding-left: 0;
+}
+
+.align-middle {
+  align-items: center;
+  display: flex;
+}
+
+// Make FullCalendar buttons use our buttons style
+.fc button.fc-button,
+.fc button.fc-button-primary {
+  // TODO: Check
+  @extend .btn;
+  // TODO: Check
+  @extend .btn-default;
+}
+
+// Highlight FullCalendar month grid cells on hover
+.fc-daygrid-day-frame:hover {
+  cursor: pointer;
+  background-color: fadeout($gray, 70%);
+}
+
+tr.changed > td {
+  background-color: $table-row-selected!important;
+}
+
+// let a button has a div style
+.div-button {
+  display: block;
+  width: 100%;
+  border: none;
+  text-align: left;
+}
+
+.badge {
+  font-size: 12px;
+}
+
+// We can reenable these after the theme migration is complete
+#scroll-top,
+#legend-box-wrapper {
+  display: none !important;
+}

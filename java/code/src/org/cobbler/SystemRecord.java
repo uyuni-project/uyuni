@@ -94,10 +94,6 @@ public class SystemRecord extends CobblerObject {
      * Constant to define the field name for the ipv6 autoconfiguration of a System
      */
     private static final String IPV6_AUTOCONF = "ipv6_autoconfiguration";
-    /**
-     * Cobbler system name for default PXE boot
-     */
-    public static final String BOOTSTRAP_NAME = "default";
 
     /**
      * Image key.

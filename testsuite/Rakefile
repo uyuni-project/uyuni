@@ -11,6 +11,7 @@ require 'parallel'
 junit_results = '-f junit -o results_junit'
 build_number = ENV.fetch('BUILD_NUMBER', nil)
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
+is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 
 namespace :cucumber do
   # Create results folder
@@ -211,7 +212,7 @@ namespace :jenkins do
   task :generate_rake_files_init_clients, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('proxy') || minion.include?('monitoring')
+      next if minion.include?('monitoring')
 
       Rake::Task['jenkins:generate_rake_run_step'].invoke('', File.basename(minion, '.feature'), 'features/build_validation/init_clients', "run_sets/build_validation/build_validation_init_client_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
@@ -269,6 +270,15 @@ namespace :jenkins do
     instances = []
     ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') || k.include?('CLIENT') || k.include?('MONITORING') }.each do |key, _value|
       # Convert ENV variables into testsuite variables
+      # Proxy can be either containerized or traditional
+      if key == 'PROXY'
+        key =
+          if is_containerized_server
+            'PROXY_CONTAINER'
+          else
+            'PROXY_TRADITIONAL'
+          end
+      end
       instance = key.to_s.downcase
       instances << instance.gsub('sshminion', 'ssh_minion')
     end

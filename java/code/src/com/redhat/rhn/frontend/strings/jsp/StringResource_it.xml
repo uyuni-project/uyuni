@@ -9984,42 +9984,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <!-- Bare-metal system listing configuration -->
-      <trans-unit id="Bare-metal systems" xml:space="preserve">
-          <source>Bare-metal systems</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.toolbar" xml:space="preserve">
-          <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.header" xml:space="preserve">
-          <source>Bare-metal system management</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.summary" xml:space="preserve">
-          <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery" xml:space="preserve">
-          <source>Bare-metal systems</source>
-      </trans-unit>
-      <trans-unit id="enable" xml:space="preserve">
-          <source>Enable adding to this organization</source>
-      </trans-unit>
-      <trans-unit id="disable" xml:space="preserve">
-          <source>Disable adding to this organization</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully enabled</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully disabled</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.kernel_not_found" xml:space="preserve">
-          <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.initrd_not_found" xml:space="preserve">
-          <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
-      </trans-unit>
       <trans-unit id="bootstrapsystemlist.jsp.header" xml:space="preserve">
           <source>Unprovisioned Systems</source>
         <context-group name="ctx">
@@ -28715,12 +28679,6 @@ caratteri.</target>
 &lt;/p&gt;
         </source>
       </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
       </trans-unit>
@@ -29502,10 +29460,22 @@ caratteri.</target>
       <target state="new"/>
   </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
-        <source>Do not use strict mode</source>
+        <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
+  </trans-unit>
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+        <source>Save</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+        <source>Resume Action Chains and Checkin Salt SSH Systems </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="peripheral_server" xml:space="preserve">
+        <source>Peripheral Server</source>
       <target state="new"/>
   </trans-unit>
       </body>

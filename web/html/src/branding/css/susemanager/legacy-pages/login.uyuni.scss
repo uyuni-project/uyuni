@@ -1,0 +1,173 @@
+body.login-page {
+  background: $uyuni-blue-100;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  overflow: auto;
+  margin-top: 0px;
+  color: $gray-light;
+
+  #login {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+.login-page {
+  text-align: left;
+
+  .wrap {
+    width: 1024px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .navbar-header {
+    margin-left: 10px;
+  }
+  .spacewalk-main-column-layout {
+    flex: 1 0 auto;
+
+    section {
+      padding: 3em 0;
+      width: 100%;
+    }
+  }
+  h1 {
+    font-size: 52px;
+    color: $green;
+  }
+  h2 {
+    font-size: 32px;
+  }
+  .btn-dark {
+    color: $green;
+    border: 1px solid $green;
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.4em 1em;
+    border-radius: 4px;
+    font-size: 15px;
+    margin-left: 3em;
+  }
+  .btn-dark:hover {
+    border: 1px solid darken($green, 10%);
+  }
+  .margins-updown {
+    margin: 2em 0;
+  }
+  input {
+    margin-bottom: 1em;
+    background: $uyuni-blue-900;
+    color: $gray-light;
+    border: 0;
+    -webkit-font-smoothing: antialiased;
+    box-shadow: 0px 1px 0px 0px $uyuni-blue-100, 0px 1px 0px 0px $uyuni-blue-900 inset;
+    -moz-box-shadow: 0px 1px 0px 0px $uyuni-blue-100, 0px 1px 0px 0px $uyuni-blue-900 inset;
+    -webkit-box-shadow: 0px 1px 0px 0px $uyuni-blue-100, 0px 1px 0px 0px $uyuni-blue-900 inset;
+  }
+  input:focus {
+    color: $white;
+  }
+  hr {
+    background: $uyuni-blue-900, 3%;
+    height: 1px;
+    border: 0;
+    border-bottom: 1px solid $uyuni-blue-100;
+  }
+  input[type="submit"] {
+    background: $green;
+    color: $white;
+    margin-bottom: 1em;
+    border: 0;
+    box-shadow: 0px 1px 0px 0px $green, 0px 0px 0px 0px $green-dark inset;
+    -moz-box-shadow: 0px 1px 0px 0px $green, 0px 0px 0px 0px $green-dark inset;
+    -webkit-box-shadow: 0px 1px 0px 0px $green, 0px 0px 0px 0px $green-dark inset;
+  }
+  input[type="submit"]:hover {
+    background: $green-dark;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    text-decoration: underline;
+  }
+  a:hover {
+    color: $green-dark;
+  }
+  .small-text {
+    font-size: 0.8em;
+  }
+  label {
+    font-weight: normal;
+  }
+  header {
+    font-size: 13px;
+    border-bottom: 0px;
+    .navbar-brand {
+      text-decoration: none;
+    }
+  }
+  .alert {
+    font-size: 14px;
+  }
+  footer {
+    border-bottom: 16px solid $green;
+    border-top-width: 0px;
+    background-color: $uyuni-blue-100;
+    position: static;
+    padding-bottom: 1em;
+    padding-left: 0;
+    color: $gray;
+
+    div.wrapper {
+      padding: 0 15px;
+      background-size: auto 35px;
+      min-height: 35px;
+    }
+    .wrap {
+      display: flex;
+      gap: 16px;
+
+      > div {
+        display: inline-block;
+        width: auto;
+      }
+    }
+    a {
+      color: inherit;
+    }
+    .bottom-line {
+      display: block;
+      margin-top: 10px;
+    }
+  }
+}
+
+.keep-header {
+  .login-page {
+    header {
+      height: auto !important;
+
+      .navbar-controls {
+        float: right !important;
+        width: auto;
+        margin-top: 0px !important;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .login-page .wrap {
+    width: 100%;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .login-page section.wrap {
+    padding-right: 1em;
+    padding-left: 1em;
+  }
+  // TODO: Test
+  // .keep-header;
+}

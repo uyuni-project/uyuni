@@ -17,6 +17,7 @@ package com.suse.manager.webui.services;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.unproxy;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static java.util.Collections.emptyMap;
@@ -194,6 +195,8 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -241,6 +244,7 @@ public class SaltServerActionService {
     private static final String SYSTEM_REBOOT = "system.reboot";
     private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
     private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
+    private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
@@ -466,6 +470,9 @@ public class SaltServerActionService {
         }
         else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
             return singletonMap(executePlaybookActionCall((PlaybookAction) actionIn), minions);
+        }
+        else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
+            return cocoAttestationAction(minions);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -2312,6 +2319,13 @@ public class SaltServerActionService {
                 Optional.of(details.isTestMode()));
     }
 
+    private Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {
+        return Map.of(
+                State.apply(Collections.singletonList(COCOATTEST_REQUESTDATA), Optional.empty()),
+                minionSummaries
+        );
+    }
+
     /**
      * Prepare to execute staging job via Salt
      * @param actionIn the action
@@ -2487,15 +2501,41 @@ public class SaltServerActionService {
                     LOG.trace("Salt call result: {}", r);
 
                     r.consume(error -> {
-                        sa.setStatus(STATUS_FAILED);
-                        sa.setResultMsg(error.fold(
-                                e -> "function " + e.getFunctionName() + " not available.",
-                                e -> "module " + e.getModuleName() + " not supported.",
-                                e -> "error parsing json.",
-                                GenericError::getMessage,
-                                e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
-                        ));
-                        sa.setCompletionTime(new Date());
+                        String errorString = error.toString();
+                        if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
+                            // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
+                            LOG.info("System is going down. Configure re-try in 3 minutes");
+                            sa.setStatus(STATUS_QUEUED);
+                            sa.setRemainingTries((sa.getRemainingTries() - 1L));
+                            sa.setPickupTime(null);
+                            sa.setCompletionTime(null);
+                            action.setEarliestAction(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)));
+                            ActionFactory.save(action);
+                            // We commit as we need to take care that the new date is in DB when we
+                            // call taskomatic to execute the action again.
+                            HibernateFactory.commitTransaction();
+                            try {
+                                taskomaticApi.scheduleActionExecution(action);
+                            }
+                            catch (TaskomaticApiException e) {
+                                LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
+                                sa.setStatus(STATUS_FAILED);
+                                sa.setResultMsg(errorString);
+                                sa.setCompletionTime(new Date());
+                            }
+                        }
+                        else {
+                            sa.setStatus(STATUS_FAILED);
+                            sa.setResultMsg(error.fold(
+                                    e -> "function " + e.getFunctionName() + " not available.",
+                                    e -> "module " + e.getModuleName() + " not supported.",
+                                    e -> "error parsing json.",
+                                    GenericError::getMessage,
+                                    e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
+                            ));
+                            LOG.error(sa.getResultMsg());
+                            sa.setCompletionTime(new Date());
+                        }
                     }, jsonResult -> {
                         String function = (String) call.getPayload().get("fun");
 
@@ -2581,8 +2621,7 @@ public class SaltServerActionService {
                             .filter(sa -> sa.getServerId().equals(minion.get().getId()))
                             .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
                             .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
-                            .findFirst())
-                    .ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
+                            .findFirst()).ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed")));
 
             // walk dependent server actions recursively and set them to failed
             Deque<Long> actionIdsDependencies = new ArrayDeque<>();
@@ -2818,7 +2857,7 @@ public class SaltServerActionService {
 
                                 serverAction.ifPresent(this::setActionAsPickedUp);
                             });
-                    }
+                        }
                 });
             }
             else {

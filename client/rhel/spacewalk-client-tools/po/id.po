@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-08 14:46+0100\n"
+"POT-Creation-Date: 2024-03-27 11:48+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/"
@@ -43,28 +43,6 @@ msgstr "Properti %s::%s tak ditemukan\n"
 #, fuzzy
 msgid "Getting list of packages installed on the system"
 msgstr "Mendapatkan daftar paket yang diinstal pada sistem"
-
-#. self.druid.finish.set_label(_("_Finish"))
-#: ../src/up2date_client/gui.py:273
-#, fuzzy
-msgid "Finish setting up software updates"
-msgstr "Selesai menyiapkan pembaruan perangkat lunak"
-
-#. self.druid.finish.set_label(_("_Exit"))
-#: ../src/up2date_client/gui.py:276
-#, fuzzy
-msgid "Software updates setup unsuccessful"
-msgstr "Penataan pembaruan perangkat lunak tidak berhasil"
-
-#: ../src/up2date_client/gui.py:283
-#, fuzzy
-msgid "You must run rhn_register as root."
-msgstr "Anda harus menjalankan rhn_register sebagai root."
-
-#: ../src/up2date_client/gui.py:308
-#, fuzzy, python-format
-msgid "There was some sort of I/O error: %s"
-msgstr "Ada kesalahan I/O: %s"
 
 #: ../src/up2date_client/hardware.py:1064
 #, fuzzy
@@ -136,39 +114,39 @@ msgstr "Tentukan username yang digunakan untuk http proxy"
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "Tentukan password yang digunakan untuk http proxy"
 
-#: ../src/up2date_client/rhncli.py:93
+#: ../src/up2date_client/rhncli.py:91
 #, fuzzy
 msgid ""
 "\n"
 "Aborted.\n"
 msgstr "Dibatalkan."
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:94
 #, fuzzy, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "Timbul galat OS tak terduga: %s"
 
-#: ../src/up2date_client/rhncli.py:101
+#: ../src/up2date_client/rhncli.py:99
 #, fuzzy
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "Sambungan dicoba dengan URI yang rusak."
 
-#: ../src/up2date_client/rhncli.py:103
+#: ../src/up2date_client/rhncli.py:101
 #, fuzzy, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "Sambungan dicoba dengan URI yang rusak: %s."
 
-#: ../src/up2date_client/rhncli.py:105
+#: ../src/up2date_client/rhncli.py:103
 #, fuzzy, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "Ada semacam kesalahan I/O: %s"
 
-#: ../src/up2date_client/rhncli.py:111
+#: ../src/up2date_client/rhncli.py:109
 #, fuzzy, python-format
 msgid "There was an SSL error: %s\n"
 msgstr "Terjadi galat SSL: %s"
 
-#: ../src/up2date_client/rhncli.py:112
+#: ../src/up2date_client/rhncli.py:110
 #, fuzzy
 msgid ""
 "A common cause of this error is the system time being incorrect. Verify that "
@@ -177,27 +155,22 @@ msgstr ""
 "Penyebab umum galat ini adalah waktu sistem yang salah. Verifikasi bahwa "
 "waktu pada sistem ini sudah benar."
 
-#: ../src/up2date_client/rhncli.py:119
+#: ../src/up2date_client/rhncli.py:117
 #, fuzzy, python-format
 msgid "There was a SSL crypto error: %s\n"
 msgstr "Ada galat kripto SSL: %s"
 
-#: ../src/up2date_client/rhncli.py:123
+#: ../src/up2date_client/rhncli.py:121
 #, fuzzy, python-format
 msgid "There was an authentication error: %s\n"
 msgstr "Timbul galat otentikasi: %s"
 
-#: ../src/up2date_client/rhncli.py:139
+#: ../src/up2date_client/rhncli.py:137
 #, fuzzy, python-format
 msgid "You must be root to run %s"
 msgstr "Anda harus menjadi root untuk menjalankan %s"
 
-#: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
-#, fuzzy
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr "Tidak dapat membuka gui. Coba 'up2date --nox'"
-
-#: ../src/up2date_client/rhncli.py:211
+#: ../src/up2date_client/rhncli.py:193
 #, fuzzy, python-format
 msgid ""
 "%%prog (Spacewalk Client Tools) %s\n"
@@ -208,60 +181,15 @@ msgstr ""
 "Hak Cipta (C) 1999--2014 Red Hat, Inc.\n"
 "Berlisensi di bawah persyaratan GPLv2."
 
-#: ../src/up2date_client/rhncli.py:226
+#: ../src/up2date_client/rhncli.py:208
 #, fuzzy
 msgid "An error has occurred:"
 msgstr "Terjadi suatu kesalahan:"
 
-#: ../src/up2date_client/rhncli.py:234
+#: ../src/up2date_client/rhncli.py:216
 #, fuzzy
 msgid "See /var/log/up2date for more information"
 msgstr "Lihat /var/log/up2date untuk informasi lebih lanjut"
-
-#: ../src/up2date_client/rhnreg.py:75
-#, fuzzy
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "Peringatan: tidak dapat mengaktifkan rhnsd dengan systemd"
-
-#: ../src/up2date_client/rhnreg.py:81
-#, fuzzy
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "Peringatan: tidak dapat mengaktifkan rhnsd dengan chkconfig"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-#, fuzzy
-msgid "Warning"
-msgstr "Peringatan"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-#, fuzzy
-msgid "Problem registering system:\n"
-msgstr "Ada masalah saat mendaftarkan sistem:\n"
-
-#: ../src/up2date_client/tui.py:1004
-#, fuzzy
-msgid "Problem registering system."
-msgstr "Masalah sistem pendaftaran."
-
-#: ../src/up2date_client/tui.py:1009
-#, fuzzy
-msgid "Problem writing out system id to disk."
-msgstr "Masalah menulis id sistem ke disk."
-
-#: ../src/up2date_client/tui.py:1058
-#, fuzzy, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Tidak dapat membuka %s\n"
-"%s tidak diaktifkan."
-
-#: ../src/up2date_client/tui.py:785
-#, fuzzy, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -941,6 +869,11 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "Kesalahan Fatal"
 
+#: ../src/up2date_client/rhnreg_constants.py:244
+#, fuzzy
+msgid "Warning"
+msgstr "Peringatan"
+
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, fuzzy, python-format, python-brace-format
 msgid ""
@@ -1187,6 +1120,11 @@ msgstr "Nama host:"
 msgid "CPU speed: "
 msgstr "Kecepatan CPU:"
 
+#: ../src/up2date_client/tui.py:785
+#, fuzzy, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
 #: ../src/up2date_client/tui.py:787
 #, fuzzy
 msgid "IP Address: "
@@ -1201,6 +1139,22 @@ msgstr "_Memori: "
 #, fuzzy, python-format
 msgid "%s megabytes"
 msgstr "%s megabytes"
+
+#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
+#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
+#, fuzzy
+msgid "Problem registering system:\n"
+msgstr "Ada masalah saat mendaftarkan sistem:\n"
+
+#: ../src/up2date_client/tui.py:1004
+#, fuzzy
+msgid "Problem registering system."
+msgstr "Masalah sistem pendaftaran."
+
+#: ../src/up2date_client/tui.py:1009
+#, fuzzy
+msgid "Problem writing out system id to disk."
+msgstr "Masalah menulis id sistem ke disk."
 
 #: ../src/up2date_client/tui.py:1025
 #, fuzzy
@@ -1221,6 +1175,15 @@ msgstr "Masalah saat mengirim daftar paket:"
 #, fuzzy
 msgid "Problem sending package list."
 msgstr "Masalah pengiriman daftar paket."
+
+#: ../src/up2date_client/tui.py:1058
+#, fuzzy, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+"Tidak dapat membuka %s\n"
+"%s tidak diaktifkan."
 
 #: ../src/up2date_client/tui.py:1096
 #, fuzzy
@@ -1419,25 +1382,20 @@ msgstr "Jangan mengunggah info virtualisasi apa pun"
 
 #: ../src/bin/rhnreg_ks.py:74
 #, fuzzy
-msgid "Do not start rhnsd after completion"
-msgstr "Jangan mulai rhnsd setelah selesai"
-
-#: ../src/bin/rhnreg_ks.py:76
-#, fuzzy
 msgid "Register the system even if it is already registered"
 msgstr "Daftarkan sistem bahkan jika sudah terdaftar"
 
-#: ../src/bin/rhnreg_ks.py:86
+#: ../src/bin/rhnreg_ks.py:84
 #, fuzzy
 msgid "A username and password are required to register a system."
 msgstr "Nama pengguna dan kata sandi diperlukan untuk mendaftarkan sistem."
 
-#: ../src/bin/rhnreg_ks.py:91
+#: ../src/bin/rhnreg_ks.py:89
 #, fuzzy
 msgid "This system is already registered. Use --force to override"
 msgstr "Sistem ini sudah terdaftar. Gunakan --force untuk menimpa"
 
-#: ../src/bin/rhnreg_ks.py:125
+#: ../src/bin/rhnreg_ks.py:123
 #, fuzzy
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
@@ -1446,12 +1404,12 @@ msgstr ""
 "Penggunaan opsi --use-eus-channel dengan --activationkey tidak didukung. "
 "Silakan gunakan nama pengguna dan kata sandi sebagai gantinya."
 
-#: ../src/bin/rhnreg_ks.py:128
+#: ../src/bin/rhnreg_ks.py:126
 #, fuzzy
 msgid "The server you are registering against does not support EUS."
 msgstr "Server yang Anda daftarkan tidak mendukung EUS."
 
-#: ../src/bin/rhnreg_ks.py:154
+#: ../src/bin/rhnreg_ks.py:152
 #, fuzzy
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
@@ -1460,12 +1418,12 @@ msgstr ""
 "Peringatan: --contactinfo pilihan telah usang. Silakan login ke antarmuka "
 "pengguna web server dan memperbarui contactinfo Anda."
 
-#: ../src/bin/rhnreg_ks.py:175
+#: ../src/bin/rhnreg_ks.py:169
 #, fuzzy, python-format
 msgid "Warning: %s is not present, could not enable it."
 msgstr "Peringatan: %s tidak ada, tidak dapat mengaktifkannya."
 
-#: ../src/bin/rhnreg_ks.py:178
+#: ../src/bin/rhnreg_ks.py:172
 #, fuzzy, python-format
 msgid ""
 "Warning: Could not open %s\n"
@@ -1474,7 +1432,7 @@ msgstr ""
 "Peringatan: Tidak dapat membuka %s\n"
 "%s tidak diaktifkan."
 
-#: ../src/bin/rhnreg_ks.py:206
+#: ../src/bin/rhnreg_ks.py:200
 #, fuzzy
 msgid ""
 "A profilename was not specified, and hostname and IP address could not be "
@@ -1482,6 +1440,38 @@ msgid ""
 msgstr ""
 "Nama profil tidak ditentukan, dan nama host dan alamat IP tidak dapat "
 "ditentukan untuk digunakan sebagai nama profil, tentukan satu."
+
+#, fuzzy
+#~ msgid "Finish setting up software updates"
+#~ msgstr "Selesai menyiapkan pembaruan perangkat lunak"
+
+#, fuzzy
+#~ msgid "Software updates setup unsuccessful"
+#~ msgstr "Penataan pembaruan perangkat lunak tidak berhasil"
+
+#, fuzzy
+#~ msgid "You must run rhn_register as root."
+#~ msgstr "Anda harus menjalankan rhn_register sebagai root."
+
+#, fuzzy, python-format
+#~ msgid "There was some sort of I/O error: %s"
+#~ msgstr "Ada kesalahan I/O: %s"
+
+#, fuzzy
+#~ msgid "Unable to open gui. Try `up2date --nox`"
+#~ msgstr "Tidak dapat membuka gui. Coba 'up2date --nox'"
+
+#, fuzzy
+#~ msgid "Warning: unable to enable rhnsd with systemd"
+#~ msgstr "Peringatan: tidak dapat mengaktifkan rhnsd dengan systemd"
+
+#, fuzzy
+#~ msgid "Warning: unable to enable rhnsd with chkconfig"
+#~ msgstr "Peringatan: tidak dapat mengaktifkan rhnsd dengan chkconfig"
+
+#, fuzzy
+#~ msgid "Do not start rhnsd after completion"
+#~ msgstr "Jangan mulai rhnsd setelah selesai"
 
 #, fuzzy
 #~ msgid "Error:"

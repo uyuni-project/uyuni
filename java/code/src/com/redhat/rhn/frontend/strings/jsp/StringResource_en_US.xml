@@ -8803,43 +8803,6 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>
         </context-group>
         </trans-unit>
-      <!-- Bare-metal system listing configuration -->
-      <trans-unit id="Bare-metal systems">
-          <source>Bare-metal systems</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.toolbar">
-          <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.header">
-          <source>Bare-metal system management</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.summary">
-          <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery">
-          <source>Bare-metal systems</source>
-        </trans-unit>
-        <trans-unit id="enable">
-          <source>Enable adding to this organization</source>
-        </trans-unit>
-        <trans-unit id="disable">
-          <source>Disable adding to this organization</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled">
-          <source>Automatic bare-metal system discovery has been successfully enabled</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled">
-          <source>Automatic bare-metal system discovery has been successfully disabled</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.kernel_not_found">
-          <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source>
-        </trans-unit>
-        <trans-unit id="bootstrapsystems.initrd_not_found">
-          <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
-        </trans-unit>
         <trans-unit id="bootstrapsystemlist.jsp.header">
           <source>Unprovisioned Systems</source>
           <context-group name="ctx">
@@ -8930,6 +8893,9 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.button-sync" xml:space="preserve">
         <source>Sync Now</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+        <source>Save</source>
       </trans-unit>
       <trans-unit id="repos.jsp.message.schedulefailed" xml:space="preserve">
         <source>Schedule of Repo Sync failed. Check logs for more information.</source>
@@ -23559,7 +23525,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
-        <source>Do not use strict mode</source>
+        <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
@@ -24246,8 +24212,11 @@ given channel.</source>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
       </trans-unit>
-       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
+      </trans-unit>
+      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+        <source>Resume Action Chains and Checkin Salt SSH Systems </source>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
@@ -25164,12 +25133,6 @@ given channel.</source>
 &lt;/p&gt;
         </source>
       </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
       </trans-unit>
@@ -25205,6 +25168,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>
+      </trans-unit>
+      <trans-unit id="peripheral_server" xml:space="preserve">
+        <source>Peripheral Server</source>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>

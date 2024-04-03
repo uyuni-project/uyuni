@@ -10018,54 +10018,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <!-- Bare-metal system listing configuration -->
-      <trans-unit id="Bare-metal systems" xml:space="preserve">
-          <source>Bare-metal systems</source>
-        <target>베어 메탈 시스템</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.toolbar" xml:space="preserve">
-          <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source>
-        <target>@@PRODUCT_NAME@@ 구성 - 베어 메탈 시스템</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.header" xml:space="preserve">
-          <source>Bare-metal system management</source>
-        <target>베어 메탈 시스템 관리</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.summary" xml:space="preserve">
-          <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source>
-        <target>@@PRODUCT_NAME@@에서 조직에 PXE 부팅이 가능한 베어 메탈 시스템을 자동으로 추가하도록 허용합니다.</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery" xml:space="preserve">
-          <source>Bare-metal systems</source>
-        <target>베어 메탈 시스템</target>
-      </trans-unit>
-      <trans-unit id="enable" xml:space="preserve">
-          <source>Enable adding to this organization</source>
-        <target>이 조직에 추가 활성화</target>
-      </trans-unit>
-      <trans-unit id="disable" xml:space="preserve">
-          <source>Disable adding to this organization</source>
-        <target>이 조직에 추가 비활성화</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully enabled</source>
-        <target>자동 베어 메탈 시스템 검색이 활성화됨</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully disabled</source>
-        <target>자동 베어 메탈 시스템 검색이 비활성화됨</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source>
-        <target>자동 완전 시스템 등록이 "{0}" 조직에 활성화되어, "{0}" 관리자가 먼저 비활성화해야 현재 조직 "{1}"에서 활성화할 수 있습니다. </target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.kernel_not_found" xml:space="preserve">
-          <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source>
-        <target>부트스트랩 커널을 찾을 수 없습니다. {0}이(가) 있고 액세스할 수 있는지 확인하십시오.</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.initrd_not_found" xml:space="preserve">
-          <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
-        <target>부트스트랩 initrd 파일을 찾을 수 없습니다. {0}이(가) 있고 액세스할 수 있는지 확인하십시오.</target>
-      </trans-unit>
       <trans-unit id="bootstrapsystemlist.jsp.header" xml:space="preserve">
           <source>Unprovisioned Systems</source>
         <target>프로비저닝되지 않은 시스템</target>
@@ -10308,7 +10260,16 @@ Please note that some manual configuration of these scripts may still be require
               &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
               except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
           </source>
-        <target state="needs-adaptation">-zsh*,kernel +zsh-html</target>
+        <target state="final">
+              &lt;strong&gt;필터 구문:&lt;/strong&gt; &lt;code&gt;[+-]키워드[,keyword ...]&lt;/code&gt;&lt;br/&gt;
+              키워드와 일치하는 패키지 이름만 포함하려면 &lt;strong&gt;'+'&lt;/strong&gt; 를 사용하고
+              키워드와 일치하는 이름을 제외하려면 &lt;strong&gt;'-'&lt;/strong&gt; 를 사용하십시오. 다수 필터는 공백으로
+              구분할 수 있습니다. 필터는 지정된 순서대로 평가됩니다. 쉘 스타일 와일드카드가
+              지원됩니다.&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;예:&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* 해당 이름이 지정된 패키지만 포함- &lt;code&gt;zsh*&lt;/code&gt;, &lt;code&gt;kernel*&lt;/code&gt;,
+              예외: &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
+          </target>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
@@ -17411,12 +17372,12 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
         <target>선택한 시스템에 파일 배치</target>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
+      <trans-unit approved="yes" id="deployconfirm.jsp.h2" xml:space="preserve">
         <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="needs-adaptation">설정 파일 배치: 배치를 위한 영역 및 시스템을 확인</target>
+        <target state="final">설정 파일 배치: 배치를 위한 필드 및 시스템 확인</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
@@ -29071,13 +29032,6 @@ given channel.</source>
 &lt;/p&gt;
         </target>
       </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <target>이 시스템에서는 위의 목록으로 패키지 동기화를 사용할 수 없습니다.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
         <target>Salt를 통해 시스템을 등록한 경우 확인란을 선택하면 등록 시 highstate가 실행됩니다.</target>
@@ -29915,12 +29869,24 @@ given channel.</source>
         <target state="final">페이고 서버입니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
-        <source>Do not use strict mode</source>
+        <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
-    </body>
+    <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+        <source>Save</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+        <source>Resume Action Chains and Checkin Salt SSH Systems </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="peripheral_server" xml:space="preserve">
+        <source>Peripheral Server</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

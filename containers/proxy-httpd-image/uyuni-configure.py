@@ -80,7 +80,7 @@ with open(config_path + "httpd.yaml") as httpdSource:
         container_version = subprocess.run(["rpm", "-q", "--queryformat", "%{version}", "spacewalk-proxy-common"],
                 stdout=subprocess.PIPE, universal_newlines=True).stdout
         if not container_version.startswith(major_version):
-            logging.critical("Proxy container image version (%s) doesn't match server major version (%s)", container_version, major_version, file=sys.stderr)
+            logging.critical("Proxy container image version (%s) doesn't match server major version (%s)", container_version, major_version)
             sys.exit(1)
     
     # store the systemid content

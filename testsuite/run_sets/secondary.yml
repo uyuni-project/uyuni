@@ -34,8 +34,6 @@
 - features/secondary/min_bootstrap_script.feature
 - features/secondary/min_ssh_tunnel.feature
 - features/secondary/min_activationkey.feature
-# Bare Metal discovery is not yet supported using Salt Minions https://github.com/SUSE/spacewalk/issues/18932
-# - features/secondary/min_baremetal_discovery.feature
 - features/secondary/min_salt_minions_page.feature
 - features/secondary/min_salt_mgrcompat_state.feature
 - features/secondary/min_salt_lock_packages.feature
@@ -49,7 +47,8 @@
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
 - features/secondary/min_retracted_patches.feature
-- features/secondary/proxy_cobbler_pxeboot.feature
+- features/secondary/proxy_traditional_cobbler_pxeboot.feature
+# - features/secondary/proxy_container_cobbler_pxeboot.feature
 - features/secondary/srv_restart.feature
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature

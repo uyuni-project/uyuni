@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SNPGuestModule">
+
+    <select id="retrieveReport" parameterType="Long" resultType="com.suse.coco.module.snpguest.model.AttestationReport">
+          SELECT id
+                    , CASE
+                        WHEN env_type = 1 THEN 'MILAN'
+                        WHEN env_type = 2 THEN 'GENOA'
+                        ELSE 'UNKNOWN'
+                      END AS cpu_generation
+                    , decode(in_data->>'nonce', 'base64') AS random_nonce
+                    , decode(out_data->>'mgr_snpguest_report', 'base64') AS report
+            FROM suseServerCoCoAttestationReport
+           WHERE id = #{reportId}
+    </select>
+</mapper>

@@ -78,8 +78,8 @@
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
-  <condition property="jaf" value="glassfish-activation-api" else="jaf">
-    <available file="${java.lib.dir}/glassfish-activation-api.jar"/>
+  <condition property="jaf" value="glassfish-activation" else="jaf">
+    <available file="${java.lib.dir}/glassfish-activation.jar"/>
   </condition>
   <condition property="jaf" value="jakarta-activation">
     <available file="${java.lib.dir}/jakarta-activation/jakarta.activation.jar"/>

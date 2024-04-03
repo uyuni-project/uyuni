@@ -1,0 +1,12 @@
+// Temporarily fix input misalignment on forms until we rehaul them in the Bootstrap upgrade
+.radio label, .checkbox label {
+  padding-left: 0;
+}
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  position: relative;
+  margin: 0 8px 0 0;
+}

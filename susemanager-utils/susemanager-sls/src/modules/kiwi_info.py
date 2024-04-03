@@ -208,6 +208,7 @@ _compression_types = [
     {"suffix": ".vhdx", "compression": None},
     {"suffix": ".vdi", "compression": None},
     {"suffix": ".raw", "compression": None},
+    {"suffix": ".squashfs", "compression": None},
     {"suffix": "", "compression": None},
 ]
 

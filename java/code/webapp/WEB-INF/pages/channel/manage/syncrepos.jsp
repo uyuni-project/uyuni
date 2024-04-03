@@ -34,6 +34,11 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
+                <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-save'/>"
+                    class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
+                    <rhn:icon type="repo-save"/>
+                    <bean:message key='repos.jsp.button-save'/>
+                </button>
                 <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-sync'/>"
                         class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
                     <rhn:icon type="repo-sync"/>
@@ -80,39 +85,39 @@
 
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-strict" id="no-strict"/>
+                <input type="checkbox" name="noStrict" id="noStrict"  <c:if test='${noStrict}'> checked</c:if> />
                 <bean:message key="channel.manage.sync.nostrict.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-errata" id="no-errata"/>
+                <input type="checkbox" name="noErrata" id="noErrata" <c:if test='${noErrata}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="latest" id="latest"/>
+                <input type="checkbox" name="latest" id="latest" <c:if test='${latest}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.latestonly.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="sync-kickstart" id="sync-kickstart"/>
+                <input type="checkbox" name="syncKickstart" id="syncKickstart" <c:if test='${syncKickstart}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.synckickstart.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
-           <label>
-                <input type="checkbox" name="fail" id="fail"/>
+            <label>
+                <input type="checkbox" name="fail" id="fail" <c:if test='${fail}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.fail.jsp"/>
-           </label>
+            </label>
         </div>
-
+        
         <br/>
         <c:if test='${scheduleEditable}'>
             <jsp:include page="/WEB-INF/pages/common/fragments/repeat-task-picker.jspf">

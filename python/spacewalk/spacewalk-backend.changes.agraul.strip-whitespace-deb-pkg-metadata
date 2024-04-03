@@ -1,0 +1,1 @@
+- Strip whitespace from .deb package metadata (bsc#1214387)

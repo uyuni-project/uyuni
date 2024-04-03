@@ -1,0 +1,4 @@
+- implement persistent channel sync settings
+* add save button
+* show / set values via webui
+* pass values along to reposync call

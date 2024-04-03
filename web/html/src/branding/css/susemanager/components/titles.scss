@@ -1,0 +1,65 @@
+@include onSuma {
+  @import "titles.suma.scss";
+}
+
+@include onUyuni {
+  @import "titles.uyuni.scss";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.subheadline {
+  line-height: 1.5;
+
+  small {
+    color: inherit;
+    font-size: 80%;
+  }
+
+  a:hover {
+    text-decoration: underline !important;
+  }
+}
+
+h1 {
+  font-size: $font-size-h1;
+}
+
+h2 {
+  font-size: $font-size-h2;
+}
+
+h3 {
+  font-size: $font-size-h3;
+}
+
+h4 {
+  font-size: $font-size-h4;
+}
+
+h5 {
+  font-size: $font-size-h5;
+}
+
+h6 {
+  font-size: $font-size-h6;
+}
+
+// These are just carried over from the old theme, we can get rid of these after we finish the migration
+h1,
+h2,
+h3 {
+  margin-top: 21px;
+  margin-bottom: 10.5px;
+}
+
+h4,
+h5,
+h6 {
+  margin-top: 10.5px;
+  margin-bottom: 10.5px;
+}

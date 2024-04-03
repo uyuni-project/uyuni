@@ -902,6 +902,7 @@
       <form-property name="osimage_build_host" type="java.lang.Boolean"/>
       <form-property name="monitoring_entitled" type="java.lang.Boolean"/>
       <form-property name="ansible_control_node" type="java.lang.Boolean"/>
+      <form-property name="peripheral_server" type="java.lang.Boolean"/>
       <form-property name="receive_notifications" type="java.lang.Boolean"/>
       <form-property name="include_in_daily_summary" type="java.lang.Boolean"/>
       <form-property name="auto_update" type="java.lang.Boolean"/>
@@ -4719,17 +4720,6 @@
         <forward name="default"
                  path="/WEB-INF/pages/admin/config/cobbler.jsp"/>
 
-    </action>
-
-    <action path="/admin/config/BootstrapSystems"
-        scope="request"
-        input="/WEB-INF/pages/admin/config/bootstrapsystems.jsp"
-        type="com.redhat.rhn.frontend.action.satellite.BootstrapSystemConfigAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(satellite_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/config/bootstrapsystems.jsp"/>
     </action>
 
     <action path="/admin/Catalina"

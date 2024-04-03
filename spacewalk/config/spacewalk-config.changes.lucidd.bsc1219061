@@ -1,1 +1,1 @@
-- be explicit about default apache configs being overwritten on updates and point to making custom configs. (bsc#c1219061)
+- Be explicit about default Apache configs being overwritten on updates and point to making custom configs. (bsc#1219061)

@@ -7,7 +7,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         table="rhnActivationKey">
         <id name="key" type="string" column="token"/>
         
-        <property name="bootstrap" column="bootstrap" not-null="true" type="string" length="1" />
         <property name="created" column="created" type="timestamp" insert="false"
             update="false"/>
         <property name="modified" column="modified" type="timestamp" insert="false"
@@ -36,7 +35,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                    from com.redhat.rhn.domain.token.ActivationKey actKey,
                         com.redhat.rhn.domain.token.Token token
                   where actKey.token = token
-                    and actKey.bootstrap = 'N'
                     and token.server = :server]]>
     </query>
 
@@ -45,7 +43,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                    from com.redhat.rhn.domain.token.ActivationKey actKey,
                         com.redhat.rhn.domain.token.Token token
                   where actKey.token = token
-                    and actKey.bootstrap = 'N'
                     and :server in elements(token.activatedServers)]]>
     </query>
 
@@ -57,8 +54,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.token.ActivationKey as ak
                    where ak.token.org = :org
                      and ak.kickstartSession = null
-                     and ak.token.server = null
-                     and ak.bootstrap = 'N']]>
+                     and ak.token.server = null]]>
     </query>
 
     <query name="ActivationKey.findActiveByOrg">
@@ -66,7 +62,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                    where ak.token.org = :org
                      and ak.kickstartSession = null
                      and ak.token.server = null
-                     and ak.bootstrap = 'N'
                      and ak.token.disabled = 0]]>
     </query>
 
@@ -74,8 +69,4 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartData as k where :token member of k.defaultRegTokens]]>
     </query>
 
-    <query name="ActivationKey.findBootstrap">
-        <![CDATA[from com.redhat.rhn.domain.token.ActivationKey as ak
-                   where ak.bootstrap = 'Y']]>
-    </query>
 </hibernate-mapping>

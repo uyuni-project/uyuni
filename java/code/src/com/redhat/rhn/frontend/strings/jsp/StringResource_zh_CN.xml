@@ -10019,54 +10019,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <!-- Bare-metal system listing configuration -->
-      <trans-unit id="Bare-metal systems" xml:space="preserve">
-          <source>Bare-metal systems</source>
-        <target>裸机系统</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.toolbar" xml:space="preserve">
-          <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source>
-        <target>@@PRODUCT_NAME@@ 配置 - 裸机系统</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.header" xml:space="preserve">
-          <source>Bare-metal system management</source>
-        <target>裸机系统管理</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.summary" xml:space="preserve">
-          <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source>
-        <target>允许 @@PRODUCT_NAME@@ 将支持 PXE 引导的裸机系统自动添加到组织。</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery" xml:space="preserve">
-          <source>Bare-metal systems</source>
-        <target>裸机系统</target>
-      </trans-unit>
-      <trans-unit id="enable" xml:space="preserve">
-          <source>Enable adding to this organization</source>
-        <target>允许添加到此组织</target>
-      </trans-unit>
-      <trans-unit id="disable" xml:space="preserve">
-          <source>Disable adding to this organization</source>
-        <target>禁止添加到此组织</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully enabled</source>
-        <target>已成功启用自动裸机系统发现</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled" xml:space="preserve">
-          <source>Automatic bare-metal system discovery has been successfully disabled</source>
-        <target>已成功禁用自动裸机系统发现</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source>
-        <target state="translated">已经为组织 "{0}" 启用了自动裸机系统注册，因此，除非 "{0}" 管理员先禁用该功能，否则无法为当前组织 "{1}" 启用该功能。 </target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.kernel_not_found" xml:space="preserve">
-          <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source>
-        <target>找不到引导内核文件，请检查 {0} 是否存在并且可供访问。</target>
-      </trans-unit>
-      <trans-unit id="bootstrapsystems.initrd_not_found" xml:space="preserve">
-          <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
-        <target>找不到引导 initrd 文件，请检查 {0} 是否存在并且可供访问。</target>
-      </trans-unit>
       <trans-unit id="bootstrapsystemlist.jsp.header" xml:space="preserve">
           <source>Unprovisioned Systems</source>
         <target>未置备的系统</target>
@@ -10309,7 +10261,16 @@ Please note that some manual configuration of these scripts may still be require
               &lt;em&gt;* Only include packages named &lt;code&gt;zsh*&lt;/code&gt; and &lt;code&gt;kernel*&lt;/code&gt;,
               except &lt;code&gt;zsh-html&lt;/code&gt;&lt;/em&gt;
           </source>
-        <target state="needs-adaptation">-zsh*,kernel +zsh-html</target>
+        <target state="final">
+              &lt;strong&gt;过滤条件语法：&lt;/strong&gt; &lt;code&gt;[+-]keyword[,keyword ...]&lt;/code&gt;&lt;br/&gt;
+              使用 &lt;strong&gt;'+'&lt;/strong&gt; 可仅包含与关键字匹配的软件包名称，
+              使用 &lt;strong&gt;'-'&lt;/strong&gt; 可排除与关键字匹配的软件包名称。
+              多个文件可用空格分隔。过滤条件以其指定的顺序进行评估。支持
+              外壳样式通配符。&lt;br/&gt;&lt;br/&gt;
+              &lt;strong&gt;示例：&lt;/strong&gt; &lt;code&gt;+zsh*,kernel* -zsh-html&lt;/code&gt;&lt;br/&gt;
+              &lt;em&gt;* 仅包含名为 &lt;code&gt;zsh*&lt;/code&gt; 和 &lt;code&gt;kernel*&lt;/code&gt; 的软件包，
+              &lt;code&gt;zsh-html&lt;/code&gt; 除外&lt;/em&gt;
+          </target>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.error" xml:space="preserve">
         <source>Filter syntax is incorrect!</source>
@@ -17413,12 +17374,12 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
         <target state="translated">将文件部署到所选系统</target>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.h2" xml:space="preserve">
+      <trans-unit approved="yes" id="deployconfirm.jsp.h2" xml:space="preserve">
         <source>Deploy Configuration Files: Confirm Fields and Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="needs-adaptation">部署配置文件：确认部署文件和系统</target>
+        <target state="final">部署配置文件：确认部署字段和系统</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note" xml:space="preserve">
         <source>The files shown below will be deployed to the systems shown below.
@@ -29082,13 +29043,6 @@ given channel.</source>
 &lt;/p&gt;
         </target>
       </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
-        <source>Syncing the packages to the list above is not available for this system.</source>
-        <target>对于此系统，无法将软件包同步到以上列表。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
         <target>在选中此复选框的情况下，如果系统是通过 Salt 注册的，则注册时将执行 highstate。</target>
@@ -29930,12 +29884,24 @@ given channel.</source>
         <target state="final">这是 Pay-as-you-go 服务器</target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
-        <source>Do not use strict mode</source>
+        <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
-    </body>
+    <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+        <source>Save</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+        <source>Resume Action Chains and Checkin Salt SSH Systems </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="peripheral_server" xml:space="preserve">
+        <source>Peripheral Server</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

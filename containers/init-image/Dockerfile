@@ -37,6 +37,8 @@ RUN mkdir -p /etc/systemd/logind.conf.d/ && \
 
 RUN systemctl disable getty@tty1.service
 
+RUN ((rpm -qa | grep skelcd-EULA-bci) && zypper -n rm skelcd-EULA-bci) || true
+
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"

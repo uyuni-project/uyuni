@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { showErrorToastr, showSuccessToastr, showWarningToastr } from "components/toastr";
 
 const debugUtils = {
@@ -64,12 +65,14 @@ const debugUtils = {
     if (oldTheme) {
       oldTheme.classList.remove("old-theme");
       oldTheme.classList.add("new-theme");
+      console.log("current theme: new theme");
       return;
     }
     const updatedTheme = document.querySelector(".new-theme");
     if (updatedTheme) {
       updatedTheme.classList.add("old-theme");
       updatedTheme.classList.remove("new-theme");
+      console.log("current theme: old theme");
       return;
     }
   },

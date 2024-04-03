@@ -42,24 +42,6 @@ Then(/^I turn off disable_local_repos for all clients/) do
   step 'I install a salt pillar top file for "salt_bundle_config, disable_local_repos_off" with target "*" on the server'
 end
 
-Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
-  node = get_target(host)
-  _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
-  unless return_code.zero?
-    sleep 2
-    puts 're-try ping'
-    node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
-  end
-  get_target('server').run("ping -c 1 #{node.public_ip}")
-end
-
-Then(/^"([^"]*)" should not communicate with the server using private interface/) do |host|
-  node = get_target(host)
-  node.run_until_fail("ping -c 1 -I #{node.private_interface} #{get_target('server').public_ip}")
-  # commented out as a machine with the same IP address might exist somewhere in our engineering network
-  # get_target('server').run_until_fail("ping -c 1 #{node.private_ip}")
-end
-
 Then(/^the clock from "([^"]*)" should be exact$/) do |host|
   node = get_target(host)
   clock_node, _rc = node.run('date +\'%s\'')
@@ -420,7 +402,11 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       sleep checking_rate
     end
   rescue StandardError => e
-    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+    log e.message
+    unless $build_validation
+      # It might be that the MU repository is wrong, but we want to continue in any case
+      raise ScriptError, "This channel was not fully synced: #{channel}"
+    end
   end
 end
 
@@ -430,7 +416,8 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
 
   time_spent = 0
   checking_rate = 10
-  timeout = 0
+  # Let's start with a timeout margin aside from the sum of the timeouts for each channel
+  timeout = 600
   channels_to_wait.each do |channel|
     if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
       log "Unknown timeout for channel #{channel}, assuming one minute"
@@ -453,7 +440,11 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       sleep checking_rate
     end
   rescue StandardError => e
-    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+    log e.message
+    unless $build_validation
+      # It might be that the MU repository is wrong, but we want to continue in any case
+      raise ScriptError, "These channels were not fully synced:\n #{channels_to_wait}"
+    end
   end
 end
 
@@ -1520,9 +1511,11 @@ When(/^I reboot the server through SSH$/) do
   end
 end
 
-When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
+When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) do |host|
   node = get_target(host)
-  node.run('reboot')
+  node.run('reboot', check_errors: false, verbose: true, runs_in_container: false)
+  node.wait_until_offline
+  node.wait_until_online
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
@@ -1724,4 +1717,10 @@ When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, 
     _output, code = node.run("tail -n 10 #{file} | grep '#{text}' ", check_errors: false)
     break if code.zero?
   end
+end
+
+Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
+  count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
+  occurences = count.to_i
+  raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end
