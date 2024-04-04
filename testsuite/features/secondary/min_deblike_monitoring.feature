@@ -4,7 +4,6 @@
 # - features/secondary/srv_monitoring.feature: as this feature disables/re-enables monitoring capabilities
 # - sumaform: as it is configuring monitoring to be enabled after deployment
 
-@skip_if_github_validation
 @scope_monitoring
 @scope_res
 @deblike_minion
@@ -13,6 +12,7 @@ Feature: Monitor SUMA environment with Prometheus on a Debian-like Salt minion
   As an authorized user
   I want to enable Prometheus exporters
 
+  @skip_if_github_validation
   Scenario: Pre-requisite: enable Prometheus exporters repository on the Debian-like minion
     When I enable the necessary repositories before installing Prometheus exporters on this "deblike_minion"
 
@@ -64,6 +64,7 @@ Feature: Monitor SUMA environment with Prometheus on a Debian-like Salt minion
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
-
+	
+  @skip_if_github_validation
   Scenario: Cleanup: disable Prometheus exporters repository on the Debian-like minion
     When I disable the necessary repositories before installing Prometheus exporters on this "deblike_minion" without error control
