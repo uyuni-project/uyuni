@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 04 23:20:43 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2-0
+  * Simplified spec file by moving requirements outside of if statement.
+
+-------------------------------------------------------------------
 Tue Jan 16 08:23:19 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1
