@@ -5,6 +5,7 @@ Feature: Export and import software channels with new ISS implementation
   Distribute software between servers
   Run export and import with ISS v2
 
+@skip_if_github_validation
   Scenario: Install inter server sync package
     When I install packages "inter-server-sync" on this "server"
     Then "inter-server-sync" should be installed on "server"
