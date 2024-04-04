@@ -1,2 +1,2 @@
-- In the source URL use a macro for specifying the release version 
-  instead of hardcoding it
+- Switch the default release version to 0 and update the source
+  URL
