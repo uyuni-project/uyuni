@@ -11,24 +11,41 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.x
+          ruby-version: '2.5.9'
 
       - name: Install dependencies
         run: |
+          sudo apt-get install -y rdoc
           gem install yard yard-cucumber
+
+      - name: Generate .yard/config
+        run: |
+          $HOME/.yard
+          echo '--- !ruby/hash-with-ivars:SymbolHash
+          elements:
+            :load_plugins: true
+            :ignored_plugins: []
+            :autoload_plugins: []
+            :safe_mode: false
+            :"yard-cucumber":
+              language:
+                step_definitions: [ "Given", "When", "Then", "And", "But"]
+              menus: [ "features", "directories", "tags", "steps", "step definitions" ]
+          ivars:
+            :@symbolize_value: false%' > $HOME/.yard/config
 
       - name: Generate YARD Documentation
         run: |
           cd testsuite
-          yard doc --protected --private features/step_definitions/*.rb features/support/*.rb features/**/*.feature features/**/**/*.feature
+          yard doc --protected --private features/step_definitions/*.rb features/support/*.rb features/support/**/*.rb features/**/*.feature features/**/**/*.feature
 
-      - name: Publish documentation
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Archive documentation as artifact
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: testsuite/doc
+          name: yard-docs
+          path: testsuite/doc
