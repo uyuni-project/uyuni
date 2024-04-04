@@ -1,0 +1,34 @@
+name: Generate YARD Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  generate_documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.7.x
+
+      - name: Install dependencies
+        run: |
+          gem install yard yard-cucumber
+
+      - name: Generate YARD Documentation
+        run: |
+          cd testsuite
+          yard doc --protected --private features/step_definitions/*.rb features/support/*.rb features/**/*.feature features/**/**/*.feature
+
+      - name: Publish documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: testsuite/doc
