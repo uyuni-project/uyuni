@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Apr 04 17:31:49 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * Implement database schema for confidential compute attestation
+  * Support containerized peripheral server
+  * Add new tables to store vulnerable packages metadata extracted
+    from OVAL files
+  * Store the CPE of servers
+  * Remove spacewalk and satellite schema upgrade files
+  * Move 001-oval-add-tables.sql script to new upgrade folder
+  * Missing size in rhnServer CVE column
+  * Drop bootstrap column from activation key table
+
+-------------------------------------------------------------------
 Tue Feb 13 17:17:56 CET 2024 - marina.latini@suse.com
 
 - version 5.0.5-1
