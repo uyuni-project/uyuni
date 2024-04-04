@@ -3,7 +3,6 @@
 
 # The NamespaceSchedule class provides methods for interacting with the schedule API.
 class NamespaceSchedule
-  ##
   # Initializes a new instance of the NamespaceSchedule class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -11,7 +10,6 @@ class NamespaceSchedule
     @test = api_test
   end
 
-  ##
   # Lists all actions.
   #
   # @return [Array] A list of all actions.
@@ -19,7 +17,6 @@ class NamespaceSchedule
     @test.call('schedule.listAllActions', sessionKey: @test.token)
   end
 
-  ##
   # Returns a list of actions that are currently in progress.
   #
   # @return [Array] A list of actions that are currently in progress.
@@ -27,7 +24,6 @@ class NamespaceSchedule
     @test.call('schedule.listInProgressActions', sessionKey: @test.token)
   end
 
-  ##
   # Returns a list of systems that are currently in progress for the given action.
   #
   # @param action_id [Integer] The ID of the action you want to list systems for.
@@ -36,7 +32,6 @@ class NamespaceSchedule
     @test.call('schedule.listInProgressSystems', sessionKey: @test.token, actionId: action_id)
   end
 
-  ##
   # Returns a list of completed actions for the current user.
   #
   # @return [Array] A list of completed actions for the current user.
@@ -44,7 +39,6 @@ class NamespaceSchedule
     @test.call('schedule.listCompletedActions', sessionKey: @test.token)
   end
 
-  ##
   # Returns a list of failed actions.
   #
   # @return [Array] A list of failed actions.
@@ -52,7 +46,6 @@ class NamespaceSchedule
     @test.call('schedule.listFailedActions', sessionKey: @test.token)
   end
 
-  ##
   # Returns a list of systems that failed to execute the action.
   #
   # @param action_id [Integer] The ID of the action to list failed systems for.
@@ -61,7 +54,6 @@ class NamespaceSchedule
     @test.call('schedule.listFailedSystems', sessionKey: @test.token, actionId: action_id)
   end
 
-  ##
   # Cancels actions in the schedule.
   #
   # @param actions [Array] An array of action IDs to cancel.
@@ -69,7 +61,6 @@ class NamespaceSchedule
     @test.call('schedule.cancelActions', sessionKey: @test.token, actionIds: actions)
   end
 
-  ##
   # Fails a system action.
   #
   # @param system_id [Integer] The ID of the system you want to schedule an action for.

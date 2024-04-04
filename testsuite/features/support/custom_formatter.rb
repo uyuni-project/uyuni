@@ -1,11 +1,9 @@
 # Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-##
 # CustomFormatter module provides a custom formatter for Cucumber tests.
 # It extends the Cucumber Pretty Formatter and prepends the feature name on each step.
 module CustomFormatter
-  ##
   # PrependsFeatureName module is included in the custom formatter class.
   # It overrides some methods to modify the behavior of the formatter.
   module PrependsFeatureName

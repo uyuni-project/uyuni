@@ -10,7 +10,6 @@ require 'pp'
 # any  = ct.system_get_key('vbox-ug', 'uid')
 # list = ct.get_list('systems')
 
-##
 # This class provides methods for interacting with the Cobbler server.
 #
 # The `CobblerTest` class is responsible for creating a new XMLRPC::client object and checking if the server is running.
@@ -33,7 +32,6 @@ require 'pp'
 # @attr_reader [XMLRPC::Client] server The XMLRPC::Client object for communicating with the Cobbler server.
 # @attr_reader [String] token The authentication token obtained after successful login.
 class CobblerTest
-  ##
   # Creates a new XMLRPC::client object, and then checks to see if the server is running.
   def initialize
     server_address = get_target('server').full_hostname
@@ -41,7 +39,6 @@ class CobblerTest
     raise(SystemCallError, "No running server at found at #{server_address}") unless running?
   end
 
-  ##
   # Logs into Cobbler and returns the session token.
   #
   # @param user [String] The username for logging in to Cobbler.
@@ -49,21 +46,23 @@ class CobblerTest
   # @return [String] The authentication token obtained after successful login.
   # @raise [StandardError] If the login to Cobbler fails.
   def login(user, pass)
-    @token = @server.call('login', user, pass)
-  rescue StandardError
-    raise(StandardError, "Login to Cobbler failed. #{$ERROR_INFO}")
+    begin
+      @token = @server.call('login', user, pass)
+    rescue StandardError
+      raise(StandardError, "Login to Cobbler failed. #{$ERROR_INFO}")
+    end
   end
 
-  ##
   # Logs out of Cobbler.
   #
   def logout
-    @server.call('logout', @token)
-  rescue StandardError
-    raise(StandardError, "Logout to Cobbler failed. #{$ERROR_INFO}")
+    begin
+      @server.call('logout', @token)
+    rescue StandardError
+      raise(StandardError, "Logout to Cobbler failed. #{$ERROR_INFO}")
+    end
   end
 
-  ##
   # Returns true or false depending on whether the server is running.
   def running?
     result = true
@@ -75,7 +74,6 @@ class CobblerTest
     result
   end
 
-  ##
   # Returns a list of the names of the systems, profiles, or distros in the database.
   #
   # @param what [String] The parameter indicating the type of items to retrieve.
@@ -91,7 +89,6 @@ class CobblerTest
     result
   end
 
-  ##
   # Creates a new distribution with a specific name, kernel, initrd, and breed, and saves it.
   #
   # @param name [String] The name of the distribution.
@@ -113,7 +110,6 @@ class CobblerTest
     distro_id
   end
 
-  ##
   # Creates a new profile, modifies it, and saves it.
   #
   # @param name [String] The name of the profile.
@@ -141,7 +137,6 @@ class CobblerTest
     profile_id
   end
 
-  ##
   # Creates a system, sets its name and profile, and saves it.
   # Every system needs at least a name and a profile.
   #
@@ -168,7 +163,6 @@ class CobblerTest
     system_id
   end
 
-  ##
   # Removes a system from the Spacewalk server.
   #
   # The first thing this function does is check to see if the system exists. If it doesn't, it raises an error. If it
@@ -185,7 +179,6 @@ class CobblerTest
     end
   end
 
-  ##
   # Checks if a Cobbler item exists in the database by using
   # 'distros|profiles|systems|repos' as the table name,
   # 'name' as the column and the name of the item.
@@ -195,7 +188,6 @@ class CobblerTest
     exists(element_type, 'name', name)
   end
 
-  ##
   # Gets a key's value from a repository.
   #
   # @param name [String] The name of the repo
@@ -207,7 +199,6 @@ class CobblerTest
     raise(IndexError, "Repo #{name} does not exist") unless element_exists('repos', name)
   end
 
-  ##
   # Checks if a specific object with a certain key and value exists in the database.
   #
   # @param what [String] The name of the object you want to check for.
@@ -222,7 +213,6 @@ class CobblerTest
     result
   end
 
-  ##
   # Retrieves an object from the server based on its type, name and key.
   #
   # @param what [String] The type of object you want to get.
@@ -237,7 +227,6 @@ class CobblerTest
     result
   end
 
-  ##
   # Modifies a profile and saves it afterwards.
   #
   # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-profile
@@ -265,7 +254,6 @@ class CobblerTest
     profile
   end
 
-  ##
   # Modifies a distribution and saves it afterwards.
   #
   # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-distro
@@ -293,7 +281,6 @@ class CobblerTest
     distro
   end
 
-  ##
   # Modifies a system and saves it afterwards.
   #
   # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-system
@@ -321,7 +308,6 @@ class CobblerTest
     system
   end
 
-  ##
   # Removes a distribution from the Spacewalk server.
   #
   # The first thing this function does is check to see if the distribution exists. If it doesn't, it raises an error.
@@ -338,7 +324,6 @@ class CobblerTest
     end
   end
 
-  ##
   # Removes a profile from the Spacewalk server.
   #
   # The first thing this function does is check to see if the profile exists. If it doesn't, it raises an error. If it
@@ -355,7 +340,6 @@ class CobblerTest
     end
   end
 
-  ##
   # Get a handle for a system.
   #
   # Get a handle for a system which allows you to use the functions modify_* or save_* to manipulate it.
@@ -371,7 +355,6 @@ class CobblerTest
     system
   end
 
-  ##
   # Get a handle for a profile.
   #
   # Get a handle for a profile which allows you to use the functions modify_* or save_* to manipulate it.
@@ -387,7 +370,6 @@ class CobblerTest
     system
   end
 
-  ##
   # Get a handle for a distribution.
   #
   # Get a handle for a distribution which allows you to use the functions modify_* or save_* to manipulate it.

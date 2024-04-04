@@ -1,10 +1,8 @@
 # Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-##
 # Represents a configuration channel in the Uyuni API.
 class NamespaceConfigchannel
-  ##
   # Initializes the NamespaceConfigchannel object.
   #
   # @param api_test [Object] The test object passed in from the test script.
@@ -12,7 +10,6 @@ class NamespaceConfigchannel
     @test = api_test
   end
 
-  ##
   # Checks if the configuration channel exists.
   #
   # @param channel [String] The channel to check for existence.
@@ -21,7 +18,6 @@ class NamespaceConfigchannel
     @test.call('configchannel.channelExists', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Lists the files in a configuration channel.
   #
   # @param channel [String] The configuration channel to list files from.
@@ -29,7 +25,6 @@ class NamespaceConfigchannel
     @test.call('configchannel.listFiles', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Returns a list of systems subscribed to the given configuration channel.
   #
   # @param channel [String] The configuration channel to list the subscribed systems for.
@@ -37,7 +32,6 @@ class NamespaceConfigchannel
     @test.call('configchannel.listSubscribedSystems', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Gets a file revision of a configuration channel.
   #
   # @param channel [String] The configuration channel name.
@@ -47,7 +41,6 @@ class NamespaceConfigchannel
     @test.call('configchannel.getFileRevision', sessionKey: @test.token, label: channel, filePath: file_path, revision: revision)
   end
 
-  ##
   # Creates a new configuration channel.
   #
   # @param label [String] The label of the configuration channel.
@@ -58,7 +51,6 @@ class NamespaceConfigchannel
     @test.call('configchannel.create', sessionKey: @test.token, label: label, name: name, description: description, type: type)
   end
 
-  ##
   # Creates a new configuration channel with path information.
   #
   # @param label [String] The label of the configuration channel.
@@ -70,7 +62,6 @@ class NamespaceConfigchannel
     @test.call('configchannel.create', sessionKey: @test.token, label: label, name: name, description: description, type: type, pathInfo: info)
   end
 
-  ##
   # Creates or updates a file in a channel.
   #
   # @param channel [String] The configuration channel to create or update the file in.
@@ -90,7 +81,6 @@ class NamespaceConfigchannel
                })
   end
 
-  ##
   # Deploys all systems to the given configuration channel.
   #
   # @param channel [String] The configuration channel to deploy to.
@@ -98,7 +88,6 @@ class NamespaceConfigchannel
     @test.call('configchannel.deployAllSystems', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Deletes the specified channels.
   #
   # @param channels [Array<String>] A list of configuration channel names to delete.

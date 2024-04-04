@@ -1,10 +1,8 @@
 # Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-##
 # Represents a namespace for managing images.
 class NamespaceImage
-  ##
   # Initializes a new instance of the NamespaceImage class.
   #
   # @param api_test [Object] The API test object.
@@ -16,7 +14,6 @@ class NamespaceImage
 
   attr_reader :profile, :store
 
-  ##
   # Deletes an image based on its ID.
   #
   # @param imageid [String] The ID of the image you want to delete.
@@ -24,7 +21,6 @@ class NamespaceImage
     @test.call('image.delete', sessionKey: @test.token, imageId: imageid)
   end
 
-  ##
   # Gets an image's details based on its ID.
   #
   # @param imageid [String] The ID of the image you want to get details for.
@@ -32,7 +28,6 @@ class NamespaceImage
     @test.call('image.getDetails', sessionKey: @test.token, imageId: imageid)
   end
 
-  ##
   # Schedules an image build for a given profile, version, build host, and date.
   #
   # @param profile_label [String] The label of the profile you want to build.
@@ -44,7 +39,6 @@ class NamespaceImage
     @test.call('image.scheduleImageBuild', sessionKey: @test.token, profileLabel: profile_label, version: version_build, buildHostId: build_hostid, earliestOccurrence: date)
   end
 
-  ##
   # Returns a list of images.
   def list_images
     @test.call('image.listImages', sessionKey: @test.token)
@@ -54,7 +48,6 @@ end
 # Image Profile namespace
 # It's a Ruby class that wraps the API calls for the image.profile namespace
 class NamespaceImageProfile
-  ##
   # Initializes a new instance of the NamespaceImageProfile class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -62,7 +55,6 @@ class NamespaceImageProfile
     @test = api_test
   end
 
-  ##
   # Create a new image profile.
   #
   # @param label [String] The name of the profile.
@@ -74,7 +66,6 @@ class NamespaceImageProfile
     @test.call('image.profile.create', sessionKey: @test.token, label: label, type: type, storeLabel: store_label, path: path, activationKey: actkey)
   end
 
-  ##
   # Deletes a profile from the system.
   #
   # @param label [String] The name of the profile to delete.
@@ -82,7 +73,6 @@ class NamespaceImageProfile
     @test.call('image.profile.delete', sessionKey: @test.token, label: label)
   end
 
-  ##
   # Sets custom values for an image profile, based on its label.
   #
   # @param label [String] The label of the image profile.
@@ -91,7 +81,6 @@ class NamespaceImageProfile
     @test.call('image.profile.setCustomValues', sessionKey: @test.token, label: label, values: values)
   end
 
-  ##
   # Delete custom values from an image profile.
   #
   # @param label [String] The label of the image profile you want to delete custom values from.
@@ -100,7 +89,6 @@ class NamespaceImageProfile
     @test.call('image.profile.deleteCustomValues', sessionKey: @test.token, label: label, keys: keys)
   end
 
-  ##
   # Returns the custom values for a given label.
   #
   # @param label [String] The label of the image profile you want to get the custom values for.
@@ -108,19 +96,16 @@ class NamespaceImageProfile
     @test.call('image.profile.getCustomValues', sessionKey: @test.token, label: label)
   end
 
-  ##
   # Lists the image profile types available in the system.
   def list_image_profile_types
     @test.call('image.profile.listImageProfileTypes', sessionKey: @test.token)
   end
 
-  ##
   # Lists all the image profiles.
   def list_image_profiles
     @test.call('image.profile.listImageProfiles', sessionKey: @test.token)
   end
 
-  ##
   # Returns the details of an image profile based on its label.
   #
   # @param label [String] The label of the image profile you want to get details for.
@@ -128,7 +113,6 @@ class NamespaceImageProfile
     @test.call('image.profile.getDetails', sessionKey: @test.token, label: label)
   end
 
-  ##
   # Sets the label and values for an image profile.
   #
   # @param label [String] The label for the details.
@@ -138,10 +122,8 @@ class NamespaceImageProfile
   end
 end
 
-##
 # The NamespaceImageStore class provides methods for managing image stores in the system.
 class NamespaceImageStore
-  ##
   # Initializes a new instance of the NamespaceImageStore class.
   #
   # @param api_test [Object] The test object passed in from the test script.
@@ -149,7 +131,6 @@ class NamespaceImageStore
     @test = api_test
   end
 
-  ##
   # Creates a new image store.
   #
   # @param label [String] The name of the image store.
@@ -161,7 +142,6 @@ class NamespaceImageStore
     @test.call('image.store.create', sessionKey: @test.token, label: label, uri: uri, storeType: type, credentials: creds)
   end
 
-  ##
   # Deletes an image store from the system.
   #
   # @param label [String] The name of the image store.
@@ -169,19 +149,16 @@ class NamespaceImageStore
     @test.call('image.store.delete', sessionKey: @test.token, label: label)
   end
 
-  ##
   # Lists the image store types available in the system.
   def list_image_store_types
     @test.call('image.store.listImageStoreTypes', sessionKey: @test.token)
   end
 
-  ##
   # Lists the image stores available in the system.
   def list_image_stores
     @test.call('image.store.listImageStores', sessionKey: @test.token)
   end
 
-  ##
   # Gets the details of an image store.
   #
   # @param label [String] The name of the image store.
@@ -189,7 +166,6 @@ class NamespaceImageStore
     @test.call('image.store.getDetails', sessionKey: @test.token, label: label)
   end
 
-  ##
   # Sets the details of an image store.
   #
   # @param label [String] The name of the image store.

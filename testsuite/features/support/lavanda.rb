@@ -8,7 +8,6 @@ require 'timeout'
 # All function added here will be available like get_target('server').run
 #  or get_target('sle_minion').run_until_ok etc.
 module LavandaBasic
-  ##
   # Initializes the hostnames, only one time.
   #
   # @param hostname [String] The hostname to initialize.
@@ -16,7 +15,6 @@ module LavandaBasic
     @in_hostname = hostname.strip
   end
 
-  ##
   # Initializes the fully qualified domain name (FQDN) instance variable.
   #
   # @param fqdn [String] The fully qualified domain name of the host.
@@ -24,7 +22,6 @@ module LavandaBasic
     @in_full_hostname = fqdn.strip
   end
 
-  ##
   # Initializes the private IP instance variable.
   #
   # @param private_ip [String] The private IP address of the instance.
@@ -32,7 +29,6 @@ module LavandaBasic
     @in_private_ip = private_ip
   end
 
-  ##
   # Initializes the public IP instance variable.
   #
   # @param public_ip [String] The public IP address of the server.
@@ -40,7 +36,6 @@ module LavandaBasic
     @in_public_ip = public_ip
   end
 
-  ##
   # Initializes the private interface instance variable.
   #
   # @param private_interface [Boolean] A boolean value that indicates whether the interface is private or not.
@@ -48,7 +43,6 @@ module LavandaBasic
     @in_private_interface = private_interface
   end
 
-  ##
   # Initializes the public interface instance variable.
   #
   # @param public_interface [String] The name of the public interface.
@@ -56,7 +50,6 @@ module LavandaBasic
     @in_public_interface = public_interface
   end
 
-  ##
   # Initializes the OS family instance variable.
   #
   # @param os_family [String] The OS family to initialize.
@@ -64,7 +57,6 @@ module LavandaBasic
     @in_os_family = os_family
   end
 
-  ##
   # Initializes the OS version instance variable.
   #
   # @param os_version [String] The version of the operating system.
@@ -72,7 +64,6 @@ module LavandaBasic
     @in_os_version = os_version
   end
 
-  ##
   # Initializes the `@in_has_mgrctl` variable to true.
   def init_has_mgrctl
     @in_has_mgrctl = true
@@ -80,7 +71,6 @@ module LavandaBasic
 
   # Getter functions, executed on testsuite
 
-  ##
   # Returns the hostname.
   #
   # @return [String] The hostname.
@@ -91,7 +81,6 @@ module LavandaBasic
     @in_hostname
   end
 
-  ##
   # Returns the fully qualified domain name (FQDN).
   #
   # @return [String] The fully qualified domain name (FQDN).
@@ -102,7 +91,6 @@ module LavandaBasic
     @in_full_hostname
   end
 
-  ##
   # Returns the private IP address.
   #
   # @return [String] The private IP address.
@@ -113,7 +101,6 @@ module LavandaBasic
     @in_private_ip
   end
 
-  ##
   # Returns the public IP address.
   #
   # @return [String] The public IP address.
@@ -124,7 +111,6 @@ module LavandaBasic
     @in_public_ip
   end
 
-  ##
   # Returns the private interface.
   #
   # @return [String] The private interface.
@@ -135,7 +121,6 @@ module LavandaBasic
     @in_private_interface
   end
 
-  ##
   # Returns the public interface.
   #
   # @return [String] The public interface.
@@ -146,7 +131,6 @@ module LavandaBasic
     @in_public_interface
   end
 
-  ##
   # Returns the OS family.
   #
   # @return [String] The OS family.
@@ -157,7 +141,6 @@ module LavandaBasic
     @in_os_family
   end
 
-  ##
   # Returns the OS version.
   #
   # @return [String] The OS version.
@@ -168,7 +151,6 @@ module LavandaBasic
     @in_os_version
   end
 
-  ##
   # Runs a command and returns the output, error, and exit code.
   #
   # @param cmd [String] The command to run.
@@ -186,7 +168,6 @@ module LavandaBasic
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
-  ##
   # Runs a command locally and returns the output, error, and exit code.
   #
   # @param cmd [String] The command to run.
@@ -214,7 +195,6 @@ module LavandaBasic
     end
   end
 
-  ##
   # Runs a command until it succeeds or times out.
   #
   # @param cmd [String] The command to run.
@@ -231,7 +211,6 @@ module LavandaBasic
     end
   end
 
-  ##
   # Runs a command until it fails or times out.
   #
   # @param cmd [String] The command to run.
@@ -248,7 +227,6 @@ module LavandaBasic
     end
   end
 
-  ##
   # Waits until the process is no longer running.
   #
   # @param process [String] The name of the process to wait for.
@@ -263,7 +241,6 @@ module LavandaBasic
     end
   end
 
-  ##
   # Copies a local file to a remote node.
   #
   # @param local_file [String] The path to the file to copy.
@@ -287,7 +264,6 @@ module LavandaBasic
     code
   end
 
-  ##
   # Copies a remote file to a local one.
   #
   # @param remote_file [String] The path in the destination.
@@ -312,7 +288,6 @@ module LavandaBasic
     code
   end
 
-  ##
   # Check if a file exists on a node.
   # Handles checking in server container if possible.
   #
@@ -329,7 +304,6 @@ module LavandaBasic
     exists
   end
 
-  ##
   # Check if a folder exists on a node.
   # Handles checking in server container if possible.
   #
@@ -346,7 +320,6 @@ module LavandaBasic
     exists
   end
 
-  ##
   # Delete a file on a node.
   # Handles checking in server container if possible.
   #
@@ -361,7 +334,6 @@ module LavandaBasic
     code
   end
 
-  ##
   # Delete a folder on a node.
   # Handles checking in server container if possible.
   #

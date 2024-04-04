@@ -3,7 +3,6 @@
 
 # Channel namespace
 class NamespaceChannel
-  ##
   # Initializes the NamespaceChannelSoftware class.
   #
   # @param api_test [Object] This is the test object that is passed in from the test script.
@@ -14,7 +13,6 @@ class NamespaceChannel
 
   attr_reader :software
 
-  ##
   # It returns the number of software channels in the system.
   #
   # @return [Integer] The number of software channels in the system.
@@ -23,7 +21,6 @@ class NamespaceChannel
     channels.nil? ? 0 : channels.length
   end
 
-  ##
   # Checks if a channel is valid, based on its label.
   #
   # @param label [String] The label of the channel you want to verify.
@@ -34,7 +31,6 @@ class NamespaceChannel
          .include?(label)
   end
 
-  ##
   # Lists all channels in the system.
   #
   # @return [Hash] A hash containing the channel labels as keys and channel details as values.
@@ -58,7 +54,6 @@ class NamespaceChannel
     mapped_channels.to_h
   end
 
-  ##
   # Lists the labels of all software channels in the system.
   #
   # @return [Array<String>] An array of channel labels.
@@ -70,7 +65,6 @@ end
 
 # Software Channel namespace
 class NamespaceChannelSoftware
-  ##
   # Initializes the class.
   #
   # @param api_test [Object] This is the name of the test. It's used to create the test's directory.
@@ -78,7 +72,6 @@ class NamespaceChannelSoftware
     @test = api_test
   end
 
-  ##
   # Creates a new repository.
   #
   # @param label [String] The label of the repository.
@@ -90,7 +83,6 @@ class NamespaceChannelSoftware
     @test.call('channel.software.create', sessionKey: @test.token, label: label, name: name, summary: summary, archLabel: arch, parentLabel: parent)
   end
 
-  ##
   # Deletes the repository with the given label.
   #
   # @param label [String] The label of the repository to delete.
@@ -98,7 +90,6 @@ class NamespaceChannelSoftware
     @test.call('channel.software.delete', sessionKey: @test.token, channelLabel: label)
   end
 
-  ##
   # Creates a new repository, with a given label and URL.
   #
   # @param label [String] The name of the repository.
@@ -107,7 +98,6 @@ class NamespaceChannelSoftware
     @test.call('channel.software.createRepo', sessionKey: @test.token, label: label, type: 'yum', url: url)
   end
 
-  ##
   # Associates a repository with a channel.
   #
   # @param channel_label [String] The label of the channel you want to associate the repo with.
@@ -116,7 +106,6 @@ class NamespaceChannelSoftware
     @test.call('channel.software.associateRepo', sessionKey: @test.token, channelLabel: channel_label, repoLabel: repo_label)
   end
 
-  ##
   # Removes a repository from the list of repositories to be processed.
   #
   # @param label [String] The label of the repo you want to remove.
@@ -126,7 +115,6 @@ class NamespaceChannelSoftware
     @test.call('channel.software.removeRepo', sessionKey: @test.token, label: label)
   end
 
-  ##
   # Verifies if a given channel is a child of the given parent channel.
   #
   # @param child [String] The channel you want to check if it's a child of the parent channel.
@@ -138,7 +126,6 @@ class NamespaceChannelSoftware
     channel['parent_channel_label'] == parent
   end
 
-  ##
   # Gets the details of a channel with the given label.
   #
   # @param label [String] The label of the channel.
@@ -148,7 +135,6 @@ class NamespaceChannelSoftware
     @test.call('channel.software.getDetails', sessionKey: @test.token, channelLabel: label)
   end
 
-  ##
   # Lists the child channels for a given parent channel.
   #
   # @param parent_channel [String] The channel you want to list the children of.
@@ -160,7 +146,6 @@ class NamespaceChannelSoftware
     channel_labels.select { |channel| parent_channel?(channel, parent_channel) }
   end
 
-  ##
   # Lists all the repos that the user has access to.
   #
   # @return [Array<String>] An array of repository labels.
@@ -169,7 +154,6 @@ class NamespaceChannelSoftware
     repos.map { |key| key['label'] }
   end
 
-  ##
   # Lists the names of channels the system with the given system ID is subscribed to.
   #
   # @param system_id [String] The ID of the system.

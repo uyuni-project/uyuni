@@ -7,19 +7,16 @@ require 'open-uri'
 # CodeCoverage handler to produce, parse and report Code Coverage from the Jave Server to our GitHub PRs
 class CodeCoverage
   include(Nokogiri::XML)
-  ##
   # Initialize a connection with a Redis database
   def initialize(redis_host, redis_port, redis_username, redis_password)
     @database = Redis.new(host: redis_host, port: redis_port, username: redis_username, password: redis_password)
   end
 
-  ##
   # Close the connection with the Redis database
   def close
     @database.close
   end
 
-  ##
   # Parse a JaCoCo XML report, extracting information that will be included in a Set on a Redis database
   #
   # @param feature_name [String] The name of the feature.
@@ -52,7 +49,6 @@ class CodeCoverage
     end
   end
 
-  ##
   # Generate a JaCoCo report naming it as the feature name passed by parameter
   # (https://redis.io/docs/data-types/sets/)
   #

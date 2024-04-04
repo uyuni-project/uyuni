@@ -10,7 +10,6 @@ Faraday::Utils.default_params_encoder = Faraday::FlatParamsEncoder
 
 # Wrapper class for HTTP client library (Faraday)
 class HttpClient
-  ##
   # Creates a new HTTP client using the Faraday library.
   #
   # @param host [String] The host to connect to.
@@ -20,7 +19,6 @@ class HttpClient
     @http_client = Faraday.new("https://#{host}", request: { timeout: DEFAULT_TIMEOUT }, ssl: { verify: ssl_verify })
   end
 
-  ##
   # It takes a name of a Spacewalk API call and a hash of parameters and returns a tuple of the HTTP method and the URL to
   # call.
   #
@@ -54,7 +52,6 @@ class HttpClient
     [call_type, url]
   end
 
-  ##
   # It takes a name and a hash of parameters, calls the API, and returns the result.
   #
   # @param name [String] The name of the API call.

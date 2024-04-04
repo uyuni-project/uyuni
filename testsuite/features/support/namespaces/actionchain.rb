@@ -3,7 +3,6 @@
 
 # Action Chain namespace
 class NamespaceActionchain
-  ##
   # Initializes a new instance of the NamespaceActionchain class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -11,7 +10,6 @@ class NamespaceActionchain
     @test = api_test
   end
 
-  ##
   # Returns a list of all the action chains in the account.
   #
   # @return [Array<String>] The list of action chain labels.
@@ -19,7 +17,6 @@ class NamespaceActionchain
     @test.call('actionchain.listChains', sessionKey: @test.token).map { |x| x['label'] }
   end
 
-  ##
   # Creates a new action chain with the given label.
   #
   # @param label [String] The name of the chain you want to create.
@@ -27,7 +24,6 @@ class NamespaceActionchain
     @test.call('actionchain.createChain', sessionKey: @test.token, chainLabel: label)
   end
 
-  ##
   # Deletes an action chain with the specified label.
   #
   # @param label [String] The label of the chain you want to delete.
@@ -35,7 +31,6 @@ class NamespaceActionchain
     @test.call('actionchain.deleteChain', sessionKey: @test.token, chainLabel: label)
   end
 
-  ##
   # Removes an action from an action chain.
   #
   # @param label [String] The label of the action chain you want to remove an action from.
@@ -44,7 +39,6 @@ class NamespaceActionchain
     @test.call('actionchain.removeAction', sessionKey: @test.token, chainLabel: label, actionId: action_id)
   end
 
-  ##
   # Renames an action chain.
   #
   # @param old_label [String] The name of the action chain you want to rename.
@@ -53,7 +47,6 @@ class NamespaceActionchain
     @test.call('actionchain.renameChain', sessionKey: @test.token, previousLabel: old_label, newLabel: new_label)
   end
 
-  ##
   # Adds a script run action to the action chain.
   #
   # @param system [String] The system ID of the system you want to run the action chain on.
@@ -66,7 +59,6 @@ class NamespaceActionchain
     @test.call('actionchain.addScriptRun', sessionKey: @test.token, sid: system, chainLabel: label, uid: uid, gid: gid, timeout: timeout, scriptBody: Base64.strict_encode64(script))
   end
 
-  ##
   # Lists all the actions in a given chain.
   #
   # @param label [String] The label of the chain you want to list the actions for.
@@ -75,7 +67,6 @@ class NamespaceActionchain
     @test.call('actionchain.listChainActions', sessionKey: @test.token, chainLabel: label)
   end
 
-  ##
   # Adds a system reboot action to the action chain.
   #
   # @param system [String] The system ID of the system you want to reboot.
@@ -84,7 +75,6 @@ class NamespaceActionchain
     @test.call('actionchain.addSystemReboot', sessionKey: @test.token, sid: system, chainLabel: label)
   end
 
-  ##
   # Adds a package install action to the action chain for the given system.
   #
   # @param system [String] The system ID of the system you want to add the package to.
@@ -94,7 +84,6 @@ class NamespaceActionchain
     @test.call('actionchain.addPackageInstall', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
-  ##
   # Adds a package upgrade action to the action chain.
   #
   # @param system [String] The system ID of the system you want to upgrade.
@@ -104,7 +93,6 @@ class NamespaceActionchain
     @test.call('actionchain.addPackageUpgrade', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
-  ##
   # Adds a package verify action to the action chain.
   #
   # @param system [String] The system ID of the system you want to add the package to.
@@ -114,7 +102,6 @@ class NamespaceActionchain
     @test.call('actionchain.addPackageVerify', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
-  ##
   # Adds a package removal action to the action chain for the specified system.
   #
   # @param system [String] The ID of the system you want to add the package removal to.
@@ -124,7 +111,6 @@ class NamespaceActionchain
     @test.call('actionchain.addPackageRemoval', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
-  ##
   # Schedules a chain to run at a specific time.
   #
   # @param label [String] The label of the chain you want to schedule.

@@ -1,10 +1,8 @@
 # Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-##
 # Represents a namespace for activation key operations.
 class NamespaceActivationkey
-  ##
   # Initializes the NamespaceActivationkey object.
   #
   # @param api_test [Object] The test object passed in from the test script.
@@ -13,7 +11,6 @@ class NamespaceActivationkey
     @keys = nil
   end
 
-  ##
   # Creates an activation key.
   #
   # @param id [String] The name of the activation key.
@@ -24,7 +21,6 @@ class NamespaceActivationkey
     @test.call('activationkey.create', sessionKey: @test.token, key: id, description: descr, baseChannelLabel: base_channel, usageLimit: limit, entitlements: [], universalDefault: false)
   end
 
-  ##
   # Deletes an activation key.
   #
   # @param id [String] The ID of the activation key to delete.
@@ -33,7 +29,6 @@ class NamespaceActivationkey
     @keys = @test.call('activationkey.listActivationKeys', sessionKey: @test.token)
   end
 
-  ##
   # Returns the number of activation keys.
   #
   # @return [Integer] The number of activation keys.
@@ -42,7 +37,6 @@ class NamespaceActivationkey
     @keys.nil? ? 0 : @keys.length
   end
 
-  ##
   # Returns the number of activated systems for a given user.
   #
   # @param id [String] The ID of the user.
@@ -52,7 +46,6 @@ class NamespaceActivationkey
     systems.nil? ? 0 : systems.length
   end
 
-  ##
   # Returns the number of channels in the configuration with the given ID.
   #
   # @param id [String] The ID of the configuration.
@@ -62,7 +55,6 @@ class NamespaceActivationkey
     channels.nil? ? 0 : channels.length
   end
 
-  ##
   # Verifies if the ID of the user is valid and active.
   #
   # @param id [String] The ID of the user to verify.
@@ -73,7 +65,6 @@ class NamespaceActivationkey
          .include?(id)
   end
 
-  ##
   # Adds configuration channels to a system.
   #
   # @param id [String] The ID of the system to add the config channels to.
@@ -82,7 +73,6 @@ class NamespaceActivationkey
     @test.call('activationkey.addConfigChannels', sessionKey: @test.token, keys: id, configChannelLabels: config_channels, addToTop: false)
   end
 
-  ##
   # Adds child channels to a channel.
   #
   # @param id [String] The ID of the channel to add child channels to.
@@ -91,7 +81,6 @@ class NamespaceActivationkey
     @test.call('activationkey.addChildChannels', sessionKey: @test.token, key: id, childChannelLabels: child_channels)
   end
 
-  ##
   # Returns the details of the user with the given ID.
   #
   # @param id [String] The ID of the user to get details for.
@@ -100,7 +89,6 @@ class NamespaceActivationkey
     @test.call('activationkey.getDetails', sessionKey: @test.token, key: id)
   end
 
-  ##
   # Sets the details of a channel.
   #
   # @param id [String] The ID of the channel.
@@ -118,7 +106,6 @@ class NamespaceActivationkey
     @test.call('activationkey.setDetails', sessionKey: @test.token, key: id, details: details).to_i == 1
   end
 
-  ##
   # Sets the entitlements of an activation key.
   #
   # @param id [String] The ID of the activation key.

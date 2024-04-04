@@ -186,10 +186,8 @@ class NamespaceSystem
 end
 
 # System Configuration namespace
-##
 # This class represents the configuration for the namespace system.
 class NamespaceSystemConfig
-  ##
   # Initializes a new instance of the NamespaceSystemConfig class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -197,7 +195,6 @@ class NamespaceSystemConfig
     @test = api_test
   end
 
-  ##
   # Removes the specified channels from the specified servers.
   #
   # @param servers [Array<Integer>] An array of server IDs.
@@ -207,11 +204,9 @@ class NamespaceSystemConfig
   end
 end
 
-##
 # This class represents a namespace for system custom information.
 # It provides methods to create custom info keys.
 class NamespaceSystemCustominfo
-  ##
   # Initializes a new instance of the NamespaceSystemCustominfo class.
   #
   # @param api_test [Object] The test object passed in from the test script.
@@ -219,7 +214,6 @@ class NamespaceSystemCustominfo
     @test = api_test
   end
 
-  ##
   # Creates a custom info key.
   #
   # @param value [String] The name of the custom field.
@@ -231,7 +225,6 @@ end
 
 # System Provisioning namespace
 class NamespaceSystemProvisioning
-  ##
   # Initializes the Power Management namespace.
   #
   #
@@ -249,7 +242,6 @@ end
 
 # System Provisioning Power Management namespace
 class NamespaceSystemProvisioningPowermanagement
-  ##
   # Initializes the NamespaceSystemProvisioningPowermanagement class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -257,13 +249,11 @@ class NamespaceSystemProvisioningPowermanagement
     @test = api_test
   end
 
-  ##
   # Lists the power management types available for a given system.
   def list_types
     @test.call('system.provisioning.powermanagement.listTypes', sessionKey: @test.token)
   end
 
-  ##
   # Returns the power management details of a server.
   #
   # @param server [String] The server ID.
@@ -271,7 +261,6 @@ class NamespaceSystemProvisioningPowermanagement
     @test.call('system.provisioning.powermanagement.getDetails', sessionKey: @test.token, sid: server)
   end
 
-  ##
   # Returns the power status of a server.
   #
   # @param server [String] The server ID.
@@ -279,7 +268,6 @@ class NamespaceSystemProvisioningPowermanagement
     @test.call('system.provisioning.powermanagement.getStatus', sessionKey: @test.token, sid: server)
   end
 
-  ##
   # Sets the power management details for a server.
   #
   # @param server [String] The server ID.
@@ -288,7 +276,6 @@ class NamespaceSystemProvisioningPowermanagement
     @test.call('system.provisioning.powermanagement.setDetails', sessionKey: @test.token, sid: server, data: data)
   end
 
-  ##
   # Powers on a server.
   #
   # @param server [String] The server ID of the server you want to power on.
@@ -296,7 +283,6 @@ class NamespaceSystemProvisioningPowermanagement
     @test.call('system.provisioning.powermanagement.powerOn', sessionKey: @test.token, sid: server)
   end
 
-  ##
   # Powers off a server.
   #
   # @param server [String] The server ID of the server you want to power off.
@@ -304,7 +290,6 @@ class NamespaceSystemProvisioningPowermanagement
     @test.call('system.provisioning.powermanagement.powerOff', sessionKey: @test.token, sid: server)
   end
 
-  ##
   # Reboots a server.
   #
   # @param server [String] The server ID you want to reboot.
@@ -315,7 +300,6 @@ end
 
 # This class represents a namespace for system SCAP related operations.
 class NamespaceSystemScap
-  ##
   # Initializes a new instance of the NamespaceSystemScap class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -323,7 +307,6 @@ class NamespaceSystemScap
     @test = api_test
   end
 
-  ##
   # Lists all XCCDF scans for a given server.
   #
   # @param server [String] The server ID of the server you want to list the XCCDF scans for.
@@ -334,7 +317,6 @@ end
 
 # The NamespaceSystemSearch class provides methods for searching system information.
 class NamespaceSystemSearch
-  ##
   # Initializes a new instance of the NamespaceSystemSearch class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -342,7 +324,6 @@ class NamespaceSystemSearch
     @test = api_test
   end
 
-  ##
   # Takes a server name as an argument and returns the hostname of the server.
   #
   # @param server [String] The server name you want to search for.

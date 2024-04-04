@@ -96,32 +96,34 @@ end
 #
 # Implementation works around https://bugs.ruby-lang.org/issues/15886
 def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, report_result: false, dont_raise: false)
-  last_result = nil
-  Timeout.timeout(timeout) do
-    # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
-    # Pitfalls with this method have been long known according to the following articles:
-    # https://rnubel.svbtle.com/ruby-timeouts
-    # https://vaneyckt.io/posts/the_disaster_that_is_rubys_timeout_method
-    # At the time of writing some of the problems described have been addressed.
-    # However, at least https://bugs.ruby-lang.org/issues/15886 remains reproducible and code below
-    # works around it by adding an additional check between loops
-    start = Time.new
-    attempts = 0
-    while (Time.new - start <= timeout) && (retries.nil? || attempts < retries)
-      last_result = yield
-      attempts += 1
+  begin
+    last_result = nil
+    Timeout.timeout(timeout) do
+      # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
+      # Pitfalls with this method have been long known according to the following articles:
+      # https://rnubel.svbtle.com/ruby-timeouts
+      # https://vaneyckt.io/posts/the_disaster_that_is_rubys_timeout_method
+      # At the time of writing some of the problems described have been addressed.
+      # However, at least https://bugs.ruby-lang.org/issues/15886 remains reproducible and code below
+      # works around it by adding an additional check between loops
+      start = Time.new
+      attempts = 0
+      while (Time.new - start <= timeout) && (retries.nil? || attempts < retries)
+        last_result = yield
+        attempts += 1
+      end
+  
+      detail = format_detail(message, last_result, report_result)
+      raise ScriptError, "Giving up after #{attempts} attempts#{detail}" if attempts == retries
+  
+      raise TimeoutError, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
     end
-
-    detail = format_detail(message, last_result, report_result)
-    raise ScriptError, "Giving up after #{attempts} attempts#{detail}" if attempts == retries
-
-    raise TimeoutError, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
+  rescue Timeout::Error => e
+    $stdout.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
+    raise e unless dont_raise
+  rescue StandardError => e
+    raise e unless dont_raise
   end
-rescue Timeout::Error => e
-  $stdout.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
-  raise e unless dont_raise
-rescue StandardError => e
-  raise e unless dont_raise
 end
 
 #
@@ -166,11 +168,13 @@ end
 
 # This Ruby function refreshes the current page and handles any modal not found errors.
 def refresh_page
-  accept_prompt do
-    execute_script 'window.location.reload()'
+  begin
+    accept_prompt do
+      execute_script 'window.location.reload()'
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
   end
-rescue Capybara::ModalNotFound
-  # ignored
 end
 
 #
@@ -316,16 +320,18 @@ end
 # @param [Node] node - The node from which to extract the logs.
 # @raise [ScriptError] if the download of the log archive fails.
 def extract_logs_from_node(node)
-  os_family = node.os_family
-  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_gh_validation
-  node.run('journalctl > /var/log/messages', check_errors: false)
-  node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
-  node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
-  `mkdir logs` unless Dir.exist?('logs')
-  code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
-  raise ScriptError, 'Download log archive failed' unless code.zero?
-rescue RuntimeError => e
-  $stdout.puts e.message
+  begin
+    os_family = node.os_family
+    node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_gh_validation
+    node.run('journalctl > /var/log/messages', check_errors: false)
+    node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
+    node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
+    `mkdir logs` unless Dir.exist?('logs')
+    code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
+    raise ScriptError, 'Download log archive failed' unless code.zero?
+  rescue RuntimeError => e
+    $stdout.puts e.message
+  end
 end
 
 # Executes a SQL query on the server.

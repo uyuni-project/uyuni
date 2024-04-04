@@ -3,7 +3,6 @@
 
 # Kickstart namespace
 class NamespaceKickstart
-  ##
   # Initializes a new instance of the NamespaceKickstart class.
   #
   # @param api_test [Object] The test object passed to the initialize method.
@@ -15,7 +14,6 @@ class NamespaceKickstart
 
   attr_reader :tree, :profile
 
-  ##
   # Creates a new kickstart profile using the default download URL for the kickstartable tree and kickstart host specified.
   #
   # @param name [String] The name of the new kickstart profile.
@@ -29,7 +27,6 @@ end
 
 # Kickstart.profile namespace
 class NamespaceKickstartProfile
-  ##
   # Initializes a new instance of the NamespaceKickstartProfile class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -37,7 +34,6 @@ class NamespaceKickstartProfile
     @test = api_test
   end
 
-  ##
   # Associates a list of kickstart variables with the specified kickstart profile.
   #
   # @param profile [String] The name of the kickstart profile.
@@ -49,7 +45,6 @@ end
 
 # "kickstart.tree" namespace
 class NamespaceKickstartTree
-  ##
   # Initializes a new instance of the NamespaceKickstartTree class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -57,7 +52,6 @@ class NamespaceKickstartTree
     @test = api_test
   end
 
-  ##
   # Creates a Kickstart tree (Distribution).
   #
   # @param distro [String] The name of the kickstart tree (distribution) you want to create.
@@ -69,7 +63,6 @@ class NamespaceKickstartTree
     @test.call('kickstart.tree.create', sessionKey: @test.token, treeLabel: distro, basePath: path, channelLabel: label, installType: install)
   end
 
-  ##
   # Creates a Kickstart tree (Distribution), adding kernel options as parameters.
   #
   # @param distro [String] The name of the kickstart tree (distribution) you want to create.
@@ -83,7 +76,6 @@ class NamespaceKickstartTree
     @test.call('kickstart.tree.create', sessionKey: @test.token, treeLabel: distro, basePath: path, channelLabel: label, installType: install, kernelOptions: options, postKernelOptions: post_options)
   end
 
-  ##
   # Updates a Kickstart tree (Distribution).
   #
   # @param distro [String] The name of the kickstart tree (distribution) you want to update. This must match an existing distro.
@@ -97,7 +89,6 @@ class NamespaceKickstartTree
     @test.call('kickstart.tree.update', sessionKey: @test.token, treeLabel: distro, basePath: path, channelLabel: label, installType: install, kernelOptions: options, postKernelOptions: post_options)
   end
 
-  ##
   # Deletes a Kickstart tree and all profiles associated with it.
   #
   # @param distro [String] The name of the distribution you want to delete.

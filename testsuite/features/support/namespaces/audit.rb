@@ -3,7 +3,6 @@
 
 # Audit namespace
 class NamespaceAudit
-  ##
   # Initializes a new instance of the NamespaceAudit class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -11,7 +10,6 @@ class NamespaceAudit
     @test = api_test
   end
 
-  ##
   # Lists the systems that are affected by a given CVE.
   #
   # @param cve_identifier [String] The CVE identifier for the vulnerability you want to check.

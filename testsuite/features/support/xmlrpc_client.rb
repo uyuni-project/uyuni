@@ -3,10 +3,8 @@
 
 require 'xmlrpc/client'
 
-##
 # Represents an XMLRPC client object that is used to communicate with the Spacewalk server.
 class XmlrpcClient
-  ##
   # Initializes a new XmlrpcClient object.
   #
   # @param host [String] The hostname of the Spacewalk server.
@@ -16,7 +14,6 @@ class XmlrpcClient
     @xmlrpc_client = XMLRPC::Client.new2("#{protocol}#{host}/rpc/api", nil, DEFAULT_TIMEOUT)
   end
 
-  ##
   # Calls a remote method with a list of parameters.
   #
   # @param name [String] The name of the method to call.
@@ -25,8 +22,10 @@ class XmlrpcClient
   # @return [Object] The result of the method call.
   # @raise [SystemCallError] If there is an API failure.
   def call(name, params)
-    @xmlrpc_client.call(name, *params.values)
-  rescue XMLRPC::FaultException => e
-    raise SystemCallError, "API failure: #{e.message}"
+    begin
+      @xmlrpc_client.call(name, *params.values)
+    rescue XMLRPC::FaultException => e
+      raise SystemCallError, "API failure: #{e.message}"
+    end
   end
 end

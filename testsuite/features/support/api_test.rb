@@ -15,10 +15,8 @@ require_relative 'namespaces/user'
 require_relative 'xmlrpc_client'
 require_relative 'http_client'
 
-##
 # Abstract parent class describing an API test
 class ApiTest
-  ##
   # Creates objects that are used to interact with the API.
   #
   # @param _host [String] The hostname of the Spacewalk server.
@@ -52,7 +50,6 @@ class ApiTest
   attr_reader :user
   attr_accessor :token
 
-  ##
   # Calls a function with the given name and parameters, and returns its response.
   #
   # @param name [String] The name of the method you want to call.
@@ -73,10 +70,8 @@ class ApiTest
   end
 end
 
-##
 # Derived class for an XML-RPC test
 class ApiTestXmlrpc < ApiTest
-  ##
   # Creates a new instance of the XmlrpcClient class, and assigns it to the @connection instance variable.
   #
   # @param host [String] The hostname of the server.
@@ -85,7 +80,6 @@ class ApiTestXmlrpc < ApiTest
     @connection = XmlrpcClient.new(host)
   end
 
-  ##
   # Returns a boolean on whether the given attribute is an XMLRPC::DateTime object or not
   #
   # @param attribute [Object] The attribute to check.
@@ -94,7 +88,6 @@ class ApiTestXmlrpc < ApiTest
     attribute.instance_of?(XMLRPC::DateTime)
   end
 
-  ##
   # Returns the current date and time as an XMLRPC::DateTime object.
   #
   # @return [XMLRPC::DateTime] The current date and time as an XMLRPC::DateTime object.
@@ -104,10 +97,8 @@ class ApiTestXmlrpc < ApiTest
   end
 end
 
-##
 # Derived class for an HTTP test
 class ApiTestHttp < ApiTest
-  ##
   # It creates a new instance of the HttpClient class.
   #
   # @param host [String] The hostname of the server.
@@ -117,7 +108,6 @@ class ApiTestHttp < ApiTest
     @connection = HttpClient.new(host, ssl_verify)
   end
 
-  ##
   # Attempts to parse a given string as a Date object, to validate it.
   # Returns a boolean on whether it's a string containing a valid Date or not.
   #
@@ -133,7 +123,6 @@ class ApiTestHttp < ApiTest
     ok
   end
 
-  ##
   # It returns a string with the current date and time in the format `YYYY-MM-DDTHH:MM:SS.LLL+HHMM`
   #
   # @return [String] The current date and time in the specified format.

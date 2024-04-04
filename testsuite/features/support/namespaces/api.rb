@@ -3,7 +3,6 @@
 
 # API namespace
 class NamespaceApi
-  ##
   # Initializes a new instance of the NamespaceApi class.
   #
   # @param api_test [Object] The test object that is passed to the initialize method.
@@ -11,7 +10,6 @@ class NamespaceApi
     @test = api_test
   end
 
-  ##
   # Returns the amount of API namespaces.
   #
   # @return [Integer] The count of API namespaces.
@@ -20,7 +18,6 @@ class NamespaceApi
     namespaces.nil? ? 0 : namespaces.length
   end
 
-  ##
   # Returns the amount of available API calls.
   #
   # @return [Integer] The count of API calls.
@@ -29,7 +26,6 @@ class NamespaceApi
     call_list.nil? ? 0 : call_list.length
   end
 
-  ##
   # Returns the count of the number of API calls in the API namespace call list.
   #
   # @return [Integer] The count of API calls in the API namespace call list.
