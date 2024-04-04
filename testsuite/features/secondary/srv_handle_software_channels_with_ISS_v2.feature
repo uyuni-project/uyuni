@@ -1,7 +1,6 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 Feature: Export and import software channels with new ISS implementation
   Distribute software between servers
   Run export and import with ISS v2
