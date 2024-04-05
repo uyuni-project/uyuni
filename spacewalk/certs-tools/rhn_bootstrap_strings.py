@@ -198,10 +198,10 @@ INSTALLER=zypper
 
 if [ -x /usr/bin/dnf ]; then
     INSTALLER=yum
-elif [ -x /usr/bin/zypper ]; then
-    INSTALLER=zypper
 elif [ -x /usr/bin/yum ]; then
     INSTALLER=yum
+elif [ -x /usr/bin/zypper ]; then
+    INSTALLER=zypper
 elif [ -x /usr/bin/apt ]; then
     INSTALLER=apt
 fi
