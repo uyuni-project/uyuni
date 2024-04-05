@@ -59,6 +59,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     python3-pygit2 \
     ipmitool \
     sssd \
+    sssd-dbus \
     sssd-ldap \
     nss-pam-ldapd
 
