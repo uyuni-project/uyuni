@@ -1,10 +1,16 @@
 """Unit tests for AppStreams reposync module."""
+
 import os
 import pytest
 from mock import Mock
 
 import spacewalk.satellite_tools.appstreams
-from spacewalk.satellite_tools.appstreams import ModuleMdImporter, Nsvca, Nevra
+from spacewalk.satellite_tools.appstreams import (
+    ModuleMdImporter,
+    ModuleMdIndexingError,
+    Nsvca,
+    Nevra,
+)
 
 import gi
 
@@ -67,10 +73,10 @@ def test_validate(importer):
     importer.validate()
 
     importer.modulemd_file = "INVALID_FILE"
-    with pytest.raises(gi.repository.GLib.GError) as exc:
+    with pytest.raises(ModuleMdIndexingError) as exc:
         importer.validate()
 
-    assert exc.value.domain == "modulemd-yaml-error-quark"
+    assert exc.value.__cause__.domain == "modulemd-yaml-error-quark"
 
 
 # pylint: disable=protected-access
