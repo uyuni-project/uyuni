@@ -1,7 +1,6 @@
 # Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_ansible
 Feature: Operate an Ansible control node in a normal minion
 
@@ -11,12 +10,14 @@ Feature: Operate an Ansible control node in a normal minion
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     When I deploy testing playbooks and inventory files to "sle_minion"
 
+@skip_if_github_validation
 @susemanager
   Scenario: Pre-requisite: Enable client tools repositories
     When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
 
 # TODO: Check why tools_update_repo is not available on the openSUSE minion
+@skip_if_github_validation
 @uyuni
   Scenario: Pre-requisite: Enable client tools repositories
     When I enable the repositories "tools_pool_repo os_pool_repo" on this "sle_minion"
@@ -90,12 +91,14 @@ Feature: Operate an Ansible control node in a normal minion
     And I remove package "orion-dummy" from this "sle_minion" without error control
     And I remove "/tmp/file.txt" from "sle_minion"
 
+@skip_if_github_validation
 @susemanager
   Scenario: Cleanup: Disable client tools repositories
     Given I am on the Systems overview page of this "sle_minion"
     When I disable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
 
+@skip_if_github_validation
 @uyuni
   Scenario: Cleanup: Disable client tools repositories
     Given I am on the Systems overview page of this "sle_minion"
