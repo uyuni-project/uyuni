@@ -77,6 +77,7 @@ from spacewalk.satellite_tools.syncLib import (
     dumpEMAIL_LOG,
     log2background,
 )
+from spacewalk.satellite_tools.appstreams import ModuleMdImporter, ModuleMdIndexingError
 
 translation = gettext.translation("spacewalk-backend-server", fallback=True)
 _ = translation.gettext
@@ -751,31 +752,56 @@ class RepoSync(object):
                         # this fetch also the normal xml primary file
                         repo_checksum_type = plugin.get_md_checksum_type()
 
+                        modulemd_importer = None
                         if not self.no_packages:
-                            self.import_groups(plugin)
                             if repo_type == "yum":
-                                self.import_modules(plugin)
-                            ret = self.import_packages(
-                                plugin, data["id"], url, is_non_local_repo
-                            )
-                            failed_packages += ret
+                                modulemd_path = self.import_modules(plugin)
+                                if modulemd_path:
+                                    modulemd_importer = ModuleMdImporter(
+                                        self.channel["id"], modulemd_path
+                                    )
+                                    try:
+                                        modulemd_importer.validate()
+                                    except ModuleMdIndexingError as e:
+                                        log(
+                                            0,
+                                            f"An error occurred while reading module metadata: {e}",
+                                        )
+                                        self.sendErrorMail(str(e))
+                                        sync_error = -1
 
-                        if not self.no_errata:
-                            self.import_updates(plugin)
+                        if sync_error == 0:
+                            self.import_groups(plugin)
 
-                        self.import_mediaproducts(plugin)
-
-                        # only for repos obtained from the DB
-                        if self.sync_kickstart and data["repo_label"]:
-                            try:
-                                self.import_kickstart(
-                                    plugin, data["repo_label"], is_non_local_repo
+                            if not self.no_packages:
+                                ret = self.import_packages(
+                                    plugin, data["id"], url, is_non_local_repo
                                 )
-                            except:
-                                rhnSQL.rollback()
-                                raise
-                        self.import_products(plugin)
-                        self.import_susedata(plugin)
+                                failed_packages += ret
+
+                            if not self.no_errata:
+                                self.import_updates(plugin)
+
+                            if modulemd_importer:
+                                try:
+                                    modulemd_importer.import_module_metadata()
+                                except:
+                                    rhnSQL.rollback()
+                                    raise
+
+                            self.import_mediaproducts(plugin)
+
+                            # only for repos obtained from the DB
+                            if self.sync_kickstart and data["repo_label"]:
+                                try:
+                                    self.import_kickstart(
+                                        plugin, data["repo_label"], is_non_local_repo
+                                    )
+                                except:
+                                    rhnSQL.rollback()
+                                    raise
+                            self.import_products(plugin)
+                            self.import_susedata(plugin)
 
                 except rhnSQL.SQLError as e:
                     # pylint: disable-next=consider-using-f-string
@@ -1128,7 +1154,9 @@ class RepoSync(object):
     def import_modules(self, plug):
         modulesfile = plug.get_modules()
         if modulesfile:
-            self.copy_metadata_file(plug, modulesfile, "modules", relative_modules_dir)
+            return self.copy_metadata_file(
+                plug, modulesfile, "modules", relative_modules_dir
+            )
 
     def import_mediaproducts(self, plug):
         mediaproducts = plug.get_mediaproducts()
