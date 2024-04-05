@@ -191,8 +191,8 @@ public class ActionFactory extends HibernateFactory {
         Set<Server> involvedMinions = MinionServerFactory
                     .lookupByIds(new ArrayList<>(set.getElementValues()))
                     .collect(toSet());
-        Set<Server> involvedSystems = ServerFactory.lookupByIds(
-                new ArrayList<>(set.getElementValues())).stream().collect(toSet());
+        Set<Server> involvedSystems = new HashSet<>(ServerFactory.lookupByIds(
+                new ArrayList<>(set.getElementValues())));
         Action action = ActionFactory.lookupById(actionId);
 
         TASKOMATIC_API.deleteScheduledActions(Collections.singletonMap(action, involvedMinions));
@@ -795,6 +795,7 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIn you want to limit the list of Actions to
      * @return List of Action objects
      */
+    @SuppressWarnings("unchecked")
     public static List<Action> listActionsForServer(User user, Server serverIn) {
         Map<String, Object> params = new HashMap<>();
         params.put("orgId", user.getOrg().getId());
@@ -830,7 +831,6 @@ public class ActionFactory extends HibernateFactory {
         params.put("server", serverIn);
         params.put("actionType", actionType);
         params.put("date", date);
-
         return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
     }
     /**
@@ -839,6 +839,7 @@ public class ActionFactory extends HibernateFactory {
      * @param statusList to filter the ServerActoins by
      * @return List of ServerAction objects
      */
+    @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn,
             List<ActionStatus> statusList) {
         Map<String, Object> params = new HashMap<>();
@@ -855,7 +856,9 @@ public class ActionFactory extends HibernateFactory {
      * @param createdDate to filter the ServerActions by
      * @return List of ServerAction objects
      */
-    public static List listServerActionsForServer(Server serverIn, List<ActionStatus> statusList, Date createdDate) {
+    @SuppressWarnings("unchecked")
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList,
+                                                                Date createdDate) {
         Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         params.put("statusList", statusList);

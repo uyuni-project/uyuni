@@ -78,9 +78,10 @@ class HttpResponseDataFiltered(HttpResponseData):
     Saltboot entries have MASTER= option, we want only those mathing our proxy
     """
 
-    def __init__(self, url, capath, fqdn):
+    def __init__(self, url, capath, proxyFqdn, serverFqdn):
         # request file by url and store it
-        self._proxyFqdn = fqdn
+        self._proxyFqdn = proxyFqdn
+        self._serverFqdn = serverFqdn
         self._request = requests.get(url, stream=True, verify=capath)
         if self._request.status_code == 404:
             raise FileNotFoundError()
@@ -97,9 +98,11 @@ class HttpResponseDataFiltered(HttpResponseData):
 
 class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
     def contentFilter(self):
-        new_content = ""
+        saltboot_content = ""
+        cobbler_content = ""
         have_entry = False
         entry = ""
+        entry_name = ""
         in_entry = False
         for line in self._content.decode("utf-8").splitlines():
             if in_entry:
@@ -113,27 +116,39 @@ class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
                         and "MINION_ID_PREFIX" in entry
                     ):
                         have_entry = True
-                        new_content += entry
+                        entry += "        MENU DEFAULT\n"
+                        entry += f"ONTIMEOUT {entry_name}\n"
+                        saltboot_content += entry
+                    else:
+                        cobbler_content += entry.replace(
+                            self._serverFqdn, self._proxyFqdn
+                        )
                     entry = ""
             if not in_entry:
                 if line.startswith("LABEL"):
                     entry = line + "\n"
+                    entry_name = line.split(" ", 2)[1]
                     in_entry = True
                 else:
                     if not line.startswith(
                         "ONTIMEOUT"
                     ):  # ONTIMEOUT points to deleted entry
-                        new_content += line + "\n"
-        if not have_entry:
-            return  # there are no specific Saltboot entries, keep the content unchanged
-        self._content = new_content.encode("utf-8")
+                        saltboot_content += line + "\n"
+                        cobbler_content += line + "\n"
+        if have_entry:
+            self._content = saltboot_content.encode("utf-8")
+        else:
+            self._content = cobbler_content.encode("utf-8")
+        logging.debug("translation finished")
 
 
 class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
     def contentFilter(self):
-        new_content = ""
+        saltboot_content = ""
+        cobbler_content = ""
         have_entry = False
         entry = ""
+        entry_name = ""
         in_entry = False
         for line in self._content.decode("utf-8").splitlines():
             if in_entry:
@@ -146,26 +161,44 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                         and "MINION_ID_PREFIX" in entry
                     ):
                         have_entry = True
-                        new_content += entry
+                        saltboot_content += entry
+                        saltboot_content += f"set default={entry_name}\n"
+                    else:
+                        cobbler_content += entry.replace(
+                            self._serverFqdn, self._proxyFqdn
+                        )
                     entry = ""
-            if not in_entry:
+            else:
                 if line.startswith("menuentry"):
+                    entry_name = line.split(" ", 3)[1]
                     entry = line + "\n"
                     in_entry = True
                 else:
-                    new_content += line + "\n"
-        if not have_entry:
-            return  # there are no specific Saltboot entries, keep the content unchanged
-        self._content = new_content.encode("utf-8")
+                    saltboot_content += line + "\n"
+                    cobbler_content += line + "\n"
+        if have_entry:
+            self._content = saltboot_content.encode("utf-8")
+        else:
+            self._content = cobbler_content.encode("utf-8")
 
 
 class TFTPHandler(BaseHandler):
     def __init__(
-        self, server_addr, peer, path, options, root, httpHost, proxyFqdn, capath
+        self,
+        server_addr,
+        peer,
+        path,
+        options,
+        root,
+        httpHost,
+        proxyFqdn,
+        serverFqdn,
+        capath,
     ):
         self._root = root
         self._httpHost = httpHost
         self._proxyFqdn = proxyFqdn
+        self._serverFqdn = serverFqdn
         self._capath = capath
         super().__init__(server_addr, peer, path, options, stats)
 
@@ -188,7 +221,7 @@ class TFTPHandler(BaseHandler):
             # server local default
             logging.debug(f"Got request for {path}, filtering HTTP")
             return HttpResponseDataFilteredPXE(
-                f"{target}/tftp/{path}", capath, self._proxyFqdn
+                f"{target}/tftp/{path}", capath, self._proxyFqdn, self._serverFqdn
             )
         elif path.startswith("pxelinux.cfg/"):
             # ignore other pxelinux.cfg files
@@ -197,7 +230,7 @@ class TFTPHandler(BaseHandler):
         elif path.startswith("grub/") and path.endswith("_menu_items.cfg"):
             logging.debug(f"Got request for {path}, filtering HTTP")
             return HttpResponseDataFilteredGrub(
-                f"{target}/tftp/{path}", capath, self._proxyFqdn
+                f"{target}/tftp/{path}", capath, self._proxyFqdn, self._serverFqdn
             )
         # The rest get from http
         logging.debug(f"Got request for {path}, forwarding to HTTP")
@@ -206,7 +239,16 @@ class TFTPHandler(BaseHandler):
 
 class TFTPServer(BaseServer):
     def __init__(
-        self, address, port, retries, timeout, root, httpHost, proxyFqdn, capath
+        self,
+        address,
+        port,
+        retries,
+        timeout,
+        root,
+        httpHost,
+        proxyFqdn,
+        serverFqdn,
+        capath,
     ):
         self._root = root
         if capath is None or httpHost == "localhost":
@@ -217,6 +259,7 @@ class TFTPServer(BaseServer):
             logging.info("HTTPS used for inproxy communication")
 
         self._proxyFqdn = proxyFqdn
+        self._serverFqdn = serverFqdn
         self._capath = capath
         super().__init__(address, port, retries, timeout, None)
 
@@ -229,6 +272,7 @@ class TFTPServer(BaseServer):
             self._root,
             self._httpHost,
             self._proxyFqdn,
+            self._serverFqdn,
             self._capath,
         )
 
@@ -259,6 +303,12 @@ def get_arguments():
         type=str,
         default="localhost",
         help="Hostname where to forward HTTP requests",
+    )
+    parser.add_argument(
+        "--serverFqdn",
+        type=str,
+        default="localhost",
+        help="Hostname of the server for Cobbler filtering",
     )
     parser.add_argument(
         "--proxyFqdn",
@@ -295,6 +345,7 @@ def main():
         with open(args.configFile) as source:
             config = yaml.safe_load(source)
             args.proxyFqdn = config["proxy_fqdn"]
+            args.serverFqdn = config["server"]
             log_level = (
                 logging.DEBUG if config.get("log_level", 1) == 5 else logging.INFO
             )
@@ -307,8 +358,9 @@ def main():
         exit(1)
 
     logging.info("Starting TFTP proxy:")
-    logging.info(f"httpHost: {args.httpHost}")
-    logging.info(f"proxyFqdn: {args.proxyFqdn}")
+    logging.info(f"forward host: {args.httpHost}")
+    logging.info(f"server: {args.serverFqdn}")
+    logging.info(f"proxy: {args.proxyFqdn}")
     logging.info(f"CA path: {args.caPath}")
 
     server = TFTPServer(
@@ -319,8 +371,10 @@ def main():
         args.root,
         args.httpHost,
         args.proxyFqdn,
+        args.serverFqdn,
         args.caPath,
     )
+
     try:
         server.run()
     except KeyboardInterrupt:
