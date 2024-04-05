@@ -4,7 +4,7 @@ set -euxo pipefail
 create_proxy_configuration() {
 
   PROXY_UTILS=$HOME/proxy
-  PROXY_VERSION=$( [[ $UYUNI_VERSION == "master" ]] && echo "latest" || echo $UYUNI_VERSION )
+  VERSION=$( [[ $UYUNI_VERSION == "master" ]] && echo "latest" || echo $UYUNI_VERSION )
 
   sudo --login podman exec uyuni-server-all-in-one-test bash -c \
     'cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /root/ssl-build/uyuni-server-all-in-one-test/server.crt /root/ssl-build/uyuni-server-all-in-one-test/server.key /tmp'
@@ -23,7 +23,7 @@ ca_crt: |
 $(sudo --login sed 's/^/  /' /tmp/test-all-in-one/RHN-ORG-TRUSTED-SSL-CERT)
 proxy_fqdn: proxy-httpd
 max_cache_size_mb: 2048
-server_version: 
+server_version: $VERSION
 email: galaxy-noise@suse.de
 EOF
 
@@ -60,7 +60,6 @@ run_proxy_containers() {
     --add-host uyuni-server-all-in-one-test:$(sudo --login podman exec uyuni-server-all-in-one-test bash -c 'hostname -I | cut -d" " -f1')
 
   sudo --login podman run \
-    --privileged \
     --rm \
     --detach \
     --tty \
@@ -71,10 +70,9 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/proxy-rhn-cache/:/var/cache/rhn \
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-httpd \
-      registry.opensuse.org/uyuni/proxy-httpd:$UYUNI_VERSION
+      registry.opensuse.org/uyuni/proxy-httpd:$VERSION
 
   sudo --login podman run \
-    --privileged \
     --rm \
     --detach \
     --tty \
@@ -84,10 +82,9 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume /tmp/test-all-in-one:/tmp \
     --name proxy-ssh \
-      registry.opensuse.org/uyuni/proxy-ssh:$UYUNI_VERSION
+      registry.opensuse.org/uyuni/proxy-ssh:$VERSION
 
   sudo --login podman run \
-    --privileged \
     --rm \
     --detach \
     --tty \
@@ -96,10 +93,9 @@ run_proxy_containers() {
     --cgroupns host \
     --volume $PROXY_UTILS/:/etc/uyuni \
     --name proxy-salt-broker \
-      registry.opensuse.org/uyuni/proxy-salt-broker:$UYUNI_VERSION
+      registry.opensuse.org/uyuni/proxy-salt-broker:$VERSION
 
   sudo --login podman run \
-    --privileged \
     --rm \
     --detach \
     --tty \
@@ -109,10 +105,9 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume $PROXY_UTILS/proxy-squid-cache/:/var/cache/squid \
     --name proxy-squid \
-      registry.opensuse.org/uyuni/proxy-squid:$UYUNI_VERSION
+      registry.opensuse.org/uyuni/proxy-squid:$VERSION
 
   sudo --login podman run \
-    --privileged \
     --rm \
     --detach \
     --tty \
@@ -122,7 +117,7 @@ run_proxy_containers() {
     --volume $PROXY_UTILS/:/etc/uyuni \
     --volume $PROXY_UTILS/proxy-tftpboot/:/srv/tftpboot \
     --name proxy-tftpd \
-      registry.opensuse.org/uyuni/proxy-tftpd:$UYUNI_VERSION
+      registry.opensuse.org/uyuni/proxy-tftpd:$VERSION
 }
 
 log_status() {
