@@ -96,7 +96,7 @@ jobs:
       - name: setup_sshd
         run: ./testsuite/podman_runner/11_setup_sshd.sh
       - name: start-proxy-container
-        run: ./testsuite/podman_runner/12_run_proxy.sh
+        run: ./testsuite/podman_runner/12_setup_and_run_proxy.sh
       - name: run_cucumber_core
         run: ./testsuite/podman_runner/13_run_core_tests.sh
       - name: sle-salt-minion

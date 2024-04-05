@@ -18,16 +18,17 @@ set -e
 ./09_build_server_code.sh
 ./10_run_sshminion.sh
 ./11_setup_sshd.sh
-./12_run_core_tests.sh
-./13_run_salt_sle_minion.sh
-./14_run_salt_rhlike_minion.sh
-./15_run_salt_deblike_minion.sh
-./16_accept_all_keys.sh
-./17_run_init_clients_tests.sh
-./18_run_secondary_tests.sh
-./19_split_secondary_p_tests.sh
+./12_setup_and_run_proxy.sh
+./13_run_core_tests.sh
+./14_run_salt_sle_minion.sh
+./15_run_salt_rhlike_minion.sh
+./16_run_salt_deblike_minion.sh
+./17_accept_all_keys.sh
+./18_run_init_clients_tests.sh
+./19_run_secondary_tests.sh
+./20_split_secondary_p_tests.sh
 for i in 1 2 3 4 5;do
-  ./19_run_secondary_parallelizable_tests_subset.sh ${i}
+  ./20_run_secondary_parallelizable_tests_subset.sh ${i}
 done
-./20_get_server_logs.sh
-./21_get_client_logs.sh
+./21_get_server_logs.sh
+./22_get_client_logs.sh

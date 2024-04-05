@@ -4,13 +4,13 @@
 # The scenarios in this feature are skipped if:
 # * there is no proxy ($proxy is nil)
 #
-# Bootstrap the proxy as a Pod
+# Check pod and containers of the proxy
 
 @proxy
-Feature: Setup containerized proxy
+Feature: Check containerized proxy
   In order to use a containerized proxy with the server
   As the system administrator
-  I want to register the containerized proxy on the server
+  I want to check the status of the containerized proxy
 
   Scenario: Check pod and container statuses
     When I get the contents of the remote file "/tmp/podman-proxy.log"
