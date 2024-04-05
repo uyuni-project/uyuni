@@ -21,7 +21,7 @@
 
     <groupId>org.uyuni-project</groupId>
     <artifactId>uyuni-java-parent</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
     <packaging>pom</packaging>
 
     <properties>
