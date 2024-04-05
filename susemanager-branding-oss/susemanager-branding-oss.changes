@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 04 17:41:15 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4-0
+  * Use the EULA from the skelcd package
+
+-------------------------------------------------------------------
 Wed Jan 17 19:36:21 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.3-1

@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>uyuni-java-common</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.1</version>
 
     <dependencies>
         <dependency>

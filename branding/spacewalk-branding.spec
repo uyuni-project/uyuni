@@ -25,8 +25,8 @@
 %global wwwdocroot %{wwwroot}/htdocs
 
 Name:           spacewalk-branding
-Version:        5.0.1
-Release:        1
+Version:        5.0.2
+Release:        0
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only AND OFL-1.1
 Group:          Applications/Internet

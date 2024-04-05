@@ -24,10 +24,10 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        5.0.5
-Release:        1
+Version:        5.0.6
+Release:        0
 Source0:        %{name}-%{version}.tar.gz
-Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/spacewalk/%{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/schema/spacewalk/%{name}-rpmlintrc
 
 URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch

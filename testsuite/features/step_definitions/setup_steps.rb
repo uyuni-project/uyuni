@@ -195,6 +195,16 @@ end
 
 # Register client
 
+When(/^I wait at most (\d+) seconds until I see the name of "([^"]*)", refreshing the page$/) do |seconds, host|
+  system_name = get_system_name(host)
+  repeat_until_timeout(message: "I can't see the system '#{system_name}'", timeout: seconds.to_i) do
+    step 'I wait until I do not see "Loading..." text'
+    break if has_content?(system_name, wait: 3)
+
+    refresh_page
+  end
+end
+
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
     When I follow the left menu "Systems > System List > All"
