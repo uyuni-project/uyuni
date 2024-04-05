@@ -89,6 +89,11 @@ class RepoSyncTest(unittest.TestCase):
             ],
         )
 
+        spacewalk.satellite_tools.appstreams.ModuleMdImporter.validate = Mock()
+        spacewalk.satellite_tools.appstreams.ModuleMdImporter.import_module_metadata = (
+            Mock()
+        )
+
     def tearDown(self):
         self.stdout.close()
         sys.stdout = self.saved_stdout
@@ -97,6 +102,7 @@ class RepoSyncTest(unittest.TestCase):
         sys.stderr = self.saved_stderr
 
         imp.reload(spacewalk.satellite_tools.reposync)
+        imp.reload(spacewalk.satellite_tools.appstreams)
 
     def test_init_succeeds_with_correct_attributes(self):
         rs = _init_reposync(self.reposync, "Label", RTYPE)
@@ -216,6 +222,7 @@ class RepoSyncTest(unittest.TestCase):
 
         _mock_rhnsql(self.reposync, [None, []])
         rs = _mock_sync(self.reposync, rs)
+
         with patch("uyuni.common.context_managers.CFG", CFG):
             rs.sync()
 
@@ -946,10 +953,17 @@ class SyncTest(unittest.TestCase):
             import_products=Mock(),
             import_susedata=Mock(),
         )
+        appstreams_patcher = patch.multiple(
+            "spacewalk.satellite_tools.appstreams.ModuleMdImporter",
+            validate=Mock(),
+            import_module_metadata=Mock(),
+        )
         module_patcher.start()
         class_patcher.start()
+        appstreams_patcher.start()
         self.addCleanup(module_patcher.stop)
         self.addCleanup(class_patcher.stop)
+        self.addCleanup(appstreams_patcher.stop)
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_pass_multiple_urls_params(self):

@@ -64,6 +64,12 @@ class Nsvca:
         return f"{self.name}:{self.stream}:{self.version}:{self.context}:{self.arch}"
 
 
+class ModuleMdIndexingError(Exception):
+    """Exception raised when indexing module metadata fails."""
+
+    pass
+
+
 class ModuleMdImporter:
     """
     Imports a channel's AppStream modules from its Modulemd file to the database.
@@ -89,7 +95,7 @@ class ModuleMdImporter:
         log(2, "  Validating module metadata file.")
         self._index_modulemd()
         if not self.modulemd_index.get_module_names():
-            raise IOError("Error reading module metadata.")
+            raise ModuleMdIndexingError("No module data exists in the metadata file.")
 
     def import_module_metadata(self):
         """Imports modules from the Modulemd file to the database."""
@@ -141,7 +147,12 @@ class ModuleMdImporter:
     def _index_modulemd(self):
         """Indexes the Modulemd file."""
         idx = Modulemd.ModuleIndex.new()
-        idx.update_from_file(self.modulemd_file, False)
+        try:
+            idx.update_from_file(self.modulemd_file, False)
+        except gi.repository.GLib.GError as e:
+            raise ModuleMdIndexingError(
+                f"An error occurred while indexing the module metadata from file '{self.modulemd_file}'."
+            ) from e
         self.modulemd_index = idx
 
     def _get_modules(self):
