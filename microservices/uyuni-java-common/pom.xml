@@ -21,12 +21,12 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
-        <version>5.0.0</version>
+        <version>5.0.2</version>
         <relativePath>../uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>uyuni-java-common</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
 
     <dependencies>
         <dependency>
