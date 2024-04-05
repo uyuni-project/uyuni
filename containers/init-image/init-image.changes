@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 05 18:47:08 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5
+  * Remove the BCI EULA from the container images
+
+-------------------------------------------------------------------
 Tue Feb 13 16:47:44 CET 2024 - marina.latini@suse.com
 
 - version 5.0.4
