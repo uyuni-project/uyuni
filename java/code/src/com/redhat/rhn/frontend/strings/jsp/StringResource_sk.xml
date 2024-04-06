@@ -2783,28 +2783,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.archiveactions" xml:space="preserve">
         <source>Archive Actions</source>
-        <target/>
+        <target>Archivovať akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.cancelactions" xml:space="preserve">
         <source>Cancel Actions</source>
-        <target/>
+        <target>Zrušiť akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.confirmcancelactions" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.system" xml:space="preserve">
         <source>System</source>
-        <target/>
+        <target>Systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2816,7 +2816,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.basechannel" xml:space="preserve">
         <source>Base Channel</source>
-        <target/>
+        <target>Základný kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2827,14 +2827,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.unscheduleaction" xml:space="preserve">
         <source>Unschedule Action</source>
-        <target/>
+        <target>Zrušenie naplánovanej akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.imgAlt" xml:space="preserve">
         <source>Action Icon</source>
-        <target/>
+        <target>Ikona akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
@@ -2844,7 +2844,10 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
           Note: For multi-system scheduled actions, the ability to cancel individual
           systems means that the number of clients mentioned in the Action column may not match the number in Total.
         </source>
-        <target/>
+        <target>
+          Poznámka: Pri plánovaných akciách s viacerými systémami znamená možnosť zrušiť
+           jednotlivé systémy, že počet klientov uvedený v stĺpci Akcia sa nemusí zhodovať s počtom v stĺpci Celkom.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2855,14 +2858,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- pendingactions.jsp -->
       <trans-unit id="pendingactions.jsp.pending_actions" xml:space="preserve">
         <source>Pending Actions</source>
-        <target/>
+        <target>Čakajúce akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.summary" xml:space="preserve">
         <source> The following actions have been scheduled, and are awaiting execution by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
-        <target/>
+        <target> Nasledujúce akcie boli naplánované a čakajú na vykonanie jedným alebo viacerými systémami. Akcie môžu archivovať len administrátori organizácie alebo používateľ, ktorý akciu naplánoval. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
