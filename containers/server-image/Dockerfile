@@ -61,7 +61,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sssd \
     sssd-dbus \
     sssd-ldap \
-    nss-pam-ldapd
+    nss-pam-ldapd \
+    authselect
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
