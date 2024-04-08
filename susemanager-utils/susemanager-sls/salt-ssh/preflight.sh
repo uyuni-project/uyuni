@@ -49,6 +49,7 @@ function exit_with_message_code() {
     exit 0
 }
 
+# the order matters: see bsc#1222347
 if [ -x /usr/bin/dnf ]; then
     INSTALLER=yum
 elif [ -x /usr/bin/yum ]; then
