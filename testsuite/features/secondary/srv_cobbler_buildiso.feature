@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @scope_cobbler
@@ -86,6 +86,3 @@ Feature: Cobbler buildiso
 @flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
-
-  Scenario: Cleanup Cobbler after the feature has run
-    When I cleanup Cobbler files and restart apache and cobblerd services
