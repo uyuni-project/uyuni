@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Apr 08 15:27:46 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5
+  * remove virtual-host-gatherer-Kubernetes module
+  * Add uyuni-configfiles-sync to synchronize configuration and
+    package files
+
+-------------------------------------------------------------------
 Tue Feb 13 16:59:23 CET 2024 - marina.latini@suse.com
 
 - version 5.0.4
