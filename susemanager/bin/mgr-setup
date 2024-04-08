@@ -295,8 +295,11 @@ setup_db_postgres() {
             echo "local $MANAGER_DB_NAME postgres peer
     local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
     host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
-    host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
-    " > /tmp/pg_hba.conf
+    host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256" > /tmp/pg_hba.conf
+            if [ "$container" == "podman" -o -d /var/run/secrets/kubernetes.io ]; then
+                INT_NET=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}')
+                echo "host $MANAGER_DB_NAME $MANAGER_USER $INT_NET scram-sha-256" >> /tmp/pg_hba.conf
+            fi
             cat ${DATADIR}/pg_hba.conf >> /tmp/pg_hba.conf
             mv ${DATADIR}/pg_hba.conf ${DATADIR}/pg_hba.conf.bak
             mv /tmp/pg_hba.conf ${DATADIR}/pg_hba.conf
