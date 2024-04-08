@@ -224,6 +224,7 @@ fi
 
 INSTALLER=up2date
 
+# the order matters: see bsc#1222347
 if [ -x /usr/bin/dnf ]; then
     INSTALLER=yum
 elif [ -x /usr/bin/yum ]; then
