@@ -173,6 +173,3 @@ Feature: PXE boot a terminal with Cobbler
 @flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
-
-  Scenario: Cleanup Cobbler after the feature has run
-    When I cleanup Cobbler files and restart apache and cobblerd services
