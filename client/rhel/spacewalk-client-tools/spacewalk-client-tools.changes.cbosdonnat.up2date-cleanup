@@ -1,1 +1,5 @@
 - Remove rhn_check, rhnreg_ks and parts of up2date_client
+- Drop spacewalk-check, python2-spacewalk-check,
+  python3-spacewalk-check
+- Drop spacewalk-client-setup, python2-spacewalk-client-setup,
+  python3-spacewalk-client-setup
