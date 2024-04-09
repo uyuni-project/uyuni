@@ -549,6 +549,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             discriminator-value="523" lazy="true">
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.appstream.AppStreamAction"
+                  lazy="true" discriminator-value="524">
+            <set cascade="all" inverse="true" name="details" >
+                <key column="action_id" />
+                <one-to-many class="com.redhat.rhn.domain.action.appstream.AppStreamActionDetails" />
+            </set>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>

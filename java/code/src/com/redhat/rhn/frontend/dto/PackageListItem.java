@@ -67,6 +67,8 @@ public class PackageListItem extends IdComboDto {
 
     private boolean selectable;
 
+    private String appStream;
+
     /**
      * Default constructor
      */
@@ -540,6 +542,24 @@ public class PackageListItem extends IdComboDto {
      */
     public void setSelectable(boolean selectableIn) {
         this.selectable = selectableIn;
+    }
+
+    /**
+     * Gets the appStream for this package.
+     *
+     * @return The appStream this package is associated with.
+     */
+    public String getAppStream() {
+        return appStream;
+    }
+
+    /**
+     * Sets the appStream for this package.
+     *
+     * @param appStreamIn The AppStream to set for this package.
+     */
+    public void setStream(String appStreamIn) {
+        appStream = appStreamIn;
     }
 
     /**

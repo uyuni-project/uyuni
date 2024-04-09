@@ -12,27 +12,31 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.server;
+package com.redhat.rhn.domain.channel;
 
-import java.util.Map;
+import com.redhat.rhn.domain.rhnpackage.Package;
+
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "suseServerAppstream")
-public class ServerAppStream {
+@Table(name = "suseAppstream")
+public class AppStream {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_servermodule_seq")
-    @SequenceGenerator(name = "appstreams_servermodule_seq", sequenceName = "suse_as_servermodule_seq",
-            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_module_seq")
+    @SequenceGenerator(name = "appstreams_module_seq", sequenceName = "suse_as_module_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
@@ -51,28 +55,17 @@ public class ServerAppStream {
     private String arch;
 
     @ManyToOne
-    @JoinColumn(name = "server_id")
-    private Server server;
+    @JoinColumn(name = "channel_id", nullable = false)
+    private Channel channel;
 
-    /**
-     * Constructs a ServerAppStream instance.
-     */
-    public ServerAppStream() { }
-
-    /**
-     * Constructs a ServerAppStream based on a provided Map containing NSVCA keys.
-     *
-     * @param serverIn The server
-     * @param nsvca A Map containing NSVCA keys: "name", "stream", "version", "context", "architecture".
-     */
-    public ServerAppStream(Server serverIn, Map<String, String> nsvca) {
-        this.setName(nsvca.get("name"));
-        this.setStream(nsvca.get("stream"));
-        this.setVersion(nsvca.get("version"));
-        this.setContext(nsvca.get("context"));
-        this.setArch(nsvca.get("architecture"));
-        this.server = serverIn;
-    }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "suseAppstreamPackage",
+            joinColumns = {
+                    @JoinColumn(name = "module_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "package_id", nullable = false, updatable = false)}
+    )
+    private Set<Package> artifacts;
 
     public Long getId() {
         return id;
@@ -122,11 +115,19 @@ public class ServerAppStream {
         arch = archIn;
     }
 
-    public Server getServer() {
-        return server;
+    public Channel getChannel() {
+        return channel;
     }
 
-    public void setServer(Server serverIn) {
-        server = serverIn;
+    public void setChannel(Channel channelIn) {
+        channel = channelIn;
+    }
+
+    public Set<Package> getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(Set<Package> artifactsIn) {
+        artifacts = artifactsIn;
     }
 }

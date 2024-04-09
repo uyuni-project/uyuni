@@ -35,6 +35,12 @@
                             <rhn:icon type="errata-retracted" title="errata.jsp.retracted-package-tooltip" />
                         </c:if>
                         <a href="/rhn/software/packages/Details.do?pid=${current.id}">${current.nvrea}</a>
+                        <c:if test="${current.appStream != null}">
+                            <span class="label label-info">
+                            <c:out value="${current.appStream}"/>
+                            </span>
+                            &nbsp;
+                        </c:if>
                 </rl:column>
 
 

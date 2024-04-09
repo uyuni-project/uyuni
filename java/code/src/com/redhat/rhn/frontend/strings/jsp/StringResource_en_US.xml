@@ -25254,6 +25254,9 @@ given channel.</source>
       <trans-unit id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
       </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
+      </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
       </trans-unit>
