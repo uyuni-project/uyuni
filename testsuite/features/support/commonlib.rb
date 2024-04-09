@@ -254,7 +254,15 @@ def escape_regex(text)
 end
 
 def get_system_id(node)
-  $api_test.system.search_by_name(node.full_hostname).first['id']
+  # TODO: Remove this retrying code when this issue https://github.com/SUSE/spacewalk/issues/24084 is fixed:
+  result = []
+  repeat_until_timeout(message: "The API can't see the system id for '#{node.full_hostname}'", timeout: 10) do
+    result = $api_test.system.search_by_name(node.full_hostname)
+    break if result.any?
+
+    sleep 1
+  end
+  result.first['id']
 end
 
 def check_shutdown(host, time_out)
