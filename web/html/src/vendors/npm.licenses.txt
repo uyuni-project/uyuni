@@ -2484,7 +2484,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-prop-types v15.8.1
+prop-types v15.7.2
 facebook/prop-types
 --------------------------------------------------------------------------------
 

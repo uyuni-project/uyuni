@@ -119,7 +119,12 @@ export const DateTimePicker = (props: Props) => {
       <div className="input-group">
         {hideDatePicker ? null : (
           <>
-            <span key="calendar" className="input-group-addon input-group-text" data-picker-type="date" onClick={() => openDatePicker()}>
+            <span
+              key="calendar"
+              className="input-group-addon input-group-text"
+              data-picker-type="date"
+              onClick={() => openDatePicker()}
+            >
               &nbsp;<i className="fa fa-calendar"></i>
             </span>
             <ReactDatePicker
