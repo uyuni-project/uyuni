@@ -78,6 +78,7 @@ COPY java_agent.yaml /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
 COPY java_agent.yaml /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
 COPY tomcat_jmx.conf /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+COPY pam_susemanager /etc/pam.d/susemanager
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
@@ -85,9 +86,15 @@ RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 COPY motd /etc/motd
 RUN echo "cat /etc/motd" >/etc/sh.shrc.local
 
+RUN pam-config -a --sss
+RUN pam-config -a --ldap
+RUN authselect select sssd --force
+RUN authselect apply-changes
+
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
-    systemctl enable timezone_alignment;
+    systemctl enable timezone_alignment; \
+    systemctl enable sssd;
 
 # Provide tool to synchronize package and configuration files to persistent volumes
 COPY uyuni-configfiles-sync /usr/bin
