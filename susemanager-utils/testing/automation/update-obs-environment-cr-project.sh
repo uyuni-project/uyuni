@@ -6,7 +6,7 @@ clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \
     Ubuntu1804-Uyuni-Client-Tools;xUbuntu_18.04 \
     Ubuntu2004-Uyuni-Client-Tools;xUbuntu_20.04 \
     Ubuntu2204-Uyuni-Client-Tools;xUbuntu_22.04 \
-    Ubuntu2404-Uyuni-Client-Tools;xUbuntu_22.04 \
+    Ubuntu2404-Uyuni-Client-Tools;xUbuntu_24.04 \
     openSUSE_Leap_15-Uyuni-Client-Tools;openSUSE_Leap_15.0 \
     openSUSE_Leap_42-Uyuni-Client-Tools;openSUSE_Leap_42.3 \
     SLE15-Uyuni-Client-Tools;SLE_15 \
