@@ -3,8 +3,9 @@ $theme: "uyuni";
 @import "./body.scss";
 @import "./fonts.scss";
 
+@import "./bootstrap5-scaffolding-variables.scss";
+
 .new-theme {
-  @import "./bootstrap5-scaffolding-variables.scss";
   @import "bootstrap5/scss/bootstrap";
 
   @import "./mixins.scss";
