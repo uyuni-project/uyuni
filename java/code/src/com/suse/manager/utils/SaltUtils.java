@@ -104,6 +104,7 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
@@ -630,6 +631,9 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             handlePackageLockData(serverAction, jsonResult, action);
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CHANGE)) {
+            handleAppStreamsChange(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
@@ -1384,6 +1388,21 @@ public class SaltUtils {
         ErrataManager.insertErrataCacheTask(imageInfo);
     }
 
+    private void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
+        Optional<MinionServer> server = serverAction.getServer().asMinionServer();
+        if (server.isEmpty()) {
+            return;
+        }
+        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
+
+        Set<ServerAppStream> enabledModules = currentlyEnabled.stream()
+            .map(nsvca -> new ServerAppStream(server.get(), nsvca))
+            .collect(Collectors.toSet());
+        server.get().getAppStreams().clear();
+        server.get().getAppStreams().addAll(enabledModules);
+        serverAction.setResultMsg("Successfully changed system AppStreams.");
+    }
+
     /**
      * Perform the actual update of the database based on given event data.
      *
@@ -1504,11 +1523,7 @@ public class SaltUtils {
                 .map(m -> m.getChanges().getRet())
                 .orElse(Collections.emptySet())
                 .stream()
-                .map(nsvca -> {
-                    ServerAppStream appStream = new ServerAppStream(nsvca);
-                    appStream.setServer(server);
-                    return appStream;
-                })
+                .map(nsvca -> new ServerAppStream(server, nsvca))
                 .collect(Collectors.toSet());
 
         server.getAppStreams().clear();

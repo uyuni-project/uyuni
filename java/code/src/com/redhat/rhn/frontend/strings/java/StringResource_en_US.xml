@@ -1856,6 +1856,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="appstreams.change" xml:space="preserve">
+        <source>Change AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="clientcert.update_client_cert" xml:space="preserve">
         <source>Update of system certificate</source>
         <context-group name="ctx">

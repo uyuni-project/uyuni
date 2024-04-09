@@ -24,6 +24,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
@@ -510,6 +511,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
             retval = new CoCoAttestationAction();
+        }
+        else if (typeIn.equals(TYPE_APPSTREAM_CHANGE)) {
+            retval = new AppStreamAction();
         }
         else {
             retval = new Action();
@@ -1436,5 +1440,10 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_COCO_ATTESTATION =
             lookupActionTypeByLabel("coco.attestation");
+
+    /**
+     * The constant representing appstreams changes action.
+     */
+    public static final ActionType TYPE_APPSTREAM_CHANGE = lookupActionTypeByLabel("appstreams.change");
 }
 
