@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -125,6 +125,13 @@ Feature: Update activation keys
     And I wait until "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" has been checked
     And I check "SUSE-Manager-Proxy-5.0-Pool for x86_64"
     And I check "SUSE-Manager-Proxy-5.0-Updates for x86_64"
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Proxy Key x86_64 has been modified" text
+    # TODO: remove when we use combustion
+    # 'expect' is needed for Cobbler and Retail tests
+    # It is complicated to add othewise on SLE Micro
+    When I follow "Packages"
+    And I enter "expect" as "packages"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
