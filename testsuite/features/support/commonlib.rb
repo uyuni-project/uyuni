@@ -194,7 +194,9 @@ def suse_host?(name)
 end
 
 def slemicro_host?(name)
-  (name.include? 'slemicro') || (name.include? 'micro')
+  node = get_target(name)
+  os_family = node.os_family
+  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos')
 end
 
 def rh_host?(name)
