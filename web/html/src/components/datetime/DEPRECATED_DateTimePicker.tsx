@@ -336,7 +336,12 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
     return (
       <div className="input-group">
         {!this.state.hideDate && [
-          <span className="input-group-addon input-group-text" data-picker-type="date" onClick={this.toggleDatepicker} key="calendar">
+          <span
+            className="input-group-addon input-group-text"
+            data-picker-type="date"
+            onClick={this.toggleDatepicker}
+            key="calendar"
+          >
             &nbsp;<i className="fa fa-calendar"></i>
           </span>,
           <DatePicker
@@ -351,7 +356,12 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
           />,
         ]}
         {!this.state.hideTime && [
-          <span className="input-group-addon input-group-text" data-picker-type="time" onClick={this.toggleTimepicker} key="clock">
+          <span
+            className="input-group-addon input-group-text"
+            data-picker-type="time"
+            onClick={this.toggleTimepicker}
+            key="clock"
+          >
             &nbsp;<i className="fa fa-clock-o"></i>
           </span>,
           <TimePicker
