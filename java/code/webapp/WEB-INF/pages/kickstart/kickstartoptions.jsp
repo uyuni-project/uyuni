@@ -47,7 +47,7 @@
                     <c:choose>
                         <c:when test="${option.hasArgs}">
                             <div class="input-group">
-                                <span class="input-group-addon">
+                                <span class="input-group-addon input-group-text">
                                     <input type="checkbox"
                                     name="${option.name}"
                                     value="${option.name}" ${enabled} />

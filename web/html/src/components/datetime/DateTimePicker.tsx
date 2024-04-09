@@ -119,7 +119,7 @@ export const DateTimePicker = (props: Props) => {
       <div className="input-group">
         {hideDatePicker ? null : (
           <>
-            <span key="calendar" className="input-group-addon" data-picker-type="date" onClick={() => openDatePicker()}>
+            <span key="calendar" className="input-group-addon input-group-text" data-picker-type="date" onClick={() => openDatePicker()}>
               &nbsp;<i className="fa fa-calendar"></i>
             </span>
             <ReactDatePicker
@@ -162,7 +162,7 @@ export const DateTimePicker = (props: Props) => {
           <>
             <span
               key="clock"
-              className="input-group-addon no-right-border"
+              className="input-group-addon input-group-text no-right-border"
               data-picker-type="time"
               onClick={openTimePicker}
             >
@@ -223,7 +223,7 @@ export const DateTimePicker = (props: Props) => {
             />
           </>
         )}
-        <span className="input-group-addon" key="tz">
+        <span className="input-group-addon input-group-text" key="tz">
           {timeZone}
         </span>
       </div>

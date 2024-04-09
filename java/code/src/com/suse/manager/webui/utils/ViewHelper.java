@@ -60,7 +60,13 @@ public enum ViewHelper {
      */
     private static final List<String> BOOTSTRAP_READY_PAGES = List.of(
         "/rhn/YourRhn.do",
-        "/rhn/account/UserPreferences.do"
+        "/rhn/account/UserPreferences.do",
+        "/rhn/account/UserDetails.do",
+        "/rhn/account/ChangeEmail.do",
+        "/rhn/account/AccountDeactivation.do",
+        "/rhn/account/Addresses.do",
+        "/rhn/account/EditAddress.do",
+        "/rhn/multiorg/OrgConfigDetails.do"
     );
 
     ViewHelper() { }
