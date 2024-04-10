@@ -49,12 +49,13 @@ function exit_with_message_code() {
     exit 0
 }
 
+# the order matters: see bsc#1222347
 if [ -x /usr/bin/dnf ]; then
+    INSTALLER=yum
+elif [ -x /usr/bin/yum ]; then
     INSTALLER=yum
 elif [ -x /usr/bin/zypper ]; then
     INSTALLER=zypper
-elif [ -x /usr/bin/yum ]; then
-    INSTALLER=yum
 elif [ -x /usr/bin/apt ]; then
     INSTALLER=apt
 else
