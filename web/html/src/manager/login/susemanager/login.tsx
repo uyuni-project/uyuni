@@ -110,7 +110,6 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
           </form>
 
           <div className={styles.loginFooter}>
-            {/* <a href="/rhn/help/Copyright.do">Copyright Notice</a> */}
             <span>
               {`${props.productName} release `}
               <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
