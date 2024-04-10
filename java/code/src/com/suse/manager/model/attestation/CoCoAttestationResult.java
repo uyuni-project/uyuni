@@ -17,6 +17,7 @@ package com.suse.manager.model.attestation;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Date;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -42,6 +43,7 @@ public class CoCoAttestationResult {
     private CoCoAttestationStatus status;
     private String description;
     private String details;
+    private Date attested;
 
     /**
      * @return return the ID
@@ -97,6 +99,11 @@ public class CoCoAttestationResult {
         return details;
     }
 
+    @Column(name = "attested")
+    public Date getAttested() {
+        return attested;
+    }
+
     /**
      * @return return the details if available
      */
@@ -145,6 +152,10 @@ public class CoCoAttestationResult {
      */
     public void setDetails(String detailsIn) {
         details = detailsIn;
+    }
+
+    public void setAttested(Date attestedIn) {
+        attested = attestedIn;
     }
 
     @Override

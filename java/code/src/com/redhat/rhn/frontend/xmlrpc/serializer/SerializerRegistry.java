@@ -19,6 +19,7 @@ import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceCalendarSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceScheduleSerializer;
 import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
+import com.suse.manager.xmlrpc.serializer.ServerCoCoAttestationReportSerializer;
 import com.suse.manager.xmlrpc.serializer.SystemEventDetailsDtoSerializer;
 import com.suse.manager.xmlrpc.serializer.SystemEventDtoSerializer;
 
@@ -161,6 +162,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(SystemEventDetailsDtoSerializer.class);
         SERIALIZER_CLASSES.add(PaygSshDataSerializer.class);
         SERIALIZER_CLASSES.add(CoCoAttestationConfigSerializer.class);
+        SERIALIZER_CLASSES.add(ServerCoCoAttestationReportSerializer.class);
     }
 
     /**
