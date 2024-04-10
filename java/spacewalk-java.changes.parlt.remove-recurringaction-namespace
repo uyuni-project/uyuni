@@ -1,1 +1,2 @@
+- Bump API version from 26 to 27
 - Remove deprecated 'recurringaction' API namespace
