@@ -3,9 +3,6 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
 <div class="wrapper">
-  <div class="footer-copyright">
-    <bean:message key="footer.jsp.copyright" />
-  </div>
   <div class="footer-release">
     <bean:message key="footer.jsp.release" arg0="/docs/${rhn:getDocsLocale(pageContext)}/release-notes/release-notes-server.html" arg1="${rhn:getProductVersion()}" />
   </div>
