@@ -13,10 +13,7 @@ const LoginFooter = (props: Props) => (
     <div>
       <div className="wrapper wrap">
         <div>
-          <a href="/rhn/help/about.do">About</a>
-        </div>
-        <div className="footer-copyright">
-          <a href="/rhn/help/Copyright.do">Copyright Notice</a>{" "}
+          <a href="/rhn/apidoc/index.jsp">API Documentation</a>
         </div>
         <div className={`footer-release`}>
           {`${props.productName} release `}
