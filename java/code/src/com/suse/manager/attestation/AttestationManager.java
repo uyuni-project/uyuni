@@ -39,6 +39,7 @@ import org.apache.logging.log4j.Logger;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -149,6 +150,22 @@ public class AttestationManager {
             User userIn, Server serverIn, Action actionIn) {
         ensureSystemAccessible(userIn, serverIn);
         return factory.lookupReportByServerAndAction(serverIn, actionIn);
+    }
+
+    /**
+     * Return a list of reports for the given server and filters
+     *
+     * @param userIn the user
+     * @param serverIn the server
+     * @param earliest earliest report
+     * @param offset number of reports to skip
+     * @param limit maximum number of reports
+     * @return returns a list of reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, Server serverIn, Date earliest,
+                                                                        int offset, int limit) {
+        ensureSystemAccessible(userIn, serverIn);
+        return factory.listCoCoAttestationReports(serverIn, earliest, offset, limit);
     }
 
     private void ensureSystemAccessible(User userIn, Server serverIn) {
