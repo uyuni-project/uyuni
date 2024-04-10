@@ -196,6 +196,7 @@ import com.suse.manager.attestation.AttestationDisabledException;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
+import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
@@ -9040,6 +9041,79 @@ public class SystemHandler extends BaseHandler {
         catch (java.lang.UnsupportedOperationException e) {
             throw new UnsupportedOperationException(e.getMessage());
         }
+    }
+
+    /**
+     * Return a list of reports with its results for the given filters
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @param earliest earliest report
+     * @return return a list of reports
+     *
+     * @apidoc.doc Return a list of reports with its results for the given filters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("$date", "earliest")
+     * @apidoc.returntype
+     *     #return_array_begin()
+     *         $ServerCoCoAttestationReportSerializer
+     *     #array_end()
+     */
+    @ReadOnly
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Date earliest) {
+        return listCoCoAttestationReports(loggedInUser, sid, earliest, 0, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Return a list of reports with its results for the given filters
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @param offset offset
+     * @param limit limit
+     * @return return a list of reports
+     *
+     * @apidoc.doc Return a list of reports with its results for the given filters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param_desc("int", "offset", "Number of reports to skip")
+     * @apidoc.param #param_desc("int", "limit", "Maximum number of reports")
+     * @apidoc.returntype
+     *     #return_array_begin()
+     *         $ServerCoCoAttestationReportSerializer
+     *     #array_end()
+     */
+    @ReadOnly
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Integer offset,
+                                                                        Integer limit) {
+        return listCoCoAttestationReports(loggedInUser, sid, new Date(0), offset, limit);
+    }
+
+    /**
+     * Return a list of reports with its results for the given filters
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @param earliest earliest report
+     * @param offset offset
+     * @param limit limit
+     * @return return a list of reports
+     *
+     * @apidoc.doc Return a list of reports with its results for the given filters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("$date", "earliest")
+     * @apidoc.param #param_desc("int", "offset", "Number of reports to skip")
+     * @apidoc.param #param_desc("int", "limit", "Maximum number of reports")
+     * @apidoc.returntype
+     *     #return_array_begin()
+     *         $ServerCoCoAttestationReportSerializer
+     *     #array_end()
+     */
+    @ReadOnly
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Date earliest,
+                                                                        Integer offset, Integer limit) {
+        AttestationManager mgr = new AttestationManager();
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        return mgr.listCoCoAttestationReports(loggedInUser, server, earliest, offset, limit);
     }
 
     /**

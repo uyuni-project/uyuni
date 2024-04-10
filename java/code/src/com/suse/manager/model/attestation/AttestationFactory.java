@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class AttestationFactory extends HibernateFactory {
@@ -179,4 +181,25 @@ public class AttestationFactory extends HibernateFactory {
         return LOG;
     }
 
+    /**
+     * Return a list of reports for a given server with filters
+     * @param serverIn the server
+     * @param earliestIn earliest report
+     * @param offsetIn number of reports to skip
+     * @param limitIn maximal number of reports
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(Server serverIn, Date earliestIn,
+                                                                        int offsetIn, int limitIn) {
+        return getSession()
+                .createQuery("FROM ServerCoCoAttestationReport " +
+                        "WHERE server = :server " +
+                        "AND created >= :earliest " +
+                        "ORDER BY created DESC", ServerCoCoAttestationReport.class)
+                .setParameter("server", serverIn)
+                .setParameter("earliest", earliestIn)
+                .setMaxResults(limitIn)
+                .setFirstResult(offsetIn)
+                .list();
+    }
 }
