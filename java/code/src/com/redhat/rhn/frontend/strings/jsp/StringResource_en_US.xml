@@ -1465,12 +1465,6 @@
         </context-group>
       </trans-unit>
       <!-- footer.jsp -->
-      <trans-unit id="footer.jsp.copyright" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/footer.jsp</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="footer.jsp.legalStatement" xml:space="preserve">
         <source>Legal statement</source>
         <context-group name="ctx">
@@ -22502,19 +22496,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.title" xml:space="preserve">
-        <source>About @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.summary" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network. Through a simple user interface, administrators can perform patch management, updates and maintenance. And because @@PRODUCT_NAME@@ is Web-based, it can be accessed from anywhere. @@PRODUCT_NAME@@ or Proxy server options provide advanced capabilities and the ability to get updates directly from SUSE with even greater levels of security and reduced network bandwidth.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
+      </trans-unit>     
       <trans-unit id="help.jsp.about.overview" xml:space="preserve">
         <source>Overview</source>
         <context-group name="ctx">
@@ -22579,12 +22561,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.start" xml:space="preserve">
         <source>Basic setup and configuration with @@PRODUCT_NAME@@</source>
-      </trans-unit>
-      <trans-unit id="help.jsp.copyright.title" xml:space="preserve">
-        <source>Copyright Notice</source>
-      </trans-unit>
-      <trans-unit id="help.jsp.eula.title" xml:space="preserve">
-        <source>@@PRODUCT_NAME@@ License Agreement</source>
       </trans-unit>
       <trans-unit id="iprange.emptylist" xml:space="preserve">
         <source>No Ip Ranges Found</source>
@@ -25117,36 +25093,8 @@ given channel.</source>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
       </trans-unit>
-      <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
-      </trans-unit>
-      <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
-      </trans-unit>
-      <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
-        <source>
-&lt;p&gt;
-    @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution.
-&lt;/p&gt;
-&lt;p&gt;
-    For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
-&lt;/p&gt;
-        </source>
-      </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore" xml:space="preserve">
-        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.learnmore.uyuni" xml:space="preserve">
-        <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions" xml:space="preserve">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
@@ -25255,31 +25203,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Bootstrap" xml:space="preserve">
         <source>Bootstrap</source>
-      </trans-unit>
-      <trans-unit id="copyright.jsp.body" xml:space="preserve">
-        <source>
-&lt;p&gt;
-    This software is a modular operating system comprised of numerous components
-    that may be accompanied by separate license terms. The software is a
-    collective work of SUSE; although SUSE does not own the copyright to every
-    component of the software, SUSE owns the collective work copyright for the
-    software.
-&lt;/p&gt;
-&lt;p&gt;
-    This SUSE product includes materials licensed to SUSE under the GNU
-    General Public License (GPL). The GPL requires that SUSE makes available
-    certain source code that corresponds to the GPL-licensed material. The source
-    code is available for download at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    Also, for up to three years from SUSE's distribution of the SUSE product, upon
-    request SUSE will mail a copy of the source code. Requests should be sent by
-    e-mail to
-    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
-    or as otherwise instructed at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    SUSE may charge a fee to recover its reasonable costs of distribution
-&lt;/p&gt;
-        </source>
       </trans-unit>
       <trans-unit id="Salt" xml:space="preserve">
         <source>Salt</source>
