@@ -34,9 +34,6 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-# workaround for bsc#1218146
-# Once we start using Leap Micro #23811 in Uyuni Proxy, we need to remove this Cucumber tag
-@susemanager
 @skip
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
