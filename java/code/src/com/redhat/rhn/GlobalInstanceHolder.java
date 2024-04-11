@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -92,6 +93,7 @@ public class GlobalInstanceHolder {
             ServerGroupFactory.SINGLETON, SALT_API);
     public static final MigrationManager MIGRATION_MANAGER = new MigrationManager(SERVER_GROUP_MANAGER);
     public static final WebsocketHeartbeatService WEBSOCKET_SESSION_MANAGER = new WebsocketHeartbeatService();
+    public static final AttestationManager ATTESTATION_MANAGER = new AttestationManager();
 
     public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
     public static final ThrottlingService THROTTLING_SERVICE = new ThrottlingService();

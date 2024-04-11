@@ -148,7 +148,8 @@ public class HandlerFactory {
         );
         ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager);
         SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER);
+                systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER,
+                GlobalInstanceHolder.ATTESTATION_MANAGER);
 
         OrgHandler orgHandler = new OrgHandler(migrationManager);
         ServerGroupHandler serverGroupHandler = new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager);
