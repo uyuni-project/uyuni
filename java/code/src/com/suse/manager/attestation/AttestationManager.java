@@ -170,6 +170,20 @@ public class AttestationManager {
     }
 
     /**
+     * Return latest attestation report for the given server
+     * @param userIn the user
+     * @param serverIn the server
+     * @return return the latest report or throws an excpetion
+     */
+    public ServerCoCoAttestationReport lookupLatestCoCoAttestationReport(User userIn, Server serverIn) {
+        ensureSystemAccessible(userIn, serverIn);
+        return factory.lookupLatestReportByServer(serverIn).orElseThrow(() -> {
+            LOG.error("No Report found for server: {}", serverIn);
+            return new LookupException("No Report found");
+        });
+    }
+
+    /**
      * Lookup a specific attestation result identified by the result id for a given server.
      * It is checked if the user manages the server and if the result belong to a report of that server.
      *
@@ -219,4 +233,5 @@ public class AttestationManager {
             throw new AttestationDisabledException();
         }
     }
+
 }
