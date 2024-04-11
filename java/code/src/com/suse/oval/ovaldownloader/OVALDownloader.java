@@ -15,6 +15,9 @@
 
 package com.suse.oval.ovaldownloader;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.oval.OsFamily;
 import com.suse.oval.config.OVALConfig;
 import com.suse.oval.config.OVALSourceInfo;
@@ -29,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 /**
@@ -41,9 +46,8 @@ import java.util.zip.GZIPInputStream;
 public class OVALDownloader {
     /**
      * The path where downloaded OVAL files will be stored.
-     * TODO: Decide on a better location to cache OVAL files
      * */
-    private static final String DOWNLOAD_PATH = "/var/log/rhn/ovals/";
+    private final String ovalCacheDir;
     /**
      * A configuration object that corresponds to {@code oval.config.json}
      * */
@@ -56,6 +60,17 @@ public class OVALDownloader {
      * */
     public OVALDownloader(OVALConfig configIn) {
         this.config = configIn;
+        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
+        Path ovalCacheDirPath = Path.of(mountPoint, "rhn", "ovals").toAbsolutePath();
+
+        try {
+            Files.createDirectories(ovalCacheDirPath);
+            ovalCacheDir = ovalCacheDirPath.toAbsolutePath().toString();
+        }
+        catch (IOException eIn) {
+            throw new RuntimeException("Couldn't create OVAL cache directory", eIn);
+        }
+
     }
 
     /**
@@ -105,8 +120,7 @@ public class OVALDownloader {
     private File downloadOVALFile(String vulnerabilityInfoSource) throws IOException {
         URL vulnerabilityInfoURL = new URL(vulnerabilityInfoSource);
         String vulnerabilityInfoOVALFilename = FilenameUtils.getName(vulnerabilityInfoURL.getPath());
-        File vulnerabilityFile =
-                new File(DOWNLOAD_PATH + vulnerabilityInfoOVALFilename);
+        File vulnerabilityFile = Path.of(ovalCacheDir, vulnerabilityInfoOVALFilename).toFile();
         // Start downloading
         FileUtils.copyURLToFile(vulnerabilityInfoURL, vulnerabilityFile, 15_000, 15_000);
 
