@@ -47,6 +47,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.PackageTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -122,7 +123,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
         handler = new SystemHandler(taskomaticApi, xmlRpcHelper, entitlementManager, systemManager, groupManager,
-                new CloudPaygManager());
+                new CloudPaygManager(), new AttestationManager());
 
         standard = PackageTest.createTestPackage(admin.getOrg());
         standardUpdated = PackageTestUtils.newVersionOfPackage(standard, null, "2.0.0", null, admin.getOrg());
