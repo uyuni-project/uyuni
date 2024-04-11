@@ -15,10 +15,14 @@ Feature: Setup containerized proxy
   As the system administrator
   I want to register the containerized proxy on the server
 
+  Scenario: Clean up sumaform leftovers on the containerized proxy
+    When I perform a full salt minion cleanup on "proxy"
+    And I reboot the "proxy" host through SSH, waiting until it comes back
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-# TODO: Enable the following scenarios once the team fixes the SLE Micro bootstrapping issues
+# TODO: Remove this tag, once bsc#1222628 is fixed
 @skip
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
@@ -31,13 +35,12 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-# workaround for bsc#1218146
-# Once we start using Leap Micro #23811 in Uyuni Proxy, we need to remove this Cucumber tag
+# TODO: Remove this tag, once bsc#1222628 is fixed
 @skip
-@susemanager
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
 
+# TODO: Remove this tag, once bsc#1222628 is fixed
 @skip
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
