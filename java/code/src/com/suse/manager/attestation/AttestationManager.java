@@ -28,6 +28,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.attestation.AttestationFactory;
+import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
@@ -166,6 +167,29 @@ public class AttestationManager {
                                                                         int offset, int limit) {
         ensureSystemAccessible(userIn, serverIn);
         return factory.listCoCoAttestationReports(serverIn, earliest, offset, limit);
+    }
+
+    /**
+     * Lookup a specific attestation result identified by the result id for a given server.
+     * It is checked if the user manages the server and if the result belong to a report of that server.
+     *
+     * @param userIn the user
+     * @param serverIn the server
+     * @param resultId the result id
+     * @return optional result
+     */
+    public Optional<CoCoAttestationResult> lookupCoCoAttestationResult(User userIn, Server serverIn, int resultId) {
+        ensureSystemAccessible(userIn, serverIn);
+        Optional<CoCoAttestationResult> optRes = factory.lookupResultById(resultId);
+        if (optRes
+                .map(CoCoAttestationResult::getReport)
+                .map(ServerCoCoAttestationReport::getServer)
+                .stream().noneMatch(s -> s.equals(serverIn))) {
+            String msg = "Result not for the given server";
+            LOG.error(msg);
+            throw new LookupException(msg);
+        }
+        return optRes;
     }
 
     private void ensureSystemAccessible(User userIn, Server serverIn) {
