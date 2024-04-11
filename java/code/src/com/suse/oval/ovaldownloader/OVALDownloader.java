@@ -108,7 +108,7 @@ public class OVALDownloader {
         File vulnerabilityFile =
                 new File(DOWNLOAD_PATH + vulnerabilityInfoOVALFilename);
         // Start downloading
-        FileUtils.copyURLToFile(vulnerabilityInfoURL, vulnerabilityFile, 10_000, 10_000);
+        FileUtils.copyURLToFile(vulnerabilityInfoURL, vulnerabilityFile, 15_000, 15_000);
 
         return decompressIfNeeded(vulnerabilityFile);
     }
