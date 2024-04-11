@@ -92,22 +92,6 @@
         }
       }
     },
-    "UBUNTU": {
-      "content": {
-        "18.04": {
-          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.bionic.cve.oval.xml.bz2",
-          "patch": ""
-        },
-        "20.04": {
-          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.focal.cve.oval.xml.bz2",
-          "patch": ""
-        },
-        "22.04": {
-          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.jammy.cve.oval.xml.bz2",
-          "patch": ""
-        }
-      }
-    },
     "REDHAT_ENTERPRISE_LINUX": {
       "content": {
         "7": {
