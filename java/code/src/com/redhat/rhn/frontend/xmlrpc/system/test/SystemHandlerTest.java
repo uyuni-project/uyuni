@@ -164,6 +164,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -231,7 +232,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                    serverGroupManager, new CloudPaygManager());
+                    serverGroupManager, new CloudPaygManager(), new AttestationManager());
 
     @RegisterExtension
     protected final Mockery mockContext = new JUnit5Mockery() {{
@@ -3730,7 +3731,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager, new CloudPaygManager());
+                systemManager, serverGroupManager, new CloudPaygManager(), new AttestationManager());
 
         mockContext.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));

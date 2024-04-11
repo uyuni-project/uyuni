@@ -115,7 +115,8 @@ public class AdminConfigurationHandlerTest extends BaseHandlerTestCase {
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
     private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper,
-                systemEntitlementManager, systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER);
+            systemEntitlementManager, systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER,
+            GlobalInstanceHolder.ATTESTATION_MANAGER);
     private MigrationManager migrationManager = new MigrationManager(serverGroupManager);
     private OrgHandler orgHandler = new OrgHandler(migrationManager);
     private ServerGroupHandler serverGroupHandler = new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager);
