@@ -194,17 +194,8 @@ Requires:       hal >= 0.5.8.1-52
 %endif # 0{?suse_version} >= 1140
 %endif # 0{?fedora}
 
-%if 0%{?rhel} == 5
-Requires:       newt
-%endif
-
-%if 0%{?rhel} > 5 || 0%{?fedora}
-Requires:       newt-python
-%endif
-
 %if 0%{?suse_version}
 Requires:       dbus-1-python
-Requires:       python-newt
 %else
 Requires:       dbus-python
 %endif # 0{?suse_version}
@@ -228,7 +219,6 @@ BuildRequires:  python-rpm
 Requires:       gir1.2-gudev-1.0
 Requires:       python-dbus
 Requires:       python-gi
-Requires:       python-newt
 Requires:       python-pyudev
 Requires(preun):python-minimal
 Requires(post): python-minimal
@@ -257,11 +247,9 @@ Requires:       python3-dbus-python
 Requires:       dbus-1-python3
 %endif
 Requires:       libgudev-1_0-0
-Requires:       python3-newt
 Requires:       python3-pyudev
 %else
 Requires:       libgudev
-Requires:       newt-python3
 Requires:       python3-dbus
 Requires:       python3-gobject-base
 %endif
@@ -283,7 +271,6 @@ BuildRequires:  python3-dev
 Requires:       gir1.2-gudev-1.0
 Requires:       python3-dbus
 Requires:       python3-gi
-Requires:       python3-newt
 Requires:       python3-pyudev
 Requires(preun):python3-minimal
 Requires(post): python3-minimal
