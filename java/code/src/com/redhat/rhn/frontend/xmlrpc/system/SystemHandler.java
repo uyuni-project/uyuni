@@ -9118,6 +9118,24 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Return the latest attestation report for the given system
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @return return the latest report
+     *
+     * @apidoc.doc Return the latest report for the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.returntype $ServerCoCoAttestationReportSerializer
+     */
+    @ReadOnly
+    public ServerCoCoAttestationReport getLatestCoCoAttestationReport(User loggedInUser, Integer sid) {
+        AttestationManager mgr = new AttestationManager();
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        return mgr.lookupLatestCoCoAttestationReport(loggedInUser, server);
+    }
+
+    /**
      * Return a specific attestation result with details
      * @param loggedInUser the user
      * @param sid the server id
