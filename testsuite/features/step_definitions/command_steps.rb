@@ -13,7 +13,7 @@ require 'date'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result, return_code = node.run_local('date +%s; hostname -f; date +%s', check_errors: false)
+  result, return_code = node.run('date +%s; hostname -f; date +%s', runs_in_container: false, check_errors: false)
   lines = result.split("\n")
   initial_time = lines[0]
   result = lines[1]
