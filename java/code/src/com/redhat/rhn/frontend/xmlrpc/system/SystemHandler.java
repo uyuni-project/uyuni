@@ -194,6 +194,7 @@ import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.attestation.AttestationDisabledException;
 import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
@@ -9114,6 +9115,27 @@ public class SystemHandler extends BaseHandler {
         AttestationManager mgr = new AttestationManager();
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
         return mgr.listCoCoAttestationReports(loggedInUser, server, earliest, offset, limit);
+    }
+
+    /**
+     * Return a specific attestation result with details
+     * @param loggedInUser the user
+     * @param sid the server id
+     * @param resultId the result id
+     * @return return the result
+     *
+     * @apidoc.doc Return a specific results with all details
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("int", "resultId")
+     * @apidoc.returntype $CoCoAttestationResultSerializer
+     */
+    @ReadOnly
+    public CoCoAttestationResult getCoCoAttestationResultDetails(User loggedInUser, Integer sid, Integer resultId) {
+        AttestationManager mgr = new AttestationManager();
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        return mgr.lookupCoCoAttestationResult(loggedInUser, server, resultId)
+                .orElseThrow(() -> new EntityNotExistsFaultException(resultId));
     }
 
     /**
