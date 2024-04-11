@@ -39,7 +39,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
     mount_point = '/srv/www/distributions'
     get_target('server').run("mkdir -p #{mount_point}")
     # this needs to be run outside the container
-    get_target('server').run_local("mgradm distro copy #{iso_path} #{name}", verbose: true)
+    get_target('server').run("mgradm distro copy #{iso_path} #{name}", runs_in_container: false, verbose: true)
     get_target('server').run("ln -s #{mount_point}/#{name} /srv/www/htdocs/pub/")
   else
     mount_point = "/srv/www/htdocs/pub/#{name}"

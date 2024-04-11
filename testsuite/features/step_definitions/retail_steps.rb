@@ -22,7 +22,7 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
   elsif os_family =~ /^opensuse/
     repos = 'proxy_pool_repo'
   end
-  log get_target('proxy').run("zypper mr --#{action} #{repos}")
+  get_target('proxy').run("zypper mr --#{action} #{repos}", verbose: true)
 end
 
 When(/^I start tftp on the proxy$/) do
