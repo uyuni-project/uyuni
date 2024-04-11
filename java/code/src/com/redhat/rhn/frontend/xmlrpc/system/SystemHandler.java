@@ -257,6 +257,7 @@ public class SystemHandler extends BaseHandler {
     private SystemManager systemManager;
     private final ServerGroupManager serverGroupManager;
     private CloudPaygManager cloudPaygManager;
+    private AttestationManager attestationManager;
 
     /**
      * Instantiates a new system handler.
@@ -267,11 +268,12 @@ public class SystemHandler extends BaseHandler {
      * @param systemManagerIn            the system manager
      * @param serverGroupManagerIn
      * @param cloudPaygManagerIn         the PAYG manager. If null, the one from GlobalInstanceHolder is used.
+     * @param attestationManagerIn       the attestation manager
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
                          SystemEntitlementManager systemEntitlementManagerIn,
                          SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn,
-                         CloudPaygManager cloudPaygManagerIn) {
+                         CloudPaygManager cloudPaygManagerIn, AttestationManager attestationManagerIn) {
         this.taskomaticApi = taskomaticApiIn;
         this.xmlRpcSystemHelper = xmlRpcSystemHelperIn;
         this.systemEntitlementManager = systemEntitlementManagerIn;
@@ -283,7 +285,7 @@ public class SystemHandler extends BaseHandler {
         else {
             this.cloudPaygManager = cloudPaygManagerIn;
         }
-
+        this.attestationManager = attestationManagerIn;
     }
 
     /**
@@ -5214,8 +5216,7 @@ public class SystemHandler extends BaseHandler {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser)
                 .asMinionServer().orElseThrow(NoSuchSystemException::new);
         try {
-            AttestationManager mgr = new AttestationManager();
-            CoCoAttestationAction action = mgr.scheduleAttestationAction(loggedInUser, minionServer,
+            CoCoAttestationAction action = attestationManager.scheduleAttestationAction(loggedInUser, minionServer,
                     earliestOccurrence);
             return action.getId().intValue();
         }
@@ -5272,14 +5273,13 @@ public class SystemHandler extends BaseHandler {
     public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
-        AttestationManager mgr = new AttestationManager();
         minionServer.getOptCocoAttestationConfig()
                 .ifPresentOrElse(
                         c -> {
                             c.setEnabled(enabled);
                             c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
                         },
-                        () -> mgr.createConfig(loggedInUser, minionServer,
+                        () -> attestationManager.createConfig(loggedInUser, minionServer,
                                 CoCoEnvironmentType.valueOf(environmentType), enabled));
         return 1;
     }
@@ -9112,9 +9112,8 @@ public class SystemHandler extends BaseHandler {
     @ReadOnly
     public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Date earliest,
                                                                         Integer offset, Integer limit) {
-        AttestationManager mgr = new AttestationManager();
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
-        return mgr.listCoCoAttestationReports(loggedInUser, server, earliest, offset, limit);
+        return attestationManager.listCoCoAttestationReports(loggedInUser, server, earliest, offset, limit);
     }
 
     /**
@@ -9130,9 +9129,8 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public ServerCoCoAttestationReport getLatestCoCoAttestationReport(User loggedInUser, Integer sid) {
-        AttestationManager mgr = new AttestationManager();
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
-        return mgr.lookupLatestCoCoAttestationReport(loggedInUser, server);
+        return attestationManager.lookupLatestCoCoAttestationReport(loggedInUser, server);
     }
 
     /**
@@ -9150,9 +9148,8 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public CoCoAttestationResult getCoCoAttestationResultDetails(User loggedInUser, Integer sid, Integer resultId) {
-        AttestationManager mgr = new AttestationManager();
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
-        return mgr.lookupCoCoAttestationResult(loggedInUser, server, resultId)
+        return attestationManager.lookupCoCoAttestationResult(loggedInUser, server, resultId)
                 .orElseThrow(() -> new EntityNotExistsFaultException(resultId));
     }
 
