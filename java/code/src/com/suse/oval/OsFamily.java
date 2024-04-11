@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * This enum defines the operating system families for which we can retrieve OVAL data.
+ * */
 public enum OsFamily {
     LEAP("openSUSE Leap", "Leap", "opensuse",
             oneOf("15.2", "15.3", "15.4", "15.5")),
@@ -35,7 +38,6 @@ public enum OsFamily {
             oneOf("5.0", "5.1", "5.2", "5.3")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
             withPrefix("7.", "8.", "9.")),
-    UBUNTU("Ubuntu", "Ubuntu", "canonical", oneOf("18.04", "20.04", "22.04")),
     DEBIAN("Debian", "Debian", "debian", oneOf("10", "11", "12"));
 
     private final String vendor;
