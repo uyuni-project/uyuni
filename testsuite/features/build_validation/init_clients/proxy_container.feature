@@ -15,6 +15,10 @@ Feature: Setup containerized proxy
   As the system administrator
   I want to register the containerized proxy on the server
 
+  Scenario: Clean up sumaform leftovers on the containerized proxy
+    When I perform a full salt minion cleanup on "proxy"
+    And I reboot the "proxy" host through SSH, waiting until it comes back
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
