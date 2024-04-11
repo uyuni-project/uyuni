@@ -73,6 +73,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -132,7 +133,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     private SystemManager systemManager =
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-            systemManager, serverGroupManager, new CloudPaygManager());
+            systemManager, serverGroupManager, new CloudPaygManager(), new AttestationManager());
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
     private ErrataHandler errataHandler = new ErrataHandler();
 
@@ -325,7 +326,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertFalse(child2.isBaseChannel());
 
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new CloudPaygManager());
+                serverGroupManager, new CloudPaygManager(), new AttestationManager());
 
         int sid = server.getId().intValue();
         int rc1 = sh.setBaseChannel(admin, sid, base.getLabel());
@@ -354,7 +355,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testSetBaseChannel() throws Exception {
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new CloudPaygManager());
+                serverGroupManager, new CloudPaygManager(), new AttestationManager());
 
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -875,7 +876,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         childChan.setParentChannel(baseChan);
 
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new CloudPaygManager());
+                serverGroupManager, new CloudPaygManager(), new AttestationManager());
 
         int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());
         int return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of(childChan.getLabel()));
