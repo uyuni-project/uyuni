@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 12 16:30:01 CEST 2024 - rosuna@suse.com
+
+- version 4.3.13
+  * Update the chart version to SUSE Manager 4.3.12
+
+-------------------------------------------------------------------
 Tue Feb 20 11:33:46 CET 2024 - rosuna@suse.com
 
 - version 4.3.12
