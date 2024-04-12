@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:11:51 CEST 2024 - rosuna@suse.com
+
+- version 4.3.25-0
+  * Add update-salt to internal state table
+
+-------------------------------------------------------------------
 Tue Jan 23 14:15:01 CET 2024 - rosuna@suse.com
 
 - version 4.3.24-1
