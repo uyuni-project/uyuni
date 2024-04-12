@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 12 16:43:19 CEST 2024 - rosuna@suse.com
+
+- version 4.3.13
+  * Translate server FQDN to proxy FQDN for PXE boot menus
+  * Connect to localhost instead of FQDN from tftp wrapper (bsc#1221138)
+
+-------------------------------------------------------------------
 Tue Feb 20 11:36:49 CET 2024 - rosuna@suse.com
 
 - version 4.3.12
