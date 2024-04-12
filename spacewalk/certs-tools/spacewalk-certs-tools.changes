@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 12 16:49:57 CEST 2024 - rosuna@suse.com
+
+- version 4.3.23-0
+  * Fix liberty bootstrapping when zypper is installed (bsc#1222347)
+  * Apply reboot method changes for transactional systems in the bootstrap script
+
+-------------------------------------------------------------------
 Mon Feb 12 20:03:33 CET 2024 - rosuna@suse.com
 
 - version 4.3.22-1
