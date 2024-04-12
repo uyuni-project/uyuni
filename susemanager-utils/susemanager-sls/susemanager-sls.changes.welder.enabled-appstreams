@@ -1,2 +1,3 @@
-- Introduce salt module for dealing with appstreams
+- Introduce salt module for dealing with AppStreams
+- Introduce salt state for changing AppStreams
 - Collect enabled AppStream modules in package profile update
