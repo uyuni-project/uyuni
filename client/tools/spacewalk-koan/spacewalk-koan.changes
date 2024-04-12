@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:05:07 CEST 2024 - rosuna@suse.com
+
+- version 4.3.6-0
+  * Change Docker image location for test
+
+-------------------------------------------------------------------
 Tue Apr 19 12:03:18 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.5-1
