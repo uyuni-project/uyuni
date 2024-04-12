@@ -968,6 +968,7 @@ When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error contro
   node.run(cmd, check_errors: error_control.empty?, successcodes: successcodes)
 end
 
+# TODO: remove this step definition when we deprecate the non-containerized components
 When(/^I install package tftpboot-installation on the server$/) do
   server = get_target('server')
 
@@ -994,6 +995,29 @@ When(/^I install package tftpboot-installation on the server$/) do
     latest_version = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
     server.run("rpm -q #{tftpboot_package} || rpm -i #{latest_version}", verbose: true)
   end
+end
+
+When(/I copy the tftpboot installation files from the build host to the server$/) do
+  node = get_target('build_host')
+  file = 'copy-tftpboot-files.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  return_code = file_inject(node, source, dest)
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
+  hostname = get_target('server').full_hostname
+  node.run("expect -f #{dest} #{hostname}")
+end
+
+When(/I copy the distribution inside the container on the server$/) do
+  node = get_target('server')
+  node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP4-x86_64 SLE-15-SP4-TFTP', runs_in_container: false)
+end
+
+When(/I remove the autoinstallation files from the server$/) do
+  node = get_target('server')
+  node.run('rm -r /tmp/tftpboot-installation', runs_in_container: false)
+  node.run('rm -r /srv/www/distributions/SLE-15-SP4-TFTP')
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
