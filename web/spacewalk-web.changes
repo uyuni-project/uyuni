@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:06:10 CEST 2024 - rosuna@suse.com
+
+- version 4.3.38-0
+  * Upgrade json5 to 2.2.3
+  * Upgrade semver to 7.6.0
+  * Add one-shot action execution to recurring custom state
+    create/edit
+  * Add two filters for rpmlint in package spacewalk-web:
+    explicit-lib-dependency and filename-too-long-for-joliet
+    * Added: spacewalk-web-rpmlintrc
+  * Fix virtual systems filters (bsc#1208572)
+  * Improve CLM Create New Filter button
+  * Bump the WebUI version to 4.3.12
+
+-------------------------------------------------------------------
 Tue Jan 23 14:10:42 CET 2024 - rosuna@suse.com
 
 - version 4.3.37-1
