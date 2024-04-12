@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:18:11 CEST 2024 - rosuna@suse.com
+
+- version 4.3.10-0
+  * Add support for package signature type V4 RSA/SHA384
+  * Add support for package signature type V4 RSA/SHA512 (bsc#1221465)
+
+-------------------------------------------------------------------
 Tue Aug 29 16:45:45 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.9-1
