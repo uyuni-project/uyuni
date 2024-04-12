@@ -32,8 +32,8 @@
 %define rhnsd		 mgr-daemon
 #
 Name:           mgr-daemon
-Version:        4.3.8
-Release:        1
+Version:        4.3.9
+Release:        0
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
@@ -42,8 +42,8 @@ Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          System Environment/Base
 %endif
-Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
-Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/rhel/%{name}/%{name}-rpmlintrc
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-0.tar.gz
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
