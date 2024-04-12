@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Apr 12 16:48:46 CEST 2024 - rosuna@suse.com
+
+- version 4.3.28-0
+  * Strip whitespace from .deb package metadata (bsc#1214387)
+  * Fix inserting NULL into some columns during ISSv1 sync (bsc#1220980)
+  * Add support for package signature type V4 RSA/SHA512 (bsc#1221465)
+  * Unquote HTML-encoded credentials before synchronizing repositories (bsc#1217204)
+
+-------------------------------------------------------------------
 Thu Feb 01 09:00:06 CET 2024 - rosuna@suse.com
 
 - version 4.3.27-1

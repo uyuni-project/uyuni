@@ -51,10 +51,10 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.3.27
-Release:        1
+Version:        4.3.28
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-0.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch

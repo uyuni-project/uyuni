@@ -1,1 +1,0 @@
-- Unquote HTML-encoded credentials before synchronizing repositories (bsc#1217204)
