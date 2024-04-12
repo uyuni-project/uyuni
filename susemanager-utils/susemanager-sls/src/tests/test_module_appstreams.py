@@ -77,6 +77,11 @@ maven                       3.8 [e]                       common [d]            
 nginx                       1.22 [e]                      common [d]                                                nginx webserver                                                           
 nodejs                      18 [e]                        common [d], development, minimal, s2i                     Javascript runtime                                                        
 ruby                        3.1 [e]                       common [d]                                                An interpreter of object-oriented scripting language
+
+Rocky Linux 9 CRB (x86_64)
+Name             Stream             Profiles                                       Summary                                                                     
+swig             4.1 [e]            common [d], complete                           Connects C/C++/Objective C to some high-level programming languages
+
 """
 
 def test_get_enabled_module_names():
@@ -84,6 +89,6 @@ def test_get_enabled_module_names():
         returncode=0,
         stdout=sample_dnf_enabled_modules_result
     )
-    expected_result = ["maven:3.8", "nginx:1.22", "nodejs:18", "ruby:3.1"]
+    expected_result = ["maven:3.8", "nginx:1.22", "nodejs:18", "ruby:3.1", "swig:4.1"]
     with patch("subprocess.run", return_value=mocked_command_result):
         assert _get_enabled_module_names() == expected_result
