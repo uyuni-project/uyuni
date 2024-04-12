@@ -7,6 +7,7 @@
 @skip_if_github_validation
 @containerized_server
 @proxy
+@buildhost
 @private_net
 @pxeboot_minion
 @scope_cobbler
@@ -21,16 +22,18 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
 
-  # We currently test Cobbler with SLES 15 SP4, even on Uyuni
-  Scenario: Install the TFTP boot package on the server for Cobbler tests
-    When I install package tftpboot-installation on the server
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+  # We currently test Cobbler with a SLES 15 SP4 terminal
+  # The build host has same version as the terminal
+  Scenario: Prepare the autoinstallation files on the server
+    When I install packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" on this "build_host"
+    And I copy the tftpboot installation files from the build host to the server
+    And I copy the distribution inside the container on the server
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-SP4-TFTP" as "label"
-    And I enter "/usr/share/tftpboot-installation/SLE-15-SP4-x86_64/" as "basepath"
+    And I enter "/srv/www/distributions/SLE-15-SP4-TFTP/" as "basepath"
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
@@ -120,9 +123,9 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     And I click on "Delete Distribution"
     Then I should not see a "SLE-15-SP4-TFTP" text
 
-  Scenario: Cleanup: remove the TFTP boot package from the server after Cobbler tests
-    When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+  Scenario: Cleanup: remove the auto installation files
+    When I remove packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" from this "build_host"
+    And I remove the autoinstallation files from the server
 
   Scenario: Cleanup: delete the PXE boot minion
     When I navigate to the Systems overview page of this "pxeboot_minion"
