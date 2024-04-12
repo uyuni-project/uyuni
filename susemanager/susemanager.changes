@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:10:32 CEST 2024 - rosuna@suse.com
+
+- version 4.3.35-0
+  * Add bootstrap repository definition for openSUSE Leap 15.6
+  * Add bootstrap repository definition for SUSE Linux Enterprise 15 SP6
+
+-------------------------------------------------------------------
 Tue Jan 23 14:12:43 CET 2024 - rosuna@suse.com
 
 - version 4.3.34-1

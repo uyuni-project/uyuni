@@ -47,8 +47,8 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.3.34
-Release:        1
+Version:        4.3.35
+Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
