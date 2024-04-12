@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:16:30 CEST 2024 - rosuna@suse.com
+
+- version 4.3.17-0
+  * AlmaLinux 9 PowerTools was renamed into CRB (bsc#1222110)
+
+-------------------------------------------------------------------
 Tue Jan 30 14:43:04 CET 2024 - rosuna@suse.com
 
 - version 4.3.16-1
