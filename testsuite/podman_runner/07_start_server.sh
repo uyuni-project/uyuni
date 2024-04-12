@@ -28,5 +28,6 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -p 4506:4506 \
     -d --name=uyuni-server-all-in-one-test \
     --network uyuni-network-1 \
+    --log-driver=none \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
 
