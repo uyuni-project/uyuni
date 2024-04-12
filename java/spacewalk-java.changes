@@ -1,4 +1,44 @@
 -------------------------------------------------------------------
+Fri Apr 12 16:54:05 CEST 2024 - rosuna@suse.com
+
+- version 4.3.72-0
+  * Use execution module call to detect client instance flavor
+    (PAYG/BYOS) in public cloud (bsc#1218805)
+  * Update help text for the custom repo filter field (bsc#1217874)
+  * Fix issue where Salt cannot access autoinstallation files
+    (bsc#1220221)
+  * Fix issue when checking for credential duplication
+    (bsc#1218957)
+  * Fix matching epoch while creating Ubuntu erratas
+  * When an action that belongs to an action chain is unscheduled,
+    unschedule the action chain as well (bsc#1221784)
+  * Reschedule failed SSH actions caused by a connection error due
+    to a scheduled reboot
+  * Fix removal of old IPv6 addresses (bsc#1214340)
+  * Do not automatically add child channels outside of selected
+    base channel (bsc#1220101)
+  * Fix listProxies API call (bsc#1219233)
+  * Fix system.provisionSystem when called via HTTP API (bsc#1219875)
+  * Remove package sync not available message in
+    Software > Packages > Profile since it is no longer available
+    for supported clients (bsc#1221279)
+  * Fix login for read-only users when using HTTP API (bsc#1221111)
+  * Add one-shot action execution to recurring custom state
+    create/edit
+  * Fix a typo in 'Deploy Files' page
+  * Drop system password as identifier on SCC system registration
+    (bsc#1219634, bsc#1221182)
+  * Fix memory size extraction in virtual instances (bsc#1219634)
+  * Fix virtual systems filters (bsc#1208572)
+  * Update license to include the year 2024
+  * Add timeout for SMTP server connection (bsc#1218931)
+  * Commit Salt event removal in case of process failure (bsc#1218931)
+  * Users with API read only are only allowed to make GET requests
+  * Ignore retry suffix when getting recurring action id from
+    schedule name
+  * Sort CLM project filters by filter name
+
+-------------------------------------------------------------------
 Fri Feb 02 16:27:37 CET 2024 - rosuna@suse.com
 
 - version 4.3.71-1
