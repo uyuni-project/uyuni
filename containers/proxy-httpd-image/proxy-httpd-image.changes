@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 12 16:30:52 CEST 2024 - rosuna@suse.com
+
+- version 4.3.13
+  * Remove 'file=sys.stderr' kwarg from logging as it does not know it
+
+-------------------------------------------------------------------
 Tue Feb 20 11:34:26 CET 2024 - rosuna@suse.com
 
 - version 4.3.12
