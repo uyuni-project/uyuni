@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:08:19 CEST 2024 - rosuna@suse.com
+
+- version 4.3.11-0
+  * Add Salt and Reposync connections to minimum required DB
+    connections calculation
+
+-------------------------------------------------------------------
 Tue Jan 23 14:11:47 CET 2024 - rosuna@suse.com
 
 - version 4.3.10-1
