@@ -218,7 +218,7 @@ When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"$
 end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
-  steps %(I wait at most #{DEFAULT_TIMEOUT} seconds until onboarding is completed for "#{host}")
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until onboarding is completed for "#{host}")
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
