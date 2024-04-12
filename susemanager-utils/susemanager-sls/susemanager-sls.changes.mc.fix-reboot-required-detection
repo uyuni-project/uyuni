@@ -1,2 +1,0 @@
-- distinguish between different SUSE versions when detecting if a
-  reboot is needed (bsc#1220903, bsc#1221571)

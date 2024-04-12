@@ -31,13 +31,13 @@
 
 
 Name:           susemanager-sls
-Version:        4.3.40
-Release:        1
+Version:        4.3.41
+Release:        0
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
-Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
 Requires(pre):  coreutils
 Requires(posttrans): spacewalk-admin
 Requires:       susemanager-build-keys-web >= 15.4.2

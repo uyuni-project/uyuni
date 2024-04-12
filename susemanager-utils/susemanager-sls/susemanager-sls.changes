@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Fri Apr 12 17:13:07 CEST 2024 - rosuna@suse.com
+
+- version 4.3.41-0
+  * Use execution module call to detect client instance flavor
+    (PAYG/BYOS) in public cloud (bsc#1218805)
+  * Do not log dnf needs-restarting output in Salt's log (bsc#1220194)
+  * Dynamically load an SELinux policy for "Push via SSH tunnel"
+    for SELinux enabled clients. This policy allows communication
+    over a custom SSH port
+  * Fix reboot needed detection for SUSE systems
+  * Fix SUSE Liberty Linux bootstrapping when Zypper is installed
+    (bsc#1222347)
+  * Distinguish between different SUSE versions when detecting if a
+    reboot is needed (bsc#1220903, bsc#1221571)
+  * Improve updatestack update in uptodate state
+  * Add a standalone update-salt state
+  * Add pillar check to skip reboot_if_needed state
+  * Recognize .tar.xz and .ext4 image files (bsc#1216085)
+  * Avoid issues on reactivating traditional clients as Salt managed
+  * Fix the case of missing requisites on bootstrap (bsc#1220705)
+
+-------------------------------------------------------------------
 Mon Feb 12 11:50:08 CET 2024 - rosuna@suse.com
 
 - version 4.3.40-1
