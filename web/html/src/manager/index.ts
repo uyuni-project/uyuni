@@ -33,7 +33,6 @@ import Shared from "./shared";
 import Highstate from "./state";
 import Systems from "./systems";
 import Virtualization from "./virtualization";
-import Visualization from "./visualization";
 
 const pages = {
   ...Admin,
@@ -57,7 +56,6 @@ const pages = {
   ...Shared,
   ...Systems,
   ...Virtualization,
-  ...Visualization,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {
