@@ -36,7 +36,7 @@ do
     while IFS= read -r -d '' file
     do
         echo -e "\t$(basename "${file}")"; spacewalk-sql ${additional_params} "${file}" | sed 's/^/\t\t/';
-    done < <(find "${current_dir}" -name '*.sql' -print0)
+    done < <(find "${current_dir}" -name '*.sql' -print0 | sort -z)
 
     # Set the next schema and version from the directory name
     schema=$(basename "${current_dir}" | sed -e 's/.*-to-\([a-z-]\+\)-.*$/\1/')
