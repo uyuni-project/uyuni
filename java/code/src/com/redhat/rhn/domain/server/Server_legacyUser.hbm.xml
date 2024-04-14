@@ -275,81 +275,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
-    <query name="Server.listProxySystemsHierarchy">
-        <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.System(
-                    s.id,
-                    CASE
-                      WHEN (pi is not null and sp is null)
-                    THEN 'root'
-                    ELSE cast(sp.id.proxyServer.id as string)
-                    END AS parentId,
-                    s.name,
-                    s.contactMethod.label,
-                    c.name,
-                    g.groupType.label,
-                    s.serverInfo.checkin,
-                    CASE
-                      WHEN (pi is not null)
-                    THEN 'proxy'
-                    ELSE 'system'
-                    END AS type
-                )
-                from Server s
-                    left join s.serverPaths sp
-                    left join s.proxyInfo pi
-                    left join s.channels c
-                    left join s.groups g
-                where c.parentChannel is NULL and
-                    g.groupType.isBaseChar = 'Y' and
-                    s.org = :org and
-                    ((pi is not null and sp is null) or sp.position = 0)]]>
-    </query>
-
-    <query name="Server.listSystems">
-        <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
-                from Server s
-                    left join s.channels c
-                    left join s.groups g
-                where c.parentChannel is NULL and
-                    g.groupType.isBaseChar = 'Y' and
-                    s.org = :org]]>
-    </query>
-
-    <query name="Server.systemIdManagedGroupName">
-        <![CDATA[ select
-                s.id, g.name
-                from Server s
-                    left join s.groups g
-                where s.org = :org and
-                    g.org = :org and
-                    (g.groupType is null)]]>
-    </query>
-
-    <query name="Server.listHostSystems">
-        <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
-                from Server s
-                    left join s.channels c
-                    left join s.groups g
-                where c.parentChannel is NULL and
-                    g.groupType.isBaseChar = 'Y' and
-                    s.org = :org and
-                    exists (select 1 from VirtualInstance vi where vi.hostSystem = s)
-    ]]>
-    </query>
-
-    <query name="Server.serverInstalledProductNames">
-        <![CDATA[ select
-                s.id, ip.name
-                from Server s
-                    left join s.installedProducts ip
-                where
-                    s.org = :org
-    ]]>
-    </query>
-
     <query name="Server.findNonZypperTradClientsIds">
         <![CDATA[SELECT s.id
                  FROM Server s
@@ -401,21 +326,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             from suseServerVirtualHostManager
         ]]>
     </sql-query>
-
-    <query name="Server.listGuestSystems">
-        <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.System(s.id, vi.hostSystem.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
-                from Server s, VirtualInstance vi
-                    left join s.channels c
-                    left join s.groups g
-                where c.parentChannel is NULL and
-                    g.groupType.isBaseChar = 'Y' and
-                    s.org = :org and
-                    vi.guestSystem = s and
-                    vi.hostSystem is not null and
-                    vi.uuid is not null
-    ]]>
-    </query>
 
     <query name="MinionServer.listSSHMinionsIdsAndContactMethods">
         <![CDATA[ select s.minionId, m.label
@@ -526,25 +436,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
               JOIN rhnServerChannel sc ON c.id = sc.channel_id
           WHERE e.id in (:errataIds) AND
               sc.server_id in (:serverIds)
-        ]]>
-    </sql-query>
-
-    <!--Lists all patch counts per server, grouped by advisory type-->
-    <sql-query name="Server.listPatchCountsForAllServers">
-        <return-scalar column="serverId" type="long"/>
-        <return-scalar column="advisoryType" type="string"/>
-        <return-scalar column="patchCount" type="integer"/>
-        <![CDATA[select s.id as serverId, e.advisory_type as advisoryType, count(e.id) as patchCount
-                 FROM
-                      rhnServerNeededErrataCache cache,
-                      rhnServer s,
-                      rhnErrata e
-                 WHERE
-                       s.org_id = :orgId AND
-                       cache.server_id = s.id AND
-                       cache.errata_id = e.id
-                 GROUP BY
-                       s.id, e.advisory_type
         ]]>
     </sql-query>
 

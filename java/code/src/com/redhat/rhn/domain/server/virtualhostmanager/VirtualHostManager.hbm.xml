@@ -34,12 +34,4 @@
         </set>
     </class>
 
-    <query name="VirtualHostManager.listByOrg">
-        <![CDATA[ select
-                new com.redhat.rhn.manager.visualization.json.VirtualHostManager(vhm.id, vhm.label)
-                from com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager vhm
-                where vhm.org = :org
-        ]]>
-    </query>
-
 </hibernate-mapping>

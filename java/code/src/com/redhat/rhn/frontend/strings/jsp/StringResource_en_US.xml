@@ -1623,48 +1623,6 @@
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="visualization-legend.jsp.title" xml:space="preserve">
-        <source>Visualization Hierarchy</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notcheckin" xml:space="preserve">
-        <source>System not checking in</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notpatched" xml:space="preserve">
-        <source>Not patched system</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.root" xml:space="preserve">
-        <source>SUSE Manager</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.vhm" xml:space="preserve">
-        <source>Virtual Host Manager</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.group" xml:space="preserve">
-        <source>Group</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.system" xml:space="preserve">
-        <source>System</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
       <!-- email_sent.jsp -->
       <!-- yourchangeemail.jsp -->
       <trans-unit id="yourchangeemail.jsp.title" xml:space="preserve">
