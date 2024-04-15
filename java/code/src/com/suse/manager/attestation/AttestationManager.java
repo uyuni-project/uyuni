@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -97,16 +98,32 @@ public class AttestationManager {
                                                            ActionChain actionChain)
             throws TaskomaticApiException {
         ensureSystemAccessible(userIn, minionIn);
+        return scheduleAttestationAction(Optional.of(userIn), userIn.getOrg(), minionIn, earliest, actionChain);
+    }
+
+    /**
+     * Create an Attestation Action for a given minion.
+     * @param orgIn the org
+     * @param minionIn the minion
+     * @param earliest the earliest execution date
+     */
+    public void scheduleAttestationActionFromSystem(Org orgIn, MinionServer minionIn, Date earliest)
+            throws TaskomaticApiException {
+        scheduleAttestationAction(Optional.empty(), orgIn, minionIn, earliest, null);
+    }
+
+    private CoCoAttestationAction scheduleAttestationAction(Optional<User> userIn, Org orgIn, MinionServer minionIn,
+            Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         ensureSystemConfigured(minionIn);
         CoCoAttestationAction action = (CoCoAttestationAction) ActionFactory.createAction(
                 ActionFactory.TYPE_COCO_ATTESTATION, earliest);
-        action.setSchedulerUser(userIn);
-        action.setOrg(userIn.getOrg());
+        action.setSchedulerUser(userIn.orElse(null));
+        action.setOrg(orgIn);
         action.setName("Confidential Compute Attestation");
         ActionFactory.save(action);
 
         //Initialize the report
-        ServerCoCoAttestationReport initReport = initializeReport(userIn, minionIn);
+        ServerCoCoAttestationReport initReport = factory.createReportForServer(minionIn);
         initReport.setAction(action);
         if (initReport.getEnvironmentType().isNonceRequired()) {
             SecureRandom rand = new SecureRandom();
@@ -124,7 +141,6 @@ public class AttestationManager {
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             ActionChainFactory.queueActionChainEntry(action, actionChain, minionIn.getId(), sortOrder);
-
         }
 
         return action;
