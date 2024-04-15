@@ -126,10 +126,24 @@ public class AttestationFactory extends HibernateFactory {
      */
     public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
                                                              boolean enabledIn) {
+        return createConfigForServer(serverIn, typeIn, enabledIn, false);
+    }
+
+        /**
+         * Create a Confidential Compute Attestation Config for a given Server ID
+         * @param serverIn the server
+         * @param typeIn the environment type
+         * @param enabledIn enabled status
+         * @param attestOnBootIn perform attestation on boot
+         * @return returns the Confidential Compute Attestation Config
+         */
+    public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
+                                                             boolean enabledIn, boolean attestOnBootIn) {
         ServerCoCoAttestationConfig cnf = new ServerCoCoAttestationConfig();
         cnf.setServer(serverIn);
         cnf.setEnvironmentType(typeIn);
         cnf.setEnabled(enabledIn);
+        cnf.setAttestOnBoot(attestOnBootIn);
         save(cnf);
         serverIn.setCocoAttestationConfig(cnf);
         return cnf;
