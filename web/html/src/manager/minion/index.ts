@@ -8,4 +8,5 @@ export default {
   "minion/ptf/ptf-overview": () => import("./ptf/ptf-overview.renderer"),
   "minion/ptf/ptf-list-remove": () => import("./ptf/ptf-list-remove.renderer"),
   "minion/ptf/ptf-install": () => import("./ptf/ptf-install.renderer"),
+  "minion/coco/coco-settings": () => import("./coco/coco-settings.renderer"),
 };

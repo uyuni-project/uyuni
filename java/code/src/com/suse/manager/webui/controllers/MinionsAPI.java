@@ -24,6 +24,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -44,6 +45,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -56,6 +59,7 @@ import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.gson.CoCoSettingsJson;
 import com.suse.manager.webui.utils.gson.ListKeysJson;
 import com.suse.manager.webui.utils.gson.PackageActionJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
@@ -100,10 +104,14 @@ public class MinionsAPI {
 
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
+    private static final LocalizationService LOCAL = LocalizationService.getInstance();
+
     private final SaltApi saltApi;
     private final SSHMinionBootstrapper sshMinionBootstrapper;
     private final RegularMinionBootstrapper regularMinionBootstrapper;
     private final SaltKeyUtils saltKeyUtils;
+
+    private final AttestationManager attestationManager;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -120,14 +128,16 @@ public class MinionsAPI {
      * @param regularMinionBootstrapperIn regular bootstrapper
      * @param sshMinionBootstrapperIn ssh bootstrapper
      * @param saltKeyUtilsIn salt key utils instance
+     * @param attestationManagerIn the attestation manager
      */
     public MinionsAPI(SaltApi saltApiIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
                       RegularMinionBootstrapper regularMinionBootstrapperIn,
-                      SaltKeyUtils saltKeyUtilsIn) {
+                      SaltKeyUtils saltKeyUtilsIn, AttestationManager attestationManagerIn) {
         this.saltApi = saltApiIn;
         this.sshMinionBootstrapper = sshMinionBootstrapperIn;
         this.regularMinionBootstrapper = regularMinionBootstrapperIn;
         this.saltKeyUtils = saltKeyUtilsIn;
+        this.attestationManager = attestationManagerIn;
     }
 
     /**
@@ -149,6 +159,10 @@ public class MinionsAPI {
             asJson(withUserAndServer(this::availablePtfsForSystem)));
         post("/manager/api/systems/:sid/details/ptf/scheduleAction",
             asJson(withUserAndServer(this::schedulePtfAction)));
+        get("/manager/api/systems/:sid/details/coco/settings",
+            asJson(withUserAndServer(this::getCoCoSettings)));
+        post("/manager/api/systems/:sid/details/coco/settings",
+            asJson(withUserAndServer(this::setCoCoSettings)));
     }
 
     /**
@@ -467,4 +481,61 @@ public class MinionsAPI {
         return SessionSetHelper.lookupAndBind(request.raw(), setLabel + server.getId());
     }
 
+
+    /**
+     * Get current coco attestation settings for the current server
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return the current coco settings as json object
+     */
+    public String getCoCoSettings(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportCoCoAttestation()) {
+            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(false),
+                LOCAL.getMessage("system.audit.coco.unsupported")), new TypeToken<>() { });
+        }
+
+        CoCoSettingsJson jsonConfig = attestationManager.getConfig(user, server)
+            .map(cfg -> new CoCoSettingsJson(cfg))
+            .orElseGet(() -> new CoCoSettingsJson(true));
+
+        return json(GSON, response, ResultJson.success(jsonConfig), new TypeToken<>() { });
+    }
+
+
+    private String setCoCoSettings(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportCoCoAttestation()) {
+            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(false),
+                    LOCAL.getMessage("system.audit.coco.unsupported")), new TypeToken<>() { });
+        }
+
+        CoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), CoCoSettingsJson.class);
+        try {
+            ServerCoCoAttestationConfig updatedConfig = attestationManager.getConfig(user, server)
+                .map(cfg -> {
+                    cfg.setEnabled(jsonConfig.isEnabled());
+                    cfg.setEnvironmentType(jsonConfig.getEnvironmentType());
+                    cfg.setAttestOnBoot(jsonConfig.isAttestOnBoot());
+
+                    attestationManager.saveConfig(user, cfg);
+
+                    return cfg;
+                })
+                .orElseGet(() -> {
+                    return attestationManager.createConfig(user, server,
+                        jsonConfig.getEnvironmentType(),
+                        jsonConfig.isEnabled(),
+                        jsonConfig.isAttestOnBoot()
+                    );
+                });
+
+            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(updatedConfig),
+                LOCAL.getMessage("system.audit.coco.configUpdated")), new TypeToken<>() { });
+        }
+        catch (RuntimeException ex) {
+            return json(GSON, response, ResultJson.error(LOCAL.getMessage("system.audit.coco.configNotUpdated")),
+                new TypeToken<>() { });
+        }
+    }
 }
