@@ -11,13 +11,14 @@
 
 CREATE TABLE suseServerCoCoAttestationConfig
 (
-	id        NUMERIC NOT NULL
-	            CONSTRAINT suse_srvcocoatt_cnf_id_pk PRIMARY KEY,
-	server_id NUMERIC NOT NULL
-                    CONSTRAINT suse_srvcocoatt_cnf_sid_fk
-                      REFERENCES rhnServer (id) ON DELETE CASCADE,
-	enabled   BOOLEAN NOT NULL DEFAULT FALSE,
-	env_type  NUMERIC NULL
+    id                  NUMERIC NOT NULL
+                          CONSTRAINT suse_srvcocoatt_cnf_id_pk PRIMARY KEY,
+    server_id           NUMERIC NOT NULL
+                              CONSTRAINT suse_srvcocoatt_cnf_sid_fk
+                                REFERENCES rhnServer (id) ON DELETE CASCADE,
+    enabled             BOOLEAN NOT NULL DEFAULT FALSE,
+    env_type            NUMERIC NULL,
+    attest_on_boot      BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE UNIQUE INDEX suse_srvcocoatt_cnf_sid_uq
