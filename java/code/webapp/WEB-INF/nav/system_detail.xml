@@ -181,16 +181,24 @@
     <rhn-tab name="Deployment" url="/rhn/systems/details/virtualization/Deployment.do" acl="not system_is_virtual(); system_has_management_entitlement()"/>
   </rhn-tab>
 
-  <rhn-tab name="Audit" acl="system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)">
-    <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
-    <rhn-tab name="nav.system.audit.list_scans">
+  <rhn-tab name="Audit" acl="system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
+    <rhn-tab name="OpenSCAP" url="/rhn/systems/details/audit/ListScap.do">
       <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/audit/XccdfDetails.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/audit/RuleDetails.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/audit/XccdfDeleteConfirm.do</rhn-tab-url>
+      <rhn-tab name="nav.system.audit.list_scans">
+        <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
+        <rhn-tab-url>/rhn/systems/details/audit/XccdfDetails.do</rhn-tab-url>
+        <rhn-tab-url>/rhn/systems/details/audit/RuleDetails.do</rhn-tab-url>
+        <rhn-tab-url>/rhn/systems/details/audit/XccdfDeleteConfirm.do</rhn-tab-url>
+      </rhn-tab>
+      <rhn-tab name="nav.system.audit.schedule">
+        <rhn-tab-url>/rhn/systems/details/audit/ScheduleXccdf.do</rhn-tab-url>
+      </rhn-tab>
     </rhn-tab>
-    <rhn-tab name="nav.system.audit.schedule">
-      <rhn-tab-url>/rhn/systems/details/audit/ScheduleXccdf.do</rhn-tab-url>
+
+    <rhn-tab name="nav.system.coco" url="/rhn/manager/systems/details/coco/settings">
+      <rhn-tab name="nav.system.coco.settings">
+        <rhn-tab-url>/rhn/manager/systems/details/coco/settings</rhn-tab-url>
+      </rhn-tab>
     </rhn-tab>
   </rhn-tab>
 
