@@ -35,7 +35,8 @@ public class CoCoSettingsJson {
      * @param attestationConfig the current attestation configuration
      */
     public CoCoSettingsJson(ServerCoCoAttestationConfig attestationConfig) {
-        this(true, attestationConfig.isEnabled(), attestationConfig.getEnvironmentType(), attestationConfig.isAttestOnBoot());
+        this(true, attestationConfig.isEnabled(), attestationConfig.getEnvironmentType(),
+            attestationConfig.isAttestOnBoot());
     }
 
     /**
