@@ -2796,6 +2796,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="actionchain.jsp.deleted" xml:space="preserve">
         <source>Action Chain {0} deleted.</source>
         <context-group name="ctx">

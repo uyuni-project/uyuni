@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.listview.PageControl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -193,6 +194,28 @@ public class AttestationFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         return LOG;
+    }
+
+    /**
+     * Return the total number of reports available for a given server
+     * @param serverIn the server
+     * @return returns a list or reports
+     */
+    public long countCoCoAttestationReports(Server serverIn) {
+        return getSession()
+            .createQuery("SELECT COUNT(*) FROM ServerCoCoAttestationReport r WHERE r.server = :server", Long.class)
+            .setParameter("server", serverIn)
+            .uniqueResult();
+    }
+
+    /**
+     * Return a list of reports for a given server with filters
+     * @param serverIn the server
+     * @param pc page control object
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(Server serverIn, PageControl pc) {
+        return listCoCoAttestationReports(serverIn, new Date(0), pc.getStart() - 1, pc.getPageSize());
     }
 
     /**

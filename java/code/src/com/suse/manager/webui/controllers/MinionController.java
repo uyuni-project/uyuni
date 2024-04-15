@@ -155,6 +155,8 @@ public class MinionController {
     private static void initCoCoRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/coco/settings",
             withCsrfToken(withDocsLocale(withUserAndServer(MinionController::cocoSettings))), jade);
+        get("/manager/systems/details/coco/list",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::cocoListScans))), jade);
     }
 
     /**
@@ -610,6 +612,21 @@ public class MinionController {
         addActionChains(user, data);
         addCoCoMetadata(data);
         return new ModelAndView(data, "templates/minion/coco-settings.jade");
+    }
+
+    /**
+     * Handler for the page to list confidential computing attestation scans.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView cocoListScans(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        addActionChains(user, data);
+        return new ModelAndView(data, "templates/minion/coco-scans-list.jade");
     }
 
     private static void addCoCoMetadata(Map<String, Object> data) {
