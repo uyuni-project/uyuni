@@ -373,7 +373,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // randomize a bit to prevent an attestation storm on a mass reboot action
             int rand = ThreadLocalRandom.current().nextInt(60, 90);
             Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
-            attestationManager.scheduleAttestationAction(null, minion, scheduleAt);
+            attestationManager.scheduleAttestationActionFromSystem(minion.getOrg(), minion, scheduleAt);
         }
         catch (TaskomaticApiException e) {
             LOG.error("Unable to schedule attestation action. ", e);
