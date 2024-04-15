@@ -99,6 +99,9 @@ public class CoCoAttestationResult {
         return details;
     }
 
+    /**
+     * @return the time this result was attested
+     */
     @Column(name = "attested")
     public Date getAttested() {
         return attested;
@@ -154,6 +157,9 @@ public class CoCoAttestationResult {
         details = detailsIn;
     }
 
+    /**
+     * @param attestedIn the time to set
+     */
     public void setAttested(Date attestedIn) {
         attested = attestedIn;
     }
@@ -191,7 +197,7 @@ public class CoCoAttestationResult {
                 "report_id=" + report.getId() +
                 ", resultType=" + resultType +
                 ", status=" + status +
-                ", descrption=" + description +
+                ", description=" + description +
                 '}';
     }
 }
