@@ -131,7 +131,7 @@ Feature: Register and test a Containerized Proxy
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until event "Patch Update:" is completed
 
-  Scenario: Remove package from Salt minion
+  Scenario: Install a package on the Salt minion
     When I follow "Software" in the content area
     And I follow "Install"
     And I enter the package for "sle_minion" as the filtered package name
@@ -141,6 +141,15 @@ Feature: Register and test a Containerized Proxy
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+
+  Scenario: Remove package from the Salt minion
+    When I follow "Software" in the content area
+    And I follow "List / Remove"
+    And I enter the package for "sle_minion" as the filtered package name
+    And I click on the filter button
+    And I check the package for "sle_minion" in the list
+    And I click on "Remove Packages"
+    And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled for" text
     And I wait until event "Package Removal scheduled by admin" is completed
 
