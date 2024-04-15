@@ -28,6 +28,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.ByteArrayInputStream;
 import java.nio.file.Path;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +48,8 @@ class SNPGuestWrapperTest {
         when(runtime.exec(any(String[].class))).thenReturn(process);
 
         // Basic mocking of process
+        when(process.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
+        when(process.getErrorStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
         when(process.waitFor()).thenReturn(0);
 
         wrapper = new SNPGuestWrapper(runtime);
@@ -76,6 +79,15 @@ class SNPGuestWrapperTest {
         wrapper.verifyAttestation(Path.of("/srv/attestation/certs"), Path.of("/root/report.bin"));
 
         String expectedCommandLine = "/usr/bin/snpguest verify attestation /srv/attestation/certs /root/report.bin";
+        verify(runtime).exec(expectedCommandLine.split(" "));
+    }
+
+    @Test
+    @DisplayName("Generates the correct command line for displaying an attestation report")
+    void canDisplayReport() throws Exception {
+        wrapper.displayReport(Path.of("/root/report.bin"));
+
+        String expectedCommandLine = "/usr/bin/snpguest display report /root/report.bin";
         verify(runtime).exec(expectedCommandLine.split(" "));
     }
 }
