@@ -292,8 +292,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
   },
   'Uyuni' => {
-    # WORKAROUND until https://github.com/SUSE/spacewalk/issues/23053 will be done
-    'proxy_container' => 'openSUSE Leap 15.5 (x86_64)',
+    'proxy_container' => 'openSUSE Leap Micro 5.5 (x86_64)',
     'proxy_traditional' => 'openSUSE Leap 15.5 (x86_64)',
     'sle_minion' => 'openSUSE Leap 15.5 (x86_64)',
     'ssh_minion' => 'openSUSE Leap 15.5 (x86_64)',
@@ -1200,6 +1199,16 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-aarch64-updates
         opensuse_leap15_5-uyuni-client-devel-aarch64
       ],
+    'leap-micro5.5-x86_64' => # CHECKED
+      %w[
+        opensuse_micro5_5-x86_64
+        opensuse_micro5_5-x86_64-sle-updates
+      ],
+    'leap-micro5.5-client-tools-x86_64' => # CHECKED
+      %w[
+        opensuse_micro5_5-uyuni-client-x86_64
+        opensuse_micro5_5-uyuni-client-devel-x86_64
+      ],
     'suse-microos-5.1' => # CHECKED
       %w[
         suse-microos-5.1-pool-x86_64
@@ -1348,6 +1357,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_leap15_5-x86_64-non-oss-updates' => 120,
   'opensuse_leap15_5-x86_64-sle-updates' => 5400,
   'opensuse_leap15_5-x86_64-updates' => 60,
+  'opensuse_micro5_5-uyuni-client-x86_64' => 60,
+  'opensuse_micro5_5-uyuni-client-devel-x86_64' => 60,
+  'opensuse_micro5_5-x86_64' => 240,
+  'opensuse_micro5_5-x86_64-sle-updates' => 5400,
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-x86_64' => 840,

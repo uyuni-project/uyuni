@@ -22,7 +22,6 @@ Feature: Setup containerized proxy
     When I perform a full salt minion cleanup on "proxy"
     And I reboot the "proxy" host through SSH, waiting until it comes back
 
-@skip
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -34,14 +33,9 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-# workaround for bsc#1218146
-# Once we start using Leap Micro #23811 in Uyuni Proxy, we need to remove this Cucumber tag
-@susemanager
-@skip
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
 
-@skip
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
 
