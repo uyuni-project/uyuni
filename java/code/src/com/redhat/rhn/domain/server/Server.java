@@ -2408,6 +2408,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return <code>true</code> if OS supports Confidential Computing Attestation
+     *
+     * @return <code>true</code> if OS supports CoCo Attestation
+     */
+    public boolean doesOsSupportCoCoAttestation() {
+        return (isSLES15() && getRelease().equals("15.6")) ||
+            (isLeap15() && getRelease().equals("15.6"));
+    }
+
+    /**
      * @return true if the installer type is of SLES 10
      */
     boolean isSLES10() {
