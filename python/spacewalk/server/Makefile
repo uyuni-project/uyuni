@@ -11,7 +11,6 @@ FILES		= __init__
 SPACEWALK_FILES		= __init__ \
 		  apacheServer apacheHandler apacheAuth apacheRequest \
                   apacheUploadServer \
-		  configFilesHandler \
 		  rhnAuthPAM rhnCapability rhnChannel \
                   rhnDependency \
                   rhnAction \
@@ -21,6 +20,6 @@ SPACEWALK_FILES		= __init__ \
                   suseEula
 SUBDIRS		= rhnSQL rhnServer action \
 			  handlers importlib action_extra_data \
-			  config_common repomd
+			  repomd
 
 include $(TOP)/Makefile.defs
