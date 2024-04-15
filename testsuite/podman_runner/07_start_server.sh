@@ -19,14 +19,14 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts_suse.conf:/etc/tomcat/conf.d/tomcat_java_opts_suse.conf \
     -v ${src_dir}/java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
-    -v /tmp/test-all-in-one:/tmp \
+    -v /tmp/testing:/tmp \
     --cgroupns=host \
-    -h uyuni-server-all-in-one-test \
+    -h uyuni-server \
     -p 8443:443 \
     -p 8080:80 \
     -p 4505:4505 \
     -p 4506:4506 \
-    -d --name=uyuni-server-all-in-one-test \
-    --network uyuni-network-1 \
+    -d --name=uyuni-server \
+    --network uyuni-network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
 

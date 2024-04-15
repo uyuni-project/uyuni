@@ -12,7 +12,7 @@ if [ -z "${UYUNI_VERSION}" ];then
 fi
 
 echo "Killing old containers"
-containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server-all-in-one-test controller-test"
+containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server uyuni-controller"
 for i in ${containers};do
     sudo -i podman kill ${i}
 done
@@ -23,12 +23,12 @@ for i in ${containers};do
 done
 
 echo "Force remove containers"
-containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server-all-in-one-test controller-test"
+containers="deblike_minion rhlike_minion sle_minion opensusessh uyuni-server uyuni-controller"
 for i in ${containers};do
     sudo -i podman rm ${i}
 done
 
 echo "Remove network"
-sudo -i podman network rm uyuni-network-1
+sudo -i podman network rm uyuni-network
 
 sleep 10
