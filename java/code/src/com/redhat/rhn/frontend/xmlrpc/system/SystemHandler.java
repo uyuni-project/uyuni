@@ -5254,23 +5254,26 @@ public class SystemHandler extends BaseHandler {
      * Configure Confidential Compute Attestation for the given system
      * @param loggedInUser the user
      * @param sid the ID of the system
-     * @param enabled set the endabled state for Confidential Compute Attestation
+     * @param enabled set the enabled state for Confidential Compute Attestation
      * @param environmentType set the environment type of the system
+     * @param attestOnBoot set if the attestation should be performed on system boot
      * @return Returns 1 if successful, exception otherwise.
      *
      * @apidoc.doc Configure Confidential Compute Attestation for the given system
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
-     * @apidoc.param #param_desc("boolean", "enabled", "set the endabled state for Confidential Compute Attestation")
+     * @apidoc.param #param_desc("boolean", "enabled", "set the enabled state for Confidential Compute Attestation")
      * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
      *   #options()
      *     #item("NONE")
      *     #item("KVM_AMD_EPYC_MILAN")
      *     #item("KVM_AMD_EPYC_GENOA")
      *   #options_end()
+     * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
      * @apidoc.returntype #return_int_success()
      */
-    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType) {
+    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType,
+                                            Boolean attestOnBoot) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
         minionServer.getOptCocoAttestationConfig()
@@ -5278,6 +5281,7 @@ public class SystemHandler extends BaseHandler {
                         c -> {
                             c.setEnabled(enabled);
                             c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
+                            c.setAttestOnBoot(attestOnBoot);
                         },
                         () -> attestationManager.createConfig(loggedInUser, minionServer,
                                 CoCoEnvironmentType.valueOf(environmentType), enabled));
