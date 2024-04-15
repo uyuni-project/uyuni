@@ -1,0 +1,2 @@
+- Remove hardcoded ARG PRODUCT_VERSION and let the container push 
+  script control it
