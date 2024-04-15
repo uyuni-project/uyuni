@@ -214,9 +214,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final AttestationManager attestationManager = new AttestationManager();
     private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper =
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper

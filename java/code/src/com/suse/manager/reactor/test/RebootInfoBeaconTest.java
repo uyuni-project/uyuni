@@ -24,6 +24,7 @@ import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -62,18 +63,20 @@ public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
         SaltService saltService = createSaltService();
         SaltServerActionService saltServerActionService = createSaltServerActionService(saltService, saltService);
         SaltUtils saltUtils = new SaltUtils(saltService, saltService);
+        AttestationManager attMgr = new AttestationManager();
         CloudPaygManager paygMgr = new CloudPaygManager();
         reactor = new SaltReactor(
             saltService,
             saltService,
             saltServerActionService,
             saltUtils,
-            paygMgr
+            paygMgr,
+            attMgr
         );
     }
 
     @Test
-    public void testRebootInfoEvent() throws Exception {
+    public void testRebootInfoEvent() {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setMinionId("slemicro100001");
         minion1.setLastBoot(System.currentTimeMillis() / 1000);

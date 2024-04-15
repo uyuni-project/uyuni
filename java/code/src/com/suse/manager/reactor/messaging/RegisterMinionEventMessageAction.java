@@ -126,6 +126,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private final SystemEntitlementManager entitlementManager;
 
     private final CloudPaygManager cloudPaygManager;
+    private final AttestationManager attestationManager;
 
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
@@ -136,11 +137,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param systemQueryIn systemQuery instance for gathering data from a system.
      * @param saltApiIn saltApi instance for gathering data from a system.
      * @param paygMgrIn {@link CloudPaygManager} instance
+     * @param attMgrIn {@link AttestationManager} instance
      */
-    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
+    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn,
+                                            AttestationManager attMgrIn) {
         saltApi = saltApiIn;
         systemQuery = systemQueryIn;
         cloudPaygManager = paygMgrIn;
+        attestationManager = attMgrIn;
         VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
@@ -356,7 +360,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param minion the minion
      */
     private void scheduleCoCoAttestation(MinionServer minion) {
-        AttestationManager mgr = new AttestationManager();
         if (minion.getOptCocoAttestationConfig()
                 .filter(ServerCoCoAttestationConfig::isEnabled)
                 .filter(ServerCoCoAttestationConfig::isAttestOnBoot)
@@ -370,7 +373,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // randomize a bit to prevent an attestation storm on a mass reboot action
             int rand = ThreadLocalRandom.current().nextInt(60, 90);
             Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
-            mgr.scheduleAttestationAction(null, minion, scheduleAt);
+            attestationManager.scheduleAttestationAction(null, minion, scheduleAt);
         }
         catch (TaskomaticApiException e) {
             LOG.error("Unable to schedule attestation action. ", e);
