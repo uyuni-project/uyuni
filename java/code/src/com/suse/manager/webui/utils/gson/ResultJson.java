@@ -108,6 +108,18 @@ public class ResultJson<T> {
     }
 
     /**
+     * Create a success result with the given data.
+     *
+     * @param dataIn the data
+     * @param messagesIn the messages
+     * @param <T> the type of data
+     * @return a ResultJson
+     */
+    public static <T> ResultJson<T> success(T dataIn, String... messagesIn) {
+        return new ResultJson<>(true, Arrays.asList(messagesIn), null, dataIn);
+    }
+
+    /**
      * Instantiates a new Json result.
      *
      * @param successIn  the success

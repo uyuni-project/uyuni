@@ -132,6 +132,28 @@ public class AttestationManager {
         return factory.createConfigForServer(serverIn, typeIn, enabledIn, attestOnBootIn);
     }
 
+
+    /**
+     * Retrieves an existing configuration
+     * @param userIn the user
+     * @param serverIn the server
+     * @return returns the configuration, if present
+     */
+    public Optional<ServerCoCoAttestationConfig> getConfig(User userIn, Server serverIn) {
+        ensureSystemAccessible(userIn, serverIn);
+        return factory.lookupConfigByServerId(serverIn.getId());
+    }
+
+    /**
+     * Saves the specified configuration
+     * @param userIn the user
+     * @param configIn the configuration
+     */
+    public void saveConfig(User userIn, ServerCoCoAttestationConfig configIn) {
+        ensureSystemAccessible(userIn, configIn.getServer());
+        factory.save(configIn);
+    }
+
     /**
      * Initialize a new Attestation Report with defaults from the Server Configuration
      * @param userIn the user
