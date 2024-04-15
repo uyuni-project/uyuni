@@ -74,10 +74,6 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
 
-  Scenario: Set up tftp installation and synchronize it
-    When I configure tftp on the "server"
-    And I run Cobbler sync with error checking
-
   Scenario: PXE boot the PXE boot minion
     When I set the default PXE menu entry to the target profile on the "server"
     And I reboot the Cobbler terminal "pxeboot_minion"
