@@ -64,6 +64,7 @@ public class GlobalInstanceHolder {
     public static final SystemQuery SYSTEM_QUERY = SALT_SERVICE;
     public static final SaltApi SALT_API = SALT_SERVICE;
     public static final CloudPaygManager PAYG_MANAGER = new CloudPaygManager();
+    public static final AttestationManager ATTESTATION_MANAGER = new AttestationManager();
     public static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
     public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
     public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
@@ -80,9 +81,9 @@ public class GlobalInstanceHolder {
     public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SALT_API);
     public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
     public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =
-            new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER);
+            new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER, ATTESTATION_MANAGER);
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER =
-            new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER);
+            new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER, ATTESTATION_MANAGER);
     public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
             new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
@@ -93,7 +94,6 @@ public class GlobalInstanceHolder {
             ServerGroupFactory.SINGLETON, SALT_API);
     public static final MigrationManager MIGRATION_MANAGER = new MigrationManager(SERVER_GROUP_MANAGER);
     public static final WebsocketHeartbeatService WEBSOCKET_SESSION_MANAGER = new WebsocketHeartbeatService();
-    public static final AttestationManager ATTESTATION_MANAGER = new AttestationManager();
 
     public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
     public static final ThrottlingService THROTTLING_SERVICE = new ThrottlingService();

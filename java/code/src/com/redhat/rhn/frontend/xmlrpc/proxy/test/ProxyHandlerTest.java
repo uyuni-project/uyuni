@@ -37,6 +37,7 @@ import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
@@ -65,10 +66,11 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final CloudPaygManager paygManager = new CloudPaygManager();
-    private final RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(
-            systemQuery, saltApi, paygManager);
+    private final AttestationManager attestationManager = new AttestationManager();
+    private final RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private final SSHMinionBootstrapper sshMinionBootstrapper =
-            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private final XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
