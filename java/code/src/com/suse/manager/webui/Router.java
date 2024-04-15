@@ -127,7 +127,7 @@ public class Router implements SparkApplication {
         ProxyController proxyController = new ProxyController(systemManager);
         SaltSSHController saltSSHController = new SaltSSHController(saltApi);
         NotificationMessageController notificationMessageController =
-                new NotificationMessageController(systemQuery, saltApi, paygManager);
+                new NotificationMessageController(systemQuery, saltApi, paygManager, attestationManager);
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
                 saltKeyUtils, attestationManager);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);

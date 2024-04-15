@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
@@ -94,6 +95,7 @@ public class SaltReactor {
     private final SaltServerActionService saltServerActionService;
     private final SaltUtils saltUtils;
     private final CloudPaygManager paygMgr;
+    private final AttestationManager attestationMgr;
 
     // The event stream object
     private EventStream eventStream;
@@ -107,17 +109,19 @@ public class SaltReactor {
      * Processing salt events
      * @param saltApiIn instance to talk to salt
      * @param systemQueryIn instance to get system information.
-     * @param saltServerActionServiceIn
-     * @param saltUtilsIn
-     * @param paygMgrIn
+     * @param saltServerActionServiceIn the salt server action sevice
+     * @param saltUtilsIn the salt utils
+     * @param paygMgrIn the payg manager
+     * @param attestationMgrIn the attestation manager
      */
     public SaltReactor(SaltApi saltApiIn, SystemQuery systemQueryIn, SaltServerActionService saltServerActionServiceIn,
-                       SaltUtils saltUtilsIn, CloudPaygManager paygMgrIn) {
+                       SaltUtils saltUtilsIn, CloudPaygManager paygMgrIn, AttestationManager attestationMgrIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
         this.saltServerActionService = saltServerActionServiceIn;
         this.saltUtils = saltUtilsIn;
         this.paygMgr = paygMgrIn;
+        this.attestationMgr = attestationMgrIn;
     }
 
     /**
@@ -127,7 +131,7 @@ public class SaltReactor {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
 
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi, paygMgr),
+        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi, paygMgr, attestationMgr),
                 RegisterMinionEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
@@ -224,7 +228,7 @@ public class SaltReactor {
      */
     private Stream<EventMessage> eventToMessages(SystemIdGenerateEvent systemIdGenerateEvent) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Generate systemid file for minion: {}", (String) systemIdGenerateEvent.getData().get("id"));
+            LOG.debug("Generate systemid file for minion: {}", systemIdGenerateEvent.getData().get("id"));
         }
         return of(new SystemIdGenerateEventMessage((String) systemIdGenerateEvent.getData().get("id")));
     }
@@ -328,7 +332,7 @@ public class SaltReactor {
             minion.ifPresent(
                 m -> {
                     Boolean rebootRequired = (Boolean) beaconEvent.getData().get("reboot_needed");
-                    Date rebootRequiredAfter = rebootRequired ? new Date() : null;
+                    Date rebootRequiredAfter = Boolean.TRUE.equals(rebootRequired) ? new Date() : null;
                     m.setRebootRequiredAfter(rebootRequiredAfter);
                     SystemManager.updateSystemOverview(m);
                 }

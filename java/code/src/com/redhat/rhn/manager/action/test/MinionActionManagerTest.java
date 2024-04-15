@@ -107,9 +107,11 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
     private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final AttestationManager attestationManager = new AttestationManager();
     private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper =
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper

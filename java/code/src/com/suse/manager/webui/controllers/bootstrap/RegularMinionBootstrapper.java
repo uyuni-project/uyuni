@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -50,9 +51,11 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
      * @param systemQueryIn systemQuery to use
      * @param saltApiIn saltApi to use
      * @param paygMgrIn {@link CloudPaygManager} to use
+     * @param attMgrIn the attestation manager to use
      */
-    public RegularMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
-        super(systemQueryIn, saltApiIn, paygMgrIn);
+    public RegularMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn,
+                                     AttestationManager attMgrIn) {
+        super(systemQueryIn, saltApiIn, paygMgrIn, attMgrIn);
     }
 
     @Override
