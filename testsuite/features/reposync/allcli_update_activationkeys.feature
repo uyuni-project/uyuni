@@ -115,7 +115,8 @@ Feature: Update activation keys
 @scc_credentials
 @susemanager
 @proxy
-  Scenario: Update the SLE Proxy key with synced base product
+@containerized_server
+  Scenario: Update the SLE Micro Proxy Host key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
@@ -130,6 +131,7 @@ Feature: Update activation keys
 
 @uyuni
 @proxy
+@skip_if_containerized_server
   Scenario: Update the openSUSE Leap Proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
@@ -150,7 +152,7 @@ Feature: Update activation keys
 @containerized_server
 @uyuni
 @proxy
-  Scenario: Update the openSUSE Leap Micro 5.5 Proxy key for the container proxy
+  Scenario: Update the openSUSE Leap Micro 5.5 Proxy Host key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
