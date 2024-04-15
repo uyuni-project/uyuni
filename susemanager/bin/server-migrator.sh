@@ -36,7 +36,7 @@ zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/${
 zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/oss repo-update
 zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/${NEW_VERSION_ID}/repo/non-oss repo-non-oss
 zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/non-oss/ repo-update-non-oss
-zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ uyuni-server-stable
+zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ server-stable
 zypper ar -n "Update repository with updates from SUSE Linux Enterprise" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/sle repo-sle-update
 zypper ar -n "Update repository of openSUSE Backports" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/backports/ repo-backports-update
 zypper ref

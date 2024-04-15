@@ -21,12 +21,12 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \
     --cgroupns=host \
-    -h uyuni-server \
+    -h server \
     -p 8443:443 \
     -p 8080:80 \
     -p 4505:4505 \
     -p 4506:4506 \
-    -d --name=uyuni-server \
-    --network uyuni-network \
+    -d --name=server \
+    --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
 
