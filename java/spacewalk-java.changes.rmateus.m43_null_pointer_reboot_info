@@ -1,0 +1,1 @@
+- Prevent NPE when processing reboot needed beacon event(bsc#1216063)
