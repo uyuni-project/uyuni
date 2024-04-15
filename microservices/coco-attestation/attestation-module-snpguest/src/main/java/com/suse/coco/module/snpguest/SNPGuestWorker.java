@@ -16,6 +16,7 @@
 package com.suse.coco.module.snpguest;
 
 import com.suse.coco.model.AttestationResult;
+import com.suse.coco.module.snpguest.execution.ProcessOutput;
 import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
@@ -93,25 +94,36 @@ public class SNPGuestWorker implements AttestationWorker {
                 Path reportPath = workingDir.getReportPath();
 
                 // Download the VCEK for this cpu model
-                int exitCode = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
-                if (exitCode != 0 || !workingDir.isVCEKAvailable()) {
-                    LOGGER.error("Unable to retrieve VCEK file. SNPGuest return {}", exitCode);
+                ProcessOutput processOutput = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
+                if (processOutput.getExitCode() != 0 || !workingDir.isVCEKAvailable()) {
+                    LOGGER.error("Unable to retrieve VCEK file. SNPGuest return {}", processOutput.getExitCode());
                     return false;
                 }
 
                 // Verify the certificates
-                exitCode = snpGuest.verifyCertificates(certsPath);
-                if (exitCode != 0) {
-                    LOGGER.error("Unable to verify the validity of the certificates. SNPGuest return {}", exitCode);
+                processOutput = snpGuest.verifyCertificates(certsPath);
+                if (processOutput.getExitCode() != 0) {
+                    LOGGER.error("Unable to verify the validity of the certificates. SNPGuest return {}",
+                        processOutput.getExitCode());
                     return false;
                 }
 
                 // Verify the actual attestation report
-                exitCode = snpGuest.verifyAttestation(certsPath, reportPath);
-                if (exitCode != 0) {
-                    LOGGER.error("Unable to verify the attestation report. SNPGuest return {}", exitCode);
+                processOutput = snpGuest.verifyAttestation(certsPath, reportPath);
+                if (processOutput.getExitCode() != 0) {
+                    LOGGER.error("Unable to verify the attestation report. SNPGuest return {}",
+                        processOutput.getExitCode());
                     return false;
                 }
+
+                processOutput = snpGuest.displayReport(reportPath);
+                if (processOutput.getExitCode() != 0) {
+                    LOGGER.error("Unable to get the attestation report in human readable format. SNPGuest return {}",
+                        processOutput.getExitCode());
+                    return false;
+                }
+
+                result.setDetails(processOutput.getStandardOutput());
             }
 
             return true;
