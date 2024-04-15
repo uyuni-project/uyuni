@@ -37,6 +37,7 @@ public class ServerCoCoAttestationConfig {
     private Server server;
     private boolean enabled;
     private CoCoEnvironmentType environmentType;
+    private boolean attestOnBoot;
 
     /**
      * Constructor
@@ -44,6 +45,7 @@ public class ServerCoCoAttestationConfig {
     public ServerCoCoAttestationConfig() {
         enabled = false;
         environmentType = CoCoEnvironmentType.NONE;
+        attestOnBoot = false;
     }
 
     /**
@@ -84,6 +86,11 @@ public class ServerCoCoAttestationConfig {
         return environmentType;
     }
 
+    @Column(name = "attest_on_boot")
+    public boolean isAttestOnBoot() {
+        return attestOnBoot;
+    }
+
     /**
      * Use setServer() instead
      * @param idIn set the id
@@ -111,6 +118,10 @@ public class ServerCoCoAttestationConfig {
      */
     public void setEnvironmentType(CoCoEnvironmentType environmentTypeIn) {
         environmentType = environmentTypeIn;
+    }
+
+    public void setAttestOnBoot(boolean attestOnBootIn) {
+        this.attestOnBoot = attestOnBootIn;
     }
 
     @Override
