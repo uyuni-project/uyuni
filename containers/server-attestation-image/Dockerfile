@@ -18,7 +18,6 @@ ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
-ARG PRODUCT_VERSION="2024.02"
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.server-attestation
