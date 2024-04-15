@@ -44,10 +44,10 @@ public class InputValidatorTest  {
     private static final String PORT_ERROR_MESSAGE = "Port must be a number within range" +
             " 1-65535.";
 
-    private SaltApi saltApi = new TestSaltApi();
-    private SystemQuery systemQuery = new TestSystemQuery();
-    private CloudPaygManager paygManager = new CloudPaygManager();
-    private AttestationManager attMgr = new AttestationManager();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final AttestationManager attMgr = new AttestationManager();
 
     /**
      * Test the check for required fields.

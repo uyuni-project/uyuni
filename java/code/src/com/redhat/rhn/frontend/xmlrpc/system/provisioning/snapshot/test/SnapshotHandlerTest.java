@@ -50,19 +50,19 @@ import java.util.Set;
  */
 public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
-    private SaltApi saltApi = new TestSaltApi();
-    private SystemQuery systemQuery = new TestSystemQuery();
-    private CloudPaygManager paygManager = new CloudPaygManager();
-    private AttestationManager attestationManager = new AttestationManager();
-    private RegularMinionBootstrapper regularMinionBootstrapper =
+    private final SaltApi saltApi = new TestSaltApi();
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final AttestationManager attestationManager = new AttestationManager();
+    private final RegularMinionBootstrapper regularMinionBootstrapper =
             new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper =
+    private final SSHMinionBootstrapper sshMinionBootstrapper =
             new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
-    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+    private final XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SnapshotHandler handler = new SnapshotHandler(xmlRpcSystemHelper);
+    private final SnapshotHandler handler = new SnapshotHandler(xmlRpcSystemHelper);
 
     private ServerSnapshot generateSnapshot(Server server) {
         ServerSnapshot snap = new ServerSnapshot();
