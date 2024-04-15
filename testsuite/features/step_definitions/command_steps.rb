@@ -644,6 +644,7 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
+# TODO: remove this step definition when we deprecate the non-containerized components
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
   raise ScriptError, "This step doesn't support #{host}" unless %w[server proxy].include? host
 
