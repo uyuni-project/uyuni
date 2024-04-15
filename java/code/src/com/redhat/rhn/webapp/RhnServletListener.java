@@ -48,7 +48,7 @@ import javax.servlet.ServletContextListener;
  */
 public class RhnServletListener implements ServletContextListener {
 
-    private static Logger log = LogManager.getLogger(RhnServletListener.class);
+    private static final Logger LOG = LogManager.getLogger(RhnServletListener.class);
 
     private boolean hibernateStarted = false;
     private boolean loggingStarted = false;
@@ -81,15 +81,15 @@ public class RhnServletListener implements ServletContextListener {
     }
 
     private void logStart(String system) {
-        if (log.isDebugEnabled()) {
-            log.debug("{} started", system);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("{} started", system);
         }
         loggingStarted = true;
     }
 
     private void logStop(String system) {
-        if (log.isDebugEnabled()) {
-            log.debug("{}Starting ", system);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("{}Starting ", system);
         }
         loggingStarted = false;
     }
@@ -139,18 +139,18 @@ public class RhnServletListener implements ServletContextListener {
             logStart("Salt reactor");
         }
 
-        log.debug("Starting upgrade check");
+        LOG.debug("Starting upgrade check");
         executeUpgradeStep();
 
-        log.debug("Executing startup tasks");
+        LOG.debug("Executing startup tasks");
         executeStartupTasks();
     }
 
     private void executeUpgradeStep() {
-        log.debug("calling UpgradeCommand.");
+        LOG.debug("calling UpgradeCommand.");
         UpgradeCommand cmd = new UpgradeCommand();
         cmd.store();
-        log.debug("UpgradeCommand done.");
+        LOG.debug("UpgradeCommand done.");
     }
 
     /**
@@ -186,10 +186,10 @@ public class RhnServletListener implements ServletContextListener {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                log.info("deregistering jdbc driver: {}", driver);
+                LOG.info("deregistering jdbc driver: {}", driver);
             }
             catch (SQLException e) {
-                log.warn("Error deregistering driver {}", driver);
+                LOG.warn("Error deregistering driver {}", driver);
             }
         }
     }
