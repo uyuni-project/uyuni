@@ -19,7 +19,7 @@ Name:           uyuni-coco-attestation
 Version:        5.0.2
 Release:        0
 Summary:        Uyuni utility for Confidential Computing Attestation
-License:        Apache-2.0
+License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://www.uyuni-project.org
 Source0:        %{name}-%{version}.tar.gz
@@ -126,6 +126,7 @@ cd -
 %attr(755, root, root) %{_sbindir}/coco-attestation
 %{_prefix}/share/coco-attestation/conf/daemon.conf
 %{_prefix}/share/coco-attestation/classes/log4j2.xml
+%license LICENSE
 
 # Exclude all modules jars, will be part of their specific packages
 %exclude %{_prefix}/share/coco-attestation/lib/attestation-module-*
@@ -136,8 +137,10 @@ cd -
 %dir /usr/share/coco-attestation/certs/
 %{_prefix}/share/coco-attestation/lib/attestation-module-snpguest.jar
 %{_prefix}/share/coco-attestation/certs/*
+%license LICENSE
 %endif
 
 %files javadoc -f .mfiles-javadoc
+%license LICENSE
 
 %changelog
