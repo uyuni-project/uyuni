@@ -58,7 +58,8 @@ public class RhnServletListener implements ServletContextListener {
             GlobalInstanceHolder.SALT_API, GlobalInstanceHolder.SYSTEM_QUERY,
             GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
             GlobalInstanceHolder.SALT_UTILS,
-            GlobalInstanceHolder.PAYG_MANAGER);
+            GlobalInstanceHolder.PAYG_MANAGER,
+            GlobalInstanceHolder.ATTESTATION_MANAGER);
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for
