@@ -324,7 +324,9 @@ public class SaltReactor {
             MinionServerFactory.findByMinionId(beaconEvent.getMinionId()).ifPresent(
                 m -> {
                     Boolean rebootRequired = (Boolean) beaconEvent.getData().get("reboot_needed");
-                    Date rebootRequiredAfter = rebootRequired ? new Date() : null;
+                    Date rebootRequiredAfter = Optional.ofNullable(rebootRequired)
+                                                       .map(s -> s ? new Date() : null)
+                                                       .orElse(null);
                     m.setRebootRequiredAfter(rebootRequiredAfter);
                 }
             );
