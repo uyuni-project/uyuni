@@ -9544,6 +9544,12 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="coco.resultType.azure_disk_encrypted.description">
         <source>Disks encrypted Azure attestation</source>
       </trans-unit>
+      <trans-unit id="system.audit.coco.unsupported">
+        <source>This system does not have any Confidential Computing capability.</source>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configUpdated">
+        <source>The Confidential Computing configuration for this system has been updated successfully.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
