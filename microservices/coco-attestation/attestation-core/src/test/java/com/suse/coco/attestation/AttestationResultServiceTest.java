@@ -107,7 +107,7 @@ class AttestationResultServiceTest {
 
         verify(session).selectOne("AttestationResult.selectForUpdate", 5L);
         verify(worker).process(session, attestationResult);
-        verify(session).update("AttestationResult.updateStatus", attestationResult);
+        verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
         verify(session).close();
 
@@ -137,7 +137,7 @@ class AttestationResultServiceTest {
 
         verify(session).selectOne("AttestationResult.selectForUpdate", 5L);
         verify(worker).process(session, attestationResult);
-        verify(session).update("AttestationResult.updateStatus", attestationResult);
+        verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
         verify(session).close();
 

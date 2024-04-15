@@ -15,6 +15,7 @@
 
 package com.suse.coco.module.snpguest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.never;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.model.AttestationStatus;
+import com.suse.coco.module.snpguest.execution.ProcessOutput;
 import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
 import com.suse.coco.module.snpguest.io.VerificationDirectory;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
@@ -182,7 +184,7 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Fetching fails
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(-1);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(-1));
 
         assertFalse(worker.process(session, result));
 
@@ -218,7 +220,7 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Fetch works but the file does not exist
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(false);
 
         assertFalse(worker.process(session, result));
@@ -255,11 +257,11 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Fail the certificate verification
-        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(-1);
+        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(new ProcessOutput(-1));
 
         assertFalse(worker.process(session, result));
 
@@ -298,14 +300,14 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Pass the certificate verification
-        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(0);
+        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(new ProcessOutput(0));
 
         // Fail the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(-1);
+        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(-1));
 
         assertFalse(worker.process(session, result));
 
@@ -345,16 +347,20 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Pass the certificate verification
-        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(0);
+        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(new ProcessOutput(0));
 
         // Pass the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
+
+        // Retrieve the report
+        when(snpWrapper.displayReport(MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0, "dummy-report", ""));
 
         assertTrue(worker.process(session, result));
+        assertEquals("dummy-report", result.getDetails());
 
         // Verify the required files have been created and deleted
         verify(directoryProvider).createDirectoryFor(1L, report);
@@ -373,5 +379,8 @@ class SNPGuestWorkerTest {
 
         // Verify the attestation verification have happened
         verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+
+        // Verify the report display have happened
+        verify(snpWrapper).displayReport(MOCK_REPORT_FILE);
     }
 }
