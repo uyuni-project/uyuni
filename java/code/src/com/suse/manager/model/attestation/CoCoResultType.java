@@ -14,22 +14,24 @@
  */
 package com.suse.manager.model.attestation;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
 import java.util.Arrays;
 
 public enum CoCoResultType {
-    NONE(0, "Result Type not found"),
-    SEV_SNP(1, "AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)"),
-    SECURE_BOOT(2, "Secure Boot enabled"),
-    AZURE_SEV_SNP(3, "AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP) Azure attestation"),
-    AZURE_SECURE_BOOT(4, "Secure Boot Azure attestation"),
-    AZURE_DISK_ENCRYPTED(5, "Disks encrypted Azure attestation");
+    NONE(0),
+    SEV_SNP(1),
+    SECURE_BOOT(2),
+    AZURE_SEV_SNP(3),
+    AZURE_SECURE_BOOT(4),
+    AZURE_DISK_ENCRYPTED(5);
 
     private final int value;
-    private final String description;
+    private final String descriptionKey;
 
-    CoCoResultType(int valueIn, String descriptionIn) {
+    CoCoResultType(int valueIn) {
         value = valueIn;
-        description = descriptionIn;
+        descriptionKey = "coco.resultType." + name().toLowerCase() + ".description";
     }
 
     public int getValue() {
@@ -40,7 +42,7 @@ public enum CoCoResultType {
      * @return returns a description for the result type
      */
     public String getTypeDescription() {
-        return description;
+        return LocalizationService.getInstance().getMessage(descriptionKey);
     }
 
     /**
