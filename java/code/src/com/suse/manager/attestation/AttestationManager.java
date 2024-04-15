@@ -115,8 +115,21 @@ public class AttestationManager {
      */
     public ServerCoCoAttestationConfig createConfig(User userIn, Server serverIn, CoCoEnvironmentType typeIn,
                                                     boolean enabledIn) {
+        return createConfig(userIn, serverIn, typeIn, enabledIn, false);
+    }
+        /**
+         * Create a Attestation configuration for a given server
+         * @param userIn the user
+         * @param serverIn the server
+         * @param typeIn the environment type
+         * @param enabledIn should the config been enabled
+         * @param attestOnBootIn should the attestation be performed on system boot
+         * @return returns the configuration
+         */
+    public ServerCoCoAttestationConfig createConfig(User userIn, Server serverIn, CoCoEnvironmentType typeIn,
+                                                    boolean enabledIn, boolean attestOnBootIn) {
         ensureSystemAccessible(userIn, serverIn);
-        return factory.createConfigForServer(serverIn, typeIn, enabledIn);
+        return factory.createConfigForServer(serverIn, typeIn, enabledIn, attestOnBootIn);
     }
 
     /**
