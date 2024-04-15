@@ -98,7 +98,7 @@ public class AttestationResultService {
                 result.setAttested(null);
             }
 
-            session.update("AttestationResult.updateStatus", result);
+            session.update("AttestationResult.update", result);
             session.commit();
             LOGGER.info("AttestationResult with id {} completed - result is {}", id, result.getStatus());
         }
