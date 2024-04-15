@@ -9526,6 +9526,36 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="bootstrap.minion.error.payg.byosregistered">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin => Setup Wizard => Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
       </trans-unit>
+      <trans-unit id="coco.environment.none.description">
+        <source>None</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description">
+        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description">
+        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.azure.description">
+        <source>Azure</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.none.description">
+        <source>Result Type not found</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.description">
+        <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.description">
+        <source>Secure Boot enabled</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.azure_sev_snp.description">
+        <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP) Azure attestation</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.azure_secure_boot.description">
+        <source>Secure Boot Azure attestation</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.azure_disk_encrypted.description">
+        <source>Disks encrypted Azure attestation</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
