@@ -22,8 +22,6 @@ Feature: Setup containerized proxy
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-# TODO: Remove this tag, once bsc#1222628 is fixed
-@skip
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -35,13 +33,9 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-# TODO: Remove this tag, once bsc#1222628 is fixed
-@skip
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
 
-# TODO: Remove this tag, once bsc#1222628 is fixed
-@skip
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
 
