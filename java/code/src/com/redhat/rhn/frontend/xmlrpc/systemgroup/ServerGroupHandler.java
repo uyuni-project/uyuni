@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -163,7 +164,7 @@ public class ServerGroupHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
-    public List listSystems(User loggedInUser, String systemGroupName) {
+    public List<Server> listSystems(User loggedInUser, String systemGroupName) {
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return group.getServers();
     }

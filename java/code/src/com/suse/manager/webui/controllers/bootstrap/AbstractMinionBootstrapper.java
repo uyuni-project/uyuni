@@ -48,6 +48,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.results.SSHResult;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
@@ -276,9 +277,9 @@ public abstract class AbstractMinionBootstrapper {
                     saltApi.callSync(call, minionId).ifPresentOrElse(
                             res -> {
                                 // all results must be successful, otherwise we throw an exception
-                                List<Object> failedStates = res.entrySet().stream()
-                                        .filter(r -> !r.getValue().isResult())
-                                        .map(r -> r.getValue().getChanges())
+                                List<Object> failedStates = res.values().stream()
+                                        .filter(applyResultIn -> !applyResultIn.isResult())
+                                        .map(StateApplyResult::getChanges)
                                         .collect(Collectors.toList());
 
                                 if (!failedStates.isEmpty()) {
