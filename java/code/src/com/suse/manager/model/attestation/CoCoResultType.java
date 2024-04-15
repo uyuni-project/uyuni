@@ -27,15 +27,24 @@ public enum CoCoResultType {
     AZURE_DISK_ENCRYPTED(5);
 
     private final int value;
+    private final String labelKey;
     private final String descriptionKey;
 
     CoCoResultType(int valueIn) {
         value = valueIn;
+        labelKey = "coco.resultType." + name().toLowerCase() + ".label";
         descriptionKey = "coco.resultType." + name().toLowerCase() + ".description";
     }
 
     public int getValue() {
         return value;
+    }
+
+    /**
+     * @return returns a description for the result type
+     */
+    public String getTypeLabel() {
+        return LocalizationService.getInstance().getMessage(labelKey);
     }
 
     /**
