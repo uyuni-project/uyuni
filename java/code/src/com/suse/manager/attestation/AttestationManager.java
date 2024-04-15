@@ -17,11 +17,14 @@ package com.suse.manager.attestation;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -78,6 +81,20 @@ public class AttestationManager {
      * @return returns a {@link CoCoAttestationAction}
      */
     public CoCoAttestationAction scheduleAttestationAction(User userIn, MinionServer minionIn, Date earliest)
+        throws TaskomaticApiException {
+        return scheduleAttestationAction(userIn, minionIn, earliest, null);
+    }
+
+    /**
+     * Create an Attestation Action for a given minion.
+     * @param userIn the user
+     * @param minionIn the minion
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain
+     * @return returns a {@link CoCoAttestationAction}
+     */
+    public CoCoAttestationAction scheduleAttestationAction(User userIn, MinionServer minionIn, Date earliest,
+                                                           ActionChain actionChain)
             throws TaskomaticApiException {
         ensureSystemAccessible(userIn, minionIn);
         ensureSystemConfigured(minionIn);
@@ -99,9 +116,17 @@ public class AttestationManager {
         }
 
         MinionPillarManager.INSTANCE.generatePillar(minionIn, false, MinionPillarManager.PillarSubset.GENERAL);
-        ActionManager.scheduleForExecution(action, Set.of(minionIn.getId()));
-        action = (CoCoAttestationAction) ActionFactory.save(action);
-        taskomaticApi.scheduleActionExecution(action);
+        if (actionChain == null) {
+            ActionManager.scheduleForExecution(action, Set.of(minionIn.getId()));
+            action = (CoCoAttestationAction) ActionFactory.save(action);
+            taskomaticApi.scheduleActionExecution(action);
+        }
+        else {
+            int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
+            ActionChainFactory.queueActionChainEntry(action, actionChain, minionIn.getId(), sortOrder);
+
+        }
+
         return action;
     }
 
@@ -186,6 +211,31 @@ public class AttestationManager {
             User userIn, Server serverIn, Action actionIn) {
         ensureSystemAccessible(userIn, serverIn);
         return factory.lookupReportByServerAndAction(serverIn, actionIn);
+    }
+
+    /**
+     * Return the count of attestation report the given server
+     *
+     * @param userIn the user
+     * @param serverIn the server
+     * @return returns the number of attestation reports
+     */
+    public long countCoCoAttestationReports(User userIn, Server serverIn) {
+        ensureSystemAccessible(userIn, serverIn);
+        return factory.countCoCoAttestationReports(serverIn);
+    }
+
+    /**
+     * Return a list of reports for the given server and filters
+     *
+     * @param userIn the user
+     * @param serverIn the server
+     * @param pc page control object
+     * @return returns a list of reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, Server serverIn, PageControl pc) {
+        ensureSystemAccessible(userIn, serverIn);
+        return factory.listCoCoAttestationReports(serverIn, pc);
     }
 
     /**
