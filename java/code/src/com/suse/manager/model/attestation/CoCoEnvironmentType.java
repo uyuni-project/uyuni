@@ -14,6 +14,8 @@
  */
 package com.suse.manager.model.attestation;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,15 +27,21 @@ public enum CoCoEnvironmentType {
                     CoCoResultType.AZURE_DISK_ENCRYPTED));
 
     private final long value;
+    private final String descriptionKey;
     private final List<CoCoResultType> supportedResultTypes;
 
     CoCoEnvironmentType(long valueIn, List<CoCoResultType> supportedResultTypesIn) {
         value = valueIn;
         supportedResultTypes = supportedResultTypesIn;
+        descriptionKey = "coco.environment." + name().toLowerCase() + ".description";
     }
 
     public long getValue() {
         return value;
+    }
+
+    public String getDescription() {
+        return LocalizationService.getInstance().getMessage(descriptionKey);
     }
 
     /**
