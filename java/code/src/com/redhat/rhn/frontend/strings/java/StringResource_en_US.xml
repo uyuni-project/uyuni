@@ -1850,6 +1850,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
         <context-group name="ctx">
@@ -9532,17 +9538,38 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="coco.resultType.sev_snp.description">
         <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
       </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.label">
+        <source>AMD SEV-SNP</source>
+      </trans-unit>
       <trans-unit id="coco.resultType.secure_boot.description">
         <source>Secure Boot enabled</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.label">
+        <source>Secure Boot</source>
       </trans-unit>
       <trans-unit id="coco.resultType.azure_sev_snp.description">
         <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP) Azure attestation</source>
       </trans-unit>
+      <trans-unit id="coco.resultType.azure_sev_snp.label">
+        <source>AMD SEV-SNP (Azure)</source>
+      </trans-unit>
       <trans-unit id="coco.resultType.azure_secure_boot.description">
         <source>Secure Boot Azure attestation</source>
       </trans-unit>
+      <trans-unit id="coco.resultType.azure_secure_boot.label">
+        <source>Secure Boot (Azure)</source>
+      </trans-unit>
       <trans-unit id="coco.resultType.azure_disk_encrypted.description">
         <source>Disks encrypted Azure attestation</source>
+      </trans-unit>
+      <trans-unit id="coco.status.pending.description">
+        <source>Pending</source>
+      </trans-unit>
+      <trans-unit id="coco.status.succeeded.description">
+        <source>Succeeded</source>
+      </trans-unit>
+      <trans-unit id="coco.status.failed.description">
+        <source>Failed</source>
       </trans-unit>
       <trans-unit id="system.audit.coco.unsupported">
         <source>This system does not have any Confidential Computing capability.</source>

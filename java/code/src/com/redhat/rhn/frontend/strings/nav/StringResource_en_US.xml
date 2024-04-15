@@ -438,6 +438,9 @@
       <trans-unit id="nav.system.coco.settings">
         <source>Settings</source>
       </trans-unit>
+      <trans-unit id="nav.system.coco.list_attestations">
+        <source>List Attestations</source>
+      </trans-unit>
       <!-- SDC Config file navigation-->
       <trans-unit id="nav.sdc.config.overview">
           <source>Overview</source>

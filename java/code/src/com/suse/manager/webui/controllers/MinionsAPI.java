@@ -25,6 +25,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -59,12 +60,14 @@ import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.gson.CoCoAttestationReportJson;
 import com.suse.manager.webui.utils.gson.CoCoSettingsJson;
 import com.suse.manager.webui.utils.gson.ListKeysJson;
 import com.suse.manager.webui.utils.gson.PackageActionJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
@@ -163,6 +166,10 @@ public class MinionsAPI {
             asJson(withUserAndServer(this::getCoCoSettings)));
         post("/manager/api/systems/:sid/details/coco/settings",
             asJson(withUserAndServer(this::setCoCoSettings)));
+        get("/manager/api/systems/:sid/details/coco/listAttestations",
+            asJson(withUserAndServer(this::listAllAttestations)));
+        post("/manager/api/systems/:sid/details/coco/scheduleAction",
+            asJson(withUserAndServer(this::scheduleCoCoAttestation)));
     }
 
     /**
@@ -538,4 +545,51 @@ public class MinionsAPI {
                 new TypeToken<>() { });
         }
     }
+
+    private String listAllAttestations(Request request, Response response, User user, Server server) {
+        PageControlHelper pageHelper = new PageControlHelper(request);
+        PageControl pc = pageHelper.getPageControl();
+
+        long totalSize = attestationManager.countCoCoAttestationReports(user, server);
+
+        List<CoCoAttestationReportJson> reportsJson = attestationManager.listCoCoAttestationReports(user, server, pc)
+            .stream()
+            .map(CoCoAttestationReportJson::new)
+            .collect(Collectors.toList());
+
+        return json(GSON, response, new PagedDataResultJson<>(reportsJson, totalSize, Collections.emptySet()),
+            new TypeToken<>() { });
+    }
+
+    private String scheduleCoCoAttestation(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportCoCoAttestation()) {
+            return json(GSON, response, ResultJson.error("system.audit.coco.unsupported"), new TypeToken<>() { });
+        }
+
+        ScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), ScheduledRequestJson.class);
+
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
+
+        Long result;
+
+        try {
+            MinionServer minion = server.asMinionServer().orElse(null);
+            if (minion == null) {
+                return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("System is not a minion"), new TypeToken<>() { });
+            }
+
+            Action action = attestationManager.scheduleAttestationAction(user, minion, earliestDate, chain);
+            result = chain != null ? chain.getId() : action.getId();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule attestation action", e);
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                ResultJson.error("Unable to schedule action"), new TypeToken<>() { });
+        }
+
+        return json(GSON, response, result.longValue());
+    }
+
 }
