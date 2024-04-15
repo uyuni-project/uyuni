@@ -78,6 +78,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -149,6 +150,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemManager systemManager;
     private CloudPaygManager cloudManager4Test;
+    private AttestationManager attestationManager;
 
     @FunctionalInterface
     private interface ExpectationsFunction {
@@ -293,6 +295,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                return false;
            }
        };
+       attestationManager = new AttestationManager();
 
        context().checking(new Expectations() {{
            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
@@ -373,7 +376,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock,
-                saltServiceMock, cloudManager4Test);
+                saltServiceMock, cloudManager4Test, attestationManager);
         action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
 
         // Verify the resulting system entry
@@ -2015,8 +2018,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }
         } });
 
-        RegisterMinionEventMessageAction action =
-                new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock, cloudManager4Test);
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock,
+                cloudManager4Test, attestationManager);
         action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
     }
 

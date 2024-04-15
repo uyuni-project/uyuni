@@ -107,9 +107,11 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
         CloudPaygManager paygMgr = new CloudPaygManager();
+        AttestationManager attMgr = new AttestationManager();
 
-        RegularMinionBootstrapper regularBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi, paygMgr);
-        SSHMinionBootstrapper sshBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygMgr);
+        RegularMinionBootstrapper regularBootstrapper =
+                new RegularMinionBootstrapper(systemQuery, saltApi, paygMgr, attMgr);
+        SSHMinionBootstrapper sshBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygMgr, attMgr);
         XmlRpcSystemHelper xmlRpcHelper = new XmlRpcSystemHelper(regularBootstrapper, sshBootstrapper);
 
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
