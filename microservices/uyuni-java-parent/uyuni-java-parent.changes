@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 15 18:39:40 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-0
+  * Fixed license to correctly use GPL-2.0-only
+
+-------------------------------------------------------------------
 Fri Apr 05 15:22:25 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.2-0
