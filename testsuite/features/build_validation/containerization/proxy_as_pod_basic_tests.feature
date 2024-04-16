@@ -37,6 +37,9 @@ Feature: Register and test a Containerized Proxy
     And I wait until "jabberd" service is inactive on "proxy"
     And I wait until "tftp" service is inactive on "proxy"
 
+  Scenario: Pre-requisite: Install last uyuni-proxy-systemd-services package
+    When I install package "uyuni-proxy-systemd-services" on this "proxy"
+
   Scenario: Generate Containerized Proxy configuration
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of Containerized Proxy on the server
     And I copy "/tmp/proxy_container_config.tar.gz" file from "server" to "proxy"
