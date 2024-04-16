@@ -21,7 +21,7 @@ Feature: Very first settings
     And I enter "galaxy-noise@suse.de" as "email"
     # for some reason, as noted on https://github.com/SUSE/spacewalk/issues/19369,
     # this is the only way to make sure the welcome text is shown in the following page
-    And I wait for "1" seconds
+    And I wait for "5" seconds
     And I click on "Create Organization"
     Then I am logged in
 
