@@ -73,9 +73,6 @@ Package containing the Javadoc API documentation for %{name}.
 %prep
 %setup -q
 
-# Disable the common module it will be provided by the installed dependency
-%pom_disable_module '../uyuni-java-common'
-
 %ifnarch x86_64
 # Disable the module snpguest as it requires x86_64
 %pom_disable_module 'attestation-module-snpguest'
