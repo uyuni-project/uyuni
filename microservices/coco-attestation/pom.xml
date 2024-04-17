@@ -34,11 +34,6 @@
         <module>attestation-module</module>
         <module>attestation-module-snpguest</module>
         <module>attestation-module-secureboot</module>
-
-        <!-- This module is added for convenience -->
-        <!-- If present, the common module is rebuilt when building the attestation processor -->
-        <!-- Can be commented out if the uyuni-java-common is already installed in the local maven repository -->
-        <module>../uyuni-java-common</module>
     </modules>
 
     <dependencyManagement>

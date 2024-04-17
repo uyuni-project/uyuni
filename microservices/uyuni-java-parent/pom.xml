@@ -28,6 +28,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <modules>
+        <module>../uyuni-java-common</module>
+        <module>../coco-attestation</module>
+    </modules>
+
     <!-- Profiles based on the jdk Maven is running on.
        ~ to ensure the compilation happens with the proper release target
       -->
