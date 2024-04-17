@@ -86,10 +86,10 @@ RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 COPY motd /etc/motd
 RUN echo "cat /etc/motd" >/etc/sh.shrc.local
 
-RUN pam-config -a --sss
-RUN pam-config -a --ldap
-RUN authselect select sssd --force
-RUN authselect apply-changes
+RUN pam-config -a --sss && \
+         pam-config -a --ldap && \
+         authselect select sssd --force && \
+         authselect apply-changes
 
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
