@@ -1,0 +1,43 @@
+
+synopsis:
+
+  Confidential Compute Attestations Reports
+
+description:
+
+  List the Confidential Compute Attestations performed for each system.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  report_id The id of the report
+  system_id The id of the system
+  event_id The id of the action that triggered the attestation
+  hostname The hostname that identifies the system
+  organization The organization that owns this data
+  environment_type The type of the environment of the attested system
+  report_status The status of the report
+  pass The number of passed attestation results
+  fail The number of failed attestation results
+  create_time When the attestation was started
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+            , report_id
+            , system_id
+            , action_id AS event_id
+            , hostname
+            , organization
+            , environment_type
+            , report_status
+            , pass
+            , fail
+            , create_time
+            , synced_date
+      FROM CoCoAttestationReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, event_id
