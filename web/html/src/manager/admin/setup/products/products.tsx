@@ -681,8 +681,7 @@ class CheckList extends React.Component<CheckListProps> {
               className="col text-right"
               width={this.props.bypassProps.cols.mix.width}
               um={this.props.bypassProps.cols.mix.um}
-            >
-            </CustomDiv>
+            ></CustomDiv>
           </li>
         ) : null}
         {this.props.data.map((l, index) => {
@@ -945,10 +944,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
       this.getNestedData(currentItem).some((i) => i.recommended)
     ) {
       recommendedTogglerContent = (
-        <Toggler
-          handler={this.handleWithRecommended.bind(this)}
-          value={this.state.withRecommended}
-        />
+        <Toggler handler={this.handleWithRecommended.bind(this)} value={this.state.withRecommended} />
       );
     }
 
