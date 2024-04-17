@@ -148,20 +148,26 @@ class CoCoScansList extends React.Component<Props, State> {
     const attestationList = (
       <TopPanel title={t("Confidential Computing Attestations")} icon="fa fa-list">
         {messages}
-        <SectionToolbar>
-          <div className="action-button-wrapper">
-            <span className="btn-group pull-right">
-              <AsyncButton
-                id="run-btn"
-                icon="fa-refresh"
-                action={this.onRunAttestation}
-                text={t("Schedule Attestation")}
-              />
-            </span>
-          </div>
-        </SectionToolbar>
+        {this.props.serverId !== undefined && (
+          <SectionToolbar>
+            <div className="action-button-wrapper">
+              <span className="btn-group pull-right">
+                <AsyncButton
+                  id="run-btn"
+                  icon="fa-refresh"
+                  action={this.onRunAttestation}
+                  text={t("Schedule Attestation")}
+                />
+              </span>
+            </div>
+          </SectionToolbar>
+        )}
         <CoCoAttestationTable
-          dataUrl={`/rhn/manager/api/systems/${this.props.serverId}/details/coco/listAttestations`}
+          dataUrl={
+            this.props.serverId
+              ? `/rhn/manager/api/systems/${this.props.serverId}/details/coco/listAttestations`
+              : "/rhn/manager/api/audit/confidential-computing/listAttestations"
+          }
           showSystem={this.props.serverId === undefined}
           onReportDetails={this.onDetails}
         />
