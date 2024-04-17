@@ -42,6 +42,7 @@ public class ReportDbUpdateTask extends RhnJavaJob {
     private static final String SYSTEM_REPORT_QUERIES = "SystemReport_queries";
     private static final String CHANNEL_REPORT_QUERIES = "ChannelReport_queries";
     private static final String SCAP_REPORT_QUERIES = "ScapReport_queries";
+    private static final String COCO_ATTESTATION_REPORT_QUERIES = "CoCoAttestationReport_queries";
     // Common fields
     private static final String SYSTEM_ID = "system_id";
     private static final String HISTORY_ID = "history_id";
@@ -63,6 +64,8 @@ public class ReportDbUpdateTask extends RhnJavaJob {
     public static final String IDENT_ID = "ident_id";
     public static final String PACKAGE_ID = "package_id";
     public static final String REPOSITORY_ID = "repository_id";
+    public static final String REPORT_ID = "report_id";
+    public static final String RESULT_TYPE = "result_type";
 
     private final int batchSize;
 
@@ -152,6 +155,11 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 Map.of(SCAN_ID, 0));
             fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScanResult",
                 Map.of(SCAN_ID, 0, RULE_ID, 0, IDENT_ID, 0));
+
+            fillReportDbTable(rh.getSession(), COCO_ATTESTATION_REPORT_QUERIES, "CoCoAttestation",
+                    Map.of(REPORT_ID, 0));
+            fillReportDbTable(rh.getSession(), COCO_ATTESTATION_REPORT_QUERIES, "CoCoAttestationResult",
+                    Map.of(REPORT_ID, 0, RESULT_TYPE, 0));
 
             dbHelper.analyzeReportDb(rh.getSession());
 
