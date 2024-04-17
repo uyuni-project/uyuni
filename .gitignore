@@ -76,6 +76,7 @@ java/out
 out/
 java/buildconf/checkstyle.cache.src
 reports/
+!reporting/reports/
 *.mypy*
 
 # VS Code
