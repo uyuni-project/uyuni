@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
  * BaseTreeEditCommand
  */
 public abstract class BaseTreeEditOperation extends BasePersistOperation {
+    public static final String VALIDATE_LABEL_REGEX = "^([-_0-9A-Za-z]{1,255})$";
     private static final String INVALID_INITRD = "kickstart.tree.invalidinitrd";
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
     protected KickstartableTree tree;
@@ -148,13 +149,12 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      * Validate the label to make sure:
      *
      * "The Distribution Label field should contain only letters, numbers, hyphens,
-     * periods, and underscores. It must also be at least 4 characters long."
+     * and underscores. It must also be at least 4 characters long."
      *
      * @return boolean if its valid or not
      */
     public boolean validateLabel() {
-        String regEx = "^([-_0-9A-Za-z@.]{1,255})$";
-        Pattern pattern = Pattern.compile(regEx);
+        Pattern pattern = Pattern.compile(VALIDATE_LABEL_REGEX);
         Matcher matcher = pattern.matcher(this.getTree().getLabel());
         return matcher.matches();
     }
