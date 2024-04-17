@@ -44,11 +44,11 @@ def _get_enabled_module_names():
 
 def _parse_nsvca(module_info_output):
     attrs = {
-        "name": re.compile(r'^Name\s+:\s+(\S+).*$'),
-        "stream": re.compile(r'^Stream\s+:\s+(\S+).*$'),
-        "version": re.compile(r'^Version\s+:\s+(\S+).*$'),
-        "context": re.compile(r'^Context\s+:\s+(\S+).*$'),
-        "architecture": re.compile(r'^Architecture\s+:\s+(\S+).*$'),
+        "name": re.compile(r'^Name\s+:\s+(\S+)'),
+        "stream": re.compile(r'^Stream\s+:\s+(\S+)'),
+        "version": re.compile(r'^Version\s+:\s+(\S+)'),
+        "context": re.compile(r'^Context\s+:\s+(\S+)'),
+        "architecture": re.compile(r'^Architecture\s+:\s+(\S+)'),
     }
     result = {}
 
@@ -56,7 +56,7 @@ def _parse_nsvca(module_info_output):
         for attr, regex in attrs.items():
             if result.get(attr):
                 continue
-            
+
             match = regex.match(line)
             if match:
                 result[attr] = match.group(1)
