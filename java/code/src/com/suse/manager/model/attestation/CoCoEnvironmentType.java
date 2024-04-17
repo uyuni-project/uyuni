@@ -25,6 +25,7 @@ public enum CoCoEnvironmentType {
     KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
     AZURE(3, List.of(CoCoResultType.AZURE_SEV_SNP, CoCoResultType.AZURE_SECURE_BOOT,
                     CoCoResultType.AZURE_DISK_ENCRYPTED));
+    // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final long value;
     private final String descriptionKey;

@@ -1,0 +1,64 @@
+<!--
+  ~ Copyright (c) 2024 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  -->
+<datasource_modes>
+
+<mode name="CoCoAttestation">
+    <query params="report_id, limit">
+          SELECT suseservercocoattestationreport.id AS report_id
+                    , suseservercocoattestationreport.server_id AS system_id
+                    , suseservercocoattestationreport.action_id AS action_id
+                    , (CASE suseservercocoattestationreport.env_type
+                          WHEN 0 THEN 'NONE'
+                          WHEN 1 THEN 'KVM_AMD_EPYC_MILAN'
+                          WHEN 2 THEN 'KVM_AMD_EPYC_GENOA'
+                          ELSE NULL END) AS environment_type
+                    , suseservercocoattestationreport.status
+                    , suseservercocoattestationreport.created AS create_time
+                    , COUNT(CASE susecocoattestationresult.status WHEN 'SUCCEEDED' THEN 1 ELSE NULL END) AS pass
+                    , COUNT(CASE susecocoattestationresult.status WHEN 'FAILED' THEN 1 ELSE NULL END) AS fail
+            FROM suseservercocoattestationreport
+                    LEFT JOIN susecocoattestationresult ON suseservercocoattestationreport.id = susecocoattestationresult.report_id
+           WHERE suseservercocoattestationreport.id &gt; :report_id
+        GROUP BY suseservercocoattestationreport.id
+                    , suseservercocoattestationreport.server_id
+                    , suseservercocoattestationreport.action_id
+                    , suseservercocoattestationreport.env_type
+                    , suseservercocoattestationreport.status
+                    , suseservercocoattestationreport.created
+        ORDER BY report_id
+           FETCH FIRST :limit ROWS WITH TIES
+    </query>
+</mode>
+
+<mode name="CoCoAttestationResult">
+    <query params="report_id, result_type, limit">
+        SELECT susecocoattestationresult.report_id
+             , susecocoattestationresult.result_type AS result_type_id
+             , (CASE susecocoattestationresult.result_type
+                   WHEN 0 THEN 'NONE'
+                   WHEN 1 THEN 'SEV_SNP'
+                   WHEN 2 THEN 'SECURE_BOOT'
+                   WHEN 3 THEN 'AZURE_SEV_SNP'
+                   WHEN 4 THEN 'AZURE_SECURE_BOOT'
+                   WHEN 5 THEN 'AZURE_DISK_ENCRYPTED'
+                   ELSE NULL END) AS result_type
+             , susecocoattestationresult.status AS result_status
+             , susecocoattestationresult.description
+             , susecocoattestationresult.details
+             , susecocoattestationresult.attested AS attestation_time
+          FROM susecocoattestationresult
+          WHERE (susecocoattestationresult.report_id, susecocoattestationresult.result_type) &gt; (:report_id, :result_type)
+        ORDER BY report_id, result_type_id
+        FETCH FIRST :limit ROWS WITH TIES
+    </query>
+</mode>
+
+</datasource_modes>
