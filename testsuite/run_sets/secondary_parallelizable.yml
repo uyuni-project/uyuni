@@ -40,7 +40,9 @@
 - features/secondary/srv_scc_user_credentials.feature
 - features/secondary/srv_errata_api.feature
 
-- features/secondary/proxy_retail_pxeboot_and_mass_import.feature
+- features/secondary/proxy_traditional_retail_pxeboot.feature
+- features/secondary/proxy_traditional_retail_mass_import.feature
+
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature

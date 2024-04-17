@@ -12,16 +12,17 @@ Feature: PXE boot a terminal with Cobbler
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "proxy"
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
 
   Scenario: Configure PXE part of DHCP on the proxy
-    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I click on "Expand All Sections"
     And I enter the local IP address of "proxy" in pxeboot next server field
+    And I enter "pxelinux.0" in filename field
     And I enter "pxelinux.0" in pxeboot filename field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
@@ -48,7 +49,7 @@ Feature: PXE boot a terminal with Cobbler
     And I should see a "SLE-15-SP4-TFTP" link
 
   # WORKAROUND bsc#1195842
-  # Default cobbler kernel parameters are wrong in case of proxy
+  # Default Cobbler kernel parameters are wrong in case of proxy
   Scenario: Fix kernel parameters
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "SLE-15-SP4-TFTP"
@@ -75,7 +76,7 @@ Feature: PXE boot a terminal with Cobbler
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-TFTP" text
 
-  Scenario: Migration of cobbler settings
+  Scenario: Migration of Cobbler settings
     Given cobblerd is running
     And cobbler settings are successfully migrated
     When I restart cobbler on the server
@@ -91,8 +92,8 @@ Feature: PXE boot a terminal with Cobbler
     When I restart squid service on the proxy
 
   Scenario: PXE boot the PXE boot minion
-    Given I set the default PXE menu entry to the target profile on the "proxy"
-    When I reboot the Cobbler terminal "pxeboot_minion"
+    When I set the default PXE menu entry to the target profile on the "proxy"
+    And I reboot the Cobbler terminal "pxeboot_minion"
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "proxy"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -122,15 +123,15 @@ Feature: PXE boot a terminal with Cobbler
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Cleanup: remove the auto installation profile
-    Given I follow the left menu "Systems > Autoinstallation > Profiles"
-    When I follow "15-sp4-cobbler"
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "15-sp4-cobbler"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp4-cobbler" text
 
   Scenario: Cleanup: remove the auto installation distribution
-    Given I follow the left menu "Systems > Autoinstallation > Distributions"
-    When I follow "SLE-15-SP4-TFTP"
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "SLE-15-SP4-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
     Then I should not see a "SLE-15-SP4-TFTP" text
@@ -140,30 +141,13 @@ Feature: PXE boot a terminal with Cobbler
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
 
   Scenario: Cleanup: delete the PXE boot minion
-    Given I navigate to the Systems overview page of this "pxeboot_minion"
-    When I follow "Delete System"
+    When I navigate to the Systems overview page of this "pxeboot_minion"
+    And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     And I wait until Salt client is inactive on the PXE boot minion
     Then "pxeboot_minion" should not be registered
 
-  Scenario: Cleanup: the PXE boot minion prefers booting via saltboot
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Dhcpd" in the content area
-    And I click on "Expand All Sections"
-    And I enter "boot/pxelinux.0" in pxeboot filename field
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-  Scenario: Cleanup: apply the highstate after the formula cleanup changes
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
-
-  Scenario: Cleanup: clean Cobbler
+  Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
-
-  Scenario: Cleanup Cobbler after the feature has run
-    When I cleanup Cobbler files and restart apache and cobblerd services

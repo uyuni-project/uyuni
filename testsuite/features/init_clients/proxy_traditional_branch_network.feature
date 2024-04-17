@@ -6,27 +6,23 @@
 
 @scope_proxy
 @scope_retail
+@proxy
+@private_net
 Feature: Setup SUSE Manager for Retail branch network
   In order to deploy SUSE Manager for Retail solution
   As the system administrator
   I want to prepare the branch network
 
-@proxy
-@private_net
   Scenario: Remove dependencies for dhcp-server and bind packages from the proxy
     # WORKAROUND
     When I remove package "dhcp dhcp-client bind-utils python3-bind" from this "proxy"
     # End of WORKAROUND
 
-@proxy
-@private_net
   Scenario: Install or update branch network formulas on the server
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
     And I manually install the "bind" formula on the server
 
-@proxy
-@private_net
 @susemanager
   Scenario: Install the Retail pattern on the SUSE Manager server
     When I refresh the metadata for "server"
@@ -34,8 +30,6 @@ Feature: Setup SUSE Manager for Retail branch network
     And I wait for "patterns-suma_retail" to be installed on "server"
     And I synchronize all Salt dynamic modules on "proxy"
 
-@proxy
-@private_net
 @uyuni
   Scenario: Install the Retail pattern on the Uyuni server
     When I refresh the metadata for "server"
@@ -43,19 +37,13 @@ Feature: Setup SUSE Manager for Retail branch network
     And I wait for "patterns-uyuni_retail" to be installed on "server"
     And I synchronize all Salt dynamic modules on "proxy"
 
-@proxy
-@private_net
   Scenario: Restart spacewalk services
     When I restart the spacewalk service
 
-@proxy
-@private_net
-  Scenario: Show the overview page of the proxy
+  Scenario: Show the overview page of the traditional proxy
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "proxy"
 
-@proxy
-@private_net
   Scenario: Enable the branch network formulas on the branch server
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas" text
@@ -70,8 +58,6 @@ Feature: Setup SUSE Manager for Retail branch network
     And the "dhcpd" formula should be checked
     And the "bind" formula should be checked
 
-@proxy
-@private_net
   Scenario: Parametrize the branch network
     When I follow "Formulas" in the content area
     And I follow first "Branch Network" in the content area
@@ -86,8 +72,6 @@ Feature: Setup SUSE Manager for Retail branch network
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
   Scenario: Parametrize DHCP on the branch server
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
@@ -104,8 +88,6 @@ Feature: Setup SUSE Manager for Retail branch network
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
   Scenario: Parametrize DNS on the branch server
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
@@ -143,13 +125,9 @@ Feature: Setup SUSE Manager for Retail branch network
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
   Scenario: Enable repositories for installing branch services
     When I enable repositories before installing branch server
 
-@proxy
-@private_net
 @pxeboot_minion
   Scenario: Parametrize DHCP and DNS for the PXE boot minion
     # dhcpd:
@@ -171,13 +149,9 @@ Feature: Setup SUSE Manager for Retail branch network
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
   Scenario: Let avahi work on the branch server
     When I open avahi port on the proxy
 
-@proxy
-@private_net
   Scenario: Apply the branch network formulas via the highstate
     When I follow "States" in the content area
     And I click on "Apply Highstate"
@@ -191,15 +165,11 @@ Feature: Setup SUSE Manager for Retail branch network
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
 
-@proxy
-@private_net
   Scenario: Disable repositories after installing branch services
     Given the Salt master can reach "proxy"
     When I disable repositories after installing branch server
 
-@proxy
-@private_net
-  Scenario: Let the server know about the new IP and FQDN of the proxy
+  Scenario: Let the server know about the new IP and FQDN of the traditional proxy
     When I follow "Details" in the content area
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"

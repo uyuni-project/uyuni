@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2023-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning Cobbler.
@@ -228,20 +228,6 @@ end
 When(/^I cleanup after Cobbler buildiso$/) do
   result, code = get_target('server').run('rm -Rf /var/cache/cobbler')
   raise "Error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
-end
-
-When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
-  cleanup_command = 'rm /var/lib/cobbler/collections/**/*.json 2> /dev/null && ' \
-                    'rm -r /srv/tftpboot 2> /dev/null && ' \
-                    'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
-  get_target('server').run(cleanup_command.to_s, check_errors: false)
-  result, code = get_target('server').run('systemctl restart apache')
-  raise "Error while restarting apache cleanup.\nLogs:\n#{result}" if code.nonzero?
-
-  result, code = get_target('server').run('systemctl restart apache && systemctl restart cobblerd')
-  raise "Error while restarting cobblerd.\nLogs:\n#{result}" if code.nonzero?
-
-  step 'I wait until "cobblerd" service is active on "server"'
 end
 
 # cobbler commands

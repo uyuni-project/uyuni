@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC.
+# Copyright (c) 2023-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 #
 # Motivated by bsc#1207532 - Internal Server Error editing cobbler profiles
@@ -104,8 +104,5 @@ Feature: Edit Cobbler profiles
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
 
-  Scenario: Cleanup: clean Cobbler
+  Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
-
-  Scenario: Cleanup Cobbler after the feature has run
-    When I cleanup Cobbler files and restart apache and cobblerd services

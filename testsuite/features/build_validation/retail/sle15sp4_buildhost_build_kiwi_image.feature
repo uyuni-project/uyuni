@@ -37,6 +37,7 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     And I select "1-sle15sp4_minion_key" from "activationKey"
     And I enter the image filename for "sle15sp4_terminal" relative to profiles as "path"
     And I click on "create-btn"
+    And I wait until no Salt job is running on "sle15sp4_buildhost"
 
   # WORKAROUND
   # Remove as soon as the issue is fixed
@@ -54,6 +55,7 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     When I wait until I see "[OS Image Build Host]" text
     And I wait until the image build "suse_os_image_15" is completed
     And I wait until the image inspection for "sle15sp4_terminal" is completed
+    And I wait until no Salt job is running on "sle15sp4_buildhost"
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "sle15sp4_terminal"
 

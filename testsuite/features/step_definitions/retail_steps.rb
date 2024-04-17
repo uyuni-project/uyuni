@@ -9,20 +9,20 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
   os_family = get_target('proxy').os_family
 
   # Distribution
-  repos = 'os_pool_repo os_update_repo'
-  repos += ' testing_overlay_devel_repo' unless $build_validation || product_version_full.include?('-released')
-  log get_target('proxy').run("zypper mr --#{action} #{repos}")
+  repos = 'os_pool_repo os_update_repo '
+  repos += 'testing_overlay_devel_repo ' unless $build_validation || product_version_full.include?('-released')
 
   # Server Applications, proxy product and modules, proxy devel
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = 'proxy_module_pool_repo proxy_module_update_repo ' \
-            'proxy_product_pool_repo proxy_product_update_repo ' \
-            'module_server_applications_pool_repo module_server_applications_update_repo'
-    repos += ' proxy_devel_releasenotes_repo proxy_devel_repo' unless $build_validation || product_version_full.include?('-released')
+    repos += 'proxy_module_pool_repo proxy_module_update_repo ' \
+             'proxy_product_pool_repo proxy_product_update_repo ' \
+             'module_server_applications_pool_repo module_server_applications_update_repo '
+    repos += 'proxy_devel_releasenotes_repo proxy_devel_repo ' unless $build_validation || product_version_full.include?('-released')
   elsif os_family =~ /^opensuse/
-    repos = 'proxy_pool_repo'
+    repos += 'proxy_pool_repo '
   end
-  log get_target('proxy').run("zypper mr --#{action} #{repos}")
+
+  get_target('proxy').run("zypper mr --#{action} #{repos}", verbose: true)
 end
 
 When(/^I start tftp on the proxy$/) do
@@ -44,13 +44,13 @@ end
 
 Then(/^"([^"]*)" should communicate with the server using public interface$/) do |host|
   node = get_target(host)
-  _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
+  _result, return_code = node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
   unless return_code.zero?
     sleep 2
     puts 're-try ping'
-    node.run("ping -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
+    node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
   end
-  get_target('server').run("ping -c 1 #{node.public_ip}")
+  get_target('server').run("ping -n -c 1 #{node.public_ip}")
 end
 
 When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|

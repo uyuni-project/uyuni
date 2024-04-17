@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC
+# Copyright (c) 2010-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
@@ -98,7 +98,7 @@ Feature: Create activation keys
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
 
-  Scenario: Create an activation key for the Proxy
+  Scenario: Create an activation key for the proxy
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I wait until I do not see "Loading..." text

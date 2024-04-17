@@ -647,9 +647,9 @@ When(/^I set the default PXE menu entry to the (target profile|local boot) on th
   target = '/srv/tftpboot/pxelinux.cfg/default'
   case entry
   when 'local boot'
-    script = '-e \'s/^TIMEOUT .*/TIMEOUT 1/\' -e \'s/ONTIMEOUT .*/ONTIMEOUT local/\''
+    script = '-e "s/^TIMEOUT .*/TIMEOUT 2/" -e "s/ONTIMEOUT .*/ONTIMEOUT local/"'
   when 'target profile'
-    script = '-e \'s/^TIMEOUT .*/TIMEOUT 1/\' -e \'s/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/\''
+    script = '-e "s/^TIMEOUT .*/TIMEOUT 2/" -e "s/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/"'
   else
     log "Entry #{entry} not supported"
   end
@@ -978,17 +978,29 @@ end
 
 When(/^I install package tftpboot-installation on the server$/) do
   server = get_target('server')
-  if product == 'Uyuni'
-    # On Uyuni, the server runs on openSUSE Leap, but we must use SLE-15-SP4 on the build host and terminal
-    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+
+  # set this variable to true when the server and the build host run the same operating system version
+  # examples:
+  # * the server is either SLES 15 SP5 or Leap 15.5, and the build host is SLES 15 SP4:
+  #   same_version_on_server_and_build_host = false
+  # * the server is either SLES 15 SP4 or Leap 15.4, and the build host is SLES 15 SP4:
+  #   same_version_on_server_and_build_host = product != 'Uyuni'
+  same_version_on_server_and_build_host = product != 'Uyuni'
+
+  # set this variable to the name of the desired tftpboot package
+  # beware that "-x86_64" is part of the package name, the package itself is noarch!
+  tftpboot_package = 'tftpboot-installation-SLE-15-SP4-x86_64'
+
+  # if same version, fetch the package directly, otherwise search it among the reposynced packages
+  if same_version_on_server_and_build_host
+    server.run("zypper --non-interactive install #{tftpboot_package}", verbose: true)
+  else
+    output, _code = server.run("find /var/spacewalk/packages -name #{tftpboot_package}-*.noarch.rpm")
     packages = output.split("\n")
     pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
     # Reverse sort the package names to get the latest version first
-    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-    server.run("rpm -i #{package}", verbose: true)
-  else
-    # On SUSE Manager, the server, build host and terminal all run on SLE 15 SP4, so let's install it directly
-    server.run('zypper --non-interactive install tftpboot-installation-SLE-15-SP4-x86_64', verbose: true)
+    latest_version = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -q #{tftpboot_package} || rpm -i #{latest_version}", verbose: true)
   end
 end
 
