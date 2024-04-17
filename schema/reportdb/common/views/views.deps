@@ -28,6 +28,9 @@ ChannelPackagesReport                  :: Channel \
 ChannelsReport                         :: Channel \
                                           ChannelPackage
 ClonedChannelsReport                   :: Channel
+CoCoAttestationReport                  :: System
+CoCoAttestationResultReport            :: CoCoAttestation \
+                                          System
 CustomChannelsReport                   :: Channel \
                                           ChannelRepository
 CustomInfoReport                       :: System \
