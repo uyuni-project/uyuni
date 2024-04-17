@@ -1,1 +1,1 @@
-- Use SSSD authentication in k8s
+- Prepare for LDAP authentication using SSSD
