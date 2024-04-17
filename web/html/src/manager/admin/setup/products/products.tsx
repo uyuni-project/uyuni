@@ -84,10 +84,11 @@ const _CHANNEL_STATUS = {
 const _COLS = {
   selector: { width: 2, um: "em" },
   showSubList: { width: 2, um: "em" },
-  description: { width: "auto", um: "" },
-  arch: { width: 6, um: "em" },
+  description: { width: "", um: "" },
+  arch: { width: 5, um: "em" },
   channels: { width: 7, um: "em" },
-  mix: { width: 13, um: "em" },
+  recommended: { width: 7, um: "em" },
+  mix: { width: 4, um: "em" },
 };
 
 function loadMetadata() {
@@ -648,7 +649,7 @@ class CheckList extends React.Component<CheckListProps> {
               um={this.props.bypassProps.cols.showSubList.um}
             ></CustomDiv>
             <CustomDiv
-              className="col col-class-calc-width"
+              className="col calc-width"
               width={this.props.bypassProps.cols.description.width}
               um={this.props.bypassProps.cols.description.um}
             >
@@ -671,9 +672,17 @@ class CheckList extends React.Component<CheckListProps> {
             </CustomDiv>
             <CustomDiv
               className="col text-right"
+              width={this.props.bypassProps.cols.recommended.width}
+              um={this.props.bypassProps.cols.recommended.um}
+            >
+              {t("Recommended")}
+            </CustomDiv>
+            <CustomDiv
+              className="col text-right"
               width={this.props.bypassProps.cols.mix.width}
               um={this.props.bypassProps.cols.mix.um}
-            ></CustomDiv>
+            >
+            </CustomDiv>
           </li>
         ) : null}
         {this.props.data.map((l, index) => {
@@ -939,7 +948,6 @@ class CheckListItem extends React.Component<CheckListItemProps> {
         <Toggler
           handler={this.handleWithRecommended.bind(this)}
           value={this.state.withRecommended}
-          text={t("include recommended")}
         />
       );
     }
@@ -1026,7 +1034,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
             {showNestedDataIconContent}
           </CustomDiv>
           <CustomDiv
-            className="col col-class-calc-width"
+            className="col calc-width"
             width={this.props.bypassProps.cols.description.width}
             um={this.props.bypassProps.cols.description.um}
           >
@@ -1056,11 +1064,17 @@ class CheckListItem extends React.Component<CheckListItemProps> {
             </button>
           </CustomDiv>
           <CustomDiv
-            className="col text-right"
+            className="col text-center"
+            width={this.props.bypassProps.cols.recommended.width}
+            um={this.props.bypassProps.cols.recommended.um}
+          >
+            {recommendedTogglerContent}
+          </CustomDiv>
+          <CustomDiv
+            className="col text-center"
             width={this.props.bypassProps.cols.mix.width}
             um={this.props.bypassProps.cols.mix.um}
           >
-            {recommendedTogglerContent}
             {resyncActionContent}
           </CustomDiv>
         </div>
