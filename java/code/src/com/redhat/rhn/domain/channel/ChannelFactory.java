@@ -669,6 +669,17 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Get a list of modular channels in users org
+     * @param user the logged in user
+     * @return List of modular channels
+     */
+    public static List<Channel> listModularChannels(User user) {
+        List<Channel> channels = singleton.listObjectsByNamedQuery("Channel.findModularChannels",
+                Map.of("org_id", user.getOrg().getId()));
+        return channels;
+    }
+
+    /**
      * Find checksumtype by label
      * @param checksum checksum label
      * @return ChecksumType instance for given label
