@@ -27,12 +27,9 @@ import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -64,10 +61,11 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
 
     private User user2;
     private Server server;
+    private Server server2;
+    private Server server3;
+    private Server server4;
     private AttestationManager mgr;
     private static TaskomaticApi taskomaticApi;
-    private final SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON,
-            ServerGroupFactory.SINGLETON, null);
 
     @Override
     @BeforeEach
@@ -77,6 +75,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         user2 = UserTestUtils.createUser("user2", user.getOrg().getId());
         server = ServerFactoryTest.createTestServer(user, true);
+        server2 = ServerFactoryTest.createTestServer(user2, true);
+        server3 = ServerFactoryTest.createTestServer(user, true);
+        server4 = ServerFactoryTest.createTestServer(user2, true);
         mgr = new AttestationManager(new AttestationFactory(), getTaskomaticApi());
     }
 
@@ -136,34 +137,104 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testListReports() {
+    public void countAttestationReportsForUserAndSystem() {
         mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user, server3, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
 
-        ServerCoCoAttestationReport report = mgr.initializeReport(user, server);
-        mgr.initializeResults(user, report);
-        fakeSuccessfullAttestation(report);
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server3);
 
-        ServerCoCoAttestationReport report2 = mgr.initializeReport(user, server);
-        mgr.initializeResults(user, report2);
-        fakeSuccessfullAttestation(report2);
         HibernateFactory.getSession().flush();
         HibernateFactory.commitTransaction();
         HibernateFactory.getSession().clear();
+        commitHappened();
 
-        try {
-            List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, server, new Date(0), 0,
-                    Integer.MAX_VALUE);
-            assertEquals(2, reports.size());
+        assertEquals(2, mgr.countCoCoAttestationReports(user, server));
+        assertEquals(1, mgr.countCoCoAttestationReports(user, server3));
 
-            ServerCoCoAttestationReport latestReport = mgr.lookupLatestCoCoAttestationReport(user, server);
-            assertEquals(CoCoAttestationStatus.SUCCEEDED, latestReport.getStatus());
-            assertEquals("Some details", latestReport.getResults().get(0).getDetailsOpt().orElse(""));
-        }
-        finally {
-            // cleanup
-            systemManager.deleteServer(user, server.getId());
-            HibernateFactory.commitTransaction();
-        }
+        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReports(user, server2));
+        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReports(user2, server));
+    }
+
+    @Test
+    public void testListReportsForUserAndSystem() {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.getSession().clear();
+        commitHappened();
+
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, server, new Date(0), 0,
+                Integer.MAX_VALUE);
+        assertEquals(2, reports.size());
+
+        ServerCoCoAttestationReport latestReport = mgr.lookupLatestCoCoAttestationReport(user, server);
+        assertEquals(CoCoAttestationStatus.SUCCEEDED, latestReport.getStatus());
+        assertEquals("Some details", latestReport.getResults().get(0).getDetailsOpt().orElse(""));
+    }
+
+    @Test
+    public void countAttestationReportsForUser() {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user, server3, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        mgr.createConfig(user2, server2, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user2, server4, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server3);
+
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.getSession().clear();
+        commitHappened();
+
+        assertEquals(3, mgr.countCoCoAttestationReports(user));
+        assertEquals(5, mgr.countCoCoAttestationReports(user2));
+    }
+
+    @Test
+    public void testListReportsForUser() {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user, server3, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        mgr.createConfig(user2, server2, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user2, server4, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server3);
+
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.getSession().clear();
+        commitHappened();
+
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, 0, Integer.MAX_VALUE);
+        assertEquals(3, reports.size());
+        assertTrue(reports.stream().allMatch(r -> List.of(server, server3).contains(r.getServer())));
+
+        reports = mgr.listCoCoAttestationReports(user2, 0, Integer.MAX_VALUE);
+        assertEquals(5, reports.size());
+        assertTrue(reports.stream().allMatch(r -> List.of(server2, server4).contains(r.getServer())));
     }
 
     @Test
@@ -172,38 +243,35 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
 
         long epochStart = (new Date().getTime() / 1000);
         for (int i = 10; i > 0; i--) {
-            ServerCoCoAttestationReport report = mgr.initializeReport(user, server);
-            mgr.initializeResults(user, report);
-            fakeSuccessfullAttestation(report);
+            createFakeAttestationReport(user, server);
             HibernateFactory.getSession().flush();
             HibernateFactory.commitTransaction();
+            commitHappened();
             TimeUnit.SECONDS.sleep(2);
         }
         HibernateFactory.getSession().clear();
-        try {
-            List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, server, new Date(0), 0,
-                    Integer.MAX_VALUE);
-            assertEquals(10, reports.size());
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, server, new Date(0), 0,
+                Integer.MAX_VALUE);
+        assertEquals(10, reports.size());
 
-            List<ServerCoCoAttestationReport> reports2 = mgr.listCoCoAttestationReports(user, server,
-                    new Date((epochStart + 10) * 1000L), 0, Integer.MAX_VALUE);
-            assertTrue(reports2.get(0).getModified().compareTo(new Date((epochStart + 10) * 1000L)) >= 0);
-            assertEquals(5, reports2.size());
+        List<ServerCoCoAttestationReport> reports2 = mgr.listCoCoAttestationReports(user, server,
+                new Date((epochStart + 10) * 1000L), 0, Integer.MAX_VALUE);
+        assertTrue(reports2.get(0).getModified().compareTo(new Date((epochStart + 10) * 1000L)) >= 0);
+        assertEquals(5, reports2.size());
 
-            reports2 = mgr.listCoCoAttestationReports(user, server, new Date(0), 5, 2);
-            assertEquals(2, reports2.size());
-            assertEquals(reports.get(6), reports2.get(0));
-            assertEquals(reports.get(7), reports2.get(1));
-            assertTrue(reports2.get(0).getCreated().after(reports2.get(1).getCreated()),
-                    "Report 0 is not created after Report 1");
-        }
-        finally {
-            // cleanup
-            systemManager.deleteServer(user, server.getId());
-            HibernateFactory.commitTransaction();
-        }
+        reports2 = mgr.listCoCoAttestationReports(user, server, new Date(0), 5, 2);
+        assertEquals(2, reports2.size());
+        assertEquals(reports.get(6), reports2.get(0));
+        assertEquals(reports.get(7), reports2.get(1));
+        assertTrue(reports2.get(0).getCreated().after(reports2.get(1).getCreated()),
+                "Report 0 is not created after Report 1");
     }
 
+    private void createFakeAttestationReport(User userIn, Server serverIn) {
+        ServerCoCoAttestationReport report = mgr.initializeReport(userIn, serverIn);
+        mgr.initializeResults(userIn, report);
+        fakeSuccessfullAttestation(report);
+    }
     private void fakeSuccessfullAttestation(ServerCoCoAttestationReport reportIn) {
         reportIn.getResults().forEach(res -> {
             res.setStatus(CoCoAttestationStatus.SUCCEEDED);
