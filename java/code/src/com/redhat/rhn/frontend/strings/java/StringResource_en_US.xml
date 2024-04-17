@@ -9061,6 +9061,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="mirror-credentials.jsp.verify" xml:space="preserve">
         <source>verify credentials</source>
       </trans-unit>
+      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve">
+        <source>Confidential Computing</source>
+      </trans-unit>
       <trans-unit id="subscriptionmatching.nav.title" xml:space="preserve">
         <source>Subscription Matching</source>
       </trans-unit>
