@@ -214,6 +214,17 @@ public class AttestationManager {
     }
 
     /**
+     * Return the number of existing reports for the given user
+     *
+     * @param userIn the user
+     * @return returns a list of reports
+     */
+    public long countCoCoAttestationReports(User userIn) {
+        return factory.countCoCoAttestationReports(userIn);
+    }
+
+
+    /**
      * Return the count of attestation report the given server
      *
      * @param userIn the user
@@ -289,6 +300,29 @@ public class AttestationManager {
             throw new LookupException(msg);
         }
         return optRes;
+    }
+
+    /**
+     * Return a list of reports for the given user
+     *
+     * @param userIn the user
+     * @param pc page control object
+     * @return returns a list of reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, PageControl pc) {
+        return factory.listCoCoAttestationReports(userIn, pc);
+    }
+
+    /**
+     * Return a list of reports for the given user
+     *
+     * @param userIn the user
+     * @param offset number of reports to skip
+     * @param limit maximum number of reports
+     * @return returns a list of reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, int offset, int limit) {
+        return factory.listCoCoAttestationReports(userIn, offset, limit);
     }
 
     private void ensureSystemAccessible(User userIn, Server serverIn) {

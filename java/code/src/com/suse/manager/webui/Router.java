@@ -38,6 +38,7 @@ import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.AnsibleController;
 import com.suse.manager.webui.controllers.CSVDownloadController;
 import com.suse.manager.webui.controllers.CVEAuditController;
+import com.suse.manager.webui.controllers.ConfidentialComputingController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
@@ -133,12 +134,17 @@ public class Router implements SparkApplication {
         HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
         FrontendLogController frontendLogController = new FrontendLogController();
         DownloadController downloadController = new DownloadController(paygManager);
+        ConfidentialComputingController confidentialComputingController =
+                new ConfidentialComputingController(attestationManager);
 
         // Login
         LoginController.initRoutes(jade);
 
         //CVEAudit
         CVEAuditController.initRoutes(jade);
+
+        // Confidential Computing
+        confidentialComputingController.initRoutes(jade);
 
         initContentManagementRoutes(jade, kubernetesManager);
 

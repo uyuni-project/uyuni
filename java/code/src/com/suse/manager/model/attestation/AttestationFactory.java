@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 
 import org.apache.logging.log4j.LogManager;
@@ -130,14 +131,14 @@ public class AttestationFactory extends HibernateFactory {
         return createConfigForServer(serverIn, typeIn, enabledIn, false);
     }
 
-        /**
-         * Create a Confidential Compute Attestation Config for a given Server ID
-         * @param serverIn the server
-         * @param typeIn the environment type
-         * @param enabledIn enabled status
-         * @param attestOnBootIn perform attestation on boot
-         * @return returns the Confidential Compute Attestation Config
-         */
+    /**
+     * Create a Confidential Compute Attestation Config for a given Server ID
+     * @param serverIn the server
+     * @param typeIn the environment type
+     * @param enabledIn enabled status
+     * @param attestOnBootIn perform attestation on boot
+     * @return returns the Confidential Compute Attestation Config
+     */
     public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
                                                              boolean enabledIn, boolean attestOnBootIn) {
         ServerCoCoAttestationConfig cnf = new ServerCoCoAttestationConfig();
@@ -197,6 +198,21 @@ public class AttestationFactory extends HibernateFactory {
     }
 
     /**
+     * Return the total number of reports available for a given user
+     * @param user the user
+     * @return returns a list or reports
+     */
+    public long countCoCoAttestationReports(User user) {
+        return getSession()
+            .createQuery("SELECT COUNT(r.id) FROM UserImpl u " +
+                "JOIN u.servers s " +
+                "JOIN ServerCoCoAttestationReport r ON r.server = s " +
+                "WHERE u = :user", Long.class)
+            .setParameter("user", user)
+            .uniqueResult();
+    }
+
+    /**
      * Return the total number of reports available for a given server
      * @param serverIn the server
      * @return returns a list or reports
@@ -238,5 +254,35 @@ public class AttestationFactory extends HibernateFactory {
                 .setMaxResults(limitIn)
                 .setFirstResult(offsetIn)
                 .list();
+    }
+
+    /**
+     * Return a list of reports for a given server with filters
+     * @param user the user
+     * @param pc page control object
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User user, PageControl pc) {
+        return listCoCoAttestationReports(user, pc.getStart() - 1, pc.getPageSize());
+    }
+
+    /**
+     * Return a list of reports for a given server with filters
+     * @param user the user
+     * @param offsetIn number of reports to skip
+     * @param limitIn maximal number of reports
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User user, int offsetIn, int limitIn) {
+        return getSession()
+            .createQuery("SELECT r FROM UserImpl u " +
+                "JOIN u.servers s " +
+                "JOIN ServerCoCoAttestationReport r ON r.server = s " +
+                "WHERE u = :user " +
+                "ORDER BY r.created DESC", ServerCoCoAttestationReport.class)
+            .setParameter("user", user)
+            .setMaxResults(limitIn)
+            .setFirstResult(offsetIn)
+            .list();
     }
 }
