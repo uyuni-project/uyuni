@@ -25,6 +25,7 @@ public enum CoCoResultType {
     AZURE_SEV_SNP(3),
     AZURE_SECURE_BOOT(4),
     AZURE_DISK_ENCRYPTED(5);
+    // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final int value;
     private final String labelKey;
