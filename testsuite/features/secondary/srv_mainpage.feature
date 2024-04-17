@@ -13,11 +13,20 @@ Feature: Main landing page options and preferences
     Then I should see a "Sign In" text
 
 @uyuni
-  Scenario: Access the API Documentatione
+  Scenario: Access the API Documentation
     Given I am not authorized
     When I go to the home page
     And I follow "API Documentation"
     Then I should see a "API Overview" text
+
+# TODO: We need to refactor this to navigate to a doc page
+
+@skip
+  Scenario: Access the Copyright Notice
+    Given I am not authorized
+    When I go to the home page
+    And I follow "Copyright Notice"
+    Then I should see a "Copyright (c) 2011 - 2023 SUSE LLC." text
 
 @susemanager
   Scenario: Log into Uyuni
