@@ -158,7 +158,6 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I select the parent channel for the "proxy_container" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "openSUSE Leap Micro 5.5 (x86_64)"
     And I check "SLE Micro 5.5 Update Repository (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap Micro 5.5 (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap Micro 5.5 (x86_64) (Development)"
