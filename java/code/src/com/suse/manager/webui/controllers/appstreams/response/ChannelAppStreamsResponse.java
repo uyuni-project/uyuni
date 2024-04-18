@@ -15,56 +15,81 @@
 package com.suse.manager.webui.controllers.appstreams.response;
 
 import com.redhat.rhn.domain.channel.AppStream;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class ChannelAppStreamsResponse {
 
     /**
      * Constructs a ChannelAppStreamsResponse object based on the provided parameters.
      *
-     * @param channelIdIn       The ID of the channel.
-     * @param channelLabelIn    The label of the channel.
-     * @param appStreamsIn      The list of AppStream objects associated with the channel.
+     * @param channelIn         The channel that the AppStreams belong to.
+     * @param appStreamsIn      The set of AppStream objects associated with the channel.
      * @param serverIn          The Server object used to check module enablement.
      */
     public ChannelAppStreamsResponse(
-        Long channelIdIn,
-        String channelLabelIn,
+        Channel channelIn,
         List<AppStream> appStreamsIn,
         Server serverIn
     ) {
-        numberOfAppStreams = appStreamsIn.size();
-        channelId = channelIdIn;
-        channelLabel = channelLabelIn;
-        modulesNames = new TreeSet<>();
+        channel = new ChannelJson(channelIn);
         appStreams = new HashMap<>();
         appStreamsIn.forEach(it -> {
-            modulesNames.add(it.getName());
             var module = new AppStreamModuleResponse(it, serverIn);
             if (appStreams.containsKey(it.getName())) {
                 appStreams.get(it.getName()).add(module);
             }
             else {
-                appStreams.put(it.getName(), new ArrayList<>(List.of(module)));
+                appStreams.put(it.getName(), new HashSet<>(List.of(module)));
             }
         });
     }
 
-    private Long channelId;
-    private String channelLabel;
-    private Set<String> modulesNames;
-    private Map<String, List<AppStreamModuleResponse>> appStreams;
+    private final ChannelJson channel;
+    private final Map<String, Set<AppStreamModuleResponse>> appStreams;
 
-    private Integer numberOfAppStreams;
+    public ChannelJson getChannel() {
+        return channel;
+    }
 
-    public Set<String> getModulesNames() {
-        return modulesNames;
+    public Map<String, Set<AppStreamModuleResponse>> getAppStreams() {
+        return appStreams;
+    }
+
+    /**
+     * A JSON object representation of an AppStream channel
+     */
+    public static class ChannelJson {
+        /**
+         * Instantiate a JSON object
+         * @param channelIn the channel
+         */
+        public ChannelJson(Channel channelIn) {
+            id = channelIn.getId();
+            label = channelIn.getLabel();
+            name = channelIn.getName();
+        }
+
+        private final Long id;
+        private final String label;
+        private final String name;
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }

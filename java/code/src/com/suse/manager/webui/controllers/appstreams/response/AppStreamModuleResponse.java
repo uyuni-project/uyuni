@@ -17,6 +17,8 @@ package com.suse.manager.webui.controllers.appstreams.response;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.server.Server;
 
+import java.util.Objects;
+
 public class AppStreamModuleResponse {
 
     /**
@@ -28,16 +30,30 @@ public class AppStreamModuleResponse {
     public AppStreamModuleResponse(AppStream appStreamIn, Server serverIn) {
         this.name = appStreamIn.getName();
         this.stream = appStreamIn.getStream();
-        this.version = appStreamIn.getVersion();
-        this.context = appStreamIn.getContext();
         this.arch = appStreamIn.getArch();
         this.enabled = serverIn.hasAppStreamModuleEnabled(this.name, this.stream);
     }
 
     private String name;
     private String stream;
-    private String version;
-    private String context;
     private String arch;
     private boolean enabled;
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (oIn == null || getClass() != oIn.getClass()) {
+            return false;
+        }
+        AppStreamModuleResponse that = (AppStreamModuleResponse) oIn;
+        return Objects.equals(name, that.name) && Objects.equals(stream, that.stream) &&
+                Objects.equals(arch, that.arch);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, stream, arch);
+    }
 }

@@ -57,9 +57,9 @@
                   <c:out value="${current.nvre}"/>
               </c:otherwise>
           </c:choose>
-          <c:if test="${current.appStream != null}">
-              <span class="label label-info">
-                  <c:out value="${current.appStream}"/>
+          <c:if test="${current.appstream != null}">
+              <span class="label label-info" title="AppStream module: ${current.appstream}">
+                  <c:out value="${current.appstream}"/>
               </span>
               &nbsp;
           </c:if>
