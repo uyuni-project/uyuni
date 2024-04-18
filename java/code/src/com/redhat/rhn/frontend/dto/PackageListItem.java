@@ -558,7 +558,7 @@ public class PackageListItem extends IdComboDto {
      *
      * @param appStreamIn The AppStream to set for this package.
      */
-    public void setStream(String appStreamIn) {
+    public void setAppstream(String appStreamIn) {
         appStream = appStreamIn;
     }
 

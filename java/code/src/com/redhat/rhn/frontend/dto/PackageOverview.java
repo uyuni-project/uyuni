@@ -281,7 +281,7 @@ public class PackageOverview extends BaseTupleDto {
      *
      * @param appStreamIn the appStream
      */
-    public void setAppStream(String appStreamIn) {
+    public void setAppstream(String appStreamIn) {
         appStream = appStreamIn;
     }
 
