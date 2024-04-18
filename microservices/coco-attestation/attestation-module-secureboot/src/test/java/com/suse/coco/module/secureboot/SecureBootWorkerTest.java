@@ -34,7 +34,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
-public class SecureBootWorkerTest {
+class SecureBootWorkerTest {
 
     private AttestationResult result;
 
@@ -71,9 +71,9 @@ public class SecureBootWorkerTest {
     @DisplayName("Test secure boot messages")
     void testSecureBootMessages() {
 
-        reportMessages.forEach((k,v) -> {
+        reportMessages.forEach((k, v) -> {
             result.setReportId(k);
-            if(k.equals(1L)) {
+            if (k.equals(1L)) {
                 // success
                 assertTrue(worker.process(session, result));
             }
