@@ -145,6 +145,8 @@
                     </dependencies>
                     <configuration>
                         <includeResources>false</includeResources>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <includeTestResources>false</includeTestResources>
                         <headerLocation>../../java/buildconf/LICENSE.txt</headerLocation>
                         <configLocation>../../java/buildconf/checkstyle.xml</configLocation>
                         <suppressionsLocation>../../java/buildconf/checkstyle-suppressions.xml</suppressionsLocation>

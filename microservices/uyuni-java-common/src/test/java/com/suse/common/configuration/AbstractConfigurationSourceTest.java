@@ -37,7 +37,7 @@ abstract class AbstractConfigurationSourceTest {
         source = createConfigurationSource();
     }
 
-    protected abstract ConfigurationSource createConfigurationSource() throws Exception ;
+    protected abstract ConfigurationSource createConfigurationSource() throws Exception;
 
     @Nested
     @DisplayName("Basic retrieval")
@@ -74,13 +74,19 @@ abstract class AbstractConfigurationSourceTest {
         @Test
         @DisplayName("Retrieve comma separated value as list")
         void testGetStringArrayMultElem() {
-            assertOptionalEquals(List.of("every", "good", "boy", "does", "fine"), source.getList("prefix.comma_separated", String.class));
+            assertOptionalEquals(
+                List.of("every", "good", "boy", "does", "fine"),
+                source.getList("prefix.comma_separated", String.class)
+            );
         }
 
         @Test
         @DisplayName("Item whitespace behaviour when retrieving list values")
         void testGetStringArrayWhitespace() {
-            assertOptionalEquals(List.of("every", " good ", " boy ", " does", "fine"), source.getList("prefix.comma_no_trim", String.class));
+            assertOptionalEquals(
+                List.of("every", " good ", " boy ", " does", "fine"),
+                source.getList("prefix.comma_no_trim", String.class)
+            );
         }
     }
 
