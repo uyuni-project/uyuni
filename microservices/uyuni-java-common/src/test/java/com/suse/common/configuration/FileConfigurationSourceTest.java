@@ -123,7 +123,9 @@ class FileConfigurationSourceTest extends AbstractConfigurationSourceTest {
         }
 
         @Test
-        @DisplayName("Fully qualified in rhn_web.conf, overridden fully qualified in rhn.conf, accessed fully qualified")
+        @DisplayName(
+            "Fully qualified in rhn_web.conf, overridden fully qualified in rhn.conf, accessed fully qualified"
+        )
         void testOverride2() {
             assertOptionalEquals("1", source.getString("web.fq_to_override"));
         }
