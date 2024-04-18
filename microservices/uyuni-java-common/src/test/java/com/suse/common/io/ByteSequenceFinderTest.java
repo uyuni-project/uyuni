@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 
 class ByteSequenceFinderTest {
 
-    private static final Random randomSource = new Random();
+    private static final Random RANDOM_SOURCE = new Random();
 
     @ParameterizedTest(name = "Search sequence \"{1}\" within \"{1}\"")
     @DisplayName("Can find sequences of bytes within text")
@@ -121,7 +121,7 @@ class ByteSequenceFinderTest {
     public static String randomAlphanumeric(int length) {
         String allowedChars = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789";
         return IntStream.range(0, length)
-            .mapToObj(idx -> Character.toString(allowedChars.charAt(randomSource.nextInt(allowedChars.length()))))
+            .mapToObj(idx -> Character.toString(allowedChars.charAt(RANDOM_SOURCE.nextInt(allowedChars.length()))))
             .collect(Collectors.joining());
     }
 }

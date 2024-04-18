@@ -184,7 +184,8 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Fetching fails
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(-1));
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(-1));
 
         assertFalse(worker.process(session, result));
 
@@ -220,7 +221,8 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Fetch works but the file does not exist
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(false);
 
         assertFalse(worker.process(session, result));
@@ -257,7 +259,8 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Fail the certificate verification
@@ -300,7 +303,8 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Pass the certificate verification
@@ -347,7 +351,8 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0));
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Pass the certificate verification
