@@ -46,7 +46,7 @@ public class PackageOverview extends BaseTupleDto {
     private String epoch;
     private String release;
     private Boolean retracted;
-    private String appStream;
+    private String appstream;
 
 
     /**
@@ -272,8 +272,8 @@ public class PackageOverview extends BaseTupleDto {
      *
      * @return appStream
      */
-    public String getAppStream() {
-        return appStream;
+    public String getAppstream() {
+        return appstream;
     }
 
     /**
@@ -282,7 +282,7 @@ public class PackageOverview extends BaseTupleDto {
      * @param appStreamIn the appStream
      */
     public void setAppstream(String appStreamIn) {
-        appStream = appStreamIn;
+        appstream = appStreamIn;
     }
 
 }

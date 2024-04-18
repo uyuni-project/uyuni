@@ -48,7 +48,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -136,14 +135,12 @@ public class AppStreamsController {
             server
                 .getChannels()
                 .stream()
-                .sorted(Comparator.comparing(Channel::getLabel))
-                .map(it -> new ChannelAppStreamsResponse(
-                    it.getId(),
-                    it.getLabel(),
-                    AppStreamsManager.listChannelAppStreams(it.getId()),
+                .filter(Channel::isModular)
+                .map(channel -> new ChannelAppStreamsResponse(
+                    channel,
+                    AppStreamsManager.listChannelAppStreams(channel.getId()),
                     server
                 ))
-                .filter(it -> !it.getModulesNames().isEmpty())
                 .collect(Collectors.toList());
         data.put("channelsAppStreams", GSON.toJson(channelsAppStreams));
         data.put("actionChains", ActionChainHelper.actionChainsJson(user));

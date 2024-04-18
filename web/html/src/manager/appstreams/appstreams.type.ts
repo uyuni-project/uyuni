@@ -1,9 +1,12 @@
+export type Channel = {
+  id: number;
+  label: string;
+  name: string;
+};
+
 export type ChannelAppStream = {
-  channelId: number;
-  channelLabel: string;
-  modulesNames: Array<string>;
-  modules: Map<string, Array<AppStreamModule>>;
-  numberOfAppStreams: number;
+  channel: Channel;
+  appStreams: Map<string, Array<AppStreamModule>>;
 };
 
 export type AppStreamModule = {
