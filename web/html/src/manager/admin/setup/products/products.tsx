@@ -87,7 +87,7 @@ const _COLS = {
   description: { width: "", um: "" },
   arch: { width: 5, um: "em" },
   channels: { width: 7, um: "em" },
-  recommended: { width: 7, um: "em" },
+  recommended: { width: 9, um: "em" },
   mix: { width: 4, um: "em" },
 };
 
