@@ -1715,7 +1715,7 @@ public class SaltUtils {
         return packageToKey(entry.getKey(), entry.getValue());
     }
 
-    private void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
+    public void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
         AttestationManager mgr = new AttestationManager();
 
         Optional<ServerCoCoAttestationReport> optReport = mgr.lookupReportByServerAndAction(action.getSchedulerUser(),
@@ -1726,6 +1726,16 @@ public class SaltUtils {
             return;
         }
         ServerCoCoAttestationReport report = optReport.get();
+
+        if (jsonResult == null) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            if (StringUtils.isBlank(serverAction.getResultMsg())) {
+                serverAction.setResultMsg("Error while request attestation data from target system:\n" +
+                        "Got no result from system");
+            }
+            failAttestation(report);
+            return;
+        }
 
         try {
             CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
@@ -1740,25 +1750,29 @@ public class SaltUtils {
             LOG.error(msg);
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg(msg);
+            failAttestation(report);
             return;
         }
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             String msg = "Error while request attestation data from target system:\n";
-            if (jsonResult == null) {
-                msg += "Got no result from system";
-            }
-            else {
-                msg += getJsonResultWithPrettyPrint(jsonResult);
-            }
+            msg += getJsonResultWithPrettyPrint(jsonResult);
             serverAction.setResultMsg(msg);
-            if (report.getResults().isEmpty()) {
-                // results are not initialized yet. So we need to set the report status
-                // directly to failed.
-                report.setStatus(CoCoAttestationStatus.FAILED);
-            }
+            failAttestation(report);
         }
         else {
             serverAction.setResultMsg("Successfully collected attestation data");
+        }
+    }
+
+    /**
+     * Set report status to failed if no result items exist
+     * @param report the report
+     */
+    public static void failAttestation(ServerCoCoAttestationReport report) {
+        if (report.getResults().isEmpty()) {
+            // results are not initialized yet. So we need to set the report status
+            // directly to failed.
+            report.setStatus(CoCoAttestationStatus.FAILED);
         }
     }
 

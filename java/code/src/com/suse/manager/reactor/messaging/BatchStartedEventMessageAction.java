@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
@@ -76,7 +77,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
                         .filter(sa -> sa.getServerId().equals(systemId))
                         .findFirst();
 
-                serverAction.ifPresent(sa -> failServerAction(sa, minionId));
+                serverAction.ifPresent(sa -> failServerAction(action.get(), sa, minionId));
             });
         }
         else {
@@ -90,12 +91,17 @@ public class BatchStartedEventMessageAction implements MessageAction {
      * @param serverAction the server action
      * @param minionId the minion who performed the server action
      */
-    private static void failServerAction(ServerAction serverAction, String minionId) {
+    private static void failServerAction(Action action, ServerAction serverAction, String minionId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Marking server action as failed for server: {}", minionId);
         }
         serverAction.fail("Minion is down or could not be contacted.");
         ActionFactory.save(serverAction);
+        if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
+            //GlobalInstanceHolder.ATTESTATION_MANAGER.lookupReportByServerAndAction(action.getSchedulerUser(),
+            //        serverAction.getServer(), action).ifPresent(SaltUtils::failAttestation);
+            GlobalInstanceHolder.SALT_UTILS.handleCocoAttestationResult(action, serverAction, null);
+        }
     }
 
     /**

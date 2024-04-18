@@ -2494,6 +2494,9 @@ public class SaltServerActionService {
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
                     sa.setCompletionTime(new Date());
+                    if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
+                        saltUtils.handleCocoAttestationResult(action, sa, null);
+                    }
                     return;
                 }
 
@@ -2522,6 +2525,9 @@ public class SaltServerActionService {
                                 sa.setStatus(STATUS_FAILED);
                                 sa.setResultMsg(errorString);
                                 sa.setCompletionTime(new Date());
+                                if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
+                                    saltUtils.handleCocoAttestationResult(action, sa, null);
+                                }
                             }
                         }
                         else {
@@ -2535,6 +2541,9 @@ public class SaltServerActionService {
                             ));
                             LOG.error(sa.getResultMsg());
                             sa.setCompletionTime(new Date());
+                            if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
+                                saltUtils.handleCocoAttestationResult(action, sa, null);
+                            }
                         }
                     }, jsonResult -> {
                         String function = (String) call.getPayload().get("fun");
@@ -2574,6 +2583,9 @@ public class SaltServerActionService {
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
+                    if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
+                        saltUtils.handleCocoAttestationResult(action, sa, null);
+                    }
                 });
             }
         });
