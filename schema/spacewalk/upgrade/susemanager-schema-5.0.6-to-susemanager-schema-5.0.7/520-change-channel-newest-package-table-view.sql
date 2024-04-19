@@ -1,6 +1,10 @@
 ALTER TABLE rhnChannelNewestPackage
   ADD COLUMN IF NOT EXISTS appstream_id NUMERIC;
 
+ALTER TABLE rhnChannelNewestPackage DROP CONSTRAINT IF EXISTS rhn_cnp_aid_fk;
+
+ALTER TABLE rhnChannelNewestPackage ADD CONSTRAINT rhn_cnp_aid_fk FOREIGN KEY (appstream_id) REFERENCES suseappstream(id) ON DELETE CASCADE;
+
 ALTER TABLE rhnChannelNewestPackage DROP CONSTRAINT IF EXISTS rhn_cnp_cid_nid_uq;
 
 DROP INDEX IF EXISTS rhn_cnp_cid_nid_aid_uq;

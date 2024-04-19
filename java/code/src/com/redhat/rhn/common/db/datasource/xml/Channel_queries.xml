@@ -755,8 +755,8 @@ INSERT INTO  rhnPrivateChannelFamily
 <write-mode name="clone_newest_package">
   <query params="from_cid, to_cid">
   INSERT INTO rhnChannelNewestPackage
-    ( channel_id, name_id, evr_id, package_id, package_arch_id )
-    ( SELECT :to_cid, name_id, evr_id, package_id, package_arch_id
+    ( channel_id, name_id, evr_id, package_id, package_arch_id, appstream_id )
+    ( SELECT :to_cid, name_id, evr_id, package_id, package_arch_id, appstream_id
         FROM rhnChannelNewestPackage
         WHERE channel_id = :from_cid
     )

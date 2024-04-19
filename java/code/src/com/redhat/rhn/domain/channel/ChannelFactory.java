@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
 import org.apache.logging.log4j.LogManager;
@@ -1358,6 +1359,10 @@ public class ChannelFactory extends HibernateFactory {
             }
         }
         else {
+            // clone appstreams
+            if (AppStreamsManager.listChannelAppStreams(to.getId()).isEmpty()) {
+                AppStreamsManager.cloneAppStreams(to, from);
+            }
             if (!to.isModular()) {
                 Modules modules = new Modules();
                 modules.setChannel(to);

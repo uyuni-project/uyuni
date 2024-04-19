@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,6 +29,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -66,6 +68,9 @@ public class AppStream {
                     @JoinColumn(name = "package_id", nullable = false, updatable = false)}
     )
     private Set<Package> artifacts;
+
+    @OneToMany(mappedBy = "appStream", cascade = CascadeType.ALL)
+    private Set<AppStreamApi> rpms;
 
     public Long getId() {
         return id;
@@ -129,5 +134,13 @@ public class AppStream {
 
     public void setArtifacts(Set<Package> artifactsIn) {
         artifacts = artifactsIn;
+    }
+
+    public Set<AppStreamApi> getRpms() {
+        return rpms;
+    }
+
+    public void setRpms(Set<AppStreamApi> rpmsIn) {
+        rpms = rpmsIn;
     }
 }
