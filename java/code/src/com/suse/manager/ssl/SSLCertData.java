@@ -17,8 +17,10 @@ package com.suse.manager.ssl;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -145,5 +147,21 @@ public class SSLCertData {
         return hostnameParts.length > 2 ?
                 StringUtils.join(hostnameParts, ".", 0, hostnameParts.length - 2) :
                 this.getCn();
+    }
+
+    /**
+     * Return the set of aggregates cn and cnames.
+     *
+     * @return all cnames and cn without duplicate.
+     */
+    public Set<String> getAllCnames() {
+        Set<String> allCnames = new HashSet<>();
+        if (cn != null) {
+            allCnames.add(cn);
+        }
+        if (cnames != null) {
+            allCnames.addAll(cnames);
+        }
+        return allCnames;
     }
 }

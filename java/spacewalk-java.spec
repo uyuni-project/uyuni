@@ -243,6 +243,7 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
 Requires:       tomcat-native
