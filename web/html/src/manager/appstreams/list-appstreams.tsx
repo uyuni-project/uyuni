@@ -52,7 +52,12 @@ export const AppStreamsList = ({
       {channelsAppStreams.map((channelAppStream) => {
         const { channel, appStreams } = channelAppStream;
         return (
-          <Panel headingLevel="h4" icon="spacewalk-icon-software-channels" title={channel.name}>
+          <Panel
+            headingLevel="h4"
+            icon="spacewalk-icon-software-channels"
+            title={channel.name}
+            key={`panel-${channel.label}`}
+          >
             <table className="table table-striped">
               <thead>
                 <tr>
