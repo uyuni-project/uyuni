@@ -1768,7 +1768,7 @@ public class SaltUtils {
      * Set report status to failed if no result items exist
      * @param report the report
      */
-    public static void failAttestation(ServerCoCoAttestationReport report) {
+    private void failAttestation(ServerCoCoAttestationReport report) {
         if (report.getResults().isEmpty()) {
             // results are not initialized yet. So we need to set the report status
             // directly to failed.
