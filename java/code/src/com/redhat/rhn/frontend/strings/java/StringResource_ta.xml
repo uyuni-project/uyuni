@@ -6432,11 +6432,11 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>பெயர் சரியாக வடிவமைக்கப்படவில்லை. பெயர் எழுத்துக்கள், எண்கள், இடைக்கோடுகள், காலங்கள் மற்றும் அடிக்கோடு ஆகியவற்றை மட்டுமே கொண்டிருக்க வேண்டும். அது குறைந்தது 4 எழுத்துக்களை கொண்டிருக்க வேண்டும்.</target>
+        <target state="needs-adaptation">பெயர் சரியாக வடிவமைக்கப்படவில்லை. பெயர் எழுத்துக்கள், எண்கள், இடைக்கோடுகள், காலங்கள் மற்றும் அடிக்கோடு ஆகியவற்றை மட்டுமே கொண்டிருக்க வேண்டும். அது குறைந்தது 4 எழுத்துக்களை கொண்டிருக்க வேண்டும்.</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -9682,9 +9682,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="foreign_entitled" xml:space="preserve">
         <source>Foreign</source>
       </trans-unit>
-      <trans-unit id="visualization.nav.title" xml:space="preserve">
-        <source>Visualization</source>
-      </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
       </trans-unit>
@@ -9803,15 +9800,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
-      </trans-unit>
-      <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
-        <source>Virtualization Hierarchy</source>
-      </trans-unit>
-      <trans-unit id="Proxy Hierarchy" xml:space="preserve">
-        <source>Proxy Hierarchy</source>
-      </trans-unit>
-      <trans-unit id="Systems Grouping" xml:space="preserve">
-        <source>Systems Grouping</source>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
