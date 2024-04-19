@@ -1,13 +1,12 @@
 import { useState } from "react";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
-import { Button } from "components/buttons";
-import { ActionChainLink, ActionLink } from "components/links";
+import { AsyncButton, Button } from "components/buttons";
 
 import { localizedMoment } from "utils";
 import Network from "utils/network";
 
-export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onCancelClick }) => {
+export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onError, onCancelClick }) => {
   const [earliest, setEarliest] = useState(localizedMoment);
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
 
@@ -16,60 +15,54 @@ export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onCan
       sid: window.serverId,
       toEnable: toEnable,
       toDisable: toDisable,
-    }).then((data) => {
-      const id = data.data;
-      const msg = actionChain ? (
-        <span>
-          {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
-            name: actionChain.text,
-            link: (str) => <ActionChainLink id={id}>{str}</ActionChainLink>,
-          })}
-        </span>
-      ) : (
-        <span>
-          {t("Changing AppStreams has been <link>scheduled</link>.", {
-            link: (str) => <ActionLink id={id}>{str}</ActionLink>,
-          })}
-        </span>
-      );
-      onConfirm(msg);
-    });
+    })
+      .then((data) => {
+        onConfirm(data.data, actionChain);
+      })
+      .catch((jqXHR) => onError(Network.responseErrorMessage(jqXHR)));
 
     return request;
   };
 
   return (
     <>
-      <p>{t("Please review the changes bellow.")}</p>
+      <p>{t("Please review the changes below before scheduling an action to apply the changes on the system.")}</p>
       <div className="text-right margin-bottom-sm">
-        <Button id="cancelAppStreamChanges" className="btn btn-default" text={t("Cancel")} handler={onCancelClick} />
-        <Button id="confirmAppStreamChanges" className="btn btn-success" text={t("Confirm")} handler={applyChanges} />
+        <div className="btn-group">
+          <Button id="cancelAppStreamChanges" className="btn btn-default" text={t("Cancel")} handler={onCancelClick} />
+          <AsyncButton
+            id="confirmAppStreamChanges"
+            defaultType="btn-success"
+            text={t("Confirm")}
+            action={applyChanges}
+          />
+        </div>
       </div>
 
       <div className="panel panel-default">
         <div className="panel-body">
-          <h6>Changes Summary:</h6>
-          <div>
-            <p>
-              {t("Streams to be enabled:")} {toEnable.length === 0 && t("No changes.")}
-            </p>
-            <ul>
-              {toEnable.map((it) => (
-                <li key={it}>{it}</li>
-              ))}
-            </ul>
-          </div>
+          <h5>Changes Summary:</h5>
+          {toEnable.length === 0 || (
+            <div>
+              <p>{t("Streams to be enabled:")}</p>
+              <ul>
+                {toEnable.map((it) => (
+                  <li key={it}>{it}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <div>
-            <p>
-              {t("Streams to be disabled:")} {toDisable.length === 0 && t("No changes.")}
-            </p>
-            <ul>
-              {toDisable.map((it) => (
-                <li key={it}>{it}</li>
-              ))}
-            </ul>
-          </div>
+          {toDisable.length === 0 || (
+            <div>
+              <p>{t("Streams to be disabled:")}</p>
+              <ul>
+                {toDisable.map((it) => (
+                  <li key={it}>{it}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <ActionSchedule
             earliest={earliest}
             actionChains={window.actionChains}
