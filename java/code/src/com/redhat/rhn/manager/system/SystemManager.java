@@ -2164,8 +2164,18 @@ public class SystemManager extends BaseManager {
         return () -> new RhnRuntimeException(message);
     }
 
-    private Server getOrCreateProxySystem(User creator, String fqdn, Integer port) {
-        Optional<Server> existing = ServerFactory.findByFqdn(fqdn);
+    private Optional<Server> findByAnyFqdn(Set<String> fqdns) {
+        for (String fqdn : fqdns) {
+            Optional<Server> server = ServerFactory.findByFqdn(fqdn);
+            if (server.isPresent()) {
+                return server;
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Server getOrCreateProxySystem(User creator, String proxyName, Set<String> fqdns, Integer port) {
+        Optional<Server> existing = findByAnyFqdn(fqdns);
         if (existing.isPresent()) {
             Server server = existing.get();
             if (!(server.hasEntitlement(EntitlementManager.FOREIGN) ||
@@ -2184,13 +2194,15 @@ public class SystemManager extends BaseManager {
             return server;
         }
         Server server = ServerFactory.createServer();
-        server.setName(fqdn);
-        server.setHostname(fqdn);
-        server.getFqdns().add(new ServerFQDN(server, fqdn));
+        server.setName(proxyName);
+        server.setHostname(proxyName);
+        server.getFqdns().addAll(fqdns.stream()
+                .filter(fqdn -> !fqdn.contains("*"))
+                .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
         server.setOrg(creator.getOrg());
         server.setCreator(creator);
 
-        String uniqueId = createUniqueId(List.of(fqdn));
+        String uniqueId = createUniqueId(List.of(proxyName));
         server.setDigitalServerId(uniqueId);
         server.setMachineId(uniqueId);
         server.setOs("(unknown)");
@@ -2226,18 +2238,20 @@ public class SystemManager extends BaseManager {
      * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
      * @param proxyCertKey proxy CRT and key pair
      * @param caPair the CA certificate and key used to sign the certificate to generate.
-     *               Can be omitted if proxyCertKey is not provided
+     *               Can be omitted if proxyCertKey is provided
      * @param caPassword the CA private key password.
-     *               Can be omitted if proxyCertKey is not provided
+     *               Can be omitted if proxyCertKey is provided
      * @param certData the data needed to generate the new proxy SSL certificate.
-     *               Can be omitted if proxyCertKey is not provided
+     *               Can be omitted if proxyCertKey is provided
+     * @param certManager the SSLCertManager to use
      * @return the configuration file
      */
     public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
                                              Long maxCache, String email,
                                              String rootCA, List<String> intermediateCAs,
                                              SSLCertPair proxyCertKey,
-                                             SSLCertPair caPair, String caPassword, SSLCertData certData)
+                                             SSLCertPair caPair, String caPassword, SSLCertData certData,
+                                             SSLCertManager certManager)
             throws IOException, InstantiationException, SSLCertGenerationException {
         /* Prepare the archive streams where the config files will be stored into */
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
@@ -2245,9 +2259,7 @@ public class SystemManager extends BaseManager {
         GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(bufOut);
         TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut);
 
-        /**
-         * config.yaml
-         */
+        // config.yaml
         Map<String, Object> config = new HashMap<>();
 
         config.put("server", server);
@@ -2259,23 +2271,28 @@ public class SystemManager extends BaseManager {
         SSLCertPair proxyPair = proxyCertKey;
         String rootCaCert = rootCA;
         if (proxyCertKey == null || !proxyCertKey.isComplete()) {
-            proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
+            proxyPair = certManager.generateCertificate(caPair, caPassword, certData);
             rootCaCert = caPair.getCertificate();
         }
         config.put("ca_crt", rootCaCert);
 
         addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dumpPlain(config).getBytes(), 0644);
-        /**
-         * config.yaml
-         */
+        // End of config.yaml
 
-        /**
-         * httpd.yaml
-         */
+        // httpd.yaml
         Map<String, Object> httpdRootConfig = new HashMap<>();
         Map<String, Object> httpdConfig = new HashMap<>();
 
-        Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
+        Set<String> fqdns = new HashSet<>();
+        fqdns.add(proxyName);
+        if (proxyCertKey != null && proxyCertKey.getCertificate() != null) {
+            // Get the cnames from the certificate using openssl
+            fqdns.addAll(certManager.getNamesFromSslCert(proxyCertKey.getCertificate()));
+        }
+        else {
+            fqdns.addAll(certData.getAllCnames());
+        }
+        Server proxySystem = getOrCreateProxySystem(user, proxyName, fqdns, proxyPort);
         ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
         httpdConfig.put("system_id", cert.asXml());
 
@@ -2292,13 +2309,9 @@ public class SystemManager extends BaseManager {
 
         httpdRootConfig.put("httpd", httpdConfig);
         addTarEntry(tarOut, "httpd.yaml", YamlHelper.INSTANCE.dumpPlain(httpdRootConfig).getBytes(), 0600);
-        /**
-         * httpd.yaml
-         */
+        // End of httpd.yaml
 
-        /**
-         * ssh.yaml
-         */
+        // ssh.yaml
         Map<String, Object> sshRootConfig = new HashMap<>();
         Map<String, Object> sshConfig = new HashMap<>();
 
@@ -2321,9 +2334,7 @@ public class SystemManager extends BaseManager {
 
         sshRootConfig.put("ssh", sshConfig);
         addTarEntry(tarOut, "ssh.yaml", YamlHelper.INSTANCE.dumpPlain(sshRootConfig).getBytes(), 0600);
-        /**
-         * ssh.yaml
-         */
+        // End of ssh.yaml
 
         tarOut.finish();
         tarOut.close();

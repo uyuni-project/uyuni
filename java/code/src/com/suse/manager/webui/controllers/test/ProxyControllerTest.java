@@ -22,6 +22,7 @@ import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.ssl.SSLCertData;
+import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.ProxyController;
 
@@ -62,7 +63,8 @@ public class ProxyControllerTest extends BaseControllerTestCase {
                     with(equal(user)), with(equal("pxy.acme.lab")), with(equal(8022)), with(equal("srv.acme.lab")),
                     with(equal(2048L)), with(equal("coyote@acme.lab")), with(equal("Root CA")),
                     with(equal(List.of("CA1", "CA2"))), with(equal(new SSLCertPair("CERT", "KEY"))),
-                    with(aNull(SSLCertPair.class)), with(aNull(String.class)), with(aNull(SSLCertData.class)));
+                    with(aNull(SSLCertPair.class)), with(aNull(String.class)), with(aNull(SSLCertData.class)),
+                    with(any(SSLCertManager.class)));
             will(returnValue(data));
         }});
 
@@ -86,7 +88,8 @@ public class ProxyControllerTest extends BaseControllerTestCase {
                     with(aNull(String.class)), with(aNull(List.class)), with(aNull(SSLCertPair.class)),
                     with(equal(new SSLCertPair("CA CERT", "CA KEY"))), with(equal("secret")),
                     with(equal(new SSLCertData("pxy.acme.lab", List.of("cname1", "cname2"), "DE", "Bavaria", "Nurnberg",
-                            "SUSE", "SUSE Unit", "roadrunner@acme.lab"))));
+                            "SUSE", "SUSE Unit", "roadrunner@acme.lab"))),
+                    with(any(SSLCertManager.class)));
             will(returnValue(data));
         }});
 

@@ -130,6 +130,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.metrics.SystemsCollector;
+import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -1933,6 +1934,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String sshPushKey = "DummySshPushKey";
         String sshPushPubKey = "DummySshPushPubKey";
 
+        SSLCertManager certManager = mock(SSLCertManager.class);
+
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
@@ -1942,10 +1945,12 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock)
                     .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
             will(returnValue(apacheCert));
+            allowing(certManager).getNamesFromSslCert("Dummy cert");
+            will(returnValue(Set.of("pxy.mgr.lab", "pxy-test.mgr.lab")));
         }});
 
         byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
-                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
         Map<String, String> content = readTarData(actual);
 
         Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));
