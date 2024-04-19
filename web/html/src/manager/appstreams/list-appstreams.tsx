@@ -12,6 +12,7 @@ interface Props {
   channelsAppStreams: ChannelAppStream[];
   toEnable: string[];
   toDisable: string[];
+  onReset: () => void;
   onSubmitChanges: () => void;
   onModuleEnableDisable: (module: AppStreamModule) => void;
 }
@@ -20,26 +21,33 @@ export const AppStreamsList = ({
   channelsAppStreams,
   toEnable,
   toDisable,
+  onReset,
   onSubmitChanges,
   onModuleEnableDisable,
 }: Props) => {
   const [moduleToShowPackages, setModuleToShowPackages] = useState<{ stream: string; channelId: number } | null>(null);
   const numberOfChanges = toEnable.length + toDisable.length;
+  const hasChanges = () => !(toEnable.length === 0 && toDisable.length === 0);
 
   // Sort channels by label
   channelsAppStreams.sort((a, b) => a.channel.name.localeCompare(b.channel.name));
 
   return (
     <>
-      <p>{t("Use the status button for changes and then confirm using the Apply Changes button.")}</p>
+      <p>{t("The following AppStream modules are currently available to the system.")}</p>
       <div className="text-right margin-bottom-sm">
-        <Button
-          id="applyModuleChanges"
-          className="btn-success"
-          disabled={numberOfChanges === 0}
-          text={t("Apply Changes") + (numberOfChanges > 0 ? " (" + numberOfChanges + ")" : "")}
-          handler={onSubmitChanges}
-        />
+        <div className="btn-group">
+          {hasChanges() && (
+            <Button id="revertModuleChanges" className="btn-default" text={t("Reset")} handler={onReset} />
+          )}
+          <Button
+            id="applyModuleChanges"
+            className="btn-success"
+            disabled={numberOfChanges === 0}
+            text={t("Apply Changes") + (numberOfChanges > 0 ? " (" + numberOfChanges + ")" : "")}
+            handler={onSubmitChanges}
+          />
+        </div>
       </div>
       {channelsAppStreams.map((channelAppStream) => {
         const { channel, appStreams } = channelAppStream;
