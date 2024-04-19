@@ -22756,7 +22756,7 @@ per sottoscrivere i sistemi ai canali software durante un kickstart.&lt;/span&gt
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
 The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
@@ -22765,7 +22765,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>Le seguenti informazioni sono necessarie per definire una distribuzione sulla quale poter eseguire kickstart. Il campo relativo al percorso dell'albero deve contenere un percorso valido per un albero di installazione presente su questo server di @@PRODUCT_NAME@@. L'RPM di kickstart deve essere un nome dell'rpm contenente gli script di implementazione di kickstart. I suddetti RPM vengono forniti da @@PRODUCT_NAME@@ e situati nei canali figlio per gli Strumenti di @@PRODUCT_NAME@@&lt;br/&gt;&lt;br/&gt;
+        <target state="needs-adaptation">Le seguenti informazioni sono necessarie per definire una distribuzione sulla quale poter eseguire kickstart. Il campo relativo al percorso dell'albero deve contenere un percorso valido per un albero di installazione presente su questo server di @@PRODUCT_NAME@@. L'RPM di kickstart deve essere un nome dell'rpm contenente gli script di implementazione di kickstart. I suddetti RPM vengono forniti da @@PRODUCT_NAME@@ e situati nei canali figlio per gli Strumenti di @@PRODUCT_NAME@@&lt;br/&gt;&lt;br/&gt;
 
 Il campo relativo all'Etichetta della distribuzione contiene solo lettere, numeri, trattino, punti e linee e deve avere un minimo di 4 caratteri.&lt;br/&gt;&lt;br/&gt;
 

@@ -6634,11 +6634,11 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>레이블 형식이 적절하지 않습니다. 레이블은 문자, 숫자, 하이픈, 마침표 및 밑줄만 포함해야 합니다. 또한 4자 이상이어야 합니다.</target>
+        <target state="needs-adaptation">레이블 형식이 적절하지 않습니다. 레이블은 문자, 숫자, 하이픈, 마침표 및 밑줄만 포함해야 합니다. 또한 4자 이상이어야 합니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>

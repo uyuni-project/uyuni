@@ -6576,11 +6576,11 @@ Suivez cet url pour obtenir la liste complète des systèmes inactifs :
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>L'étiquette n'est pas formatée correctement. Elle devrait contenir uniquement des lettres, des chiffres, des traits d'union, des points et des tirets bas. Elle doit également contenir au moins 4 caractères.</target>
+        <target state="needs-adaptation">L'étiquette n'est pas formatée correctement. Elle devrait contenir uniquement des lettres, des chiffres, des traits d'union, des points et des tirets bas. Elle doit également contenir au moins 4 caractères.</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>

@@ -22663,7 +22663,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
 The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
@@ -22672,7 +22672,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>您需要提供以下詳細資料，以定義可 kickstart 的發行版。目錄樹路徑欄位應包含安裝目錄樹在此 @@PRODUCT_NAME@@ 伺服器上的有效路徑。Kickstart RPM 應是包含了 kickstart 建置 script 的 rpm 名稱。這些 RPM 是由 @@PRODUCT_NAME@@ 所提供，並位於 @@PRODUCT_NAME@@ 工具子頻道中。&lt;br/&gt;&lt;br/&gt;
+        <target state="needs-adaptation">您需要提供以下詳細資料，以定義可 kickstart 的發行版。目錄樹路徑欄位應包含安裝目錄樹在此 @@PRODUCT_NAME@@ 伺服器上的有效路徑。Kickstart RPM 應是包含了 kickstart 建置 script 的 rpm 名稱。這些 RPM 是由 @@PRODUCT_NAME@@ 所提供，並位於 @@PRODUCT_NAME@@ 工具子頻道中。&lt;br/&gt;&lt;br/&gt;
 
 發行版標籤欄位應只包含字母、數字、連字號、句號以及底線符號。並且其長度必須包含至少四個字元。&lt;br/&gt;&lt;br/&gt;
 

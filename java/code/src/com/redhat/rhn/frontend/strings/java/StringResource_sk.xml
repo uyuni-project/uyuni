@@ -6642,8 +6642,8 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
-        <target>Označenie nie je správne formátované.  Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky.  Musí byť tiež dlhé aspoň 4 znaky</target>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
+        <target state="needs-adaptation">Označenie nie je správne formátované.  Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky.  Musí byť tiež dlhé aspoň 4 znaky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>

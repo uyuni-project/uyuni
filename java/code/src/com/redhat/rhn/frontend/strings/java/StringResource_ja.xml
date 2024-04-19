@@ -6632,11 +6632,11 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="translated">ラベルが正しく指定されていません。英字、数字、ハイフン、ピリオドおよびアンダースコア以外はラベルに使用できません。また、最低でも 4 文字の長さにしなければなりません</target>
+        <target state="needs-adaptation">ラベルが正しく指定されていません。英字、数字、ハイフン、ピリオドおよびアンダースコア以外はラベルに使用できません。また、最低でも 4 文字の長さにしなければなりません</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
