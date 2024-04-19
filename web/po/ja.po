@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-19 15:07+0200\n"
 "PO-Revision-Date: 2024-03-19 07:42+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -700,8 +700,6 @@ msgstr "({selectedCount}を選択しました)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-#: ../html/src/manager/visualization/hierarchy.tsx:307
-#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr "消去"
 
@@ -6674,120 +6672,6 @@ msgid ""
 msgstr ""
 "サーバからストレージプールの機能を取得できませんでした。再試行してください。"
 
-#: ../html/src/manager/visualization/data-tree.ts:137
-msgid "  security advisories"
-msgstr "  セキュリティアドバイザリ"
-
-#: ../html/src/manager/visualization/data-tree.ts:143
-msgid "  bug fix advisories"
-msgstr "  バグ修正アドバイザリ"
-
-#: ../html/src/manager/visualization/data-tree.ts:151
-msgid "  product enhancement advisories"
-msgstr "  製品の機能強化アドバイザリ"
-
-#: ../html/src/manager/visualization/data-tree.ts:190
-msgid "Add/remove system from SSM"
-msgstr "SSM からシステムを追加／削除"
-
-#: ../html/src/manager/visualization/data-tree.ts:248
-msgid "Add children to SSM"
-msgstr "SSM に子を追加"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "There was an error fetching data from the server."
-msgstr "サーバからデータを取り出す際にエラーが発生しました。"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:109
-msgid "Show systems with:"
-msgstr "下記のシステムを表示:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:138
-msgid "security advisories"
-msgstr "セキュリティアドバイザリ"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:143
-msgid "bug fix advisories"
-msgstr "バグ修正アドバイザリ"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:146
-msgid "product enhancement advisories"
-msgstr "製品の機能強化アドバイザリ"
-
-#. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "Filter by system name"
-msgstr "システム名でフィルタ"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "e.g., client.nue.sles"
-msgstr "例: client.nue.sles"
-
-#. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "Filter by system base channel"
-msgstr "システムのベースチャンネルでフィルタ"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "e.g., SLE12"
-msgstr "例: SLE12"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:170
-msgid "Filter by system installed products"
-msgstr "システムにインストールされている製品でフィルタ"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:171
-msgid "e.g., SLES"
-msgstr "例: SLES"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Hide filters"
-msgstr " フィルタ"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Show filters"
-msgstr " フィルタ"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:282
-msgid "Filtering"
-msgstr "フィルタリング"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:288
-msgid "Partitioning"
-msgstr "パーティション設定"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:295
-msgid "Partition systems by given check-in time:"
-msgstr "指定したチェックイン名でシステムのパーティションを設定する:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:304
-#: ../html/src/manager/visualization/hierarchy.tsx:319
-msgid "Apply"
-msgstr "適用"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:312
-msgid "Partition systems based on whether there are patches for them:"
-msgstr "パッチがあるかどうかに基づいてシステムのパーティションを設定する:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:328
-msgid "Split into groups"
-msgstr "グループに分割"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:335
-msgid "Add a grouping level"
-msgstr "グループレベルの追加"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:345
-msgid "Select a system group"
-msgstr "システムグループの選択"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:367
-#, fuzzy
-msgid "Remove this level"
-msgstr "ファイルの削除"
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
@@ -6806,6 +6690,90 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid "  security advisories"
+#~ msgstr "  セキュリティアドバイザリ"
+
+#~ msgid "  bug fix advisories"
+#~ msgstr "  バグ修正アドバイザリ"
+
+#~ msgid "  product enhancement advisories"
+#~ msgstr "  製品の機能強化アドバイザリ"
+
+#~ msgid "Add/remove system from SSM"
+#~ msgstr "SSM からシステムを追加／削除"
+
+#~ msgid "Add children to SSM"
+#~ msgstr "SSM に子を追加"
+
+#~ msgid "There was an error fetching data from the server."
+#~ msgstr "サーバからデータを取り出す際にエラーが発生しました。"
+
+#~ msgid "Show systems with:"
+#~ msgstr "下記のシステムを表示:"
+
+#~ msgid "security advisories"
+#~ msgstr "セキュリティアドバイザリ"
+
+#~ msgid "bug fix advisories"
+#~ msgstr "バグ修正アドバイザリ"
+
+#~ msgid "product enhancement advisories"
+#~ msgstr "製品の機能強化アドバイザリ"
+
+#~ msgid "Filter by system name"
+#~ msgstr "システム名でフィルタ"
+
+#~ msgid "e.g., client.nue.sles"
+#~ msgstr "例: client.nue.sles"
+
+#~ msgid "Filter by system base channel"
+#~ msgstr "システムのベースチャンネルでフィルタ"
+
+#~ msgid "e.g., SLE12"
+#~ msgstr "例: SLE12"
+
+#~ msgid "Filter by system installed products"
+#~ msgstr "システムにインストールされている製品でフィルタ"
+
+#~ msgid "e.g., SLES"
+#~ msgstr "例: SLES"
+
+#, fuzzy
+#~ msgid "Hide filters"
+#~ msgstr " フィルタ"
+
+#, fuzzy
+#~ msgid "Show filters"
+#~ msgstr " フィルタ"
+
+#~ msgid "Filtering"
+#~ msgstr "フィルタリング"
+
+#~ msgid "Partitioning"
+#~ msgstr "パーティション設定"
+
+#~ msgid "Partition systems by given check-in time:"
+#~ msgstr "指定したチェックイン名でシステムのパーティションを設定する:"
+
+#~ msgid "Apply"
+#~ msgstr "適用"
+
+#~ msgid "Partition systems based on whether there are patches for them:"
+#~ msgstr "パッチがあるかどうかに基づいてシステムのパーティションを設定する:"
+
+#~ msgid "Split into groups"
+#~ msgstr "グループに分割"
+
+#~ msgid "Add a grouping level"
+#~ msgstr "グループレベルの追加"
+
+#~ msgid "Select a system group"
+#~ msgstr "システムグループの選択"
+
+#, fuzzy
+#~ msgid "Remove this level"
+#~ msgstr "ファイルの削除"
 
 #, fuzzy
 #~ msgid "Manage"

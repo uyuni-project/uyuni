@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-19 15:07+0200\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -719,8 +719,6 @@ msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-#: ../html/src/manager/visualization/hierarchy.tsx:307
-#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr "Vaciar"
 
@@ -6680,120 +6678,6 @@ msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:137
-msgid "  security advisories"
-msgstr "  recomendaciones de seguridad"
-
-#: ../html/src/manager/visualization/data-tree.ts:143
-msgid "  bug fix advisories"
-msgstr "  recomendaciones de corrección de defectos"
-
-#: ../html/src/manager/visualization/data-tree.ts:151
-msgid "  product enhancement advisories"
-msgstr "  recomendaciones de mejora de productos"
-
-#: ../html/src/manager/visualization/data-tree.ts:190
-msgid "Add/remove system from SSM"
-msgstr ""
-
-#: ../html/src/manager/visualization/data-tree.ts:248
-msgid "Add children to SSM"
-msgstr ""
-
-#: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "There was an error fetching data from the server."
-msgstr "Se produjo un error al recuperar los datos del servidor."
-
-#: ../html/src/manager/visualization/hierarchy.tsx:109
-msgid "Show systems with:"
-msgstr "Mostrar sistemas con:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:138
-msgid "security advisories"
-msgstr "recomendaciones de seguridad"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:143
-msgid "bug fix advisories"
-msgstr "recomendaciones de corrección de defectos"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:146
-msgid "product enhancement advisories"
-msgstr "recomendaciones de mejora de productos"
-
-#. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "Filter by system name"
-msgstr "Filtrar por nombre de sistema"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "e.g., client.nue.sles"
-msgstr "p. ej., client.nue.sles"
-
-#. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "Filter by system base channel"
-msgstr "Filtrar por canal de base de sistema"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "e.g., SLE12"
-msgstr "p. ej., SLE12"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:170
-msgid "Filter by system installed products"
-msgstr "Filtrar por productos instalados a nivel sistema"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:171
-msgid "e.g., SLES"
-msgstr "p. ej., SLES"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Hide filters"
-msgstr " filtros"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Show filters"
-msgstr " filtros"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:282
-msgid "Filtering"
-msgstr "Filtrado"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:288
-msgid "Partitioning"
-msgstr "Particionado"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:295
-msgid "Partition systems by given check-in time:"
-msgstr ""
-
-#: ../html/src/manager/visualization/hierarchy.tsx:304
-#: ../html/src/manager/visualization/hierarchy.tsx:319
-msgid "Apply"
-msgstr "Aplicar"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:312
-msgid "Partition systems based on whether there are patches for them:"
-msgstr ""
-
-#: ../html/src/manager/visualization/hierarchy.tsx:328
-msgid "Split into groups"
-msgstr ""
-
-#: ../html/src/manager/visualization/hierarchy.tsx:335
-msgid "Add a grouping level"
-msgstr ""
-
-#: ../html/src/manager/visualization/hierarchy.tsx:345
-msgid "Select a system group"
-msgstr ""
-
-#: ../html/src/manager/visualization/hierarchy.tsx:367
-#, fuzzy
-msgid "Remove this level"
-msgstr "Quitar"
-
 #: ../html/src/utils/network.ts:97
 #, fuzzy
 msgid "Session expired, please reload the page."
@@ -6812,6 +6696,69 @@ msgstr ""
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr ""
+
+#~ msgid "  security advisories"
+#~ msgstr "  recomendaciones de seguridad"
+
+#~ msgid "  bug fix advisories"
+#~ msgstr "  recomendaciones de corrección de defectos"
+
+#~ msgid "  product enhancement advisories"
+#~ msgstr "  recomendaciones de mejora de productos"
+
+#~ msgid "There was an error fetching data from the server."
+#~ msgstr "Se produjo un error al recuperar los datos del servidor."
+
+#~ msgid "Show systems with:"
+#~ msgstr "Mostrar sistemas con:"
+
+#~ msgid "security advisories"
+#~ msgstr "recomendaciones de seguridad"
+
+#~ msgid "bug fix advisories"
+#~ msgstr "recomendaciones de corrección de defectos"
+
+#~ msgid "product enhancement advisories"
+#~ msgstr "recomendaciones de mejora de productos"
+
+#~ msgid "Filter by system name"
+#~ msgstr "Filtrar por nombre de sistema"
+
+#~ msgid "e.g., client.nue.sles"
+#~ msgstr "p. ej., client.nue.sles"
+
+#~ msgid "Filter by system base channel"
+#~ msgstr "Filtrar por canal de base de sistema"
+
+#~ msgid "e.g., SLE12"
+#~ msgstr "p. ej., SLE12"
+
+#~ msgid "Filter by system installed products"
+#~ msgstr "Filtrar por productos instalados a nivel sistema"
+
+#~ msgid "e.g., SLES"
+#~ msgstr "p. ej., SLES"
+
+#, fuzzy
+#~ msgid "Hide filters"
+#~ msgstr " filtros"
+
+#, fuzzy
+#~ msgid "Show filters"
+#~ msgstr " filtros"
+
+#~ msgid "Filtering"
+#~ msgstr "Filtrado"
+
+#~ msgid "Partitioning"
+#~ msgstr "Particionado"
+
+#~ msgid "Apply"
+#~ msgstr "Aplicar"
+
+#, fuzzy
+#~ msgid "Remove this level"
+#~ msgstr "Quitar"
 
 #, fuzzy
 #~ msgid "Instance Details for '{name}'"
