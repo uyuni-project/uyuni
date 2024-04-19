@@ -20,9 +20,10 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequenc
 
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '219180cddb42a60e', lookup_package_key_type('gpg'), lookup_package_provider('Red Hat Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = '219180cddb42a60e'));
 
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '5054e4a45a6340b3', lookup_package_key_type('gpg'), lookup_package_provider('Red Hat Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = '5054e4a45a6340b3'));
+
 -- RHEL 6
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '199e2f91fd431d51', lookup_package_key_type('gpg'), lookup_package_provider('Red Hat Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = '199e2f91fd431d51'));
-
 
 -- Fedora
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'b44269d04f2a6fd2', lookup_package_key_type('gpg'), lookup_package_provider('Fedora') from dual where not exists (select 1 from rhnPackageKey where key_id = 'b44269d04f2a6fd2'));
@@ -112,6 +113,10 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequenc
 
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '82562ea9ad986da3', lookup_package_key_type('gpg'), lookup_package_provider('Oracle Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = '82562ea9ad986da3'));
 
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'bc4d06a08d8b756f', lookup_package_key_type('gpg'), lookup_package_provider('Oracle Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = 'bc4d06a08d8b756f'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'a7dd07088b4efbe6', lookup_package_key_type('gpg'), lookup_package_provider('Oracle Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = 'a7dd07088b4efbe6'));
+
 -- Novell
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '2afe16421d061a62', lookup_package_key_type('gpg'), lookup_package_provider('Novell Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = '2afe16421d061a62'));
 
@@ -132,13 +137,39 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequenc
 
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '6c74ce73b37b98a9', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '6c74ce73b37b98a9'));
 
-insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '8055f0400182b964', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '8055f0400182b964'));
-
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '70af9e8139db7c82', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '70af9e8139db7c82'));
 
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '5eaf444450a3dd1c', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '5eaf444450a3dd1c'));
 
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '8efe1bc4d4ade9c3', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '8efe1bc4d4ade9c3'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '97a636db0bad8ecc', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '97a636db0bad8ecc'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'f74f09bc3fa1d6ce', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = 'f74f09bc3fa1d6ce'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'a1bfc02bd588dc46', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = 'a1bfc02bd588dc46'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '46dfa05c6f5da62b', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '46dfa05c6f5da62b'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '09461c70af5425f7', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '09461c70af5425f7'));
+
+-- openSUSE
+
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'b88b2fd43dbdc284', lookup_package_key_type('gpg'), lookup_package_provider('openSUSE') from dual where not exists (select 1 from rhnPackageKey where key_id = 'b88b2fd43dbdc284'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '9c214d4065176565', lookup_package_key_type('gpg'), lookup_package_provider('openSUSE') from dual where not exists (select 1 from rhnPackageKey where key_id = '9c214d4065176565'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '3c90731ed78c6b69', lookup_package_key_type('gpg'), lookup_package_provider('openSUSE') from dual where not exists (select 1 from rhnPackageKey where key_id = '3c90731ed78c6b69'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '35a2f86e29b700a4', lookup_package_key_type('gpg'), lookup_package_provider('openSUSE') from dual where not exists (select 1 from rhnPackageKey where key_id = '35a2f86e29b700a4'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '8a49eb0325db7ae0', lookup_package_key_type('gpg'), lookup_package_provider('openSUSE') from dual where not exists (select 1 from rhnPackageKey where key_id = '8a49eb0325db7ae0'));
+
+-- Liberty / SLES-ES
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '8055f0400182b964', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '8055f0400182b964'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '177086fab0f9c64f', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LLC') from dual where not exists (select 1 from rhnPackageKey where key_id = '177086fab0f9c64f'));
 
 
 -- Spacewalk
@@ -166,6 +197,12 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequenc
 
 -- Alma Linux 8
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '488fcf7c3abb34f8', lookup_package_key_type('gpg'), lookup_package_provider('AlmaLinux') from dual where not exists (select 1 from rhnPackageKey where key_id = '488fcf7c3abb34f8'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '2ae81e8aced7258b', lookup_package_key_type('gpg'), lookup_package_provider('AlmaLinux') from dual where not exists (select 1 from rhnPackageKey where key_id = '2ae81e8aced7258b'));
+
+-- Alma Linux 9
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'd36cb86cb86b3716', lookup_package_key_type('gpg'), lookup_package_provider('AlmaLinux') from dual where not exists (select 1 from rhnPackageKey where key_id = 'd36cb86cb86b3716'));
+
 
 -- Amazon Linux 2
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '11cf1f95c87f5b1a', lookup_package_key_type('gpg'), lookup_package_provider('Amazon') from dual where not exists (select 1 from rhnPackageKey where key_id = '11cf1f95c87f5b1a'));
