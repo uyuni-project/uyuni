@@ -50,6 +50,11 @@ const AppStreams = (props: Props) => {
     setScheduledMsg(msg);
   };
 
+  const handleReset = () => {
+    setToEnable([]);
+    setToDisable([]);
+  };
+
   const showContent = () => {
     if (confirmed) {
       return scheduledMsg;
@@ -67,6 +72,7 @@ const AppStreams = (props: Props) => {
         <AppStreamsList
           toEnable={toEnable}
           toDisable={toDisable}
+          onReset={handleReset}
           onModuleEnableDisable={handleEnableDisable}
           onSubmitChanges={handleSubmitChanges}
           channelsAppStreams={props.channelsAppStreams}
