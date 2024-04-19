@@ -19,6 +19,9 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.channel.AppStream;
+import com.redhat.rhn.domain.channel.AppStreamApi;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -27,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -145,5 +149,43 @@ public class AppStreamsManager {
 
         criteriaQuery.select(root).where(finalPredicate);
         return session.createQuery(criteriaQuery).uniqueResult();
+    }
+
+    /**
+     * Clone appstreams from one channel to another
+     *
+     * @param to channel to clone to
+     * @param from channel to clone from
+     */
+    public static void cloneAppStreams(Channel to, Channel from) {
+        if (from.isModular()) {
+            AppStreamsManager.listChannelAppStreams(from.getId()).forEach(appStream -> {
+                AppStream a = new AppStream();
+                a.setChannel(to);
+                a.setName(appStream.getName());
+                a.setStream(appStream.getStream());
+                a.setVersion(appStream.getVersion());
+                a.setContext(appStream.getContext());
+                a.setArch(appStream.getArch());
+                cloneArtifacts(a, appStream);
+                HibernateFactory.getSession().persist(a);
+                cloneRpms(a, appStream);
+                HibernateFactory.getSession().save(a);
+            });
+        }
+    }
+
+    private static void cloneArtifacts(AppStream to, AppStream from) {
+        Set<Package> artifacts = new HashSet<>();
+        artifacts.addAll(from.getArtifacts());
+        to.setArtifacts(artifacts);
+    }
+
+    private static void cloneRpms(AppStream to, AppStream from) {
+        Set<AppStreamApi> rpms = new HashSet<>();
+        from.getRpms().forEach(rpm -> {
+            rpms.add(new AppStreamApi(rpm.getRpm(), to.getId()));
+        });
+        to.setRpms(rpms);
     }
 }
