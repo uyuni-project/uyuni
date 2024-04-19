@@ -1,3 +1,4 @@
+import { getStreamName } from "./appstreams";
 import { AppStreamModule } from "./appstreams.type";
 
 interface Props {
@@ -8,8 +9,6 @@ interface Props {
   showPackages: (string) => void;
   onToggle: (AppStreamModule) => void;
 }
-
-const getStreamName = (module: AppStreamModule) => `${module.name}:${module.stream}`;
 
 export const ChannelAppStreams = ({ streams, moduleName, showPackages, toEnable, toDisable, onToggle }: Props) => {
   // Sort stream names alphanumerically in descending order
