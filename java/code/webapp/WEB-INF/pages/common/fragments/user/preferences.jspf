@@ -85,8 +85,6 @@
                     </c:if>/>
             <c:out value="${defaultLocale.localizedName}" />
           </div>
-          </br>
-          </br>
         </div>
         <c:set var="counter" value="0"/>
         <c:forEach var="item" items="${supportedLocales}">
@@ -132,8 +130,6 @@
                     </c:if>/>
             <c:out value="${defaultDocsLocale.localizedName}" />
           </div>
-          </br>
-          </br>
         </div>
         <c:set var="counter" value="0"/>
         <c:forEach var="item" items="${supportedDocsLocales}">

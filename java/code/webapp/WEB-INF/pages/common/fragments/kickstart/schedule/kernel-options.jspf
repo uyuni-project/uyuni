@@ -37,7 +37,7 @@
         </p>
     </div>
 
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>
                 <input type="radio" name="kernelParamsType" value="profile" onclick="form.kernelParamsId.disabled = true;"
@@ -59,7 +59,7 @@
         </p>
     </div>
 
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>
                 <input type="radio" name="kernelParamsType" value="custom" onclick="form.kernelParamsId.disabled = false;"
@@ -69,7 +69,7 @@
             </label>
         </div>
     </div>
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <html:text styleId="kernelParamsId" property="kernelParams" onkeydown="return blockEnter(event)" styleClass="form-control"
             disabled="${form.kernelParamsType ne &quot;custom&quot;}"
         />
@@ -100,7 +100,7 @@
         </p>
     </div>
 
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>
                 <input type="radio" name="postKernelParamsType" value="profile" onclick="form.postKernelParamsId.disabled = true;"
@@ -122,7 +122,7 @@
         </p>
     </div>
 
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>
                 <input type="radio" name="postKernelParamsType" value="custom" onclick="form.postKernelParamsId.disabled = false;"
@@ -132,7 +132,7 @@
             </label>
         </div>
     </div>
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <html:text styleId="postKernelParamsId" property="postKernelParams" onkeydown="return blockEnter(event)" styleClass="form-control"
             disabled="${form.postKernelParamsType ne &quot;custom&quot;}"
         />

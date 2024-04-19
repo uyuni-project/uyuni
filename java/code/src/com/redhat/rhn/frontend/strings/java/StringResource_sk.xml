@@ -6621,8 +6621,8 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
-        <target>Označenie nie je správne formátované.  Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky.  Musí byť tiež dlhé aspoň 4 znaky</target>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
+        <target state="needs-adaptation">Označenie nie je správne formátované.  Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky.  Musí byť tiež dlhé aspoň 4 znaky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -10373,10 +10373,6 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Foreign</source>
         <target>Cudzie</target>
       </trans-unit>
-      <trans-unit id="visualization.nav.title" xml:space="preserve">
-        <source>Visualization</source>
-        <target>Vizualizácia</target>
-      </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
         <target>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Pridať alebo odstrániť&lt;/a&gt; typy prídavných systémov</target>
@@ -10525,18 +10521,6 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
         <target>Sync plán</target>
-      </trans-unit>
-      <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
-        <source>Virtualization Hierarchy</source>
-        <target>Hierarchia virtualizácie</target>
-      </trans-unit>
-      <trans-unit id="Proxy Hierarchy" xml:space="preserve">
-        <source>Proxy Hierarchy</source>
-        <target>Hierarchia proxy</target>
-      </trans-unit>
-      <trans-unit id="Systems Grouping" xml:space="preserve">
-        <source>Systems Grouping</source>
-        <target>Zoskupovanie systémov</target>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
@@ -11389,30 +11373,30 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Perform a standalone Salt update</source>
         <target state="translated">Vykonanie samostatnej aktualizácie Salt</target>
       </trans-unit>
-    <trans-unit id="riscv64-deb" xml:space="preserve">
+      <trans-unit id="riscv64-deb" xml:space="preserve">
         <source>RISCV64 Debian</source>
         <target>RISCV64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ARM64 Debian" xml:space="preserve">
         <source>ARM64 Debian</source>
         <target>ARM64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="armel-deb" xml:space="preserve">
         <source>ARMEL Debian</source>
         <target>ARMEL Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="s390x-deb" xml:space="preserve">
         <source>PPC64EL Debian</source>
         <target>PPC64EL Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.savereposyncflags" xml:space="preserve">
         <source>Saved repository settings for {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Uložené nastavenia repozitára pre {0}.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.jsonError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -123,12 +124,13 @@ public class PackageController {
 
             return json(response, packages.stream()
                     .map(PackageOverview::getId)
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList()), new TypeToken<>() { });
         }
 
         DataResult<PackageOverview> packages = PackageManager.listCustomPackages(user.getOrg().getId(), source, pc);
 
-        return json(response, new PagedDataResultJson<>(packages, packages.getTotalSize(), null));
+        return json(response, new PagedDataResultJson<>(packages, packages.getTotalSize(), null),
+                new TypeToken<>() { });
     }
 
     private static Object orphanedPackages(PageControlHelper pch, Response response, User user, boolean source) {
@@ -155,12 +157,13 @@ public class PackageController {
 
             return json(response, packages.stream()
                     .map(PackageOverview::getId)
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList()), new TypeToken<>() { });
         }
 
         DataResult<PackageOverview> packages = PackageManager.listOrphanPackages(user.getOrg().getId(), source, pc);
 
-        return json(response, new PagedDataResultJson<>(packages, packages.getTotalSize(), null));
+        return json(response, new PagedDataResultJson<>(packages, packages.getTotalSize(), null),
+                new TypeToken<>() { });
     }
 
     private static Object channelPackages(Request request, Response response, User user) {
@@ -193,13 +196,14 @@ public class PackageController {
 
                 return json(response, packages.stream()
                         .map(PackageOverview::getId)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()), new TypeToken<>() { });
             }
 
             DataResult<PackageOverview> packages = PackageManager.listCustomPackageForChannel(
                     cid, user.getOrg().getId(), source, pc);
 
-            return json(response, new PagedDataResultJson<>(packages, packages.getTotalSize(), null));
+            return json(response, new PagedDataResultJson<>(packages, packages.getTotalSize(), null),
+                    new TypeToken<>() { });
         }
         catch (NumberFormatException e) {
             throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Invalid channel id: " + request.params("id"));
@@ -213,10 +217,10 @@ public class PackageController {
             PackageManager.deletePackages(ids, user);
         }
         catch (PermissionException e) {
-            return json(response, HttpStatus.SC_FORBIDDEN, e.getLocalizedMessage());
+            return jsonError(response, HttpStatus.SC_FORBIDDEN, e.getLocalizedMessage());
         }
         catch (RhnRuntimeException e) {
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
+            return jsonError(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
         }
 
         return json(response, "success");

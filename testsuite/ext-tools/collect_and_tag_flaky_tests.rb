@@ -172,23 +172,23 @@ def main
     'Content-Type' => 'application/json',
     'Authorization' => "Bearer #{token}"
   }
-  
+
   columns = {
-    'New' => 'new_issue' ,
+    'New' => 'new_issue',
     'Debugging' => 'under_debugging',
     'Bugs' => 'bug_reported',
     'Test Framework issues' => 'test_issue',
     'Flaky Tests' => 'flaky'
   }
-  
-  columns.each { |column, tag|
+
+  columns.each do |column, tag|
     gh_card_titles = fetch_github_issues(organization, project_number, column, headers)
     puts ">> Found #{gh_card_titles.length} issues in the '#{column}' column of the GitHub project board."
     unless gh_card_titles.empty?
       features_tagged, scenarios_tagged = tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_card_title)
       puts ">> Tagged #{features_tagged} feature and #{scenarios_tagged} scenarios with the '#{tag}' tag."
     end
-  }
+  end
 end
 
 main

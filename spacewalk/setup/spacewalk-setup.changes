@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:01:55 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4-0
+  * Replace java 11 with java 17
+  * set cobbler.host to localhost (bsc#1219887)
+  * set uyuni_authentication_endpoint to http://localhost (bsc#1219887)
+
+-------------------------------------------------------------------
 Mon Jan 29 12:00:29 CET 2024 - rosuna@suse.com
 
 - version 5.0.3-1

@@ -46,7 +46,7 @@
                         <%@ include file="/WEB-INF/pages/common/fragments/kickstart/virtoptions.jspf" %>
                         
                         <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
+                            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
                                         <html:checkbox property="active" />
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
+                            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
                                         <html:checkbox property="post_log" />
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
+                            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
                                         <html:checkbox property="pre_log" />
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
+                            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
                                         <html:checkbox property="ksCfg" />
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-6">
+                            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
                                         <html:checkbox property="org_default" />
@@ -136,7 +136,7 @@
                         </div>
 
                         <div class="form-group">
-                             <div class="col-lg-offset-3 col-lg-6">
+                             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <html:submit styleClass="btn btn-success">
                                     <bean:message key="kickstartdetails.jsp.updatekickstart"/>
                                 </html:submit>

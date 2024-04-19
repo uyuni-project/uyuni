@@ -195,16 +195,30 @@ end
 
 # Register client
 
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
+When(/^I wait at most (\d+) seconds until I see the name of "([^"]*)", refreshing the page$/) do |seconds, host|
+  system_name = get_system_name(host)
+  repeat_until_timeout(message: "I can't see the system '#{system_name}'", timeout: seconds.to_i) do
+    step 'I wait until I do not see "Loading..." text'
+    break if has_content?(system_name, wait: 3)
+
+    refresh_page
+  end
+end
+
+When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"$/) do |seconds, host|
   steps %(
     When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait until I see "System Status" text
-    And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Apply states" is completed
-    And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Hardware List Refresh" is completed
-    And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Package List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Apply states" is completed
+    And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Hardware List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Package List Refresh" is completed
   )
+end
+
+When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until onboarding is completed for "#{host}")
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|

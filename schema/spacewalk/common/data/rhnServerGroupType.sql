@@ -89,4 +89,12 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
       'N', 'N'
    );
 
+-- peripheral_server type ---------------------------------------------------
+
+insert into rhnServerGroupType ( id, label, name, permanent, is_base)
+   values ( sequence_nextval('rhn_servergroup_type_seq'),
+      'peripheral_server', 'Peripheral Server',
+      'N', 'N'
+   );
+
 commit;

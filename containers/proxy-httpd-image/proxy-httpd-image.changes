@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 05 18:51:13 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4
+  * Remove 'file=sys.stderr' kwarg from logging as it does not
+    know it
+
+-------------------------------------------------------------------
 Tue Feb 13 16:54:50 CET 2024 - marina.latini@suse.com
 
 - version 5.0.3

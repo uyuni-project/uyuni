@@ -37,4 +37,12 @@ insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
 values (lookup_sg_type('salt_entitled'),
         lookup_sg_type('ansible_control_node'));
 
+insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
+values (lookup_sg_type('salt_entitled'),
+        lookup_sg_type('peripheral_server'));
+
+insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
+values (lookup_sg_type('foreign_entitled'),
+        lookup_sg_type('peripheral_server'));
+
 commit;

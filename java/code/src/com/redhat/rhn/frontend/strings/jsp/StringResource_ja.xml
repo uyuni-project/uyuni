@@ -1814,55 +1814,6 @@
         </context-group>
         <target>完了した動作</target>
       </trans-unit>
-      <trans-unit id="visualization-legend.jsp.title" xml:space="preserve">
-        <source>Visualization Hierarchy</source>
-        <target>視覚化階層</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notcheckin" xml:space="preserve">
-        <source>System not checking in</source>
-        <target>チェックインしていないシステム</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notpatched" xml:space="preserve">
-        <source>Not patched system</source>
-        <target>パッチ未適用のシステム</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.root" xml:space="preserve">
-        <source>SUSE Manager</source>
-        <target>SUSE Manager</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.vhm" xml:space="preserve">
-        <source>Virtual Host Manager</source>
-        <target>仮想ホストマネージャ</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.group" xml:space="preserve">
-        <source>Group</source>
-        <target>グループ</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.system" xml:space="preserve">
-        <source>System</source>
-        <target>システム</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
       <!-- email_sent.jsp -->
       <!-- yourchangeemail.jsp -->
       <trans-unit id="yourchangeemail.jsp.title" xml:space="preserve">
@@ -22829,7 +22780,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
 The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
@@ -22838,7 +22789,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="translated">自動インストール可能なディストリビューションを定義するには、以下の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@ サーバーに存在するインストールツリーへの有効なパスである必要があります。&lt;br/&gt;&lt;br/&gt;
+        <target state="needs-adaptation">自動インストール可能なディストリビューションを定義するには、以下の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@ サーバーに存在するインストールツリーへの有効なパスである必要があります。&lt;br/&gt;&lt;br/&gt;
 
 'ディストリビューションラベル' フィールドには文字、数字、ハイフン、ピリオド、およびアンダースコアのみを指定できます。また、このフィールドには少なくとも 4 文字を指定する必要があります。 &lt;br/&gt;&lt;br/&gt;
 
@@ -29895,6 +29846,10 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="peripheral_server" xml:space="preserve">
+        <source>Peripheral Server</source>
       <target state="new"/>
   </trans-unit>
       </body>

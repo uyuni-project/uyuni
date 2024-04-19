@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 15:01+0100\n"
+"POT-Creation-Date: 2024-04-19 15:07+0200\n"
 "PO-Revision-Date: 2024-03-10 16:42+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:438
+#: ../html/javascript/spacewalk-essentials.js:444
 msgid "remaining"
 msgstr "zostávajúce"
 
-#: ../html/javascript/spacewalk-essentials.js:458
+#: ../html/javascript/spacewalk-essentials.js:464
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -659,7 +659,7 @@ msgid "Non-Virtual System"
 msgstr "Nevirtuálny systém"
 
 #: ../html/src/components/systems.tsx:44
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
 #: ../html/src/manager/systems/list-filter.tsx:6
 msgid "Proxy"
 msgstr "Proxy"
@@ -698,8 +698,6 @@ msgstr "({selectedCount} vybraných)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-#: ../html/src/manager/visualization/hierarchy.tsx:307
-#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr "Vyčistiť"
 
@@ -1052,7 +1050,7 @@ msgstr "Filtrovať podľa ľubovoľnej hodnoty"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:455
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr "Hostiteľ"
 
@@ -1137,13 +1135,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:489
 msgid "SSH Port"
 msgstr "Port SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:484
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:505
 msgid "User"
 msgstr "Používateľ"
 
@@ -1152,22 +1150,22 @@ msgstr "Používateľ"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
 #: ../html/src/manager/login/uyuni/login.tsx:88
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "Heslo"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:413
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:531
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:552
 msgid "SSH Private Key"
 msgstr "Súkromný kľúč SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:446
 msgid "SSH Private Key Passphrase"
 msgstr "Heslo súkromného kľúča SSH"
 
@@ -1219,7 +1217,7 @@ msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:207
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "Podrobnosti"
@@ -2997,7 +2995,7 @@ msgstr "Cesta"
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:231
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:574
 msgid "Activation Key"
 msgstr "Aktivačný kľúč"
 
@@ -3060,7 +3058,7 @@ msgstr "Import"
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:390
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "Vymazať polia"
@@ -4532,7 +4530,7 @@ msgid "Proxy SSH port"
 msgstr "Port Proxy SSH"
 
 #: ../html/src/manager/proxy/container-config.tsx:222
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:500
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portov: 1 - 65535"
 
@@ -4970,31 +4968,31 @@ msgstr "Hľadať podľa názvu alebo odtlačku"
 msgid "Fingerprint"
 msgstr "Odtlačok"
 
-#: ../html/src/manager/shared/menu/menu.tsx:202
+#: ../html/src/manager/shared/menu/menu.tsx:204
 msgid "Clear Menu"
 msgstr "Ponuka Vymazať"
 
-#: ../html/src/manager/shared/menu/menu.tsx:204
+#: ../html/src/manager/shared/menu/menu.tsx:206
 msgid "Filter menu"
 msgstr "Ponuka filtra"
 
-#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:243
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:243
+#: ../html/src/manager/shared/menu/menu.tsx:245
 msgid "Uyuni homepage"
 msgstr "Domovská stránka Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:252
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:254
+#: ../html/src/manager/shared/menu/menu.tsx:256
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/shared/menu/menu.tsx:258
+#: ../html/src/manager/shared/menu/menu.tsx:260
 msgid "SUSE Manager homepage"
 msgstr "Domovská stránka SUSE Manager"
 
@@ -5120,12 +5118,12 @@ msgstr "Typ systému"
 msgid "Error Details"
 msgstr "Podrobnosti o chybách"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 msgid "Close"
 msgstr "Zavrieť"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -5133,7 +5131,7 @@ msgstr ""
 "Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
 "Prosím, skontrolujte, či bol váš klient minion správne zavedený."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:335
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
 msgid ""
 "Bootstrap process initiated. Your system should be visible at the following "
 "location shortly: <link>systems</link>. If any issues arise, you'll receive "
@@ -5145,32 +5143,32 @@ msgstr ""
 "dostanete oznámenie o chybe. V prípade, že pracujete s transakčným systémom, "
 "vykonajte reštart systému, aby ste dokončili proces registrácie."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
 msgid "Show additional details about this error"
 msgstr "Zobraziť ďalšie podrobnosti o tejto chybe"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
 msgid "Unable to bootstrap host. The following errors have happened:"
 msgstr "Nie je možné zaviesť hostiteľa. Vyskytli sa nasledujúce chyby:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "Váš systém sa zavádza: čakanie na odpoveď.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:369
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:390
 msgid "Loading SSH Private Key.."
 msgstr "Načítava sa súkromný kľúč SSH..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:377
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Bootstrap"
 msgstr "Zavádzať"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:403
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:424
 msgid "e.g., ••••••••••••"
 msgstr "napr. ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:419
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:440
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -5178,15 +5176,15 @@ msgstr ""
 "Súbor bude uložený v dočasnom súbore na serveri a bude vymazaný po "
 "zavádzacej procedúre"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:453
 msgid "Leave empty for no passphrase"
 msgstr "Nechajte prázdne pre žiadne heslo"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:465
 msgid "Bootstrap Minions"
 msgstr "Zavádzať klientov minion"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
@@ -5196,11 +5194,11 @@ msgstr ""
 "prihlasovacích údajov SSH. {productName} pripraví systém vzdialene a vykoná "
 "registráciu."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:482
 msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -5212,29 +5210,29 @@ msgstr ""
 "'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení "
 "kľúča SSH {productName} počas zavádzacej procedúry."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:528
 msgid "Authentication Method"
 msgstr "Metóda overenia"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:544
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:565
 msgid "Ansible control node"
 msgstr "Riadiaci uzol Ansible"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:592
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:613
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "Žiadny"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:596
 msgid "Reactivation Key"
 msgstr "Reaktivačný kľúč"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:581
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:602
 msgid "Leave empty when no reactivation is wanted"
 msgstr "Ponechať prázdne, ak sa nevyžaduje reaktivácia"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:631
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -5242,15 +5240,15 @@ msgstr ""
 "Názov hostiteľa servera proxy nie je plne kvalifikovaný. To môže spôsobiť "
 "problémy pri prístupe ku kanálom."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:627
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:648
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "Zakázať prísnu kontrolu kľúča hostiteľa SSH počas zavádzacieho procesu"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:643
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:664
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "Spravovať systém kompletne cez SSH (neinštaluje sa agent)"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:659
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:680
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"
@@ -5451,7 +5449,7 @@ msgstr "vybraný systém"
 msgid "systems selected"
 msgstr "vybrané systémy"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
 msgid "Clear selected system set"
 msgstr "Vymazať vybranú systémovú sadu"
 
@@ -6632,117 +6630,6 @@ msgstr ""
 "Zo servera sa nepodarilo získať spôsobilosti úložných fondov. Prosím, skúste "
 "to znova."
 
-#: ../html/src/manager/visualization/data-tree.ts:137
-msgid "  security advisories"
-msgstr "  bezpečnostné upozornenia"
-
-#: ../html/src/manager/visualization/data-tree.ts:143
-msgid "  bug fix advisories"
-msgstr "  upozornenia na opravu chyby"
-
-#: ../html/src/manager/visualization/data-tree.ts:151
-msgid "  product enhancement advisories"
-msgstr "  upozornenia na vylepšenia produktu"
-
-#: ../html/src/manager/visualization/data-tree.ts:190
-msgid "Add/remove system from SSM"
-msgstr "Pridať/odobrať systém zo SSM"
-
-#: ../html/src/manager/visualization/data-tree.ts:248
-msgid "Add children to SSM"
-msgstr "Pridať potomkov do SSM"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "There was an error fetching data from the server."
-msgstr "Pri načítaní údajov zo servera sa vyskytla chyba."
-
-#: ../html/src/manager/visualization/hierarchy.tsx:109
-msgid "Show systems with:"
-msgstr "Zobraziť systémy s:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:138
-msgid "security advisories"
-msgstr "bezpečnostné upozornenia"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:143
-msgid "bug fix advisories"
-msgstr "upozornenia na opravu chyby"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:146
-msgid "product enhancement advisories"
-msgstr "upozornenia na vylepšenia produktu"
-
-#. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "Filter by system name"
-msgstr "Filtrovať podľa názvu systému"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "e.g., client.nue.sles"
-msgstr "napr. client.nue.sles"
-
-#. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "Filter by system base channel"
-msgstr "Filtrovať podľa základného kanála systému"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "e.g., SLE12"
-msgstr "napr. SLE12"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:170
-msgid "Filter by system installed products"
-msgstr "Filtrovať podľa nainštalovaných produktov systémov"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:171
-msgid "e.g., SLES"
-msgstr "napr. SLES"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-msgid "Hide filters"
-msgstr "Skryť filtre"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-msgid "Show filters"
-msgstr "Zobraziť filtre"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:282
-msgid "Filtering"
-msgstr "Filtrovanie"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:288
-msgid "Partitioning"
-msgstr "Rozdelenie"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:295
-msgid "Partition systems by given check-in time:"
-msgstr "Rozdeliť systémy podľa daného času registrácie:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:304
-#: ../html/src/manager/visualization/hierarchy.tsx:319
-msgid "Apply"
-msgstr "Použiť"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:312
-msgid "Partition systems based on whether there are patches for them:"
-msgstr "Rozdeliť systémy na základe toho, či pre ne existujú opravy:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:328
-msgid "Split into groups"
-msgstr "Rozdeliť do skupín"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:335
-msgid "Add a grouping level"
-msgstr "Pridajte úroveň zoskupenia"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:345
-msgid "Select a system group"
-msgstr "Vybrať systémovú skupinu"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:367
-msgid "Remove this level"
-msgstr "Odstrániť túto úroveň"
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku."
@@ -6761,6 +6648,87 @@ msgstr "Zdroj sa nenašiel."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "  security advisories"
+#~ msgstr "  bezpečnostné upozornenia"
+
+#~ msgid "  bug fix advisories"
+#~ msgstr "  upozornenia na opravu chyby"
+
+#~ msgid "  product enhancement advisories"
+#~ msgstr "  upozornenia na vylepšenia produktu"
+
+#~ msgid "Add/remove system from SSM"
+#~ msgstr "Pridať/odobrať systém zo SSM"
+
+#~ msgid "Add children to SSM"
+#~ msgstr "Pridať potomkov do SSM"
+
+#~ msgid "There was an error fetching data from the server."
+#~ msgstr "Pri načítaní údajov zo servera sa vyskytla chyba."
+
+#~ msgid "Show systems with:"
+#~ msgstr "Zobraziť systémy s:"
+
+#~ msgid "security advisories"
+#~ msgstr "bezpečnostné upozornenia"
+
+#~ msgid "bug fix advisories"
+#~ msgstr "upozornenia na opravu chyby"
+
+#~ msgid "product enhancement advisories"
+#~ msgstr "upozornenia na vylepšenia produktu"
+
+#~ msgid "Filter by system name"
+#~ msgstr "Filtrovať podľa názvu systému"
+
+#~ msgid "e.g., client.nue.sles"
+#~ msgstr "napr. client.nue.sles"
+
+#~ msgid "Filter by system base channel"
+#~ msgstr "Filtrovať podľa základného kanála systému"
+
+#~ msgid "e.g., SLE12"
+#~ msgstr "napr. SLE12"
+
+#~ msgid "Filter by system installed products"
+#~ msgstr "Filtrovať podľa nainštalovaných produktov systémov"
+
+#~ msgid "e.g., SLES"
+#~ msgstr "napr. SLES"
+
+#~ msgid "Hide filters"
+#~ msgstr "Skryť filtre"
+
+#~ msgid "Show filters"
+#~ msgstr "Zobraziť filtre"
+
+#~ msgid "Filtering"
+#~ msgstr "Filtrovanie"
+
+#~ msgid "Partitioning"
+#~ msgstr "Rozdelenie"
+
+#~ msgid "Partition systems by given check-in time:"
+#~ msgstr "Rozdeliť systémy podľa daného času registrácie:"
+
+#~ msgid "Apply"
+#~ msgstr "Použiť"
+
+#~ msgid "Partition systems based on whether there are patches for them:"
+#~ msgstr "Rozdeliť systémy na základe toho, či pre ne existujú opravy:"
+
+#~ msgid "Split into groups"
+#~ msgstr "Rozdeliť do skupín"
+
+#~ msgid "Add a grouping level"
+#~ msgstr "Pridajte úroveň zoskupenia"
+
+#~ msgid "Select a system group"
+#~ msgstr "Vybrať systémovú skupinu"
+
+#~ msgid "Remove this level"
+#~ msgstr "Odstrániť túto úroveň"
 
 #~ msgid "Manage"
 #~ msgstr "Spravovať"

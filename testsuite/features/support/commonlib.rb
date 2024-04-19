@@ -194,7 +194,9 @@ def suse_host?(name)
 end
 
 def slemicro_host?(name)
-  (name.include? 'slemicro') || (name.include? 'micro')
+  node = get_target(name)
+  os_family = node.os_family
+  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos')
 end
 
 def rh_host?(name)
@@ -254,7 +256,15 @@ def escape_regex(text)
 end
 
 def get_system_id(node)
-  $api_test.system.search_by_name(node.full_hostname).first['id']
+  # TODO: Remove this retrying code when this issue https://github.com/SUSE/spacewalk/issues/24084 is fixed:
+  result = []
+  repeat_until_timeout(message: "The API can't see the system id for '#{node.full_hostname}'", timeout: 10) do
+    result = $api_test.system.search_by_name(node.full_hostname)
+    break if result.any?
+
+    sleep 1
+  end
+  result.first['id']
 end
 
 def check_shutdown(host, time_out)

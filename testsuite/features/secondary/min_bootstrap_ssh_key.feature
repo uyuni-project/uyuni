@@ -41,7 +41,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     When I click on "Details"
     And I wait at most 10 seconds until I see modal containing "Error Details" text
     Then I should see a "Standard Error" text
-    And I should see "Permission denied, no authentication information" in the textarea
+    And I should see "Permission denied, no authentication information" or "Permission denied (publickey,password,keyboard-interactive)" in the stderr textarea
     When I close the modal dialog
 
   Scenario: Bootstrap a SLES minion using SSH key
@@ -55,7 +55,8 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I enter "linux" as "privKeyPwd"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
 
   Scenario: Check new minion bootstrapped with SSH key in System Overview page
     When I follow the left menu "Salt > Keys"

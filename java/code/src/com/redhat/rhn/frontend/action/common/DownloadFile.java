@@ -615,7 +615,7 @@ public class DownloadFile extends DownloadAction {
             }
             else {
                 String[] split = StringUtils.split(path, '/');
-                if (split[0].equals("repodata")) {
+                if (split.length > 0 && split[0].equals("repodata")) {
                     split[0] = child.getLabel();
                 }
                 diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +

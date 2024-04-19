@@ -388,7 +388,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
         headingLevel="h4"
         footer={
           <div className="row">
-            <div className="col-md-offset-3 col-md-9">{buttons}</div>
+            <div className="col-md-offset-3 offset-md-3 col-md-9">{buttons}</div>
           </div>
         }
       >

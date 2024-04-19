@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:17:56 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * Improve CLM Create New Filter button
+  * Layout improvements for the header and menu
+  * Migrate web UI landing page to Bootstrap 5
+  * Adapt the CVE Audit UI to the added patch statuses
+  * Fix incorrectly scoped web UI styles
+  * Build with at least Node.js 20
+  * Change the states package API serialization of optional values
+    for Java 17
+  * Fix layout on wide content areas
+  * fix virtual systems filters (bsc#1208572)
+  * Upgrade json5 to 2.2.3
+  * Upgrade semver to 7.6.0
+  * Scope off all Bootstrap 3 styles
+  * Update web UI build pipeline
+
+-------------------------------------------------------------------
 Fri Feb 16 10:10:16 CET 2024 - rosuna@suse.com
 
 - version 5.0.5-1

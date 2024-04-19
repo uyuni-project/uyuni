@@ -59,7 +59,8 @@ public class VirtualizationEntitlement extends Entitlement {
      */
     @Override
     public boolean isAllowedOnServer(Server server) {
-        return super.isAllowedOnServer(server) && !server.isVirtualGuest();
+        return super.isAllowedOnServer(server) && !server.isVirtualGuest() &&
+               !(server.getBaseEntitlement() instanceof ForeignEntitlement);
     }
 
     /**
@@ -69,7 +70,8 @@ public class VirtualizationEntitlement extends Entitlement {
     public boolean isAllowedOnServer(Server server, ValueMap grains) {
         String type = grains.getOptionalAsString("virtual").orElse("physical");
         String subtype = grains.getOptionalAsString("virtual_subtype").orElse("");
-        return super.isAllowedOnServer(server) && !isVirtualGuest(type, subtype);
+        return super.isAllowedOnServer(server) && !isVirtualGuest(type, subtype) &&
+               !(server.getBaseEntitlement() instanceof ForeignEntitlement);
     }
 
     /**

@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: uyuni
   namespace: "{{ .Release.Namespace }}"
+labels:
+  app: uyuni
 spec:
   replicas: 1
   selector:
@@ -388,6 +390,22 @@ spec:
         volumeMounts:
           - mountPath: /mnt
             name: etc-postfix
+      - name: init-etc-sssd
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        command:
+          - sh
+          - -x
+          - -c
+          - >
+            chown --reference=/etc/sssd /mnt;
+            chmod --reference=/etc/sssd /mnt;
+            if [ -z "$(ls -A /mnt)" ]; then
+              cp -a /etc/sssd/. /mnt;
+            fi
+        volumeMounts:
+          - mountPath: /mnt
+            name: etc-sssd
       containers:
       - name: uyuni
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
@@ -493,6 +511,8 @@ spec:
             name: etc-sysconfig
           - mountPath: /etc/postfix
             name: etc-postfix
+          - mountPath: /etc/sssd
+            name: etc-sssd
 {{- if not .Values.migration }}
           - mountPath: /etc/pki/tls
             name: etc-tls
@@ -605,6 +625,9 @@ spec:
       - name: etc-postfix
         persistentVolumeClaim:
           claimName: etc-postfix
+      - name: etc-sssd
+        persistentVolumeClaim:
+          claimName: etc-sssd
 {{- if not .Values.migration }}
       - name: ca-cert
         configMap:

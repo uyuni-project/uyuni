@@ -78,8 +78,8 @@
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
-  <condition property="jaf" value="glassfish-activation-api" else="jaf">
-    <available file="${java.lib.dir}/glassfish-activation-api.jar"/>
+  <condition property="jaf" value="glassfish-activation" else="jaf">
+    <available file="${java.lib.dir}/glassfish-activation.jar"/>
   </condition>
   <condition property="jaf" value="jakarta-activation">
     <available file="${java.lib.dir}/jakarta-activation/jakarta.activation.jar"/>
@@ -141,7 +141,7 @@
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
-             bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
+             bcprov bcpg stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec logdriver quartz slf4j-api log4j/log4j-slf4j-impl
              concurrent velocity-engine-core simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
@@ -197,7 +197,7 @@
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
-             jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
+             stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec quartz ${suse-common-jars} velocity-engine-core
              concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
@@ -208,7 +208,7 @@
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging ${commons-compress}
              ${commons-validator} concurrent dom4j ${hibernate5deps} ${jta11-jars}
-             ${jaf} ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
+             ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec

@@ -508,6 +508,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_PLAYBOOK)) {
             retval = new PlaybookAction();
         }
+        else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
+            retval = new CoCoAttestationAction();
+        }
         else {
             retval = new Action();
         }
@@ -1427,5 +1430,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_GUEST_MIGRATE =
             lookupActionTypeByLabel("virt.guest_migrate");
+
+    /**
+     * The constant representing "Confidential Compute Attestation" [ID:523]
+     */
+    public static final ActionType TYPE_COCO_ATTESTATION =
+            lookupActionTypeByLabel("coco.attestation");
 }
 

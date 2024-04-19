@@ -15,6 +15,10 @@ Feature: Setup containerized proxy
   As the system administrator
   I want to register the containerized proxy on the server
 
+  Scenario: Clean up sumaform leftovers on the containerized proxy
+    When I perform a full salt minion cleanup on "proxy"
+    And I reboot the "proxy" host through SSH, waiting until it comes back
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
@@ -29,12 +33,8 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-# workaround for bsc#1218146
-# Once we start using Leap Micro #23811 in Uyuni Proxy, we need to remove this Cucumber tag
-@susemanager
   Scenario: Reboot the proxy host
-    When I reboot the "proxy" minion through SSH
-    And I wait until port "22" is listening on "proxy" host
+    When I reboot the "proxy" host through SSH, waiting until it comes back
 
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
@@ -43,7 +43,7 @@ Feature: Setup containerized proxy
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
     And I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server to the proxy
 
-  Scenario: Set-up the containerized proxy service to support Avahi
+  Scenario: Set up the containerized proxy service to support Avahi
     When I add avahi hosts in containerized proxy configuration
 
   Scenario: Run a containerized proxy
@@ -61,6 +61,6 @@ Feature: Setup containerized proxy
     And I wait until port "443" is listening on "proxy" container
     And I visit "Proxy" endpoint of this "proxy"
 
-  Scenario: containerized proxy should be registered automatically
+  Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy", refreshing the page

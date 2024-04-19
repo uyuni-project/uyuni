@@ -112,4 +112,12 @@ public class ServerConstants {
     public static final ServerGroupType getServerGroupTypeOSImageBuildHostEntitled() {
         return ServerFactory.lookupServerGroupTypeByLabel("osimage_build_host");
     }
+
+    /**
+     * Static representing the Peripheral Server entitled server group type
+     * @return ServerGroupType
+     */
+    public static final ServerGroupType getServerGroupTypePeripheralServerEntitled() {
+        return ServerFactory.lookupServerGroupTypeByLabel("peripheral_server");
+    }
 }

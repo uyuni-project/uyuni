@@ -1,2 +1,0 @@
-- Use execution module call to detect client instance flavor
-  (PAYG/BYOS) in public cloud (bsc#1218805)

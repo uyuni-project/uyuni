@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
+import com.redhat.rhn.manager.kickstart.tree.BaseTreeEditOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeEditOperation;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -42,7 +43,7 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
         // qr/^[a-zA-Z\d\-\._]*$/
         // PatternCompiler compiler = new Perl5Compiler();
 
-        String regEx = "^([-_0-9A-Za-z@.]{1,255})$";
+        String regEx = BaseTreeEditOperation.VALIDATE_LABEL_REGEX;
         Pattern pattern = Pattern.compile(regEx);
         String invalid = "jlkasf*(*&^^(((";
         Matcher matcher = pattern.matcher(invalid);
@@ -69,11 +70,15 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
         assertTrue(matcher.matches());
 
         //"The Distribution Label field should contain only letters, numbers, hyphens,
-        // periods, and underscores. It must also be at least 4 characters long."
-        valid = "jlkasf_asdf-ajksldf.890234";
+        // and underscores. It must also be at least 4 characters long."
+        valid = "jlkasf_asdf-ajksldf890234";
         matcher = pattern.matcher(valid);
         assertTrue(matcher.matches());
 
+        // Periods (dots) are not valid see bsc#1219317
+        invalid = "jlkasf_asdf-ajksldf.890234";
+        matcher = pattern.matcher(invalid);
+        assertFalse(matcher.matches());
     }
 
     @Test
@@ -83,11 +88,15 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
                 ChannelFactoryTest.createTestChannel(user));
         KickstartFactory.saveKickstartableTree(tree);
         tree = (KickstartableTree) reload(tree);
-        tree.setLabel("jlkasf_asdf-ajksldf.890234");
+        tree.setLabel("jlkasf_asdf-ajksldfX890234");
         TreeEditOperation cmd = new TreeEditOperation(tree.getId(), user);
         assertTrue(cmd.validateLabel());
 
         tree.setLabel("jlkasf_asdf-ajksldf.890234**((*(*(9");
+        assertFalse(cmd.validateLabel());
+
+        // Periods (dots) are not valid see bsc#1219317
+        tree.setLabel("foo.bla");
         assertFalse(cmd.validateLabel());
     }
 

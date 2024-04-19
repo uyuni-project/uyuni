@@ -9,6 +9,7 @@ Feature: Bootstrap a SLE Micro 5.3 Salt minion
 
   Scenario: Clean up sumaform leftovers on a SLE Micro 5.3 minion
     When I perform a full salt minion cleanup on "slemicro53_minion"
+    And I reboot the "slemicro53_minion" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -28,7 +29,7 @@ Feature: Bootstrap a SLE Micro 5.3 Salt minion
   # Following the bootstrapping process, automatic booting is disabled.
   # This change was implemented due to intermittent errors with automatic reboots, which could occur before Salt could relay the results of applying the bootstrap salt state.
   Scenario: Reboot the SLE Micro 5.3 minion through SSH
-    When I reboot the "slemicro53_minion" minion through SSH
+    When I reboot the "slemicro53_minion" host through SSH, waiting until it comes back
 
   Scenario: Check the new bootstrapped SLE Micro 5.3 minion in System Overview page
     When I wait until onboarding is completed for "slemicro53_minion"

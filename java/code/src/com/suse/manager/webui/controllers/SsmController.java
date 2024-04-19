@@ -48,6 +48,7 @@ import com.suse.manager.webui.utils.gson.SsmScheduleChannelChangesResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -124,7 +125,7 @@ public class SsmController {
         createAllowedBaseChannelsForUnbasedSystems(user)
                 .ifPresent(nobase -> result.add(0, nobase));
 
-        return json(GSON, response, ResultJson.success(result));
+        return json(GSON, response, ResultJson.success(result), new TypeToken<>() { });
     }
 
     /**
@@ -171,7 +172,7 @@ public class SsmController {
     public static String computeAllowedChannelChanges(Request request, Response response, User user) {
         SsmBaseChannelChangesDto changes = GSON.fromJson(request.body(), SsmBaseChannelChangesDto.class);
         List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
-        return json(GSON, response, ResultJson.success(result));
+        return json(GSON, response, ResultJson.success(result), new TypeToken<>() { });
     }
 
     /**
@@ -195,6 +196,6 @@ public class SsmController {
                 Optional.ofNullable(actionChain).map(ActionChain::getId),
                 scheduleResult
         );
-        return json(GSON, response, ResultJson.success(result));
+        return json(GSON, response, ResultJson.success(result), new TypeToken<>() { });
     }
 }

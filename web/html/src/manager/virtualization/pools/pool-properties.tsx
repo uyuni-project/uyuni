@@ -264,7 +264,7 @@ export function PoolProperties(props: Props) {
                 <Check
                   name="autostart"
                   label={t("Start during virtual host boot")}
-                  divClass="col-md-6 col-md-offset-3"
+                  divClass="col-md-6 col-md-offset-3 offset-md-3"
                 />
               </Panel>
 
@@ -480,7 +480,7 @@ export function PoolProperties(props: Props) {
                         <Check
                           name="source_adapter_managed"
                           label={t("Manage vHBA deletion")}
-                          divClass="col-md-6 col-md-offset-3"
+                          divClass="col-md-6 col-md-offset-3 offset-md-3"
                         />
                       )}
                     </>
@@ -571,7 +571,7 @@ export function PoolProperties(props: Props) {
                   onDateTimeChanged={onDateTimeChanged}
                 />
               </Panel>
-              <div className="col-md-offset-3 col-md-6">
+              <div className="col-md-offset-3 offset-md-3 col-md-6">
                 <SubmitButton id="submit-btn" className="btn-success" text={props.submitText} disabled={invalid} />
                 <Button
                   id="clear-btn"

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -115,28 +115,28 @@ Feature: Update activation keys
 @scc_credentials
 @susemanager
 @proxy
-  Scenario: Update the SLE Proxy key with synced base product
+@containerized_server
+  Scenario: Update the SLE Micro proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "proxy" from "selectedBaseChannel"
+    And I select the parent channel for the "proxy_container" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64 Proxy 4.3" has been checked
-    And I wait until "SLE-Module-SUSE-Manager-Proxy-4.3-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-SUSE-Manager-Proxy-4.3-Updates for x86_64" has been checked
+    And I wait until "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" has been checked
+    And I check "SUSE-Manager-Proxy-5.0-Pool for x86_64"
+    And I check "SUSE-Manager-Proxy-5.0-Updates for x86_64"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
 @uyuni
-  Scenario: Update the openSUSE Leap Proxy key with synced base product
+@proxy
+@skip_if_containerized_server
+  Scenario: Update the openSUSE Leap proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "proxy" from "selectedBaseChannel"
+    And I select the parent channel for the "proxy_traditional" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I check "openSUSE 15.5 non oss (x86_64)"
     And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
@@ -145,6 +145,22 @@ Feature: Update activation keys
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64)"
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Proxy Key x86_64 has been modified" text
+
+
+@containerized_server
+@uyuni
+@proxy
+  Scenario: Update the openSUSE Leap Micro 5.5 Proxy Host key with synced base product
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Proxy Key x86_64" in the content area
+    And I wait for child channels to appear
+    And I select the parent channel for the "proxy_container" from "selectedBaseChannel"
+    And I wait for child channels to appear
+    And I check "SLE Micro 5.5 Update Repository (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap Micro 5.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap Micro 5.5 (x86_64) (Development)"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 

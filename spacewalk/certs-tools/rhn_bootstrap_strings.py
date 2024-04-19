@@ -196,12 +196,13 @@ fi
 
 INSTALLER=zypper
 
+# the order matters: see bsc#1222347
 if [ -x /usr/bin/dnf ]; then
+    INSTALLER=yum
+elif [ -x /usr/bin/yum ]; then
     INSTALLER=yum
 elif [ -x /usr/bin/zypper ]; then
     INSTALLER=zypper
-elif [ -x /usr/bin/yum ]; then
-    INSTALLER=yum
 elif [ -x /usr/bin/apt ]; then
     INSTALLER=apt
 fi
@@ -1004,6 +1005,17 @@ beacons:
   reboot_info:
     - interval: 10
 EOF
+
+    if ! test -f /etc/transactional-update.conf; then
+        cp /usr/etc/transactional-update.conf /etc/transactional-update.conf
+    fi
+
+    . /etc/transactional-update.conf
+    if [ -z "$REBOOT_METHOD" ] || [ "$REBOOT_METHOD" = "auto" ]; then
+        sed -i '/^REBOOT_METHOD=/d' /etc/transactional-update.conf
+        echo "REBOOT_METHOD=systemd" >> /etc/transactional-update.conf
+    fi
+
 fi # -n SNAPSHOT_ID
 fi # REGISTER_THIS_BOX eq 1
 

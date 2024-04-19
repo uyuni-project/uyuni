@@ -1,1 +1,0 @@
-- fixes issue where salt cant access autoinstallation files (bsc#1220221)

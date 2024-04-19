@@ -6613,11 +6613,11 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>L'etichetta non è stata formattata in modo corretto.  Al suo interno devono essere presenti solo lettere, numeri, trattini, e periodi, e deve e contenere almeno quattro caratteri</target>
+        <target state="needs-adaptation">L'etichetta non è stata formattata in modo corretto.  Al suo interno devono essere presenti solo lettere, numeri, trattini, e periodi, e deve e contenere almeno quattro caratteri</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -10250,10 +10250,6 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <source>Foreign</source>
         <target>Esterno</target>
       </trans-unit>
-      <trans-unit id="visualization.nav.title" xml:space="preserve">
-        <source>Visualization</source>
-        <target>Visualizzazione</target>
-      </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
         <target>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Aggiungi o Rimuovi&lt;/a&gt; tipi di sistema aggiuntivi</target>
@@ -10395,18 +10391,6 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
         <target>Pianificazione della sincronizzazione</target>
-      </trans-unit>
-      <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
-        <source>Virtualization Hierarchy</source>
-        <target>Gerarchia della virtualizzazione</target>
-      </trans-unit>
-      <trans-unit id="Proxy Hierarchy" xml:space="preserve">
-        <source>Proxy Hierarchy</source>
-        <target>Gerarchia del proxy</target>
-      </trans-unit>
-      <trans-unit id="Systems Grouping" xml:space="preserve">
-        <source>Systems Grouping</source>
-        <target>Raggruppamento dei sistemi</target>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>

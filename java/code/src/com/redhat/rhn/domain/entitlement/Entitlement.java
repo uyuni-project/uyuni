@@ -123,13 +123,8 @@ public abstract class Entitlement implements Comparable<Entitlement> {
      * @return boolean if the entitlement is compatible with the specified server.
      */
     public boolean isAllowedOnServer(Server server) {
-        if (server.getBaseEntitlement() instanceof ForeignEntitlement ||
-                server.getBaseEntitlement() instanceof BootstrapEntitlement) {
-            // no addon entitlement allowed for these
-            return false;
-        }
-
-        return true;
+        // no addon entitlement allowed for BootstrapEntitlement
+        return !(server.getBaseEntitlement() instanceof BootstrapEntitlement);
     }
 
     /**
@@ -140,12 +135,7 @@ public abstract class Entitlement implements Comparable<Entitlement> {
      * @return boolean if the entitlement is compatible with the specified server.
      */
     public boolean isAllowedOnServer(Server server, ValueMap grains) {
-        if (server.getBaseEntitlement() instanceof ForeignEntitlement ||
-                server.getBaseEntitlement() instanceof BootstrapEntitlement) {
-            // no addon entitlement allowed for these
-            return false;
-        }
-
-        return true;
+        // no addon entitlement allowed for BootstrapEntitlement
+        return !(server.getBaseEntitlement() instanceof BootstrapEntitlement);
     }
 }

@@ -12,7 +12,7 @@ if ! git rev-parse 2>/dev/null; then
 fi
 
 ENGINE="${CONTAINER_ENGINE:-podman}"
-IMAGE='registry.opensuse.org/home/mczernek/containers/opensuse_factory_containerfile/uyuni-lint'
+IMAGE='registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers_tw/uyuni-master-python'
 TAG='latest'
 GITROOT="$(git rev-parse --show-toplevel)"
 MOUNT="/mgr"
@@ -43,12 +43,16 @@ function help() {
   echo "  $(basename ${0}) python"
 }
 
+function ensure_latest_container_image() {
+  $ENGINE pull --quiet $IMAGE
+}
+
 function execute_black() {
-  "$ENGINE" run --rm -v ${GITROOT}:${MOUNT} ${IMAGE}:${TAG} black -t py36 "$@"
+  $ENGINE run --rm -v ${GITROOT}:${MOUNT} ${IMAGE}:${TAG} black -t py36 "$@"
 }
 
 function execute_lint() {
-  "$ENGINE" run --rm -v ${GITROOT}:${MOUNT} ${IMAGE}:${TAG} pylint --rcfile /root/.pylintrc "$@"
+  $ENGINE run --rm -v ${GITROOT}:${MOUNT} ${IMAGE}:${TAG} pylint --rcfile /root/.pylintrc "$@"
 }
 
 function get_all_py_files() {
@@ -57,6 +61,7 @@ function get_all_py_files() {
 }
 
 function main() {
+  ensure_latest_container_image
   if [[ "${CHECK_ALL_FILES}" == "true" ]]; then
     files="$(get_all_py_files)"
     echo "Linting and formatting: $files"

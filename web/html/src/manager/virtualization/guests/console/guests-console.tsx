@@ -337,7 +337,7 @@ class GuestsConsole extends React.Component<Props, State> {
             <i className="fa spacewalk-icon-virtual-guest" />
             {this.state.guestName}
           </div>
-          <ul className="nav navbar-nav navbar-utility d-flex flex-row">
+          <ul className="nav navbar-nav navbar-controls">
             <li>
               {this.state.graphicsType === "vnc" && (
                 <Button

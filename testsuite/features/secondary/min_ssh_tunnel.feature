@@ -35,7 +35,8 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "ssh_minion"
 
   Scenario: The contact method is SSH tunnel on this minion

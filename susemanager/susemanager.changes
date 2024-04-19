@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 17:38:25 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Add bootstrap repository definition for openSUSE Leap 15.6
+  * Add bootstrap repository definition for SUSE Linux Enterprise 15 SP6
+  * Replace java 11 with java 17
+
+-------------------------------------------------------------------
 Fri Feb 16 10:11:02 CET 2024 - rosuna@suse.com
 
 - version 5.0.4-1

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+
+    <environments default="default">
+        <environment id="default">
+            <transactionManager type="JDBC"/>
+            <dataSource type="com.suse.common.database.C3P0DataSourceFactory">
+                <property name="driverClass" value="org.postgresql.Driver"/>
+                <property name="jdbcUrl" value="${database_connection}"/>
+                <property name="user" value="${database_user}"/>
+                <property name="password" value="${database_password}"/>
+                <property name="initialPoolSize" value="${dataSource_initialPoolSize}"/>
+                <property name="acquireIncrement" value="${dataSource_acquireIncrement}"/>
+                <property name="minPoolSize" value="${dataSource_minPoolSize}"/>
+                <property name="maxPoolSize" value="${dataSource_maxPoolSize}"/>
+                <property name="maxIdleTime" value="${dataSource_maxIdleTime}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mappers/attestation-result.xml" />
+    </mappers>
+</configuration>

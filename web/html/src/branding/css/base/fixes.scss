@@ -1,0 +1,36 @@
+// TODO: Make this whole file obsolete, move bugfixes into their correesponding modules instead
+input[type="file"].form-control {
+  height: auto;
+}
+
+/* fix for checkbox icon alignment */
+div.checkbox.icon-wrapper i.fa {
+  width: .6em;
+}
+
+// TODO: Move this to the inputs module instead
+// div.form-control {
+//   @extend .form-control[readonly]
+// }
+
+/* fix for checkbox icon alignment */
+div.checkbox.icon-wrapper i.fa {
+  width: .6em;
+}
+
+/* bsc#1009118 overlapping text when resizing */
+.auto-width {
+  width: auto;
+}
+
+.auto-overflow {
+  overflow: auto;
+}
+
+/**
+ * This allows us to fix layouts on Bootstrap 5 pages without affecting Bootstrap 3 pages
+ * TODO: Remove and replace its usages with just `row` after we finish the migration
+ */
+.form-group {
+  @extend .row;
+}

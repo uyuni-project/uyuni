@@ -1,2 +1,0 @@
-- Remove package sync not available message in Software > Packages > Profile 
-  since it's no longer available for supported clients (bsc1221279)

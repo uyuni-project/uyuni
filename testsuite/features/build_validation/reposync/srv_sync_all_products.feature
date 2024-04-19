@@ -703,22 +703,19 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @proxy
-  Scenario: Add SUSE Manager Proxy 4.3
+  Scenario: Add SUSE Manager Proxy Extension 5.0
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Manager Proxy 4.3" as the filtered product description
-    And I select "SUSE Manager Proxy 4.3 x86_64" as a product
-    Then I should see the "SUSE Manager Proxy 4.3 x86_64" selected
-    When I open the sub-list of the product "SUSE Manager Proxy 4.3 x86_64"
-    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
-    And I select "Containers Module 15 SP4 x86_64" as a product
-    Then I should see the "Containers Module 15 SP4 x86_64" selected
+    And I enter "SUSE Manager Proxy Extension 5.0" as the filtered product description
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
+    And I select "SUSE Manager Proxy Extension 5.0" as a product
+    Then I should see the "SUSE Manager Proxy Extension 5.0" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Manager Proxy 4.3 x86_64" product has been added
-    And I wait until all synchronized channels for "suma-proxy-43" have finished
+    And I wait until I see "SUSE Manager Proxy Extension 5.0 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-proxy-extension-50" have finished
 
 @cloud
 @proxy
@@ -736,22 +733,19 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @proxy
-  Scenario: Add SUSE Manager Retail Branch Server 4.3
+  Scenario: Add SUSE Manager Retail Branch Server Extension 5.0
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Manager Retail Branch Server 4.3" as the filtered product description
-    And I select "SUSE Manager Retail Branch Server 4.3 x86_64" as a product
-    Then I should see the "SUSE Manager Retail Branch Server 4.3 x86_64" selected
-    When I open the sub-list of the product "SUSE Manager Retail Branch Server 4.3 x86_64"
-    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
-    And I select "Containers Module 15 SP4 x86_64" as a product
-    Then I should see the "Containers Module 15 SP4 x86_64" selected
+    And I enter "SUSE Manager Retail Branch Server Extension 5.0" as the filtered product description
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
+    And I select "SUSE Manager Retail Branch Server Extension 5.0" as a product
+    Then I should see the "SUSE Manager Retail Branch Server Extension 5.0" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
-    And I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
+    And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-retail-branch-server-extension-50" have finished
 
 # There are no channels for Retail under Uyuni
 

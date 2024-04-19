@@ -1,4 +1,51 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:23:52 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * Implement persistent channel sync settings
+  * Add save button
+  * Show / set values via WebUI
+  * Pass values along to reposync call
+  * Fix removal of old IPv6 addresses (bsc#1214340)
+  * Update landing page layouts
+  * Fixes issue where Salt can't access autoinstallation files (bsc#1220221)
+  * When an action is unscheduled which belong to an action chain
+    unschedule the action chain as well (bsc#1221784)
+  * Implement OVAL-based CVE auditing
+  * Define additional CVE patch statuses
+  * Merge minion with foreign system for container Proxy
+  * Update WebUI build pipeline
+  * Fix system.provisionSystem when called via HTTP API (bsc#1219875)
+  * Fix memory size extraction in virtual instances (bsc#1219634)
+  * Support containerized peripheral server
+  * Ignore retry suffix when getting recurring action id from schedule name
+  * Layout improvements for the header and menu
+  * Implement confidential compute attestation java backend
+  * Reschedule failed SSH actions caused by a connection error due
+    to a scheduled reboot
+  * Replace Uyuni configuration formula with an API call
+  * Use execution module call to detect client instance flavor
+    (PAYG/BYOS) in public cloud (bsc#1218805)
+  * Sort CLM project filters by filter name
+  * Replace java 11 with java 17
+  * Fix virtual systems filters (bsc#1208572)
+  * Commit Salt event removal in case of process failure (bsc#1218931)
+  * Fix login for read-only users when using http API (bsc#1221111)
+  * Remove use of rhn_register in Kickstart
+  * Scope off all Bootstrap 3 styles
+  * Use java.hostname variable for setting mgr_server and mgr_orig_server
+  * Fix matching epoch while creating Ubuntu erratas
+  * Disable bare-metal system discovery feature
+  * Fix a typo in 'Deploy Files' page
+  * Add timeout for smtp server connection (bsc#1218931)
+  * Don't automatically add child channels outside of selected base channel (bsc#1220101)
+  * Migrate WebUI landing page to Bootstrap 5
+  * Remove package sync not available message in Software > Packages > Profile
+    since it is no longer available for supported clients (bsc#1221279)
+  * Drop system password as identifier on SCC system registration (bsc#1219634, bsc#1221182)
+  * Fix listProxies API call (bsc#1219233)
+
+-------------------------------------------------------------------
 Fri Feb 16 10:09:04 CET 2024 - rosuna@suse.com
 
 - version 5.0.5-1

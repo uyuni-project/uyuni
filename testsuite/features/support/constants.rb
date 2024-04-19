@@ -139,7 +139,8 @@ BOX_IDS = {
   'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
   'include forwarders'        => 'bind#config#include_forwarders',
   'enable route'              => 'branch_network#firewall#enable_route',
-  'enable NAT'                => 'branch_network#firewall#enable_NAT'
+  'enable NAT'                => 'branch_network#firewall#enable_NAT',
+  'containerized proxy'       => 'saltboot#containerized_proxy'
 }.freeze
 
 BULLET_STYLE = {
@@ -292,8 +293,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
   },
   'Uyuni' => {
-    # WORKAROUND until https://github.com/SUSE/spacewalk/issues/23053 will be done
-    'proxy_container' => 'openSUSE Leap 15.5 (x86_64)',
+    'proxy_container' => 'openSUSE Leap Micro 5.5 (x86_64)',
     'proxy_traditional' => 'openSUSE Leap 15.5 (x86_64)',
     'sle_minion' => 'openSUSE Leap 15.5 (x86_64)',
     'ssh_minion' => 'openSUSE Leap 15.5 (x86_64)',
@@ -944,29 +944,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-main-security-amd64
         ubuntu-22.04-suse-manager-tools-amd64
       ],
-    'suma-proxy-43' => # CHECKED
+    'suma-proxy-extension-50' => # CHECKED
       %w[
-        sle-product-suse-manager-proxy-4.3-pool-x86_64
-        sle-product-suse-manager-proxy-4.3-updates-x86_64
-        sle-module-suse-manager-proxy-4.3-pool-x86_64
-        sle-module-suse-manager-proxy-4.3-updates-x86_64
-        sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3
-        sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3
-        sle-module-containers15-sp4-pool-x86_64-proxy-4.3
-        sle-module-containers15-sp4-updates-x86_64-proxy-4.3
+        suse-manager-proxy-5.0-pool-x86_64
+        suse-manager-proxy-5.0-updates-x86_64
       ],
-    'suma-retail-branch-server-43' => # CHECKED
+    'suma-retail-branch-server-extension-50' => # CHECKED
       %w[
-        sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
-        sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
-        sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
-        sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
-        sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3
-        sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3
-        sle-module-server-applications15-sp4-pool-x86_64-smrbs-4.3
-        sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3
-        sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
-        sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs
+        suse-manager-retail-branch-server-5.0-pool-x86_64
+        suse-manager-retail-branch-server-5.0-updates-x86_64
       ]
   },
   'Uyuni' => {
@@ -1214,6 +1200,16 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-aarch64-updates
         opensuse_leap15_5-uyuni-client-devel-aarch64
       ],
+    'leap-micro5.5-x86_64' => # CHECKED
+      %w[
+        opensuse_micro5_5-x86_64
+        opensuse_micro5_5-x86_64-sle-updates
+      ],
+    'leap-micro5.5-client-tools-x86_64' => # CHECKED
+      %w[
+        opensuse_micro5_5-uyuni-client-x86_64
+        opensuse_micro5_5-uyuni-client-devel-x86_64
+      ],
     'suse-microos-5.1' => # CHECKED
       %w[
         suse-microos-5.1-pool-x86_64
@@ -1362,6 +1358,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_leap15_5-x86_64-non-oss-updates' => 120,
   'opensuse_leap15_5-x86_64-sle-updates' => 5400,
   'opensuse_leap15_5-x86_64-updates' => 60,
+  'opensuse_micro5_5-uyuni-client-x86_64' => 60,
+  'opensuse_micro5_5-uyuni-client-devel-x86_64' => 60,
+  'opensuse_micro5_5-x86_64' => 240,
+  'opensuse_micro5_5-x86_64-sle-updates' => 5400,
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-x86_64' => 840,
@@ -1475,12 +1475,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp5-pool-x86_64' => 60,
   'sle-module-server-applications15-sp5-updates-s390x' => 120,
   'sle-module-server-applications15-sp5-updates-x86_64' => 60,
-  'sle-module-suse-manager-proxy-4.3-pool-x86_64' => 60,
-  'sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs' => 60,
-  'sle-module-suse-manager-proxy-4.3-updates-x86_64' => 60,
-  'sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs' => 60,
-  'sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64' => 60,
-  'sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64' => 60,
   'sle-product-sles15-sp1-ltss-updates-x86_64' => 1500,
   'sle-product-sles15-sp1-pool-x86_64' => 60,
   'sle-product-sles15-sp1-updates-x86_64' => 60,
@@ -1497,10 +1491,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp5-pool-x86_64' => 60,
   'sle-product-sles15-sp5-updates-s390x' => 60,
   'sle-product-sles15-sp5-updates-x86_64' => 60,
-  'sle-product-suse-manager-proxy-4.3-pool-x86_64' => 60,
-  'sle-product-suse-manager-proxy-4.3-updates-x86_64' => 60,
-  'sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64' => 60,
-  'sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64' => 60,
   'sles12-sp5-installer-updates-x86_64' => 60,
   'sles12-sp5-pool-x86_64' => 180,
   'sles12-sp5-updates-x86_64' => 2280,
@@ -1513,6 +1503,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sll-9-updates-x86_64' => 720,
   'sll-as-9-updates-x86_64' => 1620,
   'sll-cb-9-updates-x86_64' => 2640,
+  'suse-manager-proxy-5.0-pool-x86_64' => 60,
+  'suse-manager-proxy-5.0-updates-x86_64' => 60,
+  'suse-manager-retail-branch-server-5.0-pool-x86_64' => 60,
+  'suse-manager-retail-branch-server-5.0-updates-x86_64' => 60,
   'suse-microos-5.1-devel-uyuni-client-x86_64' => 60,
   'suse-microos-5.1-pool-x86_64' => 60,
   'suse-microos-5.1-updates-x86_64' => 300,
@@ -1550,6 +1544,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
 }.freeze
 
 EMPTY_CHANNELS = %w[
+  suse-manager-proxy-5.0-updates-x86_64
+  suse-manager-retail-branch-server-5.0-updates-x86_64
   sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
   sle-manager-tools15-beta-pool-x86_64-sp4
   fake-base-channel-suse-like

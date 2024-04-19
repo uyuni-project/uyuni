@@ -35,6 +35,7 @@
 # Release Engineering
 rel-eng/ @uyuni-project/release-engineering
 tito.props @uyuni-project/release-engineering
+web/conf/rhn_web.conf @uyuni-project/release-engineering
 
 # Cobbler
 java/conf/cobbler/snippets/ @uyuni-project/python
@@ -79,34 +80,34 @@ java/*.changes*
 # Individual Java packages
 
 # XMLRPC API
-java/code/src/com/redhat/rhn/frontend/xmlrpc/ @uyuni-project/frontend
+java/code/src/com/redhat/rhn/frontend/xmlrpc/ @uyuni-project/naica
 
 # HTTP API
-java/code/src/com/suse/manager/api/ @uyuni-project/frontend
+java/code/src/com/suse/manager/api/ @uyuni-project/naica
 
 # Content Lifecycle Management
-java/code/src/com/redhat/rhn/manager/contentmgmt/ @uyuni-project/frontend
-java/code/src/com/suse/manager/webui/controllers/contentmanagement/ @uyuni-project/frontend
-java/code/src/com/redhat/rhn/domain/contentmgmt/ @uyuni-project/frontend
+java/code/src/com/redhat/rhn/manager/contentmgmt/ @uyuni-project/naica
+java/code/src/com/suse/manager/webui/controllers/contentmanagement/ @uyuni-project/naica
+java/code/src/com/redhat/rhn/domain/contentmgmt/ @uyuni-project/naica
 
 # Maintenance Windows
-java/code/src/com/suse/manager/model/maintenance/ @uyuni-project/frontend
-java/code/src/com/suse/manager/webui/controllers/maintenance/ @uyuni-project/frontend
-java/code/src/com/suse/manager/maintenance/ @uyuni-project/frontend
-java/code/src/com/suse/manager/webui/utils/gson/MaintenanceWindowDataJson.java @uyuni-project/frontend
+java/code/src/com/suse/manager/model/maintenance/ @uyuni-project/naica
+java/code/src/com/suse/manager/webui/controllers/maintenance/ @uyuni-project/naica
+java/code/src/com/suse/manager/maintenance/ @uyuni-project/naica
+java/code/src/com/suse/manager/webui/utils/gson/MaintenanceWindowDataJson.java @uyuni-project/naica
 
 # Minion Bootstrapping
-java/code/src/com/suse/manager/webui/controllers/bootstrap/ @uyuni-project/frontend
-java/code/src/com/suse/manager/webui/utils/gson/BootstrapHostsJson.java @uyuni-project/frontend
-java/code/src/com/suse/manager/webui/utils/gson/BootstrapParameters.java @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/controllers/bootstrap/ @uyuni-project/naica
+java/code/src/com/suse/manager/webui/utils/gson/BootstrapHostsJson.java @uyuni-project/naica
+java/code/src/com/suse/manager/webui/utils/gson/BootstrapParameters.java @uyuni-project/naica
 
 # Notification Messages
-java/code/src/com/redhat/rhn/domain/notification/ @uyuni-project/frontend
-java/code/src/com/suse/manager/webui/controllers/NotificationMessageController.java @uyuni-project/frontend
-java/code/src/com/suse/manager/webui/utils/gson/NotificationMessageJson.java @uyuni-project/frontend
+java/code/src/com/redhat/rhn/domain/notification/ @uyuni-project/naica
+java/code/src/com/suse/manager/webui/controllers/NotificationMessageController.java @uyuni-project/naica
+java/code/src/com/suse/manager/webui/utils/gson/NotificationMessageJson.java @uyuni-project/naica
 
 # Websockets
-java/code/src/com/suse/manager/webui/websocket/ @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/websocket/ @uyuni-project/naica
 
 # Ignore translations, in the CODEOWNERS the last matching wins
 **/*.po

@@ -135,7 +135,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
                   />
                 </div>
               </div>
-              <div className="col-sm-offset-3 col-sm-6">
+              <div className="col-sm-offset-3 offset-sm-3 col-sm-6">
                 <Check
                   name="flushCache"
                   label={t("Flush Ansible fact cache")}

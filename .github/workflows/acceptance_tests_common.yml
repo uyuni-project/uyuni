@@ -119,13 +119,13 @@ jobs:
         run: ./testsuite/podman_runner/21_get_client_logs.sh ${{ inputs.server_id }}
       - name: upload_server_log_artifacts
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: server_rhn_logs_${{ inputs.server_id }}
           path: /tmp/test-all-in-one/server-logs/${{ inputs.server_id }}
       - name: upload_client_log_artifacts
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: client_logs_${{ inputs.server_id }}
           path: ./testsuite/logs
