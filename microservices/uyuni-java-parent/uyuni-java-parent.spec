@@ -16,10 +16,10 @@
 #
 
 Name:           uyuni-java-parent
-Version:        5.0.0
+Version:        5.0.3
 Release:        0
 Summary:        Parent POM for all Uyuni Maven components
-License:        Apache-2.0
+License:        GPL-2.0-only
 Group:          Development/Libraries/Java
 URL:            https://www.uyuni-project.org
 Source0:        %{name}-%{version}.tar.gz
@@ -42,5 +42,6 @@ Package that contains the parent POM used by all Uyuni Maven components.
 
 %files -f .mfiles
 %defattr(-,root,root)
+%license LICENSE
 
 %changelog

@@ -19,6 +19,7 @@ import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.C
 import static com.suse.manager.webui.controllers.maintenance.MaintenanceController.handleRescheduleResult;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -45,6 +46,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
@@ -144,7 +146,7 @@ public class MaintenanceCalendarController {
                 })
                 .collect(Collectors.toList());
 
-        return json(response, calendarsWithSchedules);
+        return json(response, calendarsWithSchedules, new TypeToken<>() { });
     }
 
     /**
@@ -176,7 +178,7 @@ public class MaintenanceCalendarController {
         ).collect(Collectors.toList()));
         json.setEventNames(new IcalUtils().getEventNames(calendar));
 
-        return json(response, json);
+        return json(response, json, new TypeToken<>() { });
     }
 
     /**
@@ -267,7 +269,7 @@ public class MaintenanceCalendarController {
                     }
                 }
         );
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -305,7 +307,7 @@ public class MaintenanceCalendarController {
             ))));
         }
 
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 
     /**
@@ -328,6 +330,6 @@ public class MaintenanceCalendarController {
                 () -> Spark.halt(HttpStatus.SC_BAD_REQUEST)
         );
 
-        return json(response, ResultJson.success());
+        return result(response, ResultJson.success(), new TypeToken<>() { });
     }
 }

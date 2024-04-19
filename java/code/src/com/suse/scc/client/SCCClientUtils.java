@@ -14,6 +14,8 @@
  */
 package com.suse.scc.client;
 
+import com.suse.utils.ParameterizedTypeImpl;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -27,7 +29,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.nio.file.FileSystem;
@@ -159,23 +160,6 @@ public class SCCClientUtils {
      * @return the List type
      */
     public static Type toListType(final Type elementType) {
-        Type resultListType = new ParameterizedType() {
-
-            @Override
-            public Type[] getActualTypeArguments() {
-                return new Type[] {elementType};
-            }
-
-            @Override
-            public Type getRawType() {
-                return List.class;
-            }
-
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
-        };
-        return resultListType;
+        return new ParameterizedTypeImpl(null, List.class, elementType);
     }
 }

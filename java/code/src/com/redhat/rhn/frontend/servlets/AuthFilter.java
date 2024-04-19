@@ -84,7 +84,9 @@ public class AuthFilter implements Filter {
             // Prevent read-only API users from using the web UI
             RequestContext requestContext = new RequestContext(hreq);
             User user = requestContext.getCurrentUser();
-            if (user != null && user.isReadOnly() && !hreq.getServletPath().startsWith("/manager/api")) {
+            if (user != null && user.isReadOnly() &&
+                    (!hreq.getServletPath().startsWith("/manager/api") ||
+                    !hreq.getMethod().equalsIgnoreCase("GET"))) {
                 SessionManager.purgeUserSessions(user);
                 authenticationService.redirectToLogin(hreq, (HttpServletResponse) response);
                 return;

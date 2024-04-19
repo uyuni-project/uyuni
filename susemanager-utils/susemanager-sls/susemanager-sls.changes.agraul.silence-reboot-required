@@ -1,1 +1,0 @@
-- Don't log dnf needs-restarting output in Salt's log (bsc#1220194)

@@ -9,6 +9,7 @@ Feature: Bootstrap a SLE Micro 5.1 Salt SSH minion
 
   Scenario: Clean up sumaform leftovers on a SLE Micro SSH 5.1 minion
     When I perform a full salt minion cleanup on "slemicro51_ssh_minion"
+    And I reboot the "slemicro51_ssh_minion" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -22,7 +23,8 @@ Feature: Bootstrap a SLE Micro 5.1 Salt SSH minion
     And I select "1-slemicro51_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "slemicro51_ssh_minion"
 
 @proxy

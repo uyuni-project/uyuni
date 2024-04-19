@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 08 12:06:55 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4-0
+  * Remove rhn-profile-sync rhn_register spacewalk-channel and
+    spacewalk-update-status
+
+-------------------------------------------------------------------
 Tue Feb 13 17:27:45 CET 2024 - marina.latini@suse.com
 
 - version 5.0.3-1

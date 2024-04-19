@@ -16,7 +16,7 @@ package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.isApiRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.isJson;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setupHibernateSessionFilter;
 import static spark.Spark.exception;
@@ -62,7 +62,6 @@ import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
-import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
@@ -202,9 +201,6 @@ public class Router implements SparkApplication {
         // Formulas
         formulaController.initRoutes(jade);
 
-        // Visualization
-        VisualizationController.initRoutes(jade);
-
         get("/manager/download/saltssh/pubkey", saltSSHController::getPubKey);
 
 
@@ -247,7 +243,7 @@ public class Router implements SparkApplication {
     private void initNotFoundRoutes(JadeTemplateEngine jade) {
         notFound((request, response) -> {
             if (isJson(response) || isApiRequest(request)) {
-                return json(response, Collections.singletonMap("message", "404 Not found"));
+                return message(response, "404 Not found");
             }
             var data = Collections.singletonMap("currentUrl",
                     URLEncoder.encode(request.pathInfo(), StandardCharsets.UTF_8));
@@ -257,7 +253,7 @@ public class Router implements SparkApplication {
         exception(NotFoundException.class, (exception, request, response) -> {
             response.status(HttpStatus.SC_NOT_FOUND);
             if (isJson(response) || isApiRequest(request)) {
-                response.body(json(response, Collections.singletonMap("message", "404 Not found")));
+                response.body(message(response, "404 Not found"));
             }
             else {
                 var data = Collections.singletonMap("currentUrl",

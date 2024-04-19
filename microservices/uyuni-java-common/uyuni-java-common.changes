@@ -1,1 +1,17 @@
-- Initial version
+-------------------------------------------------------------------
+Mon Apr 15 18:47:41 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-0
+  * Fixed license to correctly use GPL-2.0-only
+
+-------------------------------------------------------------------
+Fri Apr 05 15:27:13 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2-0
+  * Bump pom version
+
+-------------------------------------------------------------------
+Thu Apr 04 23:43:12 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.1-0
+  * Initial version

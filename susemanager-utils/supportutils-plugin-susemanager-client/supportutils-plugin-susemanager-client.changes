@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:04:23 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-0
+  * Remove rhnsd from client actions and server backend
+
+-------------------------------------------------------------------
 Tue Feb 13 17:15:06 CET 2024 - marina.latini@suse.com
 
 - version 5.0.2-1

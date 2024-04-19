@@ -18,9 +18,21 @@ fi
 
 DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
-    sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
-    opensuse|opensuse-leap)   JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
-    centos|rhel|almalinux|rocky|ol)    JVM='java-11-openjdk.x86_64';; 
+    sles|suse-manager-server)
+        JVM='/usr/lib64/jvm/jre-17-openjdk/bin/java'
+        if [ ! -f $JVM ]; then
+            JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java'
+        fi;;
+    opensuse|opensuse-leap)
+        JVM='/usr/lib64/jvm/jre-17-openjdk/bin/java'
+        if [ ! -f $JVM ]; then
+            JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java'
+        fi;;
+    centos|rhel|almalinux|rocky|ol)
+        JVM='java-17-openjdk.x86_64'
+        if [ ! -e $JVM ]; then
+            JVM='java-11-openjdk.x86_64'
+        fi;;
     *)                        echo 'Unknown distribution!'
                               exit 1;;
 esac
@@ -231,6 +243,13 @@ exists_user() {
     fi
 }
 
+run_in_container() {
+    if [ "$container" == "podman" -o "$container" == "docker" -o -d /var/run/secrets/kubernetes.io ]; then
+        return 0
+    fi
+    return 1
+}
+
 setup_db_postgres() {
     if [ $EXTERNALDB = 0 ]; then
         POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
@@ -283,8 +302,11 @@ setup_db_postgres() {
             echo "local $MANAGER_DB_NAME postgres peer
     local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
     host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
-    host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
-    " > /tmp/pg_hba.conf
+    host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256" > /tmp/pg_hba.conf
+            if run_in_container; then
+                INT_NET=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}')
+                echo "host $MANAGER_DB_NAME $MANAGER_USER $INT_NET scram-sha-256" >> /tmp/pg_hba.conf
+            fi
             cat ${DATADIR}/pg_hba.conf >> /tmp/pg_hba.conf
             mv ${DATADIR}/pg_hba.conf ${DATADIR}/pg_hba.conf.bak
             mv /tmp/pg_hba.conf ${DATADIR}/pg_hba.conf

@@ -142,8 +142,6 @@ artifacts:
     repository: Leap_sle
   - artifact: jboss-logging
     repository: Leap
-  - artifact: jcommon
-    repository: Uyuni_Other
   - artifact: jctools-core
     package: jctools
     repository: Leap
@@ -342,8 +340,6 @@ artifacts:
     package: glassfish-jaxb-txw2
     repository: Uyuni_Other
   - artifact: glassfish-activation
-    repository: Uyuni_Other
-  - artifact: glassfish-activation-api
     repository: Uyuni_Other
   - artifact: istack-commons-runtime
     repository: Uyuni_Other

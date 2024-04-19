@@ -32,16 +32,16 @@
 %define serverdir       %{susemanagershareddir}/www
 %define salt_user_group salt
 
+%{!?java_version: %global java_version 11}
 %if 0%{?suse_version}
 %define userserverdir       /srv
 %define apache_group    www
 %define apache2         apache2
-%define java_version    11
 %else
 %define userserverdir       %{_sharedstatedir}
 %define apache_group    apache
 %define apache2         httpd
-%define java_version    1:11
+%define java_version    1:%{java_version}
 %endif
 
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
@@ -61,8 +61,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.5
-Release:        1
+Version:        5.0.6
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
@@ -96,7 +96,7 @@ BuildRequires:  classmate
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
-BuildRequires:  glassfish-activation-api
+BuildRequires:  glassfish-activation
 BuildRequires:  glassfish-jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
@@ -107,13 +107,12 @@ BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  istack-commons-runtime
 BuildRequires:  jade4j
-BuildRequires:  java-11-openjdk-devel
+BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
 BuildRequires:  javamail
 BuildRequires:  javapackages-tools
 BuildRequires:  javassist
 BuildRequires:  jboss-logging
-BuildRequires:  jcommon
 BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
@@ -184,7 +183,7 @@ Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       glassfish-activation-api
+Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
@@ -194,13 +193,12 @@ Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       istack-commons-runtime
 Requires:       jade4j
-Requires:       java-11-openjdk
+Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
 Requires:       javamail
 Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging
-Requires:       jcommon
 Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
@@ -361,10 +359,9 @@ Requires:       concurrent
 Requires:       hibernate-commons-annotations
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
-Requires:       java-11-openjdk
+Requires:       java-%{java_version}-openjdk
 Requires:       javassist
 Requires:       jboss-logging
-Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
 Requires:       log4j
@@ -430,7 +427,7 @@ PRODUCT_NAME="Uyuni"
 %endif
 
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
 %endif
 
 # compile only java sources (no packing here)
@@ -496,7 +493,7 @@ PRODUCT_NAME="Uyuni"
 %endif
 
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
 %endif
 
 export NO_BRP_STALE_LINK_ERROR=yes

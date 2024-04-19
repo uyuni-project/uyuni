@@ -17,8 +17,8 @@
 
 
 Name:           supportutils-plugin-susemanager-client
-Version:        5.0.2
-Release:        1
+Version:        5.0.3
+Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Client
 License:        GPL-2.0-only

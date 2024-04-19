@@ -55,7 +55,8 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I enter "linux" as "privKeyPwd"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
 
   Scenario: Check new minion bootstrapped with SSH key in System Overview page
     When I follow the left menu "Salt > Keys"

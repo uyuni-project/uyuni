@@ -31,9 +31,16 @@ import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.domain.TaskoBunch;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -41,6 +48,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.hibernate.ObjectNotFoundException;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -424,6 +433,128 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         for (ActionChainEntry entry : actionChain.getEntries()) {
             assertNotEmpty(entry.getAction().getServerActions());
         }
+    }
+
+    /**
+     * Tests unschedule().
+     * @throws Exception if something bad happens
+     */
+    @Test
+    public void testUnSchedule() throws Exception {
+        TaskomaticApi tapi = new TaskomaticApi() {
+            @Override
+            protected Object invoke(String name, Object... args) throws TaskomaticApiException {
+                if (name.equals("tasko.scheduleSingleSatBunchRun")) {
+                    if (args.length != 4) {
+                        fail("Unexpected number of arguments");
+                    }
+                    String bunchName = (String) args[0];
+                    String jobLabel = (String) args[1];
+                    assertEquals(TaskomaticApi.MINION_ACTIONCHAIN_BUNCH_LABEL, bunchName);
+                    assertContains(jobLabel, TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX);
+                    TaskoBunch bunch = TaskoFactory.lookupSatBunchByName(bunchName);
+                    TaskoSchedule schedule = new TaskoSchedule(null, bunch, jobLabel, (Map) args[2],
+                            (Date) args[3], null, null);
+                    TaskoFactory.save(schedule);
+                }
+                else if (name.equals("tasko.unscheduleSatBunches")) {
+                    if (args.length != 1) {
+                        fail("Unexpected number of arguments");
+                    }
+                    List<String> jobLabels = (List<String>) args[0];
+                    assertEquals(1, jobLabels.size());
+                    assertContains(jobLabels.get(0), TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX);
+
+                    // Fake unschedule by removing TaskoSchedule
+                    List<TaskoSchedule> scheduleList = TaskoFactory.listScheduleByLabel(jobLabels.get(0));
+                    assertEquals(1, scheduleList.size());
+                    TaskoFactory.delete(scheduleList.get(0));
+                }
+                else {
+                    fail("unexpected API call " + name);
+                }
+                return null;
+            }
+        };
+
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        Map<Long, Integer> sortOrders = new HashMap<>();
+        long firstActionIdServer1 = 0;
+        long firstActionIdServer2 = 0;
+        for (int i = 0; i < 5; i++) {
+            // Server 1
+            Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+            action.setOrg(user.getOrg());
+            ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
+            TestUtils.saveAndFlush(action);
+            sortOrders.put(action.getId(), i);
+            if (i == 0) {
+                firstActionIdServer1 = action.getId();
+            }
+            // Server 2
+            action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+            action.setOrg(user.getOrg());
+            ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
+            TestUtils.saveAndFlush(action);
+            sortOrders.put(action.getId(), i);
+            if (i == 0) {
+                firstActionIdServer2 = action.getId();
+            }
+        }
+
+        ActionChainFactory.setTaskomaticApi(tapi);
+        ActionChainFactory.schedule(actionChain, Date.from(Instant.now().plus(1, ChronoUnit.HOURS)));
+
+        // check actions are scheduled in correct order
+        for (ActionChainEntry entry : actionChain.getEntries()) {
+            Action action = entry.getAction();
+            Action prerequisite = action.getPrerequisite();
+            if (prerequisite != null) {
+                assertTrue(sortOrders.get(action.getId()) > sortOrders.get(prerequisite
+                        .getId()));
+            }
+        }
+
+        // check ServerAction objects have been created
+        for (ActionChainEntry entry : actionChain.getEntries()) {
+            assertNotEmpty(entry.getAction().getServerActions());
+        }
+        String jobLabel = TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX + actionChain.getId();
+        List<TaskoSchedule> schedules = TaskoFactory.listScheduleByLabel(jobLabel);
+        assertEquals(1, schedules.size());
+        HibernateFactory.getSession().flush();
+
+        Action actionServer1 = ActionFactory.lookupById(firstActionIdServer1);
+        tapi.deleteScheduledActions(Map.of(actionServer1, Set.of(server1)));
+        // we need to remove the ServerAction
+        actionServer1.getServerActions().forEach(sa -> {
+            if (sa.getServerId().equals(server1.getId())) {
+                sa.getParentAction().getServerActions().remove(sa);
+                ActionFactory.delete(sa);
+            }
+        });
+        HibernateFactory.getSession().flush();
+
+        schedules = TaskoFactory.listScheduleByLabel(jobLabel);
+        assertEquals(1, schedules.size());
+        HibernateFactory.getSession().flush();
+
+        Action actionServer2 = ActionFactory.lookupById(firstActionIdServer2);
+        tapi.deleteScheduledActions(Collections.singletonMap(actionServer2, Set.of(server2)));
+        // we need to remove the ServerAction
+        actionServer2.getServerActions().forEach(sa -> {
+            if (sa.getServerId().equals(server2.getId())) {
+                sa.getParentAction().getServerActions().remove(sa);
+                ActionFactory.delete(sa);
+            }
+        });
+
+        schedules = TaskoFactory.listScheduleByLabel(jobLabel);
+        assertEquals(0, schedules.size());
+
     }
 
     /**

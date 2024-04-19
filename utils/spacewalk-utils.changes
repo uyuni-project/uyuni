@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Apr 04 17:59:01 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-0
+  * Remove apply_errata script
+  * spacewalk-hostname-rename should always set cobbler.host to localhost (bsc#1219887)
+  * Add openSUSE Leap 15.6 and its client tools
+  * Add Uyuni client tools for SUSE Linux Enterprise 15 SP6
+
+-------------------------------------------------------------------
 Mon Jan 29 11:48:40 CET 2024 - rosuna@suse.com
 
 - version 5.0.2-1

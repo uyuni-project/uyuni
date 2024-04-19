@@ -16,10 +16,10 @@
 #
 
 Name:           uyuni-coco-attestation
-Version:        5.0.0
+Version:        5.0.3
 Release:        0
 Summary:        Uyuni utility for Confidential Computing Attestation
-License:        Apache-2.0
+License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://www.uyuni-project.org
 Source0:        %{name}-%{version}.tar.gz
@@ -37,20 +37,28 @@ BuildRequires:  mvn(org.mybatis:mybatis)
 BuildRequires:  mvn(com.mchange:mchange-commons-java)
 BuildRequires:  mvn(com.mchange:c3p0)
 
-BuildArch:      noarch
-
 %description
 System daemon used by Uyuni to validate the results of confidential computing attestation.
 
+%package core
+Summary:        Uyuni utility for Confidential Computing Attestation
+BuildArch:      noarch
+
+%description core
+System daemon used by Uyuni to validate the results of confidential computing attestation.
+
+%ifarch x86_64
 %package module-snpguest
 Summary:        Confidential computing SNPGuest attestation module for Uyuni
 Requires:       snpguest
 
 %description module-snpguest
 Module for the Uyuni Confidential Computing Attestation that uses SnpGuest.
+%endif
 
 %package        javadoc
 Summary:        API documentation for %{name}
+BuildArch:      noarch
 
 %description    javadoc
 Package containing the Javadoc API documentation for %{name}.
@@ -60,6 +68,11 @@ Package containing the Javadoc API documentation for %{name}.
 
 # Disable the common module it will be provided by the installed dependency
 %pom_disable_module '../uyuni-java-common'
+
+%ifnarch x86_64
+# Disable the module snpguest as it requires x86_64
+%pom_disable_module 'attestation-module-snpguest'
+%endif
 
 # Make sure there are not dependencies on the modules projects
 %pom_remove_dep 'org.uyuni-project.coco-attestation.module:' attestation-core/pom.xml
@@ -93,6 +106,7 @@ build-jar-repository -s -p $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/lib 
 # Link all the attestation jars built and installed by maven
 ln -s -f -r $RPM_BUILD_ROOT%{_javadir}/uyuni-coco-attestation/*.jar $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/lib
 
+%ifarch x86_64
 # Install snpguest certificates
 cd attestation-module-snpguest/src/package/certs/
 for FILE in $(find -name *.pem -type f -printf '%%P\n'); do
@@ -100,8 +114,9 @@ for FILE in $(find -name *.pem -type f -printf '%%P\n'); do
     install -D -p -m 644 $FILE $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/certs/$FILE
 done
 cd -
+%endif
 
-%files -f .mfiles
+%files core -f .mfiles
 %defattr(-,root,root)
 %dir /usr/share/coco-attestation/
 %dir /usr/share/coco-attestation/conf/
@@ -111,16 +126,21 @@ cd -
 %attr(755, root, root) %{_sbindir}/coco-attestation
 %{_prefix}/share/coco-attestation/conf/daemon.conf
 %{_prefix}/share/coco-attestation/classes/log4j2.xml
+%license LICENSE
 
 # Exclude all modules jars, will be part of their specific packages
 %exclude %{_prefix}/share/coco-attestation/lib/attestation-module-*
 
+%ifarch x86_64
 %files module-snpguest -f .mfiles-module-snpguest
 %defattr(-,root,root)
 %dir /usr/share/coco-attestation/certs/
 %{_prefix}/share/coco-attestation/lib/attestation-module-snpguest.jar
 %{_prefix}/share/coco-attestation/certs/*
+%license LICENSE
+%endif
 
 %files javadoc -f .mfiles-javadoc
+%license LICENSE
 
 %changelog

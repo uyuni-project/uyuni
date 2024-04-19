@@ -272,8 +272,27 @@ def diff_dumps(initial_dump, migrated_dump):
                 for line in re.sub("\t", "       ", fd.read()).splitlines()
             ]
 
-    file_initial = get_stripped_lines(initial_dump)
-    file_migrated = get_stripped_lines(migrated_dump)
+    def get_sorted_tables(lines):
+        in_table = False
+        res = []
+        table = []
+        for line in lines:
+            if not in_table:
+                res.append(line)
+                if line.endswith("FROM stdin;"):
+                    in_table = True
+            else:
+                if line == "\.":
+                    res += sorted(table)
+                    res.append(line)
+                    in_table = False
+                    table = []
+                else:
+                    table.append(line)
+        return res
+
+    file_initial = get_sorted_tables(get_stripped_lines(initial_dump))
+    file_migrated = get_sorted_tables(get_stripped_lines(migrated_dump))
     return difflib.unified_diff(file_initial, file_migrated)
 
 

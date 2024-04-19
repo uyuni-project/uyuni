@@ -55,7 +55,6 @@ import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
-import com.redhat.rhn.frontend.xmlrpc.recurringaction.LegacyRecurringActionHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringCustomStateHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringHighstateHandler;
@@ -199,8 +198,6 @@ public class HandlerFactory {
         factory.addHandler("packages.search", new PackagesSearchHandler());
         factory.addHandler("preferences.locale", new PreferencesLocaleHandler());
         factory.addHandler("proxy", proxyHandler);
-        // TODO: 'recurringaction' is deprecated in favor of the 'recurring' namespace. Remove this after 4.3.6
-        factory.addHandler("recurringaction", new LegacyRecurringActionHandler());
         factory.addHandler("recurring", new RecurringActionHandler());
         factory.addHandler("recurring.highstate", new RecurringHighstateHandler());
         factory.addHandler("recurring.custom", new RecurringCustomStateHandler());

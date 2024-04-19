@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -28,10 +27,12 @@ import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 
 import com.suse.manager.webui.controllers.UserLocalizationDateAdapter;
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
+import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -83,10 +84,10 @@ public class ControllerApiUtils {
             });
         }
 
-        return json(GSON, res, ResultJson.success(
+        return SparkApplicationHelper.json(GSON, res, ResultJson.success(
                 ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments, swSourcesWithUnsyncedPatches,
                         sourceTagetChannelIds)
-        ));
+        ), new TypeToken<>() { });
     }
 
     /**
@@ -100,9 +101,9 @@ public class ControllerApiUtils {
                 .stream()
                 .collect(Collectors.toMap(p -> p, ContentProjectFactory::listFilterProjects));
 
-        return json(GSON, res, ResultJson.success(
+        return SparkApplicationHelper.json(GSON, res, ResultJson.success(
                 ResponseMappers.mapFilterListingFromDB(filtersWithProjects)
-        ));
+        ), new TypeToken<>() { });
     }
 
 

@@ -46,14 +46,12 @@ public class KickstartRawData extends KickstartData {
     public String getData() {
         if (this.data == null) {
             Profile prof = Profile.lookupById(
-                    CobblerXMLRPCHelper.getConnection(
-                            ConfigDefaults.get().getCobblerAutomatedUser()),
+                    CobblerXMLRPCHelper.getConnection(ConfigDefaults.get().getCobblerAutomatedUser()),
                     this.getCobblerId());
             if (prof == null) {
                 return "";
             }
-            this.data = FileUtils.
-                readStringFromFile(prof.getKickstart());
+            this.data = FileUtils.readStringFromFile(ConfigDefaults.get().getKickstartConfigDir(), prof.getKickstart());
         }
         return this.data;
     }

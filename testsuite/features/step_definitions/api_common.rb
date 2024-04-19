@@ -269,33 +269,6 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
-
-  # Filter out the custom channels
-  # This is needed because we might have both a traditional custom channel and a Salt custom channel
-  child_channels.reject! { |channel| channel.include? 'custom_channel' }
-
-  # Re-add the desired custom channel
-  # This too can go away when we get rid of traditional clients for good
-  client.sub! 'ssh_minion', 'minion'
-  client.sub! 'buildhost', 'minion'
-  client.sub! 'terminal', 'minion'
-  custom_channel =
-    if client.include? 'alma8'
-      'no-appstream-alma-8-result-custom_channel_alma8_minion'
-    elsif client.include? 'alma9'
-      'no-appstream-alma-9-result-custom_channel_alma9_minion'
-    elsif client.include? 'liberty9'
-      'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
-    elsif client.include? 'oracle9'
-      'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
-    elsif client.include? 'rocky8'
-      'no-appstream-8-result-custom_channel_rocky8_minion'
-    elsif client.include? 'rocky9'
-      'no-appstream-9-result-custom_channel_rocky9_minion'
-    else
-      "custom_channel_#{client}"
-    end
-  child_channels.push(custom_channel)
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
