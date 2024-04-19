@@ -8,12 +8,17 @@ type Props = {
   channelsAppStreams: Array<ChannelAppStream>;
 };
 
+export const getStreamName = (module: AppStreamModule) => `${module.name}:${module.stream}`;
+
 const AppStreams = (props: Props) => {
   const [toEnable, setToEnable] = useState<Array<string>>([]);
   const [toDisable, setToDisable] = useState<Array<string>>([]);
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const [confirmed, setConfirmed] = useState<boolean>(false);
   const [scheduledMsg, setScheduledMsg] = useState<any>(null);
+
+  const isStreamEnabled = (stream: AppStreamModule) =>
+    toEnable.includes(getStreamName(stream)) || (stream.enabled && !toDisable.includes(getStreamName(stream)));
 
   const handleEnableDisable = (appStream: AppStreamModule) => {
     const stream = `${appStream.name}:${appStream.stream}`;
@@ -26,6 +31,13 @@ const AppStreams = (props: Props) => {
         prevState.includes(stream) ? prevState.filter((it) => it !== stream) : prevState.concat(stream)
       );
     }
+
+    // Disable every other stream of the module
+    props.channelsAppStreams.forEach((ch) =>
+      ch.appStreams[appStream.name]
+        .filter((as) => getStreamName(as) !== stream && isStreamEnabled(as))
+        .forEach((as) => handleEnableDisable(as))
+    );
   };
 
   const handleSubmitChanges = () => {
