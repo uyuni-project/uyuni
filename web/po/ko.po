@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-19 15:07+0200\n"
 "PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -693,8 +693,6 @@ msgstr "({selectedCount} 선택됨)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-#: ../html/src/manager/visualization/hierarchy.tsx:307
-#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr "지우기"
 
@@ -6585,120 +6583,6 @@ msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
 
-#: ../html/src/manager/visualization/data-tree.ts:137
-msgid "  security advisories"
-msgstr "  보안 자문"
-
-#: ../html/src/manager/visualization/data-tree.ts:143
-msgid "  bug fix advisories"
-msgstr "  버그 수정 자문"
-
-#: ../html/src/manager/visualization/data-tree.ts:151
-msgid "  product enhancement advisories"
-msgstr "  제품 향상 자문"
-
-#: ../html/src/manager/visualization/data-tree.ts:190
-msgid "Add/remove system from SSM"
-msgstr "SSM에서 시스템 추가/제거"
-
-#: ../html/src/manager/visualization/data-tree.ts:248
-msgid "Add children to SSM"
-msgstr "SSM에 하위 추가"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "There was an error fetching data from the server."
-msgstr "서버에서 데이터를 가져오는 동안 오류가 발생했습니다."
-
-#: ../html/src/manager/visualization/hierarchy.tsx:109
-msgid "Show systems with:"
-msgstr "다음과 함께 표시:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:138
-msgid "security advisories"
-msgstr "보안 자문"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:143
-msgid "bug fix advisories"
-msgstr "버그 수정 자문"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:146
-msgid "product enhancement advisories"
-msgstr "제품 향상 자문"
-
-#. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "Filter by system name"
-msgstr "시스템 이름을 기준으로 필터링"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "e.g., client.nue.sles"
-msgstr "예: client.nue.sles"
-
-#. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "Filter by system base channel"
-msgstr "시스템 기본 채널을 기분으로 필터링"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "e.g., SLE12"
-msgstr "예: SLE12"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:170
-msgid "Filter by system installed products"
-msgstr "시스템 설치 제품을 기준으로 필터링"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:171
-msgid "e.g., SLES"
-msgstr "예: SLES"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Hide filters"
-msgstr " 필터"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Show filters"
-msgstr " 필터"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:282
-msgid "Filtering"
-msgstr "필터링"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:288
-msgid "Partitioning"
-msgstr "파티셔닝"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:295
-msgid "Partition systems by given check-in time:"
-msgstr "지정된 체크인 시간을 기준으로 시스템 파티션:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:304
-#: ../html/src/manager/visualization/hierarchy.tsx:319
-msgid "Apply"
-msgstr "적용"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:312
-msgid "Partition systems based on whether there are patches for them:"
-msgstr "패치 존재 여부에 따른 시스템 파티션:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:328
-msgid "Split into groups"
-msgstr "그룹으로 분할"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:335
-msgid "Add a grouping level"
-msgstr "그룹 수준 추가"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:345
-msgid "Select a system group"
-msgstr "시스템 그룹 선택"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:367
-#, fuzzy
-msgid "Remove this level"
-msgstr "파일 제거"
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "세션이 만료되었습니다. 페이지를 다시 로드하십시오."
@@ -6716,6 +6600,90 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "  security advisories"
+#~ msgstr "  보안 자문"
+
+#~ msgid "  bug fix advisories"
+#~ msgstr "  버그 수정 자문"
+
+#~ msgid "  product enhancement advisories"
+#~ msgstr "  제품 향상 자문"
+
+#~ msgid "Add/remove system from SSM"
+#~ msgstr "SSM에서 시스템 추가/제거"
+
+#~ msgid "Add children to SSM"
+#~ msgstr "SSM에 하위 추가"
+
+#~ msgid "There was an error fetching data from the server."
+#~ msgstr "서버에서 데이터를 가져오는 동안 오류가 발생했습니다."
+
+#~ msgid "Show systems with:"
+#~ msgstr "다음과 함께 표시:"
+
+#~ msgid "security advisories"
+#~ msgstr "보안 자문"
+
+#~ msgid "bug fix advisories"
+#~ msgstr "버그 수정 자문"
+
+#~ msgid "product enhancement advisories"
+#~ msgstr "제품 향상 자문"
+
+#~ msgid "Filter by system name"
+#~ msgstr "시스템 이름을 기준으로 필터링"
+
+#~ msgid "e.g., client.nue.sles"
+#~ msgstr "예: client.nue.sles"
+
+#~ msgid "Filter by system base channel"
+#~ msgstr "시스템 기본 채널을 기분으로 필터링"
+
+#~ msgid "e.g., SLE12"
+#~ msgstr "예: SLE12"
+
+#~ msgid "Filter by system installed products"
+#~ msgstr "시스템 설치 제품을 기준으로 필터링"
+
+#~ msgid "e.g., SLES"
+#~ msgstr "예: SLES"
+
+#, fuzzy
+#~ msgid "Hide filters"
+#~ msgstr " 필터"
+
+#, fuzzy
+#~ msgid "Show filters"
+#~ msgstr " 필터"
+
+#~ msgid "Filtering"
+#~ msgstr "필터링"
+
+#~ msgid "Partitioning"
+#~ msgstr "파티셔닝"
+
+#~ msgid "Partition systems by given check-in time:"
+#~ msgstr "지정된 체크인 시간을 기준으로 시스템 파티션:"
+
+#~ msgid "Apply"
+#~ msgstr "적용"
+
+#~ msgid "Partition systems based on whether there are patches for them:"
+#~ msgstr "패치 존재 여부에 따른 시스템 파티션:"
+
+#~ msgid "Split into groups"
+#~ msgstr "그룹으로 분할"
+
+#~ msgid "Add a grouping level"
+#~ msgstr "그룹 수준 추가"
+
+#~ msgid "Select a system group"
+#~ msgstr "시스템 그룹 선택"
+
+#, fuzzy
+#~ msgid "Remove this level"
+#~ msgstr "파일 제거"
 
 #, fuzzy
 #~ msgid "Manage"

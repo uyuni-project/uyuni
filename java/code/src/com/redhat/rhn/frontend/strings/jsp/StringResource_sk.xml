@@ -1814,55 +1814,6 @@
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="visualization-legend.jsp.title" xml:space="preserve">
-        <source>Visualization Hierarchy</source>
-        <target>Hierarchia vizualizácie</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notcheckin" xml:space="preserve">
-        <source>System not checking in</source>
-        <target>Systém, ktorý nie je prihlásený</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notpatched" xml:space="preserve">
-        <source>Not patched system</source>
-        <target>Neopravený systém</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.root" xml:space="preserve">
-        <source>SUSE Manager</source>
-        <target>SUSE Manager</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.vhm" xml:space="preserve">
-        <source>Virtual Host Manager</source>
-        <target>Správca virtuálnych hostiteľov</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.group" xml:space="preserve">
-        <source>Group</source>
-        <target>Skupina</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.system" xml:space="preserve">
-        <source>System</source>
-        <target>Systém</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
       <!-- email_sent.jsp -->
       <!-- yourchangeemail.jsp -->
       <trans-unit id="yourchangeemail.jsp.title" xml:space="preserve">
@@ -2699,21 +2650,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actiondetails.jsp.scheduler" xml:space="preserve">
         <source>Scheduler</source>
-        <target/>
+        <target>Plánovač</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.earliestexecution" xml:space="preserve">
         <source>Earliest execution</source>
-        <target/>
+        <target>Najskoršie vykonanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.notes" xml:space="preserve">
         <source>Notes</source>
-        <target/>
+        <target>Poznámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
@@ -2721,7 +2672,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.action" xml:space="preserve">
         <source>Action</source>
-        <target/>
+        <target>Akcia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2730,7 +2681,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.earliest" xml:space="preserve">
         <source>Scheduled Time</source>
-        <target/>
+        <target>Plánovaný čas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2739,7 +2690,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.succeeded" xml:space="preserve">
         <source>Succeeded</source>
-        <target/>
+        <target>Úspešné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2748,7 +2699,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.failed" xml:space="preserve">
         <source>Failed</source>
-        <target/>
+        <target>Neúspešné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2758,7 +2709,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.inprogress" xml:space="preserve">
         <source>Pending</source>
-        <target/>
+        <target>Čakajúce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2767,7 +2718,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.total" xml:space="preserve">
         <source>Total</source>
-        <target/>
+        <target>Celkom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2776,35 +2727,35 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.deleteactions" xml:space="preserve">
         <source>Delete Actions</source>
-        <target/>
+        <target>Odstrániť akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.archiveactions" xml:space="preserve">
         <source>Archive Actions</source>
-        <target/>
+        <target>Archivovať akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.cancelactions" xml:space="preserve">
         <source>Cancel Actions</source>
-        <target/>
+        <target>Zrušiť akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.confirmcancelactions" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.system" xml:space="preserve">
         <source>System</source>
-        <target/>
+        <target>Systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2816,7 +2767,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.basechannel" xml:space="preserve">
         <source>Base Channel</source>
-        <target/>
+        <target>Základný kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2827,14 +2778,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actions.jsp.unscheduleaction" xml:space="preserve">
         <source>Unschedule Action</source>
-        <target/>
+        <target>Zrušenie naplánovanej akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.imgAlt" xml:space="preserve">
         <source>Action Icon</source>
-        <target/>
+        <target>Ikona akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
@@ -2844,7 +2795,10 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
           Note: For multi-system scheduled actions, the ability to cancel individual
           systems means that the number of clients mentioned in the Action column may not match the number in Total.
         </source>
-        <target/>
+        <target>
+          Poznámka: Pri plánovaných akciách s viacerými systémami znamená možnosť zrušiť
+           jednotlivé systémy, že počet klientov uvedený v stĺpci Akcia sa nemusí zhodovať s počtom v stĺpci Celkom.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2855,14 +2809,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- pendingactions.jsp -->
       <trans-unit id="pendingactions.jsp.pending_actions" xml:space="preserve">
         <source>Pending Actions</source>
-        <target/>
+        <target>Čakajúce akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.summary" xml:space="preserve">
         <source> The following actions have been scheduled, and are awaiting execution by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
-        <target/>
+        <target> Nasledujúce akcie boli naplánované a čakajú na vykonanie jedným alebo viacerými systémami. Akcie môžu archivovať len administrátori organizácie alebo používateľ, ktorý akciu naplánoval. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
@@ -22726,13 +22680,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
 The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
 &lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution including kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  If you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value. &lt;/p&gt;
 </source>
-        <target/>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
@@ -29596,18 +29550,18 @@ given channel.</source>
         </context-group>
         <target state="needs-adaptation"/>
       </trans-unit>
-    <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
         <source>Save</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
