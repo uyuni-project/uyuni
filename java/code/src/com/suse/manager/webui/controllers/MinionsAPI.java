@@ -550,9 +550,10 @@ public class MinionsAPI {
         PageControlHelper pageHelper = new PageControlHelper(request);
         PageControl pc = pageHelper.getPageControl();
 
-        long totalSize = attestationManager.countCoCoAttestationReports(user, server);
+        long totalSize = attestationManager.countCoCoAttestationReportsForUserAndServer(user, server);
 
-        List<CoCoAttestationReportJson> reportsJson = attestationManager.listCoCoAttestationReports(user, server, pc)
+        List<CoCoAttestationReportJson> reportsJson =
+            attestationManager.listCoCoAttestationReportsForUserAndServer(user, server, pc)
             .stream()
             .map(CoCoAttestationReportJson::new)
             .collect(Collectors.toList());

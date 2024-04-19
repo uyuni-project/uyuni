@@ -150,11 +150,11 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
         commitHappened();
 
-        assertEquals(2, mgr.countCoCoAttestationReports(user, server));
-        assertEquals(1, mgr.countCoCoAttestationReports(user, server3));
+        assertEquals(2, mgr.countCoCoAttestationReportsForUserAndServer(user, server));
+        assertEquals(1, mgr.countCoCoAttestationReportsForUserAndServer(user, server3));
 
-        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReports(user, server2));
-        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReports(user2, server));
+        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReportsForUserAndServer(user, server2));
+        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReportsForUserAndServer(user2, server));
     }
 
     @Test
@@ -169,8 +169,8 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
         commitHappened();
 
-        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, server, new Date(0), 0,
-                Integer.MAX_VALUE);
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
+            new Date(0), 0, Integer.MAX_VALUE);
         assertEquals(2, reports.size());
 
         ServerCoCoAttestationReport latestReport = mgr.lookupLatestCoCoAttestationReport(user, server);
@@ -201,8 +201,8 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
         commitHappened();
 
-        assertEquals(3, mgr.countCoCoAttestationReports(user));
-        assertEquals(5, mgr.countCoCoAttestationReports(user2));
+        assertEquals(3, mgr.countCoCoAttestationReportsForUser(user));
+        assertEquals(5, mgr.countCoCoAttestationReportsForUser(user2));
     }
 
     @Test
@@ -228,11 +228,11 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
         commitHappened();
 
-        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, 0, Integer.MAX_VALUE);
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUser(user, 0, Integer.MAX_VALUE);
         assertEquals(3, reports.size());
         assertTrue(reports.stream().allMatch(r -> List.of(server, server3).contains(r.getServer())));
 
-        reports = mgr.listCoCoAttestationReports(user2, 0, Integer.MAX_VALUE);
+        reports = mgr.listCoCoAttestationReportsForUser(user2, 0, Integer.MAX_VALUE);
         assertEquals(5, reports.size());
         assertTrue(reports.stream().allMatch(r -> List.of(server2, server4).contains(r.getServer())));
     }
@@ -250,16 +250,16 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
             TimeUnit.SECONDS.sleep(2);
         }
         HibernateFactory.getSession().clear();
-        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReports(user, server, new Date(0), 0,
-                Integer.MAX_VALUE);
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
+            new Date(0), 0, Integer.MAX_VALUE);
         assertEquals(10, reports.size());
 
-        List<ServerCoCoAttestationReport> reports2 = mgr.listCoCoAttestationReports(user, server,
+        List<ServerCoCoAttestationReport> reports2 = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
                 new Date((epochStart + 10) * 1000L), 0, Integer.MAX_VALUE);
         assertTrue(reports2.get(0).getModified().compareTo(new Date((epochStart + 10) * 1000L)) >= 0);
         assertEquals(5, reports2.size());
 
-        reports2 = mgr.listCoCoAttestationReports(user, server, new Date(0), 5, 2);
+        reports2 = mgr.listCoCoAttestationReportsForUserAndServer(user, server, new Date(0), 5, 2);
         assertEquals(2, reports2.size());
         assertEquals(reports.get(6), reports2.get(0));
         assertEquals(reports.get(7), reports2.get(1));
