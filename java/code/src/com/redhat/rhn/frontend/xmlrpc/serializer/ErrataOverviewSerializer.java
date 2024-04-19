@@ -33,6 +33,8 @@ import com.suse.manager.api.SerializedApiResponse;
  *          #prop_desc("string", "advisory_type", "type label such as 'Security', 'Bug Fix'")
  *          #prop_desc("string", "advisory_status", "status label such as 'final', 'testing', 'retracted'")
  *          #prop_desc("string", "advisory_name", "name such as 'RHSA', etc.")
+ *          #prop_desc("boolean", "reboot", "system reboot after changes")
+ *  *       #prop_desc("boolean", "reload", "reload after changes")
  *      #struct_end()
  */
 public class ErrataOverviewSerializer extends ApiResponseSerializer<ErrataOverview> {
