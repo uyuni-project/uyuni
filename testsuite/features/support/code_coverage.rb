@@ -69,6 +69,10 @@ class CodeCoverage
     sourcefiles = source ? '--sourcefiles /tmp/uyuni-master/java/code/src' : ''
     classfiles = '--classfiles /srv/tomcat/webapps/rhn/WEB-INF/lib/rhn.jar'
     dump_path = "/tmp/jacoco-#{feature_name}.exec"
+    # TODO: Refactor test code to run it on a containerized server
+    # Inject JaCoCo CLI from the Server Host to the Server container
+    # Restart the server to start collecting coverage
+    # Inject uyuni_master.zip into the server container and unzip it in /tmp (and remove the same step from the Jenkins pipeline)
     get_target('server').run("#{cli} dump --address localhost --destfile #{dump_path} --port 6300 --reset")
     get_target('server').run("#{cli} report #{dump_path} #{html_report} #{xml_report} #{sourcefiles} #{classfiles}")
     file_extract(get_target('server'), "/srv/www/htdocs/pub/jacoco-#{feature_name}.xml", "/tmp/jacoco-#{feature_name}.xml")
