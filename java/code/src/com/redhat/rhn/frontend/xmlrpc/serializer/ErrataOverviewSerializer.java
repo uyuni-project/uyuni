@@ -53,6 +53,8 @@ public class ErrataOverviewSerializer extends ApiResponseSerializer<ErrataOvervi
                 .add("advisory_type", src.getAdvisoryType())
                 .add("advisory_status", src.getAdvisoryStatus().getMetadataValue())
                 .add("advisory_name", src.getAdvisoryName())
+                .add("reboot", src.isRebootSuggested())
+                .add("reload", src.isRestartSuggested())
                 .build();
     }
 }
