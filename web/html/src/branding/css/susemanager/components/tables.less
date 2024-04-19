@@ -14,23 +14,10 @@
   align-items: center;
 }
 
-.table-search-wrapper {
-  flex: 1;
-
-  .form-group {
-    margin: 0;
-  }
-}
-
 .table-input-search {
+  display: block;
+  width: 100%;
   max-width: 500px;
-  display: inline-block;
-  margin-bottom: 4px;
-}
-
-.table-search-select-all {
-  margin-top: 4px;
-  margin-left: 4px;
 }
 
 thead tr {
@@ -50,4 +37,17 @@ tbody tr td,
 .list-row-odd,
 .list-row-even {
   background: transparent !important;
+}
+
+.display-number {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  display: inline-block;
+  width: fit-content;
+  border: none;
+  color: @eos-bc-gray-700;
+  background-color: @eos-bc-gray-100;
 }

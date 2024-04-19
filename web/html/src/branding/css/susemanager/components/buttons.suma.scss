@@ -4,11 +4,6 @@
 .btn-success,
 .btn-warning,
 .btn-danger {
-  // We use flex to ensure icons etc are correctly aligned in buttons
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-
   color: inherit;
   font-weight: bold;
   padding: 8px 16px;
@@ -73,24 +68,6 @@
   i[class*="icon-"],
   i[class*="spacewalk-icon"] {
     margin: 0;
-  }
-}
-
-.btn-link {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      color: $link-color;
-      font-weight: normal;
-    }
-
-    &:not(:disabled):not(.disabled):not(.text-muted):hover {
-      text-decoration: underline;
-    }
   }
 }
 

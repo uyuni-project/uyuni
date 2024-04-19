@@ -554,7 +554,7 @@ class Products extends React.Component<ProductsProps> {
 
   render() {
     const archFilter = (
-      <div className="multiple-select-wrapper">
+      <div className="multiple-select-wrapper table-input-search">
         {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
         <Form>
           <Select

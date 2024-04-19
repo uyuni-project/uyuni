@@ -586,13 +586,6 @@ nav.navbar-pf {
       float: right;
       width: auto;
     }
-    .spacewalk-list-filter {
-      min-width: 33%;
-
-      input.with-bottom-margin {
-        margin-bottom: 0.5em;
-      }
-    }
   }
 }
 
@@ -805,14 +798,6 @@ i[class~="fa-right"] {
 .btn.spacewalk-btn-margin-vertical {
   margin: 1em 0;
 }
-//tabs - adding a margin to all tabs
-ul.nav.nav-tabs {
-  margin-bottom: 0.25rem;
-}
-//tabs - adding a margin button to the last UL
-ul.nav.nav-tabs:last-child {
-  margin-bottom: 1rem;
-}
 
 // Rewriting
 // Jumbotron
@@ -937,7 +922,6 @@ i.spacewalk-help-link {
 
 /* Override rules from bootstrap for nav-tabs*/
 .nav-tabs {
-  margin-bottom: 0.4em;
   li {
     min-width: 60px;
     a,

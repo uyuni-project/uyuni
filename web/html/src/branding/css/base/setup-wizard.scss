@@ -308,9 +308,6 @@ ul.product-list {
 }
 
 .multiple-select-wrapper {
-  @extend .d-inline-block;
-  width: 35%;
-  vertical-align: top;
   ul {
     border: 0;
     input {

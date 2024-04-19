@@ -4,7 +4,7 @@ import _isEqual from "lodash/isEqual";
 
 import { pageSize } from "core/user-preferences";
 
-import { Loading } from "components/utils";
+import { cloneReactElement, Loading } from "components/utils";
 
 import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
 import { Comparator, PagedData } from "utils/data-providers";
@@ -14,6 +14,7 @@ import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
 import { Header } from "./Header";
 import { SearchField } from "./SearchField";
 import { SearchPanel } from "./SearchPanel";
+import styles from "./TableDataHandler.module.less";
 
 type ChildrenArgsProps = {
   currItems: Array<any>;
@@ -395,10 +396,13 @@ export class TableDataHandler extends React.Component<Props, State> {
                   selectedCount={selectedItems.length}
                   selectable={isSelectable}
                 >
-                  {this.props.searchField}
-                  {this.props.additionalFilters?.map((filter, i) => (
-                    <span key={"additional-filter-" + i}>{filter}&nbsp;</span>
-                  ))}
+                  <div className={styles.searchField}>{this.props.searchField}</div>
+                  {React.Children.toArray(this.props.additionalFilters).map((child, index) =>
+                    cloneReactElement(child, {
+                      key: index,
+                      props: Object.prototype.hasOwnProperty.call(child, "props") ? (child as any).props : undefined,
+                    })
+                  )}
                 </SearchPanel>
                 <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                   <ItemsPerPageSelector

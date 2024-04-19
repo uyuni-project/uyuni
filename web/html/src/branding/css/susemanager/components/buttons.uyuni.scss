@@ -4,6 +4,8 @@
 .btn-success,
 .btn-warning,
 .btn-danger {
+  --bs-border-width: 1px;
+
   padding: 6px 12px;
   border-radius: $border-radius;
 
@@ -24,25 +26,37 @@
 // These are grandfathered old styles so we're consistent between Bootstrap 3 and 5
 .btn-default {
   background-image: linear-gradient(to bottom, #fff 0%, #e6e6e6 100%);
-  border-color: #ccc;
   color: #5F5F5F;
+
+  &, &:disabled, &.disabled {
+    border-color: #ccc;
+  }
 }
 
 .btn-primary,
 .btn-success {
   background-image: linear-gradient(to bottom, #00da92 0%, #00C081 100%);
-  border-color: #00C081;
   color: #fff;
+
+  &, &:disabled, &.disabled {
+    border-color: #00C081;
+  }
 }
 
 .btn-warning {
   color: #fff;
   background: #f0ad4e;
-  border-color: #eea236;
+
+  &, &:disabled, &.disabled {
+    border-color: #eea236;
+  }
 }
 
 .btn-danger {
   color: #fff;
   background: #d9534f;
-  border-color: #d43f3a;
+
+  &, &:disabled, &.disabled {
+    border-color: #d43f3a;
+  }
 }
