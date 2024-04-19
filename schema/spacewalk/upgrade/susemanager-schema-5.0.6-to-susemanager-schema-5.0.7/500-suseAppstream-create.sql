@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS suseAppstream(
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_uq_as_module_nsvca
-    ON suseAppstream(name, stream, version, context, arch);
+    ON suseAppstream(channel_id, name, stream, version, context, arch);
 
 CREATE SEQUENCE IF NOT EXISTS suse_as_module_seq;
