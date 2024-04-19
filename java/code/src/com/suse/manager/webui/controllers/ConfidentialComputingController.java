@@ -99,9 +99,9 @@ public class ConfidentialComputingController {
         PageControlHelper pageHelper = new PageControlHelper(request);
         PageControl pc = pageHelper.getPageControl();
 
-        long totalSize = attestationManager.countCoCoAttestationReports(user);
+        long totalSize = attestationManager.countCoCoAttestationReportsForUser(user);
 
-        List<CoCoAttestationReportJson> reportsJson = attestationManager.listCoCoAttestationReports(user, pc)
+        List<CoCoAttestationReportJson> reportsJson = attestationManager.listCoCoAttestationReportsForUser(user, pc)
             .stream()
             .map(CoCoAttestationReportJson::new)
             .collect(Collectors.toList());
