@@ -69,7 +69,7 @@
       </rhn-tab>
     </rhn-tab>
 
-    <rhn-tab name="AppStreams" acl="user_role(satellite_admin)" url="/rhn/manager/systems/details/appstreams" />
+    <rhn-tab name="AppStreams" acl="user_role(satellite_admin); system_has_modular_channels()" url="/rhn/manager/systems/details/appstreams" />
 
     <rhn-tab name="PTF" acl="has_ptf_repositories(); system_supports_ptf_removal() or system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/manager/systems/details/ptf/overview</rhn-tab-url>
