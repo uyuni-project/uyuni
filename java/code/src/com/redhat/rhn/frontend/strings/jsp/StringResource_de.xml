@@ -22664,7 +22664,7 @@ den Tab &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Aktivierun
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
 The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
@@ -22673,7 +22673,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>Die folgenden Details sind zur Definition einer kickstartbaren Distribution notwendig. Das Tree-Pfad Feld sollte ein gültiger Pfad zu einem Installations-Tree sein, der auf diesem  @@PRODUCT_NAME@@-Server liegt. Das Kickstart-RPM sollte der Name des RPM sein, das die Kickstart-Installations-Skripte enthält. Diese RPMs werden von @@PRODUCT_NAME@@ bereitgestellt und befinden sich in den @@PRODUCT_NAME@@ Tools-Subchannels.&lt;br/&gt;&lt;br/&gt;
+        <target state="needs-adaptation">Die folgenden Details sind zur Definition einer kickstartbaren Distribution notwendig. Das Tree-Pfad Feld sollte ein gültiger Pfad zu einem Installations-Tree sein, der auf diesem  @@PRODUCT_NAME@@-Server liegt. Das Kickstart-RPM sollte der Name des RPM sein, das die Kickstart-Installations-Skripte enthält. Diese RPMs werden von @@PRODUCT_NAME@@ bereitgestellt und befinden sich in den @@PRODUCT_NAME@@ Tools-Subchannels.&lt;br/&gt;&lt;br/&gt;
 
 Das Distributions-Label Feld sollte nur Buchstaben, Ziffern, Bindestriche, Punkte und Unterstriche enthalten. Es muss mindestens vier Zeichen lang sein.&lt;br/&gt;&lt;br/&gt;
 

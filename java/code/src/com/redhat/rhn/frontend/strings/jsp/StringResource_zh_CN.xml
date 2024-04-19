@@ -22913,7 +22913,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
 The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
@@ -22922,7 +22922,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="translated">下面是定义可自动安装的发行套件需要提供的细节。"树路径" 字段应该是位于该 @@PRODUCT_NAME@@ 服务器上的安装树的有效路径。&lt;br/&gt;&lt;br/&gt;
+        <target state="needs-adaptation">下面是定义可自动安装的发行套件需要提供的细节。"树路径" 字段应该是位于该 @@PRODUCT_NAME@@ 服务器上的安装树的有效路径。&lt;br/&gt;&lt;br/&gt;
 
 "发行套件标签" 字段应该只包含字母、数字、连字符、句点和下划线。至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
 
