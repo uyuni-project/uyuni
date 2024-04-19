@@ -9117,7 +9117,8 @@ public class SystemHandler extends BaseHandler {
     public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Date earliest,
                                                                         Integer offset, Integer limit) {
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
-        return attestationManager.listCoCoAttestationReports(loggedInUser, server, earliest, offset, limit);
+        return attestationManager.listCoCoAttestationReportsForUserAndServer(loggedInUser, server, earliest,
+            offset, limit);
     }
 
     /**

@@ -219,8 +219,8 @@ public class AttestationManager {
      * @param userIn the user
      * @return returns a list of reports
      */
-    public long countCoCoAttestationReports(User userIn) {
-        return factory.countCoCoAttestationReports(userIn);
+    public long countCoCoAttestationReportsForUser(User userIn) {
+        return factory.countCoCoAttestationReportsForUser(userIn);
     }
 
 
@@ -231,9 +231,9 @@ public class AttestationManager {
      * @param serverIn the server
      * @return returns the number of attestation reports
      */
-    public long countCoCoAttestationReports(User userIn, Server serverIn) {
+    public long countCoCoAttestationReportsForUserAndServer(User userIn, Server serverIn) {
         ensureSystemAccessible(userIn, serverIn);
-        return factory.countCoCoAttestationReports(serverIn);
+        return factory.countCoCoAttestationReportsForServer(serverIn);
     }
 
     /**
@@ -244,9 +244,10 @@ public class AttestationManager {
      * @param pc page control object
      * @return returns a list of reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, Server serverIn, PageControl pc) {
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUserAndServer(User userIn, Server serverIn,
+                                                                                        PageControl pc) {
         ensureSystemAccessible(userIn, serverIn);
-        return factory.listCoCoAttestationReports(serverIn, pc);
+        return factory.listCoCoAttestationReportsForServer(serverIn, pc);
     }
 
     /**
@@ -259,10 +260,11 @@ public class AttestationManager {
      * @param limit maximum number of reports
      * @return returns a list of reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, Server serverIn, Date earliest,
-                                                                        int offset, int limit) {
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUserAndServer(User userIn, Server serverIn,
+                                                                                        Date earliest, int offset,
+                                                                                        int limit) {
         ensureSystemAccessible(userIn, serverIn);
-        return factory.listCoCoAttestationReports(serverIn, earliest, offset, limit);
+        return factory.listCoCoAttestationReportsForServer(serverIn, earliest, offset, limit);
     }
 
     /**
@@ -309,8 +311,8 @@ public class AttestationManager {
      * @param pc page control object
      * @return returns a list of reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, PageControl pc) {
-        return factory.listCoCoAttestationReports(userIn, pc);
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUser(User userIn, PageControl pc) {
+        return factory.listCoCoAttestationReportsForUser(userIn, pc);
     }
 
     /**
@@ -321,8 +323,8 @@ public class AttestationManager {
      * @param limit maximum number of reports
      * @return returns a list of reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User userIn, int offset, int limit) {
-        return factory.listCoCoAttestationReports(userIn, offset, limit);
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUser(User userIn, int offset, int limit) {
+        return factory.listCoCoAttestationReportsForUser(userIn, offset, limit);
     }
 
     private void ensureSystemAccessible(User userIn, Server serverIn) {

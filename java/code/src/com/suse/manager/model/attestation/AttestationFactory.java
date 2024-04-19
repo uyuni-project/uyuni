@@ -202,7 +202,7 @@ public class AttestationFactory extends HibernateFactory {
      * @param user the user
      * @return returns a list or reports
      */
-    public long countCoCoAttestationReports(User user) {
+    public long countCoCoAttestationReportsForUser(User user) {
         return getSession()
             .createQuery("SELECT COUNT(r.id) FROM UserImpl u " +
                 "JOIN u.servers s " +
@@ -217,7 +217,7 @@ public class AttestationFactory extends HibernateFactory {
      * @param serverIn the server
      * @return returns a list or reports
      */
-    public long countCoCoAttestationReports(Server serverIn) {
+    public long countCoCoAttestationReportsForServer(Server serverIn) {
         return getSession()
             .createQuery("SELECT COUNT(*) FROM ServerCoCoAttestationReport r WHERE r.server = :server", Long.class)
             .setParameter("server", serverIn)
@@ -230,8 +230,8 @@ public class AttestationFactory extends HibernateFactory {
      * @param pc page control object
      * @return returns a list or reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(Server serverIn, PageControl pc) {
-        return listCoCoAttestationReports(serverIn, new Date(0), pc.getStart() - 1, pc.getPageSize());
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForServer(Server serverIn, PageControl pc) {
+        return listCoCoAttestationReportsForServer(serverIn, new Date(0), pc.getStart() - 1, pc.getPageSize());
     }
 
     /**
@@ -242,8 +242,8 @@ public class AttestationFactory extends HibernateFactory {
      * @param limitIn maximal number of reports
      * @return returns a list or reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(Server serverIn, Date earliestIn,
-                                                                        int offsetIn, int limitIn) {
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForServer(Server serverIn, Date earliestIn,
+                                                                                 int offsetIn, int limitIn) {
         return getSession()
                 .createQuery("FROM ServerCoCoAttestationReport " +
                         "WHERE server = :server " +
@@ -262,8 +262,8 @@ public class AttestationFactory extends HibernateFactory {
      * @param pc page control object
      * @return returns a list or reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User user, PageControl pc) {
-        return listCoCoAttestationReports(user, pc.getStart() - 1, pc.getPageSize());
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUser(User user, PageControl pc) {
+        return listCoCoAttestationReportsForUser(user, pc.getStart() - 1, pc.getPageSize());
     }
 
     /**
@@ -273,7 +273,7 @@ public class AttestationFactory extends HibernateFactory {
      * @param limitIn maximal number of reports
      * @return returns a list or reports
      */
-    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User user, int offsetIn, int limitIn) {
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUser(User user, int offsetIn, int limitIn) {
         return getSession()
             .createQuery("SELECT r FROM UserImpl u " +
                 "JOIN u.servers s " +
