@@ -9033,7 +9033,7 @@ public class SystemHandler extends BaseHandler {
      */
 
     public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
-        List<Long> sysids = sids.stream().map(Integer::longValue).toList();
+        List<Long> sysids = sids.stream().map(Integer::longValue).collect(toList());
         try {
             return ActionManager.changeProxy(loggedInUser, sysids, proxyId.longValue());
         }
