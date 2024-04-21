@@ -208,24 +208,22 @@ public class AttestationManager {
 
     /**
      * Initialze the Attestation Results for a given report
-     * @param userIn the user
      * @param reportIn the report
      */
-    public void initializeResults(User userIn, ServerCoCoAttestationReport reportIn) {
-        Server server = reportIn.getServer();
-        ensureSystemAccessible(userIn, server);
+    public void initializeResults(ServerCoCoAttestationReport reportIn) {
+        if (Optional.ofNullable(reportIn.getServer()).isEmpty()) {
+            LOG.error("Report not linked to a system");
+            throw new LookupException("Report not linked to a system");
+        }
         factory.initResultsForReport(reportIn);
     }
 
     /**
-     * @param userIn the user
      * @param serverIn the server
      * @param actionIn the action
      * @return returns the attestation report for this server and action if available
      */
-    public Optional<ServerCoCoAttestationReport> lookupReportByServerAndAction(
-            User userIn, Server serverIn, Action actionIn) {
-        ensureSystemAccessible(userIn, serverIn);
+    public Optional<ServerCoCoAttestationReport> lookupReportByServerAndAction(Server serverIn, Action actionIn) {
         return factory.lookupReportByServerAndAction(serverIn, actionIn);
     }
 
