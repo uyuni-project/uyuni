@@ -1749,7 +1749,7 @@ public class SaltUtils {
     private void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
         AttestationManager mgr = new AttestationManager();
 
-        Optional<ServerCoCoAttestationReport> optReport = mgr.lookupReportByServerAndAction(action.getSchedulerUser(),
+        Optional<ServerCoCoAttestationReport> optReport = mgr.lookupReportByServerAndAction(
                 serverAction.getServer(), action);
         if (optReport.isEmpty()) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
@@ -1761,7 +1761,7 @@ public class SaltUtils {
         try {
             CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
             report.setOutData(requestData.asMap());
-            mgr.initializeResults(action.getSchedulerUser(), report);
+            mgr.initializeResults(report);
         }
         catch (JsonSyntaxException e) {
             String msg = "Failed to parse the attestation result:\n";
