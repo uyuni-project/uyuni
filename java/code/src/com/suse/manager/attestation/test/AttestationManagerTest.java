@@ -15,6 +15,7 @@
 package com.suse.manager.attestation.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -104,14 +105,13 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     public void testInitializeAttestationResults() {
         mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
         ServerCoCoAttestationReport report = mgr.initializeReport(user, server);
-        assertThrows(PermissionException.class, () -> mgr.initializeResults(user2, report));
 
         ServerCoCoAttestationReport brokenReport = new ServerCoCoAttestationReport();
-        assertThrows(LookupException.class, () -> mgr.initializeResults(user, brokenReport));
+        assertThrows(LookupException.class, () -> mgr.initializeResults(brokenReport));
 
-        mgr.initializeResults(user, report);
+        mgr.initializeResults(report);
         List<CoCoAttestationResult> results = report.getResults();
-        assertTrue(results.size() > 0);
+        assertFalse(results.isEmpty());
     }
 
     @Test
@@ -269,7 +269,7 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
 
     private void createFakeAttestationReport(User userIn, Server serverIn) {
         ServerCoCoAttestationReport report = mgr.initializeReport(userIn, serverIn);
-        mgr.initializeResults(userIn, report);
+        mgr.initializeResults(report);
         fakeSuccessfullAttestation(report);
     }
     private void fakeSuccessfullAttestation(ServerCoCoAttestationReport reportIn) {
