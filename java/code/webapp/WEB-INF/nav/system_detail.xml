@@ -197,7 +197,7 @@
       <rhn-tab name="nav.system.coco.settings">
         <rhn-tab-url>/rhn/manager/systems/details/coco/settings</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="nav.system.coco.list_attestations">
+      <rhn-tab name="nav.system.coco.list_attestations" acl="system_has_co_co_config()">
         <rhn-tab-url>/rhn/manager/systems/details/coco/list</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
