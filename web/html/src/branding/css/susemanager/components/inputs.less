@@ -65,6 +65,12 @@ select[size] {
   height: auto;
 }
 
+.input-group > .form-control {
+  &:not(:first-child):not(:last-child) {
+    border-radius: 0 !important;
+  }
+}
+
 .input-group-addon {
   border-color: @input-border-color !important;
   background: @gray-lighter;
