@@ -2,12 +2,21 @@
 
 PUBRINGDIR="/var/lib/spacewalk/gpgdir"
 PUBRING="${PUBRINGDIR}/pubring.gpg"
-SUSERING="/usr/lib/susemanager/susemanager-build-keys.gpg"
+PRODUCTRING="/usr/lib/susemanager/susemanager-build-keys.gpg"
+ALTPRODUCTRING="/usr/lib/uyuni/uyuni-build-keys.gpg"
 CUSTRING="/var/spacewalk/gpg/customer-build-keys.gpg"
 
 if [ ! -f ${PUBRING} ]; then
     touch ${PUBRING}
 fi
+if [ ! -f ${PRODUCTRING} -a ! -f ${ALTPRODUCTRING} ]; then
+    echo "cannot find product ring"
+    exit -1
+fi
+if [ ! -f ${PRODUCTRING} ]; then
+    PRODUCTRING=${ALTPRODUCTRING}
+fi
+
 echo -n "importing SUSE Manager build key to rpm keyring... "
 TF=`mktemp /tmp/gpg.XXXXXX`
 if [ -z "$TF" ]; then
@@ -27,7 +36,7 @@ gpg < /dev/null > /dev/null 2>&1 || true
 gpg < /dev/null > /dev/null 2>&1 || true
 
 gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
-         --keyring ${SUSERING}    --export -a > $TF
+         --keyring ${PRODUCTRING}    --export -a > $TF
 a="$?"
 gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
          --keyring ${PUBRING}   --import < $TF
@@ -36,7 +45,7 @@ rm -f "$TF"
 if [ "$a" = 0 -a "$b" = 0 ]; then
     echo "done."
 else
-    echo "importing the key from the file ${SUSERING}"
+    echo "importing the key from the file ${PRODUCTRING}"
     echo "returned an error. This should not happen. It may not be possible"
     echo "to properly verify the authenticity of rpm packages from SUSE sources."
     exit -1
@@ -50,7 +59,7 @@ if [ -z "$TF" ]; then
   exit 20
 fi
 gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
-    --keyring ${SUSERING} --list-keys --with-fingerprint \
+    --keyring ${PRODUCTRING} --list-keys --with-fingerprint \
     --with-colons | awk -F: '/fpr/ {printf("%s:6:\n", $10);}' > $TF
 c="$?"
 gpg -q --batch --no-default-keyring --no-permission-warning \
@@ -60,7 +69,7 @@ rm -f "$TF"
 if [ "$c" = 0 -a "$d" = 0 ]; then
     echo "done."
 else
-    echo "trusting the key from the file ${SUSERING}"
+    echo "trusting the key from the file ${PRODUCTRING}"
     echo "returned an error. This should not happen. It may not be possible"
     echo "to properly sync repositories using spacewalk-repo-sync."
     exit -1
