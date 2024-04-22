@@ -86,8 +86,7 @@
         <javac destdir="${build.dir}/java-branding"
                includeantruntime="no"
                nowarn="true"
-               srcdir="${branding.src.dir}"
-               target="11"/>
+               srcdir="${branding.src.dir}"/>
 
         <copy toDir="${build.dir}/java-branding">
             <fileset dir="${branding.src.dir}" excludes="**/*.java"/>
@@ -114,7 +113,6 @@
                memoryMaximumSize="512m"
                includeAntRuntime="false"
                classpathref="libjars"
-               target="11"
         >
             <src>
                 <path location="code/src"/>
