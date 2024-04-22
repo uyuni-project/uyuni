@@ -25,7 +25,7 @@ jobs:
 
       - name: Generate .yard/config
         run: |
-          $HOME/.yard
+          mkdir $HOME/.yard
           echo '--- !ruby/hash-with-ivars:SymbolHash
           elements:
             :load_plugins: true
