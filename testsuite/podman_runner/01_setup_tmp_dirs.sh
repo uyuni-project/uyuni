@@ -1,5 +1,5 @@
 #!/bin/bash
 set -ex
-if [ ! -d /tmp/test-all-in-one ];then
-    mkdir /tmp/test-all-in-one
+if [ ! -d /tmp/testing ];then
+    mkdir /tmp/testing
 fi
