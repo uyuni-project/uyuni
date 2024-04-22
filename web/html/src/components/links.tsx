@@ -50,4 +50,10 @@ const SystemGroupLink = (props: LinkProps) => (
   </a>
 );
 
-export { ChannelAnchorLink, ChannelLink, ActionLink, SystemLink, ActionChainLink, SystemGroupLink };
+const PackageLink = (props: LinkProps) => (
+  <a href={`/rhn/software/packages/Details.do?pid=${props.id}`} className={props.className} {...targetProps(props)}>
+    {props.children}
+  </a>
+);
+
+export { ChannelAnchorLink, ChannelLink, ActionLink, SystemLink, ActionChainLink, SystemGroupLink, PackageLink };

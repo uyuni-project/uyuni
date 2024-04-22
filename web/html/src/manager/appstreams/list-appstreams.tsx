@@ -62,7 +62,7 @@ export const AppStreamsList = ({
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(appStreams).map((moduleName, channelIdx) => (
+                {Object.keys(appStreams).map((moduleName) => (
                   <ChannelAppStreams
                     showPackages={(stream) => setModuleToShowPackages({ stream: stream, channelId: channel.id })}
                     key={moduleName}
@@ -81,7 +81,7 @@ export const AppStreamsList = ({
       <Dialog
         isOpen={moduleToShowPackages !== null}
         onClose={() => setModuleToShowPackages(null)}
-        title={t("Packages")}
+        title={t("Packages in {stream}", { stream: moduleToShowPackages?.stream })}
         className="modal-lg"
         id="modulePackagesPopUp"
         content={
