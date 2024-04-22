@@ -4,36 +4,66 @@
 require 'net/http'
 
 # This function tests whether a file exists on a node
+# Checks if a file exists on the given node.
+#
+# @param node [Node] The node on which to check the file existence.
+# @param file [String] The path of the file to check.
+# @return [Boolean] Returns true if the file exists, false otherwise.
 def file_exists?(node, file)
   node.file_exists(file)
 end
 
-# This function deletes a file from a node
+# Deletes a file on the specified node.
+#
+# @param [Node] node The node on which the file should be deleted.
+# @param [String] file The path of the file to be deleted.
+# @return [void]
 def file_delete(node, file)
   node.file_delete(file)
 end
 
-# This function tests whether a folder exists on a node
+# Checks if a folder exists on the given node.
+#
+# @param node [Node] The node to check for the folder.
+# @param file [String] The path of the folder to check.
+# @return [Boolean] Returns true if the folder exists, false otherwise.
 def folder_exists?(node, file)
   node.folder_exists(file)
 end
 
-# This function deletes a file from a node
+# Deletes a folder on the specified node.
+#
+# @param node [Node] The node on which the folder should be deleted.
+# @param folder [String] The name of the folder to be deleted.
 def folder_delete(node, folder)
   node.folder_delete(folder)
 end
 
 # This function extracts a file from a node
+# Extracts a remote file to a local file on the specified node.
+#
+# @param node [Node] The node on which the file extraction will be performed.
+# @param remote_file [String] The path of the remote file to be extracted.
+# @param local_file [String] The path of the local file to which the remote file will be extracted.
 def file_extract(node, remote_file, local_file)
   node.extract(remote_file, local_file, 'root', false)
 end
 
-# This function injects a file into a node
+# Injects a local file into a remote node.
+#
+# @param [Node] node The remote node to inject the file into.
+# @param [String] local_file The path to the local file to be injected.
+# @param [String] remote_file The path to the remote file where the local file will be injected.
+# @return [void]
 def file_inject(node, local_file, remote_file)
   node.inject(local_file, remote_file, 'root', false)
 end
 
-# Generate temporary file on the controller
+# Generates a temporary file with the given name and content.
+#
+# @param name [String] The name of the temporary file.
+# @param content [String] The content to be written to the temporary file.
+# @return [String] The path of the generated temporary file.
 def generate_temp_file(name, content)
   Tempfile.open(name) do |file|
     file.write(content)
@@ -42,6 +72,10 @@ def generate_temp_file(name, content)
 end
 
 # Create salt pillar file in the default pillar_roots location
+#
+# @param source [String] The path of the source file.
+# @param file [String] The name of the destination file.
+# @return [Integer] The return code indicating the success or failure of the file injection.
 def inject_salt_pillar_file(source, file)
   dest = "/srv/pillar/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
@@ -53,6 +87,12 @@ def inject_salt_pillar_file(source, file)
 end
 
 # Reads the value of a variable from a given file on a given host
+#
+# @param host [String] The hostname or IP address of the target host.
+# @param file_path [String] The path to the configuration file on the target host.
+# @param variable_name [String] The name of the variable to retrieve.
+# @return [String] The value of the variable.
+# @raise [ScriptError] If reading the variable from the file fails.
 def get_variable_from_conf_file(host, file_path, variable_name)
   node = get_target(host)
   variable_value, return_code = node.run("sed -n 's/^#{variable_name} = \\(.*\\)/\\1/p' < #{file_path}")
@@ -63,7 +103,11 @@ end
 
 # Attempts to retrieve the SHA256 checksum for a file inside a given directory or download it
 # from the same domain the file has been downloaded from.
-# Returns the path to the checksum file.
+#
+# @param dir [String] The directory where the file is located.
+# @param original_file_name [String] The original name of the file.
+# @param file_url [String] The URL of the file.
+# @return [String] The path of the SHA256 checksum file.
 def get_checksum_path(dir, original_file_name, file_url)
   checksum_file_names = %W[CHECKSUM SHA256SUMS sha256sum.txt #{original_file_name}.CHECKSUM #{original_file_name}.sha256]
 
@@ -106,6 +150,10 @@ end
 
 # Computes the SHA256 checksum for the file at the given path and verifies it against a checksum file.
 # The original file name is used to retrieve the correct checksum entry
+#
+# @param original_file_name [String] The name of the original file.
+# @param file_path [String] The path to the file to validate.
+# @param checksum_path [String] The path to the checksum file.
 def validate_checksum_with_file(original_file_name, file_path, checksum_path)
   # search the checksum file for what should be the only non-comment line containing the original file name
   cmd = "grep -v '^#' #{checksum_path} | grep '#{original_file_name}'"
@@ -123,6 +171,10 @@ end
 
 # Computes the SHA256 checksum of the file at the given path and returns a boolean representing whether it
 # matches the expected checksum or not
+#
+# @param file_path [String] The path to the file.
+# @param expected_checksum [String] The expected checksum value.
+# @return [Boolean] Returns true if the file's checksum matches the expected checksum, false otherwise.
 def validate_checksum(file_path, expected_checksum)
   cmd = "sha256sum -b #{file_path} | awk '{print $1}'"
   file_checksum, _code = $is_containerized_server ? get_target('server').run_local(cmd) : get_target('server').run(cmd)

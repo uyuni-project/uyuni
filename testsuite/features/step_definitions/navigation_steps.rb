@@ -269,11 +269,13 @@ end
 #
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
-  accept_alert do
-    step %(I click on "#{text}")
+  begin
+    accept_alert do
+      step %(I click on "#{text}")
+    end
+  rescue Capybara::ModalNotFound
+    warn 'Modal not found'
   end
-rescue Capybara::ModalNotFound
-  warn 'Modal not found'
 end
 
 #
@@ -1029,10 +1031,12 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    break if has_no_xpath?(path, wait: 1)
-  rescue Selenium::WebDriver::Error::StaleElementReferenceError
-    # We need to consider the case that after obtaining the element it is detached from the page document
-    break
+    begin
+      break if has_no_xpath?(path, wait: 1)
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      # We need to consider the case that after obtaining the element it is detached from the page document
+      break
+    end
   end
 end
 
@@ -1101,11 +1105,13 @@ When(/^I close the modal dialog$/) do
 end
 
 When(/^I refresh the page$/) do
-  accept_prompt do
-    execute_script 'window.location.reload()'
+  begin
+    accept_prompt do
+      execute_script 'window.location.reload()'
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
   end
-rescue Capybara::ModalNotFound
-  # ignored
 end
 
 When(/^I make a list of the existing systems$/) do
