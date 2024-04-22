@@ -16,10 +16,10 @@
 #
 
 Name:           uyuni-java-common
-Version:        5.0.2
+Version:        5.0.3
 Release:        0
 Summary:        Common Java library for Uyuni Java components
-License:        Apache-2.0
+License:        GPL-2.0-only
 Group:          Development/Libraries/Java
 URL:            https://www.uyuni-project.org
 Source0:        %{name}-%{version}.tar.gz
@@ -53,7 +53,9 @@ Summary:        API documentation for %{name}
 
 %files -f .mfiles
 %defattr(-,root,root)
+%license LICENSE
 
 %files javadoc -f .mfiles-javadoc
+%license LICENSE
 
 %changelog

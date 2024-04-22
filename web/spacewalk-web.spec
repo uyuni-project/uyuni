@@ -39,6 +39,7 @@ Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 Source1:        node-modules.tar.gz
+Source2:	spacewalk-web-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  uyuni-base-common

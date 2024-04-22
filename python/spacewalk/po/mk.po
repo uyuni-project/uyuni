@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
-"PO-Revision-Date: 2023-10-20 05:15+0000\n"
+"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"PO-Revision-Date: 2024-04-02 06:43+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -342,11 +342,11 @@ msgstr "Токен од неусогласени организации"
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:989
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "Несовпаѓање на почетната сесија"
 
 #: ../server/rhnServer/server_token.py:1013
 msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
+msgstr "Редење на токени за пререгистрација не е поддржано"
 
 #: ../server/rhnUser.py:326 ../server/rhnUser.py:329
 msgid "Invalid username/password combination"
@@ -356,27 +356,27 @@ msgstr "Невалидна комбинација на корисничко им
 #: ../server/rhnUser.py:526
 #, python-format
 msgid "Username `%s' has not been reserved"
-msgstr ""
+msgstr "Корисничкото име `%s' не е резервирано"
 
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:532
 msgid "E-mail address not specified"
-msgstr ""
+msgstr "Адресата на е-мејл не е укажана"
 
 #: ../server/rhnUser.py:574
 #, python-format
 msgid "username should be at least %d characters"
-msgstr ""
+msgstr "корисничкото име треба да содржи најмалку %d карактери"
 
 #: ../server/rhnUser.py:578
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "корисничкото име треба да биде помало од %d карактери"
 
 #: ../server/rhnUser.py:592
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "корисничко име = `%s', невалиден карактер `%s'"
 
 #: ../server/rhnUser.py:613
 #, python-format
@@ -386,22 +386,22 @@ msgstr ""
 #: ../server/rhnUser.py:701
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "лозинката мора да содржи најмалку %d карактери"
 
 #: ../server/rhnUser.py:705
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "Лозинката мора да биде пократка од %d карактери"
 
 #: ../server/rhnUser.py:721
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "лозинката содржи карактер `%s'"
 
 #: ../server/rhnUser.py:730
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "корисничкото име треба да има најмалку %d карактери"
 
 #: ../server/rhnUser.py:741
 #, python-format

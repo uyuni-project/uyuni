@@ -1,0 +1,7 @@
+set address [lindex $argv 0]
+
+spawn /usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r /usr/share/tftpboot-installation root@$address:/tmp
+expect {
+	"*?assword:*" { send "linux\r"; interact }
+	eof { exit }
+}

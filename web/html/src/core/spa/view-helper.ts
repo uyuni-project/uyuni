@@ -2,7 +2,7 @@
  * A list of updated page pathnames, e.g. `"/rhn/manager/foo/bar"`
  * NB! This must be in sync with java/code/src/com/suse/manager/webui/utils/ViewHelper.java
  */
-const BOOTSTRAP_READY_PAGES: string[] = ["/rhn/YourRhn.do"];
+const BOOTSTRAP_READY_PAGES: string[] = ["/rhn/YourRhn.do", "/rhn/account/UserPreferences.do"];
 
 export const onEndNavigate = () => {
   const pathname = window.location.pathname;

@@ -15,7 +15,7 @@ Wed Nov 01 20:57:11 CET 2023 - marina.latini@suse.com
 
 - version 4.4.5-1
   * Use http to connect to localhost server
-  * Use bundle CA certificate in rhnpush
+  * Use bundle CA certificate in rhnpush (bsc#1222731)
 
 -------------------------------------------------------------------
 Wed Apr 19 12:45:23 CEST 2023 - marina.latini@suse.com

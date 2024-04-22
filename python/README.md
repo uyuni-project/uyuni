@@ -65,7 +65,7 @@ linting/lint.sh -a
 Alternatively, you can use the provided container to run `pylint` and `black` manually:
 
 ```
-podman run --rm -it -v $UYUNI_ROOT:/mgr registry.opensuse.org/home/mczernek/containers/opensuse_factory_containerfile/uyuni-lint:latest bash
+podman run --rm -it -v $UYUNI_ROOT:/mgr registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers_tw/uyuni-master-python:latest bash
 black -t py36 path/to/file.py
 pylint --rcfile=/root/.pylintrc /path/to/file.py
 ```

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-19 15:07+0200\n"
 "PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -688,8 +688,6 @@ msgstr "（已选择 {selectedCount} 项）"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-#: ../html/src/manager/visualization/hierarchy.tsx:307
-#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr "清除"
 
@@ -6485,120 +6483,6 @@ msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr "无法从服务器获取储存池功能。请重试。"
 
-#: ../html/src/manager/visualization/data-tree.ts:137
-msgid "  security advisories"
-msgstr "  安全建议"
-
-#: ../html/src/manager/visualization/data-tree.ts:143
-msgid "  bug fix advisories"
-msgstr "  bug 修复建议"
-
-#: ../html/src/manager/visualization/data-tree.ts:151
-msgid "  product enhancement advisories"
-msgstr "  产品增强建议"
-
-#: ../html/src/manager/visualization/data-tree.ts:190
-msgid "Add/remove system from SSM"
-msgstr "在 SSM 中添加/去除系统"
-
-#: ../html/src/manager/visualization/data-tree.ts:248
-msgid "Add children to SSM"
-msgstr "将子项添加到 SSM"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "There was an error fetching data from the server."
-msgstr "从服务器提取数据时出错。"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:109
-msgid "Show systems with:"
-msgstr "显示具有以下资源的系统："
-
-#: ../html/src/manager/visualization/hierarchy.tsx:138
-msgid "security advisories"
-msgstr "安全建议"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:143
-msgid "bug fix advisories"
-msgstr "bug 修复建议"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:146
-msgid "product enhancement advisories"
-msgstr "产品增强建议"
-
-#. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "Filter by system name"
-msgstr "按系统名称过滤"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:154
-msgid "e.g., client.nue.sles"
-msgstr "例如 client.nue.sles"
-
-#. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "Filter by system base channel"
-msgstr "按系统基础通道过滤"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:160
-msgid "e.g., SLE12"
-msgstr "例如 SLE12"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:170
-msgid "Filter by system installed products"
-msgstr "按系统安装的产品过滤"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:171
-msgid "e.g., SLES"
-msgstr "例如 SLES"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Hide filters"
-msgstr " 过滤器"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
-msgid "Show filters"
-msgstr " 过滤器"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:282
-msgid "Filtering"
-msgstr "过滤"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:288
-msgid "Partitioning"
-msgstr "分区"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:295
-msgid "Partition systems by given check-in time:"
-msgstr "按给定的签入时间将系统分区："
-
-#: ../html/src/manager/visualization/hierarchy.tsx:304
-#: ../html/src/manager/visualization/hierarchy.tsx:319
-msgid "Apply"
-msgstr "应用"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:312
-msgid "Partition systems based on whether there are patches for them:"
-msgstr "根据系统是否有适用的补丁将系统分区："
-
-#: ../html/src/manager/visualization/hierarchy.tsx:328
-msgid "Split into groups"
-msgstr "分割成组"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:335
-msgid "Add a grouping level"
-msgstr "添加分组级别"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:345
-msgid "Select a system group"
-msgstr "选择系统组"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:367
-#, fuzzy
-msgid "Remove this level"
-msgstr "去除文件"
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "会话已失效，请重新装载页面。"
@@ -6615,6 +6499,90 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "  security advisories"
+#~ msgstr "  安全建议"
+
+#~ msgid "  bug fix advisories"
+#~ msgstr "  bug 修复建议"
+
+#~ msgid "  product enhancement advisories"
+#~ msgstr "  产品增强建议"
+
+#~ msgid "Add/remove system from SSM"
+#~ msgstr "在 SSM 中添加/去除系统"
+
+#~ msgid "Add children to SSM"
+#~ msgstr "将子项添加到 SSM"
+
+#~ msgid "There was an error fetching data from the server."
+#~ msgstr "从服务器提取数据时出错。"
+
+#~ msgid "Show systems with:"
+#~ msgstr "显示具有以下资源的系统："
+
+#~ msgid "security advisories"
+#~ msgstr "安全建议"
+
+#~ msgid "bug fix advisories"
+#~ msgstr "bug 修复建议"
+
+#~ msgid "product enhancement advisories"
+#~ msgstr "产品增强建议"
+
+#~ msgid "Filter by system name"
+#~ msgstr "按系统名称过滤"
+
+#~ msgid "e.g., client.nue.sles"
+#~ msgstr "例如 client.nue.sles"
+
+#~ msgid "Filter by system base channel"
+#~ msgstr "按系统基础通道过滤"
+
+#~ msgid "e.g., SLE12"
+#~ msgstr "例如 SLE12"
+
+#~ msgid "Filter by system installed products"
+#~ msgstr "按系统安装的产品过滤"
+
+#~ msgid "e.g., SLES"
+#~ msgstr "例如 SLES"
+
+#, fuzzy
+#~ msgid "Hide filters"
+#~ msgstr " 过滤器"
+
+#, fuzzy
+#~ msgid "Show filters"
+#~ msgstr " 过滤器"
+
+#~ msgid "Filtering"
+#~ msgstr "过滤"
+
+#~ msgid "Partitioning"
+#~ msgstr "分区"
+
+#~ msgid "Partition systems by given check-in time:"
+#~ msgstr "按给定的签入时间将系统分区："
+
+#~ msgid "Apply"
+#~ msgstr "应用"
+
+#~ msgid "Partition systems based on whether there are patches for them:"
+#~ msgstr "根据系统是否有适用的补丁将系统分区："
+
+#~ msgid "Split into groups"
+#~ msgstr "分割成组"
+
+#~ msgid "Add a grouping level"
+#~ msgstr "添加分组级别"
+
+#~ msgid "Select a system group"
+#~ msgstr "选择系统组"
+
+#, fuzzy
+#~ msgid "Remove this level"
+#~ msgstr "去除文件"
 
 #, fuzzy
 #~ msgid "Manage"

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 15 11:33:08 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2
+  * Remove hardcoded ARG PRODUCT_VERSION and let the container push
+    script control it
+
+-------------------------------------------------------------------
 Mon Apr 08 12:22:37 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.1

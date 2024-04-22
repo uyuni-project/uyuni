@@ -87,7 +87,7 @@
                             </c:if>
                         </c:when>
                         <c:otherwise>
-                            <div class="col-lg-offset-6 col-lg-3">
+                            <div class="col-lg-offset-6 offset-lg-6 col-lg-3">
                                 <div class="checkbox">
                                     <label> 
                                         <input
@@ -129,7 +129,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <input type="submit" class="btn btn-success" value="<bean:message key='kickstartoptions.jsp.updatekickstart'/>" />
             </div>
         </div>

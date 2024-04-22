@@ -243,6 +243,13 @@ exists_user() {
     fi
 }
 
+run_in_container() {
+    if [ "$container" == "podman" -o "$container" == "docker" -o -d /var/run/secrets/kubernetes.io ]; then
+        return 0
+    fi
+    return 1
+}
+
 setup_db_postgres() {
     if [ $EXTERNALDB = 0 ]; then
         POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
@@ -295,8 +302,11 @@ setup_db_postgres() {
             echo "local $MANAGER_DB_NAME postgres peer
     local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
     host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
-    host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
-    " > /tmp/pg_hba.conf
+    host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256" > /tmp/pg_hba.conf
+            if run_in_container; then
+                INT_NET=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}')
+                echo "host $MANAGER_DB_NAME $MANAGER_USER $INT_NET scram-sha-256" >> /tmp/pg_hba.conf
+            fi
             cat ${DATADIR}/pg_hba.conf >> /tmp/pg_hba.conf
             mv ${DATADIR}/pg_hba.conf ${DATADIR}/pg_hba.conf.bak
             mv /tmp/pg_hba.conf ${DATADIR}/pg_hba.conf

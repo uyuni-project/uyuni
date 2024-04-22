@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.common.util.download;
 
-
-
-import org.jfree.io.IOUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,8 +58,7 @@ public class DownloadUtils {
 
     private static String toString(InputStream stream) throws IOException {
         StringWriter writer = new StringWriter();
-        IOUtils.getInstance().copyWriter(
-                new BufferedReader(new InputStreamReader(stream)), writer);
+        new BufferedReader(new InputStreamReader(stream)).transferTo(writer);
         return writer.toString();
     }
 }

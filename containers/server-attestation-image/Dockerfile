@@ -18,7 +18,6 @@ ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
-ARG PRODUCT_VERSION="2024.02"
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.server-attestation
@@ -28,7 +27,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} Confidential Computing at
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.0.1
+LABEL org.opencontainers.image.version=5.0.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-attestation:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

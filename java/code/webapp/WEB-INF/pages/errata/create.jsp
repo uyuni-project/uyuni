@@ -116,7 +116,7 @@
             </div>
 
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <h3><bean:message key="errata.create.jsp.bugs"/></h3>
                 </div>
             </div>
@@ -170,12 +170,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <h3><bean:message key="errata.create.jsp.channels"/></h3>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:set var="pageList" value="${requestScope.pageList}" />
                     <rhn:list pageList="${requestScope.pageList}" noDataText="errata.publish.nochannels">
                       <rhn:listdisplay set="${requestScope.set}" hiddenvars="${requestScope.newset}">
@@ -189,7 +189,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <button class="btn btn-primary" type="submit" name="dispatch" value='<bean:message key="errata.create.jsp.createerrata"/>'>
                         <bean:message key="errata.create.jsp.createerrata"/>
                     </button>

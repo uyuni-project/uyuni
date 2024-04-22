@@ -13,7 +13,7 @@ require 'date'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result, return_code = node.run_local('date +%s; hostname -f; date +%s', check_errors: false)
+  result, return_code = node.run('date +%s; hostname -f; date +%s', runs_in_container: false, check_errors: false)
   lines = result.split("\n")
   initial_time = lines[0]
   result = lines[1]
@@ -644,6 +644,7 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
+# TODO: remove this step definition when we deprecate the non-containerized components
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
   raise ScriptError, "This step doesn't support #{host}" unless %w[server proxy].include? host
 
@@ -667,9 +668,9 @@ When(/^I set the default PXE menu entry to the (target profile|local boot) on th
   target = '/srv/tftpboot/pxelinux.cfg/default'
   case entry
   when 'local boot'
-    script = '-e \'s/^TIMEOUT .*/TIMEOUT 1/\' -e \'s/ONTIMEOUT .*/ONTIMEOUT local/\''
+    script = '-e "s/^TIMEOUT .*/TIMEOUT 2/" -e "s/ONTIMEOUT .*/ONTIMEOUT local/"'
   when 'target profile'
-    script = '-e \'s/^TIMEOUT .*/TIMEOUT 1/\' -e \'s/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/\''
+    script = '-e "s/^TIMEOUT .*/TIMEOUT 2/" -e "s/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/"'
   else
     log "Entry #{entry} not supported"
   end
@@ -968,20 +969,56 @@ When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error contro
   node.run(cmd, check_errors: error_control.empty?, successcodes: successcodes)
 end
 
+# TODO: remove this step definition when we deprecate the non-containerized components
 When(/^I install package tftpboot-installation on the server$/) do
   server = get_target('server')
-  if product == 'Uyuni'
-    # On Uyuni, the server runs on openSUSE Leap, but we must use SLE-15-SP4 on the build host and terminal
-    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+
+  # set this variable to true when the server and the build host run the same operating system version
+  # examples:
+  # * the server's container is either SLES 15 SP6 or Leap 15.6, and the build host is SLES 15 SP4:
+  #   same_version_on_server_and_build_host = false
+  # * the server's container is either SLES 15 SP6 or Leap 15.6, and the build host is SLES 15 SP6:
+  #   same_version_on_server_and_build_host = product != 'Uyuni'
+  same_version_on_server_and_build_host = false
+
+  # set this variable to the name of the desired tftpboot package
+  # beware that "-x86_64" is part of the package name, the package itself is noarch!
+  tftpboot_package = 'tftpboot-installation-SLE-15-SP4-x86_64'
+
+  # if same version, fetch the package directly, otherwise search it among the reposynced packages
+  if same_version_on_server_and_build_host
+    server.run("zypper --non-interactive install #{tftpboot_package}", verbose: true)
+  else
+    output, _code = server.run("find /var/spacewalk/packages -name #{tftpboot_package}-*.noarch.rpm")
     packages = output.split("\n")
     pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
     # Reverse sort the package names to get the latest version first
-    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-    server.run("rpm -i #{package}", verbose: true)
-  else
-    # On SUSE Manager, the server, build host and terminal all run on SLE 15 SP4, so let's install it directly
-    server.run('zypper --non-interactive install tftpboot-installation-SLE-15-SP4-x86_64', verbose: true)
+    latest_version = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -q #{tftpboot_package} || rpm -i #{latest_version}", verbose: true)
   end
+end
+
+When(/I copy the tftpboot installation files from the build host to the server$/) do
+  node = get_target('build_host')
+  file = 'copy-tftpboot-files.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  return_code = file_inject(node, source, dest)
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
+  hostname = get_target('server').full_hostname
+  node.run("expect -f #{dest} #{hostname}")
+end
+
+When(/I copy the distribution inside the container on the server$/) do
+  node = get_target('server')
+  node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP4-x86_64 SLE-15-SP4-TFTP', runs_in_container: false)
+end
+
+When(/I remove the autoinstallation files from the server$/) do
+  node = get_target('server')
+  node.run('rm -r /tmp/tftpboot-installation', runs_in_container: false)
+  node.run('rm -r /srv/www/distributions/SLE-15-SP4-TFTP')
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -1441,12 +1478,17 @@ When(/^I generate the configuration "([^"]*)" of containerized proxy on the serv
       get_target('server').inject("/tmp/#{file}", "/tmp/#{file}")
     end
 
-    command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
+    command = 'spacecmd -u admin -p admin ' \
+              "proxy_container_config -- -o #{file_path} -p 8022 " \
               "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
-
-    command = "echo spacewalk > ca_pass && spacecmd --nossl -u admin -p admin proxy_container_config_generate_cert -- -o #{file_path} #{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de --ca-pass ca_pass && rm ca_pass"
+    command = 'echo spacewalk > ca_pass && ' \
+              'spacecmd --nossl -u admin -p admin ' \
+              "proxy_container_config_generate_cert -- -o #{file_path} " \
+              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
+              'rm ca_pass'
   end
   get_target('server').run(command)
 end

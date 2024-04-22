@@ -62,7 +62,6 @@ import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
-import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
@@ -201,9 +200,6 @@ public class Router implements SparkApplication {
 
         // Formulas
         formulaController.initRoutes(jade);
-
-        // Visualization
-        VisualizationController.initRoutes(jade);
 
         get("/manager/download/saltssh/pubkey", saltSSHController::getPubKey);
 

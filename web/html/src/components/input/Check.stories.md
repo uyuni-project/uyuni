@@ -17,7 +17,7 @@ const model = {
     model["booleanValue"] = newModel["booleanValue"];
   }}
 >
-  <Check name="booleanValue" label="Boolean value" divClass="col-md-6 col-md-offset-3" />
+  <Check name="booleanValue" label="Boolean value" divClass="col-md-6 col-md-offset-3 offset-md-3" />
   <SubmitButton className="btn-success" text={t("Submit")} />
 </Form>
 ```
