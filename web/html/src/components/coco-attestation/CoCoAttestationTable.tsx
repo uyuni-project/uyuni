@@ -4,6 +4,8 @@ import { pageSize } from "core/user-preferences";
 
 import { SystemLink } from "components/links";
 
+import { localizedMoment } from "utils/datetime";
+
 import { Button } from "../buttons";
 import { BootstrapPanel } from "../panels/BootstrapPanel";
 import { Column } from "../table/Column";
@@ -39,6 +41,23 @@ class CoCoAttestationTable extends React.Component<Props> {
               emptyText={t(`No attestation report available. Schedule an execution to create one.`)}
               initialSortColumnKey="executionTime"
             >
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                columnKey="attestation"
+                header={t("Attestation")}
+                cell={(row) => (
+                  <Button
+                    className="btn btn-link"
+                    handler={() => this.props.onReportDetails(row)}
+                    text={t("Attestation #{identifier} run on {date} at {time}", {
+                      identifier: row.id,
+                      date: localizedMoment(row.creationTime).toUserDateString(),
+                      time: localizedMoment(row.creationTime).toUserTimeString(),
+                    })}
+                  />
+                )}
+              />
               {this.props.showSystem && (
                 <Column
                   columnClass="text-center"
@@ -46,6 +65,15 @@ class CoCoAttestationTable extends React.Component<Props> {
                   columnKey="system"
                   header={t("System")}
                   cell={(row) => <SystemLink id={row.systemId}>{row.systemName}</SystemLink>}
+                />
+              )}
+              {this.props.showSystem && (
+                <Column
+                  columnClass="text-center"
+                  headerClass="text-center"
+                  columnKey="environmentType"
+                  header={t("Environment Type")}
+                  cell={(row) => row.environmentTypeLabel}
                 />
               )}
               <Column

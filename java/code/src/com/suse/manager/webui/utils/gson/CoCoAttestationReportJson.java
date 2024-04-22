@@ -38,6 +38,12 @@ public class CoCoAttestationReportJson {
 
     private final String systemName;
 
+    private final String environmentType;
+
+    private final String environmentTypeLabel;
+
+    private final String environmentTypeDescription;
+
     private final String status;
 
     private final String statusDescription;
@@ -64,6 +70,9 @@ public class CoCoAttestationReportJson {
         this.id = report.getId();
         this.systemId = report.getServer().getId();
         this.systemName = report.getServer().getName();
+        this.environmentType = report.getEnvironmentType().name();
+        this.environmentTypeLabel = report.getEnvironmentType().getLabel();
+        this.environmentTypeDescription = report.getEnvironmentType().getDescription();
         this.status = report.getStatus().name();
         this.statusDescription = report.getStatus().getDescription();
         this.creationTime = report.getCreated();
@@ -89,6 +98,18 @@ public class CoCoAttestationReportJson {
 
     public String getSystemName() {
         return systemName;
+    }
+
+    public String getEnvironmentType() {
+        return environmentType;
+    }
+
+    public String getEnvironmentTypeLabel() {
+        return environmentTypeLabel;
+    }
+
+    public String getEnvironmentTypeDescription() {
+        return environmentTypeDescription;
     }
 
     public String getStatus() {
@@ -149,6 +170,7 @@ public class CoCoAttestationReportJson {
         return new StringJoiner(", ", CoCoAttestationReportJson.class.getSimpleName() + "[", "]")
             .add("id=" + getId())
             .add("systemName='" + getSystemName() + "'")
+            .add("systemName='" + getEnvironmentType() + "'")
             .add("status=" + getStatus())
             .add("creationTime=" + getCreationTime())
             .add("modificationTime=" + getModificationTime())

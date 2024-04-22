@@ -49,6 +49,10 @@ class CoCoReport extends React.Component<Props, State> {
                 </td>
               </tr>
               <tr>
+                <td>{t("Environment Type")}:</td>
+                <td>{report.environmentTypeDescription}</td>
+              </tr>
+              <tr>
                 <td>{t("Created on")}:</td>
                 <td>{renderTime(report.creationTime)}</td>
               </tr>
