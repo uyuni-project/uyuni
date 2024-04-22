@@ -17,6 +17,9 @@ export type AttestationReport = {
   id: number;
   systemId: number;
   systemName: string;
+  environmentType: string;
+  environmentTypeLabel: string;
+  environmentTypeDescription: string;
   status: string;
   statusDescription: string;
   creationTime: Date;
