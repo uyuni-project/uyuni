@@ -33,8 +33,11 @@ import com.suse.manager.api.SerializedApiResponse;
  *          #prop_desc("string", "advisory_type", "type label such as 'Security', 'Bug Fix'")
  *          #prop_desc("string", "advisory_status", "status label such as 'final', 'testing', 'retracted'")
  *          #prop_desc("string", "advisory_name", "name such as 'RHSA', etc.")
- *          #prop_desc("boolean", "reboot", "system reboot after changes")
- *  *       #prop_desc("boolean", "reload", "reload after changes")
+ *          #prop_desc("boolean", "reboot_suggested", "A boolean flag signaling whether a system reboot is
+ *          advisable following the application of the errata. Typical example is upon kernel update.")
+ *          #prop_desc("boolean", "restart_suggested", "A boolean flag signaling a weather reboot of
+ *          the package manager is advisable following the application of the errata. This is commonly
+ *          used to address update stack issues before proceeding with other updates.")
  *      #struct_end()
  */
 public class ErrataOverviewSerializer extends ApiResponseSerializer<ErrataOverview> {
@@ -55,8 +58,8 @@ public class ErrataOverviewSerializer extends ApiResponseSerializer<ErrataOvervi
                 .add("advisory_type", src.getAdvisoryType())
                 .add("advisory_status", src.getAdvisoryStatus().getMetadataValue())
                 .add("advisory_name", src.getAdvisoryName())
-                .add("reboot", src.isRebootSuggested())
-                .add("reload", src.isRestartSuggested())
+                .add("reboot_suggested", src.isRebootSuggested())
+                .add("restart_suggested", src.isRestartSuggested())
                 .build();
     }
 }
