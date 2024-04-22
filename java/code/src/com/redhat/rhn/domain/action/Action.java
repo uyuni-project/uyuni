@@ -378,6 +378,15 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     }
 
     /**
+     * Hook when an action failed.
+     * @param serverActionIn the {@link ServerAction} which failed
+     */
+    public void onFailAction(ServerAction serverActionIn) {
+        // Something to do, when an action failed.
+        // Override this method for specific action.
+    }
+
+    /**
      * @param server server to which action is linked
      * @param currentUser user
      * @return string which is used on system history details
