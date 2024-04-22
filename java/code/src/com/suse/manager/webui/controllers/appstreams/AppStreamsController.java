@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.controllers.appstreams;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -38,9 +38,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.controllers.appstreams.response.ChannelAppStreamsResponse;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ControllerApiUtils;
-import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -105,11 +105,13 @@ public class AppStreamsController {
                 params.getEarliest().map(AppStreamsController::getScheduleDate).orElse(new Date())
             );
 
-            return json(response, success(params.getActionChainLabel()
-                    .map(l -> ActionChainFactory.getActionChain(user, l).getId()).orElse(actionId)));
+            return result(response, success(params.getActionChainLabel()
+                    .map(l -> ActionChainFactory.getActionChain(user, l).getId()).orElse(actionId)),
+                    new TypeToken<>() { });
         }
         catch (TaskomaticApiException e) {
-            return json(response, error(LocalizationService.getInstance().getMessage("taskscheduler.down")));
+            return result(response, error(LocalizationService.getInstance().getMessage("taskscheduler.down")),
+                    new TypeToken<>() { });
         }
     }
 
@@ -176,7 +178,7 @@ public class AppStreamsController {
                 .sorted()
                 .collect(Collectors.toList());
             artifacts.put("packages", sortedPackages);
-            return json(res, ResultJson.success(artifacts));
+            return result(res, success(artifacts), new TypeToken<>() { });
         }
         catch (NumberFormatException e) {
             LOG.error(e.getMessage(), e);
