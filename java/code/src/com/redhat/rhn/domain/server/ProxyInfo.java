@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -29,6 +30,7 @@ public class ProxyInfo {
     private PackageEvr version;
     private Long id;
     private Integer sshPort;
+    private byte[] sshPublicKey;
 
     /**
      * @return the id
@@ -87,6 +89,20 @@ public class ProxyInfo {
         sshPort = sshPortIn;
     }
 
+    /**
+     * @return value of sshPublicKey
+     */
+    public byte[] getSshPublicKey() {
+        return sshPublicKey;
+    }
+
+    /**
+     * @param sshPublicKeyIn value of sshPublicKey
+     */
+    public void setSshPublicKey(byte[] sshPublicKeyIn) {
+        sshPublicKey = sshPublicKeyIn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -103,6 +119,7 @@ public class ProxyInfo {
                 .append(server, proxyInfo.server)
                 .append(version, proxyInfo.version)
                 .append(sshPort, proxyInfo.sshPort)
+                .append(sshPublicKey, proxyInfo.sshPublicKey)
                 .isEquals();
     }
 
@@ -112,6 +129,7 @@ public class ProxyInfo {
                 .append(server)
                 .append(version)
                 .append(sshPort)
+                .append(sshPublicKey)
                 .toHashCode();
     }
 }

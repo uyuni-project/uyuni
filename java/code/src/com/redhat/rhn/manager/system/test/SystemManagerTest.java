@@ -1921,7 +1921,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         String proxyName = "pxy.mgr.lab";
-        String serverName = "srv.mgr.lab";
+        String serverName = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
         long maxCache = 4096;
         String email = "admin@mgr.lab";
         String rootCA = "Dummy Root CA";
@@ -1987,6 +1987,91 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         testCreateProxyContainerConfig();
     }
 
+
+    /**
+     * Tests creating multiple chained proxy container configuration file.
+     * Network topology: PXY0 -> PXY1 -> PXY2A, PXY2B
+     * PXY0 is an anchor proxy;
+     * PXY1 parent/server is PXY0;
+     * Both PXY2A and PXY2B parent/server is PXY1;
+     *
+     * @throws InstantiationException
+     * @throws IOException
+     */
+    @Test
+    public void testCreateChainedProxyContainerConfig() throws InstantiationException, IOException {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        final long maxCache = 4096;
+        final String email = "admin@mgr.lab";
+        final String rootCA = "Dummy Root CA";
+        final List<String> otherCAs = List.of("CA 1", "CA 2");
+        final String cert = "Dummy cert";
+        final String key = "Dummy key";
+        final String apacheCert = "Dummy cert for apache";
+
+        final String pxy0Name = "pxy0.mgr.lab";
+        final String pxy1Name = "pxy1.mgr.lab";
+        final String pxy2AName = "pxy2a.mgr.lab";
+        final String pxy2BName = "pxy2b.mgr.lab";
+        final String pxy0PubKey = "SshPublicKey " + pxy0Name;
+        final String pxy1SshPushKey = "sshPushKey" + pxy1Name;
+        final String pxy1SshPushPubKey = "sshPushPubKey" + pxy1Name;
+        final String pxy2ASshPushKey = "sshPushKey" + pxy2AName;
+        final String pxy2ASshPushPubKey = "sshPushPubKey" + pxy2AName;
+        final String pxy2BSshPushKey = "sshPushKey" + pxy2BName;
+        final String pxy2BSshPushPubKey = "sshPushPubKey" + pxy2BName;
+
+        SSLCertManager certManager = mock(SSLCertManager.class);
+
+        createTestProxy(pxy0Name);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)), with(aNull(String.class)));
+            will(onConsecutiveCalls(
+                    returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(pxy1SshPushKey, pxy1SshPushPubKey))),
+                    returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(pxy2ASshPushKey, pxy2ASshPushPubKey))),
+                    returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(pxy2BSshPushKey, pxy2BSshPushPubKey)))
+            ));
+            allowing(saltServiceMock)
+                    .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
+            will(returnValue(apacheCert));
+            allowing(certManager).getNamesFromSslCert(cert);
+            will(returnValue(Set.of()));
+        }});
+
+        //PXY1
+        byte[] pxy1Config = systemManager.createProxyContainerConfig(user, pxy1Name, 8022, pxy0Name, maxCache, email,
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+        Map<String, Object> sshYaml = getSshYaml(pxy1Config);
+        assertEquals(pxy1SshPushKey, sshYaml.get("server_ssh_push"));
+        assertEquals(pxy1SshPushPubKey, sshYaml.get("server_ssh_push_pub"));
+        assertEquals(pxy0PubKey, sshYaml.get("server_ssh_key_pub"));
+
+        //PXY2A
+        byte[] pxy2AConfig = systemManager.createProxyContainerConfig(user, pxy2AName, 8022, pxy1Name, maxCache, email,
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+        Map<String, Object> sshYamlA = getSshYaml(pxy2AConfig);
+        assertEquals(pxy2ASshPushKey, sshYamlA.get("server_ssh_push"));
+        assertEquals(pxy2ASshPushPubKey, sshYamlA.get("server_ssh_push_pub"));
+        assertEquals(pxy1SshPushPubKey, sshYamlA.get("server_ssh_key_pub"));
+
+        //PXY2B
+        byte[] pxy2BConfig = systemManager.createProxyContainerConfig(user, pxy2BName, 8022, pxy1Name, maxCache, email,
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+        Map<String, Object> sshYamlB = getSshYaml(pxy2BConfig);
+        assertEquals(pxy2BSshPushKey, sshYamlB.get("server_ssh_push"));
+        assertEquals(pxy2BSshPushPubKey, sshYamlB.get("server_ssh_push_pub"));
+        assertEquals(pxy1SshPushPubKey, sshYamlB.get("server_ssh_key_pub"));
+
+        assert true;
+    }
+
+    private Map<String, Object> getSshYaml(byte[] configFile) throws IOException {
+        Map<String, String> content = readTarData(configFile);
+        Map<String, Map<String, Object>> sshRootYaml = new Yaml().load(content.get("ssh.yaml"));
+        return sshRootYaml.get("ssh");
+    }
+
     private void createTestProxy(String fqdn) {
         Server proxy = ServerFactoryTest.createUnentitledTestServer(
                 user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
@@ -1995,6 +2080,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         proxy.getFqdns().add(new ServerFQDN(proxy, fqdn));
         proxy.getProxyInfo().setVersion(null);
         proxy.getProxyInfo().setSshPort(8022);
+        proxy.getProxyInfo().setSshPublicKey(("SshPublicKey " + fqdn).getBytes());
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
         ServerFactory.save(proxy);
