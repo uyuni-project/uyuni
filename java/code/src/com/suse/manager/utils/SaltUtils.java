@@ -1718,14 +1718,23 @@ public class SaltUtils {
     private void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
         AttestationManager mgr = new AttestationManager();
 
-        Optional<ServerCoCoAttestationReport> optReport = mgr.lookupReportByServerAndAction(
-                serverAction.getServer(), action);
+        Optional<ServerCoCoAttestationReport> optReport =
+                mgr.lookupReportByServerAndAction(serverAction.getServer(), action);
         if (optReport.isEmpty()) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg("Failed to find a report entry");
             return;
         }
         ServerCoCoAttestationReport report = optReport.get();
+
+        if (jsonResult == null) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            if (StringUtils.isBlank(serverAction.getResultMsg())) {
+                serverAction.setResultMsg("Error while request attestation data from target system:\n" +
+                       "Got no result from system");
+            }
+            return;
+        }
 
         try {
             CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
@@ -1734,7 +1743,7 @@ public class SaltUtils {
         }
         catch (JsonSyntaxException e) {
             String msg = "Failed to parse the attestation result:\n";
-            msg += Optional.ofNullable(jsonResult)
+            msg += Optional.of(jsonResult)
                     .map(JsonElement::toString)
                     .orElse("Got no result");
             LOG.error(msg);
@@ -1744,12 +1753,7 @@ public class SaltUtils {
         }
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             String msg = "Error while request attestation data from target system:\n";
-            if (jsonResult == null) {
-                msg += "Got no result from system";
-            }
-            else {
-                msg += getJsonResultWithPrettyPrint(jsonResult);
-            }
+            msg += getJsonResultWithPrettyPrint(jsonResult);
             serverAction.setResultMsg(msg);
             if (report.getResults().isEmpty()) {
                 // results are not initialized yet. So we need to set the report status
