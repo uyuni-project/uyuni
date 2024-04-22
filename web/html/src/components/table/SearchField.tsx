@@ -54,7 +54,6 @@ export function SearchField(props: SearchFieldProps) {
           defaultValue={props.field}
           options={props.options}
           onChange={(name: string | undefined, value: string) => {
-            console.log("onChange", name, value);
             props.onSearchField?.(value);
           }}
         />
