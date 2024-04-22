@@ -1,6 +1,18 @@
 import React from "react";
 
 import { FromNow } from "components/datetime";
+import { CronTimes, RecurringType } from "components/picker/recurring-event-picker";
+
+export type Settings = {
+  enabled: boolean;
+  environmentType: string;
+  attestOnBoot: boolean;
+  attestOnSchedule: boolean;
+  scheduleName?: string;
+  scheduleType?: RecurringType;
+  scheduleCron?: string;
+  scheduleCronTimes?: CronTimes;
+};
 
 export type AttestationResult = {
   id: number;
