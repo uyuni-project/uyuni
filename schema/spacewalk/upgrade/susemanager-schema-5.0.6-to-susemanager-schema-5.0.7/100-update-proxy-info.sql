@@ -1,0 +1,1 @@
+ALTER TABLE rhnProxyInfo ADD COLUMN IF NOT EXISTS ssh_public_key BYTEA;
