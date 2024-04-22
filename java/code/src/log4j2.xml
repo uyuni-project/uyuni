@@ -30,11 +30,9 @@
             <DefaultRolloverStrategy max="30" />
         </RollingFile>
         <!-- Uncomment for hibernate logging -->
-        <!--
         <File name="hibernateAppender" fileName="/var/log/rhn/rhn_web_hibernate.log">
             <PatternLayout pattern="[%d] %-5p - %m%n" />
         </File>
-        -->
         <FailOver name="xmlRpcFailOverAppender" primary="apiLogFileAppender">
             <FailOvers>
                 <AppenderRef ref="rootAppender" />
@@ -90,18 +88,14 @@
         </Logger>
 
         <!-- Hibernate logging -->
-        <!--
         <Logger name="org.hibernate" level="debug" additivity="false">
             <AppenderRef ref="hibernateAppender" />
         </Logger>
 
         <Logger name="org.hibernate.type" level="trace" />
-        -->
 
         <!-- log SQL statements -->
-        <!--
         <Logger name="org.hibernate.SQL" level="debug" />
-        -->
 
         <!--
         <Logger name="net.rkbloom.logdriver" level="debug" additivity="false">

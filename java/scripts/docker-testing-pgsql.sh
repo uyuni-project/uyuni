@@ -24,8 +24,14 @@ cp /root/rhn.conf /etc/rhn/rhn.conf
 cd /manager/java
 ant -f manager-build.xml ivy
 
+echo "test test test 2"
+echo "SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'rhnproxyinfo';" | spacewalk-sql --select-mode -
+
 cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
 ant -f manager-build.xml refresh-branding-jar $TARGET
+
+echo "test test test 3"
+echo "SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'rhnproxyinfo';" | spacewalk-sql --select-mode -
 
 # Postgres shutdown (avoid stale memory by shmget())
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
