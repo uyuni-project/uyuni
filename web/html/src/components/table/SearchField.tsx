@@ -53,12 +53,16 @@ export function SearchField(props: SearchFieldProps) {
           placeholder={t("Select a filter")}
           defaultValue={props.field}
           options={props.options}
-          onChange={(name: string | undefined, value: string) => props.onSearchField?.(value)}
+          onChange={(name: string | undefined, value: string) => {
+            console.log("onChange", name, value);
+            props.onSearchField?.(value);
+          }}
         />
       )}
       <div className="form-group">
         <input
           className="form-control table-input-search"
+          data-testid="default-table-search"
           value={props.criteria || ""}
           placeholder={props.placeholder}
           type="text"
