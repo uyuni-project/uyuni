@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 
+import { PackageLink } from "components/links";
+
 import Network from "../../utils/network";
 
+interface Package {
+  id: number;
+  nevra: string;
+}
+
 export const AppStreamPackages = ({ stream, channelId }) => {
-  const [packages, setPackages] = useState([]);
+  const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -22,17 +29,21 @@ export const AppStreamPackages = ({ stream, channelId }) => {
   }, [channelId, stream]);
 
   if (loading) {
-    return <p>{t("Loading...</p>")}</p>;
+    return <p>{t("Loading...")}</p>;
   }
 
   return hasError ? (
-    <p>{t("Sorry, error loading packages")}</p>
+    <p>{t("An error occurred while displaying the list of packages.")}</p>
   ) : (
     <>
-      <h6>{t("AppStream {stream} has {packages.length} packages:")}</h6>
+      <h6>{t("AppStream {stream} has {count} packages:", { stream: stream, count: packages.length })}</h6>
       <div style={{ maxHeight: "calc(100vh - 200px)" }}>
-        {packages.map((packageName, index) => (
-          <li key={`pkg-${pkg.id}`}>{packageName}</li>
+        {packages.map((pkg, index) => (
+          <li key={`pkg-${pkg.id}`}>
+            <PackageLink id={pkg.id} newWindow={true}>
+              {pkg.nevra}
+            </PackageLink>
+          </li>
         ))}
       </div>
     </>

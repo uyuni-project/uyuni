@@ -28,7 +28,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
@@ -171,11 +170,10 @@ public class AppStreamsController {
                 throw Spark.halt(HttpStatus.SC_NOT_FOUND);
             }
 
-            Map<String, List<String>> artifacts = new HashMap<>();
-            List<String> sortedPackages = appStream.getArtifacts()
+            Map<String, List<PackageJson>> artifacts = new HashMap<>();
+            List<PackageJson> sortedPackages = appStream.getArtifacts()
                 .stream()
-                .map(Package::getNevraWithEpoch)
-                .sorted()
+                .map(PackageJson::new)
                 .collect(Collectors.toList());
             artifacts.put("packages", sortedPackages);
             return result(res, success(artifacts), new TypeToken<>() { });
