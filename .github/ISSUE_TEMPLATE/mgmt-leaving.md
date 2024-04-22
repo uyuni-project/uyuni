@@ -18,6 +18,7 @@ General template for leavers of the SUSE Manager team.
 - [ ] **Exit interview:** Conduct an [exit interview](https://en.wikipedia.org/wiki/Exit_interview) and store the notes at [Confluence](https://confluence.suse.com/display/SUSEMANAGER/Exit+Interviews)
 - [ ] **Hardware:** Does this person have access to something special which also needs to get transferred to another person? (ssh access to a server, permissions to special pages on wikis, confluence, resources in the cloud, etc.)
 - [ ] **Bugzilla:** Remind the person to remove all "watches" in Bugzilla before leaving
+- [ ] **Bugzilla:** Review the [responsibles for the bugzilla team accounts](https://confluence.suse.com/display/IAM/5.+UCS+Role+Model+and+Entitlements+Management#id-5.UCSRoleModelandEntitlementsManagement-Bot/Serviceentitlements) and nominate a new one if needed
 - [ ] **Packages:** Run `OUSER=<LEAVER>; osc search -i juliogonzalezgil; osc -A https://api.suse.de maintainer -U ${OUSER}` (replace `<LEAVER>` with the leaver's username), and if the person is a bugowner of any package, look for a new bugowner (ideally a group, not a single person, home projects can be ignored)
 - [ ] **Code:** Consider any code stored in personal accounts and create forks accordingly (e.g. in GitLab)
 - [ ] **Credentials:** Consider any credentials known only to that person (e.g. for mailing lists) and share
