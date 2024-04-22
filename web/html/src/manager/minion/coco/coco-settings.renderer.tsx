@@ -2,7 +2,7 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import CoCoSettingsForm from "components/CoCoSettingsForm";
+import CoCoSettings from "./coco-settings";
 
 // See java/code/src/com/suse/manager/webui/templates/minion/coco-settings.jade
 declare global {
@@ -15,7 +15,7 @@ declare global {
 
 export const renderer = (id) =>
   SpaRenderer.renderNavigationReact(
-    <CoCoSettingsForm
+    <CoCoSettings
       serverId={window.serverId}
       availableEnvironmentTypes={window.availableEnvironmentTypes ?? []}
       // TODO: enable when the backend implementation is ready
