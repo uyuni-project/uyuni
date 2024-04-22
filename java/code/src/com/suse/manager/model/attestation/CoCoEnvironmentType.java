@@ -26,17 +26,23 @@ public enum CoCoEnvironmentType {
     // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final long value;
+    private final String labelKey;
     private final String descriptionKey;
     private final List<CoCoResultType> supportedResultTypes;
 
     CoCoEnvironmentType(long valueIn, List<CoCoResultType> supportedResultTypesIn) {
         value = valueIn;
         supportedResultTypes = supportedResultTypesIn;
+        labelKey = "coco.environment." + name().toLowerCase() + ".label";
         descriptionKey = "coco.environment." + name().toLowerCase() + ".description";
     }
 
     public long getValue() {
         return value;
+    }
+
+    public String getLabel() {
+        return LocalizationService.getInstance().getMessage(labelKey);
     }
 
     public String getDescription() {
