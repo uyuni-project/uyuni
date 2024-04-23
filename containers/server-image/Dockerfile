@@ -13,6 +13,8 @@ COPY timezone_alignment.sh /usr/bin
 
 COPY healthcheck.sh /usr/bin
 
+COPY set_pam.sh /usr/bin
+
 # Copy timezone link update service
 COPY timezone_alignment.service /usr/lib/systemd/system/
 
@@ -60,9 +62,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     ipmitool \
     sssd \
     sssd-dbus \
-    sssd-ldap \
-    nss-pam-ldapd \
-    authselect
+    sssd-ldap
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
@@ -81,15 +81,13 @@ COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 COPY pam_susemanager /etc/pam.d/susemanager
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
+RUN chmod -R 755 /usr/bin/set_pam.sh
 
 # Set a warning message for interactive shells
 COPY motd /etc/motd
 RUN echo "cat /etc/motd" >/etc/sh.shrc.local
 
-RUN pam-config -a --sss && \
-         pam-config -a --ldap && \
-         authselect select sssd --force && \
-         authselect apply-changes
+RUN /usr/bin/set_pam.sh
 
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
