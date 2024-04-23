@@ -1,7 +1,6 @@
 #!/bin/bash
 
 pam-config -a --sss
-pam-config -a --ldap
 
 if command -v authselect ; then #requires nss-pam-ldapd and authselect
     authselect select sssd --force
