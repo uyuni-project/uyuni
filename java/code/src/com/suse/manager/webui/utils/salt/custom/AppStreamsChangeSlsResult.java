@@ -19,28 +19,21 @@ import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 public class AppStreamsChangeSlsResult {
 
-    private class ChangesResult {
-        private List<String> enabled;
-        private List<String> disabled;
-        @SerializedName("currently_enabled")
-        private Set<Map<String, String>> currentlyEnabled;
-    }
+    @SerializedName("mgrcompat_|-enabled_appstreams_|-appstreams.get_enabled_modules_|-module_run")
+    private Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> currentlyEnabled = Optional.empty();
 
-    @SerializedName("appstreams_|-change_appstreams_|-change_appstreams_|-change")
-    private Optional<StateApplyResult<Ret<ChangesResult>>> changes = Optional.empty();
-
-    public Optional<StateApplyResult<Ret<ChangesResult>>> getChanges() {
-        return changes;
+    public Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> getChanges() {
+        return currentlyEnabled;
     }
 
     public Set<Map<String, String>> getCurrentlyEnabled() {
-        return changes.get().getChanges().getRet().currentlyEnabled;
+        return currentlyEnabled.isPresent() ? currentlyEnabled.get().getChanges().getRet() : Collections.emptySet();
     }
 }
