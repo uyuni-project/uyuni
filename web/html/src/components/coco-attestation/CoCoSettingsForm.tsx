@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { AsyncButton, Button } from "./buttons";
-import { Settings } from "./coco-attestation/Utils";
-import { BootstrapPanel } from "./panels/BootstrapPanel";
-import { RecurringEventPicker } from "./picker/recurring-event-picker";
-import { SectionToolbar } from "./section-toolbar/section-toolbar";
-import { Toggler } from "./toggler";
+import { AsyncButton, Button } from "../buttons";
+import { BootstrapPanel } from "../panels/BootstrapPanel";
+import { RecurringEventPicker } from "../picker/recurring-event-picker";
+import { SectionToolbar } from "../section-toolbar/section-toolbar";
+import { Toggler } from "../toggler";
+import { Settings } from "./Utils";
 
 type Props = {
   initialData: Settings;
