@@ -85,7 +85,11 @@ class CoCoScansList extends React.Component<Props, State> {
         });
       })
       .catch((err) => {
-        this.setState({ messages: MessagesUtils.error(t("Unable to perform action.")) });
+        this.setState({
+          messages: MessagesUtils.error(
+            t("Unable to schedule action. Please check the server logs for detailed information.")
+          ),
+        });
       });
   };
 
