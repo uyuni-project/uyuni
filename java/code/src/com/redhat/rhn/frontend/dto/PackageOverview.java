@@ -46,6 +46,7 @@ public class PackageOverview extends BaseTupleDto {
     private String epoch;
     private String release;
     private Boolean retracted;
+    private String appstream;
 
 
     /**
@@ -264,6 +265,24 @@ public class PackageOverview extends BaseTupleDto {
      */
     public void setRetracted(Boolean retractedIn) {
         retracted = retractedIn;
+    }
+
+    /**
+     * Gets the appStream.
+     *
+     * @return appStream
+     */
+    public String getAppstream() {
+        return appstream;
+    }
+
+    /**
+     * Sets the appStream.
+     *
+     * @param appStreamIn the appStream
+     */
+    public void setAppstream(String appStreamIn) {
+        appstream = appStreamIn;
     }
 
 }

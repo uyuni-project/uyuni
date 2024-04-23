@@ -19,7 +19,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -138,10 +137,6 @@ public class SystemOverviewAction extends RhnAction {
                         e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel()) :
                         (e1.isBase() ? -1 : 1))
                 .collect(Collectors.toList());
-
-        if (s.getChannels().stream().anyMatch(Channel::isModular)) {
-            createErrorMessage(request, "packagelist.jsp.modulespresent", null);
-        }
 
         request.setAttribute("rebootRequired", rebootRequired);
         request.setAttribute("rebootScheduled", rebootScheduled);

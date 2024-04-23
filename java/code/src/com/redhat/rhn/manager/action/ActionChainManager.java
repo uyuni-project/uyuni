@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.appstream.AppStreamAction;
+import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -268,6 +270,36 @@ public class ActionChainManager {
 
         taskoScheduleActions(result, user, actionChain);
         return result;
+    }
+
+    /**
+     * Schedules AppStream action.
+     * @param user the user scheduling the action
+     * @param name the name of the action
+     * @param details the details to be linked with the action
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain or null
+     * @param serverId the id of servers involved
+     * @return id of the scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     */
+    public static Long scheduleAppStreamAction(
+        User user,
+        String name,
+        Set<AppStreamActionDetails> details,
+        Date earliest,
+        ActionChain actionChain,
+        Long serverId
+    ) throws TaskomaticApiException {
+        var actions = createActions(
+            user, ActionFactory.TYPE_APPSTREAM_CHANGE, name, earliest, actionChain, null, singleton(serverId)
+        );
+        AppStreamAction action = (AppStreamAction) actions.stream().findFirst()
+                .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
+        action.setDetails(details);
+        ActionFactory.save(action);
+        taskoScheduleActions(actions, user, actionChain);
+        return action.getId();
     }
 
     /**

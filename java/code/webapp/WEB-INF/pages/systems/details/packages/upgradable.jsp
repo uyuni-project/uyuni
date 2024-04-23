@@ -51,6 +51,12 @@
 
                       <a href="/rhn/software/packages/Details.do?sid=${param.sid}&amp;id_combo=${current.idCombo}">
                         ${current.nvrea}</a>
+                      <c:if test="${current.appstream != null}">
+                          <span class="label label-info" title="AppStream module: ${current.appstream}">
+                              <c:out value="${current.appstream}"/>
+                          </span>
+                          &nbsp;
+                      </c:if>
                       <c:if test="${current.pkgReboot}">
                           <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
                       </c:if>

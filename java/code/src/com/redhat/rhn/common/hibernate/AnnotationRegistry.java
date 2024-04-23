@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
@@ -197,7 +198,8 @@ public class AnnotationRegistry {
         CoCoEnvironmentTypeConverter.class,
         CoCoAttestationResult.class,
         CoCoResultTypeConverter.class,
-        ServerAppStream.class
+        ServerAppStream.class,
+        AppStream.class
     );
 
     /**
