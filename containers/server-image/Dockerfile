@@ -60,7 +60,11 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     ipmitool \
     sssd \
     sssd-dbus \
-    sssd-ldap
+    sssd-ldap \
+    sssd-ad \
+    sssd-ipa \
+    sssd-krb5 \
+    sssd-tools
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
