@@ -42,12 +42,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Attestation Manager
@@ -98,7 +100,10 @@ public class AttestationManager {
                                                            ActionChain actionChain)
             throws TaskomaticApiException {
         ensureSystemAccessible(userIn, minionIn);
-        return scheduleAttestationAction(Optional.of(userIn), userIn.getOrg(), minionIn, earliest, actionChain);
+        ensureSystemConfigured(minionIn);
+        List<CoCoAttestationAction> coCoAttestationActions = scheduleAttestationAction(Optional.of(userIn),
+            userIn.getOrg(), Set.of(minionIn), earliest, actionChain);
+        return coCoAttestationActions.get(0);
     }
 
     /**
@@ -109,21 +114,77 @@ public class AttestationManager {
      */
     public void scheduleAttestationActionFromSystem(Org orgIn, MinionServer minionIn, Date earliest)
             throws TaskomaticApiException {
-        scheduleAttestationAction(Optional.empty(), orgIn, minionIn, earliest, null);
+        ensureSystemConfigured(minionIn);
+        scheduleAttestationAction(Optional.empty(), orgIn, Set.of(minionIn), earliest, null);
     }
 
-    private CoCoAttestationAction scheduleAttestationAction(Optional<User> userIn, Org orgIn, MinionServer minionIn,
+    /**
+     * Create an Attestation Action for a given minion.
+     * @param userIn the user
+     * @param minionsSet the minions
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain
+     * @return the list of scheduled actions
+     */
+    public List<CoCoAttestationAction> scheduleAttestationActionForSystems(User userIn, Set<MinionServer> minionsSet,
             Date earliest, ActionChain actionChain) throws TaskomaticApiException {
-        ensureSystemConfigured(minionIn);
+        minionsSet.forEach(minion -> ensureSystemConfigured(minion));
+        return scheduleAttestationAction(Optional.empty(), userIn.getOrg(), minionsSet, earliest, actionChain);
+    }
+
+    private List<CoCoAttestationAction> scheduleAttestationAction(Optional<User> userIn, Org orgIn,
+            Set<MinionServer> minionsSet, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+        if (actionChain != null) {
+            return scheduleActionChain(userIn, orgIn, minionsSet, earliest, actionChain);
+        }
+
+        return scheduleSingleAction(userIn, orgIn, minionsSet, earliest);
+    }
+
+    private List<CoCoAttestationAction> scheduleSingleAction(Optional<User> userIn, Org orgIn,
+                                                                  Set<MinionServer> minionsSet, Date earliest)
+        throws TaskomaticApiException {
+        CoCoAttestationAction action = createAttestationAction(userIn.orElse(null), orgIn, earliest);
+        minionsSet.forEach(minionServer -> initializeReport(action, minionServer));
+
+        Set<Long> minionIds = minionsSet.stream().map(Server::getId).collect(Collectors.toSet());
+        ActionManager.scheduleForExecution(action, minionIds);
+
+        CoCoAttestationAction updated = (CoCoAttestationAction) ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(updated);
+
+        return List.of(updated);
+    }
+
+    private List<CoCoAttestationAction> scheduleActionChain(Optional<User> userIn, Org orgIn,
+                                                            Set<MinionServer> minionsSet, Date earliest,
+                                                            ActionChain actionChain) {
+        int nextSortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
+
+        List<CoCoAttestationAction> actionsList = new ArrayList<>();
+        for (MinionServer server : minionsSet) {
+            CoCoAttestationAction action = createAttestationAction(userIn.orElse(null), orgIn, earliest);
+            initializeReport(action, server);
+
+            ActionChainFactory.queueActionChainEntry(action, actionChain, server.getId(), nextSortOrder);
+            actionsList.add(action);
+        }
+
+        return actionsList;
+    }
+
+    private static CoCoAttestationAction createAttestationAction(User user, Org org, Date earliest) {
         CoCoAttestationAction action = (CoCoAttestationAction) ActionFactory.createAction(
-                ActionFactory.TYPE_COCO_ATTESTATION, earliest);
-        action.setSchedulerUser(userIn.orElse(null));
-        action.setOrg(orgIn);
+            ActionFactory.TYPE_COCO_ATTESTATION, earliest);
+        action.setSchedulerUser(user);
+        action.setOrg(org);
         action.setName("Confidential Compute Attestation");
         ActionFactory.save(action);
+        return action;
+    }
 
-        //Initialize the report
-        ServerCoCoAttestationReport initReport = factory.createReportForServer(minionIn);
+    private void initializeReport(CoCoAttestationAction action, MinionServer minion) {
+        ServerCoCoAttestationReport initReport = factory.createReportForServer(minion);
         initReport.setAction(action);
         if (initReport.getEnvironmentType().isNonceRequired()) {
             SecureRandom rand = new SecureRandom();
@@ -132,18 +193,7 @@ public class AttestationManager {
             initReport.setInData(Map.of("nonce", Base64.getEncoder().encodeToString(bytes)));
         }
 
-        MinionPillarManager.INSTANCE.generatePillar(minionIn, false, MinionPillarManager.PillarSubset.GENERAL);
-        if (actionChain == null) {
-            ActionManager.scheduleForExecution(action, Set.of(minionIn.getId()));
-            action = (CoCoAttestationAction) ActionFactory.save(action);
-            taskomaticApi.scheduleActionExecution(action);
-        }
-        else {
-            int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-            ActionChainFactory.queueActionChainEntry(action, actionChain, minionIn.getId(), sortOrder);
-        }
-
-        return action;
+        MinionPillarManager.INSTANCE.generatePillar(minion, false, MinionPillarManager.PillarSubset.GENERAL);
     }
 
     /**
