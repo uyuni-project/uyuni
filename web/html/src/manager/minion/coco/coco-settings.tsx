@@ -1,7 +1,7 @@
 import * as React from "react";
 
+import CoCoSettingsForm from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
-import CoCoSettingsForm from "components/CoCoSettingsForm";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Loading } from "components/utils";
