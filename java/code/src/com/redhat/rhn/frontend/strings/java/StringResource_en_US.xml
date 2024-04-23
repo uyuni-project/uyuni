@@ -9541,9 +9541,6 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description">
         <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
       </trans-unit>
-      <trans-unit id="coco.environment.azure.description">
-        <source>Azure</source>
-      </trans-unit>
       <trans-unit id="coco.resultType.none.description">
         <source>Result Type not found</source>
       </trans-unit>
@@ -9558,21 +9555,6 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit id="coco.resultType.secure_boot.label">
         <source>Secure Boot</source>
-      </trans-unit>
-      <trans-unit id="coco.resultType.azure_sev_snp.description">
-        <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP) Azure attestation</source>
-      </trans-unit>
-      <trans-unit id="coco.resultType.azure_sev_snp.label">
-        <source>AMD SEV-SNP (Azure)</source>
-      </trans-unit>
-      <trans-unit id="coco.resultType.azure_secure_boot.description">
-        <source>Secure Boot Azure attestation</source>
-      </trans-unit>
-      <trans-unit id="coco.resultType.azure_secure_boot.label">
-        <source>Secure Boot (Azure)</source>
-      </trans-unit>
-      <trans-unit id="coco.resultType.azure_disk_encrypted.description">
-        <source>Disks encrypted Azure attestation</source>
       </trans-unit>
       <trans-unit id="coco.status.pending.description">
         <source>Pending</source>

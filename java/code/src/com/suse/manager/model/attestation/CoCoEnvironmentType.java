@@ -22,9 +22,7 @@ import java.util.List;
 public enum CoCoEnvironmentType {
     NONE(0, List.of()),
     KVM_AMD_EPYC_MILAN(1, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
-    KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
-    AZURE(3, List.of(CoCoResultType.AZURE_SEV_SNP, CoCoResultType.AZURE_SECURE_BOOT,
-                    CoCoResultType.AZURE_DISK_ENCRYPTED));
+    KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT));
     // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final long value;
