@@ -7,13 +7,11 @@ FROM $INIT_IMAGE
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
 # Extra packages can be added via project configuration
-ARG EXTRAPACKAGES=nss-pam-ldapd
+ARG EXTRAPACKAGES=
 
 COPY timezone_alignment.sh /usr/bin
 
 COPY healthcheck.sh /usr/bin
-
-COPY set_pam.sh /usr/bin
 
 # Copy timezone link update service
 COPY timezone_alignment.service /usr/lib/systemd/system/
@@ -81,7 +79,7 @@ COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 COPY pam_susemanager /etc/pam.d/susemanager
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
-RUN chmod -R 755 /usr/bin/set_pam.sh
+RUN pam-config -a --sss
 
 # Set a warning message for interactive shells
 COPY motd /etc/motd
