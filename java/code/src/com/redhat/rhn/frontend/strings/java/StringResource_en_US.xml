@@ -9578,7 +9578,10 @@ For a detailed analysis, please refer to the log files.
         <source>This system does not have any Confidential Computing capability.</source>
       </trans-unit>
       <trans-unit id="system.audit.coco.configUpdated">
-        <source>The Confidential Computing configuration for this system has been updated successfully.</source>
+        <source>The Confidential Computing configuration has been updated successfully.</source>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configNotUpdated">
+        <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
       </trans-unit>
     </body>
   </file>
