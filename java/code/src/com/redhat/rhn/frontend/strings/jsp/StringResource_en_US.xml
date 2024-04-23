@@ -4894,6 +4894,12 @@ organization. You may grant or remove the organization administrator role in the
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         </trans-unit>
+        <trans-unit id="ssm.overview.audit.coco_schedule">
+            <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        </trans-unit>
         <trans-unit id="ssm.overview.misc">
           <source>Misc</source>
         <context-group name="ctx">
@@ -5114,6 +5120,9 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.coco.tabs.configure">
             <source>Configure</source>
+        </trans-unit>
+        <trans-unit id="ssm.coco.tabs.schedule">
+            <source>Schedule</source>
         </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.hardware">
           <source>Hardware</source>

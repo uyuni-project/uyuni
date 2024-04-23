@@ -28,6 +28,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -69,6 +70,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
+import com.suse.manager.webui.utils.gson.SystemScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.SystemsCoCoSettingsJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
@@ -173,6 +175,8 @@ public class MinionsAPI {
             asJson(withUserAndServer(this::scheduleCoCoAttestation)));
         post("/manager/api/systems/coco/settings",
             asJson(withUser(this::setAllCoCoSettings)));
+        post("/manager/api/systems/coco/scheduleAction",
+            asJson(withUser(this::scheduleAllCoCoAttestation)));
     }
 
     /**
@@ -615,5 +619,29 @@ public class MinionsAPI {
                     jsonConfig.isAttestOnBoot()
                 );
             });
+    }
+
+    private String scheduleAllCoCoAttestation(Request request, Response response, User user) {
+        SystemScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), SystemScheduledRequestJson.class);
+        Long result;
+
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
+
+        try {
+            Set<MinionServer> minionsSet = MinionServerFactory.lookupByIds(scheduleRequest.getServerIds())
+                .collect(Collectors.toSet());
+
+            List<CoCoAttestationAction> scheduledActions =
+                attestationManager.scheduleAttestationActionForSystems(user, minionsSet, earliestDate, chain);
+            result = chain != null ? chain.getId() : scheduledActions.get(0).getId();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule attestation action", e);
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                ResultJson.error("Unable to schedule action"), new TypeToken<>() { });
+        }
+
+        return json(GSON, response, result.longValue());
     }
 }
