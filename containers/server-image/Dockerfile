@@ -7,7 +7,7 @@ FROM $INIT_IMAGE
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
 # Extra packages can be added via project configuration
-ARG EXTRAPACKAGES=shim%20nss-pam-ldapd%20authselect
+ARG EXTRAPACKAGES=shim%20nss-pam-ldapd
 
 COPY timezone_alignment.sh /usr/bin
 
