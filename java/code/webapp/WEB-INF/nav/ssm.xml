@@ -93,6 +93,9 @@
             <rhn-tab name="ssm.coco.tabs.configure">
                 <rhn-tab-url>/rhn/manager/systems/ssm/coco/settings</rhn-tab-url>
             </rhn-tab>
+            <rhn-tab name="ssm.coco.tabs.schedule">
+                <rhn-tab-url>/rhn/manager/systems/ssm/coco/schedule</rhn-tab-url>
+            </rhn-tab>
         </rhn-tab>
     </rhn-tab>
 
