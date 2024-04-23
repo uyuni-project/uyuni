@@ -84,9 +84,16 @@
                 acl="all_systems_in_set_have_feature(ftr_power_management)"/>
     </rhn-tab>
 
-    <rhn-tab name="Audit" acl="all_systems_in_set_have_feature(ftr_system_audit)">
-        <rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdf.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdfSubmit.do</rhn-tab-url>
+    <rhn-tab name="Audit" acl="all_systems_in_set_have_feature(ftr_system_audit)" url="/rhn/systems/ssm/audit/ScheduleXccdf.do">
+        <rhn-tab name="OpenSCAP" url="/rhn/systems/ssm/audit/ScheduleXccdf.do">
+            <rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdf.do</rhn-tab-url>
+            <rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdfSubmit.do</rhn-tab-url>
+        </rhn-tab>
+        <rhn-tab name="ssm.coco.index" url="/rhn/manager/systems/ssm/coco/settings">
+            <rhn-tab name="ssm.coco.tabs.configure">
+                <rhn-tab-url>/rhn/manager/systems/ssm/coco/settings</rhn-tab-url>
+            </rhn-tab>
+        </rhn-tab>
     </rhn-tab>
 
     <rhn-tab name="States" acl="any_system_with_salt_entitlement()">
