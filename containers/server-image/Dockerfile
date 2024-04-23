@@ -89,8 +89,6 @@ RUN pam-config -a --sss
 COPY motd /etc/motd
 RUN echo "cat /etc/motd" >/etc/sh.shrc.local
 
-RUN /usr/bin/set_pam.sh
-
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
     systemctl enable timezone_alignment; \
