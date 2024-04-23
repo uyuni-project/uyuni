@@ -59,9 +59,7 @@ Feature: Smoke tests for <client>
     And I wait until I see "Upgrade Packages" text
     And I follow "Patches" in the content area
     When I wait until I see "Relevant Patches" text
-    And I select "Non-Critical" from "type"
-    And I click on "Show"
-    When I check the first patch in the list
+    When I check the first patch in the list, that does not require a reboot
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
