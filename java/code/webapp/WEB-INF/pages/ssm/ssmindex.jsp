@@ -168,6 +168,7 @@
                             <li><bean:message key="ssm.overview.misc.scap"/></li>
                         </rhn:require>
                         <li><bean:message key="ssm.overview.audit.coco_configure"/></li>
+                        <li><bean:message key="ssm.overview.audit.coco_schedule"/></li>
                     </ul>
                 </div>
             </div>
