@@ -141,6 +141,8 @@ public class MinionController {
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmHighstate))), jade);
         get("/manager/systems/ssm/proxy",
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmProxy))), jade);
+        get("/manager/systems/ssm/coco/settings",
+                withCsrfToken(withDocsLocale(withUser(MinionController::ssmCoCoSettings))), jade);
     }
 
     private static void initPTFRoutes(JadeTemplateEngine jade) {
@@ -636,5 +638,32 @@ public class MinionController {
             .forEach(e -> environmentMap.put(e.name(), e.getDescription()));
 
         data.put("availableEnvironmentTypes", Json.GSON.toJson(environmentMap));
+    }
+
+    /**
+     * Handler for the ssm confidential computing settings page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ssmCoCoSettings(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+        data.put("systemSupport", Json.GSON.toJson(
+            MinionServerFactory.lookupByIds(SsmManager.listServerIds(user))
+                .map(minionServer -> Map.of(
+                    "id", minionServer.getId(),
+                    "name", minionServer.getName(),
+                    "cocoSupport", minionServer.doesOsSupportCoCoAttestation()
+                ))
+                .collect(Collectors.toList())
+        ));
+        addCoCoMetadata(data);
+
+        return new ModelAndView(data, "templates/ssm/coco-ssm-settings.jade");
     }
 }

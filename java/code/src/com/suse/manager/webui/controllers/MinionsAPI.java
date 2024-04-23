@@ -69,6 +69,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
+import com.suse.manager.webui.utils.gson.SystemsCoCoSettingsJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import com.google.gson.Gson;
@@ -170,6 +171,8 @@ public class MinionsAPI {
             asJson(withUserAndServer(this::listAllAttestations)));
         post("/manager/api/systems/:sid/details/coco/scheduleAction",
             asJson(withUserAndServer(this::scheduleCoCoAttestation)));
+        post("/manager/api/systems/coco/settings",
+            asJson(withUser(this::setAllCoCoSettings)));
     }
 
     /**
@@ -519,23 +522,7 @@ public class MinionsAPI {
 
         CoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), CoCoSettingsJson.class);
         try {
-            ServerCoCoAttestationConfig updatedConfig = attestationManager.getConfig(user, server)
-                .map(cfg -> {
-                    cfg.setEnabled(jsonConfig.isEnabled());
-                    cfg.setEnvironmentType(jsonConfig.getEnvironmentType());
-                    cfg.setAttestOnBoot(jsonConfig.isAttestOnBoot());
-
-                    attestationManager.saveConfig(user, cfg);
-
-                    return cfg;
-                })
-                .orElseGet(() -> {
-                    return attestationManager.createConfig(user, server,
-                        jsonConfig.getEnvironmentType(),
-                        jsonConfig.isEnabled(),
-                        jsonConfig.isAttestOnBoot()
-                    );
-                });
+            ServerCoCoAttestationConfig updatedConfig = updateServerCoCoConfiguration(user, server, jsonConfig);
 
             return json(GSON, response, ResultJson.success(new CoCoSettingsJson(updatedConfig),
                 LOCAL.getMessage("system.audit.coco.configUpdated")), new TypeToken<>() { });
@@ -593,4 +580,40 @@ public class MinionsAPI {
         return json(GSON, response, result.longValue());
     }
 
+    private String setAllCoCoSettings(Request request, Response response, User user) {
+        SystemsCoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), SystemsCoCoSettingsJson.class);
+
+        try {
+            MinionServerFactory.lookupByIds(jsonConfig.getServerIds())
+                .forEach(minionServer -> updateServerCoCoConfiguration(user, minionServer, jsonConfig));
+
+            return json(GSON, response, ResultJson.success(jsonConfig,
+                LOCAL.getMessage("system.audit.coco.configUpdated")), new TypeToken<>() { });
+        }
+        catch (RuntimeException ex) {
+            return json(GSON, response, ResultJson.error(LOCAL.getMessage("system.audit.coco.configNotUpdated")),
+                new TypeToken<>() { });
+        }
+    }
+
+    private ServerCoCoAttestationConfig updateServerCoCoConfiguration(User user, Server server,
+                                                                      CoCoSettingsJson jsonConfig) {
+        return attestationManager.getConfig(user, server)
+            .map(cfg -> {
+                cfg.setEnabled(jsonConfig.isEnabled());
+                cfg.setEnvironmentType(jsonConfig.getEnvironmentType());
+                cfg.setAttestOnBoot(jsonConfig.isAttestOnBoot());
+
+                attestationManager.saveConfig(user, cfg);
+
+                return cfg;
+            })
+            .orElseGet(() -> {
+                return attestationManager.createConfig(user, server,
+                    jsonConfig.getEnvironmentType(),
+                    jsonConfig.isEnabled(),
+                    jsonConfig.isAttestOnBoot()
+                );
+            });
+    }
 }
