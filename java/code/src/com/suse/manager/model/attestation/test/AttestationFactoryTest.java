@@ -142,7 +142,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
                 .collect(Collectors.toList());
         assertContains(rTypeList, CoCoResultType.SEV_SNP);
         assertContains(rTypeList, CoCoResultType.SECURE_BOOT);
-        assertNotContains(rTypeList, CoCoResultType.AZURE_SEV_SNP);
+        assertNotContains(rTypeList, CoCoResultType.NONE);
 
         assertTrue(results.stream()
                 .filter(r -> r.getResultType().equals(CoCoResultType.SEV_SNP))

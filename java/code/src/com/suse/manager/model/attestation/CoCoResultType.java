@@ -21,10 +21,7 @@ import java.util.Arrays;
 public enum CoCoResultType {
     NONE(0),
     SEV_SNP(1),
-    SECURE_BOOT(2),
-    AZURE_SEV_SNP(3),
-    AZURE_SECURE_BOOT(4),
-    AZURE_DISK_ENCRYPTED(5);
+    SECURE_BOOT(2);
     // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final int value;
