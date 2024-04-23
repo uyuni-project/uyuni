@@ -52,7 +52,7 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
   Scenario: Create auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/AutoYaST File"
-    And I enter "15-sp4-nobbler" as "kickstartLabel"
+    And I enter "15-sp4-cobbler" as "kickstartLabel"
     And I select "SLE-15-SP4-TFTP" from "kstreeId"
     And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
     And I click on "Create"
