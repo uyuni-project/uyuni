@@ -43,6 +43,7 @@ public class CoCoAttestationResult {
     private CoCoAttestationStatus status;
     private String description;
     private String details;
+    private String processOutput;
     private Date attested;
 
     /**
@@ -100,6 +101,14 @@ public class CoCoAttestationResult {
     }
 
     /**
+     * @return return the process output if available
+     */
+    @Column(name = "process_output")
+    protected String getProcessOutput() {
+        return processOutput;
+    }
+
+    /**
      * @return the time this result was attested
      */
     @Column(name = "attested")
@@ -113,6 +122,14 @@ public class CoCoAttestationResult {
     @Transient
     public Optional<String> getDetailsOpt() {
         return Optional.ofNullable(details);
+    }
+
+    /**
+     * @return return the details if available
+     */
+    @Transient
+    public Optional<String> getProcessOutputOpt() {
+        return Optional.ofNullable(processOutput);
     }
 
     /**
@@ -155,6 +172,10 @@ public class CoCoAttestationResult {
      */
     public void setDetails(String detailsIn) {
         details = detailsIn;
+    }
+
+    public void setProcessOutput(String processOutputIn) {
+        this.processOutput = processOutputIn;
     }
 
     /**
