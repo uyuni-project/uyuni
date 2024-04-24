@@ -7,7 +7,7 @@ FROM $INIT_IMAGE
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
 # Extra packages can be added via project configuration
-ARG EXTRAPACKAGES=
+ARG EXTRAPACKAGES
 
 COPY timezone_alignment.sh /usr/bin
 
