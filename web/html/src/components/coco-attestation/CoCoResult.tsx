@@ -35,18 +35,26 @@ class CoCoResult extends React.Component<Props> {
                   <td>{renderTime(result.attestationTime)}</td>
                 </tr>
               )}
-              <tr>
-                <td>{t("Details")}:</td>
-                <td>
-                  {result.details && result.details.trim().length > 0 ? (
+              {result.details && (
+                <tr>
+                  <td>{t("Details")}:</td>
+                  <td>
                     <div className="row">
                       <pre>{result.details}</pre>
                     </div>
-                  ) : (
-                    t("N/A")
-                  )}
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              )}
+              {result.processOutput && (
+                <tr>
+                  <td>{t("Process Output")}:</td>
+                  <td>
+                    <div className="row">
+                      <pre>{result.processOutput}</pre>
+                    </div>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
