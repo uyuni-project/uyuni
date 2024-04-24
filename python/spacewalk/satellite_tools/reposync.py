@@ -753,22 +753,21 @@ class RepoSync(object):
                         repo_checksum_type = plugin.get_md_checksum_type()
 
                         modulemd_importer = None
-                        if not self.no_packages:
-                            if repo_type == "yum":
-                                modulemd_path = self.import_modules(plugin)
-                                if modulemd_path:
-                                    modulemd_importer = ModuleMdImporter(
-                                        self.channel["id"], modulemd_path
+                        if not self.no_packages and repo_type == "yum":
+                            modulemd_path = self.import_modules(plugin)
+                            if modulemd_path:
+                                modulemd_importer = ModuleMdImporter(
+                                    self.channel["id"], modulemd_path
+                                )
+                                try:
+                                    modulemd_importer.validate()
+                                except ModuleMdIndexingError as e:
+                                    log(
+                                        0,
+                                        f"An error occurred while reading module metadata: {e}",
                                     )
-                                    try:
-                                        modulemd_importer.validate()
-                                    except ModuleMdIndexingError as e:
-                                        log(
-                                            0,
-                                            f"An error occurred while reading module metadata: {e}",
-                                        )
-                                        self.sendErrorMail(str(e))
-                                        sync_error = -1
+                                    self.sendErrorMail(str(e))
+                                    sync_error = -1
 
                         if sync_error == 0:
                             self.import_groups(plugin)
