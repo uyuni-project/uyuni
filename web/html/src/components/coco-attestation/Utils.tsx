@@ -22,6 +22,7 @@ export type AttestationResult = {
   statusDescription: string;
   description: string;
   details: string;
+  processOutput: string;
   attestationTime: Date;
 };
 
