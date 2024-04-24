@@ -80,10 +80,9 @@ COPY java_agent.yaml /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
 COPY java_agent.yaml /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
 COPY tomcat_jmx.conf /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
-COPY pam_susemanager /etc/pam.d/susemanager
+COPY pam.d/* /etc/pam.d/
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
-RUN pam-config -a --sss
 
 # Set a warning message for interactive shells
 COPY motd /etc/motd
