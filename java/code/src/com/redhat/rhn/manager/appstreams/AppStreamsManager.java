@@ -109,10 +109,10 @@ public class AppStreamsManager {
         if (!streamsToDisable.isEmpty()) {
             sb.append("disable: ");
             sb.append(streamsToDisable);
-
+            sb.append(" ");
         }
         if (!streamsToEnable.isEmpty()) {
-            sb.append(" enable: ");
+            sb.append("enable: ");
             sb.append(streamsToEnable);
         }
         sb.append(")");

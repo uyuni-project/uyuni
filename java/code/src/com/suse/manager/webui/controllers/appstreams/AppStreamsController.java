@@ -35,10 +35,12 @@ import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.appstreams.response.ChannelAppStreamsResponse;
-import com.suse.manager.webui.controllers.contentmanagement.handlers.ControllerApiUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
@@ -66,7 +68,11 @@ public class AppStreamsController {
 
     private AppStreamsController() { }
 
-    private static final Gson GSON = ControllerApiUtils.GSON;
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .serializeNulls()
+            .create();
     private static final Logger LOG = LogManager.getLogger(AppStreamsController.class);
 
     /**
