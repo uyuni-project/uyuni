@@ -80,13 +80,13 @@ const AppStreams = ({ channelsAppStreams }: Props) => {
         <span>
           {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
             name: actionChain.text,
-            link: (str) => <ActionChainLink id={id}>{str}</ActionChainLink>,
+            link: (str) => <a href={`/rhn/schedule/ActionChain.do?id=${id}`}>{str}</a>,
           })}
         </span>
       ) : (
         <span>
           {t("Updating the selection of AppStream modules has been <link>scheduled</link>.", {
-            link: (str) => <ActionLink id={id}>{str}</ActionLink>,
+            link: (str) => <a href={`/rhn/schedule/ActionDetails.do?aid=${id}`}>{str}</a>,
           })}
         </span>
       )
