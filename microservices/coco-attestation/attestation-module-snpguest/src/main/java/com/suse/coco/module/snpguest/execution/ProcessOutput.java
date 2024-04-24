@@ -53,8 +53,24 @@ public class ProcessOutput {
         return exitCode;
     }
 
+    /**
+     * Check if this process output has a non-empty standard output
+     * @return true if the standard output is not null and not blank
+     */
+    public boolean hasStandardOutput() {
+        return standardOutput != null && !standardOutput.isBlank();
+    }
+
     public String getStandardOutput() {
         return standardOutput;
+    }
+
+    /**
+     * Check if this process output has a non-empty standard error
+     * @return true if the standard error is not null and not blank
+     */
+    public boolean hasStandardError() {
+        return standardError != null && !standardError.isBlank();
     }
 
     public String getStandardError() {

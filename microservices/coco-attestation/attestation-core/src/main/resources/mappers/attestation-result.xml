@@ -44,6 +44,7 @@
           UPDATE suseCoCoAttestationResult
              SET status = #{status}
                     , details = #{details}
+                    , process_output = #{processOutput}
                 <if test="status.name() == 'SUCCEEDED'">
                     , attested = #{attested}
                 </if>
