@@ -18,5 +18,5 @@ CREATE INDEX IF NOT EXISTS suse_act_appstream_aid_idx ON suseActionAppstream (ac
 CREATE SEQUENCE IF NOT EXISTS suse_act_appstream_id_seq;
 
 insert into rhnActionType
-  select 524, 'appstreams.change', 'Change AppStreams in a system', 'N', 'N', 'N'
+  select 524, 'appstreams.configure', 'Configure AppStreams in a system', 'N', 'N', 'N'
   where not exists(select 1  from rhnActionType where id = 524);

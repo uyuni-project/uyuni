@@ -89,6 +89,6 @@ insert into rhnActionType values (520, 'virt.network_create', 'Creates a virtual
 insert into rhnActionType values (521, 'ansible.playbook', 'Execute an Ansible playbook', 'N', 'N', 'N');
 insert into rhnActionType values (522, 'virt.guest_migrate', 'Migrate a virtual domain', 'N', 'N', 'N');
 insert into rhnActionType values (523, 'coco.attestation', 'Confidential Compute Attestation', 'N', 'N', 'N');
-insert into rhnActionType values (524, 'appstreams.change', 'Change AppStreams in a system', 'N', 'N', 'N');
+insert into rhnActionType values (524, 'appstreams.configure', 'Configure AppStreams in a system', 'N', 'N', 'N');
 commit;
 

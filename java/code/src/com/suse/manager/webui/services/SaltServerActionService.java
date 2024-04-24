@@ -247,7 +247,7 @@ public class SaltServerActionService {
     private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
     private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
     private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
-    public static final String APPSTREAMS_CHANGE = "appstreams.change";
+    public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
     public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
     public static final String PARAM_APPSTREAMS_DISABLE = "param_appstreams_disable";
 
@@ -479,7 +479,7 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
             return cocoAttestationAction(minions);
         }
-        else if (ActionFactory.TYPE_APPSTREAM_CHANGE.equals(actionType)) {
+        else if (ActionFactory.TYPE_APPSTREAM_CONFIGURE.equals(actionType)) {
             return appStreamAction(minions, (AppStreamAction) actionIn);
         }
         else {
@@ -2352,7 +2352,7 @@ public class SaltServerActionService {
             PARAM_APPSTREAMS_ENABLE, enableParams,
             PARAM_APPSTREAMS_DISABLE, disableParams
         ));
-        ret.put(State.apply(List.of(APPSTREAMS_CHANGE), params), minionSummaries);
+        ret.put(State.apply(List.of(APPSTREAMS_CONFIGURE), params), minionSummaries);
         return ret;
     }
 

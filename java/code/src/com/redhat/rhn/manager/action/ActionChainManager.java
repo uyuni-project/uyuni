@@ -292,7 +292,7 @@ public class ActionChainManager {
         Long serverId
     ) throws TaskomaticApiException {
         var actions = createActions(
-            user, ActionFactory.TYPE_APPSTREAM_CHANGE, name, earliest, actionChain, null, singleton(serverId)
+            user, ActionFactory.TYPE_APPSTREAM_CONFIGURE, name, earliest, actionChain, null, singleton(serverId)
         );
         AppStreamAction action = (AppStreamAction) actions.stream().findFirst()
                 .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
