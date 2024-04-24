@@ -17,6 +17,9 @@ package com.suse.manager.webui.controllers.appstreams.response;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.server.Server;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Objects;
 
 public class AppStreamModuleResponse {
@@ -34,26 +37,44 @@ public class AppStreamModuleResponse {
         this.enabled = serverIn.hasAppStreamModuleEnabled(this.name, this.stream);
     }
 
-    private String name;
-    private String stream;
-    private String arch;
-    private boolean enabled;
+    private final String name;
+    private final String stream;
+    private final String arch;
+    private final boolean enabled;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getStream() {
+        return stream;
+    }
+
+    public String getArch() {
+        return arch;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 
     @Override
     public boolean equals(Object oIn) {
-        if (this == oIn) {
-            return true;
-        }
-        if (oIn == null || getClass() != oIn.getClass()) {
-            return false;
-        }
+        if (this == oIn) return true;
+
+        if (oIn == null || getClass() != oIn.getClass()) return false;
+
         AppStreamModuleResponse that = (AppStreamModuleResponse) oIn;
-        return Objects.equals(name, that.name) && Objects.equals(stream, that.stream) &&
-                Objects.equals(arch, that.arch);
+
+        return new EqualsBuilder()
+                .append(name, that.name)
+                .append(stream, that.stream)
+                .append(arch, that.arch)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, stream, arch);
+        return new HashCodeBuilder(17, 37).append(name).append(stream).append(arch).toHashCode();
     }
 }
