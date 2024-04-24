@@ -37,5 +37,6 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
     And I follow "Custom Channel for monitoring_server"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait until button "Sync Now" becomes enabled
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text or "No repositories are currently associated with this channel" text
