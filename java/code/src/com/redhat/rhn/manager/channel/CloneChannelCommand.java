@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
+import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.cloud.CloudPaygManager;
@@ -157,6 +158,9 @@ public class CloneChannelCommand extends CreateChannelCommand {
                 HibernateFactory.getSession().delete(c.getModules());
             }
             c.setModules(null);
+            AppStreamsManager.listChannelAppStreams(c.getId()).forEach(a ->
+                    HibernateFactory.getSession().delete(a)
+            );
         }
         else {
             c.cloneModulesFrom(original);

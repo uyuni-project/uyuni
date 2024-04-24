@@ -161,6 +161,9 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(SystemEventDetailsDtoSerializer.class);
         SERIALIZER_CLASSES.add(PaygSshDataSerializer.class);
         SERIALIZER_CLASSES.add(CoCoAttestationConfigSerializer.class);
+        SERIALIZER_CLASSES.add(ChannelAppStreamsResponseSerializer.class);
+        SERIALIZER_CLASSES.add(AppStreamModuleResponseSerializer.class);
+        SERIALIZER_CLASSES.add(AppStreamSerializer.class);
     }
 
     /**

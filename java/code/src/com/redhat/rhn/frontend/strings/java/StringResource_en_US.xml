@@ -1856,6 +1856,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="appstreams.configure" xml:space="preserve">
+        <source>Configure AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="clientcert.update_client_cert" xml:space="preserve">
         <source>Update of system certificate</source>
         <context-group name="ctx">
@@ -7639,6 +7645,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve">
         <source>The channel access ({0}) is not allowed for this operation.</source>
+      </trans-unit>
+      <trans-unit id="api.channel.modulespresent" xml:space="preserve">
+        <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
       </trans-unit>
       <trans-unit id="Certificate Administrators" xml:space="preserve">
         <source>Certificate Administrators</source>

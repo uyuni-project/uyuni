@@ -73,6 +73,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -103,6 +104,7 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
@@ -629,6 +631,9 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             handlePackageLockData(serverAction, jsonResult, action);
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
+            handleAppStreamsChange(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
@@ -1383,6 +1388,21 @@ public class SaltUtils {
         ErrataManager.insertErrataCacheTask(imageInfo);
     }
 
+    private void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
+        Optional<MinionServer> server = serverAction.getServer().asMinionServer();
+        if (server.isEmpty()) {
+            return;
+        }
+        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
+
+        Set<ServerAppStream> enabledModules = currentlyEnabled.stream()
+            .map(nsvca -> new ServerAppStream(server.get(), nsvca))
+            .collect(Collectors.toSet());
+        server.get().getAppStreams().clear();
+        server.get().getAppStreams().addAll(enabledModules);
+        serverAction.setResultMsg("Successfully changed system AppStreams.");
+    }
+
     /**
      * Perform the actual update of the database based on given event data.
      *
@@ -1497,6 +1517,17 @@ public class SaltUtils {
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
                 .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
+
+        // Update AppStream modules
+        Set<ServerAppStream> enabledAppStreams = result.getEnabledAppstreamModules()
+                .map(m -> m.getChanges().getRet())
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(nsvca -> new ServerAppStream(server, nsvca))
+                .collect(Collectors.toSet());
+
+        server.getAppStreams().clear();
+        server.getAppStreams().addAll(enabledAppStreams);
 
         // Update grains
         if (!result.getGrains().isEmpty()) {

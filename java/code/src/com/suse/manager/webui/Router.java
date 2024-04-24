@@ -64,6 +64,7 @@ import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
+import com.suse.manager.webui.controllers.appstreams.AppStreamsController;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.channels.ChannelsApiController;
@@ -168,6 +169,8 @@ public class Router implements SparkApplication {
 
         // Packages
         PackageController.initRoutes(jade);
+
+        AppStreamsController.initRoutes(jade);
 
         // Proxy
         proxyController.initRoutes(proxyController, jade);
