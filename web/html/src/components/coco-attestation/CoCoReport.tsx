@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { ActionLink, SystemLink } from "../links";
-import { BootstrapPanel } from "../panels/BootstrapPanel";
 import { TabContainer } from "../tab-container";
 import CoCoResult from "./CoCoResult";
 import { AttestationReport, renderStatus, renderTime } from "./Utils";
@@ -34,54 +33,78 @@ class CoCoReport extends React.Component<Props, State> {
     const report: AttestationReport = this.props.report;
 
     const overview = (
-      <BootstrapPanel key="overview">
-        <div className="table-responsive">
-          <table className="table">
-            <tbody>
-              <tr>
-                <td>{t("Status:")}</td>
-                <td>{report.statusDescription}</td>
-              </tr>
-              <tr>
-                <td>{t("System")}:</td>
-                <td>
-                  <SystemLink id={report.systemId}>{report.systemName}</SystemLink> ({report.systemId})
-                </td>
-              </tr>
-              <tr>
-                <td>{t("Environment Type")}:</td>
-                <td>{report.environmentTypeDescription}</td>
-              </tr>
-              <tr>
-                <td>{t("Created on")}:</td>
-                <td>{renderTime(report.creationTime)}</td>
-              </tr>
-              <tr>
-                <td>{t("Last modified on")}:</td>
-                <td>{renderTime(report.modificationTime)}</td>
-              </tr>
-              {report.actionId && (
-                <tr>
-                  <td>{t("Action")}:</td>
-                  <td>
-                    <ActionLink id={report.actionId}>
-                      {report.actionScheduledBy
-                        ? t("{actionName} scheduled by {actionScheduledBy}", report)
-                        : report.actionName}
-                    </ActionLink>
-                  </td>
-                </tr>
-              )}
-              {report.status === "SUCCEEDED" && (
-                <tr>
-                  <td>{t("Attested on")}:</td>
-                  <td>{renderTime(report.attestationTime)}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </BootstrapPanel>
+      <div className="panel panel-default" key="overview">
+        <ul className="list-group">
+          <li className="list-group-item">
+            <div className="row">
+              <div className="col-md-2">
+                <strong>{t("Status:")}</strong>
+              </div>
+              <div className="col-md-10">{report.statusDescription}</div>
+            </div>
+          </li>
+          <li className="list-group-item">
+            <div className="row">
+              <div className="col-md-2">
+                <strong>{t("System")}:</strong>
+              </div>
+              <div className="col-md-10">
+                <SystemLink id={report.systemId}>{report.systemName}</SystemLink> ({report.systemId})
+              </div>
+            </div>
+          </li>
+          <li className="list-group-item">
+            <div className="row">
+              <div className="col-md-2">
+                <strong>{t("Environment Type")}:</strong>
+              </div>
+              <div className="col-md-10">{report.environmentTypeDescription}</div>
+            </div>
+          </li>
+          <li className="list-group-item">
+            <div className="row">
+              <div className="col-md-2">
+                <strong>{t("Created on")}:</strong>
+              </div>
+              <div className="col-md-10">{renderTime(report.creationTime)}</div>
+            </div>
+          </li>
+          <li className="list-group-item">
+            <div className="row">
+              <div className="col-md-2">
+                <strong>{t("Last modified on")}:</strong>
+              </div>
+              <div className="col-md-10">{renderTime(report.modificationTime)}</div>
+            </div>
+          </li>
+          {report.actionId && (
+            <li className="list-group-item">
+              <div className="row">
+                <div className="col-md-2">
+                  <strong>{t("Action")}:</strong>
+                </div>
+                <div className="col-md-10">
+                  <ActionLink id={report.actionId}>
+                    {report.actionScheduledBy
+                      ? t("{actionName} scheduled by {actionScheduledBy}", report)
+                      : report.actionName}
+                  </ActionLink>
+                </div>
+              </div>
+            </li>
+          )}
+          {report.status === "SUCCEEDED" && (
+            <li className="list-group-item">
+              <div className="row">
+                <div className="col-md-2">
+                  <strong>{t("Attested on")}:</strong>
+                </div>
+                <div className="col-md-10">{renderTime(report.attestationTime)}</div>
+              </div>
+            </li>
+          )}
+        </ul>
+      </div>
     );
 
     const labels = report.results.map((result) => (
