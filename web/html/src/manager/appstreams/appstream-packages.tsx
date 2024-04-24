@@ -39,7 +39,7 @@ export const AppStreamPackages = ({ stream, channelId }) => {
       <h6>{t("AppStream {stream} has {count} packages:", { stream: stream, count: packages.length })}</h6>
       <div style={{ maxHeight: "calc(100vh - 200px)" }}>
         {packages.map((pkg, index) => (
-          <li key={index}>
+          <li key={`pkg-item-${pkg.id}`}>
             <PackageLink id={pkg.id} newWindow={true}>
               {pkg.nevra}
             </PackageLink>
