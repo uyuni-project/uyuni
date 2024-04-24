@@ -85,6 +85,9 @@ COPY pam-susemanager-account /etc/pam.d/susemanager-account
 COPY pam-susemanager-auth /etc/pam.d/susemanager-auth
 COPY pam-susemanager-password /etc/pam.d/susemanager-password
 COPY pam-susemanager-session /etc/pam.d/susemanager-session
+COPY pam-password-auth /etc/pam.d/password-auth
+COPY pam-postlogin /etc/pam.d/postlogin
+COPY pam-system-auth /etc/pam.d/system-auth
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
