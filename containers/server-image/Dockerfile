@@ -80,11 +80,11 @@ COPY java_agent.yaml /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
 COPY java_agent.yaml /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
 COPY tomcat_jmx.conf /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
-COPY pam.d/susemanager /etc/pam.d/
-COPY pam.d/susemanager-account /etc/pam.d/
-COPY pam.d/susemanager-auth /etc/pam.d/
-COPY pam.d/susemanager-password /etc/pam.d/
-COPY pam.d/susemanager-session /etc/pam.d/
+COPY pam-susemanager /etc/pam.d/
+COPY pam-susemanager-account /etc/pam.d/
+COPY pam-susemanager-auth /etc/pam.d/
+COPY pam-susemanager-password /etc/pam.d/
+COPY pam-susemanager-session /etc/pam.d/
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
