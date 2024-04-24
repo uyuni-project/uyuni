@@ -11,6 +11,7 @@ ARG ARCH_SPECIFIC_MODULES
 RUN zypper ref && zypper --non-interactive up
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
     uyuni-coco-attestation-core \
+    uyuni-coco-attestation-module-secureboot \
     ${ARCH_SPECIFIC_MODULES} \
     javassist apache-commons-ognl
 
