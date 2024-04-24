@@ -246,10 +246,10 @@ ul.product-list {
       i {
         margin: 0 auto;
       }
-    }
 
-    .calc-width {
-      width: calc(100% - 29em);
+      &-description-width {
+        width: calc(100% - 29em);
+      }
     }
   }
   li.list-row-odd {

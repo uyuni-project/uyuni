@@ -649,7 +649,7 @@ class CheckList extends React.Component<CheckListProps> {
               um={this.props.bypassProps.cols.showSubList.um}
             ></CustomDiv>
             <CustomDiv
-              className="col calc-width"
+              className="col col-description-width"
               width={this.props.bypassProps.cols.description.width}
               um={this.props.bypassProps.cols.description.um}
             >
@@ -1030,7 +1030,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
             {showNestedDataIconContent}
           </CustomDiv>
           <CustomDiv
-            className="col calc-width"
+            className="col col-description-width"
             width={this.props.bypassProps.cols.description.width}
             um={this.props.bypassProps.cols.description.um}
           >
