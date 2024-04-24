@@ -1,3 +1,2 @@
-- Introduce salt module for dealing with AppStreams
-- Introduce salt state for changing AppStreams
-- Collect enabled AppStream modules in package profile update
+- Native support for AppSream repositories
+- Introduce salt module for configuring AppStreams
