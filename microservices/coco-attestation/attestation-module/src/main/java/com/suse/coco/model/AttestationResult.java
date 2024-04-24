@@ -29,6 +29,7 @@ public class AttestationResult {
     private AttestationStatus status;
     private String description;
     private String details;
+    private String processOutput;
     private OffsetDateTime attested;
 
     public long getId() {
@@ -79,6 +80,14 @@ public class AttestationResult {
         this.details = detailsIn;
     }
 
+    public String getProcessOutput() {
+        return processOutput;
+    }
+
+    public void setProcessOutput(String processOutputIn) {
+        this.processOutput = processOutputIn;
+    }
+
     public OffsetDateTime getAttested() {
         return attested;
     }
@@ -112,7 +121,6 @@ public class AttestationResult {
             .add("resultType=" + resultType)
             .add("status='" + status + "'")
             .add("description='" + description + "'")
-            .add("details='" + details + "'")
             .add("attested=" + attested)
             .toString();
     }
