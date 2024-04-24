@@ -37,6 +37,8 @@ public class CoCoAttestationResultJson {
 
     private final String details;
 
+    private final String processOutput;
+
     private final Date attestationTime;
 
 
@@ -53,6 +55,7 @@ public class CoCoAttestationResultJson {
         this.description = result.getDescription();
         this.attestationTime = result.getAttested();
         this.details = result.getDetailsOpt().orElse(null);
+        this.processOutput = result.getProcessOutputOpt().orElse(null);
     }
 
     public long getId() {
@@ -81,6 +84,10 @@ public class CoCoAttestationResultJson {
 
     public String getDetails() {
         return details;
+    }
+
+    public String getProcessOutput() {
+        return processOutput;
     }
 
     public Date getAttestationTime() {
