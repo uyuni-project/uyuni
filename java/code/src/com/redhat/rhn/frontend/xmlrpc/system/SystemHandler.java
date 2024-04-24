@@ -9057,7 +9057,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Return a list of reports with its results for the given filters
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.param #param("$date", "earliest")
      * @apidoc.returntype
      *     #return_array_begin()
@@ -9079,7 +9079,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Return a list of reports with its results for the given filters
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.param #param_desc("int", "offset", "Number of reports to skip")
      * @apidoc.param #param_desc("int", "limit", "Maximum number of reports")
      * @apidoc.returntype
@@ -9104,7 +9104,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Return a list of reports with its results for the given filters
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.param #param("$date", "earliest")
      * @apidoc.param #param_desc("int", "offset", "Number of reports to skip")
      * @apidoc.param #param_desc("int", "limit", "Maximum number of reports")
@@ -9129,7 +9129,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Return the latest report for the given system
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.returntype $ServerCoCoAttestationReportSerializer
      */
     @ReadOnly
@@ -9147,7 +9147,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Return a specific results with all details
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid", "the system id")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.param #param("int", "resultId")
      * @apidoc.returntype $CoCoAttestationResultSerializer
      */
