@@ -29,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * Worker class for verifying the reports with SNPGuest
@@ -37,11 +38,15 @@ public class SNPGuestWorker implements AttestationWorker {
 
     private static final Logger LOGGER = LogManager.getLogger(SNPGuestWorker.class);
 
+    private static final int INDENT_SIZE = 4;
+
     private final VerificationDirectoryProvider directoryProvider;
 
     private final SNPGuestWrapper snpGuest;
 
     private final ByteSequenceFinder sequenceFinder;
+
+    private final StringBuilder outputBuilder;
 
     /**
      * Default constructor.
@@ -61,23 +66,26 @@ public class SNPGuestWorker implements AttestationWorker {
         this.directoryProvider = directoryProviderIn;
         this.snpGuest = snpGuestWrapperIn;
         this.sequenceFinder = sequenceFinderIn;
+        this.outputBuilder = new StringBuilder();
     }
 
     @Override
     public boolean process(SqlSession session, AttestationResult result) {
+        // Reset the output string builder
+        outputBuilder.setLength(0);
 
         try {
             LOGGER.debug("Processing attestation result {}", result.getId());
 
             AttestationReport report = session.selectOne("SNPGuestModule.retrieveReport", result.getReportId());
             if (report == null) {
-                LOGGER.error("Unable to retrieve attestation report for result {}", result.getId());
+                appendError("Unable to retrieve attestation report for result");
                 return false;
             }
 
              LOGGER.debug("Loaded report {}", report);
              if (report.getCpuGeneration() == EpycGeneration.UNKNOWN) {
-                LOGGER.error("Unable to identify Epyc processor generation for attestation report {}", report.getId());
+                 appendError("Unable to identify Epyc processor generation for attestation report");
                 return false;
             }
 
@@ -85,8 +93,11 @@ public class SNPGuestWorker implements AttestationWorker {
                 // Ensure the nonce is present in the report
                 sequenceFinder.setSequence(report.getRandomNonce());
                 if (sequenceFinder.search(report.getReport()) == -1) {
-                    LOGGER.error("The report does not contain the expected random nonce");
+                    appendError("The report does not contain the expected random nonce");
                     return false;
+                }
+                else {
+                    appendSuccess("The report contains the expected random nonce");
                 }
 
                 // Reference to the paths snpguest needs to work with
@@ -96,30 +107,36 @@ public class SNPGuestWorker implements AttestationWorker {
                 // Download the VCEK for this cpu model
                 ProcessOutput processOutput = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
                 if (processOutput.getExitCode() != 0 || !workingDir.isVCEKAvailable()) {
-                    LOGGER.error("Unable to retrieve VCEK file. SNPGuest return {}", processOutput.getExitCode());
+                    appendError("Unable to retrieve VCEK file", processOutput);
                     return false;
+                }
+                else {
+                    appendSuccess("VCEK fetched successfully", processOutput);
                 }
 
                 // Verify the certificates
                 processOutput = snpGuest.verifyCertificates(certsPath);
                 if (processOutput.getExitCode() != 0) {
-                    LOGGER.error("Unable to verify the validity of the certificates. SNPGuest return {}",
-                        processOutput.getExitCode());
+                    appendError("Unable to verify the validity of the certificates", processOutput);
                     return false;
+                }
+                else {
+                    appendSuccess("Certification chain validated successfully", processOutput);
                 }
 
                 // Verify the actual attestation report
                 processOutput = snpGuest.verifyAttestation(certsPath, reportPath);
                 if (processOutput.getExitCode() != 0) {
-                    LOGGER.error("Unable to verify the attestation report. SNPGuest return {}",
-                        processOutput.getExitCode());
+                    appendError("Unable to verify the attestation report", processOutput);
                     return false;
+                }
+                else {
+                    appendSuccess("Attestation report correctly verified", processOutput);
                 }
 
                 processOutput = snpGuest.displayReport(reportPath);
                 if (processOutput.getExitCode() != 0) {
-                    LOGGER.error("Unable to get the attestation report in human readable format. SNPGuest return {}",
-                        processOutput.getExitCode());
+                    appendError("Unable to get the attestation report in human readable format", processOutput);
                     return false;
                 }
 
@@ -129,9 +146,82 @@ public class SNPGuestWorker implements AttestationWorker {
             return true;
         }
         catch (Exception ex) {
-            LOGGER.error("Unable to process attestation result {}", result.getId(), ex);
+            String exceptionMessage = Optional.ofNullable(ex.getMessage()).orElse(ex.getClass().getName());
+            appendError("Unable to process attestation result: " + exceptionMessage, ex);
+        }
+        finally {
+            result.setProcessOutput(outputBuilder.toString());
         }
 
         return false;
+    }
+
+    private void appendError(String message) {
+        appendOutput(message, null);
+        LOGGER.error(message);
+    }
+
+    private void appendError(String message, ProcessOutput processOutput) {
+        appendOutput(message, processOutput);
+        LOGGER.error(message);
+    }
+
+    private void appendError(String message, Exception ex) {
+        appendOutput(message, null);
+        LOGGER.error(message, ex);
+    }
+
+    private void appendSuccess(String message) {
+        appendOutput(message, null);
+    }
+    private void appendSuccess(String message, ProcessOutput output) {
+        appendOutput(message, output);
+    }
+
+    private void appendOutput(String message, ProcessOutput processOutput) {
+        outputBuilder.append("- ").append(message);
+
+        String processDetails = getProcessOutputDetails(processOutput);
+        if (!processDetails.isEmpty()) {
+            outputBuilder.append(":")
+                .append(System.lineSeparator())
+                .append(processDetails);
+        }
+        else {
+            outputBuilder.append(System.lineSeparator());
+        }
+    }
+
+    private static String getProcessOutputDetails(ProcessOutput processOutput) {
+        if (processOutput == null) {
+            return "";
+        }
+
+        StringBuilder processBuilder = new StringBuilder();
+        if (processOutput.getExitCode() != 0) {
+            processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Exit code: ")
+                .append(processOutput.getExitCode())
+                .append(System.lineSeparator());
+        }
+
+        if (processOutput.hasStandardOutput()) {
+            processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Standard output: >")
+                .append(System.lineSeparator());
+            processOutput.getStandardOutput().lines()
+                .forEach(line -> {
+                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator());
+                });
+        }
+
+        if (processOutput.hasStandardError()) {
+            processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Standard error: >")
+                .append(System.lineSeparator());
+            processOutput.getStandardError().lines()
+                .forEach(line -> {
+                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator());
+                });
+        }
+
+        return processBuilder.toString();
     }
 }
