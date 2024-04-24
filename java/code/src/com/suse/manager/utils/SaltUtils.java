@@ -632,7 +632,7 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             handlePackageLockData(serverAction, jsonResult, action);
         }
-        else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CHANGE)) {
+        else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
             handleAppStreamsChange(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {

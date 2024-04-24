@@ -1856,8 +1856,8 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="appstreams.change" xml:space="preserve">
-        <source>Change AppStreams</source>
+      <trans-unit id="appstreams.configure" xml:space="preserve">
+        <source>Configure AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>

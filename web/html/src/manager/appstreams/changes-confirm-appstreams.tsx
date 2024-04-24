@@ -7,7 +7,7 @@ import { localizedMoment } from "utils";
 import Network from "utils/network";
 
 export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onError, onCancelClick }) => {
-  const [earliest, setEarliest] = useState(localizedMoment);
+  const [earliest, setEarliest] = useState(localizedMoment());
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
 
   const applyChanges = () => {
@@ -15,6 +15,8 @@ export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onErr
       sid: window.serverId,
       toEnable: toEnable,
       toDisable: toDisable,
+      actionChainLabel: actionChain?.text,
+      earliest: earliest,
     })
       .then((data) => {
         onConfirm(data.data, actionChain);

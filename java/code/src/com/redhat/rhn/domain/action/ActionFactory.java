@@ -512,7 +512,7 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
             retval = new CoCoAttestationAction();
         }
-        else if (typeIn.equals(TYPE_APPSTREAM_CHANGE)) {
+        else if (typeIn.equals(TYPE_APPSTREAM_CONFIGURE)) {
             retval = new AppStreamAction();
         }
         else {
@@ -1444,6 +1444,6 @@ public class ActionFactory extends HibernateFactory {
     /**
      * The constant representing appstreams changes action.
      */
-    public static final ActionType TYPE_APPSTREAM_CHANGE = lookupActionTypeByLabel("appstreams.change");
+    public static final ActionType TYPE_APPSTREAM_CONFIGURE = lookupActionTypeByLabel("appstreams.configure");
 }
 
