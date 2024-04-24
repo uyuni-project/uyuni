@@ -88,6 +88,7 @@ COPY pam-susemanager-session /etc/pam.d/susemanager-session
 COPY pam-password-auth /etc/pam.d/password-auth
 COPY pam-postlogin /etc/pam.d/postlogin
 COPY pam-system-auth /etc/pam.d/system-auth
+COPY nsswitch.conf /etc/nsswitch.conf
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
