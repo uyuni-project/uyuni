@@ -18,7 +18,7 @@
 <mapper namespace="SecureBootModule">
 
     <select id="retrieveReport" parameterType="Long" resultType="String">
-        SELECT decode(out_data->>'mgr_secureboot_enabled') AS secureboot
+        SELECT out_data->>'mgr_secureboot_enabled' AS secureboot
         FROM suseServerCoCoAttestationReport
         WHERE id = #{reportId}
     </select>
