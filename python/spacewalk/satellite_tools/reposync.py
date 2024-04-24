@@ -1414,9 +1414,9 @@ class RepoSync(object):
                 elif db_pack["channel_id"] == channel_id:
                     # different package with SAME NVREA
                     # disassociate from channel if it doesn't match package which will be downloaded
-                    to_disassociate[
-                        (db_pack["checksum_type"], db_pack["checksum"])
-                    ] = True
+                    to_disassociate[(db_pack["checksum_type"], db_pack["checksum"])] = (
+                        True
+                    )
 
             if to_download or to_link:
                 if pack.arch in ["src", "nosrc"]:
