@@ -5,8 +5,7 @@ import subprocess
 import logging
 try:
     from salt.utils.path import which as _which
-# pylint: disable-next=bare-except
-except:
+except ImportError:
     from salt.utils import which as _which
 
 log = logging.getLogger(__name__)
