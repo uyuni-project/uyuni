@@ -91,6 +91,13 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.uyuni-project.coco-attestation.module</groupId>
+            <artifactId>attestation-module-secureboot</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
 
         <!-- Test -->
         <dependency>
