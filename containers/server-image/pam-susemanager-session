@@ -1,0 +1,7 @@
+session	optional	pam_systemd.so
+session	required	pam_limits.so	
+session	required	pam_unix.so	try_first_pass 
+session	optional	pam_sss.so	
+session	optional	pam_ldap.so	
+session	optional	pam_umask.so	
+session	optional	pam_env.so
