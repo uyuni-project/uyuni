@@ -20,16 +20,6 @@ function onDocumentReadyGeneral(){
   scrollTopBehavior();
 }
 
-function adaptFluidColLayout() {
-  jQuery('.col-class-calc-width').each(function() {
-    var totalWidth = jQuery(this).parent().width();
-    jQuery(this).siblings('.col').each(function() {
-      totalWidth = Math.floor(totalWidth - jQuery(this).outerWidth());
-    });
-    jQuery(this).css('width', totalWidth - 10);
-  });
-}
-
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
 // On window load and resize
 jQuery(window).on("load resize", alignContentDimensions);
@@ -69,7 +59,6 @@ function scrollTopBehavior() {
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
-  adaptFluidColLayout();
   sstStyle();
   navbarToggleMobile();
 }

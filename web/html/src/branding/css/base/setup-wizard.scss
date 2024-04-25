@@ -246,6 +246,10 @@ ul.product-list {
       i {
         margin: 0 auto;
       }
+
+      &-description-width {
+        width: calc(100% - 29em);
+      }
     }
   }
   li.list-row-odd {
