@@ -18,10 +18,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 15:15+0100\n"
-"PO-Revision-Date: 2023-05-26 18:14+0000\n"
+"PO-Revision-Date: 2024-04-25 20:43+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web-4-3/it/"
-">\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web-4-3/it/>"
+"\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3240,7 +3240,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:632
 #: ../html/src/manager/images/image-view-overview.tsx:804
 msgid "Inspect"
-msgstr ""
+msgstr "Ispeziona"
 
 #: ../html/src/manager/images/image-view-overview.tsx:642
 msgid "Reschedule the build"
