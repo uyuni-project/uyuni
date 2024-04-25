@@ -778,15 +778,15 @@ class RepoSync(object):
                                 )
                                 failed_packages += ret
 
-                            if not self.no_errata:
-                                self.import_updates(plugin)
-
                             if modulemd_importer:
                                 try:
                                     modulemd_importer.import_module_metadata()
                                 except:
                                     rhnSQL.rollback()
                                     raise
+
+                            if not self.no_errata:
+                                self.import_updates(plugin)
 
                             self.import_mediaproducts(plugin)
 
