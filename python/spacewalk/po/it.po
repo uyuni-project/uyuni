@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-05 16:21+0200\n"
-"PO-Revision-Date: 2023-08-04 15:15+0000\n"
-"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
+"PO-Revision-Date: 2024-04-25 20:43+0000\n"
+"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/backend-4-3/"
 "it/>\n"
 "Language: it\n"
@@ -180,7 +180,6 @@ msgid "Invalid value %s (%s)"
 msgstr "Valore non valido %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
-#, fuzzy
 msgid "You are not authorized to manage packages in the null org"
 msgstr "Non sei autorizzato a gestire i pacchetti nella org null"
 
