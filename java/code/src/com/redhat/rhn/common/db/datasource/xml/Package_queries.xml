@@ -885,6 +885,9 @@ SELECT P.id, P.summary, PP.name as provider
 
 <mode name="system_available_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
+      WITH appstreamPackage AS (
+        SELECT package_id, max(module_id) as module_id FROM suseAppstreamPackage GROUP BY package_id
+      )
 SELECT rp.id AS package_id,
        pn.name || '-' || evr_t_as_vre_simple(latest.evr) AS NVRE,
        rp.summary AS summary,
@@ -919,7 +922,7 @@ SELECT rp.id AS package_id,
            JOIN rhnPackage rp ON rp.name_id = latest.name_id
                              AND rp.evr_id =  lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)
                              AND rp.package_arch_id = latest.arch_id
-           LEFT JOIN suseAppstreamPackage appStreamPkg on appStreamPkg.package_id = rp.id
+           LEFT JOIN appstreamPackage appStreamPkg on appStreamPkg.package_id = rp.id
            LEFT JOIN suseAppstream appStream on appStream.channel_id = latest.channel_id and appStream.id = appStreamPkg.module_id
           WHERE EXISTS (
                          SELECT 1 FROM rhnChannelPackage rcp
@@ -1158,6 +1161,9 @@ SELECT  COUNT(pn.id) AS COUNT
 
 <mode name="system_upgradable_package_list" class="com.redhat.rhn.frontend.dto.UpgradablePackageListItem">
   <query params="sid">
+      WITH appstreamPackage AS (
+      SELECT package_id, max(module_id) as module_id FROM suseAppstreamPackage GROUP BY package_id
+      )
 SELECT  n.id AS id,
         n.id AS name_id,
         lookup_evr(((latest.evr)).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
@@ -1197,7 +1203,7 @@ SELECT  n.id AS id,
   LEFT JOIN rhnPackage p ON p.name_id = latest.package_name_id
      AND p.evr_id = latest.package_evr_id
      AND p.package_arch_id = latest.package_arch_id
-  LEFT JOIN suseAppstreamPackage ap on ap.package_id = p.id
+  LEFT JOIN appstreamPackage ap on ap.package_id = p.id
   LEFT JOIN suseAppstream a on a.id = ap.module_id
  where sp.server_id = :sid
  order by upper(n.name)
