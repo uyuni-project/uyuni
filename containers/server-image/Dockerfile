@@ -12,6 +12,7 @@ ARG EXTRAPACKAGES
 COPY timezone_alignment.sh /usr/bin
 
 COPY healthcheck.sh /usr/bin
+RUN chmod a+x /usr/bin/healthcheck.sh
 
 # Copy timezone link update service
 COPY timezone_alignment.service /usr/lib/systemd/system/
