@@ -38,9 +38,6 @@ class TaskoTop extends React.Component<Props> {
     var currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
       .then((data) => {
-        console.log(data);
-        data[1].status = 'skipped';
-        data[2].status = 'skipped';
         currentObject.setState({
           serverData: data,
           error: null,
@@ -272,4 +269,4 @@ const ErrorMessage = (props) => (
 );
 
 export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<TaskoTop refreshInterval={5 * 50000} />, document.getElementById("taskotop"));
+  SpaRenderer.renderNavigationReact(<TaskoTop refreshInterval={5 * 1000} />, document.getElementById("taskotop"));
