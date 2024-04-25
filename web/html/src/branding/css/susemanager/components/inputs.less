@@ -46,6 +46,11 @@
   }
 }
 
+.form-control-static {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
   &:hover {
@@ -58,6 +63,12 @@ textarea.form-control,
 select[multiple],
 select[size] {
   height: auto;
+}
+
+.input-group > .form-control {
+  &:not(:first-child):not(:last-child) {
+    border-radius: 0 !important;
+  }
 }
 
 .input-group-addon {

@@ -4,18 +4,19 @@
 .btn-success,
 .btn-warning,
 .btn-danger {
+  // We use flex to ensure icons etc are correctly aligned in buttons
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   font-size: $font-size-base;
+
+  i.fa:first-child:last-child {
+    margin: 0;
+  }
 }
 
-@include onSuma {
-  @import "buttons.suma.scss";
-}
-
-@include onUyuni {
-  @import "buttons.uyuni.scss";
-}
-
-button.is-plain {
+button.is-plain,
+.btn-link {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
@@ -31,4 +32,30 @@ button.is-plain {
   text-decoration: none;
   user-select: text;
   padding: 0;
+}
+
+.btn-link {
+  &,
+  &:active,
+  &:focus,
+  &:disabled,
+  &.disabled {
+    &,
+    &:hover {
+      color: $link-color;
+      font-weight: normal;
+    }
+
+    &:not(:disabled):not(.disabled):not(.text-muted):hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@include onSuma {
+  @import "buttons.suma.scss";
+}
+
+@include onUyuni {
+  @import "buttons.uyuni.scss";
 }

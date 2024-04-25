@@ -66,7 +66,8 @@ public enum ViewHelper {
         "/rhn/account/AccountDeactivation.do",
         "/rhn/account/Addresses.do",
         "/rhn/account/EditAddress.do",
-        "/rhn/multiorg/OrgConfigDetails.do"
+        "/rhn/multiorg/OrgConfigDetails.do",
+        "/rhn/manager/notification-messages"
     );
 
     ViewHelper() { }

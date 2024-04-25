@@ -2,7 +2,6 @@ $input-height: 35px;
 
 @at-root {
   :root {
-    --bs-border-width: 1px;
     --bs-border-color: #{$input-border-color};
     --bs-border-radius: #{$border-radius};
   }
@@ -62,6 +61,11 @@ $input-height: 35px;
   }
 }
 
+.form-control-static {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
   &:hover {
@@ -77,6 +81,7 @@ select[size] {
 }
 
 .input-group-text {
+  --bs-border-width: 1px;
   font-size: 1em;
   background: $gray-lighter;
   padding: 6px 12px;
