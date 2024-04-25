@@ -269,6 +269,15 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
+
+  # filter out wrong child channels for SLE Micro 5.5 as normal Minion
+  if client.include? 'slemicro55'
+    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-pool-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-updates-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-pool-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64' }
+  end
+
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
