@@ -12,6 +12,7 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
+import { log } from "console";
 
 type Props = {
   refreshInterval: number;
@@ -37,6 +38,9 @@ class TaskoTop extends React.Component<Props> {
     var currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
       .then((data) => {
+        console.log(data);
+        data[1].status = 'skipped';
+        data[2].status = 'skipped';
         currentObject.setState({
           serverData: data,
           error: null,
@@ -268,4 +272,4 @@ const ErrorMessage = (props) => (
 );
 
 export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<TaskoTop refreshInterval={5 * 1000} />, document.getElementById("taskotop"));
+  SpaRenderer.renderNavigationReact(<TaskoTop refreshInterval={5 * 50000} />, document.getElementById("taskotop"));
