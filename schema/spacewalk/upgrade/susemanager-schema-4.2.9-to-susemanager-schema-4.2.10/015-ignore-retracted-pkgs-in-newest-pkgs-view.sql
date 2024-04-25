@@ -9,9 +9,8 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-create or replace view
-rhnChannelNewestPackageView
-as
+DROP VIEW IF EXISTS rhnChannelNewestPackageView;
+CREATE VIEW rhnChannelNewestPackageView AS
 SELECT channel_id,
        name_id,
        evr_id,
