@@ -48,9 +48,11 @@ public class SystemsCoCoSettingsJson extends CoCoSettingsJson {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SystemsCoCoSettingsJson that)) {
+        if (!(o instanceof SystemsCoCoSettingsJson)) {
             return false;
         }
+        SystemsCoCoSettingsJson that = (SystemsCoCoSettingsJson) o;
+
         if (!super.equals(o)) {
             return false;
         }
