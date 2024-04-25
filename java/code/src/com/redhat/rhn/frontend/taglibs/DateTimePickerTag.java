@@ -95,7 +95,7 @@ public class DateTimePickerTag extends TagSupport {
 
     private HtmlTag createInputAddonTag(String type, String icon) {
         HtmlTag dateAddon = new HtmlTag("span");
-        dateAddon.setAttribute("class", "input-group-addon text");
+        dateAddon.setAttribute("class", "input-group-addon input-group-text text");
         dateAddon.setAttribute("id", data.getName() + "_" +
                 type + "picker_widget_input_addon");
         dateAddon.setAttribute("data-picker-name", data.getName());

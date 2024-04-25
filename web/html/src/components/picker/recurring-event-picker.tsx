@@ -489,7 +489,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                       onChange={this.onCronChanged}
                     />
                     {/* This field is always in the server time zone, but just be explicit to the user */}
-                    <span className="input-group-addon">{localizedMoment.serverTimeZone}</span>
+                    <span className="input-group-addon input-group-text">{localizedMoment.serverTimeZone}</span>
                   </div>
                 </div>
               </div>

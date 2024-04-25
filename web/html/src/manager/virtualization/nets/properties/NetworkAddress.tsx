@@ -79,7 +79,7 @@ export const NetworkAddress = (props: Props) => {
               aria-label={t(`IPv${ipVersion} ${props.label || ""}`)}
               title={t(`IPv${ipVersion} ${props.label || ""}`)}
             />
-            <span className="input-group-addon">/</span>
+            <span className="input-group-addon input-group-text">/</span>
             <input
               className="form-control network-prefix"
               type="text"

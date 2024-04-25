@@ -6,6 +6,11 @@
 .btn-danger {
   padding: 6px 12px;
   border-radius: $border-radius;
+
+  &.btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 }
 
 .btn-default,
