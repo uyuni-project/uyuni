@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-03-10 16:42+0000\n"
+"PO-Revision-Date: 2024-04-26 19:43+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -257,9 +257,8 @@ msgstr "Podrobnosti"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
-#, fuzzy
 msgid "Status:"
-msgstr "Stav"
+msgstr "Stav:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
 #, fuzzy
@@ -291,9 +290,8 @@ msgid "Overview"
 msgstr "Prehľad"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
-#, fuzzy
 msgid "Result Type:"
-msgstr "Typ zostavenia"
+msgstr "Typ výsledku:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
@@ -948,9 +946,8 @@ msgid "Target Systems"
 msgstr "Cieľové systémy"
 
 #: ../html/src/components/target-systems.tsx:28
-#, fuzzy
 msgid "No systems specified."
-msgstr "vybrané systémy"
+msgstr "Nie sú určené žiadne systémy."
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -1762,11 +1759,8 @@ msgid "Streams to be disabled:"
 msgstr ""
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:37
-#, fuzzy
 msgid "The following AppStream modules are currently available to the system."
-msgstr ""
-"V tomto systéme sú v súčasnosti nainštalované nasledujúce Program Temporary "
-"Fixes (PTFs). "
+msgstr "V súčasnosti sú v systéme k dispozícii tieto moduly AppStream."
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:47
 #, fuzzy
