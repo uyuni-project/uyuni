@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2018-03-16 10:59+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/spacewalk/"
@@ -39,1021 +39,74 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/capabilities.py:94
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-"এই ক্লায়েন্টের জন্য সার্ভারের দ্বারা %s-র সমর্থিত হওয়া আবশ্যক। বর্তমান সার্ভারে এটি "
-"সমর্থিত নয়।"
-
 #: ../src/up2date_client/config.py:162
 #, python-format
 msgid "%s was not found"
 msgstr "%s পাওয়া যায়নি"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "সিস্টেমে ইনস্টলকৃত প্যাকেজের তালিকা আহরণ করা হচ্ছে"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "cpu সংক্রান্ত তথ্য পড়তে সমস্যা হয়েছে:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "সিস্টেমের মেমরি সংক্রান্ত তথ্য পড়তে সমস্যা:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "নেটওয়ার্ক সংক্রান্ত তথ্য পড়তে সমস্যা:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "ইনস্টলেশন পদ্ধতি সংক্রান্ত তথ্য পড়তে সমস্যা:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "নেটওয়ার্ক ইন্টারফেস সংক্রান্ত তথ্য পড়তে সমস্যা:"
-
-#: ../src/up2date_client/hardware.py:1118
-#, fuzzy
-msgid "Error reading network FQDNs information:"
-msgstr "নেটওয়ার্ক সংক্রান্ত তথ্য পড়তে সমস্যা:"
-
-#: ../src/up2date_client/hardware.py:1125
-#, fuzzy
-msgid "Error reading system info:"
-msgstr "সিস্টেমের মেমরি সংক্রান্ত তথ্য পড়তে সমস্যা:"
-
-#: ../src/up2date_client/hardware.py:1132
-#, fuzzy
-msgid "Error reading machine info:"
-msgstr "cpu সংক্রান্ত তথ্য পড়তে সমস্যা হয়েছে:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "systemid খুঁজে বের করতে ব্যর্থ"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "একটি চ্যানেলের সাথে যুক্ত না হওয়া পর্যন্ত সিস্টেমটিকে পরিবর্ধিত নাও হতে পারে।"
-
-#: ../src/up2date_client/rhncli.py:65
-#, fuzzy
-msgid "Show additional output. Repeat for more detail."
-msgstr "অতিরিক্ত আউটপুট প্রদর্শন করো"
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "ব্যবহারের জন্য একটি http প্রক্সি উল্লেখ করুন"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "অনুমোদিত http প্রক্সিতে ব্যবহারের জন্য একটি ব্যবহারকারীর-নাম উল্লেখ করুন"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "অনুমোদিত http প্রক্সির সাথে ব্যবহারের জন্য একটি পাসওয়ার্ড উল্লেখ করুন"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"অস্বাভাবিক সমাপ্তি ঘটেছে।\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "অপারেটিং সিস্টেম সংক্রান্ত একটি অপ্রত্যাশিত সমস্যা দেখা দিয়েছে: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "কোনো ধরনের I/O ( ইনপুট/আউটপুট ) সমস্যা হয়েছে: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "SSL জড়িত একটি সমস্যা হয়েছে: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"এই সমস্যার একটি প্রধান কারণ সিস্টেমের ভুল সময়।  সুতরাং এই সিস্টেমের সময় সঠিক কিনা "
-"তা পরীক্ষা করুন।\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "একটি SSL crypto জড়িত সমস্যা হয়েছে: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "পরিচয়-প্রমাণ প্রক্রিয়ায় একটি সমস্যা হয়েছে: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "আপনাকে %s চালাতে হলে অবশ্যই রুট হতে হবে"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "একটি ত্রুটি ঘটেছে:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "আরও তথ্যের জন্য /var/log/up2date দেখুন"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Copyright © 2006--2014 Red Hat, Inc. সমস্ত অধিকার সংরক্ষিত।"
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "আপনাকে অবশ্যই লগইন করতে হবে।"
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-#, fuzzy
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Red Hat Network-সার্ভারের সাথে যোগাযোগ করার চেষ্টা করা হচ্ছে।"
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr ""
-"আমরা %s তে রেড হ্যাট নেটওয়ার্ক সার্ভারের সাথে যোগাযোগ করার চেষ্টা করেছিলাম।"
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "%s তে প্রক্সি উল্লেখ করা হয়েছিল।"
-
-# modified for RHEL
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "registrationNumber"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "কেন আমার RHN-র সাথে সংযোগ করা উচিত? ..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "নিবন্ধন করবেন কেন"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"রেড হ্যাট নেটওয়ার্ক সিস্টেমে আপনার সিস্টেমের সংযুক্তকরন আপনাকে একটি প্রাপ্ত "
-"সাবস্ক্রিপশন সুবিধা সম্পূর্ণ সুবিধা দিবে, সাথে:"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "সিকিউরিটি এবং হালনাগাদকরণ:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "ডাউনলোড এবং উন্নীতকরণ:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "সমর্থন:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "সম্মতি:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-#, fuzzy
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"রেড হ্যাট লিনাক্স সিস্টেম হালনাগাদ এবং নিরাপদ রেখে, নিরাপত্তা হালনাগাদের সাথে "
-"সর্বশেষ সফ্টওয়্যার হালনাগাদ প্রাপ্ত হন।"
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-#, fuzzy
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"রেড হ্যাট লিনাক্স এর অব্যাহতির জন্য ইনস্টলেশনের ছবি ডাউনলোড করুন, নতুন অব্যাহতির "
-"সাথে।"
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-#, fuzzy
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"যে কোন বিষয়ে যা আপনি সিস্টেমের সাথে সম্মুখীন হতে পারেন সেটির সাহায্যের জন্য রেড "
-"হ্যাট অথবা রেড হ্যাটের সহযোগীদের প্রযুক্তিগত সমর্থনের বিশেষজ্ঞদের পরিসেবা।"
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-#, fuzzy
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"পরামর্শ: রেড হ্যাট আপনার ব্যক্তিগত গোপনীয়তার মান রক্ষা করে: http://www.redhat.com/"
-"legal/privacy_statement.html"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "আমাকে নিবন্ধনে ফিরিয়ে নিয়ে যান"
-
-# msgstr "  <Tab>/<Alt-Tab> বস্তুর মধ্যে  |  <Space> বাছাই করে  |  <F12>
-# পরবর্তী পর্দা"-->tranlsated in this format in a few recent files
-# (suggestion)
-# modfied for RHEL
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "up2date পুনরায় চালু করা হচ্ছে"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, fuzzy, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"রেড হ্যাট নেটওয়ার্ক সিস্টেমে আপনার সিস্টেমের সংযুক্তকরন আপনাকে একটি প্রাপ্ত "
-"সাবস্ক্রিপশন সুবিধা সম্পূর্ণ সুবিধা দিবে, সাথে:"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, fuzzy, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"একটি Red Hat Network সার্ভারের সাথে সংযোগ ব্যতীত আপনি সাফল্যের সাথে এই সিস্টেম "
-"নিবন্ধন করতে পারবেন না।"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "আমাকে সেটআপ প্রক্রিয়ায় ফিরিয়ে নিয়ে যান।"
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "আমি নিবন্ধন পরে করব।"
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr "অনুগ্রহ করে হিসাবের তথ্য দিন <b>%s</b> রেড হ্যাট নেটওয়ার্ক সেটালাইটের জন্য:"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "লগইন:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "পাসওয়ার্ড:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "একটি আকাঙ্খিত লগইন প্রবেশ করান।"
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "একটি পাসওয়ার্ড দিন এবং যাচাই করুন।"
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "অপারেটিং সিস্টেমের সংস্করণ:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr "ক্ষুদ্র রিলিজ:"
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "শুধুমাত্র সীমিত হালনাগাদ"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "সকল সহজলভ্য হালনাগাদ"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "অপারেটিং সিস্টেম রিলিজ নির্বাচন নিশ্চিত করুন"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-
-# modified for RHEL
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "আপনার সিস্টেমটি সংযুক্ত করুন"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"Red Hat নেটওয়ার্কের ওয়েব পেজে আপনার সিস্টেম প্রোফাইলকে সনাক্ত করার জন্য আপনার "
-"নির্বাচিত একটি বর্ণনামূলক নাম ব্যবহৃত হয়। এই\n"
-"নামটি হল প্রোফাইলের নাম।  এই নামের পরিবর্তে কম্পিউটারের সিরিয়াল নম্বর অথবা "
-"সনাক্তকরণ নম্বরও ব্যবহার করা যেতে পারে।"
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"হার্ডওয়্যার সংক্রান্ত অতিরিক্ত তথ্য যেমন, PCI ডিভাইস, ডিস্কের সাইজ এবং মাউন্ট পয়েন্ট "
-"এই প্রোফাইলে অন্তর্ভুক্ত করা হবে।"
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "নেটওয়ার্ক এবং হার্ডওয়্যার সংক্রান্ত নিম্নলিখিত তথ্যগুলি অন্তর্ভুক্ত করুন:"
-
-# modified for RHEL
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "আপনার সিস্টেমটি সংযুক্ত করুন"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"বর্তমান সিস্টেমের জন্য উপযুক্ত আপডেট সফটওয়্যার নির্ধারণ করতে RPM সংক্রান্ত তথ্য অত্যন্ত "
-"গুরুত্ত্বপূর্ণ।"
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr ""
-"বর্তমান সিস্টেমে ইনস্টল করা RPM প্যাকেজগুলিকে আমার সিস্টেম প্রোফাইলের মধ্যে অন্তর্ভুক্ত "
-"করো"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr ""
-"নীচে, প্রত্যেকটি প্যাকেজ আনচেক করে আপনি পৃথকভাবে এগুলিকে নির্বাচন তালিকা থেকে "
-"সরিয়ে ফলেতে পারেন।"
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "প্যাকেজ তালিকা তৈরি করা হচ্ছে"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*ইমেইলের ঠিকানা:"
-
-# modified for RHEL
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr ""
-"    --force                    - সিস্টেমটি পূর্বে নিবন্ধিত হয়ে থাকলেও পুনরায় "
-"নিবন্ধন করুন"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr ""
-"এটি প্রদর্শন করে যে এই সিস্টম সফটওয়্যার হালনাগাদকরণের জন্য ইতোমধ্য সেট আপ করা আছে:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "আপনি কি নিশ্চিত আপনি এটি করতে চান?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Red Hat নেটওয়ার্কে প্রোফাইল সম্বন্ধীয় তথ্য প্রেরণ করো"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel"
-"\" and no information will be sent.  You can run the registration program "
-"later by typing `rhn_register` at the command line."
-msgstr ""
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "সাবস্ক্রিপশন পর্যালোচনা করুন"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "নিচে সাবস্ক্রিপশনের বিবরণ পর্যালোচনা করুন:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"এই সিস্টেমে ব্যবহৃত Red Hat Network-র প্রারম্ভিক সংযোগের সময় ইনস্টলেশন নম্বর %s "
-"সক্রিয় হয়েছিল।"
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "সাবস্ক্রিপশন সক্রিয় হয়েছে নিম্নলিখিত রেড হ্যাট এর পণ্য / সেবার জন্য:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "চ্যানেল সংক্রান্ত তথ্য"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, fuzzy, python-format
-msgid "Note: %s has been enabled."
-msgstr "টীকা: yum-rhn-plugin সক্রিয় হয়েছে।"
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"আপনি নিম্নলিখিত সফ্টওয়্যার চ্যানেলে সাবস্ক্রাইব করতে অক্ষম কারণ সেখানে আপনার হিসাবে "
-"অপর্যাপ্ত সাবস্ক্রিপশন রয়েছে:"
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, fuzzy, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"আপনি নিম্নলিখিত সফ্টওয়্যার চ্যানেলে সাবস্ক্রাইব করতে অক্ষম কারণ সেখানে আপনার হিসাবে "
-"অপর্যাপ্ত সাবস্ক্রিপশন রয়েছে:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "গুরুতর সমস্যা"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "সতর্কবাণী"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "ঠিক আছে"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "সমস্যা"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "পরবর্তী"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "পূর্ববর্তী"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "বাতিল"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "না, বাতিল করুন"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "হ্যা, চালিয়ে যান"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "অপশনটি থেকে সরিয়ে ফেলতে <space> চাপুন।"
-
-#: ../src/up2date_client/rpcServer.py:56
+#: ../src/up2date_client/rpcServer.py:55
 msgid "Error: Server Unavailable. Please try later."
 msgstr "ত্রুটি: সর্ভার বিদ্যমান নয়। অনুগ্রহপূর্বক পরে চেষ্টা করুন।"
 
-#: ../src/up2date_client/rpcServer.py:182
+#: ../src/up2date_client/rpcServer.py:181
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "ত্রুটি: RHNS CA ফাইল খুঁজে পাওয়া যাচ্ছে না।"
 
-#: ../src/up2date_client/rpcServer.py:220
-msgid "Connection aborted by the user"
-msgstr "ব্যবহারকারীর দ্বারা সংযোগ বিচ্ছিন্ন করা হয়েছে"
-
-#: ../src/up2date_client/rpcServer.py:268
-msgid "Server has refused connection due to high load"
-msgstr "সার্ভারে অতিরিক্ত চাপের কারণে সার্ভার সংযোগ প্রত্যাখান করেছে।"
-
-#: ../src/up2date_client/tui.py:138
-#, fuzzy
-msgid "Spacewalk Location:"
-msgstr "রেড হ্যাট নেটওয়ার্কের অবস্থান:"
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "সিস্টেম ID:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "সার্ভার একটি সমস্যা উল্লেখ করেছে:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "নিবন্ধন সার্ভারের সঙ্গে যোগাযোগে একটি ত্রুটি ছিল:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "প্রোফাইলের নাম:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "সংস্করণ:"
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "সিপিইউ মডেল:"
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "হোস্টের নাম:"
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "সিপিইউ এর গতি:"
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d মেগাহার্জ"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP এর ঠিকানা: "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "স্মৃতি:"
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s মেগাবাইট"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "সিস্টেম নিবন্ধন করতে সমস্যা হয়েছে:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "সিস্টেম নিবন্ধনে সমস্যা।"
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "সিস্টেম id ডিস্কে লিখতে সমস্যা হয়েছে।"
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "হার্ডওয়্যার প্রোফাইল প্রেরণে সমস্যা:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "হার্ডওয়্যার প্রোফাইল প্রেরণে সমস্যা হয়েছে।"
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "প্যাকেজ তালিকা প্রেরণে সমস্যা:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "প্যাকেজ তালিকা প্রেরণে সমস্যা হয়েছে।"
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "সম্পন্ন"
-
-#: ../src/up2date_client/tui.py:1210
-#, fuzzy
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr ""
-"আপনি একটি অকার্যকর প্রটোকল উল্লেখ করেছেন। শুধুমাত্র https ও http-র অনুমতি দেওয়া হয়।"
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> বস্তুর মধ্যে চলাচল  |  <Space> বাছাই করে  |  <F12> পরবর্তী পর্দা"
-
-#: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "RHN নিবন্ধন প্রোগ্রামটি root পরিচয় ব্যবহার করে চালাতে হবে।"
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "RPM জড়িত ত্রুটি।  বার্তাটি ছিল:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "পাসওয়ার্ড সংক্রান্ত সমস্যা।  বার্তাটি ছিল:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM নির্ভরতা সংক্রান্ত সমস্যা। বার্তাটি:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "সার্ভারের সাথে যোগাযোগে সমস্যা। বার্তাটি ছিল:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "ফাইল পাওয়া যায়নি: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "সার্ভারে বিলম্ব সংক্রান্ত সমস্যা হয়েছে।  বার্তাটি ছিল:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "সার্ভারের তথ্যের বৈধতা যাচাইয়ে সমস্যা:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "সংস্থাপন সংখ্যাটি অকার্যকর"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "oemInfo ফাইল পার্স করার সময় এই ক্ষেত্রে সমস্যা হয়েছে:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr "নেটওয়ার্কের ত্রুটি:"
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1073,107 +126,536 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "প্রোফাইলের নাম সুনির্দিষ্টভাবে উল্লেখ করুন"
-
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "ব্যবহারকারীর নাম সুনির্দিষ্টভাবে উল্লেখ করুন"
-
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "পাসওয়ার্ড সুনির্দিষ্টভাবে উল্লেখ করুন"
-
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "এই সিস্টেমের জন্য প্রাতিষ্ঠানিক আইডি উল্লেখ করুন"
-
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "একটি সার্ভার হিসাবে ব্যবহার করার জন্য একটি URL নির্দিষ্ট করুন"
-
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "the ssl CA cert এর মত একটি ফাইল সুনির্দিষ্ট করুন"
-
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "একটি সক্রিয়করণ কী উল্লেখ করুন"
-
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[Deprecated] stdin থেকে যোগাযোগের তথ্য পড়ুন"
-
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "অনুসন্ধান অথবা কোন হার্ডওয়্যারের তথ্য আপলোড করবেন না"
-
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "কোন প্যাকেজের তথ্য প্রোফাইল অথবা আপলোড করবেন না"
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "কোন ভার্চুয়ালাইজেশন তথ্য আপলোড করবেন না"
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "এটি ইতোমধ্যে নিবন্ধন করা থাকলেও রেজিস্টার করুন"
-
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "একটি সিস্টেম নিবন্ধন করতে একটি ব্যবহারকরীর নাম এবং পাসওয়ার্ড প্রয়োজন।"
-
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "এই সিস্টেমটি পূর্বেই নিবন্ধিত করা হয়েছে। --force ব্যবহার করে এটি উপেক্ষা করুন"
-
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr ""
+#~ msgid ""
+#~ "This client requires the server to support %s, which the current server "
+#~ "does not support"
+#~ msgstr ""
+#~ "এই ক্লায়েন্টের জন্য সার্ভারের দ্বারা %s-র সমর্থিত হওয়া আবশ্যক। বর্তমান সার্ভারে "
+#~ "এটি সমর্থিত নয়।"
 
-#: ../src/bin/rhnreg_ks.py:172
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "সিস্টেমে ইনস্টলকৃত প্যাকেজের তালিকা আহরণ করা হচ্ছে"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "cpu সংক্রান্ত তথ্য পড়তে সমস্যা হয়েছে:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "সিস্টেমের মেমরি সংক্রান্ত তথ্য পড়তে সমস্যা:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "নেটওয়ার্ক সংক্রান্ত তথ্য পড়তে সমস্যা:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "ইনস্টলেশন পদ্ধতি সংক্রান্ত তথ্য পড়তে সমস্যা:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "নেটওয়ার্ক ইন্টারফেস সংক্রান্ত তথ্য পড়তে সমস্যা:"
+
+#, fuzzy
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "নেটওয়ার্ক সংক্রান্ত তথ্য পড়তে সমস্যা:"
+
+#, fuzzy
+#~ msgid "Error reading system info:"
+#~ msgstr "সিস্টেমের মেমরি সংক্রান্ত তথ্য পড়তে সমস্যা:"
+
+#, fuzzy
+#~ msgid "Error reading machine info:"
+#~ msgstr "cpu সংক্রান্ত তথ্য পড়তে সমস্যা হয়েছে:"
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "systemid খুঁজে বের করতে ব্যর্থ"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr ""
+#~ "একটি চ্যানেলের সাথে যুক্ত না হওয়া পর্যন্ত সিস্টেমটিকে পরিবর্ধিত নাও হতে পারে।"
+
+#, fuzzy
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "অতিরিক্ত আউটপুট প্রদর্শন করো"
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "ব্যবহারের জন্য একটি http প্রক্সি উল্লেখ করুন"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "অনুমোদিত http প্রক্সিতে ব্যবহারের জন্য একটি ব্যবহারকারীর-নাম উল্লেখ করুন"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "অনুমোদিত http প্রক্সির সাথে ব্যবহারের জন্য একটি পাসওয়ার্ড উল্লেখ করুন"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "অস্বাভাবিক সমাপ্তি ঘটেছে।\n"
+
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "অপারেটিং সিস্টেম সংক্রান্ত একটি অপ্রত্যাশিত সমস্যা দেখা দিয়েছে: %s\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"কোনো প্রোফাইলের নাম উল্লেখ করা হয়নি। প্রোফাইল নাম হিসাবে ব্যবহার করার জন্য কোনো "
-"হোস্ট নাম অথবা IP অ্যাড্রেস নির্ণয় করা যায়নি। অনুগ্রহ করে একটি প্রোফাইল-নাম উল্লেখ "
-"করুন।"
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "কোনো ধরনের I/O ( ইনপুট/আউটপুট ) সমস্যা হয়েছে: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "SSL জড়িত একটি সমস্যা হয়েছে: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "এই সমস্যার একটি প্রধান কারণ সিস্টেমের ভুল সময়।  সুতরাং এই সিস্টেমের সময় সঠিক "
+#~ "কিনা তা পরীক্ষা করুন।\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "একটি SSL crypto জড়িত সমস্যা হয়েছে: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "পরিচয়-প্রমাণ প্রক্রিয়ায় একটি সমস্যা হয়েছে: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "আপনাকে %s চালাতে হলে অবশ্যই রুট হতে হবে"
+
+#~ msgid "An error has occurred:"
+#~ msgstr "একটি ত্রুটি ঘটেছে:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "আরও তথ্যের জন্য /var/log/up2date দেখুন"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "Copyright © 2006--2014 Red Hat, Inc. সমস্ত অধিকার সংরক্ষিত।"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "আপনাকে অবশ্যই লগইন করতে হবে।"
+
+#, fuzzy
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Red Hat Network-সার্ভারের সাথে যোগাযোগ করার চেষ্টা করা হচ্ছে।"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr ""
+#~ "আমরা %s তে রেড হ্যাট নেটওয়ার্ক সার্ভারের সাথে যোগাযোগ করার চেষ্টা করেছিলাম।"
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "%s তে প্রক্সি উল্লেখ করা হয়েছিল।"
+
+# modified for RHEL
+#~ msgid "System Registration"
+#~ msgstr "registrationNumber"
+
+#, fuzzy, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "কেন আমার RHN-র সাথে সংযোগ করা উচিত? ..."
+
+#~ msgid "Why Register"
+#~ msgstr "নিবন্ধন করবেন কেন"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "রেড হ্যাট নেটওয়ার্ক সিস্টেমে আপনার সিস্টেমের সংযুক্তকরন আপনাকে একটি প্রাপ্ত "
+#~ "সাবস্ক্রিপশন সুবিধা সম্পূর্ণ সুবিধা দিবে, সাথে:"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "সিকিউরিটি এবং হালনাগাদকরণ:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "ডাউনলোড এবং উন্নীতকরণ:"
+
+#~ msgid "Support:"
+#~ msgstr "সমর্থন:"
+
+#~ msgid "Compliance:"
+#~ msgstr "সম্মতি:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "রেড হ্যাট লিনাক্স সিস্টেম হালনাগাদ এবং নিরাপদ রেখে, নিরাপত্তা হালনাগাদের সাথে "
+#~ "সর্বশেষ সফ্টওয়্যার হালনাগাদ প্রাপ্ত হন।"
+
+#, fuzzy
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "রেড হ্যাট লিনাক্স এর অব্যাহতির জন্য ইনস্টলেশনের ছবি ডাউনলোড করুন, নতুন অব্যাহতির "
+#~ "সাথে।"
+
+#, fuzzy
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "যে কোন বিষয়ে যা আপনি সিস্টেমের সাথে সম্মুখীন হতে পারেন সেটির সাহায্যের জন্য "
+#~ "রেড হ্যাট অথবা রেড হ্যাটের সহযোগীদের প্রযুক্তিগত সমর্থনের বিশেষজ্ঞদের পরিসেবা।"
+
+#, fuzzy
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "পরামর্শ: রেড হ্যাট আপনার ব্যক্তিগত গোপনীয়তার মান রক্ষা করে: http://www.redhat."
+#~ "com/legal/privacy_statement.html"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "আমাকে নিবন্ধনে ফিরিয়ে নিয়ে যান"
+
+# msgstr "  <Tab>/<Alt-Tab> বস্তুর মধ্যে  |  <Space> বাছাই করে  |  <F12>
+# পরবর্তী পর্দা"-->tranlsated in this format in a few recent files
+# (suggestion)
+# modfied for RHEL
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "up2date পুনরায় চালু করা হচ্ছে"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "রেড হ্যাট নেটওয়ার্ক সিস্টেমে আপনার সিস্টেমের সংযুক্তকরন আপনাকে একটি প্রাপ্ত "
+#~ "সাবস্ক্রিপশন সুবিধা সম্পূর্ণ সুবিধা দিবে, সাথে:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "একটি Red Hat Network সার্ভারের সাথে সংযোগ ব্যতীত আপনি সাফল্যের সাথে এই "
+#~ "সিস্টেম নিবন্ধন করতে পারবেন না।"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "আমাকে সেটআপ প্রক্রিয়ায় ফিরিয়ে নিয়ে যান।"
+
+#~ msgid "I'll register later."
+#~ msgstr "আমি নিবন্ধন পরে করব।"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "অনুগ্রহ করে হিসাবের তথ্য দিন <b>%s</b> রেড হ্যাট নেটওয়ার্ক সেটালাইটের জন্য:"
+
+#~ msgid "Login:"
+#~ msgstr "লগইন:"
+
+#~ msgid "Password:"
+#~ msgstr "পাসওয়ার্ড:"
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "একটি আকাঙ্খিত লগইন প্রবেশ করান।"
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "একটি পাসওয়ার্ড দিন এবং যাচাই করুন।"
+
+#~ msgid "Operating System version:"
+#~ msgstr "অপারেটিং সিস্টেমের সংস্করণ:"
+
+#~ msgid " Minor Release: "
+#~ msgstr "ক্ষুদ্র রিলিজ:"
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "শুধুমাত্র সীমিত হালনাগাদ"
+
+#~ msgid "All available updates"
+#~ msgstr "সকল সহজলভ্য হালনাগাদ"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "অপারেটিং সিস্টেম রিলিজ নির্বাচন নিশ্চিত করুন"
+
+# modified for RHEL
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "আপনার সিস্টেমটি সংযুক্ত করুন"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Red Hat নেটওয়ার্কের ওয়েব পেজে আপনার সিস্টেম প্রোফাইলকে সনাক্ত করার জন্য আপনার "
+#~ "নির্বাচিত একটি বর্ণনামূলক নাম ব্যবহৃত হয়। এই\n"
+#~ "নামটি হল প্রোফাইলের নাম।  এই নামের পরিবর্তে কম্পিউটারের সিরিয়াল নম্বর অথবা "
+#~ "সনাক্তকরণ নম্বরও ব্যবহার করা যেতে পারে।"
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "হার্ডওয়্যার সংক্রান্ত অতিরিক্ত তথ্য যেমন, PCI ডিভাইস, ডিস্কের সাইজ এবং মাউন্ট "
+#~ "পয়েন্ট এই প্রোফাইলে অন্তর্ভুক্ত করা হবে।"
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "নেটওয়ার্ক এবং হার্ডওয়্যার সংক্রান্ত নিম্নলিখিত তথ্যগুলি অন্তর্ভুক্ত করুন:"
+
+# modified for RHEL
+#~ msgid "Create Profile - Packages"
+#~ msgstr "আপনার সিস্টেমটি সংযুক্ত করুন"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "বর্তমান সিস্টেমের জন্য উপযুক্ত আপডেট সফটওয়্যার নির্ধারণ করতে RPM সংক্রান্ত তথ্য "
+#~ "অত্যন্ত গুরুত্ত্বপূর্ণ।"
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr ""
+#~ "বর্তমান সিস্টেমে ইনস্টল করা RPM প্যাকেজগুলিকে আমার সিস্টেম প্রোফাইলের মধ্যে "
+#~ "অন্তর্ভুক্ত করো"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr ""
+#~ "নীচে, প্রত্যেকটি প্যাকেজ আনচেক করে আপনি পৃথকভাবে এগুলিকে নির্বাচন তালিকা থেকে "
+#~ "সরিয়ে ফলেতে পারেন।"
+
+#~ msgid "Building Package List"
+#~ msgstr "প্যাকেজ তালিকা তৈরি করা হচ্ছে"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*ইমেইলের ঠিকানা:"
+
+# modified for RHEL
+#~ msgid "System Already Registered"
+#~ msgstr ""
+#~ "    --force                    - সিস্টেমটি পূর্বে নিবন্ধিত হয়ে থাকলেও পুনরায় "
+#~ "নিবন্ধন করুন"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr ""
+#~ "এটি প্রদর্শন করে যে এই সিস্টম সফটওয়্যার হালনাগাদকরণের জন্য ইতোমধ্য সেট আপ করা "
+#~ "আছে:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "আপনি কি নিশ্চিত আপনি এটি করতে চান?"
+
+#, fuzzy, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "Red Hat নেটওয়ার্কে প্রোফাইল সম্বন্ধীয় তথ্য প্রেরণ করো"
+
+#~ msgid "Review Subscription"
+#~ msgstr "সাবস্ক্রিপশন পর্যালোচনা করুন"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "নিচে সাবস্ক্রিপশনের বিবরণ পর্যালোচনা করুন:"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "এই সিস্টেমে ব্যবহৃত Red Hat Network-র প্রারম্ভিক সংযোগের সময় ইনস্টলেশন নম্বর %s "
+#~ "সক্রিয় হয়েছিল।"
+
+#, fuzzy
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "সাবস্ক্রিপশন সক্রিয় হয়েছে নিম্নলিখিত রেড হ্যাট এর পণ্য / সেবার জন্য:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "চ্যানেল সংক্রান্ত তথ্য"
+
+#, fuzzy, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "টীকা: yum-rhn-plugin সক্রিয় হয়েছে।"
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "আপনি নিম্নলিখিত সফ্টওয়্যার চ্যানেলে সাবস্ক্রাইব করতে অক্ষম কারণ সেখানে আপনার "
+#~ "হিসাবে অপর্যাপ্ত সাবস্ক্রিপশন রয়েছে:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "আপনি নিম্নলিখিত সফ্টওয়্যার চ্যানেলে সাবস্ক্রাইব করতে অক্ষম কারণ সেখানে আপনার "
+#~ "হিসাবে অপর্যাপ্ত সাবস্ক্রিপশন রয়েছে:"
+
+#~ msgid "Fatal Error"
+#~ msgstr "গুরুতর সমস্যা"
+
+#~ msgid "Warning"
+#~ msgstr "সতর্কবাণী"
+
+#~ msgid "OK"
+#~ msgstr "ঠিক আছে"
+
+#~ msgid "Error"
+#~ msgstr "সমস্যা"
+
+#~ msgid "Next"
+#~ msgstr "পরবর্তী"
+
+#~ msgid "Back"
+#~ msgstr "পূর্ববর্তী"
+
+#~ msgid "Cancel"
+#~ msgstr "বাতিল"
+
+#~ msgid "No, Cancel"
+#~ msgstr "না, বাতিল করুন"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "হ্যা, চালিয়ে যান"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "অপশনটি থেকে সরিয়ে ফেলতে <space> চাপুন।"
+
+#~ msgid "Connection aborted by the user"
+#~ msgstr "ব্যবহারকারীর দ্বারা সংযোগ বিচ্ছিন্ন করা হয়েছে"
+
+#~ msgid "Server has refused connection due to high load"
+#~ msgstr "সার্ভারে অতিরিক্ত চাপের কারণে সার্ভার সংযোগ প্রত্যাখান করেছে।"
+
+#, fuzzy
+#~ msgid "Spacewalk Location:"
+#~ msgstr "রেড হ্যাট নেটওয়ার্কের অবস্থান:"
+
+#~ msgid "System ID:"
+#~ msgstr "সিস্টেম ID:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "সার্ভার একটি সমস্যা উল্লেখ করেছে:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr "নিবন্ধন সার্ভারের সঙ্গে যোগাযোগে একটি ত্রুটি ছিল:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "প্রোফাইলের নাম:"
+
+#~ msgid "Version: "
+#~ msgstr "সংস্করণ:"
+
+#~ msgid "CPU model: "
+#~ msgstr "সিপিইউ মডেল:"
+
+#~ msgid "Hostname: "
+#~ msgstr "হোস্টের নাম:"
+
+#~ msgid "CPU speed: "
+#~ msgstr "সিপিইউ এর গতি:"
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d মেগাহার্জ"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP এর ঠিকানা: "
+
+#~ msgid "Memory: "
+#~ msgstr "স্মৃতি:"
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s মেগাবাইট"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "সিস্টেম নিবন্ধন করতে সমস্যা হয়েছে:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "সিস্টেম নিবন্ধনে সমস্যা।"
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "সিস্টেম id ডিস্কে লিখতে সমস্যা হয়েছে।"
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "হার্ডওয়্যার প্রোফাইল প্রেরণে সমস্যা:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "হার্ডওয়্যার প্রোফাইল প্রেরণে সমস্যা হয়েছে।"
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "প্যাকেজ তালিকা প্রেরণে সমস্যা:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "প্যাকেজ তালিকা প্রেরণে সমস্যা হয়েছে।"
+
+#~ msgid "Finish"
+#~ msgstr "সম্পন্ন"
+
+#, fuzzy
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr ""
+#~ "আপনি একটি অকার্যকর প্রটোকল উল্লেখ করেছেন। শুধুমাত্র https ও http-র অনুমতি দেওয়া "
+#~ "হয়।"
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> বস্তুর মধ্যে চলাচল  |  <Space> বাছাই করে  |  <F12> পরবর্তী "
+#~ "পর্দা"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "RHN নিবন্ধন প্রোগ্রামটি root পরিচয় ব্যবহার করে চালাতে হবে।"
+
+#~ msgid "Specify a profilename"
+#~ msgstr "প্রোফাইলের নাম সুনির্দিষ্টভাবে উল্লেখ করুন"
+
+#~ msgid "Specify a username"
+#~ msgstr "ব্যবহারকারীর নাম সুনির্দিষ্টভাবে উল্লেখ করুন"
+
+#~ msgid "Specify a password"
+#~ msgstr "পাসওয়ার্ড সুনির্দিষ্টভাবে উল্লেখ করুন"
+
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "এই সিস্টেমের জন্য প্রাতিষ্ঠানিক আইডি উল্লেখ করুন"
+
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "একটি সার্ভার হিসাবে ব্যবহার করার জন্য একটি URL নির্দিষ্ট করুন"
+
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "the ssl CA cert এর মত একটি ফাইল সুনির্দিষ্ট করুন"
+
+#~ msgid "Specify an activation key"
+#~ msgstr "একটি সক্রিয়করণ কী উল্লেখ করুন"
+
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[Deprecated] stdin থেকে যোগাযোগের তথ্য পড়ুন"
+
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "অনুসন্ধান অথবা কোন হার্ডওয়্যারের তথ্য আপলোড করবেন না"
+
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "কোন প্যাকেজের তথ্য প্রোফাইল অথবা আপলোড করবেন না"
+
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "কোন ভার্চুয়ালাইজেশন তথ্য আপলোড করবেন না"
+
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "এটি ইতোমধ্যে নিবন্ধন করা থাকলেও রেজিস্টার করুন"
+
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "একটি সিস্টেম নিবন্ধন করতে একটি ব্যবহারকরীর নাম এবং পাসওয়ার্ড প্রয়োজন।"
+
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr ""
+#~ "এই সিস্টেমটি পূর্বেই নিবন্ধিত করা হয়েছে। --force ব্যবহার করে এটি উপেক্ষা করুন"
+
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "কোনো প্রোফাইলের নাম উল্লেখ করা হয়নি। প্রোফাইল নাম হিসাবে ব্যবহার করার জন্য "
+#~ "কোনো হোস্ট নাম অথবা IP অ্যাড্রেস নির্ণয় করা যায়নি। অনুগ্রহ করে একটি প্রোফাইল-নাম "
+#~ "উল্লেখ করুন।"
 
 #, fuzzy
 #~ msgid "Finish setting up software updates"
