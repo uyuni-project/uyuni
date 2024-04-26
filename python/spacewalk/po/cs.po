@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
@@ -67,10 +67,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "Neplatné URI %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -95,16 +92,6 @@ msgstr "ISS je na tomto serveru deaktivováno."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nemá povolen ISS."
 
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Očekávám jméno balíku, nikoliv \"%s\""
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Očekávám balík, nikoliv \"%s\""
-
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -117,67 +104,6 @@ msgstr "Neplatný session key"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "Toto ID serveru již neexistuje"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Neplatná hodnota operace typu %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Operace %s nenáleží k serveru %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "Chybí požadovaná data"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "Chybí požadovaní členi"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "Pokoušíte se zaregistrovat systém na neexistujicího uživate"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "Požadována neplatná release verze systému"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Nelze najít platné síťové rozhraní, ipaddr (IPv4) a ip6addr (IPv6) nebyly "
-"nalezeny."
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "Uvítací zpráva {PRODUCT_NAME}"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "Prohlášení o ochraně soukromí"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "Jako argument u produktu je očekáván slovník"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Neplatná hodnota '%s' pro %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "Neplatný pár system_id/action_id."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -300,7 +226,7 @@ msgstr "Byl vyžádán neplatný RPM balík %s"
 msgid "Package not found"
 msgstr "Balík nenalezen"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "Architektura '%s' není podporována"
@@ -511,8 +437,8 @@ msgstr ""
 "\n"
 "     Znovu se zaregistrujte jako superuživatel root příkazem mgr_register.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled"
-"\" (Overview),\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview),\n"
 "     zvolte \"Správu předplatných\" (Subscription Management)\n"
 "     pro aktivaci služby pro tento systém.\n"
 "     "
@@ -539,8 +465,8 @@ msgstr ""
 "\n"
 "     Tento systém nemá platné oprávnění pro Správce SUSE.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled"
-"\" (Overview)\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview)\n"
 "     zvolte \"Správu předplatných\" (Subscription Management),\n"
 "     abyste si aktivovali službu pro tento systém.\n"
 "     "
@@ -1262,16 +1188,16 @@ msgstr "Import spustitelných stromů (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Importované startovatelné stromy (%d)"
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ odesílání protokolu jako e-mailu +++"
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:140
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s synchronizační zpráva od %s"
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ vyžadován e-mail, ale není nic k odeslání +++"
 
@@ -2045,6 +1971,62 @@ msgstr "  28 - chyba: --master je platný pouze s --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznámá verze výpisu, zkuste jeden z %s"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "Očekávám jméno balíku, nikoliv \"%s\""
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "Očekávám balík, nikoliv \"%s\""
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "Neplatná hodnota operace typu %s (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "Operace %s nenáleží k serveru %s"
+
+#~ msgid "Required data missing"
+#~ msgstr "Chybí požadovaná data"
+
+#~ msgid "Required members missing"
+#~ msgstr "Chybí požadovaní členi"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "Pokoušíte se zaregistrovat systém na neexistujicího uživate"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "Požadována neplatná release verze systému"
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "Nelze najít platné síťové rozhraní, ipaddr (IPv4) a ip6addr (IPv6) nebyly "
+#~ "nalezeny."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "Uvítací zpráva {PRODUCT_NAME}"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "Prohlášení o ochraně soukromí"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "Jako argument u produktu je očekáván slovník"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "Neplatná hodnota '%s' pro %s (%s)"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "Neplatný pár system_id/action_id."
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "Neplatná hodnota %s (%s)"
 
 #, python-format
 #~ msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2024-04-02 06:43+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -63,10 +63,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "Невалиден URI %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -91,16 +88,6 @@ msgstr "ISS е исклучен на овој сервер."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Серверот \"%s\" не е вклучен за ISS."
 
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Се очекуваше име на пакет, а не: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Се очекуваше пакет, а не: %s"
-
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -113,67 +100,6 @@ msgstr "Невалиден клуч за сесија"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "Оваа идентификација за серверот повеќе не постои"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Невалидна вредност за тип на акција %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Акцијата %s не припаѓа на серверот %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "Недостигаат потребни податоци"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "Недостасуваат потребни корисници"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "Пробај да се регистрира систем кон инвалидно корисничко име"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "Невалидна системска верзија беше побарана"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Неможеше да се најде валиден мрежен интерфејс, и ipaddr и ip6addr nе беа "
-"најдени."
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} Влезна Порака"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "Изјава за Приватност"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "Се очекуваше речник како аргумент на продуктот"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Невалидна вредност '%s' за %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "Невалиден пар на system_id/action_id."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Невалидна вредност %s (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -298,7 +224,7 @@ msgstr "Се бара невалиден RPM пакет %s"
 msgid "Package not found"
 msgstr "Пакетот не е најден"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "Архитектурата \"%s\" не е поддржана"
@@ -1136,16 +1062,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:140
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
@@ -1878,3 +1804,59 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "Се очекуваше име на пакет, а не: %s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "Се очекуваше пакет, а не: %s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "Невалидна вредност за тип на акција %s (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "Акцијата %s не припаѓа на серверот %s"
+
+#~ msgid "Required data missing"
+#~ msgstr "Недостигаат потребни податоци"
+
+#~ msgid "Required members missing"
+#~ msgstr "Недостасуваат потребни корисници"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "Пробај да се регистрира систем кон инвалидно корисничко име"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "Невалидна системска верзија беше побарана"
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "Неможеше да се најде валиден мрежен интерфејс, и ipaddr и ip6addr nе беа "
+#~ "најдени."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "{PRODUCT_NAME} Влезна Порака"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "Изјава за Приватност"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "Се очекуваше речник како аргумент на продуктот"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "Невалидна вредност '%s' за %s (%s)"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "Невалиден пар на system_id/action_id."
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "Невалидна вредност %s (%s)"
