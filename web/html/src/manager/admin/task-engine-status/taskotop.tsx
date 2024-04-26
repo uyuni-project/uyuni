@@ -12,7 +12,6 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
-import { log } from "console";
 
 type Props = {
   refreshInterval: number;
