@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 15:15+0100\n"
+"POT-Creation-Date: 2024-04-26 10:08+0200\n"
 "PO-Revision-Date: 2024-02-11 20:42+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
@@ -831,7 +831,7 @@ msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:61
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
@@ -1684,34 +1684,34 @@ msgstr "). "
 msgid "Refresh matching data"
 msgstr "Obnoviť priraďovacie údaje"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:34
 msgid "Unsupported part number detected"
 msgstr "Bolo zistené nepodporované číslo časti"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
 "Fyzický systém je hlásený ako virtuálny hosť. prosím, skontrolujte "
 "hardvérové údaje"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr ""
 "Virtuálny hosť má neznámeho hostiteľa za predpokladu, že ide o fyzický systém"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "Systém má neznámy počet soketov, predpokladá sa 16"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
 msgstr ""
 "Dve predplatné s rovnakým číslom časti sú vo zväzku - zlúčené do jedného"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:45
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1719,15 +1719,15 @@ msgstr ""
 "Dve predplatné s rovnakým číslom čast (a ďalšími vlastnosťami) boli zlúčené "
 "dohromady - dátum začiatku/konca môže byť orientačný"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "Pripnuté priradenie bolo upravené z dôvodu zlúčeného predplatného"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:52
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:62
 msgid "Subscription IDs"
 msgstr "ID položiek predplatného"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
 msgid ""
 "Subscription with unsupported part number and no associated product has been "
 "ignored."
@@ -1735,23 +1735,23 @@ msgstr ""
 "Predplatné s nepodporovaným číslom časti a žiadnym súvisiacim produktom bolo "
 "ignorované."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
 msgstr "Prosím, skontrolujte varovné a informačné správy nižšie."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:103
 msgid "Message"
 msgstr "Správa"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
 msgid "Additional information"
 msgstr "Ďalšie informácie"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:118
 msgid "No messages from the last match run."
 msgstr "Žiadne správy z posledného behu priradení."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:123
 msgid "Messages"
 msgstr "Správy"
 

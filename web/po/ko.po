@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 15:15+0100\n"
+"POT-Creation-Date: 2024-04-26 10:08+0200\n"
 "PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
@@ -824,7 +824,7 @@ msgstr ""
 "오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:61
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
@@ -1662,32 +1662,32 @@ msgstr "입니다). "
 msgid "Refresh matching data"
 msgstr "일치 데이터 새로 고침"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:34
 msgid "Unsupported part number detected"
 msgstr "지원되지 않는 파트 번호 감지됨"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
 "물리적 시스템이 가상 게스트로 보고되었습니다. 하드웨어 데이터를 확인하십시오."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr ""
 "가상 게스트에 알 수 없는 호스트가 있으며, 물리적 시스템으로 간주됩니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "시스템에 알 수 없는 소켓이 있으며, 16으로 간주됩니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
 msgstr "번들에 파트 번호가 동일한 구독이 2개 있음 - 하나로 병합"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:45
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1695,38 +1695,38 @@ msgstr ""
 "파트 번호(및 기타 속성)가 동일한 구독 2개가 병합됨 - 시작/종료 날짜를 나타낼 "
 "수 있음"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "구독이 병합되어 고정 일치가 조정됨"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:52
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:62
 msgid "Subscription IDs"
 msgstr "구독 ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
 msgid ""
 "Subscription with unsupported part number and no associated product has been "
 "ignored."
 msgstr ""
 "부품 번호가 지원되지 않은 구독 및 관련 제품이 없는 구독이 무시되었습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
 msgstr "아래 경고 및 정보 메시지를 검토하십시오."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:103
 msgid "Message"
 msgstr "메시지"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
 msgid "Additional information"
 msgstr "추가 정보"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:118
 msgid "No messages from the last match run."
 msgstr "마지막 일치 실행에서 제공된 메시지가 없습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:123
 msgid "Messages"
 msgstr "메시지"
 
