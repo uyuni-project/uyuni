@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2024-03-19 03:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -28,17 +28,68 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:444
+#: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
 msgstr "남음"
 
-#: ../html/javascript/spacewalk-essentials.js:464
+#: ../html/javascript/spacewalk-essentials.js:461
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
 "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 "
 "사용하십시오."
+
+#: ../html/src/components/CoCoScansList.tsx:75
+#: ../html/src/components/package/PackageListActionScheduler.tsx:89
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
+msgid "The action has been <link>scheduled</link>."
+msgstr "작업이 <link>예약</link>되었습니다."
+
+#: ../html/src/components/CoCoScansList.tsx:90
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
+msgid ""
+"Unable to schedule action. Please check the server logs for detailed "
+"information."
+msgstr ""
+
+#: ../html/src/components/CoCoScansList.tsx:122
+#, fuzzy
+msgid "Confirm Attestation Execution"
+msgstr "실행할 상태 구성"
+
+#: ../html/src/components/CoCoScansList.tsx:130
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:447
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
+msgid "Schedule"
+msgstr "일정"
+
+#: ../html/src/components/CoCoScansList.tsx:137
+#: ../html/src/components/CoCoScansList.tsx:192
+#: ../html/src/components/package/PackageListActionScheduler.tsx:189
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
+msgid "Back to list"
+msgstr "목록으로 돌아가기"
+
+#: ../html/src/components/CoCoScansList.tsx:153
+msgid "Confidential Computing Attestations"
+msgstr ""
+
+#: ../html/src/components/CoCoScansList.tsx:163
+#, fuzzy
+msgid "Schedule Attestation"
+msgstr "일정 세부 사항"
+
+#: ../html/src/components/CoCoScansList.tsx:187
+msgid "Attestation Report details"
+msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -110,6 +161,198 @@ msgstr "추가 위치:"
 msgid "Loading the scheduler..."
 msgstr "스케줄러를 로드하는 중..."
 
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
+#, fuzzy
+msgid "Attestations"
+msgstr "다시 시작"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
+#, fuzzy
+msgid "Attestation"
+msgstr "다시 시작"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
+msgid "Attestation #{identifier} run on {date} at {time}"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:49
+#: ../html/src/components/target-systems.tsx:34
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:203
+#: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/all-list.tsx:62
+#: ../html/src/manager/systems/list-filter.tsx:41
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
+msgid "System"
+msgstr "시스템"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:59
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
+#, fuzzy
+msgid "Environment Type"
+msgstr "환경 라이프싸이클"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
+#: ../html/src/manager/notifications/notification-messages.tsx:510
+msgid "Created"
+msgstr "생성됨"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:90
+#, fuzzy
+msgid "Last modified"
+msgstr "마지막으로 수정된 날짜"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
+#: ../html/src/manager/images/image-view-runtime.tsx:130
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
+#: ../html/src/manager/systems/virtual-list.tsx:82
+msgid "Status"
+msgstr "상태"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
+#, fuzzy
+msgid "Attestation time"
+msgstr "실행 시간"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/images/image-profiles.tsx:190
+#: ../html/src/manager/images/image-stores.tsx:192
+#: ../html/src/manager/images/image-view.tsx:683
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:64
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:49
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:202
+#: ../html/src/manager/salt/keys/key-management.tsx:195
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
+#: ../html/src/manager/virtualization/ListTab.tsx:258
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
+msgid "Actions"
+msgstr "작업"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:115
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:54
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
+#: ../html/src/manager/images/image-view-patches.tsx:87
+#: ../html/src/manager/images/image-view.tsx:689
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:69
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:54
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:207
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
+msgid "Details"
+msgstr "세부 사항"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:41
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:35
+#, fuzzy
+msgid "Status:"
+msgstr "상태"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:67
+#, fuzzy
+msgid "Created on"
+msgstr "생성됨"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:75
+#, fuzzy
+msgid "Last modified on"
+msgstr "마지막으로 수정된 날짜"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:84
+#: ../html/src/manager/notifications/notification-messages.tsx:515
+msgid "Action"
+msgstr "작업"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:89
+msgid "{actionName} scheduled by {actionScheduledBy}"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:100
+msgid "Attested on"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:118
+#: ../html/src/manager/images/image-view.tsx:789
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+msgid "Overview"
+msgstr "개요"
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:19
+#, fuzzy
+msgid "Result Type:"
+msgstr "빌드 유형"
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:27
+msgid "Description:"
+msgstr "설명:"
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:44
+msgid "Attested on:"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:66
+msgid "Process Output"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
+#: ../html/src/components/formula-selection.tsx:279
+#: ../html/src/components/panels/CreatorPanel.tsx:125
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
+#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
+#: ../html/src/manager/minion/packages/package-states.tsx:194
+msgid "Save"
+msgstr "저장"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
+#, fuzzy
+msgid "Reset Changes"
+msgstr "변경사항 저장"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
+#, fuzzy
+msgid "Enable attestation"
+msgstr "선택을 취소할 수 없음"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
+#, fuzzy
+msgid "Executions"
+msgstr "실행 시간"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
+msgid "Peform attestation during the boot process"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
+msgid "Peform attestation on a schedule"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
+#, fuzzy
+msgid "Select a schedule"
+msgstr "일정 선택"
+
+#: ../html/src/components/coco-attestation/Utils.tsx:49
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
+msgid "N/A"
+msgstr ""
+
 #: ../html/src/components/combobox.tsx:96
 #, fuzzy
 msgid "Create {label}"
@@ -151,6 +394,7 @@ msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 �
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:114
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:108
@@ -217,15 +461,6 @@ msgstr ""
 "에서 구성할 수 있습니다. 이를 통해 소프트웨어를 자동으로 설치 및 구성할 수 있"
 "습니다."
 
-#: ../html/src/components/formula-selection.tsx:279
-#: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
-#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
-#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
-#: ../html/src/manager/minion/packages/package-states.tsx:194
-msgid "Save"
-msgstr "저장"
-
 #: ../html/src/components/formula-selection.tsx:299
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
@@ -237,6 +472,7 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
+#: ../html/src/manager/appstreams/list-appstreams.tsx:41
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "재설정"
@@ -284,10 +520,6 @@ msgstr "특징 없음"
 msgid "No options"
 msgstr "Kiwi 옵션"
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:89
-msgid "The action has been <link>scheduled</link>."
-msgstr "작업이 <link>예약</link>되었습니다."
-
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
 msgstr "선택을 취소할 수 없음"
@@ -299,18 +531,14 @@ msgstr "작업을 수행할 수 없습니다."
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:339
 #: ../html/src/components/states-picker.tsx:529
-#: ../html/src/manager/admin/setup/products/products.tsx:1146
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
+#: ../html/src/manager/admin/setup/products/products.tsx:1156
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
 msgid "Confirm"
 msgstr "확인"
-
-#: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
-msgid "Back to list"
-msgstr "목록으로 돌아가기"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
@@ -336,7 +564,7 @@ msgstr "첫 번째"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:450
+#: ../html/src/manager/admin/setup/products/products.tsx:451
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -345,7 +573,7 @@ msgstr "이전"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:456
+#: ../html/src/manager/admin/setup/products/products.tsx:457
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -364,36 +592,36 @@ msgstr "<dropdown></dropdown> / {total}페이지"
 msgid "Page {current} of {total}"
 msgstr "{current} / {total}페이지"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:49
+#: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
 msgstr "일요일"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:50
+#: ../html/src/components/picker/recurring-event-picker.tsx:59
 msgid "Monday"
 msgstr "월요일"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:51
+#: ../html/src/components/picker/recurring-event-picker.tsx:60
 msgid "Tuesday"
 msgstr "화요일"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:52
+#: ../html/src/components/picker/recurring-event-picker.tsx:61
 msgid "Wednesday"
 msgstr "수요일"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:53
+#: ../html/src/components/picker/recurring-event-picker.tsx:62
 msgid "Thursday"
 msgstr "목요일"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:54
+#: ../html/src/components/picker/recurring-event-picker.tsx:63
 msgid "Friday"
 msgstr "금요일"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:55
+#: ../html/src/components/picker/recurring-event-picker.tsx:64
 msgid "Saturday"
 msgstr "토요일"
 
 #. Field options for filtering in recurring actions list.
-#: ../html/src/components/picker/recurring-event-picker.tsx:325
+#: ../html/src/components/picker/recurring-event-picker.tsx:333
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:165
@@ -401,39 +629,39 @@ msgstr "토요일"
 msgid "Schedule Name"
 msgstr "일정 이름"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:332
-msgid "Select a Schedule"
-msgstr "일정 선택"
-
-#: ../html/src/components/picker/recurring-event-picker.tsx:347
+#: ../html/src/components/picker/recurring-event-picker.tsx:353
 msgid "Hourly:"
 msgstr "매시간:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:364
+#: ../html/src/components/picker/recurring-event-picker.tsx:370
 msgid "The action will be executed every hour at the specified minute"
 msgstr "이 작업은 매시간 지정된 분에 실행됩니다."
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:379
+#: ../html/src/components/picker/recurring-event-picker.tsx:385
 msgid "Daily:"
 msgstr "매일:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:403
+#: ../html/src/components/picker/recurring-event-picker.tsx:409
 msgid "Weekly:"
 msgstr "매주:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:437
+#: ../html/src/components/picker/recurring-event-picker.tsx:443
 msgid "Monthly:"
 msgstr "매월:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:462
+#: ../html/src/components/picker/recurring-event-picker.tsx:468
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr "모든 달에 반복 일정을 사용할 수 있도록 일수는 28일로 제한됩니다."
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:477
+#: ../html/src/components/picker/recurring-event-picker.tsx:483
 msgid "Custom Quartz format:"
 msgstr "사용자 정의 Quartz 형식:"
+
+#: ../html/src/components/picker/recurring-event-picker.tsx:512
+msgid "Select a Schedule"
+msgstr "일정 선택"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
@@ -683,20 +911,20 @@ msgstr "필터"
 msgid "Select a filter"
 msgstr "필터 선택"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:59
 msgid "Items {from} - {to} of {total}"
 msgstr "항목 {from} - {to} / {total}"
 
-#: ../html/src/components/table/SearchPanel.tsx:62
+#: ../html/src/components/table/SearchPanel.tsx:64
 msgid "({selectedCount} selected)"
 msgstr "({selectedCount} 선택됨)"
 
-#: ../html/src/components/table/SearchPanel.tsx:64
-#: ../html/src/manager/admin/setup/products/products.tsx:375
+#: ../html/src/components/table/SearchPanel.tsx:66
+#: ../html/src/manager/admin/setup/products/products.tsx:376
 msgid "Clear"
 msgstr "지우기"
 
-#: ../html/src/components/table/SearchPanel.tsx:71
+#: ../html/src/components/table/SearchPanel.tsx:73
 msgid "Select All"
 msgstr "모두 선택"
 
@@ -705,9 +933,19 @@ msgstr "모두 선택"
 msgid "All"
 msgstr "모두"
 
-#: ../html/src/components/table/TableDataHandler.tsx:409
+#: ../html/src/components/table/TableDataHandler.tsx:407
 msgid "items per page"
 msgstr "페이지당 항목 수"
+
+#: ../html/src/components/target-systems.tsx:22
+#, fuzzy
+msgid "Target Systems"
+msgstr "대상 시스템"
+
+#: ../html/src/components/target-systems.tsx:28
+#, fuzzy
+msgid "No systems specified."
+msgstr "시스템 선택됨"
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -722,14 +960,15 @@ msgid "Help"
 msgstr "도움말"
 
 #: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/manager/appstreams/appstream-packages.tsx:32
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:327
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:468
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "로드하는 중..."
@@ -860,20 +1099,6 @@ msgstr ""
 "오류가 발생했습니다. 모니터링 상태를 알 수 없습니다. 페이지를 새로 고치십시"
 "오."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:203
-#: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:62
-#: ../html/src/manager/systems/list-filter.tsx:41
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
-msgid "System"
-msgstr "시스템"
-
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:62
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat(Java JMX)"
@@ -892,6 +1117,7 @@ msgstr "서버 자체 모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:81
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:83
+#: ../html/src/manager/appstreams/list-appstreams.tsx:66
 msgid "Enabled"
 msgstr "활성화됨"
 
@@ -1035,7 +1261,7 @@ msgid "Bastion SSH connection data"
 msgstr "베스천 SSH 연결 데이터"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:306
+#: ../html/src/manager/admin/setup/products/products.tsx:307
 msgid "Setup Wizard"
 msgstr "설치 마법사"
 
@@ -1051,18 +1277,6 @@ msgstr "값을 기준으로 필터링"
 msgid "Host"
 msgstr "호스트"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
-#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
-#: ../html/src/manager/images/image-view-runtime.tsx:130
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:82
-msgid "Status"
-msgstr "상태"
-
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
 msgid "Last Update Status"
 msgstr "최신 업데이트 상태"
@@ -1073,7 +1287,7 @@ msgid "never"
 msgstr "안 함"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:461
+#: ../html/src/manager/admin/setup/products/products.tsx:462
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "/"
@@ -1206,18 +1420,7 @@ msgstr "완료됨"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "작업 실패: 서버에서 빈 회신"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
-#: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:689
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:69
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:207
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
-msgid "Details"
-msgstr "세부 사항"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:153
+#: ../html/src/manager/admin/setup/products/products.tsx:154
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -1225,19 +1428,19 @@ msgstr ""
 "사용할 수 있는 SUSE Manager 서버 구독이 없습니다. 클라이언트 도구 채널이 필요"
 "한 제품이 표시되지 않습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:200
+#: ../html/src/manager/admin/setup/products/products.tsx:201
 msgid "The product catalog refresh is running..."
 msgstr "제품 카탈로그 새로 고침이 실행 중입니다..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:226
+#: ../html/src/manager/admin/setup/products/products.tsx:227
 msgid "The following product installations failed. Please check log files."
 msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:271
+#: ../html/src/manager/admin/setup/products/products.tsx:272
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "선택한 채널의 동기화가 예정되었습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/admin/setup/products/products.tsx:332
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1245,28 +1448,28 @@ msgstr ""
 "제품 데이터 새로 고침이 현재 백그라운드에서 실행 중입니다. 나중에 다시 시도하"
 "십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:336
+#: ../html/src/manager/admin/setup/products/products.tsx:337
 msgid "The product catalog is still refreshing, please wait."
 msgstr "제품 카탈로그를 아직 새로 고치는 중입니다. 기다려 주십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:338
+#: ../html/src/manager/admin/setup/products/products.tsx:339
 msgid "Select some product first."
 msgstr "우선 일부 제품을 선택하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:347
-#: ../html/src/manager/admin/setup/products/products.tsx:355
+#: ../html/src/manager/admin/setup/products/products.tsx:348
+#: ../html/src/manager/admin/setup/products/products.tsx:356
 msgid "Add products"
 msgstr "제품 추가"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:374
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 msgid "Clear products selection"
 msgstr "제품 선택 지우기"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:417
+#: ../html/src/manager/admin/setup/products/products.tsx:418
 msgid "Why aren't all products displayed in the list?"
 msgstr "목록에 모든 제품이 표시되지 않는 이유가 무엇입니까?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:420
+#: ../html/src/manager/admin/setup/products/products.tsx:421
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1274,7 +1477,7 @@ msgstr ""
 "이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩"
 "니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:425
+#: ../html/src/manager/admin/setup/products/products.tsx:426
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1282,7 +1485,7 @@ msgstr ""
 "제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인"
 "하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:435
+#: ../html/src/manager/admin/setup/products/products.tsx:436
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1290,20 +1493,20 @@ msgstr ""
 "이 서버는 ISS(Inter-Server Synchronisation) 슬레이브로 구성되었습니다. ISS 마"
 "스터에서만 제품을 관리할 수 있습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:561
+#: ../html/src/manager/admin/setup/products/products.tsx:562
 msgid "Filter by architecture"
 msgstr "아키텍처를 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:579
+#: ../html/src/manager/admin/setup/products/products.tsx:580
 msgid "Filter by product Description"
 msgstr "제품 설명을 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:655
+#: ../html/src/manager/admin/setup/products/products.tsx:656
 msgid "Product Description"
 msgstr "제품 설명"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:661
-#: ../html/src/manager/admin/setup/products/products.tsx:1039
+#: ../html/src/manager/admin/setup/products/products.tsx:662
+#: ../html/src/manager/admin/setup/products/products.tsx:1043
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1311,40 +1514,45 @@ msgstr "제품 설명"
 msgid "Architecture"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:663
+#: ../html/src/manager/admin/setup/products/products.tsx:664
 msgid "Arch"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:670
+#: ../html/src/manager/admin/setup/products/products.tsx:671
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:841
+#: ../html/src/manager/admin/setup/products/products.tsx:678
+#, fuzzy
+msgid "Recommended"
+msgstr "권장"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:849
 msgid " channels sync failed"
 msgstr " 채널을 동기화하지 못함"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:849
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid " channels sync in progress"
 msgstr " 채널 동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:857
+#: ../html/src/manager/admin/setup/products/products.tsx:865
 msgid " channels synced"
 msgstr " 채널 동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:882
+#: ../html/src/manager/admin/setup/products/products.tsx:890
 msgid "To enable this product, the parent product should be selected first"
 msgstr "이 제품을 활성화하려면 상위 제품을 우선 선택해야 합니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:883
+#: ../html/src/manager/admin/setup/products/products.tsx:891
 msgid "Select this product"
 msgstr "이 제품 선택"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:895
+#: ../html/src/manager/admin/setup/products/products.tsx:903
 msgid "This product is mirrored."
 msgstr "이 제품은 미러링되었습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:924
+#: ../html/src/manager/admin/setup/products/products.tsx:932
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1352,63 +1560,55 @@ msgstr "이 제품은 미러링되었습니다."
 msgid "recommended"
 msgstr "권장"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:942
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:173
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
-msgid "include recommended"
-msgstr "권장에 포함"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:984
+#: ../html/src/manager/admin/setup/products/products.tsx:988
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 제품 카탈로그 새로 고침 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:987
+#: ../html/src/manager/admin/setup/products/products.tsx:991
 msgid "Scheduling channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:990
+#: ../html/src/manager/admin/setup/products/products.tsx:994
 msgid "Channels product resync scheduled"
 msgstr "채널 제품 재동기화 예약됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:993
+#: ../html/src/manager/admin/setup/products/products.tsx:997
 msgid "Schedule channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1053
+#: ../html/src/manager/admin/setup/products/products.tsx:1057
 msgid "Show product's channels"
 msgstr "제품 채널 표시"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1119
+#: ../html/src/manager/admin/setup/products/products.tsx:1129
 msgid "Product Channels - "
 msgstr "제품 채널 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1124
+#: ../html/src/manager/admin/setup/products/products.tsx:1134
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "추가하고 확인하려는 선택 채널을 선택합니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1128
+#: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Mandatory Channels"
 msgstr "필수 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1130
+#: ../html/src/manager/admin/setup/products/products.tsx:1140
 msgid "Optional Channels"
 msgstr "선택 사항 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1166
+#: ../html/src/manager/admin/setup/products/products.tsx:1176
 msgid "not synced"
 msgstr "동기화되지 않음"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1169
+#: ../html/src/manager/admin/setup/products/products.tsx:1179
 msgid "sync in progress"
 msgstr "동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1172
+#: ../html/src/manager/admin/setup/products/products.tsx:1182
 msgid "synced"
 msgstr "동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1175
+#: ../html/src/manager/admin/setup/products/products.tsx:1185
 msgid "sync failed"
 msgstr "동기화 실패"
 
@@ -1512,6 +1712,65 @@ msgstr ""
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
+
+#: ../html/src/manager/appstreams/appstream-packages.tsx:36
+#, fuzzy
+msgid "An error occurred while displaying the list of packages."
+msgstr "데이터를 로드하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오."
+
+#: ../html/src/manager/appstreams/appstream-packages.tsx:39
+msgid "AppStream {stream} has {count} packages:"
+msgstr ""
+
+#: ../html/src/manager/appstreams/appstreams.tsx:87
+#, fuzzy
+msgid ""
+"Updating the selection of AppStream modules has been <link>scheduled</link>."
+msgstr "highstate 적용이 <link>예약</link>되었습니다."
+
+#: ../html/src/manager/appstreams/appstreams.tsx:135
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
+msgid "AppStreams"
+msgstr "AppStreams"
+
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
+msgid ""
+"Please review the changes below before scheduling an action to apply the "
+"changes on the system."
+msgstr ""
+
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
+msgid "Streams to be enabled:"
+msgstr ""
+
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:60
+msgid "Streams to be disabled:"
+msgstr ""
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:37
+#, fuzzy
+msgid "The following AppStream modules are currently available to the system."
+msgstr "이 시스템에 현재 설치된 프로그램 임시 수정(PTF)은 다음과 같습니다. "
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:47
+#, fuzzy
+msgid "Apply Changes"
+msgstr "변경 사항 적용"
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:64
+#, fuzzy
+msgid "Modules"
+msgstr "모듈"
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:65
+#, fuzzy
+msgid "Streams"
+msgstr "스트림"
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:89
+#, fuzzy
+msgid "Packages in {stream}"
+msgstr "패키지 이름"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
@@ -1624,20 +1883,6 @@ msgstr "SUSE 보안 CVE 링크"
 msgid "Name"
 msgstr "이름"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
-#: ../html/src/manager/images/image-profiles.tsx:190
-#: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:683
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:64
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:49
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:202
-#: ../html/src/manager/salt/keys/key-management.tsx:195
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:258
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
-msgid "Actions"
-msgstr "작업"
-
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
 msgid "No action required"
@@ -1744,32 +1989,32 @@ msgstr "입니다). "
 msgid "Refresh matching data"
 msgstr "일치 데이터 새로 고침"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:34
 msgid "Unsupported part number detected"
 msgstr "지원되지 않는 파트 번호 감지됨"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
 "물리적 시스템이 가상 게스트로 보고되었습니다. 하드웨어 데이터를 확인하십시오."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr ""
 "가상 게스트에 알 수 없는 호스트가 있으며, 물리적 시스템으로 간주됩니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "시스템에 알 수 없는 소켓이 있으며, 16으로 간주됩니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
 msgstr "번들에 파트 번호가 동일한 구독이 2개 있음 - 하나로 병합"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:45
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1777,38 +2022,38 @@ msgstr ""
 "파트 번호(및 기타 속성)가 동일한 구독 2개가 병합됨 - 시작/종료 날짜를 나타낼 "
 "수 있음"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "구독이 병합되어 고정 일치가 조정됨"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:52
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:62
 msgid "Subscription IDs"
 msgstr "구독 ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
 msgid ""
 "Subscription with unsupported part number and no associated product has been "
 "ignored."
 msgstr ""
 "부품 번호가 지원되지 않은 구독 및 관련 제품이 없는 구독이 무시되었습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
 msgstr "아래 경고 및 정보 메시지를 검토하십시오."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:103
 msgid "Message"
 msgstr "메시지"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
 msgid "Additional information"
 msgstr "추가 정보"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:118
 msgid "No messages from the last match run."
 msgstr "마지막 일치 실행에서 제공된 메시지가 없습니다."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:123
 msgid "Messages"
 msgstr "메시지"
 
@@ -2272,7 +2517,7 @@ msgid "AppStream modules with defaults"
 msgstr "기본값이 있는 AppStream 모듈"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:273
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:277
 msgid "Template"
 msgstr "템플릿"
 
@@ -2651,10 +2896,6 @@ msgid "Filter edited successfully"
 msgstr "필터 편집됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
-msgid "AppStreams"
-msgstr "AppStreams"
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
 msgid "enabled module streams"
 msgstr "활성화된 모듈 스트림"
 
@@ -2778,6 +3019,13 @@ msgstr "필수"
 msgid "no child channels"
 msgstr "하위 채널 없음"
 
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:173
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
+msgid "include recommended"
+msgstr "권장에 포함"
+
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
@@ -2785,7 +3033,7 @@ msgstr "하위 채널 없음"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notification-messages.tsx:498
 #: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
 msgstr "유형"
 
@@ -3560,11 +3808,6 @@ msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "선택한 이미지를 삭제하시겠습니까?({count}개 이미지 선택됨)"
 
-#: ../html/src/manager/images/image-view.tsx:789
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
-msgid "Overview"
-msgstr "개요"
-
 #: ../html/src/manager/login/messages.tsx:14
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
@@ -3715,7 +3958,7 @@ msgid ""
 msgstr "이 작업을 수행하면 할당된 모든 시스템에서 현재 일정이 제거됩니다."
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:183
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Cancel affected actions?"
 msgstr "영향을 받는 작업을 취소하시겠습니까?"
@@ -3781,10 +4024,10 @@ msgid "Maintenance schedule has been assigned to {count} system(s)"
 msgstr "유지보수 일정이 {count}개 시스템에 할당되었습니다."
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:174
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:131
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:114
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:133
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:116
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:137
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:139
 msgid "Cancel affected actions"
 msgstr "영향을 받는 작업 취소"
 
@@ -3796,52 +4039,41 @@ msgstr "검색 시스템"
 msgid "Current Schedule"
 msgstr "현재 일정"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:139
 msgid "Calendar data"
 msgstr "달력 날짜"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:143
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:147
 msgid "Enter Url to ical file"
 msgstr "ical 파일의 URL 입력"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:157
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:161
 msgid "Attach file"
 msgstr "파일 첨부"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:163
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:167
 msgid "Remove file"
 msgstr "파일 제거"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:173
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:177
 msgid "Refresh data from url"
 msgstr "URL에서 제공된 데이터 새로 고침"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:178
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
 msgid "Confirm calendar refresh"
 msgstr "달력 새로 고침 확인"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:181
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "달력을 새로 고치면 영향을 받는 모든 작업의 일정이 조정됩니다."
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 msgid "Confirm if you want to proceed."
 msgstr "계속 진행할지 여부를 확인하십시오."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:443
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
-msgid "Schedule"
-msgstr "일정"
-
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:137
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:141
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:37
 msgid "Calendar"
 msgstr "달력"
@@ -3851,8 +4083,8 @@ msgstr "달력"
 msgid "Maintenance"
 msgstr "유지보수"
 
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:121
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:129
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:125
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:133
 msgid "Add Calendar"
 msgstr "달력 추가"
 
@@ -4086,6 +4318,11 @@ msgstr "작업이 작업 체인에 추가되었습니다."
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:177
 msgid "Playbook execution has been"
 msgstr "플레이븍 실행이"
+
+#: ../html/src/manager/minion/coco/coco-settings.tsx:66
+#, fuzzy
+msgid "Settings"
+msgstr "다시 시작"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
@@ -4336,14 +4573,6 @@ msgstr "요약을 기준으로 필터링"
 #: ../html/src/manager/notifications/notification-messages.tsx:492
 msgid "Severity"
 msgstr "심각도"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:510
-msgid "Created"
-msgstr "생성됨"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:515
-msgid "Action"
-msgstr "작업"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:521
 msgid "Read|Delete"
@@ -5206,6 +5435,25 @@ msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "부트스트랩을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:73
+msgid "Confidential Computing Capability"
+msgstr ""
+
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:36
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+msgid "Yes"
+msgstr "예"
+
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:37
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
+msgid "No"
+msgstr "아니요"
+
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr "정리 시간이 초과되었습니다. 머신에 연결할 수 있는지 확인하십시오."
@@ -5348,16 +5596,6 @@ msgstr ""
 #, fuzzy
 msgid "Updates available"
 msgstr "패키지 업데이트를 사용할 수 있음"
-
-#: ../html/src/manager/systems/list-filter.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
-msgid "Yes"
-msgstr "예"
-
-#: ../html/src/manager/systems/list-filter.tsx:37
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
-msgid "No"
-msgstr "아니요"
 
 #: ../html/src/manager/systems/list-filter.tsx:42
 #, fuzzy
@@ -5670,13 +5908,6 @@ msgstr "CPU 아키텍처"
 msgid "CPU Sockets"
 msgstr "CPU 소켓"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
-msgid "N/A"
-msgstr ""
-
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:103
 msgid "RAM (Mb)"
 msgstr "RAM(Mb)"
@@ -5807,39 +6038,39 @@ msgstr "양수 필요"
 msgid "Virtual CPU Count"
 msgstr "가상 CPU 수"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:193
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:195
 msgid "Enable UEFI"
 msgstr "UEFI 활성화"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:198
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:202
 msgid "UEFI firmware path"
 msgstr "UEFI 펌웨어 경로"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:205
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:209
 msgid "NVRAM template path"
 msgstr "NVRAM 템플릿 경로"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:217
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:221
 msgid "Auto-installation Profile"
 msgstr "자동 설치 프로파일"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:233
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:237
 msgid "Kernel options"
 msgstr "커널 옵션"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:246
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:250
 msgid "Cluster support is disabled since VirtualDomain resource agent "
 msgstr "가상 도메인 리소스 에이전트 이후 클러스터 지원이 비활성화되었습니다. "
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:254
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:258
 msgid "Define as a cluster resource"
 msgstr "클러스터 리소스로 정의"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:260
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:264
 msgid "Path to the cluster shared folder for VM definitions"
 msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:292
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Graphics"
 msgstr "그래픽"
 
@@ -6024,7 +6255,7 @@ msgid "Networks"
 msgstr "네트워크"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:457
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
 msgid "Clear Fields"
 msgstr "필드 지우기"
@@ -6147,37 +6378,37 @@ msgstr "VLAN 태그"
 msgid "Integer between 0 and 4095"
 msgstr "0에서 4095 사이의 정수"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:388
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:390
 msgid "VLAN tags trunking"
 msgstr "VLAN 태그 트렁킹"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:396
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:397
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:400
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:401
 msgid "NAT IPv4 range"
 msgstr "NAT IPv4 범위"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:408
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
 msgid "Both values has to be IPv4 addresses"
 msgstr "두 값 모두 IPv4 주소여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:413
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:416
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:417
 msgid "NAT port range"
 msgstr "NAT 포트 범위"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:426
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:430
 msgid "Both values has to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:434
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
 msgid "Addressing"
 msgstr "주소"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:436
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
 msgid "Enable IPv6"
 msgstr "IPv6 활성화"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:442
 msgid "Domain name"
 msgstr "도메인 이름"
 
@@ -6869,9 +7100,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Name:"
 #~ msgstr "이름:"
-
-#~ msgid "Description:"
-#~ msgstr "설명:"
 
 #~ msgid "Available cluster providers"
 #~ msgstr "사용할 수 있는 클러스터 공급자"
