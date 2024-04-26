@@ -3488,10 +3488,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>다음은 시스템에 설치된 패키지로 해당 채널에 나타나지 않습니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="packagelist.jsp.modulespresent" xml:space="preserve">
-        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-        <target state="final">이 시스템이 구독 중인 1개 이상의 채널에 모듈이 포함되어 있습니다. 이 시스템에서 모듈을 활성화한 경우 패키지 작업에서 @@PRODUCT_NAME@@을(를) 사용하지 마십시오. 대신, &lt;a href="/rhn/manager/contentmanagement/projects"&gt;컨텐트 라이프사이클 관리&lt;/a&gt;를 사용하여 &lt;strong&gt;모듈 패키지가 포함된 일반 채널을 생성&lt;/strong&gt;하십시오.</target>
-      </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
         <source>Upgradable Packages</source>
@@ -29836,6 +29832,50 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.overview.audit" xml:space="preserve">
+            <source>Audit</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.index" xml:space="preserve">
+            <source>Confidential Computing</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+            <source>Configure</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+            <source>Schedule</source>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
       <target state="new"/>
   </trans-unit>
       </body>
