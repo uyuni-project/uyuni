@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 15:15+0100\n"
+"POT-Creation-Date: 2024-04-26 10:08+0200\n"
 "PO-Revision-Date: 2024-03-19 07:42+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
@@ -830,7 +830,7 @@ msgstr ""
 "エラーが発生しました。モニタリング状態は不明です。ページを更新してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:61
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
@@ -1674,26 +1674,26 @@ msgstr ") 。 "
 msgid "Refresh matching data"
 msgstr "マッチングデータの更新"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:34
 msgid "Unsupported part number detected"
 msgstr "サポート対象外のパーツ番号が検出されました"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
 "物理システムが仮想化ゲストであるものとして報告されました。ハードウェアデータ"
 "をご確認ください"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr "仮想化ゲストは未知のホストです。物理システムであるものとして処理します"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "システムのソケット数が未知です。 16 個あるものとして処理します"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
@@ -1701,7 +1701,7 @@ msgstr ""
 "同じパーツ番号の 2 つのサブスクリプションが設定されています - これらは 1 つに"
 "まとめられます"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:45
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1709,15 +1709,15 @@ msgstr ""
 "同じパーツ番号および同じプロパティの 2 つのサブスクリプションを 1 つにまとめ"
 "ました - 開始／終了日をご確認ください"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "サブスクリプションをまとめたことにより、ピンマッチも調整されました"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:52
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:62
 msgid "Subscription IDs"
 msgstr "サブスクリプション ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
 msgid ""
 "Subscription with unsupported part number and no associated product has been "
 "ignored."
@@ -1725,23 +1725,23 @@ msgstr ""
 "サポートされていないパーツ番号と関連製品がないサブスクリプションは無視されま"
 "した。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
 msgstr "下記の警告および情報メッセージをご確認ください。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:103
 msgid "Message"
 msgstr "メッセージ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
 msgid "Additional information"
 msgstr "追加情報"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:118
 msgid "No messages from the last match run."
 msgstr "直近のマッチ実行でのメッセージはありません。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:123
 msgid "Messages"
 msgstr "メッセージ"
 
