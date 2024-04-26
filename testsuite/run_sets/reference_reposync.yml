@@ -13,13 +13,16 @@
 #- features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
 #- features/reposync/srv_enable_sync_products.feature
-- features/reposync/reference_srv_sync_products_extra.feature
-- features/reposync/reference_srv_check_reposync.feature
-
 - features/reposync/srv_create_fake_channels.feature
 - features/reposync/srv_create_fake_repositories.feature
 - features/reposync/srv_sync_fake_channels.feature
+
 # Activation keys can only be created after products and channels are synced
 - features/reposync/srv_create_activationkey.feature
 - features/reposync/allcli_update_activationkeys.feature
+
+# Special reference repo sync
+- features/reposync/reference_srv_sync_products_extra.feature
+#- features/reposync/reference_srv_check_reposync.feature
+
 ## Channels and Product synchronization features END ###
