@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2023-06-26 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -70,10 +70,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "无效的 URI %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -98,16 +95,6 @@ msgstr "已在此服务器上禁用 ISS。"
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "未为 ISS 启用服务器 \"%s\"。"
 
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "预期需要提供软件包名称，而不是：%s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "预期需要提供软件包，而不是：%s"
-
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -120,65 +107,6 @@ msgstr "无效会话密钥"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "此服务器 ID 不再存在"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "无效的操作值类型 %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "操作 %s 不属于服务器 %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "缺少必需的数据"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "缺少必需的成员"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "尝试将系统注册到无效的用户名"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "请求了无效的系统发行版"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} 欢迎消息"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "隐私声明"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "预期需要提供一个字典作为产品参数"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "值 '%s'（为 %s (%s) 提供）无效"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "无效的 system_id/action_id 对。"
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "无效的值 %s (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -300,7 +228,7 @@ msgstr "请求的 RPM 软件包 %s 无效"
 msgid "Package not found"
 msgstr "找不到软件包"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "不支持体系结构 `%s'"
@@ -1246,16 +1174,16 @@ msgstr "正在导入 kickstart 树 (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ 正在以电子邮件形式发送日志 +++"
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:140
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同步报告，来自 %s"
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
@@ -2007,6 +1935,60 @@ msgstr "  28 - 错误：--master 只在与 --mount-point 结合使用时才有�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "错误：未知转储版本，请尝试使用某个 %s"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "预期需要提供软件包名称，而不是：%s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "预期需要提供软件包，而不是：%s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "无效的操作值类型 %s (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "操作 %s 不属于服务器 %s"
+
+#~ msgid "Required data missing"
+#~ msgstr "缺少必需的数据"
+
+#~ msgid "Required members missing"
+#~ msgstr "缺少必需的成员"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "尝试将系统注册到无效的用户名"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "请求了无效的系统发行版"
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "{PRODUCT_NAME} 欢迎消息"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "隐私声明"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "预期需要提供一个字典作为产品参数"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "值 '%s'（为 %s (%s) 提供）无效"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "无效的 system_id/action_id 对。"
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "无效的值 %s (%s)"
 
 #, python-format
 #~ msgid ""

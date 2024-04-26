@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -67,10 +67,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "유효하지 않은 URI %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -95,16 +92,6 @@ msgstr "이 서버에서 ISS가 비활성화되었습니다."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "\"%s\" 서버가 ISS용으로 활성화되지 않았습니다."
 
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "다음이 아닌 패키지 이름이 필요: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "다음이 아닌 패키지 필요: %s"
-
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -118,67 +105,6 @@ msgstr "유효하지 않은 세션 키"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "이 서버 ID는 더 이상 존재하지 않음"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "유효하지 않은 작업 값 유형 %s(%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "%s 작업은 %s 서버에 속하지 않음"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "필수 데이터 누락"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "필수 멤버 누락"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "시스템의 유효하지 않은 사용자 이름 등록 시도"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "유효하지 않은 시스템 릴리스 버전 요청됨"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"유효한 네트워크 인터페이스를 찾을 수 없습니다. ipaddr 및 ip6addr를 모두 찾을 "
-"수 없습니다."
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} 환영 메시지"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "개인정보 보호정책"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "제품 인수로 딕셔너리가 필요함"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "%s(%s)에 유효하지 않은 값 '%s'"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "유효하지 않은 system_id/action_id 쌍입니다."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "유효하지 않은 값 %s(%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -300,7 +226,7 @@ msgstr "유효하지 않은 RPM 패키지 %s 요청됨"
 msgid "Package not found"
 msgstr "패키지를 찾을 수 없음"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "'%s' 아키텍처는 지원되지 않습니다."
@@ -1253,16 +1179,16 @@ msgstr "킥스타트 가능 트리 가져오기(%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "가져온 킥스타트 가능 트리(%d)"
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ 로그를 이메일로 전송 +++"
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:140
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s의 %s 동기화 보고서"
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 
@@ -2021,6 +1947,62 @@ msgstr "  28 - 오류: --master는 --mount-point와 함께 사용하는 경우�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "오류: 알 수 없는 덤프 버전, %s 중 하나 시도"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "다음이 아닌 패키지 이름이 필요: %s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "다음이 아닌 패키지 필요: %s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "유효하지 않은 작업 값 유형 %s(%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "%s 작업은 %s 서버에 속하지 않음"
+
+#~ msgid "Required data missing"
+#~ msgstr "필수 데이터 누락"
+
+#~ msgid "Required members missing"
+#~ msgstr "필수 멤버 누락"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "시스템의 유효하지 않은 사용자 이름 등록 시도"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "유효하지 않은 시스템 릴리스 버전 요청됨"
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "유효한 네트워크 인터페이스를 찾을 수 없습니다. ipaddr 및 ip6addr를 모두 찾"
+#~ "을 수 없습니다."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "{PRODUCT_NAME} 환영 메시지"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "개인정보 보호정책"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "제품 인수로 딕셔너리가 필요함"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "%s(%s)에 유효하지 않은 값 '%s'"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "유효하지 않은 system_id/action_id 쌍입니다."
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "유효하지 않은 값 %s(%s)"
 
 #, python-format
 #~ msgid ""
