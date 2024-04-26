@@ -1624,8 +1624,8 @@ msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
-"디스크 덤프는 전체 내보내기로 간주됩니다. 자세한 내용은 \"man mgr-inter-"
-"sync\"를 참조하십시오."
+"디스크 덤프는 전체 내보내기로 간주됩니다. 자세한 내용은 \"man mgr-inter-sync"
+"\"를 참조하십시오."
 
 #: ../satellite_tools/satsync.py:2697
 msgid "existing custom channels will also be synced (unless -c is used)"
