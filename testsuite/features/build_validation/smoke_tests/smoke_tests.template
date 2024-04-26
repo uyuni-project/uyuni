@@ -21,6 +21,25 @@ Feature: Smoke tests for <client>
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Check that Software package refresh works on a <client>
+    Given I am on the Systems overview page of this "<client>"
+    When I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
+    And I click on "Update Package List"
+    And I force picking pending events on "<client>" if necessary
+    And I wait until event "Package List Refresh scheduled by admin" is completed
+
+  Scenario: Check that Hardware Refresh button works on a <client>
+    When I follow "Details" in the content area
+    And I wait until I see "System Status" text
+    And I follow "Hardware"
+    And I wait until I see "Refresh Hardware List" text
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I force picking pending events on "<client>" if necessary
+    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "<client>"
+
   Scenario: Client <client> grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "<client>"
     Then the hostname for "<client>" should be correct
@@ -40,9 +59,7 @@ Feature: Smoke tests for <client>
     And I wait until I see "Upgrade Packages" text
     And I follow "Patches" in the content area
     When I wait until I see "Relevant Patches" text
-    And I select "Non-Critical" from "type"
-    And I click on "Show"
-    When I check the first patch in the list
+    When I check the first patch in the list, that does not require a reboot
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
@@ -109,24 +126,6 @@ Feature: Smoke tests for <client>
     Then I should see a "Remote Command has been scheduled successfully" text
     When I force picking pending events on "<client>" if necessary
     And I wait until file "/tmp/remote-command-on-<client>" exists on "<client>"
-
-  Scenario: Check that Software package refresh works on a <client>
-    Given I am on the Systems overview page of this "<client>"
-    When I follow "Software" in the content area
-    And I wait until I see "Upgrade Packages" text
-    And I click on "Update Package List"
-    And I force picking pending events on "<client>" if necessary
-    And I wait until event "Package List Refresh scheduled by admin" is completed
-
-  Scenario: Check that Hardware Refresh button works on a <client>
-    When I follow "Details" in the content area
-    And I wait until I see "System Status" text
-    And I follow "Hardware"
-    And I wait until I see "Refresh Hardware List" text
-    And I click on "Schedule Hardware Refresh"
-    Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I force picking pending events on "<client>" if necessary
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
   Scenario: Subscribe a <client> to the configuration channel
     When I follow "Configuration" in the content area
