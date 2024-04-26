@@ -1243,6 +1243,18 @@
         </context-group>
         <target state="final">앱 스트림</target>
       </trans-unit>
-    </body>
+    <trans-unit id="nav.system.coco" xml:space="preserve">
+        <source>Confidential Computing</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="nav.system.coco.settings" xml:space="preserve">
+        <source>Settings</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve">
+        <source>List Attestations</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
