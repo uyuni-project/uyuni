@@ -10,24 +10,21 @@ Faraday::Utils.default_params_encoder = Faraday::FlatParamsEncoder
 
 # Wrapper class for HTTP client library (Faraday)
 class HttpClient
-  ##
-  #
   # Creates a new HTTP client using the Faraday library.
   #
-  # Args:
-  #   host: The hostname of the server you want to connect to.
+  # @param host [String] The host to connect to.
+  # @param ssl_verify [Boolean] Whether to verify SSL certificates (default is true).
   def initialize(host, ssl_verify = true)
     puts 'Activating HTTP API'
     @http_client = Faraday.new("https://#{host}", request: { timeout: DEFAULT_TIMEOUT }, ssl: { verify: ssl_verify })
   end
 
-  ##
   # It takes a name of a Spacewalk API call and a hash of parameters and returns a tuple of the HTTP method and the URL to
   # call.
   #
-  # Args:
-  #   name: The name of the API call.
-  #   params: A hash of parameters to pass to the API call.
+  # @param name [String] The name of the call.
+  # @param params [Hash] The parameters for the call.
+  # @return [Array] An array containing the call type and the URL.
   def prepare_call(name, params)
     short_name = name.split('.')[-1]
     call_type =
@@ -55,12 +52,17 @@ class HttpClient
     [call_type, url]
   end
 
-  ##
   # It takes a name and a hash of parameters, calls the API, and returns the result.
   #
-  # Args:
-  #   name: The name of the API call, e.g. 'auth.login'
-  #   params: A hash of parameters to pass to the API call.
+  # @param name [String] The name of the API call.
+  # @param params [Hash] The parameters for the API call.
+  # @option params [String] :sessionKey The session key for the API call.
+  #
+  # @return [String, Object] The new session cookie if the API call is 'auth.login',
+  #   otherwise the result of the API call.
+  #
+  # @raise [ScriptError] If the API call returns an unexpected HTTP status code.
+  # @raise [SystemCallError] If the API call returns an API failure.
   def call(name, params)
     # Get session cookie from previous calls
     if params.nil?

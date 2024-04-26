@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.model.AttestationStatus;
-import com.suse.coco.modules.AttestationWorker;
+import com.suse.coco.module.AttestationWorker;
 
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
@@ -107,7 +107,7 @@ class AttestationResultServiceTest {
 
         verify(session).selectOne("AttestationResult.selectForUpdate", 5L);
         verify(worker).process(session, attestationResult);
-        verify(session).update("AttestationResult.updateStatus", attestationResult);
+        verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
         verify(session).close();
 
@@ -137,7 +137,7 @@ class AttestationResultServiceTest {
 
         verify(session).selectOne("AttestationResult.selectForUpdate", 5L);
         verify(worker).process(session, attestationResult);
-        verify(session).update("AttestationResult.updateStatus", attestationResult);
+        verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
         verify(session).close();
 

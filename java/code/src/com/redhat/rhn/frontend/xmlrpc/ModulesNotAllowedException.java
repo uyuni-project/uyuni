@@ -28,7 +28,7 @@ public class ModulesNotAllowedException extends FaultException  {
      */
     public ModulesNotAllowedException() {
         super(2107, "ModulesNotAllowed",
-                LocalizationService.getInstance().getMessage("packagelist.jsp.modulespresent"));
+                LocalizationService.getInstance().getMessage("api.channel.modulespresent"));
     }
 
 }

@@ -9,9 +9,7 @@ FILES	= __init__
 SUBDIRS = \
 		  app \
 		  applet \
-		  config \
-		  config_mgmt \
-                  sat \
+          sat \
 		  xmlrpc
 
 include $(TOP)/Makefile.defs

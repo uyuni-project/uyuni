@@ -229,7 +229,7 @@ class CVEAudit extends React.Component<Props, State> {
             })}
           />
           <div className="input-group">
-            <span className="input-group-addon">{t("CVE")}</span>
+            <span className="input-group-addon input-group-text">{t("CVE")}</span>
             <select
               id="cveIdentifierYear"
               value={this.state.cveYear}
@@ -240,7 +240,7 @@ class CVEAudit extends React.Component<Props, State> {
                 <option value={year}>{year}</option>
               ))}
             </select>
-            <span className="input-group-addon">-</span>
+            <span className="input-group-addon input-group-text">-</span>
             <input
               id="cveIdentifierId"
               className="form-control"

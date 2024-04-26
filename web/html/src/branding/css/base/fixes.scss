@@ -1,10 +1,4 @@
 // TODO: Make this whole file obsolete, move bugfixes into their correesponding modules instead
-.form-horizontal .text {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 7px;
-}
-
 input[type="file"].form-control {
   height: auto;
 }
@@ -31,4 +25,21 @@ div.checkbox.icon-wrapper i.fa {
 
 .auto-overflow {
   overflow: auto;
+}
+
+/**
+ * This allows us to fix layouts on Bootstrap 5 pages without affecting Bootstrap 3 pages
+ * TODO: Remove and replace its usages with just `row` after we finish the migration
+ */
+.form-group {
+  @extend .row;
+}
+
+// We use float utilities from Bootstrap 3 in a number of places, this emulates the same behavior. Over time we should be able to refactor these out.
+.pull-right {
+  float: right !important;
+}
+
+.pull-left {
+  float: left !important;
 }

@@ -1,0 +1,1 @@
+- Proxy container: use SSL cert cnames as fqdns (bsc#1222336)

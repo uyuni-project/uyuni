@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler;
 import com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
+import com.redhat.rhn.frontend.xmlrpc.channel.appstreams.ChannelAppStreamHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.org.ChannelOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
@@ -66,6 +67,7 @@ import com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler;
 import com.redhat.rhn.frontend.xmlrpc.sync.slave.SlaveHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
+import com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.monitoring.SystemMonitoringHandler;
@@ -147,7 +149,8 @@ public class HandlerFactory {
         );
         ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper, systemManager);
         SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER);
+                systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER,
+                GlobalInstanceHolder.ATTESTATION_MANAGER);
 
         OrgHandler orgHandler = new OrgHandler(migrationManager);
         ServerGroupHandler serverGroupHandler = new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager);
@@ -170,6 +173,7 @@ public class HandlerFactory {
         factory.addHandler("auth", new AuthHandler());
         factory.addHandler("channel", channelHandler);
         factory.addHandler("channel.access", new ChannelAccessHandler());
+        factory.addHandler("channel.appstreams", new ChannelAppStreamHandler());
         factory.addHandler("channel.org", new ChannelOrgHandler());
         factory.addHandler("channel.software", channelSoftwareHandler);
         factory.addHandler("configchannel", new ConfigChannelHandler());
@@ -208,6 +212,7 @@ public class HandlerFactory {
         factory.addHandler("sync.slave", new SlaveHandler());
         factory.addHandler("sync.content", new ContentSyncHandler());
         factory.addHandler("system", systemHandler);
+        factory.addHandler("system.appstreams", new SystemAppStreamHandler());
         factory.addHandler("system.config", new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper));
         factory.addHandler("system.custominfo", new CustomInfoHandler());
         factory.addHandler("system.monitoring", new SystemMonitoringHandler(formulaManager));

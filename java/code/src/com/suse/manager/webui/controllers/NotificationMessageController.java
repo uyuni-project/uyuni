@@ -30,6 +30,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -67,16 +68,20 @@ public class NotificationMessageController {
     private final SaltApi saltApi;
     private final SystemQuery systemQuery;
     private final CloudPaygManager paygManager;
+    private final AttestationManager attestationManager;
 
     /**
      * @param systemQueryIn instance for getting information from a system.
      * @param saltApiIn instance for getting information from a system.
      * @param paygMgrIn instance of {@link CloudPaygManager}
+     * @param attMgrIn instance of {@link AttestationManager}
      */
-    public NotificationMessageController(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
+    public NotificationMessageController(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn,
+                                         AttestationManager attMgrIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
         this.paygManager = paygMgrIn;
+        this.attestationManager = attMgrIn;
     }
 
     /**
@@ -221,7 +226,7 @@ public class NotificationMessageController {
         String resultMessage = "Onboarding restarted of the minioniId '%s'";
 
         RegisterMinionEventMessageAction action =
-                new RegisterMinionEventMessageAction(systemQuery, saltApi, paygManager);
+                new RegisterMinionEventMessageAction(systemQuery, saltApi, paygManager, attestationManager);
         action.execute(new RegisterMinionEventMessage(minionId, Optional.empty()));
 
         Map<String, String> data = new HashMap<>();

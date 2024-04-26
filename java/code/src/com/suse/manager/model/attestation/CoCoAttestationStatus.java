@@ -14,8 +14,20 @@
  */
 package com.suse.manager.model.attestation;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
 public enum CoCoAttestationStatus {
     PENDING,
     SUCCEEDED,
     FAILED;
+
+    private final String descriptionKey;
+
+    CoCoAttestationStatus() {
+        this.descriptionKey = "coco.status." + name().toLowerCase() + ".description";
+    }
+
+    public String getDescription() {
+        return LocalizationService.getInstance().getMessage(descriptionKey);
+    }
 }

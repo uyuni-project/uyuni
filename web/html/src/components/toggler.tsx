@@ -4,7 +4,7 @@ import * as React from "react";
 
 type Props = {
   /** Callback function to execute on toggle switch. */
-  handler: (...args: any[]) => any;
+  handler: (value: boolean) => void;
 
   /** Text to display on the toggler. */
   text?: React.ReactNode;
@@ -30,7 +30,7 @@ class Toggler extends React.Component<Props> {
       classes += " " + this.props.className;
     }
     return (
-      <span onClick={this.props.handler} className={classes}>
+      <span onClick={() => this.props.handler(!this.props.value)} className={classes}>
         <i className={"v-middle fa " + (this.props.value ? "fa-toggle-on text-success" : "fa-toggle-off")} />
         &nbsp;
         <span className="v-middle">{this.props.text}</span>

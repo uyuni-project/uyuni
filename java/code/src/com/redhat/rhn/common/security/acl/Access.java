@@ -624,4 +624,41 @@ public class Access extends BaseHandler {
 
         return server.isPayg();
     }
+
+
+    /**
+     * Checks if a system supports confidential computing and has a configuration
+     * @param ctx
+     * @param params
+     * @return true if the system supports confidential computing
+     */
+    public boolean aclSystemHasCoCoConfig(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
+
+        return server.doesOsSupportCoCoAttestation();
+    }
+
+    /**
+     * Checks if a system has any AppStream channels assigned
+     * @param ctx the acl context
+     * @param params the parameters for the acl
+     * @return true if the system has any AppStream channels assigned
+     */
+    public boolean aclSystemHasModularChannels(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
+
+        return server.getChannels().stream().anyMatch(Channel::isModular);
+    }
 }

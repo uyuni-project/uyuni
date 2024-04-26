@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { cloneReactElement } from "components/utils";
 
+import styles from "./SearchPanel.module.less";
+
 type SearchPanelProps = {
   /** number representing the number of the first displayed item */
   fromItem: number;
@@ -43,7 +45,7 @@ type SearchPanelProps = {
 /** Panel containing the search fields for a table */
 export function SearchPanel(props: SearchPanelProps) {
   return (
-    <div className="spacewalk-list-filter table-search-wrapper">
+    <div className={`spacewalk-list-filter ${styles.searchPanel}`}>
       {React.Children.toArray(props.children).map((child) =>
         cloneReactElement(child, {
           criteria: props.criteria,
@@ -52,7 +54,7 @@ export function SearchPanel(props: SearchPanelProps) {
           onSearchField: props.onSearchField,
         })
       )}
-      <div className="d-inline-block table-search-select-all">
+      <div className={styles.pagination}>
         <span>
           {t("Items {from} - {to} of {total}", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
           &nbsp;&nbsp;

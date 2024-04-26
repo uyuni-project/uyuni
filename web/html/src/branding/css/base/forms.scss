@@ -1,0 +1,62 @@
+// These fixes make existing form layouts match between Bootstrap 3 and 5
+.form-group {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+label {
+  // TODO: Make this `inherit` after the Bootstrap upgrade is complete?
+  font-weight: 700;
+  margin-bottom: 0;
+  max-width: 100%;
+}
+
+.radio label,
+.checkbox label {
+  padding-left: 0;
+  font-weight: 400;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0;
+  vertical-align: -1px;
+  line-height: inherit;
+}
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  position: relative;
+  margin: 0 5px 0 0;
+}
+
+// Here and below, these offer Bootstrap 3 compatibility
+.form-horizontal {
+  .control-label {
+    padding-top: 8px;
+    margin-bottom: 0;
+    text-align: right;
+  }
+
+  .text {
+    padding-top: 8px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .radio,
+  .checkbox,
+  .radio-inline,
+  .checkbox-inline {
+    padding-top: 8px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .radio,
+  .checkbox {
+    min-height: 28px;
+  }
+}

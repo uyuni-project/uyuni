@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>
                 <input type="radio" name="bondType" value="bonding"
@@ -61,7 +61,7 @@
             <c:if test="${form.bondType ne 'bonding' && form.bondStatic ne 'true'}">disabled="true"</c:if> value="${form.bondGateway}"
         />
     </div>
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>
                 <input type="radio" name="bondStatic" id="bondStaticFalse" value="false"
@@ -76,13 +76,13 @@
 </div>
 
 <div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <input type="text" name="bondInterface" id="masterInterfaceName" size="5" Maxlength="10"
                value="${form.bondInterface}" class="form-control" placeholder="<bean:message key="kickstart.postnetconn.bondname.jsp.label" />"
             <c:if test="${form.bondType ne 'bonding'}">disabled="true"</c:if>
         />
     </div>
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <p class="form-control-static">
             <bean:message key="kickstart.postnetconn.bondinterfaces.jsp.label" />
         </p>
@@ -98,13 +98,13 @@
 </div>
 
 <div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <input type="text" name="bondOptions" id="bondingInterfaceOptions" size="10" Maxlength="125"
             value="${form.bondOptions}" class="form-control" placeholder="<bean:message key="kickstart.postnetconn.bondoptions.jsp.label" />"
             <c:if test="${form.bondType ne 'bonding'}">disabled="true"</c:if>
         />
     </div>
-    <div class="col-sm-offset-3 col-sm-9">
+    <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <rhn:tooltip>
             <bean:message key="kickstart.postnetconn.bondoptionstip.jsp.label" />
         </rhn:tooltip>

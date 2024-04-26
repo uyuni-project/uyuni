@@ -400,7 +400,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
             ) : null}
 
             {this.state.rank ? (
-              <div className="col-md-offset-2 col-md-8">
+              <div className="col-md-offset-2 offset-md-2 col-md-8">
                 <h2>{this.props.type === "state" ? t("Edit State Ranks") : t("Edit Channel Ranks")}</h2>
                 <p>
                   {this.props.type === "state"

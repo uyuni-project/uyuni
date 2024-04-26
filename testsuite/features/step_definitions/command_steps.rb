@@ -388,7 +388,10 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
-  if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+  if channel.include?('custom_channel')
+    log 'Timeout of 10 minutes for a custom channel'
+    timeout = 600
+  elsif TIMEOUT_BY_CHANNEL_NAME[channel].nil?
     log "Unknown timeout for channel #{channel}, assuming one minute"
     timeout = 60
   else
@@ -1336,7 +1339,7 @@ When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
   folder_delete(node, folder) if folder_exists?(node, folder)
 end
 
-## ReportDB ##
+# ReportDB
 
 Given(/^I can connect to the ReportDB on the Server$/) do
   # connect and quit database

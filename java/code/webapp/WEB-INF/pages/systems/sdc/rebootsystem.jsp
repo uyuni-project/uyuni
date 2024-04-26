@@ -30,7 +30,7 @@
 
                     <div class="form-group">
                         <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-                        <div class="col-lg-offset-3 col-lg-6">
+                        <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <html:submit styleClass="btn btn-danger">
                                 <bean:message key="reboot.jsp.confirm"/>
                             </html:submit>

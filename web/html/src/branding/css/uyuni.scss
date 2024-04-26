@@ -3,12 +3,14 @@ $theme: "uyuni";
 @import "./body.scss";
 @import "./fonts.scss";
 
+@import "./bootstrap5-scaffolding-variables.scss";
+
 .new-theme {
   @import "bootstrap5/scss/bootstrap";
 
-  @import "mixins.scss";
-  @import "susemanager/variables.scss";
-  @import "uyuni-variables.scss";
+  @import "./mixins.scss";
+  @import "./susemanager/variables.scss";
+  @import "./uyuni-variables.scss";
 
   display: flex;
   flex-direction: column;
@@ -20,5 +22,5 @@ $theme: "uyuni";
   line-height: 1.5;
   color: $body-color;
 
-  @import "susemanager/index.scss";  
+  @import "./susemanager/index.scss";  
 }

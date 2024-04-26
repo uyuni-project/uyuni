@@ -327,7 +327,9 @@ public class MenuTree {
                         .addChild(new MenuItem("audit.nav.logreview")
                                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/audit/Overview.do"))
                                 .addChild(new MenuItem("Reviews").withPrimaryUrl("/rhn/audit/Machine.do"))
-                                .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do"))));
+                                .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do"))))
+                .addChild(new MenuItem("confidentialcomputing.nav.title")
+                        .withPrimaryUrl("/rhn/manager/audit/confidential-computing"));
     }
 
     private MenuItem getConfigurationNode(Map<String, Boolean> adminRoles) {

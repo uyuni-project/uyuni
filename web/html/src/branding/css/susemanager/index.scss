@@ -7,11 +7,11 @@
 @import "../base/fixes.scss";
 @import "../base/network.scss";
 @import "../base/inputs.scss";
-@import "../base/checkbox.scss";
+@import "../base/forms.scss";
+@import "../base/hr.scss";
 
 @import "./legacy-pages/login.scss";
 
-@import "./components/grid.scss";
 @import "./components/titles.scss";
 @import "./components/alerts.scss";
 @import "./components/buttons.scss";
@@ -25,6 +25,7 @@
 @import "./components/date-time-picker.scss";
 @import "./components/header.scss";
 @import "./components/text.scss";
+@import "./components/address.scss";
 
 @import "./bootstrap-fixes.scss";
 

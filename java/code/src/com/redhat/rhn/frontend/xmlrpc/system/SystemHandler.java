@@ -194,8 +194,10 @@ import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.attestation.AttestationDisabledException;
 import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
+import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
@@ -255,6 +257,7 @@ public class SystemHandler extends BaseHandler {
     private SystemManager systemManager;
     private final ServerGroupManager serverGroupManager;
     private CloudPaygManager cloudPaygManager;
+    private AttestationManager attestationManager;
 
     /**
      * Instantiates a new system handler.
@@ -265,11 +268,12 @@ public class SystemHandler extends BaseHandler {
      * @param systemManagerIn            the system manager
      * @param serverGroupManagerIn
      * @param cloudPaygManagerIn         the PAYG manager. If null, the one from GlobalInstanceHolder is used.
+     * @param attestationManagerIn       the attestation manager
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
                          SystemEntitlementManager systemEntitlementManagerIn,
                          SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn,
-                         CloudPaygManager cloudPaygManagerIn) {
+                         CloudPaygManager cloudPaygManagerIn, AttestationManager attestationManagerIn) {
         this.taskomaticApi = taskomaticApiIn;
         this.xmlRpcSystemHelper = xmlRpcSystemHelperIn;
         this.systemEntitlementManager = systemEntitlementManagerIn;
@@ -281,7 +285,7 @@ public class SystemHandler extends BaseHandler {
         else {
             this.cloudPaygManager = cloudPaygManagerIn;
         }
-
+        this.attestationManager = attestationManagerIn;
     }
 
     /**
@@ -5212,8 +5216,7 @@ public class SystemHandler extends BaseHandler {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser)
                 .asMinionServer().orElseThrow(NoSuchSystemException::new);
         try {
-            AttestationManager mgr = new AttestationManager();
-            CoCoAttestationAction action = mgr.scheduleAttestationAction(loggedInUser, minionServer,
+            CoCoAttestationAction action = attestationManager.scheduleAttestationAction(loggedInUser, minionServer,
                     earliestOccurrence);
             return action.getId().intValue();
         }
@@ -5251,33 +5254,36 @@ public class SystemHandler extends BaseHandler {
      * Configure Confidential Compute Attestation for the given system
      * @param loggedInUser the user
      * @param sid the ID of the system
-     * @param enabled set the endabled state for Confidential Compute Attestation
+     * @param enabled set the enabled state for Confidential Compute Attestation
      * @param environmentType set the environment type of the system
+     * @param attestOnBoot set if the attestation should be performed on system boot
      * @return Returns 1 if successful, exception otherwise.
      *
      * @apidoc.doc Configure Confidential Compute Attestation for the given system
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
-     * @apidoc.param #param_desc("boolean", "enabled", "set the endabled state for Confidential Compute Attestation")
+     * @apidoc.param #param_desc("boolean", "enabled", "set the enabled state for Confidential Compute Attestation")
      * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
      *   #options()
      *     #item("NONE")
      *     #item("KVM_AMD_EPYC_MILAN")
      *     #item("KVM_AMD_EPYC_GENOA")
      *   #options_end()
+     * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
      * @apidoc.returntype #return_int_success()
      */
-    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType) {
+    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType,
+                                            Boolean attestOnBoot) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
-        AttestationManager mgr = new AttestationManager();
         minionServer.getOptCocoAttestationConfig()
                 .ifPresentOrElse(
                         c -> {
                             c.setEnabled(enabled);
                             c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
+                            c.setAttestOnBoot(attestOnBoot);
                         },
-                        () -> mgr.createConfig(loggedInUser, minionServer,
+                        () -> attestationManager.createConfig(loggedInUser, minionServer,
                                 CoCoEnvironmentType.valueOf(environmentType), enabled));
         return 1;
     }
@@ -9027,7 +9033,7 @@ public class SystemHandler extends BaseHandler {
      */
 
     public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
-        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+        List<Long> sysids = sids.stream().map(Integer::longValue).collect(toList());
         try {
             return ActionManager.changeProxy(loggedInUser, sysids, proxyId.longValue());
         }
@@ -9040,6 +9046,116 @@ public class SystemHandler extends BaseHandler {
         catch (java.lang.UnsupportedOperationException e) {
             throw new UnsupportedOperationException(e.getMessage());
         }
+    }
+
+    /**
+     * Return a list of reports with its results for the given filters
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @param earliest earliest report
+     * @return return a list of reports
+     *
+     * @apidoc.doc Return a list of reports with its results for the given filters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param("$date", "earliest")
+     * @apidoc.returntype
+     *     #return_array_begin()
+     *         $ServerCoCoAttestationReportSerializer
+     *     #array_end()
+     */
+    @ReadOnly
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Date earliest) {
+        return listCoCoAttestationReports(loggedInUser, sid, earliest, 0, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Return a list of reports with its results for the given filters
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @param offset offset
+     * @param limit limit
+     * @return return a list of reports
+     *
+     * @apidoc.doc Return a list of reports with its results for the given filters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("int", "offset", "Number of reports to skip")
+     * @apidoc.param #param_desc("int", "limit", "Maximum number of reports")
+     * @apidoc.returntype
+     *     #return_array_begin()
+     *         $ServerCoCoAttestationReportSerializer
+     *     #array_end()
+     */
+    @ReadOnly
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Integer offset,
+                                                                        Integer limit) {
+        return listCoCoAttestationReports(loggedInUser, sid, new Date(0), offset, limit);
+    }
+
+    /**
+     * Return a list of reports with its results for the given filters
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @param earliest earliest report
+     * @param offset offset
+     * @param limit limit
+     * @return return a list of reports
+     *
+     * @apidoc.doc Return a list of reports with its results for the given filters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param("$date", "earliest")
+     * @apidoc.param #param_desc("int", "offset", "Number of reports to skip")
+     * @apidoc.param #param_desc("int", "limit", "Maximum number of reports")
+     * @apidoc.returntype
+     *     #return_array_begin()
+     *         $ServerCoCoAttestationReportSerializer
+     *     #array_end()
+     */
+    @ReadOnly
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Date earliest,
+                                                                        Integer offset, Integer limit) {
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        return attestationManager.listCoCoAttestationReportsForUserAndServer(loggedInUser, server, earliest,
+            offset, limit);
+    }
+
+    /**
+     * Return the latest attestation report for the given system
+     * @param loggedInUser the user
+     * @param sid the system id
+     * @return return the latest report
+     *
+     * @apidoc.doc Return the latest report for the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype $ServerCoCoAttestationReportSerializer
+     */
+    @ReadOnly
+    public ServerCoCoAttestationReport getLatestCoCoAttestationReport(User loggedInUser, Integer sid) {
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        return attestationManager.lookupLatestCoCoAttestationReport(loggedInUser, server);
+    }
+
+    /**
+     * Return a specific attestation result with details
+     * @param loggedInUser the user
+     * @param sid the server id
+     * @param resultId the result id
+     * @return return the result
+     *
+     * @apidoc.doc Return a specific results with all details
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param("int", "resultId")
+     * @apidoc.returntype $CoCoAttestationResultSerializer
+     */
+    @ReadOnly
+    public CoCoAttestationResult getCoCoAttestationResultDetails(User loggedInUser, Integer sid, Integer resultId) {
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+        return attestationManager.lookupCoCoAttestationResult(loggedInUser, server, resultId)
+                .orElseThrow(() -> new EntityNotExistsFaultException(resultId));
     }
 
     /**

@@ -15,6 +15,7 @@
 
 package com.suse.coco.module.snpguest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.never;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.model.AttestationStatus;
+import com.suse.coco.module.snpguest.execution.ProcessOutput;
 import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
 import com.suse.coco.module.snpguest.io.VerificationDirectory;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
@@ -97,6 +99,13 @@ class SNPGuestWorkerTest {
             .thenThrow(PersistenceException.class);
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- Unable to process attestation result: org.apache.ibatis.exceptions.PersistenceException",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify no files have been created
         verifyNoInteractions(directoryProvider);
@@ -114,6 +123,13 @@ class SNPGuestWorkerTest {
             .thenReturn(null);
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- Unable to retrieve attestation report for result",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify no files have been created
         verifyNoInteractions(directoryProvider);
@@ -129,6 +145,13 @@ class SNPGuestWorkerTest {
         report.setCpuGeneration(EpycGeneration.UNKNOWN);
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- Unable to identify Epyc processor generation for attestation report",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify no files have been created
         verifyNoInteractions(directoryProvider);
@@ -152,6 +175,13 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(-1);
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- The report does not contain the expected random nonce",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify the required files have been created and deleted
         verify(directoryProvider).createDirectoryFor(1L, report);
@@ -182,9 +212,21 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Fetching fails
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(-1);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(-1, "", "Fetch FAILED"));
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- The report contains the expected random nonce",
+                "- Unable to retrieve VCEK file:",
+                "    - Exit code: -1",
+                "    - Standard error: >",
+                "        Fetch FAILED",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify the required files have been created and deleted
         verify(directoryProvider).createDirectoryFor(1L, report);
@@ -218,10 +260,21 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Fetch works but the file does not exist
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
         when(directory.isVCEKAvailable()).thenReturn(false);
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- The report contains the expected random nonce",
+                "- Unable to retrieve VCEK file:",
+                "    - Standard output: >",
+                "        Fetch ok",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify the required files have been created and deleted
         verify(directoryProvider).createDirectoryFor(1L, report);
@@ -255,13 +308,29 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Fail the certificate verification
-        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(-1);
+        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
+            .thenReturn(new ProcessOutput(-1, "", "Certificate verify FAILED"));
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- The report contains the expected random nonce",
+                "- VCEK fetched successfully:",
+                "    - Standard output: >",
+                "        Fetch ok",
+                "- Unable to verify the validity of the certificates:",
+                "    - Exit code: -1",
+                "    - Standard error: >",
+                "        Certificate verify FAILED",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify the required files have been created and deleted
         verify(directoryProvider).createDirectoryFor(1L, report);
@@ -298,16 +367,36 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Pass the certificate verification
-        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(0);
+        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
+            .thenReturn(new ProcessOutput(0, "Certificate verify ok", ""));
 
         // Fail the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(-1);
+        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(-1, "", "Attestation verify FAILED"));
 
         assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- The report contains the expected random nonce",
+                "- VCEK fetched successfully:",
+                "    - Standard output: >",
+                "        Fetch ok",
+                "- Certification chain validated successfully:",
+                "    - Standard output: >",
+                "        Certificate verify ok",
+                "- Unable to verify the attestation report:",
+                "    - Exit code: -1",
+                "    - Standard error: >",
+                "        Attestation verify FAILED",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify the required files have been created and deleted
         verify(directoryProvider).createDirectoryFor(1L, report);
@@ -345,16 +434,39 @@ class SNPGuestWorkerTest {
         when(sequenceFinder.search(report.getReport())).thenReturn(12);
 
         // Pass fetching of the VECK
-        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
         when(directory.isVCEKAvailable()).thenReturn(true);
 
         // Pass the certificate verification
-        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR)).thenReturn(0);
+        when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
+            .thenReturn(new ProcessOutput(0, "Certificate verify ok", ""));
 
         // Pass the attestation verification
-        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE)).thenReturn(0);
+        when(snpWrapper.verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE))
+            .thenReturn(new ProcessOutput(0, "Attestation verify ok", ""));
+
+        // Retrieve the report
+        when(snpWrapper.displayReport(MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0, "dummy-report", ""));
 
         assertTrue(worker.process(session, result));
+        assertEquals("dummy-report", result.getDetails());
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- The report contains the expected random nonce",
+                "- VCEK fetched successfully:",
+                "    - Standard output: >",
+                "        Fetch ok",
+                "- Certification chain validated successfully:",
+                "    - Standard output: >",
+                "        Certificate verify ok",
+                "- Attestation report correctly verified:",
+                "    - Standard output: >",
+                "        Attestation verify ok",
+                ""
+            ),
+            result.getProcessOutput()
+        );
 
         // Verify the required files have been created and deleted
         verify(directoryProvider).createDirectoryFor(1L, report);
@@ -373,5 +485,8 @@ class SNPGuestWorkerTest {
 
         // Verify the attestation verification have happened
         verify(snpWrapper).verifyAttestation(MOCK_CERTS_DIR, MOCK_REPORT_FILE);
+
+        // Verify the report display have happened
+        verify(snpWrapper).displayReport(MOCK_REPORT_FILE);
     }
 }

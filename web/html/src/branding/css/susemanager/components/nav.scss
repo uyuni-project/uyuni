@@ -1,27 +1,38 @@
-.nav-tabs li {
-  a {
-    color: $eos-bc-gray-1000;
+.nav-tabs {
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid $eos-bc-gray-100;
 
-    &:hover {
-      border-color: $eos-bc-green-500;
-      padding-bottom: 1px;
-      border-bottom-width: 5px;
-      text-decoration: none !important;
-    }
-
-    &:active, &:focus {
-      color: $eos-bc-gray-1000;
-      background: transparent;
-    }
-
-    // TODO: Check disabled states
+  &:last-child {
+    margin-bottom: 1rem;
   }
 
-  &.active {
+  li {
+    margin-bottom: -1px;
+
     a {
-      &, &:hover, &:active, &:focus {
+      color: $eos-bc-gray-1000;
+  
+      &:hover {
+        border-color: $eos-bc-green-500;
+        padding-bottom: 1px;
+        border-bottom-width: 5px;
+        text-decoration: none !important;
+      }
+  
+      &:active, &:focus {
         color: $eos-bc-gray-1000;
+        background: transparent;
+      }
+  
+      // TODO: Check disabled states
+    }
+  
+    &.active {
+      a {
+        &, &:hover, &:active, &:focus {
+          color: $eos-bc-gray-1000;
+        }
       }
     }
-  }
+  }  
 }

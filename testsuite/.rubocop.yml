@@ -93,6 +93,9 @@ Style/FrozenStringLiteralComment:
 Style/GlobalVars:
   Enabled: false
 
+Style/RedundantBegin:
+  Enabled: false
+
 Style/RegexpLiteral:
   Enabled: false
 

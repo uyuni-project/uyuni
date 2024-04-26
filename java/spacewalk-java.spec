@@ -243,6 +243,7 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
 Requires:       tomcat-native
@@ -576,11 +577,8 @@ install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{spacewalksni
 install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/keep_system_id
 install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_reactivation_key
 install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_delete_system
-install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register
 install -m 644 conf/cobbler/snippets/redhat_register_using_salt    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register_using_salt
 install -m 644 conf/cobbler/snippets/minion_script    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/minion_script
-install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register
-install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
@@ -748,11 +746,8 @@ fi
 %config %{spacewalksnippetsdir}/keep_system_id
 %config %{spacewalksnippetsdir}/post_reactivation_key
 %config %{spacewalksnippetsdir}/post_delete_system
-%config %{spacewalksnippetsdir}/redhat_register
 %config %{spacewalksnippetsdir}/redhat_register_using_salt
 %config %{spacewalksnippetsdir}/minion_script
-%config %{spacewalksnippetsdir}/sles_register
-%config %{spacewalksnippetsdir}/sles_register_script
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
 %if 0%{?suse_version}

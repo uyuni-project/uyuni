@@ -171,7 +171,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
+                    <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <div class="checkbox">
                             <label>
                                 <c:choose>
@@ -228,7 +228,7 @@
                     </label>
                     <div class="col-lg-6">
                         <div class="input-group">
-                            <span class="input-group-addon">
+                            <span class="input-group-addon input-group-text">
                                 <bean:message key="channel.edit.jsp.emailaddress"/>
                             </span>
                             <div class="form-control">
@@ -238,9 +238,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
+                    <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <div class="input-group">
-                            <span class="input-group-addon">
+                            <span class="input-group-addon input-group-text">
                                 <bean:message key="channel.edit.jsp.phonenumber"/>
                             </span>
                             <div class="form-control">
@@ -330,7 +330,7 @@
 
         <c:if test="${has_access}">
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit property="Update" styleClass="btn btn-success">
                         <bean:message key="message.Update"/>
                     </html:submit>

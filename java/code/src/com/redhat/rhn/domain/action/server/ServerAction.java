@@ -27,6 +27,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -62,6 +63,9 @@ public class ServerAction extends ActionChild implements Serializable {
      * @param statusIn to set
     */
     public void setStatus(ActionStatus statusIn) {
+        if (Objects.equals(statusIn, ActionFactory.STATUS_FAILED) && !Objects.equals(status, statusIn)) {
+            Optional.ofNullable(getParentAction()).ifPresent(pa -> pa.onFailAction(this));
+        }
         this.status = statusIn;
     }
 

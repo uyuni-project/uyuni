@@ -705,5 +705,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
+    <sql-query name="Channel.findModularChannels">
+        <![CDATA[
+            SELECT {c.*}
+            FROM rhnChannel c
+            LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+            WHERE c.org_id = :org_id
+            AND c.id in (
+              SELECT DISTINCT a.channel_id
+              FROM suseAppstream a)
+        ]]>
+        <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
+    </sql-query>
 
 </hibernate-mapping>

@@ -56,6 +56,13 @@ Requires:       snpguest
 Module for the Uyuni Confidential Computing Attestation that uses SnpGuest.
 %endif
 
+%package module-secureboot
+Summary:        Confidential computing SecureBoot attestation module for Uyuni
+
+%description module-secureboot
+Module for the Uyuni Confidential Computing Attestation for SecureBoot uses the output of mokutil.
+
+
 %package        javadoc
 Summary:        API documentation for %{name}
 BuildArch:      noarch
@@ -65,9 +72,6 @@ Package containing the Javadoc API documentation for %{name}.
 
 %prep
 %setup -q
-
-# Disable the common module it will be provided by the installed dependency
-%pom_disable_module '../uyuni-java-common'
 
 %ifnarch x86_64
 # Disable the module snpguest as it requires x86_64
@@ -81,6 +85,8 @@ Package containing the Javadoc API documentation for %{name}.
 %pom_remove_plugin -r :maven-shade-plugin
 
 %{mvn_package} ':attestation-module-snpguest' module-snpguest
+
+%{mvn_package} ':attestation-module-secureboot' module-secureboot
 
 %build
 %{mvn_build} -f
@@ -139,6 +145,11 @@ cd -
 %{_prefix}/share/coco-attestation/certs/*
 %license LICENSE
 %endif
+
+%files module-secureboot -f .mfiles-module-secureboot
+%defattr(-,root,root)
+%{_prefix}/share/coco-attestation/lib/attestation-module-secureboot.jar
+%license LICENSE
 
 %files javadoc -f .mfiles-javadoc
 %license LICENSE

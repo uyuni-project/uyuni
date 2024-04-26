@@ -269,11 +269,13 @@ end
 #
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
-  accept_alert do
-    step %(I click on "#{text}")
+  begin
+    accept_alert do
+      step %(I click on "#{text}")
+    end
+  rescue Capybara::ModalNotFound
+    warn 'Modal not found'
   end
-rescue Capybara::ModalNotFound
-  warn 'Modal not found'
 end
 
 #
@@ -795,8 +797,14 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
   step %(I check "#{text}" in the list)
 end
 
-When(/^I check the first patch in the list$/) do
-  step 'I check the first row in the list'
+When(/^I check the first patch in the list, that does not require a reboot$/) do
+  row = find(:xpath, '//section//div[@class=\'table-responsive\']/table/tbody/tr', match: :first)
+  reboot_required = row.has_xpath?('.//*[contains(@title,\'Reboot Required\')]')
+  if reboot_required
+    step 'I check the second row in the list'
+  else
+    step 'I check the first row in the list'
+  end
 end
 
 When(/^I click on the red confirmation button$/) do
@@ -897,6 +905,13 @@ When(/^I uncheck row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text
   raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
 
   row.set(false)
+end
+
+When(/^I check the second row in the list$/) do
+  within(:xpath, '//section') do
+    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[2]/td')
+    row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
+  end
 end
 
 When(/^I check the first row in the list$/) do
@@ -1016,10 +1031,12 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    break if has_no_xpath?(path, wait: 1)
-  rescue Selenium::WebDriver::Error::StaleElementReferenceError
-    # We need to consider the case that after obtaining the element it is detached from the page document
-    break
+    begin
+      break if has_no_xpath?(path, wait: 1)
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      # We need to consider the case that after obtaining the element it is detached from the page document
+      break
+    end
   end
 end
 
@@ -1088,11 +1105,13 @@ When(/^I close the modal dialog$/) do
 end
 
 When(/^I refresh the page$/) do
-  accept_prompt do
-    execute_script 'window.location.reload()'
+  begin
+    accept_prompt do
+      execute_script 'window.location.reload()'
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
   end
-rescue Capybara::ModalNotFound
-  # ignored
 end
 
 When(/^I make a list of the existing systems$/) do

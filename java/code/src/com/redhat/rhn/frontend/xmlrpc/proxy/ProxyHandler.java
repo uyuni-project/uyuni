@@ -42,6 +42,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
+import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 
 import org.apache.logging.log4j.LogManager;
@@ -293,7 +294,8 @@ public class ProxyHandler extends BaseHandler {
             }
 
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
-                    maxCache.longValue(), email, rootCA, intermediateCAs, proxyCrtKey, null, null, null);
+                    maxCache.longValue(), email, rootCA, intermediateCAs, proxyCrtKey, null, null, null,
+                    new SSLCertManager());
         }
         catch (InstantiationException e) {
             LOG.error("Failed to generate proxy system id", e);
@@ -364,7 +366,8 @@ public class ProxyHandler extends BaseHandler {
             SSLCertData certData = new SSLCertData(nullable(proxyName), cnames, nullable(country),
                     nullable(state), nullable(city), nullable(org), nullable(orgUnit), nullable(sslEmail));
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
-                    maxCache.longValue(), email, null, List.of(), null, caCrtKey, caPassword, certData);
+                    maxCache.longValue(), email, null, List.of(), null, caCrtKey, caPassword, certData,
+                    new SSLCertManager());
         }
         catch (InstantiationException e) {
             LOG.error("Failed to generate proxy system id", e);

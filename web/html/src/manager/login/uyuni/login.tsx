@@ -45,7 +45,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                 </a>
               </p>
             </div>
-            <div className="col-sm-5 col-sm-offset-1">
+            <div className="col-sm-5 col-sm-offset-1 offset-sm-1">
               <Messages items={getFormMessages(success, messages)} />
               <h2 className="gray-text">{t("Sign In")}</h2>
               <form

@@ -32,11 +32,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Set;
 
 public class SSLCertManagerTest extends RhnJmockBaseTestCase {
 
@@ -74,6 +76,8 @@ public class SSLCertManagerTest extends RhnJmockBaseTestCase {
             will(returnValue(process));
             allowing(process).getOutputStream();
             will(returnValue(outStream));
+            allowing(process).getInputStream();
+            will(returnValue(new ByteArrayInputStream("".getBytes())));
             allowing(process).waitFor();
             will(returnValue(0));
         }});
@@ -92,5 +96,31 @@ public class SSLCertManagerTest extends RhnJmockBaseTestCase {
         assertEquals("capassword", outStream.toString(StandardCharsets.US_ASCII));
 
         assertFalse(tempDir.exists());
+    }
+
+    @Test
+    public void testGetNamesFromCert() throws Exception {
+        String mockedOutput = "subject=C = US, ST = North Carolina, O = Example Corp. Inc., OU = unit, " +
+                    "CN = dev-pxy-test.mgr.lab, emailAddress = admin@example.com\n" +
+                "X509v3 Subject Alternative Name: \n" +
+                "    DNS:dev-foo.mgr.lab, DNS:dev-bar.mgr.lab\n" +
+                "    DNS:*.example.com\n";
+        String mockedCert = "FAKE CERT";
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        context().checking(new Expectations() {{
+            allowing(runtime).exec(with(IsArrayContainingInAnyOrder.arrayContainingInAnyOrder(
+                            "openssl", "x509", "-noout", "-subject", "-ext", "subjectAltName")));
+            will(returnValue(process));
+            allowing(process).getInputStream();
+            will(returnValue(new ByteArrayInputStream(mockedOutput.getBytes())));
+            allowing(process).getOutputStream();
+            will(returnValue(outputStream));
+            allowing(process).waitFor();
+            will(returnValue(0));
+        }});
+        Set<String> names = certManager.getNamesFromSslCert("FAKE CERT");
+        Set<String> expected = Set.of("dev-pxy-test.mgr.lab", "dev-foo.mgr.lab", "dev-bar.mgr.lab", "*.example.com");
+        assertEquals(expected, names);
+        assertEquals(mockedCert, outputStream.toString(StandardCharsets.US_ASCII));
     }
 }

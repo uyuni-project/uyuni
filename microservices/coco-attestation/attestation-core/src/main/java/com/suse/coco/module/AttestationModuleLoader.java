@@ -15,8 +15,6 @@
 
 package com.suse.coco.module;
 
-import com.suse.coco.modules.AttestationModule;
-import com.suse.coco.modules.AttestationWorker;
 import com.suse.common.database.DatabaseSessionFactory;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;

@@ -1,0 +1,1 @@
+- Prevent error in case of inconsistent subscription matcher message data (bsc#1221629)

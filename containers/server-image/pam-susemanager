@@ -1,0 +1,5 @@
+#%PAM-1.0
+auth     include        susemanager-auth
+account  include        susemanager-account
+password include        susemanager-password
+session  include        susemanager-session

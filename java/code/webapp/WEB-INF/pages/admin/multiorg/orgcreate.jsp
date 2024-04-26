@@ -74,7 +74,7 @@
                                        styleClass="form-control"
                                        maxlength="32"
                                        styleId="desiredpass" />
-                        <span class="input-group-addon">
+                        <span class="input-group-addon input-group-text">
                             <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
                         </span>
                     </div>
@@ -92,7 +92,7 @@
                                        styleClass="form-control"
                                        onkeyup="updateTickIcon()"
                                        maxlength="32" styleId="confirmpass"/>
-                        <span class="input-group-addon">
+                        <span class="input-group-addon input-group-text">
                             <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
                         </span>
                     </div>
@@ -179,7 +179,7 @@ function toggleAsterisk() {
             </div>
 
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <span class="help-block">
                         <span class="required-form-field">*</span> - <bean:message key="usercreate.requiredField" />
                     </span>
@@ -187,7 +187,7 @@ function toggleAsterisk() {
             </div>
 
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit styleClass="btn btn-success">
                         <bean:message key="orgcreate.jsp.submit"/>
                     </html:submit>

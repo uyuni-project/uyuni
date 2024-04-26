@@ -10,13 +10,18 @@ def dict_equal(a, b):
     type_b = type(b)
 
     if type_a != type_b:
+        sys.stderr.write("Type_a '{}' != Type_b '{}'\n".format(type_a, type_b))
         return False
 
     if isinstance(a, dict):
         if len(a) != len(b):
+            sys.stderr.write("dicts have different number of values\n")
+            sys.stderr.write("{}\n".format(a))
+            sys.stderr.write("{}\n".format(b))
             return False
         for key in a:
             if key not in b:
+                sys.stderr.write("Key '{}' exists in a, but not in b\n".format(key))
                 return False
             if not dict_equal(a[key], b[key]):
                 return False
@@ -24,11 +29,15 @@ def dict_equal(a, b):
 
     elif isinstance(a, list):
         if len(a) != len(b):
+            sys.stderr.write("lists have a different number of values\n")
+            sys.stderr.write("{}\n".format(a))
+            sys.stderr.write("{}\n".format(b))
             return False
         while len(a):
             x = a.pop()
             index = dict_indexof(x, b)
             if index == -1:
+                sys.stderr.write("position of elements in list are different")
                 return False
             del b[index]
         return True

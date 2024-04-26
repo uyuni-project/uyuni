@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2018 Red Hat, Inc.
+ * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,8 +13,11 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.manager.system;
 
+import static com.suse.utils.Predicates.allProvided;
+import static com.suse.utils.Predicates.isAbsent;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
@@ -618,7 +622,7 @@ public class SystemManager extends BaseManager {
 
     /**
      * How to cleanup the server on deletion.
-      */
+     */
     public enum ServerCleanupType {
         /**
          * Fail in case of cleanup error.
@@ -1057,7 +1061,7 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult<SystemOverview> systemsWithFeature(User user, String feature,
-            PageControl pc) {
+                                                                PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "systems_with_feature");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
@@ -1456,7 +1460,7 @@ public class SystemManager extends BaseManager {
      * @return a list of ErrataOverviews
      */
     public static DataResult<ErrataOverview> relevantErrata(User user,
-            Long sid, List<String> types) {
+                                                            Long sid, List<String> types) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "relevant_to_system_by_types");
 
         Map<String, Object> params = new HashMap<>();
@@ -1858,7 +1862,7 @@ public class SystemManager extends BaseManager {
      *           returned server.
      */
     public static Server subscribeServerToChannel(User user,
-            Server server, Channel channel) {
+                                                  Server server, Channel channel) {
         return subscribeServerToChannel(user, server, channel, false);
     }
 
@@ -2164,8 +2168,20 @@ public class SystemManager extends BaseManager {
         return () -> new RhnRuntimeException(message);
     }
 
-    private Server getOrCreateProxySystem(User creator, String fqdn, Integer port) {
-        Optional<Server> existing = ServerFactory.findByFqdn(fqdn);
+    private Optional<Server> findByAnyFqdn(Set<String> fqdns) {
+        for (String fqdn : fqdns) {
+            Optional<Server> server = ServerFactory.findByFqdn(fqdn);
+            if (server.isPresent()) {
+                return server;
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Server getOrCreateProxySystem(
+            User creator, String proxyName, Set<String> fqdns, Integer port, String sshPublicKey
+    ) {
+        Optional<Server> existing = findByAnyFqdn(fqdns);
         if (existing.isPresent()) {
             Server server = existing.get();
             if (!(server.hasEntitlement(EntitlementManager.FOREIGN) ||
@@ -2181,16 +2197,19 @@ public class SystemManager extends BaseManager {
                 server.setProxyInfo(info);
             }
             info.setSshPort(port);
+            info.setSshPublicKey(sshPublicKey.getBytes());
             return server;
         }
         Server server = ServerFactory.createServer();
-        server.setName(fqdn);
-        server.setHostname(fqdn);
-        server.getFqdns().add(new ServerFQDN(server, fqdn));
+        server.setName(proxyName);
+        server.setHostname(proxyName);
+        server.getFqdns().addAll(fqdns.stream()
+                .filter(fqdn -> !fqdn.contains("*"))
+                .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
         server.setOrg(creator.getOrg());
         server.setCreator(creator);
 
-        String uniqueId = createUniqueId(List.of(fqdn));
+        String uniqueId = createUniqueId(List.of(proxyName));
         server.setDigitalServerId(uniqueId);
         server.setMachineId(uniqueId);
         server.setOs("(unknown)");
@@ -2207,6 +2226,7 @@ public class SystemManager extends BaseManager {
         ProxyInfo info = new ProxyInfo();
         info.setServer(server);
         info.setSshPort(port);
+        info.setSshPublicKey(sshPublicKey.getBytes());
         server.setProxyInfo(info);
 
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
@@ -2226,18 +2246,20 @@ public class SystemManager extends BaseManager {
      * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
      * @param proxyCertKey proxy CRT and key pair
      * @param caPair the CA certificate and key used to sign the certificate to generate.
-     *               Can be omitted if proxyCertKey is not provided
+     *               Can be omitted if proxyCertKey is provided
      * @param caPassword the CA private key password.
-     *               Can be omitted if proxyCertKey is not provided
+     *               Can be omitted if proxyCertKey is provided
      * @param certData the data needed to generate the new proxy SSL certificate.
-     *               Can be omitted if proxyCertKey is not provided
+     *               Can be omitted if proxyCertKey is provided
+     * @param certManager the SSLCertManager to use
      * @return the configuration file
      */
     public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
                                              Long maxCache, String email,
                                              String rootCA, List<String> intermediateCAs,
                                              SSLCertPair proxyCertKey,
-                                             SSLCertPair caPair, String caPassword, SSLCertData certData)
+                                             SSLCertPair caPair, String caPassword, SSLCertData certData,
+                                             SSLCertManager certManager)
             throws IOException, InstantiationException, SSLCertGenerationException {
         /* Prepare the archive streams where the config files will be stored into */
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
@@ -2245,9 +2267,15 @@ public class SystemManager extends BaseManager {
         GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(bufOut);
         TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut);
 
-        /**
-         * config.yaml
-         */
+        // Create the proxy SSH keys ahead
+        MgrUtilRunner.SshKeygenResult proxySshKey = saltApi.generateSSHKey(null, null)
+                .orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
+
+        if (!(proxySshKey.getReturnCode() == 0 || proxySshKey.getReturnCode() == -1)) {
+            throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + proxySshKey.getStderr()).get();
+        }
+
+        // config.yaml
         Map<String, Object> config = new HashMap<>();
 
         config.put("server", server);
@@ -2259,23 +2287,28 @@ public class SystemManager extends BaseManager {
         SSLCertPair proxyPair = proxyCertKey;
         String rootCaCert = rootCA;
         if (proxyCertKey == null || !proxyCertKey.isComplete()) {
-            proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
+            proxyPair = certManager.generateCertificate(caPair, caPassword, certData);
             rootCaCert = caPair.getCertificate();
         }
         config.put("ca_crt", rootCaCert);
 
         addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dumpPlain(config).getBytes(), 0644);
-        /**
-         * config.yaml
-         */
+        // End of config.yaml
 
-        /**
-         * httpd.yaml
-         */
+        // httpd.yaml
         Map<String, Object> httpdRootConfig = new HashMap<>();
         Map<String, Object> httpdConfig = new HashMap<>();
 
-        Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
+        Set<String> fqdns = new HashSet<>();
+        fqdns.add(proxyName);
+        if (proxyCertKey != null && proxyCertKey.getCertificate() != null) {
+            // Get the cnames from the certificate using openssl
+            fqdns.addAll(certManager.getNamesFromSslCert(proxyCertKey.getCertificate()));
+        }
+        else {
+            fqdns.addAll(certData.getAllCnames());
+        }
+        Server proxySystem = getOrCreateProxySystem(user, proxyName, fqdns, proxyPort, proxySshKey.getPublicKey());
         ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
         httpdConfig.put("system_id", cert.asXml());
 
@@ -2292,43 +2325,54 @@ public class SystemManager extends BaseManager {
 
         httpdRootConfig.put("httpd", httpdConfig);
         addTarEntry(tarOut, "httpd.yaml", YamlHelper.INSTANCE.dumpPlain(httpdRootConfig).getBytes(), 0600);
-        /**
-         * httpd.yaml
-         */
+        // End of httpd.yaml
 
-        /**
-         * ssh.yaml
-         */
+        // ssh.yaml
         Map<String, Object> sshRootConfig = new HashMap<>();
         Map<String, Object> sshConfig = new HashMap<>();
 
-        MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH,
-                        SaltSSHService.SUMA_SSH_PUB_KEY)
-                .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
-        if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
-            throw raiseAndLog("Generating salt-ssh public key failed: " + result.getStderr()).get();
-        }
-        sshConfig.put("server_ssh_key_pub", result.getPublicKey());
-
-        // Create the proxy SSH keys
-        result = saltApi.generateSSHKey(null, null)
-                .orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
-        if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
-            throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + result.getStderr()).get();
-        }
-        sshConfig.put("server_ssh_push", result.getKey());
-        sshConfig.put("server_ssh_push_pub", result.getPublicKey());
+        sshConfig.put("server_ssh_key_pub", getServerSshPublicKey(user, server));
+        sshConfig.put("server_ssh_push", proxySshKey.getKey());
+        sshConfig.put("server_ssh_push_pub", proxySshKey.getPublicKey());
 
         sshRootConfig.put("ssh", sshConfig);
         addTarEntry(tarOut, "ssh.yaml", YamlHelper.INSTANCE.dumpPlain(sshRootConfig).getBytes(), 0600);
-        /**
-         * ssh.yaml
-         */
+        // End of ssh.yaml
 
         tarOut.finish();
         tarOut.close();
 
         return bytesOut.toByteArray();
+    }
+
+    private String getServerSshPublicKey(User user, String serverFqdn) {
+        String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+        if (isAbsent(localManagerFqdn)) {
+            throw raiseAndLog("Could not determine the local SUSE Manager FQDN.").get();
+        }
+
+        if (localManagerFqdn.equals(serverFqdn)) {
+            MgrUtilRunner.SshKeygenResult serverSshKey =
+                    saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY)
+                            .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
+
+            if (!(serverSshKey.getReturnCode() == 0 || serverSshKey.getReturnCode() == -1)) {
+                throw raiseAndLog("Generating salt-ssh public key failed: " + serverSshKey.getStderr()).get();
+            }
+
+            return serverSshKey.getPublicKey();
+        }
+
+        Server serverServer = ServerFactory.lookupProxiesByOrg(user).stream()
+                .filter(proxy -> serverFqdn.equals(proxy.getName())).findFirst()
+                .orElseThrow(raiseAndLog("Could not find specified server named " + serverFqdn +
+                        " in the organization."));
+
+        if (!allProvided(serverServer.getProxyInfo(), serverServer.getProxyInfo().getSshPublicKey())) {
+            throw raiseAndLog("Could not find the public SSH key for the server.").get();
+        }
+
+        return new String(serverServer.getProxyInfo().getSshPublicKey());
     }
 
     private void addTarEntry(TarArchiveOutputStream tarOut, String name, byte[] data, int mode) throws IOException {
@@ -2933,8 +2977,8 @@ public class SystemManager extends BaseManager {
      * @return description of server information as well as a list of relevant packages
      */
     public static DataResult<Row> ssmSystemPackagesToRemove(User user,
-            String packageSetLabel,
-            boolean shortened) {
+                                                            String packageSetLabel,
+                                                            boolean shortened) {
         SelectMode m;
         if (shortened) {
             m = ModeFactory.getMode("System_queries",
@@ -3186,7 +3230,7 @@ public class SystemManager extends BaseManager {
     }
 
     private static List<DuplicateSystemGrouping> listDuplicates(User user, String query,
-            List<String> ignored, Long inactiveHours) {
+                                                                List<String> ignored, Long inactiveHours) {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, (0 - inactiveHours.intValue()));
@@ -3694,7 +3738,7 @@ public class SystemManager extends BaseManager {
      * @param defaultIn The default value for the preference
      */
     public static void setUserSystemPreferenceBulk(User user, String preference,
-            Boolean value, Boolean defaultIn) {
+                                                   Boolean value, Boolean defaultIn) {
         CallableMode mode = ModeFactory.getCallableMode("System_queries",
                 "reset_user_system_preference_bulk");
         Map<String, Object> params = new HashMap<>();
