@@ -2872,7 +2872,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="pendingactions.jsp.nogroups" xml:space="preserve">
         <source>No actions pending.</source>
-        <target/>
+        <target>Žiadne čakajúce akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -2880,14 +2880,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="pendingactions.jsp.confirm_cancel_actions" xml:space="preserve">
         <source>Confirm Cancel Actions</source>
-        <target/>
+        <target>Potvrdiť zrušenie akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActionsDeleteConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.confirm_cancel_actions_summary" xml:space="preserve">
         <source>Click on the "confirm" button below to cancel the listed actions.</source>
-        <target/>
+        <target>Kliknutím na tlačidlo "potvrdiť" nižšie zrušíte uvedené akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
