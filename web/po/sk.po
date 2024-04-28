@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-04-26 19:43+0000\n"
+"PO-Revision-Date: 2024-04-28 18:43+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -52,11 +52,12 @@ msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
 msgstr ""
+"Nie je možné naplánovať akciu. Prosím, skontrolujte záznamy servera, aby ste "
+"získali podrobné informácie."
 
 #: ../html/src/components/CoCoScansList.tsx:122
-#, fuzzy
 msgid "Confirm Attestation Execution"
-msgstr "Konfigurovať stavy na vykonanie"
+msgstr "Potvrdiť vykonanie atestácie"
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
@@ -80,16 +81,15 @@ msgstr "Späť na zoznam"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "Atestácie dôveryhodného používania počítača"
 
 #: ../html/src/components/CoCoScansList.tsx:163
-#, fuzzy
 msgid "Schedule Attestation"
-msgstr "Podrobnosti plánu"
+msgstr "Naplánovať atestáciu"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
-msgstr ""
+msgstr "Podrobnosti atestačnej správy"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -162,14 +162,12 @@ msgid "Loading the scheduler..."
 msgstr "Načítava sa plánovač..."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
-#, fuzzy
 msgid "Attestations"
-msgstr "Reštartovanie"
+msgstr "Atestácie"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
-#, fuzzy
 msgid "Attestation"
-msgstr "Reštartovanie"
+msgstr "Atestácia"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
 msgid "Attestation #{identifier} run on {date} at {time}"
