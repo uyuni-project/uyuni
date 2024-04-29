@@ -1605,6 +1605,43 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void testGetRelevantErrataWithListOfSids() throws Exception {
+
+        Errata firstErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+        firstErrata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
+
+        Errata secondErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+        secondErrata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
+
+        TestUtils.flushAndEvict(firstErrata);
+        TestUtils.flushAndEvict(secondErrata);
+
+        Server firstServer = ServerFactoryTest.createTestServer(admin);
+        Server secondServer = ServerFactoryTest.createTestServer(admin);
+        ServerFactory.save(firstServer);
+        ServerFactory.save(secondServer);
+        TestUtils.flushAndEvict(firstServer);
+        TestUtils.flushAndEvict(secondServer);
+
+        UserFactory.save(admin);
+        TestUtils.flushAndEvict(admin);
+
+        Package packageOne = firstErrata.getPackages().iterator().next();
+        Package packageTwo = secondErrata.getPackages().iterator().next();
+
+        ErrataCacheManager.insertNeededErrataCache(
+                firstServer.getId(), firstErrata.getId(), packageOne.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                secondServer.getId(), secondErrata.getId(), packageTwo.getId());
+
+        List<Integer> sids = Arrays.asList(firstServer.getId().intValue(), secondServer.getId().intValue());
+
+        List<Map<String, Object>> list = handler.getRelevantErrata(admin, sids);
+
+        assertEquals(list.size(), 2);
+    }
+
+    @Test
     public void testGetRelevantErrataByType() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
