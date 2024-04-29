@@ -1,0 +1,1 @@
+- Avoid sending empty events with reboot_info beacon
