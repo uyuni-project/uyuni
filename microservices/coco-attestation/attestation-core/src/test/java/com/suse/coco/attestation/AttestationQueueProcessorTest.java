@@ -15,38 +15,39 @@
 
 package com.suse.coco.attestation;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.suse.coco.module.AttestationModuleLoader;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.awaitility.Awaitility;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.opentest4j.AssertionFailedError;
 import org.postgresql.PGConnection;
 import org.postgresql.PGNotification;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @ExtendWith(MockitoExtension.class)
 @Timeout(30)
@@ -76,7 +77,9 @@ class AttestationQueueProcessorTest {
     private AttestationQueueProcessor processor;
 
     @BeforeEach
-    public void setUp() throws SQLException {
+    public void setup() throws SQLException {
+        Awaitility.setDefaultTimeout(5, TimeUnit.SECONDS);
+
         processor = new AttestationQueueProcessor(sessionFactory, resultService, executorService, moduleLoader, 10);
 
         // Basic mocking
@@ -96,6 +99,11 @@ class AttestationQueueProcessorTest {
             .thenReturn(new PGNotification[0]);
     }
 
+    @AfterEach
+    public void tearDown() {
+        Awaitility.reset();
+    }
+
     @Test
     @DisplayName("An interruption in the listener process terminate the processor")
     void testInterruptingListenerShouldTerminateProcessor() throws Exception {
@@ -106,24 +114,24 @@ class AttestationQueueProcessorTest {
 
         runInTestThread(() -> processor.run());
 
-        awaitAsserted(() -> {
-            // Verify the listener thread has been created
-            assertNotNull(getThreadByName("attestation-processor-listener"));
-            // And it's actually waiting for notifications
-            verify(pgConnection).getNotifications(anyInt());
-        });
+        await("The listener thread to start")
+            .untilAsserted(() -> assertNotNull(getThreadByName("attestation-processor-listener")));
+
+        // And it's actually waiting for notifications
+        verify(pgConnection, atLeastOnce()).getNotifications(anyInt());
 
         // Interrupt the listener
         Thread processorListener = getThreadByName("attestation-processor-listener");
         processorListener.interrupt();
 
-        // Verify the processor and the listener are correctly stopped
-        awaitAsserted(() -> {
-            assertNull(getThreadByName("attestation-processor-listener"));
-            assertNull(getThreadByName("test-thread"));
+        await("The processor and the listener threads to properly stopped")
+            .untilAsserted(() -> {
+                assertNull(getThreadByName("attestation-processor-listener"));
+                assertNull(getThreadByName("test-thread"));
+            });
 
-            verify(executorService).shutdown();
-        });
+        // Verify shutdown was called
+        verify(executorService).shutdown();
     }
 
     private static void runInTestThread(Runnable runnable) {
@@ -135,33 +143,5 @@ class AttestationQueueProcessorTest {
             .filter(t -> Objects.equals(t.getName(), name))
             .findFirst()
             .orElse(null);
-    }
-
-    private static void awaitAsserted(Executable assertions) {
-        awaitAsserted(assertions, Duration.ofSeconds(5), Duration.ofMillis(100));
-    }
-
-    private static void awaitAsserted(Executable assertions, Duration timeout, Duration pollInterval) {
-        Instant startInstant = Instant.now();
-        Instant expirationInstant = startInstant.plusSeconds(timeout.toSeconds());
-
-        while (Instant.now().isBefore(expirationInstant)) {
-            try {
-                assertions.execute();
-                return;
-            }
-            catch (AssertionError error) {
-                try {
-                    // Assertions are not satisfied. Wait a bit and retry
-                    Thread.sleep(pollInterval.toMillis());
-                }
-                catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-            catch (Throwable th) {
-                throw new AssertionFailedError("Unhandled error during assertions execution", th);
-            }
-        }
     }
 }
