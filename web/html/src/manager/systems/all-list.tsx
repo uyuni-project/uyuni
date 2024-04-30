@@ -42,8 +42,12 @@ export function AllSystems(props: Props) {
         >
           <IconTag type="header-help" />
         </a>
-      </h1>
 
+        <a href="/rhn/manager/systems/bootstrap" role="button" className="btn btn-default pull-right">
+          <IconTag type="item-add" />
+          Add System
+        </a>
+      </h1>
       <Table
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}
