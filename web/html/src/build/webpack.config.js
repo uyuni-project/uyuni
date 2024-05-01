@@ -105,11 +105,10 @@ module.exports = (env, argv) => {
       "javascript/manager/main": "./manager/index.ts",
       "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
       "css/susemanager-fullscreen": path.resolve(__dirname, "../branding/css/susemanager-fullscreen.less"),
-      // TODO: We're removing the dark theme for now
-      "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
       "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
+      "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.less"),
       "css/updated-susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
-      "css/updated-susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
+      "css/updated-susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.scss"),
       "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
     },
     output: {
