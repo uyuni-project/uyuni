@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.suse.manager.gatherer.HostJson;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,6 +39,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -48,12 +50,12 @@ import java.util.Set;
  */
 public class VirtualHostManagerProcessor {
 
+    private static final Logger LOGGER = LogManager.getLogger(VirtualHostManagerProcessor.class);
     private final VirtualHostManager virtualHostManager;
     private final Map<String, HostJson> virtualHosts;
-    private Set<Server> serversToDelete;
-    private Set<VirtualHostManagerNodeInfo> nodesToDelete;
-    private Logger log;
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final Set<Server> serversToDelete;
+    private final Set<VirtualHostManagerNodeInfo> nodesToDelete;
+    private final SystemEntitlementManager systemEntitlementManager;
 
     /**
      * Instantiates a new virtual host manager processor, will update a virtual
@@ -62,13 +64,12 @@ public class VirtualHostManagerProcessor {
      * @param managerIn the virtual host manager
      * @param virtualHostsIn the virtual hosts information from JSON
      */
-    public VirtualHostManagerProcessor(VirtualHostManager managerIn,
-            Map<String, HostJson> virtualHostsIn) {
-        this.log = LogManager.getLogger(VirtualHostManagerProcessor.class);
+    public VirtualHostManagerProcessor(VirtualHostManager managerIn, Map<String, HostJson> virtualHostsIn) {
         this.virtualHostManager = managerIn;
         this.virtualHosts = virtualHostsIn;
         this.serversToDelete = new HashSet<>();
         this.nodesToDelete = new HashSet<>();
+        this.systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     }
 
     /**
@@ -79,24 +80,24 @@ public class VirtualHostManagerProcessor {
      * mapping.
      */
     public void processMapping() {
-        log.debug("Processing Virtual Host Manager: {}", virtualHostManager);
+        LOGGER.debug("Processing Virtual Host Manager: {}", virtualHostManager);
         if (virtualHosts == null) {
-            log.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.",
+            LOGGER.error("Virtual Host Manager {}: Please check the virtual-host-gatherer logfile.",
                     virtualHostManager.getLabel());
             return;
         }
         serversToDelete.addAll(virtualHostManager.getServers());
         nodesToDelete.addAll(virtualHostManager.getNodes());
         virtualHosts.forEach((key, value) -> {
-            log.debug("Processing host: {}", key);
+            LOGGER.debug("Processing host: {}", key);
             processVirtualHost(key, value);
         });
         serversToDelete.forEach(srv -> {
-            log.debug("Removing link to virtual host: {}", srv.getName());
+            LOGGER.debug("Removing link to virtual host: {}", srv.getName());
             virtualHostManager.removeServer(srv);
         });
         nodesToDelete.forEach(node -> {
-            log.debug("Removing virtual host node: {}", node.getName());
+            LOGGER.debug("Removing virtual host node: {}", node.getName());
             virtualHostManager.removeNode(node);
         });
     }
@@ -116,7 +117,7 @@ public class VirtualHostManagerProcessor {
                 VirtualHostManagerFactory.KUBERNETES);
         if (server == null) {
             VirtualHostManagerNodeInfo nodeInfo = updateAndGetNodeInfo(hostLabel, host);
-            if (!virtualHostManager.getNodes().contains(nodeInfo)) {
+            if (isNewInPersistentSet(virtualHostManager.getNodes(), nodeInfo)) {
                 virtualHostManager.getNodes().add(nodeInfo);
             }
             else {
@@ -126,7 +127,7 @@ public class VirtualHostManagerProcessor {
             // if one doesn't already exist
             return;
         }
-        if (!virtualHostManager.getServers().contains(server)) {
+        if (isNewInPersistentSet(virtualHostManager.getServers(), server)) {
             virtualHostManager.addServer(server);
         }
         else {
@@ -167,6 +168,18 @@ public class VirtualHostManagerProcessor {
     }
 
     /**
+     * For a Hibernate PersistentSet, contains() doesn't always work as expected. So it's better to lookup explicitly
+     * @param persistedElements the PersistentSet
+     * @param itemToCheck the item to check
+     * @return true if the item is not part of the set
+     * @param <T> the type of the elements in the set
+     */
+    private <T> boolean isNewInPersistentSet(Set<T> persistedElements, T itemToCheck) {
+        return persistedElements.stream()
+            .noneMatch(e -> Objects.equals(e, itemToCheck));
+    }
+
+    /**
      * Extracts virtual instance type from string. Falls back to para virtualization if the
      * requested string doesn't match to any existing virtualization type.
 
@@ -178,8 +191,7 @@ public class VirtualHostManagerProcessor {
                 VirtualInstanceFactory.getInstance().getVirtualInstanceType(candidate);
         if (type == null) { // fallback
             type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-            log.warn(String.format("Can't find virtual instance type for string '%s'. " +
-                    "Defaulting to '%s'", candidate, type));
+            LOGGER.warn("Can't find virtual instance type for string '{}'. Defaulting to '{}'", candidate, type);
         }
         return type;
     }
@@ -197,8 +209,7 @@ public class VirtualHostManagerProcessor {
     private Server updateAndGetServer(String hostId,
                                       HostJson host,
                                       String skipCreateForType) {
-        Server server = ServerFactory.lookupForeignSystemByDigitalServerId(
-                buildServerFullDigitalId(host.getHostIdentifier()));
+        Server server = getServerByHost(host.getHostIdentifier(), host.getFallbackHostIdentifier());
         if (server == null) {
             if (skipCreateForType.equalsIgnoreCase(host.getType())) {
                 return null;
@@ -216,6 +227,32 @@ public class VirtualHostManagerProcessor {
         if (server.getBaseEntitlement() == null) {
             systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         }
+        return server;
+    }
+
+    /**
+     * For VMWare we had to change the value for the host identifier. This method retrieves the server using the new
+     * value and falling back to the old one, if available. If the server is retrieve using the old identifier, the
+     * digital host id is updated to reflect the new identifier.
+     * @param hostIdentifier the host identifier
+     * @param fallback the fallback value, used by VMWare module before the change
+     * @return the server if found, null otherwise.
+     */
+    private Server getServerByHost(String hostIdentifier, String fallback) {
+        // First use the hostIdentifier field
+        String digitalId = buildServerFullDigitalId(hostIdentifier);
+        Server server = ServerFactory.lookupForeignSystemByDigitalServerId(digitalId);
+        if (server != null || StringUtils.isEmpty(fallback)) {
+            return server;
+        }
+
+        // Fallback to the old host identifier field
+        server = ServerFactory.lookupForeignSystemByDigitalServerId(buildServerFullDigitalId(fallback));
+        // Update to the digital id to use the current host identifier
+        if (server != null) {
+            server.setDigitalServerId(digitalId);
+        }
+
         return server;
     }
 
@@ -277,7 +314,7 @@ public class VirtualHostManagerProcessor {
         }
 
         cpu.setArch(ServerFactory.lookupCPUArchByName(host.getCpuArch()));
-        cpu.setMHz(Long.valueOf(Math.round(host.getCpuMhz())).toString());
+        cpu.setMHz(Long.toString(Math.round(host.getCpuMhz())));
         if (host.getTotalCpuSockets().longValue() > 0L) {
             cpu.setNrsocket(host.getTotalCpuSockets().longValue());
             cpu.setNrCore(host.getTotalCpuCores().longValue() / host.getTotalCpuSockets().longValue());
