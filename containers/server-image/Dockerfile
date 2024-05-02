@@ -44,7 +44,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     virtualization-formulas \
     uyuni-config-formula \
     inter-server-sync \
-    golang-github-lusitaniae-apache_exporter \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
     golang-github-QubitProducts-exporter_exporter \
