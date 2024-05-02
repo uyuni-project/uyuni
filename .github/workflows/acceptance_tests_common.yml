@@ -29,6 +29,7 @@ jobs:
               - 'testsuite/**'
               - '!.github/workflows/**'
               - '!testsuite/features/build_validation/**'
+              - '!**/*.changes*'
   test-uyuni:
     runs-on: ubuntu-22.04
     needs: paths-filter
