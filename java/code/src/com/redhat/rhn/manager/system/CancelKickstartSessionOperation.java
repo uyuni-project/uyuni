@@ -14,11 +14,22 @@
  */
 package com.redhat.rhn.manager.system;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemPendingEventDto;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * DeleteSystemFromActionOperation - deletes a system from an action
@@ -48,6 +59,23 @@ public class CancelKickstartSessionOperation
         ksession.markFailed(failedMessage);
         KickstartFactory.saveKickstartSession(ksession);
 
+        // Create and schedule a CobblerSystemRemoveCommand
+        CobblerSystemRemoveCommand cobblerRemove = new CobblerSystemRemoveCommand(user, server);
+        cobblerRemove.store();
+
+        // Remove any possible autoinstallation initiate actions from the server
+        DataResult<SystemPendingEventDto> pendingActions = SystemManager.systemPendingEvents(server.getId(), null);
+
+        String rebootName = ActionFactory.TYPE_KICKSTART_INITIATE.getName();
+        List<Action> actions = pendingActions.stream().filter(action -> action.getActionName().equals(rebootName))
+                .map(action -> ActionManager.lookupAction(user, action.getId()))
+                .collect(Collectors.toList());
+        try {
+            ActionManager.cancelActions(user, actions, List.of(server.getId()));
+        }
+        catch (TaskomaticApiException eIn) {
+            throw new RhnRuntimeException(eIn);
+        }
         return null;
     }
 

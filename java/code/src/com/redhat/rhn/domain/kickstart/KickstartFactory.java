@@ -1054,10 +1054,7 @@ public class KickstartFactory extends HibernateFactory {
             for (Object next : ksSessions) {
                 KickstartSession ks = (KickstartSession)next;
                 log.debug("Failing kickstart associated with action: {}", ks.getId());
-                ks.setState(failed);
-                ks.setAction(null);
-
-                setKickstartSessionHistoryMessage(ks, failed, KICKSTART_CANCELLED_MESSAGE);
+                ks.markFailed(KICKSTART_CANCELLED_MESSAGE);
             }
         }
     }
