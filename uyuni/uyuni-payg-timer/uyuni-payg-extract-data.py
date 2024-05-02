@@ -49,30 +49,49 @@ def system_exit(code, messages=None):
 def is_payg_instance():
     flavor_check = "/usr/bin/instance-flavor-check"
     if not os.path.isfile(flavor_check) or not os.access(flavor_check, os.X_OK):
-        print("instance-flavor-check tool is not available. " +
-              "For a correct PAYG detection please install the 'python-instance-billing-flavor-check' package"
-              , file=sys.stderr)
+        print(
+            "instance-flavor-check tool is not available. "
+            + "For a correct PAYG detection please install the 'python-instance-billing-flavor-check' package",
+            file=sys.stderr,
+        )
         return False
 
     try:
-        result = subprocess.call(flavor_check, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        result = subprocess.call(
+            flavor_check, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
     except subprocess.CalledProcessError as e:
-        print("Failed to execute instance-flavor-check tool. {}".format(e), file=sys.stderr)
+        print(
+            "Failed to execute instance-flavor-check tool. {}".format(e),
+            file=sys.stderr,
+        )
         return False
 
     # instance-flavor-check return 10 for PAYG. Other possible values are 11 -> BYOS and 12 -> Unknown
     return result == 10
 
 
-SuseCloudInfo = namedtuple('SuseCloudInfo', ['header_auth', 'hostname'])
+SuseCloudInfo = namedtuple("SuseCloudInfo", ["header_auth", "hostname"])
 
 
 def _get_suse_cloud_info():
     input = INPUT_TEMPLATE % (CREDENTIALS_NAME, "/")
     try:
-        auth_data_output = subprocess.check_output("/usr/lib/zypp/plugins/urlresolver/susecloud", input=input, stderr=subprocess.PIPE, universal_newlines=True)
+        auth_data_output = subprocess.check_output(
+            "/usr/lib/zypp/plugins/urlresolver/susecloud",
+            input=input,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        )
     except subprocess.CalledProcessError as e:
-        system_exit(3, ["Got error when getting repo processed URL and headers(error {}):".format(e)])
+        system_exit(
+            3,
+            [
+                "Got error when getting repo processed URL and headers(error {}):".format(
+                    e
+                )
+            ],
+        )
 
     full_output = auth_data_output.split("\n")
     _, header_auth, _, repository_url = full_output
@@ -87,18 +106,18 @@ def _get_suse_cloud_info():
 
 def _get_instance_identification():
     product_xml = ET.parse("/etc/products.d/baseproduct")
-    if product_xml.find("./vendor").text == 'SUSE':
+    if product_xml.find("./vendor").text == "SUSE":
         return {
             "X-Instance-Identifier": product_xml.find("./name").text,
             "X-Instance-Version": product_xml.find("./version").text,
-            "X-Instance-Arch": product_xml.find("./arch").text
+            "X-Instance-Arch": product_xml.find("./arch").text,
         }
 
     return {}
 
 
 def _extract_http_auth(credentials):
-    credentials_file = '/etc/zypp/credentials.d/' + credentials
+    credentials_file = "/etc/zypp/credentials.d/" + credentials
     if not Path(credentials_file).exists():
         system_exit(5, ["Credentials file not found ({})".format(credentials_file)])
     with open(credentials_file) as credFile:
@@ -116,34 +135,45 @@ def _extract_http_auth(credentials):
 def _extract_rmt_server_info(netloc):
     try:
         # we need to find the IP address, since it is not resolvable in any DNS. It is hardcoded in the hosts file
-        host_ip_output = subprocess.check_output(["getent", "hosts", netloc], stderr=subprocess.PIPE, universal_newlines=True)
+        host_ip_output = subprocess.check_output(
+            ["getent", "hosts", netloc], stderr=subprocess.PIPE, universal_newlines=True
+        )
     except subprocess.CalledProcessError as e:
         system_exit(4, ["unable to get ip for repository server (error {}):".format(e)])
 
     server_ip = host_ip_output.split(" ")[0].strip()
-    ca_cert_path = "/etc/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
+    ca_cert_path = (
+        "/etc/pki/trust/anchors/registration_server_%s.pem"
+        % server_ip.replace(".", "_")
+    )
     if not Path(ca_cert_path).exists():
-        ca_cert_path = "/usr/share/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
+        ca_cert_path = (
+            "/usr/share/pki/trust/anchors/registration_server_%s.pem"
+            % server_ip.replace(".", "_")
+        )
         if not Path(ca_cert_path).exists():
-            system_exit(6, ["CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')".format( server_ip)])
+            system_exit(
+                6,
+                [
+                    "CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')".format(
+                        server_ip
+                    )
+                ],
+            )
     with open(ca_cert_path) as f:
         server_ca = f.read()
-    return {
-        "hostname": netloc,
-        "ip": server_ip,
-        "server_ca": server_ca
-    }
+    return {"hostname": netloc, "ip": server_ip, "server_ca": server_ca}
 
 
 def _get_installed_suse_products():
-    products= []
+    products = []
     for product_file in glob.glob("/etc/products.d/*.prod"):
         product_xml = ET.parse(product_file)
-        if product_xml.find("./vendor").text == 'SUSE':
+        if product_xml.find("./vendor").text == "SUSE":
             product = {
                 "name": product_xml.find("./name").text,
                 "version": product_xml.find("./version").text,
-                "arch": product_xml.find("./arch").text
+                "arch": product_xml.find("./arch").text,
             }
             if product["name"] == "sle-manager-tools":
                 # no payg product has manager tools. When it appears, it comes from
@@ -160,12 +190,15 @@ def load_instance_info():
     credentials_data = _extract_http_auth(CREDENTIALS_NAME)
     products = _get_installed_suse_products()
 
-    return { "type": "CLOUDRMT",
-             "products": products,
-             "basic_auth": credentials_data,
-             "header_auth": header_auth,
-             "rmt_host": rmt_host_data,
-             "timestamp": int(time.time())}
+    return {
+        "type": "CLOUDRMT",
+        "products": products,
+        "basic_auth": credentials_data,
+        "header_auth": header_auth,
+        "rmt_host": rmt_host_data,
+        "timestamp": int(time.time()),
+    }
+
 
 def perform_compliants_checks():
     # defaults
@@ -173,7 +206,6 @@ def perform_compliants_checks():
     modifiedPackages = False
     billing_service_running = False
     isPaygInstance = is_payg_instance()
-
 
     if isPaygInstance:
         if os.path.isfile("/usr/bin/ec2metadata"):
@@ -183,39 +215,62 @@ def perform_compliants_checks():
         elif os.path.isfile("/usr/bin/gcemetadata"):
             cloudProvider = "GCE"
 
-        modifiedPackages = (has_package_modifications("billing-data-service") or
-                            has_package_modifications("csp-billing-adapter-service") or
-                            has_package_modifications("python3-csp-billing-adapter") or
-                            has_package_modifications("python3-csp-billing-adapter-local"))
+        modifiedPackages = (
+            has_package_modifications("billing-data-service")
+            or has_package_modifications("csp-billing-adapter-service")
+            or has_package_modifications("python3-csp-billing-adapter")
+            or has_package_modifications("python3-csp-billing-adapter-local")
+        )
         if cloudProvider == "AWS":
-            modifiedPackages = modifiedPackages or has_package_modifications("python3-csp-billing-adapter-amazon")
+            modifiedPackages = modifiedPackages or has_package_modifications(
+                "python3-csp-billing-adapter-amazon"
+            )
         elif cloudProvider == "AZURE":
-            modifiedPackages = modifiedPackages or has_package_modifications("python3-csp-billing-adapter-azure")
+            modifiedPackages = modifiedPackages or has_package_modifications(
+                "python3-csp-billing-adapter-azure"
+            )
         billing_service_running = is_service_running("csp-billing-adapter.service")
 
     compliant = billing_service_running and not modifiedPackages
 
-    return { "isPaygInstance": isPaygInstance,
-             "compliant": compliant,
-             "cloudProvider": cloudProvider,
-             "hasModifiedPackages": modifiedPackages,
-             "billingServiceRunning": billing_service_running,
-             "timestamp": int(time.time())}
+    return {
+        "isPaygInstance": isPaygInstance,
+        "compliant": compliant,
+        "cloudProvider": cloudProvider,
+        "hasModifiedPackages": modifiedPackages,
+        "billingServiceRunning": billing_service_running,
+        "timestamp": int(time.time()),
+    }
+
 
 def is_service_running(service):
     try:
-        result = subprocess.call(["/usr/bin/systemctl", "-q", "is-active", service], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        result = subprocess.call(
+            ["/usr/bin/systemctl", "-q", "is-active", service],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
     except subprocess.CalledProcessError as e:
-        print("Checking for running service {} failed: {}".format(service, e), file=sys.stderr)
+        print(
+            "Checking for running service {} failed: {}".format(service, e),
+            file=sys.stderr,
+        )
         return False
     return result == 0
 
 
 def has_package_modifications(pkg):
     try:
-        out = subprocess.check_output(["rpm", "-V", pkg], stderr=subprocess.PIPE, universal_newlines=True, encoding="utf-8")
+        out = subprocess.check_output(
+            ["rpm", "-V", pkg],
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+            encoding="utf-8",
+        )
     except subprocess.CalledProcessError as e:
-        print("has_package_modifications({}) failed: {}".format(pkg, e), file=sys.stderr)
+        print(
+            "has_package_modifications({}) failed: {}".format(pkg, e), file=sys.stderr
+        )
         return True
 
     for line in out.split("\n"):
@@ -225,10 +280,16 @@ def has_package_modifications(pkg):
             return True
     return False
 
+
 def get_volume_path(volume):
     path = None
     try:
-        out = subprocess.check_output(["podman", "volume", "inspect", volume], stderr=subprocess.PIPE, universal_newlines=True, encoding="utf-8")
+        out = subprocess.check_output(
+            ["podman", "volume", "inspect", volume],
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+            encoding="utf-8",
+        )
     except subprocess.CalledProcessError as e:
         system_exit(1, ["Unable to find volume: {}".format(e)])
     volumes = json.loads(out)
@@ -245,7 +306,9 @@ def main():
         system_exit(1, ["Container not yet initialized"])
 
     compliance_data = perform_compliants_checks()
-    with open(os.path.join(volume_path, "rhn", "payg_compliance.json"), "w", encoding='utf-8') as f:
+    with open(
+        os.path.join(volume_path, "rhn", "payg_compliance.json"), "w", encoding="utf-8"
+    ) as f:
         json.dump(compliance_data, f, ensure_ascii=False, indent=2)
     os.chmod(os.path.join(volume_path, "rhn", "payg_compliance.json"), 0o644)
 
@@ -255,13 +318,14 @@ def main():
         return
 
     payg_data = load_instance_info()
-    with open(os.path.join(volume_path, "rhn", "payg.json"), "w", encoding='utf-8') as f:
+    with open(
+        os.path.join(volume_path, "rhn", "payg.json"), "w", encoding="utf-8"
+    ) as f:
         json.dump(payg_data, f, ensure_ascii=False, indent=2)
     os.chmod(os.path.join(volume_path, "rhn", "payg.json"), 0o644)
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         main()
         sys.exit(0)
