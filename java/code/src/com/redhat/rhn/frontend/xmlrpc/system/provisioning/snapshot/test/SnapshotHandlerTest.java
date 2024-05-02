@@ -31,6 +31,7 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -49,17 +50,19 @@ import java.util.Set;
  */
 public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
-    private SaltApi saltApi = new TestSaltApi();
-    private SystemQuery systemQuery = new TestSystemQuery();
-    private CloudPaygManager paygManager = new CloudPaygManager();
-    private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+    private final SaltApi saltApi = new TestSaltApi();
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final AttestationManager attestationManager = new AttestationManager();
+    private final RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private final SSHMinionBootstrapper sshMinionBootstrapper =
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private final XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SnapshotHandler handler = new SnapshotHandler(xmlRpcSystemHelper);
+    private final SnapshotHandler handler = new SnapshotHandler(xmlRpcSystemHelper);
 
     private ServerSnapshot generateSnapshot(Server server) {
         ServerSnapshot snap = new ServerSnapshot();

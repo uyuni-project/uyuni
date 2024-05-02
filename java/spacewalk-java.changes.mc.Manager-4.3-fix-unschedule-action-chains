@@ -1,2 +1,0 @@
-- when an action is unscheduled which belong to an action chain
-  unschedule the action chain as well (bsc#1221784)

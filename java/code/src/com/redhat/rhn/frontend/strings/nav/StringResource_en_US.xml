@@ -431,6 +431,16 @@
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
         </trans-unit>
+      <!-- CoCo Attestation -->
+      <trans-unit id="nav.system.coco">
+        <source>Confidential Computing</source>
+      </trans-unit>
+      <trans-unit id="nav.system.coco.settings">
+        <source>Settings</source>
+      </trans-unit>
+      <trans-unit id="nav.system.coco.list_attestations">
+        <source>List Attestations</source>
+      </trans-unit>
       <!-- SDC Config file navigation-->
       <trans-unit id="nav.sdc.config.overview">
           <source>Overview</source>

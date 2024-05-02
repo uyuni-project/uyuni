@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-6">
+                        <div class="col-sm-offset-3 offset-sm-3 col-sm-6">
                             <button type="submit" value="<bean:message key='message.Update'/>"
                                 <c:choose>
                                    <c:when test="${empty mailableAddress}">

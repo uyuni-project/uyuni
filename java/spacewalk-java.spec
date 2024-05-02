@@ -61,8 +61,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.5
-Release:        1
+Version:        5.0.6
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
@@ -113,7 +113,6 @@ BuildRequires:  javamail
 BuildRequires:  javapackages-tools
 BuildRequires:  javassist
 BuildRequires:  jboss-logging
-BuildRequires:  jcommon
 BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
@@ -200,7 +199,6 @@ Requires:       javamail
 Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging
-Requires:       jcommon
 Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
@@ -245,6 +243,7 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
 Requires:       tomcat-native
@@ -364,7 +363,6 @@ Requires:       httpcomponents-core
 Requires:       java-%{java_version}-openjdk
 Requires:       javassist
 Requires:       jboss-logging
-Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
 Requires:       log4j
@@ -579,11 +577,8 @@ install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{spacewalksni
 install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/keep_system_id
 install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_reactivation_key
 install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_delete_system
-install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register
 install -m 644 conf/cobbler/snippets/redhat_register_using_salt    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register_using_salt
 install -m 644 conf/cobbler/snippets/minion_script    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/minion_script
-install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register
-install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
@@ -751,11 +746,8 @@ fi
 %config %{spacewalksnippetsdir}/keep_system_id
 %config %{spacewalksnippetsdir}/post_reactivation_key
 %config %{spacewalksnippetsdir}/post_delete_system
-%config %{spacewalksnippetsdir}/redhat_register
 %config %{spacewalksnippetsdir}/redhat_register_using_salt
 %config %{spacewalksnippetsdir}/minion_script
-%config %{spacewalksnippetsdir}/sles_register
-%config %{spacewalksnippetsdir}/sles_register_script
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
 %if 0%{?suse_version}

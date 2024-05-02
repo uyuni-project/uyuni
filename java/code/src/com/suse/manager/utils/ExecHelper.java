@@ -54,10 +54,11 @@ public class ExecHelper {
      *
      * @param command the command to run
      * @param input the value to pass as standard input of the process
+     * @return the command output
      *
      * @throws RhnRuntimeException if anything wrong happens or if the exit code is not 0
      */
-    public void exec(List<String> command, String input) throws RhnRuntimeException {
+    public String exec(List<String> command, String input) throws RhnRuntimeException {
         Process process;
         try {
             process = runtimeSupplier.get().exec(command.toArray(new String[0]));
@@ -83,6 +84,7 @@ public class ExecHelper {
                 String errMsg = new String(process.getErrorStream().readAllBytes());
                 throw new RhnRuntimeException(TOOL_FAILED_MSG + errMsg);
             }
+            return new String(process.getInputStream().readAllBytes());
         }
         catch (InterruptedException err) {
             LOG.error(err);

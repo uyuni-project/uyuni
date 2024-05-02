@@ -35,7 +35,6 @@ UPDATED = 3
 
 # pylint: disable-next=invalid-name
 class dbPackage:
-
     """A small class that helps us represent things about a
     database package. In this structure "real" means that we have an
     entry in the database for it.
@@ -517,7 +516,7 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
         """
        select id
          from rhnPackageKeyType
-        where LABEL in ('gpg', 'pgp')
+        where LABEL in ('gpg', 'pgp', 'rsa')
     """
     )
 
@@ -551,7 +550,7 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
     sigkeys = header.signatures
     key_id = None  # _key_ids(sigkeys)[0]
     for sig in sigkeys:
-        if sig["signature_type"] in ["gpg", "pgp"]:
+        if sig["signature_type"] in ("gpg", "pgp", "rsa"):
             key_id = sig["key_id"]
 
     if not key_id:

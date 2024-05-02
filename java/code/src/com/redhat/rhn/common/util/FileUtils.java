@@ -17,32 +17,23 @@ package com.redhat.rhn.common.util;
 import com.redhat.rhn.common.RhnRuntimeException;
 
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
-import org.apache.commons.io.LineIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jfree.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.file.FileSystem;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Set;
-
+import java.util.stream.Stream;
 
 
 /**
@@ -51,38 +42,46 @@ import java.util.Set;
  */
 public class FileUtils {
 
-    private static Logger log = LogManager.getLogger(FileUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(FileUtils.class);
 
     private FileUtils() {
     }
 
     /**
-     * Save a String to a file on disk using specified path.
+     * Save a String to a file on disk using specified path. This method DOES NOT validate the path, use it only to
+     * read files that cannot be modified by user input.
      *
-     * WARNING:  This deletes the original file before it writes.
+     * WARNING: This deletes the original file before it writes.
      *
      * @param contents to save to file on disk
-     * @param path to save file to.
+     * @param location to save file to.
      */
-    public static void writeStringToFile(String contents, String path) {
+    public static void writeStringToFile(String contents, String location) {
+        writeStringToFile(contents, Path.of(location));
+    }
+
+    /**
+     * Save a String to a file on disk using specified path. This method validates that the file location is contained
+     * within the specified base path.
+     *
+     * WARNING: This deletes the original file before it writes.
+     *
+     * @param basePath the base path for the file to read
+     * @param contents to save to file on disk
+     * @param location to save file to.
+     */
+    public static void writeStringToFile(String contents, String basePath, String location) {
+        writeStringToFile(contents, validateCanonicalPath(basePath, location));
+    }
+
+    private static void writeStringToFile(String contents, Path path) {
         try {
-            File file = new File(path);
-            if (file.exists()) {
-                Files.delete(file.toPath());
-            }
-            file.createNewFile();
-            try (FileOutputStream fos = new FileOutputStream(file);
-                 FileWriter fw = new FileWriter(fos.getFD());
-                 BufferedWriter output = new BufferedWriter(fw)) {
-                output.write(contents);
-                output.flush();
-                fw.flush();
-                fos.getFD().sync();
-            }
+            Files.deleteIfExists(path);
+            Files.writeString(path, contents);
         }
         catch (Exception e) {
-            log.error("Error trying to write file to disk: [{}]", path, e);
-            throw new RhnRuntimeException(e);
+            LOGGER.error("Error trying to write file to disk: [{}]", path, e);
+            throw new RhnRuntimeException("Error trying to write file to disk", e);
         }
     }
 
@@ -97,10 +96,11 @@ public class FileUtils {
      */
     public static void setAttributes(Path path, String user, String group, Set<PosixFilePermission> permissions)
             throws IOException {
-        FileSystem fileSystem = FileSystems.getDefault();
-        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-        PosixFileAttributeView view  = Files.getFileAttributeView(
-                path, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+        PosixFileAttributeView view = Files.getFileAttributeView(
+            path, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS
+        );
+        UserPrincipalLookupService service = FileSystems.getDefault().getUserPrincipalLookupService();
+
         view.setOwner(service.lookupPrincipalByName(user));
         view.setGroup(service.lookupPrincipalByGroupName(group));
         view.setPermissions(permissions);
@@ -108,7 +108,8 @@ public class FileUtils {
 
 
     /**
-     * Read a file off disk into a String and return it.
+     * Read a file off disk into a String and return it. This method DOES NOT validate the path, use it only to read
+     * files that cannot be modified by user input.
      *
      * Expect weird stuff if the file is not textual.
      *
@@ -116,12 +117,12 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path) {
-        return readStringFromFile(path, false);
+        return readStringFromFile(Path.of(path), false);
     }
 
-
     /**
-     * Read a file off disk into a String and return it.
+     * Read a file off disk into a String and return it. This method DOES NOT validate the path, use it only to read
+     * files that cannot be modified by user input.
      *
      * Expect weird stuff if the file is not textual.
      *
@@ -130,27 +131,52 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path, boolean noLog) {
-        if (log.isDebugEnabled()) {
-            log.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path));
+        return readStringFromFile(Path.of(path), noLog);
+    }
+
+    /**
+     * Read a file off disk into a String and return it. This method validates that the file location is contained
+     * within the specified base path.
+     *
+     * Expect weird stuff if the file is not textual.
+     *
+     * @param basePath the base path for the file to read
+     * @param location file to read. Can be absolute or relative to base path.
+     * @return String containing file.
+     */
+    public static String readStringFromFile(String basePath, String location) {
+        return readStringFromFile(validateCanonicalPath(basePath, location), false);
+    }
+
+    /**
+     * Read a file off disk into a String and return it. This method validates that the file location is contained
+     * within the specified base path.
+     *
+     * Expect weird stuff if the file is not textual.
+     *
+     * @param basePath the base path for the file to read
+     * @param location file to read. Can be absolute or relative to base path.
+     * @param noLog don't log the content of the file
+     * @return String containing file.
+     */
+    public static String readStringFromFile(String basePath, String location, boolean noLog) {
+        return readStringFromFile(validateCanonicalPath(basePath, location), noLog);
+    }
+
+    private static String readStringFromFile(Path path, boolean noLog) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path.toString()));
         }
 
-        File f = new File(path);
-        BufferedReader input;
         try {
-            input = new BufferedReader(new FileReader(f));
-            StringWriter writer = new StringWriter();
-            IOUtils.getInstance().copyWriter(input, writer);
-            String contents = writer.toString();
-            if (noLog && log.isDebugEnabled()) {
-                log.debug("contents: {}", contents);
+            String contents = Files.readString(path);
+            if (!noLog && LOGGER.isDebugEnabled()) {
+                LOGGER.debug("contents: {}", contents);
             }
             return contents;
         }
-        catch (FileNotFoundException e) {
-            throw new RhnRuntimeException("File not found: " + path);
-        }
         catch (IOException e) {
-            throw new RhnRuntimeException(e);
+            throw new RhnRuntimeException("Unable to load file content", e);
         }
     }
 
@@ -165,31 +191,25 @@ public class FileUtils {
      * @return byte[] array from file.
      */
     public static byte[] readByteArrayFromFile(File fileToRead, long start, long end) {
-        log.debug("readByteArrayFromFile: {} start: {} end: {}", fileToRead.getAbsolutePath(), start, end);
+        LOGGER.debug("readByteArrayFromFile: {} start: {} end: {}", fileToRead.getAbsolutePath(), start, end);
 
         int size = (int) (end - start);
-        log.debug("size of array: {}", size);
-        // Create the byte array to hold the data
-        byte[] bytes = new byte[size];
-        try (InputStream is = new FileInputStream(fileToRead)) {
-            // Read in the bytes
-            int offset = 0;
-            int numRead = 0;
+        LOGGER.debug("size of array: {}", size);
+
+        try (SeekableByteChannel byteChannel = Files.newByteChannel(fileToRead.toPath(), StandardOpenOption.READ)) {
             // Skip ahead
-            is.skip(start);
-            // start reading
-            while (offset < bytes.length &&
-                    (numRead) >= 0) {
-                numRead = is.read(bytes, offset,
-                        bytes.length - offset);
-                offset += numRead;
-            }
+            byteChannel.position(start);
+
+            // Create the byte array to hold the data
+            ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+            byteChannel.read(byteBuffer);
+
+            return byteBuffer.array();
         }
-        catch (IOException fnf) {
-            log.error("Could not read from: {}", fileToRead.getAbsolutePath());
-            throw new RhnRuntimeException(fnf);
+        catch (IOException e) {
+            LOGGER.error("Could not read from: {}", fileToRead.getAbsolutePath());
+            throw new RhnRuntimeException("Could not read bytes from file", e);
         }
-        return bytes;
     }
 
     /**
@@ -200,27 +220,22 @@ public class FileUtils {
      */
     public static String getTailOfFile(String pathToFile, Integer lines) {
         CircularFifoBuffer buffer = new CircularFifoBuffer(lines);
-        try (InputStream fileStream = new FileInputStream(pathToFile)) {
-            LineIterator it = org.apache.commons.io.IOUtils.lineIterator(fileStream,
-                                                                         (String) null);
-            while (it.hasNext()) {
-                buffer.add(it.nextLine());
-            }
-        }
-        catch (FileNotFoundException e) {
-            log.error("File not found: {}", pathToFile);
-            throw new RhnRuntimeException(e);
+
+        try (Stream<String> linesStream = Files.lines(Path.of(pathToFile))) {
+            linesStream.forEach(line -> buffer.add(line));
         }
         catch (IOException e) {
-            log.error(String.format("Failed to close file %s", pathToFile));
+            LOGGER.error("File not found: {}", pathToFile);
             throw new RhnRuntimeException(e);
         }
+
         // Construct a string from the buffered lines
         StringBuilder sb = new StringBuilder();
         for (Object s : buffer) {
             sb.append(s);
             sb.append(System.getProperty("line.separator"));
         }
+
         return sb.toString();
     }
 
@@ -233,7 +248,38 @@ public class FileUtils {
             Files.deleteIfExists(path);
         }
         catch (IOException e) {
-            log.warn("Could not delete file: {}", path, e);
+            LOGGER.warn("Could not delete file: {}", path, e);
+        }
+    }
+
+    /**
+     * Checks and validate an untrusted path
+     *
+     * @param basePath the base directory
+     * @param fileLocation the file name
+     *
+     * @return a validated canonical path object
+     */
+    public static Path validateCanonicalPath(String basePath, String fileLocation) {
+        File directory = new File(basePath);
+        if (!directory.isAbsolute()) {
+            throw new IllegalArgumentException("targetDirectory must be an absolute path");
+        }
+
+        File file = new File(fileLocation);
+        if (!file.isAbsolute()) {
+            file = Path.of(basePath, fileLocation).toFile();
+        }
+
+        try {
+            if (!file.getCanonicalPath().startsWith(directory.getCanonicalPath())) {
+                throw new IllegalArgumentException("Entry is outside of the target directory");
+            }
+
+            return file.getCanonicalFile().toPath();
+        }
+        catch (IOException | SecurityException ex) {
+            throw new RhnRuntimeException("Unable to validate path", ex);
         }
     }
 }

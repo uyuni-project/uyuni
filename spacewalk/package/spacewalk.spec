@@ -56,9 +56,6 @@ Requires:       mgr-push
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-app
 Requires:       spacewalk-backend-applet
-Requires:       spacewalk-backend-config-files
-Requires:       spacewalk-backend-config-files-common
-Requires:       spacewalk-backend-config-files-tool
 Requires:       spacewalk-backend-iss
 Requires:       spacewalk-backend-iss-export
 Requires:       spacewalk-backend-package-push-server

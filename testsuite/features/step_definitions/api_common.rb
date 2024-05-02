@@ -6,7 +6,7 @@
 require 'json'
 require 'socket'
 
-## system namespace
+# system namespace
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
@@ -87,7 +87,7 @@ When(/^I retrieve the relevant errata for (.+)$/) do |raw_hosts|
   sids.size == 1 ? $api_test.system.get_system_errata(sids[0]) : $api_test.system.get_systems_errata(sids)
 end
 
-## user namespace
+# user namespace
 
 When(/^I call user\.list_users\(\)$/) do
   @users = $api_test.user.list_users
@@ -136,7 +136,7 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
   refute($api_test.user.remove_role(luser, rolename) != 1)
 end
 
-## channel namespace
+# channel namespace
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
   url = "http://#{get_target('server').full_hostname}/pub/AnotherRepo/"
@@ -217,7 +217,7 @@ Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) 
   assert_equal(count, channels.select { |channel| channel.start_with?(prefix) }.size)
 end
 
-## activationkey namespace
+# activationkey namespace
 
 Then(/^I should get some activation keys$/) do
   raise ScriptError if $api_test.activationkey.get_activation_keys_count < 1
@@ -270,39 +270,21 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
 
-  # Filter out the custom channels
-  # This is needed because we might have both a traditional custom channel and a Salt custom channel
-  child_channels.reject! { |channel| channel.include? 'custom_channel' }
+  # filter out wrong child channels for SLE Micro 5.5 as normal Minion
+  if client.include? 'slemicro55'
+    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-pool-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-updates-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-pool-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64' }
+  end
 
-  # Re-add the desired custom channel
-  # This too can go away when we get rid of traditional clients for good
-  client.sub! 'ssh_minion', 'minion'
-  client.sub! 'buildhost', 'minion'
-  client.sub! 'terminal', 'minion'
-  custom_channel =
-    if client.include? 'alma8'
-      'no-appstream-alma-8-result-custom_channel_alma8_minion'
-    elsif client.include? 'alma9'
-      'no-appstream-alma-9-result-custom_channel_alma9_minion'
-    elsif client.include? 'liberty9'
-      'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
-    elsif client.include? 'oracle9'
-      'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
-    elsif client.include? 'rocky8'
-      'no-appstream-8-result-custom_channel_rocky8_minion'
-    elsif client.include? 'rocky9'
-      'no-appstream-9-result-custom_channel_rocky9_minion'
-    else
-      "custom_channel_#{client}"
-    end
-  child_channels.push(custom_channel)
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
   $api_test.activationkey.add_child_channels(key, child_channels)
 end
 
-## actionchain namespace
+# actionchain namespace
 
 When(/^I call actionchain\.create_chain\(\) with chain label "(.*?)"$/) do |label|
   action_id = $api_test.actionchain.create_chain(label)
@@ -423,7 +405,7 @@ When(/^I wait until there are no more action chains$/) do
   end
 end
 
-## schedule API
+# schedule API
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes($api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label)
@@ -460,7 +442,7 @@ Then(/^I wait until there are no more scheduled actions$/) do
   end
 end
 
-## provisioning.powermanagement namespace
+# provisioning.powermanagement namespace
 
 When(/^I fetch power management values$/) do
   @powermgmt_result = $api_test.system.provisioning.powermanagement.get_details($client_id)
@@ -492,7 +474,7 @@ Then(/^the power status is "([^"]*)"$/) do |estat|
   assert(!stat) if estat == 'off'
 end
 
-## audit namespace
+# audit namespace
 
 When(/^I call audit\.list_systems_by_patch_status\(\) with CVE identifier "([^"]*)"$/) do |cve_identifier|
   @result_list = $api_test.audit.list_systems_by_patch_status(cve_identifier) || []
@@ -520,7 +502,7 @@ Then(/^I should get the "([^"]*)" patch$/) do |patch|
   assert(@result['errata_advisories'].include?(patch))
 end
 
-## configchannel namespace
+# configchannel namespace
 
 Then(/^channel "([^"]*)" should exist$/) do |channel|
   assert_equal(1, $api_test.configchannel.channel_exists(channel))
@@ -568,9 +550,11 @@ When(/^I deploy all systems registered to channel "([^"]*)"$/) do |channel|
 end
 
 When(/^I delete channel "([^"]*)" via API((?: without error control)?)$/) do |channel, error_control|
-  $api_test.configchannel.delete_channels([channel])
-rescue StandardError
-  raise SystemCallError, 'Error deleting channel' if error_control.empty?
+  begin
+    $api_test.configchannel.delete_channels([channel])
+  rescue StandardError
+    raise SystemCallError, 'Error deleting channel' if error_control.empty?
+  end
 end
 
 When(/^I call system.create_system_profile\(\) with name "([^"]*)" and HW address "([^"]*)"$/) do |name, hw_address|

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Sinhala (http://www.transifex.com/projects/p/spacewalk/"
@@ -31,1050 +31,74 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/capabilities.py:94
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-"මෙම සේවා දායකයට %s පහසුකම අවශ්‍යව ඇත, නමුත් වත්මන් සේවා දායකය එම පහසුකම සපයන්නේ නැත"
-
 #: ../src/up2date_client/config.py:162
 #, python-format
 msgid "%s was not found"
 msgstr "%s සොයාගත නොහැකි විය"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "ඔබේ පද්ධතිය තුල ස්ථාපනය කල යුතු ඇසුරුම් ලයිස්තුව ලබා ගනිමින්"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "cpu තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "පද්ධතියේ මතක තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "ජාලයේ තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "ස්ථාපනය සිදුකල යුතු ආකාරය සම්බන්ධ තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "ජාල අන්තර් මුහුණත් තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය :"
-
-#: ../src/up2date_client/hardware.py:1118
-#, fuzzy
-msgid "Error reading network FQDNs information:"
-msgstr "ජාලයේ තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/hardware.py:1125
-#, fuzzy
-msgid "Error reading system info:"
-msgstr "පද්ධතියේ මතක තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/hardware.py:1132
-#, fuzzy
-msgid "Error reading machine info:"
-msgstr "cpu තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr ""
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "ඕඩයක් සමඟ නිසි ලෙස සම්බන්ධ වන තුරු පද්ධතිය නවීකරණය නොවනු ඇත."
-
-#: ../src/up2date_client/rhncli.py:65
-#, fuzzy
-msgid "Show additional output. Repeat for more detail."
-msgstr "අතිරේක ප්‍රතිදානයන් පෙන්වන්න"
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "භාවිත කල යුතු http ප්‍රොක්සිය නිර්දේශ කරන්න"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "අනන්‍යතාවය තහවුරුකරගත් http ප්‍රොක්සිය සමඟ භාවිත කිරීමට පරිශීලක නාමයක් ලබාදෙන්න "
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "අනන්‍යතාවය තහවුරුකරගත් http ප්‍රොක්සිය සමඟ භාවිත කිරීමට රහස්පදයක් ලබාදෙන්න "
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"නවතා දමන ලදී.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "බලා පොරොත්තු නොවූ මෙහෙයුම් පද්ධතියේ දෝශයක් ඇතිවිය: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "නිසි ලෙස සකසා නොමැති URI සමඟ සම්බන්ධතාවයක් සාදා ගැනීමට වෙර දැරීය.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "නිසි ලෙස සකසා නොමැති URI සමඟ සම්බන්ධතාවයක් සාදා ගැනීමට වෙර දැරීය: %s.\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "යම් ආකාරයක I/O දෝශයක් ඇත විය: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "SSL දෝශයක් ඇති විය: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"මෙම දෝශයට බොහෝ දුරට හේතු විය හැක්කේ පද්ධතියේ වේලාව සාවද්‍ය ලෙස තිබීමයි. පද්ධතිය තුල සටහන් "
-"වන වේලාවේ නිරවද්‍ය භාවය තහවුරු කරගන්න.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "SSL රහස්‍ය සංකේත වල දෝශයක් ඇති විය: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "අනන්‍යතාවය තහවුරු කර ගැනීමේදී දෝශයක් ඇති විය: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "%s ක්‍රියාත්මක කිරීම සඳහා පද්ධතිය නැවත ආරම්භ කල යුතු වේ."
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "දෝශයක් ඇතිවිය:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "වැඩි විස්තර සඳහා /var/log/up2date බලන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr ""
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "ඔබ විසින් පිවිසුමක් ඇතුලත් කලයුතුමය"
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-#, fuzzy
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Red Hat Network සේවා දායකය සමඟ සම්බන්ධ වීමට උතසහ කරමින්."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "%s තිබෙන Red Hat Network සේවා දායකය සමඟ සම්බන්ධ වීමට උත්සහ කරමින්."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "%s හී ප්‍රොක්සියක් නියම කර ඇත.."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "ලියාපදිංචි අංකය(_n)"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, fuzzy, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"ඔබේ පද්ධතිය ආරක්‍ෂිතව තබාගැනීමට අවශ්‍ය ප්‍රගමනයන් ඇතුලත්ව මෘදුකාංග ප්‍රගමනයන් ලබාගැනීම හා "
-"නිසියාකාරව පද්ධතිය පවත්වාගැනීම සඳහා මෙම සහයක විසින් Red Hat Network (RHN) වෙත සම්බන්ධ "
-"වන අයුරු පෙන්වනු ලැබේ.  මේ සඳහා පහත සඳහන් සියල්ල ඔබහට අවශ්‍ය වේ:\n"
-"\n"
-" * අන්තර්ජාල සම්බන්ධතාවයක්\n"
-" * ඔබේ Red Hat පිවිසුම සහ රහස්පදය\n"
-" * Red Hat Network Satellite හෝ ප්‍රොක්සියේ ස්ථානය (අත්‍යවශ්‍ය නොවේ)\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "මම RHNසමඟ සම්බන්ධ විය යුත්තේ මක් නිසාද? ..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "ලියාපදිංචි විය යුත්තේ ඇයි"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"ඔබේ පද්ධතිය Red Hat Network වෙත සම්බන්ධ කිරීමෙන් ඔබ මුදල් ගෙවා ලබාගන්නා සාමාජිකත්වයට හිමි "
-"සියළු ප්‍රතිලාභ ලබාගත හැකි වේ, මීට පහත සඳහන් දෑ ඇතුලත්ය"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "මීට ආරක්‍ෂාව සහ නවීකරණයන්:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "බාගතකරණයන් සහ නවීකරණයන්:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "සහයෝගය:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "අනුකූලතාවය:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-#, fuzzy
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"මෙම Red Hat Enterprise Linux පද්ධතිය නවීකරණයෙන් සහ ආරක්‍ෂිතව තබා ගැනීමට ආරක්‍ෂක "
-"නවීකරණයන් ඇතුළුව නවතම ඇසුරුම් ලබාගන්න."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-#, fuzzy
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"නව නිකුතුවන්ද ඇතුලත්ව Red Hat Enterprise Linux නිකුතුවන් සඳහා වන ස්ථාපන පිළිඹුවන් බාගත කරන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-#, fuzzy
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"Red Hat හෝ Red Hat හී කොටස් කරුවන් සමඟ ඔබේ පද්ධතියේ තිබෙන ඕනෑම ගැටළුවක් සම්බන්ධයෙන් ඔබට "
-"ඔවුන් වෙත ලඟා විය හැක."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-#, fuzzy
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"Red Hat ඔබේ පෞද්ගලිකත්වය අගය කරනු ලබයි: http://www.redhat.com/legal/"
-"privacy_statement.html"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "මාව නැවතත් ලියාපදිංචි කිරීම වෙත රැගෙන යන්න(_T)"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "මෘදුකාංග ප්‍රගමන සැකසුමෙන් ඉවත් වන්න(_E)"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, fuzzy, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"ඔබේ පද්ධතිය Red Hat Network වෙත සම්බන්ධ කිරීමෙන් ඔබ මුදල් ගෙවා ලබාගන්නා සාමාජිකත්වයට හිමි "
-"සියළු ප්‍රතිලාභ ලබාගත හැකි වේ, මීට පහත සඳහන් දෑ ඇතුලත්ය"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, fuzzy, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"Red Hat Network වෙන සම්බන්ධ නොවී ඔබ සතුව තිබෙන ග්‍රාහකත්වයන් හී වරප්‍රසාද ලබා ගැනීමට "
-"<b>නොහැක</b>. එම වරප්‍රසාද   ලබාගැනීම සඳහා    Red Hat Network.  වෙත පිවිසීමට ඔබේ "
-"පද්ධතිය මානකරගත යුතුය"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "සැකසුම් ක්‍රියාවලිය වෙත මාව නැවත රැගෙන යන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "මම පසුව ලියාපදිංචි වීමට කැමැත්තෙමි(_I)."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"%s Red Hat Network Satellite සඳහා ඔබේ පිවිසුම් තොරතුරු ඇතුල් කරන්න:\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "පිවිසුම:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "රහස්පදය:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-"ඉඟිය: ඔබේ පරිශීලක නාමය හෝ රහස්පදය අමතක වීද? ඔබේ චන්ද්‍රිකා සේවා දායකයේ ආයතන කළමණාකරු "
-"අමතන්න."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "කරුණාකර කැමති පිවිසුම ඇතුල් කරන්න."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "ඔබේ රහස්පදය ඇතුලත් කර එය තහවුරු කරන්න"
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "ඔබේ පද්ධතියේ පැතිකඩ සාදන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"පැතිකඩ නාමයක් යනු මෙම පද්ධතියේ පැතිකඩ Red Hat Network හි වියුණු පිටු තුල ඇතුලත්වන මෙම පද්ධතිය "
-"හඳුනාගැනීම සඳහා වන නාමය වේ. මීට අමතරව පද්ධතියේ ජනන අංකය හෝ හඳුනාගැනීමේ අංකය ඇතුලත් "
-"කරන්න."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr "PCI උපාංග, තැටි වල ප්‍රමාණයන්, සවිකරන ස්ථානයන් අදිය මෙම පැතිකඩ තුල ඇතුලත් වේ."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "දෘඪාංගයන් හී සහ ජාලය සම්බන්ධ පහත සඳහන් තොරතුරු සපයන්න:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "ඔබේ පද්ධතියේ පැතිකඩ සාදන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"නවීකරණය කරන ලද ඇසුරුම් මෙම පද්ධතියට අවශ්‍ය වනෙනේදැයි දැන ගැනීම සඳහා RPM තොරතුරු ඉතා "
-"වැදගත් වේ"
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr "මෙම පද්ධතිය තුල ස්ථාපනය කර ඇති RPM ඇසුරුම් මාගේ පද්ධතියේ පැතිකඩට ඇතුලත් කරන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr "ඔබ විසින් තනිව තිබෙන ඇසුරුම් බැහැර කිරීමට ඒවායේ හරි ලකුණ ඉවත් කරන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "ඇසුරුම් ලැයිස්තුව සකස් කරමින්"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*විද්‍යුත් ලිපිනය:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr "පද්ධතිය මීට පෙර ලියාපදිංචි කර තිබුනද නැවත ලියාපදිංචි කරන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr "ඔබේ පද්ධතිය මීට පෙර මෘදුකාංග නවීකරණයන් සිදුකර ගත හැකි ලෙස සකසා තිබෙන බව පෙනී යයි:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "නිශ්චිතවම ඔබට දිගටම කරගෙන යාමට අවශ්‍යද ?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "පැතිකඩ තොරතුරු Red Hat Network වෙත යවමින්"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, fuzzy, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-"පැතිකඩක් සාදාගැනීම සඳහා පද්ධතියේ තොරතුරු රැස් කරගෙන අවසන්.\n"
-"\n"
-"\"Next (මීලඟ)\"  ඔබන්න පද්ධතියේ පැතිකඩ Red Hat Network යැවීම සඳහා.  \"Cancel "
-"(අවලංගු කරන්න)\" ක්ලික් කරන්න එවිට කිසිදු තොරතුරක් යවනු නොලැබේ.  ඔබට පසුව `rhn_register` "
-"විධානය පාඨමය අයුරින් ක්‍රියාත්මක කරමින් ලියාපදිංචි කිරීමේ ක්‍රියාවලිය නැවත ආරම්භ කල හැක."
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"Red Hat Network වෙතින් නව මෘදුකාංග ප්‍රගමනයන් ලබාගැනීම සඳහා විධාන රේඛාවේ සිට 'yum "
-"update' විධානය ක්‍රියාත්මක කරන්න. නව ප්‍රගමනයන් ලබාගැනීම සඳහා වරින්වර මෙම විධානය භාවිතා "
-"කලයුතු වේ. Red Hat Network වියුණු අතුරු මුහුණත භාවිතා කරම විකල්පයක් ලෙස මෙම පද්ධතිය ස්වයංක්‍රීය "
-"මෘදුකාංග ප්‍රගමණයන් ලබාගැනීම සඳහා මානකරන්න . (RHN Reference Guide හී 6 වන පරිච්ඡේදය "
-"තුල මේ සඳහා අවශ්‍ය උපදෙස් අන්තර්ගතව ඇත, මෙය Red Hat Network වියුණු අතුරු මුහුණත තුල තිබෙන "
-"'උදව්' සූචකය හරහා ලබාගත හැක.)"
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "ග්‍රාහකත්වය සමාලෝචනය කරන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "කරුනාකර පහත දැක්වෙන ග්‍රාහක විස්තර සමාලෝචනය කරන්න:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"Red Hat Network සමඟ මූලික සම්බන්ධතාවය ඇතිකර ගැනීමේදී ස්ථාාපන අංකය %s   සක්‍රීය කර ඇත."
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "පහත දැක්වෙන Red Hat සේවාවන් සහ නිශ්පාදන සඳහා ග්‍රාහකත්වය සක්‍රීය කර ඇත:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "මෘදුකාග ඕඩයේ ග්‍රාහකත්වයන්:"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"ඔබේ ගිණුම තුල ප්‍රමාණවත් ග්‍රාහකත්වයන් නොමැති බැවින් පහත සඳහන් මෘදුකාංග ඕඩයන් හා සම්බන්ධ වීමට "
-"ඔබට නොහැකි වන බව මතකතබා ගන්න."
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, fuzzy, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"ඔබේ ගිණුම තුල ප්‍රමාණවත් ග්‍රාහකත්වයන් නොමැති හෙයින්, පහත සඳහන් RHN මොඩියුල සමඟ සම්බන්ධ වීමට "
-"පද්ධතියට හැකියාවක් නොමැත:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-#, fuzzy
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-"කළමණාකරන මොඩියුලය : ස්ව නවීකරණයන්, පද්ධති කණ්ඩායම් ගත කිරීම, පද්ධති අවසරයන්, පද්ධති ඇසුරුම් "
-"සඳහා පැතිකඩ සෑදීම"
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-#, fuzzy
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-"අථත්‍යකරණ මොඩියුලය: පද්ධතිය සඳහා වන සීමා සහිත ආගන්තුක ගිණුම් සඳහා වන මෘදුකාංග නවීකරණයන්."
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, fuzzy, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-"<b>අවවාදයයි:</b> මෙම පද්ධතිය මත සාදන ආගන්තුක පද්ධති RHN සමඟ ලියාපදිංචි වූවහොත් මීට අදාල "
-"Red Hat Enterprise Linux ග්‍රහාකත්වයන් ඉක්මවා පරිභෝජනය කරනු ඇත. ඔබ විසින් සිදුකල යුත්තේ: "
-"(1) අථත්‍යකරණය සාදන්න නැතහොත් අථත්‍යකරණ පසුබිමේ පද්ධතියේ හිමි කම ලබාගන්න පසුව (2) RHN සතු "
-"අන්තර්ජාල අතුරු මුහුණත භාවිතා කරමින් පද්ධතියේ හිමිකම ලබාගන්න, ඔබට අථත්‍ය ආගන්තුකයන් පද්ධතියේ "
-"අතිරේක ග්‍රාහකත්වයන් භාවිතා කිරීම වැලැක්වීම සඳහා මෙලෙස ක්‍රියා කිරීමට පුළුවනි."
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "භයානක දෝශයකි"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "අවවාදයයි"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-"අප හට Red Hat Network Server හා සම්න්ධ විය නොහැක.\n"
-"\n"
-"ඔබ විසින් සපයා ඇති ස්ථානයෙහි '%s' නිරවද්‍යතාවය තහවුරු කරගන්න ?\n"
-"එය එසේ නොමැති නම්, නිවැරදි කර නැවත උත්සහ කරන්න.\n"
-"\n"
-"ඔබේ පද්ධතියේ ජාල සම්බන්ධතාවය නිසි ලෙස ක්‍රියාත්මක වන්නේද යන වග තහවුරු කරගන්න.\n"
-"\n"
-"මෙම පද්ධතිය Red Hat Network server වෙත සම්බන්ධ නොවී Red Hat වෙතින් සාර්ථක ලෙස "
-"මෘදුකාංග නවීකරණයන් ලබාගත නොහැකි වන බැව් සලකන්න "
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "නිර්මිතය: %s, මෙහෙයම් පද්ධතියේ නිකුතුව: %s, මෙහෙයම් පද්ධතියේ වෙළුම:%s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-"මෙම සේවාග්‍රාහක මෘදුකාංග ප්‍රගමන සකසන ක්‍රියාකාරීත්වය සඳහා අවශ්‍ය පහසුකම සේවාදායකය තුල "
-"තිබෙන මෙම වෙළුම මඟින් සපයනු නොලැබේ. කරුණාකර නව සේවාදායකය් භාවිතා කර නැවත උත්සහකර බලන්න."
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, fuzzy, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"පද්ධතිය ලියාපදිංචි කිරීමේදී ගැටළුවක් ඇතිවිය.\n"
-"\n"
-"විශ්ව අතික්‍රම සක්‍රීය කරන යතුර භාවිතා කර ඔබ ආයතනය හට RHN සමඟ සම්බන්ධ විය හැකි පද්ධති ගණන "
-"පාලනය කරනු ඇත. මෙම පද්ධතිය ඒ හා සම්බන්ධ කරගැනීම සඳහා RHN හි සිටින පද්ධතියේ පාලකවරයා "
-"මඟින්, ඔබේ ගිණුම මඟින් සම්බන්ධ විය හැකි පද්ධති ප්‍රමාණය ඉහල දැමීමෙන් සිදුකල හැක. නැතහොත් ඒ සඳහා "
-"විශ්ව අතික්‍රම සක්‍රීය කරන යතුර භාවිතය අක්‍රීය කිරීමෙන්ද සිදුකල හැක. මේ සඳහා වැඩි විස්තර පහත සඳහන් "
-"අන්තර්ජාල ලිපිනයේ තිබෙන ලේඛණය තුලින් ලබාගත හැකRed Hat Knowledgebase Article #7924 at "
-"http://kbase.redhat.com/faq/FAQ_61_7924.shtm "
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "හරි"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "දෝශයකි"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "මීලඟ"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "ආපසු"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "අවලංගු කරන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "නැත, අවලංගු කරන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "ඔව්, දිගටම කරගෙන යන්න"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "තෝරාගෙන විකල්පය ඉවත් කිරීමට <space> ඔබන්න."
-
-#: ../src/up2date_client/rpcServer.py:56
+#: ../src/up2date_client/rpcServer.py:55
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:182
+#: ../src/up2date_client/rpcServer.py:181
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "දෝශයකි: RHNS CA ගොනුව සොයාගත නොහැකි විය:"
 
-#: ../src/up2date_client/rpcServer.py:220
-msgid "Connection aborted by the user"
-msgstr "සම්බන්ධතාවය පරිශීලක විසින් නවතා දමන ලදී"
-
-#: ../src/up2date_client/rpcServer.py:268
-msgid "Server has refused connection due to high load"
-msgstr "කාර්යයන් අධික හෙයින් සේවා දායකය සම්බන්ධතාවය ප්‍රතික්‍ෂේප කර ඇත"
-
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "පද්ධතියේ හඳුනාගැනීමේ අංකය: "
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "සේවා දායකය මඟින් දෝශයක් හඟවන ලදී:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "ලියාපදිංචිකරණ සේවා දායකය හා සම්බන්ධ වීමේදී දෝශයක් ඇතිවිය.  පණිවිඩය වනුයේ:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "පැතිකඩේ නම:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "වෙළුම:"
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "CPU මාදිලිය:"
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "ධාරක නම:"
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "CPU වේගය:"
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP ලිපිනය:"
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "මතකය:"
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s මෙගා බයිටස්"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "පද්ධතිය ලියාපදිංචි කිරීමේදී ගැටළුවක් ඇතිවිය:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "පද්ධතිය ලියාපදිංචි කිරීමේදී ගැටළුවක් ඇතිවිය"
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "පද්ධතියේ හඳුනා ගැනීමේ අංකය තැටිය මත ලිවීමේදී දෝශයක් ඇතිවිය."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "දෘඪාංග පැතිකඩ යැවීමේදී දෝශයක් ඇතිවිය:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "දෘඪාංග පැතිකඩ යැවීමේදී දෝශයක් ඇතිවිය."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "ඇසුරුම් ලැයිස්තුව යැවීමේදී දෝශයක් ඇතිවිය:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "ඇසුරුම් ලැයිස්තුව යැවීමේදී දෝශයක් ඇතිවිය"
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "නිමයි"
-
-#: ../src/up2date_client/tui.py:1210
-#, fuzzy
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr "ඔබ විසින් සපයා ඇත්තේ සාවද්‍ය වාහකයෙකි. https සහ http හට ඉඩ දී තිබේ"
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> සංඝටක අතර  |  <Space> තෝරාගැනීමට  |  <F12> මීලඟ තිරය සඳහා"
-
-#: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "ඔබ විසින් RHN ලියාපදිංචි කිරීමේ වැඩසටහන root ලෙස ක්‍රියාත්මක කල යුතු වේ"
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "RPM දෝශයකි.  පණිවිඩය වන්නේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "රහස්පදයේ දෝශයකි. පණිවිඩය වන්නේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM පරායත්ත දෝශයකි. පණිවිඩය වනුයේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "සේවා දායකය හා සන්නිවේදනය කිරීමේදී දෝශයක් ඇතිවිය. පණිවිඩය වන්නේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "ගොනුව සොයාගත නොහැකි විය: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "සේවාදායකය තුල ප්‍රමාද දෝශයක්.  පණිවිඩය වනුයේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "සේවා දායකය තුල දත්ත තහවුරු කර ගැනීමේදී දෝශයක් ඇතිවිය:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "ස්ථාපන අංකය සාවද්‍යයි"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "oemInfo ගොනුව සැකසීමේදී දෝශයක් ඇතිවිය:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1094,108 +118,639 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "පැතිකඩ සඳහා නමක් යොදන්න"
-
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "පරිශීලක නාමයක් නිර්දේශ කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "රහස්පදයක් නිර්දේශ කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "මෙම පද්ධතිය සඳහා ආයතනයේ හඳුනාගැනීමේ අංකයක් නියම කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "සේවා දායකයක් ලෙස භාවිත කල යුතු ඒකීය සම්පත් යොමුව (url) නියම කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "ssl CA සහතික පත්‍රයක් ලෙස භාවිත කිරීමට ගොනුවක් නියම කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "සක්‍රීය කිරීම සඳහා යතුරක් නියම කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "stdin මඟින් සම්බන්ධ විය හැකි ආකාරය සම්බන්ධව කියවන්න"
-
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "දෘඪාංග තොරතුරු පිරික්සීම හෝ රුවීම නොකරන්න"
-
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "ඇසුරුම් තොරතුරු රූ සටහන් ගත කිරීම හෝ රුවීම නොකරන්න"
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "අථත්‍යකරණ තොරතුරු රුවීම නොකරන්න"
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "පද්ධතිය මීට පෙර ලියාපදිංචි කර තිබුනද නැවත ලියාපදිංචි කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "පරිශීලක නාමය සහ රහස්පදය ලියාපදිංචි කිරීම සඳහා අවශ්‍යවේ"
-
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "මෙම පද්ධතිය මේවන විට ලියාපදිංචි කර ඇත. එය අභිබවා යාමට --force බාවිත කරන්න"
-
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr ""
-"ඔබ විසින් ලියාපදිංචි වීමට උත්සහ කරන සේවාදායකය මෙම සේවාග්‍රාහක වෙළුම සඳහා සහය දක්වනු "
-"නොලැබේ."
-
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr ""
+#~ msgid ""
+#~ "This client requires the server to support %s, which the current server "
+#~ "does not support"
+#~ msgstr ""
+#~ "මෙම සේවා දායකයට %s පහසුකම අවශ්‍යව ඇත, නමුත් වත්මන් සේවා දායකය එම පහසුකම සපයන්නේ නැත"
 
-#: ../src/bin/rhnreg_ks.py:172
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "ඔබේ පද්ධතිය තුල ස්ථාපනය කල යුතු ඇසුරුම් ලයිස්තුව ලබා ගනිමින්"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "cpu තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "පද්ධතියේ මතක තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "ජාලයේ තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "ස්ථාපනය සිදුකල යුතු ආකාරය සම්බන්ධ තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "ජාල අන්තර් මුහුණත් තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය :"
+
+#, fuzzy
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "ජාලයේ තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
+
+#, fuzzy
+#~ msgid "Error reading system info:"
+#~ msgstr "පද්ධතියේ මතක තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
+
+#, fuzzy
+#~ msgid "Error reading machine info:"
+#~ msgstr "cpu තොරතුරු කියවීමේදී දෝශයක් ඇතිවිය:"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr "ඕඩයක් සමඟ නිසි ලෙස සම්බන්ධ වන තුරු පද්ධතිය නවීකරණය නොවනු ඇත."
+
+#, fuzzy
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "අතිරේක ප්‍රතිදානයන් පෙන්වන්න"
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "භාවිත කල යුතු http ප්‍රොක්සිය නිර්දේශ කරන්න"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "අනන්‍යතාවය තහවුරුකරගත් http ප්‍රොක්සිය සමඟ භාවිත කිරීමට පරිශීලක නාමයක් ලබාදෙන්න "
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "අනන්‍යතාවය තහවුරුකරගත් http ප්‍රොක්සිය සමඟ භාවිත කිරීමට රහස්පදයක් ලබාදෙන්න "
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "නවතා දමන ලදී.\n"
+
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "බලා පොරොත්තු නොවූ මෙහෙයුම් පද්ධතියේ දෝශයක් ඇතිවිය: %s\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"පැතිකඩ නාමය සපයා නොමැත, පැතිකඩ නාමයක් ලෙස භාවිත කිරීමට ධාරක නාමය සහ IP ලිපිනය නීර්ණය "
-"කල නොහැක. කරුණාකර පැතිකඩ නාමයක් සපයන්න."
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "නිසි ලෙස සකසා නොමැති URI සමඟ සම්බන්ධතාවයක් සාදා ගැනීමට වෙර දැරීය.\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr "නිසි ලෙස සකසා නොමැති URI සමඟ සම්බන්ධතාවයක් සාදා ගැනීමට වෙර දැරීය: %s.\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "යම් ආකාරයක I/O දෝශයක් ඇත විය: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "SSL දෝශයක් ඇති විය: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "මෙම දෝශයට බොහෝ දුරට හේතු විය හැක්කේ පද්ධතියේ වේලාව සාවද්‍ය ලෙස තිබීමයි. පද්ධතිය තුල "
+#~ "සටහන් වන වේලාවේ නිරවද්‍ය භාවය තහවුරු කරගන්න.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "SSL රහස්‍ය සංකේත වල දෝශයක් ඇති විය: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "අනන්‍යතාවය තහවුරු කර ගැනීමේදී දෝශයක් ඇති විය: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "%s ක්‍රියාත්මක කිරීම සඳහා පද්ධතිය නැවත ආරම්භ කල යුතු වේ."
+
+#~ msgid "An error has occurred:"
+#~ msgstr "දෝශයක් ඇතිවිය:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "වැඩි විස්තර සඳහා /var/log/up2date බලන්න"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "ඔබ විසින් පිවිසුමක් ඇතුලත් කලයුතුමය"
+
+#, fuzzy
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Red Hat Network සේවා දායකය සමඟ සම්බන්ධ වීමට උතසහ කරමින්."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "%s තිබෙන Red Hat Network සේවා දායකය සමඟ සම්බන්ධ වීමට උත්සහ කරමින්."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "%s හී ප්‍රොක්සියක් නියම කර ඇත.."
+
+#~ msgid "System Registration"
+#~ msgstr "ලියාපදිංචි අංකය(_n)"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "ඔබේ පද්ධතිය ආරක්‍ෂිතව තබාගැනීමට අවශ්‍ය ප්‍රගමනයන් ඇතුලත්ව මෘදුකාංග ප්‍රගමනයන් ලබාගැනීම හා "
+#~ "නිසියාකාරව පද්ධතිය පවත්වාගැනීම සඳහා මෙම සහයක විසින් Red Hat Network (RHN) වෙත "
+#~ "සම්බන්ධ වන අයුරු පෙන්වනු ලැබේ.  මේ සඳහා පහත සඳහන් සියල්ල ඔබහට අවශ්‍ය වේ:\n"
+#~ "\n"
+#~ " * අන්තර්ජාල සම්බන්ධතාවයක්\n"
+#~ " * ඔබේ Red Hat පිවිසුම සහ රහස්පදය\n"
+#~ " * Red Hat Network Satellite හෝ ප්‍රොක්සියේ ස්ථානය (අත්‍යවශ්‍ය නොවේ)\n"
+#~ "\n"
+
+#, fuzzy, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "මම RHNසමඟ සම්බන්ධ විය යුත්තේ මක් නිසාද? ..."
+
+#~ msgid "Why Register"
+#~ msgstr "ලියාපදිංචි විය යුත්තේ ඇයි"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "ඔබේ පද්ධතිය Red Hat Network වෙත සම්බන්ධ කිරීමෙන් ඔබ මුදල් ගෙවා ලබාගන්නා සාමාජිකත්වයට "
+#~ "හිමි සියළු ප්‍රතිලාභ ලබාගත හැකි වේ, මීට පහත සඳහන් දෑ ඇතුලත්ය"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "මීට ආරක්‍ෂාව සහ නවීකරණයන්:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "බාගතකරණයන් සහ නවීකරණයන්:"
+
+#~ msgid "Support:"
+#~ msgstr "සහයෝගය:"
+
+#~ msgid "Compliance:"
+#~ msgstr "අනුකූලතාවය:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "මෙම Red Hat Enterprise Linux පද්ධතිය නවීකරණයෙන් සහ ආරක්‍ෂිතව තබා ගැනීමට ආරක්‍ෂක "
+#~ "නවීකරණයන් ඇතුළුව නවතම ඇසුරුම් ලබාගන්න."
+
+#, fuzzy
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "නව නිකුතුවන්ද ඇතුලත්ව Red Hat Enterprise Linux නිකුතුවන් සඳහා වන ස්ථාපන පිළිඹුවන් බාගත "
+#~ "කරන්න"
+
+#, fuzzy
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "Red Hat හෝ Red Hat හී කොටස් කරුවන් සමඟ ඔබේ පද්ධතියේ තිබෙන ඕනෑම ගැටළුවක් සම්බන්ධයෙන් "
+#~ "ඔබට ඔවුන් වෙත ලඟා විය හැක."
+
+#, fuzzy
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "Red Hat ඔබේ පෞද්ගලිකත්වය අගය කරනු ලබයි: http://www.redhat.com/legal/"
+#~ "privacy_statement.html"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "මාව නැවතත් ලියාපදිංචි කිරීම වෙත රැගෙන යන්න(_T)"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "මෘදුකාංග ප්‍රගමන සැකසුමෙන් ඉවත් වන්න(_E)"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "ඔබේ පද්ධතිය Red Hat Network වෙත සම්බන්ධ කිරීමෙන් ඔබ මුදල් ගෙවා ලබාගන්නා සාමාජිකත්වයට "
+#~ "හිමි සියළු ප්‍රතිලාභ ලබාගත හැකි වේ, මීට පහත සඳහන් දෑ ඇතුලත්ය"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "Red Hat Network වෙන සම්බන්ධ නොවී ඔබ සතුව තිබෙන ග්‍රාහකත්වයන් හී වරප්‍රසාද ලබා ගැනීමට "
+#~ "<b>නොහැක</b>. එම වරප්‍රසාද   ලබාගැනීම සඳහා    Red Hat Network.  වෙත පිවිසීමට "
+#~ "ඔබේ පද්ධතිය මානකරගත යුතුය"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "සැකසුම් ක්‍රියාවලිය වෙත මාව නැවත රැගෙන යන්න"
+
+#~ msgid "I'll register later."
+#~ msgstr "මම පසුව ලියාපදිංචි වීමට කැමැත්තෙමි(_I)."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "%s Red Hat Network Satellite සඳහා ඔබේ පිවිසුම් තොරතුරු ඇතුල් කරන්න:\n"
+#~ "\n"
+
+#~ msgid "Login:"
+#~ msgstr "පිවිසුම:"
+
+#~ msgid "Password:"
+#~ msgstr "රහස්පදය:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "ඉඟිය: ඔබේ පරිශීලක නාමය හෝ රහස්පදය අමතක වීද? ඔබේ චන්ද්‍රිකා සේවා දායකයේ ආයතන "
+#~ "කළමණාකරු අමතන්න."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "කරුණාකර කැමති පිවිසුම ඇතුල් කරන්න."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "ඔබේ රහස්පදය ඇතුලත් කර එය තහවුරු කරන්න"
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "ඔබේ පද්ධතියේ පැතිකඩ සාදන්න"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "පැතිකඩ නාමයක් යනු මෙම පද්ධතියේ පැතිකඩ Red Hat Network හි වියුණු පිටු තුල ඇතුලත්වන මෙම "
+#~ "පද්ධතිය හඳුනාගැනීම සඳහා වන නාමය වේ. මීට අමතරව පද්ධතියේ ජනන අංකය හෝ හඳුනාගැනීමේ "
+#~ "අංකය ඇතුලත් කරන්න."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr "PCI උපාංග, තැටි වල ප්‍රමාණයන්, සවිකරන ස්ථානයන් අදිය මෙම පැතිකඩ තුල ඇතුලත් වේ."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "දෘඪාංගයන් හී සහ ජාලය සම්බන්ධ පහත සඳහන් තොරතුරු සපයන්න:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "ඔබේ පද්ධතියේ පැතිකඩ සාදන්න"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "නවීකරණය කරන ලද ඇසුරුම් මෙම පද්ධතියට අවශ්‍ය වනෙනේදැයි දැන ගැනීම සඳහා RPM තොරතුරු ඉතා "
+#~ "වැදගත් වේ"
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr "මෙම පද්ධතිය තුල ස්ථාපනය කර ඇති RPM ඇසුරුම් මාගේ පද්ධතියේ පැතිකඩට ඇතුලත් කරන්න"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr "ඔබ විසින් තනිව තිබෙන ඇසුරුම් බැහැර කිරීමට ඒවායේ හරි ලකුණ ඉවත් කරන්න"
+
+#~ msgid "Building Package List"
+#~ msgstr "ඇසුරුම් ලැයිස්තුව සකස් කරමින්"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*විද්‍යුත් ලිපිනය:"
+
+#~ msgid "System Already Registered"
+#~ msgstr "පද්ධතිය මීට පෙර ලියාපදිංචි කර තිබුනද නැවත ලියාපදිංචි කරන්න"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr ""
+#~ "ඔබේ පද්ධතිය මීට පෙර මෘදුකාංග නවීකරණයන් සිදුකර ගත හැකි ලෙස සකසා තිබෙන බව පෙනී යයි:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "නිශ්චිතවම ඔබට දිගටම කරගෙන යාමට අවශ්‍යද ?"
+
+#, fuzzy, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "පැතිකඩ තොරතුරු Red Hat Network වෙත යවමින්"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "පැතිකඩක් සාදාගැනීම සඳහා පද්ධතියේ තොරතුරු රැස් කරගෙන අවසන්.\n"
+#~ "\n"
+#~ "\"Next (මීලඟ)\"  ඔබන්න පද්ධතියේ පැතිකඩ Red Hat Network යැවීම සඳහා.  \"Cancel "
+#~ "(අවලංගු කරන්න)\" ක්ලික් කරන්න එවිට කිසිදු තොරතුරක් යවනු නොලැබේ.  ඔබට පසුව "
+#~ "`rhn_register` විධානය පාඨමය අයුරින් ක්‍රියාත්මක කරමින් ලියාපදිංචි කිරීමේ ක්‍රියාවලිය නැවත "
+#~ "ආරම්භ කල හැක."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "Red Hat Network වෙතින් නව මෘදුකාංග ප්‍රගමනයන් ලබාගැනීම සඳහා විධාන රේඛාවේ සිට 'yum "
+#~ "update' විධානය ක්‍රියාත්මක කරන්න. නව ප්‍රගමනයන් ලබාගැනීම සඳහා වරින්වර මෙම විධානය භාවිතා "
+#~ "කලයුතු වේ. Red Hat Network වියුණු අතුරු මුහුණත භාවිතා කරම විකල්පයක් ලෙස මෙම පද්ධතිය "
+#~ "ස්වයංක්‍රීය මෘදුකාංග ප්‍රගමණයන් ලබාගැනීම සඳහා මානකරන්න . (RHN Reference Guide හී 6 "
+#~ "වන පරිච්ඡේදය තුල මේ සඳහා අවශ්‍ය උපදෙස් අන්තර්ගතව ඇත, මෙය Red Hat Network වියුණු අතුරු "
+#~ "මුහුණත තුල තිබෙන 'උදව්' සූචකය හරහා ලබාගත හැක.)"
+
+#~ msgid "Review Subscription"
+#~ msgstr "ග්‍රාහකත්වය සමාලෝචනය කරන්න"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "කරුනාකර පහත දැක්වෙන ග්‍රාහක විස්තර සමාලෝචනය කරන්න:"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Red Hat Network සමඟ මූලික සම්බන්ධතාවය ඇතිකර ගැනීමේදී ස්ථාාපන අංකය %s   සක්‍රීය කර ඇත."
+
+#, fuzzy
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "පහත දැක්වෙන Red Hat සේවාවන් සහ නිශ්පාදන සඳහා ග්‍රාහකත්වය සක්‍රීය කර ඇත:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "මෘදුකාග ඕඩයේ ග්‍රාහකත්වයන්:"
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "ඔබේ ගිණුම තුල ප්‍රමාණවත් ග්‍රාහකත්වයන් නොමැති බැවින් පහත සඳහන් මෘදුකාංග ඕඩයන් හා සම්බන්ධ "
+#~ "වීමට ඔබට නොහැකි වන බව මතකතබා ගන්න."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "ඔබේ ගිණුම තුල ප්‍රමාණවත් ග්‍රාහකත්වයන් නොමැති හෙයින්, පහත සඳහන් RHN මොඩියුල සමඟ සම්බන්ධ වීමට "
+#~ "පද්ධතියට හැකියාවක් නොමැත:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Management type: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "කළමණාකරන මොඩියුලය : ස්ව නවීකරණයන්, පද්ධති කණ්ඩායම් ගත කිරීම, පද්ධති අවසරයන්, පද්ධති ඇසුරුම් "
+#~ "සඳහා පැතිකඩ සෑදීම"
+
+#, fuzzy
+#~ msgid ""
+#~ "Virtualization type: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr ""
+#~ "අථත්‍යකරණ මොඩියුලය: පද්ධතිය සඳහා වන සීමා සහිත ආගන්තුක ගිණුම් සඳහා වන මෘදුකාංග නවීකරණයන්."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
+#~ "system's subscription. You will need to: (1) make a virtualization system "
+#~ "entitlement available and (2) apply that system entitlement to this "
+#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
+#~ "of this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>අවවාදයයි:</b> මෙම පද්ධතිය මත සාදන ආගන්තුක පද්ධති RHN සමඟ ලියාපදිංචි වූවහොත් මීට "
+#~ "අදාල Red Hat Enterprise Linux ග්‍රහාකත්වයන් ඉක්මවා පරිභෝජනය කරනු ඇත. ඔබ විසින් සිදුකල "
+#~ "යුත්තේ: (1) අථත්‍යකරණය සාදන්න නැතහොත් අථත්‍යකරණ පසුබිමේ පද්ධතියේ හිමි කම ලබාගන්න පසුව (2) "
+#~ "RHN සතු අන්තර්ජාල අතුරු මුහුණත භාවිතා කරමින් පද්ධතියේ හිමිකම ලබාගන්න, ඔබට අථත්‍ය ආගන්තුකයන් "
+#~ "පද්ධතියේ අතිරේක ග්‍රාහකත්වයන් භාවිතා කිරීම වැලැක්වීම සඳහා මෙලෙස ක්‍රියා කිරීමට පුළුවනි."
+
+#~ msgid "Fatal Error"
+#~ msgstr "භයානක දෝශයකි"
+
+#~ msgid "Warning"
+#~ msgstr "අවවාදයයි"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "We can't contact {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ msgstr ""
+#~ "අප හට Red Hat Network Server හා සම්න්ධ විය නොහැක.\n"
+#~ "\n"
+#~ "ඔබ විසින් සපයා ඇති ස්ථානයෙහි '%s' නිරවද්‍යතාවය තහවුරු කරගන්න ?\n"
+#~ "එය එසේ නොමැති නම්, නිවැරදි කර නැවත උත්සහ කරන්න.\n"
+#~ "\n"
+#~ "ඔබේ පද්ධතියේ ජාල සම්බන්ධතාවය නිසි ලෙස ක්‍රියාත්මක වන්නේද යන වග තහවුරු කරගන්න.\n"
+#~ "\n"
+#~ "මෙම පද්ධතිය Red Hat Network server වෙත සම්බන්ධ නොවී Red Hat වෙතින් සාර්ථක ලෙස "
+#~ "මෘදුකාංග නවීකරණයන් ලබාගත නොහැකි වන බැව් සලකන්න "
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr "නිර්මිතය: %s, මෙහෙයම් පද්ධතියේ නිකුතුව: %s, මෙහෙයම් පද්ධතියේ වෙළුම:%s"
+
+#~ msgid ""
+#~ "This server doesn't support functionality needed by this version of the "
+#~ "software update setup client. Please try again with a newer server."
+#~ msgstr ""
+#~ "මෙම සේවාග්‍රාහක මෘදුකාංග ප්‍රගමන සකසන ක්‍රියාකාරීත්වය සඳහා අවශ්‍ය පහසුකම සේවාදායකය තුල "
+#~ "තිබෙන මෙම වෙළුම මඟින් සපයනු නොලැබේ. කරුණාකර නව සේවාදායකය් භාවිතා කර නැවත උත්සහකර "
+#~ "බලන්න."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "පද්ධතිය ලියාපදිංචි කිරීමේදී ගැටළුවක් ඇතිවිය.\n"
+#~ "\n"
+#~ "විශ්ව අතික්‍රම සක්‍රීය කරන යතුර භාවිතා කර ඔබ ආයතනය හට RHN සමඟ සම්බන්ධ විය හැකි පද්ධති ගණන "
+#~ "පාලනය කරනු ඇත. මෙම පද්ධතිය ඒ හා සම්බන්ධ කරගැනීම සඳහා RHN හි සිටින පද්ධතියේ පාලකවරයා "
+#~ "මඟින්, ඔබේ ගිණුම මඟින් සම්බන්ධ විය හැකි පද්ධති ප්‍රමාණය ඉහල දැමීමෙන් සිදුකල හැක. නැතහොත් ඒ "
+#~ "සඳහා විශ්ව අතික්‍රම සක්‍රීය කරන යතුර භාවිතය අක්‍රීය කිරීමෙන්ද සිදුකල හැක. මේ සඳහා වැඩි විස්තර "
+#~ "පහත සඳහන් අන්තර්ජාල ලිපිනයේ තිබෙන ලේඛණය තුලින් ලබාගත හැකRed Hat Knowledgebase "
+#~ "Article #7924 at http://kbase.redhat.com/faq/FAQ_61_7924.shtm "
+
+#~ msgid "OK"
+#~ msgstr "හරි"
+
+#~ msgid "Error"
+#~ msgstr "දෝශයකි"
+
+#~ msgid "Next"
+#~ msgstr "මීලඟ"
+
+#~ msgid "Back"
+#~ msgstr "ආපසු"
+
+#~ msgid "Cancel"
+#~ msgstr "අවලංගු කරන්න"
+
+#~ msgid "No, Cancel"
+#~ msgstr "නැත, අවලංගු කරන්න"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "ඔව්, දිගටම කරගෙන යන්න"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "තෝරාගෙන විකල්පය ඉවත් කිරීමට <space> ඔබන්න."
+
+#~ msgid "Connection aborted by the user"
+#~ msgstr "සම්බන්ධතාවය පරිශීලක විසින් නවතා දමන ලදී"
+
+#~ msgid "Server has refused connection due to high load"
+#~ msgstr "කාර්යයන් අධික හෙයින් සේවා දායකය සම්බන්ධතාවය ප්‍රතික්‍ෂේප කර ඇත"
+
+#~ msgid "System ID:"
+#~ msgstr "පද්ධතියේ හඳුනාගැනීමේ අංකය: "
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "සේවා දායකය මඟින් දෝශයක් හඟවන ලදී:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr "ලියාපදිංචිකරණ සේවා දායකය හා සම්බන්ධ වීමේදී දෝශයක් ඇතිවිය.  පණිවිඩය වනුයේ:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "පැතිකඩේ නම:"
+
+#~ msgid "Version: "
+#~ msgstr "වෙළුම:"
+
+#~ msgid "CPU model: "
+#~ msgstr "CPU මාදිලිය:"
+
+#~ msgid "Hostname: "
+#~ msgstr "ධාරක නම:"
+
+#~ msgid "CPU speed: "
+#~ msgstr "CPU වේගය:"
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP ලිපිනය:"
+
+#~ msgid "Memory: "
+#~ msgstr "මතකය:"
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s මෙගා බයිටස්"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "පද්ධතිය ලියාපදිංචි කිරීමේදී ගැටළුවක් ඇතිවිය:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "පද්ධතිය ලියාපදිංචි කිරීමේදී ගැටළුවක් ඇතිවිය"
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "පද්ධතියේ හඳුනා ගැනීමේ අංකය තැටිය මත ලිවීමේදී දෝශයක් ඇතිවිය."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "දෘඪාංග පැතිකඩ යැවීමේදී දෝශයක් ඇතිවිය:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "දෘඪාංග පැතිකඩ යැවීමේදී දෝශයක් ඇතිවිය."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "ඇසුරුම් ලැයිස්තුව යැවීමේදී දෝශයක් ඇතිවිය:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "ඇසුරුම් ලැයිස්තුව යැවීමේදී දෝශයක් ඇතිවිය"
+
+#~ msgid "Finish"
+#~ msgstr "නිමයි"
+
+#, fuzzy
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr "ඔබ විසින් සපයා ඇත්තේ සාවද්‍ය වාහකයෙකි. https සහ http හට ඉඩ දී තිබේ"
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> සංඝටක අතර  |  <Space> තෝරාගැනීමට  |  <F12> මීලඟ තිරය සඳහා"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "ඔබ විසින් RHN ලියාපදිංචි කිරීමේ වැඩසටහන root ලෙස ක්‍රියාත්මක කල යුතු වේ"
+
+#~ msgid "Specify a profilename"
+#~ msgstr "පැතිකඩ සඳහා නමක් යොදන්න"
+
+#~ msgid "Specify a username"
+#~ msgstr "පරිශීලක නාමයක් නිර්දේශ කරන්න"
+
+#~ msgid "Specify a password"
+#~ msgstr "රහස්පදයක් නිර්දේශ කරන්න"
+
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "මෙම පද්ධතිය සඳහා ආයතනයේ හඳුනාගැනීමේ අංකයක් නියම කරන්න"
+
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "සේවා දායකයක් ලෙස භාවිත කල යුතු ඒකීය සම්පත් යොමුව (url) නියම කරන්න"
+
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "ssl CA සහතික පත්‍රයක් ලෙස භාවිත කිරීමට ගොනුවක් නියම කරන්න"
+
+#~ msgid "Specify an activation key"
+#~ msgstr "සක්‍රීය කිරීම සඳහා යතුරක් නියම කරන්න"
+
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "stdin මඟින් සම්බන්ධ විය හැකි ආකාරය සම්බන්ධව කියවන්න"
+
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "දෘඪාංග තොරතුරු පිරික්සීම හෝ රුවීම නොකරන්න"
+
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "ඇසුරුම් තොරතුරු රූ සටහන් ගත කිරීම හෝ රුවීම නොකරන්න"
+
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "අථත්‍යකරණ තොරතුරු රුවීම නොකරන්න"
+
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "පද්ධතිය මීට පෙර ලියාපදිංචි කර තිබුනද නැවත ලියාපදිංචි කරන්න"
+
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "පරිශීලක නාමය සහ රහස්පදය ලියාපදිංචි කිරීම සඳහා අවශ්‍යවේ"
+
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "මෙම පද්ධතිය මේවන විට ලියාපදිංචි කර ඇත. එය අභිබවා යාමට --force බාවිත කරන්න"
+
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr ""
+#~ "ඔබ විසින් ලියාපදිංචි වීමට උත්සහ කරන සේවාදායකය මෙම සේවාග්‍රාහක වෙළුම සඳහා සහය දක්වනු "
+#~ "නොලැබේ."
+
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "පැතිකඩ නාමය සපයා නොමැත, පැතිකඩ නාමයක් ලෙස භාවිත කිරීමට ධාරක නාමය සහ IP ලිපිනය "
+#~ "නීර්ණය කල නොහැක. කරුණාකර පැතිකඩ නාමයක් සපයන්න."
 
 #, fuzzy
 #~ msgid "Finish setting up software updates"

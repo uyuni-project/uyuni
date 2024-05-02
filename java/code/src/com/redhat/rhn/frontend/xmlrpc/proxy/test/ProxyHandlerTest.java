@@ -37,7 +37,9 @@ import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.ssl.SSLCertData;
+import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -64,10 +66,11 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final CloudPaygManager paygManager = new CloudPaygManager();
-    private final RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(
-            systemQuery, saltApi, paygManager);
+    private final AttestationManager attestationManager = new AttestationManager();
+    private final RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private final SSHMinionBootstrapper sshMinionBootstrapper =
-            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private final XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -179,9 +182,12 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
         SystemManager mockSystemManager = mock(SystemManager.class);
         context().checking(new Expectations() {{
-            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, 8022, server, 2048L, email,
-                    "ROOT_CA", List.of("CA1", "CA2"), new SSLCertPair("PROXY_CERT", "PROXY_KEY"),
-                    null, null, null);
+            allowing(mockSystemManager).createProxyContainerConfig(
+                    with(equal(user)), with(equal(proxy)), with(equal(8022)), with(equal(server)), with(equal(2048L)),
+                    with(equal(email)), with(equal("ROOT_CA")), with(equal(List.of("CA1", "CA2"))),
+                    with(equal(new SSLCertPair("PROXY_CERT", "PROXY_KEY"))),
+                    with(aNull(SSLCertPair.class)), with(aNull(String.class)), with(aNull(SSLCertData.class)),
+                    with(any(SSLCertManager.class)));
             will(returnValue(dummyConfig));
         }});
 
@@ -200,11 +206,14 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
         SystemManager mockSystemManager = mock(SystemManager.class);
         context().checking(new Expectations() {{
-            allowing(mockSystemManager).createProxyContainerConfig(user, proxy, 22, server, 2048L, email,
-                    null, Collections.emptyList(), null,
-                    new SSLCertPair("CACert", "CAKey"), "CAPass",
-                    new SSLCertData(proxy, List.of("cname1", "cname2"), "DE", "Bayern", "Nurnberg",
-                            "ACME", "ACME Tests", "coyote@acme.lab"));
+            allowing(mockSystemManager).createProxyContainerConfig(
+                    with(equal(user)), with(equal(proxy)), with(equal(22)), with(equal(server)), with(equal(2048L)),
+                    with(equal(email)), with(aNull(String.class)), with(equal(Collections.emptyList())),
+                    with(aNull(SSLCertPair.class)),
+                    with(equal(new SSLCertPair("CACert", "CAKey"))), with(equal("CAPass")),
+                    with(equal(new SSLCertData(proxy, List.of("cname1", "cname2"), "DE", "Bayern",
+                            "Nurnberg", "ACME", "ACME Tests", "coyote@acme.lab"))),
+                    with(any(SSLCertManager.class)));
             will(returnValue(dummyConfig));
         }});
 

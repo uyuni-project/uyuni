@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:53:32 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2-0
+  * Be explicit about default Apache configs being overwritten on
+    updates and point to making custom configs. (bsc#1219061)
+  * Set cobbler.host to localhost (bsc#1219887)
+
+-------------------------------------------------------------------
 Tue Jan 16 08:25:02 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1

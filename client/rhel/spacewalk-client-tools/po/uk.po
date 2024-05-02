@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2018-03-16 12:46+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/spacewalk/"
@@ -30,1150 +30,74 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/capabilities.py:94
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-"Цей клієнт вимагає, щоб сервер підтримував %s, але поточний сервер не "
-"підтримує цю функцію"
-
 #: ../src/up2date_client/config.py:162
 #, python-format
 msgid "%s was not found"
 msgstr "%s не існує"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "Складається список встановлених у системі пакетів"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "Помилка читання інформації про процесор:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "Помилка читання інформації про системну пам'ять:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "Помилка читання інформації про мережу:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "Помилка читання інформації про метод встановлення:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "Помилка при читанні інформації про мережні інтерфейси:"
-
-#: ../src/up2date_client/hardware.py:1118
-#, fuzzy
-msgid "Error reading network FQDNs information:"
-msgstr "Помилка читання інформації про мережу:"
-
-#: ../src/up2date_client/hardware.py:1125
-#, fuzzy
-msgid "Error reading system info:"
-msgstr "Помилка читання інформації про системну пам'ять:"
-
-#: ../src/up2date_client/hardware.py:1132
-#, fuzzy
-msgid "Error reading machine info:"
-msgstr "Помилка читання інформації про процесор:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "Не вдалося знайти ідентифікатор системи"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr ""
-"Цю систему не можливо оновити, доки вона не буде пов'язана з певним каналом."
-
-#: ../src/up2date_client/rhncli.py:65
-#, fuzzy
-msgid "Show additional output. Repeat for more detail."
-msgstr "Показувати додаткові подробиці"
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "Вказати http проксі"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Вказати ім'я користувача для автентифікації з http проксі"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Вказати пароль для автентифікації з http проксі"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"Перервано.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "Виникла несподівана помилка: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "Було виконано спробу з’єднання з адресою з помилковим форматуванням.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
-"Було виконано спробу з’єднання з адресою з помилковим форматуванням: %s\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Помилка вводу/виводу: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "Помилка SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"Типова причина цієї помилки - неправильний системний час. Перевірте годинник "
-"системи.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "Помилка SSL криптографії: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Помилка автентифікації: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "Для виконання %s потрібно перейти у режим root"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-"%%prog (клієнтські інструменти Spacewalk) %s\n"
-"© Red Hat, Inc., 1999—2014\n"
-"Поширюється за умов дотримання GPLv2."
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "Виникла помилка:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "Додаткову інформацію можна знайти у /var/log/up2date "
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "© Red Hat, Inc., 2006–2014. Всі права застережено."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, fuzzy, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-"Будь ласка, вкажіть розташування вашого сервера Red Hat Satellite та його "
-"сертифіката SSL. Сертифікат SSL потрібен, лише якщо з’єднання "
-"встановлюватиметься за допомогою https (рекомендований спосіб)."
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr "Сертифікат SSL:"
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Вам слід вказати чинну адресу у Satellite."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-"Якщо ви користуєтеся https, вам слід вказати місце, де зберігається чинний "
-"сертифікат SSL."
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Намагаємося з’єднатися з сервером Spacewalk."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Спроба підключення до сервера Red Hat Network через %s."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "Proxy вказаний на %s."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "Реєстрація системи"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, fuzzy, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"Помічник допоможе з’єднати вашу систему з Red Hat Satellite для отримання "
-"оновлень ПЗ, зокрема оновлень системи безпеки для підтримки актуальності та "
-"сумісності. Для цього необхідно:\n"
-"\n"
-" * Мережеве з'єднання\n"
-" * Реєстраційне ім'я та пароль Red Hat\n"
-" * Розташування Red Hat Satellite чи Proxy\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Навіщо підключатись до RHN? ..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "Навіщо реєструватись"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"Приєднання системи до Red Hat Satellite надає змогу скористатися усіма "
-"перевагами передплати, зокрема:"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "Безпека та оновлення:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "Завантаження та оновлення:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "Підтримка:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "Відповідність стандартам:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-#, fuzzy
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"Отримуйте останні оновлення оновлення ПЗ, включно з оновленнями безпеки, "
-"підтримуючи системи Red Hat Enterprise Linux у оновленому та захищеному "
-"стані."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-#, fuzzy
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"Завантаження образів встановлення для Red Hat Enterprise Linux, зокрема "
-"останніх випусків."
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-#, fuzzy
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"Доступ до технічної підтримки Red Hat та партнерів за допомогою у вирішенні "
-"потенційних проблем у системі."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-"Дійте відповідно до умов передплати та керуйте передплатою для систем, "
-"пов’язаних з вашим обліковим записом."
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-#, fuzzy
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"Примітка: Red Hat поважає вашу конфіденційність: http://www.redhat.com/legal/"
-"privacy_statement.html"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "Повернутися до реєстрації"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "Оновлення програмного забезпечення не налаштовано"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, fuzzy, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"Ви справді не хочете з’єднати вашу систему з Red Hat Satellite? Без такого "
-"з’єднання ви не зможете скористатися перевагами передплати Red Hat "
-"Enterprise Linux:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, fuzzy, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"Ви не зможете скористатися цими перевагами передплати без з’єднання вашої "
-"системи з Red Hat Satellite\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "Повернутися до процесу налаштовування."
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "Я зареєструюсь пізніше."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"Введіть інформацію про ваш обліковий запис для %s Red Hat Network "
-"Satellite:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "Обліковий запис:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "Пароль:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-"Зауваження: Забули ім'я користувача чи пароль? Зверніться до вашого "
-"Адміністратора організації Satellite."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "Введіть бажане реєстраційне ім'я."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "Введіть пароль та підтвердження паролю."
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr "Версія випуску операційної системи"
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "Версія операційної системи:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr " Мінорний випуск: "
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "Лише обмежені оновлення"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "Всі доступі оновлення"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "Підтвердіть вибір випуску операційної системи"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-"Вашу систему буде налаштовано на канал основного програмного забезпечення "
-"для отримання всіх можливих оновлень."
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "Створення профілю — обладнання"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"Назва профілю є описовою назвою, яку ви вибираєте для ідентифікації профілю "
-"системи на веб-сторінках Red Hat Satellite. Назва може включати в себе "
-"серійний чи ідентифікаційний номер комп'ютера."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"В профіль включається додаткова інформація про пристрої PCI, розміри дисків "
-"та точки монтування."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "Включати наступну інформацію про обладнання та мережу:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "Створення профілю — пакунки"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"RPM інформація важлива для визначення які пакети оновлення доречні для цієї "
-"системи"
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr "Включати RPM пакети встановлені на цій системі у профіль моєї системи."
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr "Ви можете виключити окремі пакетів, знявши з них відмітку."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "Складається перелік пакетів"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*Ел.адреса:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr "Систему вже зареєстровано"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr "Можливо, ваша система вже налаштована для отримання оновлень ПЗ:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "Ви дійсно бажаєте продовжити?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-"Цю систему вже зареєстровано у системі керування передплатами Red Hat.\n"
-"\n"
-"Ваша система повторно реєструється за допомогою технології Red Hat Satellite "
-"або Red Hat Satellite Proxy. Red Hat рекомендує реєструватися повторно.\n"
-"\n"
-"Щоб дізнатися більше про реєстрацію на RHN Classic/Red Hat Satellite та "
-"використані технології, будь ласка, ознайомтеся з цієї статтею: https://"
-"access.redhat.com/kb/docs/DOC-45563"
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Надсилання інформації про профіль системи до Red Hat Satellite"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, fuzzy, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-"Збирання інформації для профілю системи завершено\n"
-"\n"
-"Натисніть \"Вперед\" щоб надіслати профіль системи до Red Hat Satellite.  "
-"Щоб відмінити надсилання інформації - натисніть \"Скасувати\". Ви можете "
-"запустити програму реєстрації пізніше, для цього наберіть у командному рядку "
-"rhn_register."
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr "Оновлення налаштовано"
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"Ви можете виконати «%s update» у командному рядку для отримання останніх "
-"оновлень ПЗ з Red Hat Network Satellite. Виконуйте команду регулярно для "
-"підтримки системи у оновленому стані. Також можна налаштувати автоматичне "
-"виконання оновлення ('auto errata update') за допомогою інтерфейсу Red Hat "
-"Satellite (інструкції у главі 6 Довідника з RHN, що доступний через меню "
-"довідки основного інтерфейсу Red Hat Network Satellite)."
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "Перегляд передплати"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "Нижче перегляньте подробиці системної передплати:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"Код встановлення %s був активований у процесі початкового з’єднання цієї "
-"системи з Red Hat Satellite."
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Активні передплати для наступних продуктів/сервісів Red Hat:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "Передплати каналу ПЗ:"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr "Система буде отримувати оновлення через наступні канали ПЗ:"
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, fuzzy, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-" Попередження: якщо встановленого продукту немає у наведеному вище списку, "
-"ви не зможете скористатися оновленнями та підтримкою. Якщо ви хочете "
-"отримувати оновлення для цього продукту, увійдіть до вашого облікового "
-"запису satellite і підпишіть цю систему на відповідні канали програмного "
-"забезпечення. Подробиці можна знайти у статті 11313 Kbase (http://kbase."
-"redhat.com/faq/docs/DOC-11313)"
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"Попередження: не виявлено %s, увімкнути його неможливо.\n"
-"Оновлення у автоматичному режимі не працюватиме."
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr "Зауваження: було увімкнено %s."
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"Попередження: під час спроби увімкнути %s сталася помилка.\n"
-"%s не увімкнено.\n"
-"Автоматичне оновлення не працюватиме."
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"Ви не були підключені до наступних каналів внаслідок недостатньої кількості "
-"передплат, що доступні вашому обліковому запису:"
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, fuzzy, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-"Ця система нездатна отримувати передплатні оновлення з жодного з каналів "
-"програмного забезпечення. Ваша система не отримуватиме жодних оновлень, які "
-"надають змогу підтримувати безпечний та актуальний стан програмного "
-"забезпечення. Щоб вирішити цю проблему, зв’яжіться з вашим адміністратором "
-"Satellite. Щойно до вашого облікового запису буде внесено дані щодо чинних "
-"передплат, ви зможете переглянути профіль цієї системи за допомогою інтернет-"
-"інтерфейсу RHN і оформити передплату на канали програмного забезпечення за "
-"допомогою вкладки «Програмне забезпечення > Канали програмного забезпечення "
-"(software > software channels)."
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr "Рівень служби:"
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, fuzzy, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-"Залежно від того, які модулі Red Hat Satellite пов'язані із системою, ви "
-"зможете отримати доступ до різних служб. Модулі Red Hat Satellite, що "
-"пов'язані з вашою системою:"
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, fuzzy, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"Ця система не може бути пов'язана з наступними модулями RHN через "
-"відсутність достатньої передплати:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-#, fuzzy
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-"Модуль керування: автоматичні оновлення, групування систем, права систем, "
-"профілі системних пакетів, визначення апаратного забезпечення, визначення "
-"наявного стану, повернення до початкового стану, керування налаштуваннями"
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-#, fuzzy
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-"Модуль віртуалізації: оновлення ПЗ для обмеженого числа віртуальних гостей "
-"системи."
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, fuzzy, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-"<b>Попередження:</b> Будь-які гостьові системи, які ви створите та "
-"зареєструєте у RHN, будуть використані додаткові передплати Red Hat "
-"Enterprise Linux. Потрібно:\n"
-"1) створити системне повноваження віртуалізації;\n"
-"2) застосувати це повноваження до системи через веб-інтерфейс RHN, якщо не "
-"бажаєте, щоб віртуальні гості використовували додаткові передплати."
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, fuzzy, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-"Цю систему не вдалося пов’язати з жодним модулем рівнів служби RHN. Ваша "
-"система не отримуватиме жодних оновлень, які надають змогу підтримувати "
-"безпечний та актуальний стан програмного забезпечення. Щоб вирішити цю "
-"проблему, зв’яжіться з вашим адміністратором Satellite. Щойно до вашого "
-"облікового запису буде внесено дані щодо чинних передплат, ви зможете "
-"переглянути профіль цієї системи за допомогою інтернет-інтерфейсу RHN, "
-"вилучити профіль системи і повторно встановити зв’язок цієї системи з Red "
-"Hat Satellite."
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-"Виявлено універсальний типовий ключ активації\n"
-"У вашому обліковому записі виявлено універсальний типовий ключ активації. Це "
-"означає, що набір параметрів (передплати каналів програмного забезпечення, "
-"встановлення пакунків, участь у групах системи тощо) для зв’язку вашої "
-"системи з Red Hat Satellite або Red Hat Proxy було визначено на основі даних "
-"ключа активації, а не числового індексу (номеру) встановлення. Докладніші "
-"відомості щодо ключів активації можна отримати з «Довідника з RHN», розділ "
-"6.4.6 (http://access.redhat.com/knowledge/docs/Red_Hat_Network/)\n"
-"Універсальний типовий ключ активації: %s"
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "Критична помилка"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Попередження"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-"Неможливо зв'язатись з Red Hat Satellite\n"
-"\n"
-"Перевірте правильність вказаного шлюзу — «%s».\n"
-"Якщо він неправильний, виправте його і спробуйте ще раз.\n"
-"\n"
-"Перевірте підключення до мережі.\n"
-"\n"
-"Ця система не може отримувати оновлення ПЗ Red Hat без з’єднання з сервером "
-"Red Hat Satellite"
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "Архітектура: %s, Випуск ОС: %s, Версія ОС: %s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-"Сервер не підтримує функціональність, необхідні для цієї версії клієнта "
-"параметри оновлення ПЗ. Повторіть спробу з більш старшою версією сервера."
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-"<b><span size=\"16000\">Несумісний файл сертифікату</span></b>\n"
-"\n"
-"Вказаний сертифікат <b>%s</b> не сумісний з сервером Red Hat Satellite "
-"<b>%s</b>. Переконайтесь у правильності вашого сертифіката. Ви впевнені, що "
-"вказали коректний сертифікат, та файл сертифіката не пошкоджений?\n"
-"\n"
-"Повторіть спробу з іншим файлом сертифіката."
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-"<b><span size=\"12000\">Несумісний файл сертифіката</span></b>\n"
-"\n"
-" Строк дії сертифіката вичерпано. Будь ласка, переконайтеся, що ви вказали "
-"належний сертифікат і що час у системі встановлено правильно."
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, fuzzy, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-"Будь ласка, перевірте значення параметрів sslCACert і serverURL у /etc/"
-"sysconfig/rhn/up2date. Ви можете скористатися http замість https для "
-"serverURL або отримати сертифікат SSL зі сторінки облікового запису у "
-"Satellite, зберегти його до /usr/share/rhn і зробити так, щоб sslCACert "
-"вказував на збережений сертифікат."
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, fuzzy, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"Проблема з реєстрацією системи:\n"
-"\n"
-"Універсальний ключ активації обмежує кількість систем, що підключаються до "
-"організації RHN, що пов'язана з вашим обліковим записом. Щоб дозволити "
-"підключення цієї системи зверніться до адміністратора організації RHN та "
-"попросіть, або збільшити кількість систем, яким дозволено підключення, або "
-"деактивувати універсальний ключ. Докладнішу інформацію можна знайти можна "
-"знайти у статті #7924 Бази знань за адресою http://kbase.redhat.com/faq/"
-"FAQ_61_7924.shtm (англійською)."
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-"\n"
-" Підказка: додаткові випуски, які підтримуються Red Hat позначено зірочкою "
-"(«*»).\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-"Попередження: при виборі цього варіанта у вас не буде можливості обмежувати "
-"систему допоміжним випуском, версія якого старша за версію останнього "
-"випуску. \n"
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"Ваша система буде підписана на основний програмний канал %s.\n"
-"У вас не буде можливості перепризначити систему попередньому\n"
-"випуску (але можна буде перейти на наступний випуск).\n"
-"Бажаєте продовжити?"
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "Гаразд"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "Помилка"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "Вперед"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "Назад"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "Скасувати"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "Немає, скасувати"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "Так, продовжити"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "Натисніть <пробіл> для скасування виділення."
-
-#: ../src/up2date_client/rpcServer.py:56
+#: ../src/up2date_client/rpcServer.py:55
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Помилка: сервер недоступний. Будь ласка, повторіть спробу пізніше."
 
-#: ../src/up2date_client/rpcServer.py:182
+#: ../src/up2date_client/rpcServer.py:181
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "ПОМИЛКА: не вдається знайти файл RHNS CA"
 
-#: ../src/up2date_client/rpcServer.py:220
-msgid "Connection aborted by the user"
-msgstr "З'єднання розірвано користувачем"
-
-#: ../src/up2date_client/rpcServer.py:268
-msgid "Server has refused connection due to high load"
-msgstr "Сервер відмовив у з'єднанні через високе навантаження"
-
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr "Адреса Spacewalk:"
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "Ід. системи:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "Сервер повідомив про помилку:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "Під час спроби обміну даними з сервером реєстрації сталася помилка:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "Назва профілю:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "Версія: "
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "Модель процесора: "
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "Назва вузла: "
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "Швидкість процесора: "
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d МГц"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP адреса: "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "Пам'ять: "
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s мегабайт"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Помилка реєстрацій системи:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Помилка реєстрації системи."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Помилка запису на диск ідентифікатора системи."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "Помилка надсилання апаратного профілю:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "Помилка надсилання апаратного профілю."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "Помилка надсилання списку пакетів:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "Помилка надсилання списку пакетів."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Не вдалося відкрити %s\n"
-"%s не увімкнено.\n"
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "Завершити"
-
-#: ../src/up2date_client/tui.py:1210
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr "Вказано неправильний протокол. Можна вказувати лише https та http."
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> між елементами  |  <Space> вибір  |  <F12> наступний екран"
-
-#: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "Програму реєстрації RHN необхідно запустити з правами root."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "клас %s не має атрибута «%s»"
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "Помилка RPM. Повідомлення про помилку:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "Помилка паролю. Повідомлення про помилку:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "Помилка залежностей RPM. Повідомлення про помилку:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "Фатальна помилка зв'язку з сервером. Повідомлення про помилку:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "Файл не знайдено: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "Вийшов час очікування зв'язку з сервером. Повідомлення про помилку:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "Помилка перевірки даних сервера:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "Неправильний номер передплати"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Помилка аналізу файлу oemInfo у полі:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr "Помилка мережі: "
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 #, fuzzy
 msgid ""
 "\n"
@@ -1208,119 +132,987 @@ msgstr ""
 "можна вимкнути\n"
 "    ключ і повторити спробу уникнути потреби у реєстрації для керування."
 
-#: ../src/bin/rhn_check.py:423
+#, python-format
+#~ msgid ""
+#~ "This client requires the server to support %s, which the current server "
+#~ "does not support"
+#~ msgstr ""
+#~ "Цей клієнт вимагає, щоб сервер підтримував %s, але поточний сервер не "
+#~ "підтримує цю функцію"
+
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "Складається список встановлених у системі пакетів"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "Помилка читання інформації про процесор:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "Помилка читання інформації про системну пам'ять:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "Помилка читання інформації про мережу:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "Помилка читання інформації про метод встановлення:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "Помилка при читанні інформації про мережні інтерфейси:"
+
 #, fuzzy
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
-"Виконано спробу запуску декількох екземплярів rhn_check. Завершуємо роботу "
-"програми.\n"
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "Помилка читання інформації про мережу:"
 
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "Вкажіть назву профілю"
+#, fuzzy
+#~ msgid "Error reading system info:"
+#~ msgstr "Помилка читання інформації про системну пам'ять:"
 
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "Вкажіть ім'я користувача"
+#, fuzzy
+#~ msgid "Error reading machine info:"
+#~ msgstr "Помилка читання інформації про процесор:"
 
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "Вкажіть пароль"
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "Не вдалося знайти ідентифікатор системи"
 
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "Вкажіть id системи в організації"
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr ""
+#~ "Цю систему не можливо оновити, доки вона не буде пов'язана з певним "
+#~ "каналом."
 
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "Вкажіть url сервера"
+#, fuzzy
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "Показувати додаткові подробиці"
 
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "Вкажіть файл сертифікату ssl CA cert"
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "Вказати http проксі"
 
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "Вкажіть ключ активації"
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "Вказати ім'я користувача для автентифікації з http проксі"
 
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"Оформити передплату цієї системи на канал EUS, прив’язаний до визначеного у "
-"системі redhat-release"
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "Вказати пароль для автентифікації з http проксі"
 
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[Застаріле] Прочитати контактні дані зі стандартного джерела (stdin)"
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Перервано.\n"
 
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "Не намагатись визначити чи завантажити інформацію про обладнання "
-
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "Не передавати чи зберігати у профіль інформацію про пакети"
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "не завантажувати інформацію про віртуалізацію"
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "Зареєструвати систему, навіть якщо вона вже зареєстрована"
-
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "Ім'я користувача та пароль є обов'язковими при реєстрації."
-
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr ""
-"Система вже зареєстрована. Використовуйте --force для примусової реєстрації."
-
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"Підтримки використання параметра --use-eus-channel разом з параметром --"
-"activationkey не передбачено. Замість цієї комбінації варто використовувати "
-"комбінацію імені користувача і пароля."
-
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "На сервері, на якому ви реєструєтеся, не передбачено підтримки EUS."
-
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"Попередження: параметр --contactinfo вважається застарілим. Будь ласка, "
-"скористайтеся вебінтерфейсом сервера для оновлення ваших контактних даних. "
-
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "Попередження: не виявлено %s, додаток неможливо увімкнути."
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "Виникла несподівана помилка: %s\n"
 
-#: ../src/bin/rhnreg_ks.py:172
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr ""
+#~ "Було виконано спробу з’єднання з адресою з помилковим форматуванням.\n"
+
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Попередження: не вдалося відкрити %s\n"
-"%s не увімкнено.\n"
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr ""
+#~ "Було виконано спробу з’єднання з адресою з помилковим форматуванням: %s\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"Не вказано назву профілю. Назва вузла чи IP адреса не можуть "
-"використовуватись у якості назви профілю. Вкажіть назву профілю."
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "Помилка вводу/виводу: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "Помилка SSL: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "Типова причина цієї помилки - неправильний системний час. Перевірте "
+#~ "годинник системи.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "Помилка SSL криптографії: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "Помилка автентифікації: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "Для виконання %s потрібно перейти у режим root"
+
+#, python-format
+#~ msgid ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licensed under the terms of the GPLv2."
+#~ msgstr ""
+#~ "%%prog (клієнтські інструменти Spacewalk) %s\n"
+#~ "© Red Hat, Inc., 1999—2014\n"
+#~ "Поширюється за умов дотримання GPLv2."
+
+#~ msgid "An error has occurred:"
+#~ msgstr "Виникла помилка:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "Додаткову інформацію можна знайти у /var/log/up2date "
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "© Red Hat, Inc., 2006–2014. Всі права застережено."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
+#~ "certificate. The SSL certificate is only required if you will be "
+#~ "connecting over https (recommended)."
+#~ msgstr ""
+#~ "Будь ласка, вкажіть розташування вашого сервера Red Hat Satellite та його "
+#~ "сертифіката SSL. Сертифікат SSL потрібен, лише якщо з’єднання "
+#~ "встановлюватиметься за допомогою https (рекомендований спосіб)."
+
+#~ msgid "SSL certificate:"
+#~ msgstr "Сертифікат SSL:"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "Вам слід вказати чинну адресу у Satellite."
+
+#~ msgid ""
+#~ "If you are using https you must enter the location of a valid SSL "
+#~ "certificate."
+#~ msgstr ""
+#~ "Якщо ви користуєтеся https, вам слід вказати місце, де зберігається "
+#~ "чинний сертифікат SSL."
+
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Намагаємося з’єднатися з сервером Spacewalk."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "Спроба підключення до сервера Red Hat Network через %s."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "Proxy вказаний на %s."
+
+#~ msgid "System Registration"
+#~ msgstr "Реєстрація системи"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Помічник допоможе з’єднати вашу систему з Red Hat Satellite для отримання "
+#~ "оновлень ПЗ, зокрема оновлень системи безпеки для підтримки актуальності "
+#~ "та сумісності. Для цього необхідно:\n"
+#~ "\n"
+#~ " * Мережеве з'єднання\n"
+#~ " * Реєстраційне ім'я та пароль Red Hat\n"
+#~ " * Розташування Red Hat Satellite чи Proxy\n"
+#~ "\n"
+
+#, fuzzy, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "Навіщо підключатись до RHN? ..."
+
+#~ msgid "Why Register"
+#~ msgstr "Навіщо реєструватись"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Приєднання системи до Red Hat Satellite надає змогу скористатися усіма "
+#~ "перевагами передплати, зокрема:"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "Безпека та оновлення:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "Завантаження та оновлення:"
+
+#~ msgid "Support:"
+#~ msgstr "Підтримка:"
+
+#~ msgid "Compliance:"
+#~ msgstr "Відповідність стандартам:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "Отримуйте останні оновлення оновлення ПЗ, включно з оновленнями безпеки, "
+#~ "підтримуючи системи Red Hat Enterprise Linux у оновленому та захищеному "
+#~ "стані."
+
+#, fuzzy
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "Завантаження образів встановлення для Red Hat Enterprise Linux, зокрема "
+#~ "останніх випусків."
+
+#, fuzzy
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "Доступ до технічної підтримки Red Hat та партнерів за допомогою у "
+#~ "вирішенні потенційних проблем у системі."
+
+#~ msgid ""
+#~ "Stay in compliance with your subscription agreement and manage "
+#~ "subscriptions for systems connected to your account."
+#~ msgstr ""
+#~ "Дійте відповідно до умов передплати та керуйте передплатою для систем, "
+#~ "пов’язаних з вашим обліковим записом."
+
+#, fuzzy
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "Примітка: Red Hat поважає вашу конфіденційність: http://www.redhat.com/"
+#~ "legal/privacy_statement.html"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "Повернутися до реєстрації"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "Оновлення програмного забезпечення не налаштовано"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "Ви справді не хочете з’єднати вашу систему з Red Hat Satellite? Без "
+#~ "такого з’єднання ви не зможете скористатися перевагами передплати Red Hat "
+#~ "Enterprise Linux:\n"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "Ви не зможете скористатися цими перевагами передплати без з’єднання вашої "
+#~ "системи з Red Hat Satellite\n"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "Повернутися до процесу налаштовування."
+
+#~ msgid "I'll register later."
+#~ msgstr "Я зареєструюсь пізніше."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Введіть інформацію про ваш обліковий запис для %s Red Hat Network "
+#~ "Satellite:\n"
+
+#~ msgid "Login:"
+#~ msgstr "Обліковий запис:"
+
+#~ msgid "Password:"
+#~ msgstr "Пароль:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "Зауваження: Забули ім'я користувача чи пароль? Зверніться до вашого "
+#~ "Адміністратора організації Satellite."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "Введіть бажане реєстраційне ім'я."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "Введіть пароль та підтвердження паролю."
+
+#~ msgid "Operating System Release Version"
+#~ msgstr "Версія випуску операційної системи"
+
+#~ msgid "Operating System version:"
+#~ msgstr "Версія операційної системи:"
+
+#~ msgid " Minor Release: "
+#~ msgstr " Мінорний випуск: "
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "Лише обмежені оновлення"
+
+#~ msgid "All available updates"
+#~ msgstr "Всі доступі оновлення"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "Підтвердіть вибір випуску операційної системи"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr ""
+#~ "Вашу систему буде налаштовано на канал основного програмного забезпечення "
+#~ "для отримання всіх можливих оновлень."
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "Створення профілю — обладнання"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Назва профілю є описовою назвою, яку ви вибираєте для ідентифікації "
+#~ "профілю системи на веб-сторінках Red Hat Satellite. Назва може включати в "
+#~ "себе серійний чи ідентифікаційний номер комп'ютера."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "В профіль включається додаткова інформація про пристрої PCI, розміри "
+#~ "дисків та точки монтування."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "Включати наступну інформацію про обладнання та мережу:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "Створення профілю — пакунки"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "RPM інформація важлива для визначення які пакети оновлення доречні для "
+#~ "цієї системи"
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr ""
+#~ "Включати RPM пакети встановлені на цій системі у профіль моєї системи."
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr "Ви можете виключити окремі пакетів, знявши з них відмітку."
+
+#~ msgid "Building Package List"
+#~ msgstr "Складається перелік пакетів"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*Ел.адреса:"
+
+#~ msgid "System Already Registered"
+#~ msgstr "Систему вже зареєстровано"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr "Можливо, ваша система вже налаштована для отримання оновлень ПЗ:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "Ви дійсно бажаєте продовжити?"
+
+#~ msgid ""
+#~ "This system has already been registered using Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "Your system is being registered again using Red Hat Satellite or Red Hat "
+#~ "Satellite Proxy technology. Red Hat recommends that customers only "
+#~ "register once.\n"
+#~ "\n"
+#~ "To learn more about RHN Classic/Red Hat Satellite registration and "
+#~ "technologies please consult this Knowledge Base Article: https://access."
+#~ "redhat.com/kb/docs/DOC-45563"
+#~ msgstr ""
+#~ "Цю систему вже зареєстровано у системі керування передплатами Red Hat.\n"
+#~ "\n"
+#~ "Ваша система повторно реєструється за допомогою технології Red Hat "
+#~ "Satellite або Red Hat Satellite Proxy. Red Hat рекомендує реєструватися "
+#~ "повторно.\n"
+#~ "\n"
+#~ "Щоб дізнатися більше про реєстрацію на RHN Classic/Red Hat Satellite та "
+#~ "використані технології, будь ласка, ознайомтеся з цієї статтею: https://"
+#~ "access.redhat.com/kb/docs/DOC-45563"
+
+#, fuzzy, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "Надсилання інформації про профіль системи до Red Hat Satellite"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "Збирання інформації для профілю системи завершено\n"
+#~ "\n"
+#~ "Натисніть \"Вперед\" щоб надіслати профіль системи до Red Hat Satellite.  "
+#~ "Щоб відмінити надсилання інформації - натисніть \"Скасувати\". Ви можете "
+#~ "запустити програму реєстрації пізніше, для цього наберіть у командному "
+#~ "рядку rhn_register."
+
+#~ msgid "Updates Configured"
+#~ msgstr "Оновлення налаштовано"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "Ви можете виконати «%s update» у командному рядку для отримання останніх "
+#~ "оновлень ПЗ з Red Hat Network Satellite. Виконуйте команду регулярно для "
+#~ "підтримки системи у оновленому стані. Також можна налаштувати автоматичне "
+#~ "виконання оновлення ('auto errata update') за допомогою інтерфейсу Red "
+#~ "Hat Satellite (інструкції у главі 6 Довідника з RHN, що доступний через "
+#~ "меню довідки основного інтерфейсу Red Hat Network Satellite)."
+
+#~ msgid "Review Subscription"
+#~ msgstr "Перегляд передплати"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "Нижче перегляньте подробиці системної передплати:"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Код встановлення %s був активований у процесі початкового з’єднання цієї "
+#~ "системи з Red Hat Satellite."
+
+#, fuzzy
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "Активні передплати для наступних продуктів/сервісів Red Hat:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "Передплати каналу ПЗ:"
+
+#~ msgid ""
+#~ "This system will receive updates from the following software channels:"
+#~ msgstr "Система буде отримувати оновлення через наступні канали ПЗ:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your {PRODUCT_NAME} web interface and subscribe this "
+#~ "system to the appropriate software channels."
+#~ msgstr ""
+#~ " Попередження: якщо встановленого продукту немає у наведеному вище "
+#~ "списку, ви не зможете скористатися оновленнями та підтримкою. Якщо ви "
+#~ "хочете отримувати оновлення для цього продукту, увійдіть до вашого "
+#~ "облікового запису satellite і підпишіть цю систему на відповідні канали "
+#~ "програмного забезпечення. Подробиці можна знайти у статті 11313 Kbase "
+#~ "(http://kbase.redhat.com/faq/docs/DOC-11313)"
+
+#, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Попередження: не виявлено %s, увімкнути його неможливо.\n"
+#~ "Оновлення у автоматичному режимі не працюватиме."
+
+#, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "Зауваження: було увімкнено %s."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Попередження: під час спроби увімкнути %s сталася помилка.\n"
+#~ "%s не увімкнено.\n"
+#~ "Автоматичне оновлення не працюватиме."
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "Ви не були підключені до наступних каналів внаслідок недостатньої "
+#~ "кількості передплат, що доступні вашому обліковому запису:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This system was unable to subscribe to any software channels. Your system "
+#~ "will not receive any software updates to keep it secure and supported. "
+#~ "Contact your {PRODUCT_NAME} administrator about this problem. Once you "
+#~ "make the appropriate active subscriptions available in your account, you "
+#~ "may browse to this system's profile in the {PRODUCT_NAME} web interface "
+#~ "and subscribe this system to software channels via the software > "
+#~ "software channels tab."
+#~ msgstr ""
+#~ "Ця система нездатна отримувати передплатні оновлення з жодного з каналів "
+#~ "програмного забезпечення. Ваша система не отримуватиме жодних оновлень, "
+#~ "які надають змогу підтримувати безпечний та актуальний стан програмного "
+#~ "забезпечення. Щоб вирішити цю проблему, зв’яжіться з вашим "
+#~ "адміністратором Satellite. Щойно до вашого облікового запису буде внесено "
+#~ "дані щодо чинних передплат, ви зможете переглянути профіль цієї системи "
+#~ "за допомогою інтернет-інтерфейсу RHN і оформити передплату на канали "
+#~ "програмного забезпечення за допомогою вкладки «Програмне забезпечення > "
+#~ "Канали програмного забезпечення (software > software channels)."
+
+#~ msgid "Service Level:"
+#~ msgstr "Рівень служби:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Depending on what {PRODUCT_NAME} system types are associated with a "
+#~ "system, you'll enjoy different benefits. The following are the "
+#~ "{PRODUCT_NAME} system types associated with this system:"
+#~ msgstr ""
+#~ "Залежно від того, які модулі Red Hat Satellite пов'язані із системою, ви "
+#~ "зможете отримати доступ до різних служб. Модулі Red Hat Satellite, що "
+#~ "пов'язані з вашою системою:"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "Ця система не може бути пов'язана з наступними модулями RHN через "
+#~ "відсутність достатньої передплати:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Management type: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "Модуль керування: автоматичні оновлення, групування систем, права систем, "
+#~ "профілі системних пакетів, визначення апаратного забезпечення, визначення "
+#~ "наявного стану, повернення до початкового стану, керування налаштуваннями"
+
+#, fuzzy
+#~ msgid ""
+#~ "Virtualization type: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr ""
+#~ "Модуль віртуалізації: оновлення ПЗ для обмеженого числа віртуальних "
+#~ "гостей системи."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
+#~ "system's subscription. You will need to: (1) make a virtualization system "
+#~ "entitlement available and (2) apply that system entitlement to this "
+#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
+#~ "of this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>Попередження:</b> Будь-які гостьові системи, які ви створите та "
+#~ "зареєструєте у RHN, будуть використані додаткові передплати Red Hat "
+#~ "Enterprise Linux. Потрібно:\n"
+#~ "1) створити системне повноваження віртуалізації;\n"
+#~ "2) застосувати це повноваження до системи через веб-інтерфейс RHN, якщо "
+#~ "не бажаєте, щоб віртуальні гості використовували додаткові передплати."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with any {PRODUCT_NAME} system "
+#~ "types. This system will not receive any software updates to keep it "
+#~ "secure and supported. Contace your {PRODUCT_NAME} administrator about "
+#~ "this problem. Once you make the appropriate active subscriptions "
+#~ "available in your account, you may browse to this system's profile in the "
+#~ "{PRODUCT_NAME} web interface, delete the profile, and re-connect this "
+#~ "system to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Цю систему не вдалося пов’язати з жодним модулем рівнів служби RHN. Ваша "
+#~ "система не отримуватиме жодних оновлень, які надають змогу підтримувати "
+#~ "безпечний та актуальний стан програмного забезпечення. Щоб вирішити цю "
+#~ "проблему, зв’яжіться з вашим адміністратором Satellite. Щойно до вашого "
+#~ "облікового запису буде внесено дані щодо чинних передплат, ви зможете "
+#~ "переглянути профіль цієї системи за допомогою інтернет-інтерфейсу RHN, "
+#~ "вилучити профіль системи і повторно встановити зв’язок цієї системи з Red "
+#~ "Hat Satellite."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "Universal default activation key detected\n"
+#~ "A universal default activation key was detected in your account. This "
+#~ "means that a set of properties (software channel subscriptions, package "
+#~ "installations, system group memberships, etc.) for your system's "
+#~ "connection to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been "
+#~ "determined by the activation key rather than your installation number.  "
+#~ "You may also refer to the {PRODUCT_NAME} Reference Guide for more details "
+#~ "about activation keys. \n"
+#~ "Universal Default activation key: %s"
+#~ msgstr ""
+#~ "Виявлено універсальний типовий ключ активації\n"
+#~ "У вашому обліковому записі виявлено універсальний типовий ключ активації. "
+#~ "Це означає, що набір параметрів (передплати каналів програмного "
+#~ "забезпечення, встановлення пакунків, участь у групах системи тощо) для "
+#~ "зв’язку вашої системи з Red Hat Satellite або Red Hat Proxy було "
+#~ "визначено на основі даних ключа активації, а не числового індексу "
+#~ "(номеру) встановлення. Докладніші відомості щодо ключів активації можна "
+#~ "отримати з «Довідника з RHN», розділ 6.4.6 (http://access.redhat.com/"
+#~ "knowledge/docs/Red_Hat_Network/)\n"
+#~ "Універсальний типовий ключ активації: %s"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Критична помилка"
+
+#~ msgid "Warning"
+#~ msgstr "Попередження"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "We can't contact {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ msgstr ""
+#~ "Неможливо зв'язатись з Red Hat Satellite\n"
+#~ "\n"
+#~ "Перевірте правильність вказаного шлюзу — «%s».\n"
+#~ "Якщо він неправильний, виправте його і спробуйте ще раз.\n"
+#~ "\n"
+#~ "Перевірте підключення до мережі.\n"
+#~ "\n"
+#~ "Ця система не може отримувати оновлення ПЗ Red Hat без з’єднання з "
+#~ "сервером Red Hat Satellite"
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr "Архітектура: %s, Випуск ОС: %s, Версія ОС: %s"
+
+#~ msgid ""
+#~ "This server doesn't support functionality needed by this version of the "
+#~ "software update setup client. Please try again with a newer server."
+#~ msgstr ""
+#~ "Сервер не підтримує функціональність, необхідні для цієї версії клієнта "
+#~ "параметри оновлення ПЗ. Повторіть спробу з більш старшою версією сервера."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the "
+#~ "{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+#~ "have provided a valid certificate file. Are you sure you have provided "
+#~ "the correct certificate, and that the certificate file has not been "
+#~ "corrupted?\n"
+#~ "\n"
+#~ "Please try again with a different certificate file."
+#~ msgstr ""
+#~ "<b><span size=\"16000\">Несумісний файл сертифікату</span></b>\n"
+#~ "\n"
+#~ "Вказаний сертифікат <b>%s</b> не сумісний з сервером Red Hat Satellite "
+#~ "<b>%s</b>. Переконайтесь у правильності вашого сертифіката. Ви впевнені, "
+#~ "що вказали коректний сертифікат, та файл сертифіката не пошкоджений?\n"
+#~ "\n"
+#~ "Повторіть спробу з іншим файлом сертифіката."
+
+#~ msgid ""
+#~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ " The certificate is expired. Please ensure you have the correct  "
+#~ "certificate and your system time is correct."
+#~ msgstr ""
+#~ "<b><span size=\"12000\">Несумісний файл сертифіката</span></b>\n"
+#~ "\n"
+#~ " Строк дії сертифіката вичерпано. Будь ласка, переконайтеся, що ви "
+#~ "вказали належний сертифікат і що час у системі встановлено правильно."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
+#~ "up2date. You can either make the serverURL use http instead of https, or "
+#~ "you can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/"
+#~ "share/rhn, and ensure sslCACert points to it."
+#~ msgstr ""
+#~ "Будь ласка, перевірте значення параметрів sslCACert і serverURL у /etc/"
+#~ "sysconfig/rhn/up2date. Ви можете скористатися http замість https для "
+#~ "serverURL або отримати сертифікат SSL зі сторінки облікового запису у "
+#~ "Satellite, зберегти його до /usr/share/rhn і зробити так, щоб sslCACert "
+#~ "вказував на збережений сертифікат."
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "Проблема з реєстрацією системи:\n"
+#~ "\n"
+#~ "Універсальний ключ активації обмежує кількість систем, що підключаються "
+#~ "до організації RHN, що пов'язана з вашим обліковим записом. Щоб дозволити "
+#~ "підключення цієї системи зверніться до адміністратора організації RHN та "
+#~ "попросіть, або збільшити кількість систем, яким дозволено підключення, "
+#~ "або деактивувати універсальний ключ. Докладнішу інформацію можна знайти "
+#~ "можна знайти у статті #7924 Бази знань за адресою http://kbase.redhat.com/"
+#~ "faq/FAQ_61_7924.shtm (англійською)."
+
+#~ msgid ""
+#~ "\n"
+#~ " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ " Підказка: додаткові випуски, які підтримуються Red Hat позначено "
+#~ "зірочкою («*»).\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Warning:You will not be able to limit this system to minor release that "
+#~ "is older than the recent minor release if you select this option.\n"
+#~ msgstr ""
+#~ "Попередження: при виборі цього варіанта у вас не буде можливості "
+#~ "обмежувати систему допоміжним випуском, версія якого старша за версію "
+#~ "останнього випуску. \n"
+
+#, python-format
+#~ msgid ""
+#~ "Your system will be subscribed to %s \n"
+#~ "base software channel. You will not be\n"
+#~ "able to move this system to an earlier release\n"
+#~ "(you will be able to move to a newer release).\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "Ваша система буде підписана на основний програмний канал %s.\n"
+#~ "У вас не буде можливості перепризначити систему попередньому\n"
+#~ "випуску (але можна буде перейти на наступний випуск).\n"
+#~ "Бажаєте продовжити?"
+
+#~ msgid "OK"
+#~ msgstr "Гаразд"
+
+#~ msgid "Error"
+#~ msgstr "Помилка"
+
+#~ msgid "Next"
+#~ msgstr "Вперед"
+
+#~ msgid "Back"
+#~ msgstr "Назад"
+
+#~ msgid "Cancel"
+#~ msgstr "Скасувати"
+
+#~ msgid "No, Cancel"
+#~ msgstr "Немає, скасувати"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "Так, продовжити"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "Натисніть <пробіл> для скасування виділення."
+
+#~ msgid "Connection aborted by the user"
+#~ msgstr "З'єднання розірвано користувачем"
+
+#~ msgid "Server has refused connection due to high load"
+#~ msgstr "Сервер відмовив у з'єднанні через високе навантаження"
+
+#~ msgid "Spacewalk Location:"
+#~ msgstr "Адреса Spacewalk:"
+
+#~ msgid "System ID:"
+#~ msgstr "Ід. системи:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "Сервер повідомив про помилку:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr ""
+#~ "Під час спроби обміну даними з сервером реєстрації сталася помилка:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "Назва профілю:"
+
+#~ msgid "Version: "
+#~ msgstr "Версія: "
+
+#~ msgid "CPU model: "
+#~ msgstr "Модель процесора: "
+
+#~ msgid "Hostname: "
+#~ msgstr "Назва вузла: "
+
+#~ msgid "CPU speed: "
+#~ msgstr "Швидкість процесора: "
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d МГц"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP адреса: "
+
+#~ msgid "Memory: "
+#~ msgstr "Пам'ять: "
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s мегабайт"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "Помилка реєстрацій системи:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "Помилка реєстрації системи."
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "Помилка запису на диск ідентифікатора системи."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "Помилка надсилання апаратного профілю:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "Помилка надсилання апаратного профілю."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "Помилка надсилання списку пакетів:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "Помилка надсилання списку пакетів."
+
+#, python-format
+#~ msgid ""
+#~ "Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Не вдалося відкрити %s\n"
+#~ "%s не увімкнено.\n"
+
+#~ msgid "Finish"
+#~ msgstr "Завершити"
+
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr "Вказано неправильний протокол. Можна вказувати лише https та http."
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> між елементами  |  <Space> вибір  |  <F12> наступний "
+#~ "екран"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "Програму реєстрації RHN необхідно запустити з правами root."
+
+#, fuzzy
+#~ msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+#~ msgstr ""
+#~ "Виконано спробу запуску декількох екземплярів rhn_check. Завершуємо "
+#~ "роботу програми.\n"
+
+#~ msgid "Specify a profilename"
+#~ msgstr "Вкажіть назву профілю"
+
+#~ msgid "Specify a username"
+#~ msgstr "Вкажіть ім'я користувача"
+
+#~ msgid "Specify a password"
+#~ msgstr "Вкажіть пароль"
+
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "Вкажіть id системи в організації"
+
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "Вкажіть url сервера"
+
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "Вкажіть файл сертифікату ssl CA cert"
+
+#~ msgid "Specify an activation key"
+#~ msgstr "Вкажіть ключ активації"
+
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "Оформити передплату цієї системи на канал EUS, прив’язаний до визначеного "
+#~ "у системі redhat-release"
+
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr ""
+#~ "[Застаріле] Прочитати контактні дані зі стандартного джерела (stdin)"
+
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "Не намагатись визначити чи завантажити інформацію про обладнання "
+
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "Не передавати чи зберігати у профіль інформацію про пакети"
+
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "не завантажувати інформацію про віртуалізацію"
+
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "Зареєструвати систему, навіть якщо вона вже зареєстрована"
+
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "Ім'я користувача та пароль є обов'язковими при реєстрації."
+
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr ""
+#~ "Система вже зареєстрована. Використовуйте --force для примусової "
+#~ "реєстрації."
+
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "Підтримки використання параметра --use-eus-channel разом з параметром --"
+#~ "activationkey не передбачено. Замість цієї комбінації варто "
+#~ "використовувати комбінацію імені користувача і пароля."
+
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "На сервері, на якому ви реєструєтеся, не передбачено підтримки EUS."
+
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "Попередження: параметр --contactinfo вважається застарілим. Будь ласка, "
+#~ "скористайтеся вебінтерфейсом сервера для оновлення ваших контактних "
+#~ "даних. "
+
+#, python-format
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "Попередження: не виявлено %s, додаток неможливо увімкнути."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Попередження: не вдалося відкрити %s\n"
+#~ "%s не увімкнено.\n"
+
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "Не вказано назву профілю. Назва вузла чи IP адреса не можуть "
+#~ "використовуватись у якості назви профілю. Вкажіть назву профілю."
 
 #, fuzzy
 #~ msgid "Finish setting up software updates"

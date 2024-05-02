@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:51:42 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Fix inserting NULL into some columns during ISSv1 sync (bsc#1220980)
+  * Strip whitespace from .deb package metadata (bsc#1214387)
+
+-------------------------------------------------------------------
 Tue Feb 13 17:24:48 CET 2024 - marina.latini@suse.com
 
 - version 5.0.4-1

@@ -159,6 +159,23 @@
         <li class="list-group-item">
             <div class="row">
                 <div class="col-sm-2">
+                  <rhn:icon type="header-search" title="ssm.overview.misc" />
+                    <bean:message key="ssm.overview.audit"/>
+                </div>
+                <div class="col-sm-10">
+                    <ul class="list-unstyled">
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_audit)">
+                            <li><bean:message key="ssm.overview.misc.scap"/></li>
+                        </rhn:require>
+                        <li><bean:message key="ssm.overview.audit.coco_configure"/></li>
+                        <li><bean:message key="ssm.overview.audit.coco_schedule"/></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-sm-2">
                   <rhn:icon type="header-event-history" title="ssm.overview.misc" />
                     <bean:message key="ssm.overview.misc"/>
                 </div>
@@ -182,9 +199,6 @@
                         </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_system_lock)">
                             <li><bean:message key="ssm.overview.misc.lock"/></li>
-                        </rhn:require>
-                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_audit)">
-                            <li><bean:message key="ssm.overview.misc.scap"/></li>
                         </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_reboot)">
                             <li><bean:message key="ssm.overview.misc.reboot"/></li>

@@ -1850,8 +1850,20 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="appstreams.configure" xml:space="preserve">
+        <source>Configure AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
@@ -5692,7 +5704,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -7640,6 +7652,9 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve">
         <source>The channel access ({0}) is not allowed for this operation.</source>
       </trans-unit>
+      <trans-unit id="api.channel.modulespresent" xml:space="preserve">
+        <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
+      </trans-unit>
       <trans-unit id="Certificate Administrators" xml:space="preserve">
         <source>Certificate Administrators</source>
       </trans-unit>
@@ -9046,14 +9061,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="mirror-credentials.jsp.verify" xml:space="preserve">
         <source>verify credentials</source>
       </trans-unit>
+      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve">
+        <source>Confidential Computing</source>
+      </trans-unit>
       <trans-unit id="subscriptionmatching.nav.title" xml:space="preserve">
         <source>Subscription Matching</source>
       </trans-unit>
       <trans-unit id="foreign_entitled" xml:space="preserve">
         <source>Foreign</source>
-      </trans-unit>
-      <trans-unit id="visualization.nav.title" xml:space="preserve">
-        <source>Visualization</source>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
@@ -9222,15 +9237,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
-      </trans-unit>
-      <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
-        <source>Virtualization Hierarchy</source>
-      </trans-unit>
-      <trans-unit id="Proxy Hierarchy" xml:space="preserve">
-        <source>Proxy Hierarchy</source>
-      </trans-unit>
-      <trans-unit id="Systems Grouping" xml:space="preserve">
-        <source>Systems Grouping</source>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
@@ -9525,6 +9531,57 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin => Setup Wizard => Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.none.description">
+        <source>None</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.none.label">
+        <source>None</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description">
+        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.label">
+        <source>KVM on AMD Epyc - Milan</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description">
+        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label">
+        <source>KVM on AMD Epyc - Genoa</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.none.description">
+        <source>Result Type not found</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.description">
+        <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.label">
+        <source>AMD SEV-SNP</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.description">
+        <source>Secure Boot enabled</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.label">
+        <source>Secure Boot</source>
+      </trans-unit>
+      <trans-unit id="coco.status.pending.description">
+        <source>Pending</source>
+      </trans-unit>
+      <trans-unit id="coco.status.succeeded.description">
+        <source>Succeeded</source>
+      </trans-unit>
+      <trans-unit id="coco.status.failed.description">
+        <source>Failed</source>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.unsupported">
+        <source>This system does not have any Confidential Computing capability.</source>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configUpdated">
+        <source>The Confidential Computing configuration has been updated successfully.</source>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configNotUpdated">
+        <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
       </trans-unit>
     </body>
   </file>

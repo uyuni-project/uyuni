@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2023-10-16 10:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -43,1042 +43,54 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../src/up2date_client/capabilities.py:94
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr "此客户端要求服务器支持 %s，但是当前服务器不支持"
-
 #: ../src/up2date_client/config.py:162
 #, python-format
 msgid "%s was not found"
 msgstr "未找到 %s"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "正在获取系统上安装的软件包列表"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "读取 CPU 信息时出错："
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "读取系统内存信息时出错："
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "读取网络信息时出错："
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "读取安装方法信息时出错："
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "读取网络接口信息时出错："
-
-#: ../src/up2date_client/hardware.py:1118
-msgid "Error reading network FQDNs information:"
-msgstr "读取网络 FQDN 信息时出错："
-
-#: ../src/up2date_client/hardware.py:1125
-msgid "Error reading system info:"
-msgstr "读取系统信息时出错："
-
-#: ../src/up2date_client/hardware.py:1132
-msgid "Error reading machine info:"
-msgstr "读取计算机信息时出错："
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "找不到 SystemId"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "此系统只有在关联到某个通道后才可更新。"
-
-#: ../src/up2date_client/rhncli.py:65
-msgid "Show additional output. Repeat for more detail."
-msgstr "显示附加输出。重复此操作可获取更多细节。"
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "指定要使用的 HTTP 代理"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "指定要在已经过身份验证的 HTTP 代理中使用的用户名"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "指定要在已经过身份验证的 HTTP 代理中使用的口令"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"已中止。\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "发生了意外的操作系统错误：%s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "尝试使用格式不当的 URI 进行连接。\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "尝试使用格式不当的 URI 进行连接：%s。\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "发生了某种 I/O 错误：%s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "发生了 SSL 错误：%s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr "此错误的常见原因是系统时间不正确。请校验此系统上的时间是否正确。\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "发生了 SSL 加密错误：%s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "发生了身份验证错误：%s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "只有 root 用户可以运行 %s"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"版权所有 (C) 1999--2014 Red Hat, Inc.\n"
-"根据 GPLv2 条款授权。"
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "发生了错误："
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "有关详细信息，请查看 /var/log/up2date"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr "Uyuni"
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "版权所有 © 2006--2014 Red Hat, Inc.。保留所有权利。"
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr "输入您的 {PRODUCT_NAME} URL。"
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-"请输入 {PRODUCT_NAME} 服务器及其 SSL 证书的位置。仅当您要通过 HTTPS 连接（建"
-"议）时，才需要 SSL 证书。"
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr "{PRODUCT_NAME} URL："
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr "SSL 证书："
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "必须输入有效的 {PRODUCT_NAME} URL。"
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr "如果您使用 HTTPS，则必须输入有效 SSL 证书的位置。"
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-msgid "Attempting to contact the Spacewalk server."
-msgstr "正在尝试联系 Spacewalk 服务器。"
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "正在尝试通过 %s 联系 {PRODUCT_NAME} 服务器。"
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "已在 %s 上指定一个代理。"
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "系统注册"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"此助手会引导您将您的系统连接到 {PRODUCT_NAME} 来接收软件更新（包括安全更"
-"新），以使系统持续受到支持并合规。此时您需要准备好以下各项：\n"
-"\n"
-" * 网络连接\n"
-" * 您的 {PRODUCT_NAME} 登录名和口令\n"
-" * {PRODUCT_NAME} Server 或 Proxy 的位置\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "为何要要连接到 {PRODUCT_NAME}？..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "为何要注册"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr "将系统连接到 {PRODUCT_NAME} 可以充分利用付费订阅所带来的好处，包括："
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "安全性和更新："
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "软件下载和升级："
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "支持："
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "合规："
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr "接收最新的软件更新（包括安全更新），使此系统保持更新且安全的状态。"
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr "下载系统发行版（包括新发行版）的安装映像。"
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr "在使用此系统时如果遇到任何问题，可以向技术支持专家求助。"
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr "始终遵守订阅协议，并管理连接到您帐户的系统的订阅。"
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr "提示：SUSE 非常看重您的隐私：https://www.suse.com/company/legal/"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "返回注册过程"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "未设置软件更新"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"您确定不想要将您的系统连接到 {PRODUCT_NAME} 吗？您将失去 SLES/RHEL 订阅所带来"
-"的好处：\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr "如果不将系统连接到 {PRODUCT_NAME}，您将无法利用这些订阅特权。\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "返回设置过程。"
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "以后再注册。"
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr "{PRODUCT_NAME} 帐户"
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"请输入 %s {PRODUCT_NAME} 的登录信息：\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr "{PRODUCT_NAME} 登录名："
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "登录名："
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "口令："
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr "提示：忘记了登录名或口令？请联系您的 {PRODUCT_NAME} 组织管理员。"
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "请输入所需的登录名。"
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "请输入并确认口令。"
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr "操作系统发行版"
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "操作系统版本："
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr " 次要发行版： "
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "仅限有限更新"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "所有可用更新"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "确认选择该操作系统发行版"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr "您的系统将订阅基础软件通道以接收所有可用更新。"
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "创建配置文件 - 硬件"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"配置文件名称是您选择用于在 {PRODUCT_NAME} 网页上标识此系统配置文件的描述性名"
-"称。可以选择性地包含计算机序列号或标识号。"
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr "将在配置文件中包含其他硬件信息，包括 PCI 设备、磁盘大小和装入点。"
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "包含有关硬件和网络的以下信息："
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "创建配置文件 - 软件包"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr "在确定哪些已更新的软件包与此系统相关时，RPM 信息非常重要。"
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr "将此系统上安装的 RPM 软件包包含在我的系统配置文件中"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr "可以取消选择单个软件包，只需在下面取消选中其对应的复选框即可。"
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "构建软件包列表"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*电子邮件地址："
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr "系统已注册"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr "似乎已经为此系统设置了软件更新："
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "您确定要继续吗？"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-"已使用 Red Hat 订阅管理注册此系统。\n"
-"\n"
-"正在使用 Red Hat Satellite 或 Red Hat Satellite Proxy 技术注册您的系统。Red "
-"Hat 建议客户仅注册一次。\n"
-"\n"
-"要详细了解 RHN Classic/Red Hat Satellite 注册和技术，请查阅此知识库文章："
-"https://access.redhat.com/kb/docs/DOC-45563"
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "将配置文件信息发送到 {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
-msgstr ""
-"我们已完成系统配置文件信息的收集。\n"
-"\n"
-"按 \"下一步\" 会将此系统配置文件发送到 {PRODUCT_NAME}。单击 \"取消\" 则不会发"
-"送任何信息。您以后可以通过在命令行中键入 `rhn_register` 来运行注册程序。"
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr "正在将配置文件发送到 {PRODUCT_NAME}"
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr "已配置更新"
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"您现在可以在此系统的命令行中运行 '%s update' 以从 {PRODUCT_NAME} 获取最新的软"
-"件更新。需要定期运行此命令以获取最新更新；或者，可将此系统配置为通过 "
-"{PRODUCT_NAME} Web 界面实现自动软件更新（也称为“自动勘误更新”）。（在 "
-"{PRODUCT_NAME} 主 Web 界面中单击 \"帮助\" 按钮，可以在《{PRODUCT_NAME} 参考指"
-"南》中获取有关此操作的说明。）"
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "复查订阅"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "请复查以下订阅细节："
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr "在此系统最初连接到 {PRODUCT_NAME} 期间已激活安装号 %s。"
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "已激活以下产品/服务的订阅："
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "软件通道订阅："
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr "此系统将从以下软件通道接收更新："
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-"警告：只有上面列出的已安装产品才能获得更新和支持。如果您想要获得其他产品的更"
-"新，请登录到 {PRODUCT_NAME} Web 界面，并让此系统订阅相应的软件通道。"
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"警告：%s 不存在，无法启用它。\n"
-"自动更新将无法进行。"
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr "注意：已启用 %s。"
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"警告：启用 %s 期间出错。\n"
-"未启用 %s。\n"
-"自动更新将无法进行。"
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr "由于您帐户中可用的订阅不足，您无法订阅以下软件通道："
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-"此系统无法订阅任何软件通道。您的系统将不会接收任何软件更新来保持其安全和受支"
-"持状态。请将此问题告知您的 {PRODUCT_NAME} 管理员。在帐户中提供相应的活动订阅"
-"后，您可以在 {PRODUCT_NAME} Web 界面中浏览到此系统的配置文件，然后通过 \"软件"
-"\" > \"软件通道\" 选项卡在此系统中订阅软件通道。"
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr "服务级别："
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-"根据与系统关联的 {PRODUCT_NAME} 系统类型，您将享受不同的权益。下面是与此系统"
-"关联的 {PRODUCT_NAME} 系统类型："
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"由于您帐户中可用的订阅不足，此系统无法与以下 {PRODUCT_NAME} 系统类型相关联："
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-"管理类型：自动更新、系统组、系统权限、系统软件包配置文件、裸机置备、现有状态"
-"置备、回滚、配置管理"
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr "虚拟化类型：适用于此系统上有限数量的虚拟 Guest 的软件更新。"
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-"<b>警告：</b>在此系统上创建的并要注册到 {PRODUCT_NAME} 的任何 Guest 系统将消"
-"耗除主机系统订阅以外的系统订阅。您需要：(1) 提供虚拟化系统权利并；(2) 如果您"
-"不希望此系统的虚拟 Guest 消耗额外的订阅，请在 {PRODUCT_NAME} Web 界面中向此系"
-"统应用系统权利。"
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-"此系统无法与任何 {PRODUCT_NAME} 系统类型相关联。此系统将不会接收任何软件更新"
-"来保持其安全和受支持状态。请将此问题告知您的 {PRODUCT_NAME} 管理员。在帐户中"
-"提供相应的活动订阅后，您可以在 {PRODUCT_NAME} Web 界面中浏览到此系统的配置文"
-"件，删除该配置文件，然后将此系统重新连接到 {PRODUCT_NAME}。"
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-"检测到通用默认激活密钥\n"
-"在您的帐户中检测到了通用默认激活密钥。这意味着，用于将系统连接到 "
-"{PRODUCT_NAME} Server 或 {PRODUCT_NAME} Proxy 的一组属性（软件通道订阅、软件"
-"包安装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥的更"
-"多细节，另请参见《{PRODUCT_NAME} 参考指南》。\n"
-"通用默认激活密钥：%s"
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "严重错误"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "警告"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-"我们无法联系 {PRODUCT_NAME}。\n"
-"\n"
-"请反复检查提供的位置是否正确 - '%s' 是否正确？\n"
-"如果不正确，请更正后尝试。\n"
-"\n"
-"确保此系统上的网络连接正常。\n"
-"\n"
-"在不连接到 {PRODUCT_NAME} 服务器/代理的情况下，此系统将无法成功接收软件更新"
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "体系结构：%s，操作系统发行版：%s，操作系统版本：%s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-"此服务器不支持此软件更新设置客户端版本所需的功能。请在更新的服务器上重试。"
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-"<b><span size=\"16000\">证书文件不兼容</span></b>\n"
-"\n"
-"您提供的证书 <b>%s</b> 与 <b>%s</b> 上提供的 {PRODUCT_NAME} 服务器不兼容。请"
-"反复检查您提供的证书文件是否有效。您确定提供了正确的证书，并且证书文件未损坏"
-"吗？\n"
-"\n"
-"请使用另一个证书文件重试。"
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-"<b><span size=\"12000\">证书文件不兼容</span></b>\n"
-"\n"
-"该证书已失效。请确保使用正确的证书并且系统时间正确。"
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-"请校验 /etc/sysconfig/rhn/up2date 中 sslCACert 和 serverURL 的值。可以让 "
-"serverURL 使用 http 而不是 https，或者，可以从 {PRODUCT_NAME} 下载 SSL 证书，"
-"将其放在 /usr/share/rhn 中，并确保 sslCACert 指向该证书。"
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"注册系统时出现问题。\n"
-"\n"
-"一个通用的默认激活密钥限制了可以连接到与您的登录名关联的 {PRODUCT_NAME} 组织"
-"的系统数目。要允许此系统进行连接，请联系您的 {PRODUCT_NAME} 组织管理员来增加"
-"可以建立连接的系统数目，或禁止使用此通用默认激活密钥。"
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-"\n"
-" 提示：Red Hat 目前不支持包含 '*' 的次要发行版。\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-"警告：如果您选择此选项，则无法将此系统限制为比最新次要发行版更旧的次要发行"
-"版。\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"您的系统将订阅 %s\n"
-"基础软件通道。您无法将\n"
-"此系统迁移到更低的发行版\n"
-"（可以迁移动到更高的发行版）。\n"
-"您确定要继续吗？"
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "确定"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "错误"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "下一步"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "上一步"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "取消"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "否，取消"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "是，继续"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "按 <空格键> 可取消选择该选项。"
-
-#: ../src/up2date_client/rpcServer.py:56
+#: ../src/up2date_client/rpcServer.py:55
 msgid "Error: Server Unavailable. Please try later."
 msgstr "错误：服务器不可用，请稍后重试。"
 
-#: ../src/up2date_client/rpcServer.py:182
+#: ../src/up2date_client/rpcServer.py:181
 msgid "ERROR: can not find server CA file"
 msgstr "错误：找不到服务器 CA 文件"
 
-#: ../src/up2date_client/rpcServer.py:220
-msgid "Connection aborted by the user"
-msgstr "用户已中止连接"
-
-#: ../src/up2date_client/rpcServer.py:268
-msgid "Server has refused connection due to high load"
-msgstr "由于负载过高，服务器已拒绝连接"
-
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr "Spacewalk 位置："
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "系统 ID："
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "服务器指出了一个错误：\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "与注册服务器通讯时出错：\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "配置文件名称："
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "版本： "
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "CPU 型号： "
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "主机名： "
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "CPU 速度： "
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP 地址： "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "内存： "
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s MB"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "注册系统时出现问题：\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "注册系统时出现问题。"
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "将系统 ID 写出到磁盘时出现问题。"
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "发送硬件配置文件时出现问题：\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "发送硬件配置文件时出现问题。"
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "发送软件包列表时出现问题：\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "发送软件包列表时出现问题。"
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"无法打开 %s\n"
-"未启用 %s。\n"
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "完成"
-
-#: ../src/up2date_client/tui.py:1210
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr "您指定了无效协议。只允许 https 和 http。"
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr "  <Tab>/<Alt-Tab> 切换元素  |  <空格键> 选择  |  <F12> 下一屏幕"
-
-#: ../src/up2date_client/tui.py:1345
-#, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "必须以 root 身份运行 {PRODUCT_NAME} 注册程序。"
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "%s 类没有 '%s' 属性"
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "RPM 错误。消息：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "口令错误。消息：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM 依赖关系错误。消息：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "与服务器通讯时出错。消息：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "找不到文件： \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "服务器延迟错误。消息：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "在服务器上验证数据时出错：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
@@ -1088,19 +100,19 @@ msgstr ""
 "不支持 Red Hat Network Classic。\n"
 "    "
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "安装号无效"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "在字段中分析 oemInfo 文件时出错：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr "网络错误： "
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1131,111 +143,909 @@ msgstr ""
 "    中将某个激活密钥设置为通用默认值，您可以\n"
 "    禁用此密钥并重试，以避免使用管理权利。"
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "正在尝试运行多个 mgr_check 实例。正在退出。\n"
-
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "指定配置文件名称"
-
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "指定用户名"
-
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "指定口令"
-
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "为此系统指定组织 ID"
-
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "指定要用作服务器的 URL"
-
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "指定要用作 SSL CA 证书的文件"
-
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "指定激活密钥"
-
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr "在此系统中订阅与系统的 redhat-release 关联的 EUS 通道"
-
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[已弃用] 从 stdin 读取联系信息"
-
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "不要探测或上载任何硬件信息"
-
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "不要探查或上载任何软件包信息"
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "不要上载任何虚拟化信息"
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "即使系统已注册，也仍将其注册"
-
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "注册系统时需要用户名和口令。"
-
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "此系统已注册。使用 --force 可覆盖"
-
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"不支持在 --activationkey 中使用 --use-eus-channel 选项。请改用用户名和口令。"
-
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "您要注册的服务器不支持 EUS。"
-
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"警告：--contactinfo 选项已弃用。请登录到服务器 Web 用户界面并更新您的联系信"
-"息。 "
-
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "警告：%s 不存在，无法启用它。"
+#~ msgid ""
+#~ "This client requires the server to support %s, which the current server "
+#~ "does not support"
+#~ msgstr "此客户端要求服务器支持 %s，但是当前服务器不支持"
 
-#: ../src/bin/rhnreg_ks.py:172
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "正在获取系统上安装的软件包列表"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "读取 CPU 信息时出错："
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "读取系统内存信息时出错："
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "读取网络信息时出错："
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "读取安装方法信息时出错："
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "读取网络接口信息时出错："
+
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "读取网络 FQDN 信息时出错："
+
+#~ msgid "Error reading system info:"
+#~ msgstr "读取系统信息时出错："
+
+#~ msgid "Error reading machine info:"
+#~ msgstr "读取计算机信息时出错："
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "找不到 SystemId"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr "此系统只有在关联到某个通道后才可更新。"
+
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "显示附加输出。重复此操作可获取更多细节。"
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "指定要使用的 HTTP 代理"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "指定要在已经过身份验证的 HTTP 代理中使用的用户名"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "指定要在已经过身份验证的 HTTP 代理中使用的口令"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "已中止。\n"
+
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"警告：无法打开 %s\n"
-"未启用 %s。\n"
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "发生了意外的操作系统错误：%s\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"未指定配置文件名称，并且无法确定主机名和 IP 地址是否可用作配置文件名称，请指"
-"定一个配置文件名称。"
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "尝试使用格式不当的 URI 进行连接。\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr "尝试使用格式不当的 URI 进行连接：%s。\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "发生了某种 I/O 错误：%s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "发生了 SSL 错误：%s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr "此错误的常见原因是系统时间不正确。请校验此系统上的时间是否正确。\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "发生了 SSL 加密错误：%s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "发生了身份验证错误：%s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "只有 root 用户可以运行 %s"
+
+#, python-format
+#~ msgid ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licensed under the terms of the GPLv2."
+#~ msgstr ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "版权所有 (C) 1999--2014 Red Hat, Inc.\n"
+#~ "根据 GPLv2 条款授权。"
+
+#~ msgid "An error has occurred:"
+#~ msgstr "发生了错误："
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "有关详细信息，请查看 /var/log/up2date"
+
+#~ msgid "Uyuni"
+#~ msgstr "Uyuni"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "版权所有 © 2006--2014 Red Hat, Inc.。保留所有权利。"
+
+#, python-brace-format
+#~ msgid "Enter your {PRODUCT_NAME} URL."
+#~ msgstr "输入您的 {PRODUCT_NAME} URL。"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
+#~ "certificate. The SSL certificate is only required if you will be "
+#~ "connecting over https (recommended)."
+#~ msgstr ""
+#~ "请输入 {PRODUCT_NAME} 服务器及其 SSL 证书的位置。仅当您要通过 HTTPS 连接"
+#~ "（建议）时，才需要 SSL 证书。"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} URL:"
+#~ msgstr "{PRODUCT_NAME} URL："
+
+#~ msgid "SSL certificate:"
+#~ msgstr "SSL 证书："
+
+#, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "必须输入有效的 {PRODUCT_NAME} URL。"
+
+#~ msgid ""
+#~ "If you are using https you must enter the location of a valid SSL "
+#~ "certificate."
+#~ msgstr "如果您使用 HTTPS，则必须输入有效 SSL 证书的位置。"
+
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "正在尝试联系 Spacewalk 服务器。"
+
+#, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "正在尝试通过 %s 联系 {PRODUCT_NAME} 服务器。"
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "已在 %s 上指定一个代理。"
+
+#~ msgid "System Registration"
+#~ msgstr "系统注册"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "此助手会引导您将您的系统连接到 {PRODUCT_NAME} 来接收软件更新（包括安全更"
+#~ "新），以使系统持续受到支持并合规。此时您需要准备好以下各项：\n"
+#~ "\n"
+#~ " * 网络连接\n"
+#~ " * 您的 {PRODUCT_NAME} 登录名和口令\n"
+#~ " * {PRODUCT_NAME} Server 或 Proxy 的位置\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "为何要要连接到 {PRODUCT_NAME}？..."
+
+#~ msgid "Why Register"
+#~ msgstr "为何要注册"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "将系统连接到 {PRODUCT_NAME} 可以充分利用付费订阅所带来的好处，包括："
+
+#~ msgid "Security & Updates:"
+#~ msgstr "安全性和更新："
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "软件下载和升级："
+
+#~ msgid "Support:"
+#~ msgstr "支持："
+
+#~ msgid "Compliance:"
+#~ msgstr "合规："
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr "接收最新的软件更新（包括安全更新），使此系统保持更新且安全的状态。"
+
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr "下载系统发行版（包括新发行版）的安装映像。"
+
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr "在使用此系统时如果遇到任何问题，可以向技术支持专家求助。"
+
+#~ msgid ""
+#~ "Stay in compliance with your subscription agreement and manage "
+#~ "subscriptions for systems connected to your account."
+#~ msgstr "始终遵守订阅协议，并管理连接到您帐户的系统的订阅。"
+
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr "提示：SUSE 非常看重您的隐私：https://www.suse.com/company/legal/"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "返回注册过程"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "未设置软件更新"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "您确定不想要将您的系统连接到 {PRODUCT_NAME} 吗？您将失去 SLES/RHEL 订阅所"
+#~ "带来的好处：\n"
+
+#, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr "如果不将系统连接到 {PRODUCT_NAME}，您将无法利用这些订阅特权。\n"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "返回设置过程。"
+
+#~ msgid "I'll register later."
+#~ msgstr "以后再注册。"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Account"
+#~ msgstr "{PRODUCT_NAME} 帐户"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "请输入 %s {PRODUCT_NAME} 的登录信息：\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Login:"
+#~ msgstr "{PRODUCT_NAME} 登录名："
+
+#~ msgid "Login:"
+#~ msgstr "登录名："
+
+#~ msgid "Password:"
+#~ msgstr "口令："
+
+#, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr "提示：忘记了登录名或口令？请联系您的 {PRODUCT_NAME} 组织管理员。"
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "请输入所需的登录名。"
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "请输入并确认口令。"
+
+#~ msgid "Operating System Release Version"
+#~ msgstr "操作系统发行版"
+
+#~ msgid "Operating System version:"
+#~ msgstr "操作系统版本："
+
+#~ msgid " Minor Release: "
+#~ msgstr " 次要发行版： "
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "仅限有限更新"
+
+#~ msgid "All available updates"
+#~ msgstr "所有可用更新"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "确认选择该操作系统发行版"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr "您的系统将订阅基础软件通道以接收所有可用更新。"
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "创建配置文件 - 硬件"
+
+#, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "配置文件名称是您选择用于在 {PRODUCT_NAME} 网页上标识此系统配置文件的描述性"
+#~ "名称。可以选择性地包含计算机序列号或标识号。"
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr "将在配置文件中包含其他硬件信息，包括 PCI 设备、磁盘大小和装入点。"
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "包含有关硬件和网络的以下信息："
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "创建配置文件 - 软件包"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr "在确定哪些已更新的软件包与此系统相关时，RPM 信息非常重要。"
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr "将此系统上安装的 RPM 软件包包含在我的系统配置文件中"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr "可以取消选择单个软件包，只需在下面取消选中其对应的复选框即可。"
+
+#~ msgid "Building Package List"
+#~ msgstr "构建软件包列表"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*电子邮件地址："
+
+#~ msgid "System Already Registered"
+#~ msgstr "系统已注册"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr "似乎已经为此系统设置了软件更新："
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "您确定要继续吗？"
+
+#~ msgid ""
+#~ "This system has already been registered using Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "Your system is being registered again using Red Hat Satellite or Red Hat "
+#~ "Satellite Proxy technology. Red Hat recommends that customers only "
+#~ "register once.\n"
+#~ "\n"
+#~ "To learn more about RHN Classic/Red Hat Satellite registration and "
+#~ "technologies please consult this Knowledge Base Article: https://access."
+#~ "redhat.com/kb/docs/DOC-45563"
+#~ msgstr ""
+#~ "已使用 Red Hat 订阅管理注册此系统。\n"
+#~ "\n"
+#~ "正在使用 Red Hat Satellite 或 Red Hat Satellite Proxy 技术注册您的系统。"
+#~ "Red Hat 建议客户仅注册一次。\n"
+#~ "\n"
+#~ "要详细了解 RHN Classic/Red Hat Satellite 注册和技术，请查阅此知识库文章："
+#~ "https://access.redhat.com/kb/docs/DOC-45563"
+
+#, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "将配置文件信息发送到 {PRODUCT_NAME}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "我们已完成系统配置文件信息的收集。\n"
+#~ "\n"
+#~ "按 \"下一步\" 会将此系统配置文件发送到 {PRODUCT_NAME}。单击 \"取消\" 则不"
+#~ "会发送任何信息。您以后可以通过在命令行中键入 `rhn_register` 来运行注册程"
+#~ "序。"
+
+#, python-brace-format
+#~ msgid "Sending Profile to {PRODUCT_NAME}"
+#~ msgstr "正在将配置文件发送到 {PRODUCT_NAME}"
+
+#~ msgid "Updates Configured"
+#~ msgstr "已配置更新"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "您现在可以在此系统的命令行中运行 '%s update' 以从 {PRODUCT_NAME} 获取最新"
+#~ "的软件更新。需要定期运行此命令以获取最新更新；或者，可将此系统配置为通过 "
+#~ "{PRODUCT_NAME} Web 界面实现自动软件更新（也称为“自动勘误更新”）。（在 "
+#~ "{PRODUCT_NAME} 主 Web 界面中单击 \"帮助\" 按钮，可以在《{PRODUCT_NAME} 参"
+#~ "考指南》中获取有关此操作的说明。）"
+
+#~ msgid "Review Subscription"
+#~ msgstr "复查订阅"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "请复查以下订阅细节："
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr "在此系统最初连接到 {PRODUCT_NAME} 期间已激活安装号 %s。"
+
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "已激活以下产品/服务的订阅："
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "软件通道订阅："
+
+#~ msgid ""
+#~ "This system will receive updates from the following software channels:"
+#~ msgstr "此系统将从以下软件通道接收更新："
+
+#, python-brace-format
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your {PRODUCT_NAME} web interface and subscribe this "
+#~ "system to the appropriate software channels."
+#~ msgstr ""
+#~ "警告：只有上面列出的已安装产品才能获得更新和支持。如果您想要获得其他产品的"
+#~ "更新，请登录到 {PRODUCT_NAME} Web 界面，并让此系统订阅相应的软件通道。"
+
+#, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "警告：%s 不存在，无法启用它。\n"
+#~ "自动更新将无法进行。"
+
+#, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "注意：已启用 %s。"
+
+#, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "警告：启用 %s 期间出错。\n"
+#~ "未启用 %s。\n"
+#~ "自动更新将无法进行。"
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr "由于您帐户中可用的订阅不足，您无法订阅以下软件通道："
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to subscribe to any software channels. Your system "
+#~ "will not receive any software updates to keep it secure and supported. "
+#~ "Contact your {PRODUCT_NAME} administrator about this problem. Once you "
+#~ "make the appropriate active subscriptions available in your account, you "
+#~ "may browse to this system's profile in the {PRODUCT_NAME} web interface "
+#~ "and subscribe this system to software channels via the software > "
+#~ "software channels tab."
+#~ msgstr ""
+#~ "此系统无法订阅任何软件通道。您的系统将不会接收任何软件更新来保持其安全和受"
+#~ "支持状态。请将此问题告知您的 {PRODUCT_NAME} 管理员。在帐户中提供相应的活动"
+#~ "订阅后，您可以在 {PRODUCT_NAME} Web 界面中浏览到此系统的配置文件，然后通"
+#~ "过 \"软件\" > \"软件通道\" 选项卡在此系统中订阅软件通道。"
+
+#~ msgid "Service Level:"
+#~ msgstr "服务级别："
+
+#, python-brace-format
+#~ msgid ""
+#~ "Depending on what {PRODUCT_NAME} system types are associated with a "
+#~ "system, you'll enjoy different benefits. The following are the "
+#~ "{PRODUCT_NAME} system types associated with this system:"
+#~ msgstr ""
+#~ "根据与系统关联的 {PRODUCT_NAME} 系统类型，您将享受不同的权益。下面是与此系"
+#~ "统关联的 {PRODUCT_NAME} 系统类型："
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "由于您帐户中可用的订阅不足，此系统无法与以下 {PRODUCT_NAME} 系统类型相关"
+#~ "联："
+
+#~ msgid ""
+#~ "Management type: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "管理类型：自动更新、系统组、系统权限、系统软件包配置文件、裸机置备、现有状"
+#~ "态置备、回滚、配置管理"
+
+#~ msgid ""
+#~ "Virtualization type: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr "虚拟化类型：适用于此系统上有限数量的虚拟 Guest 的软件更新。"
+
+#, python-brace-format
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
+#~ "system's subscription. You will need to: (1) make a virtualization system "
+#~ "entitlement available and (2) apply that system entitlement to this "
+#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
+#~ "of this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>警告：</b>在此系统上创建的并要注册到 {PRODUCT_NAME} 的任何 Guest 系统将"
+#~ "消耗除主机系统订阅以外的系统订阅。您需要：(1) 提供虚拟化系统权利并；(2) 如"
+#~ "果您不希望此系统的虚拟 Guest 消耗额外的订阅，请在 {PRODUCT_NAME} Web 界面"
+#~ "中向此系统应用系统权利。"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with any {PRODUCT_NAME} system "
+#~ "types. This system will not receive any software updates to keep it "
+#~ "secure and supported. Contace your {PRODUCT_NAME} administrator about "
+#~ "this problem. Once you make the appropriate active subscriptions "
+#~ "available in your account, you may browse to this system's profile in the "
+#~ "{PRODUCT_NAME} web interface, delete the profile, and re-connect this "
+#~ "system to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "此系统无法与任何 {PRODUCT_NAME} 系统类型相关联。此系统将不会接收任何软件更"
+#~ "新来保持其安全和受支持状态。请将此问题告知您的 {PRODUCT_NAME} 管理员。在帐"
+#~ "户中提供相应的活动订阅后，您可以在 {PRODUCT_NAME} Web 界面中浏览到此系统的"
+#~ "配置文件，删除该配置文件，然后将此系统重新连接到 {PRODUCT_NAME}。"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Universal default activation key detected\n"
+#~ "A universal default activation key was detected in your account. This "
+#~ "means that a set of properties (software channel subscriptions, package "
+#~ "installations, system group memberships, etc.) for your system's "
+#~ "connection to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been "
+#~ "determined by the activation key rather than your installation number.  "
+#~ "You may also refer to the {PRODUCT_NAME} Reference Guide for more details "
+#~ "about activation keys. \n"
+#~ "Universal Default activation key: %s"
+#~ msgstr ""
+#~ "检测到通用默认激活密钥\n"
+#~ "在您的帐户中检测到了通用默认激活密钥。这意味着，用于将系统连接到 "
+#~ "{PRODUCT_NAME} Server 或 {PRODUCT_NAME} Proxy 的一组属性（软件通道订阅、软"
+#~ "件包安装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥"
+#~ "的更多细节，另请参见《{PRODUCT_NAME} 参考指南》。\n"
+#~ "通用默认激活密钥：%s"
+
+#~ msgid "Fatal Error"
+#~ msgstr "严重错误"
+
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "We can't contact {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ msgstr ""
+#~ "我们无法联系 {PRODUCT_NAME}。\n"
+#~ "\n"
+#~ "请反复检查提供的位置是否正确 - '%s' 是否正确？\n"
+#~ "如果不正确，请更正后尝试。\n"
+#~ "\n"
+#~ "确保此系统上的网络连接正常。\n"
+#~ "\n"
+#~ "在不连接到 {PRODUCT_NAME} 服务器/代理的情况下，此系统将无法成功接收软件更"
+#~ "新"
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr "体系结构：%s，操作系统发行版：%s，操作系统版本：%s"
+
+#~ msgid ""
+#~ "This server doesn't support functionality needed by this version of the "
+#~ "software update setup client. Please try again with a newer server."
+#~ msgstr ""
+#~ "此服务器不支持此软件更新设置客户端版本所需的功能。请在更新的服务器上重试。"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the "
+#~ "{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+#~ "have provided a valid certificate file. Are you sure you have provided "
+#~ "the correct certificate, and that the certificate file has not been "
+#~ "corrupted?\n"
+#~ "\n"
+#~ "Please try again with a different certificate file."
+#~ msgstr ""
+#~ "<b><span size=\"16000\">证书文件不兼容</span></b>\n"
+#~ "\n"
+#~ "您提供的证书 <b>%s</b> 与 <b>%s</b> 上提供的 {PRODUCT_NAME} 服务器不兼容。"
+#~ "请反复检查您提供的证书文件是否有效。您确定提供了正确的证书，并且证书文件未"
+#~ "损坏吗？\n"
+#~ "\n"
+#~ "请使用另一个证书文件重试。"
+
+#~ msgid ""
+#~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ " The certificate is expired. Please ensure you have the correct  "
+#~ "certificate and your system time is correct."
+#~ msgstr ""
+#~ "<b><span size=\"12000\">证书文件不兼容</span></b>\n"
+#~ "\n"
+#~ "该证书已失效。请确保使用正确的证书并且系统时间正确。"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
+#~ "up2date. You can either make the serverURL use http instead of https, or "
+#~ "you can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/"
+#~ "share/rhn, and ensure sslCACert points to it."
+#~ msgstr ""
+#~ "请校验 /etc/sysconfig/rhn/up2date 中 sslCACert 和 serverURL 的值。可以让 "
+#~ "serverURL 使用 http 而不是 https，或者，可以从 {PRODUCT_NAME} 下载 SSL 证"
+#~ "书，将其放在 /usr/share/rhn 中，并确保 sslCACert 指向该证书。"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "注册系统时出现问题。\n"
+#~ "\n"
+#~ "一个通用的默认激活密钥限制了可以连接到与您的登录名关联的 {PRODUCT_NAME} 组"
+#~ "织的系统数目。要允许此系统进行连接，请联系您的 {PRODUCT_NAME} 组织管理员来"
+#~ "增加可以建立连接的系统数目，或禁止使用此通用默认激活密钥。"
+
+#~ msgid ""
+#~ "\n"
+#~ " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ " 提示：Red Hat 目前不支持包含 '*' 的次要发行版。\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Warning:You will not be able to limit this system to minor release that "
+#~ "is older than the recent minor release if you select this option.\n"
+#~ msgstr ""
+#~ "警告：如果您选择此选项，则无法将此系统限制为比最新次要发行版更旧的次要发行"
+#~ "版。\n"
+
+#, python-format
+#~ msgid ""
+#~ "Your system will be subscribed to %s \n"
+#~ "base software channel. You will not be\n"
+#~ "able to move this system to an earlier release\n"
+#~ "(you will be able to move to a newer release).\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "您的系统将订阅 %s\n"
+#~ "基础软件通道。您无法将\n"
+#~ "此系统迁移到更低的发行版\n"
+#~ "（可以迁移动到更高的发行版）。\n"
+#~ "您确定要继续吗？"
+
+#~ msgid "OK"
+#~ msgstr "确定"
+
+#~ msgid "Error"
+#~ msgstr "错误"
+
+#~ msgid "Next"
+#~ msgstr "下一步"
+
+#~ msgid "Back"
+#~ msgstr "上一步"
+
+#~ msgid "Cancel"
+#~ msgstr "取消"
+
+#~ msgid "No, Cancel"
+#~ msgstr "否，取消"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "是，继续"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "按 <空格键> 可取消选择该选项。"
+
+#~ msgid "Connection aborted by the user"
+#~ msgstr "用户已中止连接"
+
+#~ msgid "Server has refused connection due to high load"
+#~ msgstr "由于负载过高，服务器已拒绝连接"
+
+#~ msgid "Spacewalk Location:"
+#~ msgstr "Spacewalk 位置："
+
+#~ msgid "System ID:"
+#~ msgstr "系统 ID："
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "服务器指出了一个错误：\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr "与注册服务器通讯时出错：\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "配置文件名称："
+
+#~ msgid "Version: "
+#~ msgstr "版本： "
+
+#~ msgid "CPU model: "
+#~ msgstr "CPU 型号： "
+
+#~ msgid "Hostname: "
+#~ msgstr "主机名： "
+
+#~ msgid "CPU speed: "
+#~ msgstr "CPU 速度： "
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP 地址： "
+
+#~ msgid "Memory: "
+#~ msgstr "内存： "
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s MB"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "注册系统时出现问题：\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "注册系统时出现问题。"
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "将系统 ID 写出到磁盘时出现问题。"
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "发送硬件配置文件时出现问题：\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "发送硬件配置文件时出现问题。"
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "发送软件包列表时出现问题：\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "发送软件包列表时出现问题。"
+
+#, python-format
+#~ msgid ""
+#~ "Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "无法打开 %s\n"
+#~ "未启用 %s。\n"
+
+#~ msgid "Finish"
+#~ msgstr "完成"
+
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr "您指定了无效协议。只允许 https 和 http。"
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr "  <Tab>/<Alt-Tab> 切换元素  |  <空格键> 选择  |  <F12> 下一屏幕"
+
+#, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "必须以 root 身份运行 {PRODUCT_NAME} 注册程序。"
+
+#~ msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+#~ msgstr "正在尝试运行多个 mgr_check 实例。正在退出。\n"
+
+#~ msgid "Specify a profilename"
+#~ msgstr "指定配置文件名称"
+
+#~ msgid "Specify a username"
+#~ msgstr "指定用户名"
+
+#~ msgid "Specify a password"
+#~ msgstr "指定口令"
+
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "为此系统指定组织 ID"
+
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "指定要用作服务器的 URL"
+
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "指定要用作 SSL CA 证书的文件"
+
+#~ msgid "Specify an activation key"
+#~ msgstr "指定激活密钥"
+
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr "在此系统中订阅与系统的 redhat-release 关联的 EUS 通道"
+
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[已弃用] 从 stdin 读取联系信息"
+
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "不要探测或上载任何硬件信息"
+
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "不要探查或上载任何软件包信息"
+
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "不要上载任何虚拟化信息"
+
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "即使系统已注册，也仍将其注册"
+
+#~ msgid "A username and password are required to register a system."
+#~ msgstr "注册系统时需要用户名和口令。"
+
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "此系统已注册。使用 --force 可覆盖"
+
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "不支持在 --activationkey 中使用 --use-eus-channel 选项。请改用用户名和口"
+#~ "令。"
+
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "您要注册的服务器不支持 EUS。"
+
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "警告：--contactinfo 选项已弃用。请登录到服务器 Web 用户界面并更新您的联系"
+#~ "信息。 "
+
+#, python-format
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "警告：%s 不存在，无法启用它。"
+
+#, python-format
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "警告：无法打开 %s\n"
+#~ "未启用 %s。\n"
+
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "未指定配置文件名称，并且无法确定主机名和 IP 地址是否可用作配置文件名称，请"
+#~ "指定一个配置文件名称。"
 
 #~ msgid "Finish setting up software updates"
 #~ msgstr "完成设置软件更新"

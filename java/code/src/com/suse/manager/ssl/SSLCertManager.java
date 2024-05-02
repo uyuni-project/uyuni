@@ -26,8 +26,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Utility class helping to generate and check SSL certificates
@@ -116,5 +120,37 @@ public class SSLCertManager {
                 }
             }
         }
+    }
+
+    /**
+     * Extract the CN and alternate DNS names from an SSL certificate.
+     *
+     * @param certificate the certificate to read
+     * @return the set of subject names
+     */
+    public Set<String> getNamesFromSslCert(String certificate) {
+        String output = execHelper.exec(List.of("openssl", "x509", "-noout", "-subject", "-ext", "subjectAltName"),
+                certificate);
+        return Arrays.stream(output.split("\n"))
+                .map(line -> {
+                    if (line.startsWith("subject=")) {
+                        for (String part : line.split(",")) {
+                            String trimmed = part.trim();
+                            if (trimmed.startsWith("CN = ")) {
+                                return Set.of(trimmed.substring("CN =".length()).trim());
+                            }
+                        }
+                    }
+                    if (line.contains("DNS:")) {
+                        return Arrays.stream(line.split(","))
+                                .filter(dns -> dns.contains("DNS:"))
+                                .map(dns -> dns.split(":")[1].trim())
+                                .collect(Collectors.toSet());
+                    }
+                    return null;
+                })
+                .filter(name -> name != null)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
     }
 }

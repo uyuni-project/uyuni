@@ -76,7 +76,6 @@
     "copy-webpack-plugin": "5.1.2",
     "core-js": "^3.8.1",
     "css-loader": "6.10.0",
-    "d3": "4.5.0",
     "dompurify": "^3.0.3",
     "eos-ds": "^5.0.0",
     "font-awesome": "4.4.0",

@@ -189,7 +189,7 @@ class UnboundedGrowingThreadPoolExecutorTest {
         try {
             Thread.sleep(duration.toMillis());
         }
-        catch(InterruptedException ex) {
+        catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
             fail("Unexpected interruption", ex);
         }
@@ -216,7 +216,7 @@ class UnboundedGrowingThreadPoolExecutorTest {
                 status = TaskStatus.RUNNING;
                 terminateLatch.await();
             }
-            catch(InterruptedException ex) {
+            catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 fail("Unexpected interruption", ex);
             }

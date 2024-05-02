@@ -669,16 +669,18 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
               where channel_id = channel_id_in
                 and (package_name_id_in is null
                      or name_id = package_name_id_in);
+
         insert into rhnChannelNewestPackage
-                (channel_id, name_id, evr_id, package_id, package_arch_id)
+                (channel_id, name_id, evr_id, package_id, package_arch_id, appstream_id)
                 (select channel_id,
                         name_id, evr_id,
-                        package_id, package_arch_id
+                        package_id, package_arch_id, appstream_id
                    from rhnChannelNewestPackageView
                   where channel_id = channel_id_in
                     and (package_name_id_in is null
                          or name_id = package_name_id_in)
                 );
+
         insert into rhnChannelNewestPackageAudit (channel_id, caller)
              values (channel_id_in, caller_in);
         update rhnChannel

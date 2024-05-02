@@ -15,6 +15,7 @@
 package com.suse.manager.model.attestation.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -62,17 +63,18 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testCreateAttestationConfiguration() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
-                CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true);
+                CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, false);
         HibernateFactory.getSession().flush();
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, cnf.getEnvironmentType());
         assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertFalse(cnf.isAttestOnBoot());
     }
 
     @Test
     public void testAttestationConfigurationLookup() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
-                CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true);
+                CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, true);
         HibernateFactory.getSession().flush();
         Server srv = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
         Optional<ServerCoCoAttestationConfig> cocoAttCnf = srv.getOptCocoAttestationConfig();
@@ -81,6 +83,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
             assertEquals(cnf.getId(), cocoAttCnf.get().getId());
             assertEquals(cnf.getEnvironmentType(), cocoAttCnf.get().getEnvironmentType());
             assertEquals(cnf.isEnabled(), cocoAttCnf.get().isEnabled());
+            assertEquals(cnf.isAttestOnBoot(), cocoAttCnf.get().isAttestOnBoot());
             assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, cocoAttCnf.get().getEnvironmentType());
             assertTrue(cocoAttCnf.get().isEnabled());
         }
@@ -139,7 +142,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
                 .collect(Collectors.toList());
         assertContains(rTypeList, CoCoResultType.SEV_SNP);
         assertContains(rTypeList, CoCoResultType.SECURE_BOOT);
-        assertNotContains(rTypeList, CoCoResultType.AZURE_SEV_SNP);
+        assertNotContains(rTypeList, CoCoResultType.NONE);
 
         assertTrue(results.stream()
                 .filter(r -> r.getResultType().equals(CoCoResultType.SEV_SNP))

@@ -1,2 +1,0 @@
-- set cobbler.host to localhost (bsc#1219887)
-- set uyuni_authentication_endpoint to http://localhost (bsc#1219887)

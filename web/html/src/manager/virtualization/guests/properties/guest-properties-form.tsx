@@ -107,7 +107,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
               onDateTimeChanged={this.onDateTimeChanged}
             />
           </Panel>
-          <div className="col-md-offset-3 col-md-6">
+          <div className="col-md-offset-3 offset-md-3 col-md-6">
             <SubmitButton
               id="submit-btn"
               className="btn-success"

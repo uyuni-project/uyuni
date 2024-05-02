@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:47:06 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Use java.hostname for Uyuni roster configuration
+  * uyuni-update-config: trigger synchronization of configuration
+    files if uyuni-configfiles-sync is available
+
+-------------------------------------------------------------------
 Tue Feb 13 17:12:44 CET 2024 - marina.latini@suse.com
 
 - version 5.0.4-1

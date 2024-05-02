@@ -167,16 +167,9 @@ A tool to help in the process of converting certificates of registered
 </RefSect1>
 
 
-<RefSect1><Title>Files</Title>
-<simplelist>
-    <member><emphasis>/etc/sysconfig/rhn/systemid</emphasis> - client side certificate</member>
-</simplelist>
-</RefSect1>
-
 <RefSect1><Title>See Also</Title>
 <simplelist>
     <member>spacewalk-report(8)</member>
-    <member>rhn_check(8)</member>
 </simplelist>
 </RefSect1>
 

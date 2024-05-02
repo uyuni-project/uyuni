@@ -142,8 +142,6 @@ artifacts:
     repository: Leap_sle
   - artifact: jboss-logging
     repository: Leap
-  - artifact: jcommon
-    repository: Uyuni_Other
   - artifact: jctools-core
     package: jctools
     repository: Leap

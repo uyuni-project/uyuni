@@ -1,15 +1,8 @@
-.onSuma({
-  @import "buttons.suma.less";
-});
-
-.onUyuni({
-  @import "buttons.uyuni.less";
-});
-
-button.is-plain {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+button.is-plain,
+.btn-link {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
   background: none;
   border: none;
   border-radius: 0;
@@ -23,3 +16,30 @@ button.is-plain {
   user-select: text;
   padding: 0;
 }
+
+.btn-link {
+  &,
+  &:active,
+  &:focus,
+  &:disabled,
+  &.disabled {
+    &,
+    &:hover {
+      color: @link-color;
+      font-weight: normal;
+    }
+
+    &:not(:disabled):not(.disabled):not(.text-muted):hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+
+.onSuma({
+  @import "buttons.suma.less";
+});
+
+.onUyuni({
+  @import "buttons.uyuni.less";
+});

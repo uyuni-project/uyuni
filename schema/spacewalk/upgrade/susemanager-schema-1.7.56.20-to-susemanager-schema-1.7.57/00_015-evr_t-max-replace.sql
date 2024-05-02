@@ -12,9 +12,8 @@ rhnServerNeededView
 AS
 select 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 from dual;
 
-create or replace view
-rhnChannelNewestPackageView
-as
+DROP VIEW IF EXISTS rhnChannelNewestPackageView;
+CREATE VIEW rhnChannelNewestPackageView AS
 SELECT 1.0 as channel_id,
        1.0 as name_id,
        1.0 as evr_id,

@@ -1814,55 +1814,6 @@
         </context-group>
         <target>Azioni completate</target>
       </trans-unit>
-      <trans-unit id="visualization-legend.jsp.title" xml:space="preserve">
-        <source>Visualization Hierarchy</source>
-        <target>Visualizzazione della gerarchia</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notcheckin" xml:space="preserve">
-        <source>System not checking in</source>
-        <target>Il sistema non effettua il check-in</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.notpatched" xml:space="preserve">
-        <source>Not patched system</source>
-        <target>Sistema non corretto</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.root" xml:space="preserve">
-        <source>SUSE Manager</source>
-        <target>SUSE Manager</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.vhm" xml:space="preserve">
-        <source>Virtual Host Manager</source>
-        <target>Gestore dell'host virtuale</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.group" xml:space="preserve">
-        <source>Group</source>
-        <target>Gruppo</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="visualization-legend.jsp.system" xml:space="preserve">
-        <source>System</source>
-        <target>Sistema</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
-        </context-group>
-      </trans-unit>
       <!-- email_sent.jsp -->
       <!-- yourchangeemail.jsp -->
       <trans-unit id="yourchangeemail.jsp.title" xml:space="preserve">
@@ -3536,10 +3487,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/ForeignPackages</context>
         </context-group>
         <target>I seguenti pacchetti sono stati installati su questo sistema e non sono presenti nei rispettivi canali.</target>
-      </trans-unit>
-      <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
-        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-        <target state="translated">Almeno uno dei canali a cui questo sistema è abbonato contiene moduli. Se hai attivato dei moduli su questo sistema, evita di usare @@PRODUCT_NAME@@ per le operazioni sui pacchetti. Usa invece &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Gestione del ciclo di vita dei prodotti&lt;/a&gt; per &lt;strong&gt;creare canali regolari che includono pacchetti di moduli&lt;/strong&gt;.</target>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -22686,7 +22633,7 @@ per sottoscrivere i sistemi ai canali software durante un kickstart.&lt;/span&gt
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
 The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
@@ -22695,7 +22642,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>Le seguenti informazioni sono necessarie per definire una distribuzione sulla quale poter eseguire kickstart. Il campo relativo al percorso dell'albero deve contenere un percorso valido per un albero di installazione presente su questo server di @@PRODUCT_NAME@@. L'RPM di kickstart deve essere un nome dell'rpm contenente gli script di implementazione di kickstart. I suddetti RPM vengono forniti da @@PRODUCT_NAME@@ e situati nei canali figlio per gli Strumenti di @@PRODUCT_NAME@@&lt;br/&gt;&lt;br/&gt;
+        <target state="needs-adaptation">Le seguenti informazioni sono necessarie per definire una distribuzione sulla quale poter eseguire kickstart. Il campo relativo al percorso dell'albero deve contenere un percorso valido per un albero di installazione presente su questo server di @@PRODUCT_NAME@@. L'RPM di kickstart deve essere un nome dell'rpm contenente gli script di implementazione di kickstart. I suddetti RPM vengono forniti da @@PRODUCT_NAME@@ e situati nei canali figlio per gli Strumenti di @@PRODUCT_NAME@@&lt;br/&gt;&lt;br/&gt;
 
 Il campo relativo all'Etichetta della distribuzione contiene solo lettere, numeri, trattino, punti e linee e deve avere un minimo di 4 caratteri.&lt;br/&gt;&lt;br/&gt;
 
@@ -29476,6 +29423,50 @@ caratteri.</target>
   </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.overview.audit" xml:space="preserve">
+            <source>Audit</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.index" xml:space="preserve">
+            <source>Confidential Computing</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+            <source>Configure</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+            <source>Schedule</source>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
       <target state="new"/>
   </trans-unit>
       </body>

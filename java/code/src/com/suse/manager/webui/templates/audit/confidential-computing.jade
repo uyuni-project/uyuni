@@ -1,0 +1,10 @@
+include ../common.jade
+
+#confidential-computing
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('audit/coco')
+        .then(function(module) { module.renderer('confidential-computing') });

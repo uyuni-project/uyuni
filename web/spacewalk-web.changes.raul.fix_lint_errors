@@ -1,0 +1,3 @@
+- Add two filters for rpmlint in package spacewalk-web:
+  explicit-lib-dependency and filename-too-long-for-joliet
+  * Added: spacewalk-web-rpmlintrc

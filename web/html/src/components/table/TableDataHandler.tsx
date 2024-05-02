@@ -396,9 +396,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   selectable={isSelectable}
                 >
                   {this.props.searchField}
-                  {this.props.additionalFilters?.map((filter, i) => (
-                    <span key={"additional-filter-" + i}>{filter}&nbsp;</span>
-                  ))}
+                  {this.props.additionalFilters}
                 </SearchPanel>
                 <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                   <ItemsPerPageSelector

@@ -40,9 +40,11 @@
         FOR NO KEY UPDATE NOWAIT
     </select>
 
-    <update id="updateStatus" parameterType="com.suse.coco.model.AttestationResult">
+    <update id="update" parameterType="com.suse.coco.model.AttestationResult">
           UPDATE suseCoCoAttestationResult
              SET status = #{status}
+                    , details = #{details}
+                    , process_output = #{processOutput}
                 <if test="status.name() == 'SUCCEEDED'">
                     , attested = #{attested}
                 </if>

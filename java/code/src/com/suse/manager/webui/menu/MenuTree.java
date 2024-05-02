@@ -176,17 +176,6 @@ public class MenuTree {
                     .withVisibility(adminRoles.get("org")))
             .addChild(new MenuItem("container.based.proxy.config").withPrimaryUrl("/rhn/manager/proxy/container-config")
                     .withVisibility(adminRoles.get("org")))
-            .addChild(new MenuItem("visualization.nav.title")
-                    .withVisibility(adminRoles.get("org"))
-                    .addChild(new MenuItem("Virtualization Hierarchy")
-                            .withPrimaryUrl("/rhn/manager/visualization/virtualization-hierarchy")
-                            .withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Proxy Hierarchy")
-                            .withPrimaryUrl("/rhn/manager/visualization/proxy-hierarchy")
-                            .withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Systems Grouping")
-                            .withPrimaryUrl("/rhn/manager/visualization/systems-with-managed-groups")
-                            .withVisibility(adminRoles.get("org"))))
             .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/systems/Search.do"))
             .addChild(new MenuItem("Activation Keys").withPrimaryUrl("/rhn/activationkeys/List.do")
                     .withAltUrl("/rhn/activationkeys/Create.do").withAltUrl("/rhn/activationkeys/Edit.do")
@@ -338,7 +327,9 @@ public class MenuTree {
                         .addChild(new MenuItem("audit.nav.logreview")
                                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/audit/Overview.do"))
                                 .addChild(new MenuItem("Reviews").withPrimaryUrl("/rhn/audit/Machine.do"))
-                                .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do"))));
+                                .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do"))))
+                .addChild(new MenuItem("confidentialcomputing.nav.title")
+                        .withPrimaryUrl("/rhn/manager/audit/confidential-computing"));
     }
 
     private MenuItem getConfigurationNode(Map<String, Boolean> adminRoles) {

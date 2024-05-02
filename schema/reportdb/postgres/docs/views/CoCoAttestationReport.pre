@@ -1,0 +1,38 @@
+--
+-- Copyright (c) 2024 SUSE LLC
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+
+COMMENT ON VIEW CoCoAttestationReport
+  IS 'List the Confidential Compute Attestations performed for each system.';
+
+COMMENT ON COLUMN CoCoAttestationReport.mgm_id
+  IS 'The id of the BRAND_NAME instance that contains this data';
+COMMENT ON COLUMN CoCoAttestationReport.report_id
+  IS 'The id of the security scan';
+COMMENT ON COLUMN CoCoAttestationReport.system_id
+  IS 'The id of the system';
+COMMENT ON COLUMN CoCoAttestationReport.action_id
+  IS 'The id of the action that triggered the scan';
+COMMENT ON COLUMN CoCoAttestationReport.hostname
+  IS 'The hostname that identifies this system';
+COMMENT ON COLUMN CoCoAttestationReport.organization
+  IS 'The organization that owns this data';
+COMMENT ON COLUMN CoCoAttestationReport.environment_type
+  IS 'The type of the environment of the attested system';
+COMMENT ON COLUMN CoCoAttestationReport.report_status
+  IS 'The status of the report';
+COMMENT ON COLUMN CoCoAttestationReport.pass
+  IS 'The number of passed rules';
+COMMENT ON COLUMN CoCoAttestationReport.fail
+  IS 'The number of failed rules';
+COMMENT ON COLUMN CoCoAttestationReport.create_time
+  IS 'When the attestation was started';
+COMMENT ON COLUMN CoCoAttestationReport.synced_date
+  IS 'The timestamp of when this data was last refreshed.';

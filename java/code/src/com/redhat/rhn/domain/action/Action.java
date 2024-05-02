@@ -46,8 +46,6 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     private Date earliestAction;
     private Long version;
     private Long archived;
-    private Date created;
-    private Date modified;
     private Action prerequisite;
     private ActionType actionType;
 
@@ -175,42 +173,6 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     */
     public void setArchived(Long archivedIn) {
         this.archived = archivedIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    @Override
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    @Override
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    @Override
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    @Override
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**
@@ -412,6 +374,15 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     public void onCancelAction() {
         // Something to do, when action is canceled.
+        // Override this method for specific action.
+    }
+
+    /**
+     * Hook when an action failed.
+     * @param serverActionIn the {@link ServerAction} which failed
+     */
+    public void onFailAction(ServerAction serverActionIn) {
+        // Something to do, when an action failed.
         // Override this method for specific action.
     }
 

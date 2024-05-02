@@ -84,15 +84,15 @@ jobs:
       - name: build_code
         run: ./testsuite/podman_runner/09_build_server_code.sh
 #     - name: copy_ca
-#     run: podman exec uyuni-server-all-in-one-test bash -c "cp /etc/pki/tls/certs/spacewalk.crt /tmp"
+#     run: podman exec server bash -c "cp /etc/pki/tls/certs/spacewalk.crt /tmp"
 #     - name: update_ca_in_controller
-#       run: podman exec controller-test bash -c "cat /tmp/spacewalk.crt >> /etc/ssl/ca-bundle.pem"
+#       run: podman exec controller bash -c "cat /tmp/spacewalk.crt >> /etc/ssl/ca-bundle.pem"
       - name: sle-sshminion
         run: ./testsuite/podman_runner/10_run_sshminion.sh
       - name: test_from_host
         run: curl --insecure https://localhost:8443/rhn/help/Copyright.do
       - name: test_from_container
-        run: sudo -i podman exec opensusessh curl --insecure https://uyuni-server-all-in-one-test:443/rhn/help/Copyright.do
+        run: sudo -i podman exec opensusessh curl --insecure https://server:443/rhn/help/Copyright.do
       - name: setup_sshd
         run: ./testsuite/podman_runner/11_setup_sshd.sh
       - name: run_cucumber_core
@@ -119,13 +119,13 @@ jobs:
         run: ./testsuite/podman_runner/21_get_client_logs.sh ${{ inputs.server_id }}
       - name: upload_server_log_artifacts
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: server_rhn_logs_${{ inputs.server_id }}
-          path: /tmp/test-all-in-one/server-logs/${{ inputs.server_id }}
+          path: /tmp/testing/server-logs/${{ inputs.server_id }}
       - name: upload_client_log_artifacts
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: client_logs_${{ inputs.server_id }}
           path: ./testsuite/logs

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 08 12:19:15 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4
+  * Connect to localhost instead of FQDN from tftp wrapper (bsc#1221138)
+
+-------------------------------------------------------------------
 Tue Feb 13 17:00:31 CET 2024 - marina.latini@suse.com
 
 - version 5.0.3

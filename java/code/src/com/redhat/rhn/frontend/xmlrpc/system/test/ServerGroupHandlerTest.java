@@ -43,6 +43,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -55,6 +56,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -62,18 +64,20 @@ import java.util.List;
  * ServerGroupHandlerTest
  */
 public class ServerGroupHandlerTest extends BaseHandlerTestCase {
-    private SaltApi saltApi = new TestSaltApi();
-    private SystemQuery systemQuery = new TestSystemQuery();
-    private CloudPaygManager paygManager = new CloudPaygManager();
-    private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+    private final SaltApi saltApi = new TestSaltApi();
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final AttestationManager attestationManager = new AttestationManager();
+    private final RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private final SSHMinionBootstrapper sshMinionBootstrapper =
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private final XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private ServerGroupManager manager = new ServerGroupManager(saltApi);
-    private ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper, manager);
+    private final ServerGroupManager manager = new ServerGroupManager(saltApi);
+    private final ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper, manager);
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();
 
@@ -142,7 +146,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertNotNull(manager.lookup(NAME, admin));
         User newbie = UserTestUtils.createUser("Hahaha", admin.getOrg().getId());
 
-        List logins = new ArrayList<>();
+        List<String> logins = new ArrayList<>();
         logins.add(newbie.getLogin());
 
 
@@ -155,7 +159,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
 
         handler.addOrRemoveAdmins(admin, group.getName(),
-                Arrays.asList(new String []{regular.getLogin()}), true);
+                Collections.singletonList(regular.getLogin()), true);
 
         regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         handler.addOrRemoveAdmins(regular, group.getName(), logins, true);
@@ -211,12 +215,12 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
                                                     DESCRIPTION + "1");
         ServerGroup group2 = handler.create(admin, NAME + "2",
                                                     DESCRIPTION + "2");
-        List groups = handler.listGroupsWithNoAssociatedAdmins(admin);
+        List<ServerGroup> groups = handler.listGroupsWithNoAssociatedAdmins(admin);
         assertTrue(groups.contains(group));
         assertTrue(groups.contains(group1));
         assertTrue(groups.contains(group2));
 
-        List logins = new ArrayList<>();
+        List<String> logins = new ArrayList<>();
         logins.add(regular.getLogin());
         handler.addOrRemoveAdmins(admin, group1.getName(), logins, true);
         assertTrue(manager.canAccess(regular, group1));
@@ -246,7 +250,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertNotNull(manager.lookup(NAME, admin));
 
         User unpriv = UserTestUtils.createUser("Unpriv", admin.getOrg().getId());
-        List logins = new ArrayList<>();
+        List<String> logins = new ArrayList<>();
         logins.add(regular.getLogin());
         logins.add(unpriv.getLogin());
 
@@ -258,7 +262,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Server server3 = ServerFactoryTest.createTestServer(regular, true);
 
         handler.addOrRemoveSystems(regular, group.getName(),
-                Arrays.asList(server3.getId().intValue()), Boolean.TRUE);
+                List.of(server3.getId().intValue()), Boolean.TRUE);
 
         List<Long> systems = new ArrayList<>();
         systems.add(server1.getId());
@@ -267,7 +271,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.addOrRemoveSystems(regular, group.getName(), systems, Boolean.TRUE);
 
 
-        List actual = handler.listSystems(unpriv, group.getName());
+        List<Server> actual = handler.listSystems(unpriv, group.getName());
         assertTrue(actual.contains(server1));
 
         handler.addOrRemoveSystems(regular, group.getName(), systems,
@@ -298,7 +302,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         int preSize = handler.listAllGroups(admin).size();
 
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
-        List groups = handler.listAllGroups(admin);
+        List<ManagedServerGroup> groups = handler.listAllGroups(admin);
         assertTrue(groups.contains(group));
         assertEquals(1, groups.size() - preSize);
     }
@@ -324,7 +328,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         boolean exceptCaught = false;
         int badValue = -80;
         try {
-            ServerGroup sg = handler.getDetails(admin, badValue);
+            handler.getDetails(admin, badValue);
         }
         catch (FaultException e) {
             exceptCaught = true;
@@ -335,9 +339,9 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testGetDetailsByUnknownName() {
         boolean exceptCaught = false;
-        String badName = new String("intentionalBadName123456789");
+        String badName = "intentionalBadName123456789";
         try {
-            ServerGroup sg = handler.getDetails(admin, badName);
+            handler.getDetails(admin, badName);
         }
         catch (FaultException e) {
             exceptCaught = true;
@@ -352,7 +356,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createTestSystem(admin);
         Server server2 = ServerTestUtils.createTestSystem(admin);
 
-        List  test = new ArrayList<>();
+        List<Server>  test = new ArrayList<>();
         test.add(server);
         test.add(server2);
         manager.addServers(group, test, admin);
@@ -364,7 +368,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         TestUtils.saveAndFlush(server);
         TestUtils.saveAndFlush(group);
 
-        List list = handler.listInactiveSystemsInGroup(admin, group.getName(), 1);
+        List<Long> list = handler.listInactiveSystemsInGroup(admin, group.getName(), 1);
         assertEquals(1, list.size());
         assertEquals(server.getId().toString(), list.get(0).toString());
     }
@@ -375,7 +379,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createTestSystem(admin);
         Server server2 = ServerTestUtils.createTestSystem(admin);
 
-        List  test = new ArrayList<>();
+        List<Server>  test = new ArrayList<>();
         test.add(server);
         test.add(server2);
 
@@ -388,7 +392,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         TestUtils.saveAndFlush(server);
         TestUtils.saveAndFlush(group);
 
-        List list = handler.listActiveSystemsInGroup(admin, group.getName());
+        List<Long> list = handler.listActiveSystemsInGroup(admin, group.getName());
 
         assertEquals(1, list.size());
         assertEquals(server.getId().toString(), list.get(0).toString());
@@ -414,8 +418,8 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         ManagedServerGroup group1 = ServerGroupTestUtils.createManaged(admin);
         ManagedServerGroup group2 = ServerGroupTestUtils.createManaged(admin);
 
-        handler.subscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1));
-        handler.subscribeConfigChannel(admin, group2.getName(), Arrays.asList(ccLabel2));
+        handler.subscribeConfigChannel(admin, group1.getName(), List.of(ccLabel1));
+        handler.subscribeConfigChannel(admin, group2.getName(), List.of(ccLabel2));
         List<ConfigChannel> assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
         List<ConfigChannel> assignedChannels2 = handler.listAssignedConfigChannels(admin, group2.getName());
 
@@ -477,7 +481,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertContains(assignedChannels1, cc1);
         assertContains(assignedChannels1, cc2);
 
-        handler.unsubscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1));
+        handler.unsubscribeConfigChannel(admin, group1.getName(), List.of(ccLabel1));
         assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
         assertContains(assignedChannels1, cc2);
         assertFalse(assignedChannels1.contains(cc1), "Unexpected channel found");

@@ -15,10 +15,12 @@
 package com.suse.manager.attestation.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
@@ -37,6 +39,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.AttestationFactory;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
+import com.suse.manager.model.attestation.CoCoAttestationStatus;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
@@ -53,11 +56,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
 
     private User user2;
     private Server server;
+    private Server server2;
+    private Server server3;
+    private Server server4;
     private AttestationManager mgr;
     private static TaskomaticApi taskomaticApi;
 
@@ -69,6 +76,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         user2 = UserTestUtils.createUser("user2", user.getOrg().getId());
         server = ServerFactoryTest.createTestServer(user, true);
+        server2 = ServerFactoryTest.createTestServer(user2, true);
+        server3 = ServerFactoryTest.createTestServer(user, true);
+        server4 = ServerFactoryTest.createTestServer(user2, true);
         mgr = new AttestationManager(new AttestationFactory(), getTaskomaticApi());
     }
 
@@ -95,14 +105,13 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     public void testInitializeAttestationResults() {
         mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
         ServerCoCoAttestationReport report = mgr.initializeReport(user, server);
-        assertThrows(PermissionException.class, () -> mgr.initializeResults(user2, report));
 
         ServerCoCoAttestationReport brokenReport = new ServerCoCoAttestationReport();
-        assertThrows(LookupException.class, () -> mgr.initializeResults(user, brokenReport));
+        assertThrows(LookupException.class, () -> mgr.initializeResults(brokenReport));
 
-        mgr.initializeResults(user, report);
+        mgr.initializeResults(report);
         List<CoCoAttestationResult> results = report.getResults();
-        assertTrue(results.size() > 0);
+        assertFalse(results.isEmpty());
     }
 
     @Test
@@ -127,7 +136,151 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
                 attestationData.getOrDefault("environment_type", "environment_type not found"));
     }
 
-     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
+    @Test
+    public void countAttestationReportsForUserAndSystem() {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user, server3, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server3);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.getSession().clear();
+        commitHappened();
+
+        assertEquals(2, mgr.countCoCoAttestationReportsForUserAndServer(user, server));
+        assertEquals(1, mgr.countCoCoAttestationReportsForUserAndServer(user, server3));
+
+        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReportsForUserAndServer(user, server2));
+        assertThrows(PermissionException.class, () -> mgr.countCoCoAttestationReportsForUserAndServer(user2, server));
+    }
+
+    @Test
+    public void testListReportsForUserAndSystem() {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.getSession().clear();
+        commitHappened();
+
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
+            new Date(0), 0, Integer.MAX_VALUE);
+        assertEquals(2, reports.size());
+
+        ServerCoCoAttestationReport latestReport = mgr.lookupLatestCoCoAttestationReport(user, server);
+        assertEquals(CoCoAttestationStatus.SUCCEEDED, latestReport.getStatus());
+        assertEquals("Some details", latestReport.getResults().get(0).getDetailsOpt().orElse(""));
+    }
+
+    @Test
+    public void countAttestationReportsForUser() {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user, server3, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        mgr.createConfig(user2, server2, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user2, server4, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server3);
+
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.getSession().clear();
+        commitHappened();
+
+        assertEquals(3, mgr.countCoCoAttestationReportsForUser(user));
+        assertEquals(5, mgr.countCoCoAttestationReportsForUser(user2));
+    }
+
+    @Test
+    public void testListReportsForUser() {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user, server3, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        mgr.createConfig(user2, server2, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        mgr.createConfig(user2, server4, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server);
+        createFakeAttestationReport(user, server3);
+
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server2);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+        createFakeAttestationReport(user2, server4);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.getSession().clear();
+        commitHappened();
+
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUser(user, 0, Integer.MAX_VALUE);
+        assertEquals(3, reports.size());
+        assertTrue(reports.stream().allMatch(r -> List.of(server, server3).contains(r.getServer())));
+
+        reports = mgr.listCoCoAttestationReportsForUser(user2, 0, Integer.MAX_VALUE);
+        assertEquals(5, reports.size());
+        assertTrue(reports.stream().allMatch(r -> List.of(server2, server4).contains(r.getServer())));
+    }
+
+    @Test
+    public void testFilterListReports() throws InterruptedException {
+        mgr.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+
+        long epochStart = (new Date().getTime() / 1000);
+        for (int i = 10; i > 0; i--) {
+            createFakeAttestationReport(user, server);
+            HibernateFactory.getSession().flush();
+            HibernateFactory.commitTransaction();
+            commitHappened();
+            TimeUnit.SECONDS.sleep(2);
+        }
+        HibernateFactory.getSession().clear();
+        List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
+            new Date(0), 0, Integer.MAX_VALUE);
+        assertEquals(10, reports.size());
+
+        List<ServerCoCoAttestationReport> reports2 = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
+                new Date((epochStart + 10) * 1000L), 0, Integer.MAX_VALUE);
+        assertTrue(reports2.get(0).getModified().compareTo(new Date((epochStart + 10) * 1000L)) >= 0);
+        assertEquals(5, reports2.size());
+
+        reports2 = mgr.listCoCoAttestationReportsForUserAndServer(user, server, new Date(0), 5, 2);
+        assertEquals(2, reports2.size());
+        assertEquals(reports.get(6), reports2.get(0));
+        assertEquals(reports.get(7), reports2.get(1));
+        assertTrue(reports2.get(0).getCreated().after(reports2.get(1).getCreated()),
+                "Report 0 is not created after Report 1");
+    }
+
+    private void createFakeAttestationReport(User userIn, Server serverIn) {
+        ServerCoCoAttestationReport report = mgr.initializeReport(userIn, serverIn);
+        mgr.initializeResults(report);
+        fakeSuccessfullAttestation(report);
+    }
+    private void fakeSuccessfullAttestation(ServerCoCoAttestationReport reportIn) {
+        reportIn.getResults().forEach(res -> {
+            res.setStatus(CoCoAttestationStatus.SUCCEEDED);
+            res.setDetails("Some details");
+            res.setAttested(new Date());
+        });
+    }
+
+    private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {
             taskomaticApi = context.mock(TaskomaticApi.class);
             context.checking(new Expectations() {

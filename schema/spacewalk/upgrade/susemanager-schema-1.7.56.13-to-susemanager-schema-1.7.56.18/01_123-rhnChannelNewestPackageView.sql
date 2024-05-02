@@ -17,9 +17,8 @@
 --
 -- this is much more readable with ts=4, enjoy!
 
-create or replace view
-rhnChannelNewestPackageView
-as
+DROP VIEW IF EXISTS rhnChannelNewestPackageView;
+CREATE VIEW rhnChannelNewestPackageView AS
 SELECT channel_id,
        name_id,
        evr_id,

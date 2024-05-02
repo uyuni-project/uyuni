@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 04 23:15:09 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2-0
+  * Add /srv/www/distributions folder
+
+-------------------------------------------------------------------
 Thu Jan 11 10:33:10 CET 2024 - marina.latini@suse.com
 
 - version 5.0.1-1

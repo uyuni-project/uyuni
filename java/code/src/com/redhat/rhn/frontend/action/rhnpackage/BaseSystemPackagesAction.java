@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
@@ -98,9 +97,6 @@ public abstract class BaseSystemPackagesAction extends RhnAction {
         ListTagHelper.bindSetDeclTo(LIST_NAME, getDecl(sid), request);
         TagHelper.bindElaboratorTo(LIST_NAME, dataSet.getElaborator(), request);
 
-        if (server.getChannels().stream().anyMatch(Channel::isModular)) {
-            createErrorMessage(request, "packagelist.jsp.modulespresent", null);
-        }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

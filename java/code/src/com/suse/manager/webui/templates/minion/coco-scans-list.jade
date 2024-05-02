@@ -1,0 +1,12 @@
+include ./minion-header.jade
+
+#coco-scans-list
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.serverId = "#{server.id}";
+    window.actionChains = !{actionChains};
+
+script(type='text/javascript').
+    spaImportReactPage('minion/coco/coco-scans-list')
+        .then(function(module) { module.renderer('coco-scans-list') });

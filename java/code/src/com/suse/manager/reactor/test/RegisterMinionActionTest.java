@@ -78,6 +78,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -120,6 +122,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -149,6 +152,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemManager systemManager;
     private CloudPaygManager cloudManager4Test;
+    private AttestationManager attestationManager;
 
     @FunctionalInterface
     private interface ExpectationsFunction {
@@ -293,6 +297,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                return false;
            }
        };
+       attestationManager = new AttestationManager();
 
        context().checking(new Expectations() {{
            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
@@ -373,7 +378,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock,
-                saltServiceMock, cloudManager4Test);
+                saltServiceMock, cloudManager4Test, attestationManager);
         action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
 
         // Verify the resulting system entry
@@ -409,6 +414,81 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
             assertNull(minion.getLock());
         }, DEFAULT_CONTACT_METHOD);
+    }
+
+    @Test
+    public void testScheduleCoCoAttestationNotEnabled() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setHostname(MINION_ID);
+
+        try {
+            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, false);
+            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+                assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+                MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                        m -> {
+                            assertEquals(m.getCreated(), server.getCreated());
+                            assertEquals(m.getId(), server.getId());
+                            assertEquals(0, attestationManager.listCoCoAttestationReportsForUserAndServer(
+                                    user, m, new Date(0), 0, 10).size());
+                        },
+                        () -> fail("Machine ID not found"));
+            }, null, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+    }
+
+    @Test
+    public void testScheduleCoCoAttestationEnabledOnBootDisabled() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setHostname(MINION_ID);
+
+        try {
+            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+                assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+                MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                        m -> {
+                            assertEquals(m.getCreated(), server.getCreated());
+                            assertEquals(m.getId(), server.getId());
+                            assertEquals(0, attestationManager.listCoCoAttestationReportsForUserAndServer(
+                                    user, m, new Date(0), 0, 10).size());
+                        },
+                        () -> fail("Machine ID not found"));
+            }, null, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+    }
+
+    @Test
+    public void testScheduleCoCoAttestationEnabledAndBoot() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setHostname(MINION_ID);
+
+        try {
+            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true, true);
+            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+                assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+                MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                        m -> {
+                            assertEquals(m.getCreated(), server.getCreated());
+                            assertEquals(m.getId(), server.getId());
+                            assertEquals(1, attestationManager.listCoCoAttestationReportsForUserAndServer(
+                                    user, m, new Date(0), 0, 10).size());
+                        },
+                        () -> fail("Machine ID not found"));
+            }, null, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
     }
 
     /*
@@ -2015,8 +2095,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }
         } });
 
-        RegisterMinionEventMessageAction action =
-                new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock, cloudManager4Test);
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock,
+                cloudManager4Test, attestationManager);
         action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
     }
 

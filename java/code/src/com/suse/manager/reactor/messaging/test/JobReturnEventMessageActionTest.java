@@ -521,7 +521,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Verify Uptime is set
         Date bootTime = new Date(System.currentTimeMillis() - (600 * 1000));
-        assertTrue(minion.getLastBoot() == (bootTime.getTime() / 1000));
+        assertEquals((long) minion.getLastBoot(), (bootTime.getTime() / 1000));
 
         //Switch back from live patching
         message = new JobReturnEventMessage(JobReturnEvent

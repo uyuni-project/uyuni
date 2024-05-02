@@ -287,7 +287,7 @@ public class KickstartHelper {
             log.debug("Kickstart host from proxy header: {}", firstProxy);
             return firstProxy;
         }
-        return ConfigDefaults.get().getCobblerHost();
+        return ConfigDefaults.get().getJavaHostname();
     }
 
     /**

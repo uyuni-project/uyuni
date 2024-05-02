@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 11:48+0100\n"
+"POT-Creation-Date: 2024-04-26 09:58+0200\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -64,10 +64,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "URI “%s” Tidak Sah"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -93,16 +90,6 @@ msgstr "ISS dinonaktifkan di server ini."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
 
-#: ../server/handlers/xmlrpc/errata.py:71
-#, fuzzy, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Diduga sebuah nama paket, bukan: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, fuzzy, python-format
-msgid "Expected a package, not: %s"
-msgstr "Diduga sebuah paket, bukan: %s"
-
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, fuzzy, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -118,75 +105,6 @@ msgstr "Kunci sesi tidak valid"
 #, fuzzy
 msgid "This server ID no longer exists"
 msgstr "ID server ini tidak ada lagi"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, fuzzy, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipe nilai tindakan %s (%s) tidak valid"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, fuzzy, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Tindakan %s bukan milik server %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-#, fuzzy
-msgid "Required data missing"
-msgstr "Data yang diperlukan hilang"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-#, fuzzy
-msgid "Required members missing"
-msgstr "Anggota yang diperlukan hilang"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-#, fuzzy
-msgid "Attempt to register a system to an invalid username"
-msgstr "Mencoba mendaftarkan sistem ke nama pengguna yang tidak valid"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-#, fuzzy
-msgid "Invalid system release version requested"
-msgstr "Versi rilis sistem tidak valid yang diminta"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-#, fuzzy
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Tidak dapat menemukan antarmuka jaringan yang valid, ipaddr dan ip6addr "
-"tidak ditemukan."
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-#, fuzzy
-msgid "Privacy Statement"
-msgstr "Red Hat Pernyataan Privasi Satelit"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-#, fuzzy
-msgid "Expected a dictionary as a product argument"
-msgstr "Mengharapkan kamus sebagai argumen produk"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, fuzzy, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Nilai '%s' tidak valid untuk %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Pasangan system_id/action_id tidak valid."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, fuzzy, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Nilai %s (%s) tidak valid"
 
 #: ../server/importlib/userAuth.py:109
 #, fuzzy
@@ -314,7 +232,7 @@ msgstr "Paket RPM %s tidak valid diminta"
 msgid "Package not found"
 msgstr "Paket tidak ditemukan"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, fuzzy, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "Arsitektur '%s' tidak didukung"
@@ -1355,17 +1273,17 @@ msgstr "Mengimpor pohon kickstartable (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Pohon kickstartable impor (%d)"
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
 #, fuzzy
 msgid "+++ sending log as an email +++"
 msgstr "+++ mengirim log sebagai email +++"
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:140
 #, fuzzy, python-format
 msgid "%s sync. report from %s"
 msgstr "Sinkronisasi %s. laporan dari %s"
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
 #, fuzzy
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
@@ -2254,6 +2172,66 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
+
+#, fuzzy, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "Diduga sebuah nama paket, bukan: %s"
+
+#, fuzzy, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "Diduga sebuah paket, bukan: %s"
+
+#, fuzzy, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "Tipe nilai tindakan %s (%s) tidak valid"
+
+#, fuzzy, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "Tindakan %s bukan milik server %s"
+
+#, fuzzy
+#~ msgid "Required data missing"
+#~ msgstr "Data yang diperlukan hilang"
+
+#, fuzzy
+#~ msgid "Required members missing"
+#~ msgstr "Anggota yang diperlukan hilang"
+
+#, fuzzy
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "Mencoba mendaftarkan sistem ke nama pengguna yang tidak valid"
+
+#, fuzzy
+#~ msgid "Invalid system release version requested"
+#~ msgstr "Versi rilis sistem tidak valid yang diminta"
+
+#, fuzzy
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "Tidak dapat menemukan antarmuka jaringan yang valid, ipaddr dan ip6addr "
+#~ "tidak ditemukan."
+
+#, fuzzy
+#~ msgid "Privacy Statement"
+#~ msgstr "Red Hat Pernyataan Privasi Satelit"
+
+#, fuzzy
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "Mengharapkan kamus sebagai argumen produk"
+
+#, fuzzy, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "Nilai '%s' tidak valid untuk %s (%s)"
+
+#, fuzzy
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "Pasangan system_id/action_id tidak valid."
+
+#, fuzzy, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "Nilai %s (%s) tidak valid"
 
 #, fuzzy, python-format
 #~ msgid ""

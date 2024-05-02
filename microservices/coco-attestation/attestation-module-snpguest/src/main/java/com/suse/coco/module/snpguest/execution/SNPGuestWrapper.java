@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -70,7 +71,7 @@ public class SNPGuestWrapper {
      * @return the exit code of the fetching process
      * @throws ExecutionException when an error happens during the process execution
      */
-    public int fetchVCEK(EpycGeneration generation, Path certsDir, Path report) throws ExecutionException {
+    public ProcessOutput fetchVCEK(EpycGeneration generation, Path certsDir, Path report) throws ExecutionException {
         return executeProcess(
             SNPGUEST.toString(),
             "fetch",
@@ -88,7 +89,7 @@ public class SNPGuestWrapper {
      * @return the exit code of the verification process
      * @throws ExecutionException when an error happens during the process execution
      */
-    public int verifyCertificates(Path certsDir) throws ExecutionException {
+    public ProcessOutput verifyCertificates(Path certsDir) throws ExecutionException {
         return executeProcess(
             SNPGUEST.toString(),
             "verify",
@@ -104,7 +105,7 @@ public class SNPGuestWrapper {
      * @return the exit code of the verification process
      * @throws ExecutionException when an error happens during the process execution
      */
-    public int verifyAttestation(Path certsDir, Path report) throws ExecutionException {
+    public ProcessOutput verifyAttestation(Path certsDir, Path report) throws ExecutionException {
         return executeProcess(
             SNPGUEST.toString(),
             "verify",
@@ -115,12 +116,27 @@ public class SNPGuestWrapper {
     }
 
     /**
+     * Display the attestation report.
+     * @param report Path to attestation report to use for validation.
+     * @return the exit code of the verification process
+     * @throws ExecutionException when an error happens during the process execution
+     */
+    public ProcessOutput displayReport(Path report) throws ExecutionException {
+        return executeProcess(
+            SNPGUEST.toString(),
+            "display",
+            "report",
+            report.toString()
+        );
+    }
+
+    /**
      * Executes a commandline process
      * @param command the command line to execute
      * @return the exit code returned by the process
      * @throws ExecutionException when an error happens during the process execution
      */
-    private int executeProcess(String... command) throws ExecutionException {
+    protected ProcessOutput executeProcess(String... command) throws ExecutionException {
         Process snpguestProcess;
 
         try {
@@ -137,32 +153,44 @@ public class SNPGuestWrapper {
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
         try {
-            // Process the standard output and error in background and log it
-            if (LOGGER.isDebugEnabled()) {
-                executor.submit(() -> logProcessOutput(STDOUT_MARKER, snpguestProcess.getInputStream()));
-                executor.submit(() -> logProcessOutput(STDERR_MARKER, snpguestProcess.getErrorStream()));
-            }
+            int exitCode = snpguestProcess.waitFor();
 
-            return snpguestProcess.waitFor();
+            String standardOutputIn = getOutput(snpguestProcess.getInputStream(), STDOUT_MARKER);
+            String standardErrorIn = getOutput(snpguestProcess.getErrorStream(), STDERR_MARKER);
+
+            return new ProcessOutput(
+                exitCode,
+                standardOutputIn,
+                standardErrorIn
+            );
         }
         catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
             throw new ExecutionException("Unable to get snpguest execution result", ex);
+        }
+        catch (IOException ex) {
+            throw new ExecutionException("Unable to get snpguest execution output", ex);
         }
         finally {
             executor.shutdown();
         }
     }
 
-    private static void logProcessOutput(Marker marker, InputStream stream) {
+    private static String getOutput(InputStream stream, Marker logMarker) throws IOException {
+        StringWriter writer = new StringWriter();
+
         try (BufferedReader inErr = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = inErr.readLine()) != null) {
-                LOGGER.debug(marker, line);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug(logMarker, line);
+                }
+
+                writer.write(line);
+                writer.write(System.lineSeparator());
             }
-        }
-        catch (IOException e) {
-            LOGGER.error("Error reading stderr from external process", e);
+
+            return writer.toString();
         }
     }
 

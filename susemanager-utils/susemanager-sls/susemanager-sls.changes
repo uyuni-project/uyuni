@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Thu Apr 04 18:57:37 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * Distinguish between different SUSE versions when detecting if a
+    reboot is needed (bsc#1220903, bsc#1221571)
+  * Add custom grain module for CPE
+  * Use java.hostname conf instead of cobbler.host
+  * Replace Uyuni configuration formula with an API call
+  * Fix the case of missing requisites on bootstrap (bsc#1220705)
+  * Avoid issues on reactivating traditional clients as Salt managed
+  * Don't log dnf needs-restarting output in Salt's log (bsc#1220194)
+  * Use execution module call to detect client instance flavor
+    (PAYG/BYOS) in public cloud (bsc#1218805)
+  * Migrate all Salt versions to Salt Bundle
+  * Implement state for confidential compute attestation
+  * Recognize squashfs build results from kiwi (bsc#1216085)
+  * Switch the default release version to 0 and update the source
+    URL
+
+-------------------------------------------------------------------
 Wed Feb 28 16:59:17 CET 2024 - marina.latini@suse.com
 
 - version 5.0.5-0

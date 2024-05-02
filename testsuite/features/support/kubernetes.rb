@@ -2,6 +2,10 @@
 # Licensed under the terms of the MIT license.
 
 # Create an SSL certificate using cert-manager and return the path on the server where the files have been copied
+#
+# @param name [String] The name of the certificate.
+# @param fqdn [String] The fully qualified domain name (FQDN) for the certificate.
+# @return [Array<String>] An array containing the paths to the generated certificate files: [crt_path, key_path, ca_path].
 def generate_certificate(name, fqdn)
   certificate = 'apiVersion: cert-manager.io/v1\\n'\
                 'kind: Certificate\\n'\
@@ -49,6 +53,8 @@ def generate_certificate(name, fqdn)
 end
 
 # Returns whether the server is running in a k3s container or not
+#
+# @return [Boolean] Returns true if the k3s service is running, false otherwise.
 def running_k3s?
   _out, code = get_target('server').run_local('systemctl is-active k3s', check_errors: false)
   code.zero?

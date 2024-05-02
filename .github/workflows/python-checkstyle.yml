@@ -17,7 +17,7 @@ on:
 jobs:
   checkstyle:
     runs-on: ubuntu-latest
-    container: registry.opensuse.org/home/mczernek/containers/opensuse_factory_containerfile/uyuni-lint:latest
+    container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers_tw/uyuni-master-python:latest
 
     steps:
     - uses: actions/checkout@v4

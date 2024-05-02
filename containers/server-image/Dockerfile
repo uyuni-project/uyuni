@@ -12,6 +12,7 @@ ARG EXTRAPACKAGES
 COPY timezone_alignment.sh /usr/bin
 
 COPY healthcheck.sh /usr/bin
+RUN chmod a+x /usr/bin/healthcheck.sh
 
 # Copy timezone link update service
 COPY timezone_alignment.service /usr/lib/systemd/system/
@@ -57,7 +58,14 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     virtual-host-gatherer-VMware \
     vim \
     python3-pygit2 \
-    ipmitool
+    ipmitool \
+    sssd \
+    sssd-dbus \
+    sssd-ldap \
+    sssd-ad \
+    sssd-ipa \
+    sssd-krb5 \
+    sssd-tools
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
@@ -73,6 +81,15 @@ COPY java_agent.yaml /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
 COPY java_agent.yaml /etc/prometheus-jmx_exporter/taskomatic/java_agent.yml
 COPY tomcat_jmx.conf /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+COPY pam-susemanager /etc/pam.d/susemanager
+COPY pam-susemanager-account /etc/pam.d/susemanager-account
+COPY pam-susemanager-auth /etc/pam.d/susemanager-auth
+COPY pam-susemanager-password /etc/pam.d/susemanager-password
+COPY pam-susemanager-session /etc/pam.d/susemanager-session
+COPY pam-password-auth /etc/pam.d/password-auth
+COPY pam-postlogin /etc/pam.d/postlogin
+COPY pam-system-auth /etc/pam.d/system-auth
+COPY nsswitch.conf /etc/nsswitch.conf
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
@@ -82,7 +99,8 @@ RUN echo "cat /etc/motd" >/etc/sh.shrc.local
 
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
-    systemctl enable timezone_alignment;
+    systemctl enable timezone_alignment; \
+    systemctl enable sssd;
 
 # Provide tool to synchronize package and configuration files to persistent volumes
 COPY uyuni-configfiles-sync /usr/bin
@@ -114,7 +132,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.0.4
+LABEL org.opencontainers.image.version=5.0.5
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

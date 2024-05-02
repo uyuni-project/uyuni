@@ -14,26 +14,39 @@
  */
 package com.suse.manager.model.attestation;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+
 import java.util.Arrays;
 import java.util.List;
 
 public enum CoCoEnvironmentType {
     NONE(0, List.of()),
     KVM_AMD_EPYC_MILAN(1, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
-    KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
-    AZURE(3, List.of(CoCoResultType.AZURE_SEV_SNP, CoCoResultType.AZURE_SECURE_BOOT,
-                    CoCoResultType.AZURE_DISK_ENCRYPTED));
+    KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT));
+    // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final long value;
+    private final String labelKey;
+    private final String descriptionKey;
     private final List<CoCoResultType> supportedResultTypes;
 
     CoCoEnvironmentType(long valueIn, List<CoCoResultType> supportedResultTypesIn) {
         value = valueIn;
         supportedResultTypes = supportedResultTypesIn;
+        labelKey = "coco.environment." + name().toLowerCase() + ".label";
+        descriptionKey = "coco.environment." + name().toLowerCase() + ".description";
     }
 
     public long getValue() {
         return value;
+    }
+
+    public String getLabel() {
+        return LocalizationService.getInstance().getMessage(labelKey);
+    }
+
+    public String getDescription() {
+        return LocalizationService.getInstance().getMessage(descriptionKey);
     }
 
     /**

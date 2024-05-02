@@ -31,12 +31,14 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.AnsibleController;
 import com.suse.manager.webui.controllers.CSVDownloadController;
 import com.suse.manager.webui.controllers.CVEAuditController;
+import com.suse.manager.webui.controllers.ConfidentialComputingController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
@@ -62,9 +64,9 @@ import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
-import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
+import com.suse.manager.webui.controllers.appstreams.AppStreamsController;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.channels.ChannelsApiController;
@@ -119,25 +121,31 @@ public class Router implements SparkApplication {
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
         CloudPaygManager paygManager = GlobalInstanceHolder.PAYG_MANAGER;
+        AttestationManager attestationManager = GlobalInstanceHolder.ATTESTATION_MANAGER;
 
         SystemsController systemsController = new SystemsController(saltApi);
         ProxyController proxyController = new ProxyController(systemManager);
         SaltSSHController saltSSHController = new SaltSSHController(saltApi);
         NotificationMessageController notificationMessageController =
-                new NotificationMessageController(systemQuery, saltApi, paygManager);
+                new NotificationMessageController(systemQuery, saltApi, paygManager, attestationManager);
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
-                saltKeyUtils);
+                saltKeyUtils, attestationManager);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
         HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
         FrontendLogController frontendLogController = new FrontendLogController();
         DownloadController downloadController = new DownloadController(paygManager);
+        ConfidentialComputingController confidentialComputingController =
+                new ConfidentialComputingController(attestationManager);
 
         // Login
         LoginController.initRoutes(jade);
 
         //CVEAudit
         CVEAuditController.initRoutes(jade);
+
+        // Confidential Computing
+        confidentialComputingController.initRoutes(jade);
 
         initContentManagementRoutes(jade, kubernetesManager);
 
@@ -170,6 +178,8 @@ public class Router implements SparkApplication {
         // Packages
         PackageController.initRoutes(jade);
 
+        AppStreamsController.initRoutes(jade);
+
         // Proxy
         proxyController.initRoutes(proxyController, jade);
 
@@ -201,9 +211,6 @@ public class Router implements SparkApplication {
 
         // Formulas
         formulaController.initRoutes(jade);
-
-        // Visualization
-        VisualizationController.initRoutes(jade);
 
         get("/manager/download/saltssh/pubkey", saltSSHController::getPubKey);
 

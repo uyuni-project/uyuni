@@ -505,6 +505,10 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   if use_salt_bundle
     if slemicro_host?(host)
       node.run('transactional-update --continue -n pkg rm venv-salt-minion', check_errors: false)
+      # SLE Micro could have also installed salt-minion
+      _result, code = node.run('rpm -q salt-minion', check_errors: false)
+      node.run('transactional-update --continue -n pkg rm salt-minion', check_errors: false) if code.zero?
+      node.run('rm -Rf /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt', check_errors: false) if code.zero?
     elsif rh_host?(host)
       node.run('yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion', check_errors: false)
     elsif deb_host?(host)

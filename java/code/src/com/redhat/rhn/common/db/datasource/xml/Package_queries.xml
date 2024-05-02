@@ -33,6 +33,7 @@ SELECT * FROM
             AND  p.evr_id = pe.id
             AND  p.package_arch_id = pa.id
             AND  NOT CP.is_retracted
+            AND  NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = p.id)
        GROUP BY  p.name_id, pa.label, pa.id, pe.id
 ) avl
        left join rhnpackagename pn on pn.id = avl.name_id
@@ -61,6 +62,7 @@ SELECT PKG.id AS id,
        join rhnServerChannel SC on SC.channel_id = CP.channel_id
  WHERE SC.server_id = :sid
    AND NOT CP.is_retracted
+   AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = PKG.id)
    AND NOT EXISTS (SELECT 1
                      FROM rhnServerPackage SP
                     WHERE SP.server_id = :sid
@@ -89,6 +91,7 @@ SELECT PKG.id AS id,
        rhnServerPackage SP
  WHERE CP.channel_id = :cid
    AND SP.server_id = :sid
+   AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = PKG.id)
    AND SP.name_id = PKG.name_id
    AND SP.evr_id = PKG.evr_id
    AND SP.package_arch_id = PKG.package_arch_id
@@ -131,6 +134,7 @@ SELECT
                       AND SP.name_id = full_list.name_id
                       AND (SP.package_arch_id = full_list.arch_id or SP.package_arch_id is null))
   AND NOT rcp.is_retracted
+  AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = rp.id)
 order by upper(pn.name)
   </query>
 </mode>
@@ -467,7 +471,8 @@ SELECT P.id AS ID,
        P.summary,
        PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS nvrea,
        PP.name AS provider,
-       CP.is_retracted as retracted
+       CP.is_retracted as retracted,
+       appStream.name || ':' || appStream.stream as appstream
   FROM rhnPackage P inner join
        rhnPackageArch PA on P.package_arch_id = PA.id inner join
        rhnPackageName PN on P.name_id = PN.id inner join
@@ -475,7 +480,9 @@ SELECT P.id AS ID,
        suseChannelPackageRetractedStatusView CP on P.id = CP.package_id left join
        rhnPackageKeyAssociation assoc on assoc.package_id = P.id left join
        rhnPackageKey KEY on KEY.id = assoc.key_id left join
-       rhnPackageProvider PP on KEY.provider_id = PP.id
+       rhnPackageProvider PP on KEY.provider_id = PP.id left join
+       suseAppstreamPackage appStreamPkg on appStreamPkg.package_id = P.id left join
+       suseAppstream appStream on appStream.channel_id = cp.channel_id and appStream.id = appStreamPkg.module_id
  WHERE CP.channel_id = :cid
   </query>
 </mode>
@@ -575,7 +582,8 @@ SELECT PN.name as NAME,
          pn.id as name_id,
          pe.id as evr_id,
          pa.label as arch,
-         sp.installtime
+         sp.installtime,
+         a.name || ':' || a.stream as appstream
     FROM rhnPackageName pn
             INNER JOIN rhnServerPackage sp ON sp.name_id = pn.id
             INNER JOIN rhnServer s ON sp.server_id = s.id
@@ -583,6 +591,8 @@ SELECT PN.name as NAME,
             LEFT JOIN rhnPackageArch pa ON sp.package_arch_id = pa.id
             LEFT JOIN highest_id_packages hp ON hp.name_id = sp.name_id AND hp.evr_id = sp.evr_id AND hp.package_arch_id = sp.package_arch_id
             LEFT JOIN rhnpackage p ON hp.id = p.id
+            LEFT JOIN suseAppstreamPackage ap on ap.package_id = hp.id
+            LEFT JOIN suseAppstream a on a.id = ap.module_id
     WHERE sp.server_id = :sid
     ORDER BY nvre
   </query>
@@ -875,16 +885,21 @@ SELECT P.id, P.summary, PP.name as provider
 
 <mode name="system_available_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
+      WITH appstreamPackage AS (
+        SELECT package_id, max(module_id) as module_id FROM suseAppstreamPackage GROUP BY package_id
+      )
 SELECT rp.id AS package_id,
        pn.name || '-' || evr_t_as_vre_simple(latest.evr) AS NVRE,
        rp.summary AS summary,
        latest.arch_label as arch,
-       pn.id || '|' || rp.evr_id || '|' || latest.arch_id AS ID_COMBO
+       pn.id || '|' || rp.evr_id || '|' || latest.arch_id AS ID_COMBO,
+       appStream.name || ':' || appStream.stream AS appstream
   FROM (
          SELECT p.name_id AS name_id,
                 max(pe.evr) AS evr,
                 pa.label AS arch_label,
-                pa.id AS arch_id
+                pa.id AS arch_id,
+                cp.channel_id AS channel_id
            FROM
                 rhnPackageEVR PE
            JOIN susePackageExcludingPartOfPtf p ON p.evr_id = pe.id
@@ -901,11 +916,14 @@ SELECT rp.id AS package_id,
                     AND (SP.package_arch_id = pa.id OR SP.package_arch_id IS NULL)
             )
             AND NOT EXISTS (SELECT 1 FROM suseServerChannelsRetractedPackagesView WHERE sid = :sid AND pid = p.id)
-       GROUP BY p.name_id, pa.label, pa.id) latest
-           JOIN rhnPackageName pn ON pn.id = latest.name_id
+            AND NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = p.id)
+      GROUP BY p.name_id, pa.label, pa.id, cp.channel_id) latest
+      JOIN rhnPackageName pn ON pn.id = latest.name_id
            JOIN rhnPackage rp ON rp.name_id = latest.name_id
                              AND rp.evr_id =  lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)
                              AND rp.package_arch_id = latest.arch_id
+           LEFT JOIN appstreamPackage appStreamPkg on appStreamPkg.package_id = rp.id
+           LEFT JOIN suseAppstream appStream on appStream.channel_id = latest.channel_id and appStream.id = appStreamPkg.module_id
           WHERE EXISTS (
                          SELECT 1 FROM rhnChannelPackage rcp
                            JOIN rhnServerChannel rsc ON rsc.channel_id = rcp.channel_id
@@ -1143,6 +1161,9 @@ SELECT  COUNT(pn.id) AS COUNT
 
 <mode name="system_upgradable_package_list" class="com.redhat.rhn.frontend.dto.UpgradablePackageListItem">
   <query params="sid">
+      WITH appstreamPackage AS (
+      SELECT package_id, max(module_id) as module_id FROM suseAppstreamPackage GROUP BY package_id
+      )
 SELECT  n.id AS id,
         n.id AS name_id,
         lookup_evr(((latest.evr)).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
@@ -1153,7 +1174,8 @@ SELECT  n.id AS id,
         n.name AS name,
         n.name ||'-'|| evr_t_as_vre_simple(latest.evr) || '.' || latest_pa.label AS nvrea,
         n.name ||'-'|| evr_t_as_vre_simple(spe.evr) || '.' || spa.label AS installed_package,
-        n.id || '|' || lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)|| '|' || latest.package_arch_id AS id_combo
+        n.id || '|' || lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)|| '|' || latest.package_arch_id AS id_combo,
+        a.name || ':' || a.stream AS appstream
   FROM
        rhnServerPackage sp
   join rhnPackageName n
@@ -1165,18 +1187,24 @@ SELECT  n.id AS id,
   join (
         select sop.package_name_id,
                sop.package_arch_id,
+               sop.package_evr_id,
                max(PE.evr) evr
           from rhnServerOutdatedPackages sop
           join rhnPackageEVR pe
             on sop.package_evr_id = pe.id
          where sop.server_id = :sid
-         group by sop.package_name_id, sop.package_arch_id) latest
+         group by sop.package_name_id, sop.package_arch_id, sop.package_evr_id) latest
     on latest.package_name_id = sp.name_id
   join rhnPackageArch latest_pa
     on latest_pa.id = latest.package_arch_id
   join rhnPackageUpgradeArchCompat puac
     on puac.package_arch_id = sp.package_arch_id
    and puac.package_upgrade_arch_id = latest.package_arch_id
+  LEFT JOIN rhnPackage p ON p.name_id = latest.package_name_id
+     AND p.evr_id = latest.package_evr_id
+     AND p.package_arch_id = latest.package_arch_id
+  LEFT JOIN appstreamPackage ap on ap.package_id = p.id
+  LEFT JOIN suseAppstream a on a.id = ap.module_id
  where sp.server_id = :sid
  order by upper(n.name)
   </query>

@@ -11,19 +11,20 @@
 
 CREATE TABLE suseCoCoAttestationResult
 (
-        id          NUMERIC NOT NULL
-                      CONSTRAINT suse_cocoatt_res_id_pk PRIMARY KEY,
-        report_id   NUMERIC NOT NULL
-                      CONSTRAINT suse_cocoatt_res_rid_fk
-                        REFERENCES suseServerCoCoAttestationReport (id)
-                        ON DELETE CASCADE,
-        result_type NUMERIC     NOT NULL,
-        status      VARCHAR(32) NOT NULL
-                      CONSTRAINT suse_cocoatt_res_st_ck
-                        CHECK(status IN ('PENDING', 'SUCCEEDED', 'FAILED')),
-        description VARCHAR(256) NOT NULL,
-        details     TEXT NULL,
-        attested    TIMESTAMPTZ NULL
+        id              NUMERIC NOT NULL
+                          CONSTRAINT suse_cocoatt_res_id_pk PRIMARY KEY,
+        report_id       NUMERIC NOT NULL
+                          CONSTRAINT suse_cocoatt_res_rid_fk
+                            REFERENCES suseServerCoCoAttestationReport (id)
+                            ON DELETE CASCADE,
+        result_type     NUMERIC     NOT NULL,
+        status          VARCHAR(32) NOT NULL
+                          CONSTRAINT suse_cocoatt_res_st_ck
+                            CHECK(status IN ('PENDING', 'SUCCEEDED', 'FAILED')),
+        description     VARCHAR(256) NOT NULL,
+        details         TEXT NULL,
+        process_output  TEXT NULL,
+        attested        TIMESTAMPTZ NULL
 );
 
 CREATE SEQUENCE suse_cocoatt_res_id_seq;

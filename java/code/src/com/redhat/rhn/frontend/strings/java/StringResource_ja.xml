@@ -6611,11 +6611,11 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="translated">ラベルが正しく指定されていません。英字、数字、ハイフン、ピリオドおよびアンダースコア以外はラベルに使用できません。また、最低でも 4 文字の長さにしなければなりません</target>
+        <target state="needs-adaptation">ラベルが正しく指定されていません。英字、数字、ハイフン、ピリオドおよびアンダースコア以外はラベルに使用できません。また、最低でも 4 文字の長さにしなければなりません</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -10249,10 +10249,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Foreign</source>
         <target>外部</target>
       </trans-unit>
-      <trans-unit id="visualization.nav.title" xml:space="preserve">
-        <source>Visualization</source>
-        <target>可視化</target>
-      </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
         <target>アドオンシステムタイプの &lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;追加または削除&lt;/a&gt;</target>
@@ -10401,18 +10397,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
         <target>同期スケジュール</target>
-      </trans-unit>
-      <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
-        <source>Virtualization Hierarchy</source>
-        <target>仮想化階層構造</target>
-      </trans-unit>
-      <trans-unit id="Proxy Hierarchy" xml:space="preserve">
-        <source>Proxy Hierarchy</source>
-        <target>プロキシ階層構造</target>
-      </trans-unit>
-      <trans-unit id="Systems Grouping" xml:space="preserve">
-        <source>Systems Grouping</source>
-        <target>システムのグループ化</target>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
@@ -11408,6 +11392,96 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Saved repository settings for {0}.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="appstreams.configure" xml:space="preserve">
+        <source>Configure AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.channel.modulespresent" xml:space="preserve">
+        <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve">
+        <source>Confidential Computing</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.none.description" xml:space="preserve">
+        <source>None</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.none.label" xml:space="preserve">
+        <source>None</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Milan</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Genoa</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.resultType.none.description" xml:space="preserve">
+        <source>Result Type not found</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.description" xml:space="preserve">
+        <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.label" xml:space="preserve">
+        <source>AMD SEV-SNP</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.description" xml:space="preserve">
+        <source>Secure Boot enabled</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.label" xml:space="preserve">
+        <source>Secure Boot</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.status.pending.description" xml:space="preserve">
+        <source>Pending</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.status.succeeded.description" xml:space="preserve">
+        <source>Succeeded</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="coco.status.failed.description" xml:space="preserve">
+        <source>Failed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.audit.coco.unsupported" xml:space="preserve">
+        <source>This system does not have any Confidential Computing capability.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.audit.coco.configUpdated" xml:space="preserve">
+        <source>The Confidential Computing configuration has been updated successfully.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="system.audit.coco.configNotUpdated" xml:space="preserve">
+        <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
+      <target state="new"/>
+  </trans-unit>
+    </body>
   </file>
 </xliff>

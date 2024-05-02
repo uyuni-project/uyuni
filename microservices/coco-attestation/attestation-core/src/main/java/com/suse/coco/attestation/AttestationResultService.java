@@ -17,7 +17,7 @@ package com.suse.coco.attestation;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.model.AttestationStatus;
-import com.suse.coco.modules.AttestationWorker;
+import com.suse.coco.module.AttestationWorker;
 import com.suse.common.database.DatabaseSessionFactory;
 
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -98,7 +98,7 @@ public class AttestationResultService {
                 result.setAttested(null);
             }
 
-            session.update("AttestationResult.updateStatus", result);
+            session.update("AttestationResult.update", result);
             session.commit();
             LOGGER.info("AttestationResult with id {} completed - result is {}", id, result.getStatus());
         }

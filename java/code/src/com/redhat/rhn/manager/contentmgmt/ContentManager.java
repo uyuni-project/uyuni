@@ -67,6 +67,7 @@ import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -772,6 +773,9 @@ public class ContentManager {
         if (channel != null && channel.getModules() != null) {
             HibernateFactory.getSession().delete(channel.getModules());
             channel.setModules(null);
+            AppStreamsManager.listChannelAppStreams(channel.getId()).forEach(a ->
+                    HibernateFactory.getSession().delete(a)
+            );
         }
     }
 
