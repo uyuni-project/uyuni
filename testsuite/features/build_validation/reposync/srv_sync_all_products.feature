@@ -144,7 +144,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sles15-sp4-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp5_minion
-@salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -175,11 +174,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @sle15sp5_minion
-@salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp5-devel-uyuni-client" with arch "x86_64"
     And I wait until the channel "sles15-sp5-devel-uyuni-client-x86_64" has been synced
-
 
 @sleforsap15sp5_paygo_minion
   Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP5
