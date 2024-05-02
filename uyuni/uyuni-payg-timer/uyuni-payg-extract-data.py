@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-
+#  pylint: disable=missing-module-docstring, invalid-name
 #
 # Copyright (c) 2021-2024 SUSE LLC
 #
@@ -15,17 +15,15 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-import csv
 import subprocess
 import time
 import xml.etree.ElementTree as ET
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse
 import json
 import sys
 from pathlib import Path
 import glob
 import os
-import platform
 from collections import namedtuple
 
 INPUT_TEMPLATE = """RESOLVEURL
@@ -62,7 +60,7 @@ def is_payg_instance():
         )
     except subprocess.CalledProcessError as e:
         print(
-            "Failed to execute instance-flavor-check tool. {}".format(e),
+            f"Failed to execute instance-flavor-check tool. {e}",
             file=sys.stderr,
         )
         return False
@@ -75,22 +73,18 @@ SuseCloudInfo = namedtuple("SuseCloudInfo", ["header_auth", "hostname"])
 
 
 def _get_suse_cloud_info():
-    input = INPUT_TEMPLATE % (CREDENTIALS_NAME, "/")
+    inputTmpl = INPUT_TEMPLATE % (CREDENTIALS_NAME, "/")
     try:
         auth_data_output = subprocess.check_output(
             "/usr/lib/zypp/plugins/urlresolver/susecloud",
-            input=input,
+            input=inputTmpl,
             stderr=subprocess.PIPE,
             universal_newlines=True,
         )
     except subprocess.CalledProcessError as e:
         system_exit(
             3,
-            [
-                "Got error when getting repo processed URL and headers(error {}):".format(
-                    e
-                )
-            ],
+            [f"Got error when getting repo processed URL and headers(error {e}):"],
         )
 
     full_output = auth_data_output.split("\n")
@@ -119,8 +113,8 @@ def _get_instance_identification():
 def _extract_http_auth(credentials):
     credentials_file = "/etc/zypp/credentials.d/" + credentials
     if not Path(credentials_file).exists():
-        system_exit(5, ["Credentials file not found ({})".format(credentials_file)])
-    with open(credentials_file) as credFile:
+        system_exit(5, [f"Credentials file not found ({credentials_file})"])
+    with open(credentials_file, encoding="utf-8") as credFile:
         username = ""
         password = ""
         for line in credFile:
@@ -139,28 +133,25 @@ def _extract_rmt_server_info(netloc):
             ["getent", "hosts", netloc], stderr=subprocess.PIPE, universal_newlines=True
         )
     except subprocess.CalledProcessError as e:
-        system_exit(4, ["unable to get ip for repository server (error {}):".format(e)])
+        system_exit(4, [f"unable to get ip for repository server (error {e}):"])
 
-    server_ip = host_ip_output.split(" ")[0].strip()
-    ca_cert_path = (
-        "/etc/pki/trust/anchors/registration_server_%s.pem"
-        % server_ip.replace(".", "_")
-    )
+    server_ip = host_ip_output.split(" ", maxsplit=1)[0].strip()
+    server_ip_uds = server_ip.replace(".", "_")
+    ca_cert_path = f"/etc/pki/trust/anchors/registration_server_{server_ip_uds}.pem"
+
     if not Path(ca_cert_path).exists():
         ca_cert_path = (
-            "/usr/share/pki/trust/anchors/registration_server_%s.pem"
-            % server_ip.replace(".", "_")
+            f"/usr/share/pki/trust/anchors/registration_server_{server_ip_uds}.pem"
         )
+
         if not Path(ca_cert_path).exists():
             system_exit(
                 6,
                 [
-                    "CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')".format(
-                        server_ip
-                    )
+                    f"CA file for server {server_ip} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')"
                 ],
             )
-    with open(ca_cert_path) as f:
+    with open(ca_cert_path, encoding="utf-8") as f:
         server_ca = f.read()
     return {"hostname": netloc, "ip": server_ip, "server_ca": server_ca}
 
@@ -252,7 +243,7 @@ def is_service_running(service):
         )
     except subprocess.CalledProcessError as e:
         print(
-            "Checking for running service {} failed: {}".format(service, e),
+            f"Checking for running service {service} failed: {e}",
             file=sys.stderr,
         )
         return False
@@ -268,9 +259,7 @@ def has_package_modifications(pkg):
             encoding="utf-8",
         )
     except subprocess.CalledProcessError as e:
-        print(
-            "has_package_modifications({}) failed: {}".format(pkg, e), file=sys.stderr
-        )
+        print(f"has_package_modifications({pkg}) failed: {e}", file=sys.stderr)
         return True
 
     for line in out.split("\n"):
@@ -291,7 +280,7 @@ def get_volume_path(volume):
             encoding="utf-8",
         )
     except subprocess.CalledProcessError as e:
-        system_exit(1, ["Unable to find volume: {}".format(e)])
+        system_exit(1, [f"Unable to find volume: {e}"])
     volumes = json.loads(out)
     for v in volumes:
         if v["Name"] == volume and v["Driver"] == "local" and v["Mountpoint"]:
@@ -331,10 +320,11 @@ if __name__ == "__main__":
         sys.exit(0)
     except KeyboardInterrupt:
         system_exit(9, ["User interrupted process."])
-    except SystemExit as e:
-        sys.exit(e.code)
-    except Exception as e:
-        system_exit(9, ["ERROR: {}".format(e)])
+    except SystemExit as ex:
+        sys.exit(ex.code)
+    #  pylint: disable=broad-exception-caught
+    except Exception as ex:
+        system_exit(9, [f"ERROR: {ex}"])
 
 # Error codes
 # 1- error detecting volumes
