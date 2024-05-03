@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,24 +13,11 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.taskomatic.task.payg;
+package com.suse.cloud;
 
-public class PaygDataExtractException extends RuntimeException {
-
-    /**
-     * Constructor with error message
-     * @param message error message
-     */
-    public PaygDataExtractException(String message) {
-        super(message);
-    }
-
-    /**
-     * Constructor with error message and a cause
-     * @param message error message
-     * @param cause what caused this exception
-     */
-    public PaygDataExtractException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public enum CloudProvider {
+    None,
+    AWS,
+    AZURE,
+    GCE
 }
