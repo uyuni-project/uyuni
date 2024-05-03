@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 03 14:48:55 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * Use uyuni-build-keys.gpg if suma-build-keys.gpg is missing
+
+-------------------------------------------------------------------
 Thu Apr 04 18:47:06 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5-0
