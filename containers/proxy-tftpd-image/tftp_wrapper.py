@@ -132,9 +132,9 @@ class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
                 else:
                     if not line.startswith(
                         "ONTIMEOUT"
-                    ):  # ONTIMEOUT points to deleted entry
+                    ):  # ONTIMEOUT points to deleted entry in saltboot case
                         saltboot_content += line + "\n"
-                        cobbler_content += line + "\n"
+                    cobbler_content += line + "\n"
         if have_entry:
             self._content = saltboot_content.encode("utf-8")
         else:
