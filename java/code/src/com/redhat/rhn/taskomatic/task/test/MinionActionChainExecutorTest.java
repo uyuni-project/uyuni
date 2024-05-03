@@ -32,7 +32,7 @@ import com.redhat.rhn.taskomatic.task.MinionActionExecutor;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -124,7 +124,7 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
         JobExecutionContext context = new JobExecutionContextImpl(scheduler, firedBundle, job);
 
         MinionActionChainExecutor actionExecutor = new MinionActionChainExecutor(saltServerActionService,
-                new CloudPaygManager());
+            new TestCloudPaygManagerBuilder().build());
         actionExecutor.execute(context);
 
         context().assertIsSatisfied();

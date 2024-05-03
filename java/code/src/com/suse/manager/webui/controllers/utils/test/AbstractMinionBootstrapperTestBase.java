@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.webui.controllers.bootstrap.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
@@ -71,7 +72,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        paygManager = new CloudPaygManager();
+        paygManager = new TestCloudPaygManagerBuilder().build();
         attestationManager = new AttestationManager();
     }
 

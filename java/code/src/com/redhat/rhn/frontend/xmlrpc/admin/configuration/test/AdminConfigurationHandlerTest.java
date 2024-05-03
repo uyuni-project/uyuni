@@ -61,8 +61,8 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 
-
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
@@ -97,7 +97,7 @@ public class AdminConfigurationHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
     private final AttestationManager attestationManager = new AttestationManager();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private RegularMinionBootstrapper regularMinionBootstrapper =

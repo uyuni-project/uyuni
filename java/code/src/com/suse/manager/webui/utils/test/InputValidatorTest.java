@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
@@ -46,7 +47,7 @@ public class InputValidatorTest  {
 
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
-    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
     private final AttestationManager attMgr = new AttestationManager();
 
     /**
