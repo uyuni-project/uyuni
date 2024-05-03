@@ -73,9 +73,9 @@ Group:          admin
 %else
 Group:          System Environment/Base
 %endif
-Version:        5.0.4
+Version:        5.0.5
 Source0:        %{name}-%{version}.tar.gz
-Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/rhel/%{name}/%{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
 Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

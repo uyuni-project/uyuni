@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri May 03 14:59:46 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Remove rhn_check, rhnreg_ks and parts of up2date_client
+  * Drop spacewalk-check, python2-spacewalk-check,
+    python3-spacewalk-check
+  * Drop spacewalk-client-setup, python2-spacewalk-client-setup,
+    python3-spacewalk-client-setup
+  * Remove dependency on python-newt
+
+-------------------------------------------------------------------
 Mon Apr 08 12:06:55 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0
