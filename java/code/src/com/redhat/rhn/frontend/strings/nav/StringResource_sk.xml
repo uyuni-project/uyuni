@@ -1241,7 +1241,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target state="translated">Položky AppStream</target>
+        <target state="translated">AppStreams</target>
       </trans-unit>
     </body>
   </file>
