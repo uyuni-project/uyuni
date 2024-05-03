@@ -80,6 +80,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.mgrsync.MgrSyncStatus;
@@ -1932,9 +1933,9 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             CredentialsFactory.removeCredentials(c);
         }
         ManagerInfoFactory.setLastMgrSyncRefresh(0);
-        CloudPaygManager mgr = new CloudPaygManager();
-        mgr.setPaygInstance(true);
-        mgr.setCompliant(true);
+        CloudPaygManager mgr = new TestCloudPaygManagerBuilder()
+            .withPaygInstance()
+            .build();
         ContentSyncManager csm = new ContentSyncManager(null, mgr);
         CloudRMTCredentials rmtCreds = CredentialsFactory.createCloudRmtCredentials("RMTUSER", "secret",
             "http://example.com");

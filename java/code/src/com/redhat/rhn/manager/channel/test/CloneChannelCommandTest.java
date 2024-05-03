@@ -34,6 +34,7 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 
 import org.junit.jupiter.api.Test;
 
@@ -224,10 +225,9 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
     }
 
     private CloudPaygManager getFakeCloudPaygManager() {
-        CloudPaygManager cloudPaygManager = new CloudPaygManager();
-        cloudPaygManager.setPaygInstance(true);
-        cloudPaygManager.setCompliant(true);
-        return cloudPaygManager;
+        return new TestCloudPaygManagerBuilder()
+            .withPaygInstance()
+            .build();
     }
 
     private Channel createChildrenWIthProductChannel(Channel parentChannel) throws Exception {

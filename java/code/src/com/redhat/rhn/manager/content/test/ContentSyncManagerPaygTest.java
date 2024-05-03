@@ -45,6 +45,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -150,12 +151,9 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
     @Test
     public void testRefreshPayg() throws Exception {
         Config.get().setString(ConfigDefaults.PRODUCT_TREE_TAG, "SUMA4.3");
-        CloudPaygManager mgr = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        CloudPaygManager mgr = new TestCloudPaygManagerBuilder()
+            .withPaygInstance()
+            .build();
         PAYG_DATA_TASK.setCloudPaygManager(mgr);
 
         WireMockServer wireMockServer = setupWireMockServer();
