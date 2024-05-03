@@ -17,51 +17,39 @@ package com.suse.cloud;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Public Cloud PAYG management class
  */
 public class CloudPaygManager {
     private static final Logger LOG = LogManager.getLogger(CloudPaygManager.class);
-    protected static Path cspBillingAdapterConfig = new File("/var/lib/csp-billing-adapter/csp-config.json").toPath();
+    public static final Path PAYG_COMPLIANCE_INFO_JSON = Path.of("/var/cache/rhn/payg_compliance.json");
 
-    private final Gson gson = new GsonBuilder().setDateFormat(CspBillingAdapterStatus.DATE_FORMAT).create();
+    private final Gson gson = new GsonBuilder().create();
 
-    private Boolean isPaygInstance;
-    private Boolean hasSCCCredentials;
-    private CloudProvider cloudProvider;
     private boolean isCompliant;
+    private PaygComplainceInfo complainceInfo;
+    private Boolean hasSCCCredentials;
     private Instant cacheTime;
-    public enum CloudProvider {
-        None,
-        AWS,
-        AZURE,
-        GCE
-    }
 
     private final TaskomaticApi tapi;
     private final ContentSyncManager mgr;
@@ -74,8 +62,7 @@ public class CloudPaygManager {
         mgr = new ContentSyncManager(null, this);
         cacheTime = Instant.MIN;
         hasSCCCredentials = null;
-        cloudProvider = CloudProvider.None;
-        isPaygInstance = null;
+        complainceInfo = null;
         isCompliant = false;
     }
 
@@ -89,8 +76,7 @@ public class CloudPaygManager {
         mgr = syncManagerIn;
         cacheTime = Instant.MIN;
         hasSCCCredentials = null;
-        cloudProvider = CloudProvider.None;
-        isPaygInstance = null;
+        complainceInfo = null;
         isCompliant = false;
     }
 
@@ -99,10 +85,7 @@ public class CloudPaygManager {
      */
     public boolean isPaygInstance() {
         checkRefreshCache(false);
-        if (isPaygInstance == null) {
-            isPaygInstance = detectPaygInstance();
-        }
-        return isPaygInstance;
+        return complainceInfo.isPaygInstance();
     }
 
     /**
@@ -110,10 +93,7 @@ public class CloudPaygManager {
      */
     public CloudProvider getCloudProvider() {
         checkRefreshCache(false);
-        if (cloudProvider == CloudProvider.None) {
-            cloudProvider = detectCloudProvider();
-        }
-        return cloudProvider;
+        return complainceInfo.getCloudProvider();
     }
 
     /**
@@ -145,8 +125,6 @@ public class CloudPaygManager {
         // if isCompliant is false, we re-detect
         if (force || !isCompliant || Duration.between(cacheTime, Instant.now()).toHours() >= 1) {
             // cached values older than 1 hour - time to refresh
-            cloudProvider = detectCloudProvider();
-            isPaygInstance = detectPaygInstance();
             hasSCCCredentials = detectHasSCCCredentials();
             isCompliant = detectIsCompliant();
             cacheTime = Instant.now();
@@ -155,225 +133,76 @@ public class CloudPaygManager {
         return false;
     }
 
-    /**
-     * Only for testing - overwrite the detected provider
-     * @param providerIn the provider
-     */
-    public void setCloudProvider(CloudProvider providerIn) {
-        cloudProvider = providerIn;
-        cacheTime = Instant.now();
-    }
-
-    /**
-     * Only for testing - overwrite the detected isPaygInstance
-     * @param isPaygInstanceIn is payg instance
-     */
-    public void setPaygInstance(boolean isPaygInstanceIn) {
-        isPaygInstance = isPaygInstanceIn;
-        cacheTime = Instant.now();
-    }
-
-    /**
-     * Only for testing - overwrite the detected hasSCCCredentials
-     * @param hasSCCCredentialsIn has scc credentials
-     */
-    public void setHasSCCCredentials(boolean hasSCCCredentialsIn) {
-        hasSCCCredentials = hasSCCCredentialsIn;
-        cacheTime = Instant.now();
-    }
-
-    /**
-     * Only for testing - overwrite the detected isCompliant
-     * @param isCompliantIn is system compliant
-     */
-    public void setCompliant(boolean isCompliantIn) {
-        isCompliant = isCompliantIn;
-        cacheTime = Instant.now();
-    }
-
-    private CloudProvider detectCloudProvider() {
-        if (isFileExecutable("/usr/bin/ec2metadata")) {
-            return CloudProvider.AWS;
-        }
-        else if (isFileExecutable("/usr/bin/azuremetadata")) {
-            return CloudProvider.AZURE;
-        }
-        else if (isFileExecutable("/usr/bin/gcemetadata")) {
-            return CloudProvider.GCE;
-        }
-        return CloudProvider.None;
-    }
-
-    private boolean detectPaygInstance() {
-        if (!isFileExecutable("/usr/bin/instance-flavor-check")) {
-            return false;
-        }
-
-        try {
-            return "PAYG".equals(getInstanceType());
-        }
-        catch (ExecutionException ex) {
-            LOG.error("Unable to identify the instance type. Fallback to BYOS.", ex);
-            return false;
-        }
-    }
-
     private boolean detectHasSCCCredentials() {
         return CredentialsFactory.listSCCCredentials().stream()
                 .anyMatch(c -> mgr.isSCCCredentials(c));
     }
 
     private boolean detectIsCompliant() {
-        // do not use isPaygInstance() to prevent a loop
-        if (BooleanUtils.isFalse(isPaygInstance)) {
+        // Parse the compliance info from the external json file, if available
+        complainceInfo = getInstanceComplianceInfo();
+
+        // If it's not payg, it's always compliant
+        if (!complainceInfo.isPaygInstance()) {
             return true;
+        }
+
+        // If the external compliance tool report it's not ok, it cannot be compliant
+        if (!complainceInfo.isCompliant()) {
+            LOG.error("The instance has been reported as non-compliant.");
+            if (complainceInfo.isAnyPackageModified()) {
+                LOG.error("Some packages have been modified and cannot be trusted.");
+            }
+            if (complainceInfo.isBillingServiceRunning()) {
+                LOG.error("The CSP Billing Adapter service is not active.");
+            }
+
+            return false;
         }
 
         // Check if the payg-dimension-computation job is active
         try {
             if (tapi.lookupScheduleByBunchAndLabel(null, "payg-dimension-computation-bunch",
                     "payg-dimension-computation-default") == null) {
-                LOG.error("payg-dimension-computation job is not active");
+                LOG.error("payg-dimension-computation job is not active.");
                 return false;
             }
         }
         catch (TaskomaticApiException e) {
-            LOG.error("Unable to check payg-dimension-computation job is active");
+            LOG.error("Unable to check if payg-dimension-computation job is active.");
             LOG.info(e.getMessage(), e);
             return false;
         }
 
-        // files of this package should not be modified
-        if (hasPackageModifications("billing-data-service")) {
-            return false;
-        }
-
-        // we only need to check compliance for SUMA PAYG
+        // Check if the billing data service is up and running
         try {
             if (!requestUrl("http://localhost:18888/").equals("online")) {
-                LOG.error("Billing Data Service offline");
+                LOG.error("Billing Data Service is not active.");
                 return false;
             }
         }
         catch (IOException e) {
-            LOG.error("Billing Data Service down");
-            LOG.info(e.getMessage(), e);
+            LOG.error("Unable to contact the Billing Data Service.", e);
             return false;
         }
 
-        // files of this package should not be modified
-        if (hasPackageModifications("csp-billing-adapter-service") ||
-                hasPackageModifications("python3-csp-billing-adapter") ||
-                hasPackageModifications("python3-csp-billing-adapter-local")) {
-            return false;
-        }
-        if (cloudProvider.equals(CloudProvider.AWS) &&
-                hasPackageModifications("python3-csp-billing-adapter-amazon")) {
-            return false;
-        }
-        if (cloudProvider.equals(CloudProvider.AZURE) &&
-                hasPackageModifications("python3-csp-billing-adapter-azure")) {
-            return false;
-        }
-        if (!isServiceRunning("csp-billing-adapter.service")) {
-            return false;
-        }
-        return checkCspBillingAdapterStatus();
-    }
-
-    protected boolean checkCspBillingAdapterStatus() {
-        try {
-            CspBillingAdapterStatus cspStatus = gson.fromJson(
-                    Files.readString(cspBillingAdapterConfig), CspBillingAdapterStatus.class);
-            if (!cspStatus.getErrors().isEmpty()) {
-                LOG.error("CPS Billing Adapter reported errors: {}", String.join("\n", cspStatus.getErrors()));
-            }
-            return cspStatus.isBillingApiAccessOk();
-        }
-        catch (Exception e) {
-            LOG.error("Unable to read CSP Billing Adapter status file");
-            LOG.info(e.getMessage(), e);
-        }
-        return false;
-    }
-
-    /**
-     * Test if the provided service is running
-     * @param serviceIn service name
-     * @return true when it is running, otherwise false
-     */
-    protected boolean isServiceRunning(String serviceIn) {
-        String[] cmd = {"/usr/bin/systemctl", "-q", "is-active", serviceIn};
-        SystemCommandExecutor scexec = new SystemCommandExecutor();
-        int retcode = scexec.execute(cmd);
-        if (retcode != 0) {
-            LOG.error("Service '{}' is not running.", serviceIn);
-            return false;
-        }
         return true;
     }
 
-    /**
-     * Test if the files of the given package name have modifications.
-     * It checks only the checksum of the files. Modifications of the permissions
-     * or ownership are not detected.
-     * Also if the package is not installed does not result in an error.
-     * @param pkg the package name to check
-     * @return true if the package is installed and files were modified, otherwise false
-     */
-    protected boolean hasPackageModifications(String pkg) {
-        String[] cmd = {"/usr/bin/rpm", "-V", pkg};
-        SystemCommandExecutor scexec = new SystemCommandExecutor();
-        int retcode = scexec.execute(cmd);
-        if (retcode != 0) {
-            // missing packages result in message "package ... is not installed" and will not match "5"
-            // 5 means checksum changed / file is modified. Example "S.5....T.  /path/to/file"
-            if (scexec.getLastCommandOutput().lines()
-                    .filter(l -> !l.endsWith(".pyc"))
-                    .anyMatch(l -> l.charAt(2) == '5')) {
-                LOG.error("Package '{}' was modifified", pkg);
-                LOG.info(scexec.getLastCommandOutput());
-                return true;
-            }
+    protected PaygComplainceInfo getInstanceComplianceInfo() {
+        // If no compliance info is available, it means the instance is BYOS
+        if (!Files.isReadable(PAYG_COMPLIANCE_INFO_JSON)) {
+            return new PaygComplainceInfo();
         }
-        return false;
-    }
 
-    /**
-     * Check if file exists and is executable
-     * @param filename a filename to check
-     * @return returns true when file exists and is executable
-     */
-    protected boolean isFileExecutable(String filename) {
-        return Files.isExecutable(Path.of(filename));
-    }
-
-    /**
-     * Executes the script to check the instance type and returns it.
-     * @return PAYG or BYOS depending on the instance type.
-     * @throws ExecutionException when the script is not successfully executed
-     */
-    protected String getInstanceType() throws ExecutionException {
-        try {
-            Process proc = Runtime.getRuntime().exec("/usr/bin/sudo /usr/bin/instance-flavor-check");
-            proc.waitFor();
-
-            try (InputStream inputStream = proc.getInputStream()) {
-                String type = StringUtils.trim(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
-                LOG.debug("Script execution returned {} with exit code {}", type, proc.exitValue());
-                return type;
-            }
-        }
-        catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-
-            throw new ExecutionException("Interrupted while checking the instance type", ex);
+        try (BufferedReader reader = Files.newBufferedReader(PAYG_COMPLIANCE_INFO_JSON)) {
+            return gson.fromJson(reader, PaygComplainceInfo.class);
         }
         catch (Exception ex) {
-            throw new ExecutionException("Unexpected Error while checking the instance type", ex);
+            LOG.error("Unable to parse compliance file. Assume instance is BYOS");
+            return new PaygComplainceInfo();
         }
     }
-
 
     protected String requestUrl(String url) throws IOException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
@@ -387,5 +216,4 @@ public class CloudPaygManager {
                    httpResponse.getStatusLine().getStatusCode());
         }
     }
-
 }
