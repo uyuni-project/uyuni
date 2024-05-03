@@ -3524,6 +3524,46 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Returns a list of all errata that are relevant to a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param sids The ids of the systems in question
+     * @return Returns an array of maps representing the errata that can be applied to
+     * each system
+     * @throws FaultException A FaultException is thrown if the server in the list
+     * cannot be found.
+     *
+     * @apidoc.doc Returns a list of all errata that are relevant to a list of systems.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.returntype
+     *      #return_array_begin()
+     *          #struct_begin("server_errata")
+     *              #prop_desc("string", "system_id", "The ID of the system")
+     *              #prop_array_begin_desc("errata", "An array of available errata infos")
+     *                  $ErrataOverviewSerializer
+     *              #prop_array_end()
+     *          #struct_end()
+     *      #array_end()
+     */
+    @ReadOnly
+    public List<Map<String, Object>> getRelevantErrata(User loggedInUser, List<Integer> sids) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<Server> servers = this.xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
+
+        for (Server server : servers) {
+          Map<String, Object> serverMap = new HashMap<>();
+          Long serverId = server.getId();
+          DataResult<ErrataOverview> serverResult = SystemManager.relevantErrata(loggedInUser, serverId);
+          serverMap.put("system_id", serverId.toString());
+          serverMap.put("errata", serverResult);
+          result.add(serverMap);
+        }
+
+        return result;
+    }
+
+    /**
      * Returns a list of all errata of the specified type that are relevant to the system.
      * @param loggedInUser The current user
      * @param sid serverId

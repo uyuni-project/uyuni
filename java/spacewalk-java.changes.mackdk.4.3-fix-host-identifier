@@ -1,0 +1,2 @@
+- Improve handling of virtual-host-gather host identifier from a 
+  VMWare virtualization host (bsc#1218724)

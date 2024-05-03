@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Apr 29 11:41:12 CEST 2024 - marina.latini@suse.com
+
+- version 4.3.73-0
+  * New API endpoint for getRelevantErrata. It takes multiple
+    servers as argument and it returns an array of maps
+    representing the errata that can be applied to each system
+
+-------------------------------------------------------------------
 Fri Apr 12 16:54:05 CEST 2024 - rosuna@suse.com
 
 - version 4.3.72-0

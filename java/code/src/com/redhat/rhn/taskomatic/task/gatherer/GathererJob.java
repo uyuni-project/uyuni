@@ -69,29 +69,24 @@ public class GathererJob extends RhnJavaJob {
             return;
         }
 
-        log.debug(String.format("Running gatherer for %d Virtual Host Managers",
-                managers.size()));
+        log.debug("Running gatherer for {} Virtual Host Managers", managers.size());
 
         try {
             Map<String, Map<String, HostJson>> results = new GathererRunner().run(managers);
             if (results == null) {
                 return;
             }
-            log.debug(String.format("Got %d Virtual Host Managers from gatherer",
-                    results.size()));
+            log.debug("Got {} Virtual Host Managers from gatherer", results.size());
 
             for (VirtualHostManager manager : managers) {
                 String label = manager.getLabel();
 
                 if (!results.containsKey(label)) {
-                    log.warn(String.format("Virtual Host Manager with label '%s' is not " +
-                            "contained in the results from gatherer - skipping it.",
-                            label));
+                    log.warn("Virtual Host Manager with label {} not found in gatherer results - skipping it.", label);
                     continue;
                 }
                 log.debug("Processing {}", label);
-                new VirtualHostManagerProcessor(manager, results.get(label))
-                        .processMapping();
+                new VirtualHostManagerProcessor(manager, results.get(label)).processMapping();
             }
         }
         catch (Throwable t) {
