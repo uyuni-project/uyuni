@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 03 15:31:53 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4-0
+  * Added explicit modules declaration
+
+-------------------------------------------------------------------
 Mon Apr 15 18:39:40 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.3-0
