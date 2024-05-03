@@ -191,11 +191,33 @@ def load_instance_info():
     }
 
 
+def check_billing_adapter_status():
+    cnf = "/var/lib/csp-billing-adapter/csp-config.json"
+    if os.path.exists(cnf):
+        try:
+            with open(cnf, encoding="utf-8") as f:
+                cspConfig = json.load(f)
+                if len(cspConfig["errors"]) > 0:
+                    errstr = "\n  ".join(cspConfig["errors"])
+                    print(
+                        f"CPS Billing Adapter reported errors:\n  {errstr}",
+                        file=sys.stderr,
+                    )
+                return cspConfig["billing_api_access_ok"]
+        except json.JSONDecodeError as e:
+            print(
+                f"Unable to read CSP Billing Adapter status file: {e}", file=sys.stderr
+            )
+
+    return False
+
+
 def perform_compliants_checks():
     # defaults
     cloudProvider = "None"
     modifiedPackages = False
     billing_service_running = False
+    billing_status = False
     isPaygInstance = is_payg_instance()
 
     if isPaygInstance:
@@ -222,7 +244,10 @@ def perform_compliants_checks():
             )
         billing_service_running = is_service_running("csp-billing-adapter.service")
 
-    compliant = billing_service_running and not modifiedPackages
+        if billing_service_running:
+            billing_status = check_billing_adapter_status()
+
+    compliant = billing_service_running and billing_status and not modifiedPackages
 
     return {
         "isPaygInstance": isPaygInstance,
@@ -230,6 +255,7 @@ def perform_compliants_checks():
         "cloudProvider": cloudProvider,
         "hasModifiedPackages": modifiedPackages,
         "billingServiceRunning": billing_service_running,
+        "billingServiceStatus": billing_status,
         "timestamp": int(time.time()),
     }
 
