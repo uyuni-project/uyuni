@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 03 14:08:01 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * In containers open the main database for the internal network
+
+-------------------------------------------------------------------
 Thu Apr 04 17:38:25 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5-0
