@@ -41,7 +41,7 @@ Requires:	mgradm
 %description
 Uyuni is a systems management application that will
 inventory, provision, update and control your Linux machines.
-This package provide a time for Cloud PAYG usage.
+This package provide a timer for Cloud PAYG usage.
 
 %prep
 %setup -q
