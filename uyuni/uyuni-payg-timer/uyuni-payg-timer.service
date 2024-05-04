@@ -1,5 +1,5 @@
 [Unit]
-Description=Collect PAYG data and copy them into the uyuni container
+Description=Collect PAYG data and copy them into the Uyuni container
 After=uyuni-server.service csp-billing-adapter.service
 
 [Service]

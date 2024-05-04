@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 #  pylint: disable=missing-module-docstring, invalid-name
 #
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -133,7 +133,7 @@ def _extract_rmt_server_info(netloc):
             ["getent", "hosts", netloc], stderr=subprocess.PIPE, universal_newlines=True
         )
     except subprocess.CalledProcessError as e:
-        system_exit(4, [f"unable to get ip for repository server (error {e}):"])
+        system_exit(4, [f"Unable to get IP for repository server (error {e}):"])
 
     server_ip = host_ip_output.split(" ", maxsplit=1)[0].strip()
     server_ip_uds = server_ip.replace(".", "_")

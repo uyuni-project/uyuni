@@ -1,5 +1,5 @@
 [Unit]
-Description=Refresh PAYG data and copy them into the uyuni container
+Description=Refresh PAYG data and copy them into the Uyuni container
 ConditionVirtualization=!container
 
 [Timer]
