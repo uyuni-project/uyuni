@@ -41,6 +41,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -92,32 +93,50 @@ public class CVEAuditManagerOVAL {
 
         Set<Server> clients = user.getServers();
         for (Server clientServer : clients) {
-            CVEAuditSystemBuilder systemAuditResult;
-            // We need this initially to be able to get errata and audit channels information for the OVAL
-            // implementation.
-            CVEAuditSystemBuilder auditWithChannelsResult =
-                    CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
+            CVEAuditSystemBuilder auditWithChannelsResult = null;
+            CVEAuditSystemBuilder auditWithOVALResult = null;
 
             if (checkOVALAvailability(clientServer)) {
-                systemAuditResult =
+                auditWithOVALResult =
                         doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
-                systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
-                systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
-                systemAuditResult.setScannedWithOVAL(true);
-            }
-            else {
-                systemAuditResult = auditWithChannelsResult;
-                systemAuditResult.setScannedWithOVAL(false);
             }
 
-            if (patchStatuses.contains(systemAuditResult.getPatchStatus())) {
+            if (checkChannelsDataAvailability(clientServer)) {
+                auditWithChannelsResult =
+                        CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
+            }
+
+            CVEAuditSystemBuilder auditResult;
+            if (auditWithOVALResult != null && auditWithChannelsResult != null) {
+                auditWithOVALResult.setChannels(auditWithChannelsResult.getChannels());
+                auditWithOVALResult.setErratas(auditWithChannelsResult.getErratas());
+                auditWithOVALResult.setScanDataSources(ScanDataSource.OVAL, ScanDataSource.CHANNELS);
+                auditResult = auditWithOVALResult;
+            }
+            else if (auditWithOVALResult != null) {
+                auditWithOVALResult.setChannels(Collections.emptySet());
+                auditWithOVALResult.setErratas(Collections.emptySet());
+                auditWithOVALResult.setScanDataSources(ScanDataSource.OVAL);
+                auditResult = auditWithOVALResult;
+            }
+            else if (auditWithChannelsResult != null) {
+                auditWithChannelsResult.setScanDataSources(ScanDataSource.CHANNELS);
+                auditResult = auditWithChannelsResult;
+            }
+            else {
+                auditResult = new CVEAuditSystemBuilder(clientServer.getId());
+                // TODO: Maybe we should add an "unknown" patch status type?
+                auditResult.setPatchStatus(PatchStatus.NOT_AFFECTED);
+            }
+
+            if (patchStatuses.contains(auditResult.getPatchStatus())) {
                 result.add(new CVEAuditServer(
-                        systemAuditResult.getId(),
-                        systemAuditResult.getSystemName(),
-                        systemAuditResult.getPatchStatus(),
-                        systemAuditResult.getChannels(),
-                        systemAuditResult.getErratas(),
-                        systemAuditResult.isScannedWithOVAL()));
+                        auditResult.getId(),
+                        auditResult.getSystemName(),
+                        auditResult.getPatchStatus(),
+                        auditResult.getChannels(),
+                        auditResult.getErratas(),
+                        auditResult.getScanDataSources()));
             }
         }
 
@@ -132,6 +151,17 @@ public class CVEAuditManagerOVAL {
      * */
     public static boolean checkOVALAvailability(Server clientServer) {
         return OVALCachingFactory.checkOVALAvailability(clientServer.getCpe());
+    }
+
+    /**
+     * Check if we have CVE channels data for the OS product installed on the given client server
+     *
+     * @param clientServer the server to check
+     * @return {@code True}
+     * */
+    public static boolean checkChannelsDataAvailability(Server clientServer) {
+        // TODO: Implement!
+        return true;
     }
 
     private static boolean isCVEIdentifierUnknown(String cveIdentifier) {
