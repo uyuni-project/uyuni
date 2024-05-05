@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -30,12 +32,7 @@ public class CVEAuditSystemBuilder {
     private long systemID;
     private String systemName;
     private PatchStatus patchStatus;
-    /**
-     * Why need this?
-     * If server was scanned wth CVEAuditManager#doAuditSystem instead of CVEAuditManagerOVAL#doAuditSystem then
-     * it's possible to get false negatives.
-     */
-    private boolean scannedWithOVAL;
+    private Set<ScanDataSource> scanDataSources = new HashSet<>();
 
     // LinkedHashSet is used to preserve insertion order when iterating
     private Set<AuditChannelInfo> channels =
@@ -189,18 +186,16 @@ public class CVEAuditSystemBuilder {
     }
 
     /**
-     * Returns {@code True} if server was scanned with OVAL and {@code False} otherwise
-     * @return {@code True} if server was scanned with OVAL and {@code False} otherwise
+     * Returns the list of data sources used to audit the system.
+     *
+     * @return list of data sources
      * */
-    public boolean isScannedWithOVAL() {
-        return scannedWithOVAL;
+    public Set<ScanDataSource> getScanDataSources() {
+        return scanDataSources;
     }
 
-    /**
-     * Sets scannedWithOVAL
-     * @param scannedWithOVALIn the value to set
-     * */
-    public void setScannedWithOVAL(boolean scannedWithOVALIn) {
-        this.scannedWithOVAL = scannedWithOVALIn;
+
+    public void setScanDataSources(ScanDataSource... dataSourcesIn) {
+        scanDataSources = new HashSet<>(Arrays.asList(dataSourcesIn));
     }
 }

@@ -484,16 +484,7 @@ class CVEAudit extends React.Component<Props, State> {
               comparator={Utils.sortByText}
               header={t("Scan Data")}
               cell={(row, criteria) => {
-                return (
-                  <div
-                    className="scan-data-indicator"
-                    style={{
-                      backgroundColor: row.scannedWithOVAL ? "#009688" : "orange",
-                    }}
-                  >
-                    {t(row.scannedWithOVAL ? "OVAL" : "Channels")}
-                  </div>
-                );
+                return <div>{row.scanDataSources.join(", ")}</div>;
               }}
             />
           </Table>
