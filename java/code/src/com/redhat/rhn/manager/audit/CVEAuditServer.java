@@ -29,12 +29,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
     private long id;
     private String name;
     private PatchStatus patchStatus;
-    /**
-     * Why need this?
-     * If server was scanned wth CVEAuditManager#doAuditSystem instead of CVEAuditManagerOVAL#doAuditSystem then
-     * it's possible to get false negatives.
-     */
-    private boolean scannedWithOVAL;
+    private Set<ScanDataSource> scanDataSources;
 
     // LinkedHashSet is used to preserve insertion order when iterating
     private Set<AuditChannelInfo> channels;
@@ -48,17 +43,17 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * @param statusIn        status
      * @param channelsIn      channels
      * @param erratasIn       errata
-     * @param scannedWithOVALIn scannedWithOVAL
+     * @param scanDataSourcesIn scan data sources
      */
     public CVEAuditServer(long idIn, String nameIn, PatchStatus statusIn,
                           Set<AuditChannelInfo> channelsIn,
-                          Set<ErrataIdAdvisoryPair> erratasIn, boolean scannedWithOVALIn) {
+                          Set<ErrataIdAdvisoryPair> erratasIn, Set<ScanDataSource> scanDataSourcesIn) {
         this.id = idIn;
         this.name = nameIn;
         this.patchStatus = statusIn;
         this.channels = channelsIn;
         this.erratas = erratasIn;
-        this.scannedWithOVAL = scannedWithOVALIn;
+        this.scanDataSources = scanDataSourcesIn;
     }
 
     /**
@@ -123,7 +118,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * @inherit
      * */
     @Override
-    public boolean isScannedWithOVAL() {
-        return scannedWithOVAL;
+    public Set<ScanDataSource> getScanDataSources() {
+        return scanDataSources;
     }
 }
