@@ -53,11 +53,10 @@ public interface CVEAuditSystem {
     Set<ErrataIdAdvisoryPair> getErratas();
 
     /**
-     * Returns if the system was scanned with OVAL instead of Channels
-     *
-     * @return {@code True} of server was scanned with OVAL and {@code False} otherwise.
-     */
-    boolean isScannedWithOVAL();
+     * Return the data sources used to scan the system.
+     * @return the set of data sources
+     * */
+    Set<ScanDataSource> getScanDataSources();
 
     /**
      * Return the closest channel as {@link String} for CSV file download.
