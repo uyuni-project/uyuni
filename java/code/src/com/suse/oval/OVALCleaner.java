@@ -85,7 +85,7 @@ public class OVALCleaner {
         }
     }
 
-    private static final Pattern EXTRACT_CVE_REGEX = Pattern.compile(".*(CVE-[0-9]{4}-[0-9]+).*");
+    private static final Pattern EXTRACT_CVE_REGEX = Pattern.compile(".{0,30}(CVE-\\d{4}-\\d+).{0,30}");
 
     private static void fillCves(DefinitionType definition, OsFamily osFamily) {
         switch (osFamily) {
