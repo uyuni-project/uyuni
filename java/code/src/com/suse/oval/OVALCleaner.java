@@ -33,6 +33,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +42,7 @@ import java.util.stream.Collectors;
  * OVAL data from multiple sources and make changes to it to have a more predictable format.
  */
 public class OVALCleaner {
+
     private OVALCleaner() {
     }
 
@@ -82,6 +85,8 @@ public class OVALCleaner {
         }
     }
 
+    private static final Pattern EXTRACT_CVE_REGEX = Pattern.compile(".*(CVE-[0-9]{4}-[0-9]+).*");
+
     private static void fillCves(DefinitionType definition, OsFamily osFamily) {
         switch (osFamily) {
             case REDHAT_ENTERPRISE_LINUX:
@@ -93,7 +98,15 @@ public class OVALCleaner {
                 List<String> cves =
                         definition.getMetadata().getAdvisory().map(Advisory::getCveList)
                                 .orElse(Collections.emptyList())
-                                .stream().map(AdvisoryCveType::getCve).collect(Collectors.toList());
+                                .stream().map(AdvisoryCveType::getCve)
+                                .map(cve -> {
+                                    Matcher matcher = EXTRACT_CVE_REGEX.matcher(cve);
+                                    if (matcher.find()) {
+                                        return matcher.group(1);
+                                    }
+
+                                    return "";
+                                }).filter(StringUtils::isNotBlank).collect(Collectors.toList());
                 definition.setCves(cves);
                 break;
             case DEBIAN:
