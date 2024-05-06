@@ -265,14 +265,33 @@ def suse_host?(name)
   (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
 end
 
-# Determines if the given host name is a slemicro host.
+# Determines if the given host name is a SLE/SL Micro host.
 #
 # @param name [String] The host name to check.
-# @return [Boolean] Returns true if the system is a transactional one
-def transactional_system?(name)
+# @return [Boolean] Returns true if the system is a SLE/SL Micro one
+def slemicro_host?(name)
   node = get_target(name)
   os_family = node.os_family
-  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('opensuse-leap-micro')
+  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos')
+end
+
+# Determines if the given host name is a openSUSE Leap Micro host.
+#
+# @param name [String] The host name to check.
+# @return [Boolean] Returns true if the system is a openSUSE Leap Micro one.
+def leapmicro_host?(name)
+  node = get_target(name)
+  os_family = node.os_family
+  os_family.include?('opensuse-leap-micro')
+end
+
+# Determines if the given host name is a transactional system
+# At the moment only SLE/SL Micro and openSUSE Leap Micro
+#
+# @param name [String] The host name to check.
+# @return [Boolean] Returns true if the system is a transactional system
+def transactional_system?(name)
+  slemicro_host?(name) || leapmicro_host?(name)
 end
 
 # Determines if a given host name belongs to a Red Hat-like distribution.
