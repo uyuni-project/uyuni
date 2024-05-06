@@ -46,8 +46,7 @@ import java.util.Arrays;
 public class PaygAuthDataExtractor {
 
     private static final Path PAYG_INSTANCE_INFO_JSON = Path.of("/var/cache/rhn/payg.json");
-
-    private static final int VALIDITY_MINUTES = 10;
+    private static final int VALIDITY_MINUTES = 11;
 
     private static final String CONNECTION_TIMEOUT_PROPEERRTY = "java.payg.connection_timeout";
     private static final String WAIT_RESPONSE_TIMEOUT_PROPEERRTY = "java.payg.repsonse_timeout";
