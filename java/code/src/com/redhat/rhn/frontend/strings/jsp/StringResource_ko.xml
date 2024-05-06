@@ -29718,7 +29718,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.update-system-overview" xml:space="preserve">
         <source>Update System Overview</source>
-        <target state="new"/>
+        <target state="needs-translation">시스템 개요 업데이트</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
@@ -29820,63 +29820,63 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-translation">리포지토리에서 제거된 채널의 패키지를 유지합니다.</target>
       </trans-unit>
       <trans-unit id="repos.jsp.button-save" xml:space="preserve">
         <source>Save</source>
-        <target state="new"/>
+        <target state="needs-translation">저장</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-        <target state="new"/>
+        <target state="needs-translation">액션 체인 및 체크인 salt SSH 시스템 다시 시작 </target>
       </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
-        <target state="new"/>
+        <target state="needs-translation">주변 장치 서버</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-translation">기밀 컴퓨팅 증명</target>
       </trans-unit>
       <trans-unit id="ssm.overview.audit" xml:space="preserve">
             <source>Audit</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">감사</target>
       </trans-unit>
       <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; 선택한 시스템을 위한 기밀 컴퓨팅</target>
       </trans-unit>
       <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; 선택한 시스템을 위한 새로운 기밀 컴퓨팅 증명</target>
       </trans-unit>
       <trans-unit id="ssm.coco.index" xml:space="preserve">
             <source>Confidential Computing</source>
-        <target state="new"/>
+        <target state="needs-translation">기밀 컴퓨팅</target>
       </trans-unit>
       <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
             <source>Configure</source>
-        <target state="new"/>
+        <target state="needs-translation">구성</target>
       </trans-unit>
       <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
             <source>Schedule</source>
-        <target state="new"/>
+        <target state="needs-translation">일정</target>
       </trans-unit>
       <trans-unit id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
-        <target state="new"/>
+        <target state="needs-translation">AppStreams</target>
       </trans-unit>
     </body>
   </file>
