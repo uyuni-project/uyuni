@@ -265,14 +265,33 @@ def suse_host?(name)
   (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
 end
 
-# Determines if the given host name is a slemicro host.
+# Determines if the given host name is a SLE/SL Micro host.
 #
 # @param name [String] The host name to check.
-# @return [Boolean] Returns true if the host name contains 'slemicro' or 'micro', false otherwise.
+# @return [Boolean] Returns true if the system is a SLE/SL Micro one
 def slemicro_host?(name)
   node = get_target(name)
   os_family = node.os_family
   (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos')
+end
+
+# Determines if the given host name is a openSUSE Leap Micro host.
+#
+# @param name [String] The host name to check.
+# @return [Boolean] Returns true if the system is a openSUSE Leap Micro one.
+def leapmicro_host?(name)
+  node = get_target(name)
+  os_family = node.os_family
+  os_family.include?('opensuse-leap-micro')
+end
+
+# Determines if the given host name is a transactional system
+# At the moment only SLE/SL Micro and openSUSE Leap Micro
+#
+# @param name [String] The host name to check.
+# @return [Boolean] Returns true if the system is a transactional system
+def transactional_system?(name)
+  slemicro_host?(name) || leapmicro_host?(name)
 end
 
 # Determines if a given host name belongs to a Red Hat-like distribution.
@@ -320,11 +339,16 @@ end
 # Extracts logs from a given node.
 #
 # @param [Node] node - The node from which to extract the logs.
+# @param [Host] - The host from which to extract the logs.
 # @raise [ScriptError] if the download of the log archive fails.
-def extract_logs_from_node(node)
+def extract_logs_from_node(node, host)
   begin
     os_family = node.os_family
-    node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_gh_validation
+    if os_family =~ /^opensuse/ && !$is_gh_validation && !transactional_system?(host)
+      node.run('zypper --non-interactive install tar')
+    elsif transactional_system?(host)
+      node.run('transactional-update --continue -n pkg install tar')
+    end
     node.run('journalctl > /var/log/messages', check_errors: false)
     node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
     node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
