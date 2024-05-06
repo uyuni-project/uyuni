@@ -40,6 +40,9 @@ public class PaygComplainceInfo {
 
     private final boolean billingAdapterRunning;
 
+    @SerializedName("billingServiceStatus")
+    private final boolean billingAdapterHealthy;
+
     private final long timestamp;
 
     /**
@@ -47,7 +50,7 @@ public class PaygComplainceInfo {
      */
     public PaygComplainceInfo() {
         // By default, assume it's a compliant BYOS instance
-        this(CloudProvider.None, false, false, true);
+        this(CloudProvider.None, false, false, true, true);
     }
 
     /**
@@ -56,17 +59,20 @@ public class PaygComplainceInfo {
      * @param isPayg if the instance is PAYG
      * @param hasModifiedPackages if some packages are modified
      * @param isAdapterRunning if the required billing adapter service is running
+     * @param isAdapterHealthy if the required billing adapter service is healthy. The value is forced to
+     * <code>false</code> when the other parameter <code>isAdapterRunning</code> is set to false.
      */
     public PaygComplainceInfo(CloudProvider provider, boolean isPayg, boolean hasModifiedPackages,
-                              boolean isAdapterRunning) {
+                              boolean isAdapterRunning, boolean isAdapterHealthy) {
         paygInstance = isPayg;
 
         cloudProvider = provider;
         anyPackageModified = hasModifiedPackages;
         billingAdapterRunning = isAdapterRunning;
+        billingAdapterHealthy = isAdapterRunning && isAdapterHealthy;
 
         // Set the compliant flag accordingly to the value received
-        compliant = billingAdapterRunning && !anyPackageModified;
+        compliant = billingAdapterRunning && billingAdapterHealthy && !anyPackageModified;
 
         timestamp = Instant.now().getEpochSecond();
     }
@@ -91,6 +97,10 @@ public class PaygComplainceInfo {
         return billingAdapterRunning;
     }
 
+    public boolean isBillingAdapterHealthy() {
+        return billingAdapterHealthy;
+    }
+
     public Instant getTimestamp() {
         return Instant.ofEpochSecond(timestamp);
     }
@@ -110,6 +120,7 @@ public class PaygComplainceInfo {
             .append(compliant, that.compliant)
             .append(anyPackageModified, that.anyPackageModified)
             .append(billingAdapterRunning, that.billingAdapterRunning)
+            .append(billingAdapterHealthy, that.billingAdapterHealthy)
             .append(timestamp, that.timestamp)
             .append(cloudProvider, that.cloudProvider)
             .isEquals();
@@ -123,6 +134,7 @@ public class PaygComplainceInfo {
             .append(cloudProvider)
             .append(anyPackageModified)
             .append(billingAdapterRunning)
+            .append(billingAdapterHealthy)
             .append(timestamp)
             .toHashCode();
     }
@@ -135,6 +147,7 @@ public class PaygComplainceInfo {
             .append("cloudProvider", getCloudProvider())
             .append("anyPackageModified", isAnyPackageModified())
             .append("billingAdapterRunning", isBillingAdapterRunning())
+            .append("billingAdapterHealthy", isBillingAdapterHealthy())
             .append("timestamp", getTimestamp())
             .toString();
     }
