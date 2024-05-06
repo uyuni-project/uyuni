@@ -38,12 +38,12 @@ public class PaygComplainceInfo {
     @SerializedName("hasModifiedPackages")
     private boolean anyPackageModified;
 
-    private boolean billingServiceRunning;
+    private boolean billingAdapterRunning;
 
     private long timestamp;
 
     /**
-     * Creates the compliance info for a BYOS instace.
+     * Creates the compliance info for a BYOS instance.
      */
     public PaygComplainceInfo() {
         // By default, assume it's a compliant BYOS instance
@@ -51,30 +51,20 @@ public class PaygComplainceInfo {
     }
 
     /**
-     * Creates the compliance info for a BYOS instace.
-     * @param provider the cloud provider
-     * @param hasModifiedPackages if some packages are modified
-     * @param isServiceRunning if the required billing service is running
-     */
-    public PaygComplainceInfo(CloudProvider provider, boolean hasModifiedPackages, boolean isServiceRunning) {
-        this(provider, true, hasModifiedPackages, isServiceRunning);
-    }
-
-    /**
-     * Creates the compliance info for a BYOS instace.
+     * Creates the compliance info for an instance.
      * @param provider the cloud provider
      * @param isPayg if the instance is PAYG
      * @param hasModifiedPackages if some packages are modified
-     * @param isServiceRunning if the required billing service is running
+     * @param isAdapterRunning if the required billing adapter service is running
      */
     public PaygComplainceInfo(CloudProvider provider, boolean isPayg, boolean hasModifiedPackages,
-                              boolean isServiceRunning) {
+                              boolean isAdapterRunning) {
         paygInstance = isPayg;
-        compliant = isServiceRunning && !hasModifiedPackages;
+        compliant = isAdapterRunning && !hasModifiedPackages;
 
         cloudProvider = provider;
         anyPackageModified = hasModifiedPackages;
-        billingServiceRunning = isServiceRunning;
+        billingAdapterRunning = isAdapterRunning;
 
         timestamp = Instant.now().getEpochSecond();
     }
@@ -111,12 +101,12 @@ public class PaygComplainceInfo {
         this.anyPackageModified = hasModifiedPackagesIn;
     }
 
-    public boolean isBillingServiceRunning() {
-        return billingServiceRunning;
+    public boolean isBillingAdapterRunning() {
+        return billingAdapterRunning;
     }
 
-    public void setBillingServiceRunning(boolean billingServiceRunningIn) {
-        this.billingServiceRunning = billingServiceRunningIn;
+    public void setBillingAdapterRunning(boolean billingServiceRunningIn) {
+        this.billingAdapterRunning = billingServiceRunningIn;
     }
 
     public Instant getTimestamp() {
@@ -141,7 +131,7 @@ public class PaygComplainceInfo {
             .append(paygInstance, that.paygInstance)
             .append(compliant, that.compliant)
             .append(anyPackageModified, that.anyPackageModified)
-            .append(billingServiceRunning, that.billingServiceRunning)
+            .append(billingAdapterRunning, that.billingAdapterRunning)
             .append(timestamp, that.timestamp)
             .append(cloudProvider, that.cloudProvider)
             .isEquals();
@@ -154,7 +144,7 @@ public class PaygComplainceInfo {
             .append(compliant)
             .append(cloudProvider)
             .append(anyPackageModified)
-            .append(billingServiceRunning)
+            .append(billingAdapterRunning)
             .append(timestamp)
             .toHashCode();
     }
@@ -166,7 +156,7 @@ public class PaygComplainceInfo {
             .append("compliant", isCompliant())
             .append("cloudProvider", getCloudProvider())
             .append("anyPackageModified", isAnyPackageModified())
-            .append("billingServiceRunning", isBillingServiceRunning())
+            .append("billingAdapterRunning", isBillingAdapterRunning())
             .append("timestamp", getTimestamp())
             .toString();
     }
