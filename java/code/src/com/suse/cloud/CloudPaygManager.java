@@ -42,7 +42,9 @@ import java.time.Instant;
  */
 public class CloudPaygManager {
     private static final Logger LOG = LogManager.getLogger(CloudPaygManager.class);
-    public static final Path PAYG_COMPLIANCE_INFO_JSON = Path.of("/var/cache/rhn/payg_compliance.json");
+
+    private static final Path PAYG_COMPLIANCE_INFO_JSON = Path.of("/var/cache/rhn/payg_compliance.json");
+    private static final int VALIDITY_MINUTES = 11;
 
     private final Gson gson = new GsonBuilder().create();
 
@@ -141,6 +143,12 @@ public class CloudPaygManager {
     private boolean detectIsCompliant() {
         // Parse the compliance info from the external json file, if available
         complainceInfo = getInstanceComplianceInfo();
+
+        // Verify the information is correctly updated
+        if (Duration.between(complainceInfo.getTimestamp(), Instant.now()).toMinutes() > VALIDITY_MINUTES) {
+            LOG.error("The instance compliance info is not up-to-date.");
+            return false;
+        }
 
         // If it's not payg, it's always compliant
         if (!complainceInfo.isPaygInstance()) {
