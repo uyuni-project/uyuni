@@ -1236,25 +1236,25 @@
         </context-group>
         <target state="final">앱 스트림</target>
       </trans-unit>
-      <trans-unit approved="yes" id="AppStreams" xml:space="preserve">
+      <trans-unit approved="no" id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target state="final">앱 스트림</target>
+        <target state="needs-translation">AppStreams</target>
       </trans-unit>
-    <trans-unit id="nav.system.coco" xml:space="preserve">
+      <trans-unit id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">기밀 컴퓨팅</target>
+      </trans-unit>
       <trans-unit id="nav.system.coco.settings" xml:space="preserve">
         <source>Settings</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">설정</target>
+      </trans-unit>
       <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve">
         <source>List Attestations</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="needs-translation">증명 나열</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
