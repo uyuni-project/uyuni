@@ -29614,60 +29614,60 @@ given channel.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">추가 패키지</target>
       </trans-unit>
       <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
             <source>Config Diffs</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">구성 차이</target>
       </trans-unit>
       <trans-unit id="exportcolumn.proxy" xml:space="preserve">
             <source>Proxy</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">프록시</target>
       </trans-unit>
       <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
             <source>Manager Server</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">서버 관리</target>
       </trans-unit>
       <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
             <source>Virtual Host</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">가상 호스트</target>
       </trans-unit>
       <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
             <source>Virtual Guest</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">가상 게스트</target>
       </trans-unit>
       <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
             <source>Requires Reboot</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">재부팅 필요</target>
       </trans-unit>
       <trans-unit id="exportcolumn.statusType" xml:space="preserve">
             <source>Status Type</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="needs-translation">상태 유형</target>
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
-        <target state="new"/>
+        <target state="needs-translation">기존 스택은 더 이상 지원되지 않으며 제거될 예정입니다. salt 미니언으로 마이그레이션하는 것을 고려하세요.</target>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
           <source>Some systems already have a reboot scheduled.</source>
@@ -29714,7 +29714,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
         <source>System Overview Update Queue</source>
-        <target state="new"/>
+        <target state="needs-translation">시스템 개요 업데이트 대기열</target>
       </trans-unit>
       <trans-unit id="task.status.update-system-overview" xml:space="preserve">
         <source>Update System Overview</source>
@@ -29822,62 +29822,62 @@ given channel.</source>
         </context-group>
         <target state="needs-adaptation"/>
       </trans-unit>
-    <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
         <source>Save</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ssm.overview.audit" xml:space="preserve">
             <source>Audit</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.index" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.index" xml:space="preserve">
             <source>Confidential Computing</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
             <source>Configure</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
             <source>Schedule</source>
         <target state="new"/>
-  </trans-unit>
+      </trans-unit>
       <trans-unit id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
