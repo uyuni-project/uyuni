@@ -130,6 +130,15 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
         assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
 
+        // test 7 - billing adapter report errors
+        cpm = new TestCloudPaygManagerBuilder()
+            .withPaygInstance()
+            .withBillingAdapterRunning(false)
+            .build();
+
+        assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
+        assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
+
         cpm = new TestCloudPaygManagerBuilder()
             .withPaygInstance()
             .build();

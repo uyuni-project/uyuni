@@ -153,8 +153,12 @@ public class CloudPaygManager {
             if (complainceInfo.isAnyPackageModified()) {
                 LOG.error("Some packages have been modified and cannot be trusted.");
             }
+
             if (!complainceInfo.isBillingAdapterRunning()) {
                 LOG.error("The CSP Billing Adapter service is not active.");
+            }
+            else if (!complainceInfo.isBillingAdapterHealthy()) {
+                LOG.error("The CSP Billing Adapter service has errors.");
             }
 
             return false;
