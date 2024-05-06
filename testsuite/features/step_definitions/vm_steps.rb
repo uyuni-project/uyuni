@@ -24,7 +24,7 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
     name = 'sles-disk-image-template.qcow2'
     net = 'salt-sles'
     os = 'sle15sp4'
-    mac = ENV.fetch('MAC_MIN_NESTED', 'RANDOM')
+    mac = 'RANDOM'
   when 'rhlike'
     name = 'rhlike-disk-image-template.qcow2'
     net = 'salt-rhlike'
