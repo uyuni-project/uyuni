@@ -29,18 +29,18 @@ import java.time.Instant;
 public class PaygComplainceInfo {
 
     @SerializedName("isPaygInstance")
-    private boolean paygInstance;
+    private final boolean paygInstance;
 
-    private boolean compliant;
+    private final boolean compliant;
 
-    private CloudProvider cloudProvider;
+    private final CloudProvider cloudProvider;
 
     @SerializedName("hasModifiedPackages")
-    private boolean anyPackageModified;
+    private final boolean anyPackageModified;
 
-    private boolean billingAdapterRunning;
+    private final boolean billingAdapterRunning;
 
-    private long timestamp;
+    private final long timestamp;
 
     /**
      * Creates the compliance info for a BYOS instance.
@@ -60,11 +60,13 @@ public class PaygComplainceInfo {
     public PaygComplainceInfo(CloudProvider provider, boolean isPayg, boolean hasModifiedPackages,
                               boolean isAdapterRunning) {
         paygInstance = isPayg;
-        compliant = isAdapterRunning && !hasModifiedPackages;
 
         cloudProvider = provider;
         anyPackageModified = hasModifiedPackages;
         billingAdapterRunning = isAdapterRunning;
+
+        // Set the compliant flag accordingly to the value received
+        compliant = billingAdapterRunning && !anyPackageModified;
 
         timestamp = Instant.now().getEpochSecond();
     }
@@ -73,48 +75,24 @@ public class PaygComplainceInfo {
         return paygInstance;
     }
 
-    public void setPaygInstance(boolean paygInstanceIn) {
-        this.paygInstance = paygInstanceIn;
-    }
-
     public boolean isCompliant() {
         return compliant;
-    }
-
-    public void setCompliant(boolean compliantIn) {
-        this.compliant = compliantIn;
     }
 
     public CloudProvider getCloudProvider() {
         return cloudProvider;
     }
 
-    public void setCloudProvider(CloudProvider cloudProviderIn) {
-        this.cloudProvider = cloudProviderIn;
-    }
-
     public boolean isAnyPackageModified() {
         return anyPackageModified;
-    }
-
-    public void setAnyPackageModified(boolean hasModifiedPackagesIn) {
-        this.anyPackageModified = hasModifiedPackagesIn;
     }
 
     public boolean isBillingAdapterRunning() {
         return billingAdapterRunning;
     }
 
-    public void setBillingAdapterRunning(boolean billingServiceRunningIn) {
-        this.billingAdapterRunning = billingServiceRunningIn;
-    }
-
     public Instant getTimestamp() {
         return Instant.ofEpochSecond(timestamp);
-    }
-
-    public void setTimestamp(Instant timestampIn) {
-        this.timestamp = timestampIn.getEpochSecond();
     }
 
     @Override
