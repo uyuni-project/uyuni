@@ -471,7 +471,7 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   pkgs = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
   if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
-  elsif slemicro_host?(host)
+  elsif transactional_system?(host)
     target.run("test -e /usr/bin/zypper && transactional-update -n pkg install #{pkgs}", check_errors: false)
   elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
@@ -503,9 +503,9 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if use_salt_bundle
-    if slemicro_host?(host)
+    if transactional_system?(host)
       node.run('transactional-update --continue -n pkg rm venv-salt-minion', check_errors: false)
-      # SLE Micro could have also installed salt-minion
+      # Transactional systems could have also installed salt-minion via sumaform
       _result, code = node.run('rpm -q salt-minion', check_errors: false)
       node.run('transactional-update --continue -n pkg rm salt-minion', check_errors: false) if code.zero?
       node.run('rm -Rf /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt', check_errors: false) if code.zero?
@@ -518,7 +518,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
     end
     node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
   else
-    if slemicro_host?(host)
+    if transactional_system?(host)
       node.run('transactional-update --continue -n pkg rm salt salt-minion', check_errors: false)
     elsif rh_host?(host)
       node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)

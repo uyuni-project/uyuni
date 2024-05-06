@@ -523,7 +523,7 @@ When(/^I extract the log files from all our active nodes$/) do
 
     $stdout.puts "Host: #{host}"
     $stdout.puts "Node: #{node.full_hostname}"
-    extract_logs_from_node(node)
+    extract_logs_from_node(node, host)
   end
 end
 
@@ -925,7 +925,7 @@ When(/^I install packages? "([^"]*)" on this "([^"]*)"((?: without error control
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
-  elsif slemicro_host?(host)
+  elsif transactional_system?(host)
     cmd = "transactional-update pkg install -n #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
     not_found_msg = 'not found in package names'
@@ -1576,8 +1576,8 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
   )
 end
 
-When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
-  if slemicro_host?(host)
+When(/^I reboot the "([^"]*)" if it is a transactional system$/) do |host|
+  if transactional_system?(host)
     step %(I reboot the "#{host}" minion through the web UI)
   end
 end
