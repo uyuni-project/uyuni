@@ -81,6 +81,8 @@ ENV_VAR_BY_HOST = {
   'opensuse154arm_ssh_minion' => 'OPENSUSE154ARM_SSHMINION',
   'opensuse155arm_minion' => 'OPENSUSE155ARM_MINION',
   'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION',
+  'opensuse156arm_minion' => 'OPENSUSE156ARM_MINION',
+  'opensuse156arm_ssh_minion' => 'OPENSUSE156ARM_SSHMINION',
   'sle15sp5s390_minion' => 'SLE15SP5S390_MINION',
   'sle15sp5s390_ssh_minion' => 'SLE15SP5S390_SSHMINION',
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
@@ -239,6 +241,8 @@ PACKAGE_BY_CLIENT = {
   'opensuse154arm_ssh_minion' => 'bison',
   'opensuse155arm_minion' => 'bison',
   'opensuse155arm_ssh_minion' => 'bison',
+  'opensuse156arm_minion' => 'bison',
+  'opensuse156arm_ssh_minion' => 'bison',
   'sle15sp5s390_minion' => 'bison',
   'sle15sp5s390_ssh_minion' => 'bison',
   'salt_migration_minion' => 'bison'
@@ -326,6 +330,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
     'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
     'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
+    'opensuse156arm_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
+    'opensuse156arm_ssh_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
@@ -398,6 +404,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'opensuse154arm_ssh_minion' => 'openSUSE Leap 15.4 (aarch64)',
     'opensuse155arm_minion' => 'openSUSE Leap 15.5 (aarch64)',
     'opensuse155arm_ssh_minion' => 'openSUSE Leap 15.5 (aarch64)',
+    'opensuse156arm_minion' => 'openSUSE Leap 15.6 (aarch64)',
+    'opensuse156arm_ssh_minion' => 'openSUSE Leap 15.6 (aarch64)',
     'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
@@ -446,7 +454,8 @@ LABEL_BY_BASE_CHANNEL = {
     'debian-11-pool for amd64' => 'debian-11-pool-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
     'openSUSE-Leap-15.4-Pool for aarch64' => 'opensuse-leap-15.4-pool-aarch64',
-    'openSUSE-Leap-15.5-Pool for aarch64' => 'opensuse-leap-15.5-pool-aarch64'
+    'openSUSE-Leap-15.5-Pool for aarch64' => 'opensuse-leap-15.5-pool-aarch64',
+    'openSUSE-Leap-15.6-Pool for aarch64' => 'opensuse-leap-15.6-pool-aarch64'
   },
   'Uyuni' =>
   {
@@ -477,7 +486,8 @@ LABEL_BY_BASE_CHANNEL = {
     'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian-11-pool-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian-12-pool-amd64-uyuni',
     'openSUSE Leap 15.4 (aarch64)' => 'opensuse_leap15_4-aarch64',
-    'openSUSE Leap 15.5 (aarch64)' => 'opensuse_leap15_5-aarch64'
+    'openSUSE Leap 15.5 (aarch64)' => 'opensuse_leap15_5-aarch64',
+    'openSUSE Leap 15.6 (aarch64)' => 'opensuse_leap15_6-aarch64'
   }
 }.freeze
 
@@ -514,7 +524,8 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'debian-11-pool for amd64' => 'debian11-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
     'openSUSE-Leap-15.4-Pool for aarch64' => 'openSUSE-Leap-15.4-aarch64',
-    'openSUSE-Leap-15.5-Pool for aarch64' => 'openSUSE-Leap-15.5-aarch64'
+    'openSUSE-Leap-15.5-Pool for aarch64' => 'openSUSE-Leap-15.5-aarch64',
+    'openSUSE-Leap-15.6-Pool for aarch64' => 'openSUSE-Leap-15.6-aarch64'
   },
   'Uyuni' => {
     'openSUSE Leap 15.4 (x86_64)' => 'openSUSE-Leap-15.4-x86_64-uyuni',
@@ -544,7 +555,8 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian11-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
     'openSUSE Leap 15.4 (aarch64)' => 'openSUSE-Leap-15.4-aarch64-uyuni',
-    'openSUSE Leap 15.5 (aarch64)' => 'openSUSE-Leap-15.5-aarch64-uyuni'
+    'openSUSE Leap 15.5 (aarch64)' => 'openSUSE-Leap-15.5-aarch64-uyuni',
+    'openSUSE Leap 15.6 (aarch64)' => 'openSUSE-Leap-15.6-aarch64-uyuni'
   }
 }.freeze
 
@@ -582,7 +594,8 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'debian-11-pool for amd64' => 'debian-11-pool-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
     'openSUSE-Leap-15.4-Pool for aarch64' => nil,
-    'openSUSE-Leap-15.5-Pool for aarch64' => nil
+    'openSUSE-Leap-15.5-Pool for aarch64' => nil,
+    'openSUSE-Leap-15.6-Pool for aarch64' => nil
   },
   'Uyuni' => {
     'openSUSE Leap 15.4 (x86_64)' => nil,
@@ -611,7 +624,8 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian11-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
     'openSUSE Leap 15.4 (aarch64)' => nil,
-    'openSUSE Leap 15.5 (aarch64)' => nil
+    'openSUSE Leap 15.5 (aarch64)' => nil,
+    'openSUSE Leap 15.6 (aarch64)' => nil
   }
 }.freeze
 
@@ -684,6 +698,8 @@ PKGARCH_BY_CLIENT = {
   'opensuse154arm_ssh_minion' => 'aarch64',
   'opensuse155arm_minion' => 'aarch64',
   'opensuse155arm_ssh_minion' => 'aarch64',
+  'opensuse156arm_minion' => 'aarch64',
+  'opensuse156arm_ssh_minion' => 'aarch64',
   'sle15sp5s390_minion' => 's390x',
   'sle15sp5s390_ssh_minion' => 's390x'
 }.freeze
@@ -923,6 +939,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-x86_64-backports-updates
         opensuse_leap15_5-x86_64-sle-updates
       ],
+    'leap15.6-x86_64' =>
+      %w[
+        opensuse_leap15_6-x86_64
+        opensuse_leap15_6-x86_64-non-oss
+        opensuse_leap15_6-x86_64-non-oss-updates
+        opensuse_leap15_6-x86_64-updates
+        opensuse_leap15_6-x86_64-backports-updates
+        opensuse_leap15_6-x86_64-sle-updates
+      ],
     'leap15.4-aarch64' =>
       %w[
         opensuse-backports-15.4-updates-aarch64
@@ -939,6 +964,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse-sle-15.5-updates-aarch64
         sle-manager-tools15-updates-aarch64-opensuse-15.5
         sle-manager-tools15-pool-aarch64-opensuse-15.5
+      ],
+    'leap15.6-aarch64' =>
+      %w[
+        opensuse-backports-15.6-updates-aarch64
+        opensuse-leap-15.6-pool-aarch64
+        opensuse-leap-15.6-updates-aarch64
+        opensuse-sle-15.6-updates-aarch64
+        sle-manager-tools15-updates-aarch64-opensuse-15.6
+        sle-manager-tools15-pool-aarch64-opensuse-15.6
       ],
     'suse-microos-5.1' => # CHECKED
       %w[
@@ -1239,6 +1273,18 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-uyuni-client-devel-x86_64
         uyuni-proxy-devel-leap-x86_64
       ],
+    'leap15.6-x86_64' => # CHECKED
+      %w[
+        opensuse_leap15_6-x86_64
+        opensuse_leap15_6-x86_64-backports-updates
+        opensuse_leap15_6-x86_64-non-oss
+        opensuse_leap15_6-x86_64-non-oss-updates
+        opensuse_leap15_6-x86_64-updates
+        opensuse_leap15_6-x86_64-sle-updates
+        opensuse_leap15_6-uyuni-client-x86_64
+        opensuse_leap15_6-uyuni-client-devel-x86_64
+        uyuni-proxy-devel-leap-x86_64
+      ],
     'leap15.4-aarch64' => # CHECKED
       %w[
         opensuse_leap15_4-aarch64
@@ -1258,6 +1304,16 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-aarch64-sle-updates
         opensuse_leap15_5-aarch64-updates
         opensuse_leap15_5-uyuni-client-devel-aarch64
+      ],
+    'leap15.6-aarch64' => # CHECKED
+      %w[
+        opensuse_leap15_6-aarch64
+        opensuse_leap15_6-aarch64-backports-updates
+        opensuse_leap15_6-aarch64-non-oss
+        opensuse_leap15_6-aarch64-non-oss-updates
+        opensuse_leap15_6-aarch64-sle-updates
+        opensuse_leap15_6-aarch64-updates
+        opensuse_leap15_6-uyuni-client-devel-aarch64
       ],
     'suse-microos-5.1' => # CHECKED
       %w[
@@ -1355,6 +1411,10 @@ PAYGO_DEFAULT_PRODUCTS = {
       '[ ] openSUSE Leap 15.5 ppc64le',
       '[ ] openSUSE Leap 15.5 s390x',
       '[ ] openSUSE Leap 15.5 x86_64',
+      '[ ] openSUSE Leap 15.6 aarch64',
+      '[ ] openSUSE Leap 15.6 ppc64le',
+      '[ ] openSUSE Leap 15.6 s390x',
+      '[ ] openSUSE Leap 15.6 x86_64',
       '[ ] Oracle Linux 8 aarch64',
       '[ ] Oracle Linux 8 x86_64',
       '[ ] Oracle Linux 9 aarch64',
@@ -1483,6 +1543,21 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_leap15_5-x86_64-non-oss-updates' => 120,
   'opensuse_leap15_5-x86_64-sle-updates' => 5400,
   'opensuse_leap15_5-x86_64-updates' => 60,
+  'opensuse_leap15_6-aarch64' => 10_020,
+  'opensuse_leap15_6-aarch64-backports-updates' => 420,
+  'opensuse_leap15_6-aarch64-non-oss' => 60,
+  'opensuse_leap15_6-aarch64-non-oss-updates' => 60,
+  'opensuse_leap15_6-aarch64-sle-updates' => 4140,
+  'opensuse_leap15_6-aarch64-updates' => 60,
+  'opensuse_leap15_6-uyuni-client-devel-aarch64' => 60,
+  'opensuse_leap15_6-uyuni-client-devel-x86_64' => 60,
+  'opensuse_leap15_6-uyuni-client-x86_64' => 60,
+  'opensuse_leap15_6-x86_64' => 10_380,
+  'opensuse_leap15_6-x86_64-backports-updates' => 360,
+  'opensuse_leap15_6-x86_64-non-oss' => 60,
+  'opensuse_leap15_6-x86_64-non-oss-updates' => 120,
+  'opensuse_leap15_6-x86_64-sle-updates' => 5400,
+  'opensuse_leap15_6-x86_64-updates' => 60,
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-x86_64' => 840,
