@@ -33,7 +33,7 @@ public class TestCloudPaygManagerBuilder {
     private CloudProvider cloudProvider;
     private boolean payg;
     private String billingDataServiceStatus;
-    private boolean serviceRunning;
+    private boolean billingAdapterRunning;
     private boolean packageModified;
     private Xor<TaskomaticApiException, Map<String, Object>> dimensionComputationSchedule;
     private boolean sccCredentials;
@@ -46,7 +46,7 @@ public class TestCloudPaygManagerBuilder {
         withCloudProvider(CloudProvider.None)
             .withByosInstance()
             .withBillingDataServiceStatus("online")
-            .withServiceRunning()
+            .withBillingAdapterRunning()
             .withOriginalPackages()
             .withDimensionComputationScheduled(Map.of())
             .withSCCCredentials();
@@ -78,13 +78,13 @@ public class TestCloudPaygManagerBuilder {
         return this;
     }
 
-    public TestCloudPaygManagerBuilder withoutServiceRunning() {
-        serviceRunning = false;
+    public TestCloudPaygManagerBuilder withBillingAdapterDown() {
+        billingAdapterRunning = false;
         return this;
     }
 
-    public TestCloudPaygManagerBuilder withServiceRunning() {
-        serviceRunning = true;
+    public TestCloudPaygManagerBuilder withBillingAdapterRunning() {
+        billingAdapterRunning = true;
         return this;
     }
 
@@ -155,7 +155,7 @@ public class TestCloudPaygManagerBuilder {
             @Override
             protected PaygComplainceInfo getInstanceComplianceInfo() {
                 return new PaygComplainceInfo(
-                    cloudProvider, payg, packageModified, serviceRunning
+                    cloudProvider, payg, packageModified, billingAdapterRunning
                 );
             }
         };

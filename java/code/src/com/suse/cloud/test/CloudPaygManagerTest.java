@@ -124,7 +124,7 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         // test 6 - billing adapter is down
         cpm = new TestCloudPaygManagerBuilder()
             .withPaygInstance()
-            .withoutServiceRunning()
+            .withBillingAdapterDown()
             .build();
 
         assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
