@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-05-07 02:43+0000\n"
+"PO-Revision-Date: 2024-05-07 15:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -52,12 +52,12 @@ msgstr "작업이 <link>예약</link>되었습니다."
 msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
-msgstr "작업을 예약할 수 없습니다. 서버 로그에서 세부 정보를 확인하십시오."
+msgstr "작업을 예약할 수 없습니다. 자세한 내용은 서버 로그를 확인하십시오."
 
 #: ../html/src/components/CoCoScansList.tsx:122
 #, fuzzy
 msgid "Confirm Attestation Execution"
-msgstr "실행할 상태 구성"
+msgstr "증명 실행 확인"
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
@@ -87,7 +87,7 @@ msgstr "기밀 컴퓨팅 증명"
 #: ../html/src/components/CoCoScansList.tsx:163
 #, fuzzy
 msgid "Schedule Attestation"
-msgstr "일정 세부 사항"
+msgstr "증명 예약"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 #, fuzzy
@@ -167,12 +167,12 @@ msgstr "스케줄러를 로드하는 중..."
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
 #, fuzzy
 msgid "Attestations"
-msgstr "다시 시작"
+msgstr "증명"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 #, fuzzy
 msgid "Attestation"
-msgstr "다시 시작"
+msgstr "증명"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
 #, fuzzy
@@ -201,7 +201,7 @@ msgstr "시스템"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
 #, fuzzy
 msgid "Environment Type"
-msgstr "환경 라이프싸이클"
+msgstr "환경 유형"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/manager/notifications/notification-messages.tsx:510
@@ -229,7 +229,7 @@ msgstr "상태"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
 #, fuzzy
 msgid "Attestation time"
-msgstr "실행 시간"
+msgstr "증명 시간"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
@@ -263,12 +263,12 @@ msgstr "세부 사항"
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
 #, fuzzy
 msgid "Status:"
-msgstr "상태"
+msgstr "상태:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
 #, fuzzy
 msgid "Created on"
-msgstr "생성됨"
+msgstr "생성된 날짜"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:75
 #, fuzzy
@@ -288,7 +288,7 @@ msgstr "{actionScheduledBy}에 의해 {actionName} 예약됨"
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
 #, fuzzy
 msgid "Attested on"
-msgstr "증명 날짜:"
+msgstr "증명된 날짜"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
 #: ../html/src/manager/images/image-view.tsx:789
@@ -299,7 +299,7 @@ msgstr "개요"
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
 #, fuzzy
 msgid "Result Type:"
-msgstr "빌드 유형"
+msgstr "결과 유형:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
@@ -328,22 +328,22 @@ msgstr "저장"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
 #, fuzzy
 msgid "Reset Changes"
-msgstr "변경사항 저장"
+msgstr "변경사항 재설정"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
 #, fuzzy
 msgid "Enable attestation"
-msgstr "선택을 취소할 수 없음"
+msgstr "증명 활성화"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
 #, fuzzy
 msgid "Executions"
-msgstr "실행 시간"
+msgstr "실행"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
 #, fuzzy
 msgid "Peform attestation during the boot process"
-msgstr "부팅 프로세스 중 성능 증명"
+msgstr "부팅 프로세스 중 증명 수행"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
 #, fuzzy
@@ -367,7 +367,7 @@ msgstr "N/A"
 #: ../html/src/components/combobox.tsx:96
 #, fuzzy
 msgid "Create {label}"
-msgstr "만들기 "
+msgstr "{label} 만들기"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -529,7 +529,7 @@ msgstr "특징 없음"
 #: ../html/src/components/input/Select.tsx:255
 #, fuzzy
 msgid "No options"
-msgstr "Kiwi 옵션"
+msgstr "옵션 없음"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -872,13 +872,13 @@ msgstr "시스템 선택"
 #: ../html/src/components/systems.tsx:21
 #, fuzzy
 msgid "Unprovisioned System"
-msgstr "미등록 시스템"
+msgstr "프로비저닝되지 않은 시스템"
 
 #: ../html/src/components/systems.tsx:26
 #: ../html/src/manager/systems/list-filter.tsx:7
 #, fuzzy
 msgid "Virtual Guest"
-msgstr "가상 호스트"
+msgstr "가상 게스트"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
@@ -890,7 +890,7 @@ msgstr "가상 호스트"
 #: ../html/src/components/systems.tsx:36
 #, fuzzy
 msgid "Non-Virtual System"
-msgstr "가상 시스템"
+msgstr "비가상 시스템"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
@@ -956,7 +956,7 @@ msgstr "대상 시스템"
 #: ../html/src/components/target-systems.tsx:28
 #, fuzzy
 msgid "No systems specified."
-msgstr "시스템 선택됨"
+msgstr "시스템을 지정하지 않았습니다."
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -1727,7 +1727,7 @@ msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
 #, fuzzy
 msgid "An error occurred while displaying the list of packages."
-msgstr "데이터를 로드하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오."
+msgstr "패키지 목록을 표시하는 동안 오류가 발생했습니다."
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:39
 #, fuzzy
@@ -1738,7 +1738,7 @@ msgstr "AppStream {stream}에 {count}개 패키지 있음:"
 #, fuzzy
 msgid ""
 "Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr "highstate 적용이 <link>예약</link>되었습니다."
+msgstr "AppStream 모듈의 일부 업데이트가 <link>예약</link>되었습니다."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:135
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -1765,7 +1765,7 @@ msgstr "비활성화할 스트림:"
 #: ../html/src/manager/appstreams/list-appstreams.tsx:37
 #, fuzzy
 msgid "The following AppStream modules are currently available to the system."
-msgstr "이 시스템에 현재 설치된 프로그램 임시 수정(PTF)은 다음과 같습니다. "
+msgstr "현재 시스템에서 사용할 수 있는 AppStream 모듈은 다음과 같습니다."
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:47
 #, fuzzy
@@ -1785,7 +1785,7 @@ msgstr "스트림"
 #: ../html/src/manager/appstreams/list-appstreams.tsx:89
 #, fuzzy
 msgid "Packages in {stream}"
-msgstr "패키지 이름"
+msgstr "{stream}의 패키지"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
@@ -1825,12 +1825,12 @@ msgstr "패치됨"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
 #, fuzzy
 msgid "A patch has been successfully installed on the client."
-msgstr "작업이 다음에 추가됨: "
+msgstr "클라이언트에 패치가 설치되었습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
 #, fuzzy
 msgid "Affected, patch is unavailable"
-msgstr "패키지 업데이트를 사용할 수 있음"
+msgstr "영향을 받음, 패치를 사용할 수 없음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
 #, fuzzy
@@ -1842,7 +1842,7 @@ msgstr "이 클라이언트는 아직 패치가 릴리스되지 않은 취약점
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
 #, fuzzy
 msgid "Affected, patch is unavailable in relevant channels"
-msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
+msgstr "영향을 받음, 관련 채널에서 패치를 사용할 수 없음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 #, fuzzy
@@ -1854,7 +1854,7 @@ msgstr "이 클라이언트는 패치가 릴리스된 취약점의 영향을 받
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
 #, fuzzy
 msgid "Affected, partial patch available in assigned channel"
-msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
+msgstr "영향을 받음, 할당된 채널에서 부분 패치 사용 가능"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
@@ -4342,7 +4342,7 @@ msgstr "플레이븍 실행이"
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 #, fuzzy
 msgid "Settings"
-msgstr "다시 시작"
+msgstr "설정"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
@@ -5288,24 +5288,24 @@ msgstr ""
 #: ../html/src/manager/systems/all-list.tsx:37
 #, fuzzy
 msgid " Systems "
-msgstr "시스템"
+msgstr " 시스템 "
 
 #: ../html/src/manager/systems/all-list.tsx:57
 #, fuzzy
 msgid "No Systems."
-msgstr "시스템"
+msgstr "시스템이 없습니다."
 
 #: ../html/src/manager/systems/all-list.tsx:106
 #: ../html/src/manager/systems/list-filter.tsx:46
 #, fuzzy
 msgid "Extra Packages"
-msgstr "패키지"
+msgstr "추가 패키지"
 
 #: ../html/src/manager/systems/all-list.tsx:120
 #: ../html/src/manager/systems/list-filter.tsx:47
 #, fuzzy
 msgid "Config Diffs"
-msgstr "구성 URL"
+msgstr "구성 차이"
 
 #: ../html/src/manager/systems/all-list.tsx:135
 #: ../html/src/manager/systems/list-filter.tsx:48
@@ -5318,7 +5318,7 @@ msgstr "기본 채널"
 #: ../html/src/manager/systems/list-filter.tsx:49
 #, fuzzy
 msgid "System Type"
-msgstr "저장소 유형"
+msgstr "시스템 유형"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
@@ -5541,7 +5541,7 @@ msgstr "Manager"
 #: ../html/src/manager/systems/list-filter.tsx:5
 #, fuzzy
 msgid "Physical"
-msgstr "물리적 기능"
+msgstr "물리적"
 
 #: ../html/src/manager/systems/list-filter.tsx:12
 #, fuzzy
@@ -5551,7 +5551,7 @@ msgstr "Ansible 제어 노드"
 #: ../html/src/manager/systems/list-filter.tsx:14
 #, fuzzy
 msgid "Container Build Host"
-msgstr "호스트 빌드"
+msgstr "컨테이너 빌드 호스트"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 #, fuzzy
@@ -5561,7 +5561,7 @@ msgstr "외부"
 #: ../html/src/manager/systems/list-filter.tsx:16
 #, fuzzy
 msgid "Management"
-msgstr "관리 노드"
+msgstr "관리"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 #, fuzzy
@@ -5571,7 +5571,7 @@ msgstr "모니터링되는 호스트"
 #: ../html/src/manager/systems/list-filter.tsx:18
 #, fuzzy
 msgid "OS Image Build Host"
-msgstr "호스트 빌드"
+msgstr "OS 이미지 빌드 호스트"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
 #, fuzzy
@@ -5581,27 +5581,27 @@ msgstr "Salt"
 #: ../html/src/manager/systems/list-filter.tsx:20
 #, fuzzy
 msgid "Virtualization Host"
-msgstr "가상 호스트"
+msgstr "가상화 호스트"
 
 #: ../html/src/manager/systems/list-filter.tsx:24
 #, fuzzy
 msgid "Actions scheduled"
-msgstr "예약됨"
+msgstr "작업 예약됨"
 
 #: ../html/src/manager/systems/list-filter.tsx:25
 #, fuzzy
 msgid "All updates scheduled"
-msgstr "채널 변경이 예약되었습니다."
+msgstr "모든 업데이트가 예약되었습니다."
 
 #: ../html/src/manager/systems/list-filter.tsx:27
 #, fuzzy
 msgid "Kickstart in progress"
-msgstr " 진행 중"
+msgstr "킥스타트 진행 중"
 
 #: ../html/src/manager/systems/list-filter.tsx:28
 #, fuzzy
 msgid "System is up to date"
-msgstr "이미지가 최신임"
+msgstr "시스템이 최신임"
 
 #: ../html/src/manager/systems/list-filter.tsx:29
 #, fuzzy
@@ -5611,7 +5611,7 @@ msgstr "시스템 체크인 안 됨"
 #: ../html/src/manager/systems/list-filter.tsx:30
 #, fuzzy
 msgid "System not entitled"
-msgstr "시스템 잠김"
+msgstr "시스템에 권한이 부여되지 않음"
 
 #: ../html/src/manager/systems/list-filter.tsx:31
 #, fuzzy
@@ -5621,12 +5621,12 @@ msgstr "시스템 재부팅 필요"
 #: ../html/src/manager/systems/list-filter.tsx:32
 #, fuzzy
 msgid "Updates available"
-msgstr "패키지 업데이트를 사용할 수 있음"
+msgstr "업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/systems/list-filter.tsx:42
 #, fuzzy
 msgid "System Kind"
-msgstr "시스템 이름"
+msgstr "시스템 종류"
 
 #: ../html/src/manager/systems/list-filter.tsx:50
 #, fuzzy
@@ -5636,7 +5636,7 @@ msgstr "재부팅 필요"
 #: ../html/src/manager/systems/list-filter.tsx:51
 #, fuzzy
 msgid "Registered Days"
-msgstr "등록된 시스템"
+msgstr "등록 기간"
 
 #: ../html/src/manager/systems/list-filter.tsx:52
 #, fuzzy
@@ -5672,7 +5672,7 @@ msgstr "새 프록시"
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
 #, fuzzy
 msgid "Manage selected system set"
-msgstr "선택 항목을 읽음으로 표시"
+msgstr "선택한 시스템 집합 관리"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "system selected"
@@ -5685,7 +5685,7 @@ msgstr "시스템 선택됨"
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
 #, fuzzy
 msgid "Clear selected system set"
-msgstr "선택한 메시지 삭제"
+msgstr "선택한 시스템 집합 제거"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
