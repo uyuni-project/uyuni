@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-05-06 23:43+0000\n"
+"PO-Revision-Date: 2024-05-07 02:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -48,10 +48,11 @@ msgstr "작업이 <link>예약</link>되었습니다."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
+#, fuzzy
 msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
-msgstr ""
+msgstr "작업을 예약할 수 없습니다. 서버 로그에서 세부 정보를 확인하십시오."
 
 #: ../html/src/components/CoCoScansList.tsx:122
 #, fuzzy
@@ -79,8 +80,9 @@ msgid "Back to list"
 msgstr "목록으로 돌아가기"
 
 #: ../html/src/components/CoCoScansList.tsx:153
+#, fuzzy
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "기밀 컴퓨팅 증명"
 
 #: ../html/src/components/CoCoScansList.tsx:163
 #, fuzzy
@@ -88,8 +90,9 @@ msgid "Schedule Attestation"
 msgstr "일정 세부 사항"
 
 #: ../html/src/components/CoCoScansList.tsx:187
+#, fuzzy
 msgid "Attestation Report details"
-msgstr ""
+msgstr "증명 보고서 세부 정보"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -172,8 +175,9 @@ msgid "Attestation"
 msgstr "다시 시작"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
+#, fuzzy
 msgid "Attestation #{identifier} run on {date} at {time}"
-msgstr ""
+msgstr "{date}의 {time}에 실행된 #{identifier} 증명"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
@@ -277,12 +281,14 @@ msgid "Action"
 msgstr "작업"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:89
+#, fuzzy
 msgid "{actionName} scheduled by {actionScheduledBy}"
-msgstr ""
+msgstr "{actionScheduledBy}에 의해 {actionName} 예약됨"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
+#, fuzzy
 msgid "Attested on"
-msgstr ""
+msgstr "증명 날짜:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
 #: ../html/src/manager/images/image-view.tsx:789
@@ -300,12 +306,14 @@ msgid "Description:"
 msgstr "설명:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:44
+#, fuzzy
 msgid "Attested on:"
-msgstr ""
+msgstr "증명 날짜:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:66
+#, fuzzy
 msgid "Process Output"
-msgstr ""
+msgstr "프로세스 출력"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:279
@@ -333,12 +341,14 @@ msgid "Executions"
 msgstr "실행 시간"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
+#, fuzzy
 msgid "Peform attestation during the boot process"
-msgstr ""
+msgstr "부팅 프로세스 중 성능 증명"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
+#, fuzzy
 msgid "Peform attestation on a schedule"
-msgstr ""
+msgstr "일정에 따라 증명 수행"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
 #, fuzzy
@@ -350,8 +360,9 @@ msgstr "일정 선택"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: ../html/src/components/combobox.tsx:96
 #, fuzzy
@@ -1719,8 +1730,9 @@ msgid "An error occurred while displaying the list of packages."
 msgstr "데이터를 로드하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오."
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:39
+#, fuzzy
 msgid "AppStream {stream} has {count} packages:"
-msgstr ""
+msgstr "AppStream {stream}에 {count}개 패키지 있음:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:87
 #, fuzzy
@@ -1734,18 +1746,21 @@ msgid "AppStreams"
 msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
+#, fuzzy
 msgid ""
 "Please review the changes below before scheduling an action to apply the "
 "changes on the system."
-msgstr ""
+msgstr "시스템에서 변경 사항을 적용하기 위한 작업을 예약하기 전에 아래의 변경 사항을 검토하십시오."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
+#, fuzzy
 msgid "Streams to be enabled:"
-msgstr ""
+msgstr "활성화할 스트림:"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:60
+#, fuzzy
 msgid "Streams to be disabled:"
-msgstr ""
+msgstr "비활성화할 스트림:"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:37
 #, fuzzy
@@ -1779,8 +1794,9 @@ msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
+#, fuzzy
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
@@ -1796,10 +1812,11 @@ msgid "Not affected"
 msgstr "적용되지 않음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:63
+#, fuzzy
 msgid ""
 "The client is not affected because none of the known CVE vulnerable packages "
 "are installed."
-msgstr ""
+msgstr "이 클라이언트에는 알려진 CVE 취약 패키지가 설치되어 있지 않으므로 영향을 받지 않습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
@@ -1816,10 +1833,11 @@ msgid "Affected, patch is unavailable"
 msgstr "패키지 업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
+#, fuzzy
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
-msgstr ""
+msgstr "이 클라이언트는 아직 패치가 릴리스되지 않은 취약점의 영향을 받습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
 #, fuzzy
@@ -1827,10 +1845,11 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "할당된 채널에서 사용 가능한 한 개 이상의 패치가 적용됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
+#, fuzzy
 msgid ""
 "The client is affected by a vulnerability for which a patch has been "
 "released,"
-msgstr ""
+msgstr "이 클라이언트는 패치가 릴리스된 취약점의 영향을 받습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
 #, fuzzy
@@ -5438,8 +5457,9 @@ msgstr "부트스트랩을 진행하는 동안 이 페이지를 닫으시겠습�
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
+#, fuzzy
 msgid "Confidential Computing Capability"
-msgstr ""
+msgstr "기밀 컴퓨팅 성능"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
@@ -5534,8 +5554,9 @@ msgid "Container Build Host"
 msgstr "호스트 빌드"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
+#, fuzzy
 msgid "Foreign"
-msgstr ""
+msgstr "외부"
 
 #: ../html/src/manager/systems/list-filter.tsx:16
 #, fuzzy
@@ -5543,8 +5564,9 @@ msgid "Management"
 msgstr "관리 노드"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
+#, fuzzy
 msgid "Monitored Host"
-msgstr ""
+msgstr "모니터링되는 호스트"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
 #, fuzzy
@@ -5552,8 +5574,9 @@ msgid "OS Image Build Host"
 msgstr "호스트 빌드"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
+#, fuzzy
 msgid "Salt"
-msgstr ""
+msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:20
 #, fuzzy
@@ -5581,8 +5604,9 @@ msgid "System is up to date"
 msgstr "이미지가 최신임"
 
 #: ../html/src/manager/systems/list-filter.tsx:29
+#, fuzzy
 msgid "System not checking in"
-msgstr ""
+msgstr "시스템 체크인 안 됨"
 
 #: ../html/src/manager/systems/list-filter.tsx:30
 #, fuzzy
@@ -5590,8 +5614,9 @@ msgid "System not entitled"
 msgstr "시스템 잠김"
 
 #: ../html/src/manager/systems/list-filter.tsx:31
+#, fuzzy
 msgid "System requires reboot"
-msgstr ""
+msgstr "시스템 재부팅 필요"
 
 #: ../html/src/manager/systems/list-filter.tsx:32
 #, fuzzy
@@ -5604,8 +5629,9 @@ msgid "System Kind"
 msgstr "시스템 이름"
 
 #: ../html/src/manager/systems/list-filter.tsx:50
+#, fuzzy
 msgid "Requires Reboot"
-msgstr ""
+msgstr "재부팅 필요"
 
 #: ../html/src/manager/systems/list-filter.tsx:51
 #, fuzzy
