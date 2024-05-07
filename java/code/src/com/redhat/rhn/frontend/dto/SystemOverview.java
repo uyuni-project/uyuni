@@ -180,7 +180,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         else if (getEnhancementErrata() + getBugErrata() +
                 getSecurityErrata() > 0 &&
                 Optional.ofNullable(unscheduledErrataCount).map(count -> count == 0)
-                        .orElse(SystemManager.hasUnscheduledErrata(user, sid))) {
+                        .orElse(!SystemManager.hasUnscheduledErrata(user, sid))) {
             type = STATUS_TYPE_UPDATES_SCHEDULED;
         }
         else if (Optional.ofNullable(actionsCount).orElse(Long.valueOf(SystemManager.countActions(sid))) > 0) {
