@@ -20,10 +20,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-03 15:50+0200\n"
-"PO-Revision-Date: 2023-10-17 07:15+0000\n"
+"PO-Revision-Date: 2024-05-07 17:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools-4-3/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools-4-3/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2066,6 +2066,7 @@ msgid "<b>Management:</b>"
 msgstr "<b>관리:</b>"
 
 #: ../data/rh_register.glade.h:80
+#, fuzzy
 msgid "Management"
 msgstr "관리"
 
