@@ -22909,7 +22909,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>自動インストール可能なディストリビューションの編集</target>
       </trans-unit>
-      <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
+      <trans-unit id="treecreate.jsp.header1" xml:space="preserve" approved="yes">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
@@ -22921,11 +22921,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">自動インストール可能なディストリビューションを定義するには、以下の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@ サーバーに存在するインストールツリーへの有効なパスである必要があります。&lt;br/&gt;&lt;br/&gt;
+        <target state="final">自動インストール可能なディストリビューションを定義するには、以下の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@ サーバーに存在するインストールツリーへの有効なパスである必要があります。&lt;br/&gt;&lt;br/&gt;
 
-'ディストリビューションラベル' フィールドには文字、数字、ハイフン、ピリオド、およびアンダースコアのみを指定できます。また、このフィールドには少なくとも 4 文字を指定する必要があります。 &lt;br/&gt;&lt;br/&gt;
+ディストリビューションラベルフィールドには文字、数字、ハイフン、およびアンダースコアのみを指定できます。また、このフィールドには少なくとも 4 文字を指定する必要があります。 &lt;br/&gt;&lt;br/&gt;
 
-ツリーパス、キックスタート RPM、ベースチャンネル、インストーラ生成は常に一致する必要があります。一般的に、これは各フィールドのバージョンが @@ENTERPRISE_LINUX_NAME@@ の同じバージョンとなることを意味します。 &lt;br/&gt;&lt;br/&gt;
+ツリーパス、ベースチャンネル、インストーラ生成は常に一致する必要があります。一般的に、これは各フィールドのバージョンが @@ENTERPRISE_LINUX_NAME@@ の同じバージョンとなることを意味します。 &lt;br/&gt;&lt;br/&gt;
 
 &lt;p&gt;ツリーパスは、カーネル、initrd、およびリポジトリ情報を含むが rpm を除く、ディストリビューションのキックスタートツリー全体を含む @@PRODUCT_NAME@@ サーバー上のローカルディスクパスである必要があります。このディレクトリは、apache ユーザーおよび tomcat ユーザーが読み取れる必要があります。たとえば @@PRODUCT_NAME@@ のサーバ内の &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; にメディアがある場合は、これをツリーパスとして指定する必要があります。 &lt;/p&gt;
 </target>
