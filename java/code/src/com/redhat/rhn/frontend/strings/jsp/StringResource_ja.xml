@@ -29836,62 +29836,62 @@ given channel.</source>
         </context-group>
         <target state="needs-adaptation"/>
       </trans-unit>
-    <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
         <source>Save</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ssm.overview.audit" xml:space="preserve">
             <source>Audit</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.index" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.index" xml:space="preserve">
             <source>Confidential Computing</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
             <source>Configure</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
             <source>Schedule</source>
         <target state="new"/>
-  </trans-unit>
-      <trans-unit id="AppStreams" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve" approved="yes">
         <source>AppStreams</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">AppStream</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
