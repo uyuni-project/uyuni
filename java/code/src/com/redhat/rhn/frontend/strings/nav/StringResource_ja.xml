@@ -1243,17 +1243,17 @@
         </context-group>
         <target state="final">AppStream</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco" xml:space="preserve">
+      <trans-unit id="nav.system.coco" xml:space="preserve" approved="yes">
         <source>Confidential Computing</source>
-        <target state="new"/>
+        <target state="final">コンフィデンシャルコンピューティング</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco.settings" xml:space="preserve">
+      <trans-unit id="nav.system.coco.settings" xml:space="preserve" approved="yes">
         <source>Settings</source>
-        <target state="new"/>
+        <target state="final">設定</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve">
+      <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve" approved="yes">
         <source>List Attestations</source>
-        <target state="new"/>
+        <target state="final">認証をリスト表示する</target>
       </trans-unit>
     </body>
   </file>
