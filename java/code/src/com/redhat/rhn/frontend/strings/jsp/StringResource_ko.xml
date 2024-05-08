@@ -13087,12 +13087,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>비활성 시스템 모두 보기({0})</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
+      <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="needs-translation">&lt;strong&gt;비활성화 시스템이 없습니다.&lt;/strong&gt; &lt;p&gt; 모든 시스템은 현재 @@PRODUCT_NAME@@(으)로 체크인하고 있습니다. &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;시스템 &gt; 모든 시스템&lt;/a&gt;&lt;/strong&gt;에서 모든 시스템의 목록을 볼 수 있습니다.&lt;/p&gt;</target>
+        <target state="final">&lt;strong&gt;비활성화 시스템이 없습니다.&lt;/strong&gt; &lt;p&gt; 모든 시스템은 현재 @@PRODUCT_NAME@@(으)로 체크인하고 있습니다. &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;시스템 &gt; 모든 시스템&lt;/a&gt;&lt;/strong&gt;에서 모든 시스템의 목록을 볼 수 있습니다.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata" xml:space="preserve">
         <source>Relevant Security Patches</source>
@@ -16318,9 +16318,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="targetsystems.jsp.summary" xml:space="preserve">
+      <trans-unit approved="yes" id="targetsystems.jsp.summary" xml:space="preserve">
           <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="needs-translation">아래의 목록에 있는 시스템에서는 @@PRODUCT_NAME@@ 설정 관리를 통해 파일이 관리되지 않습니다. @@PRODUCT_NAME@@ 설정 관리로 시스템을 관리 받으려면, *-salt-minion 패키지가 설치되어 있어야 합니다. 아래의 '@@PRODUCT_NAME@@ 설정 관리 활성화' 버튼을 사용하여 선택한 시스템에서 설정 관리를 받으실 수 있습니다.</target>
+        <target state="final">아래의 목록에 있는 시스템에서는 @@PRODUCT_NAME@@ 설정 관리를 통해 파일이 관리되지 않습니다. @@PRODUCT_NAME@@ 설정 관리로 시스템을 관리 받으려면, *-salt-minion 패키지가 설치되어 있어야 합니다. 아래의 '@@PRODUCT_NAME@@ 설정 관리 활성화' 버튼을 사용하여 선택한 시스템에서 설정 관리를 받으실 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16424,9 +16424,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.stepone" xml:space="preserve">
+      <trans-unit id="summary.jsp.stepone" xml:space="preserve" approved="yes">
           <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
-        <target state="needs-translation">&lt;code&gt;mgr_check&lt;/code&gt;를 실행하여 보류 상태인 salt-minion 패키지 설치를 완료합니다.</target>
+        <target state="final">&lt;code&gt;mgr_check&lt;/code&gt;를 실행하여 보류 상태인 salt-minion 패키지 설치를 완료합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16466,9 +16466,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.packages" xml:space="preserve">
+      <trans-unit id="summary.jsp.packages" xml:space="preserve" approved="yes">
           <source>Could not schedule salt-minion package installations.</source>
-        <target state="needs-translation">salt-minion 패키지 설치를 예약할 수 없습니다.</target>
+        <target state="final">salt-minion 패키지 설치를 예약할 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -20160,9 +20160,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
+      <trans-unit id="ssmenable.jsp.summary" xml:space="preserve" approved="yes">
           <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="needs-translation">아래의 시스템에는 @@PRODUCT_NAME@@ 설정 관리를 통해 관리되는 파일이 없습니다. @@PRODUCT_NAME@@ 설정 관리에 의해 시스템을 관리할 수 있도록 하기 위해 시스템에는 특정 salt-minion 패키지가 설치되어 있어야 합니다. 아래의 시스템 목록에서 설정 관리를 활성화할 수 있습니다. &lt;strong&gt;참고:&lt;/strong&gt; 이미 활성화된 시스템에는 아무런 영향을 미치지 않습니다.</target>
+        <target state="final">아래의 시스템에는 @@PRODUCT_NAME@@ 설정 관리를 통해 관리되는 파일이 없습니다. @@PRODUCT_NAME@@ 설정 관리에 의해 시스템을 관리할 수 있도록 하기 위해 시스템에는 특정 salt-minion 패키지가 설치되어 있어야 합니다. 아래의 시스템 목록에서 설정 관리를 활성화할 수 있습니다. &lt;strong&gt;참고:&lt;/strong&gt; 이미 활성화된 시스템에는 아무런 영향을 미치지 않습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -21402,9 +21402,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
+      <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve" approved="yes">
           <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
-        <target state="needs-translation">&lt;code&gt;salt-minion&lt;/code&gt; RPM을 설치하여 대상 시스템에서 원격 명령 실행을 활성화해야 합니다.</target>
+        <target state="final">&lt;code&gt;salt-minion&lt;/code&gt; RPM을 설치하여 대상 시스템에서 원격 명령 실행을 활성화해야 합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -22771,7 +22771,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>자동 설치 배포판 수정</target>
       </trans-unit>
-      <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
+      <trans-unit id="treecreate.jsp.header1" xml:space="preserve" approved="yes">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
@@ -22783,7 +22783,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">자동 설치 배포를 정의하려면 다음과 같은 정보가 필요합니다. 트리 경로 필드는 @@PRODUCT_NAME@@ 서버에 존재하는 설치 트리로의 유효한 경로여야 합니다.&lt;br/&gt;&lt;br/&gt;
+        <target state="final">자동 설치 배포를 정의하려면 다음과 같은 정보가 필요합니다. 트리 경로 필드는 @@PRODUCT_NAME@@ 서버에 존재하는 설치 트리로의 유효한 경로여야 합니다.&lt;br/&gt;&lt;br/&gt;
 
 배포판 레이블 필드에서는 문자, 숫자, 하이픈, 마침표, 밑줄로 지정할 수 있습니다. 또한 최소 4자 이상의 문자로 지정해야 합니다.&lt;br/&gt;&lt;br/&gt;
 
@@ -29016,9 +29016,9 @@ given channel.</source>
         <source>OS Image Build Host</source>
         <target>OD 이미지 빌드 호스트</target>
       </trans-unit>
-      <trans-unit id="monitoring_entitled" xml:space="preserve">
+      <trans-unit id="monitoring_entitled" xml:space="preserve" approved="yes">
         <source>Monitored Host</source>
-        <target state="needs-adaptation">모니터링</target>
+        <target state="final">모니터링</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29609,65 +29609,65 @@ given channel.</source>
         </context-group>
         <target state="final">사용자 지정 채널의 자동 동기화가 활성화되었습니다. 이 채널은 벤더 채널과 함께 자동으로 동기화됩니다.</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve" approved="yes">
             <source>Extra Packages</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">추가 패키지</target>
+        <target state="final">추가 패키지</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve" approved="yes">
             <source>Config Diffs</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">구성 차이</target>
+        <target state="final">구성 차이</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+      <trans-unit id="exportcolumn.proxy" xml:space="preserve" approved="yes">
             <source>Proxy</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">프록시</target>
+        <target state="final">프록시</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve" approved="yes">
             <source>Manager Server</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">서버 관리</target>
+        <target state="final">서버 관리</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve" approved="yes">
             <source>Virtual Host</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">가상 호스트</target>
+        <target state="final">가상 호스트</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve" approved="yes">
             <source>Virtual Guest</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">가상 게스트</target>
+        <target state="final">가상 게스트</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve" approved="yes">
             <source>Requires Reboot</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">재부팅 필요</target>
+        <target state="final">재부팅 필요</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+      <trans-unit id="exportcolumn.statusType" xml:space="preserve" approved="yes">
             <source>Status Type</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="needs-translation">상태 유형</target>
+        <target state="final">상태 유형</target>
       </trans-unit>
-      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve" approved="yes">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
-        <target state="needs-translation">기존 스택은 더 이상 지원되지 않으며 제거될 예정입니다. salt 미니언으로 마이그레이션하는 것을 고려하세요.</target>
+        <target state="final">기존 스택은 더 이상 지원되지 않으며 제거될 예정입니다. salt 미니언으로 마이그레이션하는 것을 고려하세요.</target>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
           <source>Some systems already have a reboot scheduled.</source>
@@ -29712,13 +29712,13 @@ given channel.</source>
         </context-group>
         <target state="final">이 패키지는 제품 임시 수정(PTF)의 일부이며 직접 설치할 수 없습니다. 임시 수정의 기본 패키지를 선택하여 대상 시스템을 검토하십시오.</target>
       </trans-unit>
-      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve" approved="yes">
         <source>System Overview Update Queue</source>
-        <target state="needs-translation">시스템 개요 업데이트 대기열</target>
+        <target state="final">시스템 개요 업데이트 대기열</target>
       </trans-unit>
-      <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+      <trans-unit id="task.status.update-system-overview" xml:space="preserve" approved="yes">
         <source>Update System Overview</source>
-        <target state="needs-translation">시스템 개요 업데이트</target>
+        <target state="final">시스템 개요 업데이트</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
@@ -29815,68 +29815,68 @@ given channel.</source>
         </context-group>
         <target state="final">페이고 서버입니다.</target>
       </trans-unit>
-      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
+      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve" approved="yes">
         <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="needs-translation">리포지토리에서 제거된 채널의 패키지를 유지합니다.</target>
+        <target state="final">리포지토리에서 제거된 채널의 패키지를 유지합니다.</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve" approved="yes">
         <source>Save</source>
-        <target state="needs-translation">저장</target>
+        <target state="final">저장</target>
       </trans-unit>
-      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+      <trans-unit id="task.status.ssh-service" xml:space="preserve" approved="yes">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-        <target state="needs-translation">액션 체인 및 체크인 salt SSH 시스템 다시 시작 </target>
+        <target state="final">액션 체인 및 체크인 salt SSH 시스템 다시 시작 </target>
       </trans-unit>
-      <trans-unit id="peripheral_server" xml:space="preserve">
+      <trans-unit id="peripheral_server" xml:space="preserve" approved="yes">
         <source>Peripheral Server</source>
-        <target state="needs-translation">주변 장치 서버</target>
+        <target state="final">주변 장치 서버</target>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve" approved="yes">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="needs-translation">기밀 컴퓨팅 증명</target>
+        <target state="final">기밀 컴퓨팅 증명</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit" xml:space="preserve">
+      <trans-unit id="ssm.overview.audit" xml:space="preserve" approved="yes">
             <source>Audit</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="needs-translation">감사</target>
+        <target state="final">감사</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve" approved="yes">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="needs-translation">&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; 선택한 시스템을 위한 기밀 컴퓨팅</target>
+        <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; 선택한 시스템을 위한 기밀 컴퓨팅</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve" approved="yes">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="needs-translation">&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; 선택한 시스템을 위한 새로운 기밀 컴퓨팅 증명</target>
+        <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; 선택한 시스템을 위한 새로운 기밀 컴퓨팅 증명</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.index" xml:space="preserve">
+      <trans-unit id="ssm.coco.index" xml:space="preserve" approved="yes">
             <source>Confidential Computing</source>
-        <target state="needs-translation">기밀 컴퓨팅</target>
+        <target state="final">기밀 컴퓨팅</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve" approved="yes">
             <source>Configure</source>
-        <target state="needs-translation">구성</target>
+        <target state="final">구성</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve" approved="yes">
             <source>Schedule</source>
-        <target state="needs-translation">일정</target>
+        <target state="final">일정</target>
       </trans-unit>
-      <trans-unit id="AppStreams" xml:space="preserve">
+      <trans-unit id="AppStreams" xml:space="preserve" approved="yes">
         <source>AppStreams</source>
-        <target state="needs-translation">AppStreams</target>
+        <target state="final">AppStreams</target>
       </trans-unit>
     </body>
   </file>
