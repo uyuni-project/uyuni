@@ -1253,6 +1253,19 @@ public class SaltUtils {
         return results;
     }
 
+    /**
+     * Returns the root cause of a failed state.apply result by filtering out the subsequent failures.
+     * @param stateApplyResultMap the map of the state apply results
+     * @return the first failed state.apply result
+     * @param <R> the type of the state.apply result
+     */
+    private static <R> Optional<StateApplyResult<R>> getOriginalStateApplyError(
+            Map<String, StateApplyResult<R>> stateApplyResultMap) {
+        return stateApplyResultMap.values().stream()
+                .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
+                .findFirst();
+    }
+
     private void handleImagePackageProfileUpdate(ImageInfo imageInfo,
             ImagesProfileUpdateSlsResult result, ServerAction serverAction) {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
@@ -1393,8 +1406,21 @@ public class SaltUtils {
         if (server.isEmpty()) {
             return;
         }
-        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
 
+        if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
+            // Filter out the subsequent errors to find the root cause
+            var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
+                    .map(SaltUtils::getOriginalStateApplyError)
+                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
+                    .map(StateApplyResult::getComment)
+                    .map(msg -> msg.isEmpty() ? null : msg)
+                    .orElse("Error while configuring AppStreams on the system.\nGot no result from the system.");
+
+            serverAction.setResultMsg(originalErrorMsg);
+            return;
+        }
+
+        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
         Set<ServerAppStream> enabledModules = currentlyEnabled.stream()
             .map(nsvca -> new ServerAppStream(server.get(), nsvca))
             .collect(Collectors.toSet());
