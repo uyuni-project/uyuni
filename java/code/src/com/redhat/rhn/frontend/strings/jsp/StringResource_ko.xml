@@ -22907,7 +22907,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>자동 설치 배포판 수정</target>
       </trans-unit>
-      <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
+      <trans-unit id="treecreate.jsp.header1" xml:space="preserve" approved="yes">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
@@ -22919,7 +22919,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">자동 설치 배포를 정의하려면 다음과 같은 정보가 필요합니다. 트리 경로 필드는 @@PRODUCT_NAME@@ 서버에 존재하는 설치 트리로의 유효한 경로여야 합니다.&lt;br/&gt;&lt;br/&gt;
+        <target state="final">자동 설치 배포를 정의하려면 다음과 같은 정보가 필요합니다. 트리 경로 필드는 @@PRODUCT_NAME@@ 서버에 존재하는 설치 트리로의 유효한 경로여야 합니다.&lt;br/&gt;&lt;br/&gt;
 
 배포판 레이블 필드에서는 문자, 숫자, 하이픈, 마침표, 밑줄로 지정할 수 있습니다. 또한 최소 4자 이상의 문자로 지정해야 합니다.&lt;br/&gt;&lt;br/&gt;
 
