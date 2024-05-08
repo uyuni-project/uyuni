@@ -120,19 +120,19 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         if (tuple.getElements().size() > 2) {
             serverName = getTupleValue(tuple, "server_name", String.class).orElse(null);
             name = serverName;
-            channelId = getTupleValue(tuple, "channel_id", Number.class).map(Number::longValue).orElse(0L);
+            channelId = getTupleValue(tuple, "channel_id", Number.class).map(Number::longValue).orElse(null);
             created = getTupleValue(tuple, "created", Date.class).orElse(null);
             creatorName = getTupleValue(tuple, "creator_name", String.class).orElse(null);
             modified = getTupleValue(tuple, "modified", Date.class).orElse(null);
-            groupCount = getTupleValue(tuple, "group_count", Number.class).map(Number::longValue).orElse(0L);
-            securityErrata = getTupleValue(tuple, "security_errata", Number.class).map(Number::longValue).orElse(0L);
-            bugErrata = getTupleValue(tuple, "bug_errata", Number.class).map(Number::longValue).orElse(0L);
+            groupCount = getTupleValue(tuple, "group_count", Number.class).map(Number::longValue).orElse(null);
+            securityErrata = getTupleValue(tuple, "security_errata", Number.class).map(Number::longValue).orElse(null);
+            bugErrata = getTupleValue(tuple, "bug_errata", Number.class).map(Number::longValue).orElse(null);
             enhancementErrata = getTupleValue(tuple, "enhancement_errata", Number.class)
-                    .map(Number::longValue).orElse(0L);
+                    .map(Number::longValue).orElse(null);
             outdatedPackages = getTupleValue(tuple, "outdated_packages", Number.class)
-                    .map(Number::longValue).orElse(0L);
+                    .map(Number::longValue).orElse(null);
             configFilesWithDifferences = getTupleValue(tuple, "config_files_with_differences", Number.class)
-                    .map(Number::longValue).orElse(0L);
+                    .map(Number::longValue).orElse(null);
             channelLabels = getTupleValue(tuple, "channel_labels", String.class).orElse(null);
             lastCheckin = getTupleValue(tuple, "last_checkin", Date.class).orElse(null);
             mgrServer = getTupleValue(tuple, "mgr_server", Boolean.class).orElse(false);
@@ -140,14 +140,14 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
             setEntitlementLevel(getTupleValue(tuple, "entitlement_level", String.class).orElse(null));
             isVirtualHost = getTupleValue(tuple, "virtual_host", Boolean.class).orElse(Boolean.FALSE);
             isVirtualGuest = getTupleValue(tuple, "virtual_guest", Boolean.class).orElse(Boolean.FALSE);
-            extraPkgCount = getTupleValue(tuple, "extra_pkg_count", Number.class).map(Number::longValue).orElse(0L);
+            extraPkgCount = getTupleValue(tuple, "extra_pkg_count", Number.class).map(Number::longValue).orElse(null);
             requiresReboot = getTupleValue(tuple, "requires_reboot", Boolean.class).orElse(Boolean.FALSE);
             kickstarting = getTupleValue(tuple, "kickstarting", Boolean.class).orElse(Boolean.FALSE);
-            actionsCount = getTupleValue(tuple, "actions_count", Number.class).map(Number::longValue).orElse(0L);
+            actionsCount = getTupleValue(tuple, "actions_count", Number.class).map(Number::longValue).orElse(null);
             packageActionsCount = getTupleValue(tuple, "package_actions_count", Number.class)
-                    .map(Number::longValue).orElse(0L);
+                    .map(Number::longValue).orElse(null);
             unscheduledErrataCount = getTupleValue(tuple, "unscheduled_errata_count", Number.class)
-                    .map(Number::longValue).orElse(0L);
+                    .map(Number::longValue).orElse(null);
             statusType = getTupleValue(tuple, "status_type", String.class).orElse(null);
         }
     }
