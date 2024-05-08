@@ -254,7 +254,7 @@ Summary:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -263,7 +263,7 @@ This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date.
     </source>
-        <target state="needs-translation">
+        <target state="final">
 ---------------------
 영향을 받는 시스템 목록
 ---------------------
