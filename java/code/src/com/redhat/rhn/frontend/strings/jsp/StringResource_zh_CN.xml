@@ -29729,11 +29729,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">更新集线器报告数据库</target>
+        <target state="final">更新 Hub 报告数据库</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
-        <target state="final">更新集线器报告数据库</target>
+        <target state="final">更新 Hub 报告数据库</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
         <source>Following installed products will be removed from the system during migration:</source>
