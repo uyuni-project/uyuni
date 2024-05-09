@@ -44,12 +44,8 @@ export function AllSystems(props: Props) {
         </a>
 
         <div className="pull-right btn-group">
-          <a 
-            id="addsystem"
-            title="Add a system" 
-            className="btn btn-link" 
-            href="/rhn/manager/systems/bootstrap">
-              <i className="fa fa-plus"></i>Add System
+          <a id="addsystem" title="Add a system" className="btn btn-link" href="/rhn/manager/systems/bootstrap">
+            <i className="fa fa-plus"></i>Add System
           </a>
         </div>
       </h1>
