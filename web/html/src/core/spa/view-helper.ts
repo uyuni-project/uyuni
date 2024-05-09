@@ -13,6 +13,10 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/multiorg/OrgConfigDetails.do",
   "/rhn/manager/notification-messages",
   "rhn/channels/software/Search.do",
+  "/rhn/manager/systems/list/all",
+  "/rhn/ssm/index.do",
+  "/rhn/ssm/Packages.do",
+  "/rhn/manager/systems/bootstrap",
 ];
 
 export const onEndNavigate = () => {
