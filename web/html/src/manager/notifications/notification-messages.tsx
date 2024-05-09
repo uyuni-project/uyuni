@@ -387,7 +387,6 @@ class NotificationMessages extends React.Component<Props, State> {
 
   render() {
     const data = this.state.serverData;
-
     const dataHashTag = window.location.hash;
     const headerTabs = (
       <div className="spacewalk-content-nav">
@@ -476,7 +475,6 @@ class NotificationMessages extends React.Component<Props, State> {
           <Table
             data={this.buildRows(this.filterDataByType(data))}
             identifier={(row) => row["id"]}
-            cssClassFunction={(row) => (DEPRECATED_unsafeEquals(row["isRead"], true) ? "text-muted" : "")}
             initialSortColumnKey="created"
             initialSortDirection={-1}
             loading={this.state.loading}
