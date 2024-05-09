@@ -7,6 +7,17 @@ Feature: Migrate a SLES 15 SP3 Salt minion to 15 SP4
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  # Having OS salt packages which are not up to date installed on the minion
+  # will not allow it to undergo a Product migration
+  Scenario: Remove OS salt leftovers from the SLE 15 SP3 minion
+    When I remove package "salt" from this "sle15sp3_minion" without error control
+
+  Scenario: Update Package List of this SLE 15 SP3 minion
+    Given I am on the Systems overview page of this "sle15sp3_minion"
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I wait until event "Package List Refresh" is completed
+
   Scenario: Migrate this minion to SLE 15 SP4
     Given I am on the Systems overview page of this "sle15sp3_minion"
     When I follow "Software" in the content area
