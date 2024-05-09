@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-05-09 07:43+0000\n"
+"PO-Revision-Date: 2024-05-09 19:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -87,7 +87,7 @@ msgstr "認証のスケジュールを設定する"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
-msgstr "認証報告書詳細"
+msgstr "認証レポートの詳細"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -170,7 +170,7 @@ msgstr "認証"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
 msgid "Attestation #{identifier} run on {date} at {time}"
-msgstr "認証#{identifier}は{日付}に{時刻}に実行されました"
+msgstr "認証 #{identifier} は {date} {time} に実行されます"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
@@ -273,7 +273,7 @@ msgstr "{actionScheduledBy} によってスケジュールされた {actionName}
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
 msgid "Attested on"
-msgstr "認証済み"
+msgstr "認証日"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
 #: ../html/src/manager/images/image-view.tsx:789
@@ -1723,7 +1723,7 @@ msgstr "AppStream"
 msgid ""
 "Please review the changes below before scheduling an action to apply the "
 "changes on the system."
-msgstr "システムに変更を適用するアクションをスケジュールする前に、以下の変更点を確認してください。"
+msgstr "システムに変更を適用するアクションをスケジュールする前に、以下の変更を確認してください。"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
@@ -1793,23 +1793,23 @@ msgstr "パッチがクライアントに正常にインストールされまし
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
 msgid "Affected, patch is unavailable"
-msgstr "影響を受ける、パッチは利用できません"
+msgstr "影響を受ける、パッチは利用不可"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
-msgstr "このクライアントは、まだパッチがリリースされていない脆弱性の影響を受けます。"
+msgstr "クライアントは、まだパッチがリリースされていない脆弱性の影響を受けます。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
 msgid "Affected, patch is unavailable in relevant channels"
-msgstr "影響を受ける、関連チャンネルでパッチが利用できません"
+msgstr "影響を受ける、関連チャンネルでパッチは利用不可"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid ""
 "The client is affected by a vulnerability for which a patch has been "
 "released,"
-msgstr "このクライアントは、パッチがリリースされている脆弱性の影響を受けます。"
+msgstr "クライアントは、パッチがリリースされている脆弱性の影響を受けます。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
 msgid "Affected, partial patch available in assigned channel"
@@ -5614,7 +5614,7 @@ msgstr "システムの種類"
 
 #: ../html/src/manager/systems/list-filter.tsx:50
 msgid "Requires Reboot"
-msgstr "再起動が必要です"
+msgstr "再起動が必要"
 
 #: ../html/src/manager/systems/list-filter.tsx:51
 msgid "Registered Days"
