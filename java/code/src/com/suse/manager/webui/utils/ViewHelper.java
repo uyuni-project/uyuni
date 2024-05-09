@@ -67,7 +67,11 @@ public enum ViewHelper {
         "/rhn/account/Addresses.do",
         "/rhn/account/EditAddress.do",
         "/rhn/multiorg/OrgConfigDetails.do",
-        "/rhn/manager/notification-messages"
+        "/rhn/manager/notification-messages",
+        "/rhn/manager/systems/list/all",
+        "/rhn/ssm/index.do",
+        "/rhn/ssm/Packages.do",
+        "/rhn/manager/systems/bootstrap",
     );
 
     ViewHelper() { }

@@ -202,7 +202,7 @@ th {
   a {
     border: none;
     padding: 0;
-    font-weight: bold;
-    color: $eos-bc-gray-1000;
+    font-weight: bold !important;
+    color: $eos-bc-gray-1000 !important;
   }
 }
