@@ -1,4 +1,17 @@
 .btn,
+.btn-link,
+.btn-default,
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-danger {
+  i.fa::before {
+    // No text-decoration for the icon text, see https://stackoverflow.com/a/19529256/1470607
+    display: inline-block;
+  }
+}
+
+.btn,
 .btn-default,
 .btn-primary,
 .btn-success,
@@ -15,8 +28,7 @@
   }
 }
 
-button.is-plain,
-.btn-link {
+button.is-plain {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
@@ -34,12 +46,23 @@ button.is-plain,
   padding: 0;
 }
 
+@include onSuma {
+  @import "buttons.suma.scss";
+}
+
+@include onUyuni {
+  @import "buttons.uyuni.scss";
+}
+
 .btn-link {
   &,
   &:active,
   &:focus,
   &:disabled,
   &.disabled {
+    border-color: transparent;
+    text-decoration: none;
+
     &,
     &:hover {
       color: $link-color;
@@ -50,12 +73,4 @@ button.is-plain,
       text-decoration: underline;
     }
   }
-}
-
-@include onSuma {
-  @import "buttons.suma.scss";
-}
-
-@include onUyuni {
-  @import "buttons.uyuni.scss";
 }
