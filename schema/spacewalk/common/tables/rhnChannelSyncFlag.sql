@@ -18,7 +18,7 @@ CREATE TABLE rhnChannelSyncFlag (
     only_latest BOOLEAN NOT NULL DEFAULT FALSE,
     create_tree BOOLEAN NOT NULL DEFAULT FALSE,
     quit_on_error BOOLEAN NOT NULL DEFAULT FALSE,
-    CONSTRAINT rhn_chsf_cid_fk FOREIGN KEY channel_id
+    CONSTRAINT rhn_chsf_cid_fk FOREIGN KEY (channel_id)
                         REFERENCES rhnchannel(id)
                         ON DELETE CASCADE
 );
