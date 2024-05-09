@@ -192,7 +192,6 @@ class TaskoTop extends React.Component<Props> {
             <Table
               data={this.buildRows(data)}
               identifier={(row) => row["id"]}
-              cssClassFunction={(row) => (row["status"] === "skipped" ? "text-muted" : null)}
               initialSortColumnKey="status"
               searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
             >
