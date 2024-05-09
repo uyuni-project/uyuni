@@ -954,18 +954,6 @@ i.spacewalk-help-link {
       padding-bottom: 1px;
     }
   }
-
-// TODO: Fix
-// See https://stackoverflow.com/a/77366360/1470607
-//  .nav-tabs-indent(1);
-//  .nav-tabs-indent(2);
-//  .nav-tabs-indent(3);
-
-//  .nav-tabs-indent($i) {
-//    &:nth-child(${i}) {
-//      margin-left: ($i - 1) * 30px;
-//    }
-//  }
 }
 
 /* Override rules from theme.less that uses
