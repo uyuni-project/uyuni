@@ -11461,7 +11461,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="coco.status.pending.description" xml:space="preserve" approved="yes">
         <source>Pending</source>
-        <target state="final">保留中</target>
+        <target state="final">待機中</target>
       </trans-unit>
       <trans-unit id="coco.status.succeeded.description" xml:space="preserve" approved="yes">
         <source>Succeeded</source>
