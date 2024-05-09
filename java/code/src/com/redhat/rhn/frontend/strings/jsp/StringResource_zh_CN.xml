@@ -13089,12 +13089,12 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">查看所有非活动系统 ({0})</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
+      <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;没有非活动系统。&lt;/strong&gt; &lt;p&gt;目前您的系统都在和 @@PRODUCT_NAME@@ 联系。您可以通过&lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;系统 &gt; 所有&lt;/a&gt;&lt;/strong&gt;来查看您所有系统的列表。&lt;/p&gt;</target>
+        <target state="final">&lt;strong&gt;没有非活动系统。&lt;/strong&gt; &lt;p&gt;目前您的所有系统都在和 @@PRODUCT_NAME@@ 联系。您可以通过&lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;系统 &gt; 所有&lt;/a&gt;&lt;/strong&gt;来查看您所有系统的列表。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata" xml:space="preserve">
         <source>Relevant Security Patches</source>
@@ -16320,9 +16320,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
+      <trans-unit id="targetsystems.jsp.summary" xml:space="preserve" approved="yes">
           <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="needs-adaptation">下面列出的系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以用下面的 "启用 @@PRODUCT_NAME@@ 配置管理" 按钮在选定的系统上启用配置管理。</target>
+        <target state="final">下列系统不包含通过 @@PRODUCT_NAME@@ 配置管理功能进行管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理功能进行管理，需要为其安装特定的 *-salt-minion 软件包。您可以使用下面的 "启用 @@PRODUCT_NAME@@ 配置管理" 按钮在选定的系统上启用配置管理功能。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16404,9 +16404,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
+      <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve" approved="yes">
           <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-        <target state="needs-adaptation">可将 &lt;code&gt;mgr-cfg*&lt;/code&gt; 软件包安装安排在以下时间。&lt;strong&gt;注意：所有其他操作将立即发生。&lt;/strong&gt;</target>
+        <target state="final">您可以安排在以下时间安装 &lt;code&gt;salt-minion&lt;/code&gt; 软件包。&lt;strong&gt;注意：所有其他操作将立即发生。&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16426,9 +16426,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.stepone" xml:space="preserve">
+      <trans-unit id="summary.jsp.stepone" xml:space="preserve" approved="yes">
           <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
-        <target state="needs-adaptation">运行 &lt;code&gt;mgr_check&lt;/code&gt; 完成等待中的 mgr-cfg-* 软件包安装。</target>
+        <target state="final">运行 &lt;code&gt;mgr_check&lt;/code&gt; 可完成等待进行的 salt-minion 软件包安装任务。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16468,9 +16468,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.packages" xml:space="preserve">
+      <trans-unit id="summary.jsp.packages" xml:space="preserve" approved="yes">
           <source>Could not schedule salt-minion package installations.</source>
-        <target state="needs-adaptation">无法安排 mgr-cfg* 软件包安装。</target>
+        <target state="final">无法安排 salt-minion 软件包安装。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -20163,9 +20163,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
+      <trans-unit id="ssmenable.jsp.summary" xml:space="preserve" approved="yes">
           <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="needs-adaptation">下列系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以在下面列出的系统上启用配置管理。&lt;strong&gt;注意：&lt;/strong&gt;已启用的系统不会有任何变化。</target>
+        <target state="final">下列系统不包含通过 @@PRODUCT_NAME@@ 配置管理功能进行管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理功能进行管理，需要为其安装特定的 salt-minion 软件包。您可以在下列系统上启用配置管理功能。&lt;strong&gt;注意：&lt;/strong&gt;已启用的系统不会有任何变化。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -21405,9 +21405,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
+      <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve" approved="yes">
           <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
-        <target state="needs-adaptation">您必须安装 &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM 以支持在目标系统中执行远程命令的功能。</target>
+        <target state="final">您必须安装 &lt;code&gt;salt-minion&lt;/code&gt; RPM 以支持在目标系统中执行远程命令的功能。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -22774,7 +22774,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target state="translated">编辑自动安装的发行套件</target>
       </trans-unit>
-      <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
+      <trans-unit id="treecreate.jsp.header1" xml:space="preserve" approved="yes">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
@@ -22786,13 +22786,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">下面是定义可自动安装的发行套件需要提供的细节。"树路径" 字段应该是位于该 @@PRODUCT_NAME@@ 服务器上的安装树的有效路径。&lt;br/&gt;&lt;br/&gt;
+        <target state="final">下面是定义可自动安装的发行套件需要提供的细节。"树路径" 字段应该是位于该 @@PRODUCT_NAME@@ 服务器上的安装树的有效路径。&lt;br/&gt;&lt;br/&gt;
 
-"发行套件标签" 字段应该只包含字母、数字、连字符、句点和下划线。至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
+"发行套件标签" 字段应该只包含字母、数字、连字符和下划线，且至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
 
-树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
+树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自相同版本的 @@ENTERPRISE_LINUX_NAME@@。&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和储存库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
+&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和储存库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以将该路径指定为树路径。&lt;/p&gt;
 </target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2" xml:space="preserve">
@@ -29027,9 +29027,9 @@ given channel.</source>
         <source>OS Image Build Host</source>
         <target>操作系统映像构建主机</target>
       </trans-unit>
-      <trans-unit id="monitoring_entitled" xml:space="preserve">
+      <trans-unit id="monitoring_entitled" xml:space="preserve" approved="yes">
         <source>Monitored Host</source>
-        <target state="needs-adaptation">监视</target>
+        <target state="final">受监视主机</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29624,65 +29624,65 @@ given channel.</source>
         </context-group>
         <target state="final">自动同步自定义通道功能已启用。此通道将自动与供应商通道一起同步。</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve" approved="yes">
             <source>Extra Packages</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">额外的软件包</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve" approved="yes">
             <source>Config Diffs</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">配置差异</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+      <trans-unit id="exportcolumn.proxy" xml:space="preserve" approved="yes">
             <source>Proxy</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">代理</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve" approved="yes">
             <source>Manager Server</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">管理器服务器</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve" approved="yes">
             <source>Virtual Host</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">虚拟主机</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve" approved="yes">
             <source>Virtual Guest</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">虚拟 Guest</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve" approved="yes">
             <source>Requires Reboot</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">需要重引导</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+      <trans-unit id="exportcolumn.statusType" xml:space="preserve" approved="yes">
             <source>Status Type</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">状态类型</target>
       </trans-unit>
-      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve" approved="yes">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
-        <target state="new"/>
+        <target state="final">传统堆栈不受支持，已安排将其去除。请考虑迁移为 Salt 受控端。</target>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
           <source>Some systems already have a reboot scheduled.</source>
@@ -29727,13 +29727,13 @@ given channel.</source>
         </context-group>
         <target state="final">此软件包是某个程序临时修复 (PTF) 的组件，无法直接安装。请选择该临时修复的主软件包查看目标系统。</target>
       </trans-unit>
-      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve" approved="yes">
         <source>System Overview Update Queue</source>
-        <target state="new"/>
+        <target state="final">系统概览更新队列</target>
       </trans-unit>
-      <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+      <trans-unit id="task.status.update-system-overview" xml:space="preserve" approved="yes">
         <source>Update System Overview</source>
-        <target state="new"/>
+        <target state="final">更新系统概览</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
@@ -29830,64 +29830,64 @@ given channel.</source>
         </context-group>
         <target state="final">这是 Pay-as-you-go 服务器</target>
       </trans-unit>
-      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
+      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve" approved="yes">
         <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="final">保留已从储存库中去除的通道中的软件包</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.button-save" xml:space="preserve">
+      <trans-unit id="repos.jsp.button-save" xml:space="preserve" approved="yes">
         <source>Save</source>
-        <target state="new"/>
+        <target state="final">保存</target>
       </trans-unit>
-      <trans-unit id="task.status.ssh-service" xml:space="preserve">
+      <trans-unit id="task.status.ssh-service" xml:space="preserve" approved="yes">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-        <target state="new"/>
+        <target state="final">继续执行操作链并签入 Salt SSH 系统 </target>
       </trans-unit>
-      <trans-unit id="peripheral_server" xml:space="preserve">
+      <trans-unit id="peripheral_server" xml:space="preserve" approved="yes">
         <source>Peripheral Server</source>
-        <target state="new"/>
+        <target state="final">外设服务器</target>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve" approved="yes">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">机密计算认证</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit" xml:space="preserve">
+      <trans-unit id="ssm.overview.audit" xml:space="preserve" approved="yes">
             <source>Audit</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">审计</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve" approved="yes">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">为选定的系统&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;配置&lt;/a&gt;机密计算</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve" approved="yes">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="new"/>
+        <target state="final">为选定的系统&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;安排&lt;/a&gt;新机密计算认证</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.index" xml:space="preserve">
+      <trans-unit id="ssm.coco.index" xml:space="preserve" approved="yes">
             <source>Confidential Computing</source>
-        <target state="new"/>
+        <target state="final">机密计算</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve" approved="yes">
             <source>Configure</source>
-        <target state="new"/>
+        <target state="final">配置</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve" approved="yes">
             <source>Schedule</source>
-        <target state="new"/>
+        <target state="final">日程安排</target>
       </trans-unit>
       <trans-unit id="AppStreams" xml:space="preserve" approved="yes">
         <source>AppStreams</source>
