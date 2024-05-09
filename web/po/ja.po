@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:08+0200\n"
-"PO-Revision-Date: 2024-05-08 02:43+0000\n"
+"PO-Revision-Date: 2024-05-09 07:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -746,7 +746,7 @@ msgstr "未定義"
 #: ../html/src/core/intl/index.test.tsx:18
 #: ../html/src/core/intl/index.test.tsx:19
 msgid "foo {insert} bar"
-msgstr "foo {insert} bar"
+msgstr "foo {insert} バー"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
@@ -2277,7 +2277,7 @@ msgstr "パッチ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr "Product Temporary Fix"
+msgstr "製品の一時的修正"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -4193,7 +4193,7 @@ msgstr "Program Temporary Fixes (PTFs)削除の確認"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr "Program Temporary Fixes (PTFs)"
+msgstr "製品の一時的修正(PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
