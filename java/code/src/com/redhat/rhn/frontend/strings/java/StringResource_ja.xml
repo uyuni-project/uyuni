@@ -6636,7 +6636,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="final">ラベルが正しくフォーマットされていません。英字、数字、ハイフン、およびアンダースコア以外はラベルに使用できません。また、最低でも 4 文字の長さにしなければなりません</target>
+        <target state="final">ラベルが正しくフォーマットされていません。英字、数字、ハイフン、およびアンダースコア以外はラベルに使用できません。また、最低でも4文字の長さにしなければなりません</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
