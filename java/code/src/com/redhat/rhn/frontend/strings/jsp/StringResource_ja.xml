@@ -16321,7 +16321,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve" approved="yes">
           <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="final">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
+        <target state="final">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の*-salt-minionパッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16427,7 +16427,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve" approved="yes">
           <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
-        <target state="final">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中の salt-minionパッケージインストールを完了します。</target>
+        <target state="final">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中のsalt-minionパッケージインストールを完了します。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -29834,7 +29834,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="final">リポジトリから削除されたチャンネル内のパッケージを保持します</target>
+        <target state="final">リポジトリから削除されたチャンネル内のパッケージを保持する</target>
       </trans-unit>
       <trans-unit id="repos.jsp.button-save" xml:space="preserve" approved="yes">
         <source>Save</source>
@@ -29842,7 +29842,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve" approved="yes">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-        <target state="final">動作チェーンを再開し、Salt SSH システムをチェックインします </target>
+        <target state="final">動作チェーンを再開し、Salt SSH システムをチェックインする </target>
       </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve" approved="yes">
         <source>Peripheral Server</source>
@@ -29867,14 +29867,14 @@ given channel.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;選択したシステムのコンフィデンシャルコンピューティングを設定&lt;/a&gt;します</target>
+        <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;選択したシステムのコンフィデンシャルコンピューティングを設定&lt;/a&gt;する</target>
       </trans-unit>
       <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve" approved="yes">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
-        <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;新しい選択したシステムに対するコンフィデンシャルコンピューティング認証をスケジュールします&lt;/a&gt;</target>
+        <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;選択したシステムに対する新しいコンフィデンシャルコンピューティング認証をスケジュール&lt;/a&gt;する</target>
       </trans-unit>
       <trans-unit id="ssm.coco.index" xml:space="preserve" approved="yes">
             <source>Confidential Computing</source>
