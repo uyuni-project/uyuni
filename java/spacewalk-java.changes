@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 09 12:42:56 CEST 2024 - rosuna@suse.com
+
+- version 4.3.75-0
+  * Fix status icon of the systems overview list (bsc#1224012)
+
+-------------------------------------------------------------------
 Thu May 09 11:57:19 CEST 2024 - rosuna@suse.com
 
 - version 4.3.74-0
