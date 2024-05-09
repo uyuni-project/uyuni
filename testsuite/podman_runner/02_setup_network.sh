@@ -21,4 +21,7 @@ done
 shift $((OPTIND-1))
 
 sudo -i podman network create --ipv6 --subnet ${subnet} uyuni-network-1
+# workaround for https://bugs.launchpad.net/ubuntu/+source/libpod/+bug/2024394
+sudo sed -ie "s/\"cniVersion\": \"1.0.0\"/\"cniVersion\": \"0.4.0\"/g" /etc/cni/net.d/uyuni-network-1.conflist
+
 
