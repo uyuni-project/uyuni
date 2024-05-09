@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-05-08 08:43+0000\n"
+"PO-Revision-Date: 2024-05-09 07:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -5505,7 +5505,7 @@ msgstr "OS 이미지 빌드 호스트"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
 msgid "Salt"
-msgstr "소금"
+msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:20
 msgid "Virtualization Host"
