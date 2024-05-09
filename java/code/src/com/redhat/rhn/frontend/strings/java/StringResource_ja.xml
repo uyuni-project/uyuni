@@ -6616,7 +6616,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="final">ラベルが正しくフォーマットされていません。英字、数字、ハイフン、およびアンダースコア以外はラベルに使用できません。また、最低でも 4 文字の長さにしなければなりません</target>
+        <target state="final">ラベルが正しくフォーマットされていません。英字、数字、ハイフン、およびアンダースコア以外はラベルに使用できません。また、最低でも4文字の長さにしなければなりません</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -11113,7 +11113,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">システム概要データを更新します</target>
+        <target state="final">システム概要データの更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
@@ -11425,7 +11425,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc Processor, second generation (milan)</source>
-        <target state="final">KVM on AMD Epycプロセッサ第2世代(milan)</target>
+        <target state="final">KVM on AMD Epycプロセッサ、第2世代(milan)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc - Milan</source>
@@ -11433,7 +11433,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
-        <target state="final">KVM on AMD Epycプロセッサ第3世代(genoa)</target>
+        <target state="final">KVM on AMD Epycプロセッサ、第3世代(genoa)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc - Genoa</source>
