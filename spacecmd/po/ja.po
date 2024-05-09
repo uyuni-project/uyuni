@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2023-10-16 13:15+0000\n"
+"PO-Revision-Date: 2024-05-09 13:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -1564,12 +1564,10 @@ msgstr ""
 "  -f 鍵ファイル"
 
 #: ../src/spacecmd/cryptokey.py:69
-#, fuzzy
 msgid "cryptokey_update: Update a cryptographic key"
-msgstr "cryptokey_create: 暗号鍵を作成"
+msgstr "cryptokey_create: 暗号鍵を更新"
 
 #: ../src/spacecmd/cryptokey.py:70
-#, fuzzy
 msgid ""
 "usage: cryptokey_update [options])\n"
 "\n"
@@ -1581,7 +1579,7 @@ msgstr ""
 "使用方法: cryptokey_create [オプション])\n"
 "\n"
 "オプション:\n"
-"  -t GPG または SSL\n"
+"  -t GPGまたはSSL\n"
 "  -d 説明\n"
 "  -f 鍵ファイル"
 
