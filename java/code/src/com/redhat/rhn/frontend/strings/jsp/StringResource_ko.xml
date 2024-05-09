@@ -29871,7 +29871,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="mirror-credentials.jsp.fromDir" xml:space="preserve">
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
-        <target state="final">rhn.conf에 `server.susemanager.fromdir` 속성이 설정되어 있으므로 자격 증명을 확인할 수 없습니다.</target>
+        <target state="final">rhn.conf에 ``server.susemanager.fromdir`` 속성이 설정되어 있으므로 자격 증명을 확인할 수 없습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="sdc.details.overview.payg" xml:space="preserve">
         <source>Pay-as-you-go:</source>
