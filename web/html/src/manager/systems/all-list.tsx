@@ -43,10 +43,15 @@ export function AllSystems(props: Props) {
           <IconTag type="header-help" />
         </a>
 
-        <a href="/rhn/manager/systems/bootstrap" role="button" className="btn btn-default pull-right">
-          <IconTag type="item-add" />
-          Add System
-        </a>
+        <div className="pull-right btn-group">
+          <a 
+            id="addsystem"
+            title="Add a system" 
+            className="btn btn-link" 
+            href="/rhn/manager/systems/bootstrap">
+              <i className="fa fa-plus"></i>Add System
+          </a>
+        </div>
       </h1>
       <Table
         data="/rhn/manager/api/systems/list/all"
