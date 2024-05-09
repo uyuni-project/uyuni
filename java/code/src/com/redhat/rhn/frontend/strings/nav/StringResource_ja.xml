@@ -1253,7 +1253,7 @@
       </trans-unit>
       <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve" approved="yes">
         <source>List Attestations</source>
-        <target state="final">認証をリスト表示する</target>
+        <target state="final">認証を一覧にする</target>
       </trans-unit>
     </body>
   </file>
