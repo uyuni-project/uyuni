@@ -2262,8 +2262,8 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
-&lt;p&gt;要解决此问题，请检查以下事项：&lt;/p&gt;
+        <target state="final">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;要解决此问题，请检查以下几点：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 此 kickstart 配置文件的基础通道的客户端工具通道是否
@@ -2278,12 +2278,12 @@ available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
 确保 kickstart 基础通道的工具通道中提供了对应于
-此 kickstart 的 spacewalk-koan 软件包。如果未提供，
+此 kickstart 的所需软件包。如果未提供，
 则您需要提供此软件包才能使此 kickstart 配置文件正常运行。
 &lt;/li&gt;
 &lt;li&gt;
-此 kickstart 的基础通道中是否提供了上面列出的软件包？
-如果未提供，则您需要提供此软件包才能使此 kickstart 配置文件正常运行。
+此 kickstart 的基础通道中是否提供了上面列出的软件包？如果未提供，
+则您需要提供此软件包才能使此 kickstart 配置文件正常运行。
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -6613,12 +6613,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
+      <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve" approved="yes">
         <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">标签格式不正确。标签只能包含字母、数字、连字符、句点和下划线，并且至少须包含 4 个字符</target>
+        <target state="final">标签格式不正确。标签只能包含字母、数字、连字符和下划线，并且至少须包含 4 个字符</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -9886,12 +9886,12 @@ tree will not be usable for autoinstalling.</source>
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
         <target state="final">已将找到的登录信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的电子邮件注册的帐户。</target>
       </trans-unit>
-      <trans-unit id="config.multiple.channels" xml:space="preserve">
+      <trans-unit id="config.multiple.channels" xml:space="preserve" approved="yes">
         <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="needs-adaptation">选定的系统具有多个包含 mgr-cfg 软件包的可用子通道。您必须手动订阅所需的子通道，然后重试此操作。</target>
+        <target state="final">选定的系统具有多个包含 venv-salt-minion 软件包的可用子通道。您必须手动订阅所需的子通道，然后重试此操作。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
@@ -11105,19 +11105,19 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve" approved="yes">
         <source>Regularly ensure the systems overview data are up to date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">定期确定系统概览数据是最新的</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve" approved="yes">
         <source>Update the systems overview data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">更新系统概览数据</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
@@ -11127,12 +11127,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="final">无法取消未满足先决条件的操作。</target>
       </trans-unit>
-      <trans-unit id="java|hostname" xml:space="preserve">
+      <trans-unit id="java|hostname" xml:space="preserve" approved="yes">
         <source>Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">主机名</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
@@ -11329,9 +11329,9 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
 要改变这一状况，请在&lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;此处&lt;/a&gt;添加 SCC 身份凭证，或在 SSM 中仅选择 Pay-as-you-go 实例。
         </target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve" approved="yes">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
-        <target state="new"/>
+        <target state="final">管理 SSH Push 客户端的签入和操作链的继续执行</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
@@ -11373,120 +11373,120 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a standalone Salt update</source>
         <target state="final">执行独立的 Salt 更新</target>
       </trans-unit>
-    <trans-unit id="riscv64-deb" xml:space="preserve">
+      <trans-unit id="riscv64-deb" xml:space="preserve" approved="yes">
         <source>RISCV64 Debian</source>
         <target>RISCV64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ARM64 Debian" xml:space="preserve">
         <source>ARM64 Debian</source>
         <target>ARM64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="armel-deb" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="armel-deb" xml:space="preserve" approved="yes">
         <source>ARMEL Debian</source>
         <target>ARMEL Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="s390x-deb" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="s390x-deb" xml:space="preserve" approved="yes">
         <source>PPC64EL Debian</source>
         <target>PPC64EL Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="message.savereposyncflags" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="message.savereposyncflags" xml:space="preserve" approved="yes">
         <source>Saved repository settings for {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.attestation" xml:space="preserve">
+        <target state="final">已保存 {0} 的储存库设置。</target>
+      </trans-unit>
+      <trans-unit id="coco.attestation" xml:space="preserve" approved="yes">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="appstreams.configure" xml:space="preserve">
+        <target state="final">机密计算认证</target>
+      </trans-unit>
+      <trans-unit id="appstreams.configure" xml:space="preserve" approved="yes">
         <source>Configure AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.channel.modulespresent" xml:space="preserve">
+        <target state="final">配置 AppStream</target>
+      </trans-unit>
+      <trans-unit id="api.channel.modulespresent" xml:space="preserve" approved="yes">
         <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve">
+        <target state="final">不允许对指派了模块化通道的系统执行该操作。请考虑设置 'allowModules=true'。</target>
+      </trans-unit>
+      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve" approved="yes">
         <source>Confidential Computing</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.none.description" xml:space="preserve">
+        <target state="final">机密计算</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.none.description" xml:space="preserve" approved="yes">
         <source>None</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.none.label" xml:space="preserve">
+        <target state="final">无</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.none.label" xml:space="preserve" approved="yes">
         <source>None</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
+        <target state="final">无</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc Processor, second generation (milan)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
+        <target state="final">AMD Epyc 第三代处理器 (milan) 上的 KVM</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc - Milan</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
+        <target state="final">AMD Epyc (Milan) 上的 KVM</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
+        <target state="final">AMD Epyc 第四代处理器 (genoa) 上的 KVM</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve" approved="yes">
         <source>KVM on AMD Epyc - Genoa</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.none.description" xml:space="preserve">
+        <target state="final">AMD Epyc (Genoa) 上的 KVM</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.none.description" xml:space="preserve" approved="yes">
         <source>Result Type not found</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.sev_snp.description" xml:space="preserve">
+        <target state="final">未找到结果类型</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.description" xml:space="preserve" approved="yes">
         <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.sev_snp.label" xml:space="preserve">
+        <target state="final">AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.label" xml:space="preserve" approved="yes">
         <source>AMD SEV-SNP</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.secure_boot.description" xml:space="preserve">
+        <target state="final">AMD SEV-SNP</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.description" xml:space="preserve" approved="yes">
         <source>Secure Boot enabled</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.secure_boot.label" xml:space="preserve">
+        <target state="final">已启用安全引导</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.label" xml:space="preserve" approved="yes">
         <source>Secure Boot</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.status.pending.description" xml:space="preserve">
+        <target state="final">安全引导</target>
+      </trans-unit>
+      <trans-unit id="coco.status.pending.description" xml:space="preserve" approved="yes">
         <source>Pending</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.status.succeeded.description" xml:space="preserve">
+        <target state="final">待处理</target>
+      </trans-unit>
+      <trans-unit id="coco.status.succeeded.description" xml:space="preserve" approved="yes">
         <source>Succeeded</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.status.failed.description" xml:space="preserve">
+        <target state="final">成功</target>
+      </trans-unit>
+      <trans-unit id="coco.status.failed.description" xml:space="preserve" approved="yes">
         <source>Failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.audit.coco.unsupported" xml:space="preserve">
+        <target state="final">失败</target>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.unsupported" xml:space="preserve" approved="yes">
         <source>This system does not have any Confidential Computing capability.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.audit.coco.configUpdated" xml:space="preserve">
+        <target state="final">此系统没有任何机密计算功能。</target>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configUpdated" xml:space="preserve" approved="yes">
         <source>The Confidential Computing configuration has been updated successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.audit.coco.configNotUpdated" xml:space="preserve">
+        <target state="final">已成功更新机密计算配置。</target>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configNotUpdated" xml:space="preserve" approved="yes">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">上载机密计算配置时发生错误。请查看服务器日志了解详细信息。</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
