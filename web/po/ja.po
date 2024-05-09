@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-05-08 02:43+0000\n"
+"PO-Revision-Date: 2024-05-09 07:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -51,12 +51,11 @@ msgstr "動作を<link>スケジュールしました</link>。"
 msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
-msgstr ""
+msgstr "アクションをスケジュールできません。詳細については、サーバのログを確認してください。"
 
 #: ../html/src/components/CoCoScansList.tsx:122
-#, fuzzy
 msgid "Confirm Attestation Execution"
-msgstr "実行する状態を設定する"
+msgstr "認証実行の確認"
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
@@ -80,16 +79,15 @@ msgstr "一覧に戻る"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "コンフィデンシャルコンピューティング認証"
 
 #: ../html/src/components/CoCoScansList.tsx:163
-#, fuzzy
 msgid "Schedule Attestation"
-msgstr "スケジュールの詳細"
+msgstr "認証のスケジュールを設定する"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
-msgstr ""
+msgstr "認証報告書詳細"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -163,18 +161,16 @@ msgid "Loading the scheduler..."
 msgstr "スケジューラを読み込んでいます..."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
-#, fuzzy
 msgid "Attestations"
-msgstr "再起動"
+msgstr "認証"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
-#, fuzzy
 msgid "Attestation"
-msgstr "再起動"
+msgstr "認証"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
 msgid "Attestation #{identifier} run on {date} at {time}"
-msgstr ""
+msgstr "認証#{identifier}は{日付}に{時刻}に実行されました"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
@@ -196,9 +192,8 @@ msgstr "システム"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
-#, fuzzy
 msgid "Environment Type"
-msgstr "環境ライフサイクル"
+msgstr "環境タイプ"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/manager/notifications/notification-messages.tsx:510
@@ -206,7 +201,6 @@ msgid "Created"
 msgstr "作成日"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:90
-#, fuzzy
 msgid "Last modified"
 msgstr "最終変更"
 
@@ -224,9 +218,8 @@ msgid "Status"
 msgstr "状態"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
-#, fuzzy
 msgid "Attestation time"
-msgstr "実行時間"
+msgstr "認証時間"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
@@ -258,19 +251,16 @@ msgstr "詳細"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
-#, fuzzy
 msgid "Status:"
-msgstr "状態"
+msgstr "ステータス:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
-#, fuzzy
 msgid "Created on"
 msgstr "作成日"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:75
-#, fuzzy
 msgid "Last modified on"
-msgstr "最終変更"
+msgstr "最終変更日"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
 #: ../html/src/manager/notifications/notification-messages.tsx:515
@@ -279,11 +269,11 @@ msgstr "動作"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:89
 msgid "{actionName} scheduled by {actionScheduledBy}"
-msgstr ""
+msgstr "{actionScheduledBy} によってスケジュールされた {actionName}"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
 msgid "Attested on"
-msgstr ""
+msgstr "認証済み"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
 #: ../html/src/manager/images/image-view.tsx:789
@@ -292,9 +282,8 @@ msgid "Overview"
 msgstr "概要"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
-#, fuzzy
 msgid "Result Type:"
-msgstr "ビルドタイプ"
+msgstr "結果タイプ:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
@@ -302,11 +291,11 @@ msgstr "説明:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:44
 msgid "Attested on:"
-msgstr ""
+msgstr "認証日:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:66
 msgid "Process Output"
-msgstr ""
+msgstr "プロセス出力"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:279
@@ -319,32 +308,28 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
-#, fuzzy
 msgid "Reset Changes"
-msgstr "変更点の保存"
+msgstr "変更のリセット"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
-#, fuzzy
 msgid "Enable attestation"
-msgstr "選択を解除できません"
+msgstr "認証を有効にする"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
-#, fuzzy
 msgid "Executions"
-msgstr "実行時間"
+msgstr "実行"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
 msgid "Peform attestation during the boot process"
-msgstr ""
+msgstr "ブートプロセス中に認証を実行する"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
 msgid "Peform attestation on a schedule"
-msgstr ""
+msgstr "スケジュールに従って認証を実行する"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
-#, fuzzy
 msgid "Select a schedule"
-msgstr "スケジュールの選択:"
+msgstr "スケジュールの選択"
 
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
@@ -352,12 +337,11 @@ msgstr "スケジュールの選択:"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
-msgstr ""
+msgstr "該当なし"
 
 #: ../html/src/components/combobox.tsx:96
-#, fuzzy
 msgid "Create {label}"
-msgstr "作成 "
+msgstr "{label} の作成"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -520,9 +504,8 @@ msgid "No flavor"
 msgstr "フレーバー無し"
 
 #: ../html/src/components/input/Select.tsx:255
-#, fuzzy
 msgid "No options"
-msgstr "Kiwiオプション"
+msgstr "オプションなし"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -866,15 +849,13 @@ msgid "Select Sytems"
 msgstr "システムの選択"
 
 #: ../html/src/components/systems.tsx:21
-#, fuzzy
 msgid "Unprovisioned System"
-msgstr "未登録のシステム"
+msgstr "プロビジョニングされていないシステム"
 
 #: ../html/src/components/systems.tsx:26
 #: ../html/src/manager/systems/list-filter.tsx:7
-#, fuzzy
 msgid "Virtual Guest"
-msgstr "仮想ホスト"
+msgstr "仮想ゲスト"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
@@ -884,9 +865,8 @@ msgid "Virtual Host"
 msgstr "仮想ホスト"
 
 #: ../html/src/components/systems.tsx:36
-#, fuzzy
 msgid "Non-Virtual System"
-msgstr "仮想システム"
+msgstr "非仮想システム"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
@@ -945,14 +925,12 @@ msgid "items per page"
 msgstr "1 ページ当たりの項目数"
 
 #: ../html/src/components/target-systems.tsx:22
-#, fuzzy
 msgid "Target Systems"
 msgstr "ターゲットシステム"
 
 #: ../html/src/components/target-systems.tsx:28
-#, fuzzy
 msgid "No systems specified."
-msgstr "システムを選択しました"
+msgstr "システムが指定されていません。"
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -1022,7 +1000,7 @@ msgstr "未定義"
 #: ../html/src/core/intl/index.test.tsx:18
 #: ../html/src/core/intl/index.test.tsx:19
 msgid "foo {insert} bar"
-msgstr "foo {insert} bar"
+msgstr "foo {insert} バー"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
@@ -1532,7 +1510,6 @@ msgid "Channels"
 msgstr "チャンネル"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:678
-#, fuzzy
 msgid "Recommended"
 msgstr "推奨"
 
@@ -1725,20 +1702,17 @@ msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
-#, fuzzy
 msgid "An error occurred while displaying the list of packages."
-msgstr ""
-"データの読み込み時にエラーが発生しました。サーバ側のログを確認してください。"
+msgstr "パッケージのリストを表示中にエラーが発生しました。"
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:39
 msgid "AppStream {stream} has {count} packages:"
-msgstr ""
+msgstr "AppStream {stream} には {count} 個のパッケージがあります:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:87
-#, fuzzy
 msgid ""
 "Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr "highstateの適用が <link>スケジュールされました</link>。"
+msgstr "AppStreamモジュールの選択の更新が <link>スケジュールされました</link>。"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:135
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -1749,42 +1723,35 @@ msgstr "AppStream"
 msgid ""
 "Please review the changes below before scheduling an action to apply the "
 "changes on the system."
-msgstr ""
+msgstr "システムに変更を適用するアクションをスケジュールする前に、以下の変更点を確認してください。"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
-msgstr ""
+msgstr "有効にするストリーム:"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:60
 msgid "Streams to be disabled:"
-msgstr ""
+msgstr "無効にするストリーム:"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:37
-#, fuzzy
 msgid "The following AppStream modules are currently available to the system."
-msgstr ""
-"現在このシステムには次のProgram Temporary Fixes (PTFs)がインストールされてい"
-"ます。 "
+msgstr "現在、以下のAppStreamモジュールがシステムで利用可能です。"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:47
-#, fuzzy
 msgid "Apply Changes"
-msgstr "変更点の適用"
+msgstr "変更の適用"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:64
-#, fuzzy
 msgid "Modules"
 msgstr "モジュール"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:65
-#, fuzzy
 msgid "Streams"
 msgstr "ストリーム"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:89
-#, fuzzy
 msgid "Packages in {stream}"
-msgstr "パッケージ名"
+msgstr "{stream} のパッケージ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
@@ -1794,7 +1761,7 @@ msgstr "影響を受ける、割り当てられていないチャンネルで利
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
+msgstr "このクライアントは脆弱性の影響を受けており、それに対するパッチがあります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
@@ -1814,45 +1781,39 @@ msgstr "影響を受けません"
 msgid ""
 "The client is not affected because none of the known CVE vulnerable packages "
 "are installed."
-msgstr ""
+msgstr "既知のCVE脆弱性パッケージがインストールされていないため、クライアントは影響を受けません。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
 msgstr "パッチ適用済み"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
-#, fuzzy
 msgid "A patch has been successfully installed on the client."
-msgstr "アクションを追加しました "
+msgstr "パッチがクライアントに正常にインストールされました。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
-#, fuzzy
 msgid "Affected, patch is unavailable"
-msgstr "パッケージの更新があります"
+msgstr "影響を受ける、パッチは利用できません"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
-msgstr ""
+msgstr "このクライアントは、まだパッチがリリースされていない脆弱性の影響を受けます。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
-#, fuzzy
 msgid "Affected, patch is unavailable in relevant channels"
-msgstr ""
-"影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
+msgstr "影響を受ける、関連チャンネルでパッチが利用できません"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid ""
 "The client is affected by a vulnerability for which a patch has been "
 "released,"
-msgstr ""
+msgstr "このクライアントは、パッチがリリースされている脆弱性の影響を受けます。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
-#, fuzzy
 msgid "Affected, partial patch available in assigned channel"
-msgstr ""
-"影響を受ける、割り当てられたチャンネルで利用可能な少なくとも1つのパッチ"
+msgstr "影響を受ける、割り当てられたチャンネルで部分的なパッチが利用可能"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
@@ -1918,9 +1879,8 @@ msgid "Patch available, but needs to be cloned into Channel."
 msgstr "パッチは利用可能ですが、チャンネルにクローンを作成する必要があります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
-#, fuzzy
 msgid "Install a new partial patch on this system."
-msgstr "このシステムに新しいパッチをインストールします。"
+msgstr "このシステムに新しい部分的なパッチをインストールします。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
@@ -2608,7 +2568,7 @@ msgstr "パッチ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr "Product Temporary Fix"
+msgstr "製品の一時的修正"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -4377,9 +4337,8 @@ msgid "Playbook execution has been"
 msgstr "動作を"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
-#, fuzzy
 msgid "Settings"
-msgstr "再起動"
+msgstr "設定"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
@@ -4514,7 +4473,7 @@ msgstr "Program Temporary Fixes (PTFs)削除の確認"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr "Program Temporary Fixes (PTFs)"
+msgstr "製品の一時的修正(PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
@@ -5329,26 +5288,22 @@ msgstr ""
 "をサブスクライブします。"
 
 #: ../html/src/manager/systems/all-list.tsx:37
-#, fuzzy
 msgid " Systems "
-msgstr "システム"
+msgstr " システム "
 
 #: ../html/src/manager/systems/all-list.tsx:57
-#, fuzzy
 msgid "No Systems."
-msgstr "システム"
+msgstr "システムはありません。"
 
 #: ../html/src/manager/systems/all-list.tsx:106
 #: ../html/src/manager/systems/list-filter.tsx:46
-#, fuzzy
 msgid "Extra Packages"
-msgstr "パッケージ"
+msgstr "追加パッケージ"
 
 #: ../html/src/manager/systems/all-list.tsx:120
 #: ../html/src/manager/systems/list-filter.tsx:47
-#, fuzzy
 msgid "Config Diffs"
-msgstr "設定 URL"
+msgstr "設定の差分"
 
 #: ../html/src/manager/systems/all-list.tsx:135
 #: ../html/src/manager/systems/list-filter.tsx:48
@@ -5359,9 +5314,8 @@ msgstr "ベースチャンネル"
 
 #: ../html/src/manager/systems/all-list.tsx:146
 #: ../html/src/manager/systems/list-filter.tsx:49
-#, fuzzy
 msgid "System Type"
-msgstr "ストアの種類"
+msgstr "システムタイプ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
@@ -5504,7 +5458,7 @@ msgstr "ブートストラップ中にこのページを閉じてもよろしい
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
-msgstr ""
+msgstr "コンフィデンシャルコンピューティング機能"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
@@ -5583,106 +5537,90 @@ msgid "Confirm Deletion"
 msgstr "削除の確認"
 
 #: ../html/src/manager/systems/list-filter.tsx:4
-#, fuzzy
 msgid "Manager Server"
-msgstr "Manager"
+msgstr "マネージャサーバ"
 
 #: ../html/src/manager/systems/list-filter.tsx:5
-#, fuzzy
 msgid "Physical"
-msgstr "物理機能"
+msgstr "物理"
 
 #: ../html/src/manager/systems/list-filter.tsx:12
-#, fuzzy
 msgid "Ansible Control Node"
-msgstr "Ansible 制御ノード"
+msgstr "Ansible制御ノード"
 
 #: ../html/src/manager/systems/list-filter.tsx:14
-#, fuzzy
 msgid "Container Build Host"
-msgstr "構築ホスト"
+msgstr "コンテナ構築ホスト"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Foreign"
-msgstr ""
+msgstr "外部"
 
 #: ../html/src/manager/systems/list-filter.tsx:16
-#, fuzzy
 msgid "Management"
-msgstr "管理ノード"
+msgstr "管理"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Monitored Host"
-msgstr ""
+msgstr "監視対象ホスト"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
-#, fuzzy
 msgid "OS Image Build Host"
-msgstr "構築ホスト"
+msgstr "OSイメージ構築ホスト"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
 msgid "Salt"
-msgstr ""
+msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:20
-#, fuzzy
 msgid "Virtualization Host"
 msgstr "仮想ホスト"
 
 #: ../html/src/manager/systems/list-filter.tsx:24
-#, fuzzy
 msgid "Actions scheduled"
-msgstr "スケジュールしました"
+msgstr "スケジュールされたアクション"
 
 #: ../html/src/manager/systems/list-filter.tsx:25
-#, fuzzy
 msgid "All updates scheduled"
-msgstr "チャンネル変更をスケジュールしました。"
+msgstr "すべての更新をスケジュールしました"
 
 #: ../html/src/manager/systems/list-filter.tsx:27
-#, fuzzy
 msgid "Kickstart in progress"
-msgstr " は処理中です"
+msgstr "キックスタートが進行中です"
 
 #: ../html/src/manager/systems/list-filter.tsx:28
-#, fuzzy
 msgid "System is up to date"
-msgstr "イメージは最新の状態です"
+msgstr "システムは最新の状態です"
 
 #: ../html/src/manager/systems/list-filter.tsx:29
 msgid "System not checking in"
-msgstr ""
+msgstr "システムがチェックインしていません"
 
 #: ../html/src/manager/systems/list-filter.tsx:30
-#, fuzzy
 msgid "System not entitled"
-msgstr "システムはロック済み"
+msgstr "システムにエンタイトルメントが付与されていません"
 
 #: ../html/src/manager/systems/list-filter.tsx:31
 msgid "System requires reboot"
-msgstr ""
+msgstr "システムの再起動が必要です"
 
 #: ../html/src/manager/systems/list-filter.tsx:32
-#, fuzzy
 msgid "Updates available"
-msgstr "パッケージの更新があります"
+msgstr "更新が利用可能"
 
 #: ../html/src/manager/systems/list-filter.tsx:42
-#, fuzzy
 msgid "System Kind"
-msgstr "システム名"
+msgstr "システムの種類"
 
 #: ../html/src/manager/systems/list-filter.tsx:50
 msgid "Requires Reboot"
-msgstr ""
+msgstr "再起動が必要です"
 
 #: ../html/src/manager/systems/list-filter.tsx:51
-#, fuzzy
 msgid "Registered Days"
-msgstr "登録済みシステム"
+msgstr "登録日数"
 
 #: ../html/src/manager/systems/list-filter.tsx:52
-#, fuzzy
 msgid "Groups"
 msgstr "グループ"
 
@@ -5715,9 +5653,8 @@ msgid "New Proxy"
 msgstr "新しいプロキシ"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
-#, fuzzy
 msgid "Manage selected system set"
-msgstr "選択したものを読み込み済みとしてマーク"
+msgstr "選択したシステムセットの管理"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "system selected"
@@ -5728,9 +5665,8 @@ msgid "systems selected"
 msgstr "システムを選択しました"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
-#, fuzzy
 msgid "Clear selected system set"
-msgstr "選択したメッセージの削除"
+msgstr "選択したシステムセットのクリア"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
