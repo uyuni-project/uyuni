@@ -1217,6 +1217,12 @@ public class SystemManager extends BaseManager {
                         "COALESCE(VIS.label, 'unknown') AS STATE_LABEL, " +
                         "COALESCE(VII.vcpus, 0) AS VCPUS, " +
                         "COALESCE(VII.memory_size, 0) AS MEMORY, " +
+                        "OV.CHANNEL_LABELS, " +
+                        "OV.CHANNEL_ID, " +
+                        "OV.enhancement_errata, " +
+                        "OV.bug_errata, " +
+                        "OV.security_errata, " +
+                        "OV.outdated_packages, " +
                         "rhn_channel.user_role_check((" +
                         "   select channel_id " +
                         "   from rhnServerOverview " +
@@ -1224,7 +1230,8 @@ public class SystemManager extends BaseManager {
                 .from("rhnVirtualInstance VI " +
                         "    LEFT OUTER JOIN rhnVirtualInstanceInfo VII ON VI.id = VII.instance_id " +
                         "    LEFT OUTER JOIN rhnVirtualInstanceState VIS ON VII.state = VIS.id " +
-                        "    LEFT OUTER JOIN rhnServer RS ON RS.id = VI.host_system_id")
+                        "    LEFT OUTER JOIN rhnServer RS ON RS.id = VI.host_system_id" +
+                        "    LEFT JOIN rhnServerOverview OV on  OV.server_id = VI.virtual_system_id")
                 .where("EXISTS ( " +
                         "   SELECT 1 " +
                         "   FROM rhnUserServerPerms USP " +
