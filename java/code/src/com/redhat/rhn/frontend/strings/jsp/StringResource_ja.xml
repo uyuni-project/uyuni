@@ -29030,7 +29030,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve" approved="yes">
         <source>Monitored Host</source>
-        <target state="final">モニタリングホスト</target>
+        <target state="final">監視対象ホスト</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29842,7 +29842,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve" approved="yes">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-        <target state="final">動作チェーンを再開し、Salt SSH システムをチェックインする </target>
+        <target state="final">動作チェーンを再開し、Salt SSHシステムをチェックインする </target>
       </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve" approved="yes">
         <source>Peripheral Server</source>
