@@ -9705,20 +9705,6 @@ Veuillez noter qu'une configuration manuelle de ces scripts peut toujours être 
         </context-group>
         <target>Activer la vérification GPG du client</target>
       </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-config-actions" xml:space="preserve">
-        <source>Enable Remote Configuration</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>Activer la configuration à distance</target>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-remote-commands" xml:space="preserve">
-        <source>Enable Remote Commands</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>Activer les commandes à distance</target>
-      </trans-unit>
       <trans-unit id="bootstrap.jsp.http-proxy" xml:space="preserve">
         <source>Client HTTP Proxy</source>
         <context-group name="ctx">

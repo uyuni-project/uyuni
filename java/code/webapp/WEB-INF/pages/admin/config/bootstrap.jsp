@@ -57,26 +57,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 control-label" for="allow-config-actions">
-                            <bean:message key="bootstrap.jsp.allow-config-actions"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                    <html:checkbox property="allow-config-actions" styleId="allow-config-actions"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="allow-remote-commands">
-                            <bean:message key="bootstrap.jsp.allow-remote-commands"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                    <html:checkbox property="allow-remote-commands" styleId="allow-remote-commands" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-lg-3 control-label" for="http-proxy">
                             <bean:message key="bootstrap.jsp.http-proxy"/>
                         </label>

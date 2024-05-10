@@ -63,12 +63,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
         List args = new LinkedList<>();
         args.add("/usr/bin/sudo");
         args.add("/usr/bin/rhn-bootstrap");
-        if (BooleanUtils.toBooleanDefaultIfNull(this.allowConfigActions, false)) {
-            args.add("--allow-config-actions");
-        }
-        if (BooleanUtils.toBooleanDefaultIfNull(this.allowRemoteCommands, false)) {
-            args.add("--allow-remote-commands");
-        }
         if (!BooleanUtils.toBooleanDefaultIfNull(this.enableGpg, false)) {
             args.add("--no-gpg");
         }
