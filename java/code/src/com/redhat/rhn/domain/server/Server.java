@@ -2428,6 +2428,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("9");
     }
 
+    public boolean isRedHat() {
+        return ServerConstants.REDHAT.equals(getOsFamily());
+    }
+
     boolean isAlibaba2() {
         return ServerConstants.ALIBABA.equals(getOs());
     }

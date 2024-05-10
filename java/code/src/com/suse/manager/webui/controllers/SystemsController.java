@@ -184,6 +184,15 @@ public class SystemsController {
         }
 
         DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsList(user, pc);
+        virtual.forEach(system -> {
+                    if (system.getSystemId() != null) {
+                        system.setEntitlement(SystemManager.getServerEntitlements(system.getSystemId())
+                                .stream()
+                                .map(s -> s.getLabel())
+                                .collect(Collectors.toList()));
+                        system.updateStatusType(user);
+                    }
+                });
         RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
 
         return json(response, new PagedDataResultJson<>(virtual, virtual.getTotalSize(), ssmSet.getElementValues()));
