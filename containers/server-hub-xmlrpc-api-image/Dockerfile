@@ -26,4 +26,4 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-hub-xmlrpc-api:${PRODUC
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
-CMD ["/usr/bin/hub-xmlrpc-api"]
+CMD update-ca-certificates && hub-xmlrpc-api
