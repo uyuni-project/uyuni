@@ -15,11 +15,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-03 15:50+0200\n"
-"PO-Revision-Date: 2022-03-19 20:12+0000\n"
-"Last-Translator: Matías Silva Bustos <matiasasb@gmail.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"POT-Creation-Date: 2024-05-10 15:24+0200\n"
+"PO-Revision-Date: 2024-05-07 10:43+0000\n"
+"Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend-4-3/"
+"es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1384,7 +1384,7 @@ msgstr "Omitiendo..."
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
-msgstr ""
+msgstr "SUSE Manager Inter Server sync. reporte de %s"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -1662,15 +1662,15 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1570
 msgid "Downloading patch data"
-msgstr ""
+msgstr "Descargando datos de parches"
 
 #: ../satellite_tools/satsync.py:1572
 msgid "Forcing download of all patch data for requested channels."
-msgstr ""
+msgstr "Forzando la descarga de datos de parches para los canales solicitados."
 
 #: ../satellite_tools/satsync.py:1587
 msgid "Downloading patch data complete"
-msgstr ""
+msgstr "Descarga de datos de parches completada"
 
 #: ../satellite_tools/satsync.py:1592 ../satellite_tools/satsync.py:1613
 msgid "Downloading:"

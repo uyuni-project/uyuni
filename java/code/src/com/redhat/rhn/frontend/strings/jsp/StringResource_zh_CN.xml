@@ -22910,7 +22910,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target state="translated">编辑自动安装的发行套件</target>
       </trans-unit>
-      <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
+      <trans-unit id="treecreate.jsp.header1" xml:space="preserve" approved="yes">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
@@ -22922,13 +22922,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">下面是定义可自动安装的发行套件需要提供的细节。"树路径" 字段应该是位于该 @@PRODUCT_NAME@@ 服务器上的安装树的有效路径。&lt;br/&gt;&lt;br/&gt;
+        <target state="final">下面是定义可自动安装的发行套件需要提供的细节。"树路径" 字段应该是位于该 @@PRODUCT_NAME@@ 服务器上的安装树的有效路径。&lt;br/&gt;&lt;br/&gt;
 
-"发行套件标签" 字段应该只包含字母、数字、连字符、句点和下划线。至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
+"发行套件标签" 字段应该只包含字母、数字、连字符和下划线，且至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
 
-树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
+树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自相同版本的 @@ENTERPRISE_LINUX_NAME@@。&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和储存库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
+&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和储存库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以将该路径指定为树路径。&lt;/p&gt;
 </target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2" xml:space="preserve">
@@ -29729,11 +29729,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">更新集线器报告数据库</target>
+        <target state="final">更新 Hub 报告数据库</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
-        <target state="final">更新集线器报告数据库</target>
+        <target state="final">更新 Hub 报告数据库</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
         <source>Following installed products will be removed from the system during migration:</source>

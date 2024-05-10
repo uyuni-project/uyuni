@@ -1241,7 +1241,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target state="final">앱 스트림</target>
+        <target state="final">AppStreams</target>
       </trans-unit>
     </body>
   </file>

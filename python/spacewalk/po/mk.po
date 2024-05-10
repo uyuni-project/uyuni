@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-03 15:50+0200\n"
-"PO-Revision-Date: 2024-04-02 06:43+0000\n"
+"POT-Creation-Date: 2024-05-10 15:24+0200\n"
+"PO-Revision-Date: 2024-05-09 07:43+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "backend-4-3/mk/>\n"
@@ -375,7 +375,7 @@ msgstr "корисничко име = `%s', невалиден карактер 
 #: ../server/rhnUser.py:542
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr ""
+msgstr "Ограничете ја вашата e-mail адреса на %s карактери"
 
 #: ../server/rhnUser.py:623
 #, python-format
@@ -400,12 +400,12 @@ msgstr "корисничкото име треба да има најмалку 
 #: ../server/rhnUser.py:662
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr ""
+msgstr "Не може да се регистрираат кориснички имиња што завршуваат на %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "Се чини дека ова не е важечко корисничко име."
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
