@@ -46,8 +46,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
     public static final String SALT = "salt";
 
     public static final String ENABLE_GPG = "gpg";
-    public static final String ALLOW_CONFIG_ACTIONS = "allow-config-actions";
-    public static final String ALLOW_REMOTE_COMMANDS = "allow-remote-commands";
     public static final String HTTP_PROXY = "http-proxy";
     public static final String HTTP_PROXY_USERNAME = "http-proxy-username";
     public static final String HTTP_PROXY_PASSWORD = "http-proxy-password";

@@ -382,8 +382,6 @@
             <form-property name="salt"  type="java.lang.Boolean"/>
             <form-property name="ssl"  type="java.lang.Boolean"/>
             <form-property name="gpg"  type="java.lang.Boolean"/>
-            <form-property name="allow-config-actions"  type="java.lang.Boolean"/>
-            <form-property name="allow-remote-commands"  type="java.lang.Boolean"/>
             <form-property name="http-proxy"  type="java.lang.String"/>
             <form-property name="http-proxy-username"  type="java.lang.String"/>
             <form-property name="http-proxy-password"  type="java.lang.String"/>

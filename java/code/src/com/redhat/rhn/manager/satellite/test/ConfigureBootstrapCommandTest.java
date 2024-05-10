@@ -69,12 +69,6 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
             else if (!args[1].equals("/usr/bin/rhn-bootstrap")) {
                 return -3;
             }
-            else if (!args[2].equals("--allow-config-actions")) {
-                return -4;
-            }
-            else if (!args[3].startsWith("--allow-remote-commands")) {
-                return -5;
-            }
             else if (!args[4].startsWith("--no-gpg")) {
                 return -7;
             }
