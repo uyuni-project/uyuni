@@ -1,3 +1,8 @@
+  ## IMPORTANT 📌
+
+
+**SUSE Manager 4.3** is in maintenance mode, and we don't intend to implement significant changes unless absolutely necessary. If the pull request is substantial in size and targets **SUSE Manager 4.3**, and it's not a Level 3 fix, please reach out to @rjmateus or @admd before proceeding with the merge.
+
 ## What does this PR change?
 
 **add description**
