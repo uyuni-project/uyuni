@@ -80,8 +80,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
                 cmd.setSslPath(form.getString(SSL_CERT));
                 cmd.setSaltEnabled((Boolean) form.get(SALT));
                 cmd.setEnableGpg((Boolean) form.get(ENABLE_GPG));
-                cmd.setAllowConfigActions((Boolean) form.get(ALLOW_CONFIG_ACTIONS));
-                cmd.setAllowRemoteCommands((Boolean) form.get(ALLOW_REMOTE_COMMANDS));
                 cmd.setHttpProxy(form.getString(HTTP_PROXY));
                 cmd.setHttpProxyUsername(form.getString(HTTP_PROXY_USERNAME));
                 cmd.setHttpProxyPassword(form.getString(HTTP_PROXY_PASSWORD));
@@ -103,8 +101,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
             form.set(SSL_CERT, caCertPath);
             form.set(SALT, Boolean.TRUE);
             form.set(ENABLE_GPG, Boolean.TRUE);
-            form.set(ALLOW_CONFIG_ACTIONS, Boolean.FALSE);
-            form.set(ALLOW_REMOTE_COMMANDS, Boolean.FALSE);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

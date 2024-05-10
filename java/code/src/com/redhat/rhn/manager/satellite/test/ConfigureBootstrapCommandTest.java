@@ -44,8 +44,6 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
         assertNotNull(cmd.getUser());
         cmd.setHostname("localhost");
         cmd.setSslPath("/tmp/somepath.cert");
-        cmd.setAllowRemoteCommands(Boolean.TRUE);
-        cmd.setAllowConfigActions(Boolean.TRUE);
         cmd.setEnableGpg(Boolean.FALSE);
         cmd.setHttpProxy("proxy-host.redhat.com");
         cmd.setHttpProxyUsername("username");
@@ -60,7 +58,7 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
 
         @Override
         public int execute(String[] args) {
-            if (args.length != 11) {
+            if (args.length != 9) {
                 return -1;
             }
             if (!args[0].equals("/usr/bin/sudo")) {
@@ -69,26 +67,26 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
             else if (!args[1].equals("/usr/bin/rhn-bootstrap")) {
                 return -3;
             }
-            else if (!args[4].startsWith("--no-gpg")) {
+            else if (!args[2].startsWith("--no-gpg")) {
+                return -4;
+            }
+            else if (!args[3].startsWith("--hostname=localhost")) {
+                return -5;
+            }
+            else if (!args[4].startsWith("--traditional")) {
+                return -6;
+            }
+            else if (!args[5].startsWith("--ssl-cert=/tmp/somepath.cert")) {
                 return -7;
             }
-            else if (!args[5].startsWith("--hostname=localhost")) {
+            else if (!args[6].startsWith("--http-proxy=proxy-host.redhat.com")) {
                 return -8;
             }
-            else if (!args[6].startsWith("--traditional")) {
+            else if (!args[7].startsWith("--http-proxy-username=username")) {
                 return -9;
             }
-            else if (!args[7].startsWith("--ssl-cert=/tmp/somepath.cert")) {
+            else if (!args[8].startsWith("--http-proxy-password=password")) {
                 return -10;
-            }
-            else if (!args[8].startsWith("--http-proxy=proxy-host.redhat.com")) {
-                return -11;
-            }
-            else if (!args[9].startsWith("--http-proxy-username=username")) {
-                return -12;
-            }
-            else if (!args[10].startsWith("--http-proxy-password=password")) {
-                return -13;
             }
             else {
                 return 0;
