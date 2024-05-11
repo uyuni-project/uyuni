@@ -67,7 +67,9 @@ class Nsvca:
 class ModuleMdIndexingError(Exception):
     """Exception raised when indexing module metadata fails."""
 
-    pass
+    def __init__(self, message=None, failures=None):
+        super().__init__(message)
+        self.failures = failures
 
 
 class ModuleMdImporter:
@@ -148,10 +150,19 @@ class ModuleMdImporter:
         """Indexes the Modulemd file."""
         idx = Modulemd.ModuleIndex.new()
         try:
-            idx.update_from_file(self.modulemd_file, False)
+            # The following returns a tuple in the following format: (success, [failures])
+            result = idx.update_from_file(self.modulemd_file, False)
+            if not result[0]:
+                # Parsing error in a YAML subdocument
+                raise ModuleMdIndexingError(
+                    "An error occurred while indexing a module entry:",
+                    [f.get_gerror().message for f in result[1]],
+                )
         except gi.repository.GLib.GError as e:
+            # General parsing error in file
             raise ModuleMdIndexingError(
-                f"An error occurred while indexing the module metadata from file '{self.modulemd_file}'."
+                "An error occurred while indexing the module metadata from file:",
+                [e.message],
             ) from e
         self.modulemd_index = idx
 

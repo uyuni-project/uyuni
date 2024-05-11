@@ -762,11 +762,14 @@ class RepoSync(object):
                                 try:
                                     modulemd_importer.validate()
                                 except ModuleMdIndexingError as e:
-                                    log(
-                                        0,
-                                        f"An error occurred while reading module metadata: {e}",
-                                    )
-                                    self.sendErrorMail(str(e))
+                                    msg = f"An error occurred while reading module metadata: {e}"
+                                    log(0, msg)
+                                    mailbody = msg + "\n\n"
+                                    for failure in e.failures:
+                                        log(0, f"    {failure}")
+                                        mailbody += f"    {failure}\n"
+
+                                    self.sendErrorMail(mailbody)
                                     sync_error = -1
 
                         if sync_error == 0:
