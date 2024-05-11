@@ -219,6 +219,21 @@ class CVEAudit extends React.Component<Props, State> {
     });
   };
 
+  getPatchStatusAccuracyWarning = (row) => {
+    const dataSources: string[] = row.scanDataSources;
+    if (!dataSources) {
+      return "Unknown patch status";
+    }
+
+    if (dataSources.indexOf("OVAL") === -1) {
+      return "OVAL data not in sync. Possible false negatives";
+    } else if (dataSources.indexOf("CHANNELS") === -1) {
+      return "Channels not in sync for the given server product. Patches are not available.";
+    }
+
+    return "If you see this report a bug.";
+  };
+
   render() {
     return (
       <span>
@@ -346,6 +361,12 @@ class CVEAudit extends React.Component<Props, State> {
                     className={"fa fa-big " + PATCH_STATUS_LABEL[row.patchStatus].className}
                     title={PATCH_STATUS_LABEL[row.patchStatus].description}
                   />
+                  {row.scanDataSources.length < 2 && (
+                    <i
+                      className={"fa fa-big fa-dot-circle-o text-secondary"}
+                      title={this.getPatchStatusAccuracyWarning(row)}
+                    />
+                  )}
                 </div>
               )}
             />
