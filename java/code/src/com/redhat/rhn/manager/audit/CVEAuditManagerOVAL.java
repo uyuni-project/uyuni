@@ -101,7 +101,7 @@ public class CVEAuditManagerOVAL {
                         doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
             }
 
-            if (checkChannelsDataAvailability(clientServer)) {
+            if (checkChannelsErrataAvailability(clientServer)) {
                 auditWithChannelsResult =
                         CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
             }
@@ -144,7 +144,7 @@ public class CVEAuditManagerOVAL {
     }
 
     /**
-     * Check if server support OVAL CVE auditing
+     * Check if we have any OVAL vulnerability records for the given client OS in the database.
      *
      * @param clientServer the server to check
      * @return {@code True}
@@ -154,14 +154,13 @@ public class CVEAuditManagerOVAL {
     }
 
     /**
-     * Check if we have CVE channels data for the OS product installed on the given client server
+     * Check if we have any erratas assigned to the client's CVE channels.
      *
      * @param clientServer the server to check
      * @return {@code True}
      * */
-    public static boolean checkChannelsDataAvailability(Server clientServer) {
-        // TODO: Implement!
-        return true;
+    public static boolean checkChannelsErrataAvailability(Server clientServer) {
+        return OVALCachingFactory.checkChannelsErrataAvailability(clientServer.getId());
     }
 
     private static boolean isCVEIdentifierUnknown(String cveIdentifier) {

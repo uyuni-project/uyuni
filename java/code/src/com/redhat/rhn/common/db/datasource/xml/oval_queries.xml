@@ -35,4 +35,14 @@
             SELECT 1 FROM suseOVALPlatform plat WHERE starts_with(:cpe, plat.cpe);
         </query>
     </mode>
+
+    <mode name="check_errata_availability">
+        <query params="server_id">
+            SELECT 1
+            FROM suseCVEServerChannel,
+                 rhnChannelErrata
+            WHERE suseCVEServerChannel.channel_id = rhnChannelErrata.channel_id
+              AND server_id = :server_id
+        </query>
+    </mode>
 </datasource_modes>
