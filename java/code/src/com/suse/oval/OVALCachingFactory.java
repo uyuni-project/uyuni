@@ -135,15 +135,31 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Checks if OVAL is synced for servers with the given {@code cpe}
+     * Check if we have any OVAL vulnerability records for the given client OS in the database.
      *
-     * @param cpe the cpe of servers to check for
+     * @param cpe the cpe representing of the OS of servers to check for
      * @return {@code True} if OVAL is available for servers with {@code cpe} and {@code False} otherwise.
      */
     public static boolean checkOVALAvailability(String cpe) {
         SelectMode m = ModeFactory.getMode("oval_queries", "check_oval_availability");
         Map<String, Object> params = new HashMap<>();
         params.put("cpe", cpe);
+
+        DataResult result = m.execute(params);
+
+        return !result.isEmpty();
+    }
+
+    /**
+     * Check if we have any erratas assigned to the client's CVE channels.
+     *
+     * @param serverId the id of the client to check for
+     * @return {@code True} if the CVE channels of the server contains erratas. and {@code False} otherwise.
+     * */
+    public static boolean checkChannelsErrataAvailability(Long serverId) {
+        SelectMode m = ModeFactory.getMode("oval_queries", "check_errata_availability");
+        Map<String, Object> params = new HashMap<>();
+        params.put("server_id", serverId);
 
         DataResult result = m.execute(params);
 
