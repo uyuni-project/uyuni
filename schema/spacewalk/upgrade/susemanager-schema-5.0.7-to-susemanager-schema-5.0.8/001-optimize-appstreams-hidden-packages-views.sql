@@ -1,22 +1,5 @@
---
--- Copyright (c) 2024 SUSE LLC
---
--- This software is licensed to you under the GNU General Public License,
--- version 2 (GPLv2). There is NO WARRANTY for this software, express or
--- implied, including the implied warranties of MERCHANTABILITY or FITNESS
--- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
--- along with this software; if not, see
--- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
---
--- Red Hat trademarks are not licensed under GPLv2. No permission is
--- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation.
---
 CREATE OR REPLACE VIEW suseServerAppStreamHiddenPackagesView AS
 
--- If a package is part of any appstream,
--- and this appstream is not enabled in
--- a server, it should appear here.
 SELECT DISTINCT sasp.package_id AS pid, sc.server_id AS sid
 FROM rhnserverchannel sc
     INNER JOIN suseappstream sas ON sas.channel_id = sc.channel_id
@@ -28,9 +11,6 @@ WHERE ssa.id IS NULL
 
 UNION
 
--- If a package is part of an enabled appstream, all the packages
--- whose name matches with appstream api need to be filtered out
--- except the packages that are part of the enabled appstream.
 SELECT DISTINCT p.id AS pid, server_stream.server_id AS sid
 FROM suseServerAppstream server_stream
     INNER JOIN suseAppstream appstream ON appstream.name = server_stream.name
@@ -45,3 +25,12 @@ WHERE NOT EXISTS (
     WHERE server_id = server_stream.server_id
         AND package_id = p.id
 );
+
+CREATE INDEX IF NOT EXISTS suse_appstream_name_stream_arch_idx
+  ON suseAppStream (name, stream, arch);
+
+CREATE INDEX IF NOT EXISTS suse_srvappstream_name_stream_arch_idx
+  ON suseServerAppStream (name, stream, arch);
+
+CREATE INDEX IF NOT EXISTS suse_appstream_api_rpm_idx
+  ON suseAppStreamApi (rpm);
