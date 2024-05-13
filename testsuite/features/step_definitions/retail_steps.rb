@@ -102,6 +102,11 @@ Then(/^"([^"]*)" should communicate with the server using public interface$/) do
   get_target('server').run("ping -n -c 1 #{node.public_ip}")
 end
 
+When(/^I rename the proxy for Retail$/) do
+  node = get_target('proxy')
+  node.run('sed -i "s/^proxy_fqdn:.*$/proxy_fqdn: proxy.example.org/" /etc/uyuni/proxy/config.yaml')
+end
+
 When(/^I connect the second interface of the proxy to the private network$/) do
   node = get_target('proxy')
   _result, return_code = node.run('which nmcli')
@@ -125,7 +130,7 @@ When(/^I connect the second interface of the proxy to the private network$/) do
   node.run(cmd)
 end
 
-When(/^I restart all proxy containers to let them pick new network configuration$/) do
+When(/^I restart all proxy containers$/) do
   node = get_target('proxy')
   node.run('systemctl restart uyuni-proxy-httpd.service')
   node.run('systemctl restart uyuni-proxy-salt-broker.service')
