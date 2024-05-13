@@ -31,4 +31,7 @@ CREATE TABLE suseAppstream(
 CREATE UNIQUE INDEX idx_uq_as_module_nsvca
     ON suseAppstream(channel_id, name, stream, version, context, arch);
 
+CREATE INDEX suse_appstream_name_stream_arch_idx
+  ON suseAppStream (name, stream, arch);
+
 CREATE SEQUENCE suse_as_module_seq;

@@ -22,3 +22,6 @@ CREATE TABLE suseAppstreamApi(
         modified        TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
         CONSTRAINT uq_as_api UNIQUE (module_id, rpm)
 );
+
+CREATE INDEX suse_appstream_api_rpm_idx
+  ON suseAppStreamApi (rpm);
