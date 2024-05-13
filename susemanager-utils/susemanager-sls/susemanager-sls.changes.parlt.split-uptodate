@@ -1,0 +1,2 @@
+- Remove reboot from uptodate state, introduce reboot and rebootifneeded states
+

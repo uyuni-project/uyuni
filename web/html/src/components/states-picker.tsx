@@ -64,7 +64,7 @@ class StatesPickerState {
   changed = new Map();
   showSaltState?: any | null = undefined;
   rank?: boolean = undefined;
-  messages: MessageType[] | any;
+  messages: MessageType[] = [];
 }
 
 class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState> {
@@ -103,12 +103,38 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   };
 
   save = () => {
+    let messages: MessageType[] = [];
     const channels = this.state.assigned;
     if (this.props.type === "state" && !channels.length) {
       this.setMessages(MessagesUtils.error(t("State configuration must not be empty")));
       this.setState({ changed: new Map() });
       this.hideRanking();
       return;
+    } else if (
+      channels.filter((channel) => channel.name.includes("reboot") && channel.type === "internal_state").length > 0
+    ) {
+      // Put reboot states last
+      let position = 1;
+      let counter = 0;
+      _sortBy(channels, "position").forEach((channel) => {
+        if (channel.name.includes("reboot") && channel.type === "internal_state") {
+          if (channel.position !== channels.length) {
+            channel.position = channels.length;
+            messages = messages.concat(MessagesUtils.info(t("Reboot state will be put last.")));
+          }
+          counter++;
+        } else {
+          channel.position = position++;
+        }
+      });
+      if (counter > 1) {
+        this.setMessages(
+          MessagesUtils.error(t("'Reboot system' and 'Reboot system if needed' states cannot be used together."))
+        );
+        this.setState({ changed: new Map() });
+        this.hideRanking();
+        return;
+      }
     }
     const request = this.props.saveRequest(channels).then(
       (data, textStatus, jqXHR) => {
@@ -123,6 +149,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           }
         });
 
+        messages = messages.concat(MessagesUtils.info(t("State assignments have been saved.")));
         this.setState({
           changed: new Map(), // clear changed
           // Update the channels with the new data
@@ -136,7 +163,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
             results: this.getSortedList(newSearchResults),
           },
         });
-        this.setMessages(MessagesUtils.info(t("State assignments have been saved.")));
+        this.setMessages(messages);
         this.hideRanking();
       },
       (jqXHR, textStatus, errorThrown) => {
@@ -316,7 +343,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   };
 
   clearMessages() {
-    this.setMessages(null);
+    this.setMessages([]);
   }
 
   getCurrentAssignment = () => {

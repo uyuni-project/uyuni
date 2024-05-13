@@ -43,3 +43,9 @@ INSERT INTO suseInternalState (id, name, label)
 
 INSERT INTO suseInternalState (id, name, label)
          VALUES (12, 'update-salt', 'Update Salt');
+
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (13, 'reboot', 'Reboot system');
+
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (14, 'rebootifneeded', 'Reboot system if needed');
