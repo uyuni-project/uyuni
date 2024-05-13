@@ -926,7 +926,7 @@ When(/^I install packages? "([^"]*)" on this "([^"]*)"((?: without error control
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
   elsif transactional_system?(host)
-    cmd = "transactional-update pkg install -n #{package}"
+    cmd = "transactional-update pkg install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
     not_found_msg = 'not found in package names'
   else
@@ -965,6 +965,9 @@ When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error contro
   elsif deb_host?(host)
     cmd = "dpkg --remove #{package}"
     successcodes = [0]
+  elsif transactional_system?(host)
+    cmd = "transactional-update pkg rm -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
   else
     cmd = "zypper --non-interactive remove -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 104, 106]
