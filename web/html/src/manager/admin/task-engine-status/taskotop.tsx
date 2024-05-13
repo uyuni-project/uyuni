@@ -37,6 +37,8 @@ class TaskoTop extends React.Component<Props> {
     var currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
       .then((data) => {
+        data[1].status = 'skipped';
+        data[2].status = 'skipped';
         currentObject.setState({
           serverData: data,
           error: null,
@@ -132,7 +134,7 @@ class TaskoTop extends React.Component<Props> {
         break;
       case "skipped":
         cell = (
-          <div className="text-muted">
+          <div>
             <i className="fa fa-angle-double-right"></i>
             {t(" skipped")}
           </div>
@@ -192,6 +194,7 @@ class TaskoTop extends React.Component<Props> {
             <Table
               data={this.buildRows(data)}
               identifier={(row) => row["id"]}
+
               initialSortColumnKey="status"
               searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
             >
