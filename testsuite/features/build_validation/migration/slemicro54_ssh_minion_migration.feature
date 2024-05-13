@@ -60,13 +60,14 @@ Feature: Migrate a SLE Micro 5.4 Salt SSH minion to SLE Micro 5.5
     And I reboot the "slemicro54_ssh_minion" minion through the web UI
     And I disable repositories after installing Salt on this "slemicro54_ssh_minion"
 
-  Scenario: Subscribe the SSH-managed SLE Micro minion to a base channel
+  Scenario: Subscribe the SSH-managed SLE Micro minion to SLE Micro 5.5 child channels
     Given I am on the Systems overview page of this "slemicro54_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Base-Channel-x86_64"
-    And I wait until I do not see "Loading..." text
+    And I should see the child channel "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" "unselected"
+    When I select the child channel "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5"
+    Then I should see the child channel "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" "selected"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"

@@ -47,13 +47,14 @@ Feature: Migrate a SLES 15 SP3 Salt minion to 15 SP4
     And I install Salt packages from "sle15sp3_minion"
     And I disable repositories after installing Salt on this "sle15sp3_minion"
 
-  Scenario: Subscribe the SLES minion to a base channel
+  Scenario: Subscribe the SLES minion to a SLES 15 SP4 child channel
     Given I am on the Systems overview page of this "sle15sp3_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Base-Channel-x86_64"
-    And I wait until I do not see "Loading..." text
+    And I should see the child channel "SLE15-SP4-Installer-Updates for x86_64" "unselected"
+    When I select the child channel "SLE15-SP4-Installer-Updates for x86_64"
+    Then I should see the child channel "SLE15-SP4-Installer-Updates for x86_64" "selected"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
