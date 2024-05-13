@@ -521,10 +521,7 @@ class NotificationMessages extends React.Component<Props, State> {
                 <div className="btn-group">
                   <AsyncButton
                     id="updateReadStatus"
-                    icon={
-                      (row["isRead"] ? "spacewalk-icon-envelope-open-o" : "fa-envelope text-primary") +
-                      " fa-1-5x"
-                    }
+                    icon={(row["isRead"] ? "spacewalk-icon-envelope-open-o" : "fa-envelope text-primary") + " fa-1-5x"}
                     title={row["isRead"] ? t("Flag as Unread") : t("Flag as Read")}
                     action={() => this.updateReadStatus([row["id"]], !row["isRead"])}
                   />
