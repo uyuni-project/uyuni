@@ -42,7 +42,7 @@ enabled={{ args['enabled'] }}
 {%- if args['gpgkeyurl'] is defined and salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
 gpgkey={{ args['gpgkeyurl'] }} file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
 {%- elif args['gpgkeyurl'] is defined %}
-gpgkey={{ args['gpgkeyurl'] }}
+gpgkey={{ args['gpgkeyurl']|replace(pillar.get('mgr_origin_server', 'no-replace-origin-not-found'), pillar.get('mgr_server', '')) }}
 {%- elif salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
 gpgkey=file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
 {%- endif %}
