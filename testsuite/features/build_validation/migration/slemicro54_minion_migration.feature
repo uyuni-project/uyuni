@@ -7,6 +7,27 @@ Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  # Having OS salt packages which are not up to date installed on the minion
+  # will not allow it to undergo a Product migration
+  Scenario: Remove OS salt leftovers from this SLE Micro 5.4 minion
+    When I remove package "salt" from this "slemicro54_minion" without error control
+
+  Scenario: Reboot this SLE Micro 5.4 minion and wait until reboot is completed
+    Given I am on the Systems overview page of this "slemicro54_minion"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "Reboot completed." text
+
+  Scenario: Update Package List of this SLE Micro 5.4 minion
+    Given I am on the Systems overview page of this "slemicro54_minion"
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I wait until event "Package List Refresh" is completed
+
   Scenario: Migrate this minion to SLE Micro 5.5
     Given I am on the Systems overview page of this "slemicro54_minion"
     When I follow "Software" in the content area
