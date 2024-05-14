@@ -87,9 +87,7 @@ def twopence_init(host)
   # Initialize hostname
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
 
-  # special handling for nested VMs since they will only be created later in the test suite
-  # we to a late hostname initialization in a special step for those
-  unless hostname.empty? || host == 'salt_migration_minion'
+  unless hostname.empty?
     raise StandardError, "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
     raise StandardError, "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
 
