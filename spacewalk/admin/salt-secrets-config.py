@@ -12,7 +12,7 @@ import yaml
 import hashlib
 
 from contextlib import redirect_stderr
-from uyuni.common.context_managers import cfg_component
+from spacewalk.common.rhnConfig import cfg_component
 
 
 uyuni_roster_config = {}

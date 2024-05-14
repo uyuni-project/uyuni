@@ -1,0 +1,2 @@
+- Move server-only functions out of uyuni.common (bsc#1222325)
+- Include uyuni.common.notificationUtils in mgr-create-bootstrap-repo

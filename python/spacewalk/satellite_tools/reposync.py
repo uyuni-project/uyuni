@@ -49,11 +49,12 @@ from uyuni.common import fileutils
 from spacewalk.common import rhnLog, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common import repo
+from spacewalk.common.fileutils import chown_chmod_path
+from spacewalk.common.rhnConfig import cfg_component
 
 # pylint: disable-next=ungrouped-imports
 from uyuni.common.rhnLib import isSUSE, utc
 from uyuni.common.checksum import getFileChecksum
-from uyuni.common.context_managers import cfg_component
 
 # pylint: disable-next=ungrouped-imports
 from spacewalk.common.rhnException import rhnFault
@@ -906,13 +907,13 @@ class RepoSync(object):
         with cfg_component("server.susemanager") as CFG:
             for root, dirs, files in os.walk(os.path.join(mount_point, "rhn")):
                 for d in dirs:
-                    fileutils.setPermsPath(
+                    chown_chmod_path(
                         os.path.join(root, d),
                         group=CFG.httpd_group,
                         chmod=int("0755", 8),
                     )
                 for f in files:
-                    fileutils.setPermsPath(
+                    chown_chmod_path(
                         os.path.join(root, f),
                         group=CFG.httpd_group,
                         chmod=int("0644", 8),

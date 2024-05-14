@@ -32,7 +32,7 @@ except ImportError:
 
 # pylint: disable-next=ungrouped-imports
 from uyuni.common.checksum import getFileChecksum
-from uyuni.common.fileutils import createPath
+from spacewalk.common.fileutils import create_path
 from spacewalk.common.rhnConfig import CFG
 
 # no-op class, used to define the type of an attribute
@@ -44,7 +44,6 @@ class DateType:
 
 # An Item is just an extension for a dictionary
 class Item(dict):
-
     """
     First level object, that stores information in a hash-like structure
     """
@@ -70,7 +69,6 @@ class Item(dict):
 
 
 class BaseInformation(Item):
-
     """
     Second level object. It may contain composite items as attributes
     """
@@ -526,7 +524,6 @@ class IncompletePackage(BaseInformation):
 
 
 class Package(IncompletePackage):
-
     """
     A package is a hash of attributes
     """
@@ -1031,7 +1028,7 @@ def move_package(filename, basedir, relpath, checksum_type, checksum, force=None
     dir = os.path.dirname(packagePath)
     # Create the directory where the file will reside
     if not os.path.exists(dir):
-        createPath(dir)
+        create_path(dir)
 
     # Check if the RPM has been downloaded from a remote repository
     # If so, it is stored in CFG.MOUNT_POINT and we have to move it

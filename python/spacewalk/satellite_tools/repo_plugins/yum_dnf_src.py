@@ -28,10 +28,10 @@ from shutil import rmtree
 from libdnf.conf import ConfigParser
 from dnf.exceptions import Error, RepoError
 from uyuni.common import checksum, fileutils
-from uyuni.common.context_managers import cfg_component
 
 # pylint: disable-next=unused-import
 from spacewalk.common.suseLib import get_proxy
+from spacewalk.common.rhnConfig import cfg_component
 
 # pylint: disable-next=unused-import
 from spacewalk.satellite_tools.download import get_proxies

@@ -35,7 +35,7 @@ except ImportError:
 import pycurl
 from urlgrabber.grabber import URLGrabberOptions, PyCurlFileObject, URLGrabError
 from uyuni.common.checksum import getFileChecksum
-from uyuni.common.context_managers import cfg_component
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.satellite_tools.syncLib import log, log2
 
 

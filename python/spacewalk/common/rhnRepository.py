@@ -42,7 +42,6 @@ from spacewalk.common.RPC_Base import RPC_Base
 
 
 class Repository(RPC_Base):
-
     """Shared repository class, inherited by both the proxy and server specific
     Repository classes.
     """

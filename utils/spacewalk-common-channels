@@ -18,8 +18,9 @@ import sys
 import fnmatch
 from optparse import OptionParser, Option
 import re
+
+from spacewalk.common.rhnConfig import cfg_component
 from uyuni.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout
-from uyuni.common.context_managers import cfg_component
 
 try:
     import xmlrpclib

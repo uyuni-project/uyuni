@@ -205,7 +205,7 @@ class YumSrcTest(unittest.TestCase):
         self.assertEqual(patches[0], "patches")
         self.assertEqual(len(patches[1]), 2)
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())
@@ -227,7 +227,7 @@ class YumSrcTest(unittest.TestCase):
         with patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.MirrorGroup",
             mirror_group_mock,
-        ), patch("uyuni.common.context_managers.CFG", CFG), patch(
+        ), patch("spacewalk.common.rhnConfig.CFG", CFG), patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.os.path.isfile",
             Mock(return_value=False),
         ):
@@ -237,7 +237,7 @@ class YumSrcTest(unittest.TestCase):
             self.assertEqual(urlgrabber_spy.urlread.call_args[1]["timeout"], 42)
             self.assertEqual(urlgrabber_spy.urlread.call_args[1]["minrate"], 42)
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
     @patch("spacewalk.common.rhnLog", Mock())

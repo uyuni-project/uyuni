@@ -1,0 +1,1 @@
+- Move server-only functions out of uyuni.common (bsc#1222325)
