@@ -11,7 +11,6 @@ SPACEWALK_FILES	=   __init__ \
 		cli \
 		context_managers \
 		fileutils \
-		notificationUtils \
 		rhnLib \
 		rhn_deb \
 		rhn_mpm \

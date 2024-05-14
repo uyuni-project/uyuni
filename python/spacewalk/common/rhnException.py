@@ -272,7 +272,6 @@ on this system."
 
 
 class rhnException(Exception):
-
     """
     This is the generic exception class we raise in the code when we want to
     abort program execution and send a "500 Internal Server Error" message back
@@ -297,7 +296,6 @@ class rhnException(Exception):
 
 
 class redirectException(Exception):
-
     """
     pkilambi:This is the exception class we raise when we decide to
     issue a redirect functions in apacheRequest will catch it and
@@ -327,7 +325,6 @@ Explain = _(
 
 
 class rhnFault(Exception):
-
     """
     This is a data exception class that is raised when we detect bad data.
     The higher level functions in apacheServer will catch it and transform it
@@ -382,7 +379,6 @@ class rhnFault(Exception):
 
 
 class rhnNotFound(Exception):
-
     """Raised when we want return 404 Not Found"""
 
     pass

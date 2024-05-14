@@ -33,7 +33,6 @@ from spacewalk.common.rhnTranslate import cat
 
 
 class rhnApache:
-
     """Shared rhnApache class: rhnApache classes in proxy and server inherit
     this class.
 

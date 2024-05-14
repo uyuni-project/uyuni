@@ -31,10 +31,11 @@ import sys
 from stat import ST_MTIME
 from errno import EEXIST
 
-from uyuni.common.rhnLib import timestamp
+from spacewalk.common.fileutils import chown_chmod_path
 
+from uyuni.common.rhnLib import timestamp
 from uyuni.common.usix import raise_with_tb
-from uyuni.common.fileutils import makedirs, setPermsPath
+from uyuni.common.fileutils import makedirs
 
 # this is a constant I'm not too happy about but one way or another we have
 # to reserve our own shared memory space.
@@ -177,7 +178,7 @@ def _safe_create(fname, user, group, mode):
             # Pass exception through
             raise
         # If we got here, the file is created, so break out of the loop
-        setPermsPath(fname, user, group, mode)
+        chown_chmod_path(fname, user, group, mode)
         return fd
 
     # Ran out of tries; something is fishy
@@ -332,7 +333,6 @@ class Cache:
 
 
 class ClosingZipFile(object):
-
     """Like a GzipFile, but close closes both files."""
 
     def __init__(self, mode, io):
@@ -426,7 +426,6 @@ class ObjectCache:
 
 
 class NullCache:
-
     """A cache that returns None rather than raises a KeyError."""
 
     def __init__(self, cache):

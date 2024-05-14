@@ -1,4 +1,9 @@
-#  pylint: disable=missing-module-docstring
+"""
+Utility library for working with files, paths, and more.
+
+Part of uyuni.common and available on Uyuni servers and its clients.
+"""
+
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -28,7 +33,6 @@ import stat
 import tempfile
 import io
 from uyuni.common.checksum import getFileChecksum
-from uyuni.common.context_managers import cfg_component
 from uyuni.common.usix import ListType, TupleType, MaxInt
 
 try:
@@ -321,85 +325,6 @@ def makedirs(path, mode=int("0755", 8), user=None, group=None):
             sys.stderr.write("Changing owner for %s failed\n" % dirname)
 
 
-# pylint: disable-next=invalid-name
-def createPath(path, user=None, group=None, chmod=int("0755", 8)):
-    """advanced makedirs
-
-    Will create the path if necessary.
-    Will chmod, and chown that path properly.
-    Defaults for user/group to the apache user
-
-    Uses the above makedirs() function.
-    """
-    # pylint: disable-next=invalid-name
-    with cfg_component(component=None) as CFG:
-        if user is None:
-            user = CFG.get("httpd_user", "wwwrun")
-        if group is None:
-            group = CFG.get("httpd_group", "www")
-
-    path = cleanupAbsPath(path)
-    if not os.path.exists(path):
-        makedirs(path, mode=chmod, user=user, group=group)
-    elif not os.path.isdir(path):
-        raise ValueError(
-            # pylint: disable-next=consider-using-f-string
-            "ERROR: createPath('%s'): path doesn't lead to a directory"
-            % str(path)
-        )
-    else:
-        os.chmod(path, chmod)
-        uid, gid = getUidGid(user, group)
-        try:
-            os.chown(path, uid, gid)
-        except OSError:
-            # Changing permissions failed; ignore the error
-            # pylint: disable-next=consider-using-f-string
-            sys.stderr.write("Changing owner for %s failed\n" % path)
-
-
-# pylint: disable-next=invalid-name
-def setPermsPath(path, user=None, group="root", chmod=int("0750", 8)):
-    """chown user.group and set permissions to chmod"""
-    if user is None:
-        # pylint: disable-next=invalid-name
-        with cfg_component(component=None) as CFG:
-            user = CFG.get("httpd_user", "wwwrun")
-
-    if not os.path.exists(path):
-        raise OSError(
-            # pylint: disable-next=consider-using-f-string
-            "*** ERROR: Path doesn't exist (can't set permissions): %s"
-            % path
-        )
-
-    # If non-root, don't bother to change owners
-    if os.getuid() != 0:
-        return
-
-    gc = GecosCache()
-    uid = gc.getuid(user)
-    if uid is None:
-        raise OSError(
-            # pylint: disable-next=consider-using-f-string
-            "*** ERROR: user '%s' doesn't exist. Cannot set permissions properly."
-            % user
-        )
-
-    gid = gc.getgid(group)
-    if gid is None:
-        raise OSError(
-            # pylint: disable-next=consider-using-f-string
-            "*** ERROR: group '%s' doesn't exist. Cannot set permissions properly."
-            % group
-        )
-
-    uid_, gid_ = os.stat(path)[4:6]
-    if uid_ != uid or gid_ != gid:
-        os.chown(path, uid, gid)
-    os.chmod(path, chmod)
-
-
 class GecosCache:
     "Cache getpwnam() and getgrnam() calls"
     # pylint: disable-next=invalid-name
@@ -543,7 +468,6 @@ def f_date(dbiDate):
 
 # pylint: disable-next=invalid-name
 class payload:
-
     """this class implements simple file like object usable for reading payload
     from rpm, mpm, etc.
     it skips first 'skip' bytes of header
