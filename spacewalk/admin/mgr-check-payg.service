@@ -2,6 +2,7 @@
 Description=Check and install payg billing service.
 Before=tomcat.service
 Before=taskomatic.service
+ConditionEnvironment=ISPAYG=1
 
 [Service]
 ExecStart=/usr/sbin/spacewalk-startup-helper check-billing-service
