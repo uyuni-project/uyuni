@@ -372,7 +372,7 @@ class CVEAudit extends React.Component<Props, State> {
             />
             <Column
               columnKey="name"
-              width="37.5%"
+              width="45%"
               comparator={Utils.sortByText}
               header={t("Name")}
               cell={(row, criteria) => {
@@ -389,7 +389,7 @@ class CVEAudit extends React.Component<Props, State> {
             />
             <Column
               columnKey="action"
-              width="37.5%"
+              width="45%"
               comparator={Utils.sortByText}
               header={t("Actions")}
               cell={(row, criteria) => {
@@ -497,15 +497,6 @@ class CVEAudit extends React.Component<Props, State> {
                 } else {
                   return t("If you see this report a bug.");
                 }
-              }}
-            />
-            <Column
-              columnKey="scan-data"
-              width="15%"
-              comparator={Utils.sortByText}
-              header={t("Scan Data")}
-              cell={(row, criteria) => {
-                return <div>{row.scanDataSources.join(", ")}</div>;
               }}
             />
           </Table>
