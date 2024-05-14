@@ -74,6 +74,11 @@ done
 %postun
 %service_del_postun billing-data-service.service
 
+%posttrans
+if [ -f %{_unitdir}/billing-data-service.service ]; then
+    /usr/bin/systemctl --quiet enable billing-data-service.service 2>&1 ||:
+fi
+
 %files
 %license LICENSE
 %dir %{_sysconfdir}/sysconfig

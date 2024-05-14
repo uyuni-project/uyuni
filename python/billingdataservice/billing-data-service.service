@@ -3,6 +3,7 @@ Description=SUSE Manager PAYG billing data service
 After=local-fs.target network.target postgresql.service
 Before=tomcat.service taskomatic.service
 Requires=postgresql.service
+ConditionEnvironment=ISPAYG=1
 
 [Service]
 Type=simple
