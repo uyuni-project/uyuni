@@ -13,7 +13,7 @@ Feature: Create bootstrap repositories
 @sle12sp5_minion
   Scenario: Create the bootstrap repository for a SLES 12 SP5 minion
     When I create the bootstrap repository for "sle12sp5_minion" on the server
-	
+
 @sle15sp1_minion
   Scenario: Create the bootstrap repository for a SLES 15 SP1 minion
     When I create the bootstrap repository for "sle15sp1_minion" on the server
@@ -33,6 +33,10 @@ Feature: Create bootstrap repositories
 @sle15sp5_minion
   Scenario: Create the bootstrap repository for a SLES 15 SP5 minion
     When I create the bootstrap repository for "sle15sp5_minion" on the server
+
+@sle15sp6_minion
+  Scenario: Create the bootstrap repository for a SLES 15 SP6 minion
+    When I create the bootstrap repository for "sle15sp6_minion" on the server
 
 @monitoring_server
   Scenario: Create the bootstrap repository for the monitoring server
