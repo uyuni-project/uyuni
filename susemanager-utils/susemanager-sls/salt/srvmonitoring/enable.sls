@@ -50,7 +50,7 @@ postgres_exporter_service:
     - require:
       - cmd: postgres_exporter
       - file: postgres_exporter_configuration
-  module.run:
+  mgrcompat.module_run:
     - name: service.systemctl_reload
   service.running:
     - name: prometheus-postgres_exporter
