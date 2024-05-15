@@ -133,7 +133,7 @@ class Responder:
                 time.sleep(5)
         self.cursor = self.connection.cursor()
 
-    def match_additiona_events(self, tag):
+    def match_additional_events(self, tag):
         for p in self.re_additional:
             if p.match(tag):
                 return True
