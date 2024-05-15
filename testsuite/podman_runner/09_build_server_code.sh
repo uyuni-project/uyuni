@@ -31,6 +31,9 @@ sudo -i podman exec uyuni-server-all-in-one-test bash -c "[ -d /usr/share/susema
 
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "cd /java && ant -f manager-build.xml ivy || ant -f manager-build.xml ivy || ant -f manager-build.xml ivy"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "cd /java && ant -f manager-build.xml refresh-branding-jar deploy-local"
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "cd /java && ant -f manager-build.xml apidoc-jsp"
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "mkdir /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/ && rsync -av /java/build/reports/apidocs/jsp/ /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/"
+
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "set -xe;cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -a dist/ /usr/share/susemanager/www/htdocs/"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "rctomcat restart"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "rctaskomatic restart"
