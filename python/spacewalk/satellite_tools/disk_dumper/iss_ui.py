@@ -16,7 +16,7 @@
 
 # pylint: disable-next=deprecated-module
 from optparse import OptionParser, Option
-from spacewalk.common.rhnConfig import PRODUCT_NAME
+from uyuni.common.rhnConfig import PRODUCT_NAME
 
 # Not strictly necessary, but makes them easier to type
 # pylint: disable-next=invalid-name

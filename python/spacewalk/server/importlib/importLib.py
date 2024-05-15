@@ -33,7 +33,7 @@ except ImportError:
 # pylint: disable-next=ungrouped-imports
 from uyuni.common.checksum import getFileChecksum
 from uyuni.common.fileutils import createPath
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 
 # no-op class, used to define the type of an attribute
 
@@ -44,7 +44,6 @@ class DateType:
 
 # An Item is just an extension for a dictionary
 class Item(dict):
-
     """
     First level object, that stores information in a hash-like structure
     """
@@ -70,7 +69,6 @@ class Item(dict):
 
 
 class BaseInformation(Item):
-
     """
     Second level object. It may contain composite items as attributes
     """
@@ -526,7 +524,6 @@ class IncompletePackage(BaseInformation):
 
 
 class Package(IncompletePackage):
-
     """
     A package is a hash of attributes
     """

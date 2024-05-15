@@ -1,5 +1,5 @@
 #  pylint: disable=missing-module-docstring,invalid-name
-from spacewalk.common.rhnConfig import initCFG, CFG
+from uyuni.common.rhnConfig import initCFG, CFG
 from spacewalk.common.rhnLog import log_debug
 
 # pylint: disable-next=unused-import

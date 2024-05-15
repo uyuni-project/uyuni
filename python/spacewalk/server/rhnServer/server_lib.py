@@ -31,7 +31,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
 
 # pylint: disable-next=wrong-import-position
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 
 # pylint: disable-next=wrong-import-position
 from spacewalk.server import rhnSQL

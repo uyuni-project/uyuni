@@ -16,7 +16,7 @@
 import sys
 import time
 from spacewalk.common import rhnFlags
-from spacewalk.common.rhnConfig import initCFG
+from uyuni.common.rhnConfig import initCFG
 from spacewalk.server import rhnSQL, rhnChannel, rhnServer, rhnUser
 
 

@@ -26,7 +26,7 @@ import re
 import pycurl
 
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
+from uyuni.common.rhnConfig import initCFG, CFG, ConfigParserError
 
 try:
     from spacewalk.server import rhnSQL
@@ -40,7 +40,6 @@ SYS_PROXY = "/etc/sysconfig/proxy"
 
 
 class TransferException(Exception):
-
     """Transfer Error"""
 
     def __init__(self, value=None):
@@ -57,7 +56,6 @@ class TransferException(Exception):
 
 
 class URL(object):
-
     """URL class that allows modifying the various attributes of a URL"""
 
     # pylint: disable=R0902

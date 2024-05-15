@@ -26,7 +26,7 @@ from rhn import rpclib
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnRepository, rhnFlags, rhnCache
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, redirectException
 
 # pylint: disable-next=ungrouped-imports
@@ -40,7 +40,6 @@ from .repomd import repository
 
 
 class Repository(rhnRepository.Repository):
-
     """Cache class to perform RHN server file system and DB actions.
 
     This class gets all data from the file system and oracle.

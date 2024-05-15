@@ -32,7 +32,7 @@ from . import dumper
 from uyuni.common.usix import raise_with_tb
 from uyuni.common.checksum import getFileChecksum
 from spacewalk.common import rhnMail
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnTB import Traceback, exitWithTraceback
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
@@ -86,7 +86,6 @@ class ISSChannelPackageShortDiskSource:
 
 
 class FileMapper:
-
     """This class maps dumps to files. In other words, you give it
     the type of dump you're doing and it gives you the file to
     write it to.
@@ -261,7 +260,6 @@ class FileMapper:
 
 
 class Dumper(dumper.XML_Dumper):
-
     """This class subclasses the XML_Dumper class. It overrides
     the _get_xml_writer method and adds a set_stream method,
     which will let it write to a file instead of over the wire.

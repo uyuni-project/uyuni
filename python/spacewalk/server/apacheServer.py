@@ -20,7 +20,7 @@ from spacewalk.common import apache
 
 # common module imports
 # pylint: disable-next=unused-import
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 
 # pylint: disable-next=unused-import
 from spacewalk.common.rhnTB import Traceback

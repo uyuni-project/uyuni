@@ -22,7 +22,7 @@ import smtplib
 
 from rhn.connections import idn_puny_to_unicode
 from uyuni.common.context_managers import cfg_component
-from spacewalk.common.rhnConfig import PRODUCT_NAME
+from uyuni.common.rhnConfig import PRODUCT_NAME
 from typing import NamedTuple, Union
 
 with cfg_component(component=None) as CFG:

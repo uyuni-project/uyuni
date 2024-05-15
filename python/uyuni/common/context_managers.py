@@ -1,6 +1,7 @@
 """Collection of context managers for Uyuni."""
+
 from contextlib import contextmanager
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 
 
 @contextmanager

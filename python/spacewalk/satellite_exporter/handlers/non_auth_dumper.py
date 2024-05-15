@@ -30,7 +30,7 @@ import sys
 from rhn.UserDictCase import UserDictCase
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.server import rhnSQL, rhnLib
 from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server.importlib.backendLib import localtime

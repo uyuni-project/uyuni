@@ -14,7 +14,7 @@
 # in this software or its documentation.
 #
 
-from spacewalk.common.rhnConfig import initCFG
+from uyuni.common.rhnConfig import initCFG
 from spacewalk.server import rhnSQL, rhnUser
 
 rhnSQL.initDB("rhnuser/rhnuser@webdev")

@@ -13,7 +13,7 @@ import os
 import json
 from flask import Flask, abort
 from spacewalk.server import rhnSQL
-from spacewalk.common.rhnConfig import initCFG
+from uyuni.common.rhnConfig import initCFG
 
 # disable the development warning banner for newer Flask versions
 # where maybe the environment variable WERKZEUG_RUN_MAIN does not

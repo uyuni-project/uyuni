@@ -31,7 +31,7 @@ from uyuni.common.usix import IntType, raise_with_tb
 
 # common module
 from spacewalk.common import rhnCache, rhnFlags, suseLib
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _

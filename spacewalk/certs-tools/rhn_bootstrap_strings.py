@@ -18,7 +18,7 @@
 # shell script function library for rhn-bootstrap
 #
 from uyuni.common.context_managers import cfg_component
-from spacewalk.common.rhnConfig import isUyuni
+from uyuni.common.rhnConfig import isUyuni
 import os.path
 
 

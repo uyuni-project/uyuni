@@ -47,7 +47,7 @@ from uyuni.common import usix
 from uyuni.common import rhnLib
 from spacewalk.common import rhnMail
 from spacewalk.common.rhnLog import initLOG
-from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
+from uyuni.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTB import exitWithTraceback, fetchTraceback
 
 # pylint: disable-next=ungrouped-imports
@@ -531,7 +531,6 @@ def sendMail(forceEmail=0):
 
 
 class Syncer:
-
     """high-level sychronization/import class
     NOTE: there should *ONLY* be one instance of this.
     """

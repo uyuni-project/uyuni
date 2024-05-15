@@ -13,7 +13,7 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-from spacewalk.common.rhnConfig import initCFG, CFG
+from uyuni.common.rhnConfig import initCFG, CFG
 
 initCFG("server.config-management-tool")
 

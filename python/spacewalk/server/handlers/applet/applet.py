@@ -28,7 +28,7 @@ from uyuni.common.usix import LongType
 from uyuni.common import rhn_rpm
 from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
+from uyuni.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 

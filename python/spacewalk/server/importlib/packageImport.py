@@ -30,7 +30,7 @@ from .importLib import (
 )
 from .mpmSource import mpmBinaryPackage
 from uyuni.common import rhn_pkg
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.server import taskomatic
 from spacewalk.server.rhnServer import server_packages
 

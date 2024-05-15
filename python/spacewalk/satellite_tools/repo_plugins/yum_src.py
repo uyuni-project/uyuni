@@ -72,7 +72,7 @@ from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.syncLib import log
 
 # pylint: disable-next=unused-import
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError

@@ -22,7 +22,7 @@ import hashlib
 import time
 import sys
 
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from uyuni.common.usix import raise_with_tb
 
 from . import rhnSQL

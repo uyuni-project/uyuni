@@ -24,7 +24,7 @@ import shutil
 # pylint: disable-next=deprecated-module
 from optparse import Option, OptionParser
 from spacewalk.common.rhnLog import initLOG, rhnLog
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from uyuni.common import rhn_rpm
 
 # pylint: disable-next=ungrouped-imports

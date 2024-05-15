@@ -13,7 +13,7 @@ from spacewalk.satellite_tools.syncLib import RhnSyncException
 from up2date_client.rpcServer import RetryServer, ServerList
 
 # pylint: disable-next=ungrouped-imports
-from spacewalk.common.rhnConfig import initCFG
+from uyuni.common.rhnConfig import initCFG
 
 import logging
 

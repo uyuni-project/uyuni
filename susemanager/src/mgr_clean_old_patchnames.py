@@ -17,7 +17,7 @@ import sys
 
 from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.server import rhnSQL
 from spacewalk.susemanager import errata_helper
 

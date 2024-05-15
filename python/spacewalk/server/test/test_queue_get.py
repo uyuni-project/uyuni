@@ -15,7 +15,7 @@
 #
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnLog import initLOG
-from spacewalk.common.rhnConfig import initCFG
+from uyuni.common.rhnConfig import initCFG
 from spacewalk.server.xmlrpc import queue
 
 initLOG("stderr", 4)

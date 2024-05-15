@@ -1,0 +1,2 @@
+- Readjust imports after moving rhnConfig to uyuni-common-libs
+- Readjust imports after moving notificationUtils to spacewalk-backend

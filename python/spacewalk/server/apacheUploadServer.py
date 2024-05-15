@@ -22,7 +22,7 @@ from . import rhnSession
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error, log_setreq, initLOG
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.server import rhnImport

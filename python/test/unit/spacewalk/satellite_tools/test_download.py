@@ -29,7 +29,7 @@ class NoKeyErrorsDict(dict):
         return super().get(key)
 
 
-# this initCFG also operates on spacewalk.common.rhnConfig.CFG
+# this initCFG also operates on uyuni.common.rhnConfig.CFG
 @patch("uyuni.common.context_managers.initCFG", Mock())
 @patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
 @patch("urlgrabber.grabber.PyCurlFileObject._do_grab", Mock())  # no downloads

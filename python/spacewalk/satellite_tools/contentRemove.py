@@ -22,7 +22,7 @@ try:
 except ImportError:
     import xmlrpclib
 import datetime
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 
 # pylint: disable-next=unused-import
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -33,7 +33,6 @@ from socket import getfqdn
 
 
 class RemoteApi:
-
     """Class for connecting to the XMLRPC spacewalk interface"""
 
     cache = {}

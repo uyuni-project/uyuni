@@ -14,7 +14,7 @@
 # pylint: disable=invalid-name
 
 from spacewalk.server import rhnSQL
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 import os
 
 

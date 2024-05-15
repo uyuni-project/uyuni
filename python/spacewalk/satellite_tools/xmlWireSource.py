@@ -29,7 +29,7 @@ from up2date_client import config
 
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhnLib
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 
 # local imports
 from spacewalk.satellite_tools.syncLib import log, log2, RhnSyncException
@@ -43,7 +43,6 @@ from spacewalk.satellite_tools import connection
 
 
 class BaseWireSource:
-
     """Base object for wire-commo to RHN for delivery of XML/RPMS."""
 
     serverObj = None
@@ -223,7 +222,6 @@ class BaseWireSource:
 
 
 class MetadataWireSource(BaseWireSource):
-
     """retrieve specific xml stream through xmlrpc interface."""
 
     @staticmethod
@@ -404,7 +402,6 @@ class XMLRPCWireSource(BaseWireSource):
 
 
 class AuthWireSource(XMLRPCWireSource):
-
     """Simply authenticate this systemid as a satellite."""
 
     def checkAuth(self):

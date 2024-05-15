@@ -22,7 +22,7 @@ import re
 import time
 
 from spacewalk.common import rhnCache
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from uyuni.common.usix import UnicodeType
 
 # pylint: disable-next=ungrouped-imports
@@ -35,7 +35,6 @@ CACHE_PREFIX = "/var/cache/rhn/"
 
 
 class ChannelMapper:
-
     """Data Mapper for Channels to the RHN db."""
 
     def __init__(self, pkg_mapper, erratum_mapper, repomd_mapper):
@@ -187,7 +186,6 @@ class ChannelMapper:
 
 
 class CachedPackageMapper:
-
     """Data Mapper for Packages to an on-disc cache."""
 
     def __init__(self, mapper):
@@ -225,7 +223,6 @@ class CachedPackageMapper:
 
 
 class SqlPackageMapper:
-
     """Data Mapper for Packages to the RHN db."""
 
     def __init__(self):
@@ -598,7 +595,6 @@ class SqlPackageMapper:
 
 
 class CachedErratumMapper:
-
     """Data Mapper for Errata to an on-disc cache."""
 
     def __init__(self, mapper, package_mapper):

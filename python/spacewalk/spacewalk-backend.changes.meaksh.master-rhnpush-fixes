@@ -1,0 +1,2 @@
+- Move rhnConfig to uyuni-common-libs package
+- Move notificationUtils from uyuni-common-libs to spacewalk-backend

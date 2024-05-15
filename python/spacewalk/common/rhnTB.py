@@ -29,7 +29,7 @@ except ImportError:
     from io import StringIO
 from rhn.connections import idn_puny_to_unicode
 
-from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
+from uyuni.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnLog import log_error
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common import rhnMail
@@ -223,7 +223,6 @@ def exitWithTraceback(e, msg, exitnum, mail=0):
 
 
 class SecurityList:
-
     """The SecurityList is a list of strings that are censored out of a debug email.
     Right now it's only used for censoring traceback emails.
     """

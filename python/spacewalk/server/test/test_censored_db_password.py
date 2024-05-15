@@ -20,7 +20,7 @@
 # Run the test and look into the email.
 
 from spacewalk.server import rhnSQL
-from spacewalk.common.rhnConfig import initCFG
+from uyuni.common.rhnConfig import initCFG
 from spacewalk.common.rhnTB import Traceback
 
 initCFG("server.xmlrpc")

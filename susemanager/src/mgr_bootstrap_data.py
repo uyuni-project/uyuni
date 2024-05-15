@@ -3,7 +3,7 @@
 # DO NOT EDIT !!!
 #
 
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 
 DOCUMENT_ROOT = CFG.documentroot
 

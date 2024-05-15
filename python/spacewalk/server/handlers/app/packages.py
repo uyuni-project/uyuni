@@ -23,7 +23,7 @@ import sys
 from uyuni.common.usix import TupleType, raise_with_tb
 
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.RPC_Base import RPC_Base
 

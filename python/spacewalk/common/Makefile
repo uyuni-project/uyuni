@@ -9,6 +9,7 @@ SUBDIR  = common
 SPACEWALK_FILES	=   __init__ \
 	    apache \
             byterange \
+	    notificationUtils \
             rhnApache \
             rhnCache \
             rhnConfig \
@@ -40,7 +41,7 @@ include $(TOP)/Makefile.defs
 
 # install scripts
 all :: $(SCRIPTS)
-install :: $(SCRIPTS) $(PREFIX)/$(BINDIR)
+install :: $(SCRIPTS) $(PREFIX/$(BINDIR)
 	$(INSTALL_BIN) $(SCRIPTS) $(PREFIX)/$(BINDIR)
 
 ifneq ($(DOCBOOK),)

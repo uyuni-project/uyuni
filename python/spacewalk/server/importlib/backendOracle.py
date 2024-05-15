@@ -25,7 +25,7 @@ from .backend import Backend
 from .backendLib import DBint, DBstring, DBdateTime, Table, TableCollection, DBblob
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL.const import POSTGRESQL
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from uyuni.common import timezone_utils
 
 
@@ -744,7 +744,6 @@ class OracleBackend(Backend):
 
 
 class PostgresqlBackend(OracleBackend):
-
     """
     PostgresqlBackend specific implementation. The bulk of the OracleBackend
     is not actually Oracle specific, so we'll re-use as much as we can and just

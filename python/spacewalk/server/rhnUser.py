@@ -25,7 +25,7 @@ import crypt
 # Global Modules
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
@@ -34,7 +34,6 @@ from . import rhnSession
 
 
 class User:
-
     """Main User class"""
 
     def __init__(self, username, password):

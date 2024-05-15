@@ -29,7 +29,7 @@ except ImportError:
 from .string_buffer import StringBuffer
 from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
@@ -717,7 +717,6 @@ class SatelliteDumper(exportLib.SatelliteDumper):
 
 
 class QueryIterator:
-
     """A query iterator successively applies the list of params as execute() to the
     statement that was passed in, and presents the union of the result sets as a
     single result set.
@@ -759,7 +758,6 @@ class QueryIterator:
 
 
 class CachedQueryIterator:
-
     """This class will attempt to retrieve information, either from the database or
     from a local cache.
 
@@ -1166,7 +1164,6 @@ class ClosedConnectionError(Exception):
 
 
 class TeeStream:
-
     """Writes to multiple streams at the same time"""
 
     def __init__(self, *streams):

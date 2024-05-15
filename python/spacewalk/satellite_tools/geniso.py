@@ -23,7 +23,7 @@ from stat import ST_SIZE
 
 # pylint: disable-next=deprecated-module
 from optparse import Option, OptionParser
-from spacewalk.common.rhnConfig import PRODUCT_NAME
+from uyuni.common.rhnConfig import PRODUCT_NAME
 
 MOUNT_POINT = "/tmp"
 IMAGE_SIZE = "630M"

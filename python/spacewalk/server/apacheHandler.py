@@ -20,7 +20,7 @@ import time
 
 from spacewalk.common import apache, rhnApache, rhnTB, rhnFlags
 from spacewalk.common.rhnException import rhnException, rhnFault
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import log_debug, log_error, initLOG, log_setreq
 
 # local module imports
@@ -41,7 +41,6 @@ def timer(last):
 
 
 class apacheSession(rhnApache):
-
     """a class that extends rhnApache with several support functions used
     by the main handler class. This class deals with the processing of
     the request and setup for the real action handled in the
@@ -51,7 +50,6 @@ class apacheSession(rhnApache):
 
 
 class apacheHandler(apacheSession):
-
     """main Apache XMLRPC point of entry for the server"""
 
     def __init__(self):

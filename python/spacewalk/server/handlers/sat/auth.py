@@ -20,7 +20,7 @@ import sys
 from rhn.connections import idn_puny_to_unicode
 
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnHandler import rhnHandler
@@ -29,7 +29,6 @@ from spacewalk.server import rhnSQL
 
 
 class Authentication(rhnHandler):
-
     """Simple authentication based on hostname and configured slaves"""
 
     def __init__(self):

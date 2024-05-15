@@ -29,7 +29,7 @@ from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
 
 # pylint: disable-next=unused-import
-from spacewalk.common.rhnConfig import CFG, isUyuni
+from uyuni.common.rhnConfig import CFG, isUyuni
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
 

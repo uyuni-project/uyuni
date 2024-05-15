@@ -22,7 +22,7 @@ import os
 
 # rhn imports:
 from spacewalk.common import rhnCache
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from uyuni.common.rhnLib import hash_object_id
 
 # NOTE: this is a python 2.2-ism

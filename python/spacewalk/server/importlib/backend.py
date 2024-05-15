@@ -26,7 +26,7 @@ import sys
 
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhn_rpm
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.satellite_tools import syncLib

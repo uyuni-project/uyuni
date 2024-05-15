@@ -23,7 +23,7 @@ from xml.sax import make_parser, SAXParseException, ContentHandler, ErrorHandler
 from uyuni.common import usix
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.server.importlib import importLib, backendLib
 
@@ -43,7 +43,6 @@ RHEL234_REGEX = re.compile("rhel-[^-]*-[aew]s-(4|3|2.1)")
 
 
 class ParseException(Exception):
-
     """general parser exception (generated at this level)."""
 
     pass
@@ -68,7 +67,6 @@ class IncompatibleVersionError(ParseException):
 
 
 class RecoverableParseException(SAXParseException, Exception):
-
     """exception wrapper for a critical, but possibly recoverable, XML parser
     error.
     """
@@ -77,7 +75,6 @@ class RecoverableParseException(SAXParseException, Exception):
 
 
 class FatalParseException(SAXParseException, Exception):
-
     """exception wrapper for a critical XML parser error."""
 
     pass
@@ -107,7 +104,6 @@ class Node:
 
 # Base class we use as a SAX parsing handler
 class BaseDispatchHandler(ContentHandler, ErrorHandler):
-
     """Base class we use as a SAX parsing handler
 
     We expect the meaningful data to be on the third level.
@@ -831,7 +827,6 @@ addItem(ExtraTagItem)
 
 
 class DependencyItem(BaseItem):
-
     """virtual class - common settings for dependency items"""
 
     item_class = importLib.Dependency
@@ -1466,7 +1461,6 @@ class IncompletePackageContainer(ContainerHandler):
 
 
 class PackageContainer(IncompletePackageContainer):
-
     """Inherits from IncompletePackageContainer, since we need to postprocess the
     channel information
     """

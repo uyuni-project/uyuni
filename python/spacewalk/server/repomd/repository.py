@@ -35,7 +35,7 @@ from uyuni.common.usix import LongType
 from uyuni.common import checksum
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
+from uyuni.common.rhnConfig import CFG
 
 from . import mapper
 from . import view
@@ -62,7 +62,6 @@ for k in list(comps_mapping.keys()):
 
 
 class Repository(object):
-
     """
     Representation of RHN channels as repository metadata.
 
@@ -228,7 +227,6 @@ class Repository(object):
 
 
 class CompressedRepository:
-
     """Decorator for Repositories adding gzip compression of the output."""
 
     def __init__(self, repository):
@@ -275,7 +273,6 @@ class CompressedRepository:
 
 
 class CachedRepository:
-
     """Decorator for Repositories adding caching."""
 
     def __init__(self, repository):
@@ -331,7 +328,6 @@ class CachedRepository:
 
 
 class MetadataRepository:
-
     """
     A repository that can provide repomd data.
 

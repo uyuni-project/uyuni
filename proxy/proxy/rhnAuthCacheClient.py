@@ -1,5 +1,5 @@
 # rhnAuthCacheClient.py
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Implements a client-side 'remote shelf' caching object used for
 # authentication token caching.
 # (Client, meaning, a client to the authCache daemon)
@@ -16,11 +16,12 @@
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
 ## language imports
 import socket
 import sys
+
 try:
     #  python 2
     from xmlrpclib import Fault
@@ -46,12 +47,12 @@ from .rhnAuthProtocol import CommunicationError, send, recv
 
 
 class _Method:
+    """Bind XML-RPC to an RPC Server
 
-    """ Bind XML-RPC to an RPC Server
-
-        Some magic to bind an XML-RPC method to an RPC server.
-        Supports "nested" methods (e.g. examples.getStateName).
+    Some magic to bind an XML-RPC method to an RPC server.
+    Supports "nested" methods (e.g. examples.getStateName).
     """
+
     # pylint: disable=R0903
 
     def __init__(self, msend, name):
@@ -71,12 +72,12 @@ class _Method:
 
 
 class Shelf:
+    """Client authenication temp. db.
 
-    """ Client authenication temp. db.
-
-        Main class that the client side (client to the caching daemon) has to
-        instantiate to expose the proper API. Basically, the API is a dictionary.
+    Main class that the client side (client to the caching daemon) has to
+    instantiate to expose the proper API. Basically, the API is a dictionary.
     """
+
     # pylint: disable=R0903
 
     def __init__(self, server_addr):
@@ -95,13 +96,24 @@ class Shelf:
             sock.close()
             methodname = None
             log_error("Error connecting to the auth cache: %s" % str(e))
-            Traceback("Shelf.__request", extra="""
+            Traceback(
+                "Shelf.__request",
+                extra="""
               Error connecting to the the authentication cache daemon.
-              Make sure it is started on %s""" % str(self.serverAddr))
+              Make sure it is started on %s"""
+                % str(self.serverAddr),
+            )
             # FIXME: PROBLEM: this rhnFault will never reach the client
             raise_with_tb(
-                rhnFault(1000, _("Spacewalk Proxy error (issues connecting to auth cache). "
-                                 "Please contact your system administrator")), sys.exc_info()[2])
+                rhnFault(
+                    1000,
+                    _(
+                        "Spacewalk Proxy error (issues connecting to auth cache). "
+                        "Please contact your system administrator"
+                    ),
+                ),
+                sys.exc_info()[2],
+            )
 
         wfile = sock.makefile("w")
 
@@ -110,20 +122,29 @@ class Shelf:
         except CommunicationError:
             wfile.close()
             sock.close()
-            Traceback("Shelf.__request",
-                      extra="Encountered a CommunicationError")
+            Traceback("Shelf.__request", extra="Encountered a CommunicationError")
             raise
         except socket.error:
             wfile.close()
             sock.close()
             log_error("Error communicating to the auth cache: %s" % str(e))
-            Traceback("Shelf.__request", extra="""\
+            Traceback(
+                "Shelf.__request",
+                extra="""\
                      Error sending to the authentication cache daemon.
-                     Make sure the authentication cache daemon is started""")
+                     Make sure the authentication cache daemon is started""",
+            )
             # FIXME: PROBLEM: this rhnFault will never reach the client
             raise_with_tb(
-                rhnFault(1000, _("Spacewalk Proxy error (issues connecting to auth cache). "
-                                 "Please contact your system administrator")), sys.exc_info()[2])
+                rhnFault(
+                    1000,
+                    _(
+                        "Spacewalk Proxy error (issues connecting to auth cache). "
+                        "Please contact your system administrator"
+                    ),
+                ),
+                sys.exc_info()[2],
+            )
 
         wfile.close()
 
@@ -135,13 +156,23 @@ class Shelf:
             rfile.close()
             sock.close()
             log_error("Error communicating to the auth cache: %s" % str(e))
-            Traceback("Shelf.__request", extra="""\
+            Traceback(
+                "Shelf.__request",
+                extra="""\
                       Error receiving from the authentication cache daemon.
-                      Make sure the authentication cache daemon is started""")
+                      Make sure the authentication cache daemon is started""",
+            )
             # FIXME: PROBLEM: this rhnFault will never reach the client
             raise_with_tb(
-                rhnFault(1000, _("Spacewalk Proxy error (issues communicating to auth cache). "
-                                 "Please contact your system administrator")), sys.exc_info()[2])
+                rhnFault(
+                    1000,
+                    _(
+                        "Spacewalk Proxy error (issues communicating to auth cache). "
+                        "Please contact your system administrator"
+                    ),
+                ),
+                sys.exc_info()[2],
+            )
         except Fault as e:
             rfile.close()
             sock.close()
@@ -157,21 +188,22 @@ class Shelf:
         return "<Remote-Shelf instance at %s>" % id(self)
 
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # test code
 # pylint: disable=E0012, C0411, C0413, E1136, C0412
 # pylint: disable=bad-option-value,unsupported-assignment-operation
-if __name__ == '__main__':
-    from spacewalk.common.rhnConfig import initCFG
+if __name__ == "__main__":
+    from uyuni.common.rhnConfig import initCFG
+
     initCFG("proxy.broker")
-    s = Shelf(('localhost', 9999))
-    s['1234'] = [1, 2, 3, 4, None, None]
-    s['blah'] = 'testing 1 2 3'
-    print('Cached object s["1234"] = {}'.format(s['1234']))
-    print('Cached object s["blah"] = {}'.format(s['blah']))
+    s = Shelf(("localhost", 9999))
+    s["1234"] = [1, 2, 3, 4, None, None]
+    s["blah"] = "testing 1 2 3"
+    print('Cached object s["1234"] = {}'.format(s["1234"]))
+    print('Cached object s["blah"] = {}'.format(s["blah"]))
     print("asdfrasdf" in s)
 
 #    print
 #    print 'And this will bomb (attempt to get non-existant data:'
 #    s["DOESN'T EXIST!!!"]
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------

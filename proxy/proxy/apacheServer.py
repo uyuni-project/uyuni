@@ -15,15 +15,15 @@
 #
 
 # common module imports
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import initLOG, log_setreq, log_debug
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common import apache
 
 
 class HandlerWrap:
+    """Wrapper handlers to catch unwanted exceptions"""
 
-    """ Wrapper handlers to catch unwanted exceptions """
     svrHandlers = None
 
     def __init__(self, name, init=0):
@@ -39,13 +39,14 @@ class HandlerWrap:
 
         if self.__init:
             from .apacheHandler import getComponentType
+
             # We cannot trust the config files to tell us if we are in the
             # broker or in the redirect because we try to always pass
             # upstream all requests
             componentType = getComponentType(req)
             initCFG(componentType)
             initLOG(CFG.LOG_FILE, CFG.DEBUG, f"wsgi_{componentType}")
-            log_debug(2, 'New request, component %s' % (componentType, ))
+            log_debug(2, "New request, component %s" % (componentType,))
 
         # Instantiate the handlers
         if HandlerWrap.svrHandlers is None:
@@ -64,16 +65,18 @@ class HandlerWrap:
                 raise Exception("Class has no attribute %s" % self.__name)
         # pylint: disable=W0702
         except:
-            Traceback(self.__name, req, extra="Unhandled exception type",
-                      severity="unhandled")
+            Traceback(
+                self.__name, req, extra="Unhandled exception type", severity="unhandled"
+            )
             return apache.HTTP_INTERNAL_SERVER_ERROR
         else:
             return ret
 
     @staticmethod
     def get_handler_factory(_req):
-        """ Handler factory. Redefine in your subclasses if so choose """
+        """Handler factory. Redefine in your subclasses if so choose"""
         from .apacheHandler import apacheHandler
+
         return apacheHandler
 
 

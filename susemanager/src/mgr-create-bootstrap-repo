@@ -12,9 +12,10 @@ import traceback
 from optparse import OptionParser
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
+from spacewalk.common import notificationUtils
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean
 from string import Template
-from uyuni.common import usix, rhnLib, notificationUtils
+from uyuni.common import usix, rhnLib
 from uyuni.common.context_managers import cfg_component
 
 sys.path.append("/usr/share/susemanager")

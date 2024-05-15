@@ -43,7 +43,7 @@ from optparse import Option, OptionParser, SUPPRESS_HELP
 ## local imports
 # pylint: disable-next=unused-import
 from uyuni.common import rhn_rpm
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from .rhn_bootstrap_strings import (
     getHeader,
     getGPGKeyImportSh,
@@ -60,7 +60,7 @@ from uyuni.common.checksum import getFileChecksum
 
 try:
     # pylint: disable-next=ungrouped-imports
-    from spacewalk.common.rhnConfig import PRODUCT_NAME
+    from uyuni.common.rhnConfig import PRODUCT_NAME
 # pylint: disable-next=bare-except
 except:
     PRODUCT_NAME = "SUSE Manager"
