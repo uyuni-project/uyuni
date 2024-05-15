@@ -170,7 +170,7 @@ class UyuniRoster:
                 # pylint: disable-next=consider-using-f-string
                 "/usr/bin/ssh -p {ssh_port} -i {ssh_key_path} -o StrictHostKeyChecking=no "
                 "-o User={ssh_push_user} {in_out_forward} {proxy_host}".format(
-                    ssh_port=proxy.port or 22,
+                    ssh_port=proxy.port or SSH_PUSH_PORT,
                     ssh_key_path=SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
                     ssh_push_user=PROXY_SSH_PUSH_USER,
                     in_out_forward=(
@@ -336,7 +336,7 @@ class UyuniRoster:
                     minion_id=prow.minion_id,
                     proxies=proxies,
                     tunnel=prow.tunnel,
-                    ssh_push_port=int(prow.ssh_push_port or SSH_PUSH_PORT),
+                    ssh_push_port=int(prow.ssh_port or prow.ssh_push_port or SSH_PUSH_PORT),
                 )
             proxies = []
             if row is None:
