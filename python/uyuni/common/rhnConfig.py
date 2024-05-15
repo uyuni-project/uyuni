@@ -43,7 +43,6 @@ def warn(*args):
 
 
 class ConfigParserError(Exception):
-
     """
     Exception class we're using to expose fatal errors
     """
@@ -55,7 +54,6 @@ class ConfigParserError(Exception):
 #       the directory and form a _complete_ mapping structure.
 #       Or, if that is too difficult, take in a list of components...
 class RHNOptions:
-
     """Main options class
     The basic idea is to share the important pieces of information - the
     component and the configuration tree - across all instances of this
