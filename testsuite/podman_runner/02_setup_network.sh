@@ -22,5 +22,3 @@ shift $((OPTIND-1))
 
 sudo -i podman network create --ipv6 --subnet ${subnet} uyuni-network-1
 
-
-
