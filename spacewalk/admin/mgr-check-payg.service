@@ -1,5 +1,5 @@
 [Unit]
-Description=Check and install payg billing service.
+Description=Check and install PAYG billing service.
 Before=tomcat.service
 Before=taskomatic.service
 ConditionEnvironment=ISPAYG=1

@@ -1,2 +1,2 @@
-- make service depending on environment valiable
-- enable service by default
+- Make billing-data-service depending on environment variable
+- Enable service by default

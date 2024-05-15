@@ -1,1 +1,1 @@
-- remove enforcing billing-adapter-service as it is running outside of the container
+- Remove enforcing billing-adapter-service as it is running outside of the container
