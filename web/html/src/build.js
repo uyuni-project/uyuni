@@ -54,7 +54,7 @@ if (args.includes("--licenses-only")) {
         const uncommittedFiles = editedLicenseFilesByBuild.filter((fileName) => stdout.includes(fileName));
 
         if (uncommittedFiles.length) {
-          if (process.env.debug) {
+          if (true || process.env.debug) {
             const { stdout: diff } = shell.exec("git diff", {
               cwd: rootDir,
             });

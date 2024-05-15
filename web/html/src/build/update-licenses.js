@@ -71,7 +71,7 @@ async function updateLicenses() {
     const corrected = correct(properties.licenses);
     // Ensure we don't end up with set items that include e.g. both "MIT" as well as "MIT AND FOO", leading to "MIT AND MIT AND FOO"
     if (!(corrected.includes("(") && corrected.includes(")")) && corrected.includes(" AND ")) {
-      corrected.split(" AND ").forEach((item) => licenseSet.add(correct(item)));
+      corrected.split(" AND ").map((item) => licenseSet.add(correct(item)));
     } else {
       licenseSet.add(corrected);
     }
