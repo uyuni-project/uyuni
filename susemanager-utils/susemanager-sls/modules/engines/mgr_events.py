@@ -152,7 +152,7 @@ class Responder:
                     and data.get("metadata", {}).get("batch-mode")
                 )
             )
-        ) or self.match_additiona_events(tag):
+        ) or self.match_additional_events(tag):
             # Pass all significant events also
             queue = 0
             if "id" in data:
