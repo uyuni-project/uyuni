@@ -40,7 +40,7 @@ import sys
 import time
 
 # Import RHN libs
-from spacewalk.common.rhnConfig import RHNOptions
+from uyuni.common.rhnConfig import RHNOptions
 
 # Import pyzmq lib
 import zmq

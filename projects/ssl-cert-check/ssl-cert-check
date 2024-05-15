@@ -7,7 +7,7 @@ from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 
 from spacewalk.common import rhnMail
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from rhn.connections import idn_puny_to_unicode
 
 from optparse import OptionParser

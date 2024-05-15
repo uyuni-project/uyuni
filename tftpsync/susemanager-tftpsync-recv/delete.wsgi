@@ -20,7 +20,7 @@ try:
     import urlparse
 except:
     from urllib import parse as urlparse
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 
 initCFG("tftpsync")
 

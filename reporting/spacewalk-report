@@ -14,7 +14,7 @@
 #
 
 import sys
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 
 
 def systemExit(code, msgs=None):

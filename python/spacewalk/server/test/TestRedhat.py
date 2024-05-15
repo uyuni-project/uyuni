@@ -39,7 +39,7 @@ try:
 except ImportError:
     #  python3
     import xmlrpc.server as SimpleXMLRPCServer
-from spacewalk.common import rhnConfig
+from uyuni.common import rhnConfig
 
 
 # pylint: disable-next=missing-class-docstring

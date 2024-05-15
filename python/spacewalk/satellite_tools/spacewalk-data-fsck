@@ -11,7 +11,7 @@ import tempfile
 try:
     from uyuni.common import checksum
     from spacewalk.common.rhnLog import initLOG, log_debug
-    from spacewalk.common.rhnConfig import CFG, initCFG
+    from uyuni.common.rhnConfig import CFG, initCFG
     from spacewalk.server import rhnSQL
     from spacewalk.server.rhnPackage import unlink_package_file
 except:

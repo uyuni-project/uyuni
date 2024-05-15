@@ -7,7 +7,7 @@ import argparse
 from debian import debfile
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.server.importlib.backendLib import DBstring, sanitizeValue
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server import taskomatic

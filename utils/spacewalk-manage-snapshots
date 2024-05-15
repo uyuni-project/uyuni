@@ -28,7 +28,7 @@ from datetime import datetime
 
 try:
     from spacewalk.common import rhnLog
-    from spacewalk.common.rhnConfig import CFG, initCFG
+    from uyuni.common.rhnConfig import CFG, initCFG
     from spacewalk.common.rhnLog import log_clean
     from spacewalk.server import rhnSQL
 except ImportError:

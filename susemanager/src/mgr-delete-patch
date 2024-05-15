@@ -19,7 +19,7 @@ from __future__ import print_function
 import sys
 import textwrap
 from optparse import OptionParser
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from spacewalk.susemanager import mgr_delete_patch
 
 def main():

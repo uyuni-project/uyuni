@@ -23,7 +23,7 @@ try:
 except:
     from io import StringIO as OutputType
 from io import BytesIO
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 
 initCFG("tftpsync")
 

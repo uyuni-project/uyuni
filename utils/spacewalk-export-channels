@@ -25,7 +25,7 @@ import sys
 
 try:
     from spacewalk.common.rhnLog import initLOG, log_debug
-    from spacewalk.common.rhnConfig import CFG, initCFG
+    from uyuni.common.rhnConfig import CFG, initCFG
     from spacewalk.server import rhnSQL
 except:
     _LIBPATH = "/usr/share/rhn"

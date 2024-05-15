@@ -16,7 +16,7 @@
 import getpass
 import sys
 
-from spacewalk.common.rhnConfig import initCFG, CFG
+from uyuni.common.rhnConfig import initCFG, CFG
 from spacewalk.server import rhnSQL, rhnUser
 
 

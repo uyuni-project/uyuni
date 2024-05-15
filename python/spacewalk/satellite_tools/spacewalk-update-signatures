@@ -22,7 +22,7 @@ import os
 
 from optparse import Option, OptionParser
 from spacewalk.common.rhnLog import initLOG, log_debug
-from spacewalk.common.rhnConfig import CFG, initCFG
+from uyuni.common.rhnConfig import CFG, initCFG
 from uyuni.common import rhn_rpm
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnServer import server_packages

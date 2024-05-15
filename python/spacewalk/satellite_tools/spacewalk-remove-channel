@@ -34,7 +34,7 @@ except:
     from spacewalk.common import rhnLockfile  # old place for rhnLockfile
 
 from spacewalk.common.rhnLog import initLOG
-from spacewalk.common.rhnConfig import initCFG
+from uyuni.common.rhnConfig import initCFG
 from spacewalk.server import rhnSQL
 
 from spacewalk.satellite_tools.contentRemove import __listChannels, __serverCheck, \
