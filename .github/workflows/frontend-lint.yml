@@ -40,8 +40,8 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
 
     # Run lint without fixes so the job fails if there are fixes to be applied
     - name: Run lint
-      run: yarn lint:production
+      run: yarn --cwd web/html/src lint:production

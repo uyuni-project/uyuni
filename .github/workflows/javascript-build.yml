@@ -48,7 +48,7 @@ jobs:
 
     # We only install production dependencies here to simulate a situation similar to OBS/IBS
     - name: Install production dependencies
-      run: yarn install:production
+      run: yarn install --force --ignore-optional --production=true --frozen-lockfile --prefer-offline
 
     - name: Build application
       run: yarn build

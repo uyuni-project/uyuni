@@ -45,9 +45,9 @@ jobs:
     # `--prefer-offline` means we prefer the cache over fetching things from the network.
     # See: https://stackoverflow.com/a/62244232/1470607
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
 
     - name: Run tests
-      run: yarn test --no-cache
+      run: yarn --cwd web/html/src test --no-cache
       env:
         BABEL_ENV: 'test'

@@ -36,11 +36,11 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
 
     # Run lint with fixes
     - name: Run lint
-      run: yarn lint
+      run: yarn --cwd web/html/src lint
 
     # If there's any changes, create a PR, see https://github.com/marketplace/actions/create-pull-request
     - name: Create PR
