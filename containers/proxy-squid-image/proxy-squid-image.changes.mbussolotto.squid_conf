@@ -1,0 +1,1 @@
+- include /etc/squid/conf.d/*.conf
