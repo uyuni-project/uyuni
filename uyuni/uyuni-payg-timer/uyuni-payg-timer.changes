@@ -1,0 +1,2 @@
+- Implement a timer to collect PAYG data of the Uyuni host
+  and copy them in the container

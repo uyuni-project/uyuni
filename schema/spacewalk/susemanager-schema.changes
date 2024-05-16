@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri May 03 14:11:03 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Added column to store the process output of the attestation
+  * Update list of package GPG keys in the database
+  * Native support for AppStream repositories
+  * Import module metadata during reposync
+  * Added a setting for Confidential Computing attestation on boot
+  * Fix chained container proxies configuration
+
+-------------------------------------------------------------------
 Thu Apr 04 17:31:49 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0

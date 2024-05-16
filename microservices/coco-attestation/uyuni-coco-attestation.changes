@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri May 03 16:16:41 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4-0
+  * Improved version management of common dependency
+  * Store the snpguest report after a successful attestation
+  * Add attestation module for SecureBoot
+
+-------------------------------------------------------------------
 Mon Apr 15 19:20:20 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.3-0

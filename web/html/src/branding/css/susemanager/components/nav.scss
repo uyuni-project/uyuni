@@ -1,6 +1,16 @@
+$nav-tabs-offset: 30px;
+
 .nav-tabs {
   margin-bottom: 0.25rem;
   border-bottom: 1px solid $eos-bc-gray-100;
+
+  &:nth-child(2) {
+    margin-left: $nav-tabs-offset;
+  }
+
+  &:nth-child(3) {
+    margin-left: 2 * $nav-tabs-offset;
+  }
 
   &:last-child {
     margin-bottom: 1rem;

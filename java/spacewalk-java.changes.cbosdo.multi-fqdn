@@ -1,1 +1,2 @@
-- Proxy container: use SSL cert cnames as fqdns (bsc#1222336)
+- Add FQDNs from proxy configuration to existing system 
+  (bsc#1222336)

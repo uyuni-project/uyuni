@@ -28,11 +28,11 @@ LABEL org.opencontainers.image.description="${PRODUCT} Confidential Computing at
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.0.2
+LABEL org.opencontainers.image.version=5.0.3
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-attestation:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
 
-HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["ps -xa | grep -v grep | grep /usr/sbin/coco-attestation"]
+HEALTHCHECK --interval=5m --timeout=5s --retries=1 CMD ["pgrep", "-f", "/usr/sbin/coco-attestation"]
 
 CMD ["/usr/sbin/coco-attestation"]

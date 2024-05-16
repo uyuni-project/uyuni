@@ -164,6 +164,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
@@ -213,7 +214,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
     private final AttestationManager attestationManager = new AttestationManager();
     private RegularMinionBootstrapper regularMinionBootstrapper =
             new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
@@ -234,7 +235,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                    serverGroupManager, new CloudPaygManager(), new AttestationManager());
+                    serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
 
     @RegisterExtension
     protected final Mockery mockContext = new JUnit5Mockery() {{
@@ -3733,7 +3734,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager, new CloudPaygManager(), new AttestationManager());
+                systemManager, serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
 
         mockContext.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));

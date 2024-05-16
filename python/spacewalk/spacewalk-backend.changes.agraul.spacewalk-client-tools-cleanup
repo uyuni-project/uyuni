@@ -1,4 +1,0 @@
-- Remove configuration management (traditional stack)
-- Drop spacewalk-backend-config-files-common,
-  spacewalk-backend-config-files, and
-  spacewalk-backend-config-files-tool

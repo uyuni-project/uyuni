@@ -17,8 +17,6 @@ unless $build_validation
   warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
   warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
   warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
-  warn 'Nested VM hostname empty' if ENV['MIN_NESTED'].nil?
-  warn 'Nested VM MAC address empty' if ENV['MAC_MIN_NESTED'].nil?
 end
 
 # Dictionaries to obtain host or node from the Twopence objects

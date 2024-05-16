@@ -19,9 +19,18 @@ public class PaygDataExtractException extends RuntimeException {
 
     /**
      * Constructor with error message
-     * @param msg error message
+     * @param message error message
      */
-    public PaygDataExtractException(String msg) {
-        super(msg);
+    public PaygDataExtractException(String message) {
+        super(message);
+    }
+
+    /**
+     * Constructor with error message and a cause
+     * @param message error message
+     * @param cause what caused this exception
+     */
+    public PaygDataExtractException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

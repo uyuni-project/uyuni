@@ -16,7 +16,7 @@
 #
 
 Name:           uyuni-coco-attestation
-Version:        5.0.3
+Version:        5.0.4
 Release:        0
 Summary:        Uyuni utility for Confidential Computing Attestation
 License:        GPL-2.0-only

@@ -46,7 +46,8 @@ java/conf/cobbler/snippets/ @uyuni-project/python
 mgr_bootstrap_data.py
 
 # Frontend
-web/ @uyuni-project/frontend
+web/html/ @uyuni-project/frontend
+web/setup.sh @uyuni-project/frontend
 branding/ @uyuni-project/frontend
 *.jsp @uyuni-project/frontend
 *.jspf @uyuni-project/frontend

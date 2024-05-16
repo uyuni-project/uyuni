@@ -31,6 +31,7 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -52,7 +53,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
-    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
     private final AttestationManager attestationManager = new AttestationManager();
     private final RegularMinionBootstrapper regularMinionBootstrapper =
             new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);

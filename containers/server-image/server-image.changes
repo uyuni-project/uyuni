@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri May 03 15:23:16 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6
+  * Add execution permissions on healthcheck.sh (bsc#1223379)
+  * Install packages required by PAM, LDAP and SSSD authentication
+  * Fix PAM authentication using BCI image
+
+-------------------------------------------------------------------
 Mon Apr 08 15:27:46 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5

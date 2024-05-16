@@ -1,0 +1,7 @@
+[Unit]
+Description=Collect PAYG data and copy them into the Uyuni container
+After=uyuni-server.service csp-billing-adapter.service
+
+[Service]
+ExecStart=/usr/sbin/uyuni-payg-extract-data
+

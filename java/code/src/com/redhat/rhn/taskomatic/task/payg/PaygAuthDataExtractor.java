@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 
 import com.google.gson.Gson;
@@ -32,13 +33,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class PaygAuthDataExtractor {
+
+    private static final Path PAYG_INSTANCE_INFO_JSON = Path.of("/var/cache/rhn/payg.json");
+    private static final int VALIDITY_MINUTES = 11;
 
     private static final String CONNECTION_TIMEOUT_PROPEERRTY = "java.payg.connection_timeout";
     private static final String WAIT_RESPONSE_TIMEOUT_PROPEERRTY = "java.payg.repsonse_timeout";
@@ -50,6 +58,7 @@ public class PaygAuthDataExtractor {
     private static final Logger LOG = LogManager.getLogger(PaygAuthDataExtractor.class);
 
     private static final Gson GSON = new GsonBuilder()
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
         .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
         .serializeNulls()
         .create();
@@ -231,38 +240,17 @@ public class PaygAuthDataExtractor {
      * @return Authentication data and cryptographic material to connect to cloud rmt host
      */
     protected PaygInstanceInfo extractAuthDataLocal() {
-        String[] cmd = {"python3"};
-        InputStream programStream = PaygAuthDataExtractor.class
-                .getResourceAsStream("script/payg_extract_repo_data.py");
-        try {
-            Process p = new ProcessBuilder()
-                    .command(cmd)
-                    .start();
+        try (BufferedReader json = Files.newBufferedReader(PAYG_INSTANCE_INFO_JSON)) {
+            PaygInstanceInfo instanceInfo = GSON.fromJson(json, PaygInstanceInfo.class);
+            if (Duration.between(instanceInfo.getTimestamp(), LocalDateTime.now()).toMinutes() > VALIDITY_MINUTES) {
+                throw new PaygDataExtractException("Local PAYG Instance info is outdated.");
+            }
 
-            OutputStream stdin = p.getOutputStream();
-            InputStream stdout = p.getInputStream();
-            InputStream stderr = p.getErrorStream();
-            programStream.transferTo(stdin);
-            stdin.close();
-            programStream.close();
-
-            String output = getCommandOutput(stdout).toString();
-            String error = getCommandOutput(stderr).toString();
-
-            int exitStatus = p.waitFor();
-
-
-            //TODO: add additional product information
-            return processOutput(exitStatus, error, output);
+            return instanceInfo;
         }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
+        catch (Exception ex) {
+            throw new PaygDataExtractException("Error retrieving data from local instance", ex);
         }
-        catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            LOG.error(e.getMessage(), e);
-        }
-        return null;
     }
 
     /**

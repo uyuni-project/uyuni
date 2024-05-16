@@ -44,7 +44,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     virtualization-formulas \
     uyuni-config-formula \
     inter-server-sync \
-    golang-github-lusitaniae-apache_exporter \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
     golang-github-QubitProducts-exporter_exporter \
@@ -132,7 +131,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.0.5
+LABEL org.opencontainers.image.version=5.0.6
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

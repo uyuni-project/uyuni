@@ -78,6 +78,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -291,12 +292,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
        saltServiceMock = mock(SaltService.class);
        systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
-       cloudManager4Test = new CloudPaygManager() {
-           @Override
-           public boolean isPaygInstance() {
-               return false;
-           }
-       };
+       cloudManager4Test = new TestCloudPaygManagerBuilder().build();
        attestationManager = new AttestationManager();
 
        context().checking(new Expectations() {{
@@ -1849,12 +1845,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionBYOSonPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         product.setFree(false);
@@ -1898,12 +1889,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionDConPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         product.setFree(false);
@@ -1946,12 +1932,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionFreeBYOSonPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         product.setFree(true);
@@ -1983,12 +1964,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionSumaProxyOnPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         channelFamily.setName("SUSE Manager Proxy");
         channelFamily.setLabel("SMP");
@@ -2028,12 +2004,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionPAYGonPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);

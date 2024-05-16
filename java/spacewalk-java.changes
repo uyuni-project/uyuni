@@ -1,4 +1,38 @@
 -------------------------------------------------------------------
+Fri May 03 14:34:58 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Proxy container: use SSL cert CNAMEs as FQDNs (bsc#1222336)
+  * Migrate user account pages to Bootstrap 5
+  * Added column to store the process output of the attestation
+  * Added support for Confidential Computing in the System Set
+    Manager
+  * Removed JCommon dependency
+  * Enhance Confidential Computing attestation API
+  * Bump API version from 26 to 27
+  * Remove deprecated 'recurringaction' API namespace
+  * Added serializer for rebootSuggested and restartSuggested
+  * Prevent NPE when processing reboot needed beacon event
+    (bsc#1216063)
+  * Do not accept periods as valid characters in distribution
+    label (bsc#1219317)
+  * Remove rhnreg_ks script
+  * Native support for AppStream repositories
+  * Fix out of bounds error getting /ks/dist/ URL with no path
+  * Fix FQDN in URLs for system provisioning
+  * Migrate my preferences page to Bootstrap 5
+  * Migrate notification messages page to Bootstrap 5
+  * Added support for Confidential Computing UI in Audit
+  * Added support for Confidential Computing UI in System details
+  * Schedule an attestation on reboot if the client is configured
+    to do so
+  * Create data for Confidential Computing attestation in the
+    report database
+  * Remove the Visualization feature
+  * Fix chained container proxies configuration
+  * User with API read-only are only allowed to make GET requests
+
+-------------------------------------------------------------------
 Thu Apr 04 18:23:52 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0
