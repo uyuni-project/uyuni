@@ -220,6 +220,7 @@ class TFTPHandler(BaseHandler):
             logging.debug(f"Got request for system GRUB {path}, filtering HTTP")
             return HttpResponseDataFilteredGrub(
                 f"{target}/tftp/{path}", capath, self._proxyFqdn, self._serverFqdn
+            )
         elif path.startswith("pxelinux.cfg/default"):
             # server local default
             logging.debug(f"Got request for {path}, filtering HTTP")
