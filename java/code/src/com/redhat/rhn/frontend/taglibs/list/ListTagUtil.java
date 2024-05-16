@@ -550,9 +550,7 @@ public class ListTagUtil {
         for (String linkNameIn : linkNames) {
             String[] linkData = links.get(linkNameIn);
             ListTagUtil.write(pageContext, "<button ");
-            ListTagUtil.write(pageContext, "class=\"btn btn-default btn-xs ");
-            ListTagUtil.write(pageContext, linkData[0]);
-
+            ListTagUtil.write(pageContext, "class=\"btn btn-default btn-xs");
             // if the link is disabled...
             if (linkData[1] == null) {
                 ListTagUtil.write(pageContext, " disabled");
@@ -565,7 +563,11 @@ public class ListTagUtil {
             }
             ListTagUtil.write(pageContext, "\" title=\"");
             ListTagUtil.write(pageContext, linkData[3]);
-            ListTagUtil.write(pageContext, "\"></button>");
+            ListTagUtil.write(pageContext, "\">");
+            ListTagUtil.write(pageContext, "<i class=\"");
+            ListTagUtil.write(pageContext, linkData[0]);
+            ListTagUtil.write(pageContext, "\"></i>");
+            ListTagUtil.write(pageContext, "</button>");
         }
         ListTagUtil.write(pageContext, "</div>");
     }
