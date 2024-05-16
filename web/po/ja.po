@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 09:58+0200\n"
+"POT-Creation-Date: 2024-05-16 10:18+0200\n"
 "PO-Revision-Date: 2024-05-09 19:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -51,7 +51,9 @@ msgstr "動作を<link>スケジュールしました</link>。"
 msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
-msgstr "アクションをスケジュールできません。詳細については、サーバのログを確認してください。"
+msgstr ""
+"アクションをスケジュールできません。詳細については、サーバのログを確認してく"
+"ださい。"
 
 #: ../html/src/components/CoCoScansList.tsx:122
 msgid "Confirm Attestation Execution"
@@ -1712,7 +1714,8 @@ msgstr "AppStream {stream} には {count} 個のパッケージがあります:"
 #: ../html/src/manager/appstreams/appstreams.tsx:87
 msgid ""
 "Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr "AppStreamモジュールの選択の更新が <link>スケジュールされました</link>。"
+msgstr ""
+"AppStreamモジュールの選択の更新が <link>スケジュールされました</link>。"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:135
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -1723,7 +1726,9 @@ msgstr "AppStream"
 msgid ""
 "Please review the changes below before scheduling an action to apply the "
 "changes on the system."
-msgstr "システムに変更を適用するアクションをスケジュールする前に、以下の変更を確認してください。"
+msgstr ""
+"システムに変更を適用するアクションをスケジュールする前に、以下の変更を確認し"
+"てください。"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
@@ -1761,7 +1766,8 @@ msgstr "影響を受ける、割り当てられていないチャンネルで利
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr "このクライアントは脆弱性の影響を受けており、それに対するパッチがあります。"
+msgstr ""
+"このクライアントは脆弱性の影響を受けており、それに対するパッチがあります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
@@ -1781,7 +1787,9 @@ msgstr "影響を受けません"
 msgid ""
 "The client is not affected because none of the known CVE vulnerable packages "
 "are installed."
-msgstr "既知のCVE脆弱性パッケージがインストールされていないため、クライアントは影響を受けません。"
+msgstr ""
+"既知のCVE脆弱性パッケージがインストールされていないため、クライアントは影響を"
+"受けません。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
@@ -1799,7 +1807,8 @@ msgstr "影響を受ける、パッチは利用不可"
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
-msgstr "クライアントは、まだパッチがリリースされていない脆弱性の影響を受けます。"
+msgstr ""
+"クライアントは、まだパッチがリリースされていない脆弱性の影響を受けます。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
 msgid "Affected, patch is unavailable in relevant channels"
