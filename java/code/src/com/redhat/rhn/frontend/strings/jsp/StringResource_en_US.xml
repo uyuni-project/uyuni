@@ -15692,7 +15692,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
-        <source>delete organization</source>
+        <source>Delete Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
