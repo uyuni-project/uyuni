@@ -4,52 +4,54 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: ../src/bin/spacecmd:60
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2020-10-16 10:51+0200\n"
-"Last-Translator: Pascal Arlt <parlt@suse.com>\n"
+"POT-Creation-Date: 2024-05-16 10:19+0200\n"
+"PO-Revision-Date: 2024-05-07 10:43+0000\n"
+"Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/"
 ">\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
-msgstr ""
+msgstr "activationkey_addpackages: Añade paquetes a una clave de activación"
 
 #: ../src/spacecmd/activationkey.py:51
 msgid "usage: activationkey_addpackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "uso: activationkey_addpackages CLAVE <PAQUETE ...>"
 
 #: ../src/spacecmd/activationkey.py:86
 msgid "activationkey_removepackages: Remove packages from an activation key"
 msgstr ""
+"activationkey_removepackages: Elimina paquetes de una clave de activación"
 
 #: ../src/spacecmd/activationkey.py:88
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "uso: activationkey_removepackages CLAVE <PAQUETE ...>"
 
 #: ../src/spacecmd/activationkey.py:126
 msgid "activationkey_addgroups: Add groups to an activation key"
-msgstr ""
+msgstr "activationkey_addgroups: Añade grupos a una clave de activación"
 
 #: ../src/spacecmd/activationkey.py:127
 msgid "usage: activationkey_addgroups KEY <GROUP ...>"
-msgstr ""
+msgstr "uso: activationkey_addgroups CLAVE <GRUPO ...>"
 
 #: ../src/spacecmd/activationkey.py:167
 msgid "activationkey_removegroups: Remove groups from an activation key"
-msgstr ""
+msgstr "activationkey_removegroups: Elimina grupos de una clave de activación"
 
 #: ../src/spacecmd/activationkey.py:168
 msgid "usage: activationkey_removegroups KEY <GROUP ...>"
-msgstr ""
+msgstr "uso: activationkey_removegroups CLAVE <GRUPO ...>"
 
 #: ../src/spacecmd/activationkey.py:216
 msgid "activationkey_addentitlements: Add entitlements to an activation key"
@@ -74,7 +76,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:298
 msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "uso: activationkey_addchildchannels CLAVE <CANAL ...>"
 
 #: ../src/spacecmd/activationkey.py:350
 msgid ""
@@ -84,7 +86,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:352
 msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "uso: activationkey_removechildchannels CLAVE <CANAL ...>"
 
 #: ../src/spacecmd/activationkey.py:390
 msgid ""
@@ -94,7 +96,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:392
 msgid "usage: activationkey_listchildchannels KEY"
-msgstr ""
+msgstr "uso: activationkey_listchildchannels CLAVE"
 
 #: ../src/spacecmd/activationkey.py:421
 msgid ""
@@ -5299,8 +5301,8 @@ msgstr ""
 msgid ""
 "usage: softwarechannel_clonetree [options])\n"
 "             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar"
-"\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/"
+"bar\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "options:\n"

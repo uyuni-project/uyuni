@@ -1241,20 +1241,20 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target state="translated">Položky AppStream</target>
+        <target state="translated">AppStreams</target>
       </trans-unit>
-    <trans-unit id="nav.system.coco" xml:space="preserve">
+      <trans-unit id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Dôveryhodné používanie počítača</target>
+      </trans-unit>
       <trans-unit id="nav.system.coco.settings" xml:space="preserve">
         <source>Settings</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nastavenia</target>
+      </trans-unit>
       <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve">
         <source>List Attestations</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Zoznam atestácií</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

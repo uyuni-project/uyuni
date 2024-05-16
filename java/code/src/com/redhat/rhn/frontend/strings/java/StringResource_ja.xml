@@ -2262,26 +2262,27 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
+        <target state="final">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;この問題を解決するには、下記をご確認ください: &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、組織がクライアントツール
-チャンネルを利用できることを確認してください。利用できない場合は、@@PRODUCT_NAME@@ 管理者
-に対してクライアントツールチャンネルのエンタイトルメントを要求する必要があります。
+&lt;li&gt;
+このキックスタートプロファイルのベースチャンネルのクライアントツールチャンネルは
+組織で利用できますか? 利用できない場合は、@@PRODUCT_NAME@@ 管理者
+にクライアントツールチャンネルのエンタイトルメントを要求する必要があります。
 &lt;/li&gt;
 &lt;li&gt;
-@@PRODUCT_NAME@@ が、このキックスタートプロファイルのベースチャンネルに対応するクライアントツール
-チャンネルを利用できるようにしてください。利用できない場合は、 @@PRODUCT_NAME@@ 管理者に連絡し、
-クライアントツールチャンネルの mgr-inter-sync を要求してもう一度試してください。
+@@PRODUCT_NAME@@ が、このキックスタートプロファイルのベースチャンネル用のクライアント
+ツールチャンネルを利用できるようにしてください。利用できない場合は、 @@PRODUCT_NAME@@ 管理者
+に連絡し、クライアントツールチャンネルのmgr-inter-syncを要求して再試行してください。
 &lt;/li&gt;
 &lt;li&gt;
-このキックスタートに対応する spacewalk-koan パッケージが、このキックスタートのベースチャンネルの
+このキックスタートに対応する必要なパッケージが、このキックスタートのベースチャンネルの
 ツールチャンネル内で利用可能であることを確認してください。利用できない場合は、
-このキックスタートプロファイルでこれらのパッケージを利用できるようにする必要があります。
+このキックスタートプロファイルが適切に機能するようにこれらのパッケージを利用できるようにする必要があります。
 &lt;/li&gt;
 &lt;li&gt;
-上記のパッケージが、このキックスタートベースチャンネルで利用可能であることを確認してください。
-利用できない場合は、 このキックスタートプロファイルでこれらのパッケージを利用できるようにする必要があります。
+上記のパッケージは、このキックスタートのベース チャネルで利用できますか? 利用できない場合は、
+このキックスタートプロファイルが適切に機能するようにこれらのパッケージを利用できるようにする必要があります。
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -6610,12 +6611,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.tree.invalidlabel" xml:space="preserve">
         <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">ラベルが正しく指定されていません。英字、数字、ハイフン、ピリオドおよびアンダースコア以外はラベルに使用できません。また、最低でも 4 文字の長さにしなければなりません</target>
+        <target state="final">ラベルが正しくフォーマットされていません。英字、数字、ハイフン、およびアンダースコア以外はラベルに使用できません。また、最低でも4文字の長さにしなければなりません</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -9881,12 +9882,12 @@ tree will not be usable for autoinstalling.</source>
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
         <target state="final">検出されたログイン情報が {0} に送信されました。受信されない場合は、指定された電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
-      <trans-unit id="config.multiple.channels" xml:space="preserve">
+      <trans-unit approved="yes" id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="needs-adaptation">選択したシステムには、mgr-cfg パッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
+        <target state="final">選択したシステムには、venv-salt-minionパッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
@@ -11100,19 +11101,19 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+      <trans-unit approved="yes" id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
         <source>Regularly ensure the systems overview data are up to date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">システム概要データが最新であることを定期的に確認してください</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+      <trans-unit approved="yes" id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
         <source>Update the systems overview data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">システム概要データの更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
@@ -11122,12 +11123,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="final">待機中の前提条件を持つアクションはキャンセルできません。</target>
       </trans-unit>
-      <trans-unit id="java|hostname" xml:space="preserve">
+      <trans-unit approved="yes" id="java|hostname" xml:space="preserve">
         <source>Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">ホスト名</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
@@ -11324,9 +11325,9 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
 この状況を修正するには、&lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;ここ&lt;/a&gt;にSCC資格情報を追加するか、SSMで従量課金制インスタンスのみを選択してください。
         </target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
+      <trans-unit approved="yes" id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
-        <target state="new"/>
+        <target state="final">SSHプッシュクライアントのチェックインと動作チェーンの再開を管理します</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
@@ -11368,120 +11369,120 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a standalone Salt update</source>
         <target state="final">スタンドアロンSalt更新を実行</target>
       </trans-unit>
-    <trans-unit id="riscv64-deb" xml:space="preserve">
+      <trans-unit approved="yes" id="riscv64-deb" xml:space="preserve">
         <source>RISCV64 Debian</source>
         <target>RISCV64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ARM64 Debian" xml:space="preserve">
         <source>ARM64 Debian</source>
         <target>ARM64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="armel-deb" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="armel-deb" xml:space="preserve">
         <source>ARMEL Debian</source>
         <target>ARMEL Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="s390x-deb" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="s390x-deb" xml:space="preserve">
         <source>PPC64EL Debian</source>
         <target>PPC64EL Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="message.savereposyncflags" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="message.savereposyncflags" xml:space="preserve">
         <source>Saved repository settings for {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.attestation" xml:space="preserve">
+        <target state="final">{0} のリポジトリ設定を保存しました。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="appstreams.configure" xml:space="preserve">
+        <target state="final">コンフィデンシャルコンピューティング認証</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="appstreams.configure" xml:space="preserve">
         <source>Configure AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.channel.modulespresent" xml:space="preserve">
+        <target state="final">AppStreamの設定</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.channel.modulespresent" xml:space="preserve">
         <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve">
+        <target state="final">モジュラーチャンネルが割り当てられているシステムでは操作は許可されません。「allowModules=true」の設定を検討してください。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="confidentialcomputing.nav.title" xml:space="preserve">
         <source>Confidential Computing</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.none.description" xml:space="preserve">
+        <target state="final">コンフィデンシャルコンピューティング</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.none.description" xml:space="preserve">
         <source>None</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.none.label" xml:space="preserve">
+        <target state="final">なし</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.none.label" xml:space="preserve">
         <source>None</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
+        <target state="final">なし</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, second generation (milan)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
+        <target state="final">KVM on AMD Epycプロセッサ、第2世代(milan)</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
+        <target state="final">KVM on AMD Epyc - Milan</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
+        <target state="final">KVM on AMD Epycプロセッサ、第3世代(genoa)</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.none.description" xml:space="preserve">
+        <target state="final">KVM on AMD Epyc - Genoa</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.resultType.none.description" xml:space="preserve">
         <source>Result Type not found</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.sev_snp.description" xml:space="preserve">
+        <target state="final">結果タイプが見つかりません</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.resultType.sev_snp.description" xml:space="preserve">
         <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.sev_snp.label" xml:space="preserve">
+        <target state="final">AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.resultType.sev_snp.label" xml:space="preserve">
         <source>AMD SEV-SNP</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.secure_boot.description" xml:space="preserve">
+        <target state="final">AMD SEV-SNP</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.resultType.secure_boot.description" xml:space="preserve">
         <source>Secure Boot enabled</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.resultType.secure_boot.label" xml:space="preserve">
+        <target state="final">セキュアブート有効</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.resultType.secure_boot.label" xml:space="preserve">
         <source>Secure Boot</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.status.pending.description" xml:space="preserve">
+        <target state="final">セキュアブート</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.status.pending.description" xml:space="preserve">
         <source>Pending</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.status.succeeded.description" xml:space="preserve">
+        <target state="final">待機中</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.status.succeeded.description" xml:space="preserve">
         <source>Succeeded</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="coco.status.failed.description" xml:space="preserve">
+        <target state="final">成功</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.status.failed.description" xml:space="preserve">
         <source>Failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.audit.coco.unsupported" xml:space="preserve">
+        <target state="final">失敗</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.audit.coco.unsupported" xml:space="preserve">
         <source>This system does not have any Confidential Computing capability.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.audit.coco.configUpdated" xml:space="preserve">
+        <target state="final">このシステムにはコンフィデンシャルコンピューティング機能はありません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.audit.coco.configUpdated" xml:space="preserve">
         <source>The Confidential Computing configuration has been updated successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="system.audit.coco.configNotUpdated" xml:space="preserve">
+        <target state="final">コンフィデンシャルコンピューティング設定が正常に更新されました。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.audit.coco.configNotUpdated" xml:space="preserve">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">コンフィデンシャルコンピューティング設定の更新中にエラーが発生しました。詳細については、サーバのログを確認してください。</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

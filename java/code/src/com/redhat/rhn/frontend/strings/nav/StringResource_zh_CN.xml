@@ -1243,18 +1243,18 @@
         </context-group>
         <target state="final">AppStream</target>
       </trans-unit>
-    <trans-unit id="nav.system.coco" xml:space="preserve">
+      <trans-unit approved="yes" id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="nav.system.coco.settings" xml:space="preserve">
+        <target state="final">机密计算</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="nav.system.coco.settings" xml:space="preserve">
         <source>Settings</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve">
+        <target state="final">设置</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="nav.system.coco.list_attestations" xml:space="preserve">
         <source>List Attestations</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">列出证明</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

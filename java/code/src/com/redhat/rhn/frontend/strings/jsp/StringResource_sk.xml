@@ -2823,7 +2823,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="pendingactions.jsp.nogroups" xml:space="preserve">
         <source>No actions pending.</source>
-        <target/>
+        <target>Žiadne čakajúce akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -2831,14 +2831,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="pendingactions.jsp.confirm_cancel_actions" xml:space="preserve">
         <source>Confirm Cancel Actions</source>
-        <target/>
+        <target>Potvrdiť zrušenie akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActionsDeleteConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.confirm_cancel_actions_summary" xml:space="preserve">
         <source>Click on the "confirm" button below to cancel the listed actions.</source>
-        <target/>
+        <target>Kliknutím na tlačidlo "potvrdiť" nižšie zrušíte uvedené akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
@@ -29558,50 +29558,50 @@ given channel.</source>
         <source>Peripheral Server</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ssm.overview.audit" xml:space="preserve">
             <source>Audit</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.index" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.index" xml:space="preserve">
             <source>Confidential Computing</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
             <source>Configure</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
             <source>Schedule</source>
         <target state="new"/>
-  </trans-unit>
+      </trans-unit>
       <trans-unit id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">AppStreams</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

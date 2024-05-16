@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-03-19 03:43+0000\n"
+"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"PO-Revision-Date: 2024-05-09 10:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -50,12 +50,11 @@ msgstr "操作已<link>安排</link>。"
 msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
-msgstr ""
+msgstr "无法安排操作执行时间。请查看服务器日志了解详细信息。"
 
 #: ../html/src/components/CoCoScansList.tsx:122
-#, fuzzy
 msgid "Confirm Attestation Execution"
-msgstr "配置要执行的状态"
+msgstr "确认认证执行"
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
@@ -79,16 +78,15 @@ msgstr "返回列表"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "机密计算认证"
 
 #: ../html/src/components/CoCoScansList.tsx:163
-#, fuzzy
 msgid "Schedule Attestation"
-msgstr "日程安排细节"
+msgstr "安排认证"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
-msgstr ""
+msgstr "认证报告细节"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -158,18 +156,16 @@ msgid "Loading the scheduler..."
 msgstr "正在装载日程安排程序..."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
-#, fuzzy
 msgid "Attestations"
-msgstr "重启动"
+msgstr "认证"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
-#, fuzzy
 msgid "Attestation"
-msgstr "重启动"
+msgstr "认证"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
 msgid "Attestation #{identifier} run on {date} at {time}"
-msgstr ""
+msgstr "认证 #{identifier} 于 {date} {time} 执行"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
@@ -191,9 +187,8 @@ msgstr "系统"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
-#, fuzzy
 msgid "Environment Type"
-msgstr "环境生命周期"
+msgstr "环境类型"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/manager/notifications/notification-messages.tsx:510
@@ -201,7 +196,6 @@ msgid "Created"
 msgstr "创建日期"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:90
-#, fuzzy
 msgid "Last modified"
 msgstr "上次修改时间"
 
@@ -219,9 +213,8 @@ msgid "Status"
 msgstr "状态"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
-#, fuzzy
 msgid "Attestation time"
-msgstr "执行时间"
+msgstr "认证时间"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
@@ -253,19 +246,16 @@ msgstr "细节"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
-#, fuzzy
 msgid "Status:"
-msgstr "状态"
+msgstr "状态："
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
-#, fuzzy
 msgid "Created on"
 msgstr "创建日期"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:75
-#, fuzzy
 msgid "Last modified on"
-msgstr "上次修改时间"
+msgstr "上次修改日期"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
 #: ../html/src/manager/notifications/notification-messages.tsx:515
@@ -274,11 +264,11 @@ msgstr "操作"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:89
 msgid "{actionName} scheduled by {actionScheduledBy}"
-msgstr ""
+msgstr "{actionName} 由 {actionScheduledBy} 安排"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
 msgid "Attested on"
-msgstr ""
+msgstr "认证日期"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
 #: ../html/src/manager/images/image-view.tsx:789
@@ -287,9 +277,8 @@ msgid "Overview"
 msgstr "概览"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
-#, fuzzy
 msgid "Result Type:"
-msgstr "构建类型"
+msgstr "结果类型："
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
@@ -297,11 +286,11 @@ msgstr "说明："
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:44
 msgid "Attested on:"
-msgstr ""
+msgstr "认证日期："
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:66
 msgid "Process Output"
-msgstr ""
+msgstr "流程输出"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:279
@@ -314,30 +303,26 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
-#, fuzzy
 msgid "Reset Changes"
-msgstr "保存更改"
+msgstr "重设置更改"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
-#, fuzzy
 msgid "Enable attestation"
-msgstr "无法清除选择"
+msgstr "启用认证"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
-#, fuzzy
 msgid "Executions"
-msgstr "执行时间"
+msgstr "执行作业"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
 msgid "Peform attestation during the boot process"
-msgstr ""
+msgstr "在引导过程中执行认证"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
 msgid "Peform attestation on a schedule"
-msgstr ""
+msgstr "按日程安排执行认证"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
-#, fuzzy
 msgid "Select a schedule"
 msgstr "选择日程安排"
 
@@ -347,12 +332,11 @@ msgstr "选择日程安排"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
-msgstr ""
+msgstr "不适用"
 
 #: ../html/src/components/combobox.tsx:96
-#, fuzzy
 msgid "Create {label}"
-msgstr "创建 "
+msgstr "创建 {label}"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -511,9 +495,8 @@ msgid "No flavor"
 msgstr "无风格"
 
 #: ../html/src/components/input/Select.tsx:255
-#, fuzzy
 msgid "No options"
-msgstr "Kiwi 选项"
+msgstr "无选项"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -854,15 +837,13 @@ msgid "Select Sytems"
 msgstr "选择系统"
 
 #: ../html/src/components/systems.tsx:21
-#, fuzzy
 msgid "Unprovisioned System"
-msgstr "未注册的系统"
+msgstr "未置备的系统"
 
 #: ../html/src/components/systems.tsx:26
 #: ../html/src/manager/systems/list-filter.tsx:7
-#, fuzzy
 msgid "Virtual Guest"
-msgstr "虚拟主机"
+msgstr "虚拟 Guest"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
@@ -872,9 +853,8 @@ msgid "Virtual Host"
 msgstr "虚拟主机"
 
 #: ../html/src/components/systems.tsx:36
-#, fuzzy
 msgid "Non-Virtual System"
-msgstr "虚拟系统"
+msgstr "非虚拟系统"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
@@ -933,14 +913,12 @@ msgid "items per page"
 msgstr "项每页"
 
 #: ../html/src/components/target-systems.tsx:22
-#, fuzzy
 msgid "Target Systems"
 msgstr "目标系统"
 
 #: ../html/src/components/target-systems.tsx:28
-#, fuzzy
 msgid "No systems specified."
-msgstr "个系统已选定"
+msgstr "未指定系统。"
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -1496,9 +1474,8 @@ msgid "Channels"
 msgstr "通道"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:678
-#, fuzzy
 msgid "Recommended"
-msgstr "建议"
+msgstr "推荐"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:849
 msgid " channels sync failed"
@@ -1685,19 +1662,17 @@ msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
-#, fuzzy
 msgid "An error occurred while displaying the list of packages."
-msgstr "装载数据时出错。请查看服务器日志。"
+msgstr "显示软件包列表时发生错误。"
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:39
 msgid "AppStream {stream} has {count} packages:"
-msgstr ""
+msgstr "AppStream {stream} 包含 {count} 个软件包："
 
 #: ../html/src/manager/appstreams/appstreams.tsx:87
-#, fuzzy
 msgid ""
 "Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr "应用 Highstate 的操作<link>已安排</link>。"
+msgstr "<link>已安排</link>更新 AppStream 模块选择。"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:135
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -1708,40 +1683,35 @@ msgstr "AppStreams"
 msgid ""
 "Please review the changes below before scheduling an action to apply the "
 "changes on the system."
-msgstr ""
+msgstr "请先查看下面的更改，然后再安排执行某个操作以在系统上应用这些更改。"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
-msgstr ""
+msgstr "要启用的流："
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:60
 msgid "Streams to be disabled:"
-msgstr ""
+msgstr "要禁用的流："
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:37
-#, fuzzy
 msgid "The following AppStream modules are currently available to the system."
-msgstr "此系统上目前已安装以下程序临时修复 (PTF)。 "
+msgstr "以下 AppStream 模块目前可用于该系统。"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:47
-#, fuzzy
 msgid "Apply Changes"
 msgstr "应用更改"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:64
-#, fuzzy
 msgid "Modules"
 msgstr "模块"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:65
-#, fuzzy
 msgid "Streams"
 msgstr "流"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:89
-#, fuzzy
 msgid "Packages in {stream}"
-msgstr "软件包名称"
+msgstr "{stream} 中的软件包"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
@@ -1751,7 +1721,7 @@ msgstr "受影响，通道中有可用补丁，但未指派"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
+msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
@@ -1770,43 +1740,39 @@ msgstr "不受影响"
 msgid ""
 "The client is not affected because none of the known CVE vulnerable packages "
 "are installed."
-msgstr ""
+msgstr "该客户端不受影响，因为它未安装任何有已知 CVE 漏洞的软件包。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
 msgstr "已修补"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
-#, fuzzy
 msgid "A patch has been successfully installed on the client."
-msgstr "操作已成功添加到 "
+msgstr "该客户端上已成功安装补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
-#, fuzzy
 msgid "Affected, patch is unavailable"
-msgstr "有软件包更新可用"
+msgstr "受影响，未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
-msgstr ""
+msgstr "该客户端受到某个漏洞的影响，尚未针对该漏洞发布补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
-#, fuzzy
 msgid "Affected, patch is unavailable in relevant channels"
-msgstr "受影响，指派的通道中至少有一个可用补丁"
+msgstr "受影响，相关通道中未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid ""
 "The client is affected by a vulnerability for which a patch has been "
 "released,"
-msgstr ""
+msgstr "该客户端受到某个漏洞的影响，已针对该漏洞发布补丁，"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
-#, fuzzy
 msgid "Affected, partial patch available in assigned channel"
-msgstr "受影响，指派的通道中至少有一个可用补丁"
+msgstr "受影响，指派的通道中提供了局部补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
@@ -1872,9 +1838,8 @@ msgid "Patch available, but needs to be cloned into Channel."
 msgstr "补丁可用，但需要克隆到通道中。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
-#, fuzzy
 msgid "Install a new partial patch on this system."
-msgstr "在此系统上安装新补丁。"
+msgstr "在此系统上安装新的局部补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
@@ -4247,9 +4212,8 @@ msgid "Playbook execution has been"
 msgstr "剧本的执行已"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
-#, fuzzy
 msgid "Settings"
-msgstr "重启动"
+msgstr "设置"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
@@ -5182,26 +5146,22 @@ msgid ""
 msgstr "使用此激活密钥注册的所有系统都将订阅所选子通道。"
 
 #: ../html/src/manager/systems/all-list.tsx:37
-#, fuzzy
 msgid " Systems "
-msgstr "系统"
+msgstr " 系统 "
 
 #: ../html/src/manager/systems/all-list.tsx:57
-#, fuzzy
 msgid "No Systems."
-msgstr "系统"
+msgstr "没有系统。"
 
 #: ../html/src/manager/systems/all-list.tsx:106
 #: ../html/src/manager/systems/list-filter.tsx:46
-#, fuzzy
 msgid "Extra Packages"
-msgstr "软件包"
+msgstr "额外的软件包"
 
 #: ../html/src/manager/systems/all-list.tsx:120
 #: ../html/src/manager/systems/list-filter.tsx:47
-#, fuzzy
 msgid "Config Diffs"
-msgstr "配置 URL"
+msgstr "配置差异"
 
 #: ../html/src/manager/systems/all-list.tsx:135
 #: ../html/src/manager/systems/list-filter.tsx:48
@@ -5212,9 +5172,8 @@ msgstr "基础通道"
 
 #: ../html/src/manager/systems/all-list.tsx:146
 #: ../html/src/manager/systems/list-filter.tsx:49
-#, fuzzy
 msgid "System Type"
-msgstr "储存类型"
+msgstr "系统类型"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
@@ -5350,7 +5309,7 @@ msgstr "正在进行引导，您确定要关闭此页面吗？"
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
-msgstr ""
+msgstr "机密计算功能"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
@@ -5425,106 +5384,90 @@ msgid "Confirm Deletion"
 msgstr "确认删除"
 
 #: ../html/src/manager/systems/list-filter.tsx:4
-#, fuzzy
 msgid "Manager Server"
-msgstr "Manager"
+msgstr "管理器服务器"
 
 #: ../html/src/manager/systems/list-filter.tsx:5
-#, fuzzy
 msgid "Physical"
-msgstr "物理功能"
+msgstr "物理"
 
 #: ../html/src/manager/systems/list-filter.tsx:12
-#, fuzzy
 msgid "Ansible Control Node"
 msgstr "Ansible 控制节点"
 
 #: ../html/src/manager/systems/list-filter.tsx:14
-#, fuzzy
 msgid "Container Build Host"
-msgstr "构建主机"
+msgstr "容器构建主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Foreign"
-msgstr ""
+msgstr "外部"
 
 #: ../html/src/manager/systems/list-filter.tsx:16
-#, fuzzy
 msgid "Management"
-msgstr "管理节点"
+msgstr "管理"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Monitored Host"
-msgstr ""
+msgstr "受监视主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
-#, fuzzy
 msgid "OS Image Build Host"
-msgstr "构建主机"
+msgstr "操作系统映像构建主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
 msgid "Salt"
-msgstr ""
+msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:20
-#, fuzzy
 msgid "Virtualization Host"
-msgstr "虚拟主机"
+msgstr "虚拟化主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:24
-#, fuzzy
 msgid "Actions scheduled"
-msgstr "已安排"
+msgstr "安排的操作"
 
 #: ../html/src/manager/systems/list-filter.tsx:25
-#, fuzzy
 msgid "All updates scheduled"
-msgstr "已安排通道更改。"
+msgstr "安排的所有更新"
 
 #: ../html/src/manager/systems/list-filter.tsx:27
-#, fuzzy
 msgid "Kickstart in progress"
-msgstr " 正在进行"
+msgstr "正在进行 Kickstart"
 
 #: ../html/src/manager/systems/list-filter.tsx:28
-#, fuzzy
 msgid "System is up to date"
-msgstr "映像是最新的"
+msgstr "系统是最新的"
 
 #: ../html/src/manager/systems/list-filter.tsx:29
 msgid "System not checking in"
-msgstr ""
+msgstr "系统未在签入"
 
 #: ../html/src/manager/systems/list-filter.tsx:30
-#, fuzzy
 msgid "System not entitled"
-msgstr "系统已锁定"
+msgstr "系统未被赋权"
 
 #: ../html/src/manager/systems/list-filter.tsx:31
 msgid "System requires reboot"
-msgstr ""
+msgstr "系统需要重引导"
 
 #: ../html/src/manager/systems/list-filter.tsx:32
-#, fuzzy
 msgid "Updates available"
-msgstr "有软件包更新可用"
+msgstr "有可用更新"
 
 #: ../html/src/manager/systems/list-filter.tsx:42
-#, fuzzy
 msgid "System Kind"
-msgstr "系统名称"
+msgstr "系统类型"
 
 #: ../html/src/manager/systems/list-filter.tsx:50
 msgid "Requires Reboot"
-msgstr ""
+msgstr "需要重引导"
 
 #: ../html/src/manager/systems/list-filter.tsx:51
-#, fuzzy
 msgid "Registered Days"
-msgstr "已注册的系统"
+msgstr "已注册天数"
 
 #: ../html/src/manager/systems/list-filter.tsx:52
-#, fuzzy
 msgid "Groups"
 msgstr "组"
 
@@ -5555,9 +5498,8 @@ msgid "New Proxy"
 msgstr "新代理"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
-#, fuzzy
 msgid "Manage selected system set"
-msgstr "将选定消息标记为已读"
+msgstr "管理选定系统集"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "system selected"
@@ -5568,9 +5510,8 @@ msgid "systems selected"
 msgstr "个系统已选定"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
-#, fuzzy
 msgid "Clear selected system set"
-msgstr "删除选定的消息"
+msgstr "清除选定系统集"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24

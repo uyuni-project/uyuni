@@ -263,15 +263,13 @@ This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date.
     </source>
-        <target state="needs-adaptation">
+        <target state="final">
 ---------------------
 受影响的系统列表
 ---------------------
-此补丁建议可能适用于下面列出的系统。如果您知道此补丁不适用于
-所列的某个系统，原因可能是该服务器的软件包配置文件已过时。
-在这种情况下，您应该以 root 身份在相关系统上运行 'up2date -p'（RHEL 4
-和更低版本）或 'rhn-profile-sync'（SLES、RHEL 5 和更高版本）以
-刷新软件配置文件。
+此补丁建议可能适用于下列系统。如果您知道此补丁不适用于
+所列的某个系统，可能是因为该服务器的软件包配置文件
+已过时。
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>

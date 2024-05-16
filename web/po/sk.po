@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 09:58+0200\n"
-"PO-Revision-Date: 2024-03-10 16:42+0000\n"
+"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"PO-Revision-Date: 2024-04-29 19:43+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -52,11 +52,12 @@ msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
 msgstr ""
+"Nie je možné naplánovať akciu. Prosím, skontrolujte záznamy servera, aby ste "
+"získali podrobné informácie."
 
 #: ../html/src/components/CoCoScansList.tsx:122
-#, fuzzy
 msgid "Confirm Attestation Execution"
-msgstr "Konfigurovať stavy na vykonanie"
+msgstr "Potvrdiť vykonanie atestácie"
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
@@ -80,16 +81,15 @@ msgstr "Späť na zoznam"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "Atestácie dôveryhodného používania počítača"
 
 #: ../html/src/components/CoCoScansList.tsx:163
-#, fuzzy
 msgid "Schedule Attestation"
-msgstr "Podrobnosti plánu"
+msgstr "Naplánovať atestáciu"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
-msgstr ""
+msgstr "Podrobnosti atestačnej správy"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -162,18 +162,16 @@ msgid "Loading the scheduler..."
 msgstr "Načítava sa plánovač..."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
-#, fuzzy
 msgid "Attestations"
-msgstr "Reštartovanie"
+msgstr "Atestácie"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
-#, fuzzy
 msgid "Attestation"
-msgstr "Reštartovanie"
+msgstr "Atestácia"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
 msgid "Attestation #{identifier} run on {date} at {time}"
-msgstr ""
+msgstr "Atestácia #{identifier} vykonaná dňa {date} o {time}"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49
@@ -195,9 +193,8 @@ msgstr "Systém"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
-#, fuzzy
 msgid "Environment Type"
-msgstr "Životný cyklus prostredia"
+msgstr "Typ prostredia"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/manager/notifications/notification-messages.tsx:510
@@ -205,7 +202,6 @@ msgid "Created"
 msgstr "Vytvorené"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:90
-#, fuzzy
 msgid "Last modified"
 msgstr "Naposledy zmenené"
 
@@ -223,9 +219,8 @@ msgid "Status"
 msgstr "Stav"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
-#, fuzzy
 msgid "Attestation time"
-msgstr "Čas vykonania"
+msgstr "Čas atestácie"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
@@ -257,19 +252,16 @@ msgstr "Podrobnosti"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
-#, fuzzy
 msgid "Status:"
-msgstr "Stav"
+msgstr "Stav:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
-#, fuzzy
 msgid "Created on"
-msgstr "Vytvorené"
+msgstr "Vytvorené dňa"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:75
-#, fuzzy
 msgid "Last modified on"
-msgstr "Naposledy zmenené"
+msgstr "Naposledy zmenené dňa"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
 #: ../html/src/manager/notifications/notification-messages.tsx:515
@@ -278,11 +270,11 @@ msgstr "Akcia"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:89
 msgid "{actionName} scheduled by {actionScheduledBy}"
-msgstr ""
+msgstr "{actionName} naplánované {actionScheduledBy}"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
 msgid "Attested on"
-msgstr ""
+msgstr "Atestované dňa"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
 #: ../html/src/manager/images/image-view.tsx:789
@@ -291,9 +283,8 @@ msgid "Overview"
 msgstr "Prehľad"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
-#, fuzzy
 msgid "Result Type:"
-msgstr "Typ zostavenia"
+msgstr "Typ výsledku:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
@@ -301,11 +292,11 @@ msgstr "Popis:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:44
 msgid "Attested on:"
-msgstr ""
+msgstr "Atestované dňa:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:66
 msgid "Process Output"
-msgstr ""
+msgstr "Výstup procesu"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:279
@@ -318,30 +309,26 @@ msgid "Save"
 msgstr "Uložiť"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
-#, fuzzy
 msgid "Reset Changes"
-msgstr "Uložiť zmeny"
+msgstr "Vynulovanie zmien"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
-#, fuzzy
 msgid "Enable attestation"
-msgstr "Nie je možné vymazať výber"
+msgstr "Povolenie atestácie"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
-#, fuzzy
 msgid "Executions"
-msgstr "Čas vykonania"
+msgstr "Vykonania"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
 msgid "Peform attestation during the boot process"
-msgstr ""
+msgstr "Vykonanie atestácie počas procesu štartu systému"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
 msgid "Peform attestation on a schedule"
-msgstr ""
+msgstr "Vykonávanie atestácie podľa plánu"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
-#, fuzzy
 msgid "Select a schedule"
 msgstr "Vybrať plán"
 
@@ -943,14 +930,12 @@ msgid "items per page"
 msgstr "položiek na stránku"
 
 #: ../html/src/components/target-systems.tsx:22
-#, fuzzy
 msgid "Target Systems"
 msgstr "Cieľové systémy"
 
 #: ../html/src/components/target-systems.tsx:28
-#, fuzzy
 msgid "No systems specified."
-msgstr "vybrané systémy"
+msgstr "Nie sú určené žiadne systémy."
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -1532,9 +1517,8 @@ msgid "Channels"
 msgstr "Kanály"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:678
-#, fuzzy
 msgid "Recommended"
-msgstr "odporúčané"
+msgstr "Odporúčané"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:849
 msgid " channels sync failed"
@@ -1727,20 +1711,17 @@ msgid "Server error, please check log files."
 msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
-#, fuzzy
 msgid "An error occurred while displaying the list of packages."
-msgstr ""
-"Pri načítavaní dát sa vyskytla chyba. Prosím, skontrolujte záznamy servera."
+msgstr "Pri zobrazovaní zoznamu balíkov sa vyskytla chyba."
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:39
 msgid "AppStream {stream} has {count} packages:"
-msgstr ""
+msgstr "AppStream {stream} má {count} balíkov:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:87
-#, fuzzy
 msgid ""
 "Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr "Použitie highstate bolo <link>naplánované</link>."
+msgstr "Aktualizácia výberu modulov AppStream bola <link>naplánovaná</link>."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:135
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -1752,41 +1733,36 @@ msgid ""
 "Please review the changes below before scheduling an action to apply the "
 "changes on the system."
 msgstr ""
+"Prosím, skontrolujte nižšie uvedené zmeny pred naplánovaním akcie na "
+"vykonanie zmien v systéme."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
-msgstr ""
+msgstr "Prúdy, ktoré sa majú povoliť:"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:60
 msgid "Streams to be disabled:"
-msgstr ""
+msgstr "Prúdy, ktoré sa majú zakázať:"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:37
-#, fuzzy
 msgid "The following AppStream modules are currently available to the system."
-msgstr ""
-"V tomto systéme sú v súčasnosti nainštalované nasledujúce Program Temporary "
-"Fixes (PTFs). "
+msgstr "V súčasnosti sú v systéme k dispozícii tieto moduly AppStream."
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:47
-#, fuzzy
 msgid "Apply Changes"
 msgstr "Použiť zmeny"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:64
-#, fuzzy
 msgid "Modules"
-msgstr "Modul"
+msgstr "Moduly"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:65
-#, fuzzy
 msgid "Streams"
-msgstr "Prúd"
+msgstr "Prúdy"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:89
-#, fuzzy
 msgid "Packages in {stream}"
-msgstr "Názov balíka"
+msgstr "Balíky v {stream}"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
@@ -4366,9 +4342,8 @@ msgid "Playbook execution has been"
 msgstr "Vykonanie scenára bolo"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
-#, fuzzy
 msgid "Settings"
-msgstr "Reštartovanie"
+msgstr "Nastavenia"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
@@ -5488,7 +5463,7 @@ msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
-msgstr ""
+msgstr "Funkcia dôveryhodného používania počítača"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74

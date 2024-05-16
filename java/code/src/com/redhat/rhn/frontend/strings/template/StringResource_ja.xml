@@ -254,7 +254,7 @@ Summary:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -263,15 +263,13 @@ This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date.
     </source>
-        <target state="needs-adaptation">
+        <target state="final">
 ---------------------
 影響を受けるシステムのリスト
 ---------------------
 このパッチアドバイザリーは、以下に表示されるシステムに適用できます。
-下記のシステム一覧が正しくない場合は、該当するシステムのパッケージプロファイルが
-古くなっている可能性があります。このような場合は、システム内で root になり、
- 'up2date -p' (RHEL 4 またはそれ以前) もしくは 'rhn-profile-sync' (SLES や RHEL 5,
-またはそれ以降) を実行して、ソフトウェアプロファイルの更新を行なってください。
+システム一覧にこのパッチが適用されないことがわかっている場合は、
+そのサーバのパッケージプロファイルが古くなっている可能性があります。
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
