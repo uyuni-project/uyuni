@@ -222,16 +222,16 @@ class CVEAudit extends React.Component<Props, State> {
   getPatchStatusAccuracyWarning = (row) => {
     const dataSources: string[] = row.scanDataSources;
     if (!dataSources) {
-      return "Unknown patch status";
+      return t("Unknown patch status");
     }
 
     if (dataSources.indexOf("OVAL") === -1) {
-      return "OVAL data not in sync. Possible false negatives";
+      return t("OVAL data not in sync. Possible false negatives");
     } else if (dataSources.indexOf("CHANNELS") === -1) {
-      return "Channels not in sync for the given server product. Patches are not available.";
+      return t("Channels not in sync for the given server product. Patches are not available.");
     }
 
-    return "If you see this report a bug.";
+    return t("If you see this report a bug.");
   };
 
   render() {
