@@ -231,6 +231,8 @@ class CVEAudit extends React.Component<Props, State> {
       return t("Channels not in sync for the given server product. Patches are not available.");
     }
 
+    Loggerhead.error(`Invalid scan data sourced: ${dataSources}`);
+
     return t("If you see this report a bug.");
   };
 
