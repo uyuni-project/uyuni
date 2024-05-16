@@ -1243,15 +1243,15 @@
         </context-group>
         <target state="final">AppStreams</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>
         <target state="final">기밀 컴퓨팅</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco.settings" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="nav.system.coco.settings" xml:space="preserve">
         <source>Settings</source>
         <target state="final">설정</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="nav.system.coco.list_attestations" xml:space="preserve">
         <source>List Attestations</source>
         <target state="final">증명 나열</target>
       </trans-unit>

@@ -1236,22 +1236,22 @@
         </context-group>
         <target state="final">AppStream</target>
       </trans-unit>
-      <trans-unit id="AppStreams" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
         <target state="final">AppStream</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>
         <target state="final">コンフィデンシャルコンピューティング</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco.settings" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="nav.system.coco.settings" xml:space="preserve">
         <source>Settings</source>
         <target state="final">設定</target>
       </trans-unit>
-      <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="nav.system.coco.list_attestations" xml:space="preserve">
         <source>List Attestations</source>
         <target state="final">認証を一覧にする</target>
       </trans-unit>
