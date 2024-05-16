@@ -1236,7 +1236,7 @@
         </context-group>
         <target state="final">AppStream</target>
       </trans-unit>
-      <trans-unit id="AppStreams" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
