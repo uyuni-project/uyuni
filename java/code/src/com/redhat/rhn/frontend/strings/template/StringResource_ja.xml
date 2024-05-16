@@ -254,7 +254,7 @@ Summary:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
