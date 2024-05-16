@@ -13088,7 +13088,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>休止中のシステムをすべて表示 ({0})</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
         <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -16319,7 +16319,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="targetsystems.jsp.summary" xml:space="preserve">
           <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
         <target state="final">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の*-salt-minionパッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
         <context-group name="ctx">
@@ -16403,7 +16403,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="targetsystems.jsp.widgetsummary" xml:space="preserve">
           <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
         <target state="final">以下の時間に &lt;code&gt;salt-minion&lt;/code&gt; パッケージのインストールをスケジュールすることができます。&lt;strong&gt;注記: その他のすべての動作は直ちに行なわれます。&lt;/strong&gt;</target>
         <context-group name="ctx">
@@ -16425,7 +16425,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.stepone" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="summary.jsp.stepone" xml:space="preserve">
           <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
         <target state="final">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中のsalt-minionパッケージインストールを完了します。</target>
         <context-group name="ctx">
@@ -16467,7 +16467,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.packages" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="summary.jsp.packages" xml:space="preserve">
           <source>Could not schedule salt-minion package installations.</source>
         <target state="final">salt-minionパッケージのインストールをスケジュールできませんでした。</target>
         <context-group name="ctx">
@@ -20162,7 +20162,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssmenable.jsp.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssmenable.jsp.summary" xml:space="preserve">
           <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
         <target state="final">以下に表示されるシステムには @@PRODUCT_NAME@@ 設定管理で管理されるファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定のsalt-minionパッケージをインストールする必要があります。以下に表示されるシステムで設定管理を有効にすることができます。&lt;strong&gt;注記:&lt;/strong&gt;すでに有効になっているシステムはそのままの状態となります。</target>
         <context-group name="ctx">
@@ -21404,7 +21404,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
           <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
         <target state="final">&lt;code&gt;salt-minion&lt;/code&gt; RPM をインストールして対象システムでリモートコマンドを実行できるようにする必要があります。</target>
         <context-group name="ctx">
@@ -22773,7 +22773,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>自動インストール可能なディストリビューションの編集</target>
       </trans-unit>
-      <trans-unit id="treecreate.jsp.header1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
@@ -29028,7 +29028,7 @@ given channel.</source>
         <source>OS Image Build Host</source>
         <target>OS イメージビルドホスト</target>
       </trans-unit>
-      <trans-unit id="monitoring_entitled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
         <source>Monitored Host</source>
         <target state="final">監視対象ホスト</target>
       </trans-unit>
@@ -29623,21 +29623,21 @@ given channel.</source>
         </context-group>
         <target state="final">カスタムチャンネルの自動同期が有効になっています。このチャンネルは、ベンダチャンネルと自動的に同期されます。</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="exportcolumn.extraPkgCount" xml:space="preserve">
             <source>Extra Packages</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="final">追加パッケージ</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
             <source>Config Diffs</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="final">設定の差分</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.proxy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="exportcolumn.proxy" xml:space="preserve">
             <source>Proxy</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
@@ -29651,35 +29651,35 @@ given channel.</source>
             </context-group>
         <target state="translated">マネージャサーバ</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="exportcolumn.virtualHost" xml:space="preserve">
             <source>Virtual Host</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="final">仮想ホスト</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="exportcolumn.virtualGuest" xml:space="preserve">
             <source>Virtual Guest</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="final">仮想ゲスト</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="exportcolumn.requiresReboot" xml:space="preserve">
             <source>Requires Reboot</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="final">再起動が必要</target>
       </trans-unit>
-      <trans-unit id="exportcolumn.statusType" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="exportcolumn.statusType" xml:space="preserve">
             <source>Status Type</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="final">ステータスタイプ</target>
       </trans-unit>
-      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
         <target state="final">従来のスタックはサポート対象外で削除予定です。salt minionへの移行を検討してください。</target>
       </trans-unit>
@@ -29726,11 +29726,11 @@ given channel.</source>
         </context-group>
         <target state="final">このパッケージはProduct Temporary Fix (PTF)の一部であり、直接インストールすることはできません。一時的な修正のメインパッケージを選択して、ターゲットシステムを確認してください。</target>
       </trans-unit>
-      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.system-overview-update-queue" xml:space="preserve">
         <source>System Overview Update Queue</source>
         <target state="final">システム概要更新キュー</target>
       </trans-unit>
-      <trans-unit id="task.status.update-system-overview" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.update-system-overview" xml:space="preserve">
         <source>Update System Overview</source>
         <target state="final">システム概要の更新</target>
       </trans-unit>
@@ -29829,66 +29829,66 @@ given channel.</source>
         </context-group>
         <target state="final">これは従量課金制サーバです</target>
       </trans-unit>
-      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
         <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
         <target state="final">リポジトリから削除されたチャンネル内のパッケージを保持する</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.button-save" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="repos.jsp.button-save" xml:space="preserve">
         <source>Save</source>
         <target state="final">保存</target>
       </trans-unit>
-      <trans-unit id="task.status.ssh-service" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
         <target state="final">動作チェーンを再開し、Salt SSHシステムをチェックインする </target>
       </trans-unit>
-      <trans-unit id="peripheral_server" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
         <target state="final">周辺機器サーバ</target>
       </trans-unit>
-      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
         <target state="final">コンフィデンシャルコンピューティング認証</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.audit" xml:space="preserve">
             <source>Audit</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="final">監査</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.audit.coco_configure" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;選択したシステムのコンフィデンシャルコンピューティングを設定&lt;/a&gt;する</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.audit.coco_schedule" xml:space="preserve">
             <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/ssm/Index.do</context>
             </context-group>
         <target state="final">&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;選択したシステムに対する新しいコンフィデンシャルコンピューティング認証をスケジュール&lt;/a&gt;する</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.index" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.coco.index" xml:space="preserve">
             <source>Confidential Computing</source>
         <target state="final">コンフィデンシャルコンピューティング</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.coco.tabs.configure" xml:space="preserve">
             <source>Configure</source>
         <target state="final">設定</target>
       </trans-unit>
-      <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.coco.tabs.schedule" xml:space="preserve">
             <source>Schedule</source>
         <target state="final">スケジュール</target>
       </trans-unit>
-      <trans-unit id="AppStreams" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
         <target state="final">AppStream</target>
       </trans-unit>
