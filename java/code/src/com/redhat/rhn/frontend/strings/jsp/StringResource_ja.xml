@@ -22909,7 +22909,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>自動インストール可能なディストリビューションの編集</target>
       </trans-unit>
-      <trans-unit id="treecreate.jsp.header1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
