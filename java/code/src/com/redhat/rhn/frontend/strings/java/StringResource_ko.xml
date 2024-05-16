@@ -9884,7 +9884,7 @@ tree will not be usable for autoinstalling.</source>
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
         <target state="translated">찾은 로그인을 {0}(으)로 전송했습니다. 메일이 수신되지 않는 경우 제공한 이메일로 등록된 계정이 있는지 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="config.multiple.channels" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
@@ -11103,14 +11103,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
         <source>Regularly ensure the systems overview data are up to date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">시스템 개요 데이터가 최신 상태인지 정기적으로 확인</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
         <source>Update the systems overview data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
@@ -11125,7 +11125,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="final">대기 중인 전제 조건이 있는 작업을 취소할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="java|hostname" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="java|hostname" xml:space="preserve">
         <source>Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
@@ -11327,7 +11327,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
 이 문제를 수정하려면 &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;여기&lt;/a&gt;에서 SCC 자격 증명을 추가하거나 SSM에서 용량제 인스턴스만 선택하십시오.
         </target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
         <target state="final">SSH 푸시 클라이언트에 대한 체크인 및 작업 체인 재개 관리</target>
       </trans-unit>
@@ -11371,7 +11371,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a standalone Salt update</source>
         <target state="final">독립형 Salt 업데이트 수행</target>
       </trans-unit>
-      <trans-unit id="riscv64-deb" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="riscv64-deb" xml:space="preserve">
         <source>RISCV64 Debian</source>
         <target>RISCV64 Debian</target>
         <target state="new"/>
@@ -11381,107 +11381,107 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <target>ARM64 Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="armel-deb" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="armel-deb" xml:space="preserve">
         <source>ARMEL Debian</source>
         <target>ARMEL Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="s390x-deb" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="s390x-deb" xml:space="preserve">
         <source>PPC64EL Debian</source>
         <target>PPC64EL Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="message.savereposyncflags" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.savereposyncflags" xml:space="preserve">
         <source>Saved repository settings for {0}.</source>
         <target state="final">{0}에 대한 리포지토리 설정을 저장했습니다.</target>
       </trans-unit>
-      <trans-unit id="coco.attestation" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
         <target state="final">기밀 컴퓨팅 증명</target>
       </trans-unit>
-      <trans-unit id="appstreams.configure" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="appstreams.configure" xml:space="preserve">
         <source>Configure AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
         <target state="final">AppStreams 구성</target>
       </trans-unit>
-      <trans-unit id="api.channel.modulespresent" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.channel.modulespresent" xml:space="preserve">
         <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
         <target state="final">모듈형 채널이 할당된 시스템에서는 작동이 허용되지 않습니다. 'allowModules=true'로 설정하는 것이 좋습니다.</target>
       </trans-unit>
-      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="confidentialcomputing.nav.title" xml:space="preserve">
         <source>Confidential Computing</source>
         <target state="final">기밀 컴퓨팅</target>
       </trans-unit>
-      <trans-unit id="coco.environment.none.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.environment.none.description" xml:space="preserve">
         <source>None</source>
         <target state="final">없음</target>
       </trans-unit>
-      <trans-unit id="coco.environment.none.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.environment.none.label" xml:space="preserve">
         <source>None</source>
         <target state="final">없음</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, second generation (milan)</source>
         <target state="final">AMD Epyc 프로세서 기반 KVM, 2세대(milan)</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
         <target state="final">AMD Epyc 기반 KVM - Milan</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
         <target state="final">AMD Epyc 프로세서 기반 KVM, 3세대(genoa)</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
         <target state="final">AMD Epyc 기반 KVM - Genoa</target>
       </trans-unit>
-      <trans-unit id="coco.resultType.none.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.resultType.none.description" xml:space="preserve">
         <source>Result Type not found</source>
         <target state="final">결과 유형 없음</target>
       </trans-unit>
-      <trans-unit id="coco.resultType.sev_snp.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.resultType.sev_snp.description" xml:space="preserve">
         <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
         <target state="final">AMD 보안 암호화 가상화-보안 중첩 페이징(SEV-SNP)</target>
       </trans-unit>
-      <trans-unit id="coco.resultType.sev_snp.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.resultType.sev_snp.label" xml:space="preserve">
         <source>AMD SEV-SNP</source>
         <target state="final">AMD SEV-SNP</target>
       </trans-unit>
-      <trans-unit id="coco.resultType.secure_boot.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.resultType.secure_boot.description" xml:space="preserve">
         <source>Secure Boot enabled</source>
         <target state="final">보안 부팅 활성화됨</target>
       </trans-unit>
-      <trans-unit id="coco.resultType.secure_boot.label" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.resultType.secure_boot.label" xml:space="preserve">
         <source>Secure Boot</source>
         <target state="final">보안 부팅</target>
       </trans-unit>
-      <trans-unit id="coco.status.pending.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.status.pending.description" xml:space="preserve">
         <source>Pending</source>
         <target state="final">대기 중</target>
       </trans-unit>
-      <trans-unit id="coco.status.succeeded.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.status.succeeded.description" xml:space="preserve">
         <source>Succeeded</source>
         <target state="final">성공</target>
       </trans-unit>
-      <trans-unit id="coco.status.failed.description" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="coco.status.failed.description" xml:space="preserve">
         <source>Failed</source>
         <target state="final">실패</target>
       </trans-unit>
-      <trans-unit id="system.audit.coco.unsupported" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.audit.coco.unsupported" xml:space="preserve">
         <source>This system does not have any Confidential Computing capability.</source>
         <target state="final">이 시스템에는 기밀 컴퓨팅 기능이 없습니다.</target>
       </trans-unit>
-      <trans-unit id="system.audit.coco.configUpdated" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.audit.coco.configUpdated" xml:space="preserve">
         <source>The Confidential Computing configuration has been updated successfully.</source>
         <target state="final">기밀 컴퓨팅 구성이 업데이트되었습니다.</target>
       </trans-unit>
-      <trans-unit id="system.audit.coco.configNotUpdated" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.audit.coco.configNotUpdated" xml:space="preserve">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="final">기밀 컴퓨팅 구성을 업데이트하는 동안 오류가 발생했습니다. 서버 로그에서 세부 정보를 확인하십시오.</target>
       </trans-unit>
