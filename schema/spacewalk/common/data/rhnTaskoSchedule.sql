@@ -188,4 +188,10 @@ VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'system-profile-refresh-d
         (SELECT id FROM rhnTaskoBunch WHERE name='system-profile-refresh-bunch'),
         current_timestamp, '0 0 5 ? * SAT#2');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'),
+        'oval-data-sync-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name = 'oval-data-sync-bunch'),
+        current_timestamp, '0 0 23 ? * *');
+
 commit;
