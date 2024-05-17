@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # pylint: disable=invalid-name
-"""Configure script for Uyuni proxy Salt broker."""
+"""Configure script for Uyuni proxy Salt broker container."""
 import re
 import yaml
 

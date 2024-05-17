@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # pylint: disable=invalid-name
-"""Configure script for Uyuni proxy squid."""
+"""Configure script for Uyuni proxy squid container."""
 
 import os
 import re

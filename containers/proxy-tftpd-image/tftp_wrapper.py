@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2024 SUSE LLC
 #
 # SPDX-License-Identifier: MIT
-"""Configure script for Uyuni proxy tftp."""
+"""Wrapper script for Uyuni proxy tftp container."""
 
 import argparse
 import logging
