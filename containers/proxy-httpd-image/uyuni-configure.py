@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # pylint: disable=invalid-name
-"""Configure script for Uyuni proxy container."""
+"""Configure script for Uyuni proxy httpd container."""
 
 import logging
 import os

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # pylint: disable=invalid-name
-"""Configure script for proxy TFTP"""
+"""Configure script for proxy TFTP container."""
 
 import logging
 import os
