@@ -409,7 +409,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sle-micro-5.5-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
-@slemicro60_minion
+@slmicro60_minion
   Scenario: Add SUSE Linux Enterprise Micro 6.0
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -427,7 +427,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "sle-micro-6.0" have finished
 
 @uyuni
-@slemicro60_minion
+@slmicro60_minion
   Scenario: Add SUSE Linux Enterprise Micro 6.0
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -442,7 +442,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "sle-micro-6.0" have finished
 
 @uyuni
-@slemicro60_minion
+@slmicro60_minion
   Scenario: Add SUSE Linux Enterprise Micro 6.0 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-6.0-devel-uyuni-client" with arch "x86_64"
     And I wait until the channel "sle-micro-6.0-devel-uyuni-client-x86_64" has been synced
