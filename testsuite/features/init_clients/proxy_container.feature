@@ -18,10 +18,6 @@ Feature: Setup containerized proxy
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Clean up sumaform leftovers on the containerized proxy
-    When I perform a full salt minion cleanup on "proxy"
-    And I reboot the "proxy" host through SSH, waiting until it comes back
-
   Scenario: Bootstrap the proxy host as a salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
