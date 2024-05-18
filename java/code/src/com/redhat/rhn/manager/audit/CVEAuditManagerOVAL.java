@@ -127,6 +127,8 @@ public class CVEAuditManagerOVAL {
                 auditResult = new CVEAuditSystemBuilder(clientServer.getId());
                 // TODO: Maybe we should add an "unknown" patch status type?
                 auditResult.setPatchStatus(PatchStatus.NOT_AFFECTED);
+                auditResult.setSystemID(clientServer.getId());
+                auditResult.setSystemName(clientServer.getName());
             }
 
             if (patchStatuses.contains(auditResult.getPatchStatus())) {
