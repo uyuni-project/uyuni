@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// TODO: Test for when patch status is unknown
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     public static final String CPE_OPENSUSE_LEAP_15_4 = "cpe:/o:opensuse:leap:15.4";
     private OvalParser ovalParser = new OvalParser();

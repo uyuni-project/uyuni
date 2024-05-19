@@ -24,6 +24,7 @@ const PATCHED = "PATCHED";
 const AFFECTED_PATCH_UNAVAILABLE = "AFFECTED_PATCH_UNAVAILABLE";
 const AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI = "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI";
 const AFFECTED_PARTIAL_PATCH_APPLICABLE = "AFFECTED_PARTIAL_PATCH_APPLICABLE";
+const UNKNOWN = "UNKNOWN";
 
 const ALL = [
   AFFECTED_PATCH_UNAVAILABLE,
@@ -34,6 +35,7 @@ const ALL = [
   AFFECTED_FULL_PATCH_APPLICABLE,
   NOT_AFFECTED,
   PATCHED,
+  UNKNOWN,
 ];
 const PATCH_STATUS_LABEL = {
   AFFECTED_PATCH_INAPPLICABLE: {
@@ -86,6 +88,13 @@ const PATCH_STATUS_LABEL = {
     description: t(
       "The client is affected by a vulnerability and we have a patch for it," +
         " but applying the patch will only update some of the vulnerable packages."
+    ),
+  },
+  UNKNOWN: {
+    className: "fa-minus-circle text-secondary",
+    label: t("Unknown, CVE metadata not available"),
+    description: t(
+      "It is not possible to scan the client server for CVE vulnerabilities without channels or OVAL metadata."
     ),
   },
 };
@@ -370,7 +379,7 @@ class CVEAudit extends React.Component<Props, State> {
                     className={"fa fa-big " + PATCH_STATUS_LABEL[row.patchStatus].className}
                     title={PATCH_STATUS_LABEL[row.patchStatus].description}
                   />
-                  {row.scanDataSources.length < 2 && (
+                  {row.patchStatus !== UNKNOWN && row.scanDataSources.length < 2 && (
                     <i
                       className={"fa fa-big fa-dot-circle-o text-secondary"}
                       title={this.getPatchStatusAccuracyWarning(row)}
@@ -408,7 +417,8 @@ class CVEAudit extends React.Component<Props, State> {
                     row.patchStatus === PATCHED ||
                     row.patchStatus === AFFECTED_PATCH_UNAVAILABLE ||
                     row.patchStatus === AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI ||
-                    row.patchStatus === AFFECTED_PATCH_UNAVAILABLE
+                    row.patchStatus === AFFECTED_PATCH_UNAVAILABLE ||
+                    row.patchStatus === UNKNOWN
                   ) {
                     return t("No action required");
                   } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
