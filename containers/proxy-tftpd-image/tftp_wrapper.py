@@ -20,7 +20,7 @@ def stats(s):
 
 
 class FileResponseData(ResponseData):
-    """TODO: Add class docstring"""
+    """Local file response."""
 
     def __init__(self, path):
         self._size = os.stat(path).st_size
@@ -37,7 +37,7 @@ class FileResponseData(ResponseData):
 
 
 class HttpResponseData(ResponseData):
-    """TODO: Add class docstring"""
+    """Unprocessed HTTP response."""
 
     def __init__(self, url, capath):
         # request file by url and store it
@@ -103,7 +103,7 @@ class HttpResponseDataFiltered(HttpResponseData):
 
 
 class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
-    """TODO: Add class docstring"""
+    """Filter pxelinux.cfg files for proxy instance."""
 
     # pylint: disable-next=invalid-name
     def contentFilter(self):
@@ -152,7 +152,7 @@ class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
 
 
 class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
-    """TODO: Add class dosctring"""
+    """Filter grub config files for proxy instance."""
 
     # pylint: disable-next=invalid-name
     def contentFilter(self):
@@ -195,7 +195,7 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
 
 
 class TFTPHandler(BaseHandler):
-    """TODO: Add class docstring"""
+    """Individual TFTP connection handler."""
 
     def __init__(
         self,
@@ -256,7 +256,7 @@ class TFTPHandler(BaseHandler):
 
 
 class TFTPServer(BaseServer):
-    """TODO: Add class docstring"""
+    """Main TFTP server class."""
 
     def __init__(
         self,
