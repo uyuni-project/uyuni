@@ -33,7 +33,7 @@ def help_proxy_container_config(self):
     print(_('''usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY
 
 parameters:
-  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be different from any registered clients.
+  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.
   SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.
   MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.
   EMAIL       the email of the proxy administrator
@@ -90,7 +90,7 @@ def help_proxy_container_config_generate_cert(self):
     print(_('''usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL
 
 parameters:
-  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be different from any registered clients.
+  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.
   SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.
   MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.
   EMAIL       the email of the proxy administrator
