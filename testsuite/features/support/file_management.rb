@@ -115,7 +115,7 @@ def get_checksum_path(dir, original_file_name, file_url)
   cmd = "ls -1 #{dir}"
   # when using a mirror, the checksum file should be present and in the same directory of the file
   if $mirror
-    output, _code = server.run_local(cmd)
+    output, _code = server.run(cmd, runs_in_container: false)
     files = output.split("\n")
     checksum_file = files.find { |file| checksum_file_names.include?(file) }
 
@@ -139,7 +139,7 @@ def get_checksum_path(dir, original_file_name, file_url)
       next unless response.is_a?(Net::HTTPSuccess)
 
       checksum_url = base_url + name
-      _output, code = server.run_local("cd #{dir} && curl --insecure #{checksum_url}-o #{name}", timeout: 10)
+      _output, code = server.run("cd #{dir} && curl --insecure #{checksum_url}-o #{name}",runs_in_container: false, timeout: 10)
       return "#{dir}/#{name}" if code.zero?
     end
 
@@ -157,7 +157,7 @@ end
 def validate_checksum_with_file(original_file_name, file_path, checksum_path)
   # search the checksum file for what should be the only non-comment line containing the original file name
   cmd = "grep -v '^#' #{checksum_path} | grep '#{original_file_name}'"
-  checksum_line, _code = get_target('server').run_local(cmd)
+  checksum_line, _code = get_target('server').run(cmd, runs_in_container: false)
   raise "SHA256 checksum entry for #{original_file_name} not found in #{checksum_path}" unless checksum_line
 
   # this relies on the fact that SHA256 hashes have a fixed length of 64 hexadecimal characters to extract the checksum
@@ -177,6 +177,6 @@ end
 # @return [Boolean] Returns true if the file's checksum matches the expected checksum, false otherwise.
 def validate_checksum(file_path, expected_checksum)
   cmd = "sha256sum -b #{file_path} | awk '{print $1}'"
-  file_checksum, _code = get_target('server').run_local(cmd)
+  file_checksum, _code = get_target('server').run(cmd, runs_in_container: false)
   file_checksum.strip == expected_checksum
 end
