@@ -139,7 +139,7 @@ def get_checksum_path(dir, original_file_name, file_url)
       next unless response.is_a?(Net::HTTPSuccess)
 
       checksum_url = base_url + name
-      _output, code = server.run("cd #{dir} && curl --insecure #{checksum_url}-o #{name}", runs_in_container: false, timeout: 10)
+      _output, code = server.run("cd #{dir} && curl --insecure #{checksum_url} -o #{name}", runs_in_container: false, timeout: 10)
       return "#{dir}/#{name}" if code.zero?
     end
 
