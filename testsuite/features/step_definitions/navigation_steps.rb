@@ -909,7 +909,7 @@ end
 
 When(/^I check the second row in the list$/) do
   within(:xpath, '//section') do
-    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[2]/td')
+    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[2]/td', match: :first)
     row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
   end
 end
