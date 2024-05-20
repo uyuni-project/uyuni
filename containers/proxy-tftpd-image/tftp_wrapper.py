@@ -82,8 +82,8 @@ class HttpResponseDataFiltered(HttpResponseData):
     Saltboot entries have MASTER= option, we want only those mathing our proxy
     """
 
+    # pylint: disable-next=super-init-not-called
     def __init__(self, url, capath, proxy_fqdn, server_fqdn):
-        super().__init__(url, capath)
         # request file by url and store it
         self._proxy_fqdn = proxy_fqdn
         self._server_fqdn = server_fqdn
