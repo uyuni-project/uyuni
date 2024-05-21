@@ -41,7 +41,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/scc
 install -m 0644 channel_families.json %{buildroot}/usr/share/susemanager/scc/channel_families.json
 install -m 0644 additional_products.json    %{buildroot}/usr/share/susemanager/scc/additional_products.json
 install -m 0644 additional_repositories.json    %{buildroot}/usr/share/susemanager/scc/additional_repositories.json
-install -m 0644 oval.config.json    %{buildroot}/usr/share/susemanager/scc/oval.config.json
+install -m 0644 oval.config.json    %{buildroot}/usr/share/susemanager/oval/oval.config.json
 
 %files
 %defattr(-,root,root,-)
