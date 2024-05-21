@@ -17,6 +17,10 @@
         "15.5": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.5-affected.xml.gz",
           "patch": ""
+        },
+        "15.6": {
+          "vulnerability": "",
+          "patch": ""
         }
       }
     },
@@ -36,6 +40,10 @@
         },
         "5.5": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.micro.5.5-affected.xml.gz",
+          "patch": ""
+        },
+        "6.0": {
+          "vulnerability": "",
           "patch": ""
         }
       }
@@ -100,6 +108,10 @@
         },
         "5.5": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5.5-affected.xml.gz",
+          "patch": ""
+        },
+        "6.0": {
+          "vulnerability": "",
           "patch": ""
         }
       }
