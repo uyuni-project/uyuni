@@ -174,7 +174,8 @@ Feature: Cobbler and distribution autoinstallation
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
   Scenario: Cleanup: delete test distro and profiles
-    When I remove kickstart profiles and distros
+    When I remove distro "testdistro" as user "testing" with password "testing"
+    And I remove profile "testprofile" as user "testing" with password "testing"
     And I log out from Cobbler via the API
 
 @flaky
