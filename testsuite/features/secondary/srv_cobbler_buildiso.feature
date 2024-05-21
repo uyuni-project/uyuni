@@ -52,7 +52,6 @@ Feature: Cobbler buildiso
     And I check Cobbler buildiso ISO "orchid" with xorriso
     And I cleanup xorriso temp files
 
-  # TODO: Fails unless https://github.com/cobbler/cobbler/issues/2995 is fixed
   Scenario: Run Cobbler buildiso with selected profile and without dns entries in the cobbler buildiso context
     When I run Cobbler buildiso for distro "buildisodistro" and profile "orchid" without dns entries
     And I check Cobbler buildiso ISO "orchid" with xorriso
@@ -70,8 +69,12 @@ Feature: Cobbler buildiso
 
   Scenario: Cleanup: delete test distro and profiles in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"
+    # the order is important here. First systems, then profiles then distros
     When I remove system "testsystem"
-    And I remove kickstart profiles and distros
+    And I remove profile "orchid" as user "testing" with password "testing"
+    And I remove profile "flame" as user "testing" with password "testing"
+    And I remove profile "pearl" as user "testing" with password "testing"
+    And I remove distro "buildisodistro" as user "testing" with password "testing"
     And I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should not see a "buildisodistro" text
     And I should not see a "orchid" text
