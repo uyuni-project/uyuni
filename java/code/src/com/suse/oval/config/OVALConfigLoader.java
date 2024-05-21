@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class OVALConfigLoader {
-    private static final String DEFAULT_CONFIG_PATH = "/usr/share/susemanager/scc/oval.config.json";
+    private static final String DEFAULT_CONFIG_PATH = "/usr/share/susemanager/oval/oval.config.json";
     private final String configPath;
 
     /**
