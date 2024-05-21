@@ -231,7 +231,7 @@ class CVEAudit extends React.Component<Props, State> {
   getPatchStatusAccuracyWarning = (row) => {
     const dataSources: string[] = row.scanDataSources;
     if (!dataSources) {
-      console.error("CVE audit data sources were not supplied by server.");
+      Loggerhead.error("CVE audit data sources were not supplied by server.");
       return t("Error, see console");
     }
 
