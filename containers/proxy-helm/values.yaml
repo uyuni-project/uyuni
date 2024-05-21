@@ -61,3 +61,6 @@ services:
     nodeport_saltb: 32506
     nodeport_ssh:   30020
     nodeport_tfpt:  30069
+
+squid_tuning: ""
+apache_tuning: ""
