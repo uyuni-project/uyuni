@@ -22,7 +22,7 @@ When(/^I log out from Cobbler via the API$/) do
   $cobbler_test.logout
 end
 
-# distro and profile management
+# distro, profile and system management
 Given(/^distro "([^"]*)" exists$/) do |distro|
   raise ScriptError, "Distro #{distro} does not exist" unless $cobbler_test.element_exists('distros', distro)
 end
@@ -63,31 +63,6 @@ When(/^I remove distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do
   ct = ::CobblerTest.new
   ct.login(user, pwd)
   ct.distro_remove(system)
-end
-
-When(/^I remove kickstart profiles and distros$/) do
-  # -------------------------------
-  # Cleanup kickstart distros and their profiles, if any.
-
-  # Get all distributions: created from UI or from API.
-  distros = get_target('server').run('cobbler distro list')[0].split
-
-  # The name of distros created in the UI has the form: distro_label + suffix
-  user_details = $api_test.user.get_details('testing')
-  suffix = ":#{user_details['org_id']}:#{user_details['org_name'].delete(' ')}"
-
-  distros_ui =
-    distros.select { |distro| distro.end_with? suffix }
-           .map { |distro| distro.split(':')[0] }
-  distros_api = distros.reject { |distro| distro.end_with? suffix }
-  distros_ui.each { |distro| $api_test.kickstart.tree.delete_tree_and_profiles(distro) }
-  # -------------------------------
-  # Remove profiles and distros created with the API.
-
-  # We have already deleted the profiles from the UI; delete all the remaning ones.
-  profiles = get_target('server').run('cobbler profile list')[0].split
-  profiles.each { |profile| get_target('server').run("cobbler profile remove --name '#{profile}'") }
-  distros_api.each { |distro| get_target('server').run("cobbler distro remove --name '#{distro}'") }
 end
 
 # cobbler reports
