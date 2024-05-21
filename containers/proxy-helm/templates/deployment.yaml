@@ -32,6 +32,10 @@ spec:
             mountPath: /var/cache/rhn
           - name: tftp-boot
             mountPath: /srv/tftpboot
+          - name: config-volume
+            mountPath: /etc/apache2/conf.d/apache_tuning.conf
+            subPath:  apache_tuning
+            readOnly: true
           ports:
             - containerPort: 80
             - containerPort: 443
@@ -56,6 +60,10 @@ spec:
             readOnly: true
           - name: squid-cache
             mountPath: /var/cache/squid
+          - name: config-volume
+            mountPath: /etc/squid/conf.d/squid_tuning.conf
+            subPath:  squid_tuning
+            readOnly: true
           ports:
             - containerPort: 8088
         - name: ssh
@@ -93,6 +101,10 @@ spec:
             items:
               - key: config.yaml
                 path: config.yaml
+              - key: squid_tuning
+                path: squid_tuning
+              - key: apache_tuning
+                path: apache_tuning
         - name: httpd-secret-volume
           secret:
             secretName: proxy-secret

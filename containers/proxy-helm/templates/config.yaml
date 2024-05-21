@@ -13,6 +13,12 @@ data:
     log_level: {{ .Values.log_level | default 1 }}
     ca_crt: |
 {{ .Values.ca_crt | indent 6 }}
+  squid_tuning: |
+    # Add your Squid tuning configuration here
+{{ .Values.squid_tuning | indent 4 }}
+  apache_tuning: |
+    # Add your Apache tuning configuration here
+{{ .Values.apache_tuning | indent 4 }}
 ---
 apiVersion: v1
 kind: Secret
