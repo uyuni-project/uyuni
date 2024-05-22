@@ -1,0 +1,4 @@
+- Strip bootstrap repositories to contain only venv-salt-minion
+  and dependencies
+- Remove OS definitions which do not have the salt bundle or
+  are EOL
