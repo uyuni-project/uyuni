@@ -172,10 +172,14 @@ Feature: Cobbler and distribution autoinstallation
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
-  Scenario: Cleanup: delete test distro and profiles
-    When I remove distro "testdistro" as user "testing" with password "testing"
-    And I remove profile "testprofile" as user "testing" with password "testing"
-    And I log out from Cobbler via the API
+  Scenario: Cleanup: delete test profile
+    When I remove profile "testprofile"
+
+  Scenario: Cleanup: delete test distro
+    When I remove distro "testdistro"
 
   Scenario: Cleanup: clean Cobbler
     Then the local logs for Cobbler should not contain errors
+
+  Scenario: Logout from the Cobbler API
+    When I log out from Cobbler via the API
