@@ -69,6 +69,12 @@ public enum ViewHelper {
         "/rhn/multiorg/OrgConfigDetails.do",
         "/rhn/manager/notification-messages",
         "rhn/channels/software/Search.do"
+        "/rhn/activationkeys/List.do",
+        "/rhn/manager/systems/list/all",
+        "/rhn/manager/contentmanagement/projects",
+        "/rhn/kickstart/cobbler/DefaultSnippetList.do",
+        "/rhn/systems/details/packages/PackageList.do?sid=1000010006&",
+        "/rhn/software/channels/All.do"
     );
 
     ViewHelper() { }
