@@ -53,16 +53,12 @@ When(/^I remove system "([^"]*)"$/) do |system|
   $cobbler_test.system_remove(system)
 end
 
-When(/^I remove profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
-  ct = ::CobblerTest.new
-  ct.login(user, pwd)
-  ct.profile_remove(system)
+When(/^I remove profile "([^"]*)"$/) do |profile|
+  $cobbler_test.profile_remove(profile)
 end
 
-When(/^I remove distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
-  ct = ::CobblerTest.new
-  ct.login(user, pwd)
-  ct.distro_remove(system)
+When(/^I remove distro "([^"]*)"$/) do |distro|
+  $cobbler_test.distro_remove(distro)
 end
 
 # cobbler reports

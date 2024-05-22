@@ -315,7 +315,7 @@ class CobblerTest
   #
   # @param name [String] The name of the distribution to be removed.
   def distro_remove(name)
-    raise(::IndexError, "Distribution cannot be found. #{$ERROR_INFO}") unless distro_exists(name)
+    raise(::IndexError, "Distribution cannot be found. #{$ERROR_INFO}") unless element_exists('distros', name)
 
     begin
       @server.call('remove_distro', name, @token)
@@ -331,7 +331,7 @@ class CobblerTest
   #
   # @param name [String] The name of the profile to be removed.
   def profile_remove(name)
-    raise(::IndexError, "Profile cannot be found. #{$ERROR_INFO}") unless profile_exists(name)
+    raise(::IndexError, "Profile cannot be found. #{$ERROR_INFO}") unless element_exists('profiles', name)
 
     begin
       @server.call('remove_profile', name, @token)

@@ -18,6 +18,7 @@ Feature: Edit Cobbler profiles
 
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
+    And I am logged in via the Cobbler API as user "testing" with password "testing"
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
@@ -141,3 +142,6 @@ Feature: Edit Cobbler profiles
 @flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
+
+  Scenario: Logout from the Cobbler API
+    When I log out from Cobbler via the API
