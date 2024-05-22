@@ -34,6 +34,7 @@ RUN zypper ref -f && \
       hostname \
       iproute2 \
       && \
+      zypper -n install --oldpackage libssh4=0.9.6 && \
     zypper clean -a
 COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
