@@ -178,13 +178,17 @@
 .input-group-btn .btn {
   border-width: 1px;
   padding: 6px 12px;
-  height: 35px;
+  height: $input-height;
   z-index: 100;
 
   &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     border-width: 1px;
     bottom: -1px;
     left: -1px;
+  }
+
+  &:last-child {
+    margin-left: -1px;
   }
 }
 
