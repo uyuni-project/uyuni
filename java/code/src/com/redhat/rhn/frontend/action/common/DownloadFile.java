@@ -417,7 +417,7 @@ public class DownloadFile extends DownloadAction {
             if (helper.isProxyRequest()) {
                 // Search/replacing all instances of cobbler host with host
                 // we pass in, for use with Spacewalk Proxy.
-                outputStr = outputStr.replaceAll(ConfigDefaults.get().getCobblerHost(), helper.getForwardedHost());
+                outputStr = outputStr.replaceAll(ConfigDefaults.get().getJavaHostname(), helper.getForwardedHost());
             }
 
             setContentInfo(response, outputStr.length(), CONTENT_TYPE_TEXT_XML);
