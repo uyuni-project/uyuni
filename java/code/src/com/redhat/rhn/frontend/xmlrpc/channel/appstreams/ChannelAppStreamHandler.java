@@ -42,7 +42,7 @@ public class ChannelAppStreamHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param channelLabel label of the channel
      * @return list of appstreams
-     * @apidoc.doc List available module streams for a given system.
+     * @apidoc.doc List available module streams for a given channel.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
      * @apidoc.returntype
