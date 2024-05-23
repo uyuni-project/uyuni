@@ -229,8 +229,7 @@ def perform_compliants_checks():
             cloudProvider = "GCE"
 
         modifiedPackages = (
-            has_package_modifications("billing-data-service")
-            or has_package_modifications("csp-billing-adapter-service")
+            has_package_modifications("csp-billing-adapter-service")
             or has_package_modifications("python3-csp-billing-adapter")
             or has_package_modifications("python3-csp-billing-adapter-local")
         )
