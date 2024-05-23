@@ -867,6 +867,21 @@ public class SaltService implements SystemQuery, SaltApi {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void syncAllAsync(MinionList minionList) {
+        try {
+            LocalCall<Map<String, Object>> call = SaltUtil.syncAll(Optional.empty(),
+                    Optional.empty());
+            callAsync(call, minionList);
+        }
+        catch (SaltException e) {
+            throw new RhnRuntimeException(e);
+        }
+    }
+
+    /**
      * Execute a LocalCall synchronously on the default Salt client.
      * Note that salt-ssh systems are also called by this method.
      *
