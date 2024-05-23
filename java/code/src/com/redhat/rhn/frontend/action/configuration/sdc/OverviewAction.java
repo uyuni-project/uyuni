@@ -348,8 +348,10 @@ public class OverviewAction extends RhnAction {
                                 "]  to Action-[ " +
                                 action.getId() +
                                 "]";
-        String time = StringUtil.categorizeTime(sa.getCompletionTime().getTime(),
-                                                    StringUtil.WEEKS_UNITS);
+        String time = Optional.ofNullable(sa.getCompletionTime())
+                .map(Date::getTime)
+                .map(e -> StringUtil.categorizeTime(e, StringUtil.WEEKS_UNITS))
+                .orElse("unknown");
 
         time = "<b>" + time + "</b>";
         LocalizationService service  = LocalizationService.getInstance();
