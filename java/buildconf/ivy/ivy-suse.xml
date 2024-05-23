@@ -44,9 +44,9 @@
         <dependency org="suse" name="httpcore" rev="4.4.13" />
         <dependency org="suse" name="httpcore-nio" rev="4.4.13" />
         <dependency org="suse" name="ical4j" rev="3.0.18" />
-        <dependency org="suse" name="jackson-annotations" rev="2.15.2" />
-        <dependency org="suse" name="jackson-core" rev="2.15.2" />
-        <dependency org="suse" name="jackson-databind" rev="2.15.2" />
+        <dependency org="suse" name="jackson-annotations" rev="2.16.1" />
+        <dependency org="suse" name="jackson-core" rev="2.16.1" />
+        <dependency org="suse" name="jackson-databind" rev="2.16.1" />
         <dependency org="suse" name="jade4j" rev="1.2.7" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
         <dependency org="suse" name="java-saml" rev="2.4.0" />
@@ -124,7 +124,7 @@
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.12.7/checkstyle-10.12.7-all.jar"/>
         </dependency>
         <dependency org="suse" name="hamcrest-core" rev="1.3" transitive="false"/>
-        <dependency org="suse" name="hamcrest-library" rev="1.3" transitive="false"/>
+        <dependency org="suse" name="hamcrest-library" rev="2.2" transitive="false"/>
         <dependency org="suse" name="junit" rev="4.13.2" transitive="false"/>
         <dependency org="org.junit.jupiter" name="junit-jupiter-api" rev="5.8.2" transitive="false"/>
         <dependency org="org.junit.platform" name="junit-platform-commons" rev="1.8.2" transitive="false" />
