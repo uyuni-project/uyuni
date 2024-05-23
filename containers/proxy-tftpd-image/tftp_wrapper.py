@@ -113,7 +113,10 @@ class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
         entry = ""
         entry_name = ""
         in_entry = False
-        for line in self._content.decode("utf-8").splitlines():
+        # make sure there is an empty line at the end so translation
+        # is actually stored
+        content = self._content.decode("utf-8") + "\n"
+        for line in content.splitlines():
             if in_entry:
                 if line.startswith(" ") or line.startswith("\t"):
                     entry += line + "\n"
