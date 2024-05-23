@@ -1,5 +1,10 @@
 # This file describes the order of features in a Build Validation test suite run.
 
+## Build Kiwi images
+## (expected time of building is around 20 minutes per image)
+- features/build_validation/retail/sle12sp5_buildhost_build_kiwi_image.feature
+- features/build_validation/retail/sle15sp4_buildhost_build_kiwi_image.feature
+
 ## Prepare configuration for branch server
 - features/build_validation/retail/proxy_traditional_branch_network.feature
 - features/build_validation/retail/proxy_container_branch_network.feature
