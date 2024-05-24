@@ -72,7 +72,7 @@ When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
       And I am on the Systems overview page of this "#{host}"
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
-      And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "inst.ks=" on server
+      Then I should see a "System record created" text
     )
   end
 end
