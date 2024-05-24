@@ -26,7 +26,9 @@ Feature: Prepare the containerized branch server for PXE booting
     And name resolution should work on private network
 
   Scenario: Let the server know about the new IP and FQDN of the containerized proxy
-    When I follow "Details" in the content area
+    Given I am authorized for the "Admin" section
+    When I am on the Systems overview page of this "proxy"
+    And I follow "Details" in the content area
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
