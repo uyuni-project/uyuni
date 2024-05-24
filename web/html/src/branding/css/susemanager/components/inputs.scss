@@ -9,7 +9,7 @@ $input-height: 35px;
 
 .form-control,
 .form-control--react-select > div:first-of-type {
-  color: $eos-bc-gray-1000 !important;
+  color: $eos-bc-gray-1000;
   height: $input-height;
   max-width: 100%;
   border: 1px solid $input-border-color !important;
@@ -49,6 +49,7 @@ $input-height: 35px;
     color: $eos-bc-gray-700;
     pointer-events: auto;
     cursor: default;
+    background: $gray-lighter;
 
     &:focus {
       border-color: $input-border-color !important;
@@ -59,6 +60,7 @@ $input-height: 35px;
     color: $input-placeholder;
     opacity: 1;
   }
+
 }
 
 .form-control-static {
