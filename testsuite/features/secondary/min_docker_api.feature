@@ -13,7 +13,6 @@
 # - features/secondary/buildhost_docker_build_image.feature
 # - features/secondary/buildhost_docker_auth_registry.feature
 
-@skip_if_github_validation
 @skip_if_cloud
 @scope_building_container_images
 Feature: API "image" namespace for containers and sub-namespaces
