@@ -249,7 +249,14 @@ def perform_compliants_checks():
         if billing_service_running:
             billing_status = check_billing_adapter_status()
 
-    compliant = billing_service_running and billing_status and not modifiedPackages
+        has_metering_access = can_access_metering()
+
+    compliant = (
+        has_metering_access
+        and billing_service_running
+        and billing_status
+        and not modifiedPackages
+    )
 
     return {
         "isPaygInstance": isPaygInstance,
@@ -258,8 +265,36 @@ def perform_compliants_checks():
         "hasModifiedPackages": modifiedPackages,
         "billingServiceRunning": billing_service_running,
         "billingServiceStatus": billing_status,
+        "hasMeteringAccess": has_metering_access,
         "timestamp": int(time.time()),
     }
+
+
+def can_access_metering():
+    p = subprocess.run(
+        [
+            "curl",
+            "--fail",
+            "--no-progress-meter",
+            "--connect-timeout",
+            "3",
+            "--max-time",
+            "5",
+            "http://localhost:18888/metering",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+        encoding="utf-8",
+        check=False,
+    )
+    if p.returncode != 0:
+        print(
+            f"Failed to get metering information: {p.stderr}",
+            file=sys.stderr,
+        )
+        return False
+    return True
 
 
 def is_service_running(service):
