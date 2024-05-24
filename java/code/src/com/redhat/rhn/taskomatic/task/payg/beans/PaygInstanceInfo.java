@@ -17,7 +17,7 @@ package com.redhat.rhn.taskomatic.task.payg.beans;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class PaygInstanceInfo {
     @SerializedName("certs")
     private Map<String, String> certificates;
     @SerializedName("timestamp")
-    private LocalDateTime timestamp;
+    private long timestamp;
 
     /**
      * Constructor for type CLOUDRMT
@@ -53,7 +53,7 @@ public class PaygInstanceInfo {
         this.basicAuth = basicAuthIn;
         this.headerAuth = headerAuthIn;
         this.rmtHost = rmtHostIn;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = Instant.now().getEpochSecond();
     }
 
     /**
@@ -68,7 +68,7 @@ public class PaygInstanceInfo {
         this.headerAuth = headerAuthIn;
         this.certificates = certificatesIn;
         this.repositories = repositoriesIn;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = Instant.now().getEpochSecond();
     }
 
     public String getType() {
@@ -127,11 +127,11 @@ public class PaygInstanceInfo {
         certificates = certificatesIn;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public Instant getTimestamp() {
+        return Instant.ofEpochSecond(timestamp);
     }
 
-    public void setTimestamp(LocalDateTime timestampIn) {
+    public void setTimestamp(long timestampIn) {
         this.timestamp = timestampIn;
     }
 }
