@@ -164,6 +164,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Trigger the creation of a cobbler system record
     When I trigger cobbler system record
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "inst.ks=" on server
 
   Scenario: Create a cobbler system record via API
     When I create a system record
