@@ -1,12 +1,12 @@
 ## Path:           System/Services
 ## Description:    The SUSE Manager Billing Data Service
 ## Type:           string()
-## Default:        "127.0.0.1"
+## Default:        "0.0.0.0"
 ## ServiceRestart: billing-data-service
 #
 # IP to listen on
 #
-LISTEN="127.0.0.1"
+LISTEN="0.0.0.0"
 
 ## Path:           System/Services
 ## Description:    The SUSE Manager Billing Data Service
