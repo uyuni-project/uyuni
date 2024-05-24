@@ -212,11 +212,15 @@ class TFTPHandler(BaseHandler):
         # accept only mac based config and defaults file
         if path.startswith("pxelinux.cfg/01-"):
             # request specific system configuration
-            logging.debug(f"Got request for system PXE {path}, forwarding as is")
-            return HttpResponseData(f"{target}/tftp/{path}", capath)
+            logging.debug(f"Got request for system PXE {path}, filtering HTTP")
+            return HttpResponseDataFilteredPXE(
+                f"{target}/tftp/{path}", capath, self._proxyFqdn, self._serverFqdn
+            )
         elif path.startswith("grub/system"):
-            logging.debug(f"Got request for system GRUB {path}, forwarding as is")
-            return HttpResponseData(f"{target}/tftp/{path}", capath)
+            logging.debug(f"Got request for system GRUB {path}, filtering HTTP")
+            return HttpResponseDataFilteredGrub(
+                f"{target}/tftp/{path}", capath, self._proxyFqdn, self._serverFqdn
+            )
         elif path.startswith("pxelinux.cfg/default"):
             # server local default
             logging.debug(f"Got request for {path}, filtering HTTP")

@@ -41,7 +41,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +64,6 @@ public class OverviewAction extends RhnAction {
     public static final String DIFF_TIME_MESSAGE = "diffTimeMessage";
     public static final String DIFF_DETAILS_MESSAGE = "diffDetailsMessage";
     public static final String DIFF_ACTION_MESSAGE = "diffActionMessage";
-    public static final String SYSTEM_ID = "sid";
 
     public static final String CONFIG_ENABLED = "configEnabled";
 
@@ -185,7 +186,7 @@ public class OverviewAction extends RhnAction {
         HttpServletRequest request = context.getRequest();
         LocalizationService service = LocalizationService.getInstance();
         User user = context.getCurrentUser();
-        /**
+        /*
          * Do the diff action.
          */
 
@@ -253,7 +254,7 @@ public class OverviewAction extends RhnAction {
                     server.getId();
             String messageKey;
 
-            if (ActionFactory.STATUS_FAILED.equals(sa.getStatus())) {
+            if (sa == null || ActionFactory.STATUS_FAILED.equals(sa.getStatus())) {
                 messageKey = "sdc.config.deploy.failure";
             }
             else {
@@ -289,7 +290,7 @@ public class OverviewAction extends RhnAction {
         String messageKey = DIFF_ACTION_MESSAGE_PREFIX +
             filesSuffix + "_dirs_" + dirsSuffix + "_symlinks_" + symlinksSuffix;
 
-        List params = new ArrayList();
+        List<String> params = new ArrayList<>();
         // setup the params
         params.add(String.valueOf(successful.getFiles()));
         params.add(String.valueOf(total.getFiles()));
@@ -300,14 +301,7 @@ public class OverviewAction extends RhnAction {
         params.add(url);
 
         LocalizationService service  = LocalizationService.getInstance();
-        if (params.isEmpty()) {
-            request.setAttribute(DIFF_ACTION_MESSAGE,
-                    service.getMessage(messageKey));
-        }
-        else {
-            request.setAttribute(DIFF_ACTION_MESSAGE,
-                    service.getMessage(messageKey, params.toArray()));
-        }
+        request.setAttribute(DIFF_ACTION_MESSAGE, service.getMessage(messageKey, params.toArray()));
 
         if (successful.getFiles() + successful.getSymlinks() > 0) {
             String diffActionKey;
@@ -348,8 +342,10 @@ public class OverviewAction extends RhnAction {
                                 "]  to Action-[ " +
                                 action.getId() +
                                 "]";
-        String time = StringUtil.categorizeTime(sa.getCompletionTime().getTime(),
-                                                    StringUtil.WEEKS_UNITS);
+        String time = Optional.ofNullable(sa.getCompletionTime())
+                .map(Date::getTime)
+                .map(e -> StringUtil.categorizeTime(e, StringUtil.WEEKS_UNITS))
+                .orElse("unknown");
 
         time = "<b>" + time + "</b>";
         LocalizationService service  = LocalizationService.getInstance();
@@ -362,23 +358,17 @@ public class OverviewAction extends RhnAction {
         String url = null;
         if (loggedInUser.getRoles().contains(RoleFactory.ORG_ADMIN)) {
             url = USER_DETAILS_URL + "?uid=" + scheduledUser.getId();
-            return service.getMessage("sdc.config.time.message_url",
-                                           new Object[] { time,
-                                                           url,
-                                                           scheduledUser.getLogin()});
+            return service.getMessage("sdc.config.time.message_url", time, url, scheduledUser.getLogin());
         }
 
-        return service.getMessage("sdc.config.time.message_url",
-                                    new Object[] { time,
-                                                    scheduledUser.getLogin()});
+        return service.getMessage("sdc.config.time.message_url", time, scheduledUser.getLogin());
     }
 
-    private ServerAction  findServerAction(Set serverActions,
+    private ServerAction  findServerAction(Set<ServerAction> serverActions,
                                             Server server) {
-        for (Object serverActionIn : serverActions) {
-            ServerAction sa = (ServerAction) serverActionIn;
-            if (server.equals(sa.getServer())) {
-                return sa;
+        for (ServerAction serverAction : serverActions) {
+            if (server.equals(serverAction.getServer())) {
+                return serverAction;
             }
         }
         return null;
