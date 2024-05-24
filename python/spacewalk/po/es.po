@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2024-05-07 10:43+0000\n"
 "Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
@@ -959,7 +959,7 @@ msgstr "Error al componer ruta de archivo para los resultados SCAP detallados"
 msgid "Invalid content encoding"
 msgstr "Codificación de contenido, no válida"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -977,7 +977,7 @@ msgstr ""
 "     detalles de lo que estaba intentando hacer cuando ocurrió el error y \n"
 "     detalles sobre como reproducir el problema.\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -986,17 +986,17 @@ msgstr ""
 "Mensaje de Error:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Código de Clase de Error: %s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Información de Clase de Error: %s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "Explicación: %s"
@@ -1212,16 +1212,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ enviando registro como un email +++"
 
-#: ../satellite_tools/reposync.py:140
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email requerido, pero no hay nada que enviar +++"
 

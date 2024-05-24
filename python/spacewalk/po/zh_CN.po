@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2023-06-26 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -930,7 +930,7 @@ msgstr "编写详细 SCAP 结果的文件路径时出错"
 msgid "Invalid content encoding"
 msgstr "无效的内容编码"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -946,7 +946,7 @@ msgstr ""
 "     说明发生此错误时您正在尝试执行哪项\n"
 "     操作，并详细告知如何重现此问题。\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -955,17 +955,17 @@ msgstr ""
 "错误消息：\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "错误类代码：%s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "错误类信息：%s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "说明：%s"
@@ -1174,16 +1174,16 @@ msgstr "正在导入 kickstart 树 (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
-#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ 正在以电子邮件形式发送日志 +++"
 
-#: ../satellite_tools/reposync.py:140
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同步报告，来自 %s"
 
-#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 

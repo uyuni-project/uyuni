@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2011-03-04 16:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Maithili (http://www.transifex.com/projects/p/fedora/language/"
@@ -821,7 +821,7 @@ msgstr ""
 msgid "Invalid content encoding"
 msgstr ""
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -831,24 +831,24 @@ msgid ""
 "     details on how to reproduce this problem.\n"
 msgstr ""
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr ""
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr ""
@@ -1030,16 +1030,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:140
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
