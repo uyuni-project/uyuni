@@ -237,8 +237,6 @@ def getDefaultOptions():
         "http-proxy": "",
         "http-proxy-username": "",
         "http-proxy-password": "",
-        "allow-config-actions": 0,
-        "allow-remote-commands": 0,
         "no-bundle": 0,
         "force-bundle": 0,
         "no-gpg": 0,

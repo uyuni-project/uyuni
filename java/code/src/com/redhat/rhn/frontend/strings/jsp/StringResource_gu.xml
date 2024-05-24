@@ -9378,20 +9378,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target>ક્લાઈન્ટ GPG ચકાસણી સક્રિય કરો</target>
       </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-config-actions" xml:space="preserve">
-        <source>Enable Remote Configuration</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>દૂરસ્થ રૂપરેખાંકન સક્રિય કરો</target>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-remote-commands" xml:space="preserve">
-        <source>Enable Remote Commands</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>દૂરસ્થ આદેશો સક્રિય કરો</target>
-      </trans-unit>
       <trans-unit id="bootstrap.jsp.http-proxy" xml:space="preserve">
         <source>Client HTTP Proxy</source>
         <context-group name="ctx">

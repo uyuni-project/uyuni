@@ -26,7 +26,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
     iso_path = $is_containerized_server ? url.sub(/^https?:\/\/[^\/]+/, '/srv/mirror') : url.sub(/^https?:\/\/[^\/]+/, '/mirror')
   else
     iso_path = "/tmp/#{name}.iso"
-    get_target('server').run("curl --insecure -o #{iso_path} #{url}", timeout: 1500)
+    get_target('server').run("curl --insecure -o #{iso_path} #{url}", runs_in_container: false, timeout: 1500)
   end
 
   iso_dir = File.dirname(iso_path)

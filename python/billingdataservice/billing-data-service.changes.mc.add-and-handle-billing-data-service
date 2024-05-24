@@ -1,0 +1,2 @@
+- Make billing-data-service depending on environment variable
+- Enable service by default

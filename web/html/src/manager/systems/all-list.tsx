@@ -42,8 +42,14 @@ export function AllSystems(props: Props) {
         >
           <IconTag type="header-help" />
         </a>
-      </h1>
 
+        <div className="pull-right btn-group">
+          <a id="addsystem" title="Add a system" className="btn btn-link" href="/rhn/manager/systems/bootstrap">
+            <i className="fa fa-plus"></i>
+            {t("Add System")}
+          </a>
+        </div>
+      </h1>
       <Table
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}

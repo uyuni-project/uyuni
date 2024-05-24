@@ -321,7 +321,7 @@ artifacts:
   - artifact: hamcrest-library
     package: hamcrest
     jar: hamcrest/library
-    repository: Leap
+    repository: Leap_sle
   - artifact: junit
     repository: Leap
   - artifact: ical4j

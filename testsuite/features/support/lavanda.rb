@@ -185,9 +185,10 @@ module LavandaBasic
     else
       out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
     end
-    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" if check_errors && !successcodes.include?(code)
+    out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
+    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
-    $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out}'" if verbose
+    $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out_nocolor}'" if verbose
     if separated_results
       [out, err, code]
     else

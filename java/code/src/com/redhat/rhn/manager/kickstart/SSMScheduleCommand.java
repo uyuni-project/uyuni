@@ -234,7 +234,7 @@ public class SSMScheduleCommand {
         com.setProxy(proxy);
         com.setNetworkDevice(networkType, networkInterface);
         if (proxy == null) {
-            com.setKickstartServerName(ConfigDefaults.get().getCobblerHost());
+            com.setKickstartServerName(ConfigDefaults.get().getJavaHostname());
         }
         else {
             com.setKickstartServerName(proxy.getHostname());

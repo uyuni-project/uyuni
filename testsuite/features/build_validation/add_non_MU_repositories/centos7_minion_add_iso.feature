@@ -42,6 +42,7 @@ Feature: Add the CentOS 7 distribution custom repositories
     And I follow "Custom Channel for CentOS 7 DVD"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait until I do not see "Repository sync is running" text, refreshing the page
     And I wait until button "Sync Now" becomes enabled
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text

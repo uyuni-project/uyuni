@@ -72,3 +72,14 @@ Feature: Prepare the containerized branch server for PXE booting
     And I check containerized proxy box
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
+
+  Scenario: Let the server know about the new IP and FQDN of the proxy
+    When I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "proxy"
+    And I follow "Details" in the content area
+    And I follow "Hardware" in the content area
+    Then I should see a "proxy.example.org" text

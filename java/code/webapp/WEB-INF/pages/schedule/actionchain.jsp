@@ -158,12 +158,12 @@
     </div>
 
     <%-- Modal delete confirm dialog --%>
-    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modal-title" aria-hidden="true">
+    <div class="modal" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modal-title" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
-                        data-dismiss="modal">&times;</button>
+                        data-dismiss="modal"><i class="fa fa-close"></i></button>
                     <h4 class="modal-title" id="confirm-modal-title">
                         <bean:message key="actionchain.jsp.modaltitle"/>
                     </h4>

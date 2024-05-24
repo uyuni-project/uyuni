@@ -18,7 +18,7 @@
 
 import os
 import gzip
-from uyuni.common.fileutils import createPath
+from spacewalk.common.fileutils import create_path
 from uyuni.common.rhnLib import hash_object_id
 
 
@@ -73,7 +73,7 @@ class DiskSource:
         if not create:
             return dirname
         if not os.path.exists(dirname):
-            createPath(dirname)
+            create_path(dirname)
         if not os.path.isdir(dirname):
             # pylint: disable-next=consider-using-f-string
             raise MissingXmlDiskSourceDirError("%s is not a directory" % dirname)
@@ -87,7 +87,7 @@ class ArchesDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         return os.path.join(dirname, self.filename)
 
 
@@ -101,7 +101,7 @@ class ProductnamesDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/product_names.xml" % dirname
 
@@ -112,7 +112,7 @@ class ChannelFamilyDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/channel_families.xml" % dirname
 
@@ -123,7 +123,7 @@ class OrgsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/orgs.xml" % dirname
 
@@ -151,7 +151,7 @@ class ChannelDiskSource(DiskSource):
         # pylint: disable-next=consider-using-f-string
         dirname = "%s/%s" % (self._getDir(create), self.channel)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         return os.path.join(dirname, self._file_name())
 
     @staticmethod
@@ -201,7 +201,7 @@ class ShortPackageDiskSource(DiskSource):
         dirname = "%s/%s" % (self._getDir(create), self._hashID())
         # Create the directoru if we have to
         if create and not os.path.exists(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/%s%s" % (dirname, self.id, self._file_suffix)
 
@@ -232,7 +232,7 @@ class BlacklistsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/blacklists.xml" % dirname
 
@@ -263,7 +263,7 @@ class KickstartDataDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         return os.path.join(dirname, self.id) + ".xml"
 
 
@@ -284,7 +284,7 @@ class KickstartFileDiskSource(KickstartDataDiskSource):
         path = os.path.join(self._getDir(create), self.id, self.relative_path)
         dirname = os.path.dirname(path)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         return path
 
 
@@ -380,7 +380,7 @@ class SupportInformationDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/support_info.xml" % dirname
 
@@ -391,7 +391,7 @@ class SuseProductsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/suse_products.xml" % dirname
 
@@ -402,7 +402,7 @@ class SuseProductChannelsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/suse_product_channels.xml" % dirname
 
@@ -413,7 +413,7 @@ class SuseUpgradePathsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/suse_upgrade_paths.xml" % dirname
 
@@ -424,7 +424,7 @@ class SuseProductExtensionsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/suse_product_extensions.xml" % dirname
 
@@ -435,7 +435,7 @@ class SuseProductRepositoriesDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/suse_product_repositories.xml" % dirname
 
@@ -446,7 +446,7 @@ class SCCRepositoriesDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/scc_repositories.xml" % dirname
 
@@ -457,7 +457,7 @@ class SuseSubscriptionsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/suse_subscriptions.xml" % dirname
 
@@ -468,7 +468,7 @@ class ClonedChannelsDiskSource(DiskSource):
     def _getFile(self, create=0):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
-            createPath(dirname)
+            create_path(dirname)
         # pylint: disable-next=consider-using-f-string
         return "%s/cloned_channels.xml" % dirname
 

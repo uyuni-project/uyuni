@@ -19,6 +19,10 @@ postgres_exporter:
   cmd.run:
     - name: /usr/bin/rpm --query --info prometheus-postgres_exporter || /usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter
 
+postgres_exporter_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/prometheus-postgres_exporter
+
 postgres_exporter_configuration:
   file.managed:
     - name: /etc/postgres_exporter/postgres_exporter_queries.yaml
@@ -31,15 +35,23 @@ postgres_exporter_configuration:
 
 postgres_exporter_service:
   file.managed:
-    - name: /etc/sysconfig/prometheus-postgres_exporter
-    - source: salt://srvmonitoring/prometheus-postgres_exporter
+    - names:
+      - /etc/systemd/system/prometheus-postgres_exporter.service.d/60-server.conf:
+        - source: salt://srvmonitoring/prometheus-postgres_exporter
+        - user: root
+        - mode: 644
+      - /etc/postgres_exporter/pg_passwd:
+        - source: salt://srvmonitoring/pg_passwd
+        - user: prometheus
+        - mode: 600
+    - makedirs: True
     - template: jinja
-    - user: root
     - group: root
-    - mode: 644
     - require:
       - cmd: postgres_exporter
       - file: postgres_exporter_configuration
+  mgrcompat.module_run:
+    - name: service.systemctl_reload
   service.running:
     - name: prometheus-postgres_exporter
     - enable: True

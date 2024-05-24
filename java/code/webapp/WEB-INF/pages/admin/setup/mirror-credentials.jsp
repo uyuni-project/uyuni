@@ -9,11 +9,11 @@
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard-mirror-credentials.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <!-- MODAL: Edit credentials -->
-        <div class="modal fade" id="modal-edit-credentials">
+        <div class="modal" id="modal-edit-credentials">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-edit.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -53,11 +53,11 @@
         </div>
 
         <!-- MODAL: Delete credentials -->
-        <div class="modal fade" id="modal-delete-credentials">
+        <div class="modal" id="modal-delete-credentials">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-delete.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -84,11 +84,11 @@
         </div>
 
         <!-- MODAL: List subscriptions -->
-        <div class="modal fade" id="modal-list-subscriptions">
+        <div class="modal" id="modal-list-subscriptions">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-subscriptions.title" /></h4>
                     </div>
                     <div id="modal-list-subscriptions-body" class="modal-body">

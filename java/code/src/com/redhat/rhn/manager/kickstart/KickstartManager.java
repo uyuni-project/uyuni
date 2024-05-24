@@ -84,7 +84,7 @@ public class KickstartManager extends BaseManager {
         String retval = renderKickstart(url);
         // Search/replacing all instances of cobbler host with host
         // we pass in, for use with Spacewalk Proxy.
-        retval = retval.replaceAll(ConfigDefaults.get().getCobblerHost(), host);
+        retval = retval.replaceAll(ConfigDefaults.get().getJavaHostname(), host);
         return retval;
     }
 

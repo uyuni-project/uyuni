@@ -1,23 +1,66 @@
+.modal-header {
+  padding: 15px;
+
+  .close {
+    border: 1px solid #000;
+    border-radius: 2px;
+    width: 22px;
+    height: 22px;
+    box-sizing: content-box;
+    padding: 0;
+    margin: 0;
+    opacity: 0.4;
+    font-size: 14px;
+
+    &:hover {
+      opacity: 0.6;
+    }
+
+    .fa {
+      margin: 0;
+    }
+  }
+}
+
 .modal-body {
   height: auto;
   overflow-y: auto;
+  padding: 15px;
   
   &,
   &:active,
   &:focus {
     outline: none;
   }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .modal-footer {
   margin: 0;
+  padding: 15px;
+  border-top: 1px solid #e5e5e5;
 }
 
+.modal-backdrop,
 .modal-overlay {
   position: fixed;
   inset: 0px;
   background-color: @modal-backdrop-color;
   z-index: @zindex-modal-background;
+}
+
+.modal-backdrop.in,
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+.modal-content {
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .ReactModal__Content {

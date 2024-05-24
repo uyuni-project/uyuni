@@ -50,7 +50,7 @@ public class GathererRunner {
     /**
      * Logger for this class
      */
-    private static Logger logger = LogManager.getLogger(GathererRunner.class);
+    private static final Logger LOGGER = LogManager.getLogger(GathererRunner.class);
 
     /**
      * Call gatherer --list-modules and return the result
@@ -66,7 +66,7 @@ public class GathererRunner {
 
         int exitcode = e.execute(args.toArray(new String[0]));
         if (exitcode != 0) {
-            logger.error(e.getLastCommandErrorMessage());
+            LOGGER.error(e.getLastCommandErrorMessage());
             return null;
         }
         return new GathererJsonIO().readGathererModules(e.getLastCommandOutput());
@@ -105,10 +105,10 @@ public class GathererRunner {
                 String uri = builder.build().toString();
                 env.put("http_proxy", uri);
                 env.put("https_proxy", uri);
-                logger.debug("Set http(s)_proxy to {}", uri);
+                LOGGER.debug("Set http(s)_proxy to {}", uri);
             }
             catch (URISyntaxException e) {
-                logger.error("URI syntax exception when setting Proxy: {}", e.getMessage());
+                LOGGER.error("URI syntax exception when setting Proxy: {}", e.getMessage());
             }
         }
         int debuglevel = Config.get().getInt("debug", 0);
@@ -121,7 +121,7 @@ public class GathererRunner {
         String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
         if (!StringUtils.isEmpty(noProxy)) {
             env.put("no_proxy", noProxy);
-            logger.debug("Set no_proxy to {}", noProxy);
+            LOGGER.debug("Set no_proxy to {}", noProxy);
         }
 
         String[] envp = new String[env.size()];
@@ -149,7 +149,7 @@ public class GathererRunner {
                     }
                 }
                 catch (Exception e) {
-                    logger.error("Error reading stderr from external process", e);
+                    LOGGER.error("Error reading stderr from external process", e);
                 }
             });
             errStreamReader.start();
@@ -167,17 +167,17 @@ public class GathererRunner {
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                logger.error("Error while calling the virtual-host-gatherer, exit code {}", exitCode);
-                logger.error("Please check the virtual-host-gatherer logfile.");
+                LOGGER.error("Error while calling the virtual-host-gatherer, exit code {}", exitCode);
+                LOGGER.error("Please check the virtual-host-gatherer logfile.");
                 return null;
             }
         }
         catch (IOException ioe) {
-            logger.error("execute(String[])", ioe);
+            LOGGER.error("execute(String[])", ioe);
         }
         catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            logger.error("execute(String[])", e);
+            LOGGER.error("execute(String[])", e);
         }
         return hosts;
     }

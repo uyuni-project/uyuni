@@ -223,7 +223,6 @@ def exitWithTraceback(e, msg, exitnum, mail=0):
 
 
 class SecurityList:
-
     """The SecurityList is a list of strings that are censored out of a debug email.
     Right now it's only used for censoring traceback emails.
     """

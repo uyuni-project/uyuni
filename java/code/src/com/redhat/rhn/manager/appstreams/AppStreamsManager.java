@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.appstreams;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
@@ -24,6 +25,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -121,6 +123,27 @@ public class AppStreamsManager {
         }
         sb.append(")");
         return sb.toString();
+    }
+
+    /**
+     * Return a set of appstreams available on the given system
+     *
+     * @param serverId the id of the system
+     * @param user     the user
+     * @return set of appstreams
+     * @throws LookupException
+     */
+    public static Set<String> getSystemAppStreams(Long serverId, User user) throws LookupException {
+        Set<String> appStreams = new HashSet<>();
+        SystemManager.lookupByIdAndUser(serverId, user)
+                .getChannels()
+                .stream()
+                .filter(Channel::isModular)
+                .forEach(channel -> {
+                    AppStreamsManager.listChannelAppStreams(channel.getId()).forEach(appStream ->
+                        appStreams.add(appStream.getName() + ":" + appStream.getStream()));
+                });
+        return appStreams;
     }
 
     /**

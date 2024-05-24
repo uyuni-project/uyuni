@@ -18,6 +18,7 @@ Feature: Edit Cobbler profiles
 
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
+    And I am logged in via the Cobbler API as user "testing" with password "testing"
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
@@ -95,9 +96,8 @@ Feature: Edit Cobbler profiles
       | inst.repo   | http://ise.cobbler.test |
       | self_update | http://ise.cobbler.test |
 
-  Scenario: Cleanup: delete test distros and profiles
-    When I remove kickstart profiles and distros
-    And I follow the left menu "Systems > System List"
+  Scenario: Cleanup: delete test system
+    When I follow the left menu "Systems > System List"
     And I wait until I see the "isesystem_api" system, refreshing the page
     And I follow "isesystem_api"
     And I follow "Delete System"
@@ -105,6 +105,43 @@ Feature: Edit Cobbler profiles
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
 
+  Scenario: Cleanup: delete test profiles
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    Then I should see a "iseprofile_ui" text
+    And I follow "iseprofile_ui"
+    Then I should see a "Autoinstallation: iseprofile_ui" text
+    And I follow "Delete Autoinstallation"
+    And I click on "Delete Autoinstallation"
+    Then I should see a "Autoinstallation was deleted successfully" text
+    And I should not see a "iseprofile_ui" text
+    And I should see a "iseprofile_api" text
+    And I follow "iseprofile_api"
+    Then I should see a "Autoinstallation: iseprofile_api" text
+    And I follow "Delete Autoinstallation"
+    And I click on "Delete Autoinstallation"
+    Then I should see a "Autoinstallation was deleted successfully" text
+    And I should not see a "iseprofile_api" text
+
+  Scenario: Cleanup: delete test distibutions
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    Then I should see a "isedistro_ui" text
+    And I follow "isedistro_ui"
+    Then I should see a " Edit Autoinstallable Distribution" text
+    And I follow "Delete Distribution"
+    And I click on "Delete Distribution"
+    Then I should see a "Autoinstallable Distribution deleted successfully" text
+    And I should not see a "isedistro_ui" text
+    And I should see a "isedistro_api" text
+    And I follow "isedistro_api"
+    Then I should see a " Edit Autoinstallable Distribution" text
+    And I follow "Delete Distribution"
+    And I click on "Delete Distribution"
+    Then I should see a "Autoinstallable Distribution deleted successfully" text
+    And I should not see a "isedistro_api" text
+
 @flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
+
+  Scenario: Logout from the Cobbler API
+    When I log out from Cobbler via the API

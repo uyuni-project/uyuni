@@ -9378,20 +9378,6 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target>क्लाइंट GPG जांच स्क्रिय करें</target>
       </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-config-actions" xml:space="preserve">
-        <source>Enable Remote Configuration</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>दूरस्थ विन्यास सक्रिय करें</target>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-remote-commands" xml:space="preserve">
-        <source>Enable Remote Commands</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>दूरस्थ कमांड सक्रिय करें</target>
-      </trans-unit>
       <trans-unit id="bootstrap.jsp.http-proxy" xml:space="preserve">
         <source>Client HTTP Proxy</source>
         <context-group name="ctx">

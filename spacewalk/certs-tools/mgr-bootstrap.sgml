@@ -126,22 +126,6 @@
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>--allow-config-actions</term>
-        <listitem>
-            <para>boolean; allow all configuration actions - requires
-            installing certain rhncfg-* RPMs probably via an activation
-            key.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
-        <term>--allow-remote-commands</term>
-        <listitem>
-            <para>boolean; allow arbitrary remote commands - requires
-            installing certain rhncfg-* RPMs probably via an activation
-            key.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
         <term>--no-gpg</term>
         <listitem>
             <para>(not recommended) boolean; turn off GPG verification by the clients.</para>
@@ -191,7 +175,7 @@
 
 <RefSect1><Title>Examples</Title>
 <simplelist>
-        <member><command>&EXECUTABLE; --activation-key XXX --http-proxy="" --allow-config-actions --allow-remote-commands</command></member>
+        <member><command>&EXECUTABLE; --activation-key XXX --http-proxy="" </command></member>
         <member><command>&EXECUTABLE; --activation-key XXX --gpg-key ~/taw-pub.key</command></member>
 </simplelist>
 </RefSect1>

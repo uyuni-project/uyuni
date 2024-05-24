@@ -59,7 +59,6 @@ enforce_service_installed_running() {
 
 check_billing_service() {
   enforce_service_installed_running billing-data-service billing-data-service
-  enforce_service_installed_running csp-billing-adapter-service csp-billing-adapter
 }
 
 check_schema_version() {

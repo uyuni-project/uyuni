@@ -14,11 +14,8 @@
     <rhn:require acl="not system_has_foreign_entitlement()">
     <c:choose>
       <c:when test="${requestScope.version != null}">
-        <p><bean:message key="sdc.details.proxy.licensed" arg0="${requestScope.version}" /></p>
+        <p><bean:message key="sdc.details.proxy.licensed" /></p>
       </c:when>
-      <c:otherwise>
-        <p><bean:message key="sdc.details.proxy.unlicensed" /></p>
-      </c:otherwise>
     </c:choose>
     </rhn:require>
     <rl:listset name="systemListSet" legend="system">

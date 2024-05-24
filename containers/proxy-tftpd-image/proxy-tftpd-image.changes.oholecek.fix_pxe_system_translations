@@ -1,0 +1,1 @@
+- fix pxe system entries filter to actually store results (bsc#1225165)

@@ -65,14 +65,13 @@ import xml.etree.ElementTree as etree
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
 from uyuni.common import checksum, fileutils
-from uyuni.common.context_managers import cfg_component
 from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.syncLib import log
 
 # pylint: disable-next=unused-import
-from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError

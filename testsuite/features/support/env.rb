@@ -386,6 +386,14 @@ Before('@sle15sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_ssh_minion']
 end
 
+Before('@sle15sp6_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_minion']
+end
+
+Before('@sle15sp6_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
+end
+
 Before('@opensuse154arm_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse154arm_minion']
 end

@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchAppStreamException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
@@ -27,6 +28,9 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.controllers.appstreams.response.ChannelAppStreamsResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -44,6 +48,8 @@ import java.util.stream.Collectors;
  */
 public class SystemAppStreamHandler extends BaseHandler {
 
+    private static Logger log = LogManager.getLogger(SystemAppStreamHandler.class);
+
     /**
      * Schedule module stream enable.
      *
@@ -52,7 +58,8 @@ public class SystemAppStreamHandler extends BaseHandler {
      * @param moduleStreams struct containing module and stream
      * @param earliestOccurrence Earliest occurrence of the module enable
      * @return appstreams changes action id
-     * @apidoc.doc Schedule enabling of module streams.
+     * @apidoc.doc Schedule enabling of module streams. Invalid modules will be filtered out. If all provided
+     * modules are invalid the request will fail.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_begin("moduleStreams")
@@ -66,11 +73,21 @@ public class SystemAppStreamHandler extends BaseHandler {
      */
     public int enable(User loggedInUser, Integer sid, List<Map<String, String>> moduleStreams,
                       Date earliestOccurrence) {
-        Set<String> toEnable = new HashSet<>();
-        moduleStreams.forEach(moduleStream -> {
-            toEnable.add(moduleStream.get("module") + ":" + moduleStream.get("stream"));
-        });
         try {
+            Set<String> toEnable = new HashSet<>();
+            Set<String> systemAppStreams = AppStreamsManager.getSystemAppStreams(sid.longValue(), loggedInUser);
+            moduleStreams.forEach(moduleStream -> {
+                String appStream = moduleStream.get("module") + ":" + moduleStream.get("stream");
+                if (systemAppStreams.contains(appStream)) {
+                    toEnable.add(appStream);
+                }
+                else {
+                    log.warn("Appstream: {} not available. Skipping ...", appStream);
+                }
+            });
+            if (toEnable.isEmpty()) {
+                throw new NoSuchAppStreamException();
+            }
             Long actionId = AppStreamsManager.scheduleAppStreamsChanges(
                     sid.longValue(),
                     toEnable,
@@ -84,6 +101,9 @@ public class SystemAppStreamHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
+        catch (LookupException e) {
+            throw new NoSuchSystemException();
+        }
     }
 
     /**
@@ -94,7 +114,8 @@ public class SystemAppStreamHandler extends BaseHandler {
      * @param moduleStreams struct containing module and stream
      * @param earliestOccurrence Earliest occurrence of the module enable
      * @return appstreams changes action id
-     * @apidoc.doc Schedule disabling of module streams.
+     * @apidoc.doc Schedule disabling of module streams. Invalid modules will be filtered out. If all provided
+     * modules are invalid the request will fail.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_begin("moduleStreams")
@@ -108,11 +129,21 @@ public class SystemAppStreamHandler extends BaseHandler {
      */
     public int disable(User loggedInUser, Integer sid, List<Map<String, String>> moduleStreams,
                        Date earliestOccurrence) {
-        Set<String> toDisable = new HashSet<>();
-        moduleStreams.forEach(moduleStream -> {
-            toDisable.add(moduleStream.get("module") + ":" + moduleStream.get("stream"));
-        });
         try {
+            Set<String> toDisable = new HashSet<>();
+            Set<String> systemAppStreams = AppStreamsManager.getSystemAppStreams(sid.longValue(), loggedInUser);
+            moduleStreams.forEach(moduleStream -> {
+                String appStream = moduleStream.get("module") + ":" + moduleStream.get("stream");
+                if (systemAppStreams.contains(appStream)) {
+                    toDisable.add(appStream);
+                }
+                else {
+                    log.warn("Appstream: {} not available. Skipping ...", appStream);
+                }
+            });
+            if (toDisable.isEmpty()) {
+                throw new NoSuchAppStreamException();
+            }
             Long actionId = AppStreamsManager.scheduleAppStreamsChanges(
                     sid.longValue(),
                     new HashSet<>(),
@@ -125,6 +156,9 @@ public class SystemAppStreamHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException();
         }
     }
 

@@ -34,12 +34,14 @@ UNION
 SELECT DISTINCT p.id AS pid, server_stream.server_id AS sid
 FROM suseServerAppstream server_stream
     INNER JOIN suseAppstream appstream ON appstream.name = server_stream.name
+        AND appstream.stream = server_stream.stream
         AND appstream.arch = server_stream.arch
     INNER JOIN suseAppstreamApi api ON api.module_id = appstream.id
     inner join rhnPackageName pn ON pn.name = api.rpm
     inner join rhnPackage p ON p.name_id = pn.id
-WHERE p.id NOT IN (
+WHERE NOT EXISTS (
     SELECT package_id
     FROM suseServerAppStreamPackageView
     WHERE server_id = server_stream.server_id
+        AND package_id = p.id
 );
