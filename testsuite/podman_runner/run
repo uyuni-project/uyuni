@@ -9,7 +9,7 @@ set -e
 ./00_setup_env.sh
 ./01_setup_tmp_dirs.sh
 ./02_setup_network.sh
-./03_run_controller.sh
+./03_run_controller_and_registry.sh
 ./04_setup_ssh_controller.sh
 ./05_install_gems_in_controller.sh
 ./06_collect_and_tag_flaky_tests_in_controller.sh
@@ -24,6 +24,7 @@ set -e
 ./15_run_salt_deblike_minion.sh
 ./16_accept_all_keys.sh
 ./17_run_init_clients_tests.sh
+exit
 ./18_run_secondary_tests.sh
 ./19_split_secondary_p_tests.sh
 for i in 1 2 3 4 5;do
