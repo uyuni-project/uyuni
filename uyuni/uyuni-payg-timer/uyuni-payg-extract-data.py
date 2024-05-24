@@ -238,9 +238,12 @@ def perform_compliants_checks():
                 "python3-csp-billing-adapter-amazon"
             )
         elif cloudProvider == "AZURE":
-            modifiedPackages = modifiedPackages or has_package_modifications(
-                "python3-csp-billing-adapter-azure"
+            modifiedPackages = (
+                modifiedPackages
+                or has_package_modifications("python311-azure-mgmt-billing")
+                or has_package_modifications("python3-csp-billing-adapter-microsoft")
             )
+
         billing_service_running = is_service_running("csp-billing-adapter.service")
 
         if billing_service_running:
@@ -276,22 +279,22 @@ def is_service_running(service):
 
 
 def has_package_modifications(pkg):
-    try:
-        out = subprocess.check_output(
-            ["rpm", "-V", pkg],
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
-            encoding="utf-8",
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"has_package_modifications({pkg}) failed: {e}", file=sys.stderr)
-        return True
+    p = subprocess.run(
+        ["rpm", "-V", pkg],
+        stdout=subprocess.PIPE,
+        universal_newlines=True,
+        encoding="utf-8",
+        check=False,
+    )
 
-    for line in out.split("\n"):
+    for line in p.stdout.split("\n"):
+        if "is not installed" in line:
+            return True
         if len(line) < 3 or line.endswith(".pyc"):
             continue
         if line[2] == "5":
             return True
+
     return False
 
 
