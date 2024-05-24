@@ -49,7 +49,7 @@ from uyuni.common import fileutils
 from spacewalk.common import rhnLog, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common import repo
-from spacewalk.common.fileutils import chown_chmod_path
+from spacewalk.common.fileutils import chown_chmod_path, create_path
 from spacewalk.common.rhnConfig import cfg_component
 
 # pylint: disable-next=ungrouped-imports
@@ -903,7 +903,7 @@ class RepoSync(object):
         self.update_servers()
 
         # update permissions
-        fileutils.createPath(
+        create_path(
             os.path.join(mount_point, "rhn")
         )  # if the directory exists update ownership only
         # pylint: disable-next=invalid-name
@@ -2160,7 +2160,7 @@ class RepoSync(object):
             else:
                 self.ks_install_type = "generic_rpm"
 
-        fileutils.createPath(os.path.join(mount_point, ks_path))
+        create_path(os.path.join(mount_point, ks_path))
         # Make sure images are included
         to_download = set()
         to_download.add(treeinfo_path)

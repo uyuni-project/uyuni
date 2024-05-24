@@ -1316,7 +1316,7 @@ def _mock_sync(reposync, rs):
 
     rs.update_date = Mock()
 
-    reposync.fileutils.createPath = Mock()
+    reposync.create_path = Mock()
     reposync.os.walk = Mock(return_value=[])
     reposync.subprocess.call = Mock()
     return rs
