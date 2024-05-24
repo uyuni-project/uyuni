@@ -15,6 +15,7 @@
 
 @skip_if_cloud
 @scope_building_container_images
+@no_auth_registry
 Feature: API "image" namespace for containers and sub-namespaces
 
   Scenario: Test "image.store" namespace
