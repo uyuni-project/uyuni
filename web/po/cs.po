@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -187,7 +187,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:62
+#: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
@@ -203,7 +203,7 @@ msgid "Environment Type"
 msgstr "Životní cyklus životního prostředí"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:510
+#: ../html/src/manager/notifications/notification-messages.tsx:508
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -215,7 +215,7 @@ msgstr "Naposledy upraveno"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
@@ -275,7 +275,7 @@ msgid "Last modified on"
 msgstr "Naposledy upraveno"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:515
+#: ../html/src/manager/notifications/notification-messages.tsx:513
 msgid "Action"
 msgstr "Akce"
 
@@ -1438,7 +1438,7 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:436
+#: ../html/src/manager/notifications/notification-messages.tsx:435
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "Aktualizovat"
@@ -1702,7 +1702,7 @@ msgstr "Data se obnovují každých "
 msgid " seconds"
 msgstr " sekund"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
@@ -1710,46 +1710,46 @@ msgstr " sekund"
 msgid "Filter by name"
 msgstr "Filtrovat podle názvu"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:199
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:198
 msgid "Task Id"
 msgstr "ID úkolu"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:203
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:202
 msgid "Task Name"
 msgstr "Název úkolu"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:209
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:208
 msgid "Start Time"
 msgstr "Čas spuštění"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:215
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:214
 msgid "End Time"
 msgstr "Čas ukončení"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:221
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:220
 msgid "Elapsed Time"
 msgstr "Spotřebovaný čas"
 
 #. comparator={this.sortByText}
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:232
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:231
 msgid "Data"
 msgstr "Data"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:243
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:242
 msgid "There are no tasks running on the server at the moment."
 msgstr "Na serveru nejsou momentálně spuštěny žádné úkoly."
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:560
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
 "znovu."
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:562
+#: ../html/src/manager/notifications/notification-messages.tsx:557
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba serveru, zkontrolujte soubory protokolu."
@@ -3094,7 +3094,7 @@ msgstr "zahrnout, co je doporučeno"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:498
+#: ../html/src/manager/notifications/notification-messages.tsx:496
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
@@ -3198,7 +3198,7 @@ msgstr "Systémy"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:667
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:92
+#: ../html/src/manager/systems/all-list.tsx:98
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr "Balíčky"
@@ -3206,7 +3206,7 @@ msgstr "Balíčky"
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
 #: ../html/src/manager/images/image-view.tsx:790
-#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/all-list.tsx:85
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr "Záplaty"
@@ -3852,7 +3852,7 @@ msgid "(obsolete)"
 msgstr "(zastaralé)"
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/all-list.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
@@ -4474,7 +4474,7 @@ msgid "Applying the packages states has been "
 msgstr "Použití stavů balíčků bylo "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:504
+#: ../html/src/manager/notifications/notification-messages.tsx:502
 msgid "Summary"
 msgstr "Souhrn"
 
@@ -4612,58 +4612,58 @@ msgstr "Zkuste se registrovat znovu"
 msgid "Retry repo sync"
 msgstr "Opakovat synchronizaci úložišť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:403
+#: ../html/src/manager/notifications/notification-messages.tsx:402
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:408
+#: ../html/src/manager/notifications/notification-messages.tsx:407
 msgid "All Messages"
 msgstr "Všechny zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:421
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "Filter by type"
 msgstr "Filtrovat podle typu"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 #: ../html/src/manager/notifications/notification-messages.tsx:440
-#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr "Odstranit vybrané zprávy"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:447
 #: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr "Označit vybrané zprávy jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:466
-#: ../html/src/manager/notifications/notification-messages.tsx:548
+#: ../html/src/manager/notifications/notification-messages.tsx:465
+#: ../html/src/manager/notifications/notification-messages.tsx:543
 msgid "Notification Messages"
 msgstr "Oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:471
+#: ../html/src/manager/notifications/notification-messages.tsx:470
 msgid "The server has collected the following notification messages."
 msgstr "Server shromáždil následující upozornění."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:484
 msgid "Filter by summary"
 msgstr "Filtrovat podle souhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:492
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "Severity"
 msgstr "Závažnost"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:519
 msgid "Read|Delete"
 msgstr "Číst|Odstranit"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Unread"
 msgstr "Označit jako nepřečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Read"
 msgstr "Označit jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:531
 msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
@@ -4761,9 +4761,7 @@ msgid "Proxy FQDN"
 msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid ""
-"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
-"any registered clients."
+msgid "The unique, DNS-resolvable FQDN of this proxy."
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:202
@@ -5365,31 +5363,36 @@ msgstr ""
 msgid " Systems "
 msgstr "Systémy"
 
-#: ../html/src/manager/systems/all-list.tsx:57
+#: ../html/src/manager/systems/all-list.tsx:49
+#, fuzzy
+msgid "Add System"
+msgstr "Systém"
+
+#: ../html/src/manager/systems/all-list.tsx:63
 #, fuzzy
 msgid "No Systems."
 msgstr "Systémy"
 
-#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/systems/all-list.tsx:112
 #: ../html/src/manager/systems/list-filter.tsx:46
 #, fuzzy
 msgid "Extra Packages"
 msgstr "Balíčky"
 
-#: ../html/src/manager/systems/all-list.tsx:120
+#: ../html/src/manager/systems/all-list.tsx:126
 #: ../html/src/manager/systems/list-filter.tsx:47
 #, fuzzy
 msgid "Config Diffs"
 msgstr "Konfigurace URL"
 
-#: ../html/src/manager/systems/all-list.tsx:135
+#: ../html/src/manager/systems/all-list.tsx:141
 #: ../html/src/manager/systems/list-filter.tsx:48
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "Základní kanál"
 
-#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/all-list.tsx:152
 #: ../html/src/manager/systems/list-filter.tsx:49
 #, fuzzy
 msgid "System Type"
