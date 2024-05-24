@@ -17895,11 +17895,11 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target>cancella questa revisione del file</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
-        <source>delete organization</source>
+        <source>Delete Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>cancella organizzazione</target>
+        <target state="needs-adaptation">cancella organizzazione</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
         <source>Delete This File</source>
@@ -24308,17 +24308,12 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.proxy.unlicensed" xml:space="preserve">
-        <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve">
-        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
+        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="sdc.details.proxyclients.header" xml:space="preserve">
         <source>Proxy Clients</source>

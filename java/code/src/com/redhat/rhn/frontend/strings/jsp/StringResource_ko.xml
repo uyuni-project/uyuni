@@ -18006,11 +18006,11 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target>이 파일 리비전 삭제</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
-        <source>delete organization</source>
+        <source>Delete Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>조직 삭제</target>
+        <target state="needs-adaptation">조직 삭제</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
         <source>Delete This File</source>
@@ -24464,16 +24464,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.proxy.unlicensed" xml:space="preserve">
-        <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
-        <target>WebUI @@PRODUCT_NAME@@ 프록시 설치 프로그램은 더 이상 사용되지 않습니다. spacewalk-proxy-installer 패키지에서 제공되는 명령줄 설치 프로그램을 사용하십시오.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve">
-        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
-        <target>이 시스템은 현재 사용이 허가된 @@PRODUCT_NAME@@ Proxy(v{0})입니다.</target>
+        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy.</source>
+        <target state="needs-adaptation">이 시스템은 현재 사용이 허가된 @@PRODUCT_NAME@@ Proxy(v{0})입니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
