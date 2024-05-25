@@ -18008,11 +18008,11 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target state="translated">删除此文件修订版</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
-        <source>delete organization</source>
+        <source>Delete Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">删除组织</target>
+        <target state="needs-adaptation">删除组织</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
         <source>Delete This File</source>
@@ -24467,16 +24467,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.proxy.unlicensed" xml:space="preserve">
-        <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
-        <target>WebUI @@PRODUCT_NAME@@ Proxy 安装程序已过时。请使用软件包 spacewalk-proxy-installer 中的命令行安装程序。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve">
-        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
-        <target>此计算机目前是已许可的 @@PRODUCT_NAME@@ Proxy (v{0})。</target>
+        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy.</source>
+        <target state="needs-adaptation">此计算机目前是已许可的 @@PRODUCT_NAME@@ Proxy (v{0})。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>

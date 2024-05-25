@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -935,7 +935,7 @@ msgstr "자세한 SCAP 결과에 대한 파일 경로를 구성하는 동안 오
 msgid "Invalid content encoding"
 msgstr "유효하지 않은 컨텐트 인코딩"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -950,7 +950,7 @@ msgstr ""
 "     버그 리포트를 제출하려면, 이 오류가 발생할 때 수행한 자세한 사항과\n"
 "     이 문제를 재현할 수 있는 방법에 대한 세부 정보를 포함해 주십시오.\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -959,17 +959,17 @@ msgstr ""
 "오류 메시지:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "오류 클래스 코드: %s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "오류 클래스 정보: %s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "설명: %s"
@@ -1179,16 +1179,16 @@ msgstr "킥스타트 가능 트리 가져오기(%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "가져온 킥스타트 가능 트리(%d)"
 
-#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ 로그를 이메일로 전송 +++"
 
-#: ../satellite_tools/reposync.py:140
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s의 %s 동기화 보고서"
 
-#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 

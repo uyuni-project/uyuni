@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2024-05-09 07:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -180,7 +180,7 @@ msgstr "{date}의 {time}에 실행된 #{identifier} 증명"
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:62
+#: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
@@ -195,7 +195,7 @@ msgid "Environment Type"
 msgstr "환경 유형"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:510
+#: ../html/src/manager/notifications/notification-messages.tsx:508
 msgid "Created"
 msgstr "생성됨"
 
@@ -206,7 +206,7 @@ msgstr "마지막으로 수정된 날짜"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
@@ -262,7 +262,7 @@ msgid "Last modified on"
 msgstr "마지막으로 수정된 날짜"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:515
+#: ../html/src/manager/notifications/notification-messages.tsx:513
 msgid "Action"
 msgstr "작업"
 
@@ -1380,7 +1380,7 @@ msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:436
+#: ../html/src/manager/notifications/notification-messages.tsx:435
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "새로 고침"
@@ -1639,7 +1639,7 @@ msgstr "데이터 새로 고침: 매 "
 msgid " seconds"
 msgstr " 초"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
@@ -1647,45 +1647,45 @@ msgstr " 초"
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:199
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:198
 msgid "Task Id"
 msgstr "작업 ID"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:203
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:202
 msgid "Task Name"
 msgstr "작업 이름"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:209
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:208
 msgid "Start Time"
 msgstr "시작 시간"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:215
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:214
 msgid "End Time"
 msgstr "종료 시간"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:221
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:220
 msgid "Elapsed Time"
 msgstr "경과 시간"
 
 #. comparator={this.sortByText}
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:232
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:231
 msgid "Data"
 msgstr "데이터"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:243
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:242
 msgid "There are no tasks running on the server at the moment."
 msgstr "현재 서버에서 실행 중인 작업이 없습니다."
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:560
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:562
+#: ../html/src/manager/notifications/notification-messages.tsx:557
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
@@ -3000,7 +3000,7 @@ msgstr "권장에 포함"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:498
+#: ../html/src/manager/notifications/notification-messages.tsx:496
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
@@ -3102,7 +3102,7 @@ msgstr "시스템"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:667
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:92
+#: ../html/src/manager/systems/all-list.tsx:98
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr "패키지"
@@ -3110,7 +3110,7 @@ msgstr "패키지"
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
 #: ../html/src/manager/images/image-view.tsx:790
-#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/all-list.tsx:85
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr "패치"
@@ -3753,7 +3753,7 @@ msgid "(obsolete)"
 msgstr "(사용되지 않음)"
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/all-list.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
@@ -4372,7 +4372,7 @@ msgid "Applying the packages states has been "
 msgstr "패키지 상태 적용이 "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:504
+#: ../html/src/manager/notifications/notification-messages.tsx:502
 msgid "Summary"
 msgstr "요약"
 
@@ -4503,58 +4503,58 @@ msgstr "온보딩 다시 시도"
 msgid "Retry repo sync"
 msgstr "저장소 동기화 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:403
+#: ../html/src/manager/notifications/notification-messages.tsx:402
 msgid "Unread Messages"
 msgstr "읽지 않은 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:408
+#: ../html/src/manager/notifications/notification-messages.tsx:407
 msgid "All Messages"
 msgstr "모든 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:421
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "Filter by type"
 msgstr "유형을 기준으로 필터링"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 #: ../html/src/manager/notifications/notification-messages.tsx:440
-#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr "선택한 메시지 삭제"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:447
 #: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr "선택 항목을 읽음으로 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:466
-#: ../html/src/manager/notifications/notification-messages.tsx:548
+#: ../html/src/manager/notifications/notification-messages.tsx:465
+#: ../html/src/manager/notifications/notification-messages.tsx:543
 msgid "Notification Messages"
 msgstr "알림 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:471
+#: ../html/src/manager/notifications/notification-messages.tsx:470
 msgid "The server has collected the following notification messages."
 msgstr "서버에서 다음 알림 메시지가 수집되었습니다."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:484
 msgid "Filter by summary"
 msgstr "요약을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:492
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "Severity"
 msgstr "심각도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:519
 msgid "Read|Delete"
 msgstr "읽기|삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Unread"
 msgstr "읽지 않음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Read"
 msgstr "읽음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:531
 msgid "Delete Notification"
 msgstr "알림 삭제"
 
@@ -4646,9 +4646,8 @@ msgid "Proxy FQDN"
 msgstr "프록시 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid ""
-"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
-"any registered clients."
+#, fuzzy
+msgid "The unique, DNS-resolvable FQDN of this proxy."
 msgstr ""
 "이 프록시의 고유한 DNS 확인 FQDN입니다. 등록된 클라이언트와 달라야 합니다."
 
@@ -5237,28 +5236,33 @@ msgstr ""
 msgid " Systems "
 msgstr " 시스템 "
 
-#: ../html/src/manager/systems/all-list.tsx:57
+#: ../html/src/manager/systems/all-list.tsx:49
+#, fuzzy
+msgid "Add System"
+msgstr "시스템"
+
+#: ../html/src/manager/systems/all-list.tsx:63
 msgid "No Systems."
 msgstr "시스템이 없습니다."
 
-#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/systems/all-list.tsx:112
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Extra Packages"
 msgstr "추가 패키지"
 
-#: ../html/src/manager/systems/all-list.tsx:120
+#: ../html/src/manager/systems/all-list.tsx:126
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Config Diffs"
 msgstr "구성 차이"
 
-#: ../html/src/manager/systems/all-list.tsx:135
+#: ../html/src/manager/systems/all-list.tsx:141
 #: ../html/src/manager/systems/list-filter.tsx:48
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "기본 채널"
 
-#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/all-list.tsx:152
 #: ../html/src/manager/systems/list-filter.tsx:49
 msgid "System Type"
 msgstr "시스템 유형"

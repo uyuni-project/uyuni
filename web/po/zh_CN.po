@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2024-05-09 10:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -176,7 +176,7 @@ msgstr "认证 #{identifier} 于 {date} {time} 执行"
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:62
+#: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
@@ -191,7 +191,7 @@ msgid "Environment Type"
 msgstr "环境类型"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:510
+#: ../html/src/manager/notifications/notification-messages.tsx:508
 msgid "Created"
 msgstr "创建日期"
 
@@ -202,7 +202,7 @@ msgstr "上次修改时间"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
@@ -258,7 +258,7 @@ msgid "Last modified on"
 msgstr "上次修改日期"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:515
+#: ../html/src/manager/notifications/notification-messages.tsx:513
 msgid "Action"
 msgstr "操作"
 
@@ -1357,7 +1357,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:436
+#: ../html/src/manager/notifications/notification-messages.tsx:435
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "刷新"
@@ -1611,7 +1611,7 @@ msgstr "数据每隔 "
 msgid " seconds"
 msgstr " 秒刷新"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
@@ -1619,44 +1619,44 @@ msgstr " 秒刷新"
 msgid "Filter by name"
 msgstr "按名称过滤"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:199
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:198
 msgid "Task Id"
 msgstr "任务 ID"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:203
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:202
 msgid "Task Name"
 msgstr "任务名称"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:209
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:208
 msgid "Start Time"
 msgstr "开始时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:215
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:214
 msgid "End Time"
 msgstr "结束时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:221
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:220
 msgid "Elapsed Time"
 msgstr "已用时间"
 
 #. comparator={this.sortByText}
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:232
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:231
 msgid "Data"
 msgstr "数据"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:243
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:242
 msgid "There are no tasks running on the server at the moment."
 msgstr "目前没有任何任务在服务器上运行。"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:560
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:562
+#: ../html/src/manager/notifications/notification-messages.tsx:557
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
@@ -2952,7 +2952,7 @@ msgstr "包括建议项"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:498
+#: ../html/src/manager/notifications/notification-messages.tsx:496
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
@@ -3044,7 +3044,7 @@ msgstr "系统"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:667
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:92
+#: ../html/src/manager/systems/all-list.tsx:98
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr "软件包"
@@ -3052,7 +3052,7 @@ msgstr "软件包"
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
 #: ../html/src/manager/images/image-view.tsx:790
-#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/all-list.tsx:85
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr "补丁"
@@ -3693,7 +3693,7 @@ msgid "(obsolete)"
 msgstr "（过时）"
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/all-list.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
@@ -4295,7 +4295,7 @@ msgid "Applying the packages states has been "
 msgstr "应用软件包状态 "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:504
+#: ../html/src/manager/notifications/notification-messages.tsx:502
 msgid "Summary"
 msgstr "摘要"
 
@@ -4426,58 +4426,58 @@ msgstr "重试载入"
 msgid "Retry repo sync"
 msgstr "重试储存库同步"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:403
+#: ../html/src/manager/notifications/notification-messages.tsx:402
 msgid "Unread Messages"
 msgstr "未读消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:408
+#: ../html/src/manager/notifications/notification-messages.tsx:407
 msgid "All Messages"
 msgstr "所有消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:421
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "Filter by type"
 msgstr "按类型过滤"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 #: ../html/src/manager/notifications/notification-messages.tsx:440
-#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr "删除选定的消息"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:447
 #: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr "将选定消息标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:466
-#: ../html/src/manager/notifications/notification-messages.tsx:548
+#: ../html/src/manager/notifications/notification-messages.tsx:465
+#: ../html/src/manager/notifications/notification-messages.tsx:543
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:471
+#: ../html/src/manager/notifications/notification-messages.tsx:470
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:484
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:492
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:519
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:531
 msgid "Delete Notification"
 msgstr "删除通知"
 
@@ -4565,9 +4565,8 @@ msgid "Proxy FQDN"
 msgstr "代理 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid ""
-"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
-"any registered clients."
+#, fuzzy
+msgid "The unique, DNS-resolvable FQDN of this proxy."
 msgstr ""
 "此代理的唯一且可由 DNS 解析的完全限定域名。必须与任何已注册的客户端均不同。"
 
@@ -5149,28 +5148,33 @@ msgstr "使用此激活密钥注册的所有系统都将订阅所选子通道。
 msgid " Systems "
 msgstr " 系统 "
 
-#: ../html/src/manager/systems/all-list.tsx:57
+#: ../html/src/manager/systems/all-list.tsx:49
+#, fuzzy
+msgid "Add System"
+msgstr "系统"
+
+#: ../html/src/manager/systems/all-list.tsx:63
 msgid "No Systems."
 msgstr "没有系统。"
 
-#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/systems/all-list.tsx:112
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Extra Packages"
 msgstr "额外的软件包"
 
-#: ../html/src/manager/systems/all-list.tsx:120
+#: ../html/src/manager/systems/all-list.tsx:126
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Config Diffs"
 msgstr "配置差异"
 
-#: ../html/src/manager/systems/all-list.tsx:135
+#: ../html/src/manager/systems/all-list.tsx:141
 #: ../html/src/manager/systems/list-filter.tsx:48
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "基础通道"
 
-#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/all-list.tsx:152
 #: ../html/src/manager/systems/list-filter.tsx:49
 msgid "System Type"
 msgstr "系统类型"

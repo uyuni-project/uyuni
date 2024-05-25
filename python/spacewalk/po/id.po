@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:18+0200\n"
+"POT-Creation-Date: 2024-05-24 17:09+0200\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -1026,7 +1026,7 @@ msgstr "Galat saat menyusun jalur berkas untuk hasil SCAP rinci"
 msgid "Invalid content encoding"
 msgstr "Pengkodean konten tidak valid"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 #, fuzzy
 msgid ""
 "\n"
@@ -1043,24 +1043,24 @@ msgstr ""
 "dan\n"
 "     rincian tentang cara mereproduksi masalah ini."
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, fuzzy, python-format
 msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr "Pesan kesalahan tak tertangani: %s"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, fuzzy, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Kode Kelas Galat: %s"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, fuzzy, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Galat Info Kelas: %s"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, fuzzy, python-format
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
@@ -1273,17 +1273,17 @@ msgstr "Mengimpor pohon kickstartable (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Pohon kickstartable impor (%d)"
 
-#: ../satellite_tools/reposync.py:137 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 #, fuzzy
 msgid "+++ sending log as an email +++"
 msgstr "+++ mengirim log sebagai email +++"
 
-#: ../satellite_tools/reposync.py:140
+#: ../satellite_tools/reposync.py:141
 #, fuzzy, python-format
 msgid "%s sync. report from %s"
 msgstr "Sinkronisasi %s. laporan dari %s"
 
-#: ../satellite_tools/reposync.py:150 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 #, fuzzy
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
