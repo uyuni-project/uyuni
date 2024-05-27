@@ -26,20 +26,37 @@ assignees: ''
 - Jenkins pipeline:
 - Server URL:
 
-## Tasks
+### Links
 
-### Main Manual tests
+- [Step-by-step guide](https://confluence.suse.com/display/SUSEMANAGER/QE+Build+Validation)
+- [Automated tests](https://confluence.suse.com/display/SUSEMANAGER/Automated+tests)
+- [Pipeline parameters](https://confluence.suse.com/display/SUSEMANAGER/The+new+BV+pipeline)
 
-- [ ] Upgrade the long running server and proxy (and bootstrap a clean Salt Minion) [following the upgrade procedure for the server](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/upgrade-intro.html) and the [proxy](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/proxy-y-z.html#_update_the_proxy_z)
+## Manual tests and tasks
 
-### Bug fixes included in this MU
+- [ ] Clean up the old environment
+- [ ] Update the mirror/check if it is up to date
 
-These bugs were fixed during the development cycle, they are P1 or P2.
-They are delivered together with submissions and we must verify them before approving the MU.
+### Long running server 
 
-- [ ]
+- [ ] Upgrade the long running [server](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/upgrade-intro.html)
+- [ ] And the [proxy](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/proxy-y-z.html#_update_the_proxy_z)
+- [ ] Then bootstrap a clean Salt Minion
+- [ ] And perform some basic tests on it
 
-### Automated BV
+### Release notes and new features
+
+- [ ] Update and verify the release notes for server and proxy
+- [ ] ...
+
+### Verification of Bug fixes included in this MU
+
+These bugs were fixed during the development cycle and were delivered together with the submissions.
+We must verify them before approving the MU.
+
+- [ ] ...
+
+## Automated tests and tasks
 
 - [ ] JSON creation
 - [ ] All the supported systems were bootstrapped and passed smoke tests
@@ -55,16 +72,23 @@ http://registry.suse.de/devel/galaxy/manager/mutesting/4.3/containers/suse/manag
 - [ ] Retail
   - [ ] SLES12 SP5
   - [ ] SLES15 SP4
-- [ ] Release Notes
 
-### New features announced in the [release notes](https://gitlab.suse.de/documentation/release-notes-suse-manager/-/merge_requests/)
+## Approval
 
-- ...
+- [ ] Ping our release engineers in Slack
+- [ ] Approve all related MUs in the [IBS](https://smelt.suse.de/overview/?7=qam-manager#testing) or via the [command line](https://confluence.suse.com/display/SUSEMANAGER/QE+Build+Validation)
 
-### Blocker bugs found in this version
+## Test suite fixes
 
-- [ ]
+- [ ] ...
 
-### Non-blocker bugs found in this version
+## Reported and found Bugs
 
-- [ ]
+### Non-blocker
+
+- [ ] ...
+
+### Blocker
+
+- [ ] ...
+
