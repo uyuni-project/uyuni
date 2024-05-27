@@ -273,7 +273,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'slemicro54_ssh_minion' => 'SLE-Micro-5.4-Pool for x86_64',
     'slemicro55_minion' => 'SLE-Micro-5.5-Pool for x86_64',
     'slemicro55_ssh_minion' => 'SLE-Micro-5.5-Pool for x86_64',
-    #TODO Verify this:
     'slmicro60_minion' => 'SL-Micro-6.0-Pool for x86_64',
     'slmicro60_ssh_minion' => 'SL-Micro-6.0-Pool for x86_64',
     'alma8_minion' => 'almalinux8 for x86_64',
@@ -351,7 +350,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'slemicro54_ssh_minion' => 'SLE-Micro-5.4-Pool for x86_64',
     'slemicro55_minion' => 'SLE-Micro-5.5-Pool for x86_64',
     'slemicro55_ssh_minion' => 'SLE-Micro-5.5-Pool for x86_64',
-    #TODO Verify this:
     'slmicro60_minion' => 'SL-Micro-6.0-Pool for x86_64',
     'slmicro60_ssh_minion' => 'SL-Micro-6.0-Pool for x86_64',
     'alma8_minion' => 'AlmaLinux 8 (x86_64)',
@@ -995,12 +993,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-manager-tools-for-micro5-pool-x86_64-5.5
         sle-manager-tools-for-micro5-updates-x86_64-5.5
       ],
-    'sle-micro-6.0' =>
+    'sl-micro-6.0' =>
       %w[
-        sle-micro-6.0-pool-x86_64
-        sle-micro-6.0-updates-x86_64
-        sle-manager-tools-for-micro6-pool-x86_64-6.0
-        sle-manager-tools-for-micro6-updates-x86_64-6.0
+        sl-micro-6.0-pool-x86_64
+        sl-micro-6.0-updates-x86_64
+        sl-manager-tools-for-micro6-pool-x86_64-6.0
+        sl-manager-tools-for-micro6-updates-x86_64-6.0
       ],
     'ubuntu-2004' => # CHECKED
       %w[
@@ -1334,11 +1332,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-micro-5.5-updates-x86_64
         sle-micro-5.5-devel-uyuni-client-x86_64
       ],
-    'sle-micro6.0' =>
+    'sl-micro6.0' =>
       %w[
-        sle-micro-6.0-pool-x86_64
-        sle-micro-6.0-updates-x86_64
-        sle-micro-6.0-devel-uyuni-client-x86_64
+        sl-micro-6.0-pool-x86_64
+        sl-micro-6.0-updates-x86_64
+        sl-micro-6.0-devel-uyuni-client-x86_64
       ],
     'ubuntu-2004' => # CHECKED
       %w[
@@ -1533,7 +1531,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-micro-5.5-devel-uyuni-client-x86_64' => 60,
   'sle-micro-5.5-pool-x86_64' => 120,
   'sle-micro-5.5-updates-x86_64' => 120,
-  'sle-micro-6.0-updates-x86_64' => 120,
+  'sl-micro-6.0-updates-x86_64' => 120,
   'sle-module-basesystem15-sp1-pool-x86_64' => 180,
   'sle-module-basesystem15-sp1-updates-x86_64' => 660,
   'sle-module-basesystem15-sp2-pool-x86_64' => 180,
