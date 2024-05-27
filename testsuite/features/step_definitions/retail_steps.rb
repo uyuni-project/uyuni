@@ -210,20 +210,11 @@ When(/^I create the bootstrap script for "([^"]+)" hostname and "([^"]*)" activa
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
   # force_bundle = use_salt_bundle ? '--force-bundle' : ''
   # get_target(host).run("mgr-bootstrap #{force_bundle}")
-  node.run("mgr-bootstrap --hostname=#{hostname}")
+  node.run("mgr-bootstrap --hostname=#{hostname} --activation-keys=#{key}")
 
-  node.run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, _code = node.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   raise ScriptError, "Key: #{key} not included" unless output.include? key
   raise ScriptError, "Hostname: #{hostname} not included" unless output.include? hostname
-end
-
-When(/^I copy the bootstrap script from server to proxy$/) do
-  scriptfile = '/srv/www/htdocs/pub/bootstrap/bootstrap.sh'
-  tmpfile = '/tmp/bootstrap.sh'
-  file_extract(get_target('server'), scriptfile, tmpfile)
-  get_target('proxy').run('mkdir -p /srv/www/htdocs/pub/bootstrap')
-  file_inject(get_target('proxy'), tmpfile, scriptfile)
 end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do

@@ -29,7 +29,6 @@ Feature: Mass import of Retail terminals behind a containerized proxy
   Scenario: Bootstrap the PXE boot minion
     # Workaround for bsc#1220864 - Containerized Proxy has not mgr-bootstrap command
     When I create the bootstrap script for "proxy.example.org" hostname and "1-TERMINAL-KEY-x86_64" activation key on "server"
-    And I copy the bootstrap script from server to proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
