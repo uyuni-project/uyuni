@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-24 17:09+0200\n"
-"PO-Revision-Date: 2024-04-29 19:43+0000\n"
+"PO-Revision-Date: 2024-05-27 18:46+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
@@ -4704,11 +4704,8 @@ msgid "Proxy FQDN"
 msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-#, fuzzy
 msgid "The unique, DNS-resolvable FQDN of this proxy."
-msgstr ""
-"Jedinečný názov FQDN tohto proxy, ktorý je možné rozlíšiť pomocou DNS. Mal "
-"by sa líšiť od všetkých registrovaných klientov."
+msgstr "Jedinečný názov FQDN tohto proxy, ktorý je možné rozlíšiť pomocou DNS."
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
@@ -5295,9 +5292,8 @@ msgid " Systems "
 msgstr " Systémy "
 
 #: ../html/src/manager/systems/all-list.tsx:49
-#, fuzzy
 msgid "Add System"
-msgstr "Systém"
+msgstr "Pridať systém"
 
 #: ../html/src/manager/systems/all-list.tsx:63
 msgid "No Systems."
