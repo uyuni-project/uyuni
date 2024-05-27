@@ -26,13 +26,10 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     And I am on the Systems page
     Then I should see the terminals imported from the configuration file
 
-  # This bug prevents using mgr-bootstrap command:
-  #   https://bugzilla.suse.com/show_bug.cgi?id=1220864
-  # TODO: skipped section begin ###############################################
-  # Remove @skip tags when bug is resolved
-@skip
   Scenario: Bootstrap the PXE boot minion
-    When I create bootstrap script for "proxy.example.org" hostname and set the activation key "1-TERMINAL-KEY-x86_64" in the bootstrap script on the proxy
+    # Workaround for bsc#1220864 - Containerized Proxy has not mgr-bootstrap command
+    When I create the bootstrap script for "proxy.example.org" hostname and "1-TERMINAL-KEY-x86_64" activation key on "server"
+    And I copy the bootstrap script from server to proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -40,7 +37,6 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     Then I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
-@skip
   Scenario: Check connection from bootstrapped terminal to proxy
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -48,7 +44,6 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
-@skip
   Scenario: Install a package on the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -62,7 +57,6 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
-@skip
   Scenario: Remove the package from the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -76,10 +70,8 @@ Feature: Mass import of Retail terminals behind a containerized proxy
     Then I should see a "1 package removal has been scheduled" text
     When I wait until event "Package Removal scheduled by admin" is completed
 
-@skip
   Scenario: Cleanup: make sure salt-minion is stopped after mass import
     When I wait until Salt client is inactive on the PXE boot minion
-  # TODO: skipped section end #################################################
 
   Scenario: Cleanup: delete all imported Retail terminals
     Given I am on the Systems page
