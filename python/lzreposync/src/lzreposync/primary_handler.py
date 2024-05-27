@@ -1,6 +1,6 @@
 import logging
 import xml.sax
-from lzreposync.rpm_pkg import RPM
+from lzreposync.rpm import RPM
 
 
 COMMON_NS = "http://linux.duke.edu/metadata/common"
