@@ -154,6 +154,11 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
             info.setSshPort(port);
             info.setSshPublicKey(sshPublicKey.getBytes());
+
+            // Add the FQDNs as some may not be already known
+            server.getFqdns().addAll(fqdns.stream()
+                    .filter(fqdn -> !fqdn.contains("*"))
+                    .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
             return server;
         }
         Server server = ServerFactory.createServer();
