@@ -23,12 +23,14 @@ Feature: API "image" namespace for containers and sub-namespaces
     And I list image store types and image stores via API
     And I set and get details of image store via API
 
+  @scc_credentials
   Scenario: Test "image.profiles" namespace
     When I create and delete profiles via API
     And I create and delete profile custom values via API
     And I list image profiles via API
     And I set and get profile details via API
 
+  @scc_credentials
   Scenario: Cleanup: remove custom system info
     Given I am authorized for the "Admin" section
     When I follow the left menu "Systems > Custom System Info"
