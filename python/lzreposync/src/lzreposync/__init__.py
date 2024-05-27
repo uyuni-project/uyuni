@@ -1,4 +1,7 @@
 import argparse
+import logging
+import os.path
+from urllib.parse import urljoin
 
 from lzreposync import parse
 
