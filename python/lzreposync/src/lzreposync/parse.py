@@ -3,7 +3,7 @@ This is a minimal implementation of the lazy reposync parser.
 It downloads the target repository's metadata file(s) from the
 given url and parses it(them)
 """
-
+import hashlib
 import logging
 import pickle
 import tempfile
@@ -27,7 +27,8 @@ def download_and_parse_metadata(primary_url, name, cache_dir):
         raise ValueError("Repository URL missing")
 
     _rpms = None
-    cache_file = os.path.join(cache_dir, name)
+    hash_file = os.path.join(cache_dir, name) + ".hash"
+    hash_func = hashlib.sha256()
 
     for cnt in range(1, 4):
         try:
@@ -41,7 +42,9 @@ def download_and_parse_metadata(primary_url, name, cache_dir):
                     chunk_size = 1024 * 1024
                     written = True
                     while written:
-                        written = tmp_file.write(primary_fd.read(chunk_size))
+                        chunk = primary_fd.read(chunk_size)
+                        written = tmp_file.write(chunk)
+                        hash_func.update(chunk)
 
                 # Work on temporary file without loading it into memory at once
                 tmp_file.seek(0)
@@ -80,9 +83,10 @@ def download_and_parse_metadata(primary_url, name, cache_dir):
             for f in os.listdir(cache_dir):
                 os.remove(os.path.join(cache_dir, f))
 
-        # Cache primary XML data in filesystem
-        with open(cache_file, 'wb') as fw:
-            logging.debug("Caching RPMs in file: %s", cache_file)
-            pickle.dump(list(_rpms), fw)  # TODO: I don't think this is the right way to cache the primary-xml.gz file
+        # Cache the hash of the file
+        file_hash = hash_func.hexdigest()
+        with open(hash_file, 'w') as fw:
+            logging.debug("Caching file hash in file: %s", hash_file)
+            fw.write(file_hash)
     except OSError as error:
         logging.warning("Error caching the primary XML data: %s", error)
