@@ -43,6 +43,9 @@ public class PaygComplainceInfo {
     @SerializedName("billingServiceStatus")
     private final boolean billingAdapterHealthy;
 
+    @SerializedName("hasMeteringAccess")
+    private final boolean meteringAccessible;
+
     private final long timestamp;
 
     /**
@@ -50,7 +53,7 @@ public class PaygComplainceInfo {
      */
     public PaygComplainceInfo() {
         // By default, assume it's a compliant BYOS instance
-        this(CloudProvider.None, false, false, true, true);
+        this(CloudProvider.None, false, false, true, true, true);
     }
 
     /**
@@ -60,19 +63,21 @@ public class PaygComplainceInfo {
      * @param hasModifiedPackages if some packages are modified
      * @param isAdapterRunning if the required billing adapter service is running
      * @param isAdapterHealthy if the required billing adapter service is healthy. The value is forced to
+     * @param hasMeteringAccess if there is access to the metering API
      * <code>false</code> when the other parameter <code>isAdapterRunning</code> is set to false.
      */
     public PaygComplainceInfo(CloudProvider provider, boolean isPayg, boolean hasModifiedPackages,
-                              boolean isAdapterRunning, boolean isAdapterHealthy) {
+                              boolean isAdapterRunning, boolean isAdapterHealthy, boolean hasMeteringAccess) {
         paygInstance = isPayg;
 
         cloudProvider = provider;
         anyPackageModified = hasModifiedPackages;
         billingAdapterRunning = isAdapterRunning;
         billingAdapterHealthy = isAdapterRunning && isAdapterHealthy;
+        meteringAccessible = hasMeteringAccess;
 
         // Set the compliant flag accordingly to the value received
-        compliant = billingAdapterRunning && billingAdapterHealthy && !anyPackageModified;
+        compliant = meteringAccessible && billingAdapterRunning && billingAdapterHealthy && !anyPackageModified;
 
         timestamp = Instant.now().getEpochSecond();
     }
@@ -101,6 +106,10 @@ public class PaygComplainceInfo {
         return billingAdapterHealthy;
     }
 
+    public boolean isMeteringAccessible() {
+        return meteringAccessible;
+    }
+
     public Instant getTimestamp() {
         return Instant.ofEpochSecond(timestamp);
     }
@@ -122,6 +131,7 @@ public class PaygComplainceInfo {
             .append(anyPackageModified, that.anyPackageModified)
             .append(billingAdapterRunning, that.billingAdapterRunning)
             .append(billingAdapterHealthy, that.billingAdapterHealthy)
+            .append(meteringAccessible, that.meteringAccessible)
             .append(timestamp, that.timestamp)
             .append(cloudProvider, that.cloudProvider)
             .isEquals();
@@ -136,6 +146,7 @@ public class PaygComplainceInfo {
             .append(anyPackageModified)
             .append(billingAdapterRunning)
             .append(billingAdapterHealthy)
+            .append(meteringAccessible)
             .append(timestamp)
             .toHashCode();
     }
@@ -149,6 +160,7 @@ public class PaygComplainceInfo {
             .append("anyPackageModified", isAnyPackageModified())
             .append("billingAdapterRunning", isBillingAdapterRunning())
             .append("billingAdapterHealthy", isBillingAdapterHealthy())
+            .append("isMeteringAccessible", isMeteringAccessible())
             .append("timestamp", getTimestamp())
             .toString();
     }

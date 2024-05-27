@@ -169,6 +169,10 @@ public class CloudPaygManager {
                 LOG.error("The CSP Billing Adapter service has errors.");
             }
 
+            if (!complainceInfo.isMeteringAccessible()) {
+                LOG.error("Billing Data Service is not accessible.");
+            }
+
             return false;
         }
 
