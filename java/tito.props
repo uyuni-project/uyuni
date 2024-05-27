@@ -1,8 +1,8 @@
 [requires]
-salt-netapi-client=0.20
+salt-netapi-client=0.21
 
 [buildrequires]
-salt-netapi-client=0.20
+salt-netapi-client=0.21
 
 [conf/rhn_java.conf]
 java.min_schema_version=5.0.8
