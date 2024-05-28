@@ -12,6 +12,8 @@ env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
+  AUTH_REGISTRY: "auth_registry"
+  AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
 jobs:
   paths-filter:
     runs-on: ubuntu-latest
