@@ -356,7 +356,7 @@ public class KickstartUrlHelper {
         Profile prof = Profile.lookupById(
                 CobblerXMLRPCHelper.getAutomatedConnection(),
                         data.getCobblerId());
-        return "http://" + ConfigDefaults.get().getJavaHostname() + COBBLER_URL_BASE_PATH +
+        return "http://" + ConfigDefaults.get().getCobblerHost() + COBBLER_URL_BASE_PATH +
                     prof.getName();
     }
 }
