@@ -15,11 +15,14 @@
 
 package com.suse.oval;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import com.suse.oval.manager.OVALLookupHelper;
@@ -47,6 +50,11 @@ public class OVALCachingFactory extends HibernateFactory {
         // Left empty on purpose
     }
 
+    private static void clearOVALMetadataByPlatform(String platformCpe) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "clear_oval_metadata_by_platform");
+        mode.executeUpdate(Map.of("cpe", platformCpe));
+    }
+
     /**
      * Extracts and save the list of vulnerable packages from {@code rootType}
      *
@@ -57,33 +65,40 @@ public class OVALCachingFactory extends HibernateFactory {
 
         OVALLookupHelper ovalLookupHelper = new OVALLookupHelper(rootType);
 
-        DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(1000));
-
+        List<ProductVulnerablePackages> productVulnerablePackages = new ArrayList<>();
         for (DefinitionType definition : rootType.getDefinitions()) {
             VulnerablePackagesExtractor vulnerablePackagesExtractor =
                     VulnerablePackagesExtractors.create(definition, rootType.getOsFamily(), ovalLookupHelper);
 
-            List<ProductVulnerablePackages> extractionResult = vulnerablePackagesExtractor.extract();
-            for (ProductVulnerablePackages productVulnerablePackages : extractionResult) {
-                for (String cve : productVulnerablePackages.getCves()) {
-                    for (VulnerablePackage vulnerablePackage : productVulnerablePackages.getVulnerablePackages()) {
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("product_name", productVulnerablePackages.getProductCpe());
-                        params.put("cve_name", cve);
-                        params.put("package_name", vulnerablePackage.getName());
-                        params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));
+            productVulnerablePackages.addAll(vulnerablePackagesExtractor.extract());
+        }
 
-                        batch.add(params);
+        // Clear previous OVAL metadata
+        productVulnerablePackages.stream()
+                .collect(groupingBy(ProductVulnerablePackages::getProductCpe))
+                .keySet().forEach(OVALCachingFactory::clearOVALMetadataByPlatform);
 
-                        if (batch.size() % 1000 == 0) {
-                            mode.getQuery().executeBatchUpdates(batch);
-                            batch.clear();
-                            commitTransaction();
+        // Write OVAL metadata in batches
+        DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(1000));
+        for (ProductVulnerablePackages pvp : productVulnerablePackages) {
+            for (String cve : pvp.getCves()) {
+                for (VulnerablePackage vulnerablePackage : pvp.getVulnerablePackages()) {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("product_name", pvp.getProductCpe());
+                    params.put("cve_name", cve);
+                    params.put("package_name", vulnerablePackage.getName());
+                    params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));
 
-                            Session session = getSession();
-                            if (!inTransaction()) {
-                                session.beginTransaction();
-                            }
+                    batch.add(params);
+
+                    if (batch.size() % 1000 == 0) {
+                        mode.getQuery().executeBatchUpdates(batch);
+                        batch.clear();
+                        commitTransaction();
+
+                        Session session = getSession();
+                        if (!inTransaction()) {
+                            session.beginTransaction();
                         }
                     }
                 }
