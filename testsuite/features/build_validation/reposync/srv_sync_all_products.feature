@@ -408,7 +408,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add channel "sle-micro-5.5-devel-uyuni-client" with arch "x86_64"
     And I wait until the channel "sle-micro-5.5-devel-uyuni-client-x86_64" has been synced
 
-#TODO Verify this is true
 @susemanager
 @slmicro60_minion
   Scenario: Add SUSE Linux Micro 6.0
