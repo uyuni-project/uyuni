@@ -20,15 +20,43 @@ from memory_profiler import profile
 
 from lzreposync.primary_handler import Handler
 
+
+def get_text(nodeList):
+    rc = []
+    for node in nodeList:
+        if node.nodeType == node.TEXT_NODE:
+            rc.append(node.data)
+        return ''.join(rc)
+
+
+def get_metadata_files(repomd_url):
+    repomd_path = urllib.request.urlopen(repomd_url)
+    doc = pulldom.parse(repomd_path)
+    files = {}
+    for event, node in doc:
+        if event == pulldom.START_ELEMENT and node.tagName == "data":
+            doc.expandNode(node)
+            files[node.getAttribute("type")] = {
+                "location": node.getElementsByTagName("location")[0].getAttribute("href"),
+                "checksum": get_text(node.getElementsByTagName("checksum")[0].childNodes)
+            }
+    return files
+
 # @profile
-def download_and_parse_metadata(primary_url, name, cache_dir):
-    if not primary_url:
+def download_and_parse_metadata(repo_url, name, cache_dir):
+    if not repo_url:
         print("Error: target url not defined!")
         raise ValueError("Repository URL missing")
 
     _rpms = None
     hash_file = os.path.join(cache_dir, name) + ".hash"
-    hash_func = hashlib.sha256()
+    repomd_url = urljoin(repo_url, "repomd.xml")
+    metadata_files = get_metadata_files(repomd_url)
+    primary_url = urljoin(
+        repo_url,
+        metadata_files['primary']['location'].lstrip("/repodata")
+    )
+    primary_hash = metadata_files['primary']['checksum']
 
     for cnt in range(1, 4):
         try:
@@ -87,6 +115,6 @@ def download_and_parse_metadata(primary_url, name, cache_dir):
         file_hash = hash_func.hexdigest()
         with open(hash_file, 'w') as fw:
             logging.debug("Caching file hash in file: %s", hash_file)
-            fw.write(file_hash)
+            fw.write(primary_hash)
     except OSError as error:
         logging.warning("Error caching the primary XML data: %s", error)
