@@ -20,7 +20,8 @@ Feature: Build image with authenticated registry
     And I enter URI, username and password for registry
     And I click on "create-btn"
     Then I wait until I see "registry" text
-
+  
+  @scc_credentials
   Scenario: Create a profile for the authenticated image store as Docker admin
     When I follow the left menu "Images > Profiles"
     And I follow "Create"
@@ -31,6 +32,7 @@ Feature: Build image with authenticated registry
     And I click on "create-btn"
     Then I wait until I see "auth_registry_profile" text
 
+  @scc_credentials
   Scenario: Build an image in the authenticated image store
     When I follow the left menu "Images > Build"
     And I select "auth_registry_profile" from "profileId"
@@ -46,12 +48,14 @@ Feature: Build image with authenticated registry
     Then table row for "auth_registry_profile" should contain "1"
     And the list of packages of image "auth_registry_profile" with version "latest" is not empty
 
+  @scc_credentials
   Scenario: Cleanup: remove Docker profile for the authenticated image store
     When I follow the left menu "Images > Profiles"
     And I check the row with the "auth_registry_profile" text
     And I click on "Delete"
     And I click on the red confirmation button
     And I should see a "Image profile has been deleted." text
+    And I wait until no Salt job is running on "build_host"
 
   Scenario: Cleanup: remove authenticated image store
     When I follow the left menu "Images > Stores"
@@ -63,5 +67,3 @@ Feature: Build image with authenticated registry
   Scenario: Cleanup: delete registry image
     When I delete the image "auth_registry_profile" with version "latest" via API calls
 
-  Scenario: Cleanup: Make sure no job is left running on buildhost
-    When I wait until no Salt job is running on "build_host"

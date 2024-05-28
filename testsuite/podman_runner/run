@@ -12,7 +12,7 @@ set -e
 ./00_setup_env.sh
 ./01_setup_tmp_dirs.sh
 ./02_setup_network.sh
-./03_run_controller.sh
+./03_run_controller_and_registry_and_buildhost.sh
 ./04_setup_ssh_controller.sh
 ./05_install_gems_in_controller.sh
 ./06_collect_and_tag_flaky_tests_in_controller.sh

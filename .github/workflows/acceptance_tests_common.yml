@@ -12,6 +12,8 @@ env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
+  AUTH_REGISTRY: "auth_registry"
+  AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
 jobs:
   paths-filter:
     runs-on: ubuntu-latest
@@ -65,8 +67,8 @@ jobs:
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
         run: ./testsuite/podman_runner/02_setup_network.sh
-      - name: start_controller
-        run: ./testsuite/podman_runner/03_run_controller.sh 
+      - name: start_controller_and_registry
+        run: ./testsuite/podman_runner/03_run_controller_and_registry.sh 
       - name: create_ssh_conf
         run: ./testsuite/podman_runner/04_setup_ssh_controller.sh 
       - name: install_gems_in_controller
