@@ -993,12 +993,9 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-manager-tools-for-micro5-pool-x86_64-5.5
         sle-manager-tools-for-micro5-updates-x86_64-5.5
       ],
-    'sl-micro-6.0' =>
+    'sl-micro-6.0' => # TODO: Add  sl-manager-tools-for-micro6-pool-x86_64-6.0   sl-manager-tools-for-micro6-updates-x86_64-6.0 when they are ready
       %w[
         sl-micro-6.0-pool-x86_64
-        sl-micro-6.0-updates-x86_64
-        sl-manager-tools-for-micro6-pool-x86_64-6.0
-        sl-manager-tools-for-micro6-updates-x86_64-6.0
       ],
     'ubuntu-2004' => # CHECKED
       %w[
@@ -1335,7 +1332,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'sl-micro6.0' =>
       %w[
         sl-micro-6.0-pool-x86_64
-        sl-micro-6.0-updates-x86_64
         sl-micro-6.0-devel-uyuni-client-x86_64
       ],
     'ubuntu-2004' => # CHECKED
@@ -1531,7 +1527,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-micro-5.5-devel-uyuni-client-x86_64' => 60,
   'sle-micro-5.5-pool-x86_64' => 120,
   'sle-micro-5.5-updates-x86_64' => 120,
-  'sl-micro-6.0-updates-x86_64' => 120,
   'sle-module-basesystem15-sp1-pool-x86_64' => 180,
   'sle-module-basesystem15-sp1-updates-x86_64' => 660,
   'sle-module-basesystem15-sp2-pool-x86_64' => 180,
