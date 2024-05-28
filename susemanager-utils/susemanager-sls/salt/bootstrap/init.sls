@@ -44,6 +44,9 @@ no_ssh_push_key_authorized:
     {%- if "microos" in grains['oscodename']|lower %}
         {% set os_base = 'opensusemicroos' %}
     {%- else %}
+        {%- if grains['osrelease_info'][0]|int >= 6 %}
+            {% set os_base = 'sl' %}
+        {%- endif %}
         {% set os_base = os_base|string + 'micro' %}
     {%- endif %}
   {%- endif %}
