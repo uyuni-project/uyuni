@@ -1545,6 +1545,24 @@ DATA = {
         "DEST": DOCUMENT_ROOT
         + "/pub/repositories/opensusetumbleweed/latest/0/bootstrap/",
     },
+    "SL-MICRO-6.0-aarch64": {
+        "PDID": [2697, 2764],
+        "BETAPDID": [2767],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/0/bootstrap/",
+    },
+    "SL-MICRO-6.0-s390x": {
+        "PDID": [2698, 2765],
+        "BETAPDID": [2768],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/0/bootstrap/",
+    },
+    "SL-MICRO-6.0-x86_64": {
+        "PDID": [2699, 2763],
+        "BETAPDID": [2766],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/0/bootstrap/",
+    },
     "centos-6-x86_64": {
         "PDID": [-11, 1682],
         "BETAPDID": [2064],
