@@ -45,6 +45,4 @@ def main():
     args = parser.parse_args()
 
     logging.getLogger().setLevel(args.loglevel)
-
-    primary_xml = urljoin(args.url, args.md_file)
-    parse.download_and_parse_metadata(primary_xml, args.md_file, args.cache)
+    parse.download_and_parse_metadata(args.url, "primary", args.cache)  # TODO change the name 'primary'
