@@ -70,9 +70,7 @@ def download_and_parse_metadata(repo_url, name, cache_dir):
                     chunk_size = 1024 * 1024
                     written = True
                     while written:
-                        chunk = primary_fd.read(chunk_size)
-                        written = tmp_file.write(chunk)
-                        hash_func.update(chunk)
+                        written = tmp_file.write(primary_fd.read(chunk_size))
 
                 # Work on temporary file without loading it into memory at once
                 tmp_file.seek(0)
@@ -112,7 +110,6 @@ def download_and_parse_metadata(repo_url, name, cache_dir):
                 os.remove(os.path.join(cache_dir, f))
 
         # Cache the hash of the file
-        file_hash = hash_func.hexdigest()
         with open(hash_file, 'w') as fw:
             logging.debug("Caching file hash in file: %s", hash_file)
             fw.write(primary_hash)
