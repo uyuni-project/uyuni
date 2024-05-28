@@ -146,6 +146,12 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
     details.cronTimes.hour = details.cronTimes.hour.padStart(2, "0");
     details.cronTimes.minute = details.cronTimes.minute.padStart(2, "0");
 
+    // Creation time is always retrieved in server's timezone
+    // Parse the date and show it in user's timezone
+    const createdAt = localizedMoment(
+      Date.parse(`${details.createdAt} ${localizedMoment.serverTimeZoneAbbr}`)
+    ).toUserDateTimeString();
+
     return (
       <BootstrapPanel title={t("Schedule Details")}>
         <div className="table-responsive">
@@ -180,7 +186,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
               {
                 <tr>
                   <td>{t("Created at")}:</td>
-                  <td>{details.createdAt + " " + window.timezone}</td>
+                  <td>{createdAt + " " + localizedMoment.userTimeZoneAbbr}</td>
                 </tr>
               }
               {this.getExecutionText(details)}
