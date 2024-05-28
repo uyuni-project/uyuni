@@ -22,13 +22,6 @@ def main():
         type=str,
     )
 
-    parser.add_argument(
-        "-f",
-        "--file",
-        help="The target metadata file we want to parse",
-        dest="md_file",
-        type=str,
-    )
 
     parser.add_argument(
         "-d",
