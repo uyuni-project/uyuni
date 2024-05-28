@@ -45,4 +45,11 @@
               AND server_id = :server_id
         </query>
     </mode>
+
+    <write-mode name="clear_oval_metadata_by_platform">
+        <query params="cpe">
+            DELETE FROM suseOVALPlatformVulnerablePackage pvp WHERE pvp.platform_id = (SELECT id FROM suseOVALPlatform plat WHERE plat.cpe = :cpe);
+            DELETE FROM suseOVALPlatform plat where plat.cpe = :cpe;
+        </query>
+    </write-mode>
 </datasource_modes>
