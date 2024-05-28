@@ -238,13 +238,9 @@ class CVEAudit extends React.Component<Props, State> {
     if (dataSources.length === 0) {
       return t("Unknown patch status");
     } else if (dataSources.indexOf("OVAL") === -1) {
-      return t(
-        "OVAL data out of sync. Potential missed vulnerabilities"
-      );
+      return t("OVAL data out of sync. Potential missed vulnerabilities");
     } else if (dataSources.indexOf("CHANNELS") === -1) {
-      return t(
-        "Server product channels out of sync; no patch information available"
-      );
+      return t("Server product channels out of sync; no patch information available");
     }
 
     Loggerhead.error(`Invalid scan data sources: ${dataSources}`);
