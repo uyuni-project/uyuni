@@ -1,0 +1,2 @@
+- Fix displayed time in datetime pickers that use server's 
+  timezone (bsc#1225196)
