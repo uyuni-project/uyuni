@@ -3,20 +3,17 @@ This is a minimal implementation of the lazy reposync parser.
 It downloads the target repository's metadata file(s) from the
 given url and parses it(them)
 """
+import gzip
 import logging
+import os
 import tempfile
 import time
-import urllib.request
 import urllib.error
+import urllib.request
 import xml.sax
 from urllib.parse import urljoin
 from xml.dom import pulldom
 from xml.sax.xmlreader import InputSource
-
-import os
-import gzip
-
-from memory_profiler import profile
 
 from lzreposync.primary_handler import Handler
 

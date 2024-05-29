@@ -1,7 +1,8 @@
 import logging
 import xml.sax
-from lzreposync.rpm import RPM
+from typing import List
 
+from spacewalk.server.importlib.importLib import Package, Checksum, Dependency
 
 COMMON_NS = "http://linux.duke.edu/metadata/common"
 SEARCHED_CHARS = ["arch", "name"]
