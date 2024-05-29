@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # In order to use different end-point to download rpms other than the manager instance itself, one can do so with
@@ -12,7 +12,7 @@ Feature: Repos file generation based on custom pillar data
     Given I am authorized for the "Admin" section
 
 @susemanager
-  Scenario: Subscribe the SLES minion to a channel
+  Scenario: Select the channels of the SLES minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -20,6 +20,7 @@ Feature: Repos file generation based on custom pillar data
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
     And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
+    And I uncheck "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -28,7 +29,7 @@ Feature: Repos file generation based on custom pillar data
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
 @uyuni
-  Scenario: Subscribe the openSUSE minion to a channel
+  Scenario: Select the channels of the openSUSE minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -55,13 +56,11 @@ Feature: Repos file generation based on custom pillar data
     And I refresh the pillar data
 
 @susemanager
-  Scenario: Subscribe the SLES minion to a channel again so new RPM end-point will be taken into account
+  Scenario: Select the channels of the SLES minion again so new RPM end point will be taken into account
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
-    And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -69,9 +68,8 @@ Feature: Repos file generation based on custom pillar data
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
-
 @uyuni
-  Scenario: Subscribe the openSUSE minion to a channel again so new RPM end-point will be taken into account
+  Scenario: Select the channels of the openSUSE minion again so new RPM end point will be taken into account
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -96,7 +94,7 @@ Feature: Repos file generation based on custom pillar data
     And I refresh the pillar data
 
 @susemanager
-  Scenario: Cleanup: subscribe the SLES minion to a channel
+  Scenario: Cleanup: select the channels of the SLES minion as before
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -105,6 +103,8 @@ Feature: Repos file generation based on custom pillar data
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
+    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64"
+    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -113,7 +113,7 @@ Feature: Repos file generation based on custom pillar data
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
 @uyuni
-  Scenario: Cleanup: subscribe the SLES minion to a channel
+  Scenario: Cleanup: select the channels of the openSUSE minion as before
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
