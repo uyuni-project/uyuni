@@ -11,6 +11,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
+import { localizedMoment } from "utils";
 import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
@@ -94,14 +95,16 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
           ) : details.type === "daily" ? (
             <td>
               {"Every day at "}
-              <b>{details.cronTimes.hour + ":" + details.cronTimes.minute}</b>
+              <b>{`${details.cronTimes.hour}:${details.cronTimes.minute} `}</b>
+              {localizedMoment.serverTimeZoneAbbr}
             </td>
           ) : details.type === "weekly" ? (
             <td>
               {"Every "}
               <b>{this.weekDays[details.cronTimes.dayOfWeek - 1]}</b>
               {" at "}
-              <b>{details.cronTimes.hour + ":" + details.cronTimes.minute}</b>
+              <b>{`${details.cronTimes.hour}:${details.cronTimes.minute} `}</b>
+              {localizedMoment.serverTimeZoneAbbr}
             </td>
           ) : (
             <td>
