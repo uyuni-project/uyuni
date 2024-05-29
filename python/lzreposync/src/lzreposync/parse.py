@@ -39,13 +39,13 @@ def get_metadata_files(repomd_url):
             }
     return files
 
+
 # @profile
 def download_and_parse_metadata(repo_url, name, cache_dir):
     if not repo_url:
         print("Error: target url not defined!")
         raise ValueError("Repository URL missing")
 
-    _rpms = None
     hash_file = os.path.join(cache_dir, name) + ".hash"
     repomd_url = urljoin(repo_url, "repomd.xml")
     metadata_files = get_metadata_files(repomd_url)
