@@ -54,28 +54,68 @@ class Handler(xml.sax.ContentHandler):
     def __init__(self):
         super().__init__()
         self.package = None
-        self.rpms = {}
+        self.packages: List[Package] = []  # A group of packages to insert together into the db
         self.text = None
+        self.currentElement = None
+        self.attributes_stack = []  # used for nested attributes that has a list of objects
+        self.currentParent = None  # Used to identify an attribute that has a list of objects. Eg: 'provides'
 
     def startElementNS(self, name, qname, attrs):
         searched_attrs = {
-            "location": ["href"],
-            "time": ["file"],
-            "version": ["epoch", "ver", "rel"]
-        }  # TODO update this with the package's metadata we need
+            # "location": ["href"],  # TODO Check: is it source_rpm ?
+            "time": ["build"],
+            "version": ["epoch", "ver", "rel"],  # TODO Check: we have 'version' and 'rpm_version', which one is it ?
+            "checksum": ["type"],
+            "size": ["package", "installed"],
+            "header-range": ["start", "end"]
+        }
 
         if name == (COMMON_NS, "package"):
             self.package = {}
         elif self.package is not None and name[0] == COMMON_NS and name[1] in searched_attrs:
-            for attr_name in searched_attrs[name[1]]:
-                if attr_name not in attrs.getQNames():
-                    logging.error("missing %s %s attribute, ignoring package", name[1], attr_name)
-                    self.package = None
+            if name[1] == "checksum":
+                self.currentElement = Checksum()
+                self.currentElement['value'] = ""
+                if 'type' in attrs.getQNames():
+                    self.currentElement['type'] = attrs.getValueByQName('type')
+                    self.text = ""
                 else:
-                    value = attrs.getValueByQName(attr_name)
-                    self.package["/".join([name[1], attr_name])] = value
-        elif self.package is not None and name[0] == COMMON_NS and name[1] in SEARCHED_CHARS:
-            self.text = ""
+                    logging.error("missing %s %s attribute, ignoring package", name[1], 'type')
+                    self.package = None
+            else:
+                for attr_name in searched_attrs[name[1]]:
+                    if attr_name not in attrs.getQNames():
+                        logging.error("missing %s %s attribute, ignoring package", name[1], attr_name)
+                        self.package = None
+                    else:
+                        value = attrs.getValueByQName(attr_name)
+                        extended_name = "/".join([name[1], attr_name])  # Eg: version/ver
+                        if extended_name in attribute_map:
+                            actual_name = attribute_map[extended_name]
+                            self.package[actual_name] = value
+                        else:
+                            logging.warning(
+                                "Couldn't map the attribute: %s to any importLib attribute, ignoring package",
+                                extended_name)
+                            continue
+        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] in SEARCHED_CHARS:
+            if name[1] in nested_attributes:
+                # Dealing with list/nested attributes : ["provides", "requires", "enhances", "obsoletes"]
+                self.currentParent = name[1]
+            else:
+                self.text = ""
+        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] == "entry":
+            # Grouping the attribute of list/nested attributes. Eg: for the 'provides' attribute
+            dependency = Dependency()
+            for attr_name in dependency.attributeTypes.keys():  # ['name', 'version', 'flags']
+                if attr_name not in attrs.getQNames():
+                    # logging.warning("Attribute %s not found. Skipping..", attr_name)
+                    continue
+                else:
+                    dependency[attr_name] = attrs.getValueByQName(
+                        "ver" if attr_name == "version" else attr_name
+                    )
+            self.attributes_stack.append(dependency)
 
     def characters(self, content):
         if self.text is not None:
@@ -83,20 +123,15 @@ class Handler(xml.sax.ContentHandler):
 
     def endElementNS(self, name, qname):
         if name == (COMMON_NS, "package"):
-            if self.package is not None and self.package["arch"] in ["x86_64", "noarch"]:
-                pkg_name = self.package["name"]
-
-                rpm = RPM(
-                    self.package["location/href"],
-                    int(self.package["time/file"]),
-                    pkg_name,
-                    self.package["version/epoch"],
-                    self.package["version/ver"],
-                    self.package["version/rel"],
-                )
-                latest_rpm = self.rpms.get(pkg_name)
-                if latest_rpm is None or latest_rpm.compare(rpm):
-                    self.rpms[pkg_name] = rpm
-        elif self.package is not None and name[0] == COMMON_NS and name[1] in SEARCHED_CHARS:
-            self.package[name[1]] = self.text
+            self.packages.append(self.package)
+        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] in SEARCHED_CHARS:
+            if name[1] == "checksum":
+                self.currentElement['value'] = self.text
+                self.package["checksum_list"] = [self.currentElement]  # TODO can we have multitple ?
+            elif name[1] in nested_attributes:
+                self.package[name[1]] = self.attributes_stack  # eg: [Dependency] of 'provides' attribute
+                self.currentParent = None
+                self.attributes_stack = []
+            else:
+                self.package[name[1]] = self.text
             self.text = None
