@@ -79,7 +79,8 @@ def download_and_parse_metadata(repo_url, name, cache_dir):
                     input_source = InputSource()
                     input_source.setByteStream(gzip_fd)
                     parser.parse(input_source)
-                    _rpms = handler.rpms.values()
+                    packages_count = len(handler.packages)
+                    logging.debug("Parsed packages: %s", packages_count)
             break
         except urllib.error.HTTPError as e:
             # We likely hit the repo while it changed:
