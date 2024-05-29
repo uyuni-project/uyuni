@@ -148,9 +148,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
     // Creation time is always retrieved in server's timezone
     // Parse the date and show it in user's timezone
-    const createdAt = localizedMoment(
-      Date.parse(`${details.createdAt} ${localizedMoment.serverTimeZoneAbbr}`)
-    ).toUserDateTimeString();
+    const createdAt = localizedMoment.fromServerDateTimeString(details.createdAt).toUserDateTimeString();
 
     return (
       <BootstrapPanel title={t("Schedule Details")}>

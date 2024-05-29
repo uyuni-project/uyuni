@@ -44,9 +44,8 @@ declare global {
   }
 }
 
-if (process.env.NODE_ENV !== "production") {
-  (window as any).localizedMoment = localizedMomentConstructor;
-}
+// This is for debugging purposes only, if you need to use this module, import it properly
+(window as any).localizedMoment = localizedMomentConstructor;
 
 function validateOrGuessTimeZone(input: string | undefined, errorLabel: "Server" | "User") {
   try {
@@ -139,6 +138,13 @@ declare module "moment" {
   const userTimeZone: string;
   /** Abbreviated user time zone string, e.g. `"JST"` */
   const userTimeZoneAbbr: string;
+
+  /**
+   * Parse a date time string provided in the server time zone, e.g. `localizedMoment.fromServerString("May 29, 2024, 11:26:06 AM")`.
+   *
+   * @deprecated This function exists for backwards compatibility, for new backend code use ISO 8601 and call `localizedMoment(input)` directly.
+   */
+  const fromServerDateTimeString: (input: string) => moment.Moment;
 }
 
 moment.fn.toServerString = function (this: moment.Moment): string {
@@ -197,6 +203,13 @@ Object.defineProperties(moment, {
       return (userTimeZoneAbbr ??= moment().tz(config.userTimeZone).format("z"));
     },
   },
+  fromServerDateTimeString: {
+    get() {
+      // TODO: Is this format string correct? Maybe there's a library constant we can use here?
+      return (input: string): moment.Moment =>
+        moment.tz(input, "MMM DD, YYYY, HH:mm:ss A", true, config.serverTimeZone);
+    },
+  },
 });
 
 const parseTimeString = function (input: string): { hours: number; minutes: number } | null {
@@ -218,7 +231,9 @@ function localizedMomentConstructor(input?: moment.MomentInput) {
       : moment(input, true).utc().tz("UTC");
 
   if (!utcMoment.isValid()) {
-    throw new RangeError("Invalid localized moment on input " + JSON.stringify(input));
+    throw new RangeError(
+      `Invalid input for localized moment, got input with type "${typeof input}" and value ${input}`
+    );
   }
 
   return utcMoment;
