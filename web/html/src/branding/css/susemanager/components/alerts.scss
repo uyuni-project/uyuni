@@ -18,6 +18,10 @@
   ul {
     padding-left: 15px;
   }
+
+  > p {
+    margin: 0;
+  }
 }
 
 .alert:after,
