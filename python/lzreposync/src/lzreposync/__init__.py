@@ -52,4 +52,6 @@ def main():
     args = parser.parse_args()
 
     logging.getLogger().setLevel(args.loglevel)
-    parse.download_and_parse_metadata(args.url, "primary", args.cache)  # TODO change the name 'primary'
+    rpm_primary_handler = Handler()
+    rpm_repo = Repo(args.name, args.cache, args.url, rpm_primary_handler)  # TODO args.url should be args.repo, no ?
+    rpm_repo.download_and_parse_metadata()
