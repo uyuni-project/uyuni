@@ -22,6 +22,13 @@ def main():
         type=str,
     )
 
+    parser.add_argument(
+        "-n",
+        "--name",
+        help="Name of the repository",
+        dest="name",
+        type=str,
+    )
 
     parser.add_argument(
         "-d",
