@@ -1305,9 +1305,9 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
-When(/^I copy unset package file on server$/) do
+When(/^I copy unset package file on "(.*?)"$/) do |minion|
   base_dir = "#{File.dirname(__FILE__)}/../upload_files/unset_package/"
-  return_code = file_inject(get_target('server'), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
+  return_code = file_inject(get_target(minion), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
   raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 
