@@ -142,48 +142,19 @@ class Handler(xml.sax.ContentHandler):
             self.package = {}
         elif self.package is not None and name[0] == COMMON_NS and name[1] in searched_attrs:
             if name[1] == "checksum":
-                self.currentElement = Checksum()
-                self.currentElement['value'] = ""
-                if 'type' in attrs.getQNames():
-                    self.currentElement['type'] = attrs.getValueByQName('type')
-                    self.text = ""
-                else:
-                    logging.error("missing %s %s attribute, ignoring package", name[1], 'type')
-                    self.package = None
+                self.set_checksum(attrs)
             else:
+                # Dealing with elements with attributes. Eg: <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
                 for attr_name in searched_attrs[name[1]]:
-                    if attr_name not in attrs.getQNames():
-                        logging.error("missing %s %s attribute, ignoring package", name[1], attr_name)
-                        self.package = None
-                    else:
-                        value = attrs.getValueByQName(attr_name)
-                        extended_name = "/".join([name[1], attr_name])  # Eg: version/ver
-                        if extended_name in attribute_map:
-                            actual_name = attribute_map[extended_name]
-                            self.package[actual_name] = value
-                        else:
-                            logging.warning(
-                                "Couldn't map the attribute: %s to any importLib attribute, ignoring package",
-                                extended_name)
-                            continue
+                    self.set_element_attribute(attr_name, name[1], attrs)
         elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] in SEARCHED_CHARS:
-            if name[1] in nested_attributes:
-                # Dealing with list/nested attributes : ["provides", "requires", "enhances", "obsoletes"]
+            if is_complex(name[1]):
+                # Dealing with list/nested attributes. Eg: ["provides", "requires", "enhances", "obsoletes"]
                 self.currentParent = name[1]
             else:
                 self.text = ""
         elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] == "entry":
-            # Grouping the attribute of list/nested attributes. Eg: for the 'provides' attribute
-            dependency = Dependency()
-            for attr_name in dependency.attributeTypes.keys():  # ['name', 'version', 'flags']
-                if attr_name not in attrs.getQNames():
-                    # logging.warning("Attribute %s not found. Skipping..", attr_name)
-                    continue
-                else:
-                    dependency[attr_name] = attrs.getValueByQName(
-                        "ver" if attr_name == "version" else attr_name
-                    )
-            self.attributes_stack.append(dependency)
+            self.add_dependency(attrs)
 
     def characters(self, content):
         if self.text is not None:
@@ -196,7 +167,7 @@ class Handler(xml.sax.ContentHandler):
             if name[1] == "checksum":
                 self.currentElement['value'] = self.text
                 self.package["checksum_list"] = [self.currentElement]  # TODO can we have multitple ?
-            elif name[1] in nested_attributes:
+            elif is_complex(name[1]):
                 self.package[name[1]] = self.attributes_stack  # eg: [Dependency] of 'provides' attribute
                 self.currentParent = None
                 self.attributes_stack = []
