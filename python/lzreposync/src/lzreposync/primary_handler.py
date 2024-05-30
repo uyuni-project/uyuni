@@ -25,22 +25,26 @@ SEARCHED_CHARS = ["arch",
                   "checksum"
                   ]
 
-# Mapping the attributes from the xml tags to the importLib's Package class's attributes
-# Note: if an attribute is not in this map, then: if it is in the searched_attrs then it is ignored else it is left as
-# it is, as it has the same name as the importLib
-attribute_map = {
-    "version/ver": "version",
-    "version/rel": "release",
-    "version/epoch": "epoch",
-    "time/build": "build_time",
-    "size/package": "package_size",
-    "size/installed": "installed_size",
-    "header-range/start": "header_start",
-    "header-range/end": "header_end",
-    "buildhost": "build_host",
-    "sourcerpm": "source_rpm",
-    "group": "package_group",
-}
+
+def map_attribute(attribute: str):
+    """
+    Map the given attribute name form the metadata file to the corresponding
+    name in the importLib Package class.
+    If no mapping found, return None.
+    """
+    attributes = {
+        "version/ver": "version",
+        "version/rel": "release",
+        "version/epoch": "epoch",
+        "time/build": "build_time",
+        "size/package": "package_size",
+        "size/installed": "installed_size",
+        "header-range/start": "header_start",
+        "header-range/end": "header_end",
+        "buildhost": "build_host",
+        "sourcerpm": "source_rpm",
+        "group": "package_group"
+    }
 
 # Attributes that are represented by list of objects in importLib
 nested_attributes = ["provides", "requires", "enhances", "obsoletes"]
