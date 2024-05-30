@@ -14,6 +14,8 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/manager/notification-messages",
   "rhn/channels/software/Search.do",
   "/rhn/kickstart/KickstartIpRanges.do",
+  "/rhn/channels/manage/repos/RepoCreate.do",
+  "/rhn/systems/details/Overview",
 ];
 
 export const onEndNavigate = () => {
