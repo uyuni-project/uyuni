@@ -46,8 +46,17 @@ def map_attribute(attribute: str):
         "group": "package_group"
     }
 
-# Attributes that are represented by list of objects in importLib
-nested_attributes = ["provides", "requires", "enhances", "obsoletes"]
+    if attribute in attributes:
+        return attributes[attribute]
+    return None
+
+
+def is_complex(attribute: str):
+    """
+    Return True if the attribute is represented by a list of objects in importLib
+    Eg: provides: [Dependency]
+    """
+    return attribute in ["provides", "requires", "enhances", "obsoletes"]
 
 
 class Handler(xml.sax.ContentHandler):
