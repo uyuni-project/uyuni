@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -24,7 +24,11 @@ Feature: Display patches
   Scenario: Check all patches exist
     When I follow the left menu "Patches > Patch List > Relevant"
     Then I should see an update in the list
-    When I wait until I see "virgo-dummy" text, refreshing the page
+    When I wait until I see "andromeda-dummy" text, refreshing the page
+    Then I should see a "andromeda-dummy-6789" link
+    When I enter "virgo-dummy" as the filtered synopsis
+    And I click on the filter button
+    And I wait until I see "virgo-dummy" text
     Then I should see a "virgo-dummy-3456" link
 
   Scenario: Check SLES release 6789 patches
@@ -48,6 +52,7 @@ Feature: Display patches
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     Then I should see a "Relevant Patches" text
+    And I should see a "Test update for andromeda-dummy" text
     And I should see a "Test update for virgo-dummy" text
 
   Scenario: Cleanup: regenerate search index for later tests
