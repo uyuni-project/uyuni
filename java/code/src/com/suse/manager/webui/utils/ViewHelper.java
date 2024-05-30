@@ -107,6 +107,7 @@ public enum ViewHelper {
         "/rhn/channels/manage/repos/RepoCreate.do",
         "/rhn/systems/details/Overview"
         "/rhn/manager/formula-catalog"
+        "/rhn/errata/manage/CloneErrata.do"
     );
 
     ViewHelper() { }
