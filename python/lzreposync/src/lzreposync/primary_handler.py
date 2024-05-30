@@ -73,6 +73,61 @@ class Handler(xml.sax.ContentHandler):
         self.attributes_stack = []  # used for nested attributes that has a list of objects
         self.currentParent = None  # Used to identify an attribute that has a list of objects. Eg: 'provides'
 
+    def set_checksum(self, attrs):
+        """
+        Add the checksum (object) to the current package's metadata
+        """
+        self.currentElement = Checksum()
+        self.currentElement['value'] = ""
+        if 'type' in attrs.getQNames():
+            self.currentElement['type'] = attrs.getValueByQName('type')
+            self.text = ""
+        else:
+            logging.error("missing 'checksum' attribute, ignoring package")
+            self.package = None
+
+    def set_element_attribute(self, attr_name, element, attrs):
+        """
+        Add the given attribute to the current package's metadata.
+        For example the attribute can be 'epoch' of an element : <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
+        - attr_name: attribute within the xml element. Eg: 'epoch', 'ver', 'rel', etc... that we want to set
+        - element: the current element we're parsing. Eg: <version...>
+        - attrs: list of element's attributes returned by the sax event handler
+        """
+        if attr_name not in attrs.getQNames():
+            logging.error("missing %s %s attribute, ignoring package", element, attr_name)
+            self.package = None  # TODO is this correct? in shouldn't we break the loop?
+        else:
+            extended_name = "/".join([element, attr_name])  # Eg: version/ver
+            actual_name = map_attribute(extended_name)
+            if actual_name is not None:
+                value = attrs.getValueByQName(attr_name)
+                self.package[actual_name] = value
+            else:
+                logging.warning(
+                    "Couldn't map the attribute: %s to any importLib attribute, ignoring package",
+                    extended_name)
+                self.package = None  # TODO is this correct? in shouldn't we break the loop?
+
+    def add_dependency(self, attrs):
+        """
+        Adding a new dependency to the current attributes_stack.
+        This will be generally done by parsing the content of <rpm:entry .../>.
+
+        Note: The current 'attributes_stack' contains attributes (dependencies) relative to (or children of) the
+        attribute inside the 'currentParent'.
+        """
+        dependency = Dependency()
+        for attr_name in dependency.attributeTypes.keys():  # ['name', 'version', 'flags']
+            if attr_name not in attrs.getQNames():
+                # Skipp.. Eg: 'epoch'
+                continue
+            else:
+                dependency[attr_name] = attrs.getValueByQName(
+                    "ver" if attr_name == "version" else attr_name
+                )
+        self.attributes_stack.append(dependency)
+
     def startElementNS(self, name, qname, attrs):
         searched_attrs = {
             # "location": ["href"],  # TODO Check: is it source_rpm ?
