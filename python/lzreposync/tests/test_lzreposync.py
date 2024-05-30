@@ -1,5 +1,7 @@
-import pytest
-from lzreposync import parse
+import os.path
+from unittest.mock import patch, mock_open
+
+from lzreposync import repo, Handler
 
 
 def test_download_and_parse_metadata():

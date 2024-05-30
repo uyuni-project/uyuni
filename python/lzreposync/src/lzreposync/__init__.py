@@ -1,7 +1,9 @@
 import argparse
 import logging
 
-from lzreposync import parse
+from lzreposync import repo
+from lzreposync.primary_handler import Handler
+from lzreposync.repo import Repo
 
 
 def main():
