@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_changing_software_channels
@@ -84,17 +84,17 @@ Feature: Channel subscription via SSM
 
 @sle_minion
 @susemanager
-  Scenario: Check old channels are still enabled on SLES minion before channel change completes
+  Scenario: Check via API old channels are still the same on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "17" channels should be enabled on "sle_minion"
-    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @sle_minion
 @uyuni
-  Scenario: Check old channels are still enabled on SLES minion before channel change completes
+  Scenario: Check via API old channels are still the same on openSUSE minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "8" channels should be enabled on "sle_minion"
-    And channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
+    Then channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
+    And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development))" should be disabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
     When I wait for "180" seconds
@@ -117,14 +117,14 @@ Feature: Channel subscription via SSM
 
 @sle_minion
 @susemanager
-  Scenario: Check the new channels are enabled on the SLES minion
+  Scenario: Check via API the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
     Then "2" channels should be enabled on "sle_minion"
     And channel "Fake-Base-Channel-SUSE-like" should be enabled on "sle_minion"
     And channel "Fake-Child-Channel-SUSE-like" should be enabled on "sle_minion"
 
 @uyuni
-  Scenario: Check the new channels are enabled on the SLES minion
+  Scenario: Check via API the new channels are enabled on the openSUSE minion
     When I refresh the metadata for "sle_minion"
     Then "2" channels should be enabled on "sle_minion"
     And channel "Fake-Base-Channel-SUSE-like" should be enabled on "sle_minion"
