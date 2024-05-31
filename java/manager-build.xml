@@ -319,6 +319,9 @@
                 <include name="**/junit-platform-*.jar" />
                 <include name="**/junit-jupiter-*.jar" />
             </fileset>
+          <fileset dir="/usr/share/java/open-test-reporting/">
+            <include name="**/*.jar" />
+          </fileset>
         </classpath>
 
         <classpath refid="managertestjars" />
