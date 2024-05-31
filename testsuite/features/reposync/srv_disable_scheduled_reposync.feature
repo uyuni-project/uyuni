@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Delete the scheduled task for mgr-sync-refresh
@@ -11,3 +11,6 @@ Feature: Delete the scheduled task for mgr-sync-refresh
     And I follow "mgr-sync-refresh-default"
     And I choose "disabled"
     And I click on "Update Schedule"
+    # Workaround https://bugzilla.suse.com/show_bug.cgi?id=1225740
+    And I click on "Delete Schedule"
+￼
