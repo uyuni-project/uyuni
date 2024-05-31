@@ -390,7 +390,7 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
-  if channel.include?('custom_channel')
+  if channel.include?('custom_channel') || channel.include?('ptf')
     log 'Timeout of 10 minutes for a custom channel'
     timeout = 600
   elsif TIMEOUT_BY_CHANNEL_NAME[channel].nil?
