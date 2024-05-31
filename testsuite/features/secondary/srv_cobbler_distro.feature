@@ -18,11 +18,13 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
+    # TODO: Move to SUMA API
     When I create distro "testdistro"
 
   Scenario: Create dummy profile
     Given cobblerd is running
     And distro "testdistro" exists
+    # TODO: Move to SUMA API
     When I create profile "testprofile" for distro "testdistro"
 
   Scenario: Check cobbler created distro and profile
