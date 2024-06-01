@@ -14,7 +14,7 @@ class Repo(metaclass=abc.ABCMeta):
         self.cache_dir = os.path.join(cache_path, str(name))
         self.repository = repository
         self.handler = handler  # The sax handler/parser
-        self.metadata_files = None  # Eg: 'primary.xml', 'filelists.xml', etc..
+        self.metadata_files = None
 
     def get_repo_path(self, path):
         return "{}/{}".format(self.repository, path)
