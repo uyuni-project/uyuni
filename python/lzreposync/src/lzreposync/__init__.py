@@ -53,5 +53,5 @@ def main():
 
     logging.getLogger().setLevel(args.loglevel)
     rpm_primary_handler = Handler()
-    rpm_repo = Repo(args.name, args.cache, args.url, rpm_primary_handler)  # TODO args.url should be args.repo, no ?
-    rpm_repo.download_and_parse_metadata()
+    rpm_repository = RPMRepo(args.name, args.cache, args.url, rpm_primary_handler)  # TODO args.url should be args.repo, no ?
+    rpm_repository.download_and_parse_metadata()
