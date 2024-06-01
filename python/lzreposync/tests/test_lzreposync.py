@@ -1,7 +1,7 @@
 import os.path
 from unittest.mock import patch, mock_open
 
-from lzreposync import repo, Handler
+from lzreposync import Handler, RPMRepo
 
 
 def test_download_and_parse_metadata():

@@ -1,9 +1,9 @@
 import argparse
 import logging
 
-from lzreposync import repo
 from lzreposync.primary_handler import Handler
 from lzreposync.repo import Repo
+from lzreposync.rpm_repo import RPMRepo
 
 
 def main():

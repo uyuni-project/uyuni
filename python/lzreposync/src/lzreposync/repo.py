@@ -4,25 +4,7 @@ It downloads the target repository's metadata file(s) from the
 given url and parses it(them)
 """
 import abc
-import gzip
-import logging
 import os
-import tempfile
-import time
-import urllib.error
-import urllib.request
-import xml.sax
-from urllib.parse import urljoin
-from xml.dom import pulldom
-from xml.sax.xmlreader import InputSource
-
-
-def get_text(node_list):
-    rc = []
-    for node in node_list:
-        if node.nodeType == node.TEXT_NODE:
-            rc.append(node.data)
-        return ''.join(rc)
 
 
 class Repo(metaclass=abc.ABCMeta):
