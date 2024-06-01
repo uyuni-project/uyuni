@@ -3,6 +3,7 @@ This is a minimal implementation of the lazy reposync parser.
 It downloads the target repository's metadata file(s) from the
 given url and parses it(them)
 """
+import abc
 import gzip
 import logging
 import os
@@ -15,8 +16,6 @@ from urllib.parse import urljoin
 from xml.dom import pulldom
 from xml.sax.xmlreader import InputSource
 
-from lzreposync.primary_handler import Handler
-
 
 def get_text(node_list):
     rc = []
@@ -26,18 +25,28 @@ def get_text(node_list):
         return ''.join(rc)
 
 
-class Repo:
+class Repo(metaclass=abc.ABCMeta):
 
     def __init__(self, name, cache_path, repository, handler):
         self.name = name
         self.cache_dir = os.path.join(cache_path, str(name))
         self.repository = repository
         self.handler = handler  # The sax handler/parser
+        self.metadata_files = None  # Eg: 'primary.xml', 'filelists.xml', etc..
 
     def get_repo_path(self, path):
         return "{}/{}".format(self.repository, path)
 
     def get_metadata_files(self):
+        """
+        Return a dict containing the metadata files' information in the following format
+        {
+            "type [eg: primary]" : {
+                                    "location": "...",
+                                    "checksum": "...",
+                                    }
+        }
+        """
         repomd_url = self.get_repo_path("repomd.xml")
         repomd_path = urllib.request.urlopen(repomd_url)
         doc = pulldom.parse(repomd_path)
@@ -51,20 +60,28 @@ class Repo:
                 }
         return files
 
-    def find_metadata_file(self, file_name) -> (str, str):
+    def find_metadata_file_url(self, file_name) -> (str, str):
         """
         Return the corresponding metadata file url given its name.
         An example of these files can be 'primary', 'filelists', 'other', etc...
-        Return the md file url, and its checksum
         """
-        metadata_files = self.get_metadata_files()
-        md_file_path = urljoin(
+        if not self.metadata_files:
+            self.metadata_files = self.get_metadata_files()
+        md_file_url = urljoin(
             self.repository,
-            metadata_files[file_name]['location'].lstrip("/repodata")
+            self.metadata_files[file_name]['location'].lstrip("/repodata")
         )
-        checksum = metadata_files[file_name]['checksum']
+        return md_file_url
 
-        return md_file_path, checksum
+    def find_metadata_file_checksum(self, file_name):
+        """
+        Return the corresponding metadata file url given its name.
+        An example of these files can be 'primary', 'filelists', 'other', etc...
+        """
+        if not self.metadata_files:
+            self.metadata_files = self.get_metadata_files()
+        return self.metadata_files[file_name]["checksum"]
+
 
     # @profile
     def download_and_parse_metadata(self):
@@ -74,7 +91,8 @@ class Repo:
 
         hash_file = os.path.join(self.cache_dir, self.name) + ".hash"
 
-        primary_url, primary_hash = self.find_metadata_file("primary")
+        primary_url = self.find_metadata_file_url("primary")
+        primary_hash = self.find_metadata_file_checksum("primary")
 
         for cnt in range(1, 4):
             try:
@@ -107,7 +125,7 @@ class Repo:
                 # At the time we read repomd.xml refered to an primary.xml.gz
                 # that does not exist anymore.
                 if cnt < 3 and e.code == 404:
-                    primary_url = self.find_metadata_file("primary")
+                    primary_url = self.find_metadata_file_url("primary")
                     time.sleep(2)
                 else:
                     raise
