@@ -7,24 +7,6 @@ from spacewalk.server.importlib.importLib import Package, Checksum, Dependency
 COMMON_NS = "http://linux.duke.edu/metadata/common"
 RPM_NS = "http://linux.duke.edu/metadata/rpm"
 
-SEARCHED_CHARS = ["arch",
-                  "name",
-                  "summary",
-                  "description",
-                  "packager",
-                  "url",
-                  "license",
-                  "vendor",
-                  "group",
-                  "buildhost",
-                  "sourcerpm",
-                  "provides",
-                  "requires",
-                  "obsoletes",
-                  "enhances",
-                  "checksum"
-                  ]
-
 
 def map_attribute(attribute: str):
     """
@@ -72,6 +54,31 @@ class Handler(xml.sax.ContentHandler):
         self.currentElement = None
         self.attributes_stack = []  # used for nested attributes that has a list of objects
         self.currentParent = None  # Used to identify an attribute that has a list of objects. Eg: 'provides'
+        self.searched_chars = ["arch",
+                               "name",
+                               "summary",
+                               "description",
+                               "packager",
+                               "url",
+                               "license",
+                               "vendor",
+                               "group",
+                               "buildhost",
+                               "sourcerpm",
+                               "provides",
+                               "requires",
+                               "obsoletes",
+                               "enhances",
+                               "checksum"
+                               ]
+        self.searched_attrs = {
+            # "location": ["href"],  # TODO Check: is it source_rpm ?
+            "time": ["build"],
+            "version": ["epoch", "ver", "rel"],  # TODO Check: we have 'version' and 'rpm_version', which one is it ?
+            "checksum": ["type"],
+            "size": ["package", "installed"],
+            "header-range": ["start", "end"]
+        }
 
     def set_checksum(self, attrs):
         """
@@ -129,25 +136,17 @@ class Handler(xml.sax.ContentHandler):
         self.attributes_stack.append(dependency)
 
     def startElementNS(self, name, qname, attrs):
-        searched_attrs = {
-            # "location": ["href"],  # TODO Check: is it source_rpm ?
-            "time": ["build"],
-            "version": ["epoch", "ver", "rel"],  # TODO Check: we have 'version' and 'rpm_version', which one is it ?
-            "checksum": ["type"],
-            "size": ["package", "installed"],
-            "header-range": ["start", "end"]
-        }
-
         if name == (COMMON_NS, "package"):
             self.package = {}
-        elif self.package is not None and name[0] == COMMON_NS and name[1] in searched_attrs:
+        elif self.package is not None and name[0] == COMMON_NS and name[1] in self.searched_attrs:
             if name[1] == "checksum":
                 self.set_checksum(attrs)
             else:
                 # Dealing with elements with attributes. Eg: <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
-                for attr_name in searched_attrs[name[1]]:
+                for attr_name in self.searched_attrs[name[1]]:
                     self.set_element_attribute(attr_name, name[1], attrs)
-        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] in SEARCHED_CHARS:
+        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[
+            1] in self.searched_chars:
             if is_complex(name[1]):
                 # Dealing with list/nested attributes. Eg: ["provides", "requires", "enhances", "obsoletes"]
                 self.currentParent = name[1]
@@ -163,7 +162,8 @@ class Handler(xml.sax.ContentHandler):
     def endElementNS(self, name, qname):
         if name == (COMMON_NS, "package"):
             self.packages.append(self.package)
-        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] in SEARCHED_CHARS:
+        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[
+            1] in self.searched_chars:
             if name[1] == "checksum":
                 self.currentElement['value'] = self.text
                 self.package["checksum_list"] = [self.currentElement]  # TODO can we have multitple ?
