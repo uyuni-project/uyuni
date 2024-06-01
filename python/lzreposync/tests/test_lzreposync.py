@@ -13,9 +13,9 @@ def test_download_and_parse_metadata():
     test_rpm_handler = Handler()
 
     with patch("builtins.open", mock_open()) as mocked_file:
-        rpm_repo = repo.Repo(test_name, test_cache_dir,
-                             test_repo,
-                             test_rpm_handler)
+        rpm_repo = RPMRepo(test_name, test_cache_dir,
+                           test_repo,
+                           test_rpm_handler)
         rpm_repo.download_and_parse_metadata()
 
         mocked_file.assert_called_once_with(cache_file, 'w')
