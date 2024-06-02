@@ -7,6 +7,7 @@ gem 'capybara', '3.35.3'
 gem 'cucumber', '7.1.0'
 gem 'cucumber-html-formatter', '~> 17.0'
 gem 'faraday', '1.10.0'
+gem 'ffi', '~> 1.16.0'
 gem 'jwt', '~> 2.6'
 # mini_mime > 1.1.2, requires ruby 2.6
 gem 'mime-types', '~> 3.4'
