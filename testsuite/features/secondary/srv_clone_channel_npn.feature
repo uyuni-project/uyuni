@@ -70,6 +70,8 @@ Feature: Clone a channel
 
   Scenario: Check that new patches exists
     When I follow the left menu "Patches > Patch List > All"
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     Then I should see a "CL-hoag-dummy-7890" link
     And I should see a "CL-virgo-dummy-3456" link
@@ -78,6 +80,8 @@ Feature: Clone a channel
 
   Scenario: Check CL-hoag-dummy-7890 patches
     When I follow the left menu "Patches > Patch List > All"
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     And I follow "CL-hoag-dummy-7890"
     Then I should see a "CL-hoag-dummy-7890 - Security Advisory" text
@@ -86,6 +90,8 @@ Feature: Clone a channel
 
   Scenario: Check CM-virgo-dummy-3456 patches
     When I follow the left menu "Patches > Patch List > All"
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     And I follow "CL-virgo-dummy-3456"
     Then I should see a "CL-virgo-dummy-3456 - Bug Fix Advisory" text
