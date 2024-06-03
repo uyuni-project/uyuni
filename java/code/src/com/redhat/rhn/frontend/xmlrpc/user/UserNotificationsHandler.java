@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010--2014 Red Hat, Inc.
+ * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -62,7 +62,9 @@ public class UserNotificationsHandler extends BaseHandler {
      */
     public int makeNotificationsRead(User user, Collection<Integer> notifications) {
         for (UserNotification notification : getNotifications(user, true)) {
-            if (notifications.contains(notification.getId())) {
+            if (notifications.stream()
+                    .map(Long::valueOf)
+                    .anyMatch(l -> l.equals(notification.getId()))) {
                 UserNotificationFactory.updateStatus(notification, true);
             }
         }
