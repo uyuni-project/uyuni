@@ -37,6 +37,9 @@ no_ssh_push_key_authorized:
     {% set osrelease_minor = grains['osrelease_info'][1] %}
   {%- endif %}
   {%- if transactional %}
+    {%- if grains['osrelease_info'][0]|int >= 6 %}
+      {% set os_base = 'sl' %}
+    {%- endif %}
     {% set os_base = os_base|string + 'micro' %}
   {%- endif %}
   #end of expections
