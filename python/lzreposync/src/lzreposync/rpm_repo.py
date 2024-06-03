@@ -59,7 +59,7 @@ class RPMRepo(Repo):
 
         with urllib.request.urlopen(repomd_signature_url) as repomd_sig_fd, \
                 urllib.request.urlopen(repomd_pub_key_url) as repo_pub_key_fd:
-            imported_key = gpg.import_keys(repo_pub_key_fd.read())
+            gpg.import_keys(repo_pub_key_fd.read())
             verified = gpg.verify_file(repomd_sig_fd, downloaded_repomd_path)
 
         # Remove the saved repomd.xml file
