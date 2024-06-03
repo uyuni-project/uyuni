@@ -54,7 +54,6 @@ class RPMRepo(Repo):
         downloaded_repomd_path = "/tmp/repomd.xml"
 
         # Download and save the repomd.xml locally
-        print("REPO URL:", repomd_url)
         logging.debug("Downloading repomd.xml file to %s", downloaded_repomd_path)
         urllib.request.urlretrieve(repomd_url, downloaded_repomd_path)
 
