@@ -1,3 +1,4 @@
+import io
 import os.path
 from unittest.mock import patch, mock_open
 
@@ -20,3 +21,22 @@ def test_download_and_parse_metadata():
 
         mocked_file.assert_called_once_with(cache_file, 'w')
         mocked_file().write.assert_called_once_with(test_hash)
+
+
+def test_parse_primary_missing_element_attributes():
+    """
+    Testing the parsing with a primary.xml file of 2 packages, one of which have missing element attributes:
+    'epoch' and the 'ver' of the second package are missing.
+    The current parser's behaviour is to ignore the missing attribute, and continue parsing
+    """
+    test_primary_path = "./primary_test_missing_element_attributes.xml.gz"
+    test_cache_dir = ".cache"
+    handler = Handler()
+
+    with open(test_primary_path, "rb") as primary_gz:
+        file_obj = io.BytesIO(primary_gz.read())
+
+        rpm_repo = RPMRepo(None, test_cache_dir, None, handler)
+        parsed_packages_count = rpm_repo.parse_metadata_file(file_obj)
+
+    assert parsed_packages_count == 2
