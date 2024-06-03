@@ -88,10 +88,10 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Upload a profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/AutoYaST File"
-    When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
-    And I attach the file "/example.ks" to "fileUpload"
+    When I enter "sles_autoyast_profile_upload" as "kickstartLabel"
+    And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
     And I click on "Create"
-    Then I should see a "Autoinstallation: fedora_kickstart_profile_upload" text
+    Then I should see a "Autoinstallation: sles_autoyast_profile_upload" text
     And I should see a "Autoinstallation Details" text
 
   Scenario: Add an unprovisioned range to the created profile
@@ -111,7 +111,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Add a variable to the uploaded profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "fedora_kickstart_profile_upload"
+    And I follow "sles_autoyast_profile_upload"
     And I follow "Variables"
     And I enter "my_var=A_Test_String" as "variables"
     And I click on "Update Variables"
@@ -127,7 +127,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Add a kernel option to the uploaded profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "fedora_kickstart_profile_upload"
+    And I follow "sles_autoyast_profile_upload"
     And I enter "kernel_option2=a_value2" as "kernel_options"
     And I click on "Update"
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2" on server
@@ -159,7 +159,7 @@ Feature: Cobbler and distribution autoinstallation
     Given cobblerd is running
     When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "inst.ks=.*fedora_kickstart_profile:1" on server
-    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "inst.ks=.*fedora_kickstart_profile_upload:1" on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "autoyast=.*sles_autoyast_profile_upload:1" on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server
     And I wait until file "/srv/tftpboot/menu.c32" exists on server
@@ -167,11 +167,11 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Trigger the creation of a cobbler system record
     When I trigger cobbler system record on the "sle_minion"
-    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "inst.ks=" on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "autoyast=" on server
 
   Scenario: Create a cobbler system record via API
     When I create a system record
-    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "inst.ks=.*testserver:1" on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "autoyast=.*testserver:1" on server
     Then the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
@@ -186,14 +186,14 @@ Feature: Cobbler and distribution autoinstallation
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     Then I should see a "Autoinstallation was deleted successfully" text
-    And I should see a "fedora_kickstart_profile_upload" text
-    And I follow "fedora_kickstart_profile_upload"
-    Then I should see a "Autoinstallation: fedora_kickstart_profile_upload" text
+    And I should see a "sles_autoyast_profile_upload" text
+    And I follow "sles_autoyast_profile_upload"
+    Then I should see a "Autoinstallation: sles_autoyast_profile_upload" text
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     Then I should see a "Autoinstallation was deleted successfully" text
     And I should not see a "fedora_kickstart_profile" text
-    And I should not see a "fedora_kickstart_profile_upload" text
+    And I should not see a "sles_autoyast_profile_upload" text
 
   Scenario: Cleanup: delete test distros
     # TODO: Move to SUMA API
