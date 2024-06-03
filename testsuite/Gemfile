@@ -16,6 +16,7 @@ gem 'jwt', "~> 2.6"
 gem 'mime-types', "~> 3.4"
 gem 'xmlrpc', "~> 0.3"
 gem 'faraday', '1.10.0'
+gem 'ffi', '~> 1.16.0'
 gem 'minitest', "~> 5.15"
 gem 'websocket', "~> 1.2"
 gem 'websocket-driver', "~> 0.7"
