@@ -172,7 +172,8 @@ class RPMRepo(Repo):
 
                     # Verify the checksum of the md file (currently primary.xml)
                     if self.find_metadata_file_checksum("primary") != hash_func.hexdigest():
-                        raise ChecksumVerificationException("primary.xml.gz")  # TODO to be generalized with all md files
+                        raise ChecksumVerificationException(
+                            "primary.xml.gz")  # TODO to be generalized with all md files
 
                     # Work on temporary file without loading it into memory at once
                     tmp_file.seek(0)
