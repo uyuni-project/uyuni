@@ -19,25 +19,6 @@ class Repo(metaclass=abc.ABCMeta):
     def get_repo_path(self, path):
         return "{}/{}".format(self.repository, path)
 
-    @abc.abstractmethod
-    def get_metadata_files(self):
-        """
-        Return a datastructure containing the metadata files' information
-        """
-
-    @abc.abstractmethod
-    def find_metadata_file_url(self, file_name) -> (str, str):
-        """
-        Return the corresponding metadata file's url given its name.
-        An example of these files can be 'primary', 'filelists', 'other', etc...
-        """
-
-    @abc.abstractmethod
-    def find_metadata_file_checksum(self, file_name):
-        """
-        Return the corresponding metadata file's checksum given its name.
-        """
-
     # @profile
     @abc.abstractmethod
     def get_packages_metadata(self):
