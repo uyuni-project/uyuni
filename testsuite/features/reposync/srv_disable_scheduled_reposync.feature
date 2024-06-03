@@ -13,4 +13,4 @@ Feature: Delete the scheduled task for mgr-sync-refresh
     And I click on "Update Schedule"
     # Workaround https://bugzilla.suse.com/show_bug.cgi?id=1225740
     And I click on "Delete Schedule"
-￼
+
