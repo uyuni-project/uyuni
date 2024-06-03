@@ -1,4 +1,5 @@
 import gzip
+import hashlib
 import logging
 import os
 import tempfile
@@ -12,6 +13,11 @@ from xml.sax.xmlreader import InputSource
 
 from lzreposync import Repo
 
+
+class ChecksumVerificationException(ValueError):
+    def __init__(self, file_name=""):
+        self.message = f"File {file_name} checksum verification failed"
+        super().__init__(self.message)
 
 def get_text(node_list):
     rc = []
@@ -93,6 +99,8 @@ class RPMRepo(Repo):
             print("Error: handler not defined")
             raise ValueError("Handler missing")
 
+        hash_func = hashlib.sha256()
+
         hash_file = os.path.join(self.cache_dir, self.name) + ".hash"
 
         primary_url = self.find_metadata_file_url("primary")
@@ -110,7 +118,13 @@ class RPMRepo(Repo):
                         chunk_size = 1024 * 1024
                         written = True
                         while written:
-                            written = tmp_file.write(primary_fd.read(chunk_size))
+                            chunk = primary_fd.read(chunk_size)
+                            hash_func.update(chunk)
+                            written = tmp_file.write(chunk)
+
+                    # Verify the checksum of the md file (currently primary.xml)
+                    if self.find_metadata_file_checksum("primary") != hash_func.hexdigest():
+                        raise ChecksumVerificationException("primary.xml.gz")  # TODO to be generalized with all md files
 
                     # Work on temporary file without loading it into memory at once
                     tmp_file.seek(0)
