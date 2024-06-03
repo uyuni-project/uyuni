@@ -11,6 +11,8 @@ from urllib.parse import urljoin
 from xml.dom import pulldom
 from xml.sax.xmlreader import InputSource
 
+import gnupg
+
 from lzreposync import Repo
 
 
@@ -18,6 +20,13 @@ class ChecksumVerificationException(ValueError):
     def __init__(self, file_name=""):
         self.message = f"File {file_name} checksum verification failed"
         super().__init__(self.message)
+
+
+class SignatureVerificationException(Exception):
+    def __init__(self, file_name):
+        self.message = f"Invalid signature for file {file_name}"
+        super().__init__(self.message)
+
 
 def get_text(node_list):
     rc = []
@@ -31,6 +40,40 @@ class RPMRepo(Repo):
 
     def __init__(self, name, cache_path, repository, handler):
         super().__init__(name, cache_path, repository, handler)
+        self.signature_verified = False  # Tell whether the signature is checked against the repomd.xml file
+
+    def verify_signature(self):
+        """
+        Verify the signature of the repomd.xml file using GnuPG
+        """
+        gpg = gnupg.GPG()
+
+        repomd_url = self.get_repo_path("repomd.xml")
+        repomd_signature_url = urljoin(self.repository, "repomd.xml.asc")
+        repomd_pub_key_url = urljoin(self.repository, "repomd.xml.key")
+        downloaded_repomd_path = "/tmp/repomd.xml"
+
+        # Download and save the repomd.xml locally
+        print("REPO URL:", repomd_url)
+        logging.debug("Downloading repomd.xml file to %s", downloaded_repomd_path)
+        urllib.request.urlretrieve(repomd_url, downloaded_repomd_path)
+
+        with urllib.request.urlopen(repomd_signature_url) as repomd_sig_fd, \
+                urllib.request.urlopen(repomd_pub_key_url) as repo_pub_key_fd:
+            imported_key = gpg.import_keys(repo_pub_key_fd.read())
+            verified = gpg.verify_file(repomd_sig_fd, downloaded_repomd_path)
+
+        # Remove the saved repomd.xml file
+        if os.path.exists(downloaded_repomd_path):
+            logging.debug("Removing file %s", downloaded_repomd_path)
+            os.remove(downloaded_repomd_path)
+        if verified.valid:
+            logging.debug("Valid signature for file repomd.xml")
+            self.signature_verified = verified.valid
+        else:
+            logging.debug("Invalid signature for file repomd.xml")
+
+        return verified.valid
 
     def get_metadata_files(self):
         """
@@ -98,6 +141,11 @@ class RPMRepo(Repo):
         if not self.handler:
             print("Error: handler not defined")
             raise ValueError("Handler missing")
+        if not self.signature_verified:
+            logging.debug("Checking signature for file repomd.xml")
+            verified = self.verify_signature()
+            if not verified:
+                raise SignatureVerificationException("repomd.xml")
 
         hash_func = hashlib.sha256()
 
