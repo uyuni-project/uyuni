@@ -63,7 +63,22 @@ class RPMRepo(Repo):
             self.metadata_files = self.get_metadata_files()
         return self.metadata_files[file_name]["checksum"]
 
-    def download_and_parse_metadata(self):
+    def parse_metadata_file(self, md_file):
+        """
+        Parse the given md_file (in _.gz format) using the repo's handler (normally a sax handler)
+        """
+        with gzip.GzipFile(fileobj=md_file, mode="rb") as gzip_fd:
+            parser = xml.sax.make_parser()
+            parser.setContentHandler(self.handler)
+            parser.setFeature(xml.sax.handler.feature_namespaces, True)
+            input_source = InputSource()
+            input_source.setByteStream(gzip_fd)
+            parser.parse(input_source)
+            packages_count = len(self.handler.packages)
+            logging.debug("Parsed packages: %s", packages_count)
+            return packages_count
+
+    def get_packages_metadata(self):
         if not self.repository:
             print("Error: target url not defined!")
             raise ValueError("Repository URL missing")
@@ -89,15 +104,7 @@ class RPMRepo(Repo):
 
                     # Work on temporary file without loading it into memory at once
                     tmp_file.seek(0)
-                    with gzip.GzipFile(fileobj=tmp_file, mode="rb") as gzip_fd:
-                        parser = xml.sax.make_parser()
-                        parser.setContentHandler(self.handler)
-                        parser.setFeature(xml.sax.handler.feature_namespaces, True)
-                        input_source = InputSource()
-                        input_source.setByteStream(gzip_fd)
-                        parser.parse(input_source)
-                        packages_count = len(self.handler.packages)
-                        logging.debug("Parsed packages: %s", packages_count)
+                    self.parse_metadata_file(tmp_file)
                 break
             except urllib.error.HTTPError as e:
                 # We likely hit the repo while it changed:
