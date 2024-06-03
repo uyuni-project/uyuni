@@ -50,6 +50,10 @@ class RPMRepo(Repo):
         return files
 
     def find_metadata_file_url(self, file_name) -> (str, str):
+        """
+        Return the corresponding metadata file's url given its name.
+        An example of these files can be 'primary', 'filelists', 'other', etc...
+        """
         if not self.metadata_files:
             self.metadata_files = self.get_metadata_files()
         md_file_url = urljoin(
@@ -59,6 +63,9 @@ class RPMRepo(Repo):
         return md_file_url
 
     def find_metadata_file_checksum(self, file_name):
+        """
+        Return the corresponding metadata file's checksum given its name.
+        """
         if not self.metadata_files:
             self.metadata_files = self.get_metadata_files()
         return self.metadata_files[file_name]["checksum"]
@@ -82,6 +89,9 @@ class RPMRepo(Repo):
         if not self.repository:
             print("Error: target url not defined!")
             raise ValueError("Repository URL missing")
+        if not self.handler:
+            print("Error: handler not defined")
+            raise ValueError("Handler missing")
 
         hash_file = os.path.join(self.cache_dir, self.name) + ".hash"
 

@@ -99,11 +99,11 @@ class Handler(xml.sax.ContentHandler):
         For example the attribute can be 'epoch' of an element : <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
         - attr_name: attribute within the xml element. Eg: 'epoch', 'ver', 'rel', etc... that we want to set
         - element: the current element we're parsing. Eg: <version...>
-        - attrs: list of element's attributes returned by the sax event handler
+        - attrs: list of element's attributes returned by the sax event handler. Eg: ['epoch', 'ver', 'rel']
         """
         if attr_name not in attrs.getQNames():
-            logging.error("missing %s %s attribute, ignoring package", element, attr_name)
-            self.package = None  # TODO is this correct? in shouldn't we break the loop?
+            logging.error("missing %s %s attribute, ignoring attribute", element, attr_name)
+            # self.package = None  # TODO If we find some missing attributes, should we continue parsing? what attributes can we tolerate missing.
         else:
             extended_name = "/".join([element, attr_name])  # Eg: version/ver
             actual_name = map_attribute(extended_name)
@@ -112,9 +112,9 @@ class Handler(xml.sax.ContentHandler):
                 self.package[actual_name] = value
             else:
                 logging.warning(
-                    "Couldn't map the attribute: %s to any importLib attribute, ignoring package",
+                    "Couldn't map the attribute: %s to any importLib attribute, ignoring attribute",
                     extended_name)
-                self.package = None  # TODO is this correct? in shouldn't we break the loop?
+                # self.package = None  # TODO If we find some missing attributes, should we continue parsing? what attributes can we tolerate missing.
 
     def add_dependency(self, attrs):
         """
