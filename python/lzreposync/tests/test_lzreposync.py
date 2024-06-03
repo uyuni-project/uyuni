@@ -40,3 +40,15 @@ def test_parse_primary_missing_element_attributes():
         parsed_packages_count = rpm_repo.parse_metadata_file(file_obj)
 
     assert parsed_packages_count == 2
+
+
+def test_verify_signature():
+    """
+    Note: this test case assumes that the repomd.xml file hasn't been altered, if so it will fail
+    """
+    test_repo = "https://download.opensuse.org/update/leap/15.5/oss/repodata/"
+    test_cache_dir = ".cache"
+
+    rpm_repo = RPMRepo(None, test_cache_dir, test_repo, None)
+
+    assert rpm_repo.verify_signature()
