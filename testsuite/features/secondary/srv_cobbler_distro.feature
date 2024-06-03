@@ -88,6 +88,7 @@ Feature: Cobbler and distribution autoinstallation
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/AutoYaST File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
+    And I select "fedora_kickstart_distro" from "kstreeId"
     And I attach the file "/example.ks" to "fileUpload"
     And I click on "Create"
     Then I should see a "Autoinstallation: fedora_kickstart_profile_upload" text
