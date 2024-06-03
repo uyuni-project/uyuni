@@ -55,12 +55,12 @@ public class UserNotificationsHandler extends BaseHandler {
      * @return Returns 1 if successful
      * @param user The current user
      * @param notifications Notification list
-     * @apidoc.doc Makes a notification raed
+     * @apidoc.doc Set notifications of the given user as raed
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("Collection", "notifications", "The target notification.")
      * @apidoc.returntype #return_int_success()
      */
-    public int makeNotificationsRead(User user, Collection<Integer> notifications) {
+    public int setNotificationsRead(User user, Collection<Integer> notifications) {
         for (UserNotification notification : getNotifications(user, true)) {
             if (notifications.stream()
                     .map(Long::valueOf)
@@ -74,11 +74,11 @@ public class UserNotificationsHandler extends BaseHandler {
     /**
      * @param user The current user
      * @return Returns 1 if successful
-     * @apidoc.doc Makes all notifications from a user read
+     * @apidoc.doc Set all notifications from a user as read
      * @apidoc.param #session_key()
      * @apidoc.returntype #return_int_success()
      */
-    public int makeAllNotificationsRead(User user) {
+    public int setAllNotificationsRead(User user) {
         for (UserNotification notification : getNotifications(user, true)) {
             UserNotificationFactory.updateStatus(notification, true);
         }
