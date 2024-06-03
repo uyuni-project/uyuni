@@ -16,7 +16,7 @@ def test_download_and_parse_metadata():
         rpm_repo = RPMRepo(test_name, test_cache_dir,
                            test_repo,
                            test_rpm_handler)
-        rpm_repo.download_and_parse_metadata()
+        rpm_repo.get_packages_metadata()
 
         mocked_file.assert_called_once_with(cache_file, 'w')
         mocked_file().write.assert_called_once_with(test_hash)

@@ -40,7 +40,7 @@ class Repo(metaclass=abc.ABCMeta):
 
     # @profile
     @abc.abstractmethod
-    def download_and_parse_metadata(self):
+    def get_packages_metadata(self):
         """
         Download the metadata file(s) from the repository and parse it(them) to retrieve the package's metadata.
         """
