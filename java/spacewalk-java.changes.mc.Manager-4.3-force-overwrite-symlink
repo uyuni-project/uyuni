@@ -1,0 +1,1 @@
+- replace symlink to kernel and initrd in salt filesystem with regular files (bsc#1220221)
