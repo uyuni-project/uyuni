@@ -206,8 +206,8 @@ WSGIScriptAlias /tftpsync/delete /srv/www/tftpsync/delete"""
         file.write(
             f"""ProxyPass /cobbler_api https://{config['server']}/download/cobbler_api
 ProxyPassReverse /cobbler_api https://{config['server']}/download/cobbler_api
-RewriteRule ^/cblr/svc/op/ks/(.*)$ /download/$0 [P,L]
-RewriteRule ^/cblr/svc/op/autoinstall/(.*)$ /download/$0 [P,L]
+RewriteRule ^/cblr/svc/op/ks/(.*)$ /download/$0 [R,L]
+RewriteRule ^/cblr/svc/op/autoinstall/(.*)$ /download/$0 [R,L]
 ProxyPass /cblr https://{config['server']}/cblr
 ProxyPassReverse /cblr https://{config['server']}/cblr
 ProxyPass /cobbler https://{config['server']}/cobbler

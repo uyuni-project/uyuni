@@ -139,6 +139,15 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
         assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
 
+        // test 8 - api access denied
+        cpm = new TestCloudPaygManagerBuilder()
+                .withPaygInstance()
+                .withoutMeteringApiAccess()
+                .build();
+
+        assertTrue(cpm.checkRefreshCache(false), "Not refreshed");
+        assertFalse(cpm.isCompliant(), "Unexpected: Is compliant");
+
         cpm = new TestCloudPaygManagerBuilder()
             .withPaygInstance()
             .build();

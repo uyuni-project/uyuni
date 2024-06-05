@@ -142,15 +142,17 @@ When(/^I create and delete an image store via API$/) do
 end
 
 When(/^I list image store types and image stores via API$/) do
-  store_type = $api_test.image.store.list_image_store_types
-  raise ScriptError, 'We have only type support for Registry and OS Image Store type! New method added?! please update the tests' unless store_type.length == 2
-  raise ScriptError, "imagestore label type should be 'registry' but is #{store_type[0]['label']}" unless store_type[0]['label'] == 'registry'
-  raise ScriptError, "imagestore label type should be 'os_image' but is #{store_type[1]['label']}" unless store_type[1]['label'] == 'os_image'
+  store_types = $api_test.image.store.list_image_store_types
+  log "Store types: #{store_types}"
+  raise ScriptError, 'We have only type support for Registry and OS Image store type! New method added?! please update the tests' unless store_types.length == 2
+  raise ScriptError, 'We should have Registry as supported type' unless store_types.find { |store_type| store_type['label'] == 'registry' }
+  raise ScriptError, 'We should have OS Image as supported type' unless store_types.find { |store_type| store_type['label'] == 'os_image' }
 
-  registry_list = $api_test.image.store.list_image_stores
-  log "Image Stores: #{registry_list}"
-  raise ScriptError, "Label #{registry_list[0]['label']} is different than 'galaxy-registry'" unless registry_list[0]['label'] == 'galaxy-registry'
-  raise ScriptError, "URI #{registry_list[0]['uri']} is different than '#{$no_auth_registry}'" unless registry_list[0]['uri'] == $no_auth_registry.to_s
+  stores = $api_test.image.store.list_image_stores
+  log "Image Stores: #{stores}"
+  registry = stores.find { |store| store['storetype'] == 'registry' }
+  raise ScriptError, "Label #{registry['label']} is different than 'galaxy-registry'" unless registry['label'] == 'galaxy-registry'
+  raise ScriptError, "URI #{registry['uri']} is different than '#{$no_auth_registry}'" unless registry['uri'] == $no_auth_registry.to_s
 end
 
 When(/^I set and get details of image store via API$/) do

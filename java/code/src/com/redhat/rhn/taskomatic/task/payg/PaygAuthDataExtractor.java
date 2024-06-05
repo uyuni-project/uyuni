@@ -40,6 +40,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -242,7 +243,7 @@ public class PaygAuthDataExtractor {
     protected PaygInstanceInfo extractAuthDataLocal() {
         try (BufferedReader json = Files.newBufferedReader(PAYG_INSTANCE_INFO_JSON)) {
             PaygInstanceInfo instanceInfo = GSON.fromJson(json, PaygInstanceInfo.class);
-            if (Duration.between(instanceInfo.getTimestamp(), LocalDateTime.now()).toMinutes() > VALIDITY_MINUTES) {
+            if (Duration.between(instanceInfo.getTimestamp(), Instant.now()).toMinutes() > VALIDITY_MINUTES) {
                 throw new PaygDataExtractException("Local PAYG Instance info is outdated.");
             }
 

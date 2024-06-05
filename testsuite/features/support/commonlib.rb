@@ -713,3 +713,14 @@ def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
     sleep 2
   end
 end
+
+# This function deletes channels matching one of the filters
+#
+# @param channels [Array<String>] The list of channels to filter.
+# @param filters [Array<String>] The list of filters to apply.
+def filter_channels(channels, filters = [])
+  filters.each do |filter|
+    channels.delete_if { |channel| channel.include? filter }
+  end
+  channels
+end

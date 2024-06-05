@@ -1,15 +1,11 @@
 set address [lindex $argv 0]
 
-spawn /usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null /srv/www/htdocs/pub/bootstrap/bootstrap.sh root@$address:/root/bootstrap.sh
-expect {
-	"*?assword:*" { send "linux\r"; interact }
-	eof { exit }
-}
-
 spawn /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $address
 match_max 100000
 expect "*?assword:*"
 send -- "linux\r"
+expect "#"
+send -- "curl -O -L http://proxy.example.org/pub/bootstrap/bootstrap.sh\r"
 expect "#"
 send -- "chmod 750 /root/bootstrap.sh\r"
 expect "#"

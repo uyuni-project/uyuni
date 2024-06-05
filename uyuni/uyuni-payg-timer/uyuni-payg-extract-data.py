@@ -229,8 +229,7 @@ def perform_compliants_checks():
             cloudProvider = "GCE"
 
         modifiedPackages = (
-            has_package_modifications("billing-data-service")
-            or has_package_modifications("csp-billing-adapter-service")
+            has_package_modifications("csp-billing-adapter-service")
             or has_package_modifications("python3-csp-billing-adapter")
             or has_package_modifications("python3-csp-billing-adapter-local")
         )
@@ -239,15 +238,25 @@ def perform_compliants_checks():
                 "python3-csp-billing-adapter-amazon"
             )
         elif cloudProvider == "AZURE":
-            modifiedPackages = modifiedPackages or has_package_modifications(
-                "python3-csp-billing-adapter-azure"
+            modifiedPackages = (
+                modifiedPackages
+                or has_package_modifications("python311-azure-mgmt-billing")
+                or has_package_modifications("python3-csp-billing-adapter-microsoft")
             )
+
         billing_service_running = is_service_running("csp-billing-adapter.service")
 
         if billing_service_running:
             billing_status = check_billing_adapter_status()
 
-    compliant = billing_service_running and billing_status and not modifiedPackages
+        has_metering_access = can_access_metering()
+
+    compliant = (
+        has_metering_access
+        and billing_service_running
+        and billing_status
+        and not modifiedPackages
+    )
 
     return {
         "isPaygInstance": isPaygInstance,
@@ -256,8 +265,36 @@ def perform_compliants_checks():
         "hasModifiedPackages": modifiedPackages,
         "billingServiceRunning": billing_service_running,
         "billingServiceStatus": billing_status,
+        "hasMeteringAccess": has_metering_access,
         "timestamp": int(time.time()),
     }
+
+
+def can_access_metering():
+    p = subprocess.run(
+        [
+            "curl",
+            "--fail",
+            "--no-progress-meter",
+            "--connect-timeout",
+            "3",
+            "--max-time",
+            "5",
+            "http://localhost:18888/metering",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+        encoding="utf-8",
+        check=False,
+    )
+    if p.returncode != 0:
+        print(
+            f"Failed to get metering information: {p.stderr}",
+            file=sys.stderr,
+        )
+        return False
+    return True
 
 
 def is_service_running(service):
@@ -277,22 +314,22 @@ def is_service_running(service):
 
 
 def has_package_modifications(pkg):
-    try:
-        out = subprocess.check_output(
-            ["rpm", "-V", pkg],
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
-            encoding="utf-8",
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"has_package_modifications({pkg}) failed: {e}", file=sys.stderr)
-        return True
+    p = subprocess.run(
+        ["rpm", "-V", pkg],
+        stdout=subprocess.PIPE,
+        universal_newlines=True,
+        encoding="utf-8",
+        check=False,
+    )
 
-    for line in out.split("\n"):
+    for line in p.stdout.split("\n"):
+        if "is not installed" in line:
+            return True
         if len(line) < 3 or line.endswith(".pyc"):
             continue
         if line[2] == "5":
             return True
+
     return False
 
 
