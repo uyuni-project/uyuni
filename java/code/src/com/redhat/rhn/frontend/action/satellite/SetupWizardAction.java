@@ -15,9 +15,6 @@
 package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.domain.iss.IssFactory;
-import com.redhat.rhn.frontend.nav.NavCache;
-import com.redhat.rhn.frontend.nav.NavNode;
-import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -29,8 +26,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
