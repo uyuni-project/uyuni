@@ -23,7 +23,7 @@ Feature: Main landing page options and preferences
     Given I am not authorized
     When I go to the home page
     And I follow "Copyright Notice"
-    Then I should see a "Copyright (c) 2011 - 2023 SUSE LLC." text
+    Then I should see a "Copyright (c) 2011 - 2024 SUSE LLC." text
 
 @susemanager
   Scenario: Access the EULA
