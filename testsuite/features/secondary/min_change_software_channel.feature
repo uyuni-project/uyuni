@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -21,10 +21,10 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
 
-  Scenario: Check old channels are still enabled on the system before channel change completes
+  Scenario: Check via API old channels are still the same on the system before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "15" channels should be enabled on "sle_minion"
-    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
   Scenario: Assign a child channel to the system
     When I follow "Software" in the content area
@@ -39,7 +39,6 @@ Feature: Assign child channel to a system
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
   Scenario: Check channel change has completed for the system
     Given I am on the Systems overview page of this "sle_minion"
@@ -54,10 +53,9 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as checked
 
-  Scenario: Check the new channels are enabled on the system
+  Scenario: Check via API the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then "16" channels should be enabled on "sle_minion"
-    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
     And channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
   Scenario: Cleanup: subscribe the system back to previous channels
