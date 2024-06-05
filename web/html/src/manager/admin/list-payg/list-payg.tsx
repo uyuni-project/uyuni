@@ -143,30 +143,6 @@ const ListPayg = (props: Props) => {
     </Table>
   );
 
-  const prevStyle = { marginLeft: "10px", verticalAlign: "middle" };
-  const activeStep = _SETUP_WIZARD_STEPS.find((step) => step.active);
-  const currentStepIndex = activeStep ? _SETUP_WIZARD_STEPS.indexOf(activeStep) : -1;
-  const footer = (
-    <div className="panel-footer">
-      <div className="btn-group">
-        {currentStepIndex > 1 ? (
-          <a className="btn btn-default" href={_SETUP_WIZARD_STEPS[currentStepIndex - 1].url}>
-            <i className="fa fa-arrow-left"></i>
-            {t("Prev")}
-          </a>
-        ) : null}
-        {currentStepIndex < _SETUP_WIZARD_STEPS.length - 1 ? (
-          <a className="btn btn-success" href={_SETUP_WIZARD_STEPS[currentStepIndex + 1].url}>
-            <i className="fa fa-arrow-right"></i>
-            {t("Next")}
-          </a>
-        ) : null}
-      </div>
-      <span style={prevStyle}>
-        {currentStepIndex + 1}&nbsp;{t("of")}&nbsp;{_SETUP_WIZARD_STEPS.length}
-      </span>
-    </div>
-  );
   const addPayg = () => {
     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/setup/payg/create`);
   };
@@ -192,7 +168,6 @@ const ListPayg = (props: Props) => {
           {pageContent}
         </div>
       </div>
-      {footer}
     </div>
   );
 };
