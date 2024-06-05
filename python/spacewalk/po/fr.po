@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
@@ -49,7 +49,7 @@ msgid "Invalid request received (%s)."
 msgstr "Réception de requête invalide (%s)"
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -58,7 +58,7 @@ msgstr ""
 "UN MESSAGE IMPORTANT SUIT :\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -68,7 +68,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI invalide %s"
@@ -84,11 +84,6 @@ msgstr ""
 "                   Le compte %s a été désactivé sur ce serveur.\n"
 "                   Veuillez contacter votre administrateur d'organisation "
 "pour plus d'assistance."
-
-#: ../server/handlers/applet/applet.py:84
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Votre système n'a pas été trouvé dans la base de données RHN"
 
 #: ../server/handlers/sat/auth.py:46
 #, fuzzy
@@ -1932,6 +1927,10 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, fuzzy, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Votre système n'a pas été trouvé dans la base de données RHN"
 
 #, python-format
 #~ msgid "Expected a package name, not: %s"

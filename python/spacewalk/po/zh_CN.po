@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2023-06-26 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -46,7 +46,7 @@ msgid "Invalid request received (%s)."
 msgstr "收到的请求无效 (%s)。"
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -55,7 +55,7 @@ msgstr ""
 "重要消息如下：\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -65,7 +65,7 @@ msgstr ""
 "%s：%s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "无效的 URI %s"
@@ -80,11 +80,6 @@ msgstr ""
 "\n"
 "                   已在此服务器上停用 %s 帐户。\n"
 "                   请联系您的组织管理员取得更多帮助。"
-
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "在 {PRODUCT_NAME} 数据库中未找到您的系统"
 
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
@@ -1935,6 +1930,10 @@ msgstr "  28 - 错误：--master 只在与 --mount-point 结合使用时才有�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "错误：未知转储版本，请尝试使用某个 %s"
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "在 {PRODUCT_NAME} 数据库中未找到您的系统"
 
 #, python-format
 #~ msgid "Expected a package name, not: %s"

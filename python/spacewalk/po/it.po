@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2024-04-25 20:43+0000\n"
 "Last-Translator: Francesco Esposito <email@francescoesposito.org>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/backend/it/"
@@ -43,7 +43,7 @@ msgid "Invalid request received (%s)."
 msgstr "Ricevuta richiesta non valida (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -52,7 +52,7 @@ msgstr ""
 "SEGUE MESSAGGIO IMPORTANTE:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -62,7 +62,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI Invalido %s"
@@ -78,11 +78,6 @@ msgstr ""
 "                   %s account è stato disattivato su questo server.\n"
 "                   Per favore, rivolgiti al tuo amministratore dell'Org per "
 "ulteriori informazioni."
-
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Il tuo sistema non è presente nel database di {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
@@ -1795,6 +1790,10 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Il tuo sistema non è presente nel database di {PRODUCT_NAME}"
 
 #, python-format
 #~ msgid "Expected a package name, not: %s"
