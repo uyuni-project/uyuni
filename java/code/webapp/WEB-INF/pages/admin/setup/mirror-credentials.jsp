@@ -133,7 +133,6 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-                <jsp:include page="/WEB-INF/pages/common/fragments/setup/setup-tab-footer.jspf" />
             </div>
         </div>
     </body>
