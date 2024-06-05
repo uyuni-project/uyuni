@@ -49,7 +49,7 @@ Add more tasks if needed (for example, asking Maintenace to change the channel d
 - [ ] Tag everything with `tito`
 - [ ] Check that the relevant `manager-x.y-releng-2obs` job has packaged latest and submitted the changes from `Manager-X.Y` branch into the relevant https://build.suse.de/project/subprojects/Devel:Galaxy:Manager:X.Y project.
 - [ ] Prepare the submissions with `mu-massive-task` or `patch-creator`. For any new packages that will be added to the codestreams, fetch the groups what will maintain them (one per package) and document this at the release card.
-- [ ] Ping the Ion squad so they submit salt to `SLE15SP1`, `SLE15SP2`, `SLE15SP3`, `SLE15SP4` and `SLE15SP5` (not needed for MUs without salt/client tools)
+- [ ] Ping the Ion squad so they submit salt to `SLE15SP2`, `SLE15SP3`, `SLE15SP4`, `SLE15SP5` and `SUSE:ALP:Source:Standard:1.0` (not needed for MUs without salt/client tools). Tell them to add to the submit message the ID of the Jira ticket in the form `ijsc#MSQA-$ID`, for example, `ijsc#MSQA-808`
 - [ ] Add the IDs (and notes, if any), to the JIRA ticket, and ping the Maintenance Team at [#discuss-susemamanager-maintenance](https://app.slack.com/client/T02863RC2AC/C02DEF2U0E5)
 - [ ] Once autobuild approves all MRs, create the `Manager-X.Y-MU-X.Y.Z` branch, push it and unlock `Manager-X.Y`
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `Manager-X.Y` is unlocked , and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
