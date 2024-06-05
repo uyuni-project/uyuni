@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2024-05-09 07:43+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -39,7 +39,7 @@ msgid "Invalid request received (%s)."
 msgstr "Примено неважечко барање (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -48,7 +48,7 @@ msgstr ""
 "СЛЕДИ ВАЖНА ПОРАКА:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -58,7 +58,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Невалиден URI %s"
@@ -73,11 +73,6 @@ msgstr ""
 "\n"
 "                   %s Акаунт беше деактивиран на овој сервер.\n"
 "                   Молиме контактирајте го вашиот Орг Администратор за помош."
-
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Вашиот систем не беше најден во датабазата на {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
@@ -1804,6 +1799,10 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Вашиот систем не беше најден во датабазата на {PRODUCT_NAME}"
 
 #, python-format
 #~ msgid "Expected a package name, not: %s"

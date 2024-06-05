@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RHN 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Jens Maucher <jens.maucher@gmx.de>\n"
 "Language-Team: English <https://l10n.opensuse.org/projects/uyuni/backend/en/"
@@ -38,14 +38,14 @@ msgid "Invalid request received (%s)."
 msgstr ""
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -53,7 +53,7 @@ msgid ""
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr ""
@@ -69,11 +69,6 @@ msgstr ""
 "                   %s Das Konto wurde auf diesem Server deaktiviert.\n"
 "                   Bitte wenden Sie sich an Ihren Org-Administrator, um "
 "weitere Hilfe zu erhalten."
-
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Ihr System wurde nicht in der Datenbank {PRODUCT_NAME} gefunden"
 
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
@@ -1782,6 +1777,10 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Ihr System wurde nicht in der Datenbank {PRODUCT_NAME} gefunden"
 
 #, python-format
 #~ msgid "Expected a package name, not: %s"

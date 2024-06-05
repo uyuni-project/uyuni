@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2022-08-11 16:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
@@ -40,7 +40,7 @@ msgid "Invalid request received (%s)."
 msgstr "Prijatá neplatná požiadavka (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -49,7 +49,7 @@ msgstr ""
 "DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -59,7 +59,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Neplatné URI %s"
@@ -75,11 +75,6 @@ msgstr ""
 "                   Na tomto serveri bol účet %s deaktivovaný.\n"
 "                   Pre ďalšiu pomoc kontaktujte administrátora svojej "
 "organizácie."
-
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
@@ -1975,6 +1970,10 @@ msgstr "  28 - chyba: --master je platné iba s --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznáma verzia výpisu, vyskúšajte jeden z %s"
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
 
 #, python-format
 #~ msgid "Expected a package name, not: %s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -40,7 +40,7 @@ msgid "Invalid request received (%s)."
 msgstr "Permintaan tidak valid diterima (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, fuzzy, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -49,7 +49,7 @@ msgstr ""
 "PESAN PENTING BERIKUT:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, fuzzy, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -59,7 +59,7 @@ msgstr ""
 "%s : %s (Dalam Bahasa Inggris)"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, fuzzy, python-format
 msgid "Invalid URI %s"
 msgstr "URI “%s” Tidak Sah"
@@ -74,11 +74,6 @@ msgstr ""
 "Akun %s telah dinonaktifkan pada server ini.\n"
 "                   Silakan hubungi administrator Organisasi Anda untuk "
 "bantuan lebih lanjut."
-
-#: ../server/handlers/applet/applet.py:84
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Sistem Anda tidak ditemukan dalam rhn database"
 
 #: ../server/handlers/sat/auth.py:46
 #, fuzzy
@@ -2172,6 +2167,10 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
+
+#, fuzzy, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Sistem Anda tidak ditemukan dalam rhn database"
 
 #, fuzzy, python-format
 #~ msgid "Expected a package name, not: %s"
