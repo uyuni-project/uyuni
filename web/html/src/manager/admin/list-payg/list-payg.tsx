@@ -150,24 +150,20 @@ const ListPayg = (props: Props) => {
     <div className="responsive-wizard">
       {title}
       {tabs}
-      <div className="panel panel-default" id="products-content">
-        <div className="panel-body">
-          <SectionToolbar>
-            <div className="action-button-wrapper">
-              <div className="btn-group">
-                <Button
-                  id="addPAYG"
-                  icon="fa-plus"
-                  className={"btn-success"}
-                  text={t("Add PAYG Connection")}
-                  handler={addPayg}
-                />
-              </div>
-            </div>
-          </SectionToolbar>
-          {pageContent}
+      <SectionToolbar>
+        <div className="action-button-wrapper">
+          <div className="btn-group">
+            <Button
+              id="addPAYG"
+              icon="fa-plus"
+              className={"btn-success"}
+              text={t("Add PAYG Connection")}
+              handler={addPayg}
+            />
+          </div>
         </div>
-      </div>
+      </SectionToolbar>
+      {pageContent}
     </div>
   );
 };

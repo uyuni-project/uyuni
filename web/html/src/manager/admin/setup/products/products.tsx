@@ -443,9 +443,7 @@ class ProductsPageWrapper extends React.Component {
       <div className="responsive-wizard">
         {title}
         {tabs}
-        <div className="panel panel-default" id="products-content">
-          <div className="panel-body">{pageContent}</div>
-        </div>
+        {pageContent}
       </div>
     );
   }
