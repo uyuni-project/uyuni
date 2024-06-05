@@ -110,30 +110,26 @@
             <rhn:dialogmenu mindepth="0" maxdepth="1"
                         definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <c:choose>
-                        <c:when test='${issMaster}'>
-                            <div class="row" id="mirror-credentials">
-                                <div class="col-sm-9" id="listset-container">
-                                    <rhn:icon type="spinner"></rhn:icon>
-                                    <script>ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback, "text/html");</script>
-                                </div>
-                                <div class="col-sm-3 hidden-xs" id="wizard-faq">
-                                    <h4><bean:message key="mirror-credentials.jsp.info.h1" /></h4>
-                                    <p><bean:message key="mirror-credentials.jsp.info.p1" /></p>
-                                    <img src="../../../img/credentials-help.png" />
-                                    <h4><bean:message key="mirror-credentials.jsp.info.h2" /></h4>
-                                    <p><bean:message key="mirror-credentials.jsp.info.p2" /></p>
-                                </div>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.iss-slave"/></div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
+            <c:choose>
+                <c:when test='${issMaster}'>
+                    <div class="row" id="mirror-credentials">
+                        <div class="col-sm-9" id="listset-container">
+                            <rhn:icon type="spinner"></rhn:icon>
+                            <script>ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback, "text/html");</script>
+                        </div>
+                        <div class="col-sm-3 hidden-xs" id="wizard-faq">
+                            <h4><bean:message key="mirror-credentials.jsp.info.h1" /></h4>
+                            <p><bean:message key="mirror-credentials.jsp.info.p1" /></p>
+                            <img src="../../../img/credentials-help.png" />
+                            <h4><bean:message key="mirror-credentials.jsp.info.h2" /></h4>
+                            <p><bean:message key="mirror-credentials.jsp.info.p2" /></p>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.iss-slave"/></div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </body>
 </html>
