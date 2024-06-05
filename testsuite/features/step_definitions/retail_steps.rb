@@ -79,9 +79,8 @@ When(/^I create bootstrap script for "([^"]+)" hostname and set the activation k
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
   # force_bundle = use_salt_bundle ? '--force-bundle' : ''
   # get_target('proxy').run("mgr-bootstrap #{force_bundle}")
-  get_target('proxy').run("mgr-bootstrap --hostname=#{host}")
+  get_target('proxy').run("mgr-bootstrap --hostname=#{host} --activation-keys=#{key}")
 
-  get_target('proxy').run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, _code = get_target('proxy').run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
   raise "Key: #{key} not included" unless output.include? key
   raise "Hostname: #{host} not included" unless output.include? host

@@ -1,0 +1,3 @@
+- Show server timezone with execution time in recurring action details
+- Fix displayed time in datetime pickers that use server's 
+  timezone (bsc#1225196)

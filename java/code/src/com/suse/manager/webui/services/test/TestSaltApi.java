@@ -151,6 +151,11 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public void syncAllAsync(MinionList minionList) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void syncAll(MinionList minionList) {
         throw new UnsupportedOperationException();
     }

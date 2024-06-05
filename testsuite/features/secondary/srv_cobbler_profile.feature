@@ -17,7 +17,6 @@ Feature: Edit Cobbler profiles
 
   Scenario: Log in as testing user
     Given I am authorized as "testing" with password "testing"
-    And I am logged in via the Cobbler API as user "testing" with password "testing"
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
@@ -32,6 +31,8 @@ Feature: Edit Cobbler profiles
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "isedistro_ui" link
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    Then I should see a "isedistro_ui" text
 
   Scenario: Create a Cobbler profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -44,11 +45,8 @@ Feature: Edit Cobbler profiles
     And I click on "Finish"
     Then I should see a "Autoinstallation: iseprofile_ui" text
     And I should see a "Autoinstallation Details" link
-
-  Scenario: Cobbler created distro and profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "iseprofile_ui" text
-    And I should see a "isedistro_ui" text
 
   Scenario: Change profile variables using the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -69,6 +67,8 @@ Feature: Edit Cobbler profiles
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "isedistro_api" link
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    Then I should see a "isedistro_api" text
 
   Scenario: Create a Cobbler profile via the UI in the XML-RPC context
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -81,11 +81,8 @@ Feature: Edit Cobbler profiles
     And I click on "Finish"
     Then I should see a "Autoinstallation: iseprofile_api" text
     And I should see a "Autoinstallation Details" link
-
-  Scenario: Cobbler created distro and profile via the UI in the XML-RPC context
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "iseprofile_api" text
-    And I should see a "isedistro_api" text
 
   Scenario: Create a Cobbler system via the XML-RPC API
     When I create a system record with name "isesystem_api" and kickstart label "iseprofile_api"
@@ -141,6 +138,3 @@ Feature: Edit Cobbler profiles
 @flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
-
-  Scenario: Logout from the Cobbler API
-    When I log out from Cobbler via the API

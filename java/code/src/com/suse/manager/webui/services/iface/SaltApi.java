@@ -224,6 +224,12 @@ public interface SaltApi {
     void syncAll(MinionList minionList);
 
     /**
+     * Call 'saltutil.sync_all' to sync everything to the target minion(s) using salt asynchronous call.
+     * @param minionList minion list
+     */
+    void syncAllAsync(MinionList minionList);
+
+    /**
      * call salt test.ping
      * @param minionId id of the target minion
      * @return true

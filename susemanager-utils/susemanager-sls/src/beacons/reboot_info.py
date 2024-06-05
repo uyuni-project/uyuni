@@ -4,6 +4,12 @@ Watch system status and fire an event to SUSE Manager indicating
 when a reboot is required.
 """
 
+import logging
+
+
+log = logging.getLogger(__name__)
+
+
 __virtualname__ = "reboot_info"
 
 
@@ -40,7 +46,18 @@ def beacon(config):
     """
     ret = []
 
-    result = __salt__["reboot_info.reboot_required"]()
+    try:
+        result = __salt__["reboot_info.reboot_required"]()
+    except KeyError:
+        # reboot_info salt module could be not yet in synchronized
+        return ret
+    except Exception as e:  # pylint: disable=broad-except
+        log.error(
+            "Error while executing 'reboot_info.reboot_required': %s",
+            e,
+            exc_info=True,
+        )
+        return ret
     reboot_needed = result.get("reboot_required", False)
 
     if reboot_needed and not __context__.get("reboot_needed", False):

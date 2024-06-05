@@ -57,7 +57,7 @@ plugin_command "find /usr/share/rhn/search/lib/ | xargs file | grep broken"
 section_header "SSL Configuration"
 
 pconf_files $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
-            /etc/apache2/ssl.crt/server.crt
+            /etc/pki/tls/certs/spacewalk.crt
 plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
 plugin_command "/bin/ls -l --time-style=long-iso $(spacewalk-cfg-get documentroot)/pub/ | grep -i trusted"
