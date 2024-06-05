@@ -5,8 +5,7 @@
   <rhn-tab name="Sign In" url="/">
   </rhn-tab>
 
-  <rhn-tab name="About Spacewalk" url="/rhn/help/about.do">
-    <rhn-tab name="About Spacewalk" url="/rhn/help/about.do" />
+  <rhn-tab name="Help" url="/rhn/apidoc/index.jsp">
     <rhn-tab name="Help Desk" url="/rhn/help/index.do" />
     <rhn-tab name="Lookup Login/Password" url="/rhn/help/ForgotCredentials.do" />
     <rhn-tab name="Getting Started Guide" url="/rhn/help/dispatcher/getting_started_guide">

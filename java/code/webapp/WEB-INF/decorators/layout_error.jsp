@@ -75,11 +75,6 @@
           </c:choose>
       </div>
     </div>
-    <ul class="nav navbar-nav navbar-controls">
-      <li>
-        <a class="about-link" href="/rhn/help/about.do"><bean:message key="About Spacewalk"/></a>
-      </li>
-    </ul>
   </header>
   <div class="spacewalk-main-column-layout">
     <aside id="spacewalk-aside" class="navbar-collapse in" style="height: 689px;">
@@ -125,9 +120,6 @@
   </div>
   <footer>
     <div class="wrapper">
-      <div class="footer-copyright">
-        <bean:message key="footer.jsp.copyright" />
-      </div>
       <div class="footer-release">
         <bean:message key="footer.jsp.release" arg0="/docs/${docsLocale}/release-notes/release-notes-server.html" arg1="${rhn:getProductVersion()}" />
       </div>

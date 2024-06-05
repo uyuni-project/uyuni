@@ -6,8 +6,14 @@
   <rhn-tab name="Subscription Management" url="/rhn/systems/SystemEntitlements.do">
   </rhn-tab>
 
-  <rhn-tab name="About Spacewalk" url="/rhn/help/about.do" >
-    <rhn-tab name="About Spacewalk" url="/rhn/help/about.do" />
+  <rhn-tab name="Help" url="/rhn/apidoc/index.jsp" >
+    <rhn-tab name="API" url="/rhn/apidoc/index.jsp">
+        <rhn-tab name="Overview" url="/rhn/apidoc/index.jsp">
+                        <rhn-tab-directory>/rhn/apidoc</rhn-tab-directory>
+                </rhn-tab>
+        <rhn-tab name="FAQs" url="/rhn/apidoc/faqs.jsp" />
+        <rhn-tab name="Sample Scripts" url="/rhn/apidoc/scripts.jsp" />
+    </rhn-tab>
     <rhn-tab name="Help Desk" url="/rhn/help/index.do" />
     <rhn-tab name="Lookup Login/Password" url="/rhn/help/ForgotCredentials.do" />
     <rhn-tab name="Getting Started Guide" url="/rhn/help/dispatcher/getting_started_guide">
@@ -21,13 +27,6 @@
     </rhn-tab>
     <rhn-tab name="Release Notes" url="/rhn/help/dispatcher/release_notes">
       <rhn-tab-directory>/rhn/help/release-notes/manager</rhn-tab-directory>
-    </rhn-tab>
-    <rhn-tab name="API" url="/rhn/apidoc/index.jsp">
-        <rhn-tab name="Overview" url="/rhn/apidoc/index.jsp">
-                        <rhn-tab-directory>/rhn/apidoc</rhn-tab-directory>
-                </rhn-tab>
-        <rhn-tab name="FAQs" url="/rhn/apidoc/faqs.jsp" />
-        <rhn-tab name="Sample Scripts" url="/rhn/apidoc/scripts.jsp" />
     </rhn-tab>
 </rhn-tab>
 
