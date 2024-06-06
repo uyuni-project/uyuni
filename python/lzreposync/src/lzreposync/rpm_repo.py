@@ -137,7 +137,7 @@ class RPMRepo(Repo):
             input_source = InputSource()
             input_source.setByteStream(gzip_fd)
             parser.parse(input_source)
-            packages_count = len(self.handler.packages)
+            packages_count = len(self.handler.batch)
             logging.debug("Parsed packages: %s", packages_count)
             return packages_count
 
