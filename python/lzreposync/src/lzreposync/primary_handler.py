@@ -153,8 +153,7 @@ class Handler(xml.sax.ContentHandler):
                 # Dealing with elements with attributes. Eg: <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
                 for attr_name in self.searched_attrs[name[1]]:
                     self.set_element_attribute(attr_name, name[1], attrs)
-        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[
-            1] in self.searched_chars:
+        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] in self.searched_chars:
             if is_complex(name[1]):
                 # Dealing with list/nested attributes. Eg: ["provides", "requires", "enhances", "obsoletes"]
                 self.currentParent = name[1]
@@ -164,7 +163,7 @@ class Handler(xml.sax.ContentHandler):
                     self.set_element_attribute(attr_name, name[1], attrs)
             else:
                 self.text = ""
-        elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] == "entry":
+        elif self.package is not None and name[0] == RPM_NS and name[1] == "entry":
             self.add_dependency(attrs)
 
     def characters(self, content):
