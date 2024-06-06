@@ -2,6 +2,8 @@ import logging
 import xml.sax
 from typing import List
 
+from lzreposync.importUtils import import_package_batch
+from lzreposync.rpm_repo import RPMHeader
 from spacewalk.server.importlib.importLib import Package, Checksum, Dependency
 
 COMMON_NS = "http://linux.duke.edu/metadata/common"
