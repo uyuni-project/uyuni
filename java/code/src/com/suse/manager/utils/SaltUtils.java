@@ -1862,7 +1862,7 @@ public class SaltUtils {
                     result.getCustomFqdns().stream()
                 ).distinct().collect(Collectors.toList())
         );
-        hwMapper.mapPaygInfo();
+        server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
 
         // Let the action fail in case there is error messages
         if (!hwMapper.getErrors().isEmpty()) {
