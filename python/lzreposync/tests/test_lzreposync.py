@@ -29,7 +29,7 @@ def test_parse_primary_missing_element_attributes():
     'epoch' and the 'ver' of the second package are missing.
     The current parser's behaviour is to ignore the missing attribute, and continue parsing
     """
-    test_primary_path = "tests/primary_test_missing_element_attributes.xml.gz"
+    test_primary_path = "primary_test_missing_element_attributes.xml.gz"
     test_cache_dir = ".cache"
     handler = Handler()
 
