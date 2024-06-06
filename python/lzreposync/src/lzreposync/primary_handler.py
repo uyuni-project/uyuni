@@ -182,6 +182,10 @@ class Handler(xml.sax.ContentHandler):
                 self.count = 0
         elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[
             1] in self.searched_chars:
+            if name[1] == "arch":
+                # Tagging 'binary' packages with {isSource:True}, and 'source' ones with {isSource:False}
+                if self.text == "src":
+                    self.package['header'].is_source = True
             if name[1] == "checksum":
                 self.currentElement['value'] = self.text
                 self.package["checksum"] = self.currentElement
