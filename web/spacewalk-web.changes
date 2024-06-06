@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Jun 06 17:03:31 CEST 2024 - rosuna@suse.com
+
+- version 4.3.39-0
+  * Show server timezone with execution time in recurring action details
+  * Fix displayed time in datetime pickers that use server's
+    timezone (bsc#1225196)
+  * Bump the WebUI version to 4.3.13
+  * Prevent error in case of inconsistent subscription matcher message
+    data (bsc#1221629)
+
+-------------------------------------------------------------------
 Fri Apr 12 17:06:10 CEST 2024 - rosuna@suse.com
 
 - version 4.3.38-0
