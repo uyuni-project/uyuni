@@ -48,10 +48,13 @@ class Handler(xml.sax.ContentHandler):
     SAX parser handler for repository primary.xml files.
     """
 
-    def __init__(self):
+    def __init__(self, batch_size=20):
         super().__init__()
+        self.batch_size = batch_size
+        self.batch_index = 0  # Number of already imported batches
+        self.count = 0  # Counting the num of packages of current batch
         self.package = None
-        self.packages: List[Package] = []  # A group of packages to insert together into the db
+        self.batch: List[Package] = []  # A group of packages to insert together into the db
         self.text = None
         self.currentElement = None
         self.attributes_stack = []  # used for nested attributes that has a list of objects
@@ -163,7 +166,14 @@ class Handler(xml.sax.ContentHandler):
 
     def endElementNS(self, name, qname):
         if name == (COMMON_NS, "package"):
-            self.packages.append(self.package)
+            self.count += 1
+            self.batch.append(self.package)
+            if self.count >= self.batch_size:
+                print("----> TESTING: Importing {} packages...".format(self.count))
+                # Import current batch
+                self.batch_index += 1
+                import_package_batch(self.batch, self.batch_index, self.batch_size)
+                self.count = 0
         elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[
             1] in self.searched_chars:
             if name[1] == "checksum":
