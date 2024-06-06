@@ -74,7 +74,8 @@ class Handler(xml.sax.ContentHandler):
                                "requires",
                                "obsoletes",
                                "enhances",
-                               "checksum"
+                               "checksum",
+                               "header-range"
                                ]
         self.searched_attrs = {
             # "location": ["href"],  # TODO Check: is it source_rpm ?
@@ -142,7 +143,9 @@ class Handler(xml.sax.ContentHandler):
 
     def startElementNS(self, name, qname, attrs):
         if name == (COMMON_NS, "package"):
-            self.package = {}
+            #  self.package = {}
+            self.package = Package()
+            self.package['header'] = RPMHeader()  # TODO should we use the header class defined in rhn_mpm.py: class MPM_Header ?
         elif self.package is not None and name[0] == COMMON_NS and name[1] in self.searched_attrs:
             if name[1] == "checksum":
                 self.set_checksum(attrs)
@@ -155,6 +158,10 @@ class Handler(xml.sax.ContentHandler):
             if is_complex(name[1]):
                 # Dealing with list/nested attributes. Eg: ["provides", "requires", "enhances", "obsoletes"]
                 self.currentParent = name[1]
+            elif len(attrs) > 0:
+                # Rpm element with attributes. Eg: <rpm:header-range start="6200" end="149568"/>
+                for attr_name in self.searched_attrs[name[1]]:
+                    self.set_element_attribute(attr_name, name[1], attrs)
             else:
                 self.text = ""
         elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[1] == "entry":
