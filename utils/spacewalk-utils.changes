@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 16:12:29 CEST 2024 - rosuna@suse.com
+
+- version 4.3.20-1
+  * Add SL Micro 6.0 Uyuni Client Tools Channel via spacewalk-common-channels
+
+-------------------------------------------------------------------
 Tue Jan 23 14:09:46 CET 2024 - rosuna@suse.com
 
 - version 4.3.19-1
