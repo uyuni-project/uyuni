@@ -1,2 +1,0 @@
-- Remove initiate action and cobbler system profile when
-  cancelling autoinstallion (bsc#1220259)

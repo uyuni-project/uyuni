@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Thu Jun 06 16:08:27 CEST 2024 - rosuna@suse.com
+
+- version 4.3.76-0
+  * Remove initiate action and cobbler system profile when cancelling
+    autoinstallion (bsc#1220259)
+  * Improve handling of virtual-host-gather host identifier from a
+    VMWare virtualization host (bsc#1218724)
+  * Replace symlink to kernel and initrd in salt filesystem with regular
+    files (bsc#1220221)
+  * Fix Null Pointer Exception when action completion time is not set
+  * Prevent Null Pointer Exception when processing reboot needed beacon
+    event(bsc#1216063)
+  * Change syncAll call at start-up to be asynchronous (bsc#1224004)
+  * Don't accept periods as valid characters in distribution label
+    (bsc#1219317)
+  * Increase reboot info beacon interval
+
+-------------------------------------------------------------------
 Thu May 09 12:42:56 CEST 2024 - rosuna@suse.com
 
 - version 4.3.75-0
