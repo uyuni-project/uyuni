@@ -259,8 +259,8 @@ def create_bootstrap_failure_notification(label, messages: List[str]):
     notification_type = "CreateBootstrapRepoFailed"
     with cfg_component("java") as cfg:
         if (
-            cfg.notification_type_disabled
-            and notification_type in cfg.notification_type_disabled.split(",")
+            cfg.notifications_type_disabled
+            and notification_type in cfg.notifications_type_disabled.split(",")
         ):
             return None
 
