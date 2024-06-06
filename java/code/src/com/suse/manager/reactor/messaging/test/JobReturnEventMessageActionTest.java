@@ -786,8 +786,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server.getDmi().getProduct());
             assertNotNull(server.getDmi().getBios());
             assertNotNull(server.getDmi().getVendor());
-            assertTrue(!server.getDevices().isEmpty());
-            assertTrue(!server.getNetworkInterfaces().isEmpty());
+            assertFalse(server.getDevices().isEmpty());
+            assertFalse(server.getNetworkInterfaces().isEmpty());
+            assertFalse(server.isPayg(), "Unexpected: system is PAYG but it should not");
 
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
                     NetworkInterface::getName,
@@ -1229,9 +1230,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testHardwareProfilePublicCloud()  throws Exception {
-        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.public_cloud.json", (server) -> {
+        testHardwareProfileUpdate("hardware.profileupdate.public_cloud.json", (server) -> {
             assertNotNull(server);
             assertEquals("iabcdef1234567890", server.getVirtualInstance().getUuid());
+            assertFalse(server.isPayg(), "Unexpected: instance is PAYG but should not");
+        });
+    }
+
+    @Test
+    public void testHardwareProfilePublicCloudPayg()  throws Exception {
+        testHardwareProfileUpdate("hardware.profileupdate.public_cloud_payg.json", (server) -> {
+            assertNotNull(server);
+            assertEquals("iabcdef1234567890", server.getVirtualInstance().getUuid());
+            assertTrue(server.isPayg(), "Unexpected: instance is BYOS but should not");
         });
     }
 

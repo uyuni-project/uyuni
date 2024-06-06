@@ -111,7 +111,7 @@
                 "duration": 0.653,
                 "__run_num__": 5,
                 "changes": {
-                    "ret": "BYOS"
+                    "ret": "PAYG"
                 }
             },
             "mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run": {
