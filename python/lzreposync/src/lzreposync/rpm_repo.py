@@ -13,7 +13,7 @@ from xml.sax.xmlreader import InputSource
 
 import gnupg
 
-from lzreposync import Repo
+from lzreposync.repo import Repo
 
 
 class ChecksumVerificationException(ValueError):
@@ -27,6 +27,14 @@ class SignatureVerificationException(Exception):
         self.message = f"Invalid signature for file {file_name}"
         super().__init__(self.message)
 
+
+class RPMHeader:
+    """
+    RPM Pacakge Header
+    """
+    def __init__(self, is_source=False, packaging="rpm"):
+        self.is_source = is_source
+        self.packaging = packaging
 
 def get_text(node_list):
     rc = []
