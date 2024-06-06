@@ -166,8 +166,13 @@ Feature: Cobbler and distribution autoinstallation
     And I wait until file "/srv/tftpboot/pxelinux.0" exists on server
 
   Scenario: Trigger the creation of a cobbler system record
-    When I trigger cobbler system record
-    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "inst.ks=" on server
+    When I clear the caches on the server
+    And I am on the Systems overview page of this "sle_client"
+    And I follow "Provisioning"
+    And I click on profile "testprofile"
+    And I click on "Create PXE installation configuration"
+    Then I should see a "System record created" text
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "autoyast=" on server
 
   Scenario: Create a cobbler system record via API
     When I create a system record
