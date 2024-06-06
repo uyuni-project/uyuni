@@ -11,6 +11,8 @@ from [Spacewalk](https://spacewalkproject.github.io/).
 It is the upstream community project from which [SUSE Manager](https://www.suse.com/products/suse-manager/)
 is derived.
 
+We are just doing a test here about PR review approvals.
+
 Resources
 ---------
 
