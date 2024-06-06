@@ -50,7 +50,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-httpd-image
-LABEL org.opencontainers.image.version=4.3.13
+LABEL org.opencontainers.image.version=4.3.14
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
