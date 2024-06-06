@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 17:05:43 CEST 2024 - rosuna@suse.com
+
+- version 4.3.26-0
+  * Update list of package GPG keys in the database
+
+-------------------------------------------------------------------
 Fri Apr 12 17:11:51 CEST 2024 - rosuna@suse.com
 
 - version 4.3.25-0
