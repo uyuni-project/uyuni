@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jun 06 17:07:49 CEST 2024 - rosuna@suse.com
+
+- version 4.3.18-0
+  * Add SLE 12 SP5 LTSS channel families
+  * Remove SUSE Linux Liberty HA LTSS 7 channel family
+
+-------------------------------------------------------------------
 Fri Apr 12 17:16:30 CEST 2024 - rosuna@suse.com
 
 - version 4.3.17-0
