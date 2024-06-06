@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.audit;
 
 import static com.redhat.rhn.manager.audit.CVEAuditManager.SUCCESSOR_PRODUCT_RANK_BOUNDARY;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -96,7 +97,7 @@ public class CVEAuditManagerOVAL {
             CVEAuditSystemBuilder auditWithChannelsResult = null;
             CVEAuditSystemBuilder auditWithOVALResult = null;
 
-            if (checkOVALAvailability(clientServer)) {
+            if (ConfigDefaults.get().isOvalEnabledForCveAudit() && checkOVALAvailability(clientServer)) {
                 auditWithOVALResult =
                         doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
             }
