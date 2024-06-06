@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 17:04:21 CEST 2024 - rosuna@suse.com
+
+- version 4.3.12-0
+  * Update the spacewalk certificate location (bsc#1225634)
+
+-------------------------------------------------------------------
 Fri Apr 12 17:08:19 CEST 2024 - rosuna@suse.com
 
 - version 4.3.11-0
