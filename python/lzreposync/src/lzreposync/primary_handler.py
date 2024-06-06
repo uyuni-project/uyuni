@@ -184,7 +184,7 @@ class Handler(xml.sax.ContentHandler):
             1] in self.searched_chars:
             if name[1] == "checksum":
                 self.currentElement['value'] = self.text
-                self.package["checksum_list"] = [self.currentElement]  # TODO can we have multitple ?
+                self.package["checksum"] = self.currentElement
             elif is_complex(name[1]):
                 self.package[name[1]] = self.attributes_stack  # eg: [Dependency] of 'provides' attribute
                 self.currentParent = None
