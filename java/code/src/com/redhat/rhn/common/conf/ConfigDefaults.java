@@ -235,6 +235,8 @@ public class ConfigDefaults {
 
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
 
+    public static final String CVE_AUDIT_ENABLE_OVAL_METADATA = "java.cve_audit.enable_oval_metadata";
+
     /**
      * Token lifetime in seconds
      */
@@ -1194,5 +1196,14 @@ public class ConfigDefaults {
         }
 
         return rebootDelay;
+    }
+
+    /**
+     * Check if the usage of OVAL metadata is permitted in scanning systems for CVE vulnerabilities.
+     *
+     * @return {@code true} if OVAL usage is permitted and {@code false} otherwise.
+     * */
+    public boolean isOvalEnabledForCveAudit() {
+        return Config.get().getBoolean(CVE_AUDIT_ENABLE_OVAL_METADATA, false);
     }
 }
