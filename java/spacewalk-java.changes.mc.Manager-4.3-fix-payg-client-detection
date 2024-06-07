@@ -1,0 +1,3 @@
+- allow running Hardware refresh for BYOS Clients on a SUMA PAYG Server
+  to allow re-detection of the instance flavor (bsc#1225940)
+- fix PAYG client detection during Hardware refresh (bsc#1225940)
