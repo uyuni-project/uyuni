@@ -1,0 +1,3 @@
+- fetch byte-buddy dependencies from Leap_sle
+- add byte-buddy-dep dependency
+- require byte-buddy and byte-buddy-dep using maven dependencies
