@@ -254,15 +254,39 @@ When(/^I start local monitoring of Cobbler$/) do
 end
 
 Then(/^the local logs for Cobbler should not contain errors$/) do
-  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
-  local_file = '/tmp/cobbler_debug.log'
-  return_code = file_extract(get_target('server'), cobbler_log_file, local_file)
+  node = get_target('server')
+
+  # normal log file
+  cobbler_log_file = '/var/log/cobbler/cobbler.log'
+  local_file = '/tmp/cobbler.log'
+  # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
+  node.run("cp #{cobbler_log_file} #{local_file}")
+  return_code = file_extract(node, local_file, local_file)
   raise ScriptError, 'File extraction failed' unless return_code.zero?
 
-  file_data = File.read(local_file).gsub!("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
-  file_data = "[#{file_data}]"
-  data_hash = JSON.parse(file_data)
-  output = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
-  get_target('server').run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") unless output.empty?
-  raise ScriptError, "Errors in Cobbler logs:\n #{output}" unless output.empty?
+  output = File.read(local_file).each_line.select { |line| line.include? 'ERROR' }
+  unless output.empty?
+    node.run("cp #{local_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
+    log "Error in Cobbler log:\n#{output}"
+    log ''
+  end
+
+  # debug log file
+  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
+  local_file = '/tmp/cobbler_debug.log'
+  # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
+  node.run("cp #{cobbler_log_file} #{local_file}")
+  return_code = file_extract(node, local_file, local_file)
+  raise ScriptError, 'File extraction failed' unless return_code.zero?
+
+  file_data = File.read(local_file).gsub("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
+  data_hash = JSON.parse("[#{file_data}]")
+  output_debug = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
+  unless output_debug.empty?
+    node.run("cp #{local_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
+    log "Error in Cobbler debug log:\n#{output_debug}"
+    log ''
+  end
+
+  raise ScriptError, 'Errors in Cobbler logs' unless output.empty? && output_debug.empty?
 end
