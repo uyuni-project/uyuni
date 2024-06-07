@@ -1954,7 +1954,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(pil)));
                 }},
                 ACTIVATION_KEY_SUPPLIER,
-                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    assertFalse(optMinion.get().isPayg(), "Unexpected: instance is PAYG");
+                },
                 DEFAULT_CONTACT_METHOD);
     }
 
@@ -1981,7 +1984,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                     will(returnValue(getSystemInfo(MINION_ID, null, key)));
                     allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
-                    will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
+                    will(returnValue(SumaUtil.PublicCloudInstanceFlavor.BYOS));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                             product.getName(),
@@ -1994,7 +1997,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(pil)));
                 }},
                 ACTIVATION_KEY_SUPPLIER,
-                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    assertFalse(optMinion.get().isPayg(), "Unexpected: instance is PAYG");
+                },
                 DEFAULT_CONTACT_METHOD);
     }
 
@@ -2013,7 +2019,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
                 }},
                 ACTIVATION_KEY_SUPPLIER,
-                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    assertTrue(optMinion.get().isPayg(), "Unexpected: instance is not PAYG");
+                },
                 DEFAULT_CONTACT_METHOD);
     }
 
