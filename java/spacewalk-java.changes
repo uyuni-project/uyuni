@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 07 11:46:01 CEST 2024 - rosuna@suse.com
+
+- version 4.3.77-0
+  * Allow running hardware refresh for BYOS Clients on a SUMA PAYG Server
+    to allow re-detection of the instance flavor (bsc#1225940)
+  * Fix PAYG client detection during hardware refresh (bsc#1225940)
+
+-------------------------------------------------------------------
 Thu Jun 06 16:08:27 CEST 2024 - rosuna@suse.com
 
 - version 4.3.76-0
