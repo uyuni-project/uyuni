@@ -21,6 +21,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
@@ -2204,6 +2205,28 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean isPayg() {
         return payg;
+    }
+
+    /**
+     * @return true if this server is allowed to be managed by SUSE Manager PAYG
+     */
+    public boolean isAllowedOnPayg() {
+        if (isPayg()) {
+            return true;
+        }
+        return getInstalledProducts().stream()
+                .map(InstalledProduct::getSUSEProduct)
+                .filter(Objects::nonNull)
+                .allMatch(p -> {
+                    if (p.getFree()) {
+                        return true;
+                    }
+                    ChannelFamily cf = p.getChannelFamily();
+                    if (cf != null) {
+                        return cf.getLabel().equals("SMP") || cf.getLabel().equals("SLE-M-T");
+                    }
+                    return false;
+                });
     }
 
     /**

@@ -150,9 +150,9 @@ public class MinionActionChainExecutor extends RhnJavaJob {
             if (!cloudPaygManager.hasSCCCredentials()) {
                 boolean hasNonCompliantByosMinion = actionChain.getEntries()
                         .stream()
-                        .map(entry -> entry.getServer())
+                        .map(ActionChainEntry::getServer)
                         .filter(Objects::nonNull)
-                        .anyMatch(server -> !server.isPayg());
+                        .anyMatch(server -> !server.isAllowedOnPayg());
 
                 if (hasNonCompliantByosMinion) {
                     List<Long> actionsId = actionChain.getEntries()
@@ -163,8 +163,8 @@ public class MinionActionChainExecutor extends RhnJavaJob {
 
                     Set<Server> nonCompliantByosMinions = actionChain.getEntries()
                             .stream()
-                            .map(entry -> entry.getServer())
-                            .filter(s -> !s.isPayg())
+                            .map(ActionChainEntry::getServer)
+                            .filter(s -> !s.isAllowedOnPayg())
                             .collect(Collectors.toSet());
 
                     ActionFactory.rejectScheduledActions(actionsId,
