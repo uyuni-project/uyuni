@@ -1,7 +1,6 @@
 # Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 Feature: Distribution Channel Mapping
 
   Scenario: Log in as admin user
@@ -30,6 +29,7 @@ Feature: Distribution Channel Mapping
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4" link in the content area
 
+@scc_credentials
 @uyuni
   Scenario: Create new map for x86_64 openSUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
@@ -42,6 +42,7 @@ Feature: Distribution Channel Mapping
     And I click on "Create Mapping"
     Then I should see a "openSUSE Leap 15.5" link in the content area
 
+@deblike_minion
   Scenario: Create new map for x86_64 Ubuntu clients with test base channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
@@ -80,6 +81,7 @@ Feature: Distribution Channel Mapping
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 modified" in the Operating System field
     And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
 
+@scc_credentials
 @uyuni
   Scenario: Update map for x86_64 openSUSE clients using test-x86_64 channel
     When I follow the left menu "Software > Distribution Channel Mapping"
@@ -94,6 +96,7 @@ Feature: Distribution Channel Mapping
     Then I should see the text "openSUSE Leap 15.5 modified" in the Operating System field
     And I should see the text "opensuse_leap15_5-x86_64" in the Channel Label field
 
+@deblike_minion
   Scenario: Update map for x86_64 Ubuntu clients using test base channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS" in the Operating System field
@@ -133,6 +136,7 @@ Feature: Distribution Channel Mapping
     When I click on "Delete Mapping"
     Then I should not see a "SUSE Linux Enterprise Server 15 SP 4 modified" link
 
+@scc_credentials
 @uyuni
   Scenario: Cleanup: delete the map created for x68_64 openSUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
@@ -146,6 +150,7 @@ Feature: Distribution Channel Mapping
     When I click on "Delete Mapping"
     Then I should not see a "openSUSE Leap 15.5 modified" link
 
+@deblike_minion
   Scenario: Cleanup: delete the map created for x68_64 Ubuntu clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field

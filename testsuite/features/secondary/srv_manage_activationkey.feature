@@ -1,7 +1,6 @@
 # Copyright (c) 2010-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 Feature: Manipulate activation keys
   In order to register systems to the spacewalk server
   As the testing user
@@ -82,6 +81,7 @@ Feature: Manipulate activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
 
+@scc_credentials    
 @uyuni
   Scenario: Create an activation key with a channel and a package list for x86_64
     When I follow the left menu "Systems > Activation Keys"
