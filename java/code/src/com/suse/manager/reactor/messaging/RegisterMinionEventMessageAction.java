@@ -482,8 +482,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .orElseThrow(() -> new SaltException("Missing systeminfo result. Aborting registration."));
 
             ValueMap grains = systemInfo.getGrains();
+            PublicCloudInstanceFlavor instanceFlavor = PublicCloudInstanceFlavor.UNKNOWN;
             if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.hasSCCCredentials()) {
-                PublicCloudInstanceFlavor instanceFlavor = saltApi.getInstanceFlavor(minionId);
+                instanceFlavor = saltApi.getInstanceFlavor(minionId);
                 if (!RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains,
                                                        instanceFlavor)) {
                     Object[] args = {minionId};
@@ -562,7 +563,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
             minion.setCpe(cpe);
             systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
-
+            minion.setPayg(instanceFlavor.equals(PublicCloudInstanceFlavor.PAYG));
 
             String serverArch = String.format("%s-%s", osarch,
                     osfamily.equals("Debian") ? "debian-linux" : "redhat-linux");
