@@ -15,6 +15,8 @@ We are just doing a test here about PR review approvals.
 
 Adding some more changes for testing.
 
+Here's Haroune contributing to Uyuni :).
+
 Resources
 ---------
 
