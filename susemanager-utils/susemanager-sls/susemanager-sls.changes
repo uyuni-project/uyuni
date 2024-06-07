@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 07 11:44:25 CEST 2024 - rosuna@suse.com
+
+- version 4.3.43-0
+  * Fix PAYG client detection during hardware refresh (bsc#1225940)
+
+-------------------------------------------------------------------
 Thu Jun 06 17:06:40 CEST 2024 - rosuna@suse.com
 
 - version 4.3.42-0
