@@ -5,6 +5,7 @@ given url and parses it(them)
 """
 import abc
 import os
+import urllib.parse
 
 
 class Repo(metaclass=abc.ABCMeta):
@@ -17,7 +18,7 @@ class Repo(metaclass=abc.ABCMeta):
         self.metadata_files = None
 
     def get_repo_path(self, path):
-        return "{}/{}".format(self.repository, path)
+        return urllib.parse.urljoin(self.repository, path)
 
     # @profile
     @abc.abstractmethod
