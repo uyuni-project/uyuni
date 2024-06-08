@@ -2,7 +2,7 @@ import logging
 import xml.sax
 from typing import List
 
-from lzreposync.importUtils import import_package_batch
+# from lzreposync.importUtils import import_package_batch
 from lzreposync.rpm_repo import RPMHeader
 from spacewalk.server.importlib.importLib import Package, Checksum, Dependency
 
@@ -175,10 +175,12 @@ class Handler(xml.sax.ContentHandler):
             self.count += 1
             self.batch.append(self.package)
             if self.count >= self.batch_size:
-                print("----> TESTING: Importing {} packages...".format(self.count))
+                # print("----> Importing {} packages...".format(self.count))
+                # yield self.batch
                 # Import current batch
                 self.batch_index += 1
-                import_package_batch(self.batch, self.batch_index, self.batch_size)
+                # import_package_batch(self.batch, self.batch_index, self.batch_size)
+                self.batch = []
                 self.count = 0
         elif self.package is not None and (name[0] == COMMON_NS or name[0] == RPM_NS) and name[
             1] in self.searched_chars:
