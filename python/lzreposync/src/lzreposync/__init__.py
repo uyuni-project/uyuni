@@ -63,4 +63,13 @@ def main():
     logging.getLogger().setLevel(args.loglevel)
     rpm_primary_handler = Handler(args.batch_size)
     rpm_repository = RPMRepo(args.name, args.cache, args.url, rpm_primary_handler)  # TODO args.url should be args.repo, no ?
-    rpm_repository.get_packages_metadata()
+    packages_batch_gen = rpm_repository.get_packages_metadata()
+
+    count = 0
+    total = 0
+    for batch in packages_batch_gen:
+        count += 1
+        total += len(batch)
+        print(f"Batch: {count} - Size: {len(batch)} - Package[0]= {batch[0]['name']}")
+
+    print("TOTAL:", total)
