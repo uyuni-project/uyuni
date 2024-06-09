@@ -191,7 +191,7 @@ class UyuniRoster:
                     pushKey=PROXY_SSH_PUSH_KEY,
                     user=user,
                     pushPort=self.ssh_push_port_https,
-                    proxy=proxies[len(proxies) - 1].hostname,
+                    proxy="localhost",
                     sslPort=SSL_PORT,
                     minion=minion_id,
                     # pylint: disable-next=consider-using-f-string
@@ -247,7 +247,7 @@ class UyuniRoster:
                 {
                     # pylint: disable-next=consider-using-f-string
                     "remote_port_forwards": "%d:%s:%d"
-                    % (self.ssh_push_port_https, self.java_hostname, SSL_PORT)
+                    % (self.ssh_push_port_https, "localhost", SSL_PORT)
                 }
             )
 
