@@ -21,10 +21,15 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
 import com.suse.manager.api.ReadOnly;
 
-import java.util.Collection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class UserNotificationsHandler extends BaseHandler {
+    private static final Logger LOG = LogManager.getLogger(UserNotificationsHandler.class);
 
     /**
      * @param user The current user
@@ -55,19 +60,20 @@ public class UserNotificationsHandler extends BaseHandler {
      * @return Returns 1 if successful
      * @param user The current user
      * @param notifications Notification list
-     * @apidoc.doc Set notifications of the given user as raed
+     * @apidoc.doc Set notifications of the given user as read
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("Collection", "notifications", "The target notification.")
      * @apidoc.returntype #return_int_success()
      */
-    public int setNotificationsRead(User user, Collection<Integer> notifications) {
-        for (UserNotification notification : getNotifications(user, true)) {
-            if (notifications.stream()
-                    .map(Long::valueOf)
-                    .anyMatch(l -> l.equals(notification.getId()))) {
-                UserNotificationFactory.updateStatus(notification, true);
-            }
-        }
+    public int setNotificationsRead(User user, List<Integer> notifications) {
+        notifications.stream()
+                .map(Long::valueOf)
+                .forEach(id -> {
+                    Optional<UserNotification> optNotification = UserNotificationFactory.lookupByUserAndId(id, user);
+                    optNotification.ifPresentOrElse(
+                            notification -> UserNotificationFactory.updateStatus(notification, true),
+                            () -> LOG.error("Notification ID {} not found", id));
+                    });
         return 1;
     }
 
@@ -91,12 +97,24 @@ public class UserNotificationsHandler extends BaseHandler {
      * @return int number of deleted notifications
      * @apidoc.doc Deletes multiple notifications
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("collection", "notifications", "List of notifications.")
+     * @apidoc.param #param_desc("collection", "notifications", "List of notification ids.")
      * @apidoc.returntype #return_int_success()
      */
-    public int deleteNotification(User user, Collection<UserNotification> notifications) {
-        UserNotificationFactory.delete(notifications);
-        return 1;
+    public int deleteNotifications(User user, List<Integer> notifications) {
+
+        List<UserNotification> collect = notifications.stream()
+                .map(Long::valueOf)
+                .map(id -> {
+                    Optional<UserNotification> optNotification = UserNotificationFactory.lookupByUserAndId(id, user);
+                    return optNotification.orElseGet(() -> {
+                        LOG.error("Notification ID {} not found", id);
+                        return null;
+                    });
+                })
+                .filter(Objects::nonNull)
+                .toList();
+        int cnt = UserNotificationFactory.delete(collect);
+        return cnt == notifications.size() ? 1 : 0;
     }
 
 }
