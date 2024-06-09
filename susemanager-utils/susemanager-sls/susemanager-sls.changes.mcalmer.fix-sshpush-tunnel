@@ -1,0 +1,1 @@
+- fix hairpin problem in ssh push with tunnel prevent bootstrapping (bsc#1226098, bsc#1223970)

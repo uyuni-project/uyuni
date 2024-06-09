@@ -588,8 +588,7 @@ public class SaltSSHService {
     private Optional<String> remotePortForwarding(List<String> proxyPath,
                                                   String sshContactMethod) {
         if (ContactMethodUtil.SSH_PUSH_TUNNEL.equals(sshContactMethod)) {
-            return Optional.of(getSshPushRemotePort() + ":" +
-                    ConfigDefaults.get().getJavaHostname() + ":" + SSL_PORT);
+            return Optional.of(getSshPushRemotePort() + ":" + "localhost" + ":" + SSL_PORT);
         }
         return Optional.empty();
     }
