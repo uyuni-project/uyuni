@@ -27,10 +27,10 @@ fi
 PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
 
 # Possible values: beta, sle-eula
-EULA=beta
+EULA=sle-eula
 
 # Possible values: alpha, beta, released
-RELEASE_STAGE=beta
+RELEASE_STAGE=released
 
 if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
   NAME="${PKG_NAME%%-image}"
