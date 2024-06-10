@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:14:33 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Fix header layout alignment bugs (bsc#1225072)
+  * Fix tab alignment on system detail pages
+  * Fix height of search icon button
+  * Fix modal backwards compatibility event handling
+  * Fix color contrast issue in tables for the status like,
+    skipped, and read messages
+  * Fix button link styles
+  * Fix modal layouts on notification messages page (bsc#1224401)
+  * Added "Add System" link on System page
+  * Fix dark sidebar color scheme
+
+-------------------------------------------------------------------
 Fri May 03 14:21:08 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7-0
