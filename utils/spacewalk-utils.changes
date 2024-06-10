@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:13:13 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4-0
+  * Move server-only functions out of uyuni.common (bsc#1222325)
+  * Add SL Micro 6.0 Uyuni Client Tools Channel via
+    spacewalk-common-channels
+
+-------------------------------------------------------------------
 Thu Apr 04 17:59:01 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.3-0
