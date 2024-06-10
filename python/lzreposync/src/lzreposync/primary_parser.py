@@ -12,9 +12,7 @@ class PrimaryIncrementalParser(xml.sax.xmlreader.IncrementalParser):
 
     def feed(self, data):
         self._parser.feed(data)
-        print(f"---> BATCH SIZE: {len(self._handler.batch)}")
         if len(self._handler.batch) >= 19:  # TODO: change 19 by batch_size
-            print("----> Returning batch...")
             return self._handler.batch
 
     def close(self):

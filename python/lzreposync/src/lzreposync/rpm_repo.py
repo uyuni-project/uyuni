@@ -141,7 +141,6 @@ class RPMRepo(Repo):
                     break
                 batch = parser.feed(chunk)
                 if batch:
-                    print("---> Yielding batch....")
                     yield batch
 
             parser.close()
