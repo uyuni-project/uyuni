@@ -1,7 +1,17 @@
 import argparse
 import logging
+from itertools import islice
 
 from lzreposync.rpm_repo import RPMRepo
+
+
+# TODO: put this function in a better location
+def batched(iterable, n):
+    if n < 1:
+        raise ValueError('n must be at least one')
+    iterator = iter(iterable)
+    while batch := tuple(islice(iterator, n)):
+        yield batch
 
 
 def main():
