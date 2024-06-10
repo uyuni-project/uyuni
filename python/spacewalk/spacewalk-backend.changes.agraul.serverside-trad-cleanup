@@ -1,3 +1,0 @@
-- Remove applet handler
-- Drop spacewalk-backend-applet subpackage
-- Remove server-side action handling (traditional stack)

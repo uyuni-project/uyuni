@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:56:22 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Move server-only functions out of uyuni.common (bsc#1222325)
+  * Remove applet handler
+  * Drop spacewalk-backend-applet subpackage
+  * Remove server-side action handling (traditional stack)
+  * Print detailed parsing errors when indexing module metadata
+  * Remove configuration management (traditional stack)
+  * Drop spacewalk-backend-config-files-common,
+    spacewalk-backend-config-files, and
+    spacewalk-backend-config-files-tool
+  * Adjust minimal DB schema version requirements
+
+-------------------------------------------------------------------
 Fri May 03 14:52:07 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0
