@@ -26,14 +26,6 @@ class SignatureVerificationException(Exception):
         super().__init__(self.message)
 
 
-class RPMHeader:
-    """
-    RPM Pacakge Header
-    """
-    def __init__(self, is_source=False, packaging="rpm"):
-        self.is_source = is_source
-        self.packaging = packaging
-
 def get_text(node_list):
     rc = []
     for node in node_list:
@@ -182,7 +174,8 @@ class RPMRepo(Repo):
 
                     # Work on temporary file without loading it into memory at once
                     tmp_file.seek(0)
-                    self.parse_metadata_file(tmp_file)
+                    parser = PrimaryParser(tmp_file)
+                    yield from parser.parse_primary()
                 break
             except urllib.error.HTTPError as e:
                 # We likely hit the repo while it changed:
