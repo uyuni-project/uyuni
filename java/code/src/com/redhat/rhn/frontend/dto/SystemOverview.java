@@ -14,8 +14,9 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -957,7 +958,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
      * @return Returns <code>true</code> if the last checkin dates too much.
      */
     public boolean checkinOverdue() {
-        Long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
+        Long threshold = (long) Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD, 1);
 
         return getLastCheckinDaysAgo() != null &&
                 getLastCheckinDaysAgo().compareTo(threshold) > 0;
