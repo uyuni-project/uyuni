@@ -49,7 +49,6 @@ $input-height: 35px;
     color: $eos-bc-gray-700;
     pointer-events: auto;
     cursor: default;
-    background: $gray-lighter;
 
     &:focus {
       border-color: $input-border-color !important;
@@ -59,6 +58,7 @@ $input-height: 35px;
   &::placeholder {
     color: $input-placeholder;
     opacity: 1;
+    background: $gray-lighter;
   }
 
 }
@@ -67,6 +67,12 @@ $input-height: 35px;
   padding-top: 8px;
   padding-bottom: 8px;
 }
+
+.form-control[disabled],
+div.form-control {
+  background-color: $gray-lighter;
+}
+
 
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
