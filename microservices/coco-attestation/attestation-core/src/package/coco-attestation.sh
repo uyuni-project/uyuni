@@ -22,7 +22,7 @@ if [ -f /etc/coco-attestation.conf ]; then
     . /etc/coco-attestation.conf
 fi
 
-ATTESTATION_PARAMS="-Dfile.encoding=UTF-8 -Xms${ATTESTATION_INIT_MEMORY}m -Xmx${ATTESTATION_MAX_MEMORY}m ${ATTESTATION_CRASH_PARAMS} ${ATTESTATION_JAVA_OPTS}"
+ATTESTATION_PARAMS="-Dfile.encoding=UTF-8 -Dlog4j.shutdownHookEnabled=false -Xms${ATTESTATION_INIT_MEMORY}m -Xmx${ATTESTATION_MAX_MEMORY}m ${ATTESTATION_CRASH_PARAMS} ${ATTESTATION_JAVA_OPTS}"
 ATTESTATION_CLASSPATH="${ATTESTATION_CLASSES}:${ATTESTATION_JARS}"
 
 exec /usr/bin/java -Djava.library.path="${ATTESTATION_LIBRARY_PATH}" \
