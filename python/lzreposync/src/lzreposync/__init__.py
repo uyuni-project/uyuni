@@ -25,7 +25,7 @@ def main():
         "--url",
         "-u",
         help="The target url of the remote repository of which we'll "
-        "parse the metadata",
+             "parse the metadata",
         dest="url",
         type=str,
     )
