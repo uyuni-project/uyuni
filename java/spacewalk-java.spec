@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.7
+Version:        5.0.8
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -131,7 +131,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.20
+BuildRequires:  salt-netapi-client >= 0.21
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -214,7 +214,7 @@ Requires:       objectweb-asm >= 9.2
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
-Requires:       salt-netapi-client >= 0.20
+Requires:       salt-netapi-client >= 0.21
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh

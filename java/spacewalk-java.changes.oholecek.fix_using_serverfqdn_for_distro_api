@@ -1,2 +1,0 @@
-- Use server FQDN instead of client used connection FQDN for
-  distro creation when using API

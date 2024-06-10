@@ -1,4 +1,46 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:03:13 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Fix API doc for 'channel.appstreams.listModuleStreams'
+  * Improve handling of virtual-host-gather host identifier from a
+    VMWare virtualization host (bsc#1218724)
+  * Set product tree tag from Beta to SUMA5.0
+  * Adjust minimal DB schema version requirements
+  * Allow running Hardware refresh for BYOS Clients on a SUMA PAYG
+    Server to allow re-detection of the instance flavor (bsc#1225940)
+  * Fix PAYG client detection during Hardware refresh (bsc#1225940)
+  * Remove the allow-config-actions and allow-remote-commands
+    options from the bootstrap script
+  * Remove rhnreg_ks script
+  * Fix missing icons in pagination buttons
+  * Fix modal layout inconsistencies
+  * Fix status icon of the systems overview list (bsc#1224012)
+  * Revert kickstart render URL back to Cobbler host (bsc#1225494)
+  * Fix hairpin problem in SSH push with tunnel preventing
+    bootstrapping (bsc#1226098, bsc#1223970)
+  * Remove initiate action and Cobbler system profile when
+    cancelling autoinstallion (bsc#1220259)
+  * Fixed incorrect capitalization for delete organization link
+    in the Recurring Actions tab
+  * Print detailed error messages on AppStreams action failure
+  * Remove obsolete proxy installation messages (bsc#1224778)
+  * Parse hasMeteringAccess from compliance input file
+  * Fix PAYG data timestamp parsing
+  * Use server FQDN instead of client used connection FQDN for
+    distro creation when using API
+  * Increase reboot info beacon interval
+  * Fix Null Pointer Exception when action completion time is
+    not set
+  * Add FQDNs from proxy configuration to existing system
+    (bsc#1222336)
+  * Parse the PAYG data collected by the external timer service
+  * Use Java hostname instead of Cobbler hostname in
+    autoinstallation snippets and URLs (bsc#1224441)
+  * Replace symlink to Kernel and initrd in Salt filesystem with
+    regular files (bsc#1220221)
+
+-------------------------------------------------------------------
 Fri May 03 14:34:58 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7-0
