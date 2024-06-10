@@ -1,2 +1,0 @@
-- Exclude AppStream information from package profile update for 
-  Centos 7 and older (bsc1224476)

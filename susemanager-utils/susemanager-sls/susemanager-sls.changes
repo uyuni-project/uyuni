@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:40:05 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Define bootstrap repo data for SL Micro 6.0
+  * Calculate bootstrap repo path for SL Micro 6.0
+  * Exclude AppStream information from package profile update for
+    Centos 7 and older (bsc1224476)
+  * Explicitly remove old venv-minion environment when updating
+    Python versions
+  * Fix bootstrapping transactional systems if Salt Minion package
+    is already installed.
+  * Avoid sending empty events with reboot_info beacon
+  * Fix parsing passwords with special characters for PostgreSQL
+    exporter
+  * Fix PAYG client detection during Hardware refresh (bsc#1225940)
+  * Fix hairpin problem in SSH push with tunnel preventing
+    bootstrapping (bsc#1226098, bsc#1223970)
+
+-------------------------------------------------------------------
 Fri May 03 14:42:58 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7-0
