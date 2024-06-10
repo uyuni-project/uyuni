@@ -1,4 +1,3 @@
-import gzip
 import hashlib
 import logging
 import os
@@ -11,6 +10,7 @@ from xml.dom import pulldom
 
 import gnupg
 
+from lzreposync.primary_parser import PrimaryParser
 from lzreposync.repo import Repo
 
 
@@ -36,8 +36,8 @@ def get_text(node_list):
 
 class RPMRepo(Repo):
 
-    def __init__(self, name, cache_path, repository, handler):
-        super().__init__(name, cache_path, repository, handler)
+    def __init__(self, name, cache_path, repository):
+        super().__init__(name, cache_path, repository)
         self.signature_verified = False  # Tell whether the signature is checked against the repomd.xml file
 
     def verify_signature(self):
@@ -116,28 +116,10 @@ class RPMRepo(Repo):
             self.metadata_files = self.get_metadata_files()
         return self.metadata_files[file_name]["checksum"]
 
-    def parse_metadata_file(self, md_file):
-        """
-        Parse the given md_file (in _.gz format) using the repo's handler (normally a sax handler)
-        """
-        with gzip.GzipFile(fileobj=md_file, mode="rb") as gzip_fd:
-            parser = xml.sax.make_parser()
-            parser.setContentHandler(self.handler)
-            parser.setFeature(xml.sax.handler.feature_namespaces, True)
-            input_source = InputSource()
-            input_source.setByteStream(gzip_fd)
-            parser.parse(input_source)
-            packages_count = len(self.handler.batch)
-            logging.debug("Parsed packages: %s", packages_count)
-            return packages_count
-
     def get_packages_metadata(self):
         if not self.repository:
             print("Error: target url not defined!")
             raise ValueError("Repository URL missing")
-        if not self.handler:
-            print("Error: handler not defined")
-            raise ValueError("Handler missing")
         if not self.signature_verified:
             logging.debug("Checking signature for file repomd.xml")
             verified = self.verify_signature()

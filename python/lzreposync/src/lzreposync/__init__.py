@@ -69,6 +69,8 @@ def main():
     args = parser.parse_args()
 
     logging.getLogger().setLevel(args.loglevel)
-    rpm_primary_handler = Handler(args.batch_size)
-    rpm_repository = RPMRepo(args.name, args.cache, args.url, rpm_primary_handler)  # TODO args.url should be args.repo, no ?
-    rpm_repository.get_packages_metadata()
+    rpm_repository = RPMRepo(args.name, args.cache, args.url)  # TODO args.url should be args.repo, no ?
+    packages = rpm_repository.get_packages_metadata()
+    for batch in batched(packages, 20):
+        print(f"Importing a batch of {len(batch)} packages...")
+        # TODO: complete the import
