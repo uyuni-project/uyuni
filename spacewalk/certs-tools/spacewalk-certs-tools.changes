@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:47:59 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Move server-only functions out of uyuni.common (bsc#1222325)
+  * Calculate bootstrap repo path for SL Micro 6.0
+
+-------------------------------------------------------------------
 Fri May 03 14:56:39 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0
