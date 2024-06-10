@@ -6,10 +6,8 @@ import tempfile
 import time
 import urllib.error
 import urllib.request
-import xml.sax
 from urllib.parse import urljoin
 from xml.dom import pulldom
-from xml.sax.xmlreader import InputSource
 
 import gnupg
 

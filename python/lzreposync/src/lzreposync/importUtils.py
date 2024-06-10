@@ -4,7 +4,6 @@ from spacewalk.satellite_tools.syncLib import log2, log
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import importLib, mpmSource, packageImport
 from spacewalk.server.importlib.backendOracle import SQLBackend
-from uyuni.common.context_managers import cfg_component
 
 
 # TODO: rename 'to_process' into 'package_batch'
