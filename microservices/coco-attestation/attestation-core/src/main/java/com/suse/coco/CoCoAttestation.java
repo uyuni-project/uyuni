@@ -68,6 +68,24 @@ public class CoCoAttestation {
 
             LOGGER.debug("Initializing attestation queue processor");
             var attestationQueueProcessor = new AttestationQueueProcessor(sessionFactory, configuration, moduleLoader);
+
+            // Add shutdown hook to stop the processor and shutdown logging
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    LOGGER.debug("Received termination signal");
+                    if (attestationQueueProcessor.isRunning()) {
+                        attestationQueueProcessor.stop();
+                        attestationQueueProcessor.awaitTermination();
+                    }
+                }
+                catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                finally {
+                    LogManager.shutdown();
+                }
+            }, "shutdown-hook"));
+
             attestationQueueProcessor.start();
             attestationQueueProcessor.awaitTermination();
 
