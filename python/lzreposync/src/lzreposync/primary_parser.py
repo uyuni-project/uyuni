@@ -177,7 +177,7 @@ class PrimaryParser:
             # dealing with ["provides", "requires", "enhances", "obsoletes"]
             self.set_complex_element_node(node)
 
-    def set_pacakge_header(self, node):
+    def set_package_header(self, node):
         """
         Set the package header. Mainly 'is_source' and 'packaging'
         """
