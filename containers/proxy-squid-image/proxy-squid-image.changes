@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:53:52 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6
+  * Include /etc/squid/conf.d/*.conf
+
+-------------------------------------------------------------------
 Fri May 03 15:17:36 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5
