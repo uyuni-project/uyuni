@@ -68,15 +68,19 @@ public class CoCoAttestation {
 
             LOGGER.debug("Initializing attestation queue processor");
             var attestationQueueProcessor = new AttestationQueueProcessor(sessionFactory, configuration, moduleLoader);
-            attestationQueueProcessor.run();
+            attestationQueueProcessor.start();
+            attestationQueueProcessor.awaitTermination();
 
-            LOGGER.debug("Execution completed");
+            LOGGER.info("Execution completed");
             System.exit(0);
         }
         catch (Exception ex) {
+            if (ex instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+
             LOGGER.error("Unexpected exception", ex);
             System.exit(1);
         }
-
     }
 }

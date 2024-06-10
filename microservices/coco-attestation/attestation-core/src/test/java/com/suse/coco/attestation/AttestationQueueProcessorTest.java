@@ -16,8 +16,11 @@
 package com.suse.coco.attestation;
 
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.AdditionalAnswers.answersWithDelay;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -28,7 +31,6 @@ import static org.mockito.Mockito.when;
 
 import com.suse.coco.module.AttestationModuleLoader;
 
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,25 +38,26 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.postgresql.PGConnection;
 import org.postgresql.PGNotification;
+import org.postgresql.core.QueryExecutor;
+import org.postgresql.jdbc.PgConnection;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.sql.DataSource;
+
 @ExtendWith(MockitoExtension.class)
 @Timeout(30)
 class AttestationQueueProcessorTest {
 
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    private SqlSessionFactory sessionFactory;
+    @Mock
+    private DataSource dataSource;
 
     @Mock
     private AttestationResultService resultService;
@@ -66,10 +69,10 @@ class AttestationQueueProcessorTest {
     private AttestationModuleLoader moduleLoader;
 
     @Mock
-    private Connection connection;
+    private PgConnection pgConnection;
 
     @Mock
-    private PGConnection pgConnection;
+    private QueryExecutor queryExecutor;
 
     @Mock
     private Statement statement;
@@ -77,26 +80,32 @@ class AttestationQueueProcessorTest {
     private AttestationQueueProcessor processor;
 
     @BeforeEach
-    public void setup() throws SQLException {
+    public void setUp() throws SQLException, InterruptedException {
         Awaitility.setDefaultTimeout(5, TimeUnit.SECONDS);
 
-        processor = new AttestationQueueProcessor(sessionFactory, resultService, executorService, moduleLoader, 10);
+        processor = new AttestationQueueProcessor(dataSource, resultService, executorService, moduleLoader, 10);
 
         // Basic mocking
-        when(sessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection())
-            .thenReturn(connection);
-
-        when(connection.isWrapperFor(PGConnection.class))
-            .thenReturn(true);
-
-        when(connection.unwrap(argThat(clazz -> clazz.getName().equals(PGConnection.class.getName()))))
+        when(dataSource.getConnection())
             .thenReturn(pgConnection);
 
-        when(connection.createStatement())
+        when(pgConnection.isWrapperFor(PgConnection.class))
+            .thenReturn(true);
+
+        when(pgConnection.unwrap(argThat(clazz -> clazz.getName().equals(PgConnection.class.getName()))))
+            .thenReturn(pgConnection);
+
+        when(pgConnection.createStatement())
             .thenReturn(statement);
 
         when(pgConnection.getNotifications(anyInt()))
-            .thenReturn(new PGNotification[0]);
+            // Return a new notification each quarter of a second
+            .thenAnswer(answersWithDelay(250, ivn -> new PGNotification[0]));
+
+        // Simulate the executor shutdown
+        when(executorService.isShutdown()).thenReturn(false);
+        when(executorService.isTerminated()).thenReturn(false);
+        when(executorService.awaitTermination(anyLong(), any())).thenReturn(true);
     }
 
     @AfterEach
@@ -105,37 +114,111 @@ class AttestationQueueProcessorTest {
     }
 
     @Test
-    @DisplayName("An interruption in the listener process terminate the processor")
-    void testInterruptingListenerShouldTerminateProcessor() throws Exception {
-        // Simulate the executor shutdown
-        when(executorService.isShutdown()).thenReturn(false);
-        when(executorService.isTerminated()).thenReturn(false);
-        when(executorService.awaitTermination(anyLong(), any())).thenReturn(true);
-
-        runInTestThread(() -> processor.run());
+    @DisplayName("An interruption in the listener process terminates the processor")
+    void testInterruptingListenerShouldTerminateProcessor() {
+        processor.start();
 
         await("The listener thread to start")
-            .untilAsserted(() -> assertNotNull(getThreadByName("attestation-processor-listener")));
-
-        // And it's actually waiting for notifications
-        verify(pgConnection, atLeastOnce()).getNotifications(anyInt());
+            .untilAsserted(() -> {
+                // Verify the listener thread has been created
+                assertNotNull(getThreadByName("attestation-processor-listener"));
+                // Verify the main thread has been created
+                assertNotNull(getThreadByName("attestation-processor-main"));
+                // And it's actually waiting for notifications
+                verify(pgConnection, atLeastOnce()).getNotifications(anyInt());
+            });
 
         // Interrupt the listener
         Thread processorListener = getThreadByName("attestation-processor-listener");
+        assertNotNull(processorListener);
         processorListener.interrupt();
 
+        // Verify the processor and the listener are correctly stopped
         await("The processor and the listener threads to properly stopped")
             .untilAsserted(() -> {
+                assertFalse(processor.isRunning());
+
                 assertNull(getThreadByName("attestation-processor-listener"));
+                assertNull(getThreadByName("attestation-processor-main"));
                 assertNull(getThreadByName("test-thread"));
+
+                verify(executorService).shutdown();
             });
 
         // Verify shutdown was called
         verify(executorService).shutdown();
     }
 
-    private static void runInTestThread(Runnable runnable) {
-        new Thread(runnable, "test-thread").start();
+    @Test
+    @DisplayName("An interruption in the main process terminates the listener")
+    void testInterruptingProcessorShouldTerminateListener() {
+        processor.start();
+
+        await("The listener thread to start")
+            .untilAsserted(() -> {
+                assertTrue(processor.isRunning());
+
+                // Verify the listener thread has been created
+                assertNotNull(getThreadByName("attestation-processor-listener"));
+                // Verify the main thread has been created
+                assertNotNull(getThreadByName("attestation-processor-main"));
+                // And it's actually waiting for notifications
+                verify(pgConnection, atLeastOnce()).getNotifications(anyInt());
+            });
+
+        // Interrupt the listener
+        Thread processorMain = getThreadByName("attestation-processor-main");
+        assertNotNull(processorMain);
+        processorMain.interrupt();
+
+        // Verify the processor and the listener are correctly stopped
+        await("The processor and the listener threads to properly stopped")
+            .untilAsserted(() -> {
+                assertFalse(processor.isRunning());
+
+                assertNull(getThreadByName("attestation-processor-listener"));
+                assertNull(getThreadByName("attestation-processor-main"));
+                assertNull(getThreadByName("test-thread"));
+
+                verify(executorService).shutdown();
+            });
+    }
+
+    @Test
+    @DisplayName("The processor can be manually shut down")
+    void canBeShutDown() {
+        when(pgConnection.getQueryExecutor())
+            .thenReturn(queryExecutor);
+
+        processor.start();
+
+        await("The processor and the listener threads to properly stopped")
+            .untilAsserted(() -> {
+                assertTrue(processor.isRunning());
+
+                // Verify the listener thread has been created
+                assertNotNull(getThreadByName("attestation-processor-listener"));
+                // Verify the main thread has been created
+                assertNotNull(getThreadByName("attestation-processor-main"));
+                // And it's actually waiting for notifications
+                verify(pgConnection, atLeastOnce()).getNotifications(anyInt());
+            });
+
+        // Interrupt the listener
+        processor.stop();
+
+        // Verify the processor and the listener are correctly stopped
+        await("The processor and the listener threads to properly stopped")
+            .untilAsserted(() -> {
+                assertFalse(processor.isRunning());
+
+                assertNull(getThreadByName("attestation-processor-listener"));
+                assertNull(getThreadByName("attestation-processor-main"));
+                assertNull(getThreadByName("test-thread"));
+
+                verify(executorService).shutdown();
+                verify(queryExecutor).abort();
+            });
     }
 
     private static Thread getThreadByName(String name) {
