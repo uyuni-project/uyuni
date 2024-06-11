@@ -76,3 +76,13 @@ timezone: "Etc/UTC"
 #     configPath: /home/mine/.ssh/config
 #     knownHostsPath: /home/mine/.ssh/known_hosts
 #   dataPath: /tmp/uyuni-migration
+
+# Hub XML-RPC API cnfiguration
+# Enable the hub XML-RPC API by setting the replicas to 1.
+# If migration values are set, the Hub API will be kept disabled
+# whatever the replicas value is.
+# hub:
+#   api:
+#     replicas: 1
+#     connectTimeout: 10
+#     requestTimeout: 10

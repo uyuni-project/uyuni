@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uyuni-hub-xmlrpc-api
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app: uyuni-hub-xmlrpc-api
+spec:
+{{- if .Values.migration }}
+  replicas: 0
+{{- else }}
+  replicas: {{ ((.Values.hub).api).replicas | default 0 }}
+{{- end }}
+  selector:
+    matchLabels:
+      app: uyuni-hub-xmlrpc-api
+  template:
+    metadata:
+      labels:
+        app: uyuni-hub-xmlrpc-api
+    spec:
+      containers:
+      - name: uyuni-hub-xmlrpc-api
+        image: {{- include "deployment.container.image" (dict "name" "hub-xmlrpc-api" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        ports:
+          - containerPort: 2830
+        env:
+          - name: HUB_API_URL
+            value: http://uyuni-tcp:80/rpc/api
+          - name: HUB_CONNECT_TIMEOUT
+            value: "{{ ((.Values.hub).api).connectTimeout | default 10 }}"
+          - name: HUB_REQUEST_TIMEOUT
+            value: "{{ ((.Values.hub).api).requestTimeout | default 10 }}"
+          - name: HUB_CONNECT_USING_SSL
+            value: "true"
+        volumeMounts:
+          - name: ca-cert
+            mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+            readOnly: true
+            subPath: ca.crt
+      volumes:
+      - name: ca-cert
+        configMap:
+          name: uyuni-ca
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: uyuni-hub-xmlrpc-api
+  name: uyuni-hub-xmlrpc-api
+  namespace: "{{ .Release.Namespace }}"
+{{- if .Values.servicesAnnotations }}
+  annotations:
+{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{- end }}
+spec:
+  ports:
+  - name: hub-xmlrpc-api
+    port: 2830
+    protocol: TCP
+    targetPort: 2830
+  selector:
+    app: uyuni-hub-xmlrpc-api
+  type: ClusterIP

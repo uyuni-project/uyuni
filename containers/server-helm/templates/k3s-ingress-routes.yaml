@@ -152,6 +152,22 @@ spec:
       - name: uyuni-tcp
         port: 8001
 {{- end }}
+{{- if and .Values.hub (and .Values.hub.api .Values.hub.api.replicas) }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: hub-xmlrpc-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - hub-xmlrpc
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-hub-xmlrpc-api
+        port: 2830
+{{- end }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteUDP
