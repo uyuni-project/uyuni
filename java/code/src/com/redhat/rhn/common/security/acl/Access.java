@@ -31,6 +31,8 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ChannelPerms;
@@ -463,6 +465,19 @@ public class Access extends BaseHandler {
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
 
         return chan.isModular();
+    }
+
+    /**
+     * Checks if a given activation key is linked to any modular channel.
+     * @param ctx acl context (includes the activation key id tid and the user)
+     * @param params parameters for acl (ignored)
+     * @return true if it is an activation key associated with any modular channel.
+     */
+    public boolean aclHasModularChannel(Map<String, Object> ctx, String[] params) {
+        Long tid = getAsLong(ctx.get("tid"));
+        User user = (User) ctx.get("user");
+        ActivationKey activationKey = ActivationKeyFactory.lookupById(tid, user.getOrg());
+        return activationKey.getChannels().stream().anyMatch(Channel::isModular);
     }
 
     /**

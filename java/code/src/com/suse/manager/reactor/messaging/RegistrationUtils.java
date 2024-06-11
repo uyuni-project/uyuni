@@ -19,6 +19,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.GlobalInstanceHolder;
@@ -46,12 +47,14 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.channels.ChannelsUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -67,6 +70,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -125,6 +129,7 @@ public class RegistrationUtils {
                 activationKey.get().getEntitlements().stream().anyMatch(e -> !e.isBase()));
 
         // Apply initial states asynchronously
+        Map<String, Object> statesToApplyPillar = new HashMap<>();
         List<String> statesToApply = new ArrayList<>();
         statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
         statesToApply.add(ApplyStatesEventMessage.CHANNELS);
@@ -136,11 +141,15 @@ public class RegistrationUtils {
             // SSH Minions need this to set last booted value.
             statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
         }
+
+        handleActivationKeyAppStreams(activationKey, statesToApply, statesToApplyPillar);
+
         MessageQueue.publish(new ApplyStatesEventMessage(
                 minion.getId(),
                 minion.getCreator() != null ? minion.getCreator().getId() : null,
                 !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
-                statesToApply
+                statesToApplyPillar,
+                statesToApply.toArray(new String[0])
         ));
 
         // Call final highstate to deploy config channels if required
@@ -158,6 +167,30 @@ public class RegistrationUtils {
         // solution we schedule it 1 minute in the future. This should be fixed when
         // refactoring this method to provide clear dependencies for example via action chains.
         triggerHardwareRefresh(minion);
+    }
+
+    /**
+     * Includes appStreams configuration state and its params to the list of applicable states in case
+     * there is any modular channel linked to the activation key.
+     * @param activationKey the activation key
+     * @param statesToApply the current list of applicable states
+     * @param statesToApplyPillar the current map of pillar
+     */
+    private static void handleActivationKeyAppStreams(
+            Optional<ActivationKey> activationKey,
+            List<String> statesToApply,
+            Map<String, Object> statesToApplyPillar) {
+        if (activationKey.isPresent() && activationKey.get().getChannels().stream().anyMatch(Channel::isModular)) {
+            var appStreamsToEnable = ActivationKeyManager.getInstance().listTokenChannelAppStreams(activationKey.get());
+            if (!appStreamsToEnable.isEmpty()) {
+                statesToApply.add(SaltServerActionService.APPSTREAMS_CONFIGURE);
+                var appStreamsParams = appStreamsToEnable
+                    .stream()
+                    .map(it -> List.of(it.getName(), it.getStream()))
+                    .collect(toList());
+                statesToApplyPillar.put(SaltServerActionService.PARAM_APPSTREAMS_ENABLE, appStreamsParams);
+            }
+        }
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {
