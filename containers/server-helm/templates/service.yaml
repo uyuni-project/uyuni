@@ -68,6 +68,12 @@ spec:
     protocol: TCP
     targetPort: 8001
 {{- end }}
+{{- if and .Values.hub (and .Values.hub.api .Values.hub.api.replicas) }}
+  - name: hub-xmlrpc
+    port: 2830
+    protocol: TCP
+    targetPort: 2830
+{{- end }}
   selector:
     app: uyuni
   type: ClusterIP
