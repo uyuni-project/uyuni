@@ -146,7 +146,7 @@ public class AppStreamsController {
                 .map(channel -> new ChannelAppStreamsResponse(
                     channel,
                     AppStreamsManager.listChannelAppStreams(channel.getId()),
-                    server
+                    server::hasAppStreamModuleEnabled
                 ))
                 .collect(Collectors.toList());
         data.put("channelsAppStreams", GSON.toJson(channelsAppStreams));

@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.Scrubber;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -59,6 +60,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * ActivationKeyManager
@@ -564,5 +570,122 @@ public class ActivationKeyManager {
                 ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME)) {
             addConfigMgmtPackages(key);
         }
+    }
+
+    /**
+     * Checks if a specific app stream module is enabled for the given activation key and channel.
+     *
+     * @param activationKey the activation key containing the registration token for matching
+     * @param channel the channel to check
+     * @param module the name of the appStream module to check
+     * @param stream the stream of the appStream module to check
+     * @return {@code true} if the app stream module is included in the activation key and channel,
+     *         {@code false} otherwise
+     */
+    public boolean hasAppStreamModuleEnabled(
+        ActivationKey activationKey,
+        Channel channel,
+        String module,
+        String stream) {
+        return listTokenChannelAppStreams(activationKey, channel)
+            .stream()
+            .anyMatch(it ->
+                it.getChannel().getId().equals(channel.getId()) &&
+                it.getName().equals(module) &&
+                it.getStream().equals(stream)
+            );
+    }
+
+    /**
+     * Retrieves a list of {@code TokenChannelAppStream} objects that match the given activation key.
+     *
+     * @param activationKey the activation key containing the token to match
+     * @return a list of {@code TokenChannelAppStream} objects related to the activation key.
+     */
+    public List<TokenChannelAppStream> listTokenChannelAppStreams(ActivationKey activationKey) {
+        return listTokenChannelAppStreams(activationKey, null);
+    }
+
+    /**
+     * Retrieves a list of {@code TokenChannelAppStream} objects that match the given activation key and channel.
+     * If the channel is {@code null}, only the activation key is used as a filter criterion.
+     *
+     * @param activationKey the activation key containing the token to match
+     * @param channel the channel to match;  if {@code null}, the channel criterion is ignored
+     * @return a list of {@code TokenChannelAppStream} objects that match the given criteria
+     */
+    private List<TokenChannelAppStream> listTokenChannelAppStreams(ActivationKey activationKey, Channel channel) {
+        CriteriaBuilder criteriaBuilder = ActivationKeyFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<TokenChannelAppStream> criteriaQuery = criteriaBuilder.createQuery(TokenChannelAppStream.class);
+        Root<TokenChannelAppStream> root = criteriaQuery.from(TokenChannelAppStream.class);
+
+        Predicate tokenPredicate = criteriaBuilder.equal(root.get("token"), activationKey.getToken());
+        if (channel != null) {
+            Predicate channelPredicate = criteriaBuilder.equal(root.get("channel"), channel);
+            criteriaQuery.where(criteriaBuilder.and(tokenPredicate, channelPredicate));
+        }
+        else {
+            criteriaQuery.where(tokenPredicate);
+        }
+
+        return ActivationKeyFactory.getSession().createQuery(criteriaQuery).getResultList();
+    }
+
+    /**
+     * Saves the specified channel app streams by including and removing the given lists of app streams.
+     * It will first remove the specified app streams from the channel, and then includes the specified
+     * app streams to the channel. The app streams are specified as a list of strings in the format "name:stream".
+     *
+     * @param activationKey the activation key containing the registration token
+     * @param channel the channel to which the app streams belong
+     * @param toInclude the list of app streams to include in the activation key
+     * @param toRemove the list of app streams to remove from the activation key
+     */
+    public void saveChannelAppStreams(
+            ActivationKey activationKey,
+            Channel channel,
+            List<String> toInclude,
+            List<String> toRemove) {
+        removeChannelAppStreams(activationKey, channel, toRemove);
+        includeChannelAppStreams(activationKey, channel, toInclude);
+    }
+
+    private void removeChannelAppStreams(ActivationKey activationKey, Channel channel, List<String> toRemove) {
+        var session = ActivationKeyFactory.getSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        var criteriaDelete = criteriaBuilder.createCriteriaDelete(TokenChannelAppStream.class);
+        var root = criteriaDelete.from(TokenChannelAppStream.class);
+
+        Predicate tokenPredicate = criteriaBuilder.equal(root.get("token"), activationKey.getToken());
+        Predicate channelPredicate = criteriaBuilder.equal(root.get("channel"), channel);
+
+        criteriaDelete.where(
+            criteriaBuilder.and(
+                tokenPredicate,
+                channelPredicate,
+                criteriaBuilder.or(
+                    toRemove
+                        .stream()
+                        .map(appStream -> {
+                            String[] parts = appStream.split(":");
+                            String name = parts[0];
+                            String stream = parts[1];
+                            Predicate namePredicate = criteriaBuilder.equal(root.get("name"), name);
+                            Predicate streamPredicate = criteriaBuilder.equal(root.get("stream"), stream);
+                            return criteriaBuilder.and(namePredicate, streamPredicate);
+                        }).toArray(Predicate[]::new)))
+        );
+        session.createQuery(criteriaDelete).executeUpdate();
+    }
+
+    private void includeChannelAppStreams(ActivationKey activationKey, Channel channel, List<String> toInclude) {
+        toInclude.forEach(appStream -> {
+            String[] parts = appStream.split(":");
+            String name = parts[0];
+            String stream = parts[1];
+            ActivationKeyFactory.getSession().persist(
+                new TokenChannelAppStream(activationKey.getToken(), channel, name, stream)
+            );
+        });
     }
 }
