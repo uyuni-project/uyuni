@@ -22,6 +22,10 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/manager/systems/ssm/coco/settings",
   "/rhn/systems/ssm/audit/ScheduleXccdf.do",
   "/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do",
+  "/rhn/systems/details/kickstart/PowerManagement.do",
+  "rhn/systems/ssm/provisioning/PowerManagementOperations.do",
+  "/rhn/channels/ChannelDetail.do",
+  "/rhn/software/packages/Details.do",
 ];
 
 export const onEndNavigate = () => {
