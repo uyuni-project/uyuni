@@ -994,10 +994,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-manager-tools-for-micro5-pool-x86_64-5.5
         sle-manager-tools-for-micro5-updates-x86_64-5.5
       ],
-    'sl-micro-6.0' => # TODO: Enable when it becomes available sl-manager-tools-for-micro6-updates-x86_64-6.0
+    'sl-micro-6.0' =>
       %w[
-        sl-manager-tools-for-micro6-pool-x86_64-6.0
         sl-micro-6.0-pool-x86_64
+        suse-manager-tools-for-sl-micro-6.0-x86_64
       ],
     'ubuntu-2004' => # CHECKED
       %w[
