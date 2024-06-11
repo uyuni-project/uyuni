@@ -91,6 +91,7 @@ import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.token.TokenChannelAppStream;
 
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
@@ -201,7 +202,8 @@ public class AnnotationRegistry {
         CoCoResultTypeConverter.class,
         ServerAppStream.class,
         AppStream.class,
-        AppStreamApi.class
+        AppStreamApi.class,
+        TokenChannelAppStream.class
     );
 
     /**

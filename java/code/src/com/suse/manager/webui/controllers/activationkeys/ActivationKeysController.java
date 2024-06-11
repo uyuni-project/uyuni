@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.activationkeys;
 
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.generateChannelJson;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.getPossibleBaseChannels;
