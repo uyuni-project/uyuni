@@ -9,6 +9,12 @@ Feature: Very first settings
   Scenario: Cleanup Salt files
     When I run "rm -Rf /srv/salt/*" on "server"
 
+  Scenario: Install testsuite packages
+    When I install package "iputils" on this "server"
+    And I install package "expect" on this "server"
+    And I install package "wget" on this "server"
+    And I install package "OpenIPMI" on this "server"
+
 @skip_if_containerized_server
   Scenario: Create admin user and first organization
     Given I access the host the first time
