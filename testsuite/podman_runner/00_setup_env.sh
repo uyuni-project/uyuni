@@ -12,7 +12,7 @@ if [ -z "${UYUNI_VERSION}" ];then
 fi
 
 echo "Killing old containers"
-containers="deblike_minion rhlike_minion sle_minion opensusessh server controller"
+containers="deblike_minion rhlike_minion sleminionone opensusessh server controller"
 for i in ${containers};do
     sudo -i podman kill ${i}
 done
@@ -23,7 +23,7 @@ for i in ${containers};do
 done
 
 echo "Force remove containers"
-containers="deblike_minion rhlike_minion sle_minion opensusessh server controller"
+containers="deblike_minion rhlike_minion sleminionone opensusessh server controller"
 for i in ${containers};do
     sudo -i podman rm ${i}
 done
