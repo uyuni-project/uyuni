@@ -16,6 +16,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# Actual version set by prjconf, default is 14
+%{!?postgresql_version_min: %global postgresql_version_min 14}
+%{!?postgresql_version_max: %global postgresql_version_max 15}
 
 Name:           spacewalk
 Version:        5.0.3
@@ -106,20 +109,15 @@ Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-# Actual version set by prjconf, default is 14
-%{!?postgresql_version_min: %global postgresql_version_min 14}
-%{!?postgresql_version_max: %global postgresql_version_max 15}
-Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
 Requires:       postgresql-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
-Conflicts:      postgresql-implementation > %{postgresql_version_max}
+Requires:       postgresql-implementation <= %{postgresql_version_max}.9999
+Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
+Requires:       postgresql-contrib-implementation <= %{postgresql_version_max}.9999
 %else # not a supported SUSE version or alternative OS.
-Requires:       postgresql14
-Requires:       postgresql14-contrib
-# we do not support postgresql versions > 14.x yet
-# Hardcoded v15 conflict due to PostgreSQL bug 17507 (instead of >= 15)
-Conflicts:      postgresql15
-Conflicts:      postgresql15-contrib
+Requires:       postgresql >= %{postgresql_version_min}
+Requires:       postgresql <= %{postgresql_version_max}.9999
+Requires:       postgresql-contrib >= %{postgresql_version_min}
+Requires:       postgresql-contrib <= %{postgresql_version_max}.9999
 %endif # if sle_Version
 
 %description postgresql
@@ -144,9 +142,6 @@ db-backend = $i
 EOF
 done
 install -d $RPM_BUILD_ROOT/%{_bindir}
-%if 0%{?rhel}
-ln -s /usr/pgsql-14/bin/initdb $RPM_BUILD_ROOT/%{_bindir}/initdb
-%endif
 
 %files common
 %{!?_licensedir:%global license %doc}
@@ -159,8 +154,5 @@ ln -s /usr/pgsql-14/bin/initdb $RPM_BUILD_ROOT/%{_bindir}/initdb
 
 %files postgresql
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
-%if 0%{?rhel}
-%{_bindir}/initdb
-%endif
 
 %changelog
