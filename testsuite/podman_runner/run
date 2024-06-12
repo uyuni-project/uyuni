@@ -19,7 +19,7 @@ set -e
 ./10_run_sshminion.sh
 ./11_setup_sshd.sh
 ./12_run_core_tests.sh
-./13_run_salt_sle_minion.sh
+./13_run_salt_sleminionone.sh
 ./14_run_salt_rhlike_minion.sh
 ./15_run_salt_deblike_minion.sh
 ./16_accept_all_keys.sh
