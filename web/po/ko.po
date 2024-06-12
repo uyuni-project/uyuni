@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-24 17:09+0200\n"
-"PO-Revision-Date: 2024-05-09 07:43+0000\n"
+"PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
@@ -4646,10 +4646,8 @@ msgid "Proxy FQDN"
 msgstr "프록시 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-#, fuzzy
 msgid "The unique, DNS-resolvable FQDN of this proxy."
-msgstr ""
-"이 프록시의 고유한 DNS 확인 FQDN입니다. 등록된 클라이언트와 달라야 합니다."
+msgstr "이 프록시의 고유한 DNS 확인 FQDN입니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
@@ -5237,9 +5235,8 @@ msgid " Systems "
 msgstr " 시스템 "
 
 #: ../html/src/manager/systems/all-list.tsx:49
-#, fuzzy
 msgid "Add System"
-msgstr "시스템"
+msgstr "시스템 추가"
 
 #: ../html/src/manager/systems/all-list.tsx:63
 msgid "No Systems."
