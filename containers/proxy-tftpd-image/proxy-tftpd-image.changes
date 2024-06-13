@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 13 09:20:37 CEST 2024 - rosuna@suse.com
+
+- version 4.3.15
+  * Modify images path in Dockerfile to point to the LTSS one
+
+-------------------------------------------------------------------
 Thu Jun 06 15:54:58 CEST 2024 - rosuna@suse.com
 
 - version 4.3.14
