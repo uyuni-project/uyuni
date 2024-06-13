@@ -27,6 +27,7 @@ import sys
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.satellite_tools import syncLib
@@ -3295,10 +3296,11 @@ class Backend:
     def validate_pks(self):
         # If nevra is enabled use checksum as primary key
         tbs = self.tables["rhnPackage"]
-        if not CFG.ENABLE_NVREA:
-            # remove checksum from a primary key if nevra is disabled.
-            if "checksum_id" in tbs.pk:
-                tbs.pk.remove("checksum_id")
+        with cfg_component("server") as cfg:
+            if not cfg.ENABLE_NVREA:
+                # remove checksum from a primary key if nevra is disabled.
+                if "checksum_id" in tbs.pk:
+                    tbs.pk.remove("checksum_id")
 
 
 # Returns a tuple for the hash's values
