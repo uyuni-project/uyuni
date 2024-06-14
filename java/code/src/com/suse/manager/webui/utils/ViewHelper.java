@@ -83,7 +83,8 @@ public enum ViewHelper {
         "/rhn/systems/ssm/provisioning/PowerManagementOperations.do",
         "/rhn/channels/ChannelDetail.do",
         "/rhn/software/packages/Details.do",
-        "/rhn/manager/systems/details/formulas"
+        "/rhn/manager/systems/details/formulas",
+        "/rhn/manager/cm/imagestores"
     );
 
     ViewHelper() { }

@@ -27,6 +27,7 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/channels/ChannelDetail.do",
   "/rhn/software/packages/Details.do",
   "/rhn/manager/systems/details/formulas",
+  "/rhn/manager/cm/imagestores",
 ];
 
 export const onEndNavigate = () => {
