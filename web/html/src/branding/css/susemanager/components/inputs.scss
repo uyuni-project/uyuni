@@ -24,6 +24,20 @@ $input-height: 35px;
   &:active {
     background: #fff;
   }
+
+  // This is like writing `div&`, except this nonsense is valid syntax, see https://stackoverflow.com/a/28357148/1470607
+  @at-root #{selector-unify(&, div)},
+  &[disabled],
+  &[readonly],
+  fieldset[disabled] & {
+    background-color: $gray-lighter;
+    opacity: 1;
+  }
+
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
+  }
 }
 
 .form-control {
@@ -80,9 +94,11 @@ div.form-control {
 
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
-  &:hover {
-    border: 1px solid $eos-bc-blue-500 !important;
-    outline: none !important;
+  outline: none !important;
+
+  &[class*="--is-focused"],
+  &[class*="--menu-is-open"] {
+    border-color: $eos-bc-blue-500 !important;
   }
 }
 
@@ -90,6 +106,16 @@ textarea.form-control,
 select[multiple],
 select[size] {
   height: auto;
+}
+
+// We need to manually handle these cases to fix legacy DOM structures
+.input-group {
+  --bs-border-width: 1px;
+}
+
+.input-group-btn:not(:first-child) .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .input-group-text {
@@ -105,4 +131,10 @@ select[size] {
 
 .input-group {
   align-items: center;
+}
+
+.input-group-addon {
+  color: $eos-bc-gray-900;
+  background: $gray-lighter;
+  font-size: 1em;
 }
