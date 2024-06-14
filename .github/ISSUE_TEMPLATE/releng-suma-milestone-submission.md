@@ -26,8 +26,8 @@ https://confluence.suse.com/pages/viewpage.action?pageId=1082228986
 
 Add more tasks if needed.
 
-- [ ] Lock the `Manager-X.Y` branch
-- [ ] Send an email to galaxy-devel@suse.de informing that branch `Manager-X.Y` is locked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
+- [ ] Lock the `master` branch
+- [ ] Send an email to galaxy-devel@suse.de informing that branch `master` is locked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 - [ ] Ask the Doc Squad to submit an update of the doc package to the `Devel:Galaxy:Manager:Head` project, and ask them to warn the translators so they can start their work. A Merge Request for the [documentation.suse.com repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma) should get created a few days before the release
 - [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
 - [ ] Confirm that the SR for the documentation is merged, and translators warned
