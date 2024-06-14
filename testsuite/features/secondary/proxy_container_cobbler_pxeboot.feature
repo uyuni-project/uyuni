@@ -105,6 +105,13 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
+  Scenario: Download the profile from the UI
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "15-sp4-cobbler"
+    And I follow "Autoinstallation File" in the content area
+    And I follow "Download Autoinstallation File"
+    Then I should see a "<profile " text
+
   Scenario: Cleanup: remove the auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "15-sp4-cobbler"

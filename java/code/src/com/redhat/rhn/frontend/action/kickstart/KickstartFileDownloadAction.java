@@ -82,7 +82,7 @@ public class KickstartFileDownloadAction extends BaseKickstartEditAction {
             try {
                 request.setAttribute(FILEDATA, StringEscapeUtils.escapeHtml4(
                         KickstartManager.getInstance().renderKickstart(data)));
-                request.setAttribute(KSURL, KickstartUrlHelper.getCobblerProfileUrl(data));
+                request.setAttribute(KSURL, KickstartUrlHelper.getCobblerProfileUrl(data, true));
             }
             catch (DownloadException de) {
                 request.setAttribute(FILEERROR,

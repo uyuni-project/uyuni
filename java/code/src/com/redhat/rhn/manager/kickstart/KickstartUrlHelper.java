@@ -350,13 +350,14 @@ public class KickstartUrlHelper {
     /**
      * Get the cobbler profile url
      * @param data the kickstart data
+     * @param userFacing whether the URL is to be used by the user or just internally used.
      * @return the url
      */
-    public static String getCobblerProfileUrl(KickstartData data) {
+    public static String getCobblerProfileUrl(KickstartData data, boolean userFacing) {
         Profile prof = Profile.lookupById(
                 CobblerXMLRPCHelper.getAutomatedConnection(),
                         data.getCobblerId());
-        return "http://" + ConfigDefaults.get().getCobblerHost() + COBBLER_URL_BASE_PATH +
-                    prof.getName();
+        String host = userFacing ? ConfigDefaults.get().getJavaHostname() : ConfigDefaults.get().getCobblerHost();
+        return "http://" + host + COBBLER_URL_BASE_PATH + prof.getName();
     }
 }
