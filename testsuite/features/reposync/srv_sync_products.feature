@@ -141,11 +141,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
-    And I select "SUSE Manager Proxy Extension 5.0 x86_64" as a product
-    Then I should see the "SUSE Manager Proxy Extension 5.0 x86_64" selected
+    And I select "SUSE Manager Proxy Extension 5.0 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Manager Proxy Extension 5.0 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Manager Proxy Extension 5.0 x86_64" product has been added
+    And I wait until I see "SUSE Manager Proxy Extension 5.0 x86_64 (BETA)" product has been added
 
 @proxy
 @susemanager
@@ -156,11 +156,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
-    And I select "SUSE Manager Retail Branch Server Extension 5.0 x86_64" as a product
-    Then I should see the "SUSE Manager Retail Branch Server Extension 5.0 x86_64" selected
+    And I select "SUSE Manager Retail Branch Server Extension 5.0 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Manager Retail Branch Server Extension 5.0 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64" product has been added
+    And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64 (BETA)" product has been added
 
 
 @scc_credentials
