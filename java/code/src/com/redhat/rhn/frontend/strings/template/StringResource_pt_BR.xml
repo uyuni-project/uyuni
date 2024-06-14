@@ -206,7 +206,7 @@ Obrigado por usar o @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
-          <source>
+        <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -223,7 +223,7 @@ Summary:
 ------------------------------------------------------------------------------
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
         {2} - errata advisory
@@ -233,7 +233,7 @@ Summary:
         {6} - errata notes
         {7} - errata refs
       </context>
-          </context-group>
+        </context-group>
         <target state="translated">
 @@PRODUCT_NAME@@ determina que a informação seguinte aplica-se a
 um ou mais sistemas em que você registrou:
@@ -255,7 +255,7 @@ Sumário:
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
-          <source>
+        <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -279,7 +279,7 @@ para este servidor esteja desatualizado. Neste caso, você deverá rodar
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
-          <source>
+        <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -292,15 +292,15 @@ sistemas pelos quais você ativou claramente os Alertas de Erro são apresentado
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
-          <source>
+        <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - system count
       </context>
-          </context-group>
+        </context-group>
         <target state="translated">
 Existe apenas {0} sistemas afetados e registrados na 'Visão Geral' (apenas sistemas
 pelos quais você ativou claramente os Alertas de Erros são apresentados).
@@ -310,7 +310,7 @@ pelos quais você ativou claramente os Alertas de Erros são apresentados).
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
-          <source>
+        <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -325,11 +325,11 @@ You may address the issues outlined in this advisory in two ways:
      - run the Update Agent on each affected server.
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
-          </context-group>
+        </context-group>
         <target state="translated">
 Nome do Perfil do Arch.
 ---------- ---------- ------------------------------ ---------------
@@ -349,7 +349,7 @@ Você pode resolver os problemas que observamos de duas maneiras:
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
-          <source>
+        <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -365,12 +365,12 @@ click the "Details" tab.
 {2}
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
-          </context-group>
+        </context-group>
         <target state="translated">
 Modificação das Preferências de Notificação
 ---------------------------------
@@ -436,24 +436,24 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="needs-adaptation">Este é o Relatório de Status do @@PRODUCT_NAME@@ para sua conta {0}, conforme o {1}.
+        <target state="translated">{7}
+Este é o Relatório de status do @@PRODUCT_NAME@@ da sua conta {0}, em {1}.
 
-Este e-mail será enviado nas seguintes condições:
+Este e-mail será enviado quando qualquer uma das seguintes situações se aplicar:
 
-1.  O sistema falhar em checar o @@PRODUCT_NAME@@ com uma janela de 24 horas.
-2.  O sistema registrar a atividade de ação programada.
+1.   O sistema não consegue fazer check-in com @@PRODUCT_NAME@@ dentro de uma janela de 24 horas.
+2.   O sistema registra atividades de ação programadas.
 
 {2}
 {3}
-Desativação deste e-mail:
+Desativando este e-mail:
 ----------------------
 
-Consulte a página abaixo para maiores informações de como desativar este e-mail nos sistemas:
+Para desativar este e-mail para sistemas, visite a página Preferências em
+https://{4}/rhn/account/UserPreferences.do
 
-https://{4}/rhn/help/reference/en-US/ref.webui.overview.jsp
 
-
-Obrigado por usar o @@PRODUCT_NAME@@.
+Obrigado por usar @@PRODUCT_NAME@@.
 {5}
 {6}
 </target>
@@ -579,12 +579,14 @@ Obrigado por usar @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
-          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+      <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+        <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Aviso: esta instância @@PRODUCT_NAME@@ PAYG não é compatível e algumas de suas funções estão desativadas.
+Entre em contato com seu administrador para corrigir a situação antes de continuar usando o produto.
+          </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

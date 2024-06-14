@@ -9,25 +9,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:34+0200\n"
-"PO-Revision-Date: 2018-03-16 11:05+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Bulgarian <trans-bg@lists.fedoraproject.org>\n"
+"POT-Creation-Date: 2024-06-14 14:43+0200\n"
+"PO-Revision-Date: 2024-06-08 16:46+0000\n"
+"Last-Translator: koralski <koralsky11@gmail.com>\n"
+"Language-Team: Bulgarian <https://l10n.opensuse.org/projects/uyuni/mgr-"
+"daemon-4-3/bg/>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: ../rhnsd.c:54
 msgid "MINS"
 msgstr "MINS"
 
 #: ../rhnsd.c:55
-#, fuzzy
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr "Свързвай се с Red Hat Network на всеки MINS минути"
+msgstr "Свързвай се с Spacewalk на всеки MINS минути"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
@@ -35,9 +35,8 @@ msgstr "Работи на преден план"
 
 #. Short description of program.
 #: ../rhnsd.c:62
-#, fuzzy
 msgid "Spacewalk Services Daemon"
-msgstr "Red Hat Network Services демон"
+msgstr "Spacewalk services демон"
 
 #: ../rhnsd.c:115
 #, c-format
