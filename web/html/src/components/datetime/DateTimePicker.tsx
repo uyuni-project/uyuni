@@ -125,7 +125,7 @@ export const DateTimePicker = (props: Props) => {
               data-picker-type="date"
               onClick={() => openDatePicker()}
             >
-              &nbsp;<i className="fa fa-calendar"></i>
+              <i className="fa fa-calendar"></i>
             </span>
             <ReactDatePicker
               key="date-picker"
@@ -171,7 +171,7 @@ export const DateTimePicker = (props: Props) => {
               data-picker-type="time"
               onClick={openTimePicker}
             >
-              &nbsp;<i className="fa fa-clock-o"></i>
+              <i className="fa fa-clock-o"></i>
             </span>
             <ReactDatePicker
               key="time-picker"
