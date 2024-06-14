@@ -56,6 +56,9 @@ public class HwProfileUpdateSlsResult {
     @SerializedName("mgrcompat_|-network-modules_|-sumautil.get_net_modules_|-module_run")
     private StateApplyResult<Ret<Map<String, Optional<String>>>> networkModules;
 
+    @SerializedName("mgrcompat_|-instance-flavor_|-sumautil.instance_flavor_|-module_run")
+    private StateApplyResult<Ret<Optional<String>>> instanceFlavor;
+
     @SerializedName("mgrcompat_|-dns_fqdns_|-mgrnet.dns_fqdns_|-module_run")
     private Optional<StateApplyResult<Optional<Ret<Map<String, List<String>>>>>> fqdnsFromMgrNetModule =
             Optional.empty();
@@ -147,6 +150,16 @@ public class HwProfileUpdateSlsResult {
             return Collections.emptyMap();
         }
         return networkModules.getChanges().getRet();
+    }
+
+    /**
+     * @return the flavor of the instance
+     */
+    public Optional<String> getInstanceFlavor() {
+        if (instanceFlavor == null) {
+            return Optional.empty();
+        }
+        return instanceFlavor.getChanges().getRet();
     }
 
     /**

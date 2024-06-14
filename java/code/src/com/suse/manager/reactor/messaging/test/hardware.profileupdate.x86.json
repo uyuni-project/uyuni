@@ -103,6 +103,17 @@
                     }
                 }
             },
+            "mgrcompat_|-instance-flavor_|-sumautil.instance_flavor_|-module_run": {
+                "comment": "Module function sumautil.instance_flavor executed",
+                "name": "sumautil.instance_flavor",
+                "start_time": "12:58:12.422344",
+                "result": true,
+                "duration": 0.653,
+                "__run_num__": 5,
+                "changes": {
+                    "ret": "This minion does not run in a public cloud."
+                }
+            },
             "mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run": {
                 "comment": "Module function smbios.records executed",
                 "name": "smbios.records",

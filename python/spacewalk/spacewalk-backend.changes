@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 16:03:09 CEST 2024 - rosuna@suse.com
+
+- version 4.3.29-0
+  * Set permissions on exported Salt GPG key (bsc#1222996)
+
+-------------------------------------------------------------------
 Fri Apr 12 16:48:46 CEST 2024 - rosuna@suse.com
 
 - version 4.3.28-0

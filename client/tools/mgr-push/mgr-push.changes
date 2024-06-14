@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 16:00:10 CEST 2024 - rosuna@suse.com
+
+- version 4.3.6-0
+  *  Use bundle CA certificate in rhnpush (bsc#1222731)
+
+-------------------------------------------------------------------
 Wed Jan 11 12:49:44 CET 2023 - jgonzalez@suse.com
 
 - version 4.3.5-1

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 16:02:06 CEST 2024 - rosuna@suse.com
+
+- version 4.3.28-0
+  * Remove spacewalk-abrt related commands
+
+-------------------------------------------------------------------
 Fri Apr 12 16:47:24 CEST 2024 - rosuna@suse.com
 
 - version 4.3.27-0

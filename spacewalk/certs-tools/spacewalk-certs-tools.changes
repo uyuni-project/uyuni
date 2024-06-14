@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 16:04:35 CEST 2024 - rosuna@suse.com
+
+- version 4.3.24-0
+  * Calculate bootstrap repo path for SL Micro 6.0
+
+-------------------------------------------------------------------
 Fri Apr 12 16:49:57 CEST 2024 - rosuna@suse.com
 
 - version 4.3.23-0

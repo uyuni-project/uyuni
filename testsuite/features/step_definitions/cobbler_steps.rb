@@ -62,21 +62,14 @@ When(/^I remove distro "([^"]*)"$/) do |distro|
 end
 
 # cobbler reports
-When(/^I trigger cobbler system record$/) do
-  # not for SSH-push traditional client
-  space = 'spacecmd -u admin -p admin'
-  get_target('server').run("#{space} clear_caches")
-  out, _code = get_target('server').run("#{space} system_details #{get_target('client').full_hostname}")
-  unless out.include? 'ssh-push-tunnel'
-    # normal traditional client
-    steps %(
-      Given I am authorized as "testing" with password "testing"
-      And I am on the Systems overview page of this "sle_client"
-      And I follow "Provisioning"
-      And I click on "Create PXE installation configuration"
-      Then I should see a "System record created" text
-    )
-  end
+When(/^I clear the caches on the server$/) do
+  node = get_target('server')
+  node.run('spacecmd -u admin -p admin clear_caches')
+end
+
+When(/I click on profile "([^"]*)"$/) do |profile|
+  xpath_query = "//a[text()='#{profile}']/../../td[1]/input[@type='radio']"
+  find(:xpath, xpath_query).click
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|

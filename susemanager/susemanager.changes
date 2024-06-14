@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 17:05:10 CEST 2024 - rosuna@suse.com
+
+- version 4.3.36-0
+  * Add bootstrap repository definition for SL Micro 6.0
+
+-------------------------------------------------------------------
 Fri Apr 12 17:10:32 CEST 2024 - rosuna@suse.com
 
 - version 4.3.35-0

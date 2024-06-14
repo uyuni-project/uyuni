@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 06 16:11:58 CEST 2024 - rosuna@suse.com
+
+- version 4.3.18-0
+  * Refactor salt-broker and implement flexible channels state monitoring
+
+-------------------------------------------------------------------
 Mon Nov 20 11:33:22 CET 2023 - rosuna@suse.com
 
 - version 4.3.17-1

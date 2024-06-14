@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Jun 13 09:20:37 CEST 2024 - rosuna@suse.com
+
+- version 4.3.15
+  * Modify images path in Dockerfile to point to the LTSS one
+
+-------------------------------------------------------------------
+Thu Jun 06 15:54:58 CEST 2024 - rosuna@suse.com
+
+- version 4.3.14
+  * Replace central server URLs in system profiles, instead point to the proxy host
+    (bsc#1223855)
+  * Do not ignore ONTIMEOUT PXE in cobbler case (bsc#1223850)
+
+-------------------------------------------------------------------
 Fri Apr 12 16:43:19 CEST 2024 - rosuna@suse.com
 
 - version 4.3.13

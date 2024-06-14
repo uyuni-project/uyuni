@@ -529,6 +529,14 @@ Before('@slemicro55_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro55_ssh_minion']
 end
 
+Before('@slmicro60_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro60_minion']
+end
+
+Before('@slmicro60_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro60_ssh_minion']
+end
+
 Before('@sle12sp5_buildhost') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_buildhost']
 end
@@ -587,7 +595,7 @@ Before('@skip_for_sle_micro') do |scenario|
 end
 
 Before('@skip_for_sle_micro_ssh_minion') do |scenario|
-  sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion]
+  sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion slmicro60_ssh_minion]
   current_feature_node = scenario.location.file.split(%r{(_smoke_tests.feature|/)})[-2]
   skip_this_scenario if sle_micro_ssh_nodes.include? current_feature_node
 end

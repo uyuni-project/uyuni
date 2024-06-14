@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Jun 07 11:44:25 CEST 2024 - rosuna@suse.com
+
+- version 4.3.43-0
+  * Fix PAYG client detection during hardware refresh (bsc#1225940)
+
+-------------------------------------------------------------------
+Thu Jun 06 17:06:40 CEST 2024 - rosuna@suse.com
+
+- version 4.3.42-0
+  * Fix bootstrapping transactional systems if Salt Minion package
+    is already installed.
+  * Avoid sending empty events with reboot_info beacon
+  * Define bootstrap repo data for SL Micro 6.0
+  * Calculate bootstrap repo path for SL Micro 6.0
+
+-------------------------------------------------------------------
 Fri Apr 12 17:13:07 CEST 2024 - rosuna@suse.com
 
 - version 4.3.41-0

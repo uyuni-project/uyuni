@@ -50,6 +50,8 @@ ENV_VAR_BY_HOST = {
   'slemicro54_ssh_minion' => 'SLEMICRO54_SSHMINION',
   'slemicro55_minion' => 'SLEMICRO55_MINION',
   'slemicro55_ssh_minion' => 'SLEMICRO55_SSHMINION',
+  'slmicro60_minion' => 'SLMICRO60_MINION',
+  'slmicro60_ssh_minion' => 'SLMICRO60_SSHMINION',
   'alma8_minion' => 'ALMA8_MINION',
   'alma8_ssh_minion' => 'ALMA8_SSHMINION',
   'alma9_minion' => 'ALMA9_MINION',
@@ -210,6 +212,8 @@ PACKAGE_BY_CLIENT = {
   'slemicro54_ssh_minion' => 'ethtool',
   'slemicro55_minion' => 'ethtool',
   'slemicro55_ssh_minion' => 'ethtool',
+  'slmicro60_minion' => 'ethtool',
+  'slmicro60_ssh_minion' => 'ethtool',
   'alma8_minion' => 'autoconf',
   'alma8_ssh_minion' => 'autoconf',
   'alma9_minion' => 'autoconf',
@@ -299,6 +303,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'slemicro54_ssh_minion' => 'SLE-Micro-5.4-Pool for x86_64',
     'slemicro55_minion' => 'SLE-Micro-5.5-Pool for x86_64',
     'slemicro55_ssh_minion' => 'SLE-Micro-5.5-Pool for x86_64',
+    'slmicro60_minion' => 'SL-Micro-6.0-Pool for x86_64',
+    'slmicro60_ssh_minion' => 'SL-Micro-6.0-Pool for x86_64',
     'alma8_minion' => 'almalinux8 for x86_64',
     'alma8_ssh_minion' => 'almalinux8 for x86_64',
     'alma9_minion' => 'almalinux9 for x86_64',
@@ -374,6 +380,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'slemicro54_ssh_minion' => 'SLE-Micro-5.4-Pool for x86_64',
     'slemicro55_minion' => 'SLE-Micro-5.5-Pool for x86_64',
     'slemicro55_ssh_minion' => 'SLE-Micro-5.5-Pool for x86_64',
+    'slmicro60_minion' => 'SL-Micro-6.0-Pool for x86_64',
+    'slmicro60_ssh_minion' => 'SL-Micro-6.0-Pool for x86_64',
     'alma8_minion' => 'AlmaLinux 8 (x86_64)',
     'alma8_ssh_minion' => 'AlmaLinux 8 (x86_64)',
     'alma9_minion' => 'AlmaLinux 9 (x86_64)',
@@ -440,6 +448,7 @@ LABEL_BY_BASE_CHANNEL = {
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
+    'SL-Micro-6.0-Pool for x86_64' => 'sl-micro-6.0-pool-x86_64',
     'almalinux8 for x86_64' => 'no-appstream-alma-8-result-almalinux8-x86_64',
     'almalinux9 for x86_64' => 'no-appstream-alma-9-result-almalinux9-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
@@ -472,6 +481,7 @@ LABEL_BY_BASE_CHANNEL = {
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
+    'SL-Micro-6.0-Pool for x86_64' => 'sl-micro-6.0-pool-x86_64',
     'AlmaLinux 8 (x86_64)' => 'no-appstream-alma-8-result-almalinux8-x86_64',
     'AlmaLinux 9 (x86_64)' => 'no-appstream-alma-9-result-almalinux9-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
@@ -510,6 +520,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'SLE-MICRO-5.5-x86_64',
+    'SL-Micro-6.0-Pool for x86_64' => 'SL-MICRO-6.0-x86_64',
     'almalinux8 for x86_64' => 'almalinux-8-x86_64',
     'almalinux9 for x86_64' => 'almalinux-9-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
@@ -541,6 +552,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'SLE-MICRO-5.5-x86_64',
+    'SL-Micro-6.0-Pool for x86_64' => 'SL-MICRO-6.0-x86_64',
     'AlmaLinux 8 (x86_64)' => 'almalinux-8-x86_64-uyuni',
     'AlmaLinux 9 (x86_64)' => 'almalinux-9-x86_64-uyuni',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
@@ -580,6 +592,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
+    'SL-Micro-6.0-Pool for x86_64' => 'sl-micro-6.0-pool-x86_64',
     'almalinux8 for x86_64' => nil,
     'almalinux9 for x86_64' => nil,
     'Fake-Base-Channel-SUSE-like' => nil,
@@ -610,6 +623,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
     'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
+    'SL-Micro-6.0-Pool for x86_64' => 'sl-micro-6.0-pool-x86_64',
     'almalinux8 for x86_64' => nil,
     'almalinux9 for x86_64' => nil,
     'Fake-Base-Channel-SUSE-like' => nil,
@@ -667,6 +681,8 @@ PKGARCH_BY_CLIENT = {
   'slemicro54_ssh_minion' => 'x86_64',
   'slemicro55_minion' => 'x86_64',
   'slemicro55_ssh_minion' => 'x86_64',
+  'slmicro60_minion' => 'x86_64',
+  'slmicro60_ssh_minion' => 'x86_64',
   'alma8_minion' => 'x86_64',
   'alma8_ssh_minion' => 'x86_64',
   'alma9_minion' => 'x86_64',
@@ -1009,6 +1025,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-manager-tools-for-micro5-pool-x86_64-5.5
         sle-manager-tools-for-micro5-updates-x86_64-5.5
       ],
+    'sl-micro-6.0' =>
+      %w[
+        suse-manager-tools-for-sl-micro-6.0-x86_64
+        sl-micro-6.0-pool-x86_64
+      ],
     'ubuntu-2004' => # CHECKED
       %w[
         ubuntu-2004-amd64-main-amd64
@@ -1345,6 +1366,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-micro-5.5-updates-x86_64
         sle-micro-5.5-devel-uyuni-client-x86_64
       ],
+    'sl-micro-6.0' =>
+      %w[
+        sl-micro-6.0-pool-x86_64
+        sl-micro-6.0-devel-uyuni-client-x86_64
+      ],
     'ubuntu-2004' => # CHECKED
       %w[
         ubuntu-2004-pool-amd64-uyuni
@@ -1596,6 +1622,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-manager-tools-for-micro5-pool-x86_64-5.3' => 60,
   'sle-manager-tools-for-micro5-pool-x86_64-5.4' => 60,
   'sle-manager-tools-for-micro5-pool-x86_64-5.5' => 60,
+  'sle-manager-tools-for-micro6-pool-x86_64-6.0' => 60,
   'sle-manager-tools-for-micro5-updates-x86_64-5.1' => 60,
   'sle-manager-tools-for-micro5-updates-x86_64-5.2' => 60,
   'sle-manager-tools-for-micro5-updates-x86_64-5.3' => 60,
@@ -1610,6 +1637,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-micro-5.5-devel-uyuni-client-x86_64' => 60,
   'sle-micro-5.5-pool-x86_64' => 120,
   'sle-micro-5.5-updates-x86_64' => 120,
+  'sl-micro-6.0-pool-x86_64' => 120,
+  'sl-micro-6.0-devel-uyuni-client-x86_64' => 60,
   'sle-module-basesystem15-sp1-pool-x86_64' => 180,
   'sle-module-basesystem15-sp1-updates-x86_64' => 660,
   'sle-module-basesystem15-sp2-pool-x86_64' => 180,
