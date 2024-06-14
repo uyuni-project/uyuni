@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:34+0200\n"
+"POT-Creation-Date: 2024-06-14 14:43+0200\n"
 "PO-Revision-Date: 2024-06-11 06:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
@@ -80,8 +80,8 @@ msgid ""
 "                   Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   %s "
-"アカウントは本サーバー上では非アクティブになっています。\n"
+"                   %s アカウントは本サーバー上では非アクティブになっていま"
+"す。\n"
 "                   組織の管理者にお問い合わせください。"
 
 #: ../server/handlers/applet/applet.py:78
@@ -111,8 +111,9 @@ msgstr "パッケージが期待されています、 次ではありません: 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "サーバプロファイルに対して SUSE Manager Proxy サービスが有効化されていません:"
-" \"%s\""
+msgstr ""
+"サーバプロファイルに対して SUSE Manager Proxy サービスが有効化されていませ"
+"ん: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -199,8 +200,9 @@ msgstr "管理に関する作業を行う許可がありません"
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "チャンネル %s の管理は許可されていないか、 "
-"またはこのチャンネルは存在していません"
+msgstr ""
+"チャンネル %s の管理は許可されていないか、 またはこのチャンネルは存在していま"
+"せん"
 
 #: ../server/importlib/userAuth.py:204
 #, python-format
@@ -220,8 +222,8 @@ msgid ""
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 "ご使用のアカウントには (release='%(release)s', "
-"arch='%(arch)s')%(www_activation)s "
-"に一致するチャンネルのいずれにもアクセスがありません"
+"arch='%(arch)s')%(www_activation)s に一致するチャンネルのいずれにもアクセスが"
+"ありません"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -247,10 +249,10 @@ msgid ""
 msgstr ""
 "\n"
 "アーキテクチャとオペレーティングシステムのリリースの組み合わせ (%s、 %s)\n"
-"が無効です。 システムは登録されていますが、 "
-"ベースチャンネルにサブスクライブ\n"
-"させることができなかったため更新は行われません。 "
-"詳細については組織の管理者に\n"
+"が無効です。 システムは登録されていますが、 ベースチャンネルにサブスクライ"
+"ブ\n"
+"させることができなかったため更新は行われません。 詳細については組織の管理者"
+"に\n"
 "お問い合わせください。\n"
 
 #: ../server/rhnChannel.py:2286
@@ -263,10 +265,10 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  このシステムは正常に登録されていますが、 "
-"サービスへのエンタイトルメントがまだ付与されていません。\n"
-"  システムにサービスへのエンタイトルメントを付与するには次の Web "
-"サイトにログインしてください。\n"
+"  このシステムは正常に登録されていますが、 サービスへのエンタイトルメントがま"
+"だ付与されていません。\n"
+"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログ"
+"インしてください。\n"
 "\n"
 "  %(entitlement_url)s\n"
 
@@ -281,16 +283,17 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  このシステムは正常に登録されていますが、 "
-"利用できるサービスエンタイトルメントがありませんでした。\n"
-"  システムにサービスへのエンタイトルメントを付与するには次の Web "
-"サイトにログインしてください。\n"
+"  このシステムは正常に登録されていますが、 利用できるサービスエンタイトルメン"
+"トがありませんでした。\n"
+"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログ"
+"インしてください。\n"
 "\n"
 "  %(entitlement_url)s\n"
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr "このクライアント上で root ユーザーになり、 rhn_register を実行してください"
+msgstr ""
+"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
 
 #: ../server/rhnHandler.py:75
 #, python-format
@@ -335,7 +338,8 @@ msgstr "最大使用数 %s に達しました"
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
-msgstr "異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していませ"
+msgstr ""
+"異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していませ"
 "ん"
 
 #: ../server/rhnServer/server_token.py:811
@@ -476,7 +480,8 @@ msgstr "ファイルが見つかりません。"
 
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
-msgstr "アーキテクチャとオペレーティングシステムのバージョンの組み合わせは対応してい"
+msgstr ""
+"アーキテクチャとオペレーティングシステムのバージョンの組み合わせは対応してい"
 "ません。"
 
 #: ../common/rhnException.py:68
@@ -669,10 +674,10 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"    このシステムは既に Salt Minion "
-"として登録されています。従来型のクライアントとして登録したい場合は、\n"
-"    Web UI や API "
-"でいったん削除を行なったあと、再度従来のツールで登録を行なってください。\n"
+"    このシステムは既に Salt Minion として登録されています。従来型のクライアン"
+"トとして登録したい場合は、\n"
+"    Web UI や API でいったん削除を行なったあと、再度従来のツールで登録を行"
+"なってください。\n"
 "    "
 
 #. For the uploading tools
@@ -682,7 +687,8 @@ msgstr "サーバーに無効な情報がアップロードされました"
 
 #: ../common/rhnException.py:128
 msgid "Error uploading network interfaces configuration."
-msgstr "ネットワークインターフェースの設定をアップロード中にエラーが発生しました。"
+msgstr ""
+"ネットワークインターフェースの設定をアップロード中にエラーが発生しました。"
 
 #: ../common/rhnException.py:129
 msgid ""
@@ -729,7 +735,8 @@ msgstr "この登録トークンを使用して登録されたシステムが多
 
 #: ../common/rhnException.py:145
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr "無効な設定、 またはサポートされていないか不適切な設定を含むトークンです"
+msgstr ""
+"無効な設定、 またはサポートされていないか不適切な設定を含むトークンです"
 
 #: ../common/rhnException.py:146
 msgid "Conflicting activation tokens"
@@ -756,8 +763,8 @@ msgid ""
 msgstr ""
 "\n"
 "     指定チャンネルへのサブスクリプションパーミッションがありません。\n"
-"     詳細については組織の管理者またはチャンネル管理者にお問い合わせください。"
-"\n"
+"     詳細については組織の管理者またはチャンネル管理者にお問い合わせくださ"
+"い。\n"
 "     "
 
 #: ../common/rhnException.py:157
@@ -766,7 +773,8 @@ msgstr "ベースチャンネルのサブスクリプションを解除するこ
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr "SUSE Manager もしくは Proxy チャンネルはサブスクリプションを設定できません。"
+msgstr ""
+"SUSE Manager もしくは Proxy チャンネルはサブスクリプションを設定できません。"
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
@@ -821,8 +829,9 @@ msgstr "パスワードの最大長を超えています"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr "このユーザに対しては読み込み専用の API "
-"アクセスのみが提供されています。アクションが拒否されました。"
+msgstr ""
+"このユーザに対しては読み込み専用の API アクセスのみが提供されています。アク"
+"ションが拒否されました。"
 
 #: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
@@ -881,8 +890,8 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     この SUSE Manager サーバーでは、このサーバーでの Inter Server Sync "
-"の使用が許可されていません\n"
+"     この SUSE Manager サーバーでは、このサーバーでの Inter Server Sync の使"
+"用が許可されていません\n"
 "     "
 
 #: ../common/rhnException.py:209
@@ -1042,8 +1051,8 @@ msgstr ""
 "\n"
 "     要求の処理中にエラーが発生しました。 問題が解決しない場合は、\n"
 "     scc.suse.com にてバグ報告を提出してください。\n"
-"     バグ報告を行なう場合は、 "
-"エラーが起きたときに何を行なおうとしていたのか、\n"
+"     バグ報告を行なう場合は、 エラーが起きたときに何を行なおうとしていたの"
+"か、\n"
 "     また問題を再現する場合の手順などを詳しく記入していただけるよう\n"
 "     お願いします。\n"
 
@@ -1140,8 +1149,8 @@ msgid ""
 msgstr ""
 "\n"
 "エラー: ISS Master と通信する際に問題がありました。\n"
-"       エラーの詳細にもよりますが、設定やネットワークの接続、"
-"名前解決などが正しく動作\n"
+"       エラーの詳細にもよりますが、設定やネットワークの接続、名前解決などが正"
+"しく動作\n"
 "       することをご確認のうえ、やり直してください。\n"
 "       エラーメッセージ: %s\n"
 
@@ -1366,8 +1375,8 @@ msgid ""
 "ERROR: The dump is missing package data, use --no-rpms to skip this step or "
 "fix the content to include package data."
 msgstr ""
-"エラー: ダンプにはパッケージデータがありません。 --no-rpms を指定してこのステ"
-"ップを飛ばすか、パッケージデータが含まれるように内容を修正してください。"
+"エラー: ダンプにはパッケージデータがありません。 --no-rpms を指定してこのス"
+"テップを飛ばすか、パッケージデータが含まれるように内容を修正してください。"
 
 #. the orgs() method doesn't exist; that's fine we just
 #. won't sync the orgs
@@ -1401,12 +1410,11 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
-"エラー: RHN Classic Hosted "
-"を利用したライブコンテンツの同期は、もはやサポートされていません。\n"
+"エラー: RHN Classic Hosted を利用したライブコンテンツの同期は、もはやサポート"
+"されていません。\n"
 "サーバ間同期 (ISS) を介して他の {PRODUCT_NAME} から同期を行なっている場合や、"
-"チャンネルダンプ ISO "
-"を利用してディスク内のローカルコンテンツから同期を行なっている場合を除き、"
-"代わりに cdn-sync コマンドを使用してください。"
+"チャンネルダンプ ISO を利用してディスク内のローカルコンテンツから同期を行なっ"
+"ている場合を除き、代わりに cdn-sync コマンドを使用してください。"
 
 #: ../satellite_tools/satsync.py:541
 #, python-format
@@ -1453,8 +1461,9 @@ msgstr "エラー: 例外 (処理時) が発生しました: "
 #, python-format
 msgid ""
 "   Encountered some errors with %s data (see logs (%s) for more information)"
-msgstr "   %s データでいくつかのエラーに遭遇しました (詳しくはログ (%s) "
-"をお読みください)"
+msgstr ""
+"   %s データでいくつかのエラーに遭遇しました (詳しくはログ (%s) をお読みくだ"
+"さい)"
 
 #: ../satellite_tools/satsync.py:605
 #, python-format
@@ -1587,8 +1596,9 @@ msgstr "   短いパッケージのメタデータを取得／処理していま
 #: ../satellite_tools/satsync.py:981
 #, python-format
 msgid "Diffing package metadata (what's missing locally?): %s"
-msgstr "パッケージのメタデータの差分を抽出しています "
-"(ローカル側に何が無いのかを調べています): %s"
+msgstr ""
+"パッケージのメタデータの差分を抽出しています (ローカル側に何が無いのかを調べ"
+"ています): %s"
 
 #: ../satellite_tools/satsync.py:987 ../satellite_tools/satsync.py:1270
 msgid "Diffing:    "
@@ -1631,8 +1641,9 @@ msgstr "   存在していない SRPM をフェッチしています: %s (%s)"
 #: ../satellite_tools/satsync.py:1265
 #, python-format
 msgid "Diffing source package metadata (what's missing locally?): %s"
-msgstr "ソースパッケージのメタデータの差分を抽出しています "
-"(ローカル側に何が無いのかを調べています): %s"
+msgstr ""
+"ソースパッケージのメタデータの差分を抽出しています (ローカル側に何が無いのか"
+"を調べています): %s"
 
 #: ../satellite_tools/satsync.py:1276
 msgid "Downloading source package metadata"
@@ -1670,7 +1681,8 @@ msgstr "パッチデータをダウンロードしています"
 
 #: ../satellite_tools/satsync.py:1572
 msgid "Forcing download of all patch data for requested channels."
-msgstr "要求したチャンネルに対する全てのパッチデータを強制ダウンロードしています。"
+msgstr ""
+"要求したチャンネルに対する全てのパッチデータを強制ダウンロードしています。"
 
 #: ../satellite_tools/satsync.py:1587
 msgid "Downloading patch data complete"
@@ -1701,7 +1713,8 @@ msgstr "取り込んでいます:  "
 msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
-msgstr "キャッシュ内にはパッケージが見つかりません。キャッシュを再生成するにはクリア"
+msgstr ""
+"キャッシュ内にはパッケージが見つかりません。キャッシュを再生成するにはクリア"
 "してください。"
 
 #: ../satellite_tools/satsync.py:1731
@@ -1755,8 +1768,8 @@ msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
-"ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-sync"
-"\" をお読みください。"
+"ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-"
+"sync\" をお読みください。"
 
 #: ../satellite_tools/satsync.py:2234
 msgid "existing custom channels will also be synced (unless -c is used)"
