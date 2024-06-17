@@ -101,15 +101,15 @@ mgrpxy_installed:
 
         [Service]
         Type=oneshot
-        ExecStart=/bin/bash -c 'mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 2>&1 | tee -a /var/log/mgrpxy_install.log'
+        ExecStart=/bin/bash -c '/usr/bin/mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 2>&1 | /usr/bin/tee -a /var/log/mgrpxy_install.log'
         
         ExecStartPost=/bin/bash -c 'STATUS_OUTPUT=$(mgrpxy status 2>&1); \
-            echo "$STATUS_OUTPUT" | tee -a /var/log/mgrpxy_install.log; \
-            if ! echo "$STATUS_OUTPUT" | grep -q "Error: no installed proxy detected"; then \
-                echo "mgrpxy was successfully {{ mgrpxy_operation }}ed. Removing apply mgrpxy service and configuration file." | tee -a /var/log/mgrpxy_install.log; \
-                rm -f /etc/systemd/system/apply_proxy_config.service; \
+            /usr/bin/echo "$STATUS_OUTPUT" | /usr/bin/tee -a /var/log/mgrpxy_install.log; \
+            if ! /usr/bin/echo "$STATUS_OUTPUT" | /usr/bin/grep -q "Error: no installed proxy detected"; then \
+                /usr/bin/echo "mgrpxy was successfully {{ mgrpxy_operation }}ed. Removing apply mgrpxy service and configuration file." | /usr/bin/tee -a /var/log/mgrpxy_install.log; \
+                /usr/bin/rm -f /etc/systemd/system/apply_proxy_config.service; \
             else \
-                echo "mgrpxy status check failed. Service file will remain for troubleshooting." | tee -a /var/log/mgrpxy_install.log; \
+                /usr/bin/echo "mgrpxy status check failed. Service file will remain for troubleshooting." | /usr/bin/tee -a /var/log/mgrpxy_install.log; \
             fi'
 
         [Install]
@@ -124,7 +124,7 @@ mgrpxy_installed:
 # The system will run this service to enable apply_proxy_config.service after reboot
 enable_apply_proxy_config_service:
   cmd.run:
-    - name: systemctl enable apply_proxy_config.service
+    - name: /usr/bin/systemctl enable apply_proxy_config.service
     - require:
       - file: /etc/systemd/system/apply_proxy_config.service
 
@@ -133,8 +133,8 @@ enable_apply_proxy_config_service:
 apply_proxy_configuration:
   cmd.run:
     - name: >
-        mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 
-        2>&1 | tee -a /var/log/mgrpxy_install.log
+        /usr/bin/mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 
+        2>&1 | /usr/bin/tee -a /var/log/mgrpxy_install.log
     - shell: /bin/bash
     - require:
       - file: /etc/uyuni/proxy/config.yaml

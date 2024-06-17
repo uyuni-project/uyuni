@@ -42,7 +42,7 @@ mgr_buildimage_prepare_activation_key_in_source:
 {%- if use_kiwi_ng %}
 # KIWI NG
 #
-{%- set kiwi = 'kiwi-ng' %}
+{%- set kiwi = '/usr/bin/kiwi-ng' %}
 
 {%- set kiwi_options = pillar.get('kiwi_options', '') %}
 {%- set bootstrap_packages = ['findutils', 'rhn-org-trusted-ssl-cert-osimage'] %}
@@ -86,12 +86,12 @@ mgr_buildimage_kiwi_bundle:
 # KIWI Legacy
 #
 
-{%- set kiwi_help = salt['cmd.run']('kiwi --help') %}
+{%- set kiwi_help = salt['cmd.run']('/usr/bin/kiwi --help') %}
 {%- set have_bundle_build = kiwi_help.find('--bundle-build') > 0 %}
 
 # i586 build on x86_64 host must be called with linux32
 # let's consider the build i586 if there is no x86_64 repo specified
-{%- set kiwi = 'linux32 kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else 'kiwi' %}
+{%- set kiwi = '/usr/bin/linux32 /usr/bin/kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else '/usr/bin/kiwi' %}
 
 # in SLES11 Kiwi the --add-repotype is required
 {%- macro kiwi_params() -%}
@@ -141,13 +141,13 @@ mgr_buildimage_kiwi_bundle_dir:
 
 mgr_buildimage_kiwi_bundle_tarball:
   cmd.run:
-    - name: "cd '{{ dest_dir }}' && tar czf '{{ bundle_dir }}'`basename *.packages .packages`-{{ bundle_id }}.tgz --no-recursion `find . -maxdepth 1 -type f`"
+    - name: "cd '{{ dest_dir }}' && /usr/bin/tar czf '{{ bundle_dir }}'`basename *.packages .packages`-{{ bundle_id }}.tgz --no-recursion `/usr/bin/find . -maxdepth 1 -type f`"
     - require:
       - file: mgr_buildimage_kiwi_bundle_dir
 
 mgr_buildimage_kiwi_bundle:
   cmd.run:
-    - name: "cd '{{ bundle_dir }}' && sha256sum *.tgz > `echo *.tgz`.sha256"
+    - name: "cd '{{ bundle_dir }}' && /usr/bin/sha256sum *.tgz > `/usr/bin/echo *.tgz`.sha256"
     - require:
       - cmd: mgr_buildimage_kiwi_bundle_tarball
 
