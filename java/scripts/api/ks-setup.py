@@ -53,7 +53,7 @@ def main():
     client.channel.software.create(key, channel,uniquify( options.prefix.lower() + "-channel"), options.prefix.title() + " channel","channel-ia32","")
 
     #upload the spacewalk koan rpm
-    execute("sudo /usr/bin/rhnpush -u %s -p %s -c %s  --nosig --server=http://%s/APP %s" % (SATELLITE_LOGIN, SATELLITE_PASSWORD, channel, SATELLITE_HOST, options.koan))
+    execute("/usr/bin/sudo /usr/bin/rhnpush -u %s -p %s -c %s  --nosig --server=http://%s/APP %s" % (SATELLITE_LOGIN, SATELLITE_PASSWORD, channel, SATELLITE_HOST, options.koan))
 
     #create activation key
 

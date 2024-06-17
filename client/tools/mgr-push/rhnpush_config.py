@@ -38,11 +38,11 @@ class rhnpushConfigParser:
     _instance = None
 
     def get_ca_bundle_path(self):
-        if os.system("grep -iq '^ID_LIKE=.*suse' /etc/os-release") == 0:
+        if os.system("/usr/bin/grep -iq '^ID_LIKE=.*suse' /etc/os-release") == 0:
             return '/etc/ssl/ca-bundle.pem'
-        if os.system("grep -iq '^ID_LIKE=.*rhel' /etc/os-release") == 0:
+        if os.system("/usr/bin/grep -iq '^ID_LIKE=.*rhel' /etc/os-release") == 0:
             return '/etc/pki/tls/certs/ca-bundle.crt'
-        if os.system("grep -iq '^ID_LIKE=.*debian' /etc/os-release") == 0:
+        if os.system("/usr/bin/grep -iq '^ID_LIKE=.*debian' /etc/os-release") == 0:
             return '/etc/ssl/certs/ca-certificates.crt'
 
     def __init__(self, filename=None, ensure_consistency=False):
