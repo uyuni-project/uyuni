@@ -50,7 +50,7 @@ mgr_set_default_boot:
 
 mgr_elilo_copy_config:
   cmd.run:
-    - name: elilo
+    - name: /sbin/elilo
     - onchanges:
       - file: mgr_create_elilo_entry
       - file: mgr_set_default_boot
@@ -72,7 +72,7 @@ mgr_set_default_boot:
 
 mgr_generate_grubconf:
   cmd.run:
-    - name: grub2-mkconfig -o /boot/grub2/grub.cfg
+    - name: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
     - onchanges:
       - file: mgr_copy_kernel
       - file: mgr_copy_initrd
@@ -82,7 +82,7 @@ mgr_generate_grubconf:
 
 mgr_autoinstall_start:
   cmd.run:
-    - name: shutdown -r +1
+    - name: /usr/sbin/shutdown -r +1
     - require:
 {% if loader_type == 'grub' %}
       - cmd: mgr_grub_boot_once

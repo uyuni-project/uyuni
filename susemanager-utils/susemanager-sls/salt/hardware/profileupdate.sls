@@ -154,7 +154,7 @@ dns_fqdns:
       - mgrcompat: sync_states
 {%- endif %}
     - onlyif:
-        which host || which nslookup
+        /usr/bin/which host || /usr/bin/which nslookup
 {% endif%}
 {% if 'network.fqdns' in salt %}
 fqdns:

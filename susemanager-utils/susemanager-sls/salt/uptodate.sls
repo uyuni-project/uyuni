@@ -4,17 +4,17 @@ include:
 {%- if grains['os_family'] == 'Suse' %}
 mgr_keep_system_up2date_updatestack:
   cmd.run:
-    - name: zypper --non-interactive patch --updatestack-only
+    - name: /usr/bin/zypper --non-interactive patch --updatestack-only
     - success_retcodes:
       - 104
       - 103
       - 106
       - 0
-    - onlyif: 'zypper patch-check --updatestack-only; r=$?; test $r -eq 100 || test $r -eq 101'
+    - onlyif: '/usr/bin/zypper patch-check --updatestack-only; r=$?; test $r -eq 100 || test $r -eq 101'
     - require:
       - sls: channels
 
-{% set patch_need_reboot = salt['cmd.retcode']('zypper -x list-patches | grep \'restart="true"\' > /dev/null', python_shell=True) %}
+{% set patch_need_reboot = salt['cmd.retcode']('/usr/bin/zypper -x list-patches | /usr/bin/grep \'restart="true"\' > /dev/null', python_shell=True) %}
 
 {% else %}
 
@@ -49,20 +49,20 @@ mgr_keep_system_up2date_pkgs:
 {%- if salt['pillar.get']('mgr_reboot_if_needed', True) and salt['pillar.get']('custom_info:mgr_reboot_if_needed', 'true')|lower in ('true', '1', 'yes', 't') %}
 mgr_reboot_if_needed:
   cmd.run:
-    - name: shutdown -r +5
+    - name: /usr/sbin/shutdown -r +5
     - require:
       - pkg: mgr_keep_system_up2date_pkgs
 {%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease'] >= 8 %}
-    - onlyif: 'dnf -q needs-restarting -r; [ $? -eq 1 ]'
+    - onlyif: '/usr/bin/dnf -q needs-restarting -r; [ $? -eq 1 ]'
 {%- elif grains['os_family'] == 'RedHat' and grains['osmajorrelease'] >= 7 %}
-    - onlyif: 'needs-restarting -r; [ $? -eq 1 ]'
+    - onlyif: '/usr/bin/needs-restarting -r; [ $? -eq 1 ]'
 {%- elif grains['os_family'] == 'Debian' %}
     - onlyif:
-      - test -e /var/run/reboot-required
+      - /usr/bin/test -e /var/run/reboot-required
 {%- elif grains['os_family'] == 'Suse' and grains['osmajorrelease'] <= 12 %}
     - onlyif:
-      - test -e /boot/do_purge_kernels
+      - /usr/bin/test -e /boot/do_purge_kernels
 {%- else %}
-    - onlyif: 'zypper ps -s; [ $? -eq 102 ] || [ {{ patch_need_reboot }} -eq 0 ]'
+    - onlyif: '/usr/bin/zypper ps -s; [ $? -eq 102 ] || [ {{ patch_need_reboot }} -eq 0 ]'
 {%- endif %}
 {%- endif %}
