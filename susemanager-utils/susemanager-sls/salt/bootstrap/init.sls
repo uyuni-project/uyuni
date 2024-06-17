@@ -168,7 +168,7 @@ bootstrap_repo:
 {% set salt_minion_installed = (salt['pkg.info_installed']('venv-salt-minion', attr='version', failhard=False).get('venv-salt-minion', {}).get('version') != None) %}
 check_bootstrap_dbg:
   cmd.run:
-    - name: echo "{{ salt_minion_installed }}"
+    - name: /usr/bin/echo "{{ salt_minion_installed }}"
 {% set venv_available_request = salt_minion_installed or salt['http.query'](bootstrap_repo_url + 'venv-enabled-' + grains['osarch'] + '.txt', status=True, verify_ssl=False) %}
 {# Prefer venv-salt-minion if available and not disabled #}
 {%- set use_venv_salt = salt['pillar.get']('mgr_force_venv_salt_minion') or ((salt_minion_installed or (0 < venv_available_request.get('status', 404) < 300)) and not salt['pillar.get']('mgr_avoid_venv_salt_minion')) %}
@@ -332,7 +332,7 @@ copy_transactional_conf_file_to_etc:
     - name: /etc/transactional-update.conf
     - source: /usr/etc/transactional-update.conf
     - unless:
-      - test -f /etc/transactional-update.conf
+      - /usr/bin/test -f /etc/transactional-update.conf
 
 transactional_update_set_reboot_method_systemd:
   file.keyvalue:
@@ -345,7 +345,7 @@ transactional_update_set_reboot_method_systemd:
     - require:
       - file: copy_transactional_conf_file_to_etc
     - unless:
-      - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
+      - /usr/bin/grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
 disable_reboot_timer_transactional_minions:
   cmd.run:

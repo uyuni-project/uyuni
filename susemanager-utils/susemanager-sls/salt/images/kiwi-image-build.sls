@@ -42,7 +42,7 @@ mgr_buildimage_prepare_activation_key_in_source:
 {%- if use_kiwi_ng %}
 # KIWI NG
 #
-{%- set kiwi = 'kiwi-ng' %}
+{%- set kiwi = '/usr/bin/kiwi-ng' %}
 
 {%- set kiwi_options = pillar.get('kiwi_options', '') %}
 {%- set bootstrap_packages = ['findutils', 'rhn-org-trusted-ssl-cert-osimage'] %}
@@ -91,7 +91,7 @@ mgr_buildimage_kiwi_bundle:
 
 # i586 build on x86_64 host must be called with linux32
 # let's consider the build i586 if there is no x86_64 repo specified
-{%- set kiwi = 'linux32 kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else 'kiwi' %}
+{%- set kiwi = '/usr/bin/linux32 /usr/bin/kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else '/usr/bin/kiwi' %}
 
 # in SLES11 Kiwi the --add-repotype is required
 {%- macro kiwi_params() -%}
