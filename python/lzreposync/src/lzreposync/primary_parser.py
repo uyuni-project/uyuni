@@ -28,14 +28,12 @@ def map_attribute(attribute: str):
         "version/ver": "version",
         "version/rel": "release",
         "version/epoch": "epoch",
-        "time/build": "build_time",
+        "time/build": "buildtime",
         "size/package": "package_size",
         "size/installed": "installed_size",
+        "size/archive": "archivesize",
         "header-range/start": "header_start",
-        "header-range/end": "header_end",
-        "buildhost": "build_host",
-        "sourcerpm": "source_rpm",
-        "group": "package_group"
+        "header-range/end": "header_end"
     }
 
     if attribute in attributes:
