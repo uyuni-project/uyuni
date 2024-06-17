@@ -144,7 +144,7 @@ if not all(
     ]
 ):
     os.system(
-        "openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out /etc/salt/pki/api/salt-api.crt -keyout /etc/salt/pki/api/salt-api.key -subj '/CN=localhost'"
+        "/usr/bin/openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out /etc/salt/pki/api/salt-api.crt -keyout /etc/salt/pki/api/salt-api.key -subj '/CN=localhost'"
     )
     os.chown(
         "/etc/salt/pki/api/salt-api.crt",

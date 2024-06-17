@@ -387,7 +387,7 @@ def gen_slave_template(slave_session, master_session, master, filename, dflt_mas
     master_ca_cert_path = '/usr/share/rhn/' + master + '_RHN-ORG-TRUSTED-SSL-CERT'
     slave_setup.set(master, 'cacert', master_ca_cert_path)
 
-    wget_cmd = 'wget -q -O ' + master_ca_cert_path + ' http://' + master + '/pub/RHN-ORG-TRUSTED-SSL-CERT'
+    wget_cmd = '/usr/bin/wget -q -O ' + master_ca_cert_path + ' http://' + master + '/pub/RHN-ORG-TRUSTED-SSL-CERT'
     logging.info("About to wget master CA cert: [" + wget_cmd + "]")
     try:
         os.system(wget_cmd)
