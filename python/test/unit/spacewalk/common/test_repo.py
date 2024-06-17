@@ -347,7 +347,7 @@ class TestCommonRepo:
             # pylint: disable-next=pointless-statement
             mock_popen.assert_called_once
             gpg_args = mock_popen.call_args[0][0]
-            assert gpg_args[0] == "gpg"
+            assert gpg_args[0] == "/usr/bin/gpg"
             assert gpg_args[1] == "--verify"
             assert gpg_args[2] == "--homedir"
             assert gpg_args[3] == "/var/lib/spacewalk/gpgdir"

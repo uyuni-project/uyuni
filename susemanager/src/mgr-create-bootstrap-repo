@@ -798,7 +798,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 log(err, 2)
                 return 1
         else:
-            os.system("createrepo -s sha256 %s" % destdirtmp)
+            os.system("/usr/bin/createrepo -s sha256 %s" % destdirtmp)
         # ensure venv-enabled-{ARCH}.txt doesn't exist in repo with no salt bundle package
         # create venv-enabled-{ARCH}.txt for repos with salt bundle package
         for file_path in glob.glob(os.path.join(destdirtmp, "venv-enabled-*.txt")):

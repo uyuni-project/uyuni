@@ -319,7 +319,7 @@ class DpkgRepo:
             # There is a response, so we are dealing with a URL.
             if parse.urlparse(response.url).path.endswith("InRelease"):
                 process = subprocess.Popen(
-                    ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR],
+                    ["/usr/bin/gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR],
                     stdin=subprocess.PIPE,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
@@ -342,7 +342,7 @@ class DpkgRepo:
                     temp_signature_file.seek(0)
                     process = subprocess.Popen(
                         [
-                            "gpg",
+                            "/usr/bin/gpg",
                             "--verify",
                             "--homedir",
                             SPACEWALK_GPG_HOMEDIR,
