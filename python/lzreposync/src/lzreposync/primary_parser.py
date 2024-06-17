@@ -7,6 +7,16 @@ from spacewalk.server.importlib.importLib import Package, Checksum, Dependency
 COMMON_NS = "http://linux.duke.edu/metadata/common"
 RPM_NS = "http://linux.duke.edu/metadata/rpm"
 
+# Data to be included in the package object
+package_data = ["package_size", "checksum", "checksum_type", "header_start", "header_end"]
+
+ignored_attributes = ["provideflags", "requirename", "requireversion", "requireflags", "conflictname",
+                      "conflictversion", "conflictflags", "obsoletename", "obsoleteversion", "obsoleteflags", 1159,
+                      1160, 1161, 1156, 1157, 1158, 5052, 5053, 5054, 5055, 5056, 5057, 5049, 5050, 5051, 5046, 5047,
+                      5048, 'filenames', 'filedevices', 'fileinodes', 'filemodes', 'fileusername', 'filegroupname',
+                      'filerdevs', 'filesizes', 'longfilesizes', 'filemtimes', 'filemd5s', 'filelinktos', 'fileflags',
+                      'fileverifyflags', 'filelangs']
+
 
 def map_attribute(attribute: str):
     """
@@ -221,5 +231,36 @@ class PrimaryParser:
                     for child_node in node.childNodes:
                         if child_node.nodeType == child_node.ELEMENT_NODE:
                             self.set_element_node(child_node)
+
+                    # To make the _extract_signatures() function happy # TODO: fix later
+                    header_tags = [
+                        rpm.RPMTAG_DSAHEADER,
+                        rpm.RPMTAG_RSAHEADER,
+                        rpm.RPMTAG_SIGGPG,
+                        rpm.RPMTAG_SIGPGP,
+                    ]
+                    for ht in header_tags:
+                        self.current_hdr[ht] = None
+                    # TODO: We can put them in a list: ignored_attributes
+                    self.current_hdr["rpmversion"] = '1'  # TODO fix later
+                    self.current_hdr["size"] = 10000  # TODO fix later
+                    self.current_hdr["payloadformat"] = "cpio"  # TODO fix later
+                    self.current_hdr["cookie"] = "cookie_test"  # TODO fix later
+                    self.current_hdr["sigsize"] = 10000  # TODO fix later
+                    self.current_hdr["sigmd5"] = "sigmd5_test"  # TODO fix later
+                    for elt in ignored_attributes:
+                        self.current_hdr[elt] = None
+
+                    is_source = is_source_package(node)
+                    package_header = RPM_Header(self.current_hdr, is_source=is_source)
+                    self.currentPackage["header"] = package_header
+
+                    # TODO: handle channels, files, tags (required by the importer)
+                    self.current_hdr["channels"] = []
+                    self.current_hdr["files"] = []
+                    self.current_hdr["changelog"] = []
+                    self.current_hdr["changelogname"] = None
+                    self.current_hdr["changelogtext"] = None
+                    self.current_hdr["changelogtime"] = None
 
                     yield self.currentPackage
