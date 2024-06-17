@@ -1809,7 +1809,7 @@ public class PackageManager extends BaseManager {
         }
 
         List<String> cmd = new ArrayList<>();
-        cmd.add(Config.get().getString("rpm.path", "/bin/rpm"));
+        cmd.add("/usr/bin/rpm");
         cmd.add("-qp");
         cmd.add("--changelog");
         cmd.add(f.getPath());
