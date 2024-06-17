@@ -40,6 +40,22 @@ def map_attribute(attribute: str):
         return attributes[attribute]
     return None
 
+def map_dependency_attribute(dependency_name, attribute):
+    """
+    Map the given dependency's attribute to the corresponding name
+    Eg: dependency="requires", attribute="name" => return "requirename"
+    We'll be using the mapping used in headerSource.py
+    """
+
+    if dependency_name == "provides":
+        return rpmProvides.tagMap.get(attribute)
+    if dependency_name == "requires":
+        return rpmRequires.tagMap.get(attribute)
+    if dependency_name == "enhances":
+        return rpmEnhances.tagMap.get(attribute)  # TODO Note: there's also 'rpmOldEnhances'..what to choose ?
+    if dependency_name == "obsoletes":
+        return rpmObsoletes.tagMap.get(attribute)
+
 
 def is_complex(attribute: str):
     """
@@ -133,25 +149,32 @@ class PrimaryParser:
     def set_complex_element_node(self, node):
         """
         Parse and set complex elements. Complex means the it contains child nodes. Eg: "provides", "requires", etc
-        each node has a list of Dependencies
+        each node has a list of Dependencies.
+        The names should be mapped the same as in HeaderSource.py: rpmProvides, rpmRequires, etc..
         """
         # TODO: fix later
         # if not self.currentPackage:
         #     print("Error: No package being parsed!")
         #     raise ValueError("No package being parsed")
         elt_name = node.localName
-        dependencies: [Dependency] = []
+        dependencies = []
         for child_node in node.childNodes:
             if child_node.nodeType == node.ELEMENT_NODE:
-                dependency = Dependency()
-                for attr_name in dependency.attributeTypes.keys():  # ['name', 'version', 'flags']
-                    if child_node.attributes and attr_name not in child_node.attributes.keys():
-                        continue  # Skipping Eg: 'epoch'
-                    dependency[attr_name] = child_node.getAttributeNode(
+                dependency = {}
+                for attr_name in ('name', 'version', 'flags'):
+
+                    attr_mapped_name = map_dependency_attribute(elt_name, attr_name)
+                    attr = child_node.getAttributeNode(
                         "ver" if attr_name == "version" else attr_name  # mapping attr name
-                    ).value
+                    )
+                    if attr:
+                        dependency[attr_mapped_name] = attr.value
+                    else:
+                        dependency[attr_mapped_name] = None
+                # print(f"APPENDING DEPENDENCY {dependency.items()}")
                 dependencies.append(dependency)
-        self.currentPackage[elt_name] = dependencies
+        # print(f"HAROUNE DEBUG: SETTING COMPLEX {elt_name}, NUM DEPENDENCIES={len(dependencies)}", )
+        self.current_hdr[elt_name] = dependencies
 
     def set_text_element_node(self, node):
         """
