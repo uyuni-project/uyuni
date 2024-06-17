@@ -2,6 +2,7 @@ import argparse
 import logging
 from itertools import islice
 
+from lzreposync.importUtils import import_package_batch
 from lzreposync.rpm_repo import RPMRepo
 
 
@@ -72,5 +73,5 @@ def main():
     rpm_repository = RPMRepo(args.name, args.cache, args.url)  # TODO args.url should be args.repo, no ?
     packages = rpm_repository.get_packages_metadata()  # packages is a generator
     for batch in batched(packages, args.batch_size):
-        print(f"Importing a batch of {len(batch)} packages...")
-        # TODO: complete the import
+        logging.info(f"Importing a batch of {len(batch)} packages...")
+        import_package_batch(batch)
