@@ -342,6 +342,6 @@ artifacts:
   - artifact: glassfish-activation
     repository: Uyuni_Other
   - artifact: istack-commons-runtime
-    repository: Uyuni_Other
+    repository: Leap_sle
   - artifact: stax-ex
     repository: Uyuni_Other
