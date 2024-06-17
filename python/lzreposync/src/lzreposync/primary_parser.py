@@ -1,8 +1,13 @@
+import datetime
 import gzip
 from xml.dom import pulldom
 
+import rpm
+
 from lzreposync.rpm_utils import RPMHeader
+from spacewalk.server.importlib.headerSource import rpmProvides, rpmRequires, rpmEnhances, rpmObsoletes
 from spacewalk.server.importlib.importLib import Package, Checksum, Dependency
+from uyuni.common.rhn_rpm import RPM_Header
 
 COMMON_NS = "http://linux.duke.edu/metadata/common"
 RPM_NS = "http://linux.duke.edu/metadata/rpm"
@@ -77,6 +82,14 @@ def get_text(node):
     return ''.join(text_content).strip()
 
 
+def is_source_package(node):
+    arch_node = node.getElementsByTagName("arch")[0]
+    if get_text(arch_node) == "src":
+        return True
+    else:
+        return False
+
+
 class PrimaryParser:
     def __init__(self, primary_file):
         """
@@ -84,6 +97,7 @@ class PrimaryParser:
         """
         self.primaryFile = primary_file
         self.currentPackage = None
+        self.current_hdr = None
         self.searchedChars = ["arch",
                               "name",
                               "summary",
@@ -105,7 +119,7 @@ class PrimaryParser:
             "time": ["build"],
             "version": ["epoch", "ver", "rel"],
             "checksum": ["type"],
-            "size": ["package", "installed"],
+            "size": ["package", "installed", "archive"],
             "header-range": ["start", "end"]
         }  # Self-closing elements: relevant values are their attributes'
 
@@ -118,11 +132,8 @@ class PrimaryParser:
         #     print("Error: No package being parsed!")
         #     raise ValueError("No package being parsed")
 
-        checksum = Checksum()
-        # TODO: Surround with try except
-        checksum["type"] = node.attributes["type"].value
-        checksum["value"] = node.firstChild.nodeValue
-        self.currentPackage["checksum"] = checksum
+        self.currentPackage["checksum"] = node.firstChild.nodeValue
+        self.currentPackage["checksum_type"] = node.attributes["type"].value
 
     def set_attribute_element_node(self, node):
         """
@@ -193,7 +204,17 @@ class PrimaryParser:
         #     print("Error: No package being parsed!")
         #     raise ValueError("No package being parsed")
 
-        self.currentPackage[node.localName] = get_text(node)
+        mapped_name = map_attribute(node.localName)
+        if mapped_name:
+            if mapped_name in package_data:  # TODO: optimize if statements
+                self.currentPackage[mapped_name] = get_text(node)
+            else:
+                self.current_hdr[mapped_name] = get_text(node)
+        else:
+            if node.localName in package_data:
+                self.currentPackage[node.localName] = get_text(node)
+            else:
+                self.current_hdr[node.localName] = get_text(node)
 
     def set_element_node(self, node):
         """
@@ -251,10 +272,11 @@ class PrimaryParser:
                 if event == pulldom.START_ELEMENT and node.namespaceURI == COMMON_NS and node.tagName == "package":
                     # New package
                     doc.expandNode(node)
-                    self.currentPackage = Package()
+                    self.currentPackage = {}
+                    self.current_hdr = {}
 
                     # Tagging 'source' and 'binary' packages
-                    self.set_pacakge_header(node)
+                    # self.set_pacakge_header(node)  # TODO: make this a final step
 
                     # Parsing package's metadata
                     for child_node in node.childNodes:
