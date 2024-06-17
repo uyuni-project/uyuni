@@ -195,7 +195,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
         }
 
         // Is this PID running?
-        String[] cmd = {"ps", "-o", "args", "-p", pid};
+        String[] cmd = {"/usr/bin/ps", "-o", "args", "-p", pid};
         SystemCommandExecutor ce = new SystemCommandExecutor();
         ce.execute(cmd);
         return ce.getLastCommandOutput().contains(" " + chan.getLabel() + " ");
