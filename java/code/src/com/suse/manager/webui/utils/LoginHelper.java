@@ -414,7 +414,7 @@ public class LoginHelper {
 
     private static String getRpmSchemaVersion(String schemaName) {
         String[] rpmCommand = new String[4];
-        rpmCommand[0] = "rpm";
+        rpmCommand[0] = "/usr/bin/rpm";
         rpmCommand[1] = "-q";
         rpmCommand[2] = "--qf=%{VERSION}-%{RELEASE}";
         rpmCommand[3] = schemaName;

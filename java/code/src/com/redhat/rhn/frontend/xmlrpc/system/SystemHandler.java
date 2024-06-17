@@ -6070,8 +6070,7 @@ public class SystemHandler extends BaseHandler {
                             map.put(csvUuid, record[uuidPos]);
                             map.put(csvSystemId, record[systemIdPos]);
                             map.put(csvStamp, fileStamp);
-                            String[] cmd = {"rpm", "--qf=%{NAME}",
-                                    "-qf", file.getAbsolutePath()};
+                            String[] cmd = {"/usr/bin/rpm", "--qf=%{NAME}", "-qf", file.getAbsolutePath()};
                             map.remove(csvHostname);
                             SystemCommandExecutor ce = new SystemCommandExecutor();
                             if (ce.execute(cmd) == 0) {
