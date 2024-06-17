@@ -1,1 +1,0 @@
-- fix system_upgradable_package_list query to not return duplicate package names (bsc#1226037)

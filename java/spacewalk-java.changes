@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 17 14:55:58 CEST 2024 - rosuna@suse.com
+
+- version 5.0.9-0
+  * Fix system_upgradable_package_list query to not return duplicate
+    package names (bsc#1226037)
+
+-------------------------------------------------------------------
 Mon Jun 10 17:03:13 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8-0
