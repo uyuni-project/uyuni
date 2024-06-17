@@ -147,7 +147,7 @@ def initDB(
     add_to_seclist(password)
     try:
         __init__DB(
-            backend, host, port, username, password, database, sslmode, sslrootcert
+            backend, host, port, username, password, database, None, None
         )
     #    except (rhnException, SQLError):
     #        raise  # pass on, we know those ones

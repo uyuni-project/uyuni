@@ -424,7 +424,7 @@ class PackageImport(ChannelPackageSubscription):
                 ignoreUploaded=self.ignoreUploaded,
                 transactional=self.transactional,
             )
-            self._import_signatures()
+            # self._import_signatures()
         except:
             # Oops
             self.backend.rollback()
