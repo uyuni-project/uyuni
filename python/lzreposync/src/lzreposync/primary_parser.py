@@ -140,7 +140,15 @@ class PrimaryParser:
             actual_name = map_attribute(extended_name)
             if actual_name:
                 value = node.getAttributeNode(attr).value
-                self.currentPackage[actual_name] = value
+                if actual_name == "archivesize":
+                    value = int(value)
+                elif actual_name == "buildtime":  # TODO can be optimized and be more general (eg mapping function for time)
+                    value = datetime.datetime.fromtimestamp(float(value))
+                if actual_name in package_data:
+                    self.currentPackage[actual_name] = value
+                else:
+                    # It is a header attribute
+                    self.current_hdr[actual_name] = value
             else:
                 continue
                 # logging.warning("Couldn't map the attribute: %s to any importLib attribute, ignoring attribute",
