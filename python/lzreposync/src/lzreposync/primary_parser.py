@@ -15,7 +15,7 @@ RPM_NS = "http://linux.duke.edu/metadata/rpm"
 # Data to be included in the package object
 package_data = ["package_size", "checksum", "checksum_type", "header_start", "header_end"]
 
-ignored_attributes = ["provideflags", "requirename", "requireversion", "requireflags", "conflictname",
+ignored_attributes = ["provideversion", "provideflags", "requirename", "requireversion", "requireflags", "conflictname",
                       "conflictversion", "conflictflags", "obsoletename", "obsoleteversion", "obsoleteflags", 1159,
                       1160, 1161, 1156, 1157, 1158, 5052, 5053, 5054, 5055, 5056, 5057, 5049, 5050, 5051, 5046, 5047,
                       5048, 'filenames', 'filedevices', 'fileinodes', 'filemodes', 'fileusername', 'filegroupname',
