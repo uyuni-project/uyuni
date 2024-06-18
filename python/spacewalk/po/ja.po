@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 09:56+0200\n"
-"PO-Revision-Date: 2022-08-29 04:13+0000\n"
+"POT-Creation-Date: 2024-06-18 14:54+0200\n"
+"PO-Revision-Date: 2024-06-11 06:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -690,7 +690,6 @@ msgstr ""
 "     指定チャンネルへのサブスクリプションパーミッションがありません。\n"
 "     詳細については組織の管理者またはチャンネル管理者にお問い合わせくださ"
 "い。\n"
-"     \n"
 "     "
 
 #: ../common/rhnException.py:182
