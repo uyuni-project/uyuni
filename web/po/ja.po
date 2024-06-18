@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:09+0200\n"
+"POT-Creation-Date: 2024-06-18 14:55+0200\n"
 "PO-Revision-Date: 2024-06-13 03:46+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -421,8 +421,8 @@ msgstr "取り消し"
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
 #: ../html/src/manager/packages/list.tsx:72
 #: ../html/src/manager/packages/list.tsx:125
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:214
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:217
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:224
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
@@ -655,20 +655,20 @@ msgstr "スケジュールの選択:"
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
 #: ../html/src/components/states-picker.tsx:35
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:23
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:24
 msgid "State Configuration Channel"
 msgstr "状態設定チャンネル"
 
 #: ../html/src/components/ranking-table.tsx:23
 #: ../html/src/components/states-picker.tsx:38
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:26
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:27
 msgid "Internal State"
 msgstr "内部状態"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
 #: ../html/src/components/states-picker.tsx:42
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:30
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:31
 msgid "Normal Configuration Channel"
 msgstr "通常設定チャンネル"
 
@@ -690,8 +690,8 @@ msgstr "設定チャンネル: {name}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:206
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:209
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:215
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
@@ -734,8 +734,8 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:199
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:201
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:204
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
@@ -791,7 +791,7 @@ msgid "There are no states assigned."
 msgstr "状態が何も割り当てられていません。"
 
 #: ../html/src/components/states-picker.tsx:421
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:248
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 msgid "State Name"
 msgstr "状態名"
 
@@ -800,7 +800,7 @@ msgid "Channel Name"
 msgstr "チャンネル名"
 
 #: ../html/src/components/states-picker.tsx:422
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:261
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 msgid "State Label"
 msgstr "状態ラベル"
 
@@ -820,7 +820,7 @@ msgstr "チャンネルラベル"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:265
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:268
 msgid "Description"
 msgstr "説明"
 
@@ -4033,7 +4033,7 @@ msgid "Multi"
 msgstr "マルチ"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:147
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:150
 msgid "Schedule Details"
 msgstr "スケジュールの詳細"
 
@@ -4863,69 +4863,69 @@ msgstr "PEM形式"
 msgid "Proxy SSL private key"
 msgstr "プロキシSSL機密鍵"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:88
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:89
 msgid "Execution time"
 msgstr "実行時間"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:152
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:155
 msgid "State:"
 msgstr "状態:"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:153
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:150
 msgid "Active"
 msgstr "有効"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:153
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
 msgid "Inactive"
 msgstr "無効"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:157
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:160
 msgid "Test"
 msgstr "テスト"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:158
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
 msgid "True"
 msgstr "はい"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:165
 msgid "Action type"
 msgstr "動作タイプ"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:166
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:169
 msgid "Target type"
 msgstr "ターゲットタイプ"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:170
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:173
 msgid "Target name"
 msgstr "ターゲット名"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:174
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:177
 msgid "Created by"
 msgstr "作成者"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:179
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:182
 msgid "Created at"
 msgstr "作成日時"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:185
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
 msgid "Quartz format string"
 msgstr "クォーツ書式文字列"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:230
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:237
 msgid "Delete Recurring Action Schedule"
 msgstr "定期的なアクションのスケジュールの削除"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:231
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:234
 msgid "Are you sure you want to delete this schedule?"
 msgstr "このスケジュールを削除してよろしいですか？"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:239
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:242
 msgid "State configuration for {name}"
 msgstr "{name}の状態設定"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:246
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:249
 msgid "Order"
 msgstr "順序"
 
