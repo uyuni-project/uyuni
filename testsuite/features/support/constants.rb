@@ -901,6 +901,21 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-devtools15-sp5-pool-x86_64
         sle-module-devtools15-sp5-updates-x86_64
       ],
+    'sles15-sp6' => # CHECKED
+      %w[
+        sle-product-sles15-sp6-pool-x86_64
+        sle-product-sles15-sp6-updates-x86_64
+        sle-module-basesystem15-sp6-pool-x86_64
+        sle-module-basesystem15-sp6-updates-x86_64
+        sle-manager-tools15-updates-x86_64-sp6
+        sle-manager-tools15-pool-x86_64-sp6
+        sle-module-server-applications15-sp6-pool-x86_64
+        sle-module-server-applications15-sp6-updates-x86_64
+        sle-module-desktop-applications15-sp6-pool-x86_64
+        sle-module-desktop-applications15-sp6-updates-x86_64
+        sle-module-devtools15-sp6-updates-x86_64
+        sle-module-devtools15-sp6-pool-x86_64
+      ],
     'slesforsap15-sp5' =>
       %w[
         sle-manager-tools15-pool-x86_64-sap-sp5
@@ -1243,6 +1258,20 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp5-updates-x86_64
         sles15-sp5-devel-uyuni-client-x86_64
       ],
+    'sles15-sp6' =>
+      %w[
+        sle-product-sles15-sp6-pool-x86_64
+        sle-product-sles15-sp6-updates-x86_64
+        sle-module-basesystem15-sp6-pool-x86_64
+        sle-module-basesystem15-sp6-updates-x86_64
+        sle-module-server-applications15-sp6-pool-x86_64
+        sle-module-server-applications15-sp6-updates-x86_64
+        sle-module-desktop-applications15-sp6-pool-x86_64
+        sle-module-desktop-applications15-sp6-updates-x86_64
+        sle-module-devtools15-sp6-updates-x86_64
+        sle-module-devtools15-sp6-pool-x86_64
+        sles15-sp6-devel-uyuni-client-x86_64
+      ],
     'slesforsap15-sp5' =>
       %w[
         sle-module-basesystem15-sp5-pool-x86_64-sap
@@ -1584,6 +1613,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_leap15_6-x86_64-non-oss-updates' => 120,
   'opensuse_leap15_6-x86_64-sle-updates' => 5400,
   'opensuse_leap15_6-x86_64-updates' => 60,
+  'opensuse-leap-15.6-pool-aarch64' => 11_820,
+  'opensuse-leap-15.6-updates-aarch64' => 60,
+  'opensuse-backports-15.6-updates-aarch64' => 60,
+  'opensuse-sle-15.6-updates-aarch64' => 60,
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-x86_64' => 840,
@@ -1611,12 +1644,16 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-manager-tools15-pool-x86_64-sp3' => 60,
   'sle-manager-tools15-pool-x86_64-sp4' => 60,
   'sle-manager-tools15-pool-x86_64-sp5' => 60,
+  'sle-manager-tools15-pool-x86_64-sp6' => 60,
   'sle-manager-tools15-updates-s390x-sp5' => 120,
   'sle-manager-tools15-updates-x86_64-sp1' => 180,
   'sle-manager-tools15-updates-x86_64-sp2' => 60,
   'sle-manager-tools15-updates-x86_64-sp3' => 60,
   'sle-manager-tools15-updates-x86_64-sp4' => 60,
   'sle-manager-tools15-updates-x86_64-sp5' => 60,
+  'sle-manager-tools15-updates-x86_64-sp6' => 90,
+  'sle-manager-tools15-pool-aarch64-opensuse-15.6' => 60,
+  'sle-manager-tools15-updates-aarch64-opensuse-15.6' => 120,
   'sle-manager-tools-for-micro5-pool-x86_64-5.1' => 60,
   'sle-manager-tools-for-micro5-pool-x86_64-5.2' => 60,
   'sle-manager-tools-for-micro5-pool-x86_64-5.3' => 60,
@@ -1655,6 +1692,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp5-pool-x86_64' => 240,
   'sle-module-basesystem15-sp5-updates-s390x' => 600,
   'sle-module-basesystem15-sp5-updates-x86_64' => 540,
+  'sle-module-basesystem15-sp6-pool-x86_64' => 300,
+  'sle-module-basesystem15-sp6-updates-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-updates-x86_64' => 60,
@@ -1667,6 +1706,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-desktop-applications15-sp4-updates-x86_64' => 120,
   'sle-module-desktop-applications15-sp5-pool-x86_64' => 120,
   'sle-module-desktop-applications15-sp5-updates-x86_64' => 60,
+  'sle-module-desktop-applications15-sp6-pool-x86_64' => 240,
+  'sle-module-desktop-applications15-sp6-updates-x86_64' => 60,
   'sle-module-devtools15-sp2-pool-x86_64' => 120,
   'sle-module-devtools15-sp2-updates-x86_64' => 420,
   'sle-module-devtools15-sp3-pool-x86_64' => 120,
@@ -1675,6 +1716,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-devtools15-sp4-updates-x86_64' => 600,
   'sle-module-devtools15-sp5-pool-x86_64' => 120,
   'sle-module-devtools15-sp5-updates-x86_64' => 300,
+  'sle-module-devtools15-sp6-updates-x86_64' => 60,
+  'sle-module-devtools15-sp6-pool-x86_64' => 120,
   'sle-module-public-cloud15-sp4-pool-x86_64' => 840,
   'sle-module-public-cloud15-sp4-updates-x86_64' => 600,
   'sle-module-public-cloud15-sp5-pool-x86_64' => 600,
@@ -1695,6 +1738,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp5-pool-x86_64' => 60,
   'sle-module-server-applications15-sp5-updates-s390x' => 120,
   'sle-module-server-applications15-sp5-updates-x86_64' => 60,
+  'sle-module-server-applications15-sp6-pool-x86_64' => 60,
+  'sle-module-server-applications15-sp6-updates-x86_64' => 60,
   'sle-module-suse-manager-proxy-4.3-pool-x86_64' => 60,
   'sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs' => 60,
   'sle-module-suse-manager-proxy-4.3-updates-x86_64' => 60,
@@ -1717,6 +1762,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp5-pool-x86_64' => 60,
   'sle-product-sles15-sp5-updates-s390x' => 60,
   'sle-product-sles15-sp5-updates-x86_64' => 60,
+  'sle-product-sles15-sp6-pool-x86_64' => 60,
+  'sle-product-sles15-sp6-updates-x86_64' => 60,
   'sle-product-suse-manager-proxy-4.3-pool-x86_64' => 60,
   'sle-product-suse-manager-proxy-4.3-updates-x86_64' => 60,
   'sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64' => 60,
