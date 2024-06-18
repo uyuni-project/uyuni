@@ -218,6 +218,7 @@ def perform_compliants_checks():
     modifiedPackages = False
     billing_service_running = False
     billing_status = False
+    has_metering_access = False
     isPaygInstance = is_payg_instance()
 
     if isPaygInstance:
