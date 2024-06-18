@@ -546,6 +546,12 @@ nav.navbar-pf {
     max-height: 250px;
     overflow-y: auto;
     text-align: right;
+    font-size: 14px;
+    left: 0;
+    background: $white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     li {
       display: block;
       padding: 0 1px;
@@ -559,6 +565,8 @@ nav.navbar-pf {
     li.disabled {
       a {
         color: #aaa;
+        text-decoration: none;
+        cursor: not-allowed;
       }
     }
     li:nth-child(11) {
