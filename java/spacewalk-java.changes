@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 18 18:12:15 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.10-0
+  * Refresh systems list when create proxy configuration
+
+-------------------------------------------------------------------
 Mon Jun 17 14:55:58 CEST 2024 - rosuna@suse.com
 
 - version 5.0.9-0
