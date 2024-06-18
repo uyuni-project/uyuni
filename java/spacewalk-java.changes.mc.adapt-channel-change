@@ -1,0 +1,3 @@
+- adapt changing software channels to first perform the changes in
+  the database and apply the channel state later to. This allow better
+  handling of offline minions (bsc#1216683)
