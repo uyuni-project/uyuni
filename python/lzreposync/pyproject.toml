@@ -8,7 +8,8 @@ version = "0.1"
 dependencies = [
      "memory_profiler",
      "pytest",
-     "requests"
+     "requests",
+     "python-gnupg"
 ]
 
 [project.scripts]

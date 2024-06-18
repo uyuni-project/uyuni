@@ -1,0 +1,97 @@
+import sys
+
+from spacewalk.satellite_tools.syncLib import log2, log
+from spacewalk.server import rhnSQL
+from spacewalk.server.importlib import importLib, mpmSource, packageImport
+from spacewalk.server.importlib.backendOracle import SQLBackend
+
+
+# TODO: rename 'to_process' into 'package_batch'
+# TODO: 'to_disassociate', 'to_link': are they important ?
+def import_package_batch(to_process, batch_index, batch_count):
+    # Prepare SQL statements
+    rhnSQL.closeDB(committing=False, closing=False)  # TODO: not sure what this exactly do
+    rhnSQL.initDB()
+
+    backend = SQLBackend()
+    mpm_bin_batch = importLib.Collection()  # bin packages
+    mpm_src_batch = importLib.Collection()  # src packages
+
+    # affected_channels = []  # TODO: not sure if we need it
+
+    upload_caller = "server.app.uploadPackage"  # TODO: not sure what this exactly do
+    # pylint: disable-next=invalid-name
+    # with cfg_component("server.susemanager") as CFG:
+    #     mount_point = CFG.MOUNT_POINT
+    import_count = 0  # TODO:can we make it this way? sum(p[1] for p in to_process) instead of incrementing in the loop
+    failed_packages = 0
+    # all_packages = set()  # TODO: see reposync
+
+    for package in to_process:
+        try:
+            print(f"INFO: Importing package {package['name']}")
+            import_count += 1
+            pkg = mpmSource.create_package(
+                package["header"],
+                size=package["package_size"],  # TODO: in reposync they use 'payload size': we don't have that in primary
+                checksum_type=package["checksum"]["type"],
+                checksum=package["checksum"]["value"],
+                relpath="/var",  # TODO: check what is this 'relpath'
+                org_id=1,  # TODO: correct
+                header_start=package["header_start"],
+                header_end=package["header_end"],
+                channels=[]
+            )
+
+            if package['header'].is_source:
+                mpm_src_batch.append(pkg)
+            else:
+                mpm_bin_batch.append(pkg)
+        except (KeyboardInterrupt, rhnSQL.SQLError):
+            raise
+        except Exception:
+            failed_packages += 1
+            # TODO: maybe other stuff to do (like in the reposync)
+        finally:
+            try:
+                # importing packages by batch or if the current packages is the last
+                if mpm_bin_batch:  # TODO: possibly more conditions
+                    importer = packageImport.PackageImport(
+                        mpm_bin_batch, backend, caller=upload_caller
+                    )
+                    importer.setUploadForce(1)
+                    importer.run()
+                    rhnSQL.commit()
+                    del importer.batch
+                    del mpm_bin_batch
+                    mpm_bin_batch = importLib.Collection()
+
+                if mpm_src_batch:  # TODO: possibly more conditions
+                    src_importer = packageImport.SourcePackageImport(
+                        mpm_src_batch, backend, caller=upload_caller
+                    )
+                    src_importer.setUploadForce(1)
+                    src_importer.run()
+                    rhnSQL.commit()
+                    del mpm_src_batch
+                    mpm_src_batch = importLib.Collection()
+
+            except (KeyboardInterrupt, rhnSQL.SQLError):
+                raise
+            except Exception as e:
+                e_message = f"Exception: {e}"
+                log2(0, 1, e_message, stream=sys.stderr)
+            finally:
+                # Cleanup if cache..if applied
+                pass
+
+        # package.clear_header()  # TODO See reposync
+    # rhnSQL.closeDB()
+    log(
+        0,
+        " Pacakge batch #{} of {} completed...".format(
+            batch_index, batch_count
+        ),
+    )
+
+    # TODO: return somthing ?
