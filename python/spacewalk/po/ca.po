@@ -138,8 +138,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"El compte no té accés a cap canal que coincideixi (release=%(release)s, arch="
-"%(arch)s)%(www_activation)s"
+"El compte no té accés a cap canal que coincideixi (release=%(release)s, "
+"arch=%(arch)s)%(www_activation)s"
 
 #: ../server/rhnChannel.py:2235
 #, python-format
