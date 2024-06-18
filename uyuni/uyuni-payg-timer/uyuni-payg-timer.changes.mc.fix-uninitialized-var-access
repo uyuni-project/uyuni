@@ -1,1 +1,0 @@
-- fix accessing 'has_metering_access' on BYOS systems (bsc#1226483)
