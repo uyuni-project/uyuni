@@ -90,8 +90,6 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAc
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
-import com.redhat.rhn.domain.channel.AccessToken;
-import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
@@ -141,7 +139,6 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdat
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
@@ -209,13 +206,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1444,55 +1441,41 @@ public class SaltServerActionService {
             List<MinionSummary> minionSummaries, SubscribeChannelsActionDetails actionDetails) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
-        Stream<MinionServer> minions = MinionServerFactory.lookupByIds(
-                minionSummaries.stream().map(MinionSummary::getServerId).toList());
+        List<MinionServer> minions = MinionServerFactory.lookupByMinionIds(
+                minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toSet()));
 
-        minions.forEach(minion -> {
-            // generate access tokens
-            Set<Channel> allChannels = new HashSet<>(actionDetails.getChannels());
-            if (actionDetails.getBaseChannel() != null) {
-                allChannels.add(actionDetails.getBaseChannel());
-            }
-
-            List<AccessToken> newTokens = allChannels.stream()
-                    .map(channel ->
-                            AccessTokenFactory.generate(minion, Collections.singleton(channel))
-                                    .orElseThrow(() ->
-                                            new RuntimeException(
-                                                    "Could not generate new channel access token for minion " +
-                                                            minion.getMinionId() + " and channel " +
-                                                            channel.getName())))
-                    .toList();
-
-            newTokens.forEach(newToken -> {
-                // set the token as valid, then if something is wrong, the state chanel will disable it
-                newToken.setValid(true);
-                actionDetails.getAccessTokens().add(newToken);
-            });
-
-            MinionGeneralPillarGenerator minionGeneralPillarGenerator = new MinionGeneralPillarGenerator();
-            Map<String, Object> chanPillar = new HashMap<>();
-            newTokens.forEach(accessToken ->
-                accessToken.getChannels().forEach(chan -> {
-                    Map<String, Object> chanProps =
-                            minionGeneralPillarGenerator.getChannelPillarData(minion, accessToken, chan);
-                    chanPillar.put(chan.getLabel(), chanProps);
-                })
-            );
-
-            Map<String, Object> pillar = new HashMap<>();
-            pillar.put("_mgr_channels_items_name", "mgr_channels_new");
-            pillar.put("mgr_channels_new", chanPillar);
-
-            ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS),
-                    Optional.of(pillar)), Collections.singletonList(new MinionSummary(minion)));
-
-        });
+        minions.forEach(minion ->
+            // change channels in DB and fire a ChannelsChangedEventMessage
+            // the ChannelsChangedEventMessageAction regenerate pillar and refresh Tokens
+            // but does not execute a "state.apply channels"
+            SystemManager.updateServerChannels(
+                    actionDetails.getParentAction().getSchedulerUser(),
+                    minion,
+                    Optional.ofNullable(actionDetails.getBaseChannel()),
+                    actionDetails.getChannels())
+        );
         if (commitTransaction) {
-            // we must be sure that tokens and action Details are in the database
+            // we must be sure that new channel assignments and action Details are in the database
             // before we return and send the salt calls to update the minions.
             HibernateFactory.commitTransaction();
+
+            try {
+                for (int k = 0; k < 10; k = k + 1) {
+                    // check, if all channels got valid tokens before we send the update to the minions.
+                    // can only work, if we commit the transaction. In unit tests this just cause 10 seconds wait
+                    if (minions.stream().allMatch(MinionServer::hasValidTokensForAllChannels)) {
+                        break;
+                    }
+                    LOG.error("Waiting for all channel tokens being refreshed");
+                    TimeUnit.SECONDS.sleep(1);
+                }
+            }
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
+        ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS), Optional.empty()),
+                minionSummaries);
 
         return ret;
     }

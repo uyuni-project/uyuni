@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -46,7 +45,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
-import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -837,24 +835,8 @@ public class SaltUtils {
     private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
-            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-
-            // if successful update channels in db and trigger pillar refresh
-            SystemManager.updateServerChannels(
-                    action.getSchedulerUser(),
-                    serverAction.getServer(),
-                    Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels());
         }
         else {
-            //set the token as invalid
-            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-            sca.getDetails().getAccessTokens().forEach(token -> {
-                token.setValid(false);
-                token.setMinion(null);
-                AccessTokenFactory.save(token);
-            });
-
             serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
                     getJsonResultWithPrettyPrint(jsonResult));
         }

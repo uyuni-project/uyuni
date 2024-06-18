@@ -15,6 +15,8 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
@@ -29,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * MinionServer
@@ -219,6 +222,20 @@ public class MinionServer extends Server implements SaltConfigurable {
                 .append(getMachineId(), otherMinion.getMachineId())
                 .append(getMinionId(), otherMinion.getMinionId())
                 .isEquals();
+    }
+
+
+    /**
+     * @return Return true when all assigned software channels have valid access tokens.
+     */
+    public boolean hasValidTokensForAllChannels() {
+
+        Set<Channel> tokenChannels = AccessTokenFactory.listByMinion(this)
+                .stream()
+                .flatMap(t -> t.getChannels().stream())
+                .collect(Collectors.toSet());
+
+        return tokenChannels.containsAll(getChannels()) && getChannels().containsAll(tokenChannels);
     }
 
     /**
