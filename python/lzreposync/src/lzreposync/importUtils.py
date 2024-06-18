@@ -8,7 +8,7 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 
 # TODO: rename 'to_process' into 'package_batch'
 # TODO: 'to_disassociate', 'to_link': are they important ?
-def import_package_batch(to_process, batch_index, batch_count):
+def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     # Prepare SQL statements
     rhnSQL.closeDB(committing=False, closing=False)  # TODO: not sure what this exactly do
     rhnSQL.initDB()
@@ -34,8 +34,8 @@ def import_package_batch(to_process, batch_index, batch_count):
             pkg = mpmSource.create_package(
                 package["header"],
                 size=package["package_size"],  # TODO: in reposync they use 'payload size': we don't have that in primary
-                checksum_type=package["checksum"]["type"],
-                checksum=package["checksum"]["value"],
+                checksum_type=package["checksum_type"],
+                checksum=package["checksum"],
                 relpath="/var",  # TODO: check what is this 'relpath'
                 org_id=1,  # TODO: correct
                 header_start=package["header_start"],
@@ -86,7 +86,7 @@ def import_package_batch(to_process, batch_index, batch_count):
                 pass
 
         # package.clear_header()  # TODO See reposync
-    # rhnSQL.closeDB()
+    rhnSQL.closeDB()
     log(
         0,
         " Pacakge batch #{} of {} completed...".format(
