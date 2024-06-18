@@ -18,12 +18,8 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
 
 import com.suse.cloud.CloudPaygManager;
@@ -36,7 +32,6 @@ import org.quartz.SchedulerException;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -181,10 +176,6 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         log.info("Executing action: {}", actionId);
 
-        if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(action.getActionType())) {
-            handleTraditionalClients(user, (SubscribeChannelsAction) action);
-        }
-
         saltServerActionService.execute(action, forcePackageListRefresh,
                 isStagingJob, Optional.ofNullable(stagingJobMinionServerId));
 
@@ -194,21 +185,6 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
     }
 
-    // for traditional systems only the subscribe channels action will be handled here
-    // all other actions are still handled like before
-    private void handleTraditionalClients(User user, SubscribeChannelsAction sca) {
-        List<ServerAction> serverActions = MinionServerFactory.findTradClientServerActions(sca.getId());
-
-        serverActions.forEach(sa -> {
-            SystemManager.updateServerChannels(user, sa.getServer(),
-                    Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels());
-            sa.setStatus(ActionFactory.STATUS_COMPLETED);
-            sa.setCompletionTime(new Date());
-            sa.setResultCode(0L);
-            sa.setResultMsg("Successfully changed channels");
-        });
-    }
 
     private long countQueuedServerActions(Action action) {
         if (action == null || CollectionUtils.isEmpty(action.getServerActions())) {
