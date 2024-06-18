@@ -473,44 +473,6 @@ public class SystemHandler extends BaseHandler {
      * Sets the base channel for the given server to the given channel
      * @param loggedInUser The current user
      * @param sid The id for the server
-     * @param cid The id for the channel
-     * @return Returns 1 if successful, exception otherwise
-     * @throws FaultException A FaultException is thrown if:
-     *   - the server corresponding to sid cannot be found.
-     *   - the channel corresponding to cid is not a base channel.
-     *   - the user doesn't have subscribe access to either the current or
-     *     the new base channel.
-     * @deprecated being replaced by system.setBaseChannel(string sessionKey,
-     * int serverId, string channelLabel)
-     *
-     * @apidoc.doc Assigns the server to a new baseChannel.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param_desc("int", "cid", "channel ID")
-     * @apidoc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int setBaseChannel(User loggedInUser, Integer sid, Integer cid)
-            throws FaultException {
-        //Get the logged in user and server
-        Server server = lookupServer(loggedInUser, sid);
-        UpdateBaseChannelCommand cmd =
-                new UpdateBaseChannelCommand(
-                        loggedInUser, server, cid.longValue());
-        cmd.setScheduleApplyChannelsState(true);
-        ValidatorError ve = cmd.store();
-        if (ve != null) {
-            throw new InvalidChannelException(
-                    LocalizationService.getInstance()
-                    .getMessage(ve.getKey(), ve.getValues()));
-        }
-        return 1;
-    }
-
-    /**
-     * Sets the base channel for the given server to the given channel
-     * @param loggedInUser The current user
-     * @param sid The id for the server
      * @param channelLabel The id for the channel
      * @return Returns 1 if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if:
