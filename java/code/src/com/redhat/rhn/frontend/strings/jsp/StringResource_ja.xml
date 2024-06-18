@@ -18006,7 +18006,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
         <target>このファイルリビジョンの削除</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.org" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="toolbar.delete.org" xml:space="preserve">
         <source>Delete Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
@@ -24466,7 +24466,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.proxy.licensed" xml:space="preserve">
         <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy.</source>
         <target state="final">このマシンは現在、ライセンス済みの @@PRODUCT_NAME@@ プロキシです。</target>
         <context-group name="ctx">
