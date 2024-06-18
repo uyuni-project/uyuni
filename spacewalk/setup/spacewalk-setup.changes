@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:46:32 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Remove the message to create the admin user in the setup as
+    this is now done by mgradm
+
+-------------------------------------------------------------------
 Thu Apr 04 18:01:55 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0

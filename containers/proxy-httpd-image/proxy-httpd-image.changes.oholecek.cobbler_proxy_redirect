@@ -1,2 +1,0 @@
-- use redirect instead of proxypass for rewritten cobbler
-  autoyast link (bsc#1225520)

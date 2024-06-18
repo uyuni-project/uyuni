@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:38:45 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Add primary key for rhnChannelSyncFlag table
+  * Optimize AppStreams related queries
+
+-------------------------------------------------------------------
 Fri May 03 14:11:03 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7-0

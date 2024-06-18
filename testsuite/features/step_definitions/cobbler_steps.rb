@@ -62,19 +62,14 @@ When(/^I remove distro "([^"]*)"$/) do |distro|
 end
 
 # cobbler reports
-When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
-  space = 'spacecmd -u admin -p admin'
-  get_target('server').run("#{space} clear_caches")
-  out, _code = get_target('server').run("#{space} system_details #{get_target(host).full_hostname}")
-  unless out.include? 'ssh-push-tunnel'
-    steps %(
-      Given I am authorized as "testing" with password "testing"
-      And I am on the Systems overview page of this "#{host}"
-      And I follow "Provisioning"
-      And I click on "Create PXE installation configuration"
-      Then I should see a "System record created" text
-    )
-  end
+When(/^I clear the caches on the server$/) do
+  node = get_target('server')
+  node.run('spacecmd -u admin -p admin clear_caches')
+end
+
+When(/I click on profile "([^"]*)"$/) do |profile|
+  xpath_query = "//a[text()='#{profile}']/../../td[1]/input[@type='radio']"
+  find(:xpath, xpath_query).click
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
@@ -259,15 +254,39 @@ When(/^I start local monitoring of Cobbler$/) do
 end
 
 Then(/^the local logs for Cobbler should not contain errors$/) do
-  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
-  local_file = '/tmp/cobbler_debug.log'
-  return_code = file_extract(get_target('server'), cobbler_log_file, local_file)
+  node = get_target('server')
+
+  # normal log file
+  cobbler_log_file = '/var/log/cobbler/cobbler.log'
+  local_file = '/tmp/cobbler.log'
+  # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
+  node.run("cp #{cobbler_log_file} #{local_file}")
+  return_code = file_extract(node, local_file, local_file)
   raise ScriptError, 'File extraction failed' unless return_code.zero?
 
-  file_data = File.read(local_file).gsub!("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
-  file_data = "[#{file_data}]"
-  data_hash = JSON.parse(file_data)
-  output = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
-  get_target('server').run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") unless output.empty?
-  raise ScriptError, "Errors in Cobbler logs:\n #{output}" unless output.empty?
+  output = File.read(local_file).each_line.select { |line| line.include? 'ERROR' }
+  unless output.empty?
+    node.run("cp #{local_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
+    log "Error in Cobbler log:\n#{output}"
+    log ''
+  end
+
+  # debug log file
+  cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
+  local_file = '/tmp/cobbler_debug.log'
+  # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
+  node.run("cp #{cobbler_log_file} #{local_file}")
+  return_code = file_extract(node, local_file, local_file)
+  raise ScriptError, 'File extraction failed' unless return_code.zero?
+
+  file_data = File.read(local_file).gsub("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
+  data_hash = JSON.parse("[#{file_data}]")
+  output_debug = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
+  unless output_debug.empty?
+    node.run("cp #{local_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
+    log "Error in Cobbler debug log:\n#{output_debug}"
+    log ''
+  end
+
+  raise ScriptError, 'Errors in Cobbler logs' unless output.empty? && output_debug.empty?
 end

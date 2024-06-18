@@ -1,3 +1,0 @@
-- Drop dependency to spacewalk-backend-config-files,
-  spacewalk-backend-config-files-common,
-  spacewalk-backend-config-files-tool

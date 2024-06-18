@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 10 18:00:24 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6
+  * Call update-ca-certificates on startup
+
+-------------------------------------------------------------------
 Fri May 03 15:22:16 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5

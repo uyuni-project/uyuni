@@ -73,6 +73,18 @@ network-modules:
       - mgrcompat: sync_modules
 {%- endif %}
 
+instance-flavor:
+  mgrcompat.module_run:
+    - name: sumautil.instance_flavor
+    - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_states
+      - saltutil: sync_modules
+{%- else %}
+      - mgrcompat: sync_states
+      - mgrcompat: sync_modules
+{%- endif %}
+
 {% if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64'] %}
 smbios-records-bios:
   mgrcompat.module_run:

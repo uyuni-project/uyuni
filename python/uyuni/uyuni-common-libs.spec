@@ -48,7 +48,7 @@ Name:           uyuni-common-libs
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
-Version:        5.0.3
+Version:        5.0.4
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz

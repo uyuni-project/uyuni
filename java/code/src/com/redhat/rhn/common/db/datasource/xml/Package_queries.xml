@@ -1180,15 +1180,16 @@ SELECT  n.id AS id,
   join rhnPackageEvr spe
     on spe.id = sp.evr_id
   join (
-        select sop.package_name_id,
-               sop.package_arch_id,
-               sop.package_evr_id,
-               max(PE.evr) evr
-          from rhnServerOutdatedPackages sop
-          join rhnPackageEVR pe
-            on sop.package_evr_id = pe.id
-         where sop.server_id = :sid
-         group by sop.package_name_id, sop.package_arch_id, sop.package_evr_id) latest
+        SELECT X.package_name_id, X.package_arch_id, X.evr,
+               lookup_evr((X.evr).epoch, ((X.evr)).version, ((X.evr)).release, ((X.evr)).type) as package_evr_id
+        FROM ( select sop.package_name_id,
+                      sop.package_arch_id,
+                      max(PE.evr) evr
+                 from rhnServerOutdatedPackages sop
+                 join rhnPackageEVR pe on sop.package_evr_id = pe.id
+                where sop.server_id = :sid
+             group by sop.package_name_id, sop.package_arch_id) X
+       ) latest
     on latest.package_name_id = sp.name_id
   join rhnPackageArch latest_pa
     on latest_pa.id = latest.package_arch_id

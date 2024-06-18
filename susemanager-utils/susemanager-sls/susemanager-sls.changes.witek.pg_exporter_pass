@@ -1,2 +1,0 @@
-- Fix parsing passwords with special characters for PostgreSQL
-  exporter

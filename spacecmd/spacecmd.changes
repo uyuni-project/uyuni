@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:53:10 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Remove spacewalk-abrt related commands
+
+-------------------------------------------------------------------
 Fri May 03 14:23:03 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0

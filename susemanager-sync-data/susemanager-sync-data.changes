@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:16:53 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Add SUSE Linux Enterprise 12 SP5 LTSS channel families
+  * Remove SUSE Liberty Linux HA LTSS 7 channel family
+
+-------------------------------------------------------------------
 Fri May 03 14:46:00 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0
