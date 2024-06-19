@@ -132,7 +132,7 @@ class PrimaryParser:
         #     print("Error: No package being parsed!")
         #     raise ValueError("No package being parsed")
 
-        self.currentPackage["checksum"] = node.firstChild.nodeValue
+        self.currentPackage["checksum"] = get_text(node)
         self.currentPackage["checksum_type"] = node.attributes["type"].value
 
     def set_attribute_element_node(self, node):
