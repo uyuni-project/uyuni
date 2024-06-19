@@ -146,16 +146,16 @@ const Sources = (props: SourcesProps) => {
           {messages.messages}
           {props.softwareSources.length > 0 && (
             <Panel headingLevel="h4" title={t("Software Channels")}>
-              <div className="col-xs-12">
+              <div className="col-12 col-xs-12">
                 <React.Fragment>
                   <dl className="row">
-                    <dt className="col-xs-2">Base Channel:</dt>
-                    <dd className="col-xs-10">{renderSourceEntry(props.softwareSources[0])}</dd>
+                    <dt className="col-2 col-xs-2">Base Channel:</dt>
+                    <dd className="col-10 col-xs-10">{renderSourceEntry(props.softwareSources[0])}</dd>
                   </dl>
 
                   <dl className="row">
-                    <dt className="col-xs-2">Child Channels:</dt>
-                    <dd className="col-xs-6">
+                    <dt className="col-2 col-xs-2">Child Channels:</dt>
+                    <dd className="col-6 col-xs-6">
                       <ul className="list-unstyled">
                         {props.softwareSources.slice(1, props.softwareSources.length).map((source) => (
                           <li key={`softwareSources_entry_${source.channelId}`}>{renderSourceEntry(source)}</li>
