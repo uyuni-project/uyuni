@@ -108,7 +108,9 @@ public enum ViewHelper {
         "/rhn/systems/details/Overview",
         "/rhn/manager/formula-catalog",
         "/rhn/errata/manage/CloneErrata.do",
-        "/rhn/admin/setup/ProxySettings.do"
+        "/rhn/admin/setup/ProxySettings.do",
+        "/rhn/admin/setup/MirrorCredentials.do",
+        "/rhn/manager/admin/setup/payg"
     );
 
     ViewHelper() { }

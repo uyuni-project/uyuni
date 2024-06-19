@@ -12,7 +12,7 @@
         </div>
         <div class="panel-footer">
             <div class="row">
-                <div class="text-left col-xs-10">
+                <div class="text-left col-10 col-xs-10">
                     <span id="verify-${current.id}"></span>
                     <span id="primary-${current.id}">
                         <c:if test="${current.primary}">
@@ -31,7 +31,7 @@
                         <rhn:icon type="setup-wizard-creds-edit" title="mirror-credentials.jsp.edit" />
                     </a>
                 </div>
-                <div class="text-right col-xs-2">
+                <div class="text-right col-2 col-xs-2">
                     <span id="delete-${current.id}">
                         <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.user}');" data-toggle="modal" data-target="#modal-delete-credentials">
                             <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />

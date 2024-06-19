@@ -55,6 +55,8 @@ const BOOTSTRAP_READY_PAGES: PathString[] = [
   "/rhn/manager/formula-catalog",
   "/rhn/errata/manage/CloneErrata.do",
   "/rhn/admin/setup/ProxySettings.do",
+  "/rhn/admin/setup/MirrorCredentials.do",
+  "/rhn/manager/admin/setup/payg",
 ];
 
 export const onEndNavigate = () => {
