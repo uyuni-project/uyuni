@@ -10,8 +10,10 @@ from xml.dom import pulldom
 
 import gnupg
 
+from lzreposync.filelists_parser import FilelistsParser
 from lzreposync.primary_parser import PrimaryParser
 from lzreposync.repo import Repo
+from lzreposync.rpm_metadata_parser import MetadataParser
 
 
 class ChecksumVerificationException(ValueError):
@@ -126,38 +128,60 @@ class RPMRepo(Repo):
             if not verified:
                 raise SignatureVerificationException("repomd.xml")
 
-        hash_func = hashlib.sha256()
-
-        hash_file = os.path.join(self.cache_dir, self.name) + ".hash"
+        hash_file = os.path.join(self.cache_dir, self.name) + ".hash"  # TODO change for both primary and filelists
 
         primary_url = self.find_metadata_file_url("primary")
         primary_hash = self.find_metadata_file_checksum("primary")
+        filelists_url = self.find_metadata_file_url("filelists")
+        filelists_hash = self.find_metadata_file_checksum("filelists")
 
         for cnt in range(1, 4):
             try:
                 logging.debug("Parsing primary %s, try %s", primary_url, cnt)
 
-                # Download the primary.xml.gz to a file first to avoid
+                # Download the primary.xml.gz and filelists.xml.gz to temporary files first to avoid
                 # connection resets
-                with tempfile.TemporaryFile() as tmp_file:
+                with tempfile.TemporaryFile() as primary_tmp_file, tempfile.TemporaryFile() as filelists_tmp_file:
+                    # Downloading primary.xml.gz
                     with urllib.request.urlopen(primary_url) as primary_fd:
                         # Avoid loading large documents into memory at once
+                        hash_func = hashlib.sha256()
                         chunk_size = 1024 * 1024
                         written = True
                         while written:
                             chunk = primary_fd.read(chunk_size)
                             hash_func.update(chunk)
-                            written = tmp_file.write(chunk)
+                            written = primary_tmp_file.write(chunk)
 
                     # Verify the checksum of the md file (currently primary.xml)
-                    if self.find_metadata_file_checksum("primary") != hash_func.hexdigest():
+                    if primary_hash != hash_func.hexdigest():
                         raise ChecksumVerificationException(
-                            "primary.xml.gz")  # TODO to be generalized with all md files
+                            "primary.xml.gz")
+
+                    # Downloading filelists.xml.gz
+                    with urllib.request.urlopen(filelists_url) as filelists_fd:
+                        # Avoid loading large documents into memory at once
+                        hash_func = hashlib.sha256()
+                        chunk_size = 1024 * 1024
+                        written = True
+                        while written:
+                            chunk = filelists_fd.read(chunk_size)
+                            hash_func.update(chunk)
+                            written = filelists_tmp_file.write(chunk)
+
+                    # Verify the checksum of the md file (currently primary.xml)
+                    if filelists_hash != hash_func.hexdigest():
+                        raise ChecksumVerificationException(
+                            "filelists.xml.gz")
 
                     # Work on temporary file without loading it into memory at once
-                    tmp_file.seek(0)
-                    parser = PrimaryParser(tmp_file)
-                    yield from parser.parse_primary()
+                    primary_tmp_file.seek(0)
+                    filelists_tmp_file.seek(0)
+                    primary_parser = PrimaryParser(primary_tmp_file)
+                    filelists_parser = FilelistsParser(filelists_tmp_file)
+                    metadata_parser = MetadataParser(primary_parser=primary_parser, filelists_parser=filelists_parser)
+                    yield from metadata_parser.parse_packages_metadata()
+                    filelists_parser.clear_cache()  # TODO can we make this execute automatically
                 break
             except urllib.error.HTTPError as e:
                 # We likely hit the repo while it changed:
