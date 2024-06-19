@@ -16,11 +16,13 @@ RPM_NS = "http://linux.duke.edu/metadata/rpm"
 package_data = ["package_size", "checksum", "checksum_type", "header_start", "header_end"]
 
 ignored_attributes = ["provideversion", "provideflags", "requirename", "requireversion", "requireflags", "conflictname",
-                      "conflictversion", "conflictflags", "obsoletename", "obsoleteversion", "obsoleteflags", 1159,
-                      1160, 1161, 1156, 1157, 1158, 5052, 5053, 5054, 5055, 5056, 5057, 5049, 5050, 5051, 5046, 5047,
-                      5048, 'filenames', 'filedevices', 'fileinodes', 'filemodes', 'fileusername', 'filegroupname',
+                      "conflictversion", "conflictflags", "obsoletename", "obsoleteversion", "obsoleteflags",
+                      'filenames', 'filedevices', 'fileinodes', 'filemodes', 'fileusername', 'filegroupname',
                       'filerdevs', 'filesizes', 'longfilesizes', 'filemtimes', 'filemd5s', 'filelinktos', 'fileflags',
                       'fileverifyflags', 'filelangs']
+
+ignored_dependencies = [1159, 1160, 1161, 1156, 1157, 1158, 5052, 5053, 5054, 5055, 5056, 5057, 5049, 5050, 5051, 5046,
+                        5047, 5048]
 
 
 def map_attribute(attribute: str):
@@ -275,14 +277,6 @@ class PrimaryParser:
                     self.currentPackage = {}
                     self.current_hdr = {}
 
-                    # Tagging 'source' and 'binary' packages
-                    # self.set_pacakge_header(node)  # TODO: make this a final step
-
-                    # Parsing package's metadata
-                    for child_node in node.childNodes:
-                        if child_node.nodeType == child_node.ELEMENT_NODE:
-                            self.set_element_node(child_node)
-
                     # To make the _extract_signatures() function happy # TODO: fix later
                     header_tags = [
                         rpm.RPMTAG_DSAHEADER,
@@ -292,6 +286,7 @@ class PrimaryParser:
                     ]
                     for ht in header_tags:
                         self.current_hdr[ht] = None
+
                     # TODO: We can put them in a list: ignored_attributes
                     self.current_hdr["rpmversion"] = '1'  # TODO fix later
                     self.current_hdr["size"] = 10000  # TODO fix later
@@ -300,18 +295,29 @@ class PrimaryParser:
                     self.current_hdr["sigsize"] = 10000  # TODO fix later
                     self.current_hdr["sigmd5"] = "sigmd5_test"  # TODO fix later
                     for elt in ignored_attributes:
-                        self.current_hdr[elt] = None
+                        self.current_hdr[elt] = ["11111111111", "2222222222222", "333333333333", "4444444444"]
+
+                    for dep in ignored_dependencies:
+                        self.current_hdr[dep] = []
+
+                    # Parsing package's metadata
+                    for child_node in node.childNodes:
+                        if child_node.nodeType == child_node.ELEMENT_NODE:
+                            self.set_element_node(child_node)
+
+                    self.current_hdr[
+                        rpm.RPMTAG_FILEDIGESTALGO] = None  # TODO: check 'rhn_rpm.py' for more info about digest codes
 
                     is_source = is_source_package(node)
                     package_header = RPM_Header(self.current_hdr, is_source=is_source)
                     self.currentPackage["header"] = package_header
 
                     # TODO: handle channels, files, tags (required by the importer)
-                    self.current_hdr["channels"] = []
-                    self.current_hdr["files"] = []
-                    self.current_hdr["changelog"] = []
-                    self.current_hdr["changelogname"] = None
-                    self.current_hdr["changelogtext"] = None
-                    self.current_hdr["changelogtime"] = None
+                    # self.current_hdr["channels"] = ["channel1", "channel2", "channel3", "channel4"]
+                    # # self.current_hdr["files"] = []
+                    # self.current_hdr["changelog"] = []
+                    self.current_hdr["changelogname"] = "changelogname"
+                    self.current_hdr["changelogtext"] = "changelogtext"
+                    self.current_hdr["changelogtime"] = "changelogtime"
 
                     yield self.currentPackage
