@@ -96,11 +96,6 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         current_timestamp, '0 0 * * * ?');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-chain-cleanup-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-chain-cleanup-bunch'),
-        current_timestamp, '0 0 * * * ?');
-
-INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'reboot-action-cleanup-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='reboot-action-cleanup-bunch'),
         current_timestamp, '0 0 * * * ?');

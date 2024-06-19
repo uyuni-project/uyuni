@@ -105,9 +105,6 @@ INSERT INTO rhnTaskoTask (id, name, class)
    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'minion-action-chain-executor', 'com.redhat.rhn.taskomatic.task.MinionActionChainExecutor');
 
 INSERT INTO rhnTaskoTask (id, name, class)
-   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'minion-action-chain-cleanup', 'com.redhat.rhn.taskomatic.task.MinionActionChainCleanup');
-
-INSERT INTO rhnTaskoTask (id, name, class)
    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'notifications-cleanup', 'com.redhat.rhn.taskomatic.task.NotificationsCleanup');
 
 INSERT INTO rhnTaskoTask (id, name, class)
