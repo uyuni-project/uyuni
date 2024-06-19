@@ -21,7 +21,7 @@ CREATE TABLE Errata
     severity                      VARCHAR(64),
     reboot_required               BOOLEAN NOT NULL DEFAULT FALSE,
     affects_package_manager       BOOLEAN NOT NULL DEFAULT FALSE,
-    cve                           VARCHAR(4000),
+    cve                           TEXT,
     synopsis                      VARCHAR(4000),
     organization                  VARCHAR(128),
     synced_date                   TIMESTAMPTZ DEFAULT (current_timestamp)
