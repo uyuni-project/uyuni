@@ -209,6 +209,41 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I add "sle-module-public-cloud15-sp5-updates-x86_64-sap" channel
     And I wait until the channel "sle-module-public-cloud15-sp5-updates-x86_64-sap" has been synced
 
+@sle15sp6_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP6
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP6" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP6 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP6 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP6 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP6 x86_64"
+    And I select "Desktop Applications Module 15 SP6 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP6 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP6 x86_64"
+    And I select "Development Tools Module 15 SP6 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP6 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP6 x86_64" product has been added
+    And I wait until all synchronized channels for "sles15-sp6" have finished
+
+@cloud
+@sle15sp6_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP6 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp6-pool-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp6-pool-x86_64" has been synced
+    And I add "sle-module-public-cloud15-sp6-updates-x86_64" channel
+    And I wait until the channel "sle-module-public-cloud15-sp6-updates-x86_64" has been synced
+
+@uyuni
+@sle15sp6_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP6 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles15-sp6-devel-uyuni-client" with arch "x86_64"
+    And I wait until the channel "sles15-sp6-devel-uyuni-client-x86_64" has been synced
+
 @susemanager
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
