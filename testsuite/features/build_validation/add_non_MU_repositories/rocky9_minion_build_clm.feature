@@ -13,7 +13,7 @@ Feature: Add the Rocky 9 distribution custom repositories
   Scenario: Verify the CLM filters we need for Rocky 9 exist
     When I follow the left menu "Content Lifecycle > Filters"
     Then I should see a "ruby-3.1" text
-    And I should see a "php-8.1" text
+    And I should see a "php-8.2" text
 
 @susemanager
   Scenario: Create a CLM project to remove AppStream metadata from Rocky 9
@@ -31,10 +31,10 @@ Feature: Add the Rocky 9 distribution custom repositories
     And I click on "Save"
     Then I should see a "EL9-Manager-Tools-Pool for x86_64 Rocky" text
     When I click on "Attach/Detach Filters"
-    And I check "php-8.1: enable module php:8.1"
+    And I check "php-8.2: enable module php:8.2"
     And I check "ruby-3.1: enable module ruby:3.1"
     And I click on "Save"
-    Then I should see a "php-8.1: enable module php:8.1" text
+    Then I should see a "php-8.2: enable module php:8.2" text
     When I click on "Add Environment"
     And I enter "result" as "name"
     And I enter "result" as "label"
@@ -63,10 +63,10 @@ Feature: Add the Rocky 9 distribution custom repositories
     And I click on "Save"
     Then I should see a "Rocky Linux 9 AppStream (x86_64)" text
     When I click on "Attach/Detach Filters"
-    And I check "php-8.1: enable module php:8.1"
+    And I check "php-8.2: enable module php:8.2"
     And I check "ruby-3.1: enable module ruby:3.1"
     And I click on "Save"
-    Then I should see a "php-8.1: enable module php:8.1" text
+    Then I should see a "php-8.2: enable module php:8.2" text
     When I click on "Add Environment"
     And I enter "result" as "name"
     And I enter "result" as "label"
