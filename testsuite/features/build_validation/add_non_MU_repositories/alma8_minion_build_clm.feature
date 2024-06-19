@@ -12,8 +12,8 @@ Feature: Add the Alma 8 distribution custom repositories
 
   Scenario: Verify the CLM filters we need for Alma 8 exist
     When I follow the left menu "Content Lifecycle > Filters"
-    Then I should see a "ruby-3.1" text
-    And I should see a "php-8.1" text
+    Then I should see a "ruby-2.7" text
+    And I should see a "python-3.6" text
 
 @susemanager
   Scenario: Create a CLM project to remove AppStream metadata from Alma 8
@@ -29,12 +29,13 @@ Feature: Add the Alma 8 distribution custom repositories
     # "almalinux8-appstream for x86_64" is already checked
     And I check "Custom Channel for alma8_minion"
     And I click on "Save"
-    Then I should see a "EL8-Manager-Tools-Pool for x86_64 Alma" text
+    Then I should see a "RES8-Manager-Tools-Pool for x86_64 Alma" text
+    And I should see a "RES8-Manager-Tools-Updates for x86_64 Alma" text
     When I click on "Attach/Detach Filters"
-    And I check "php-8.1: enable module php:8.1"
-    And I check "ruby-3.1: enable module ruby:3.1"
+    And I check "python-3.6: enable module python36:3.6"
+    And I check "ruby-2.7: enable module ruby:2.7"
     And I click on "Save"
-    Then I should see a "php-8.1: enable module php:8.1" text
+    Then I should see a "python-3.6: enable module python36:3.6" text
     When I click on "Add Environment"
     And I enter "result" as "name"
     And I enter "result" as "label"
@@ -63,10 +64,10 @@ Feature: Add the Alma 8 distribution custom repositories
     And I click on "Save"
     Then I should see a "AlmaLinux 8 AppStream (x86_64)" text
     When I click on "Attach/Detach Filters"
-    And I check "php-8.1: enable module php:8.1"
-    And I check "ruby-3.1: enable module ruby:3.1"
+    And I check "python-3.6: enable module python36:3.6"
+    And I check "ruby-2.7: enable module ruby:2.7"
     And I click on "Save"
-    Then I should see a "php-8.1: enable module php:8.1" text
+    Then I should see a "python-3.6: enable module python36:3.6" text
     When I click on "Add Environment"
     And I enter "result" as "name"
     And I enter "result" as "label"
