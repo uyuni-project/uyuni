@@ -1048,18 +1048,22 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
+When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+
   cmd =
     if parent_channel.nil?
-      "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
+      "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels"
     else
-      "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
+      "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels"
     end
-  log 'Creating the boostrap repository on the server:'
+
+  cmd += ' --flush' unless without_flushing
+
+  log 'Creating the bootstrap repository on the server:'
   log "  #{cmd}"
   get_target('server').run(cmd)
 end
