@@ -151,6 +151,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
                 info = new ProxyInfo();
                 info.setServer(server);
                 server.setProxyInfo(info);
+                SystemManager.updateSystemOverview(server.getId());
             }
             info.setSshPort(port);
             info.setSshPublicKey(sshPublicKey.getBytes());
@@ -190,6 +191,8 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         info.setSshPublicKey(sshPublicKey.getBytes());
         server.setProxyInfo(info);
 
+        // No need to call `updateSystemOverview`
+        // It will be called inside the method setBaseEntitlement. If we remove this line we need to manually call it
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         return server;
     }
