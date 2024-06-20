@@ -197,7 +197,10 @@ def check_billing_adapter_status():
         try:
             with open(cnf, encoding="utf-8") as f:
                 cspConfig = json.load(f)
-                if len(cspConfig["errors"]) > 0:
+                if (
+                    not cspConfig["billing_api_access_ok"]
+                    and len(cspConfig["errors"]) > 0
+                ):
                     errstr = "\n  ".join(cspConfig["errors"])
                     print(
                         f"CPS Billing Adapter reported errors:\n  {errstr}",
@@ -229,11 +232,13 @@ def perform_compliants_checks():
         elif os.path.isfile("/usr/bin/gcemetadata"):
             cloudProvider = "GCE"
 
-        modifiedPackages = (
-            has_package_modifications("python-instance-billing-flavor-check")
-            or has_package_modifications("csp-billing-adapter-service")
-            or has_package_modifications("python3-csp-billing-adapter")
-            or has_package_modifications("python3-csp-billing-adapter-local")
+        modifiedPackages = any(
+            has_package_modifications(pkg)
+            for pkg in [
+                "python-instance-billing-flavor-check",
+                "csp-billing-adapter-service",
+                "python3-csp-billing-adapter-local",
+            ]
         )
         if cloudProvider == "AWS":
             modifiedPackages = modifiedPackages or has_package_modifications(
