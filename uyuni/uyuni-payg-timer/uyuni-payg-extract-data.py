@@ -230,7 +230,8 @@ def perform_compliants_checks():
             cloudProvider = "GCE"
 
         modifiedPackages = (
-            has_package_modifications("csp-billing-adapter-service")
+            has_package_modifications("python-instance-billing-flavor-check")
+            or has_package_modifications("csp-billing-adapter-service")
             or has_package_modifications("python3-csp-billing-adapter")
             or has_package_modifications("python3-csp-billing-adapter-local")
         )
@@ -239,10 +240,8 @@ def perform_compliants_checks():
                 "python3-csp-billing-adapter-amazon"
             )
         elif cloudProvider == "AZURE":
-            modifiedPackages = (
-                modifiedPackages
-                or has_package_modifications("python311-azure-mgmt-billing")
-                or has_package_modifications("python3-csp-billing-adapter-microsoft")
+            modifiedPackages = modifiedPackages or has_package_modifications(
+                "python3-csp-billing-adapter-microsoft"
             )
 
         billing_service_running = is_service_running("csp-billing-adapter.service")
