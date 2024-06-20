@@ -13,6 +13,9 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/multiorg/OrgConfigDetails.do",
   "/rhn/manager/notification-messages",
   "rhn/channels/software/Search.do",
+  "/rhn/manager/systems/ssm/coco/settings",
+  "/rhn/systems/ssm/audit/ScheduleXccdf.do",
+  "/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do",
 ];
 
 export const onEndNavigate = () => {

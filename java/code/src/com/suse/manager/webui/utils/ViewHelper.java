@@ -68,7 +68,10 @@ public enum ViewHelper {
         "/rhn/account/EditAddress.do",
         "/rhn/multiorg/OrgConfigDetails.do",
         "/rhn/manager/notification-messages",
-        "rhn/channels/software/Search.do"
+        "rhn/channels/software/Search.do",
+        "/rhn/manager/systems/ssm/coco/settings",
+        "/rhn/systems/ssm/audit/ScheduleXccdf.do",
+        "/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"
     );
 
     ViewHelper() { }
