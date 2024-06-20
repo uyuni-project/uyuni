@@ -24,7 +24,7 @@
 %endif
 
 Name:           uyuni-payg-timer
-Version:        5.0.1
+Version:        5.0.2
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
