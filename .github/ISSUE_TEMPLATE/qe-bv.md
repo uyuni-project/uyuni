@@ -37,7 +37,7 @@ assignees: ''
 - [ ] Clean up the old environment
 - [ ] Update the mirror/check if it is up to date
 
-### Long running server 
+### Long running server
 
 - [ ] Upgrade the long running [server](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/upgrade-intro.html)
 - [ ] And the [proxy](https://documentation.suse.com/external-tree/en-us/suma/4.3/en/suse-manager/installation-and-upgrade/proxy-y-z.html#_update_the_proxy_z)
@@ -60,15 +60,12 @@ We must verify them before approving the MU.
 
 - [ ] JSON creation
 - [ ] All the supported systems were bootstrapped and passed smoke tests
-- [ ] Containerized proxy passed using the aggregate namespace [please set it up](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-Finalcurrentsolution)
-  Make sure to read the info and ask maint-coord to create the release requests
-
-```bash
-Edit `/etc/sysconfig/uyuni-proxy-systemd-services` inside the Pod Proxy VM
-In the NAMESPACE, use this link exactly:
-http://registry.suse.de/devel/galaxy/manager/mutesting/4.3/containers/suse/manager/4.3/
-```
-
+- [ ] Product and Salt migration tests
+- [ ] Containerized proxy passed using the [aggregate namespace](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-WhathappenswhenwehaveanewMaintenanceUpdateinSUSEManager?).
+  - Edit `/etc/sysconfig/uyuni-proxy-systemd-services` inside the Proxy VM and assure the namespace is correct:
+    ```bash
+    NAMESPACE=registry.suse.de/devel/galaxy/manager/mutesting/4.3/containers/suse/manager/4.3
+    ```
 - [ ] Retail
   - [ ] SLES12 SP5
   - [ ] SLES15 SP4
