@@ -88,11 +88,13 @@ Feature: Edit Cobbler profiles
   Scenario: Create a Cobbler system via the XML-RPC API
     When I create a system record with name "isesystem_api" and kickstart label "iseprofile_api"
 
+  @flow
   Scenario: Create and modify a System profile using the XML-RPC API
     When I create and modify the kickstart system "isesystem_api" with kickstart label "iseprofile_api" and hostname "ise-system.test" via XML-RPC
       | inst.repo   | http://ise.cobbler.test |
       | self_update | http://ise.cobbler.test |
 
+  @flow
   Scenario: Cleanup: delete test system
     When I follow the left menu "Systems > System List"
     And I wait until I see the "isesystem_api" system, refreshing the page
@@ -102,6 +104,7 @@ Feature: Edit Cobbler profiles
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
 
+  @flow
   Scenario: Cleanup: delete test profiles
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "iseprofile_ui" text
@@ -119,6 +122,7 @@ Feature: Edit Cobbler profiles
     Then I should see a "Autoinstallation was deleted successfully" text
     And I should not see a "iseprofile_api" text
 
+  @flow
   Scenario: Cleanup: delete test distibutions
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     Then I should see a "isedistro_ui" text
