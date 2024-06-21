@@ -88,7 +88,6 @@ Feature: Edit Cobbler profiles
   Scenario: Create a Cobbler system via the XML-RPC API
     When I create a system record with name "isesystem_api" and kickstart label "iseprofile_api"
 
-  @slow
   Scenario: Create and modify a System profile using the XML-RPC API
     When I create and modify the kickstart system "isesystem_api" with kickstart label "iseprofile_api" and hostname "ise-system.test" via XML-RPC
       | inst.repo   | http://ise.cobbler.test |
