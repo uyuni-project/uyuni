@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.system.proxycontainerconfig;
 
+import static com.redhat.rhn.common.ErrorReportingStrategies.raiseAndLog;
 import static com.suse.utils.Predicates.allProvided;
 import static com.suse.utils.Predicates.isAbsent;
 
@@ -46,7 +47,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -63,10 +63,10 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
 
         // Generate SSH keys for proxy
         MgrUtilRunner.SshKeygenResult proxySshKey = saltApi.generateSSHKey(null, null)
-                .orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
+                .orElseThrow(raiseAndLog(this, "Could not generate proxy salt-ssh SSH keys."));
 
         if (!(proxySshKey.getReturnCode() == 0 || proxySshKey.getReturnCode() == -1)) {
-            throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + proxySshKey.getStderr()).get();
+            raiseAndLog(this, "Generating proxy salt-ssh SSH keys failed: " + proxySshKey.getStderr()).get();
         }
 
         context.setProxySshKey(proxySshKey);
@@ -107,7 +107,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             context.setClientCertificate(SystemManager.createClientCertificate(proxySystem));
         }
         catch (InstantiationException e) {
-            throw raiseAndLog("Failed creating client certificate: " + e.getMessage()).get();
+            raiseAndLog(this, "Failed creating client certificate: " + e.getMessage()).get();
         }
 
         // Check the SSL files using mgr-ssl-cert-setup
@@ -207,16 +207,16 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
     private String getServerSshPublicKey(User user, String serverFqdn) {
         String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
         if (isAbsent(localManagerFqdn)) {
-            throw raiseAndLog("Could not determine the local SUSE Manager FQDN.").get();
+            raiseAndLog(this, "Could not determine the local SUSE Manager FQDN.").get();
         }
 
         if (localManagerFqdn.equals(serverFqdn)) {
             MgrUtilRunner.SshKeygenResult serverSshKey =
                     saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY)
-                            .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
+                            .orElseThrow(raiseAndLog(this, "Could not generate salt-ssh public key."));
 
             if (!(serverSshKey.getReturnCode() == 0 || serverSshKey.getReturnCode() == -1)) {
-                throw raiseAndLog("Generating salt-ssh public key failed: " + serverSshKey.getStderr()).get();
+                raiseAndLog(this, "Generating salt-ssh public key failed: " + serverSshKey.getStderr()).get();
             }
 
             return serverSshKey.getPublicKey();
@@ -224,25 +224,14 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
 
         Server serverServer = ServerFactory.lookupProxiesByOrg(user).stream()
                 .filter(proxy -> serverFqdn.equals(proxy.getName())).findFirst()
-                .orElseThrow(raiseAndLog("Could not find specified server named " + serverFqdn +
+                .orElseThrow(raiseAndLog(this, "Could not find specified server named " + serverFqdn +
                         " in the organization."));
 
         if (!allProvided(serverServer.getProxyInfo(), serverServer.getProxyInfo().getSshPublicKey())) {
-            throw raiseAndLog("Could not find the public SSH key for the server.").get();
+            raiseAndLog(this, "Could not find the public SSH key for the server.").get();
         }
 
         return new String(serverServer.getProxyInfo().getSshPublicKey());
-    }
-
-    /**
-     * Raises and logs an exception
-     *
-     * @param message exception message
-     * @return exception supplier
-     */
-    private Supplier<RhnRuntimeException> raiseAndLog(String message) {
-        LOG.error(message);
-        return () -> new RhnRuntimeException(message);
     }
 
     private Optional<Server> findByAnyFqdn(Set<String> fqdns) {
