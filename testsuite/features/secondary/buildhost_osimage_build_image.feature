@@ -19,6 +19,7 @@
 @buildhost
 @scope_retail
 @scope_building_container_images
+@scc_credentials
 Feature: Build OS images
 
   Scenario: Create an OS image profile with activation key
