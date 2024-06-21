@@ -39,8 +39,6 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
 import java.util.HashSet;
@@ -53,7 +51,6 @@ import java.util.stream.Collectors;
  * Acquires and validates all necessary data for the Proxy container configuration creation files.
  */
 public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfigCreateContextHandler {
-    private static final Logger LOG = LogManager.getLogger(SystemManagerUtils.class);
 
     private SaltApi saltApi;
 

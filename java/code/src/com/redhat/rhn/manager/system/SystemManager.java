@@ -145,7 +145,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
-import java.io.IOException;
 import java.net.IDN;
 import java.security.SecureRandom;
 import java.sql.Date;
@@ -2155,7 +2154,7 @@ public class SystemManager extends BaseManager {
                                              SSLCertPair proxyCertKey,
                                              SSLCertPair caPair, String caPassword, SSLCertData certData,
                                              SSLCertManager certManager)
-            throws IOException, InstantiationException, SSLCertGenerationException {
+            throws SSLCertGenerationException {
 
         return new ProxyContainerConfigCreate().create(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,

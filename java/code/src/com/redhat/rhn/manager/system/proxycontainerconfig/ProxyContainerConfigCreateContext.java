@@ -25,9 +25,6 @@ import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +33,6 @@ import java.util.Map;
  * Object containing variables required for creating a proxy container configuration
  */
 public class ProxyContainerConfigCreateContext {
-
-    private static final Logger LOG = LogManager.getLogger(ProxyContainerConfigCreateContext.class);
 
     // provided
     private final SaltApi saltApi;
