@@ -125,7 +125,7 @@ Feature: Register and test a Containerized Proxy
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check the first patch in the list
+    When I check the first patch in the list, that does not require a reboot
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text

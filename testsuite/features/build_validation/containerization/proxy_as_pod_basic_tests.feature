@@ -14,7 +14,7 @@ Feature: Register and test a Containerized Proxy
   In order to test Containerized Proxy
   As the system administrator
   I want to register the proxy to the server
-  
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
@@ -116,7 +116,7 @@ Feature: Register and test a Containerized Proxy
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check the first patch in the list
+    When I check the first patch in the list, that does not require a reboot
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
@@ -132,7 +132,7 @@ Feature: Register and test a Containerized Proxy
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
-  
+
   Scenario: Remove package from the Salt minion
     When I follow "Software" in the content area
     And I follow "List / Remove"
