@@ -40,7 +40,7 @@ public class ErrorReportingStrategies {
      * @return Supplier of RhnRuntimeException that logs the message and throw the exception
      */
     public static Supplier<RhnRuntimeException> raiseAndLog(Object obj, String message) {
-        Logger logger = OBJ_LOGGER.computeIfAbsent(obj, (key) -> LogManager.getLogger(obj.getClass().getName()));
+        Logger logger = OBJ_LOGGER.computeIfAbsent(obj, key -> LogManager.getLogger(obj.getClass().getName()));
         return () -> {
             logger.error(message);
             return new RhnRuntimeException(message);
