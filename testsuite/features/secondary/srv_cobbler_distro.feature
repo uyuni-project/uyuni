@@ -175,6 +175,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "System record created" text
     And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "autoyast=" on server
 
+  @slow
   Scenario: Create a cobbler system record via API
     When I create a system record
     And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "inst.ks=.*testserver:1" on server
@@ -182,6 +183,7 @@ Feature: Cobbler and distribution autoinstallation
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
+  @slow
   Scenario: Cleanup: delete test profile
     # TODO: Move to SUMA API
     When I remove profile "testprofile"
@@ -201,6 +203,7 @@ Feature: Cobbler and distribution autoinstallation
     And I should not see a "fedora_kickstart_profile" text
     And I should not see a "fedora_kickstart_profile_upload" text
 
+  @slow
   Scenario: Cleanup: delete test distros
     # TODO: Move to SUMA API
     When I remove distro "testdistro"
