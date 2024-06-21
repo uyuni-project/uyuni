@@ -15,6 +15,7 @@ General template for new joiners of the SUSE Manager team.
   - [ ] Add to [Uyuni organization and teams](https://github.com/orgs/uyuni-project/people) (@juliogonzalez or [another owner](https://github.com/orgs/uyuni-project/people?query=role%3Aowner))
 - [ ] Add SUMA account on [manager.mgr.suse.de](https://manager.mgr.suse.de)
 - [ ] [Trello account](https://confluence.suse.com/display/IAM/Trello+account+and+access)
+- [ ] [IBS access](https://confluence.suse.com/display/devops/How+to+request+IBS+access) 
 - [ ] Confluence
   - [ ] Add to [SUMA squads](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics) page
   - [ ] Add to [Confluence overview page](https://confluence.suse.com/display/SUSEMANAGER/SUSE+Manager) of the team

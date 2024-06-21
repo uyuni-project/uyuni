@@ -55,6 +55,7 @@ Add more tasks if needed.
 - [ ] Announce: mailing lists, twitter and Gitter (update the topic for the `users` channel)
 - [ ] [Unlock](https://github.com/uyuni-project/uyuni/settings/branch_protection_rules/2243617) the `master` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
 - [ ] [Unlock](https://github.com/uyuni-project/uyuni-tools/settings/branch_protection_rules/37702039) the `main` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
+- [ ] Consider PRs for merge that became ready during the branch freeze looking for the ["merge-candidate" label](https://github.com/uyuni-project/uyuni/pulls?q=is%3Apr+is%3Aopen+label%3Amerge-candidate) or ping reviewers to take care of it
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `master` is unlocked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 
 ## 24h after the release

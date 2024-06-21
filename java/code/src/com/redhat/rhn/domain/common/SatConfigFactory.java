@@ -41,7 +41,6 @@ public class SatConfigFactory extends HibernateFactory {
     public static final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";
     public static final String EXT_AUTH_USE_ORGUNIT = "extauth_use_orgunit";
     public static final String EXT_AUTH_KEEP_ROLES = "extauth_keep_temproles";
-    public static final String SYSTEM_CHECKIN_THRESHOLD = "system_checkin_threshold";
 
     private SatConfigFactory() {
         super();
