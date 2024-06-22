@@ -28,6 +28,8 @@ import com.suse.manager.api.SerializedApiResponse;
  *      #prop("long", "id")
  *      #prop_array("boolean", "read")
  *      #prop_array("string", "message")
+ *      #prop_array("string", "summary")
+ *      #prop_array("string", "details")
  *      #prop_array("notificationType", "type")
  *      #prop_array("date", "created")
  *  #struct_end()
@@ -42,10 +44,13 @@ public class UserNotificationSerializer extends ApiResponseSerializer<UserNotifi
 
     @Override
     public SerializedApiResponse serialize(UserNotification src) {
+        String summary = src.getMessage().getNotificationData().getSummary();
         return new SerializationBuilder()
                 .add("id", src.getId())
                 .add("read", src.getRead())
                 .add("message", src.getMessage().getData())
+                .add("summary", summary.replaceAll("<[^>]*>", ""))
+                .add("details", src.getMessage().getNotificationData().getDetails())
                 .add("type", src.getMessage().getType())
                 .add("created", src.getMessage().getCreated())
                 .build();
