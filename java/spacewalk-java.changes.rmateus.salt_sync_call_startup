@@ -1,0 +1,1 @@
+- Change syncAll call at start-up to be asynchronous (bsc#1224004)
