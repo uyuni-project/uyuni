@@ -284,7 +284,7 @@ public class UserNotificationFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup for a single {@link UserNotification} by its id
+     * Lookup for a single {@link UserNotification} by its message id
      *
      * @param messageIdIn the id of the message
      * @param userIn the user
@@ -300,6 +300,21 @@ public class UserNotificationFactory extends HibernateFactory {
                 builder.equal(root.get("messageId"), messageIdIn));
 
         return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup for a single {@link UserNotification} by its id
+     *
+     * @param notificationIdIn the id of the user notification
+     * @param userIn the user
+     * @return the Optional wrapper for the UserNotification
+     */
+    public static Optional<UserNotification> lookupByUserAndId(Long notificationIdIn, User userIn) {
+        return getSession().createQuery("FROM UserNotification WHERE userId = :userid AND id = :id",
+                UserNotification.class)
+                .setParameter("userid", userIn.getId())
+                .setParameter("id", notificationIdIn)
+                .uniqueResultOptional();
     }
 
     /**

@@ -1141,4 +1141,5 @@ public class UserHandler extends BaseHandler {
         targetUser.setEmailNotify(BooleanUtils.toIntegerObject(value));
         return 1;
     }
+
 }
