@@ -120,6 +120,7 @@ import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelListException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
@@ -437,10 +438,19 @@ public class SystemHandler extends BaseHandler {
             if (channelIdsOrLabels.get(0) instanceof String) {
                 receivedLabels = true;
                 Channel channel = ChannelFactory.lookupByLabel((String) channelIdsOrLabels.get(0));
+                if (channel == null) {
+                    throw new InvalidChannelLabelException();
+                }
+                if (channel.getParentChannel() == null) {
+                    throw new InvalidChannelException();
+                }
                 baseChannel = channel.getParentChannel().getLabel();
             }
             else {
                 Channel channel = ChannelFactory.lookupById(Long.valueOf((Integer) channelIdsOrLabels.get(0)));
+                if (channel == null || channel.getParentChannel() == null) {
+                    throw new InvalidChannelException();
+                }
                 baseChannel = channel.getParentChannel().getLabel();
             }
 
@@ -566,11 +576,6 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids, String baseChannelLabel,
                                              List childLabels, Date earliestOccurrence) {
-        //Get the logged in user and server
-        Set<Long> servers = sids.stream()
-                .map(sid -> lookupServer(loggedInUser, sid))
-                .map(Server::getId)
-                .collect(toSet());
         Optional<Channel> baseChannel = Optional.empty();
 
         // base channel
@@ -578,9 +583,29 @@ public class SystemHandler extends BaseHandler {
             List<Long> channelIds = ChannelFactory.getChannelIds(singletonList(baseChannelLabel));
             long baseChannelId = channelIds.stream().findFirst().orElseThrow(InvalidChannelLabelException::new);
             baseChannel = Optional.of(ChannelManager.lookupByIdAndUser(baseChannelId, loggedInUser));
+            if (baseChannel.filter(Channel::isBaseChannel).isEmpty()) {
+                throw new InvalidChannelException();
+            }
         }
         // else if the user provides an empty string for the channel label, they are requesting
         // to remove the base channel
+
+        //Get the logged in user and server
+        Set<Server> servers = sids.stream()
+                .map(sid -> lookupServer(loggedInUser, sid))
+                .collect(toSet());
+
+        for (Server s : servers) {
+            if (baseChannel.map(Channel::getChannelArch)
+                    .filter(arch -> arch.isCompatible(s.getServerArch()))
+                    .isEmpty()) {
+                throw new InvalidChannelException();
+            }
+        }
+
+        Set<Long> serverIds = servers.stream()
+                .map(Server::getId)
+                .collect(toSet());
 
         // check if user passed a list of labels for the child channels
         if (childLabels.stream().anyMatch(e -> !(e instanceof String))) {
@@ -602,7 +627,7 @@ public class SystemHandler extends BaseHandler {
 
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
-                    servers,
+                    serverIds,
                     baseChannel,
                     childChannels,
                     earliestOccurrence, null);
