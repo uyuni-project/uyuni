@@ -43,6 +43,10 @@
     <available file="${java.lib.dir}/byte-buddy/byte-buddy.jar"/>
   </condition>
 
+  <condition property="byte-buddy-dep" value="byte-buddy/byte-buddy-dep.jar" else="byte-buddy-dep.jar">
+    <available file="${java.lib.dir}/byte-buddy/byte-buddy-dep.jar"/>
+  </condition>
+
   <available file="${java.lib.dir}/hibernate/hibernate-commons-annotations.jar" type="file"
 	  property="hibernate-commons-annotations" value="hibernate/hibernate-commons-annotations"/>
   <available file="${java.lib.dir}/hibernate-commons-annotations/hibernate-commons-annotations.jar" type="file"
@@ -115,7 +119,7 @@
     <available file="${java.lib.dir}/hibernate5/hibernate-core.jar" type="file"/>
   </condition>
 
-  <property name="hibernate5deps" value="${hibernate5files} ${hibernate-commons-annotations} slf4j/api jpa-api/jakarta.persistence-api ${byte-buddy} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hibernate-types/hibernate-types-52 jackson-databind jackson-core jackson-annotations"/>
+  <property name="hibernate5deps" value="${hibernate5files} ${hibernate-commons-annotations} slf4j/api jpa-api/jakarta.persistence-api ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hibernate-types/hibernate-types-52 jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="c3p0"/>
   <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
