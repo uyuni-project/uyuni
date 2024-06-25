@@ -1,0 +1,1 @@
+- Remove PKI of salt minion only in case of changing the master with the bootstrap script
