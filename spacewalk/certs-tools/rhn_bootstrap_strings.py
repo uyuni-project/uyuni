@@ -1224,12 +1224,14 @@ if [ -n "$SNAPSHOT_ID" ]; then
     SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
 fi
 MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/salt/minion_id"
+MINION_PKI_CONF="${{SNAPSHOT_PREFIX}}/etc/salt/pki/minion"
 MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/salt/minion.d"
 SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
 MINION_SERVICE="salt-minion"
 
 if [ $VENV_ENABLED -eq 1 ]; then
     MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion_id"
+    MINION_PKI_CONF="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/pki/minion"
     MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion.d"
     SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
