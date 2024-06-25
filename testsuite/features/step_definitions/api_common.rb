@@ -598,7 +598,7 @@ When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
   end
 end
 
-When(/^I create a kickstart profile for "([^"]*)" via the API using import file for distro "([^"]*)"$/) do |profile_name, distro_name|
+When(/^I create a "([^"]*)" profile via the API using import file for "([^"]*)" distribution$/) do |profile_name, distro_name|
   canonical_path = Pathname.new(File.join(File.dirname(__FILE__), '/../upload_files/autoinstall/cobbler/mock/empty.xml')).cleanpath
   $api_test.kickstart.create_profile_using_import_file(profile_name, distro_name, canonical_path)
 end
@@ -611,6 +611,6 @@ When(/^I update a kickstart tree via the API$/) do
   $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'generic_rpm', 'self_update=0', 'self_update=1')
 end
 
-When(/^I delete profile and distro using the API for "([^"]*)"$/) do |distro_name|
+When(/^I delete profile and distribution using the API for "([^"]*)" kickstart tree$/) do |distro_name|
   $api_test.kickstart.tree.delete_tree_and_profiles(distro_name)
 end
