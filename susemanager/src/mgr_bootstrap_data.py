@@ -814,6 +814,18 @@ DATA = {
         "PKGLIST": RES7 + RES7_X86,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
     },
+    "SLL7-LTSS-x86_64": {
+        "PDID": [2702, 1683],
+        "BETAPDID": [2065],
+        "PKGLIST": RES7 + RES7_X86,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
+    },
+    "SLL7-OL-LTSS-x86_64": {
+        "PDID": [2778, 1683],
+        "BETAPDID": [2065],
+        "PKGLIST": RES7 + RES7_X86,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
+    },
     "SLE-12-SP2-aarch64": {
         "PDID": 1375,
         "BETAPDID": [1744],
