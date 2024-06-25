@@ -189,9 +189,6 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  if @slow_feature
-    sleep 2 # Sleep for 2 seconds after each step
-  end
   log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
@@ -199,10 +196,6 @@ Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
-end
-
-Before('@slow') do
-  @slow_feature = true
 end
 
 Before('@skip') do
