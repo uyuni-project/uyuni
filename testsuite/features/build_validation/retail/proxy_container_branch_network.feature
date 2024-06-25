@@ -18,11 +18,8 @@ Feature: Prepare the containerized branch server for PXE booting
     Then the "dhcp_dns" host should be present on private network
     And name resolution should work on private network
 
-  Scenario: Show the overview page of the containerized proxy
-    Given I am authorized for the "Admin" section
-    And I am on the Systems overview page of this "proxy"
-
   Scenario: Create branch terminals group
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Systems > System Groups"
     And I follow "Create Group"
     And I enter "example" as "name"
@@ -74,7 +71,8 @@ Feature: Prepare the containerized branch server for PXE booting
     Then I should see a "Formula saved" text
 
   Scenario: Let the server know about the new IP and FQDN of the proxy
-    When I follow "Details" in the content area
+    When I am on the Systems overview page of this "proxy"
+    And I follow "Details" in the content area
     And I follow "Hardware" in the content area
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
