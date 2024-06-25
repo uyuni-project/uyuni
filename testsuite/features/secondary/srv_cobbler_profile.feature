@@ -93,7 +93,7 @@ Feature: Edit Cobbler profiles
       | inst.repo   | http://ise.cobbler.test |
       | self_update | http://ise.cobbler.test |
 
-  Scenario: Cleanup: delete test profiles and distributions
+  Scenario: Cleanup: delete test profiles and distributions using API
     When I wait for "10" seconds
     When I delete profile and distribution using the API for "isedistro_ui" kickstart tree
     When I delete profile and distribution using the API for "isedistro_api" kickstart tree

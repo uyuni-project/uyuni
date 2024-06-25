@@ -181,7 +181,7 @@ Feature: Cobbler and distribution autoinstallation
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
-  Scenario: Cleanup: delete test profiles and distros using API
+  Scenario: Cleanup: delete test profiles and distributions using API
     When I wait for "10" seconds
     When I delete profile and distribution using the API for "testdistro" kickstart tree
     When I delete profile and distribution using the API for "fedora_kickstart_distro" kickstart tree
