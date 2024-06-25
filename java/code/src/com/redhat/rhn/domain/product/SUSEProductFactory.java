@@ -106,6 +106,14 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * @return return true if any products are available, otherwise false
+     */
+    public static boolean hasProducts() {
+        return getSession().createQuery("SELECT productId FROM SUSEProduct")
+                .stream().findAny().isPresent();
+    }
+
+    /**
      * @return map of all {@link SUSEProductSCCRepository} by ID triple
      */
     public static Map<Tuple3<Long, Long, Long>, SUSEProductSCCRepository> allProductReposByIds() {

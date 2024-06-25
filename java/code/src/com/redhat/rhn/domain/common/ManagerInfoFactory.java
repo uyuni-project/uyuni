@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,10 +62,13 @@ public class ManagerInfoFactory extends HibernateFactory {
     }
 
     /**
-     * set last mgr-sync refresh to now
+     * set last mgr-sync refresh to now.
+     * It will be executed only when also products were at least one time synced.
      */
     public static void setLastMgrSyncRefresh() {
-        setLastMgrSyncRefresh(System.currentTimeMillis());
+        if (SUSEProductFactory.hasProducts()) {
+            setLastMgrSyncRefresh(System.currentTimeMillis());
+        }
     }
 
     /**
