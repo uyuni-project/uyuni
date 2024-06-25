@@ -95,8 +95,8 @@ Feature: Edit Cobbler profiles
 
   Scenario: Cleanup: delete test profiles and distributions
     When I wait for "10" seconds
-    When I delete profile and distro using the API for "isedistro_ui"
-    When I delete profile and distro using the API for "isedistro_api"
+    When I delete profile and distribution using the API for "isedistro_ui" kickstart tree
+    When I delete profile and distribution using the API for "isedistro_api" kickstart tree
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I should not see a "isedistro_ui" text
     And I should not see a "isedistro_api" text

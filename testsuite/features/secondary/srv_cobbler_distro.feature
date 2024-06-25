@@ -24,7 +24,7 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Create dummy profile
     Given cobblerd is running
     # TODO: Move to SUMA API
-    When I create a kickstart profile for "testprofile" via the API using import file for distro "testdistro"
+    When I create a "testprofile" profile via the API using import file for "testdistro" distribution
 
   Scenario: Check cobbler created distro and profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -183,11 +183,11 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Cleanup: delete test profiles and distros using API
     When I wait for "10" seconds
-    When I delete profile and distro using the API for "testdistro"
-    When I delete profile and distro using the API for "fedora_kickstart_distro"
-    When I delete profile and distro using the API for "fedora_kickstart_distro_api"
-    When I delete profile and distro using the API for "fedora_kickstart_distro_kernel_api"
-    When I delete profile and distro using the API for "SLE-15-FAKE"
+    When I delete profile and distribution using the API for "testdistro" kickstart tree
+    When I delete profile and distribution using the API for "fedora_kickstart_distro" kickstart tree
+    When I delete profile and distribution using the API for "fedora_kickstart_distro_api" kickstart tree
+    When I delete profile and distribution using the API for "fedora_kickstart_distro_kernel_api" kickstart tree
+    When I delete profile and distribution using the API for "SLE-15-FAKE" kickstart tree
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I should not see a "testdistro" text
     And I should not see a "fedora_kickstart_distro" text
