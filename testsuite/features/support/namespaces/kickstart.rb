@@ -24,6 +24,11 @@ class NamespaceKickstart
     @test.call('kickstart.profile.createProfile', sessionKey: @test.token, profileLabel: name, vmType: 'none', kickstartableTreeLabel: kstreelabel, kickstartHost: kshost, rootPassword: 'linux', updateType: 'all')
   end
 
+  #  Import a raw kickstart file into #product().
+  #
+  # @param name [String] The name of the new kickstart profile.
+  # @param kstreelabel [String] Label of a kickstartable tree to associate the new profile with.
+  # @param filename [String] Contents of the kickstart file to import.
   def create_profile_using_import_file(name, kstreelabel, filename)
     file_content = File.read(filename)
     @test.call('kickstart.importRawFile', sessionKey: @test.token, profileLabel: name, vmType: 'none', kickstartableTreeLabel: kstreelabel, kickstartFileContents: file_content )
