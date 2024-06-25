@@ -42,7 +42,7 @@ export const TableFilter = (props) => {
   };
 
   return (
-    <Form model={model} onChange={onChange} title={t("Filter")} className="row">
+    <Form model={model} onChange={onChange} title={t("Filter")} divClass="row">
       <div className="col-sm-4">
         <Select
           name="filter"

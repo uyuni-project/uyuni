@@ -38,7 +38,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             BASE=registry.opensuse.org/uyuni/server
-            VERSION=2024.03
+            VERSION=2024.05
   build-and-push-ubuntu-minion-image:
     runs-on: ubuntu-latest
     permissions:

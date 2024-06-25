@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
-"PO-Revision-Date: 2024-03-19 03:43+0000\n"
+"POT-Creation-Date: 2024-06-18 14:55+0200\n"
+"PO-Revision-Date: 2024-06-12 03:47+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -27,17 +27,66 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
-#: ../html/javascript/spacewalk-essentials.js:444
+#: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
 msgstr "剩余"
 
-#: ../html/javascript/spacewalk-essentials.js:464
+#: ../html/javascript/spacewalk-essentials.js:461
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
+
+#: ../html/src/components/CoCoScansList.tsx:75
+#: ../html/src/components/package/PackageListActionScheduler.tsx:89
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
+msgid "The action has been <link>scheduled</link>."
+msgstr "操作已<link>安排</link>。"
+
+#: ../html/src/components/CoCoScansList.tsx:90
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
+msgid ""
+"Unable to schedule action. Please check the server logs for detailed "
+"information."
+msgstr "无法安排操作执行时间。请查看服务器日志了解详细信息。"
+
+#: ../html/src/components/CoCoScansList.tsx:122
+msgid "Confirm Attestation Execution"
+msgstr "确认认证执行"
+
+#: ../html/src/components/CoCoScansList.tsx:130
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:447
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
+msgid "Schedule"
+msgstr "日程安排"
+
+#: ../html/src/components/CoCoScansList.tsx:137
+#: ../html/src/components/CoCoScansList.tsx:192
+#: ../html/src/components/package/PackageListActionScheduler.tsx:189
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
+msgid "Back to list"
+msgstr "返回列表"
+
+#: ../html/src/components/CoCoScansList.tsx:153
+msgid "Confidential Computing Attestations"
+msgstr "机密计算认证"
+
+#: ../html/src/components/CoCoScansList.tsx:163
+msgid "Schedule Attestation"
+msgstr "安排认证"
+
+#: ../html/src/components/CoCoScansList.tsx:187
+msgid "Attestation Report details"
+msgstr "认证报告细节"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -106,10 +155,188 @@ msgstr "添加到："
 msgid "Loading the scheduler..."
 msgstr "正在装载日程安排程序..."
 
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
+msgid "Attestations"
+msgstr "认证"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
+msgid "Attestation"
+msgstr "认证"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
+msgid "Attestation #{identifier} run on {date} at {time}"
+msgstr "认证 #{identifier} 于 {date} {time} 执行"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:49
+#: ../html/src/components/target-systems.tsx:34
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:68
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:203
+#: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/list-filter.tsx:41
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
+msgid "System"
+msgstr "系统"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:59
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
+msgid "Environment Type"
+msgstr "环境类型"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
+#: ../html/src/manager/notifications/notification-messages.tsx:508
+msgid "Created"
+msgstr "创建日期"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:90
+msgid "Last modified"
+msgstr "上次修改时间"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
+#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
+#: ../html/src/manager/images/image-view-runtime.tsx:130
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
+#: ../html/src/manager/systems/virtual-list.tsx:82
+msgid "Status"
+msgstr "状态"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
+msgid "Attestation time"
+msgstr "认证时间"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/images/image-profiles.tsx:190
+#: ../html/src/manager/images/image-stores.tsx:192
+#: ../html/src/manager/images/image-view.tsx:683
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:64
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:49
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:202
+#: ../html/src/manager/salt/keys/key-management.tsx:195
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
+#: ../html/src/manager/virtualization/ListTab.tsx:258
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
+msgid "Actions"
+msgstr "操作"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:115
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:54
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
+#: ../html/src/manager/images/image-view-patches.tsx:87
+#: ../html/src/manager/images/image-view.tsx:689
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:69
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:54
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:207
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
+msgid "Details"
+msgstr "细节"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:41
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:35
+msgid "Status:"
+msgstr "状态："
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:67
+msgid "Created on"
+msgstr "创建日期"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:75
+msgid "Last modified on"
+msgstr "上次修改日期"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:84
+#: ../html/src/manager/notifications/notification-messages.tsx:513
+msgid "Action"
+msgstr "操作"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:89
+msgid "{actionName} scheduled by {actionScheduledBy}"
+msgstr "{actionName} 由 {actionScheduledBy} 安排"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:100
+msgid "Attested on"
+msgstr "认证日期"
+
+#: ../html/src/components/coco-attestation/CoCoReport.tsx:118
+#: ../html/src/manager/images/image-view.tsx:789
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
+msgid "Overview"
+msgstr "概览"
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:19
+msgid "Result Type:"
+msgstr "结果类型："
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:27
+msgid "Description:"
+msgstr "说明："
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:44
+msgid "Attested on:"
+msgstr "认证日期："
+
+#: ../html/src/components/coco-attestation/CoCoResult.tsx:66
+msgid "Process Output"
+msgstr "流程输出"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
+#: ../html/src/components/formula-selection.tsx:279
+#: ../html/src/components/panels/CreatorPanel.tsx:125
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
+#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
+#: ../html/src/manager/minion/packages/package-states.tsx:194
+msgid "Save"
+msgstr "保存"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
+msgid "Reset Changes"
+msgstr "重设置更改"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
+msgid "Enable attestation"
+msgstr "启用认证"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
+msgid "Executions"
+msgstr "执行作业"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
+msgid "Peform attestation during the boot process"
+msgstr "在引导过程中执行认证"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
+msgid "Peform attestation on a schedule"
+msgstr "按日程安排执行认证"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
+msgid "Select a schedule"
+msgstr "选择日程安排"
+
+#: ../html/src/components/coco-attestation/Utils.tsx:49
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
+msgid "N/A"
+msgstr "不适用"
+
 #: ../html/src/components/combobox.tsx:96
-#, fuzzy
 msgid "Create {label}"
-msgstr "创建 "
+msgstr "创建 {label}"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -147,6 +374,7 @@ msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {nam
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:114
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:108
@@ -184,8 +412,8 @@ msgstr "取消"
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
 #: ../html/src/manager/packages/list.tsx:72
 #: ../html/src/manager/packages/list.tsx:125
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:214
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:217
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:224
 #: ../html/src/manager/salt/keys/key-management.tsx:54
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
@@ -212,15 +440,6 @@ msgstr ""
 "在此页上，可为此组/系统选择 Salt 公式，然后可在组和系统级别配置 Salt 公式。这"
 "样您就可以自动安装和配置软件。"
 
-#: ../html/src/components/formula-selection.tsx:279
-#: ../html/src/components/panels/CreatorPanel.tsx:125
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
-#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
-#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
-#: ../html/src/manager/minion/packages/package-states.tsx:194
-msgid "Save"
-msgstr "保存"
-
 #: ../html/src/components/formula-selection.tsx:299
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
@@ -232,6 +451,7 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
+#: ../html/src/manager/appstreams/list-appstreams.tsx:41
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "重设置"
@@ -275,13 +495,8 @@ msgid "No flavor"
 msgstr "无风格"
 
 #: ../html/src/components/input/Select.tsx:255
-#, fuzzy
 msgid "No options"
-msgstr "Kiwi 选项"
-
-#: ../html/src/components/package/PackageListActionScheduler.tsx:89
-msgid "The action has been <link>scheduled</link>."
-msgstr "操作已<link>安排</link>。"
+msgstr "无选项"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -294,18 +509,14 @@ msgstr "无法执行操作。"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:339
 #: ../html/src/components/states-picker.tsx:529
-#: ../html/src/manager/admin/setup/products/products.tsx:1146
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
+#: ../html/src/manager/admin/setup/products/products.tsx:1156
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
 msgid "Confirm"
 msgstr "确认"
-
-#: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
-msgid "Back to list"
-msgstr "返回列表"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
@@ -331,7 +542,7 @@ msgstr "第一页"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:450
+#: ../html/src/manager/admin/setup/products/products.tsx:451
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -340,7 +551,7 @@ msgstr "上一页"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:456
+#: ../html/src/manager/admin/setup/products/products.tsx:457
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -359,36 +570,36 @@ msgstr "第 <dropdown></dropdown> 页，共 {total} 页"
 msgid "Page {current} of {total}"
 msgstr "第 {current} 页，共 {total} 页"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:49
+#: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
 msgstr "星期日"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:50
+#: ../html/src/components/picker/recurring-event-picker.tsx:59
 msgid "Monday"
 msgstr "星期一"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:51
+#: ../html/src/components/picker/recurring-event-picker.tsx:60
 msgid "Tuesday"
 msgstr "星期二"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:52
+#: ../html/src/components/picker/recurring-event-picker.tsx:61
 msgid "Wednesday"
 msgstr "星期三"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:53
+#: ../html/src/components/picker/recurring-event-picker.tsx:62
 msgid "Thursday"
 msgstr "星期四"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:54
+#: ../html/src/components/picker/recurring-event-picker.tsx:63
 msgid "Friday"
 msgstr "星期五"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:55
+#: ../html/src/components/picker/recurring-event-picker.tsx:64
 msgid "Saturday"
 msgstr "星期六"
 
 #. Field options for filtering in recurring actions list.
-#: ../html/src/components/picker/recurring-event-picker.tsx:325
+#: ../html/src/components/picker/recurring-event-picker.tsx:333
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:165
@@ -396,57 +607,57 @@ msgstr "星期六"
 msgid "Schedule Name"
 msgstr "日程安排名称"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:332
-msgid "Select a Schedule"
-msgstr "选择日程安排"
-
-#: ../html/src/components/picker/recurring-event-picker.tsx:347
+#: ../html/src/components/picker/recurring-event-picker.tsx:353
 msgid "Hourly:"
 msgstr "每小时："
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:364
+#: ../html/src/components/picker/recurring-event-picker.tsx:370
 msgid "The action will be executed every hour at the specified minute"
 msgstr "将在每小时的指定分钟执行该操作"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:379
+#: ../html/src/components/picker/recurring-event-picker.tsx:385
 msgid "Daily:"
 msgstr "每日："
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:403
+#: ../html/src/components/picker/recurring-event-picker.tsx:409
 msgid "Weekly:"
 msgstr "每周："
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:437
+#: ../html/src/components/picker/recurring-event-picker.tsx:443
 msgid "Monthly:"
 msgstr "每月："
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:462
+#: ../html/src/components/picker/recurring-event-picker.tsx:468
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr "天数限制为 28，使所有月份都可使用重复性日程安排"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:477
+#: ../html/src/components/picker/recurring-event-picker.tsx:483
 msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
+
+#: ../html/src/components/picker/recurring-event-picker.tsx:512
+msgid "Select a Schedule"
+msgstr "选择日程安排"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
 #: ../html/src/components/states-picker.tsx:35
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:23
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:24
 msgid "State Configuration Channel"
 msgstr "状态配置通道"
 
 #: ../html/src/components/ranking-table.tsx:23
 #: ../html/src/components/states-picker.tsx:38
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:26
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:27
 msgid "Internal State"
 msgstr "内部状态"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
 #: ../html/src/components/states-picker.tsx:42
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:30
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:31
 msgid "Normal Configuration Channel"
 msgstr "常规配置通道"
 
@@ -468,8 +679,8 @@ msgstr "配置通道：{name}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:206
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:209
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:215
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
@@ -510,8 +721,8 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:199
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:201
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:204
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
@@ -566,7 +777,7 @@ msgid "There are no states assigned."
 msgstr "未指派任何状态。"
 
 #: ../html/src/components/states-picker.tsx:421
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:248
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 msgid "State Name"
 msgstr "状态名称"
 
@@ -575,7 +786,7 @@ msgid "Channel Name"
 msgstr "通道名称"
 
 #: ../html/src/components/states-picker.tsx:422
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:261
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 msgid "State Label"
 msgstr "状态标签"
 
@@ -595,7 +806,7 @@ msgstr "通道标签"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:36
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:265
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:268
 msgid "Description"
 msgstr "说明"
 
@@ -626,15 +837,13 @@ msgid "Select Sytems"
 msgstr "选择系统"
 
 #: ../html/src/components/systems.tsx:21
-#, fuzzy
 msgid "Unprovisioned System"
-msgstr "未注册的系统"
+msgstr "未置备的系统"
 
 #: ../html/src/components/systems.tsx:26
 #: ../html/src/manager/systems/list-filter.tsx:7
-#, fuzzy
 msgid "Virtual Guest"
-msgstr "虚拟主机"
+msgstr "虚拟 Guest"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
@@ -644,9 +853,8 @@ msgid "Virtual Host"
 msgstr "虚拟主机"
 
 #: ../html/src/components/systems.tsx:36
-#, fuzzy
 msgid "Non-Virtual System"
-msgstr "虚拟系统"
+msgstr "非虚拟系统"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
@@ -678,20 +886,20 @@ msgstr "过滤"
 msgid "Select a filter"
 msgstr "选择过滤器"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:59
 msgid "Items {from} - {to} of {total}"
 msgstr "第 {from} - {to} 项，共 {total} 项"
 
-#: ../html/src/components/table/SearchPanel.tsx:62
+#: ../html/src/components/table/SearchPanel.tsx:64
 msgid "({selectedCount} selected)"
 msgstr "（已选择 {selectedCount} 项）"
 
-#: ../html/src/components/table/SearchPanel.tsx:64
-#: ../html/src/manager/admin/setup/products/products.tsx:375
+#: ../html/src/components/table/SearchPanel.tsx:66
+#: ../html/src/manager/admin/setup/products/products.tsx:376
 msgid "Clear"
 msgstr "清除"
 
-#: ../html/src/components/table/SearchPanel.tsx:71
+#: ../html/src/components/table/SearchPanel.tsx:73
 msgid "Select All"
 msgstr "全选"
 
@@ -700,9 +908,17 @@ msgstr "全选"
 msgid "All"
 msgstr "所有"
 
-#: ../html/src/components/table/TableDataHandler.tsx:409
+#: ../html/src/components/table/TableDataHandler.tsx:407
 msgid "items per page"
 msgstr "项每页"
+
+#: ../html/src/components/target-systems.tsx:22
+msgid "Target Systems"
+msgstr "目标系统"
+
+#: ../html/src/components/target-systems.tsx:28
+msgid "No systems specified."
+msgstr "未指定系统。"
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -717,14 +933,15 @@ msgid "Help"
 msgstr "帮助"
 
 #: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/manager/appstreams/appstream-packages.tsx:32
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:327
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:464
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:468
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "正在装载..."
@@ -839,20 +1056,6 @@ msgstr "监视状态未更改。"
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
 msgstr "发生错误。监视状态未知。请刷新页面。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:203
-#: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:62
-#: ../html/src/manager/systems/list-filter.tsx:41
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
-msgid "System"
-msgstr "系统"
-
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:62
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat (Java JMX)"
@@ -871,6 +1074,7 @@ msgstr "服务器自我监视"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:81
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:83
+#: ../html/src/manager/appstreams/list-appstreams.tsx:66
 msgid "Enabled"
 msgstr "已启用"
 
@@ -1014,7 +1218,7 @@ msgid "Bastion SSH connection data"
 msgstr "堡垒 SSH 连接数据"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:306
+#: ../html/src/manager/admin/setup/products/products.tsx:307
 msgid "Setup Wizard"
 msgstr "安装向导"
 
@@ -1030,18 +1234,6 @@ msgstr "按任意值过滤"
 msgid "Host"
 msgstr "主机"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
-#: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:227
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
-#: ../html/src/manager/images/image-view-runtime.tsx:130
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:82
-msgid "Status"
-msgstr "状态"
-
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
 msgid "Last Update Status"
 msgstr "上次更新状态"
@@ -1052,7 +1244,7 @@ msgid "never"
 msgstr "从不"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:461
+#: ../html/src/manager/admin/setup/products/products.tsx:462
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "/"
@@ -1165,7 +1357,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:436
+#: ../html/src/manager/notifications/notification-messages.tsx:435
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "刷新"
@@ -1183,78 +1375,67 @@ msgstr "已完成"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "操作不成功：服务器返回了空答复"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:194
-#: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:689
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:69
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:207
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
-msgid "Details"
-msgstr "细节"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:153
+#: ../html/src/manager/admin/setup/products/products.tsx:154
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
 "没有可用的 SUSE Manager Server 订阅。需要客户端工具通道的产品将不显示。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:200
+#: ../html/src/manager/admin/setup/products/products.tsx:201
 msgid "The product catalog refresh is running..."
 msgstr "产品目录刷新正在运行..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:226
+#: ../html/src/manager/admin/setup/products/products.tsx:227
 msgid "The following product installations failed. Please check log files."
 msgstr "以下产品安装失败。请检查日志文件。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:271
+#: ../html/src/manager/admin/setup/products/products.tsx:272
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "已成功安排同步选定的通道。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/admin/setup/products/products.tsx:332
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:336
+#: ../html/src/manager/admin/setup/products/products.tsx:337
 msgid "The product catalog is still refreshing, please wait."
 msgstr "产品目录仍在刷新，请稍候。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:338
+#: ../html/src/manager/admin/setup/products/products.tsx:339
 msgid "Select some product first."
 msgstr "请先选择某个产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:347
-#: ../html/src/manager/admin/setup/products/products.tsx:355
+#: ../html/src/manager/admin/setup/products/products.tsx:348
+#: ../html/src/manager/admin/setup/products/products.tsx:356
 msgid "Add products"
 msgstr "添加产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:374
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 msgid "Clear products selection"
 msgstr "清除产品选择"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:417
+#: ../html/src/manager/admin/setup/products/products.tsx:418
 msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:420
+#: ../html/src/manager/admin/setup/products/products.tsx:421
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 "此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:425
+#: ../html/src/manager/admin/setup/products/products.tsx:426
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:435
+#: ../html/src/manager/admin/setup/products/products.tsx:436
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1262,20 +1443,20 @@ msgstr ""
 "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
 "品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:561
+#: ../html/src/manager/admin/setup/products/products.tsx:562
 msgid "Filter by architecture"
 msgstr "按体系结构过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:579
+#: ../html/src/manager/admin/setup/products/products.tsx:580
 msgid "Filter by product Description"
 msgstr "按产品说明过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:655
+#: ../html/src/manager/admin/setup/products/products.tsx:656
 msgid "Product Description"
 msgstr "产品说明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:661
-#: ../html/src/manager/admin/setup/products/products.tsx:1039
+#: ../html/src/manager/admin/setup/products/products.tsx:662
+#: ../html/src/manager/admin/setup/products/products.tsx:1043
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1283,40 +1464,44 @@ msgstr "产品说明"
 msgid "Architecture"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:663
+#: ../html/src/manager/admin/setup/products/products.tsx:664
 msgid "Arch"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:670
+#: ../html/src/manager/admin/setup/products/products.tsx:671
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:841
+#: ../html/src/manager/admin/setup/products/products.tsx:678
+msgid "Recommended"
+msgstr "推荐"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:849
 msgid " channels sync failed"
 msgstr " 通道同步失败"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:849
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid " channels sync in progress"
 msgstr " 通道同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:857
+#: ../html/src/manager/admin/setup/products/products.tsx:865
 msgid " channels synced"
 msgstr " 通道已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:882
+#: ../html/src/manager/admin/setup/products/products.tsx:890
 msgid "To enable this product, the parent product should be selected first"
 msgstr "要启用此产品，应先选择父产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:883
+#: ../html/src/manager/admin/setup/products/products.tsx:891
 msgid "Select this product"
 msgstr "选择此产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:895
+#: ../html/src/manager/admin/setup/products/products.tsx:903
 msgid "This product is mirrored."
 msgstr "已镜像此产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:924
+#: ../html/src/manager/admin/setup/products/products.tsx:932
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1324,63 +1509,55 @@ msgstr "已镜像此产品。"
 msgid "recommended"
 msgstr "建议"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:942
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:173
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
-msgid "include recommended"
-msgstr "包括建议项"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:984
+#: ../html/src/manager/admin/setup/products/products.tsx:988
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 产品目录刷新正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:987
+#: ../html/src/manager/admin/setup/products/products.tsx:991
 msgid "Scheduling channels product resync"
 msgstr "正在安排通道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:990
+#: ../html/src/manager/admin/setup/products/products.tsx:994
 msgid "Channels product resync scheduled"
 msgstr "已安排通道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:993
+#: ../html/src/manager/admin/setup/products/products.tsx:997
 msgid "Schedule channels product resync"
 msgstr "安排通道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1053
+#: ../html/src/manager/admin/setup/products/products.tsx:1057
 msgid "Show product's channels"
 msgstr "显示产品的通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1119
+#: ../html/src/manager/admin/setup/products/products.tsx:1129
 msgid "Product Channels - "
 msgstr "产品通道 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1124
+#: ../html/src/manager/admin/setup/products/products.tsx:1134
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "选择您要添加的可选通道并确认。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1128
+#: ../html/src/manager/admin/setup/products/products.tsx:1138
 msgid "Mandatory Channels"
 msgstr "必需通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1130
+#: ../html/src/manager/admin/setup/products/products.tsx:1140
 msgid "Optional Channels"
 msgstr "可选通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1166
+#: ../html/src/manager/admin/setup/products/products.tsx:1176
 msgid "not synced"
 msgstr "未同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1169
+#: ../html/src/manager/admin/setup/products/products.tsx:1179
 msgid "sync in progress"
 msgstr "同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1172
+#: ../html/src/manager/admin/setup/products/products.tsx:1182
 msgid "synced"
 msgstr "已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1175
+#: ../html/src/manager/admin/setup/products/products.tsx:1185
 msgid "sync failed"
 msgstr "同步失败"
 
@@ -1434,7 +1611,7 @@ msgstr "数据每隔 "
 msgid " seconds"
 msgstr " 秒刷新"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
@@ -1442,47 +1619,99 @@ msgstr " 秒刷新"
 msgid "Filter by name"
 msgstr "按名称过滤"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:199
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:198
 msgid "Task Id"
 msgstr "任务 ID"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:203
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:202
 msgid "Task Name"
 msgstr "任务名称"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:209
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:208
 msgid "Start Time"
 msgstr "开始时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:215
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:214
 msgid "End Time"
 msgstr "结束时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:221
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:220
 msgid "Elapsed Time"
 msgstr "已用时间"
 
 #. comparator={this.sortByText}
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:232
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:231
 msgid "Data"
 msgstr "数据"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:243
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:242
 msgid "There are no tasks running on the server at the moment."
 msgstr "目前没有任何任务在服务器上运行。"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:560
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:562
+#: ../html/src/manager/notifications/notification-messages.tsx:557
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
+
+#: ../html/src/manager/appstreams/appstream-packages.tsx:36
+msgid "An error occurred while displaying the list of packages."
+msgstr "显示软件包列表时发生错误。"
+
+#: ../html/src/manager/appstreams/appstream-packages.tsx:39
+msgid "AppStream {stream} has {count} packages:"
+msgstr "AppStream {stream} 包含 {count} 个软件包："
+
+#: ../html/src/manager/appstreams/appstreams.tsx:87
+msgid ""
+"Updating the selection of AppStream modules has been <link>scheduled</link>."
+msgstr "<link>已安排</link>更新 AppStream 模块选择。"
+
+#: ../html/src/manager/appstreams/appstreams.tsx:135
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
+msgid "AppStreams"
+msgstr "AppStreams"
+
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
+msgid ""
+"Please review the changes below before scheduling an action to apply the "
+"changes on the system."
+msgstr "请先查看下面的更改，然后再安排执行某个操作以在系统上应用这些更改。"
+
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
+msgid "Streams to be enabled:"
+msgstr "要启用的流："
+
+#: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:60
+msgid "Streams to be disabled:"
+msgstr "要禁用的流："
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:37
+msgid "The following AppStream modules are currently available to the system."
+msgstr "以下 AppStream 模块目前可用于该系统。"
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:47
+msgid "Apply Changes"
+msgstr "应用更改"
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:64
+msgid "Modules"
+msgstr "模块"
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:65
+msgid "Streams"
+msgstr "流"
+
+#: ../html/src/manager/appstreams/list-appstreams.tsx:89
+msgid "Packages in {stream}"
+msgstr "{stream} 中的软件包"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
 msgid "Affected, patches available in channels which are not assigned"
@@ -1492,7 +1721,7 @@ msgstr "受影响，通道中有可用补丁，但未指派"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
+msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
 msgid "Affected, patches available in a Product Migration target"
@@ -1511,43 +1740,39 @@ msgstr "不受影响"
 msgid ""
 "The client is not affected because none of the known CVE vulnerable packages "
 "are installed."
-msgstr ""
+msgstr "该客户端不受影响，因为它未安装任何有已知 CVE 漏洞的软件包。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
 msgid "Patched"
 msgstr "已修补"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
-#, fuzzy
 msgid "A patch has been successfully installed on the client."
-msgstr "操作已成功添加到 "
+msgstr "该客户端上已成功安装补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
-#, fuzzy
 msgid "Affected, patch is unavailable"
-msgstr "有软件包更新可用"
+msgstr "受影响，未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
-msgstr ""
+msgstr "该客户端受到某个漏洞的影响，尚未针对该漏洞发布补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
-#, fuzzy
 msgid "Affected, patch is unavailable in relevant channels"
-msgstr "受影响，指派的通道中至少有一个可用补丁"
+msgstr "受影响，相关通道中未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid ""
 "The client is affected by a vulnerability for which a patch has been "
 "released,"
-msgstr ""
+msgstr "该客户端受到某个漏洞的影响，已针对该漏洞发布补丁，"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
-#, fuzzy
 msgid "Affected, partial patch available in assigned channel"
-msgstr "受影响，指派的通道中至少有一个可用补丁"
+msgstr "受影响，指派的通道中提供了局部补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
 msgid "CVE Audit"
@@ -1595,20 +1820,6 @@ msgstr "SUSE 安全 CVE 链接"
 msgid "Name"
 msgstr "名称"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
-#: ../html/src/manager/images/image-profiles.tsx:190
-#: ../html/src/manager/images/image-stores.tsx:192
-#: ../html/src/manager/images/image-view.tsx:683
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:64
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:49
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:202
-#: ../html/src/manager/salt/keys/key-management.tsx:195
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:258
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
-msgid "Actions"
-msgstr "操作"
-
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
 msgid "No action required"
@@ -1627,9 +1838,8 @@ msgid "Patch available, but needs to be cloned into Channel."
 msgstr "补丁可用，但需要克隆到通道中。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
-#, fuzzy
 msgid "Install a new partial patch on this system."
-msgstr "在此系统上安装新补丁。"
+msgstr "在此系统上安装新的局部补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
@@ -1713,30 +1923,30 @@ msgstr "）。 "
 msgid "Refresh matching data"
 msgstr "刷新匹配数据"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:34
 msgid "Unsupported part number detected"
 msgstr "检测到不支持的部件号"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr "物理系统已报告为虚拟 Guest，请检查硬件数据"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr "虚拟 Guest 包含未知主机，将假定它是物理系统"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "系统包含未知数量的插槽，将假定为 16 个"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
 msgstr "某个捆绑包中包含两个具有相同部件号的订阅 - 已合并成一个订阅"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:45
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1744,37 +1954,37 @@ msgstr ""
 "已将两个具有相同部件号（和其他属性）的订阅合并到一起 - 开始/结束日期可能会指"
 "示此状态"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "由于合并了订阅而调整了关联的匹配项"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:52
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:62
 msgid "Subscription IDs"
 msgstr "订阅 ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
 msgid ""
 "Subscription with unsupported part number and no associated product has been "
 "ignored."
 msgstr "已忽略包含不支持的部件号和非关联产品的订阅。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
 msgstr "请查看下面的警告和信息消息。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:103
 msgid "Message"
 msgstr "消息"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
 msgid "Additional information"
 msgstr "其他信息"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:118
 msgid "No messages from the last match run."
 msgstr "上次匹配运行未返回任何消息。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:123
 msgid "Messages"
 msgstr "消息"
 
@@ -2231,7 +2441,7 @@ msgid "AppStream modules with defaults"
 msgstr "含默认值的 AppStream 模块"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:273
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:277
 msgid "Template"
 msgstr "模板"
 
@@ -2607,10 +2817,6 @@ msgid "Filter edited successfully"
 msgstr "已成功编辑过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
-msgid "AppStreams"
-msgstr "AppStreams"
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
 msgid "enabled module streams"
 msgstr "已启用模块流"
 
@@ -2734,14 +2940,21 @@ msgstr "必需"
 msgid "no child channels"
 msgstr "无子通道"
 
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:173
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
+msgid "include recommended"
+msgstr "包括建议项"
+
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:498
+#: ../html/src/manager/notifications/notification-messages.tsx:496
 #: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
 msgstr "类型"
 
@@ -2831,7 +3044,7 @@ msgstr "系统"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:667
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:92
+#: ../html/src/manager/systems/all-list.tsx:98
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr "软件包"
@@ -2839,7 +3052,7 @@ msgstr "软件包"
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
 #: ../html/src/manager/images/image-view.tsx:790
-#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/all-list.tsx:85
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr "补丁"
@@ -3480,7 +3693,7 @@ msgid "(obsolete)"
 msgstr "（过时）"
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/all-list.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
@@ -3503,11 +3716,6 @@ msgstr "您确定要删除选定的映像吗？"
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "您确定要删除选定的映像吗？（已选择 {count} 个映像）"
-
-#: ../html/src/manager/images/image-view.tsx:789
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
-msgid "Overview"
-msgstr "概览"
 
 #: ../html/src/manager/login/messages.tsx:14
 msgid ""
@@ -3646,7 +3854,7 @@ msgid ""
 msgstr "这会从指派到该项的所有系统中去除当前日程安排。"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:183
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Cancel affected actions?"
 msgstr "取消受影响的操作？"
@@ -3703,7 +3911,7 @@ msgid "Multi"
 msgstr "多"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:102
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:147
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:150
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
@@ -3712,10 +3920,10 @@ msgid "Maintenance schedule has been assigned to {count} system(s)"
 msgstr "已为 {count} 个系统指派维护日程安排"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:174
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:131
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:114
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:133
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:116
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:137
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:139
 msgid "Cancel affected actions"
 msgstr "取消受影响的操作"
 
@@ -3727,52 +3935,41 @@ msgstr "搜索系统"
 msgid "Current Schedule"
 msgstr "当前日程安排"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:139
 msgid "Calendar data"
 msgstr "日历数据"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:143
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:147
 msgid "Enter Url to ical file"
 msgstr "编辑 ical 文件的 URL"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:157
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:161
 msgid "Attach file"
 msgstr "附加文件"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:163
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:167
 msgid "Remove file"
 msgstr "去除文件"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:173
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:177
 msgid "Refresh data from url"
 msgstr "从 URL 刷新数据"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:178
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
 msgid "Confirm calendar refresh"
 msgstr "确认日历刷新"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:181
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "刷新日历会重安排所有受影响的操作。"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 msgid "Confirm if you want to proceed."
 msgstr "请确认是否继续。"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:443
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
-msgid "Schedule"
-msgstr "日程安排"
-
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:137
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:141
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:37
 msgid "Calendar"
 msgstr "日历"
@@ -3782,8 +3979,8 @@ msgstr "日历"
 msgid "Maintenance"
 msgstr "维护"
 
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:121
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:129
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:125
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:133
 msgid "Add Calendar"
 msgstr "添加日历"
 
@@ -4014,6 +4211,10 @@ msgstr "操作已成功添加到操作链"
 msgid "Playbook execution has been"
 msgstr "剧本的执行已"
 
+#: ../html/src/manager/minion/coco/coco-settings.tsx:66
+msgid "Settings"
+msgstr "设置"
+
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
 msgstr "应用配置通道 "
@@ -4094,7 +4295,7 @@ msgid "Applying the packages states has been "
 msgstr "应用软件包状态 "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:504
+#: ../html/src/manager/notifications/notification-messages.tsx:502
 msgid "Summary"
 msgstr "摘要"
 
@@ -4225,66 +4426,58 @@ msgstr "重试载入"
 msgid "Retry repo sync"
 msgstr "重试储存库同步"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:403
+#: ../html/src/manager/notifications/notification-messages.tsx:402
 msgid "Unread Messages"
 msgstr "未读消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:408
+#: ../html/src/manager/notifications/notification-messages.tsx:407
 msgid "All Messages"
 msgstr "所有消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:421
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "Filter by type"
 msgstr "按类型过滤"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 #: ../html/src/manager/notifications/notification-messages.tsx:440
-#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr "删除选定的消息"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:447
 #: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr "将选定消息标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:466
-#: ../html/src/manager/notifications/notification-messages.tsx:548
+#: ../html/src/manager/notifications/notification-messages.tsx:465
+#: ../html/src/manager/notifications/notification-messages.tsx:543
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:471
+#: ../html/src/manager/notifications/notification-messages.tsx:470
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:484
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:492
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:510
-msgid "Created"
-msgstr "创建日期"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:515
-msgid "Action"
-msgstr "操作"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:519
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:525
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:531
 msgid "Delete Notification"
 msgstr "删除通知"
 
@@ -4372,11 +4565,8 @@ msgid "Proxy FQDN"
 msgstr "代理 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid ""
-"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
-"any registered clients."
-msgstr ""
-"此代理的唯一且可由 DNS 解析的完全限定域名。必须与任何已注册的客户端均不同。"
+msgid "The unique, DNS-resolvable FQDN of this proxy."
+msgstr "此代理的唯一且可由 DNS 解析的完全限定域名。"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
@@ -4531,69 +4721,69 @@ msgstr "PEM 格式"
 msgid "Proxy SSL private key"
 msgstr "代理 SSL 私用密钥"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:88
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:89
 msgid "Execution time"
 msgstr "执行时间"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:152
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:155
 msgid "State:"
 msgstr "状态："
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:153
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:150
 msgid "Active"
 msgstr "活动"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:153
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:156
 msgid "Inactive"
 msgstr "非活动"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:157
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:160
 msgid "Test"
 msgstr "测试"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:158
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:161
 msgid "True"
 msgstr "True"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:162
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:165
 msgid "Action type"
 msgstr "操作类型"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:166
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:169
 msgid "Target type"
 msgstr "目标类型"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:170
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:173
 msgid "Target name"
 msgstr "目标名称"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:174
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:177
 msgid "Created by"
 msgstr "创建者"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:179
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:182
 msgid "Created at"
 msgstr "创建时间"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:185
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:188
 msgid "Quartz format string"
 msgstr "Quartz 格式字符串"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:230
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:233
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:237
 msgid "Delete Recurring Action Schedule"
 msgstr "删除重复性操作日程安排"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:231
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:234
 msgid "Are you sure you want to delete this schedule?"
 msgstr "您确定要删除此日程安排吗？"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:239
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:242
 msgid "State configuration for {name}"
 msgstr "{name} 的状态配置"
 
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:246
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:249
 msgid "Order"
 msgstr "排序"
 
@@ -4953,39 +5143,38 @@ msgid ""
 msgstr "使用此激活密钥注册的所有系统都将订阅所选子通道。"
 
 #: ../html/src/manager/systems/all-list.tsx:37
-#, fuzzy
 msgid " Systems "
-msgstr "系统"
+msgstr " 系统 "
 
-#: ../html/src/manager/systems/all-list.tsx:57
-#, fuzzy
+#: ../html/src/manager/systems/all-list.tsx:49
+msgid "Add System"
+msgstr "添加系统"
+
+#: ../html/src/manager/systems/all-list.tsx:63
 msgid "No Systems."
-msgstr "系统"
+msgstr "没有系统。"
 
-#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/systems/all-list.tsx:112
 #: ../html/src/manager/systems/list-filter.tsx:46
-#, fuzzy
 msgid "Extra Packages"
-msgstr "软件包"
+msgstr "额外的软件包"
 
-#: ../html/src/manager/systems/all-list.tsx:120
+#: ../html/src/manager/systems/all-list.tsx:126
 #: ../html/src/manager/systems/list-filter.tsx:47
-#, fuzzy
 msgid "Config Diffs"
-msgstr "配置 URL"
+msgstr "配置差异"
 
-#: ../html/src/manager/systems/all-list.tsx:135
+#: ../html/src/manager/systems/all-list.tsx:141
 #: ../html/src/manager/systems/list-filter.tsx:48
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "基础通道"
 
-#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/all-list.tsx:152
 #: ../html/src/manager/systems/list-filter.tsx:49
-#, fuzzy
 msgid "System Type"
-msgstr "储存类型"
+msgstr "系统类型"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
@@ -5118,6 +5307,25 @@ msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "正在进行引导，您确定要关闭此页面吗？"
 
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:73
+msgid "Confidential Computing Capability"
+msgstr "机密计算功能"
+
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:36
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
+msgid "Yes"
+msgstr "是"
+
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:37
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
+msgid "No"
+msgstr "否"
+
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr "清理操作超时。请检查计算机是否可访问。"
@@ -5177,116 +5385,90 @@ msgid "Confirm Deletion"
 msgstr "确认删除"
 
 #: ../html/src/manager/systems/list-filter.tsx:4
-#, fuzzy
 msgid "Manager Server"
-msgstr "Manager"
+msgstr "管理器服务器"
 
 #: ../html/src/manager/systems/list-filter.tsx:5
-#, fuzzy
 msgid "Physical"
-msgstr "物理功能"
+msgstr "物理"
 
 #: ../html/src/manager/systems/list-filter.tsx:12
-#, fuzzy
 msgid "Ansible Control Node"
 msgstr "Ansible 控制节点"
 
 #: ../html/src/manager/systems/list-filter.tsx:14
-#, fuzzy
 msgid "Container Build Host"
-msgstr "构建主机"
+msgstr "容器构建主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Foreign"
-msgstr ""
+msgstr "外部"
 
 #: ../html/src/manager/systems/list-filter.tsx:16
-#, fuzzy
 msgid "Management"
-msgstr "管理节点"
+msgstr "管理"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Monitored Host"
-msgstr ""
+msgstr "受监视主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
-#, fuzzy
 msgid "OS Image Build Host"
-msgstr "构建主机"
+msgstr "操作系统映像构建主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
 msgid "Salt"
-msgstr ""
+msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:20
-#, fuzzy
 msgid "Virtualization Host"
-msgstr "虚拟主机"
+msgstr "虚拟化主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:24
-#, fuzzy
 msgid "Actions scheduled"
-msgstr "已安排"
+msgstr "安排的操作"
 
 #: ../html/src/manager/systems/list-filter.tsx:25
-#, fuzzy
 msgid "All updates scheduled"
-msgstr "已安排通道更改。"
+msgstr "安排的所有更新"
 
 #: ../html/src/manager/systems/list-filter.tsx:27
-#, fuzzy
 msgid "Kickstart in progress"
-msgstr " 正在进行"
+msgstr "正在进行 Kickstart"
 
 #: ../html/src/manager/systems/list-filter.tsx:28
-#, fuzzy
 msgid "System is up to date"
-msgstr "映像是最新的"
+msgstr "系统是最新的"
 
 #: ../html/src/manager/systems/list-filter.tsx:29
 msgid "System not checking in"
-msgstr ""
+msgstr "系统未在签入"
 
 #: ../html/src/manager/systems/list-filter.tsx:30
-#, fuzzy
 msgid "System not entitled"
-msgstr "系统已锁定"
+msgstr "系统未被赋权"
 
 #: ../html/src/manager/systems/list-filter.tsx:31
 msgid "System requires reboot"
-msgstr ""
+msgstr "系统需要重引导"
 
 #: ../html/src/manager/systems/list-filter.tsx:32
-#, fuzzy
 msgid "Updates available"
-msgstr "有软件包更新可用"
-
-#: ../html/src/manager/systems/list-filter.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
-msgid "Yes"
-msgstr "是"
-
-#: ../html/src/manager/systems/list-filter.tsx:37
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
-msgid "No"
-msgstr "否"
+msgstr "有可用更新"
 
 #: ../html/src/manager/systems/list-filter.tsx:42
-#, fuzzy
 msgid "System Kind"
-msgstr "系统名称"
+msgstr "系统类型"
 
 #: ../html/src/manager/systems/list-filter.tsx:50
 msgid "Requires Reboot"
-msgstr ""
+msgstr "需要重引导"
 
 #: ../html/src/manager/systems/list-filter.tsx:51
-#, fuzzy
 msgid "Registered Days"
-msgstr "已注册的系统"
+msgstr "已注册天数"
 
 #: ../html/src/manager/systems/list-filter.tsx:52
-#, fuzzy
 msgid "Groups"
 msgstr "组"
 
@@ -5317,9 +5499,8 @@ msgid "New Proxy"
 msgstr "新代理"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
-#, fuzzy
 msgid "Manage selected system set"
-msgstr "将选定消息标记为已读"
+msgstr "管理选定系统集"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "system selected"
@@ -5330,9 +5511,8 @@ msgid "systems selected"
 msgstr "个系统已选定"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:35
-#, fuzzy
 msgid "Clear selected system set"
-msgstr "删除选定的消息"
+msgstr "清除选定系统集"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
@@ -5574,13 +5754,6 @@ msgstr "CPU 体系结构"
 msgid "CPU Sockets"
 msgstr "CPU 插槽数"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
-msgid "N/A"
-msgstr ""
-
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:103
 msgid "RAM (Mb)"
 msgstr "RAM (Mb)"
@@ -5709,39 +5882,39 @@ msgstr "必须指定正整数"
 msgid "Virtual CPU Count"
 msgstr "虚拟 CPU 计数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:193
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:195
 msgid "Enable UEFI"
 msgstr "启用 UEFI"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:198
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:202
 msgid "UEFI firmware path"
 msgstr "UEFI 固件路径"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:205
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:209
 msgid "NVRAM template path"
 msgstr "NVRAM 模板路径"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:217
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:221
 msgid "Auto-installation Profile"
 msgstr "自动安装配置文件"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:233
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:237
 msgid "Kernel options"
 msgstr "内核选项"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:246
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:250
 msgid "Cluster support is disabled since VirtualDomain resource agent "
 msgstr "已禁用群集支持，因为 VirtualDomain 资源代理 "
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:254
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:258
 msgid "Define as a cluster resource"
 msgstr "定义为群集资源"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:260
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:264
 msgid "Path to the cluster shared folder for VM definitions"
 msgstr "群集 VM 定义共享文件夹路径"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:292
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Graphics"
 msgstr "显卡"
 
@@ -5926,7 +6099,7 @@ msgid "Networks"
 msgstr "网络"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:457
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
 msgid "Clear Fields"
 msgstr "清除字段"
@@ -6048,37 +6221,37 @@ msgstr "VLAN 标记"
 msgid "Integer between 0 and 4095"
 msgstr "0 到 4095 之间的整数"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:388
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:390
 msgid "VLAN tags trunking"
 msgstr "VLAN 标记中继"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:396
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:397
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:400
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:401
 msgid "NAT IPv4 range"
 msgstr "NAT IPv4 范围"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:408
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
 msgid "Both values has to be IPv4 addresses"
 msgstr "两个值都必须为 IPv4 地址"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:413
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:416
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:417
 msgid "NAT port range"
 msgstr "NAT 端口范围"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:426
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:430
 msgid "Both values has to be positive integers"
 msgstr "两个值都必须为正整数"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:434
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
 msgid "Addressing"
 msgstr "寻址"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:436
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
 msgid "Enable IPv6"
 msgstr "启用 IPv6"
 
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:442
 msgid "Domain name"
 msgstr "域名"
 
@@ -6766,9 +6939,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Name:"
 #~ msgstr "名称："
-
-#~ msgid "Description:"
-#~ msgstr "说明："
 
 #~ msgid "Available cluster providers"
 #~ msgstr "可用的群集提供程序"

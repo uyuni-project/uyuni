@@ -20,10 +20,10 @@ LABEL org.opencontainers.image.description="${PRODUCT} Hub XML-RPC API image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.0.4
+LABEL org.opencontainers.image.version=5.0.6
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-hub-xmlrpc-api:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
-CMD ["/usr/bin/hub-xmlrpc-api"]
+CMD update-ca-certificates && hub-xmlrpc-api

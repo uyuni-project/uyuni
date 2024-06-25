@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:54:14 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-0
+  * Drop dependency to spacewalk-backend-config-files,
+    spacewalk-backend-config-files-common,
+    spacewalk-backend-config-files-tool
+  * Remove dependency on spacewalk-backend-applet
+
+-------------------------------------------------------------------
+Fri May 03 14:16:07 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2-0
+  * Drop dependency to spacewalk-backend-config-files,
+    spacewalk-backend-config-files-common,
+    spacewalk-backend-config-files-tool
+
+-------------------------------------------------------------------
 Tue Jan 16 08:23:48 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1

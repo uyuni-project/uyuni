@@ -74,17 +74,25 @@ Feature: Retracted patches
 
   Scenario: Retracted packages in the patch detail
     When I follow the left menu "Patches > Patch List > All"
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     And I follow "rute-dummy-0815"
     Then I should see a "Status: Retracted" text
     When I go back
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     And I follow "rute-dummy-0816"
     Then I should see a "Status: Stable" text
     When I go back
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     And I follow "rute-dummy-0817"
     Then I should see a "Status: Retracted" text
 
   Scenario: Retracted packages in the patches list
     When I follow the left menu "Patches > Patch List > All"
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     Then the table row for "rute-dummy-0815" should contain "retracted" icon
     And the table row for "rute-dummy-0816" should not contain "retracted" icon
     And the table row for "rute-dummy-0817" should contain "retracted" icon

@@ -1,0 +1,18 @@
+proxy.jade.spacewalk-toolbar-h1
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{' System Set Manager Overview '}
+    a(href="/docs/#{docsLocale}/reference/systems/ssm-overview.html", target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link
+
+!{tabs}
+#coco-settings
+
+script(type="text/javascript").
+    window.csrfToken = "#{csrf_token}";
+    window.systemSupport = !{systemSupport};
+    window.availableEnvironmentTypes = !{availableEnvironmentTypes};
+
+script(type='text/javascript').
+    spaImportReactPage('systems/coco-settings')
+        .then(function(module) { module.renderer('coco-settings') });

@@ -1,0 +1,132 @@
+#!/bin/bash
+
+# Copyright (c) 2019--2024 SUSE Linux GmbH
+# Copyright (c) 2024 SUSE LLC
+#
+# This file is part of uyuni-storage-setup.
+#
+# uyuni-storage-setup is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 3 of the License
+#
+# uyuni-storage-setup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program
+
+. /usr/lib/susemanager/susemanager-storage-setup-functions.sh || exit 1
+
+usage() {
+    echo "Usage: $0 <storage-disk-device> [<database-disk-device>]"
+    echo
+    echo "If <database-disk-device> is specified, the given disk device will be set up"
+    echo "as data base storage (recommended). If omitted, <storage-disk-device> will"
+    echo "be used for both channel and data base storage."
+    echo
+}
+
+case "$1" in
+  "-h"|"--help"|"")
+    usage
+    exit 0
+    ;;
+esac
+
+if [ ! $UID = 0 ];then
+    die "You must be root to run this script."
+fi
+
+if [ ! -x /usr/bin/mgradm ]; then
+    die "$0 support only SUSE Manager 5.0 or later"
+fi
+
+storage_disk=$(linux_device $1)
+storage_fs=xfs
+storage_location="/var/lib/containers/storage/volumes"
+storage_location_tmp="/var/lib/containers/storage/manager_storage_tmp"
+
+if [ -z "$storage_disk" ] || [ ! -b "$storage_disk" ]; then
+    usage
+    die "Given storage disk does not exist or is not a block device."
+fi
+check_device_empty $storage_disk
+if is_btrfs_subvolume $storage_location; then
+    umount_subvolume $storage_location
+fi
+check_mountpoint $storage_location
+
+if [ -n "$2" ]; then
+    database_disk=$(linux_device $2)
+    if [ ! -b "$database_disk" ]; then
+        usage
+        die "Given storage disk does not exist or is not a block device."
+    fi
+    database_location="/var/lib/containers/storage/volumes/var-pgsql"
+    database_location_tmp="/var/lib/containers/storage/pgsql_storage_tmp"
+    check_device_empty $database_disk
+    if is_btrfs_subvolume $database_location; then
+        umount_subvolume $database_location
+    fi
+    check_mountpoint $database_location
+else
+    database_disk=$storage_disk
+fi
+
+if systemctl -q is-active uyuni-server.service >/dev/null ; then
+    spacewalk_running=yes
+    info "Stop spacewalk services"
+    mgradm stop
+fi
+
+info "Checking disk for content signature"
+check_content_signature $storage_disk
+
+info "Creating partition on disk $storage_disk"
+create_partition $storage_disk
+
+info "Creating $storage_fs filesystem"
+create_filesystem $storage_disk $storage_fs
+
+info "Mounting storage at $storage_location_tmp"
+mount_storage $storage_disk $storage_location_tmp
+
+if [ "$database_disk" != "$storage_disk" ]; then
+    info "Checking data base disk for content signature"
+    check_content_signature $database_disk
+
+    info "Creating partition on disk $database_disk"
+    create_partition $database_disk
+
+    info "Creating $storage_fs filesystem"
+    create_filesystem $database_disk $storage_fs
+
+    info "Mounting storage at $database_location_tmp"
+    mount_storage $database_disk $database_location_tmp
+fi
+
+info "Syncing SUSE Manager Server directories to storage disk(s)"
+move_storage /var/lib/containers/storage/volumes/ $storage_location_tmp
+if [ "$database_disk" != "$storage_disk" ]; then
+    move_storage $storage_location_tmp/var-pgsql/ $database_location_tmp
+fi
+
+info "Creating entry in /etc/fstab"
+update_fstab $storage_disk $storage_location
+if [ "$database_disk" != "$storage_disk" ]; then
+    update_fstab $database_disk $database_location
+fi
+
+remount_storage $storage_disk $storage_location_tmp $storage_location
+if [ "$database_disk" != "$storage_disk" ]; then
+    remount_storage $database_disk $database_location_tmp $database_location
+fi
+
+if [ "$spacewalk_running" ]; then
+    info "Start SUSE Manager services"
+    mgradm start
+fi
+
+exit 0

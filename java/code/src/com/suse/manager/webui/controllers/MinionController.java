@@ -43,6 +43,7 @@ import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
@@ -51,10 +52,12 @@ import com.suse.utils.Json;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -78,6 +81,7 @@ public class MinionController {
         initStatesRoutes(jade);
         initSSMRoutes(jade);
         initPTFRoutes(jade);
+        initCoCoRoutes(jade);
     }
 
     private static void initSystemRoutes(JadeTemplateEngine jade) {
@@ -137,6 +141,10 @@ public class MinionController {
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmHighstate))), jade);
         get("/manager/systems/ssm/proxy",
                 withCsrfToken(withDocsLocale(withUser(MinionController::ssmProxy))), jade);
+        get("/manager/systems/ssm/coco/settings",
+                withCsrfToken(withDocsLocale(withUser(MinionController::ssmCoCoSettings))), jade);
+        get("/manager/systems/ssm/coco/schedule",
+            withCsrfToken(withDocsLocale(withUser(MinionController::ssmCoCoSchedule))), jade);
     }
 
     private static void initPTFRoutes(JadeTemplateEngine jade) {
@@ -146,6 +154,13 @@ public class MinionController {
             withCsrfToken(withDocsLocale(withUserAndServer(MinionController::ptfListRemove))), jade);
         get("/manager/systems/details/ptf/install",
             withCsrfToken(withDocsLocale(withUserAndServer(MinionController::ptfInstall))), jade);
+    }
+
+    private static void initCoCoRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/coco/settings",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::cocoSettings))), jade);
+        get("/manager/systems/details/coco/list",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::cocoListScans))), jade);
     }
 
     /**
@@ -587,4 +602,97 @@ public class MinionController {
         return new ModelAndView(data, "templates/minion/ptf-install.jade");
     }
 
+    /**
+     * Handler for the page to list confidential computing settings.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView cocoSettings(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        addActionChains(user, data);
+        addCoCoMetadata(data);
+        return new ModelAndView(data, "templates/minion/coco-settings.jade");
+    }
+
+    /**
+     * Handler for the page to list confidential computing attestation scans.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView cocoListScans(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        addActionChains(user, data);
+        return new ModelAndView(data, "templates/minion/coco-scans-list.jade");
+    }
+
+    private static void addCoCoMetadata(Map<String, Object> data) {
+        // Confidential computing environment types. Using linked hash map to keep the enum order
+        Map<String, String> environmentMap = new LinkedHashMap<>();
+        Stream.of(CoCoEnvironmentType.values())
+            .forEach(e -> environmentMap.put(e.name(), e.getDescription()));
+
+        data.put("availableEnvironmentTypes", Json.GSON.toJson(environmentMap));
+    }
+
+    /**
+     * Handler for the ssm confidential computing settings page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ssmCoCoSettings(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+        data.put("systemSupport", Json.GSON.toJson(
+            MinionServerFactory.lookupByIds(SsmManager.listServerIds(user))
+                .map(minionServer -> Map.of(
+                    "id", minionServer.getId(),
+                    "name", minionServer.getName(),
+                    "cocoSupport", minionServer.doesOsSupportCoCoAttestation()
+                ))
+                .collect(Collectors.toList())
+        ));
+        addCoCoMetadata(data);
+
+        return new ModelAndView(data, "templates/ssm/coco-ssm-settings.jade");
+    }
+
+    /**
+     * Handler for the ssm confidential computing schedule page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ssmCoCoSchedule(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+        data.put("systemSupport", Json.GSON.toJson(
+            MinionServerFactory.lookupByIds(SsmManager.listServerIds(user))
+                .map(minionServer -> Map.of(
+                    "id", minionServer.getId(),
+                    "name", minionServer.getName(),
+                    "cocoSupport", minionServer.doesOsSupportCoCoAttestation()
+                ))
+                .collect(Collectors.toList())
+        ));
+        addActionChains(user, data);
+
+        return new ModelAndView(data, "templates/ssm/coco-ssm-schedule.jade");
+    }
 }

@@ -89,8 +89,8 @@ export const DateTimePicker = (props: Props) => {
 
   // We use localizedMoment to clone the date so we don't modify the original
   const browserTimezoneValue = localizedMoment(props.value)
-    // We convert the date to the users configured timezone because this is what we want to show the user
-    .tz(localizedMoment.userTimeZone)
+    // We convert the date to the user's or server's configured timezone because this is what we want to show the user
+    .tz(timeZone)
     // The react-datepicker component only shows the browsers local timezone and will convert any date to that
     // before showing so since we already got the date with the right values we now pretend the date we have is in
     // the browsers local timezone but without changing its values. This will prevent the react component from
@@ -119,7 +119,12 @@ export const DateTimePicker = (props: Props) => {
       <div className="input-group">
         {hideDatePicker ? null : (
           <>
-            <span key="calendar" className="input-group-addon" data-picker-type="date" onClick={() => openDatePicker()}>
+            <span
+              key="calendar"
+              className="input-group-addon input-group-text"
+              data-picker-type="date"
+              onClick={() => openDatePicker()}
+            >
               &nbsp;<i className="fa fa-calendar"></i>
             </span>
             <ReactDatePicker
@@ -162,7 +167,7 @@ export const DateTimePicker = (props: Props) => {
           <>
             <span
               key="clock"
-              className="input-group-addon no-right-border"
+              className="input-group-addon input-group-text no-right-border"
               data-picker-type="time"
               onClick={openTimePicker}
             >
@@ -223,7 +228,7 @@ export const DateTimePicker = (props: Props) => {
             />
           </>
         )}
-        <span className="input-group-addon" key="tz">
+        <span className="input-group-addon input-group-text" key="tz">
           {timeZone}
         </span>
       </div>

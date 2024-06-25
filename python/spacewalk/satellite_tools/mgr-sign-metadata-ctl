@@ -156,6 +156,7 @@ if [[  $ACTION = "enable" ]]; then
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_SALT_EXPORT_FILE}."
         chmod 644 $GPG_SALT_EXPORT_FILE
         gpg --batch --export --armor --output $GPG_ARMOR_SALT_EXPORT_FILE $ENABLE_KEYID
+        chmod 644 ${GPG_ARMOR_SALT_EXPORT_FILE}
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_ARMOR_SALT_EXPORT_FILE}."
     fi
 

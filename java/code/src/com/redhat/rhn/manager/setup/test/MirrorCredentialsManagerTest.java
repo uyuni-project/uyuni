@@ -32,6 +32,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.junit.jupiter.api.AfterEach;
@@ -170,8 +171,8 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         ChannelFamilyTest.ensureChannelFamilyExists(user, "SMP", "SUSE Manager Proxy");
 
         // Mock the content sync manager to return a known set of subscriptions
-        credsManager = new MirrorCredentialsManager(new CloudPaygManager(), new ContentSyncManager() {
-
+        CloudPaygManager cloudPaygManager = new TestCloudPaygManagerBuilder().build();
+        ContentSyncManager contentSyncManager = new ContentSyncManager() {
             @Override
             public List<SCCSubscriptionJson> updateSubscriptions(ContentSyncSource source) throws ContentSyncException {
                 return List.of(
@@ -189,7 +190,9 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
                     )
                 );
             }
-        });
+        };
+
+        credsManager = new MirrorCredentialsManager(cloudPaygManager, contentSyncManager);
 
         List<SubscriptionDto> subscriptions = credsManager.getSubscriptions(creds, request, true);
 

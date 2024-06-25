@@ -61,8 +61,9 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 
-
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -96,11 +97,13 @@ public class AdminConfigurationHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
+    private final AttestationManager attestationManager = new AttestationManager();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper =
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -115,7 +118,8 @@ public class AdminConfigurationHandlerTest extends BaseHandlerTestCase {
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
     private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper,
-                systemEntitlementManager, systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER);
+            systemEntitlementManager, systemManager, serverGroupManager, GlobalInstanceHolder.PAYG_MANAGER,
+            GlobalInstanceHolder.ATTESTATION_MANAGER);
     private MigrationManager migrationManager = new MigrationManager(serverGroupManager);
     private OrgHandler orgHandler = new OrgHandler(migrationManager);
     private ServerGroupHandler serverGroupHandler = new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager);

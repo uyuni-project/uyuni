@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 13 10:57:19 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-1
+  * Align changelog entries
+
+-------------------------------------------------------------------
 Mon Jan 29 11:43:30 CET 2024 - rosuna@suse.com
 
 - version 5.0.2-1
@@ -20,7 +26,7 @@ Fri Dec 15 16:54:45 CET 2023 - rosuna@suse.com
 Wed Nov 01 20:56:07 CET 2023 - marina.latini@suse.com
 
 - version 4.4.5-1
-  *  Use bundle CA certificate in rhnpush
+  *  Use bundle CA certificate in rhnpush (bsc#1222731)
 
 -------------------------------------------------------------------
 Mon Sep 18 14:13:24 CEST 2023 - rosuna@suse.com

@@ -8,27 +8,33 @@ import subprocess
 import sys
 import time
 import traceback
+import xmlrpc.client
 
 from optparse import OptionParser
+from string import Template
+from typing import List
+
 from rhn import rhnLockfile
 from spacewalk.server import rhnSQL
-from spacewalk.common.rhnLog import initLOG, log_time, log_clean
-from string import Template
-from uyuni.common import usix, rhnLib, notificationUtils
-from uyuni.common.context_managers import cfg_component
+from spacewalk.common.rhnLog import initLOG, log_time, log_clean, log_debug
+from spacewalk.common.rhnConfig import cfg_component
+
+from uyuni.common import usix, rhnLib
+
 
 sys.path.append("/usr/share/susemanager")
 
 rhnSQL.initDB()
 
-with cfg_component('server.susemanager') as CFG:
-    basepath = CFG.MOUNT_POINT or '/var/spacewalk'
-LOCK  = None
-BETA  = None
-logfile = '/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log'
+with cfg_component("server.susemanager") as CFG:
+    basepath = CFG.MOUNT_POINT or "/var/spacewalk"
+LOCK = None
+BETA = None
+logfile = "/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log"
 UYUNI = None
 
-_sql_synced_proucts = rhnSQL.Statement("""
+_sql_synced_proucts = rhnSQL.Statement(
+    """
    SELECT sp.product_id id, spsr.root_product_id
      FROM suseProducts sp
      JOIN suseProductSCCRepository spsr ON spsr.product_id = sp.id
@@ -36,7 +42,8 @@ LEFT JOIN rhnChannel c ON spsr.channel_label = c.label
     WHERE spsr.mandatory = 'Y'
  GROUP BY sp.id, spsr.root_product_id
    HAVING COUNT(c.label) = COUNT(spsr.mandatory)
-""")
+"""
+)
 
 _sql_find_root_channel_label = """
 SELECT label
@@ -48,7 +55,7 @@ WHERE id IN (
     JOIN suseProducts p ON pc.product_id = p.id
    WHERE p.product_id IN ( {0} )
 )
-""";
+"""
 
 _sql_filter_root_channel_label = """
 select c.label
@@ -57,14 +64,14 @@ select c.label
   join rhnchannel c on spc.channel_id = c.id
  where sp.product_id in ( {0} )
    and c.label in ( {1} );
-""";
+"""
 
 _sql_find_custom_parent_channel_labels = """
 SELECT label
   FROM rhnChannel
  WHERE parent_channel IS NULL
    AND org_id IS NOT NULL
-""";
+"""
 
 _sql_find_pkgs_all = """
 SELECT distinct
@@ -142,7 +149,7 @@ SELECT distinct
    AND (c.parent_channel = full_list.root OR c.id = full_list.root)
    AND pn.name = :pkgname
 ORDER BY pkg.id
-""";
+"""
 
 _sql_find_pkgs_custom = """
 SELECT DISTINCT
@@ -183,7 +190,7 @@ SELECT DISTINCT
    AND (c.parent_channel = full_list.root OR c.id = full_list.root)
    AND pn.name = :pkgname
 ORDER BY pkg.id
-""";
+"""
 
 
 _find_mand_modified_repos = """
@@ -202,14 +209,14 @@ join (
      having COUNT(c.label) = COUNT(spsr.mandatory)
    ) X on X.product_id = p.product_id
 where X.product_id in ( %s )
-""";
+"""
 
 _find_modified_repos_by_basechannel = """
 SELECT c.label, c.last_synced,
        (SELECT 1 FROM DUAL WHERE c.last_synced > :filemod) AS newer
   FROM rhnchannel c
  WHERE (SELECT id FROM rhnchannel WHERE label = :basechannel) IN (c.parent_channel, c.id);
-""";
+"""
 
 _lookupToolsProductIds = """
 SELECT sp.product_id
@@ -218,7 +225,8 @@ SELECT sp.product_id
  WHERE cf.label = 'SLE-M-T'
     OR cf.label = 'SLE-M-T-BETA'
     OR cf.label = 'SLE-M-T-ALPHA';
-""";
+"""
+
 
 def releaseLOCK():
     global LOCK
@@ -229,77 +237,159 @@ def releaseLOCK():
 
 def log_error(msg):
     frame = traceback.extract_stack()[-2]
-    log_clean(0, "{0}: {1}.{2}({3}) - {4}".format(log_time(), frame[0], frame[2], frame[1], msg))
+    log_clean(
+        0,
+        "{0}: {1}.{2}({3}) - {4}".format(log_time(), frame[0], frame[2], frame[1], msg),
+    )
     sys.stderr.write("{0}\n".format(msg))
 
 
 def log(msg, level=0):
     frame = traceback.extract_stack()[-2]
-    log_clean(level, "{0}: {1}.{2}({3}) - {4}".format(log_time(), frame[0], frame[2], frame[1], msg))
+    log_clean(
+        level,
+        "{0}: {1}.{2}({3}) - {4}".format(log_time(), frame[0], frame[2], frame[1], msg),
+    )
     if level < 1:
         sys.stdout.write("{0}\n".format(msg))
+
+
+def create_bootstrap_failure_notification(label, messages: List[str]):
+    """Create a CreateBoostrapRepoFailed notification over XMLRPC."""
+    notification_type = "CreateBootstrapRepoFailed"
+    with cfg_component("java") as cfg:
+        if (
+            cfg.notifications_type_disabled
+            and notification_type in cfg.notifications_type_disabled.split(",")
+        ):
+            return None
+
+    message = "\n".join(messages)
+    # see TaskoXmlRpcHandler.java for available methods
+    with xmlrpc.client.ServerProxy("http://localhost:2829/RPC2") as proxy:
+        log_debug(2, f"Calling createBootstrapRepoFailedNotification({label}, {message})")
+        return proxy.tasko.createBootstrapRepoFailedNotification(label, message)
+
 
 def isBeta():
     global BETA
     global UYUNI
     if BETA is None:
-        with cfg_component('java') as CFG:
-            BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
-            UYUNI = CFG.PRODUCT_TREE_TAG == 'Uyuni'
+        with cfg_component("java") as CFG:
+            BETA = CFG.PRODUCT_TREE_TAG == "Beta"
+            UYUNI = CFG.PRODUCT_TREE_TAG == "Uyuni"
     return BETA
+
 
 def isUyuni():
     global BETA
     global UYUNI
     if UYUNI is None:
-        with cfg_component('java') as CFG:
-            BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
-            UYUNI = CFG.PRODUCT_TREE_TAG == 'Uyuni'
+        with cfg_component("java") as CFG:
+            BETA = CFG.PRODUCT_TREE_TAG == "Beta"
+            UYUNI = CFG.PRODUCT_TREE_TAG == "Uyuni"
     return UYUNI
+
 
 def cli():
 
     usage = "usage: %prog [options] [additional_pkg1 additional_pkg2 ...]"
-    parser = OptionParser(usage=usage, description=""
-            "Tool to generate repositories containing the required software to "
-            "register at SUSE Manager Server. Logs are written to "
-            "/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log .")
+    parser = OptionParser(
+        usage=usage,
+        description=""
+        "Tool to generate repositories containing the required software to "
+        "register at SUSE Manager Server. Logs are written to "
+        "/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log .",
+    )
 
-    parser.add_option('-n', '--dryrun', action='store_true', dest='dryrun',
-                      help='Dry run. Show only changes - do not execute them')
-    parser.add_option('-i', '--interactive', action='store_true', dest='interactive',
-                      help='Interactive mode (default)')
-    parser.add_option('-l', '--list', action='store_true', dest='list',
-                      help='list available distributions')
-    parser.add_option('-c', '--create', action='store', dest='create',
-                      help='create bootstrap repo for given distribution label')
-    parser.add_option('-a', '--auto', action='store_true', dest='auto',
-                      help='Automatic Mode. Generate all available bootstrap repos')
-    parser.add_option('', '--datamodule', action="store", dest='datamodule',
-                      help='Use an own datamodule (Default: mgr_bootstrap_data)')
-    parser.add_option('-d', '--debug', action='store_true', dest='debug',
-                      help='Enable debug mode')
+    parser.add_option(
+        "-n",
+        "--dryrun",
+        action="store_true",
+        dest="dryrun",
+        help="Dry run. Show only changes - do not execute them",
+    )
+    parser.add_option(
+        "-i",
+        "--interactive",
+        action="store_true",
+        dest="interactive",
+        help="Interactive mode (default)",
+    )
+    parser.add_option(
+        "-l",
+        "--list",
+        action="store_true",
+        dest="list",
+        help="list available distributions",
+    )
+    parser.add_option(
+        "-c",
+        "--create",
+        action="store",
+        dest="create",
+        help="create bootstrap repo for given distribution label",
+    )
+    parser.add_option(
+        "-a",
+        "--auto",
+        action="store_true",
+        dest="auto",
+        help="Automatic Mode. Generate all available bootstrap repos",
+    )
+    parser.add_option(
+        "",
+        "--datamodule",
+        action="store",
+        dest="datamodule",
+        help="Use an own datamodule (Default: mgr_bootstrap_data)",
+    )
+    parser.add_option(
+        "-d", "--debug", action="store_true", dest="debug", help="Enable debug mode"
+    )
 
-
-    parser.add_option('-f', '--flush', action='store_true', dest='flush',
-                      help='when used in conjuction with --create, deletes the target repository before creating it (default)')
-    parser.add_option('--no-flush', action='store_true', dest='noflush',
-                      help='when used in conjuction with --create, prevent deletion of the target repository before creating it')
-    parser.add_option('--force', action='store_true', dest='force',
-                      help='Force creation even when not all required channels are available')
-    parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
-                      help='Take custom channels into account when searching for newest package versions')
-    parser.add_option('', '--with-parent-channel', action="store", dest='parentchannel',
-                      help='use child channels below this parent')
+    parser.add_option(
+        "-f",
+        "--flush",
+        action="store_true",
+        dest="flush",
+        help="when used in conjuction with --create, deletes the target repository before creating it (default)",
+    )
+    parser.add_option(
+        "--no-flush",
+        action="store_true",
+        dest="noflush",
+        help="when used in conjuction with --create, prevent deletion of the target repository before creating it",
+    )
+    parser.add_option(
+        "--force",
+        action="store_true",
+        dest="force",
+        help="Force creation even when not all required channels are available",
+    )
+    parser.add_option(
+        "",
+        "--with-custom-channels",
+        action="store_true",
+        dest="usecustomchannels",
+        help="Take custom channels into account when searching for newest package versions",
+    )
+    parser.add_option(
+        "",
+        "--with-parent-channel",
+        action="store",
+        dest="parentchannel",
+        help="use child channels below this parent",
+    )
 
     options, args = parser.parse_args()
 
     if options.debug:
         initLOG(logfile, level=5)
     else:
-        with cfg_component('server.susemanager') as CFG:
+        with cfg_component("server.susemanager") as CFG:
             initLOG(logfile, CFG.DEBUG or 1)
-    with cfg_component('server.susemanager') as CFG:
+    with cfg_component("server.susemanager") as CFG:
         flush = CFG.BOOTSTRAP_REPO_FLUSH
     if options.flush:
         flush = options.flush
@@ -316,18 +406,55 @@ def cli():
         log("Is a Uyuni installation", 1)
         blacklistedPids = list_products_needs_tools_subscription()
 
-    with cfg_component('server.susemanager') as CFG:
+    with cfg_component("server.susemanager") as CFG:
         modulename = options.datamodule or CFG.BOOTSTRAP_REPO_DATAMODULE
     try:
         bootstrap_data = __import__(modulename)
         for label in bootstrap_data.DATA:
-            if 'PDID' in bootstrap_data.DATA[label]:
-                if not isinstance(bootstrap_data.DATA[label]['PDID'], usix.ListType):
-                    bootstrap_data.DATA[label]['PDID'] = list(map(str, [x for x in [int(bootstrap_data.DATA[label]['PDID'])] if x not in blacklistedPids]))
+            if "PDID" in bootstrap_data.DATA[label]:
+                if not isinstance(bootstrap_data.DATA[label]["PDID"], usix.ListType):
+                    bootstrap_data.DATA[label]["PDID"] = list(
+                        map(
+                            str,
+                            [
+                                x
+                                for x in [int(bootstrap_data.DATA[label]["PDID"])]
+                                if x not in blacklistedPids
+                            ],
+                        )
+                    )
                 else:
-                    bootstrap_data.DATA[label]['PDID'] = list(map(str, [x for x in [int(pdid) for pdid in bootstrap_data.DATA[label]['PDID']] if x not in blacklistedPids]))
-                if isBeta() and 'BETAPDID' in bootstrap_data.DATA[label]:
-                    bootstrap_data.DATA[label]['PDID'].extend(list(map(str, [x for x in [int(pdid) for pdid in bootstrap_data.DATA[label]['BETAPDID']] if x not in blacklistedPids])))
+                    bootstrap_data.DATA[label]["PDID"] = list(
+                        map(
+                            str,
+                            [
+                                x
+                                for x in [
+                                    int(pdid)
+                                    for pdid in bootstrap_data.DATA[label]["PDID"]
+                                ]
+                                if x not in blacklistedPids
+                            ],
+                        )
+                    )
+                if isBeta() and "BETAPDID" in bootstrap_data.DATA[label]:
+                    bootstrap_data.DATA[label]["PDID"].extend(
+                        list(
+                            map(
+                                str,
+                                [
+                                    x
+                                    for x in [
+                                        int(pdid)
+                                        for pdid in bootstrap_data.DATA[label][
+                                            "BETAPDID"
+                                        ]
+                                    ]
+                                    if x not in blacklistedPids
+                                ],
+                            )
+                        )
+                    )
 
     except ImportError as e:
         log_error("Unable to load module '%s'" % modulename)
@@ -339,9 +466,10 @@ def cli():
 
     return options, args, bootstrap_data
 
+
 def list_products_needs_tools_subscription():
     h = rhnSQL.Statement(_lookupToolsProductIds)
-    return [x['product_id'] for x in rhnSQL.fetchall_dict(h) or []]
+    return [x["product_id"] for x in rhnSQL.fetchall_dict(h) or []]
 
 
 def find_root_channel_labels(pdids):
@@ -350,12 +478,16 @@ def find_root_channel_labels(pdids):
 
     :return: list of root channel labels
     """
-    h = rhnSQL.Statement( _sql_find_root_channel_label.format(pdids))
-    root_labels = [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
+    h = rhnSQL.Statement(_sql_find_root_channel_label.format(pdids))
+    root_labels = [x["label"] for x in rhnSQL.fetchall_dict(h) or []]
     log("Root Labels: {}".format(root_labels), 3)
     if len(root_labels) > 1:
-        h = rhnSQL.Statement( _sql_filter_root_channel_label.format(pdids, ', '.join(["'{}'".format(x) for x in root_labels])))
-        filtered_root_labels = [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
+        h = rhnSQL.Statement(
+            _sql_filter_root_channel_label.format(
+                pdids, ", ".join(["'{}'".format(x) for x in root_labels])
+            )
+        )
+        filtered_root_labels = [x["label"] for x in rhnSQL.fetchall_dict(h) or []]
         log("Filtered Root Labels: {}".format(filtered_root_labels), 3)
         if len(filtered_root_labels) >= 1:
             return filtered_root_labels
@@ -371,7 +503,7 @@ def find_custom_parent_channel_labels():
     :return: list of custom parent channel labels
     """
     h = rhnSQL.Statement(_sql_find_custom_parent_channel_labels)
-    return [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
+    return [x["label"] for x in rhnSQL.fetchall_dict(h) or []]
 
 
 def list_labels(mgr_bootstrap_data, force=False, do_print=True):
@@ -381,16 +513,36 @@ def list_labels(mgr_bootstrap_data, force=False, do_print=True):
     :return:
     """
     label_map = {}
-    synced_products = list(map(str, [x['id'] for x in rhnSQL.fetchall_dict(_sql_synced_proucts) or []]))
+    synced_products = list(
+        map(str, [x["id"] for x in rhnSQL.fetchall_dict(_sql_synced_proucts) or []])
+    )
     custom_parent_channels = find_custom_parent_channel_labels()
     label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.keys()):
-        if ('PDID' in mgr_bootstrap_data.DATA[label] and mgr_bootstrap_data.DATA[label]['PDID'] and
-            (all(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID']) or
-                (force and any(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID'])))):
+        if (
+            "PDID" in mgr_bootstrap_data.DATA[label]
+            and mgr_bootstrap_data.DATA[label]["PDID"]
+            and (
+                all(
+                    elem in synced_products
+                    for elem in mgr_bootstrap_data.DATA[label]["PDID"]
+                )
+                or (
+                    force
+                    and any(
+                        elem in synced_products
+                        for elem in mgr_bootstrap_data.DATA[label]["PDID"]
+                    )
+                )
+            )
+        ):
 
-            if label in ('RHEL8-x86_64', 'RHEL9-x86_64'):
-                if not connected_to_rhel_cdn(find_root_channel_labels(', '.join(mgr_bootstrap_data.DATA[label]['PDID']))):
+            if label in ("RHEL8-x86_64", "RHEL9-x86_64"):
+                if not connected_to_rhel_cdn(
+                    find_root_channel_labels(
+                        ", ".join(mgr_bootstrap_data.DATA[label]["PDID"])
+                    )
+                ):
                     # skip native RHEL if not connected to cdn
                     log("{} not connected to CDN. Skipping".format(label), 1)
                     continue
@@ -399,12 +551,16 @@ def list_labels(mgr_bootstrap_data, force=False, do_print=True):
                 print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
             label_index += 1
-        elif 'BASECHANNEL' in mgr_bootstrap_data.DATA[label] and mgr_bootstrap_data.DATA[label]['BASECHANNEL'] in custom_parent_channels:
+        elif (
+            "BASECHANNEL" in mgr_bootstrap_data.DATA[label]
+            and mgr_bootstrap_data.DATA[label]["BASECHANNEL"] in custom_parent_channels
+        ):
             if do_print:
                 print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
             label_index += 1
     return label_map
+
 
 def cleanup_dir(path):
     if os.path.exists(path):
@@ -412,7 +568,7 @@ def cleanup_dir(path):
             shutil.rmtree(path)
             log("REMOVE dir {0}".format(path), 3)
         except OSError as err:
-            log_error('Error while deleting {0}: {1}'.format(path, err))
+            log_error("Error while deleting {0}: {1}".format(path, err))
             return False
     return True
 
@@ -422,14 +578,17 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     usecustomchannels = options.usecustomchannels
     parentchannel = options.parentchannel
 
-    if 'PDID' in mgr_bootstrap_data.DATA[label]:
-        pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
-        if label in ('RHEL8-x86_64', 'RHEL9-x86_64'):
+    if "PDID" in mgr_bootstrap_data.DATA[label]:
+        pdids = ", ".join(mgr_bootstrap_data.DATA[label]["PDID"])
+        if label in ("RHEL8-x86_64", "RHEL9-x86_64"):
             if not connected_to_rhel_cdn(find_root_channel_labels(pdids)):
                 log("WARNING: {} not connected to CDN.".format(label))
 
-
-        if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu')):
+        if (
+            label.startswith("RES")
+            or label.startswith("RHEL")
+            or label.lower().startswith("ubuntu")
+        ):
             usecustomchannels = True
         if isUyuni():
             usecustomchannels = True
@@ -439,17 +598,15 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 break
     else:
         usecustomchannels = True
-        parentchannel = mgr_bootstrap_data.DATA[label]['BASECHANNEL']
+        parentchannel = mgr_bootstrap_data.DATA[label]["BASECHANNEL"]
 
-    destdir = os.path.normpath(mgr_bootstrap_data.DATA[label]['DEST'])
+    destdir = os.path.normpath(mgr_bootstrap_data.DATA[label]["DEST"])
     dirprefix, lastdir = os.path.split(destdir)
     destdirtmp = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "tmp"))
     destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
     errors = 0
     messages = []
-    suggestions = {
-        'no-packages': None
-    }
+    suggestions = {"no-packages": None}
 
     if usecustomchannels:
         if pdids:
@@ -457,11 +614,17 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         else:
             root_labels = find_custom_parent_channel_labels()
         if parentchannel and parentchannel not in root_labels:
-            log_error("'{0}' not found in existing parent channel options '{1}'".format(parentchannel, root_labels))
+            log_error(
+                "'{0}' not found in existing parent channel options '{1}'".format(
+                    parentchannel, root_labels
+                )
+            )
             return 1
         elif not parentchannel:
             if len(root_labels) > 1:
-                log_error("Multiple options for parent channel found. Please use option --with-parent-channel <label>")
+                log_error(
+                    "Multiple options for parent channel found. Please use option --with-parent-channel <label>"
+                )
                 log_error("and choose one of:")
                 for l in root_labels:
                     log_error("- {0}".format(l))
@@ -469,7 +632,9 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             elif len(root_labels) == 1:
                 parentchannel = root_labels[0]
             else:
-                log("WARNING: no parent channel found. Execute without using custom channels")
+                log(
+                    "WARNING: no parent channel found. Execute without using custom channels"
+                )
                 parentchannel = ""
     else:
         parentchannel = ""
@@ -489,7 +654,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             shutil.copytree(destdir, destdirtmp)
 
     print()
-    if label.startswith('RES') or label.startswith('RHEL'):
+    if label.startswith("RES") or label.startswith("RHEL"):
         log("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
         log("Creating bootstrap repo for {0}".format(label))
@@ -499,28 +664,35 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     elif pdids and options.force:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_all % (pdids)))
     else:
-        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_custom ))
-    packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
-    repotype = mgr_bootstrap_data.DATA[label].get('TYPE', 'yum')
+        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_custom))
+    packagelist = mgr_bootstrap_data.DATA[label]["PKGLIST"]
+    repotype = mgr_bootstrap_data.DATA[label].get("TYPE", "yum")
     packagelist.extend(additional)
-    log("The bootstrap repo should contain the following packages: {0}".format(packagelist), 2)
+    log(
+        "The bootstrap repo should contain the following packages: {0}".format(
+            packagelist
+        ),
+        2,
+    )
 
-    debs_dir = os.path.join(destdirtmp, 'debs')
-    if repotype == 'deb' and not options.dryrun:
+    debs_dir = os.path.join(destdirtmp, "debs")
+    if repotype == "deb" and not options.dryrun:
         # reprepro is picky with packages having the same name, but different checksums.
         # To avoid aborting, we copy the old packages to debs and add or overwrite them
         # with new found packages and run reprepro again (bsc#1184330)
         if not os.path.exists(debs_dir):
             os.makedirs(debs_dir)
-        for file_path in glob.glob(os.path.join(destdirtmp, 'pool/**/*.deb'), recursive=True):
+        for file_path in glob.glob(
+            os.path.join(destdirtmp, "pool/**/*.deb"), recursive=True
+        ):
             shutil.copy2(file_path, debs_dir)
-        cleanup_dir(os.path.join(destdirtmp, 'pool'))
-        cleanup_dir(os.path.join(destdirtmp, 'db'))
-        cleanup_dir(os.path.join(destdirtmp, 'dists'))
+        cleanup_dir(os.path.join(destdirtmp, "pool"))
+        cleanup_dir(os.path.join(destdirtmp, "db"))
+        cleanup_dir(os.path.join(destdirtmp, "dists"))
 
     for pkgaltstr in packagelist:
         alt = pkgaltstr.split("|")
-        altpretty =  ', '.join("'%s'" %(e) for e in alt)
+        altpretty = ", ".join("'%s'" % (e) for e in alt)
         altcount = 0
         for pkgname in alt:
             optional = False
@@ -530,8 +702,10 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             altcount += 1
             h.execute(parentchannel=parentchannel, pkgname=pkgname)
             pkgs = h.fetchall_dict() or []
-            log("Package {0} found {1} resulting packages:".format(
-                pkgname, len(pkgs)), 2)
+            log(
+                "Package {0} found {1} resulting packages:".format(pkgname, len(pkgs)),
+                2,
+            )
             if len(pkgs) == 0:
                 if optional:
                     log("Optional package '{0}' not found".format(pkgname))
@@ -542,49 +716,77 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                     else:
                         messages.append("ERROR: package '%s' not found" % pkgname)
                     errors += 1
-                    if not suggestions['no-packages']:
-                        suggestions['no-packages'] = (
-                             'mgr-create-bootstrap-repo uses the locally synchronized versions of files\n' +
-                             'from the Tools repository, and uses the locally synchronized pool channel\n' +
-                             'for dependency resolution.\n' +
-                             'Both should be fully synced before running the mgr-create-bootstrap-repo script.\n')
+                    if not suggestions["no-packages"]:
+                        suggestions["no-packages"] = (
+                            "mgr-create-bootstrap-repo uses the locally synchronized versions of files\n"
+                            + "from the Tools repository, and uses the locally synchronized pool channel\n"
+                            + "for dependency resolution.\n"
+                            + "Both should be fully synced before running the mgr-create-bootstrap-repo script.\n"
+                        )
                 continue
             for p in pkgs:
                 log(p, 2)
-                rpmdir = os.path.join(destdirtmp, p['arch']) if repotype != 'deb' else debs_dir
+                rpmdir = (
+                    os.path.join(destdirtmp, p["arch"])
+                    if repotype != "deb"
+                    else debs_dir
+                )
                 if not os.path.exists(rpmdir) and not options.dryrun:
                     os.makedirs(rpmdir)
-                log("copy '%s'" % p['nvrea'])
-                log("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir), 2)
+                log("copy '%s'" % p["nvrea"])
+                log("copy {0} / {1} to {2}".format(basepath, p["path"], rpmdir), 2)
                 if not options.dryrun:
-                    shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+                    shutil.copy2(os.path.join(basepath, p["path"]), rpmdir)
             break
     if options.dryrun:
-        if repotype == 'deb':
+        if repotype == "deb":
             debs = " ".join([os.path.join(debs_dir, f) for f in os.listdir(debs_dir)])
-            log("/usr/bin/reprepro -b {0} includedeb {1} {2}".format(destdirtmp, "bootstrap", debs))
+            log(
+                "/usr/bin/reprepro -b {0} includedeb {1} {2}".format(
+                    destdirtmp, "bootstrap", debs
+                )
+            )
         else:
             log("createrepo -s sha256 %s" % destdirtmp)
     else:
-        if repotype == 'deb':
-            reprepro_conf_tmpl = Template("Origin: $origin\n" \
-            "Label: $label\n" \
-            "Codename: $codename\n" \
-            "Architectures: $arches\n" \
-            "Components: $comps\n" \
-            "Description: $desc\n")
-            codename="bootstrap"
-            reprepro_conf = reprepro_conf_tmpl.substitute(origin="mgr",
-                    label="mgr", codename=codename, arches="amd64 i386 armhf arm64", comps="main", desc="Bootstrap repo")
+        if repotype == "deb":
+            reprepro_conf_tmpl = Template(
+                "Origin: $origin\n"
+                "Label: $label\n"
+                "Codename: $codename\n"
+                "Architectures: $arches\n"
+                "Components: $comps\n"
+                "Description: $desc\n"
+            )
+            codename = "bootstrap"
+            reprepro_conf = reprepro_conf_tmpl.substitute(
+                origin="mgr",
+                label="mgr",
+                codename=codename,
+                arches="amd64 i386 armhf arm64",
+                comps="main",
+                desc="Bootstrap repo",
+            )
             reprepro_conf_dir = os.path.join(destdirtmp, "conf")
             if not os.path.exists(reprepro_conf_dir):
                 os.makedirs(reprepro_conf_dir)
-            with open(os.path.join(reprepro_conf_dir, "distributions"), "w") as conf_file:
+            with open(
+                os.path.join(reprepro_conf_dir, "distributions"), "w"
+            ) as conf_file:
                 conf_file.write(reprepro_conf)
-            log("Created reprepro config file in {0}".format(os.path.join(destdirtmp, "distributions")), 2)
+            log(
+                "Created reprepro config file in {0}".format(
+                    os.path.join(destdirtmp, "distributions")
+                ),
+                2,
+            )
             debs = [os.path.join(debs_dir, f) for f in os.listdir(debs_dir)]
             try:
-                subprocess.run(["/usr/bin/reprepro", "-b", destdirtmp, "includedeb", codename] + debs, check=True)
+                subprocess.run(
+                    ["/usr/bin/reprepro", "-b", destdirtmp, "includedeb", codename]
+                    + debs,
+                    check=True,
+                )
                 log("Removing directory {0}".format(debs_dir), 2)
                 shutil.rmtree(debs_dir, ignore_errors=True)
             except subprocess.CalledProcessError as err:
@@ -595,11 +797,15 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             os.system("createrepo -s sha256 %s" % destdirtmp)
         # ensure venv-enabled-{ARCH}.txt doesn't exist in repo with no salt bundle package
         # create venv-enabled-{ARCH}.txt for repos with salt bundle package
-        for file_path in glob.glob(os.path.join(destdirtmp, 'venv-enabled-*.txt')):
+        for file_path in glob.glob(os.path.join(destdirtmp, "venv-enabled-*.txt")):
             os.remove(file_path)
-        for file_path in sorted(glob.glob(os.path.join(destdirtmp, '**/venv-salt-minion*.*'), recursive=True)):
+        for file_path in sorted(
+            glob.glob(
+                os.path.join(destdirtmp, "**/venv-salt-minion*.*"), recursive=True
+            )
+        ):
             rel_path = os.path.relpath(file_path, start=destdirtmp)
-            (l_path, ext) = rel_path.rsplit('.', 1)
+            (l_path, ext) = rel_path.rsplit(".", 1)
             if ext:
                 dg = hashlib.sha256()
                 with open(file_path, "rb") as pkg_fh:
@@ -608,8 +814,10 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                         if not buff:
                             break
                         dg.update(buff)
-                (l_path, arch) = l_path.rsplit('.' if ext == 'rpm' else '_', 1)
-                with open(os.path.join(destdirtmp, "venv-enabled-{}.txt".format(arch)), "w") as venv_enabled_file:
+                (l_path, arch) = l_path.rsplit("." if ext == "rpm" else "_", 1)
+                with open(
+                    os.path.join(destdirtmp, "venv-enabled-{}.txt".format(arch)), "w"
+                ) as venv_enabled_file:
                     venv_enabled_file.write("{}  {}\n".format(dg.hexdigest(), rel_path))
                     venv_enabled_file.close()
         # move tmp dir to final location
@@ -621,24 +829,34 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     if errors:
         for m in messages:
             log_error(m)
-        if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu'))  and not usecustomchannels:
-            log_error("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
+        if (
+            label.startswith("RES")
+            or label.startswith("RHEL")
+            or label.lower().startswith("ubuntu")
+        ) and not usecustomchannels:
+            log_error(
+                "If the installation media was imported into a custom channel, try to run again with --with-custom-channels option"
+            )
         suggestions = list([_f for _f in list(suggestions.values()) if _f])
         if suggestions:
             log_error("\nSuggestions:")
             for suggestion in suggestions:
                 log_error(suggestion)
-        notificationUtils.CreateBootstrapRepoFailed(label, "\n".join(messages)).store()
+        create_bootstrap_failure_notification(label, messages)
         return 1
     return 0
+
 
 def generate_repo_view(mgr_bootstrap_data):
     repos = {}
     for dist in sorted(list_labels(mgr_bootstrap_data, do_print=False).values()):
-        if mgr_bootstrap_data.DATA[dist]['DEST'] not in repos:
-            repos[mgr_bootstrap_data.DATA[dist]['DEST']] = {}
-        repos[mgr_bootstrap_data.DATA[dist]['DEST']][dist] = mgr_bootstrap_data.DATA[dist]
+        if mgr_bootstrap_data.DATA[dist]["DEST"] not in repos:
+            repos[mgr_bootstrap_data.DATA[dist]["DEST"]] = {}
+        repos[mgr_bootstrap_data.DATA[dist]["DEST"]][dist] = mgr_bootstrap_data.DATA[
+            dist
+        ]
     return repos
+
 
 def connected_to_rhel_cdn(root_channel_labels):
     # only 1 entry in root_channel_labels expected
@@ -666,30 +884,42 @@ def connected_to_rhel_cdn(root_channel_labels):
         return False
     return True
 
+
 def find_dists_for_regeneration(dest, dists, doall=False):
     regenerate = []
     for label, dist in dists.items():
-        if label in ('RHEL8-x86_64', 'RHEL9-x86_64') and 'PDID' in dist:
-            if not connected_to_rhel_cdn(find_root_channel_labels(', '.join(dist['PDID']))):
+        if label in ("RHEL8-x86_64", "RHEL9-x86_64") and "PDID" in dist:
+            if not connected_to_rhel_cdn(
+                find_root_channel_labels(", ".join(dist["PDID"]))
+            ):
                 # skip native RHEL if not connected to cdn
                 log("{} not connected to CDN. Skipping".format(label), 1)
                 continue
-        destfile = os.path.join(dest, 'repodata', 'repomd.xml')
-        if 'TYPE' in dist and dist['TYPE'] == 'deb':
-            destfile = os.path.join(dest, 'dists', 'bootstrap', 'Release')
+        destfile = os.path.join(dest, "repodata", "repomd.xml")
+        if "TYPE" in dist and dist["TYPE"] == "deb":
+            destfile = os.path.join(dest, "dists", "bootstrap", "Release")
 
         filemodtime = 0
         if os.path.exists(destfile):
             filemodtime = os.path.getmtime(destfile)
 
         log("{0} modified: {1}".format(destfile, filemodtime), 2)
-        if 'PDID' in dist:
-            pdids = ', '.join(dist['PDID'])
+        if "PDID" in dist:
+            pdids = ", ".join(dist["PDID"])
             h = rhnSQL.prepare(rhnSQL.Statement(_find_mand_modified_repos % (pdids)))
-            h.execute(filemod=time.strftime('%Y-%m-%d %H:%M:%S %z', time.localtime(filemodtime)))
-        if 'BASECHANNEL' in dist:
+            h.execute(
+                filemod=time.strftime(
+                    "%Y-%m-%d %H:%M:%S %z", time.localtime(filemodtime)
+                )
+            )
+        if "BASECHANNEL" in dist:
             h = rhnSQL.prepare(rhnSQL.Statement(_find_modified_repos_by_basechannel))
-            h.execute(filemod=time.strftime('%Y-%m-%d %H:%M:%S %z', time.localtime(filemodtime)), basechannel=dist['BASECHANNEL'])
+            h.execute(
+                filemod=time.strftime(
+                    "%Y-%m-%d %H:%M:%S %z", time.localtime(filemodtime)
+                ),
+                basechannel=dist["BASECHANNEL"],
+            )
 
         res = h.fetchall_dict() or []
         if not res:
@@ -697,21 +927,43 @@ def find_dists_for_regeneration(dest, dists, doall=False):
         regen = True
         oneNewerTimestamp = 0
         for channelinfo in res:
-            if doall and channelinfo['last_synced']:
-                log("{0} available. Full regeneration requested".format(channelinfo['label']), 2)
+            if doall and channelinfo["last_synced"]:
+                log(
+                    "{0} available. Full regeneration requested".format(
+                        channelinfo["label"]
+                    ),
+                    2,
+                )
                 regen = regen and True
-            elif not doall and channelinfo['newer'] == 1:
-                log("{0} modified after last bootstrap generation".format(channelinfo['label']), 2)
+            elif not doall and channelinfo["newer"] == 1:
+                log(
+                    "{0} modified after last bootstrap generation".format(
+                        channelinfo["label"]
+                    ),
+                    2,
+                )
                 regen = regen and True
-                if channelinfo['last_synced'] and channelinfo['last_synced'].timestamp() > oneNewerTimestamp:
-                    oneNewerTimestamp = channelinfo['last_synced'].timestamp()
+                if (
+                    channelinfo["last_synced"]
+                    and channelinfo["last_synced"].timestamp() > oneNewerTimestamp
+                ):
+                    oneNewerTimestamp = channelinfo["last_synced"].timestamp()
             else:
-                log("{0} not modified".format(channelinfo['label']), 2)
+                log("{0} not modified".format(channelinfo["label"]), 2)
                 regen = regen and False
         # regen is True when *all* required channels were re-synced
         # set it tue true after a grace period of 4 hours
-        if not regen and oneNewerTimestamp > 0 and time.time() - oneNewerTimestamp > 4 * 60 * 60:
-            log("latest channel sync at: {0}. Grace period over. Regenarate bootstrap repo.".format(oneNewerTimestamp), 2)
+        if (
+            not regen
+            and oneNewerTimestamp > 0
+            and time.time() - oneNewerTimestamp > 4 * 60 * 60
+        ):
+            log(
+                "latest channel sync at: {0}. Grace period over. Regenarate bootstrap repo.".format(
+                    oneNewerTimestamp
+                ),
+                2,
+            )
             regen = True
         if regen:
             regenerate.append(label)
@@ -728,42 +980,46 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
 
     regenerated = 0
     for dest, dists in repos.items():
-       labels =  find_dists_for_regeneration(dest, dists, doall=options.flush)
-       if options.flush and len(labels) > 0:
-           destdir = os.path.normpath(dest)
-           if os.path.exists(destdir):
-               dirprefix, lastdir = os.path.split(destdir)
-               destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
-               log("FLUSH: move destdir '{0}' to old".format(destdir))
-               if not options.dryrun:
-                   os.rename(destdir, destdirold)
-           doall = True
-       for label in labels:
-           errors += create_repo(label, options, mgr_bootstrap_data, additional=additional)
-           regenerated += 1
+        labels = find_dists_for_regeneration(dest, dists, doall=options.flush)
+        if options.flush and len(labels) > 0:
+            destdir = os.path.normpath(dest)
+            if os.path.exists(destdir):
+                dirprefix, lastdir = os.path.split(destdir)
+                destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+                log("FLUSH: move destdir '{0}' to old".format(destdir))
+                if not options.dryrun:
+                    os.rename(destdir, destdirold)
+            doall = True
+        for label in labels:
+            errors += create_repo(
+                label, options, mgr_bootstrap_data, additional=additional
+            )
+            regenerated += 1
 
     if not regenerated:
         log("Nothing to do.")
     return errors
 
 
-
 #################################################################################
 ### main
 #################################################################################
 
+
 def main():
     # quick check to see if you are a super-user.
     if os.getuid() != 0:
-        sys.stderr.write('ERROR: must be root to execute.\n')
+        sys.stderr.write("ERROR: must be root to execute.\n")
         sys.exit(1)
 
     global LOCK
     try:
-        LOCK = rhnLockfile.Lockfile('/run/mgr-create-bootstrap-repo.pid')
+        LOCK = rhnLockfile.Lockfile("/run/mgr-create-bootstrap-repo.pid")
     except rhnLockfile.LockfileLockedException:
-        sys.stderr.write("ERROR: attempting to run more than one instance of "
-                         "mgr-create-bootstrap-repo Exiting.\n")
+        sys.stderr.write(
+            "ERROR: attempting to run more than one instance of "
+            "mgr-create-bootstrap-repo Exiting.\n"
+        )
         sys.exit(1)
 
     global BETA
@@ -782,7 +1038,9 @@ def main():
         elabel = None
         while True:
             try:
-                elabel = label_map.get(int(input("Enter a number of a product label: ")), '')
+                elabel = label_map.get(
+                    int(input("Enter a number of a product label: ")), ""
+                )
                 break
             except Exception:
                 print("Please enter a number.")
@@ -792,7 +1050,7 @@ def main():
             sys.exit(1)
 
         if opts.flush:
-            destdir = os.path.normpath(mgr_bootstrap_data.DATA[elabel]['DEST'])
+            destdir = os.path.normpath(mgr_bootstrap_data.DATA[elabel]["DEST"])
             if os.path.exists(destdir):
                 dirprefix, lastdir = os.path.split(destdir)
                 destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
@@ -807,7 +1065,7 @@ def main():
             log_error("'%s' not found" % opts.create)
             sys.exit(1)
         if opts.flush:
-            destdir = os.path.normpath(mgr_bootstrap_data.DATA[opts.create]['DEST'])
+            destdir = os.path.normpath(mgr_bootstrap_data.DATA[opts.create]["DEST"])
             if os.path.exists(destdir):
                 dirprefix, lastdir = os.path.split(destdir)
                 destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
@@ -818,7 +1076,8 @@ def main():
     releaseLOCK()
     return r
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     try:
         sys.exit(abs(main() or 0))
     except KeyboardInterrupt:
@@ -830,4 +1089,3 @@ if __name__ == '__main__':
     except Exception as e:
         releaseLOCK()
         raise
-

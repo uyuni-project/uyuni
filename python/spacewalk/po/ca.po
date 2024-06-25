@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-06-18 14:54+0200\n"
 "PO-Revision-Date: 2022-04-01 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
@@ -38,7 +38,7 @@ msgid "Invalid request received (%s)."
 msgstr "Es va rebre una petició no vàlida (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -47,7 +47,7 @@ msgstr ""
 "MISSATGE IMPORTANT SEGÜENT:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -57,15 +57,12 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "L'URI %s no és vàlid"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -77,11 +74,6 @@ msgstr ""
 "                   Poseu-vos en contacte amb l'administrador de "
 "l'organització per obtenir més ajuda."
 
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "El sistema no s'ha trobat a la base de dades de {PRODUCT_NAME}"
-
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
 msgstr "ISS està desactivat en aquest servidor."
@@ -90,16 +82,6 @@ msgstr "ISS està desactivat en aquest servidor."
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "El servidor \"%s\" no està habilitat per a l'ISS."
-
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "S'esperava un nom de paquet, no %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "S'esperava un paquet, no: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
@@ -115,67 +97,6 @@ msgstr "la clau de sessió no és vàlida"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "Aquest ID de servidor ja no existeix"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "L'acció %s no pertany al servidor %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "Falten les dades necessàries"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "Membres obligatoris desapareguts"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "Intenteu registrar un sistema amb un nom d'usuari no vàlid"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "S'ha sol·licitat una versió de llançament del sistema no vàlida."
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"No s'ha pogut trobar una interfície de xarxa vàlida, no s'han trobat ni "
-"ipaddr ni ip6addr."
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "Missatge de benvinguda de {PRODUCT_NAME}"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "Declaració de privacitat"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "S'esperava un diccionari com a argument de producte."
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "El valor %s no és vàlid per a %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "Parell system_id / action_id no vàlid."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Valor no vàlid %s (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -217,8 +138,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"El compte no té accés a cap canal que coincideixi (release=%(release)s, arch="
-"%(arch)s)%(www_activation)s"
+"El compte no té accés a cap canal que coincideixi (release=%(release)s, "
+"arch=%(arch)s)%(www_activation)s"
 
 #: ../server/rhnChannel.py:2235
 #, python-format
@@ -302,7 +223,7 @@ msgstr "S'ha sol·licitat el paquet RPM %s no vàlid."
 msgid "Package not found"
 msgstr "Paquet no trobat"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "L'arquitectura %s no és compatible."
@@ -1032,7 +953,7 @@ msgstr ""
 msgid "Invalid content encoding"
 msgstr "La codificació de contingut no és vàlida."
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -1048,7 +969,7 @@ msgstr ""
 "     detalls del que s'estava intentant fer quan es va produir l'error i\n"
 "     detalls sobre com reproduir el problema.\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -1057,17 +978,17 @@ msgstr ""
 "Missatge d'error:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Codi de la classe d'error: %s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Informació de la classe d'error: %s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "Explicació: %s"
@@ -1283,16 +1204,16 @@ msgstr "Importació d'arbres de taules d'inici (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Arbres de taules d'inici importats (%d)"
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ enviament de registre com a correu electrònic +++"
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "Informe de sincronització de %s de %s"
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
 
@@ -2077,6 +1998,66 @@ msgstr "  28 - error: --master només és vàlid amb --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERROR: versió d'abocament desconeguda, proveu-ne una de %s"
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "El sistema no s'ha trobat a la base de dades de {PRODUCT_NAME}"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "S'esperava un nom de paquet, no %s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "S'esperava un paquet, no: %s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "L'acció %s no pertany al servidor %s"
+
+#~ msgid "Required data missing"
+#~ msgstr "Falten les dades necessàries"
+
+#~ msgid "Required members missing"
+#~ msgstr "Membres obligatoris desapareguts"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "Intenteu registrar un sistema amb un nom d'usuari no vàlid"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "S'ha sol·licitat una versió de llançament del sistema no vàlida."
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "No s'ha pogut trobar una interfície de xarxa vàlida, no s'han trobat ni "
+#~ "ipaddr ni ip6addr."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "Missatge de benvinguda de {PRODUCT_NAME}"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "Declaració de privacitat"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "S'esperava un diccionari com a argument de producte."
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "El valor %s no és vàlid per a %s (%s)"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "Parell system_id / action_id no vàlid."
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "Valor no vàlid %s (%s)"
 
 #, python-format
 #~ msgid ""

@@ -24,8 +24,11 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -44,6 +47,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -56,12 +61,17 @@ import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.gson.CoCoAttestationReportJson;
+import com.suse.manager.webui.utils.gson.CoCoSettingsJson;
 import com.suse.manager.webui.utils.gson.ListKeysJson;
 import com.suse.manager.webui.utils.gson.PackageActionJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
+import com.suse.manager.webui.utils.gson.SystemScheduledRequestJson;
+import com.suse.manager.webui.utils.gson.SystemsCoCoSettingsJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import com.google.gson.Gson;
@@ -100,10 +110,14 @@ public class MinionsAPI {
 
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
+    private static final LocalizationService LOCAL = LocalizationService.getInstance();
+
     private final SaltApi saltApi;
     private final SSHMinionBootstrapper sshMinionBootstrapper;
     private final RegularMinionBootstrapper regularMinionBootstrapper;
     private final SaltKeyUtils saltKeyUtils;
+
+    private final AttestationManager attestationManager;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -120,14 +134,16 @@ public class MinionsAPI {
      * @param regularMinionBootstrapperIn regular bootstrapper
      * @param sshMinionBootstrapperIn ssh bootstrapper
      * @param saltKeyUtilsIn salt key utils instance
+     * @param attestationManagerIn the attestation manager
      */
     public MinionsAPI(SaltApi saltApiIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
                       RegularMinionBootstrapper regularMinionBootstrapperIn,
-                      SaltKeyUtils saltKeyUtilsIn) {
+                      SaltKeyUtils saltKeyUtilsIn, AttestationManager attestationManagerIn) {
         this.saltApi = saltApiIn;
         this.sshMinionBootstrapper = sshMinionBootstrapperIn;
         this.regularMinionBootstrapper = regularMinionBootstrapperIn;
         this.saltKeyUtils = saltKeyUtilsIn;
+        this.attestationManager = attestationManagerIn;
     }
 
     /**
@@ -149,6 +165,18 @@ public class MinionsAPI {
             asJson(withUserAndServer(this::availablePtfsForSystem)));
         post("/manager/api/systems/:sid/details/ptf/scheduleAction",
             asJson(withUserAndServer(this::schedulePtfAction)));
+        get("/manager/api/systems/:sid/details/coco/settings",
+            asJson(withUserAndServer(this::getCoCoSettings)));
+        post("/manager/api/systems/:sid/details/coco/settings",
+            asJson(withUserAndServer(this::setCoCoSettings)));
+        get("/manager/api/systems/:sid/details/coco/listAttestations",
+            asJson(withUserAndServer(this::listAllAttestations)));
+        post("/manager/api/systems/:sid/details/coco/scheduleAction",
+            asJson(withUserAndServer(this::scheduleCoCoAttestation)));
+        post("/manager/api/systems/coco/settings",
+            asJson(withUser(this::setAllCoCoSettings)));
+        post("/manager/api/systems/coco/scheduleAction",
+            asJson(withUser(this::scheduleAllCoCoAttestation)));
     }
 
     /**
@@ -467,4 +495,153 @@ public class MinionsAPI {
         return SessionSetHelper.lookupAndBind(request.raw(), setLabel + server.getId());
     }
 
+
+    /**
+     * Get current coco attestation settings for the current server
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return the current coco settings as json object
+     */
+    public String getCoCoSettings(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportCoCoAttestation()) {
+            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(false),
+                LOCAL.getMessage("system.audit.coco.unsupported")), new TypeToken<>() { });
+        }
+
+        CoCoSettingsJson jsonConfig = attestationManager.getConfig(user, server)
+            .map(cfg -> new CoCoSettingsJson(cfg))
+            .orElseGet(() -> new CoCoSettingsJson(true));
+
+        return json(GSON, response, ResultJson.success(jsonConfig), new TypeToken<>() { });
+    }
+
+
+    private String setCoCoSettings(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportCoCoAttestation()) {
+            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(false),
+                    LOCAL.getMessage("system.audit.coco.unsupported")), new TypeToken<>() { });
+        }
+
+        CoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), CoCoSettingsJson.class);
+        try {
+            ServerCoCoAttestationConfig updatedConfig = updateServerCoCoConfiguration(user, server, jsonConfig);
+
+            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(updatedConfig),
+                LOCAL.getMessage("system.audit.coco.configUpdated")), new TypeToken<>() { });
+        }
+        catch (RuntimeException ex) {
+            return json(GSON, response, ResultJson.error(LOCAL.getMessage("system.audit.coco.configNotUpdated")),
+                new TypeToken<>() { });
+        }
+    }
+
+    private String listAllAttestations(Request request, Response response, User user, Server server) {
+        PageControlHelper pageHelper = new PageControlHelper(request);
+        PageControl pc = pageHelper.getPageControl();
+
+        long totalSize = attestationManager.countCoCoAttestationReportsForUserAndServer(user, server);
+
+        List<CoCoAttestationReportJson> reportsJson =
+            attestationManager.listCoCoAttestationReportsForUserAndServer(user, server, pc)
+            .stream()
+            .map(CoCoAttestationReportJson::new)
+            .collect(Collectors.toList());
+
+        return json(GSON, response, new PagedDataResultJson<>(reportsJson, totalSize, Collections.emptySet()),
+            new TypeToken<>() { });
+    }
+
+    private String scheduleCoCoAttestation(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportCoCoAttestation()) {
+            return json(GSON, response, ResultJson.error("system.audit.coco.unsupported"), new TypeToken<>() { });
+        }
+
+        ScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), ScheduledRequestJson.class);
+
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
+
+        Long result;
+
+        try {
+            MinionServer minion = server.asMinionServer().orElse(null);
+            if (minion == null) {
+                return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("System is not a minion"), new TypeToken<>() { });
+            }
+
+            Action action = attestationManager.scheduleAttestationAction(user, minion, earliestDate, chain);
+            result = chain != null ? chain.getId() : action.getId();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule attestation action", e);
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                ResultJson.error("Unable to schedule action"), new TypeToken<>() { });
+        }
+
+        return json(GSON, response, result.longValue());
+    }
+
+    private String setAllCoCoSettings(Request request, Response response, User user) {
+        SystemsCoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), SystemsCoCoSettingsJson.class);
+
+        try {
+            MinionServerFactory.lookupByIds(jsonConfig.getServerIds())
+                .forEach(minionServer -> updateServerCoCoConfiguration(user, minionServer, jsonConfig));
+
+            return json(GSON, response, ResultJson.success(jsonConfig,
+                LOCAL.getMessage("system.audit.coco.configUpdated")), new TypeToken<>() { });
+        }
+        catch (RuntimeException ex) {
+            return json(GSON, response, ResultJson.error(LOCAL.getMessage("system.audit.coco.configNotUpdated")),
+                new TypeToken<>() { });
+        }
+    }
+
+    private ServerCoCoAttestationConfig updateServerCoCoConfiguration(User user, Server server,
+                                                                      CoCoSettingsJson jsonConfig) {
+        return attestationManager.getConfig(user, server)
+            .map(cfg -> {
+                cfg.setEnabled(jsonConfig.isEnabled());
+                cfg.setEnvironmentType(jsonConfig.getEnvironmentType());
+                cfg.setAttestOnBoot(jsonConfig.isAttestOnBoot());
+
+                attestationManager.saveConfig(user, cfg);
+
+                return cfg;
+            })
+            .orElseGet(() -> {
+                return attestationManager.createConfig(user, server,
+                    jsonConfig.getEnvironmentType(),
+                    jsonConfig.isEnabled(),
+                    jsonConfig.isAttestOnBoot()
+                );
+            });
+    }
+
+    private String scheduleAllCoCoAttestation(Request request, Response response, User user) {
+        SystemScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), SystemScheduledRequestJson.class);
+        Long result;
+
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
+
+        try {
+            Set<MinionServer> minionsSet = MinionServerFactory.lookupByIds(scheduleRequest.getServerIds())
+                .collect(Collectors.toSet());
+
+            List<CoCoAttestationAction> scheduledActions =
+                attestationManager.scheduleAttestationActionForSystems(user, minionsSet, earliestDate, chain);
+            result = chain != null ? chain.getId() : scheduledActions.get(0).getId();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule attestation action", e);
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                ResultJson.error("Unable to schedule action"), new TypeToken<>() { });
+        }
+
+        return json(GSON, response, result.longValue());
+    }
 }

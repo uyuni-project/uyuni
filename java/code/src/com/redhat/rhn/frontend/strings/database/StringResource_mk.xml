@@ -1261,7 +1261,7 @@
       </trans-unit>
       <trans-unit id="Interface" xml:space="preserve">
         <source>Interface</source>
-        <target/>
+        <target>Интерфејс</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1289,14 +1289,14 @@
       </trans-unit>
       <trans-unit id="Log file" xml:space="preserve">
         <source>Log file</source>
-        <target/>
+        <target>Фајл за евиденција</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MySQL Port" xml:space="preserve">
         <source>MySQL Port</source>
-        <target/>
+        <target>MySQL Порта</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>

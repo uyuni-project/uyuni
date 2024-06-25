@@ -40,6 +40,7 @@ import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.domain.BillingDimension;
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionFactory;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -67,12 +68,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
     public void before() {
         contextMock = mock(JobExecutionContext.class);
         // Force being in PAYG context
-        cloudManager = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager = new TestCloudPaygManagerBuilder().withPaygInstance().build();
 
         factory = new PaygDimensionFactory();
         SaltApi saltApi = new TestSaltApi();

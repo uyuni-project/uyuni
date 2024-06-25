@@ -1,0 +1,12 @@
+include ./minion-header.jade
+
+#coco-settings
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.serverId = "#{server.id}";
+    window.availableEnvironmentTypes = !{availableEnvironmentTypes};
+
+script(type='text/javascript').
+    spaImportReactPage('minion/coco/coco-settings')
+        .then(function(module) { module.renderer('coco-settings') });

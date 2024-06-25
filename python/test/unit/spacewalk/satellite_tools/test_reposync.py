@@ -89,6 +89,11 @@ class RepoSyncTest(unittest.TestCase):
             ],
         )
 
+        spacewalk.satellite_tools.appstreams.ModuleMdImporter.validate = Mock()
+        spacewalk.satellite_tools.appstreams.ModuleMdImporter.import_module_metadata = (
+            Mock()
+        )
+
     def tearDown(self):
         self.stdout.close()
         sys.stdout = self.saved_stdout
@@ -97,6 +102,7 @@ class RepoSyncTest(unittest.TestCase):
         sys.stderr = self.saved_stderr
 
         imp.reload(spacewalk.satellite_tools.reposync)
+        imp.reload(spacewalk.satellite_tools.appstreams)
 
     def test_init_succeeds_with_correct_attributes(self):
         rs = _init_reposync(self.reposync, "Label", RTYPE)
@@ -184,7 +190,7 @@ class RepoSyncTest(unittest.TestCase):
             self.stderr.getvalue(),
         )
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_update_servers(self):
         rs = _init_reposync(self.reposync)
 
@@ -195,7 +201,7 @@ class RepoSyncTest(unittest.TestCase):
             [call(1234), call(5678)],
         )
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_sync_success_no_regen(self):
         rs = _init_reposync(self.reposync)
         # pylint: disable-next=invalid-name
@@ -216,7 +222,8 @@ class RepoSyncTest(unittest.TestCase):
 
         _mock_rhnsql(self.reposync, [None, []])
         rs = _mock_sync(self.reposync, rs)
-        with patch("uyuni.common.context_managers.CFG", CFG):
+
+        with patch("spacewalk.common.rhnConfig.CFG", CFG):
             rs.sync()
 
         self.assertEqual(
@@ -239,7 +246,7 @@ class RepoSyncTest(unittest.TestCase):
         )
         self.assertFalse(self.reposync.taskomatic.add_to_erratacache_queue.called)
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_sync_success_regen(self):
         rs = _init_reposync(self.reposync)
         # pylint: disable-next=invalid-name
@@ -261,7 +268,7 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, {})
         rs = _mock_sync(self.reposync, rs)
         rs.regen = True
-        with patch("uyuni.common.context_managers.CFG", CFG):
+        with patch("spacewalk.common.rhnConfig.CFG", CFG):
             rs.sync()
 
         self.assertEqual(
@@ -299,7 +306,7 @@ class RepoSyncTest(unittest.TestCase):
             packages.append(package)
         return packages
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     @patch("spacewalk.satellite_tools.reposync.log2", Mock())
     @patch("spacewalk.satellite_tools.reposync.os", os)
     @patch("spacewalk.satellite_tools.reposync.log", Mock())
@@ -319,7 +326,7 @@ class RepoSyncTest(unittest.TestCase):
         packs = self._mock_packages_list([fail_pkg_name])
         plugin = self._mock_repo_plugin(packs)
 
-        with patch("uyuni.common.context_managers.CFG", self._mock_cfg()):
+        with patch("spacewalk.common.rhnConfig.CFG", self._mock_cfg()):
             rs.import_packages(plugin, None, "unused-url-string", None)
 
         # repository plugin returned 1 package that failed to download
@@ -327,7 +334,7 @@ class RepoSyncTest(unittest.TestCase):
         apply_async_mock = pool.return_value.__enter__.return_value.apply_async
         self.assertFalse(apply_async_mock.called)
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_sync_raises_channel_timeout(self):
         rs = self._create_mocked_reposync()
         # pylint: disable-next=invalid-name
@@ -340,14 +347,14 @@ class RepoSyncTest(unittest.TestCase):
         rs.load_plugin = Mock(return_value=Mock(side_effect=exception))
         rs.sendErrorMail = Mock()
 
-        with patch("uyuni.common.context_managers.CFG", CFG):
+        with patch("spacewalk.common.rhnConfig.CFG", CFG):
             # pylint: disable-next=unused-variable
             etime, ret = rs.sync()
             self.assertEqual(-1, ret)
         self.assertEqual(rs.sendErrorMail.call_args, (("anony-error",), {}))
         self.assertEqual(self.reposync.log.call_args[0][1], exception)
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_sync_raises_unexpected_error(self):
         rs = self._create_mocked_reposync()
         # pylint: disable-next=invalid-name
@@ -358,7 +365,7 @@ class RepoSyncTest(unittest.TestCase):
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
         rs.sendErrorMail = Mock()
-        with patch("uyuni.common.context_managers.CFG", CFG):
+        with patch("spacewalk.common.rhnConfig.CFG", CFG):
             # pylint: disable-next=unused-variable
             etime, ret = rs.sync()
             self.assertEqual(-1, ret)
@@ -483,7 +490,7 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=protected-access
         self.assertEqual(self.reposync.RepoSync._update_keywords(notice), [])
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_send_error_mail(self):
         rs = self._create_mocked_reposync()
         self.reposync.rhnMail.send = Mock()
@@ -492,7 +499,7 @@ class RepoSyncTest(unittest.TestCase):
         CFG = Mock()
         CFG.TRACEBACK_MAIL = "recipient"
 
-        with patch("uyuni.common.context_managers.CFG", CFG):
+        with patch("spacewalk.common.rhnConfig.CFG", CFG):
             rs.sendErrorMail("email body")
 
         self.assertEqual(
@@ -946,12 +953,19 @@ class SyncTest(unittest.TestCase):
             import_products=Mock(),
             import_susedata=Mock(),
         )
+        appstreams_patcher = patch.multiple(
+            "spacewalk.satellite_tools.appstreams.ModuleMdImporter",
+            validate=Mock(),
+            import_module_metadata=Mock(),
+        )
         module_patcher.start()
         class_patcher.start()
+        appstreams_patcher.start()
         self.addCleanup(module_patcher.stop)
         self.addCleanup(class_patcher.stop)
+        self.addCleanup(appstreams_patcher.stop)
 
-    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_pass_multiple_urls_params(self):
         # pylint: disable-next=import-outside-toplevel
         from spacewalk.satellite_tools.reposync import RepoSync
@@ -965,7 +979,7 @@ class SyncTest(unittest.TestCase):
         CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
-        with patch("uyuni.common.context_managers.CFG", CFG):
+        with patch("spacewalk.common.rhnConfig.CFG", CFG):
             repo_sync.sync()
 
     @patch("spacewalk.satellite_tools.reposync.RepoSync._url_with_repo_credentials")
@@ -1167,7 +1181,7 @@ class RunScriptTest(unittest.TestCase):
         self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
 
 
-@patch("uyuni.common.context_managers.initCFG", Mock())
+@patch("spacewalk.common.rhnConfig.initCFG", Mock())
 def test_channel_exceptions():
     """Test raising all the different exceptions when syncing"""
     # the only way to write a test generator with nose is if we put it
@@ -1216,7 +1230,7 @@ def test_channel_exceptions():
         (yum_src.RepoMDError, "RepoMDError"),
     ]:
         rs.load_plugin = Mock(return_value=Mock(side_effect=exc_class("error msg")))
-        with patch("uyuni.common.context_managers.CFG", CFG):
+        with patch("spacewalk.common.rhnConfig.CFG", CFG):
             _, ret = rs.sync()
             assert ret == -1
         # pylint: disable-next=consider-using-f-string
@@ -1302,7 +1316,7 @@ def _mock_sync(reposync, rs):
 
     rs.update_date = Mock()
 
-    reposync.fileutils.createPath = Mock()
+    reposync.create_path = Mock()
     reposync.os.walk = Mock(return_value=[])
     reposync.subprocess.call = Mock()
     return rs

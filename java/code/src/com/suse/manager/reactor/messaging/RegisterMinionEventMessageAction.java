@@ -59,8 +59,11 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
@@ -91,6 +94,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -102,6 +107,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -120,6 +126,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private final SystemEntitlementManager entitlementManager;
 
     private final CloudPaygManager cloudPaygManager;
+    private final AttestationManager attestationManager;
 
     private static final String FQDN = "fqdn";
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
@@ -130,11 +137,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param systemQueryIn systemQuery instance for gathering data from a system.
      * @param saltApiIn saltApi instance for gathering data from a system.
      * @param paygMgrIn {@link CloudPaygManager} instance
+     * @param attMgrIn {@link AttestationManager} instance
      */
-    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn) {
+    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn, CloudPaygManager paygMgrIn,
+                                            AttestationManager attMgrIn) {
         saltApi = saltApiIn;
         systemQuery = systemQueryIn;
         cloudPaygManager = paygMgrIn;
+        attestationManager = attMgrIn;
         VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
@@ -271,7 +281,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         },
                         minionServer -> server.asMinionServer().filter(ms -> ms.equals(minionServer)).ifPresentOrElse(
                                 serverAsMinion -> {
-                                    // Case 2.2a
+                                    // Case 2.2a - minion_id and machine-id are the same
                                     updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
                                     applyMinionStartStates(minionId, minionServer, saltbootInitrd);
                                 },
@@ -339,6 +349,34 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // this is the time to update SystemInfo
             MinionList minionTarget = new MinionList(minionId);
             saltApi.updateSystemInfo(minionTarget);
+            scheduleCoCoAttestation(registeredMinion);
+        }
+    }
+
+    /**
+     * Schedule a Confidential Compute Attestation when the minion has CoCoAttestation
+     * enabled and attestOnBoot is enabled
+     *
+     * @param minion the minion
+     */
+    private void scheduleCoCoAttestation(MinionServer minion) {
+        if (minion.getOptCocoAttestationConfig()
+                .filter(ServerCoCoAttestationConfig::isEnabled)
+                .filter(ServerCoCoAttestationConfig::isAttestOnBoot)
+                .isEmpty()) {
+            // no attestation configured or wanted on startup
+            return;
+        }
+
+        try {
+            // eariest 1 minute later to finish the boot process
+            // randomize a bit to prevent an attestation storm on a mass reboot action
+            int rand = ThreadLocalRandom.current().nextInt(60, 90);
+            Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
+            attestationManager.scheduleAttestationActionFromSystem(minion.getOrg(), minion, scheduleAt);
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule attestation action. ", e);
         }
     }
 
@@ -444,8 +482,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .orElseThrow(() -> new SaltException("Missing systeminfo result. Aborting registration."));
 
             ValueMap grains = systemInfo.getGrains();
+            PublicCloudInstanceFlavor instanceFlavor = PublicCloudInstanceFlavor.UNKNOWN;
             if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.hasSCCCredentials()) {
-                PublicCloudInstanceFlavor instanceFlavor = saltApi.getInstanceFlavor(minionId);
+                instanceFlavor = saltApi.getInstanceFlavor(minionId);
                 if (!RegistrationUtils.isAllowedOnPayg(systemQuery, minionId, Collections.emptySet(), grains,
                                                        instanceFlavor)) {
                     Object[] args = {minionId};
@@ -524,7 +563,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
             minion.setCpe(cpe);
             systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
-
+            minion.setPayg(instanceFlavor.equals(PublicCloudInstanceFlavor.PAYG));
 
             String serverArch = String.format("%s-%s", osarch,
                     osfamily.equals("Debian") ? "debian-linux" : "redhat-linux");

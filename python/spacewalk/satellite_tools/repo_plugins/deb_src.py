@@ -26,8 +26,8 @@ import logging
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
 from uyuni.common import fileutils
-from uyuni.common.context_managers import cfg_component
 from spacewalk.common.suseLib import get_proxy
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2

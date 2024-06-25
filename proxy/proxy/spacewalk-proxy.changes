@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:10:09 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-0
+  * Remove applet handler
+  * Refactor salt-broker and implement flexible channels state
+    monitoring
+
+-------------------------------------------------------------------
+Fri May 03 15:04:51 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2-0
+  * Remove the config management related WSGI script
+
+-------------------------------------------------------------------
 Tue Jan 16 08:09:14 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1

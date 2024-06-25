@@ -13,7 +13,7 @@ Feature: Create bootstrap repositories
 @sle12sp5_minion
   Scenario: Create the bootstrap repository for a SLES 12 SP5 minion
     When I create the bootstrap repository for "sle12sp5_minion" on the server
-	
+
 @sle15sp1_minion
   Scenario: Create the bootstrap repository for a SLES 15 SP1 minion
     When I create the bootstrap repository for "sle15sp1_minion" on the server
@@ -33,6 +33,10 @@ Feature: Create bootstrap repositories
 @sle15sp5_minion
   Scenario: Create the bootstrap repository for a SLES 15 SP5 minion
     When I create the bootstrap repository for "sle15sp5_minion" on the server
+
+@sle15sp6_minion
+  Scenario: Create the bootstrap repository for a SLES 15 SP6 minion
+    When I create the bootstrap repository for "sle15sp6_minion" on the server
 
 @monitoring_server
   Scenario: Create the bootstrap repository for the monitoring server
@@ -57,6 +61,10 @@ Feature: Create bootstrap repositories
 @slemicro55_minion
   Scenario: Create the bootstrap repository for a SLE Micro 5.5 minion
     When I create the bootstrap repository for "slemicro55_minion" on the server
+
+@slmicro60_minion
+  Scenario: Create the bootstrap repository for a SL Micro 6.0 minion
+    When I create the bootstrap repository for "slmicro60_minion" on the server
 
 @alma8_minion
   Scenario: Create the bootstrap repository for a Alma 8 Salt minion
@@ -118,6 +126,10 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a OpenSUSE 15.5 ARM minion
     When I create the bootstrap repository for "opensuse155arm_minion" on the server
 
+@opensuse156arm_minion
+  Scenario: Create the bootstrap repository for a OpenSUSE 15.6 ARM minion
+    When I create the bootstrap repository for "opensuse156arm_minion" on the server
+
 @sle15sp5s390_minion
   Scenario: Create the bootstrap repository for a SLES 15 SP5 s390x minion
-    When I create the bootstrap repository for "sle15sp5s390_minion" on the server
+    When I create the bootstrap repository for "sle15sp5s390_minion" on the server without flushing

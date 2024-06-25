@@ -1,0 +1,14 @@
+-------------------------------------------------------------------
+Thu Jun 20 16:23:34 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.2-0
+  * Adapt packages to check for modifications
+
+-------------------------------------------------------------------
+Tue Jun 18 17:56:17 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.1-0
+  * Do not check for billing-data-service outside of the container
+  * Fix accessing 'has_metering_access' on BYOS systems (bsc#1226483)
+  * Implement a timer to collect PAYG data of the Uyuni host
+    and copy them in the container

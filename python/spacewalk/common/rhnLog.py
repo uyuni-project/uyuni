@@ -37,8 +37,10 @@ import traceback
 import time
 import fcntl
 import atexit
+
+from spacewalk.common.rhnConfig import cfg_component
 from uyuni.common.fileutils import getUidGid
-from uyuni.common.context_managers import cfg_component
+
 
 LOG = None
 

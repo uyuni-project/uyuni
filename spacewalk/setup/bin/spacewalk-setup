@@ -170,7 +170,6 @@ if ($opts{'upgrade'}) {
       wait_for_tomcat() or exit 56;
   }
   print Spacewalk::Setup::loc("Installation complete.\n");
-  print Spacewalk::Setup::loc("Visit https://%s to create the $product_name administrator account.\n", $answers{hostname});
 }
 
 exit 0;

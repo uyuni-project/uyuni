@@ -29,7 +29,7 @@ jobs:
     
     - id: filter-files
       run: |
-        echo added_modified_renamed="$( echo '${{ steps.files.outputs.added_modified_renamed }}' | tr ' ' '\n' | grep -E '^(python|spacewalk|susemanager)/' | tr '\n' ' ')" >> $GITHUB_ENV
+        echo added_modified_renamed="$( echo '${{ steps.files.outputs.added_modified_renamed }}' | tr ' ' '\n' | grep -E '^(python|spacewalk|susemanager|containers)/' | tr '\n' ' ')" >> $GITHUB_ENV
 
     - name: Run black on files
       run: |

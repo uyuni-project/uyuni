@@ -26,20 +26,12 @@ public class CobblerSnippetEditActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() {
         setRequestPathInfo("/kickstart/cobbler/CobblerSnippetEdit");
-        addRequestParameter("name", "redhat_register");
+        addRequestParameter("name", "minion_script");
         actionPerform();
     }
 
     /**
      * TODO: Right now this blows up with a permission denied.
-    @Test
-    public void testSubmitExecute() throws Exception {
-        setRequestPathInfo("/kickstart/cobbler/CobblerSnippetEdit");
-        addRequestParameter("name", "redhat_register");
-        addSubmitted();
-        actionPerform();
-    }
-
 
     @Test
     public void testDelete() throws Exception {

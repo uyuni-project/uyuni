@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 03 14:31:48 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5-0
+  * Add tables and report views for Confidential Computing
+    attestation
+
+-------------------------------------------------------------------
 Wed Feb 14 13:43:09 CET 2024 - marina.latini@suse.com
 
 - version 5.0.4-1

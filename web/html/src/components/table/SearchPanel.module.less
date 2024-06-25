@@ -1,0 +1,31 @@
+:global(.old-theme),
+:global(.new-theme) {
+  .searchPanel {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 0 auto;
+    min-width: 33%;
+    align-items: center;
+    gap: 5px;
+
+    > * {
+      flex-shrink: 0;
+    }
+
+    >:first-child {
+      min-width: 100%;
+    }
+
+    :global(.form-group) {
+      margin: 0;
+
+      > * {
+        padding: 0;
+      }
+    }
+  }
+
+  .pagination {
+    margin-left: 10px;
+  }
+}

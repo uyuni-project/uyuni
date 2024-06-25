@@ -29,8 +29,7 @@ class NoKeyErrorsDict(dict):
         return super().get(key)
 
 
-# this initCFG also operates on spacewalk.common.rhnConfig.CFG
-@patch("uyuni.common.context_managers.initCFG", Mock())
+@patch("spacewalk.common.rhnConfig.initCFG", Mock())
 @patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
 @patch("urlgrabber.grabber.PyCurlFileObject._do_grab", Mock())  # no downloads
 @patch("urlgrabber.grabber.PyCurlFileObject.close", Mock())  # no need to close files
@@ -49,7 +48,7 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
 
     with patch(
         "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
-    ), patch("uyuni.common.context_managers.CFG", CFG):
+    ), patch("spacewalk.common.rhnConfig.CFG", CFG):
         td = ThreadedDownloader(force=True)
         td.add(params)
         td.run()
@@ -58,7 +57,7 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
         curl_spy.setopt.assert_any_call(pycurl.LOW_SPEED_TIME, 42)
 
 
-@patch("uyuni.common.context_managers.initCFG", Mock())
+@patch("spacewalk.common.rhnConfig.initCFG", Mock())
 @patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
 @patch("spacewalk.satellite_tools.download.log2", Mock())  # no logging
 @patch(
@@ -84,7 +83,7 @@ def test_reposync_threaded_downloader_sets_failed_pkgs():
 
     with patch(
         "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
-    ), patch("uyuni.common.context_managers.CFG", CFG):
+    ), patch("spacewalk.common.rhnConfig.CFG", CFG):
         td = ThreadedDownloader(retries=0, force=True)
         td.add(params)
         td.run()
@@ -92,7 +91,6 @@ def test_reposync_threaded_downloader_sets_failed_pkgs():
         assert fail_pkg_name in td.failed_pkgs
 
 
-@patch("uyuni.common.context_managers.initCFG", Mock())
 @patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
 @patch("urlgrabber.grabber.PyCurlFileObject._do_grab", Mock())  # no downloads
 @patch("urlgrabber.grabber.PyCurlFileObject.close", Mock())  # no need to close files
@@ -115,7 +113,7 @@ def test_reposync_configured_http_proxy_passed_to_urlgrabber():
 
     with patch(
         "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
-    ), patch("uyuni.common.context_managers.CFG", CFG):
+    ), patch("spacewalk.common.rhnConfig.CFG", CFG):
         pycurlobj = PyCurlFileObjectThread(url, "file.rpm", opts, curl_spy, None)
         assert pycurlobj.opts.proxy == http_proxy
 

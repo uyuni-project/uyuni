@@ -1,4 +1,52 @@
 -------------------------------------------------------------------
+Tue Jun 18 17:59:31 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.9-0
+  * Show Server timezone with execution time in recurring action
+    details
+  * Fix displayed time in datetime pickers that use server's
+    timezone (bsc#1225196)
+
+-------------------------------------------------------------------
+Mon Jun 10 17:14:33 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Fix header layout alignment bugs (bsc#1225072)
+  * Fix tab alignment on system detail pages
+  * Fix height of search icon button
+  * Fix modal backwards compatibility event handling
+  * Fix color contrast issue in tables for the status like,
+    skipped, and read messages
+  * Fix button link styles
+  * Fix modal layouts on notification messages page (bsc#1224401)
+  * Added "Add System" link on System page
+  * Fix dark sidebar color scheme
+
+-------------------------------------------------------------------
+Fri May 03 14:21:08 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Added pages to configure and schedule Confidential Computing
+    attestations from the System Set Manager
+  * Add two filters for rpmlint in package spacewalk-web:
+    explicit-lib-dependency and filename-too-long-for-joliet
+    * Added: spacewalk-web-rpmlintrc
+  * Added Confidential Computing UI in Audit
+  * Remove the d3 library
+  * Remove the Visualization feature
+  * Fixed alert alignment issue in credentials modal
+  * Migrate my preferences page to Bootstrap 5
+  * Migrate notification messages page to Bootstrap 5
+  * Added Confidential Computing UI in System details
+  * Fixed alignment issue in the Product table
+  * Added a title to Recommended column in the Products page
+  * Migrate user account pages to Bootstrap 5
+  * Display the attestation process output if available
+  * Enable PAM Authentication by default
+  * Prevent error in case of inconsistent subscription matcher
+    message data (bsc#1221629)
+
+-------------------------------------------------------------------
 Thu Apr 04 18:17:56 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0

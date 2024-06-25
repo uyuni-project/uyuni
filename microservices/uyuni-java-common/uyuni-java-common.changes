@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 03 15:45:16 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.4-0
+  * Changed log4j2-core to provided dependency
+
+-------------------------------------------------------------------
 Mon Apr 15 18:47:41 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.3-0

@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.payg.beans;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,8 @@ public class PaygInstanceInfo {
     private Map<String, Map<String, String>> repositories;
     @SerializedName("certs")
     private Map<String, String> certificates;
+    @SerializedName("timestamp")
+    private long timestamp;
 
     /**
      * Constructor for type CLOUDRMT
@@ -50,6 +53,7 @@ public class PaygInstanceInfo {
         this.basicAuth = basicAuthIn;
         this.headerAuth = headerAuthIn;
         this.rmtHost = rmtHostIn;
+        this.timestamp = Instant.now().getEpochSecond();
     }
 
     /**
@@ -64,29 +68,7 @@ public class PaygInstanceInfo {
         this.headerAuth = headerAuthIn;
         this.certificates = certificatesIn;
         this.repositories = repositoriesIn;
-    }
-
-    /**
-     * Constructor for all types
-     * @param typeIn
-     * @param productsIn
-     * @param basicAuthIn
-     * @param headerAuthIn
-     * @param rmtHostIn
-     * @param certificatesIn
-     * @param repositoriesIn
-     */
-    public PaygInstanceInfo(String typeIn, List<PaygProductInfo> productsIn,
-                            Map<String, String> basicAuthIn,
-                            Map<String, String> headerAuthIn, Map<String, String> rmtHostIn,
-                            Map<String, String> certificatesIn, Map<String, Map<String, String>> repositoriesIn) {
-        this.type = typeIn;
-        this.products = productsIn;
-        this.basicAuth = basicAuthIn;
-        this.headerAuth = headerAuthIn;
-        this.rmtHost = rmtHostIn;
-        this.certificates = certificatesIn;
-        this.repositories = repositoriesIn;
+        this.timestamp = Instant.now().getEpochSecond();
     }
 
     public String getType() {
@@ -143,5 +125,13 @@ public class PaygInstanceInfo {
 
     public void setCertificates(Map<String, String> certificatesIn) {
         certificates = certificatesIn;
+    }
+
+    public Instant getTimestamp() {
+        return Instant.ofEpochSecond(timestamp);
+    }
+
+    public void setTimestamp(long timestampIn) {
+        this.timestamp = timestampIn;
     }
 }

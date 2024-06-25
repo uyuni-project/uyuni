@@ -142,6 +142,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private boolean payg;
     private MaintenanceSchedule maintenanceSchedule;
     private Boolean hasConfigFeature;
+    private Set<ServerAppStream> appStreams = new HashSet<>();
 
     private String cpe;
 
@@ -2408,6 +2409,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return <code>true</code> if OS supports Confidential Computing Attestation
+     *
+     * @return <code>true</code> if OS supports CoCo Attestation
+     */
+    public boolean doesOsSupportCoCoAttestation() {
+        return (isSLES15() && getRelease().equals("15.6")) ||
+            (isLeap15() && getRelease().equals("15.6"));
+    }
+
+    /**
      * @return true if the installer type is of SLES 10
      */
     boolean isSLES10() {
@@ -2503,6 +2514,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("9");
     }
 
+    public boolean isRedHat() {
+        return ServerConstants.REDHAT.equals(getOsFamily());
+    }
+
     boolean isAlibaba2() {
         return ServerConstants.ALIBABA.equals(getOs());
     }
@@ -2557,5 +2572,34 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * */
     public void setCpe(String cpeIn) {
         this.cpe = cpeIn;
+    }
+
+    /**
+     * Getter for AppStreams
+     *
+     * @return Set of ServerAppStream
+     */
+    public Set<ServerAppStream> getAppStreams() {
+        return appStreams;
+    }
+
+    /**
+     * Setter for AppStreams
+     *
+     * @param appStreamsIn to set
+    */
+    public void setAppStreams(Set<ServerAppStream> appStreamsIn) {
+        appStreams = appStreamsIn;
+    }
+
+    /**
+     * Checks if a specific module with a given stream is enabled on the system.
+     *
+     * @param module The name of the module to check.
+     * @param stream The stream associated with the module to check.
+     * @return {@code true} if the module with the specified stream is enabled, {@code false} otherwise.
+     */
+    public boolean hasAppStreamModuleEnabled(String module, String stream) {
+        return getAppStreams().stream().anyMatch(it -> it.getName().equals(module) && it.getStream().equals(stream));
     }
 }

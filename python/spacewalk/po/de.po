@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-06-18 14:54+0200\n"
 "PO-Revision-Date: 2023-03-31 13:14+0000\n"
 "Last-Translator: Georg Mayer <georgbmayer@yahoo.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/"
@@ -46,7 +46,7 @@ msgid "Invalid request received (%s)."
 msgstr "Ungültige Anfrage erhalten (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -55,7 +55,7 @@ msgstr ""
 "NACHFOLGEND EINE WICHTIGE NACHRICHT:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -63,15 +63,12 @@ msgid ""
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Ungültige URI %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -82,11 +79,6 @@ msgstr ""
 "                   %s Benutzer wurde auf diesem Server deaktiviert.\n"
 "                   Bitte kontaktieren Sie Ihren Org-Administrator für Hilfe."
 
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Ihr System wurde in der {PRODUCT_NAME} Datenbank nicht gefunden"
-
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
 msgstr "ISS ist auf diesem Server deaktiviert."
@@ -95,16 +87,6 @@ msgstr "ISS ist auf diesem Server deaktiviert."
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nicht für ISS aktiviert."
-
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Paketname erwartet, nicht: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Paket erwartet, nicht: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
@@ -119,67 +101,6 @@ msgstr "Ungültiger Sitzungsschlüssel"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "Diese Server-ID existiert nicht mehr"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Ungültiger Aktionswerttyp %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Aktion %s gehört nicht zu Server %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "Erforderliche Daten nicht vorhanden"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "Erforderliche Mitglieder fehlen"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "Versuch, ein System mit einem ungültigen Benutzernamen zu registrieren"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "Ungültige System-Release-Version angefordert"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Kein gültiges Netzwerk Interface gefunden. Sowohl ipaddr als auch ip6addr "
-"konnten nicht gefunden werden."
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} Willkommensnachricht"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "Datenschutzerklärung"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "Es wurde ein Wörterbuch als Produktargument erwartet"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Ungültiger Wert '%s' für %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "Ungültiges system_id/action_id Paar."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Ungültiger Wert %s (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -290,7 +211,7 @@ msgstr "ungültiges rpm Paket %s angefordert"
 msgid "Package not found"
 msgstr "Paket nicht gefunden"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "die Architektur '%s' wird nicht unterstützt"
@@ -957,7 +878,7 @@ msgstr ""
 msgid "Invalid content encoding"
 msgstr "Ungültiger Feldcode"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 #, fuzzy
 msgid ""
 "\n"
@@ -978,7 +899,7 @@ msgstr ""
 "dieser Fehler auftrat,\n"
 "     sowie Informationen, wie dieses Problem reproduziert werden kann.\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -987,17 +908,17 @@ msgstr ""
 "Fehlermeldung:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Fehlerklasse-Code: %s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Fehlerklasse-Information: %s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "Erklärung: %s"
@@ -1180,16 +1101,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
@@ -1925,6 +1846,67 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Ihr System wurde in der {PRODUCT_NAME} Datenbank nicht gefunden"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "Paketname erwartet, nicht: %s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "Paket erwartet, nicht: %s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "Ungültiger Aktionswerttyp %s (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "Aktion %s gehört nicht zu Server %s"
+
+#~ msgid "Required data missing"
+#~ msgstr "Erforderliche Daten nicht vorhanden"
+
+#~ msgid "Required members missing"
+#~ msgstr "Erforderliche Mitglieder fehlen"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr ""
+#~ "Versuch, ein System mit einem ungültigen Benutzernamen zu registrieren"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "Ungültige System-Release-Version angefordert"
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "Kein gültiges Netzwerk Interface gefunden. Sowohl ipaddr als auch ip6addr "
+#~ "konnten nicht gefunden werden."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "{PRODUCT_NAME} Willkommensnachricht"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "Datenschutzerklärung"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "Es wurde ein Wörterbuch als Produktargument erwartet"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "Ungültiger Wert '%s' für %s (%s)"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "Ungültiges system_id/action_id Paar."
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "Ungültiger Wert %s (%s)"
 
 #, fuzzy
 #~ msgid "Invalid crash name"

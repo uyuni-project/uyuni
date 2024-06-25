@@ -3365,10 +3365,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/ForeignPackages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
-        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-      <target state="needs-adaptation"/>
-      </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
         <source>Upgradable Packages</source>
@@ -9381,20 +9377,6 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
         <target>क्लाइंट GPG जांच स्क्रिय करें</target>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-config-actions" xml:space="preserve">
-        <source>Enable Remote Configuration</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>दूरस्थ विन्यास सक्रिय करें</target>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.allow-remote-commands" xml:space="preserve">
-        <source>Enable Remote Commands</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>दूरस्थ कमांड सक्रिय करें</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.http-proxy" xml:space="preserve">
         <source>Client HTTP Proxy</source>
@@ -17027,11 +17009,11 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target>इस फाइल पुनरीक्षण मिटाएं</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
-        <source>delete organization</source>
+        <source>Delete Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>संगठन मिटाएं</target>
+        <target state="needs-adaptation">संगठन मिटाएं</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
         <source>Delete This File</source>
@@ -23275,17 +23257,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.proxy.unlicensed" xml:space="preserve">
-        <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve">
-        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
+        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="sdc.details.proxyclients.header" xml:space="preserve">
         <source>Proxy Clients</source>
@@ -27180,7 +27157,7 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2024 SUSE LLC.</source>
       <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
@@ -27993,6 +27970,50 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.overview.audit" xml:space="preserve">
+            <source>Audit</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/ssm/Index.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.index" xml:space="preserve">
+            <source>Confidential Computing</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
+            <source>Configure</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
+            <source>Schedule</source>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="AppStreams" xml:space="preserve">
+        <source>AppStreams</source>
       <target state="new"/>
   </trans-unit>
       </body>

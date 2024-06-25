@@ -47,6 +47,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.PackageTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -105,10 +107,12 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        CloudPaygManager paygMgr = new CloudPaygManager();
+        CloudPaygManager paygMgr = new TestCloudPaygManagerBuilder().build();
+        AttestationManager attMgr = new AttestationManager();
 
-        RegularMinionBootstrapper regularBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi, paygMgr);
-        SSHMinionBootstrapper sshBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygMgr);
+        RegularMinionBootstrapper regularBootstrapper =
+                new RegularMinionBootstrapper(systemQuery, saltApi, paygMgr, attMgr);
+        SSHMinionBootstrapper sshBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygMgr, attMgr);
         XmlRpcSystemHelper xmlRpcHelper = new XmlRpcSystemHelper(regularBootstrapper, sshBootstrapper);
 
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
@@ -122,7 +126,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
         handler = new SystemHandler(taskomaticApi, xmlRpcHelper, entitlementManager, systemManager, groupManager,
-                new CloudPaygManager());
+            new TestCloudPaygManagerBuilder().build(), new AttestationManager());
 
         standard = PackageTest.createTestPackage(admin.getOrg());
         standardUpdated = PackageTestUtils.newVersionOfPackage(standard, null, "2.0.0", null, admin.getOrg());

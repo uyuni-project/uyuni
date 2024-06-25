@@ -630,6 +630,53 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 .findFirst().isPresent());
     }
 
+    @Test
+    public void canSwitchHostIdentifierWhenNewAndFallbackAreProvided() {
+        // Create a VMWare host
+        String hostLabel = TestUtils.randomString();
+        HostJson vmwareHost = createMinimalHost("'vim.HostSystem:host-159266'", "vmware", null);
+        vmwareHost.setFallbackHostIdentifier(null);
+        vmwareHost.setCpuMhz(400.0);
+
+        // Process
+        new VirtualHostManagerProcessor(virtualHostManager, Map.of(hostLabel, vmwareHost))
+            .processMapping();
+
+        // Verify the server has been created
+        Server server = ServerFactory.lookupForeignSystemByDigitalServerId("101-'vim.HostSystem:host-159266'");
+        assertNotNull(server);
+        assertEquals("400", server.getCpu().getMHz());
+
+        // Switch the host identifier
+        vmwareHost.setHostIdentifier("55f23bba-66e1-46e7-b04b-d207dc3de2fc");
+        vmwareHost.setFallbackHostIdentifier("'vim.HostSystem:host-159266'");
+        vmwareHost.setCpuMhz(1400.d);
+
+        // Process again
+        new VirtualHostManagerProcessor(virtualHostManager, Map.of(hostLabel, vmwareHost))
+            .processMapping();
+
+        // Verify the host identifier has changed. The old one does not exits
+        assertNull(ServerFactory.lookupForeignSystemByDigitalServerId("101-'vim.HostSystem:host-159266'"));
+        // The new one exists and has been updated
+        server = ServerFactory.lookupForeignSystemByDigitalServerId("101-55f23bba-66e1-46e7-b04b-d207dc3de2fc");
+        assertNotNull(server);
+        assertEquals("1400", server.getCpu().getMHz());
+
+        // Perform another update to verify the new host identifier is used as expected
+        vmwareHost.setHostIdentifier("55f23bba-66e1-46e7-b04b-d207dc3de2fc");
+        vmwareHost.setFallbackHostIdentifier("'vim.HostSystem:host-159266'");
+        vmwareHost.setCpuMhz(4400.d);
+
+        // Process again
+        new VirtualHostManagerProcessor(virtualHostManager, Map.of(hostLabel, vmwareHost))
+            .processMapping();
+
+        // The server exists and has been updated
+        server = ServerFactory.lookupForeignSystemByDigitalServerId("101-55f23bba-66e1-46e7-b04b-d207dc3de2fc");
+        assertNotNull(server);
+        assertEquals("4400", server.getCpu().getMHz());
+    }
 
     /**
      * Creates a map representing the parsed result from gatherer run on one virtual host

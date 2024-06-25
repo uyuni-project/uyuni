@@ -78,6 +78,9 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
+import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -120,6 +123,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -149,6 +153,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemManager systemManager;
     private CloudPaygManager cloudManager4Test;
+    private AttestationManager attestationManager;
 
     @FunctionalInterface
     private interface ExpectationsFunction {
@@ -287,12 +292,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
        saltServiceMock = mock(SaltService.class);
        systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
-       cloudManager4Test = new CloudPaygManager() {
-           @Override
-           public boolean isPaygInstance() {
-               return false;
-           }
-       };
+       cloudManager4Test = new TestCloudPaygManagerBuilder().build();
+       attestationManager = new AttestationManager();
 
        context().checking(new Expectations() {{
            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
@@ -373,7 +374,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock,
-                saltServiceMock, cloudManager4Test);
+                saltServiceMock, cloudManager4Test, attestationManager);
         action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
 
         // Verify the resulting system entry
@@ -409,6 +410,81 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
             assertNull(minion.getLock());
         }, DEFAULT_CONTACT_METHOD);
+    }
+
+    @Test
+    public void testScheduleCoCoAttestationNotEnabled() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setHostname(MINION_ID);
+
+        try {
+            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, false);
+            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+                assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+                MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                        m -> {
+                            assertEquals(m.getCreated(), server.getCreated());
+                            assertEquals(m.getId(), server.getId());
+                            assertEquals(0, attestationManager.listCoCoAttestationReportsForUserAndServer(
+                                    user, m, new Date(0), 0, 10).size());
+                        },
+                        () -> fail("Machine ID not found"));
+            }, null, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+    }
+
+    @Test
+    public void testScheduleCoCoAttestationEnabledOnBootDisabled() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setHostname(MINION_ID);
+
+        try {
+            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+                assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+                MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                        m -> {
+                            assertEquals(m.getCreated(), server.getCreated());
+                            assertEquals(m.getId(), server.getId());
+                            assertEquals(0, attestationManager.listCoCoAttestationReportsForUserAndServer(
+                                    user, m, new Date(0), 0, 10).size());
+                        },
+                        () -> fail("Machine ID not found"));
+            }, null, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+    }
+
+    @Test
+    public void testScheduleCoCoAttestationEnabledAndBoot() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        server.setHostname(MINION_ID);
+
+        try {
+            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true, true);
+            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+                assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+                MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                        m -> {
+                            assertEquals(m.getCreated(), server.getCreated());
+                            assertEquals(m.getId(), server.getId());
+                            assertEquals(1, attestationManager.listCoCoAttestationReportsForUserAndServer(
+                                    user, m, new Date(0), 0, 10).size());
+                        },
+                        () -> fail("Machine ID not found"));
+            }, null, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
     }
 
     /*
@@ -1769,12 +1845,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionBYOSonPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         product.setFree(false);
@@ -1818,12 +1889,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionDConPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         product.setFree(false);
@@ -1866,12 +1932,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionFreeBYOSonPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         product.setFree(true);
@@ -1893,7 +1954,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(pil)));
                 }},
                 ACTIVATION_KEY_SUPPLIER,
-                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    assertFalse(optMinion.get().isPayg(), "Unexpected: instance is PAYG");
+                },
                 DEFAULT_CONTACT_METHOD);
     }
 
@@ -1903,12 +1967,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionSumaProxyOnPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         ChannelFamily channelFamily = createTestChannelFamily();
         channelFamily.setName("SUSE Manager Proxy");
         channelFamily.setLabel("SMP");
@@ -1925,7 +1984,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                     will(returnValue(getSystemInfo(MINION_ID, null, key)));
                     allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
-                    will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
+                    will(returnValue(SumaUtil.PublicCloudInstanceFlavor.BYOS));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                             product.getName(),
@@ -1938,7 +1997,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(pil)));
                 }},
                 ACTIVATION_KEY_SUPPLIER,
-                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    assertFalse(optMinion.get().isPayg(), "Unexpected: instance is PAYG");
+                },
                 DEFAULT_CONTACT_METHOD);
     }
 
@@ -1948,12 +2010,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterMinionPAYGonPAYG() throws Exception {
-        cloudManager4Test = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        cloudManager4Test = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1962,7 +2019,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
                 }},
                 ACTIVATION_KEY_SUPPLIER,
-                (optMinion, machineId, key) -> assertTrue(optMinion.isPresent()),
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    assertTrue(optMinion.get().isPayg(), "Unexpected: instance is not PAYG");
+                },
                 DEFAULT_CONTACT_METHOD);
     }
 
@@ -2015,8 +2075,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }
         } });
 
-        RegisterMinionEventMessageAction action =
-                new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock, cloudManager4Test);
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock,
+                cloudManager4Test, attestationManager);
         action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
     }
 

@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:48:56 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7
+  * Add Apache and Squid tuning
+
+-------------------------------------------------------------------
+Fri May 03 15:10:41 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6
+  * Tag for SUSE Manager 5.0 RC
+
+-------------------------------------------------------------------
 Fri Apr 05 18:48:55 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5

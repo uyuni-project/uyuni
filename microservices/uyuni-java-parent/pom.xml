@@ -21,12 +21,41 @@
 
     <groupId>org.uyuni-project</groupId>
     <artifactId>uyuni-java-parent</artifactId>
-    <version>5.0.3</version>
+    <version>5.0.4</version>
     <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <modules>
+        <module>../uyuni-java-common</module>
+        <module>../coco-attestation</module>
+    </modules>
+
+    <!-- Profiles based on the jdk Maven is running on.
+       ~ to ensure the compilation happens with the proper release target
+      -->
+    <profiles>
+        <profile>
+            <id>java-11</id>
+            <activation>
+                <jdk>[11,17)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>11</maven.compiler.release>
+            </properties>
+        </profile>
+        <profile>
+            <id>java-17</id>
+            <activation>
+                <jdk>[17,)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>17</maven.compiler.release>
+            </properties>
+        </profile>
+    </profiles>
 
     <!-- Global dependencies based on the package version in OBS -->
     <dependencyManagement>
@@ -56,20 +85,25 @@
                 <artifactId>c3p0</artifactId>
                 <version>0.9.5.5</version>
             </dependency>
+
+            <!-- Test dependencies -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>5.8.2</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>5.10.0</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-junit-jupiter</artifactId>
                 <version>5.10.0</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -82,17 +116,14 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.11.0</version>
-                    <configuration>
-                        <release>11</release>
-                        <target>11</target>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.2.2</version>
                     <configuration>
-                        <argLine>-ea</argLine>
+                        <!-- enable assertions and disable sharing of classes for tests -->
+                        <argLine>-ea -Xshare:off</argLine>
                         <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
                             <usePhrasedFileName>false</usePhrasedFileName>
                             <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
@@ -114,6 +145,8 @@
                     </dependencies>
                     <configuration>
                         <includeResources>false</includeResources>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <includeTestResources>false</includeTestResources>
                         <headerLocation>../../java/buildconf/LICENSE.txt</headerLocation>
                         <configLocation>../../java/buildconf/checkstyle.xml</configLocation>
                         <suppressionsLocation>../../java/buildconf/checkstyle-suppressions.xml</suppressionsLocation>

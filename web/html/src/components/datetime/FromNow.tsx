@@ -5,7 +5,7 @@ import { localizedMoment } from "utils";
 import { getTimeProps } from "./timeProps";
 
 type Props = {
-  value?: string | moment.Moment;
+  value?: string | moment.Moment | Date;
   children?: string;
 };
 

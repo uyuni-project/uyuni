@@ -556,13 +556,6 @@ public class HardwareMapper {
     }
 
     /**
-     * Map PAYG information for the server to the database.
-     */
-    public void mapPaygInfo() {
-        server.setPayg(grains.getOptionalAsBoolean("is_payg_instance").orElse(false));
-    }
-
-    /**
      * Get the memory amount to set. Most of the times we don't want to update it since a better value comes from
      * the virtual host, but for foreign hosts and systems with no memory set, take the value seen from the guest OS:
      * it's better than no value at all.

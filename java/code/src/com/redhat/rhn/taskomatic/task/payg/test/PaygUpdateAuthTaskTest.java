@@ -47,6 +47,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.MockFileLocks;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -109,7 +110,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
         paygUpdateAuthTask = new PaygUpdateAuthTask();
 
-        paygUpdateAuthTask.setCloudPaygManager(new CloudPaygManager());
+        paygUpdateAuthTask.setCloudPaygManager(new TestCloudPaygManagerBuilder().build());
         paygUpdateAuthTask.setPaygDataExtractor(paygAuthDataExtractorMock);
         paygUpdateAuthTask.setContentSyncManager(contentSyncManagerMock);
         paygUpdateAuthTask.setSccRefreshLock(new MockFileLocks());
@@ -151,12 +152,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(paygInstanceInfo));
         }});
-        CloudPaygManager mgr = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-        };
+        CloudPaygManager mgr = new TestCloudPaygManagerBuilder().withPaygInstance().build();
         paygUpdateAuthTask.setCloudPaygManager(mgr);
         paygUpdateAuthTask.execute(null);
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
@@ -224,12 +220,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        mgr = new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return false;
-            }
-        };
+        mgr = new TestCloudPaygManagerBuilder().build();
         paygUpdateAuthTask.setCloudPaygManager(mgr);
         paygUpdateAuthTask.execute(null);
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {

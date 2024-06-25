@@ -51,6 +51,7 @@ import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.TokenBuilder;
@@ -173,7 +174,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
 
-        downloadController = new DownloadController(new CloudPaygManager());
+        downloadController = new DownloadController(new TestCloudPaygManagerBuilder().build());
         downloadController.setCheckTokens(true);
     }
 
@@ -660,13 +661,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPaygNotCompliant() {
-        CloudPaygManager pmgr = new CloudPaygManager() {
-            @Override
-            public boolean checkRefreshCache(boolean force) {
-                setCompliant(false);
-                return true;
-            }
-        };
+        CloudPaygManager pmgr = new TestCloudPaygManagerBuilder()
+            .withPaygInstance()
+            .withModifiedPackages()
+            .build();
+
         DownloadController ctl = new DownloadController(pmgr);
 
         Map<String, String> params = new HashMap<>();
@@ -913,16 +912,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testValidateMinionInPaygShortToken() {
-        downloadController = new DownloadController(new CloudPaygManager() {
-            @Override
-            public boolean isPaygInstance() {
-                return true;
-            }
-            @Override
-            public boolean hasSCCCredentials() {
-                return false;
-            }
-        });
+        CloudPaygManager cpg = new TestCloudPaygManagerBuilder()
+            .withPaygInstance()
+            .withoutSCCCredentials()
+            .build();
+
+        downloadController = new DownloadController(cpg);
 
         // Test case - Token passed is not a short-token (must fail)
         DownloadTokenBuilder tokenBuilderFail = new DownloadTokenBuilder(user.getOrg().getId());

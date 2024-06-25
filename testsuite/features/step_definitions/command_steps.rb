@@ -164,6 +164,7 @@ end
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
   channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel) ||
                             CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+  channels_to_synchronize = filter_channels(channels_to_synchronize, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channel #{channel} or #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil? || channels_to_synchronize.empty?
 
   channels_to_synchronize.each do |os_product_version_channel|
@@ -326,6 +327,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
   next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).nil?
 
   channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  channels_to_kill = filter_channels(channels_to_kill, ['beta']) unless $beta_enabled
   log "Killing channels:\n#{channels_to_kill}"
   time_spent = 0
   checking_rate = 10
@@ -388,7 +390,10 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
-  if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+  if channel.include?('custom_channel') || channel.include?('ptf')
+    log 'Timeout of 10 minutes for a custom channel'
+    timeout = 600
+  elsif TIMEOUT_BY_CHANNEL_NAME[channel].nil?
     log "Unknown timeout for channel #{channel}, assuming one minute"
     timeout = 60
   else
@@ -412,6 +417,7 @@ end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
   channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
 
   time_spent = 0
@@ -520,7 +526,7 @@ When(/^I extract the log files from all our active nodes$/) do
 
     $stdout.puts "Host: #{host}"
     $stdout.puts "Node: #{node.full_hostname}"
-    extract_logs_from_node(node)
+    extract_logs_from_node(node, host)
   end
 end
 
@@ -702,7 +708,8 @@ Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
   repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
-    result, _code = get_target('server').run(cmd, check_errors: false)
+    # If the error code is different than 0 (grep matches) or 1 (no grep matches), the command failed.
+    result, _code = get_target('server').run(cmd, successcodes: [0, 1], check_errors: true)
     break if result.include? 'SLES'
 
     sleep 5
@@ -922,8 +929,8 @@ When(/^I install packages? "([^"]*)" on this "([^"]*)"((?: without error control
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
-  elsif slemicro_host?(host)
-    cmd = "transactional-update pkg install -n #{package}"
+  elsif transactional_system?(host)
+    cmd = "transactional-update pkg install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
     not_found_msg = 'not found in package names'
   else
@@ -962,6 +969,9 @@ When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error contro
   elsif deb_host?(host)
     cmd = "dpkg --remove #{package}"
     successcodes = [0]
+  elsif transactional_system?(host)
+    cmd = "transactional-update pkg rm -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
   else
     cmd = "zypper --non-interactive remove -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 104, 106]
@@ -1038,18 +1048,22 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
+When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+
   cmd =
     if parent_channel.nil?
-      "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
+      "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels"
     else
-      "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
+      "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels"
     end
-  log 'Creating the boostrap repository on the server:'
+
+  cmd += ' --flush' unless without_flushing
+
+  log 'Creating the bootstrap repository on the server:'
   log "  #{cmd}"
   get_target('server').run(cmd)
 end
@@ -1298,9 +1312,9 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
-When(/^I copy unset package file on server$/) do
+When(/^I copy unset package file on "(.*?)"$/) do |minion|
   base_dir = "#{File.dirname(__FILE__)}/../upload_files/unset_package/"
-  return_code = file_inject(get_target('server'), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
+  return_code = file_inject(get_target(minion), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
   raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 
@@ -1336,7 +1350,7 @@ When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
   folder_delete(node, folder) if folder_exists?(node, folder)
 end
 
-## ReportDB ##
+# ReportDB
 
 Given(/^I can connect to the ReportDB on the Server$/) do
   # connect and quit database
@@ -1573,8 +1587,8 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
   )
 end
 
-When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
-  if slemicro_host?(host)
+When(/^I reboot the "([^"]*)" if it is a transactional system$/) do |host|
+  if transactional_system?(host)
     step %(I reboot the "#{host}" minion through the web UI)
   end
 end

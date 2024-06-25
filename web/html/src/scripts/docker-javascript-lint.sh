@@ -9,7 +9,7 @@ git config --global --add safe.directory /manager
 cd /manager/web/html/src
 
 yarn install
-yarn build
+yarn build:novalidate
 yarn lint:production
 yarn test
 yarn tsc

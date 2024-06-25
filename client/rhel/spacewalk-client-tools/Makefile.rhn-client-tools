@@ -2,10 +2,9 @@
 #
 
 PREFIX		?=
-MANPATH		?= /usr/share/man
 
 # Dirs we need to walk into
-SUBDIRS		= etc-conf man po src
+SUBDIRS		= etc-conf po src
 
 # Handy defines 
 VERSION         := $(shell echo `grep ^Version: spacewalk-client-tools.spec | awk '{ print $$2 }'`)
@@ -17,7 +16,6 @@ endif
 
 # For subdirs, required exports 
 export PREFIX 
-export MANPATH
 export VERSION
 export PLATFORM
 

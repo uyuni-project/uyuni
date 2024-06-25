@@ -26,7 +26,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
     iso_path = $is_containerized_server ? url.sub(/^https?:\/\/[^\/]+/, '/srv/mirror') : url.sub(/^https?:\/\/[^\/]+/, '/mirror')
   else
     iso_path = "/tmp/#{name}.iso"
-    get_target('server').run("curl --insecure -o #{iso_path} #{url}", timeout: 1500)
+    get_target('server').run("curl --insecure -o #{iso_path} #{url}", runs_in_container: false, timeout: 1500)
   end
 
   iso_dir = File.dirname(iso_path)
@@ -510,11 +510,10 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   get_target('server').run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
-When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |package, channel|
-  command = "rhnpush -u admin -p admin --nosig -c #{channel} #{package}"
-  get_target('server').run(command, timeout: 500)
-  # TODO: instead of next line, wait for package to appear inside /var/spacewalk/packages
-  get_target('server').run('ls -lR /var/spacewalk/packages', timeout: 500)
+When(/^I push package "([^"]*)" into "([^"]*)" channel through "([^"]*)"$/) do |package, channel, minion|
+  command = "mgrpush -u admin -p admin --server=#{get_target('server').full_hostname} --nosig -c #{channel} #{package}"
+  get_target(minion).run(command, timeout: 500)
+  get_target('server').run_until_ok("find . -name \"#{package}\" | grep -q \"#{package}\"", timeout: 500)
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|

@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
-"PO-Revision-Date: 2022-08-29 04:13+0000\n"
+"POT-Creation-Date: 2024-06-18 14:54+0200\n"
+"PO-Revision-Date: 2024-06-11 06:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -47,7 +47,7 @@ msgid "Invalid request received (%s)."
 msgstr "無効な要求を受け取りました (%s)。"
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -56,7 +56,7 @@ msgstr ""
 "重要なメッセージです:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -66,15 +66,12 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "無効な URI %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -86,11 +83,6 @@ msgstr ""
 "す。\n"
 "                   組織の管理者にお問い合わせください。"
 
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "システムが {PRODUCT_NAME} データベース内には見つかりませんでした"
-
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
 msgstr "このサーバでは ISS が無効化されています。"
@@ -99,16 +91,6 @@ msgstr "このサーバでは ISS が無効化されています。"
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "サーバー「%s」は ISS に有効になっていません。"
-
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "パッケージ名が期待されています、次ではありません: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "パッケージが期待されています、 次ではありません: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
@@ -124,67 +106,6 @@ msgstr "無効なセッションキー"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "このサーバー ID は既になくなりました"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "無効な動作値タイプ %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "動作 %s はサーバー %s に属していません"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "必要なデータが足りません"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "必要なメンバーが足りません"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "システムを無効なユーザー名に登録しようとしています"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "無効なシステムリリースバージョンを要求しています"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"適切なネットワークインターフェイスが見つかりませんでした。 ipaddr と ip6addr "
-"の両方が見つかりません。"
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} ようこそメッセージ"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "プライバシーステートメント"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "製品の引数としてディクショナリが期待されています"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "無効な値 '%s' − %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "system_id/action_id の対が正しくありません。"
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "無効な値 %s (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -316,7 +237,7 @@ msgstr "無効な RPM パッケージ %s を要求しています"
 msgid "Package not found"
 msgstr "パッケージが見つかりません"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "アーキテクチャ `%s' はサポートされていません"
@@ -769,7 +690,6 @@ msgstr ""
 "     指定チャンネルへのサブスクリプションパーミッションがありません。\n"
 "     詳細については組織の管理者またはチャンネル管理者にお問い合わせくださ"
 "い。\n"
-"     \n"
 "     "
 
 #: ../common/rhnException.py:182
@@ -1042,7 +962,7 @@ msgstr "詳細な SCAP results に対するファイルパスの生成時にエ�
 msgid "Invalid content encoding"
 msgstr "コンテンツエンコーディングが正しくありません"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -1059,7 +979,7 @@ msgstr ""
 "     また問題を再現する場合の手順などを詳しく記入していただけるよう\n"
 "     お願いします。\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -1068,17 +988,17 @@ msgstr ""
 "エラーメッセージ:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "エラークラスコード: %s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "エラークラス情報: %s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "説明: %s"
@@ -1292,16 +1212,16 @@ msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "キックスタート可能なツリーを取り込みました (%d)"
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ 電子メールでログを送信 +++"
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s 同期。 %s からのレポート"
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
 
@@ -1746,8 +1666,8 @@ msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
-"ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-sync"
-"\" をお読みください。"
+"ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-"
+"sync\" をお読みください。"
 
 #: ../satellite_tools/satsync.py:2697
 msgid "existing custom channels will also be synced (unless -c is used)"
@@ -2081,6 +2001,66 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "システムが {PRODUCT_NAME} データベース内には見つかりませんでした"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "パッケージ名が期待されています、次ではありません: %s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "パッケージが期待されています、 次ではありません: %s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "無効な動作値タイプ %s (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "動作 %s はサーバー %s に属していません"
+
+#~ msgid "Required data missing"
+#~ msgstr "必要なデータが足りません"
+
+#~ msgid "Required members missing"
+#~ msgstr "必要なメンバーが足りません"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "システムを無効なユーザー名に登録しようとしています"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "無効なシステムリリースバージョンを要求しています"
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "適切なネットワークインターフェイスが見つかりませんでした。 ipaddr と "
+#~ "ip6addr の両方が見つかりません。"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "{PRODUCT_NAME} ようこそメッセージ"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "プライバシーステートメント"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "製品の引数としてディクショナリが期待されています"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "無効な値 '%s' − %s (%s)"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "system_id/action_id の対が正しくありません。"
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "無効な値 %s (%s)"
 
 #, python-format
 #~ msgid ""

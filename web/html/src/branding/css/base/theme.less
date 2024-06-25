@@ -295,6 +295,7 @@ nav.navbar-pf {
       display: flex;
       flex-direction: column;
       gap: 4px;
+      margin: 0;
     }
     input[type="search"],
     select.form-control {
@@ -384,7 +385,7 @@ nav.navbar-pf {
       border-width: 0 0 1px 0;
       padding-right: 3em;
       height: 3em;
-      color: @aside-search-text-color;
+      color: @aside-search-text-color !important;
 
       &::placeholder {
         color: rgba(@aside-search-text-color, 0.75);
@@ -589,13 +590,6 @@ nav.navbar-pf {
       float: right;
       width: auto;
     }
-    .spacewalk-list-filter {
-      min-width: 33%;
-
-      input.with-bottom-margin {
-        margin-bottom: 0.5em;
-      }
-    }
   }
 }
 
@@ -608,13 +602,6 @@ nav.navbar-pf {
   .col-md-9 {
     padding-right: 0;
   }
-}
-.display-number {
-  .input-sm;
-  display: inline-block;
-  width: 5.2em;
-  border: 1px solid #dddddd;
-  background-color: @eos-bc-gray-100;
 }
 .view-systems-registered {
   .input-sm;
@@ -801,14 +788,6 @@ i[class~="fa-right"] {
 .btn.spacewalk-btn-margin-vertical {
   margin: 1em 0;
 }
-//tabs - adding a margin to all tabs
-ul.nav.nav-tabs {
-  margin-bottom: 0.25rem;
-}
-//tabs - adding a margin button to the last UL
-ul.nav.nav-tabs:last-child {
-  margin-bottom: 1rem;
-}
 
 // Rewriting
 // Jumbotron
@@ -930,7 +909,6 @@ i.spacewalk-help-link {
 
 /* Override rules from bootstrap for nav-tabs*/
 .nav-tabs {
-  margin-bottom: 0.4em;
   li {
     min-width: 60px;
     a,
@@ -961,15 +939,6 @@ i.spacewalk-help-link {
       color: @gray;
       background: inherit;
       padding-bottom: 1px;
-    }
-  }
-  .nav-tabs-indent(1);
-  .nav-tabs-indent(2);
-  .nav-tabs-indent(3);
-
-  .nav-tabs-indent(@i) {
-    &:nth-child(@{i}) {
-      margin-left: (@i - 1) * 30px;
     }
   }
 }

@@ -46,7 +46,7 @@ export const Range = (props: Props) => {
               aria-label={t(`${props.label || ""} start`)}
               title={t(`${props.title || ""} start`)}
             />
-            <span className="input-group-addon">-</span>
+            <span className="input-group-addon input-group-text">-</span>
             <input
               className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
               type={"text"}

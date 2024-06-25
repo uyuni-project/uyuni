@@ -1,0 +1,43 @@
+
+synopsis:
+
+  Results of Confidential Compute Attestations
+
+description:
+
+  List the Confidential Compute Attestations results performed for each report and system.
+
+columns:
+
+  mgm_id The id of the management server instance that contains this data
+  report_id The id of the report
+  result_type_id The id of the result type
+  system_id The id of the system
+  hostname The hostname that identifies this system
+  organization The organization that owns this data
+  environment_type The type of the environment of the attested system
+  result_type The type of the result
+  result_status The status of the result
+  description The result description
+  attestation_time The time when this result was attested
+  synced_date The timestamp of when this data was last refreshed.
+
+sql:
+
+  SELECT * FROM (
+      SELECT mgm_id
+            , report_id
+            , result_type_id
+            , system_id
+            , hostname
+            , organization
+            , environment_type
+            , result_type
+            , result_status
+            , description
+            , attestation_time
+            , synced_date
+        FROM CoCoAttestationResultReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, report_id, result_type_id

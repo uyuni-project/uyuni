@@ -17,6 +17,7 @@ package com.suse.manager.model.attestation;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Date;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -42,6 +43,8 @@ public class CoCoAttestationResult {
     private CoCoAttestationStatus status;
     private String description;
     private String details;
+    private String processOutput;
+    private Date attested;
 
     /**
      * @return return the ID
@@ -98,11 +101,35 @@ public class CoCoAttestationResult {
     }
 
     /**
+     * @return return the process output if available
+     */
+    @Column(name = "process_output")
+    protected String getProcessOutput() {
+        return processOutput;
+    }
+
+    /**
+     * @return the time this result was attested
+     */
+    @Column(name = "attested")
+    public Date getAttested() {
+        return attested;
+    }
+
+    /**
      * @return return the details if available
      */
     @Transient
     public Optional<String> getDetailsOpt() {
         return Optional.ofNullable(details);
+    }
+
+    /**
+     * @return return the details if available
+     */
+    @Transient
+    public Optional<String> getProcessOutputOpt() {
+        return Optional.ofNullable(processOutput);
     }
 
     /**
@@ -147,6 +174,17 @@ public class CoCoAttestationResult {
         details = detailsIn;
     }
 
+    public void setProcessOutput(String processOutputIn) {
+        this.processOutput = processOutputIn;
+    }
+
+    /**
+     * @param attestedIn the time to set
+     */
+    public void setAttested(Date attestedIn) {
+        attested = attestedIn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -180,7 +218,7 @@ public class CoCoAttestationResult {
                 "report_id=" + report.getId() +
                 ", resultType=" + resultType +
                 ", status=" + status +
-                ", descrption=" + description +
+                ", description=" + description +
                 '}';
     }
 }

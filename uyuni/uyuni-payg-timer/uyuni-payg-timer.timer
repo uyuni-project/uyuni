@@ -1,0 +1,13 @@
+[Unit]
+Description=Refresh PAYG data and copy them into the Uyuni container
+ConditionVirtualization=!container
+
+[Timer]
+OnBootSec=5
+OnCalendar=*:7/10
+AccuracySec=1m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+

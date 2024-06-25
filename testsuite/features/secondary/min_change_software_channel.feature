@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -34,19 +34,17 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as unchecked
 
-# susemanager has the Client Tools channels more than uyuni. (+2)
-# in Head also Beta Client Tools Channels (+2)
 @susemanager
-  Scenario: Check old channels are still enabled on the system before channel change completes
+  Scenario: Check via API old channels are still the same on the system before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "17" channels should be enabled on "sle_minion"
-    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @uyuni
-  Scenario: Check old channels are still enabled on the system before channel change completes
+  Scenario: Check via API old channels are still the same on the system before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "8" channels should be enabled on "sle_minion"
-    And channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
+    Then channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
+    And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development))" should be disabled on "sle_minion"
 
 @susemanager
   Scenario: Assign a child channel to the system
@@ -104,17 +102,15 @@ Feature: Assign child channel to a system
     And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as checked
 
 @susemanager
-  Scenario: Check the new channels are enabled on the system
+  Scenario: Check via API the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then "18" channels should be enabled on "sle_minion"
-    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
     And channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
 @uyuni
-  Scenario: Check the new channels are enabled on the system
+  Scenario: Check via API the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then "9" channels should be enabled on "sle_minion"
-    And channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
+    Then channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
     And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be enabled on "sle_minion"
 
 @susemanager

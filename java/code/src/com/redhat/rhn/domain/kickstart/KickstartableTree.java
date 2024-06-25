@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -585,8 +586,8 @@ public class KickstartableTree extends BaseDomainHelper {
 
             for (Path copyFrom : targets) {
                 Path copyTo = fullDir.resolve(copyFrom.getFileName());
-                if (!pathExists(copyTo.toString())) {
-                    Files.copy(copyFrom, copyTo);
+                if (!Files.exists(copyTo) || Files.isSymbolicLink(copyTo)) {
+                    Files.copy(copyFrom, copyTo, StandardCopyOption.REPLACE_EXISTING);
                 }
             }
         }

@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/spacewalk/"
@@ -32,983 +32,73 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/capabilities.py:94
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-"İstemci için sunucunun %s desteği olması gerekiyor. fakat sunucunun buna "
-"desteği yok"
-
 #: ../src/up2date_client/config.py:162
 #, python-format
 msgid "%s was not found"
 msgstr "%s bulanamadı"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "Sistemde kurulu paketlerin listesi alınıyor"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "Cpu bilgisi okuma hatası:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "Sistem bellek bilgisi okuma hatası:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "Ağ bilgisi okuma hatası:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "Kurulum metodu bilgisi okuma hatası:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "Ağ Arayüzü bilgisi okuma hatası:"
-
-#: ../src/up2date_client/hardware.py:1118
-#, fuzzy
-msgid "Error reading network FQDNs information:"
-msgstr "Ağ bilgisi okuma hatası:"
-
-#: ../src/up2date_client/hardware.py:1125
-#, fuzzy
-msgid "Error reading system info:"
-msgstr "Sistem bellek bilgisi okuma hatası:"
-
-#: ../src/up2date_client/hardware.py:1132
-#, fuzzy
-msgid "Error reading machine info:"
-msgstr "Cpu bilgisi okuma hatası:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr ""
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "Sistem bir kanalla iliştirilene kadar güncellenmez"
-
-#: ../src/up2date_client/rhncli.py:65
-#, fuzzy
-msgid "Show additional output. Repeat for more detail."
-msgstr "Ek çıktı göster"
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "Kullanmak için http proxy belirleyin"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr ""
-"Yetkili bir http proxy ile kullanmak üzere bir kullanıcı adı belirleyin"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Kimlikli http proxy kullanmak için bir şifre belirtin"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"İptal Edildi.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "Umulmayan bir OS hatası oluştu: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Bazı G/Ç sıralama hataları var: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "SSL hatası var: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"Bu hata büyük ihtimalle nedeni sistem saatindeki yanlışlık. Sistem "
-"saatinizin doğru olduğundan emin olun\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "SSL kodlama hatası var: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Erişim hatası var: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr ""
-"Umulmadık bir İS hatası oluştu:\n"
-"%s"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "Başlık okunurken hata"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Bir kullanıcı adı girmelisiniz."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr ""
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-#, fuzzy
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Red Hat Ağ Sunucusuna bağlanmayı çalışıyor."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "%s Red Hat Ağ Sunucusuna bağlanmaya çalışıyoruz."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr ""
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "Bir kullanıcı adı girmelisiniz."
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Neden RHN'e bağlanmalıyım ?"
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "Neden üye olmalıyım ?"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "Güvenlik ve Güncelleştirmeler:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "İndirmeler & Güncellemeler:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "Destek:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "Uyum:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "Up2date - Paket Listesi (kayıt)"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "Up2date yeniden başlatılıyor"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr ""
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr "Hesap Bilgisi"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "Giriş:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "Parola:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "İstediğiniz bir giriş yapınız."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "Lütfen şifreyi girin ve onaylayın"
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "İşletim Sistemi sürümü:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr "Dağıtım"
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "Sadece Sınırlı Güncelleştirmeler"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "Tüm kullanılabilir güncelleştirmeler"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "Up2date - Doanım Profili"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"Bir profil adı sisteminizi Red Hat Ağı web sayfalarında tanıyabilmeniz için "
-"kullanacağınız bir isimdir. İsteğe bağlı olarak bir bilgisayar seri numarası "
-"veya kimlik numarası olabilir."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"Bu profilde ek donanım bilgisi olan PCI aygıtları, dik boyutları, bağlantı "
-"noktalarıda eklenecek."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "Donanım ve ağ hakkındaki aşağıdaki bilgileri ekle:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "Up2date - Doanım Profili"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"RPM bilgisi sitem kurulu olan paketlerden hangilerinin güncellendiğini "
-"anlamak için çok önemlidir."
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr "Bu sistemde kurulu paketleri Sistem Profilime ekle"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr ""
-"Kişisel paketleri alttan seçimlerini kaldırarak seçim dışı yapabilirsiniz."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "Paket Listesi Oluşturuluyor"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "*E-posta Adresi"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr ""
-"    --force                    - sistemi daha önce kaydedilmiş olsada kaydet"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr "Up2date yeniden başlatılıyor"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "Devam etmek istediğinize emin misiniz?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Profil Bilgisini Red Hat Ağına Gönder"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel"
-"\" and no information will be sent.  You can run the registration program "
-"later by typing `rhn_register` at the command line."
-msgstr ""
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "Açıklama"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "    --activationkey=<value>    - bir aktivasyon şifresi belirtin "
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "Kanal Bilgileri"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "Ölümcül Hata"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Uyarı"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "TAMAM"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "Hata"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "Sonraki"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "Geri"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "İptal"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "Hayır, İptal"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "Evet, Devam"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr ""
-
-#: ../src/up2date_client/rpcServer.py:56
+#: ../src/up2date_client/rpcServer.py:55
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:182
+#: ../src/up2date_client/rpcServer.py:181
 msgid "ERROR: can not find server CA file"
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:220
-msgid "Connection aborted by the user"
-msgstr "Bağlantı kullanıcı tarafından kesildi"
-
-#: ../src/up2date_client/rpcServer.py:268
-msgid "Server has refused connection due to high load"
-msgstr "Yüksek yükleme nedeniyle sunucu bağlantıyı reddetti"
-
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "Soyadı:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "Sunucu bir hata belirledi:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr ""
-"Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata iletisi:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "Profil adı:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "Sürüm:"
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "CPU modeli:"
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "Makine Adı:"
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "CPU hızı:"
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP Adresi:"
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "Hafıza:"
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s megabayt"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Sistem kaydedilirken hata:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Sorun kaydetme sistemi"
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Sistem id'sini diske yazarken hata."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "Donanım profili gönderilirken hata:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "Donanım profili gönderilirken hata."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "Paket listesi gönderme hatalı:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "Paket listesi gönderilirken hata."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "Bitir"
-
-#: ../src/up2date_client/tui.py:1210
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr ""
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> nesneler arasında geçiş  |  <Space> seçim  |  <F12> "
-"sonraki ekran"
-
-#: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "RHN kayıt programını root olarak çalıştırmalısınız."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "RPM hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "Parola hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM bağımlılık hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "Sunucu ile haberleşilirken hata. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "Dosya Bulunamadı: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "Sunucuda gecikme hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "Veri sunucuda onaylanırken hata:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "    --activationkey=<value>    - bir aktivasyon şifresi belirtin "
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Oem Bilgi dosyası ayrıştırılırken hataların oluştuğu alanlar:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1028,112 +118,399 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "Kullanılacak sunucu url'sini girin"
-
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr ""
-"    --sslCACert=<path>         - ssl CA sertifikası olarak kullanılacak "
-"dosyayı belirtin"
-
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "Kullanmak için http proxy belirleyin"
-
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "    --contactinfo              - stdin'den bağlantı bilgisini okur "
-
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr ""
-"    --nohardware               - her hangi bir donanım bilgisi araştırma ve "
-"göndeme  "
-
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "    --nopackages               - profil veya paket bilgisi gönderme "
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr ""
-"    --force                    - sistemi daha önce kaydedilmiş olsada kaydet"
-
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr ""
-"Sistem kaydı için bir kullanıcı adı, şifre ve e-mail adresi gereklidir."
-
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "Sistem zaten kayıtlı. Tekrar kaydetmek için --force komutunu kullanın"
-
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr ""
+#~ msgid ""
+#~ "This client requires the server to support %s, which the current server "
+#~ "does not support"
+#~ msgstr ""
+#~ "İstemci için sunucunun %s desteği olması gerekiyor. fakat sunucunun buna "
+#~ "desteği yok"
 
-#: ../src/bin/rhnreg_ks.py:172
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "Sistemde kurulu paketlerin listesi alınıyor"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "Cpu bilgisi okuma hatası:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "Sistem bellek bilgisi okuma hatası:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "Ağ bilgisi okuma hatası:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "Kurulum metodu bilgisi okuma hatası:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "Ağ Arayüzü bilgisi okuma hatası:"
+
+#, fuzzy
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "Ağ bilgisi okuma hatası:"
+
+#, fuzzy
+#~ msgid "Error reading system info:"
+#~ msgstr "Sistem bellek bilgisi okuma hatası:"
+
+#, fuzzy
+#~ msgid "Error reading machine info:"
+#~ msgstr "Cpu bilgisi okuma hatası:"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr "Sistem bir kanalla iliştirilene kadar güncellenmez"
+
+#, fuzzy
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "Ek çıktı göster"
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "Kullanmak için http proxy belirleyin"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr ""
+#~ "Yetkili bir http proxy ile kullanmak üzere bir kullanıcı adı belirleyin"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "Kimlikli http proxy kullanmak için bir şifre belirtin"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "İptal Edildi.\n"
+
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "Umulmayan bir OS hatası oluştu: %s\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"Bir profil adı belirtilmemiş, ve makine adı, IP adresi profil adı olarak "
-"kullanmak için çözümlenemedi, lütfen bir profil adı belirtin."
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "Bazı G/Ç sıralama hataları var: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "SSL hatası var: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "Bu hata büyük ihtimalle nedeni sistem saatindeki yanlışlık. Sistem "
+#~ "saatinizin doğru olduğundan emin olun\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "SSL kodlama hatası var: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "Erişim hatası var: %s\n"
+
+#~ msgid "An error has occurred:"
+#~ msgstr ""
+#~ "Umulmadık bir İS hatası oluştu:\n"
+#~ "%s"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "Başlık okunurken hata"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+
+#, fuzzy, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "Bir kullanıcı adı girmelisiniz."
+
+#, fuzzy
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Red Hat Ağ Sunucusuna bağlanmayı çalışıyor."
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "%s Red Hat Ağ Sunucusuna bağlanmaya çalışıyoruz."
+
+#~ msgid "System Registration"
+#~ msgstr "Bir kullanıcı adı girmelisiniz."
+
+#, fuzzy, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "Neden RHN'e bağlanmalıyım ?"
+
+#~ msgid "Why Register"
+#~ msgstr "Neden üye olmalıyım ?"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "Güvenlik ve Güncelleştirmeler:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "İndirmeler & Güncellemeler:"
+
+#~ msgid "Support:"
+#~ msgstr "Destek:"
+
+#~ msgid "Compliance:"
+#~ msgstr "Uyum:"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "Up2date - Paket Listesi (kayıt)"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "Up2date yeniden başlatılıyor"
+
+#, fuzzy, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr "Hesap Bilgisi"
+
+#~ msgid "Login:"
+#~ msgstr "Giriş:"
+
+#~ msgid "Password:"
+#~ msgstr "Parola:"
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "İstediğiniz bir giriş yapınız."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "Lütfen şifreyi girin ve onaylayın"
+
+#~ msgid "Operating System version:"
+#~ msgstr "İşletim Sistemi sürümü:"
+
+#~ msgid " Minor Release: "
+#~ msgstr "Dağıtım"
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "Sadece Sınırlı Güncelleştirmeler"
+
+#~ msgid "All available updates"
+#~ msgstr "Tüm kullanılabilir güncelleştirmeler"
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "Up2date - Doanım Profili"
+
+#, fuzzy, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Bir profil adı sisteminizi Red Hat Ağı web sayfalarında tanıyabilmeniz "
+#~ "için kullanacağınız bir isimdir. İsteğe bağlı olarak bir bilgisayar seri "
+#~ "numarası veya kimlik numarası olabilir."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "Bu profilde ek donanım bilgisi olan PCI aygıtları, dik boyutları, "
+#~ "bağlantı noktalarıda eklenecek."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "Donanım ve ağ hakkındaki aşağıdaki bilgileri ekle:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "Up2date - Doanım Profili"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "RPM bilgisi sitem kurulu olan paketlerden hangilerinin güncellendiğini "
+#~ "anlamak için çok önemlidir."
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr "Bu sistemde kurulu paketleri Sistem Profilime ekle"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr ""
+#~ "Kişisel paketleri alttan seçimlerini kaldırarak seçim dışı yapabilirsiniz."
+
+#~ msgid "Building Package List"
+#~ msgstr "Paket Listesi Oluşturuluyor"
+
+#~ msgid "*Email Address:"
+#~ msgstr "*E-posta Adresi"
+
+#~ msgid "System Already Registered"
+#~ msgstr ""
+#~ "    --force                    - sistemi daha önce kaydedilmiş olsada "
+#~ "kaydet"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr "Up2date yeniden başlatılıyor"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "Devam etmek istediğinize emin misiniz?"
+
+#, fuzzy, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "Profil Bilgisini Red Hat Ağına Gönder"
+
+#~ msgid "Review Subscription"
+#~ msgstr "Açıklama"
+
+#, fuzzy
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "    --activationkey=<value>    - bir aktivasyon şifresi belirtin "
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "Kanal Bilgileri"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Ölümcül Hata"
+
+#~ msgid "Warning"
+#~ msgstr "Uyarı"
+
+#~ msgid "OK"
+#~ msgstr "TAMAM"
+
+#~ msgid "Error"
+#~ msgstr "Hata"
+
+#~ msgid "Next"
+#~ msgstr "Sonraki"
+
+#~ msgid "Back"
+#~ msgstr "Geri"
+
+#~ msgid "Cancel"
+#~ msgstr "İptal"
+
+#~ msgid "No, Cancel"
+#~ msgstr "Hayır, İptal"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "Evet, Devam"
+
+#~ msgid "Connection aborted by the user"
+#~ msgstr "Bağlantı kullanıcı tarafından kesildi"
+
+#~ msgid "Server has refused connection due to high load"
+#~ msgstr "Yüksek yükleme nedeniyle sunucu bağlantıyı reddetti"
+
+#~ msgid "System ID:"
+#~ msgstr "Soyadı:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "Sunucu bir hata belirledi:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr ""
+#~ "Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata "
+#~ "iletisi:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "Profil adı:"
+
+#~ msgid "Version: "
+#~ msgstr "Sürüm:"
+
+#~ msgid "CPU model: "
+#~ msgstr "CPU modeli:"
+
+#~ msgid "Hostname: "
+#~ msgstr "Makine Adı:"
+
+#~ msgid "CPU speed: "
+#~ msgstr "CPU hızı:"
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP Adresi:"
+
+#~ msgid "Memory: "
+#~ msgstr "Hafıza:"
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s megabayt"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "Sistem kaydedilirken hata:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "Sorun kaydetme sistemi"
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "Sistem id'sini diske yazarken hata."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "Donanım profili gönderilirken hata:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "Donanım profili gönderilirken hata."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "Paket listesi gönderme hatalı:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "Paket listesi gönderilirken hata."
+
+#~ msgid "Finish"
+#~ msgstr "Bitir"
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> nesneler arasında geçiş  |  <Space> seçim  |  <F12> "
+#~ "sonraki ekran"
+
+#, fuzzy, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr "RHN kayıt programını root olarak çalıştırmalısınız."
+
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "Kullanılacak sunucu url'sini girin"
+
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr ""
+#~ "    --sslCACert=<path>         - ssl CA sertifikası olarak kullanılacak "
+#~ "dosyayı belirtin"
+
+#~ msgid "Specify an activation key"
+#~ msgstr "Kullanmak için http proxy belirleyin"
+
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "    --contactinfo              - stdin'den bağlantı bilgisini okur "
+
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr ""
+#~ "    --nohardware               - her hangi bir donanım bilgisi araştırma "
+#~ "ve göndeme  "
+
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr ""
+#~ "    --nopackages               - profil veya paket bilgisi gönderme "
+
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr ""
+#~ "    --force                    - sistemi daha önce kaydedilmiş olsada "
+#~ "kaydet"
+
+#~ msgid "A username and password are required to register a system."
+#~ msgstr ""
+#~ "Sistem kaydı için bir kullanıcı adı, şifre ve e-mail adresi gereklidir."
+
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr ""
+#~ "Sistem zaten kayıtlı. Tekrar kaydetmek için --force komutunu kullanın"
+
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "Bir profil adı belirtilmemiş, ve makine adı, IP adresi profil adı olarak "
+#~ "kullanmak için çözümlenemedi, lütfen bir profil adı belirtin."
 
 #, fuzzy
 #~ msgid "Software updates setup unsuccessful"

@@ -1,18 +1,31 @@
 .btn,
+.btn-link,
 .btn-default,
 .btn-primary,
 .btn-success,
 .btn-warning,
 .btn-danger {
+  i.fa::before {
+    // No text-decoration for the icon text, see https://stackoverflow.com/a/19529256/1470607
+    display: inline-block;
+  }
+}
+
+.btn,
+.btn-default,
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-danger {
+  // We use flex to ensure icons etc are correctly aligned in buttons
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   font-size: $font-size-base;
-}
 
-@include onSuma {
-  @import "buttons.suma.scss";
-}
-
-@include onUyuni {
-  @import "buttons.uyuni.scss";
+  i.fa:first-child:last-child {
+    margin: 0;
+  }
 }
 
 button.is-plain {
@@ -31,4 +44,33 @@ button.is-plain {
   text-decoration: none;
   user-select: text;
   padding: 0;
+}
+
+@include onSuma {
+  @import "buttons.suma.scss";
+}
+
+@include onUyuni {
+  @import "buttons.uyuni.scss";
+}
+
+.btn-link {
+  &,
+  &:active,
+  &:focus,
+  &:disabled,
+  &.disabled {
+    border-color: transparent;
+    text-decoration: none;
+
+    &,
+    &:hover {
+      color: $link-color;
+      font-weight: normal;
+    }
+
+    &:not(:disabled):not(.disabled):not(.text-muted):hover {
+      text-decoration: underline;
+    }
+  }
 }

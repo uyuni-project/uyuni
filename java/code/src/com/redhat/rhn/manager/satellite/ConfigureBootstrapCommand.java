@@ -36,8 +36,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
     private Boolean saltEnabled;
     private String sslPath;
     private Boolean enableGpg;
-    private Boolean allowConfigActions;
-    private Boolean allowRemoteCommands;
     private String httpProxy;
     private String httpProxyUsername;
     private String httpProxyPassword;
@@ -63,12 +61,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
         List args = new LinkedList<>();
         args.add("/usr/bin/sudo");
         args.add("/usr/bin/rhn-bootstrap");
-        if (BooleanUtils.toBooleanDefaultIfNull(this.allowConfigActions, false)) {
-            args.add("--allow-config-actions");
-        }
-        if (BooleanUtils.toBooleanDefaultIfNull(this.allowRemoteCommands, false)) {
-            args.add("--allow-remote-commands");
-        }
         if (!BooleanUtils.toBooleanDefaultIfNull(this.enableGpg, false)) {
             args.add("--no-gpg");
         }
@@ -105,39 +97,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
         return null;
 
     }
-
-
-    /**
-     * @return Returns the allowConfigActions.
-     */
-    public Boolean getAllowConfigActions() {
-        return allowConfigActions;
-    }
-
-
-    /**
-     * @param allowConfigActionsIn The allowConfigActions to set.
-     */
-    public void setAllowConfigActions(Boolean allowConfigActionsIn) {
-        this.allowConfigActions = allowConfigActionsIn;
-    }
-
-
-    /**
-     * @return Returns the allowRemoteCommands.
-     */
-    public Boolean getAllowRemoteCommands() {
-        return allowRemoteCommands;
-    }
-
-
-    /**
-     * @param allowRemoteCommandsIn The allowRemoteCommands to set.
-     */
-    public void setAllowRemoteCommands(Boolean allowRemoteCommandsIn) {
-        this.allowRemoteCommands = allowRemoteCommandsIn;
-    }
-
 
     /**
      * @return Returns the enableGpg.

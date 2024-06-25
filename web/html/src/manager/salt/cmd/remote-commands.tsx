@@ -228,7 +228,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
                     disabled={this.state.executing.state() === "pending"}
                     placeholder={t("Type the command here")}
                   />
-                  <span className="input-group-addon">@</span>
+                  <span className="input-group-addon input-group-text">@</span>
                   <input
                     id="target"
                     className="form-control"

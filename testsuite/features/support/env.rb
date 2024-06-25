@@ -18,7 +18,7 @@ require_relative 'code_coverage'
 require_relative 'twopence_env'
 require_relative 'commonlib'
 
-## code coverage analysis
+# code coverage analysis
 # SimpleCov.start
 
 server = ENV.fetch('SERVER', nil)
@@ -58,6 +58,7 @@ $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME'
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
+$beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
@@ -386,6 +387,14 @@ Before('@sle15sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_ssh_minion']
 end
 
+Before('@sle15sp6_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_minion']
+end
+
+Before('@sle15sp6_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
+end
+
 Before('@opensuse154arm_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse154arm_minion']
 end
@@ -400,6 +409,14 @@ end
 
 Before('@opensuse155arm_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_ssh_minion']
+end
+
+Before('@opensuse156arm_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_minion']
+end
+
+Before('@opensuse156arm_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_ssh_minion']
 end
 
 Before('@sle15sp5s390_minion') do
@@ -458,6 +475,14 @@ Before('@slemicro55_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro55_ssh_minion']
 end
 
+Before('@slmicro60_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro60_minion']
+end
+
+Before('@slmicro60_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro60_ssh_minion']
+end
+
 Before('@sle12sp5_buildhost') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_buildhost']
 end
@@ -512,7 +537,7 @@ Before('@skip_for_sle_micro') do |scenario|
 end
 
 Before('@skip_for_sle_micro_ssh_minion') do |scenario|
-  sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion]
+  sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion slmicro60_ssh_minion]
   current_feature_node = scenario.location.file.split(%r{(_smoke_tests.feature|/)})[-2]
   skip_this_scenario if sle_micro_ssh_nodes.include? current_feature_node
 end
@@ -600,6 +625,11 @@ end
 # only test for excessive SCC accesses if SCC access is being logged
 Before('@srv_scc_access_logging') do
   skip_this_scenario unless scc_access_logging_grain?
+end
+
+# do test only if we have beta channels enabled
+Before('@beta') do
+  skip_this_scenario unless $beta_enabled
 end
 
 # check whether the server has the scc_access_logging variable set

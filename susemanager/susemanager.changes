@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Mon Jun 10 16:36:26 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Add bootstrap repository definition for SL Micro 6.0
+  * Move server-only functions out of uyuni.common (bsc#1222325)
+  * Include uyuni.common.notificationUtils in
+    mgr-create-bootstrap-repo
+  * Configure the database to provide enough connections for our
+    default setup
+  * Fix typo in notification
+
+-------------------------------------------------------------------
+Fri May 03 14:08:01 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * In containers open the main database for the internal network
+
+-------------------------------------------------------------------
 Thu Apr 04 17:38:25 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5-0

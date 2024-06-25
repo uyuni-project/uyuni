@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-06-18 14:54+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
@@ -49,7 +49,7 @@ msgid "Invalid request received (%s)."
 msgstr "Réception de requête invalide (%s)"
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -58,7 +58,7 @@ msgstr ""
 "UN MESSAGE IMPORTANT SUIT :\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -68,15 +68,12 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI invalide %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -88,11 +85,6 @@ msgstr ""
 "                   Veuillez contacter votre administrateur d'organisation "
 "pour plus d'assistance."
 
-#: ../server/handlers/applet/applet.py:84
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Votre système n'a pas été trouvé dans la base de données RHN"
-
 #: ../server/handlers/sat/auth.py:46
 #, fuzzy
 msgid "ISS is disabled on this server."
@@ -102,16 +94,6 @@ msgstr "ISS est désactivé sur ce satellite."
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Serveur \"%s\" n'est pas autorisé pour ISS."
-
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Nom de paquet attendu, pas : %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Paquet attendu, pas : %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, fuzzy, python-format
@@ -125,67 +107,6 @@ msgstr "Clé de session invalide"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "Cet identifiant de serveur n'existe plus"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Type d'action %s invalide (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "L'action %s n'appartient pas au serveur %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "Données requises manquantes"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "Membres requis manquantes"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "Essai d'enregistrer un système avec un nom d'utilisateur invalide"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "Version de système demandée invalide"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-#, fuzzy
-msgid "Privacy Statement"
-msgstr "Déclaration de respect de la vie privée de Red Hat Network"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "J'attendais un dictionnaire en tant qu'arguement produit"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Valeur incorrecte '%s' pour %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Informations d'identification du système invalides."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Valeur %s invalide (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -314,7 +235,7 @@ msgstr "Paquet RPM %s demandé invalide"
 msgid "Package not found"
 msgstr "Paquet non trouvé"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "L'architecture `%s' n'est pas supportée"
@@ -1040,7 +961,7 @@ msgstr ""
 msgid "Invalid content encoding"
 msgstr "Code item invalide"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 #, fuzzy
 msgid ""
 "\n"
@@ -1059,7 +980,7 @@ msgstr ""
 "     en train de faire lorsque l'erreur est survenue, ainsi que les détails\n"
 "     sur la façon de reproduire le problème.\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -1068,17 +989,17 @@ msgstr ""
 "Message d'erreur :\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Code de classe d'erreur : %s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Information de classe d'erreur : %s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "Explication : %s"
@@ -1261,16 +1182,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
@@ -2006,6 +1927,57 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, fuzzy, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Votre système n'a pas été trouvé dans la base de données RHN"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "Nom de paquet attendu, pas : %s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "Paquet attendu, pas : %s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "Type d'action %s invalide (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "L'action %s n'appartient pas au serveur %s"
+
+#~ msgid "Required data missing"
+#~ msgstr "Données requises manquantes"
+
+#~ msgid "Required members missing"
+#~ msgstr "Membres requis manquantes"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "Essai d'enregistrer un système avec un nom d'utilisateur invalide"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "Version de système demandée invalide"
+
+#, fuzzy
+#~ msgid "Privacy Statement"
+#~ msgstr "Déclaration de respect de la vie privée de Red Hat Network"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "J'attendais un dictionnaire en tant qu'arguement produit"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "Valeur incorrecte '%s' pour %s (%s)"
+
+#, fuzzy
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "Informations d'identification du système invalides."
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "Valeur %s invalide (%s)"
 
 #, fuzzy
 #~ msgid "Invalid crash name"

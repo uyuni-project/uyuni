@@ -124,6 +124,10 @@ export const fromServerMessage = (
 };
 
 function msg(severityIn: Severity, textIn: React.ReactNode, listMultiple: boolean, header?: string) {
+  if (textIn === null || textIn === undefined) {
+    return [];
+  }
+
   if (Array.isArray(textIn)) {
     if (listMultiple && textIn.length > 1) {
       return [

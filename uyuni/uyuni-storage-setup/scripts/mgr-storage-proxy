@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# Copyright (c) 2019--2024 SUSE Linux GmbH
+# Copyright (c) 2024 SUSE LLC
+#
+# This file is part of uyuni-storage-setup.
+#
+# uyuni-storage-setup is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 3 of the License
+#
+# uyuni-storage-setup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program
+
+. /usr/lib/susemanager/susemanager-storage-setup-functions.sh || exit 1
+
+
+usage() {
+    echo "Usage: $0 <storage-disk-device>"
+    echo
+}
+
+case "$1" in
+  "-h"|"--help"|"")
+    usage
+    exit 0
+    ;;
+esac
+
+if [ ! $UID = 0 ];then
+    die "You must be root to run this script."
+fi
+
+if [ ! -x /usr/bin/mgrpxy ]; then
+    die "$0 support only SUSE Manager 5.0 or later"
+fi
+
+storage_disk=$(linux_device $1)
+storage_fs=xfs
+storage_location="/var/lib/containers/storage/volumes"
+storage_location_tmp="/var/lib/containers/storage/manager_storage_tmp"
+
+if [ -z "$storage_disk" ] || [ ! -b "$storage_disk" ];then
+    usage
+    die "Given storage disk does not exist or is not a block device."
+fi
+check_device_empty $storage_disk
+if is_btrfs_subvolume $storage_location; then
+    umount_subvolume $storage_location
+fi
+check_mountpoint $storage_location
+
+info "Checking disk for content signature"
+check_content_signature $storage_disk
+
+info "Creating partition on disk $storage_disk"
+create_partition $storage_disk
+
+info "Creating $storage_fs filesystem"
+create_filesystem $storage_disk $storage_fs
+
+info "Mounting storage at $storage_location_tmp"
+mount_storage $storage_disk $storage_location_tmp
+
+if systemctl -q is-active uyuni-proxy-httpd.service >/dev/null ; then
+    proxy_running=yes
+    info "Stopping proxy service"
+    mgrpxy stop
+fi
+
+info "Syncing SUSE Manager Proxy directories to storage disk"
+move_storage /var/lib/containers/storage/volumes/ $storage_location_tmp
+
+remount_storage $storage_disk $storage_location_tmp $storage_location
+
+if [ "$proxy_running" = "yes" ]; then
+    info "Starting proxy service"
+    mgrpxy start
+fi
+
+info "Creating entry in /etc/fstab"
+update_fstab $storage_disk $storage_location
+
+exit 0

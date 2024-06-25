@@ -21,6 +21,24 @@ Feature: Smoke tests for <client>
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Check that Software package refresh works on a <client>
+    Given I am on the Systems overview page of this "<client>"
+    When I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
+    And I click on "Update Package List"
+    And I wait until event "Package List Refresh scheduled by admin" is completed
+
+  Scenario: Check that Hardware Refresh button works on a <client>
+    Given I am on the Systems overview page of this "<client>"
+    When I follow "Details" in the content area
+    And I wait until I see "System Status" text
+    And I follow "Hardware"
+    And I wait until I see "Refresh Hardware List" text
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "<client>"
+
   Scenario: Client <client> grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "<client>"
     Then the hostname for "<client>" should be correct
@@ -36,21 +54,21 @@ Feature: Smoke tests for <client>
 @skip_for_rocky9
 @skip_for_alma9
   Scenario: Install a patch on the <client>
+    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "Patches" in the content area
     When I wait until I see "Relevant Patches" text
-    And I select "Non-Critical" from "type"
-    And I click on "Show"
-    When I check the first patch in the list
+    When I check the first patch in the list, that does not require a reboot
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until event "Patch Update:" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion
   Scenario: Install a package on the <client>
+    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "Install"
@@ -62,10 +80,11 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion
   Scenario: Remove package from <client>
+    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "List / Remove"
@@ -76,7 +95,7 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
   Scenario: Run a remote command on <client> minion
     When I follow the left menu "Salt > Remote Commands"
@@ -91,23 +110,8 @@ Feature: Smoke tests for <client>
     And I expand the results for "<client>"
     Then I should see "My remote command output" in the command output for "<client>"
 
-  Scenario: Check that Software package refresh works on a <client>
-    Given I am on the Systems overview page of this "<client>"
-    When I follow "Software" in the content area
-    And I wait until I see "Upgrade Packages" text
-    And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
-
-  Scenario: Check that Hardware Refresh button works on a <client>
-    When I follow "Details" in the content area
-    And I wait until I see "System Status" text
-    And I follow "Hardware"
-    And I wait until I see "Refresh Hardware List" text
-    And I click on "Schedule Hardware Refresh"
-    Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
-
   Scenario: Subscribe a <client> to the configuration channel
+    Given I am on the Systems overview page of this "<client>"
     When I follow "Configuration" in the content area
     And I wait until I see "Configuration Overview" text
     And I follow "Manage Configuration Channels" in the content area
@@ -118,7 +122,7 @@ Feature: Smoke tests for <client>
     And I click on "Continue"
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
   Scenario: Deploy the configuration file to <client>
     When I follow the left menu "Configuration > Channels"
@@ -199,7 +203,7 @@ Feature: Smoke tests for <client>
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion
 @sle_micro_minion

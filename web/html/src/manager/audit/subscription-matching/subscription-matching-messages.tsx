@@ -13,6 +13,16 @@ type Props = {
   subscriptions: any;
 };
 
+const systemName = (systems, messageData) => {
+  if (!systems[messageData["id"]]) {
+    Loggerhead.warn("System: " + messageData["id"] + " not found in server data.");
+    Loggerhead.debug("Systems: " + JSON.stringify(systems));
+    Loggerhead.debug("Message Data: " + JSON.stringify(messageData));
+    return "-";
+  }
+  return systems[messageData["id"]].name;
+};
+
 class Messages extends React.Component<Props> {
   buildRows = (rawMessages, systems, subscriptions) => {
     return rawMessages.map(function (rawMessage, index) {
@@ -26,15 +36,15 @@ class Messages extends React.Component<Props> {
           break;
         case "physical_guest":
           message = t("Physical system is reported as virtual guest, please check hardware data");
-          additionalInformation = systems[data["id"]].name;
+          additionalInformation = systemName(systems, data);
           break;
         case "guest_with_unknown_host":
           message = t("Virtual guest has unknown host, assuming it is a physical system");
-          additionalInformation = systems[data["id"]].name;
+          additionalInformation = systemName(systems, data);
           break;
         case "unknown_cpu_count":
           message = t("System has an unknown number of sockets, assuming 16");
-          additionalInformation = systems[data["id"]].name;
+          additionalInformation = systemName(systems, data);
           break;
         case "hb_merge_subscriptions":
           message = t("Two subscriptions with the same part number are in a bundle - merged into a single one");
@@ -57,7 +67,7 @@ class Messages extends React.Component<Props> {
             ", " +
             t("System") +
             ": " +
-            systems[data["system_id"]].name;
+            systemName(systems, data);
           break;
         case "no_products_associated":
           message = t("Subscription with unsupported part number and no associated product has been ignored.");

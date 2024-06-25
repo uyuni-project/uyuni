@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -32,7 +33,6 @@ import com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeFilter;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
-import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.manager.kickstart.KickstartCloneCommand;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
@@ -112,7 +112,7 @@ public class KickstartHandler extends BaseHandler {
 
         return importFile(loggedInUser, profileLabel, virtualizationType,
                 kickstartableTreeLabel,
-                RhnXmlRpcServer.getServerName(), kickstartFileContents);
+                ConfigDefaults.get().getJavaHostname(), kickstartFileContents);
     }
 
     /**

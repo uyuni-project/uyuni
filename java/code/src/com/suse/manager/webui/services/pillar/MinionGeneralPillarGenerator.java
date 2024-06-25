@@ -46,14 +46,13 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
     public static final String CATEGORY = "general";
 
     private static final int PKGSET_INTERVAL = 5;
-    private static final Integer REBOOT_INFO_INTERVAL = 10;
 
     private static final Map<String, Object> PKGSET_BEACON_PROPS = new HashMap<>();
-    private static final Map<String, Object> REBOOT_INFO_BEACON_PROPS = new HashMap<>();
+    private static final Map<String, Object> REBOOT_INFO_BEACON_PROPS = Map.of("interval", 30);
+    private static final Map<String, Object> REBOOT_INFO_BEACON_PROPS_RH = Map.of("interval", 180);
 
     static {
         PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
-        REBOOT_INFO_BEACON_PROPS.put("interval", REBOOT_INFO_INTERVAL);
     }
 
     /**
@@ -95,10 +94,10 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
         // this add the configuration for the beacon that tell us when the
         // minion packages are modified locally
         if (minion.getOsFamily().equalsIgnoreCase("suse") ||
-                minion.getOsFamily().equalsIgnoreCase("redhat") ||
+                minion.isRedHat() ||
                 minion.getOsFamily().equalsIgnoreCase("debian")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
-            beaconConfig.put("reboot_info", REBOOT_INFO_BEACON_PROPS);
+            beaconConfig.put("reboot_info", minion.isRedHat() ? REBOOT_INFO_BEACON_PROPS_RH : REBOOT_INFO_BEACON_PROPS);
         }
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);

@@ -73,6 +73,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -103,6 +104,7 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.AppStreamsChangeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
@@ -629,6 +631,9 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             handlePackageLockData(serverAction, jsonResult, action);
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_APPSTREAM_CONFIGURE)) {
+            handleAppStreamsChange(serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
@@ -1248,6 +1253,19 @@ public class SaltUtils {
         return results;
     }
 
+    /**
+     * Returns the root cause of a failed state.apply result by filtering out the subsequent failures.
+     * @param stateApplyResultMap the map of the state apply results
+     * @return the first failed state.apply result
+     * @param <R> the type of the state.apply result
+     */
+    private static <R> Optional<StateApplyResult<R>> getOriginalStateApplyError(
+            Map<String, StateApplyResult<R>> stateApplyResultMap) {
+        return stateApplyResultMap.values().stream()
+                .filter(r -> !r.getComment().startsWith("One or more requisite failed"))
+                .findFirst();
+    }
+
     private void handleImagePackageProfileUpdate(ImageInfo imageInfo,
             ImagesProfileUpdateSlsResult result, ServerAction serverAction) {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
@@ -1383,6 +1401,34 @@ public class SaltUtils {
         ErrataManager.insertErrataCacheTask(imageInfo);
     }
 
+    private void handleAppStreamsChange(ServerAction serverAction, JsonElement jsonResult) {
+        Optional<MinionServer> server = serverAction.getServer().asMinionServer();
+        if (server.isEmpty()) {
+            return;
+        }
+
+        if (ActionFactory.STATUS_FAILED.equals(serverAction.getStatus())) {
+            // Filter out the subsequent errors to find the root cause
+            var originalErrorMsg = jsonEventToStateApplyResults(jsonResult)
+                    .map(SaltUtils::getOriginalStateApplyError)
+                        .orElseThrow(() -> new RuntimeException("Failed to parse the state.apply error result"))
+                    .map(StateApplyResult::getComment)
+                    .map(msg -> msg.isEmpty() ? null : msg)
+                    .orElse("Error while configuring AppStreams on the system.\nGot no result from the system.");
+
+            serverAction.setResultMsg(originalErrorMsg);
+            return;
+        }
+
+        var currentlyEnabled = Json.GSON.fromJson(jsonResult, AppStreamsChangeSlsResult.class).getCurrentlyEnabled();
+        Set<ServerAppStream> enabledModules = currentlyEnabled.stream()
+            .map(nsvca -> new ServerAppStream(server.get(), nsvca))
+            .collect(Collectors.toSet());
+        server.get().getAppStreams().clear();
+        server.get().getAppStreams().addAll(enabledModules);
+        serverAction.setResultMsg("Successfully changed system AppStreams.");
+    }
+
     /**
      * Perform the actual update of the database based on given event data.
      *
@@ -1497,6 +1543,17 @@ public class SaltUtils {
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
                 .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
+
+        // Update AppStream modules
+        Set<ServerAppStream> enabledAppStreams = result.getEnabledAppstreamModules()
+                .map(m -> m.getChanges().getRet())
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(nsvca -> new ServerAppStream(server, nsvca))
+                .collect(Collectors.toSet());
+
+        server.getAppStreams().clear();
+        server.getAppStreams().addAll(enabledAppStreams);
 
         // Update grains
         if (!result.getGrains().isEmpty()) {
@@ -1718,8 +1775,8 @@ public class SaltUtils {
     private void handleCocoAttestationResult(Action action, ServerAction serverAction, JsonElement jsonResult) {
         AttestationManager mgr = new AttestationManager();
 
-        Optional<ServerCoCoAttestationReport> optReport = mgr.lookupReportByServerAndAction(action.getSchedulerUser(),
-                serverAction.getServer(), action);
+        Optional<ServerCoCoAttestationReport> optReport =
+                mgr.lookupReportByServerAndAction(serverAction.getServer(), action);
         if (optReport.isEmpty()) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg("Failed to find a report entry");
@@ -1727,14 +1784,23 @@ public class SaltUtils {
         }
         ServerCoCoAttestationReport report = optReport.get();
 
+        if (jsonResult == null) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            if (StringUtils.isBlank(serverAction.getResultMsg())) {
+                serverAction.setResultMsg("Error while request attestation data from target system:\n" +
+                       "Got no result from system");
+            }
+            return;
+        }
+
         try {
             CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
             report.setOutData(requestData.asMap());
-            mgr.initializeResults(action.getSchedulerUser(), report);
+            mgr.initializeResults(report);
         }
         catch (JsonSyntaxException e) {
             String msg = "Failed to parse the attestation result:\n";
-            msg += Optional.ofNullable(jsonResult)
+            msg += Optional.of(jsonResult)
                     .map(JsonElement::toString)
                     .orElse("Got no result");
             LOG.error(msg);
@@ -1744,12 +1810,7 @@ public class SaltUtils {
         }
         if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             String msg = "Error while request attestation data from target system:\n";
-            if (jsonResult == null) {
-                msg += "Got no result from system";
-            }
-            else {
-                msg += getJsonResultWithPrettyPrint(jsonResult);
-            }
+            msg += getJsonResultWithPrettyPrint(jsonResult);
             serverAction.setResultMsg(msg);
             if (report.getResults().isEmpty()) {
                 // results are not initialized yet. So we need to set the report status
@@ -1801,7 +1862,7 @@ public class SaltUtils {
                     result.getCustomFqdns().stream()
                 ).distinct().collect(Collectors.toList())
         );
-        hwMapper.mapPaygInfo();
+        server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
 
         // Let the action fail in case there is error messages
         if (!hwMapper.getErrors().isEmpty()) {

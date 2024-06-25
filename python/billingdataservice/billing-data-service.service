@@ -6,6 +6,8 @@ Requires=postgresql.service
 
 [Service]
 Type=simple
+PassEnvironment=ISPAYG
+ExecCondition=sh -c "test \"$ISPAYG\" == \"1\""
 ExecStart=/srv/billing-data-service/billing-data-service
 Restart=on-failure
 

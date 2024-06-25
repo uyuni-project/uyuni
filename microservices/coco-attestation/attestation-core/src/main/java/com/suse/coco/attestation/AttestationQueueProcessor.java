@@ -17,7 +17,7 @@ package com.suse.coco.attestation;
 
 import com.suse.coco.configuration.Configuration;
 import com.suse.coco.module.AttestationModuleLoader;
-import com.suse.coco.modules.AttestationWorker;
+import com.suse.coco.module.AttestationWorker;
 import com.suse.common.concurrent.UnboundedGrowingThreadPoolExecutor;
 
 import org.apache.ibatis.session.SqlSessionFactory;

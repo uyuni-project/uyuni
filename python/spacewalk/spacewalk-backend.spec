@@ -50,7 +50,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        5.0.5
+Version:        5.0.8
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -69,6 +69,7 @@ Requires:       python3-uyuni-common-libs
 Requires(pre):  %{apache_pkg}
 Requires:       %{apache_pkg}
 Requires:       python3-pycurl
+Requires:       python3-libmodulemd
 # for Debian support
 Requires:       python3-debian >= 0.1.44
 BuildRequires:  %{m2crypto}
@@ -139,15 +140,6 @@ These are the files required for running the /XMLRPC handler, which
 provide the basic support for the registration client (rhn_register)
 and the up2date clients.
 
-%package applet
-Summary:        Handler for /APPLET
-Group:          System/Management
-Requires:       %{name}-server = %{version}-%{release}
-
-%description applet
-These are the files required for running the /APPLET handler, which
-provides the functions for the Spacewalk applet.
-
 %package app
 Summary:        Handler for /APP
 Group:          System/Management
@@ -184,30 +176,6 @@ modular so that you can plug/install additional modules for XML-RPC
 receivers and get them enabled automatically.
 
 This package contains listener for the Server XML dumper.
-
-%package config-files-common
-Summary:        Common files for the Configuration Management project
-Group:          System/Management
-Requires:       %{name}-server = %{version}-%{release}
-
-%description config-files-common
-Common files required by the Configuration Management project
-
-%package config-files
-Summary:        Handler for /CONFIG-MANAGEMENT
-Group:          System/Management
-Requires:       %{name}-config-files-common = %{version}-%{release}
-
-%description config-files
-This package contains the server-side code for configuration management.
-
-%package config-files-tool
-Summary:        Handler for /CONFIG-MANAGEMENT-TOOL
-Group:          System/Management
-Requires:       %{name}-config-files-common = %{version}-%{release}
-
-%description config-files-tool
-This package contains the server-side code for configuration management tool.
 
 %package package-push-server
 Summary:        Listener for rhnpush (non-XMLRPC version)
@@ -463,7 +431,6 @@ fi
 %{python3rhnroot}/server/rhnRepository.py*
 %{python3rhnroot}/server/rhnSession.py*
 %{python3rhnroot}/server/rhnUser.py*
-%{python3rhnroot}/server/rhnVirtualization.py*
 %{python3rhnroot}/server/taskomatic.py*
 %{python3rhnroot}/server/suseEula.py*
 %dir %{python3rhnroot}/server/rhnServer
@@ -495,7 +462,6 @@ fi
 %{python3rhnroot}/server/importlib/__pycache__/*
 %{python3rhnroot}/server/__pycache__/*
 %exclude %{python3rhnroot}/server/__pycache__/__init__.*
-%exclude %{python3rhnroot}/server/__pycache__/configFilesHandler.*
 %{rhnroot}/server/handlers/__init__.py*
 
 # Repomd stuff
@@ -520,9 +486,6 @@ fi
 # wsgi stuff
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/zz-spacewalk-server-wsgi.conf
 %{rhnroot}/wsgi/app.py*
-%{rhnroot}/wsgi/applet.py*
-%{rhnroot}/wsgi/config.py*
-%{rhnroot}/wsgi/config_tool.py*
 %{rhnroot}/wsgi/package_push.py*
 %{rhnroot}/wsgi/sat.py*
 %{rhnroot}/wsgi/sat_dump.py*
@@ -540,26 +503,11 @@ fi
 %license LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
-%dir %{python3rhnroot}/server/action
-%{python3rhnroot}/server/action/*
-%dir %{python3rhnroot}/server/action_extra_data
-%{python3rhnroot}/server/action_extra_data/*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers
-
-%files applet
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/applet
-%{rhnroot}/server/handlers/applet/*
-# config files
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_applet.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-applet
 
 %files app
 %defattr(-,root,root)
@@ -598,35 +546,6 @@ fi
 %{python3rhnroot}/satellite_exporter/__pycache__/*
 # config files
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss-export
-
-%files config-files-common
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%{python3rhnroot}/server/configFilesHandler.py*
-%{python3rhnroot}/server/__pycache__/configFilesHandler.*
-%dir %{python3rhnroot}/server/config_common
-%{python3rhnroot}/server/config_common/*
-
-%files config-files
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/config
-%{rhnroot}/server/handlers/config/*
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
-
-%files config-files-tool
-%defattr(-,root,root)
-%{!?_licensedir:%global license %doc}
-%license LICENSE
-%dir %{rhnroot}/server
-%dir %{rhnroot}/server/handlers/config_mgmt
-%{rhnroot}/server/handlers/config_mgmt/*
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management-tool.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files-tool
 
 %files package-push-server
 %defattr(-,root,root)
@@ -690,6 +609,7 @@ fi
 %{python3rhnroot}/satellite_tools/constants.py*
 %{python3rhnroot}/satellite_tools/download.py*
 %{python3rhnroot}/satellite_tools/ulnauth.py*
+%{python3rhnroot}/satellite_tools/appstreams.py*
 %dir %{python3rhnroot}/satellite_tools/disk_dumper
 %{python3rhnroot}/satellite_tools/disk_dumper/__init__.py*
 %{python3rhnroot}/satellite_tools/disk_dumper/iss.py*

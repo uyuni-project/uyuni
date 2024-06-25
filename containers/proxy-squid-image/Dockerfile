@@ -30,6 +30,9 @@ COPY squid.conf /etc/squid/squid.conf
 RUN chown squid:squid /etc/squid/squid.conf
 RUN mkdir -p /run/squid && chown squid:squid /run/squid
 
+RUN mkdir -p /etc/squid/conf.d
+COPY squid_example.conf /etc/squid/conf.d/squid_example.conf
+
 # Ensure the cache is owned by squid user
 RUN chown squid:squid /var/cache/squid
 RUN chmod a+x /var/log
@@ -55,7 +58,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-squid-image
-LABEL org.opencontainers.image.version=5.0.4
+LABEL org.opencontainers.image.version=5.0.6
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-squid:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

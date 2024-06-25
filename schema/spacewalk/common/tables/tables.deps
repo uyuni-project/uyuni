@@ -296,3 +296,8 @@ suseRecurringAction                :: web_customer web_contact rhnServerGroup su
 suseAnsiblePath                    :: rhnServer
 rhnActionPlaybook                  :: rhnAction
 susePaygDimensionResult            :: billing_dimension_t susePaygDimensionComputation
+suseAppstream                      :: rhnChannel
+suseAppstreamPackage               :: suseAppstream rhnPackage
+suseAppstreamApi                   :: suseAppstream
+rhnChannelNewestPackage            :: suseAppstream rhnChannel rhnPackageName rhnPackageEVR \
+                                      rhnPackageArch

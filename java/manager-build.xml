@@ -227,7 +227,7 @@
     </target>
 
     <target name="build-js" depends="warn-if-yarn-not-installed" description="Build js files">
-        <echo message="Calling yarn build ..."/>
+        <echo message="Calling yarn build:novalidate ..."/>
         <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
             <arg line="build:novalidate"/>
         </exec>
@@ -465,6 +465,9 @@
                 <fileset dir="/usr/share/java/junit5/">
                     <include name="**/junit-platform-*.jar"/>
                     <include name="**/junit-jupiter-*.jar"/>
+                </fileset>
+                <fileset dir="/usr/share/java/open-test-reporting/">
+                    <include name="**/*.jar" />
                 </fileset>
             </classpath>
 

@@ -156,7 +156,7 @@ describe("Table component", () => {
         <Column columnKey="value" cell={(item) => item.value} />
       </Table>
     );
-    const input = screen.getByRole("textbox");
+    const input = screen.getByTestId("default-table-search");
     await type(input, "Value 1");
 
     expect(screen.queryByText("Value 0")).toBe(null);

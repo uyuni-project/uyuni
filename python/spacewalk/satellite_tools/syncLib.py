@@ -31,10 +31,8 @@ except ImportError:
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhnLib
 from spacewalk.common.rhnLog import log_time, log_clean
-
-# pylint: disable-next=ungrouped-imports
-from uyuni.common.context_managers import cfg_component
-from uyuni.common.fileutils import createPath, setPermsPath
+from spacewalk.common.fileutils import chown_chmod_path, create_path
+from spacewalk.common.rhnConfig import cfg_component
 
 from . import messages
 
@@ -54,14 +52,12 @@ def dumpEMAIL_LOG():
 
 
 class RhnSyncException(Exception):
-
     """General exception handler for all sync activity."""
 
     pass
 
 
 class ReprocessingNeeded(Exception):
-
     """Exception raised when a contition has been hit that would require a new
     run of the sync process"""
 
@@ -214,7 +210,7 @@ class FileManip:
         """Writes the contents of stream_in to the filesystem
         Returns the file size(success) or raises FileCreationError"""
         dirname = os.path.dirname(self.full_path)
-        createPath(dirname)
+        create_path(dirname)
         stat = os.statvfs(dirname)
 
         f_bsize = stat[0]  # file system block size
@@ -244,7 +240,7 @@ class FileManip:
         # setting file permissions; NOTE: rhnpush uses apache to write to disk,
         # hence the 6 setting.
         with cfg_component(component=None) as CFG:
-            setPermsPath(
+            chown_chmod_path(
                 self.full_path,
                 user=CFG.httpd_user,
                 group=CFG.httpd_group,
@@ -294,7 +290,6 @@ class FileManip:
 
 
 class RpmManip(FileManip):
-
     """General [S]RPM manipulation class.
 
     o Check checksums for mismatches

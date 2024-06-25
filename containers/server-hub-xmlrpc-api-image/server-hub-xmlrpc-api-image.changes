@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Jun 10 18:00:24 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6
+  * Call update-ca-certificates on startup
+
+-------------------------------------------------------------------
+Fri May 03 15:22:16 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5
+  * SUSE Manager 5.0 RC release
+
+-------------------------------------------------------------------
 Mon Apr 08 15:24:34 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4

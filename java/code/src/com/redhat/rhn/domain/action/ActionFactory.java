@@ -24,6 +24,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
@@ -511,6 +512,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
             retval = new CoCoAttestationAction();
         }
+        else if (typeIn.equals(TYPE_APPSTREAM_CONFIGURE)) {
+            retval = new AppStreamAction();
+        }
         else {
             retval = new Action();
         }
@@ -945,6 +949,12 @@ public class ActionFactory extends HibernateFactory {
      * @return true if the action was stopped due to byos servers within it, false otherwise
      */
     public static boolean rejectScheduleActionIfByos(Action action) {
+        if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
+            // Hardware refresh detect PAYG/BYOS type and refresh it. This should be possible also
+            // for BYOS systems in case the former detection failed. On error PAYG is set to false,
+            // and we need a way to repeat the detection.
+            return false;
+        }
         List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(action);
         if (CollectionUtils.isNotEmpty(byosMinions)) {
             LOG.error("To manage BYOS or DC servers from SUSE Manager PAYG, SCC credentials must be " +
@@ -1436,5 +1446,10 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_COCO_ATTESTATION =
             lookupActionTypeByLabel("coco.attestation");
+
+    /**
+     * The constant representing appstreams changes action.
+     */
+    public static final ActionType TYPE_APPSTREAM_CONFIGURE = lookupActionTypeByLabel("appstreams.configure");
 }
 

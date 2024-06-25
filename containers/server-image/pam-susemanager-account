@@ -1,0 +1,4 @@
+account	requisite	pam_unix.so	try_first_pass 
+account	sufficient	pam_localuser.so 
+account	sufficient	pam_sss.so	use_first_pass	
+account	required	pam_ldap.so	use_first_pass

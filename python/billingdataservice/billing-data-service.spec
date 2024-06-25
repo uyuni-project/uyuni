@@ -17,8 +17,8 @@
 
 
 Name:           billing-data-service
-Version:        5.0.2
-Release:        1
+Version:        5.0.3
+Release:        0
 Summary:        Server to request billing information
 License:        GPL-2.0-only
 Group:          System/Daemons
@@ -73,6 +73,11 @@ done
 
 %postun
 %service_del_postun billing-data-service.service
+
+%posttrans
+if [ -f %{_unitdir}/billing-data-service.service ]; then
+    /usr/bin/systemctl --quiet enable billing-data-service.service 2>&1 ||:
+fi
 
 %files
 %license LICENSE

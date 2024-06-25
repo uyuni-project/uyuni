@@ -14,6 +14,8 @@
 - features/build_validation/init_clients/sle15sp4_ssh_minion.feature
 - features/build_validation/init_clients/sle15sp5_minion.feature
 - features/build_validation/init_clients/sle15sp5_ssh_minion.feature
+- features/build_validation/init_clients/sle15sp6_minion.feature
+- features/build_validation/init_clients/sle15sp6_ssh_minion.feature
 
 - features/build_validation/init_clients/alma8_minion.feature
 - features/build_validation/init_clients/alma8_ssh_minion.feature
@@ -49,6 +51,8 @@
 - features/build_validation/init_clients/opensuse154arm_ssh_minion.feature
 - features/build_validation/init_clients/opensuse155arm_minion.feature
 - features/build_validation/init_clients/opensuse155arm_ssh_minion.feature
+- features/build_validation/init_clients/opensuse156arm_minion.feature
+- features/build_validation/init_clients/opensuse156arm_ssh_minion.feature
 - features/build_validation/init_clients/sle15sp5s390_minion.feature
 - features/build_validation/init_clients/sle15sp5s390_ssh_minion.feature
 
@@ -62,6 +66,8 @@
 - features/build_validation/init_clients/slemicro54_ssh_minion.feature
 - features/build_validation/init_clients/slemicro55_minion.feature
 - features/build_validation/init_clients/slemicro55_ssh_minion.feature
+- features/build_validation/init_clients/slmicro60_minion.feature
+- features/build_validation/init_clients/slmicro60_ssh_minion.feature
 
 - features/build_validation/init_clients/salt_migration_minion.feature
 

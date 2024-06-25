@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 03 14:41:02 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.3-0
+  * Enable SSSD authentication by default in containers
+
+-------------------------------------------------------------------
 Thu Apr 04 18:53:32 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.2-0

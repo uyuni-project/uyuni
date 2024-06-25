@@ -17,8 +17,7 @@
 #
 # shell script function library for rhn-bootstrap
 #
-from uyuni.common.context_managers import cfg_component
-from spacewalk.common.rhnConfig import isUyuni
+from spacewalk.common.rhnConfig import isUyuni, cfg_component
 import os.path
 
 
@@ -551,6 +550,9 @@ elif [ "$INSTALLER" == zypper ]; then
             grep -q 'Enterprise' /etc/os-release && BASE='sle'
             if [ "$BASE" != "sle" ]; then
                 grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
+            fi
+            if [ "$BASE" == "" ]; then
+                grep -q 'cpe:/o:suse:' /etc/os-release && BASE='sl'
             fi
             grep -q 'Micro' /etc/os-release && BASE="${{BASE}}micro"
             VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"

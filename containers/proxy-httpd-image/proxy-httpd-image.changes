@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Jun 10 17:51:11 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6
+  * Use redirect instead of proxypass for rewritten Cobbler
+    AutoYAST link (bsc#1225520)
+
+-------------------------------------------------------------------
+Fri May 03 15:15:35 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5
+  * SUSE Manager 5.0 RC release
+
+-------------------------------------------------------------------
 Fri Apr 05 18:51:13 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4

@@ -9,6 +9,7 @@ SUBDIR  = common
 SPACEWALK_FILES	=   __init__ \
 	    apache \
             byterange \
+            fileutils \
             rhnApache \
             rhnCache \
             rhnConfig \

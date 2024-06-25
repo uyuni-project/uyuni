@@ -18,10 +18,14 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class AttestationFactory extends HibernateFactory {
@@ -124,10 +128,24 @@ public class AttestationFactory extends HibernateFactory {
      */
     public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
                                                              boolean enabledIn) {
+        return createConfigForServer(serverIn, typeIn, enabledIn, false);
+    }
+
+    /**
+     * Create a Confidential Compute Attestation Config for a given Server ID
+     * @param serverIn the server
+     * @param typeIn the environment type
+     * @param enabledIn enabled status
+     * @param attestOnBootIn perform attestation on boot
+     * @return returns the Confidential Compute Attestation Config
+     */
+    public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
+                                                             boolean enabledIn, boolean attestOnBootIn) {
         ServerCoCoAttestationConfig cnf = new ServerCoCoAttestationConfig();
         cnf.setServer(serverIn);
         cnf.setEnvironmentType(typeIn);
         cnf.setEnabled(enabledIn);
+        cnf.setAttestOnBoot(attestOnBootIn);
         save(cnf);
         serverIn.setCocoAttestationConfig(cnf);
         return cnf;
@@ -179,4 +197,92 @@ public class AttestationFactory extends HibernateFactory {
         return LOG;
     }
 
+    /**
+     * Return the total number of reports available for a given user
+     * @param user the user
+     * @return returns a list or reports
+     */
+    public long countCoCoAttestationReportsForUser(User user) {
+        return getSession()
+            .createQuery("SELECT COUNT(r.id) FROM UserImpl u " +
+                "JOIN u.servers s " +
+                "JOIN ServerCoCoAttestationReport r ON r.server = s " +
+                "WHERE u = :user", Long.class)
+            .setParameter("user", user)
+            .uniqueResult();
+    }
+
+    /**
+     * Return the total number of reports available for a given server
+     * @param serverIn the server
+     * @return returns a list or reports
+     */
+    public long countCoCoAttestationReportsForServer(Server serverIn) {
+        return getSession()
+            .createQuery("SELECT COUNT(*) FROM ServerCoCoAttestationReport r WHERE r.server = :server", Long.class)
+            .setParameter("server", serverIn)
+            .uniqueResult();
+    }
+
+    /**
+     * Return a list of reports for a given server with filters
+     * @param serverIn the server
+     * @param pc page control object
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForServer(Server serverIn, PageControl pc) {
+        return listCoCoAttestationReportsForServer(serverIn, new Date(0), pc.getStart() - 1, pc.getPageSize());
+    }
+
+    /**
+     * Return a list of reports for a given server with filters
+     * @param serverIn the server
+     * @param earliestIn earliest report
+     * @param offsetIn number of reports to skip
+     * @param limitIn maximal number of reports
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForServer(Server serverIn, Date earliestIn,
+                                                                                 int offsetIn, int limitIn) {
+        return getSession()
+                .createQuery("FROM ServerCoCoAttestationReport " +
+                        "WHERE server = :server " +
+                        "AND created >= :earliest " +
+                        "ORDER BY created DESC", ServerCoCoAttestationReport.class)
+                .setParameter("server", serverIn)
+                .setParameter("earliest", earliestIn)
+                .setMaxResults(limitIn)
+                .setFirstResult(offsetIn)
+                .list();
+    }
+
+    /**
+     * Return a list of reports for a given server with filters
+     * @param user the user
+     * @param pc page control object
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUser(User user, PageControl pc) {
+        return listCoCoAttestationReportsForUser(user, pc.getStart() - 1, pc.getPageSize());
+    }
+
+    /**
+     * Return a list of reports for a given server with filters
+     * @param user the user
+     * @param offsetIn number of reports to skip
+     * @param limitIn maximal number of reports
+     * @return returns a list or reports
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForUser(User user, int offsetIn, int limitIn) {
+        return getSession()
+            .createQuery("SELECT r FROM UserImpl u " +
+                "JOIN u.servers s " +
+                "JOIN ServerCoCoAttestationReport r ON r.server = s " +
+                "WHERE u = :user " +
+                "ORDER BY r.created DESC", ServerCoCoAttestationReport.class)
+            .setParameter("user", user)
+            .setMaxResults(limitIn)
+            .setFirstResult(offsetIn)
+            .list();
+    }
 }

@@ -14,7 +14,7 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
   Scenario: Do some basic testing on the minion without Salt bundle
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
-    When I enter command "file /etc/salt"
+    When I enter command "file /etc/salt/minion.d"
     And I enter the hostname of "salt_migration_minion" as "target"
     And I click on preview
     Then I should see a "Target systems (1)" text
@@ -23,7 +23,7 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     And I click on run
     And I wait until I do not see "pending" text
     And I expand the results for "salt_migration_minion"
-    Then I should see "/etc/salt: directory" in the command output for "salt_migration_minion"
+    Then I should see "/etc/salt/minion.d: directory" in the command output for "salt_migration_minion"
 
   @susemanager
   Scenario: Subscribe the minion to the SLES 15 SP5 channel and enable client tools in the Salt migration context
@@ -69,22 +69,22 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
   Scenario: Check if the Salt bundle migration was successful
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
-    When I enter command "file /etc/salt"
+    When I enter command "file /etc/salt/minion.d"
     And I click on preview
     Then I should see "salt_migration_minion" hostname
     And I wait until I do not see "pending" text
     When I click on run
     And I wait until I do not see "pending" text
     And I expand the results for "salt_migration_minion"
-    Then I should see "/etc/salt: cannot open `/etc/salt' (No such file or directory)" in the command output for "salt_migration_minion"
-    When I enter command "file /etc/venv-salt-minion"
+    Then I should see "/etc/salt/minion.d: cannot open `/etc/salt/minion.d' (No such file or directory)" in the command output for "salt_migration_minion"
+    When I enter command "file /etc/venv-salt-minion/minion.d"
     And I click on preview
     Then I should see "salt_migration_minion" hostname
     And I wait until I do not see "pending" text
     When I click on run
     And I wait until I do not see "pending" text
     And I expand the results for "salt_migration_minion"
-    Then I should see "/etc/venv-salt-minion: directory" in the command output for "salt_migration_minion"
+    Then I should see "/etc/venv-salt-minion/minion.d: directory" in the command output for "salt_migration_minion"
 
   Scenario: Do some basic testing on the minion with the Salt bundle in the Salt migration context
     Given I am on the Systems overview page of this "salt_migration_minion"

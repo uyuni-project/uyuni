@@ -1,27 +1,48 @@
-.nav-tabs li {
-  a {
-    color: @eos-bc-gray-1000;
+@nav-tabs-offset: 30px;
 
-    &:hover {
-      border-color: @eos-bc-green-500;
-      padding-bottom: 1px;
-      border-bottom-width: 5px;
-      text-decoration: none !important;
-    }
+.nav-tabs {
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid @eos-bc-gray-100;
 
-    &:active, &:focus {
-      color: @eos-bc-gray-1000;
-      background: transparent;
-    }
-
-    // TODO: Check disabled states
+  &:nth-child(2) {
+    margin-left: @nav-tabs-offset;
   }
 
-  &.active {
+  &:nth-child(3) {
+    margin-left: 2 * @nav-tabs-offset;
+  }
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+
+  li {
+    margin-bottom: -1px;
+
     a {
-      &, &:hover, &:active, &:focus {
+      color: @eos-bc-gray-1000;
+  
+      &:hover {
+        border-color: @eos-bc-green-500;
+        padding-bottom: 1px;
+        border-bottom-width: 5px;
+        text-decoration: none !important;
+      }
+  
+      &:active, &:focus {
         color: @eos-bc-gray-1000;
+        background: transparent;
+      }
+  
+      // TODO: Check disabled states
+    }
+  
+    &.active {
+      a {
+        &, &:hover, &:active, &:focus {
+          color: @eos-bc-gray-1000;
+        }
       }
     }
-  }
+  }  
 }

@@ -29,8 +29,22 @@ div.checkbox.icon-wrapper i.fa {
 
 /**
  * This allows us to fix layouts on Bootstrap 5 pages without affecting Bootstrap 3 pages
- * TODO: Remove and replace its usages with just `row` after we finish the migration
+ * TODO: Can we remove and replace its usages with just `row` after we finish the migration?
  */
 .form-group {
   @extend .row;
+}
+
+// TODO: Remove this and squash it into just `row` after the migration is complete.
+.row-0 {
+  @extend .row;
+}
+
+// We use float utilities from Bootstrap 3 in a number of places, this emulates the same behavior. Over time we should be able to refactor these out.
+.pull-right {
+  float: right !important;
+}
+
+.pull-left {
+  float: left !important;
 }

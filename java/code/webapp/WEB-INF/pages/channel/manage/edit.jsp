@@ -264,7 +264,7 @@
                 </label>
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <span class="input-group-addon"><bean:message key="channel.edit.jsp.emailaddress"/>:</span>
+                        <span class="input-group-addon input-group-text"><bean:message key="channel.edit.jsp.emailaddress"/>:</span>
                         <html:text property="maintainer_email" size="20"
                                    styleClass="form-control"
                                    styleId="maintainer_email"/>
@@ -274,7 +274,7 @@
             <div class="form-group">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="input-group">
-                        <span class="input-group-addon"><bean:message key="channel.edit.jsp.phonenumber"/>:</span>
+                        <span class="input-group-addon input-group-text"><bean:message key="channel.edit.jsp.phonenumber"/>:</span>
                         <html:text property="maintainer_phone" size="20"
                                    styleClass="form-control"
                                    styleId="maintainer_phone"/>

@@ -6622,7 +6622,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
         <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, and underscores. It must also be at least 4 characters long</source>
-        <target state="needs-adaptation">Označenie nie je správne formátované.  Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky.  Musí byť tiež dlhé aspoň 4 znaky</target>
+        <target state="translated">Označenie nie je správne formátované. Označenie by malo obsahovať len písmená, číslice, pomlčky, bodky a podčiarkovníky. Musí byť tiež dlhé aspoň 4 znaky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -11396,6 +11396,96 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       <trans-unit id="message.savereposyncflags" xml:space="preserve">
         <source>Saved repository settings for {0}.</source>
         <target state="translated">Uložené nastavenia repozitára pre {0}.</target>
+      </trans-unit>
+      <trans-unit id="coco.attestation" xml:space="preserve">
+        <source>Confidential Computing Attestation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+        <target state="translated">Atestácia dôveryhodného používania počítača</target>
+      </trans-unit>
+      <trans-unit id="appstreams.configure" xml:space="preserve">
+        <source>Configure AppStreams</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+        <target state="translated">Konfigurácia AppStreams</target>
+      </trans-unit>
+      <trans-unit id="api.channel.modulespresent" xml:space="preserve">
+        <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
+        <target state="translated">Operácia nie je povolená pre systémy, ktoré majú priradené modulárne kanály. Prosím, zvážte nastavenie 'allowModules=true'.</target>
+      </trans-unit>
+      <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve">
+        <source>Confidential Computing</source>
+        <target state="translated">Dôveryhodné používanie počítača</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.none.description" xml:space="preserve">
+        <source>None</source>
+        <target state="translated">Žiadne</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.none.label" xml:space="preserve">
+        <source>None</source>
+        <target state="translated">Žiadne</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
+        <target state="translated">KVM na procesore AMD Epyc, druhá generácia (milan)</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Milan</source>
+        <target state="translated">KVM na AMD Epyc - Milan</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
+        <target state="translated">KVM na procesore AMD Epyc, tretia generácia (genoa)</target>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Genoa</source>
+        <target state="translated">KVM na AMD Epyc - Genoa</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.none.description" xml:space="preserve">
+        <source>Result Type not found</source>
+        <target state="translated">Typ výsledku nebol nájdený</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.description" xml:space="preserve">
+        <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
+        <target state="translated">AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.sev_snp.label" xml:space="preserve">
+        <source>AMD SEV-SNP</source>
+        <target state="translated">AMD SEV-SNP</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.description" xml:space="preserve">
+        <source>Secure Boot enabled</source>
+        <target state="translated">Secure Boot povolený</target>
+      </trans-unit>
+      <trans-unit id="coco.resultType.secure_boot.label" xml:space="preserve">
+        <source>Secure Boot</source>
+        <target state="translated">Secure Boot</target>
+      </trans-unit>
+      <trans-unit id="coco.status.pending.description" xml:space="preserve">
+        <source>Pending</source>
+        <target state="translated">Čakajúce</target>
+      </trans-unit>
+      <trans-unit id="coco.status.succeeded.description" xml:space="preserve">
+        <source>Succeeded</source>
+        <target state="translated">Úspešné</target>
+      </trans-unit>
+      <trans-unit id="coco.status.failed.description" xml:space="preserve">
+        <source>Failed</source>
+        <target state="translated">Neúspešné</target>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.unsupported" xml:space="preserve">
+        <source>This system does not have any Confidential Computing capability.</source>
+        <target state="translated">Tento systém nie je vybavený funkciou dôveryhodného používania počítača.</target>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configUpdated" xml:space="preserve">
+        <source>The Confidential Computing configuration has been updated successfully.</source>
+        <target state="translated">Konfigurácia dôveryhodného používania počítača bola úspešne aktualizovaná.</target>
+      </trans-unit>
+      <trans-unit id="system.audit.coco.configNotUpdated" xml:space="preserve">
+        <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
+        <target state="translated">Pri aktualizácii konfigurácie dôveryhodného používania počítača došlo k chybe. Podrobné informácie nájdete v záznamoch servera.</target>
       </trans-unit>
     </body>
   </file>

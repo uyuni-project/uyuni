@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-06-05 09:56+0200\n"
 "PO-Revision-Date: 2022-05-19 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -25,1111 +25,54 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../src/up2date_client/capabilities.py:94
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-"Tento klient vyžaduje, aby server podporoval %s, čo momentálne server "
-"nepodporuje"
-
 #: ../src/up2date_client/config.py:162
 #, python-format
 msgid "%s was not found"
 msgstr "%s nebol nájdený"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
-msgid "Getting list of packages installed on the system"
-msgstr "Získavam zoznam balíčkov nainštalovaných v systéme"
-
-#: ../src/up2date_client/hardware.py:1064
-msgid "Error reading cpu information:"
-msgstr "Chyba pri čítaní cpu informácii:"
-
-#: ../src/up2date_client/hardware.py:1071
-msgid "Error reading system memory information:"
-msgstr "Chyba pri čítaní pamäťových informácii:"
-
-#: ../src/up2date_client/hardware.py:1081
-msgid "Error reading networking information:"
-msgstr "Chyba pri čítaní sieťových informácii:"
-
-#: ../src/up2date_client/hardware.py:1102
-msgid "Error reading install method information:"
-msgstr "Chyba pri čítaní informácii inštalačnej metódy:"
-
-#: ../src/up2date_client/hardware.py:1110
-msgid "Error reading network interface information:"
-msgstr "Chyba pri čítaní informácii sieťového rozhrania:"
-
-#: ../src/up2date_client/hardware.py:1118
-msgid "Error reading network FQDNs information:"
-msgstr "Chyba pri čítaní sieťových informácii FQDN:"
-
-#: ../src/up2date_client/hardware.py:1125
-msgid "Error reading system info:"
-msgstr "Chyba pri čítaní systémových informácií:"
-
-#: ../src/up2date_client/hardware.py:1132
-msgid "Error reading machine info:"
-msgstr "Chyba pri čítaní informácií o stroji:"
-
-#: ../src/up2date_client/rhnChannel.py:102
-msgid "Unable to Locate SystemId"
-msgstr "Nepodarilo sa nájsť SystemId"
-
-#: ../src/up2date_client/rhnChannel.py:119
-msgid "This system may not be updated until it is associated with a channel."
-msgstr ""
-"Tento systém nemôže byť aktualizovaný, dokiaľ nebude priradený ku kanálu."
-
-#: ../src/up2date_client/rhncli.py:65
-msgid "Show additional output. Repeat for more detail."
-msgstr "Zobraziť ďalší výstup. Opakovať kvôli viac detailom."
-
-#: ../src/up2date_client/rhncli.py:67
-msgid "Specify an http proxy to use"
-msgstr "Zadať http proxy pre použitie"
-
-#: ../src/up2date_client/rhncli.py:69
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Zadať meno používateľa pre použitie s autentifikovaným http proxy"
-
-#: ../src/up2date_client/rhncli.py:71
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Zadať heslo pre použitie s autentifikovaným http proxy"
-
-#: ../src/up2date_client/rhncli.py:91
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"Prerušené.\n"
-
-#: ../src/up2date_client/rhncli.py:94
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "Vyskytla sa neočakávaná chyba OS: %s\n"
-
-#: ../src/up2date_client/rhncli.py:99
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr "Pokus o pripojenie s poškodeným URI.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "Pokus o pripojenie s poškodeným URI: %s.\n"
-
-#: ../src/up2date_client/rhncli.py:103
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Vyskytlo sa niekoľko V/V chýb: %s\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "Vyskytla sa chyba v SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:110
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"Častou príčinou tejto chyby je nesprávny systémový čas. Skontrolujte či je "
-"čas v tomto systéme správny.\n"
-
-#: ../src/up2date_client/rhncli.py:117
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "Vyskytla sa chyba v SSL šifrovaní: %s\n"
-
-#: ../src/up2date_client/rhncli.py:121
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Pri overovaní pravosti došlo k chybe: %s\n"
-
-#: ../src/up2date_client/rhncli.py:137
-#, python-format
-msgid "You must be root to run %s"
-msgstr "Na spustenie %s musíte byť správca systému"
-
-#: ../src/up2date_client/rhncli.py:193
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-"%%prog (Klientské nástroje Spacewalk) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licencované podľa podmienok GPLv2."
-
-#: ../src/up2date_client/rhncli.py:208
-msgid "An error has occurred:"
-msgstr "Vyskytla sa chyba:"
-
-#: ../src/up2date_client/rhncli.py:216
-msgid "See /var/log/up2date for more information"
-msgstr "Pozri /var/log/up2date pre viac informácii"
-
-#: ../src/up2date_client/rhnreg_constants.py:19
-msgid "Uyuni"
-msgstr "Uyuni"
-
-#: ../src/up2date_client/rhnreg_constants.py:21
-msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Copyright © 2006--2014 Red Hat, Inc. Všetky práva vyhradené."
-
-#. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, python-brace-format
-msgid "Enter your {PRODUCT_NAME} URL."
-msgstr "Zadajte svoju adresu URL {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:25
-#, python-brace-format
-msgid ""
-"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
-"certificate. The SSL certificate is only required if you will be connecting "
-"over https (recommended)."
-msgstr ""
-"Prosím, zadajte umiestnenie svojho servera {PRODUCT_NAME} a jeho certifikátu "
-"SSL. Certifikát SSL sa vyžaduje, iba ak sa pripájate prostredníctvom https "
-"(odporúčané)."
-
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, python-brace-format
-msgid "{PRODUCT_NAME} URL:"
-msgstr "URL {PRODUCT_NAME}:"
-
-#: ../src/up2date_client/rhnreg_constants.py:30
-msgid "SSL certificate:"
-msgstr "SSL certifikát:"
-
-#: ../src/up2date_client/rhnreg_constants.py:31
-#, python-brace-format
-msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Musíte zadať platnú adresu URL {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:32
-msgid ""
-"If you are using https you must enter the location of a valid SSL "
-"certificate."
-msgstr "Ak používate https, musíte zadať umiestnenie platného certifikátu SSL."
-
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:36
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Pokúšanie sa o kontaktovanie servera Spacewalk."
-
-#: ../src/up2date_client/rhnreg_constants.py:37
-#, python-format, python-brace-format
-msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Pokúšame sa kontaktovať server {PRODUCT_NAME} na %s."
-
-#: ../src/up2date_client/rhnreg_constants.py:39
-#, python-format
-msgid "A proxy was specified at %s."
-msgstr "Proxy bolo určené na %s."
-
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:42
-msgid "System Registration"
-msgstr "registračnéČíslo"
-
-#: ../src/up2date_client/rhnreg_constants.py:43
-#, python-brace-format
-msgid ""
-"This assistant will guide you through connecting your system to "
-"{PRODUCT_NAME} to receive software updates, including security updates, to "
-"keep your system supported and compliant.  You will need the following at "
-"this time:\n"
-"\n"
-" * A network connection\n"
-" * Your {PRODUCT_NAME} Login & password\n"
-" * The location of a {PRODUCT_NAME} Server or Proxy\n"
-"\n"
-msgstr ""
-"Tento asistent vás prevedie pripojením vášho systému k {PRODUCT_NAME} na "
-"prijímanie softvérových aktualizácií vrátane bezpečnostných aktualizácií, "
-"aby bol váš systém podporovaný a súhlasný.  Momentálne budete potrebovať "
-"nasledovné:\n"
-"\n"
-" * Sieťové pripojenie\n"
-" * Vaše prihlasovacie meno a heslo {PRODUCT_NAME}\n"
-" * Umiestnenie servera alebo proxy {PRODUCT_NAME}\n"
-"\n"
-
-#. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:56
-#, python-brace-format
-msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Prečo by som sa mal pripojiť k {PRODUCT_NAME}? ..."
-
-#: ../src/up2date_client/rhnreg_constants.py:57
-msgid "Why Register"
-msgstr "Už zaregistrovaný"
-
-#: ../src/up2date_client/rhnreg_constants.py:58
-#, python-brace-format
-msgid ""
-"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
-"of the benefits of a paid subscription, including:"
-msgstr ""
-"Pripájanie vášho systému k {PRODUCT_NAME} vám umožňuje plne využívať "
-"prednosť výhod predplatného vrátane:"
-
-#: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Security & Updates:"
-msgstr "Bezpečnosť a aktualizácie:"
-
-#: ../src/up2date_client/rhnreg_constants.py:61
-msgid "Downloads & Upgrades:"
-msgstr "Stiahnutia a zvýšenia verzie:"
-
-#: ../src/up2date_client/rhnreg_constants.py:62
-msgid "Support:"
-msgstr "Podpora:"
-
-#: ../src/up2date_client/rhnreg_constants.py:63
-msgid "Compliance:"
-msgstr "Spoločnosť:"
-
-#: ../src/up2date_client/rhnreg_constants.py:64
-msgid ""
-"Receive the latest software updates, including security updates, keeping "
-"this system updated and secure."
-msgstr ""
-"Prijímajte najnovšie aktualizácie softvéru vrátane bezpečnostných "
-"aktualizácií, aby bol tento systém aktuálny a zabezpečený."
-
-#: ../src/up2date_client/rhnreg_constants.py:66
-msgid ""
-"Download installation images for system releases, including new releases."
-msgstr ""
-"Stiahnite si inštalačné obrazy pre vydania systému, vrátane nových vydaní."
-
-#: ../src/up2date_client/rhnreg_constants.py:68
-msgid ""
-"Access to the technical support experts for help with any issues you might "
-"encounter with this system."
-msgstr ""
-"Prístup k expertom technickej podpory kvôli pomoci s akýmikoľvek problémami, "
-"s ktorými sa môžete stretnúť v tomto systéme."
-
-#: ../src/up2date_client/rhnreg_constants.py:70
-msgid ""
-"Stay in compliance with your subscription agreement and manage subscriptions "
-"for systems connected to your account."
-msgstr ""
-"Dodržiavajte svoju predplatnú zmluvu a spravujte predplatné pre systémy "
-"spojené s vašim účtom."
-
-#: ../src/up2date_client/rhnreg_constants.py:73
-msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr "Tip: SUSE si cení vaše súkromie: https://www.suse.com/company/legal/"
-
-#: ../src/up2date_client/rhnreg_constants.py:75
-msgid "Take me back to the registration"
-msgstr "Up2date - Zoznam balíčkov (registrácia)"
-
-#. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:78
-msgid "Software Update Not Set Up"
-msgstr "Aktualizácia softvéru nie je nastavená"
-
-#: ../src/up2date_client/rhnreg_constants.py:79
-#, python-brace-format
-msgid ""
-"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
-"miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"Naozaj nechcete pripojiť svoj systém k {PRODUCT_NAME}? Prídete o výhody "
-"predplatného SLES/RHEL:\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:81
-#, python-brace-format
-msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"Nebudete môcť využívať tieto výhody predplatného bez pripojenia vášho "
-"systému k {PRODUCT_NAME}.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:83
-msgid "Take me back to the setup process."
-msgstr "Vrátiť sa späť do procesu nastavenia."
-
-#: ../src/up2date_client/rhnreg_constants.py:84
-msgid "I'll register later."
-msgstr "Zaregistrujem sa neskôr."
-
-#. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:87
-#, python-brace-format
-msgid "{PRODUCT_NAME} Account"
-msgstr "Účet {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:88
-#, python-format, python-brace-format
-msgid ""
-"Please enter your login information for the %s {PRODUCT_NAME}:\n"
-"\n"
-msgstr ""
-"Prosím, zadajte svoje prihlasovacie údaje pre %s {PRODUCT_NAME}:\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:89
-#, python-brace-format
-msgid "{PRODUCT_NAME} Login:"
-msgstr "Prihlasovacie meno {PRODUCT_NAME}:"
-
-#: ../src/up2date_client/rhnreg_constants.py:90
-#: ../src/up2date_client/tui.py:139
-msgid "Login:"
-msgstr "Prihlasovacie meno:"
-
-#: ../src/up2date_client/rhnreg_constants.py:91
-msgid "Password:"
-msgstr "Heslo:"
-
-#: ../src/up2date_client/rhnreg_constants.py:92
-#, python-brace-format
-msgid ""
-"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-"Organization Administrator."
-msgstr ""
-"Tip: Zabudli ste svoje prihlasovacie meno alebo heslo?  Kontaktujte "
-"administrátora {PRODUCT_NAME} vašej organizácie."
-
-#: ../src/up2date_client/rhnreg_constants.py:94
-msgid "Please enter a desired login."
-msgstr "Prosím, zadajte požadované prihlasovacie meno."
-
-#: ../src/up2date_client/rhnreg_constants.py:95
-msgid "Please enter and verify a password."
-msgstr "Musíte zadať a overiť heslo."
-
-#. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System Release Version"
-msgstr "Verzia vydania operačného systému"
-
-#: ../src/up2date_client/rhnreg_constants.py:99
-msgid "Operating System version:"
-msgstr "Verzia operačného systému:"
-
-#: ../src/up2date_client/rhnreg_constants.py:100
-msgid " Minor Release: "
-msgstr " Vedľajšie vydanie: "
-
-#: ../src/up2date_client/rhnreg_constants.py:101
-msgid "Limited Updates Only"
-msgstr "Iba obmedzené aktualizácie"
-
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "All available updates"
-msgstr "Dostupné aktualizácie balíčkov"
-
-#: ../src/up2date_client/rhnreg_constants.py:103
-msgid "Confirm operating system release selection"
-msgstr "Potvrďte výber vydania operačného systému"
-
-#: ../src/up2date_client/rhnreg_constants.py:104
-msgid ""
-"Your system will be subscribed to the base software channel to receive all "
-"available updates."
-msgstr ""
-"Váš systém bude prihlásený k základnému softvérovému kanálu na prijímanie "
-"všetkých dostupných aktualizácií."
-
-#. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:109
-msgid "Create Profile - Hardware"
-msgstr "Pripojte Váš systém"
-
-#: ../src/up2date_client/rhnreg_constants.py:110
-#, python-brace-format
-msgid ""
-"A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
-"serial or identification number."
-msgstr ""
-"Meno profilu je popisujúci názov, ktorý zvolíte na rozpoznanie tohoto "
-"systémového profilu na webových stránkach {PRODUCT_NAME}. Voliteľne obsahuje "
-"sériové alebo identifikačné číslo počítača."
-
-#: ../src/up2date_client/rhnreg_constants.py:114
-msgid ""
-"Additional hardware information including PCI devices, disk sizes and mount "
-"points will be included in the profile."
-msgstr ""
-"Dodatočné hardvérové informácie vrátane PCI zariadení, veľkosti diskov a "
-"prípojných bodov budú vložené do profilu."
-
-#: ../src/up2date_client/rhnreg_constants.py:117
-msgid "Include the following information about hardware and network:"
-msgstr "Vložiť následujúce informácie o hardvéri a sieti:"
-
-#. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:121
-msgid "Create Profile - Packages"
-msgstr "Pripojte Váš systém"
-
-#: ../src/up2date_client/rhnreg_constants.py:122
-msgid ""
-"RPM information is important to determine what updated software packages are "
-"relevant to this system."
-msgstr ""
-"RPM informácie sú dôležité pre určenie aktualizácii softvérových balíčkov, "
-"ktoré sú významné pre tento systém."
-
-#: ../src/up2date_client/rhnreg_constants.py:125
-msgid "Include RPM packages installed on this system in my System Profile"
-msgstr ""
-"Vložiť RPM balíčky nainštalované v systéme do môjho systémového profilu"
-
-#: ../src/up2date_client/rhnreg_constants.py:127
-msgid "You may deselect individual packages by unchecking them below."
-msgstr "Môžete zamietnuť jednotlivé balíčky ich odznačením nižšie."
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-msgid "Building Package List"
-msgstr "Vytváram zoznam balíčkov"
-
-#. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:132
-msgid "*Email Address:"
-msgstr "E-mailová adresa:"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-msgid "System Already Registered"
-msgstr "Systém je už zaregistrovaný"
-
-#: ../src/up2date_client/rhnreg_constants.py:135
-msgid "It appears this system has already been set up for software updates:"
-msgstr "Zdá sa, že tento systém už bol nastavený na aktualizácie softvéru:"
-
-#: ../src/up2date_client/rhnreg_constants.py:136
-msgid "Are you sure you would like to continue?"
-msgstr "Naozaj chcete pokračovať?"
-
-#: ../src/up2date_client/rhnreg_constants.py:138
-msgid ""
-"This system has already been registered using Red Hat Subscription "
-"Management.\n"
-"\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat "
-"Satellite Proxy technology. Red Hat recommends that customers only register "
-"once.\n"
-"\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and "
-"technologies please consult this Knowledge Base Article: https://access."
-"redhat.com/kb/docs/DOC-45563"
-msgstr ""
-"Tento systém už bol zaregistrovaný pomocou Red Hat Subscription Management.\n"
-"\n"
-"Váš systém sa znova registruje pomocou technológie Red Hat Satellite alebo "
-"Red Hat Satellite Proxy. Red Hat odporúča, aby sa zákazníci registrovali iba "
-"raz.\n"
-"\n"
-"Ak sa chcete dozvedieť viac o registrácii a technológiách RHN Classic/Red "
-"Hat Satellite, prečítajte si tento článok z Knowledge Base: https://access."
-"redhat.com/kb/docs/DOC-45563"
-
-#. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:145
-#, python-brace-format
-msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Odoslať informácie profilu do {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:146
-#, python-brace-format
-msgid ""
-"We are finished collecting information for the System Profile.\n"
-"\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel"
-"\" and no information will be sent.  You can run the registration program "
-"later by typing `rhn_register` at the command line."
-msgstr ""
-"Dokončili sme zhromažďovanie informácií pre systémový profil.\n"
-"\n"
-"Stlačte \"Ďalej\" na odoslanie systémového profilu do {PRODUCT_NAME}.  "
-"Kliknite na \"Zrušiť\" a nebudú odoslané žiadne informácie.  Registračný "
-"program môžete spustiť neskôr zadaním `rhn_register` do príkazového riadku."
-
-#. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:153
-#, python-brace-format
-msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr "Odosielanie profilu do {PRODUCT_NAME}"
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:156
-msgid "Updates Configured"
-msgstr "Aktualizácie boli nakonfigurované"
-
-#: ../src/up2date_client/rhnreg_constants.py:157
-#, python-format, python-brace-format
-msgid ""
-"You may now run '%s update' from this system's command line to get the "
-"latest software updates from {PRODUCT_NAME}. You will need to run this "
-"periodically to get the latest updates. Alternatively, you may configure "
-"this system for automatic software updates (also known as 'auto errata "
-"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
-"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
-"main {PRODUCT_NAME} web interface.)"
-msgstr ""
-"Teraz môžete spustiť '%s update' z príkazového riadku tohto systému na "
-"získanie najnovších aktualizácií softvéru od {PRODUCT_NAME}. Budete to "
-"musieť pravidelne spúšťať, aby ste získali najnovšie aktualizácie. Alebo "
-"tento systém môžete nakonfigurovať na automatické aktualizácie softvéru "
-"(tiež známe ako 'auto errata update') cez webové rozhranie {PRODUCT_NAME}. "
-"(Pokyny sú uvedené v referenčnej príručke {PRODUCT_NAME} dostupnej "
-"prostredníctvom tlačidla 'Help' v hlavnom webovom rozhraní {PRODUCT_NAME}.)"
-
-#. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:168
-msgid "Review Subscription"
-msgstr "Skontrolujte predplatné"
-
-#: ../src/up2date_client/rhnreg_constants.py:169
-msgid "Please review the subscription details below:"
-msgstr "Skontrolujte podrobnosti o predplatnom nižšie:"
-
-#: ../src/up2date_client/rhnreg_constants.py:170
-#, python-format, python-brace-format
-msgid ""
-"The installation number %s was activated during this system's initial "
-"connection to {PRODUCT_NAME}."
-msgstr ""
-"Inštalačné číslo %s bolo aktivované počas počiatočného pripojenia tohto "
-"systému k {PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:172
-msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Aktivovali sa predplatné pre nasledujúce produkty/služby:"
-
-#: ../src/up2date_client/rhnreg_constants.py:174
-msgid "Software Channel Subscriptions:"
-msgstr "Predplatné softvérových kanálov:"
-
-#: ../src/up2date_client/rhnreg_constants.py:175
-msgid "This system will receive updates from the following software channels:"
-msgstr ""
-"Tento systém bude dostávať aktualizácie z nasledujúcich softvérových kanálov:"
-
-#: ../src/up2date_client/rhnreg_constants.py:177
-#, python-brace-format
-msgid ""
-"Warning: Only installed product listed above will receive updates and "
-"support. If you would like to receive updates for additional products, "
-"please login to your {PRODUCT_NAME} web interface and subscribe this system "
-"to the appropriate software channels."
-msgstr ""
-"Upozornenie: Aktualizácie a podporu bude dostávať iba nainštalovaný produkt "
-"uvedený vyššie. Ak by ste chceli dostávať aktualizácie pre ďalšie produkty, "
-"prihláste sa do svojho webového rozhrania {PRODUCT_NAME} a prihláste tento "
-"systém k príslušným softvérovým kanálom."
-
-#: ../src/up2date_client/rhnreg_constants.py:183
-#, python-format
-msgid ""
-"Warning: %s is not present, could not enable it.\n"
-"Automatic updates will not work."
-msgstr ""
-"Upozornenie: %s nie je prítomný, nebolo možné ho povoliť.\n"
-"Automatické aktualizácie nebudú fungovať."
-
-#: ../src/up2date_client/rhnreg_constants.py:185
-#, python-format
-msgid "Note: %s has been enabled."
-msgstr "Poznámka: %s bolo povolené."
-
-#: ../src/up2date_client/rhnreg_constants.py:186
-#, python-format
-msgid ""
-"Warning: An error occurred during enabling %s.\n"
-"%s is not enabled.\n"
-"Automatic updates will not work."
-msgstr ""
-"Upozornenie: Počas povoľovania %s sa vyskytla chyba.\n"
-"%s nie je povolené.\n"
-"Automatické aktualizácie nebudú fungovať."
-
-#: ../src/up2date_client/rhnreg_constants.py:189
-msgid ""
-"You were unable to be subscribed to the following software channels because "
-"there were insufficient subscriptions available in your account:"
-msgstr ""
-"Nemohli ste byť prihlásený k nasledujúcim softvérovým kanálom, pretože vo "
-"vašom účte neboli k dispozícii dostačujúce predplatné:"
-
-#: ../src/up2date_client/rhnreg_constants.py:193
-#, python-brace-format
-msgid ""
-"This system was unable to subscribe to any software channels. Your system "
-"will not receive any software updates to keep it secure and supported. "
-"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
-"the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the {PRODUCT_NAME} web interface and "
-"subscribe this system to software channels via the software > software "
-"channels tab."
-msgstr ""
-"Tento systém nebol schopný sa prihlásiť k žiadnym softvérovým kanálom. Váš "
-"systém nedostane žiadne aktualizácie softvéru, aby bol zabezpečený a "
-"podporovaný. Obráťte sa na svojho administrátora {PRODUCT_NAME} s týmto "
-"problémom. Keď vo svojom účte sprístupníte príslušné aktívne predplatné, "
-"môžete prejsť na profil tohto systému vo webovom rozhraní {PRODUCT_NAME} a "
-"prihlásiť tento systém k softvérovým kanálom cez kartu softvér > softvérové "
-"kanály."
-
-#: ../src/up2date_client/rhnreg_constants.py:199
-msgid "Service Level:"
-msgstr "Úroveň služieb:"
-
-#: ../src/up2date_client/rhnreg_constants.py:200
-#, python-brace-format
-msgid ""
-"Depending on what {PRODUCT_NAME} system types are associated with a system, "
-"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
-"types associated with this system:"
-msgstr ""
-"V závislosti od toho, aké systémové typy {PRODUCT_NAME} sú so systémom "
-"spojené, získate rôzne výhody. Nasledovné sú systémové typy {PRODUCT_NAME} "
-"spojené s týmto systémom:"
-
-#: ../src/up2date_client/rhnreg_constants.py:204
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with the following {PRODUCT_NAME} "
-"system type(s) because there were insufficient subscriptions available in "
-"your account:"
-msgstr ""
-"Tento systém sa nemohol spojiť s nasledujúcim systémovým typom(i) "
-"{PRODUCT_NAME}, pretože vo vašom účte neboli k dispozícii dostačujúce "
-"predplatné:"
-
-#: ../src/up2date_client/rhnreg_constants.py:207
-msgid ""
-"Management type: automatic updates, systems grouping, systems permissions, "
-"system package profiling, bare-metal provisioning, existing state "
-"provisioning, rollbacks, configuration management"
-msgstr ""
-"Typ správy: automatické aktualizácie, zoskupenie systémov, povolenia "
-"systémov, profilovanie systémových balíkov, zabezpečovanie bare-metal, "
-"existujúci stav zabezpečovania, vrátenie vykonaných zmien, správa "
-"konfigurácie"
-
-#: ../src/up2date_client/rhnreg_constants.py:212
-msgid ""
-"Virtualization type: software updates for a limited number of virtual guests "
-"on this system."
-msgstr ""
-"Virtualizačný typ: aktualizácie softvéru pre obmedzený počet virtuálnych "
-"hostí v tomto systéme."
-
-#: ../src/up2date_client/rhnreg_constants.py:216
-#, python-brace-format
-msgid ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
-"subscription. You will need to: (1) make a virtualization system entitlement "
-"available and (2) apply that system entitlement to this system in "
-"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
-"system to consume additional subscriptions."
-msgstr ""
-"<b>Upozornenie:</b> Všetky hosťovské systémy, ktoré vytvoríte v tomto "
-"systéme a zaregistrujete na {PRODUCT_NAME}, budú využívať systémové "
-"predplatné mimo predplatného tohto hostiteľského systému. Budete musieť: (1) "
-"sprístupniť oprávnenie virtualizačného systému a (2) uplatniť toto systémové "
-"oprávnenie na tento systém vo webovom rozhraní {PRODUCT_NAME}, ak nechcete, "
-"aby virtuálni hostia tohto systému spotrebovávali ďalšie predplatné."
-
-#: ../src/up2date_client/rhnreg_constants.py:224
-#, python-brace-format
-msgid ""
-"This system was unable to be associated with any {PRODUCT_NAME} system "
-"types. This system will not receive any software updates to keep it secure "
-"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
-"Once you make the appropriate active subscriptions available in your "
-"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
-"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr ""
-"Tento systém sa nemohol spojiť so žiadnymi systémovými typmi {PRODUCT_NAME}. "
-"Tento systém nebude dostávať žiadne aktualizácie softvéru, aby bol "
-"zabezpečený a podporovaný. Obráťte sa na svojho administrátora "
-"{PRODUCT_NAME} s týmto problémom. Keď vo svojom účte sprístupníte príslušné "
-"aktívne predplatné, môžete prejsť na profil tohto systému vo webovom "
-"rozhraní {PRODUCT_NAME}, vymazať profil a znova pripojiť tento systém k "
-"{PRODUCT_NAME}."
-
-#: ../src/up2date_client/rhnreg_constants.py:231
-#, python-format, python-brace-format
-msgid ""
-"Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means "
-"that a set of properties (software channel subscriptions, package "
-"installations, system group memberships, etc.) for your system's connection "
-"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
-"activation key rather than your installation number.  You may also refer to "
-"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
-"Universal Default activation key: %s"
-msgstr ""
-"Bol zistený univerzálny predvolený aktivačný kľúč\n"
-"Vo vašom účte bol zistený univerzálny predvolený aktivačný kľúč. To znamená, "
-"že súbor vlastností (predplatné softvérových kanálov, inštalácie balíkov, "
-"členstvá v systémových skupinách atď.) pre pripojenie vášho systému k "
-"{PRODUCT_NAME} Server alebo {PRODUCT_NAME} Proxy boli určené skôr pomocou "
-"aktivačného kľúča než podľa vášho inštalačného čísla inštalácie.  Viac "
-"podrobností o aktivačných kľúčoch nájdete v referenčnej príručke "
-"{PRODUCT_NAME}.\n"
-"Univerzálny predvolený aktivačný kľúč: %s"
-
-#. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:243
-msgid "Fatal Error"
-msgstr "Závažná chyba"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-msgid "Warning"
-msgstr "Varovanie"
-
-#: ../src/up2date_client/rhnreg_constants.py:245
-#, python-format, python-brace-format
-msgid ""
-"We can't contact {PRODUCT_NAME}.\n"
-"\n"
-"Double check the location provided - is '%s' correct?\n"
-"If not, you can correct it and try again.\n"
-"\n"
-"Make sure that the network connection on this system is operational.\n"
-"\n"
-"This system will not be able to successfully receive software updates "
-"without connecting to an {PRODUCT_NAME} server/proxy"
-msgstr ""
-"Nemôžeme kontaktovať {PRODUCT_NAME}.\n"
-"\n"
-"Prekontrolujte poskytnuté umiestnenie - je '%s' správne?\n"
-"Ak nie, môžete ho opraviť a skúsiť znova.\n"
-"\n"
-"Uistite sa, či je sieťové pripojenie na tomto systéme funkčné.\n"
-"\n"
-"Tento systém nebude schopný úspešne prijímať aktualizácie softvéru bez "
-"pripojenia k serveru/proxy {PRODUCT_NAME}"
-
-#: ../src/up2date_client/rhnreg_constants.py:252
-#, python-format
-msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "Architektúra: %s, vydanie OS: %s, verzia OS: %s"
-
-#: ../src/up2date_client/rhnreg_constants.py:254
-msgid ""
-"This server doesn't support functionality needed by this version of the "
-"software update setup client. Please try again with a newer server."
-msgstr ""
-"Tento server nepodporuje funkcie potrebné pre túto verziu klienta nastavenia "
-"aktualizácií softvéru. Prosím. skúste to znova s novším serverom."
-
-#: ../src/up2date_client/rhnreg_constants.py:260
-#, python-format, python-brace-format
-msgid ""
-"<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
-"\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the "
-"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-"have provided a valid certificate file. Are you sure you have provided the "
-"correct certificate, and that the certificate file has not been corrupted?\n"
-"\n"
-"Please try again with a different certificate file."
-msgstr ""
-"<b><span size=\"16000\">Nekompatibilný súbor certifikátu</span></b>\n"
-"\n"
-"Certifikát, ktorý ste poskytli <b>%s</b>, nie je kompatibilný so serverom "
-"{PRODUCT_NAME} na <b>%s</b>. Možno budete chcieť znova skontrolovať, či ste "
-"poskytli platný súbor certifikátu. Ste si istí, že ste poskytli správny "
-"certifikát a že súbor certifikátu nebol poškodený?\n"
-"\n"
-"Prosím, skúste to znova s iným súborom certifikátu."
-
-#: ../src/up2date_client/rhnreg_constants.py:268
-msgid ""
-"<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
-"\n"
-" The certificate is expired. Please ensure you have the correct  certificate "
-"and your system time is correct."
-msgstr ""
-"<b><span size=\"12000\">Nekompatibilný súbor certifikátu</span></b>\n"
-"\n"
-" Platnosť certifikátu vypršala. Prosím, zaistite, že máte správny certifikát "
-"a že je váš systémový čas správny."
-
-#: ../src/up2date_client/rhnreg_constants.py:272
-#, python-brace-format
-msgid ""
-"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
-"up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
-"rhn, and ensure sslCACert points to it."
-msgstr ""
-"Prosím, overte hodnoty sslCACert a serverURL v /etc/sysconfig/rhn/up2date. "
-"Môžete buď nastaviť, aby serverURL používal http namiesto https, alebo "
-"môžete stiahnuť certifikát SSL zo svojho {PRODUCT_NAME}, umiestniť ho do /"
-"usr/share/rhn a zaistiť, aby sslCACert naň ukazoval."
-
-#: ../src/up2date_client/rhnreg_constants.py:278
-#, python-brace-format
-msgid ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the {PRODUCT_NAME} organization associated with your login. To "
-"allow this system to connect, please contact your {PRODUCT_NAME} "
-"organization administrator to increase the number of systems allowed to "
-"connect or to disable this universal default activation key."
-msgstr ""
-"Problém s registráciou systému.\n"
-"\n"
-"Univerzálny predvolený aktivačný kľúč obmedzuje počet systémov, ktoré sa "
-"môžu pripojiť k organizácii {PRODUCT_NAME} spojenej s vaším prihlasovacím "
-"menom. Ak chcete povoliť pripojenie tohto systému, kontaktujte svojho "
-"administrátora organizácie {PRODUCT_NAME}, aby sa zvýšil počet systémov, "
-"ktoré sa môžu pripojiť, alebo zakázať tento univerzálny predvolený aktivačný "
-"kľúč."
-
-#: ../src/up2date_client/rhnreg_constants.py:288
-msgid ""
-"\n"
-" Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
-"\n"
-msgstr ""
-"\n"
-" Tip: Vedľajšie vydania s '*' sú v súčasnosti podporované Red Hat.\n"
-"\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:291
-msgid ""
-"Warning:You will not be able to limit this system to minor release that is "
-"older than the recent minor release if you select this option.\n"
-msgstr ""
-"Varovanie:Ak vyberiete túto možnosť, nebudete môcť obmedziť tento systém na "
-"vedľajšie vydanie, ktoré je staršie ako posledné vedľajšie vydanie.\n"
-
-#: ../src/up2date_client/rhnreg_constants.py:296
-#, python-format
-msgid ""
-"Your system will be subscribed to %s \n"
-"base software channel. You will not be\n"
-"able to move this system to an earlier release\n"
-"(you will be able to move to a newer release).\n"
-"Are you sure you would like to continue?"
-msgstr ""
-"Váš systém bude prihlásený k základnému \n"
-"softvérovému kanálu %s. Nebudete môcť\n"
-"presunúť tento systém na staršie vydanie\n"
-"(budete môcť prejsť na novšie vydanie).\n"
-"Naozaj chcete pokračovať?"
-
-#. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:305
-#: ../src/up2date_client/tui.py:541
-msgid "OK"
-msgstr "OK"
-
-#: ../src/up2date_client/rhnreg_constants.py:306
-#: ../src/up2date_client/tui.py:541
-msgid "Error"
-msgstr "Chyba"
-
-#: ../src/up2date_client/rhnreg_constants.py:307
-msgid "Next"
-msgstr "Nasledujúca"
-
-#: ../src/up2date_client/rhnreg_constants.py:308
-msgid "Back"
-msgstr "Späť"
-
-#: ../src/up2date_client/rhnreg_constants.py:309
-msgid "Cancel"
-msgstr "Zrušiť"
-
-#: ../src/up2date_client/rhnreg_constants.py:310
-msgid "No, Cancel"
-msgstr "Zrušiť"
-
-#: ../src/up2date_client/rhnreg_constants.py:311
-msgid "Yes, Continue"
-msgstr "Áno, pokračovať"
-
-#: ../src/up2date_client/rhnreg_constants.py:312
-msgid "Press <space> to deselect the option."
-msgstr "Stlačením <medzerníka> zrušíte výber možnosti."
-
-#: ../src/up2date_client/rpcServer.py:56
+#: ../src/up2date_client/rpcServer.py:55
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Chyba: Server je nedostupný.Prosím, skúste neskôr."
 
-#: ../src/up2date_client/rpcServer.py:182
+#: ../src/up2date_client/rpcServer.py:181
 msgid "ERROR: can not find server CA file"
 msgstr "CHYBA: nemožno nájsť súbor CA servera"
 
-#: ../src/up2date_client/rpcServer.py:220
-msgid "Connection aborted by the user"
-msgstr "Spojenie prerušené užívateľom"
-
-#: ../src/up2date_client/rpcServer.py:268
-msgid "Server has refused connection due to high load"
-msgstr "Server odmietol spojenie pre príliš veľké vyťaženie"
-
-#: ../src/up2date_client/tui.py:138
-msgid "Spacewalk Location:"
-msgstr "Umiestnenie Spacewalk:"
-
-#: ../src/up2date_client/tui.py:140
-msgid "System ID:"
-msgstr "Systémové ID:"
-
-#: ../src/up2date_client/tui.py:541
-msgid "The server indicated an error:\n"
-msgstr "Server oznámil chybu:\n"
-
-#: ../src/up2date_client/tui.py:546
-msgid "There was an error communicating with the registration server:\n"
-msgstr "Vyskytla sa chyba pri komunikácii s registračným serverom:\n"
-
-#: ../src/up2date_client/tui.py:734
-msgid "Profile name:"
-msgstr "Meno profilu:"
-
-#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
-msgid "Version: "
-msgstr "Verzia: "
-
-#: ../src/up2date_client/tui.py:763
-msgid "CPU model: "
-msgstr "Model CPU: "
-
-#: ../src/up2date_client/tui.py:769
-msgid "Hostname: "
-msgstr "Meno hostiteľa: "
-
-#: ../src/up2date_client/tui.py:781
-msgid "CPU speed: "
-msgstr "Rýchlosť CPU: "
-
-#: ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/tui.py:787
-msgid "IP Address: "
-msgstr "IP adresa: "
-
-#: ../src/up2date_client/tui.py:796
-msgid "Memory: "
-msgstr "Pamäť: "
-
-#: ../src/up2date_client/tui.py:800
-#, python-format
-msgid "%s megabytes"
-msgstr "%s megabajtov"
-
-#: ../src/up2date_client/tui.py:986 ../src/up2date_client/tui.py:990
-#: ../src/up2date_client/tui.py:994 ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "Problém s registráciou systému:\n"
-
-#: ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "Problém s registráciou systému."
-
-#: ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "Problém pri zápise systémového id na disk."
-
-#: ../src/up2date_client/tui.py:1025
-msgid "Problem sending hardware profile:\n"
-msgstr "Problém pri odosielaní hardvérového profilu:\n"
-
-#: ../src/up2date_client/tui.py:1029
-msgid "Problem sending hardware profile."
-msgstr "Problém pri odosielaní hardvérového profilu."
-
-#: ../src/up2date_client/tui.py:1039
-msgid "Problem sending package list:\n"
-msgstr "Problém pri odosielaní zoznamu balíčkov:\n"
-
-#: ../src/up2date_client/tui.py:1042
-msgid "Problem sending package list."
-msgstr "Problém pri odosielaní zoznamu balíčkov."
-
-#: ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Nebolo možné otvoriť %s\n"
-"%s nie je povolené.\n"
-
-#: ../src/up2date_client/tui.py:1096
-msgid "Finish"
-msgstr "Dokončiť"
-
-#: ../src/up2date_client/tui.py:1210
-msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr "Zadali ste neplatný protokol. Povolené sú iba https a http."
-
-#: ../src/up2date_client/tui.py:1241
-msgid ""
-"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr ""
-"  <Tab>/<Alt-Tab> medzi prvkami | <Medzerník> vyberá  |  <F12> ďalšia "
-"obrazovka"
-
-#: ../src/up2date_client/tui.py:1345
-#, python-brace-format
-msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "Registračný program {PRODUCT_NAME} musíte spúšťať ako správca systému."
-
-#: ../src/up2date_client/up2dateErrors.py:48
-#: ../src/up2date_client/up2dateErrors.py:81
+#: ../src/up2date_client/up2dateErrors.py:47
+#: ../src/up2date_client/up2dateErrors.py:80
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "trieda %s nemá žiadny atribút '%s'"
 
-#: ../src/up2date_client/up2dateErrors.py:108
+#: ../src/up2date_client/up2dateErrors.py:107
 msgid "RPM error.  The message was:\n"
 msgstr "Chyba RPM.  Ohlásená chyba:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:115
+#: ../src/up2date_client/up2dateErrors.py:114
 msgid "Password error. The message was:\n"
 msgstr "Chyba hesla. Ohlásená chyba:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:119
+#: ../src/up2date_client/up2dateErrors.py:118
 msgid "RPM dependency error. The message was:\n"
 msgstr "Chyba závislosti RPM. Ohlásená chyba:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:129
+#: ../src/up2date_client/up2dateErrors.py:128
 msgid "Error communicating with server. The message was:\n"
 msgstr "Chyba pri komunikácii so serverom. Ohlásená chyba:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:136
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "File Not Found: \n"
 msgstr "Súbor nebol nájdený: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:143
+#: ../src/up2date_client/up2dateErrors.py:142
 msgid "Delay error from server.  The message was:\n"
 msgstr "Prekročený limit odozvy servera.  Ohlásená chyba:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:179
+#: ../src/up2date_client/up2dateErrors.py:178
 msgid "Error validating data at server:\n"
 msgstr "Chyba potvrdzovania dát na serveri.\n"
 
-#: ../src/up2date_client/up2dateErrors.py:192
+#: ../src/up2date_client/up2dateErrors.py:191
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
@@ -1139,19 +82,19 @@ msgstr ""
 "Red Hat Network Classic nie je podporovaný.\n"
 "    "
 
-#: ../src/up2date_client/up2dateErrors.py:198
+#: ../src/up2date_client/up2dateErrors.py:197
 msgid "The installation number is invalid"
 msgstr "Prihlasovacie číslo nie je správne"
 
-#: ../src/up2date_client/up2dateErrors.py:201
+#: ../src/up2date_client/up2dateErrors.py:200
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Chyba pri analýze oemInfo súboru na položke:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:228
+#: ../src/up2date_client/up2dateErrors.py:227
 msgid "Network error: "
 msgstr "Chyba siete: "
 
-#: ../src/up2date_client/up2dateErrors.py:296
+#: ../src/up2date_client/up2dateErrors.py:295
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1189,116 +132,989 @@ msgstr ""
 "znova,\n"
 "    aby ste sa vyhli požadovaniu oprávnenia správy."
 
-#: ../src/bin/rhn_check.py:423
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr ""
-"Pokúšanie sa o spustenie viac ako jednej inštancie mgr_check. Ukončenie.\n"
-
-#: ../src/bin/rhnreg_ks.py:50
-msgid "Specify a profilename"
-msgstr "Zadať názov profilu"
-
-#: ../src/bin/rhnreg_ks.py:52
-msgid "Specify a username"
-msgstr "Zadať používateľské meno"
-
-#: ../src/bin/rhnreg_ks.py:54
-msgid "Specify a password"
-msgstr "Zadať heslo"
-
-#: ../src/bin/rhnreg_ks.py:56
-msgid "Specify an organizational id for this system"
-msgstr "Zadať organizačné id pre tento systém"
-
-#: ../src/bin/rhnreg_ks.py:58
-msgid "Specify a url to use as a server"
-msgstr "Zadať url servera, ktorý použiť"
-
-#: ../src/bin/rhnreg_ks.py:60
-msgid "Specify a file to use as the ssl CA cert"
-msgstr "Určitee súbor, ktorý sa použije ako ssl CA cert"
-
-#: ../src/bin/rhnreg_ks.py:62
-msgid "Specify an activation key"
-msgstr "Zadať http proxy pre použitie"
-
-#: ../src/bin/rhnreg_ks.py:64
-msgid ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr ""
-"Prihlásiť tento systém ku kanálu EUS, ktorý je viazaný k systémovému redhat-"
-"release"
-
-#: ../src/bin/rhnreg_ks.py:66
-msgid "[Deprecated] Read contact info from stdin"
-msgstr "[Zastarané] Čítať kontaktné informácie z stdin"
-
-#: ../src/bin/rhnreg_ks.py:68
-msgid "Do not probe or upload any hardware info"
-msgstr "Nezisťovať alebo neposielať žiadne informácie o hardvéri"
-
-#: ../src/bin/rhnreg_ks.py:70
-msgid "Do not profile or upload any package info"
-msgstr "Nerobiť profil alebo neposielať žiadne informácie o balíkoch"
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Do not upload any virtualization info"
-msgstr "Neodosielať žiadne informácie o virtualizácii"
-
-#: ../src/bin/rhnreg_ks.py:74
-msgid "Register the system even if it is already registered"
-msgstr "Registrovať systém, aj keď už je zaregistrovaný"
-
-#: ../src/bin/rhnreg_ks.py:84
-msgid "A username and password are required to register a system."
-msgstr "Používateľské meno a heslo sú vyžadované pre zaregistrovanie systému."
-
-#: ../src/bin/rhnreg_ks.py:89
-msgid "This system is already registered. Use --force to override"
-msgstr "Tento systém už je zaregistrovaný. Použite --force pre vynútenie"
-
-#: ../src/bin/rhnreg_ks.py:123
-msgid ""
-"Usage of --use-eus-channel option with --activationkey is not supported. "
-"Please use username and password instead."
-msgstr ""
-"Použitie voľby --use-eus-channel s --activationkey nie je podporované. "
-"Namiesto toho použite používateľské meno a heslo."
-
-#: ../src/bin/rhnreg_ks.py:126
-msgid "The server you are registering against does not support EUS."
-msgstr "Server, do ktorého sa zaregistrujete, nepodporuje EUS."
-
-#: ../src/bin/rhnreg_ks.py:152
-msgid ""
-"Warning: --contactinfo option has been deprecated. Please login to the "
-"server web user Interface and update your contactinfo. "
-msgstr ""
-"Upozornenie: Voľba --contactinfo bola odmietnutá. Prosím, prihláste sa do "
-"webového používateľského rozhrania servera a aktualizujte svoje kontaktné "
-"informácie. "
-
-#: ../src/bin/rhnreg_ks.py:169
 #, python-format
-msgid "Warning: %s is not present, could not enable it."
-msgstr "Upozornenie: %s nie je prítomný, nebolo možné ho povoliť."
+#~ msgid ""
+#~ "This client requires the server to support %s, which the current server "
+#~ "does not support"
+#~ msgstr ""
+#~ "Tento klient vyžaduje, aby server podporoval %s, čo momentálne server "
+#~ "nepodporuje"
 
-#: ../src/bin/rhnreg_ks.py:172
+#~ msgid "Getting list of packages installed on the system"
+#~ msgstr "Získavam zoznam balíčkov nainštalovaných v systéme"
+
+#~ msgid "Error reading cpu information:"
+#~ msgstr "Chyba pri čítaní cpu informácii:"
+
+#~ msgid "Error reading system memory information:"
+#~ msgstr "Chyba pri čítaní pamäťových informácii:"
+
+#~ msgid "Error reading networking information:"
+#~ msgstr "Chyba pri čítaní sieťových informácii:"
+
+#~ msgid "Error reading install method information:"
+#~ msgstr "Chyba pri čítaní informácii inštalačnej metódy:"
+
+#~ msgid "Error reading network interface information:"
+#~ msgstr "Chyba pri čítaní informácii sieťového rozhrania:"
+
+#~ msgid "Error reading network FQDNs information:"
+#~ msgstr "Chyba pri čítaní sieťových informácii FQDN:"
+
+#~ msgid "Error reading system info:"
+#~ msgstr "Chyba pri čítaní systémových informácií:"
+
+#~ msgid "Error reading machine info:"
+#~ msgstr "Chyba pri čítaní informácií o stroji:"
+
+#~ msgid "Unable to Locate SystemId"
+#~ msgstr "Nepodarilo sa nájsť SystemId"
+
+#~ msgid ""
+#~ "This system may not be updated until it is associated with a channel."
+#~ msgstr ""
+#~ "Tento systém nemôže byť aktualizovaný, dokiaľ nebude priradený ku kanálu."
+
+#~ msgid "Show additional output. Repeat for more detail."
+#~ msgstr "Zobraziť ďalší výstup. Opakovať kvôli viac detailom."
+
+#~ msgid "Specify an http proxy to use"
+#~ msgstr "Zadať http proxy pre použitie"
+
+#~ msgid "Specify a username to use with an authenticated http proxy"
+#~ msgstr "Zadať meno používateľa pre použitie s autentifikovaným http proxy"
+
+#~ msgid "Specify a password to use with an authenticated http proxy"
+#~ msgstr "Zadať heslo pre použitie s autentifikovaným http proxy"
+
+#~ msgid ""
+#~ "\n"
+#~ "Aborted.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Prerušené.\n"
+
 #, python-format
-msgid ""
-"Warning: Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"Upozornenie: Nebolo možné otvoriť %s\n"
-"%s nie je povolené.\n"
+#~ msgid "An unexpected OS error occurred: %s\n"
+#~ msgstr "Vyskytla sa neočakávaná chyba OS: %s\n"
 
-#: ../src/bin/rhnreg_ks.py:200
-msgid ""
-"A profilename was not specified, and hostname and IP address could not be "
-"determined to use as a profilename, please specify one."
-msgstr ""
-"Meno profilu nebolo zadané a názov počítača ani IP adresa sa nedajú zistiť "
-"tak, aby mohli byť použité ako meno profilu. Prosím zadajte meno profilu."
+#~ msgid "A connection was attempted with a malformed URI.\n"
+#~ msgstr "Pokus o pripojenie s poškodeným URI.\n"
+
+#, python-format
+#~ msgid "A connection was attempted with a malformed URI: %s.\n"
+#~ msgstr "Pokus o pripojenie s poškodeným URI: %s.\n"
+
+#, python-format
+#~ msgid "There was some sort of I/O error: %s\n"
+#~ msgstr "Vyskytlo sa niekoľko V/V chýb: %s\n"
+
+#, python-format
+#~ msgid "There was an SSL error: %s\n"
+#~ msgstr "Vyskytla sa chyba v SSL: %s\n"
+
+#~ msgid ""
+#~ "A common cause of this error is the system time being incorrect. Verify "
+#~ "that the time on this system is correct.\n"
+#~ msgstr ""
+#~ "Častou príčinou tejto chyby je nesprávny systémový čas. Skontrolujte či "
+#~ "je čas v tomto systéme správny.\n"
+
+#, python-format
+#~ msgid "There was a SSL crypto error: %s\n"
+#~ msgstr "Vyskytla sa chyba v SSL šifrovaní: %s\n"
+
+#, python-format
+#~ msgid "There was an authentication error: %s\n"
+#~ msgstr "Pri overovaní pravosti došlo k chybe: %s\n"
+
+#, python-format
+#~ msgid "You must be root to run %s"
+#~ msgstr "Na spustenie %s musíte byť správca systému"
+
+#, python-format
+#~ msgid ""
+#~ "%%prog (Spacewalk Client Tools) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licensed under the terms of the GPLv2."
+#~ msgstr ""
+#~ "%%prog (Klientské nástroje Spacewalk) %s\n"
+#~ "Copyright (C) 1999--2014 Red Hat, Inc.\n"
+#~ "Licencované podľa podmienok GPLv2."
+
+#~ msgid "An error has occurred:"
+#~ msgstr "Vyskytla sa chyba:"
+
+#~ msgid "See /var/log/up2date for more information"
+#~ msgstr "Pozri /var/log/up2date pre viac informácii"
+
+#~ msgid "Uyuni"
+#~ msgstr "Uyuni"
+
+#~ msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
+#~ msgstr "Copyright © 2006--2014 Red Hat, Inc. Všetky práva vyhradené."
+
+#, python-brace-format
+#~ msgid "Enter your {PRODUCT_NAME} URL."
+#~ msgstr "Zadajte svoju adresu URL {PRODUCT_NAME}."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
+#~ "certificate. The SSL certificate is only required if you will be "
+#~ "connecting over https (recommended)."
+#~ msgstr ""
+#~ "Prosím, zadajte umiestnenie svojho servera {PRODUCT_NAME} a jeho "
+#~ "certifikátu SSL. Certifikát SSL sa vyžaduje, iba ak sa pripájate "
+#~ "prostredníctvom https (odporúčané)."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} URL:"
+#~ msgstr "URL {PRODUCT_NAME}:"
+
+#~ msgid "SSL certificate:"
+#~ msgstr "SSL certifikát:"
+
+#, python-brace-format
+#~ msgid "You must enter a valid {PRODUCT_NAME} URL."
+#~ msgstr "Musíte zadať platnú adresu URL {PRODUCT_NAME}."
+
+#~ msgid ""
+#~ "If you are using https you must enter the location of a valid SSL "
+#~ "certificate."
+#~ msgstr ""
+#~ "Ak používate https, musíte zadať umiestnenie platného certifikátu SSL."
+
+#~ msgid "Attempting to contact the Spacewalk server."
+#~ msgstr "Pokúšanie sa o kontaktovanie servera Spacewalk."
+
+#, python-format, python-brace-format
+#~ msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+#~ msgstr "Pokúšame sa kontaktovať server {PRODUCT_NAME} na %s."
+
+#, python-format
+#~ msgid "A proxy was specified at %s."
+#~ msgstr "Proxy bolo určené na %s."
+
+#~ msgid "System Registration"
+#~ msgstr "registračnéČíslo"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to "
+#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
+#~ "to keep your system supported and compliant.  You will need the following "
+#~ "at this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your {PRODUCT_NAME} Login & password\n"
+#~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Tento asistent vás prevedie pripojením vášho systému k {PRODUCT_NAME} na "
+#~ "prijímanie softvérových aktualizácií vrátane bezpečnostných aktualizácií, "
+#~ "aby bol váš systém podporovaný a súhlasný.  Momentálne budete potrebovať "
+#~ "nasledovné:\n"
+#~ "\n"
+#~ " * Sieťové pripojenie\n"
+#~ " * Vaše prihlasovacie meno a heslo {PRODUCT_NAME}\n"
+#~ " * Umiestnenie servera alebo proxy {PRODUCT_NAME}\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+#~ msgstr "Prečo by som sa mal pripojiť k {PRODUCT_NAME}? ..."
+
+#~ msgid "Why Register"
+#~ msgstr "Už zaregistrovaný"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Pripájanie vášho systému k {PRODUCT_NAME} vám umožňuje plne využívať "
+#~ "prednosť výhod predplatného vrátane:"
+
+#~ msgid "Security & Updates:"
+#~ msgstr "Bezpečnosť a aktualizácie:"
+
+#~ msgid "Downloads & Upgrades:"
+#~ msgstr "Stiahnutia a zvýšenia verzie:"
+
+#~ msgid "Support:"
+#~ msgstr "Podpora:"
+
+#~ msgid "Compliance:"
+#~ msgstr "Spoločnosť:"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this system updated and secure."
+#~ msgstr ""
+#~ "Prijímajte najnovšie aktualizácie softvéru vrátane bezpečnostných "
+#~ "aktualizácií, aby bol tento systém aktuálny a zabezpečený."
+
+#~ msgid ""
+#~ "Download installation images for system releases, including new releases."
+#~ msgstr ""
+#~ "Stiahnite si inštalačné obrazy pre vydania systému, vrátane nových vydaní."
+
+#~ msgid ""
+#~ "Access to the technical support experts for help with any issues you "
+#~ "might encounter with this system."
+#~ msgstr ""
+#~ "Prístup k expertom technickej podpory kvôli pomoci s akýmikoľvek "
+#~ "problémami, s ktorými sa môžete stretnúť v tomto systéme."
+
+#~ msgid ""
+#~ "Stay in compliance with your subscription agreement and manage "
+#~ "subscriptions for systems connected to your account."
+#~ msgstr ""
+#~ "Dodržiavajte svoju predplatnú zmluvu a spravujte predplatné pre systémy "
+#~ "spojené s vašim účtom."
+
+#~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+#~ msgstr ""
+#~ "Tip: SUSE si cení vaše súkromie: https://www.suse.com/company/legal/"
+
+#~ msgid "Take me back to the registration"
+#~ msgstr "Up2date - Zoznam balíčkov (registrácia)"
+
+#~ msgid "Software Update Not Set Up"
+#~ msgstr "Aktualizácia softvéru nie je nastavená"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
+#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr ""
+#~ "Naozaj nechcete pripojiť svoj systém k {PRODUCT_NAME}? Prídete o výhody "
+#~ "predplatného SLES/RHEL:\n"
+
+#, python-brace-format
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr ""
+#~ "Nebudete môcť využívať tieto výhody predplatného bez pripojenia vášho "
+#~ "systému k {PRODUCT_NAME}.\n"
+
+#~ msgid "Take me back to the setup process."
+#~ msgstr "Vrátiť sa späť do procesu nastavenia."
+
+#~ msgid "I'll register later."
+#~ msgstr "Zaregistrujem sa neskôr."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Account"
+#~ msgstr "Účet {PRODUCT_NAME}"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Prosím, zadajte svoje prihlasovacie údaje pre %s {PRODUCT_NAME}:\n"
+#~ "\n"
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Login:"
+#~ msgstr "Prihlasovacie meno {PRODUCT_NAME}:"
+
+#~ msgid "Login:"
+#~ msgstr "Prihlasovacie meno:"
+
+#~ msgid "Password:"
+#~ msgstr "Heslo:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "Tip: Zabudli ste svoje prihlasovacie meno alebo heslo?  Kontaktujte "
+#~ "administrátora {PRODUCT_NAME} vašej organizácie."
+
+#~ msgid "Please enter a desired login."
+#~ msgstr "Prosím, zadajte požadované prihlasovacie meno."
+
+#~ msgid "Please enter and verify a password."
+#~ msgstr "Musíte zadať a overiť heslo."
+
+#~ msgid "Operating System Release Version"
+#~ msgstr "Verzia vydania operačného systému"
+
+#~ msgid "Operating System version:"
+#~ msgstr "Verzia operačného systému:"
+
+#~ msgid " Minor Release: "
+#~ msgstr " Vedľajšie vydanie: "
+
+#~ msgid "Limited Updates Only"
+#~ msgstr "Iba obmedzené aktualizácie"
+
+#~ msgid "All available updates"
+#~ msgstr "Dostupné aktualizácie balíčkov"
+
+#~ msgid "Confirm operating system release selection"
+#~ msgstr "Potvrďte výber vydania operačného systému"
+
+#~ msgid ""
+#~ "Your system will be subscribed to the base software channel to receive "
+#~ "all available updates."
+#~ msgstr ""
+#~ "Váš systém bude prihlásený k základnému softvérovému kanálu na prijímanie "
+#~ "všetkých dostupných aktualizácií."
+
+#~ msgid "Create Profile - Hardware"
+#~ msgstr "Pripojte Váš systém"
+
+#, python-brace-format
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Meno profilu je popisujúci názov, ktorý zvolíte na rozpoznanie tohoto "
+#~ "systémového profilu na webových stránkach {PRODUCT_NAME}. Voliteľne "
+#~ "obsahuje sériové alebo identifikačné číslo počítača."
+
+#~ msgid ""
+#~ "Additional hardware information including PCI devices, disk sizes and "
+#~ "mount points will be included in the profile."
+#~ msgstr ""
+#~ "Dodatočné hardvérové informácie vrátane PCI zariadení, veľkosti diskov a "
+#~ "prípojných bodov budú vložené do profilu."
+
+#~ msgid "Include the following information about hardware and network:"
+#~ msgstr "Vložiť následujúce informácie o hardvéri a sieti:"
+
+#~ msgid "Create Profile - Packages"
+#~ msgstr "Pripojte Váš systém"
+
+#~ msgid ""
+#~ "RPM information is important to determine what updated software packages "
+#~ "are relevant to this system."
+#~ msgstr ""
+#~ "RPM informácie sú dôležité pre určenie aktualizácii softvérových "
+#~ "balíčkov, ktoré sú významné pre tento systém."
+
+#~ msgid "Include RPM packages installed on this system in my System Profile"
+#~ msgstr ""
+#~ "Vložiť RPM balíčky nainštalované v systéme do môjho systémového profilu"
+
+#~ msgid "You may deselect individual packages by unchecking them below."
+#~ msgstr "Môžete zamietnuť jednotlivé balíčky ich odznačením nižšie."
+
+#~ msgid "Building Package List"
+#~ msgstr "Vytváram zoznam balíčkov"
+
+#~ msgid "*Email Address:"
+#~ msgstr "E-mailová adresa:"
+
+#~ msgid "System Already Registered"
+#~ msgstr "Systém je už zaregistrovaný"
+
+#~ msgid "It appears this system has already been set up for software updates:"
+#~ msgstr "Zdá sa, že tento systém už bol nastavený na aktualizácie softvéru:"
+
+#~ msgid "Are you sure you would like to continue?"
+#~ msgstr "Naozaj chcete pokračovať?"
+
+#~ msgid ""
+#~ "This system has already been registered using Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "Your system is being registered again using Red Hat Satellite or Red Hat "
+#~ "Satellite Proxy technology. Red Hat recommends that customers only "
+#~ "register once.\n"
+#~ "\n"
+#~ "To learn more about RHN Classic/Red Hat Satellite registration and "
+#~ "technologies please consult this Knowledge Base Article: https://access."
+#~ "redhat.com/kb/docs/DOC-45563"
+#~ msgstr ""
+#~ "Tento systém už bol zaregistrovaný pomocou Red Hat Subscription "
+#~ "Management.\n"
+#~ "\n"
+#~ "Váš systém sa znova registruje pomocou technológie Red Hat Satellite "
+#~ "alebo Red Hat Satellite Proxy. Red Hat odporúča, aby sa zákazníci "
+#~ "registrovali iba raz.\n"
+#~ "\n"
+#~ "Ak sa chcete dozvedieť viac o registrácii a technológiách RHN Classic/Red "
+#~ "Hat Satellite, prečítajte si tento článok z Knowledge Base: https://"
+#~ "access.redhat.com/kb/docs/DOC-45563"
+
+#, python-brace-format
+#~ msgid "Send Profile Information to {PRODUCT_NAME}"
+#~ msgstr "Odoslať informácie profilu do {PRODUCT_NAME}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "Dokončili sme zhromažďovanie informácií pre systémový profil.\n"
+#~ "\n"
+#~ "Stlačte \"Ďalej\" na odoslanie systémového profilu do {PRODUCT_NAME}.  "
+#~ "Kliknite na \"Zrušiť\" a nebudú odoslané žiadne informácie.  Registračný "
+#~ "program môžete spustiť neskôr zadaním `rhn_register` do príkazového "
+#~ "riadku."
+
+#, python-brace-format
+#~ msgid "Sending Profile to {PRODUCT_NAME}"
+#~ msgstr "Odosielanie profilu do {PRODUCT_NAME}"
+
+#~ msgid "Updates Configured"
+#~ msgstr "Aktualizácie boli nakonfigurované"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from {PRODUCT_NAME}. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the {PRODUCT_NAME} web interface. (Instructions for this are "
+#~ "in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button "
+#~ "in the main {PRODUCT_NAME} web interface.)"
+#~ msgstr ""
+#~ "Teraz môžete spustiť '%s update' z príkazového riadku tohto systému na "
+#~ "získanie najnovších aktualizácií softvéru od {PRODUCT_NAME}. Budete to "
+#~ "musieť pravidelne spúšťať, aby ste získali najnovšie aktualizácie. Alebo "
+#~ "tento systém môžete nakonfigurovať na automatické aktualizácie softvéru "
+#~ "(tiež známe ako 'auto errata update') cez webové rozhranie "
+#~ "{PRODUCT_NAME}. (Pokyny sú uvedené v referenčnej príručke {PRODUCT_NAME} "
+#~ "dostupnej prostredníctvom tlačidla 'Help' v hlavnom webovom rozhraní "
+#~ "{PRODUCT_NAME}.)"
+
+#~ msgid "Review Subscription"
+#~ msgstr "Skontrolujte predplatné"
+
+#~ msgid "Please review the subscription details below:"
+#~ msgstr "Skontrolujte podrobnosti o predplatnom nižšie:"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Inštalačné číslo %s bolo aktivované počas počiatočného pripojenia tohto "
+#~ "systému k {PRODUCT_NAME}."
+
+#~ msgid ""
+#~ "Subscriptions have been activated for the following products/services:"
+#~ msgstr "Aktivovali sa predplatné pre nasledujúce produkty/služby:"
+
+#~ msgid "Software Channel Subscriptions:"
+#~ msgstr "Predplatné softvérových kanálov:"
+
+#~ msgid ""
+#~ "This system will receive updates from the following software channels:"
+#~ msgstr ""
+#~ "Tento systém bude dostávať aktualizácie z nasledujúcich softvérových "
+#~ "kanálov:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your {PRODUCT_NAME} web interface and subscribe this "
+#~ "system to the appropriate software channels."
+#~ msgstr ""
+#~ "Upozornenie: Aktualizácie a podporu bude dostávať iba nainštalovaný "
+#~ "produkt uvedený vyššie. Ak by ste chceli dostávať aktualizácie pre ďalšie "
+#~ "produkty, prihláste sa do svojho webového rozhrania {PRODUCT_NAME} a "
+#~ "prihláste tento systém k príslušným softvérovým kanálom."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: %s is not present, could not enable it.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Upozornenie: %s nie je prítomný, nebolo možné ho povoliť.\n"
+#~ "Automatické aktualizácie nebudú fungovať."
+
+#, python-format
+#~ msgid "Note: %s has been enabled."
+#~ msgstr "Poznámka: %s bolo povolené."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: An error occurred during enabling %s.\n"
+#~ "%s is not enabled.\n"
+#~ "Automatic updates will not work."
+#~ msgstr ""
+#~ "Upozornenie: Počas povoľovania %s sa vyskytla chyba.\n"
+#~ "%s nie je povolené.\n"
+#~ "Automatické aktualizácie nebudú fungovať."
+
+#~ msgid ""
+#~ "You were unable to be subscribed to the following software channels "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "Nemohli ste byť prihlásený k nasledujúcim softvérovým kanálom, pretože vo "
+#~ "vašom účte neboli k dispozícii dostačujúce predplatné:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to subscribe to any software channels. Your system "
+#~ "will not receive any software updates to keep it secure and supported. "
+#~ "Contact your {PRODUCT_NAME} administrator about this problem. Once you "
+#~ "make the appropriate active subscriptions available in your account, you "
+#~ "may browse to this system's profile in the {PRODUCT_NAME} web interface "
+#~ "and subscribe this system to software channels via the software > "
+#~ "software channels tab."
+#~ msgstr ""
+#~ "Tento systém nebol schopný sa prihlásiť k žiadnym softvérovým kanálom. "
+#~ "Váš systém nedostane žiadne aktualizácie softvéru, aby bol zabezpečený a "
+#~ "podporovaný. Obráťte sa na svojho administrátora {PRODUCT_NAME} s týmto "
+#~ "problémom. Keď vo svojom účte sprístupníte príslušné aktívne predplatné, "
+#~ "môžete prejsť na profil tohto systému vo webovom rozhraní {PRODUCT_NAME} "
+#~ "a prihlásiť tento systém k softvérovým kanálom cez kartu softvér > "
+#~ "softvérové kanály."
+
+#~ msgid "Service Level:"
+#~ msgstr "Úroveň služieb:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Depending on what {PRODUCT_NAME} system types are associated with a "
+#~ "system, you'll enjoy different benefits. The following are the "
+#~ "{PRODUCT_NAME} system types associated with this system:"
+#~ msgstr ""
+#~ "V závislosti od toho, aké systémové typy {PRODUCT_NAME} sú so systémom "
+#~ "spojené, získate rôzne výhody. Nasledovné sú systémové typy "
+#~ "{PRODUCT_NAME} spojené s týmto systémom:"
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
+#~ "system type(s) because there were insufficient subscriptions available in "
+#~ "your account:"
+#~ msgstr ""
+#~ "Tento systém sa nemohol spojiť s nasledujúcim systémovým typom(i) "
+#~ "{PRODUCT_NAME}, pretože vo vašom účte neboli k dispozícii dostačujúce "
+#~ "predplatné:"
+
+#~ msgid ""
+#~ "Management type: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "Typ správy: automatické aktualizácie, zoskupenie systémov, povolenia "
+#~ "systémov, profilovanie systémových balíkov, zabezpečovanie bare-metal, "
+#~ "existujúci stav zabezpečovania, vrátenie vykonaných zmien, správa "
+#~ "konfigurácie"
+
+#~ msgid ""
+#~ "Virtualization type: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr ""
+#~ "Virtualizačný typ: aktualizácie softvéru pre obmedzený počet virtuálnych "
+#~ "hostí v tomto systéme."
+
+#, python-brace-format
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
+#~ "system's subscription. You will need to: (1) make a virtualization system "
+#~ "entitlement available and (2) apply that system entitlement to this "
+#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
+#~ "of this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>Upozornenie:</b> Všetky hosťovské systémy, ktoré vytvoríte v tomto "
+#~ "systéme a zaregistrujete na {PRODUCT_NAME}, budú využívať systémové "
+#~ "predplatné mimo predplatného tohto hostiteľského systému. Budete musieť: "
+#~ "(1) sprístupniť oprávnenie virtualizačného systému a (2) uplatniť toto "
+#~ "systémové oprávnenie na tento systém vo webovom rozhraní {PRODUCT_NAME}, "
+#~ "ak nechcete, aby virtuálni hostia tohto systému spotrebovávali ďalšie "
+#~ "predplatné."
+
+#, python-brace-format
+#~ msgid ""
+#~ "This system was unable to be associated with any {PRODUCT_NAME} system "
+#~ "types. This system will not receive any software updates to keep it "
+#~ "secure and supported. Contace your {PRODUCT_NAME} administrator about "
+#~ "this problem. Once you make the appropriate active subscriptions "
+#~ "available in your account, you may browse to this system's profile in the "
+#~ "{PRODUCT_NAME} web interface, delete the profile, and re-connect this "
+#~ "system to {PRODUCT_NAME}."
+#~ msgstr ""
+#~ "Tento systém sa nemohol spojiť so žiadnymi systémovými typmi "
+#~ "{PRODUCT_NAME}. Tento systém nebude dostávať žiadne aktualizácie "
+#~ "softvéru, aby bol zabezpečený a podporovaný. Obráťte sa na svojho "
+#~ "administrátora {PRODUCT_NAME} s týmto problémom. Keď vo svojom účte "
+#~ "sprístupníte príslušné aktívne predplatné, môžete prejsť na profil tohto "
+#~ "systému vo webovom rozhraní {PRODUCT_NAME}, vymazať profil a znova "
+#~ "pripojiť tento systém k {PRODUCT_NAME}."
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "Universal default activation key detected\n"
+#~ "A universal default activation key was detected in your account. This "
+#~ "means that a set of properties (software channel subscriptions, package "
+#~ "installations, system group memberships, etc.) for your system's "
+#~ "connection to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been "
+#~ "determined by the activation key rather than your installation number.  "
+#~ "You may also refer to the {PRODUCT_NAME} Reference Guide for more details "
+#~ "about activation keys. \n"
+#~ "Universal Default activation key: %s"
+#~ msgstr ""
+#~ "Bol zistený univerzálny predvolený aktivačný kľúč\n"
+#~ "Vo vašom účte bol zistený univerzálny predvolený aktivačný kľúč. To "
+#~ "znamená, že súbor vlastností (predplatné softvérových kanálov, inštalácie "
+#~ "balíkov, členstvá v systémových skupinách atď.) pre pripojenie vášho "
+#~ "systému k {PRODUCT_NAME} Server alebo {PRODUCT_NAME} Proxy boli určené "
+#~ "skôr pomocou aktivačného kľúča než podľa vášho inštalačného čísla "
+#~ "inštalácie.  Viac podrobností o aktivačných kľúčoch nájdete v referenčnej "
+#~ "príručke {PRODUCT_NAME}.\n"
+#~ "Univerzálny predvolený aktivačný kľúč: %s"
+
+#~ msgid "Fatal Error"
+#~ msgstr "Závažná chyba"
+
+#~ msgid "Warning"
+#~ msgstr "Varovanie"
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "We can't contact {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ msgstr ""
+#~ "Nemôžeme kontaktovať {PRODUCT_NAME}.\n"
+#~ "\n"
+#~ "Prekontrolujte poskytnuté umiestnenie - je '%s' správne?\n"
+#~ "Ak nie, môžete ho opraviť a skúsiť znova.\n"
+#~ "\n"
+#~ "Uistite sa, či je sieťové pripojenie na tomto systéme funkčné.\n"
+#~ "\n"
+#~ "Tento systém nebude schopný úspešne prijímať aktualizácie softvéru bez "
+#~ "pripojenia k serveru/proxy {PRODUCT_NAME}"
+
+#, python-format
+#~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
+#~ msgstr "Architektúra: %s, vydanie OS: %s, verzia OS: %s"
+
+#~ msgid ""
+#~ "This server doesn't support functionality needed by this version of the "
+#~ "software update setup client. Please try again with a newer server."
+#~ msgstr ""
+#~ "Tento server nepodporuje funkcie potrebné pre túto verziu klienta "
+#~ "nastavenia aktualizácií softvéru. Prosím. skúste to znova s novším "
+#~ "serverom."
+
+#, python-format, python-brace-format
+#~ msgid ""
+#~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the "
+#~ "{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+#~ "have provided a valid certificate file. Are you sure you have provided "
+#~ "the correct certificate, and that the certificate file has not been "
+#~ "corrupted?\n"
+#~ "\n"
+#~ "Please try again with a different certificate file."
+#~ msgstr ""
+#~ "<b><span size=\"16000\">Nekompatibilný súbor certifikátu</span></b>\n"
+#~ "\n"
+#~ "Certifikát, ktorý ste poskytli <b>%s</b>, nie je kompatibilný so serverom "
+#~ "{PRODUCT_NAME} na <b>%s</b>. Možno budete chcieť znova skontrolovať, či "
+#~ "ste poskytli platný súbor certifikátu. Ste si istí, že ste poskytli "
+#~ "správny certifikát a že súbor certifikátu nebol poškodený?\n"
+#~ "\n"
+#~ "Prosím, skúste to znova s iným súborom certifikátu."
+
+#~ msgid ""
+#~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ " The certificate is expired. Please ensure you have the correct  "
+#~ "certificate and your system time is correct."
+#~ msgstr ""
+#~ "<b><span size=\"12000\">Nekompatibilný súbor certifikátu</span></b>\n"
+#~ "\n"
+#~ " Platnosť certifikátu vypršala. Prosím, zaistite, že máte správny "
+#~ "certifikát a že je váš systémový čas správny."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
+#~ "up2date. You can either make the serverURL use http instead of https, or "
+#~ "you can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/"
+#~ "share/rhn, and ensure sslCACert points to it."
+#~ msgstr ""
+#~ "Prosím, overte hodnoty sslCACert a serverURL v /etc/sysconfig/rhn/"
+#~ "up2date. Môžete buď nastaviť, aby serverURL používal http namiesto https, "
+#~ "alebo môžete stiahnuť certifikát SSL zo svojho {PRODUCT_NAME}, umiestniť "
+#~ "ho do /usr/share/rhn a zaistiť, aby sslCACert naň ukazoval."
+
+#, python-brace-format
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the {PRODUCT_NAME} organization associated with your login. To "
+#~ "allow this system to connect, please contact your {PRODUCT_NAME} "
+#~ "organization administrator to increase the number of systems allowed to "
+#~ "connect or to disable this universal default activation key."
+#~ msgstr ""
+#~ "Problém s registráciou systému.\n"
+#~ "\n"
+#~ "Univerzálny predvolený aktivačný kľúč obmedzuje počet systémov, ktoré sa "
+#~ "môžu pripojiť k organizácii {PRODUCT_NAME} spojenej s vaším prihlasovacím "
+#~ "menom. Ak chcete povoliť pripojenie tohto systému, kontaktujte svojho "
+#~ "administrátora organizácie {PRODUCT_NAME}, aby sa zvýšil počet systémov, "
+#~ "ktoré sa môžu pripojiť, alebo zakázať tento univerzálny predvolený "
+#~ "aktivačný kľúč."
+
+#~ msgid ""
+#~ "\n"
+#~ " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ " Tip: Vedľajšie vydania s '*' sú v súčasnosti podporované Red Hat.\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Warning:You will not be able to limit this system to minor release that "
+#~ "is older than the recent minor release if you select this option.\n"
+#~ msgstr ""
+#~ "Varovanie:Ak vyberiete túto možnosť, nebudete môcť obmedziť tento systém "
+#~ "na vedľajšie vydanie, ktoré je staršie ako posledné vedľajšie vydanie.\n"
+
+#, python-format
+#~ msgid ""
+#~ "Your system will be subscribed to %s \n"
+#~ "base software channel. You will not be\n"
+#~ "able to move this system to an earlier release\n"
+#~ "(you will be able to move to a newer release).\n"
+#~ "Are you sure you would like to continue?"
+#~ msgstr ""
+#~ "Váš systém bude prihlásený k základnému \n"
+#~ "softvérovému kanálu %s. Nebudete môcť\n"
+#~ "presunúť tento systém na staršie vydanie\n"
+#~ "(budete môcť prejsť na novšie vydanie).\n"
+#~ "Naozaj chcete pokračovať?"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Error"
+#~ msgstr "Chyba"
+
+#~ msgid "Next"
+#~ msgstr "Nasledujúca"
+
+#~ msgid "Back"
+#~ msgstr "Späť"
+
+#~ msgid "Cancel"
+#~ msgstr "Zrušiť"
+
+#~ msgid "No, Cancel"
+#~ msgstr "Zrušiť"
+
+#~ msgid "Yes, Continue"
+#~ msgstr "Áno, pokračovať"
+
+#~ msgid "Press <space> to deselect the option."
+#~ msgstr "Stlačením <medzerníka> zrušíte výber možnosti."
+
+#~ msgid "Connection aborted by the user"
+#~ msgstr "Spojenie prerušené užívateľom"
+
+#~ msgid "Server has refused connection due to high load"
+#~ msgstr "Server odmietol spojenie pre príliš veľké vyťaženie"
+
+#~ msgid "Spacewalk Location:"
+#~ msgstr "Umiestnenie Spacewalk:"
+
+#~ msgid "System ID:"
+#~ msgstr "Systémové ID:"
+
+#~ msgid "The server indicated an error:\n"
+#~ msgstr "Server oznámil chybu:\n"
+
+#~ msgid "There was an error communicating with the registration server:\n"
+#~ msgstr "Vyskytla sa chyba pri komunikácii s registračným serverom:\n"
+
+#~ msgid "Profile name:"
+#~ msgstr "Meno profilu:"
+
+#~ msgid "Version: "
+#~ msgstr "Verzia: "
+
+#~ msgid "CPU model: "
+#~ msgstr "Model CPU: "
+
+#~ msgid "Hostname: "
+#~ msgstr "Meno hostiteľa: "
+
+#~ msgid "CPU speed: "
+#~ msgstr "Rýchlosť CPU: "
+
+#, python-format
+#~ msgid "%d MHz"
+#~ msgstr "%d MHz"
+
+#~ msgid "IP Address: "
+#~ msgstr "IP adresa: "
+
+#~ msgid "Memory: "
+#~ msgstr "Pamäť: "
+
+#, python-format
+#~ msgid "%s megabytes"
+#~ msgstr "%s megabajtov"
+
+#~ msgid "Problem registering system:\n"
+#~ msgstr "Problém s registráciou systému:\n"
+
+#~ msgid "Problem registering system."
+#~ msgstr "Problém s registráciou systému."
+
+#~ msgid "Problem writing out system id to disk."
+#~ msgstr "Problém pri zápise systémového id na disk."
+
+#~ msgid "Problem sending hardware profile:\n"
+#~ msgstr "Problém pri odosielaní hardvérového profilu:\n"
+
+#~ msgid "Problem sending hardware profile."
+#~ msgstr "Problém pri odosielaní hardvérového profilu."
+
+#~ msgid "Problem sending package list:\n"
+#~ msgstr "Problém pri odosielaní zoznamu balíčkov:\n"
+
+#~ msgid "Problem sending package list."
+#~ msgstr "Problém pri odosielaní zoznamu balíčkov."
+
+#, python-format
+#~ msgid ""
+#~ "Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Nebolo možné otvoriť %s\n"
+#~ "%s nie je povolené.\n"
+
+#~ msgid "Finish"
+#~ msgstr "Dokončiť"
+
+#~ msgid "You specified an invalid protocol.Only https and http are allowed."
+#~ msgstr "Zadali ste neplatný protokol. Povolené sú iba https a http."
+
+#~ msgid ""
+#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
+#~ "screen"
+#~ msgstr ""
+#~ "  <Tab>/<Alt-Tab> medzi prvkami | <Medzerník> vyberá  |  <F12> ďalšia "
+#~ "obrazovka"
+
+#, python-brace-format
+#~ msgid "You must run the {PRODUCT_NAME} registration program as root."
+#~ msgstr ""
+#~ "Registračný program {PRODUCT_NAME} musíte spúšťať ako správca systému."
+
+#~ msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+#~ msgstr ""
+#~ "Pokúšanie sa o spustenie viac ako jednej inštancie mgr_check. Ukončenie.\n"
+
+#~ msgid "Specify a profilename"
+#~ msgstr "Zadať názov profilu"
+
+#~ msgid "Specify a username"
+#~ msgstr "Zadať používateľské meno"
+
+#~ msgid "Specify a password"
+#~ msgstr "Zadať heslo"
+
+#~ msgid "Specify an organizational id for this system"
+#~ msgstr "Zadať organizačné id pre tento systém"
+
+#~ msgid "Specify a url to use as a server"
+#~ msgstr "Zadať url servera, ktorý použiť"
+
+#~ msgid "Specify a file to use as the ssl CA cert"
+#~ msgstr "Určitee súbor, ktorý sa použije ako ssl CA cert"
+
+#~ msgid "Specify an activation key"
+#~ msgstr "Zadať http proxy pre použitie"
+
+#~ msgid ""
+#~ "Subscribe this system to the EUS channel tied to the system's redhat-"
+#~ "release"
+#~ msgstr ""
+#~ "Prihlásiť tento systém ku kanálu EUS, ktorý je viazaný k systémovému "
+#~ "redhat-release"
+
+#~ msgid "[Deprecated] Read contact info from stdin"
+#~ msgstr "[Zastarané] Čítať kontaktné informácie z stdin"
+
+#~ msgid "Do not probe or upload any hardware info"
+#~ msgstr "Nezisťovať alebo neposielať žiadne informácie o hardvéri"
+
+#~ msgid "Do not profile or upload any package info"
+#~ msgstr "Nerobiť profil alebo neposielať žiadne informácie o balíkoch"
+
+#~ msgid "Do not upload any virtualization info"
+#~ msgstr "Neodosielať žiadne informácie o virtualizácii"
+
+#~ msgid "Register the system even if it is already registered"
+#~ msgstr "Registrovať systém, aj keď už je zaregistrovaný"
+
+#~ msgid "A username and password are required to register a system."
+#~ msgstr ""
+#~ "Používateľské meno a heslo sú vyžadované pre zaregistrovanie systému."
+
+#~ msgid "This system is already registered. Use --force to override"
+#~ msgstr "Tento systém už je zaregistrovaný. Použite --force pre vynútenie"
+
+#~ msgid ""
+#~ "Usage of --use-eus-channel option with --activationkey is not supported. "
+#~ "Please use username and password instead."
+#~ msgstr ""
+#~ "Použitie voľby --use-eus-channel s --activationkey nie je podporované. "
+#~ "Namiesto toho použite používateľské meno a heslo."
+
+#~ msgid "The server you are registering against does not support EUS."
+#~ msgstr "Server, do ktorého sa zaregistrujete, nepodporuje EUS."
+
+#~ msgid ""
+#~ "Warning: --contactinfo option has been deprecated. Please login to the "
+#~ "server web user Interface and update your contactinfo. "
+#~ msgstr ""
+#~ "Upozornenie: Voľba --contactinfo bola odmietnutá. Prosím, prihláste sa do "
+#~ "webového používateľského rozhrania servera a aktualizujte svoje kontaktné "
+#~ "informácie. "
+
+#, python-format
+#~ msgid "Warning: %s is not present, could not enable it."
+#~ msgstr "Upozornenie: %s nie je prítomný, nebolo možné ho povoliť."
+
+#, python-format
+#~ msgid ""
+#~ "Warning: Could not open %s\n"
+#~ "%s is not enabled.\n"
+#~ msgstr ""
+#~ "Upozornenie: Nebolo možné otvoriť %s\n"
+#~ "%s nie je povolené.\n"
+
+#~ msgid ""
+#~ "A profilename was not specified, and hostname and IP address could not be "
+#~ "determined to use as a profilename, please specify one."
+#~ msgstr ""
+#~ "Meno profilu nebolo zadané a názov počítača ani IP adresa sa nedajú "
+#~ "zistiť tak, aby mohli byť použité ako meno profilu. Prosím zadajte meno "
+#~ "profilu."
 
 #~ msgid "Finish setting up software updates"
 #~ msgstr "Ukončiť nastavenia softvérových aktualizácií"

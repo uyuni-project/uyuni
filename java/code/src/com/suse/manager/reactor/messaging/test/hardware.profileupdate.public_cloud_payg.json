@@ -1,0 +1,3796 @@
+{
+    "tag": "salt/job/20160407084101455805/ret/minionsles12-suma3pg.vagrant.local",
+    "data": {
+        "fun_args": [
+            {
+                "mods": [
+                    "hardware.profileupdate"
+                ]
+            }
+        ],
+        "jid": "20160407084101455805",
+        "return": {
+            "mgrcompat_|-network-interfaces_|-network.interfaces_|-module_run": {
+                "comment": "Module function network.interfaces executed",
+                "name": "network.interfaces",
+                "start_time": "12:58:12.398566",
+                "result": true,
+                "duration": 14.501,
+                "__run_num__": 3,
+                "changes": {
+                    "ret": {
+                        "lo": {
+                            "hwaddr": "00:00:00:00:00:00",
+                            "up": true,
+                            "inet6": [
+                                {
+                                    "prefixlen": "128",
+                                    "scope": "host",
+                                    "address": "::1"
+                                }
+                            ],
+                            "inet": [
+                                {
+                                    "broadcast": "127.255.255.255",
+                                    "netmask": "255.0.0.0",
+                                    "label": "lo",
+                                    "address": "127.0.0.1"
+                                }
+                            ],
+                            "secondary": [
+                                {
+                                    "broadcast": "127.255.255.255",
+                                    "netmask": "255.0.0.0",
+                                    "label": "lo",
+                                    "type": "inet",
+                                    "address": "127.0.0.2"
+                                }
+                            ]
+                        },
+                        "eth1": {
+                            "hwaddr": "52:54:00:eb:51:3d",
+                            "up": true,
+                            "inet": [
+                                {
+                                    "broadcast": "172.31.255.255",
+                                    "netmask": "255.240.0.0",
+                                    "label": "eth1",
+                                    "address": "172.24.108.98"
+                                }
+                            ],
+                            "inet6": [
+                                {
+                                    "prefixlen": "64",
+                                    "scope": "link",
+                                    "address": "fe80::5054:ff:fefc:19a4"
+                                }
+                            ]
+                        },
+                        "eth0": {
+                            "hwaddr": "52:54:00:af:7f:30",
+                            "up": true,
+                            "inet": [
+                                {
+                                    "broadcast": "192.168.121.255",
+                                    "netmask": "255.255.255.0",
+                                    "label": "eth0",
+                                    "address": "192.168.121.155"
+                                }
+                            ],
+                            "inet6": [
+                                {
+                                    "prefixlen": "64",
+                                    "scope": "link",
+                                    "address": "fe80::5054:ff:fed0:91"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "mgrcompat_|-network-modules_|-sumautil.get_net_modules_|-module_run": {
+                "comment": "Module function sumautil.get_net_modules executed",
+                "name": "sumautil.get_net_modules",
+                "start_time": "12:58:12.422343",
+                "result": true,
+                "duration": 0.653,
+                "__run_num__": 5,
+                "changes": {
+                    "ret": {
+                        "lo": null,
+                        "eth1": "virtio_net",
+                        "eth0": "virtio_net"
+                    }
+                }
+            },
+            "mgrcompat_|-instance-flavor_|-sumautil.instance_flavor_|-module_run": {
+                "comment": "Module function sumautil.instance_flavor executed",
+                "name": "sumautil.instance_flavor",
+                "start_time": "12:58:12.422344",
+                "result": true,
+                "duration": 0.653,
+                "__run_num__": 5,
+                "changes": {
+                    "ret": "PAYG"
+                }
+            },
+            "mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.435214",
+                "result": true,
+                "duration": 4.453,
+                "__run_num__": 8,
+                "changes": {
+                    "ret": []
+                }
+            },
+            "mgrcompat_|-smbios-records-chassis_|-smbios.records_|-module_run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.439927",
+                "result": true,
+                "duration": 4.585,
+                "__run_num__": 9,
+                "changes": {
+                    "ret": [
+                        {
+                            "data": {
+                                "boot-up_state": "Safe",
+                                "manufacturer": "QEMU",
+                                "oem_information": "0x00000000",
+                                "power_supply_state": "Safe",
+                                "thermal_state": "Safe",
+                                "type": "Other",
+                                "version": "pc-i440fx-2.1"
+                            },
+                            "description": "Chassis Information",
+                            "handle": "0x0300",
+                            "type": 3
+                        }
+                    ]
+                }
+            },
+            "mgrcompat_|-cpuinfo_|-status.cpuinfo_|-module_run": {
+                "comment": "Module function status.cpuinfo executed",
+                "name": "status.cpuinfo",
+                "start_time": "12:58:12.371860",
+                "result": true,
+                "duration": 2.123,
+                "__run_num__": 1,
+                "changes": {
+                    "ret": {
+                        "power management": "",
+                        "model": "42",
+                        "cpu family": "6",
+                        "model name": "Intel Xeon E312xx (Sandy Bridge)",
+                        "vendor_id": "GenuineIntel",
+                        "bogomips": "6984.32",
+                        "fpu": "yes",
+                        "fpu_exception": "yes",
+                        "wp": "yes",
+                        "flags": [
+                            "fpu",
+                            "vme",
+                            "de",
+                            "pse",
+                            "tsc",
+                            "msr",
+                            "pae",
+                            "mce",
+                            "cx8",
+                            "apic",
+                            "sep",
+                            "mtrr",
+                            "pge",
+                            "mca",
+                            "cmov",
+                            "pat",
+                            "pse36",
+                            "clflush",
+                            "mmx",
+                            "fxsr",
+                            "sse",
+                            "sse2",
+                            "ss",
+                            "syscall",
+                            "nx",
+                            "pdpe1gb",
+                            "rdtscp",
+                            "lm",
+                            "constant_tsc",
+                            "rep_good",
+                            "nopl",
+                            "eagerfpu",
+                            "pni",
+                            "pclmulqdq",
+                            "vmx",
+                            "ssse3",
+                            "fma",
+                            "cx16",
+                            "pcid",
+                            "sse4_1",
+                            "sse4_2",
+                            "x2apic",
+                            "movbe",
+                            "popcnt",
+                            "tsc_deadline_timer",
+                            "aes",
+                            "xsave",
+                            "avx",
+                            "f16c",
+                            "rdrand",
+                            "hypervisor",
+                            "lahf_lm",
+                            "abm",
+                            "xsaveopt",
+                            "vnmi",
+                            "ept",
+                            "fsgsbase",
+                            "bmi1",
+                            "avx2",
+                            "smep",
+                            "bmi2",
+                            "erms",
+                            "invpcid"
+                        ],
+                        "clflush size": "64",
+                        "stepping": "1",
+                        "cache_alignment": "64",
+                        "cpuid level": "13",
+                        "microcode": "0x1",
+                        "address sizes": "40 bits physical, 48 bits virtual",
+                        "processor": "0",
+                        "cpu MHz": "3492.164",
+                        "cache size": "4096 KB"
+                    }
+                }
+            },
+            "mgrcompat_|-smbios-records-bios_|-smbios.records_|-module_run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.423499",
+                "result": true,
+                "duration": 6.668,
+                "__run_num__": 6,
+                "changes": {
+                    "ret": [{
+                        "data": {
+                            "address": "0xE8000",
+                            "characteristics": [
+                                "BIOS characteristics not supported",
+                                "Targeted content distribution is supported"
+                            ],
+                            "release_date": "04/01/2014",
+                            "rom_size": "64 kB",
+                            "runtime_size": "96 kB",
+                            "vendor": "SeaBIOS",
+                            "version": "rel-1.7.5-0-ge51488c-20150524_160643-cloud127"
+                        },
+                        "description": "BIOS Information",
+                        "handle": "0x0000",
+                        "type": 0
+                    }]
+                }
+            },
+            "mgrcompat_|-udev_|-udev.exportdb_|-module_run": {
+                "comment": "Module function udev.exportdb executed",
+                "name": "udev.exportdb",
+                "start_time": "12:58:12.374296",
+                "result": true,
+                "duration": 23.922,
+                "__run_num__": 2,
+                "changes": {
+                    "ret": [
+                        {
+                            "P": "/devices/LNXSYSTM:00",
+                            "E": {
+                                "MODALIAS": "acpi:LNXSYSTM:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/LNXPWRBN:00",
+                            "E": {
+                                "MODALIAS": "acpi:LNXPWRBN:",
+                                "SUBSYSTEM": "acpi",
+                                "DRIVER": "button",
+                                "DEVPATH": "/devices/LNXSYSTM:00/LNXPWRBN:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/LNXPWRBN:00/input/input3",
+                            "E": {
+                                "SUBSYSTEM": "input",
+                                "PRODUCT": "19/0/1/0",
+                                "PHYS": "\"LNXPWRBN/button/input0\"",
+                                "NAME": "\"Power Button\"",
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/LNXSYSTM:00/LNXPWRBN:00/input/input3",
+                                "MODALIAS": "input:b0019v0000p0001e0000-e0,1,k74,ramlsfw",
+                                "ID_PATH_TAG": "acpi-LNXPWRBN_00",
+                                "TAGS": ":seat:",
+                                "PROP": 0,
+                                "ID_FOR_SEAT": "input-acpi-LNXPWRBN_00",
+                                "KEY": "10000000000000 0",
+                                "USEC_INITIALIZED": 41134,
+                                "ID_PATH": "acpi-LNXPWRBN:00",
+                                "EV": 3,
+                                "ID_INPUT_KEY": 1
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/LNXPWRBN:00/input/input3/event1",
+                            "E": {
+                                "SUBSYSTEM": "input",
+                                "MAJOR": 13,
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/LNXSYSTM:00/LNXPWRBN:00/input/input3/event1",
+                                "ID_PATH_TAG": "acpi-LNXPWRBN_00",
+                                "DEVNAME": "/dev/input/event1",
+                                "TAGS": ":power-switch:",
+                                "MINOR": 65,
+                                "USEC_INITIALIZED": 41326,
+                                "ID_PATH": "acpi-LNXPWRBN:00",
+                                "ID_INPUT_KEY": 1
+                            },
+                            "N": "input/event1"
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/LNXCPU:00",
+                            "E": {
+                                "MODALIAS": "acpi:LNXCPU:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/LNXCPU:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0103:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0103:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0103:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0A03:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/PNP0A06:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0A06:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/PNP0A06:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:01",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:01"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/APP0001:00",
+                            "E": {
+                                "MODALIAS": "acpi:APP0001:",
+                                "SUBSYSTEM": "acpi",
+                                "ID_VENDOR_FROM_DATABASE": "Apple Computer Inc",
+                                "USEC_INITIALIZED": 4001,
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/APP0001:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0303:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0303:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0303:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0400:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0400:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0400:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0501:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0501:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0501:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0501:01",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0501:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0501:01"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0700:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0700:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0700:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0B00:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0B00:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0B00:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0F13:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0F13:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/PNP0F13:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/QEMU0001:00",
+                            "E": {
+                                "MODALIAS": "acpi:QEMU0001:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:02/QEMU0001:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:03",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:03"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:04",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:04"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:05",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:05"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:06",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:06"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:07",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:07"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:08",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:08"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:09",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:09"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0a",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0a"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0b",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0b"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0c",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0c"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0d",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0d"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0e",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0e"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0f",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:0f"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:10",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:10"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:11",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:11"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:12",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:12"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:13",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:13"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:14",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:14"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:15",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:15"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:16",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:16"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:17",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:17"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:18",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:18"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:19",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:19"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1a",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1a"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1b",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1b"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1c",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1c"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1d",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1d"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1e",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1e"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1f",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:1f"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:20",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:20"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:21",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A03:00/device:21"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0A06:01",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0A06:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0A06:01"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0C0F:00",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0C0F:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0C0F:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0C0F:01",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0C0F:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0C0F:01"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0C0F:02",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0C0F:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0C0F:02"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0C0F:03",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0C0F:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0C0F:03"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:00/PNP0C0F:04",
+                            "E": {
+                                "MODALIAS": "acpi:PNP0C0F:",
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:00/PNP0C0F:04"
+                            }
+                        },
+                        {
+                            "P": "/devices/LNXSYSTM:00/device:22",
+                            "E": {
+                                "SUBSYSTEM": "acpi",
+                                "DEVPATH": "/devices/LNXSYSTM:00/device:22"
+                            }
+                        },
+                        {
+                            "P": "/devices/breakpoint",
+                            "E": {
+                                "SUBSYSTEM": "event_source",
+                                "DEVPATH": "/devices/breakpoint"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:00.0",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Intel Corporation",
+                                "PCI_CLASS": 60000,
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "Host bridge",
+                                "MODALIAS": "pci:v00008086d00001237sv00001AF4sd00001100bc06sc00i00",
+                                "ID_MODEL_FROM_DATABASE": "440FX - 82441FX PMC [Natoma] (Qemu virtual machine)",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:00.0",
+                                "PCI_ID": "8086:1237",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Bridge",
+                                "PCI_SUBSYS_ID": "1AF4:1100",
+                                "USEC_INITIALIZED": 894595,
+                                "PCI_SLOT_NAME": "0000:00:00.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.0",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Intel Corporation",
+                                "PCI_CLASS": 60100,
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "ISA bridge",
+                                "MODALIAS": "pci:v00008086d00007000sv00001AF4sd00001100bc06sc01i00",
+                                "ID_MODEL_FROM_DATABASE": "82371SB PIIX3 ISA [Natoma/Triton II] (Qemu virtual machine)",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.0",
+                                "PCI_ID": "8086:7000",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Bridge",
+                                "PCI_SUBSYS_ID": "1AF4:1100",
+                                "USEC_INITIALIZED": 894680,
+                                "PCI_SLOT_NAME": "0000:00:01.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Intel Corporation",
+                                "PCI_CLASS": 10180,
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "IDE interface",
+                                "MODALIAS": "pci:v00008086d00007010sv00001AF4sd00001100bc01sc01i80",
+                                "ID_MODEL_FROM_DATABASE": "82371SB PIIX3 IDE [Natoma/Triton II] (Qemu virtual machine)",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1",
+                                "DRIVER": "ata_piix",
+                                "PCI_ID": "8086:7010",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Mass storage controller",
+                                "PCI_SUBSYS_ID": "1AF4:1100",
+                                "USEC_INITIALIZED": 894770,
+                                "PCI_SLOT_NAME": "0000:00:01.1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata1/ata_port/ata1",
+                            "E": {
+                                "SUBSYSTEM": "ata_port",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/ata_port/ata1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata1/host0",
+                            "E": {
+                                "SUBSYSTEM": "scsi",
+                                "DEVTYPE": "scsi_host",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/host0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata1/host0/scsi_host/host0",
+                            "E": {
+                                "SUBSYSTEM": "scsi_host",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/host0/scsi_host/host0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata1/link1/ata_link/link1",
+                            "E": {
+                                "SUBSYSTEM": "ata_link",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/link1/ata_link/link1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata1/link1/dev1.0/ata_device/dev1.0",
+                            "E": {
+                                "SUBSYSTEM": "ata_device",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/link1/dev1.0/ata_device/dev1.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata1/link1/dev1.1/ata_device/dev1.1",
+                            "E": {
+                                "SUBSYSTEM": "ata_device",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/link1/dev1.1/ata_device/dev1.1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata2/ata_port/ata2",
+                            "E": {
+                                "SUBSYSTEM": "ata_port",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata2/ata_port/ata2"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata2/host1",
+                            "E": {
+                                "SUBSYSTEM": "scsi",
+                                "DEVTYPE": "scsi_host",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata2/host1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata2/host1/scsi_host/host1",
+                            "E": {
+                                "SUBSYSTEM": "scsi_host",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata2/host1/scsi_host/host1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata2/link2/ata_link/link2",
+                            "E": {
+                                "SUBSYSTEM": "ata_link",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata2/link2/ata_link/link2"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata2/link2/dev2.0/ata_device/dev2.0",
+                            "E": {
+                                "SUBSYSTEM": "ata_device",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata2/link2/dev2.0/ata_device/dev2.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.1/ata2/link2/dev2.1/ata_device/dev2.1",
+                            "E": {
+                                "SUBSYSTEM": "ata_device",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata2/link2/dev2.1/ata_device/dev2.1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.2",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Intel Corporation",
+                                "PCI_CLASS": "C0300",
+                                "ID_PCI_INTERFACE_FROM_DATABASE": "UHCI",
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "USB controller",
+                                "MODALIAS": "pci:v00008086d00007020sv00001AF4sd00001100bc0Csc03i00",
+                                "ID_MODEL_FROM_DATABASE": "82371SB PIIX3 USB [Natoma/Triton II] (QEMU Virtual Machine)",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.2",
+                                "DRIVER": "uhci_hcd",
+                                "PCI_ID": "8086:7020",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Serial bus controller",
+                                "PCI_SUBSYS_ID": "1AF4:1100",
+                                "USEC_INITIALIZED": 894849,
+                                "PCI_SLOT_NAME": "0000:00:01.2"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.2/usb1",
+                            "E": {
+                                "ID_VENDOR_ID": "1d6b",
+                                "DEVNUM": 1,
+                                "ID_VENDOR_FROM_DATABASE": "Linux Foundation",
+                                "ID_MODEL_FROM_DATABASE": "1.1 root hub",
+                                "ID_REVISION": 312,
+                                "ID_MODEL_ID": 1,
+                                "ID_PATH": "pci-0000:00:01.2",
+                                "ID_VENDOR": "Linux_3.12.53-60.30-default_uhci_hcd",
+                                "ID_SERIAL": "Linux_3.12.53-60.30-default_uhci_hcd_UHCI_Host_Controller_0000:00:01.2",
+                                "DEVTYPE": "usb_device",
+                                "ID_FOR_SEAT": "usb-pci-0000_00_01_2",
+                                "MINOR": 0,
+                                "USEC_INITIALIZED": 78783,
+                                "ID_VENDOR_ENC": "Linux\\x203.12.53-60.30-default\\x20uhci_hcd",
+                                "BUSNUM": 1,
+                                "TAGS": ":seat:",
+                                "ID_MODEL": "UHCI_Host_Controller",
+                                "DRIVER": "usb",
+                                "MAJOR": 189,
+                                "ID_USB_INTERFACES": ":090000:",
+                                "ID_BUS": "usb",
+                                "SUBSYSTEM": "usb",
+                                "ID_SERIAL_SHORT": "0000:00:01.2",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.2/usb1",
+                                "ID_PATH_TAG": "pci-0000_00_01_2",
+                                "DEVNAME": "/dev/bus/usb/001/001",
+                                "PRODUCT": "1d6b/1/312",
+                                "ID_MODEL_ENC": "UHCI\\x20Host\\x20Controller",
+                                "TYPE": "9/0/0"
+                            },
+                            "N": "bus/usb/001/001"
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.2/usb1/1-0:1.0",
+                            "E": {
+                                "SUBSYSTEM": "usb",
+                                "ID_VENDOR_FROM_DATABASE": "Linux Foundation",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.2/usb1/1-0:1.0",
+                                "MODALIAS": "usb:v1D6Bp0001d0312dc09dsc00dp00ic09isc00ip00in00",
+                                "ID_MODEL_FROM_DATABASE": "1.1 root hub",
+                                "USEC_INITIALIZED": 79306,
+                                "DRIVER": "hub",
+                                "PRODUCT": "1d6b/1/312",
+                                "ID_USB_CLASS_FROM_DATABASE": "Hub",
+                                "DEVTYPE": "usb_interface",
+                                "ID_USB_PROTOCOL_FROM_DATABASE": "Full speed (or root) hub",
+                                "INTERFACE": "9/0/0",
+                                "TYPE": "9/0/0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.3",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Intel Corporation",
+                                "PCI_CLASS": 68000,
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "Bridge",
+                                "MODALIAS": "pci:v00008086d00007113sv00001AF4sd00001100bc06sc80i00",
+                                "ID_MODEL_FROM_DATABASE": "82371AB/EB/MB PIIX4 ACPI (Qemu virtual machine)",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.3",
+                                "DRIVER": "piix4_smbus",
+                                "PCI_ID": "8086:7113",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Bridge",
+                                "PCI_SUBSYS_ID": "1AF4:1100",
+                                "USEC_INITIALIZED": 895708,
+                                "PCI_SLOT_NAME": "0000:00:01.3"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:01.3/i2c-0",
+                            "E": {
+                                "SUBSYSTEM": "i2c",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:01.3/i2c-0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:02.0",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Cirrus Logic",
+                                "PCI_CLASS": 30000,
+                                "ID_PCI_INTERFACE_FROM_DATABASE": "VGA controller",
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "VGA compatible controller",
+                                "MODALIAS": "pci:v00001013d000000B8sv00001AF4sd00001100bc03sc00i00",
+                                "ID_MODEL_FROM_DATABASE": "GD 5446 (QEMU Virtual Machine)",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:02.0",
+                                "PCI_ID": "1013:00B8",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Display controller",
+                                "PCI_SUBSYS_ID": "1AF4:1100",
+                                "USEC_INITIALIZED": 895789,
+                                "PCI_SLOT_NAME": "0000:00:02.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:03.0",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Red Hat, Inc",
+                                "PCI_CLASS": 10000,
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "SCSI storage controller",
+                                "MODALIAS": "pci:v00001AF4d00001001sv00001AF4sd00000002bc01sc00i00",
+                                "ID_MODEL_FROM_DATABASE": "Virtio block device",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:03.0",
+                                "DRIVER": "virtio-pci",
+                                "PCI_ID": "1AF4:1001",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Mass storage controller",
+                                "PCI_SUBSYS_ID": "1AF4:0002",
+                                "USEC_INITIALIZED": 895862,
+                                "PCI_SLOT_NAME": "0000:00:03.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:03.0/virtio0",
+                            "E": {
+                                "MODALIAS": "virtio:d00000002v00001AF4",
+                                "SUBSYSTEM": "virtio",
+                                "DRIVER": "virtio_blk",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:03.0/virtio0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:03.0/virtio0/block/vda",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "ID_PART_TABLE_TYPE": "dos",
+                                "MAJOR": 254,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/vda",
+                                "ID_PART_TABLE_UUID": "a518198a",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:03.0/virtio0/block/vda",
+                                "USEC_INITIALIZED": 68132,
+                                "MINOR": 0
+                            },
+                            "N": "vda"
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:03.0/virtio0/block/vda/vda1",
+                            "S": [
+                                "disk/by-label/ROOT",
+                                "disk/by-uuid/b4a1345a-2aa1-4845-a98d-6b5661f55804",
+                                "root"
+                            ],
+                            "E": {
+                                "ID_PART_ENTRY_DISK": "254:0",
+                                "ID_PART_ENTRY_UUID": "a518198a-01",
+                                "ID_FS_VERSION": 1.0,
+                                "ID_PART_ENTRY_FLAGS": "0x80",
+                                "ID_PART_ENTRY_TYPE": "0x83",
+                                "ID_FS_LABEL_ENC": "ROOT",
+                                "DEVTYPE": "partition",
+                                "ID_PART_TABLE_UUID": "a518198a",
+                                "ID_PART_ENTRY_SIZE": 209713152,
+                                "ID_FS_UUID": "b4a1345a-2aa1-4845-a98d-6b5661f55804",
+                                "USEC_INITIALIZED": 68144,
+                                "ID_FS_UUID_ENC": "b4a1345a-2aa1-4845-a98d-6b5661f55804",
+                                "ID_FS_TYPE": "ext4",
+                                "DEVLINKS": "/dev/disk/by-label/ROOT /dev/disk/by-uuid/b4a1345a-2aa1-4845-a98d-6b5661f55804 /dev/root",
+                                "ID_PART_TABLE_TYPE": "dos",
+                                "TAGS": ":systemd:",
+                                "ID_FS_LABEL": "ROOT",
+                                "ID_FS_USAGE": "filesystem",
+                                "MINOR": 1,
+                                "SUBSYSTEM": "block",
+                                "ID_PART_ENTRY_NUMBER": 1,
+                                "MAJOR": 254,
+                                "ID_PART_ENTRY_SCHEME": "dos",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:03.0/virtio0/block/vda/vda1",
+                                "DEVNAME": "/dev/vda1",
+                                "ID_SCSI": 1,
+                                "ID_PART_ENTRY_OFFSET": 2048
+                            },
+                            "N": "vda1"
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:04.0",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Red Hat, Inc",
+                                "PCI_CLASS": "FF00",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:04.0",
+                                "MODALIAS": "pci:v00001AF4d00001002sv00001AF4sd00000005bc00scFFi00",
+                                "ID_MODEL_FROM_DATABASE": "Virtio memory balloon",
+                                "PCI_SUBSYS_ID": "1AF4:0005",
+                                "DRIVER": "virtio-pci",
+                                "PCI_ID": "1AF4:1002",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Unclassified device",
+                                "USEC_INITIALIZED": 895961,
+                                "PCI_SLOT_NAME": "0000:00:04.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:04.0/virtio1",
+                            "E": {
+                                "MODALIAS": "virtio:d00000005v00001AF4",
+                                "SUBSYSTEM": "virtio",
+                                "DRIVER": "virtio_balloon",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:04.0/virtio1"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:05.0",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Red Hat, Inc",
+                                "PCI_CLASS": 20000,
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "Ethernet controller",
+                                "MODALIAS": "pci:v00001AF4d00001000sv00001AF4sd00000001bc02sc00i00",
+                                "ID_MODEL_FROM_DATABASE": "Virtio network device",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:05.0",
+                                "DRIVER": "virtio-pci",
+                                "PCI_ID": "1AF4:1000",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Network controller",
+                                "PCI_SUBSYS_ID": "1AF4:0001",
+                                "USEC_INITIALIZED": 896069,
+                                "PCI_SLOT_NAME": "0000:00:05.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:05.0/virtio2",
+                            "E": {
+                                "MODALIAS": "virtio:d00000001v00001AF4",
+                                "SUBSYSTEM": "virtio",
+                                "DRIVER": "virtio_net",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:05.0/virtio2"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:05.0/virtio2/net/eth0",
+                            "E": {
+                                "ID_VENDOR_ID": "0x1af4",
+                                "SUBSYSTEM": "net",
+                                "ID_VENDOR_FROM_DATABASE": "Red Hat, Inc",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:05.0/virtio2/net/eth0",
+                                "ID_NET_NAME_MAC": "enx5254009617eb",
+                                "SYSTEMD_ALIAS": "/sys/subsystem/net/devices/eth0",
+                                "ID_MODEL_FROM_DATABASE": "Virtio network device",
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "Ethernet controller",
+                                "TAGS": ":systemd:",
+                                "ID_MODEL_ID": "0x1000",
+                                "ID_PATH": "pci-0000:00:05.0",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Network controller",
+                                "ID_PATH_TAG": "pci-0000_00_05_0",
+                                "INTERFACE": "eth0",
+                                "ID_NET_DRIVER": "virtio_net",
+                                "IFINDEX": 2,
+                                "ID_NET_LINK_FILE": "/usr/lib/systemd/network/99-default.link",
+                                "USEC_INITIALIZED": 43922,
+                                "ID_BUS": "pci"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:06.0",
+                            "E": {
+                                "SUBSYSTEM": "pci",
+                                "ID_VENDOR_FROM_DATABASE": "Red Hat, Inc",
+                                "PCI_CLASS": 20000,
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "Ethernet controller",
+                                "MODALIAS": "pci:v00001AF4d00001000sv00001AF4sd00000001bc02sc00i00",
+                                "ID_MODEL_FROM_DATABASE": "Virtio network device",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:06.0",
+                                "DRIVER": "virtio-pci",
+                                "PCI_ID": "1AF4:1000",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Network controller",
+                                "PCI_SUBSYS_ID": "1AF4:0001",
+                                "USEC_INITIALIZED": 896162,
+                                "PCI_SLOT_NAME": "0000:00:06.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:06.0/virtio3",
+                            "E": {
+                                "MODALIAS": "virtio:d00000001v00001AF4",
+                                "SUBSYSTEM": "virtio",
+                                "DRIVER": "virtio_net",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:06.0/virtio3"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/0000:00:06.0/virtio3/net/eth1",
+                            "E": {
+                                "ID_VENDOR_ID": "0x1af4",
+                                "SUBSYSTEM": "net",
+                                "ID_VENDOR_FROM_DATABASE": "Red Hat, Inc",
+                                "DEVPATH": "/devices/pci0000:00/0000:00:06.0/virtio3/net/eth1",
+                                "ID_NET_NAME_MAC": "enx52540073b7a8",
+                                "SYSTEMD_ALIAS": "/sys/subsystem/net/devices/eth1",
+                                "ID_MODEL_FROM_DATABASE": "Virtio network device",
+                                "ID_PCI_SUBCLASS_FROM_DATABASE": "Ethernet controller",
+                                "TAGS": ":systemd:",
+                                "ID_MODEL_ID": "0x1000",
+                                "ID_PATH": "pci-0000:00:06.0",
+                                "ID_PCI_CLASS_FROM_DATABASE": "Network controller",
+                                "ID_PATH_TAG": "pci-0000_00_06_0",
+                                "INTERFACE": "eth1",
+                                "ID_NET_DRIVER": "virtio_net",
+                                "IFINDEX": 3,
+                                "ID_NET_LINK_FILE": "/usr/lib/systemd/network/99-default.link",
+                                "USEC_INITIALIZED": 45163,
+                                "ID_BUS": "pci"
+                            }
+                        },
+                        {
+                            "P": "/devices/pci0000:00/pci_bus/0000:00",
+                            "E": {
+                                "SUBSYSTEM": "pci_bus",
+                                "DEVPATH": "/devices/pci0000:00/pci_bus/0000:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/alarmtimer",
+                            "E": {
+                                "MODALIAS": "platform:alarmtimer",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "alarmtimer",
+                                "DEVPATH": "/devices/platform/alarmtimer"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/efi-framebuffer.0",
+                            "E": {
+                                "MODALIAS": "platform:efi-framebuffer",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "efi-framebuffer",
+                                "DEVPATH": "/devices/platform/efi-framebuffer.0"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/efi-framebuffer.0/graphics/fb0",
+                            "E": {
+                                "SUBSYSTEM": "graphics",
+                                "MAJOR": 29,
+                                "TAGS": ":master-of-seat:seat:",
+                                "ID_PATH_TAG": "platform-efi-framebuffer_0",
+                                "DEVNAME": "/dev/fb0",
+                                "ID_FOR_SEAT": "graphics-platform-efi-framebuffer_0",
+                                "DEVPATH": "/devices/platform/efi-framebuffer.0/graphics/fb0",
+                                "USEC_INITIALIZED": 6515,
+                                "ID_PATH": "platform-efi-framebuffer.0",
+                                "MINOR": 0
+                            },
+                            "N": "fb0"
+                        },
+                        {
+                            "P": "/devices/platform/i8042",
+                            "E": {
+                                "MODALIAS": "platform:i8042",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "i8042",
+                                "DEVPATH": "/devices/platform/i8042"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/i8042/serio0",
+                            "E": {
+                                "SUBSYSTEM": "serio",
+                                "DEVPATH": "/devices/platform/i8042/serio0",
+                                "MODALIAS": "serio:ty06pr00id00ex00",
+                                "SERIO_EXTRA": 0,
+                                "SERIO_FIRMWARE_ID": "PNP: PNP0303",
+                                "DRIVER": "atkbd",
+                                "SERIO_PROTO": 0,
+                                "SERIO_TYPE": 6,
+                                "SERIO_ID": 0
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/i8042/serio0/input/input0",
+                            "E": {
+                                "SUBSYSTEM": "input",
+                                "PRODUCT": "11/1/1/ab41",
+                                "EV": 120013,
+                                "LED": 7,
+                                "NAME": "\"AT Translated Set 2 keyboard\"",
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/platform/i8042/serio0/input/input0",
+                                "MODALIAS": "input:b0011v0001p0001eAB41-e0,1,4,11,14,k71,72,73,74,75,76,77,79,7A,7B,7C,7D,7E,7F,80,8C,8E,8F,9B,9C,9D,9E,9F,A3,A4,A5,A6,AC,AD,B7,B8,B9,D9,E2,ram4,l0,1,2,sfw",
+                                "ID_PATH_TAG": "platform-i8042-serio-0",
+                                "ID_SERIAL": "noserial",
+                                "TAGS": ":seat:",
+                                "PROP": 0,
+                                "ID_FOR_SEAT": "input-platform-i8042-serio-0",
+                                "KEY": "402000000 3803078f800d001 feffffdfffefffff fffffffffffffffe",
+                                "USEC_INITIALIZED": 6645,
+                                "ID_PATH": "platform-i8042-serio-0",
+                                "PHYS": "\"isa0060/serio0/input0\"",
+                                "ID_INPUT_KEYBOARD": 1,
+                                "MSC": 10,
+                                "ID_INPUT_KEY": 1
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/i8042/serio0/input/input0/event0",
+                            "S": "input/by-path/platform-i8042-serio-0-event-kbd",
+                            "E": {
+                                "DEVLINKS": "/dev/input/by-path/platform-i8042-serio-0-event-kbd",
+                                "SUBSYSTEM": "input",
+                                "MAJOR": 13,
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/platform/i8042/serio0/input/input0/event0",
+                                "ID_PATH_TAG": "platform-i8042-serio-0",
+                                "DEVNAME": "/dev/input/event0",
+                                "MINOR": 64,
+                                "USEC_INITIALIZED": 6657,
+                                "ID_PATH": "platform-i8042-serio-0",
+                                "ID_INPUT_KEYBOARD": 1,
+                                "ID_SERIAL": "noserial",
+                                "ID_INPUT_KEY": 1
+                            },
+                            "N": "input/event0"
+                        },
+                        {
+                            "P": "/devices/platform/i8042/serio1",
+                            "E": {
+                                "SUBSYSTEM": "serio",
+                                "DEVPATH": "/devices/platform/i8042/serio1",
+                                "MODALIAS": "serio:ty01pr00id00ex00",
+                                "SERIO_EXTRA": 0,
+                                "SERIO_FIRMWARE_ID": "PNP: PNP0f13",
+                                "DRIVER": "psmouse",
+                                "SERIO_PROTO": 0,
+                                "SERIO_TYPE": 1,
+                                "SERIO_ID": 0
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/i8042/serio1/input/input2",
+                            "E": {
+                                "SUBSYSTEM": "input",
+                                "PRODUCT": "11/2/6/0",
+                                "PHYS": "\"isa0060/serio1/input0\"",
+                                "NAME": "\"ImExPS/2 Generic Explorer Mouse\"",
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/platform/i8042/serio1/input/input2",
+                                "MODALIAS": "input:b0011v0002p0006e0000-e0,1,2,k110,111,112,113,114,r0,1,6,8,amlsfw",
+                                "ID_PATH_TAG": "platform-i8042-serio-1",
+                                "ID_SERIAL": "noserial",
+                                "PROP": 0,
+                                "ID_INPUT_MOUSE": 1,
+                                "ID_FOR_SEAT": "input-platform-i8042-serio-1",
+                                "KEY": "1f0000 0 0 0 0",
+                                "REL": 143,
+                                "ID_PATH": "platform-i8042-serio-1",
+                                "EV": 7,
+                                "USEC_INITIALIZED": 35794,
+                                "TAGS": ":seat:"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/i8042/serio1/input/input2/event2",
+                            "S": "input/by-path/platform-i8042-serio-1-event-mouse",
+                            "E": {
+                                "DEVLINKS": "/dev/input/by-path/platform-i8042-serio-1-event-mouse",
+                                "SUBSYSTEM": "input",
+                                "MAJOR": 13,
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/platform/i8042/serio1/input/input2/event2",
+                                "ID_PATH_TAG": "platform-i8042-serio-1",
+                                "DEVNAME": "/dev/input/event2",
+                                "ID_INPUT_MOUSE": 1,
+                                "USEC_INITIALIZED": 37287,
+                                "ID_PATH": "platform-i8042-serio-1",
+                                "ID_SERIAL": "noserial",
+                                "MINOR": 66
+                            },
+                            "N": "input/event2"
+                        },
+                        {
+                            "P": "/devices/platform/i8042/serio1/input/input2/mouse0",
+                            "S": "input/by-path/platform-i8042-serio-1-mouse",
+                            "E": {
+                                "DEVLINKS": "/dev/input/by-path/platform-i8042-serio-1-mouse",
+                                "SUBSYSTEM": "input",
+                                "MAJOR": 13,
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/platform/i8042/serio1/input/input2/mouse0",
+                                "ID_PATH_TAG": "platform-i8042-serio-1",
+                                "DEVNAME": "/dev/input/mouse0",
+                                "ID_INPUT_MOUSE": 1,
+                                "USEC_INITIALIZED": 36623,
+                                "ID_PATH": "platform-i8042-serio-1",
+                                "ID_SERIAL": "noserial",
+                                "MINOR": 32
+                            },
+                            "N": "input/mouse0"
+                        },
+                        {
+                            "P": "/devices/platform/microcode",
+                            "E": {
+                                "MODALIAS": "platform:microcode",
+                                "SUBSYSTEM": "platform",
+                                "DEVPATH": "/devices/platform/microcode"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/pcspkr",
+                            "E": {
+                                "MODALIAS": "platform:pcspkr",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "pcspkr",
+                                "DEVPATH": "/devices/platform/pcspkr"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/pcspkr/input/input4",
+                            "E": {
+                                "SUBSYSTEM": "input",
+                                "PRODUCT": "10/1f/1/100",
+                                "PHYS": "\"isa0061/input0\"",
+                                "NAME": "\"PC Speaker\"",
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/platform/pcspkr/input/input4",
+                                "MODALIAS": "input:b0010v001Fp0001e0100-e0,12,kramls1,2,fw",
+                                "ID_PATH_TAG": "platform-pcspkr",
+                                "ID_SERIAL": "noserial",
+                                "SND": 6,
+                                "PROP": 0,
+                                "ID_FOR_SEAT": "input-platform-pcspkr",
+                                "USEC_INITIALIZED": 8357,
+                                "ID_PATH": "platform-pcspkr",
+                                "EV": 40001,
+                                "TAGS": ":seat:"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/pcspkr/input/input4/event3",
+                            "S": "input/by-path/platform-pcspkr-event-spkr",
+                            "E": {
+                                "DEVLINKS": "/dev/input/by-path/platform-pcspkr-event-spkr",
+                                "SUBSYSTEM": "input",
+                                "MAJOR": 13,
+                                "ID_INPUT": 1,
+                                "DEVPATH": "/devices/platform/pcspkr/input/input4/event3",
+                                "ID_PATH_TAG": "platform-pcspkr",
+                                "DEVNAME": "/dev/input/event3",
+                                "USEC_INITIALIZED": 44285,
+                                "ID_PATH": "platform-pcspkr",
+                                "ID_SERIAL": "noserial",
+                                "MINOR": 67
+                            },
+                            "N": "input/event3"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250",
+                            "E": {
+                                "MODALIAS": "platform:serial8250",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "serial8250",
+                                "DEVPATH": "/devices/platform/serial8250"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS1",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS1",
+                                "DEVNAME": "/dev/ttyS1",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 6947,
+                                "MINOR": 65
+                            },
+                            "N": "ttyS1"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS10",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS10",
+                                "DEVNAME": "/dev/ttyS10",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 6962,
+                                "MINOR": 74
+                            },
+                            "N": "ttyS10"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS11",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS11",
+                                "DEVNAME": "/dev/ttyS11",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 6971,
+                                "MINOR": 75
+                            },
+                            "N": "ttyS11"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS12",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS12",
+                                "DEVNAME": "/dev/ttyS12",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 6979,
+                                "MINOR": 76
+                            },
+                            "N": "ttyS12"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS13",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS13",
+                                "DEVNAME": "/dev/ttyS13",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 6985,
+                                "MINOR": 77
+                            },
+                            "N": "ttyS13"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS14",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS14",
+                                "DEVNAME": "/dev/ttyS14",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 6994,
+                                "MINOR": 78
+                            },
+                            "N": "ttyS14"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS15",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS15",
+                                "DEVNAME": "/dev/ttyS15",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7000,
+                                "MINOR": 79
+                            },
+                            "N": "ttyS15"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS16",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS16",
+                                "DEVNAME": "/dev/ttyS16",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7008,
+                                "MINOR": 80
+                            },
+                            "N": "ttyS16"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS17",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS17",
+                                "DEVNAME": "/dev/ttyS17",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7014,
+                                "MINOR": 81
+                            },
+                            "N": "ttyS17"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS18",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS18",
+                                "DEVNAME": "/dev/ttyS18",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7021,
+                                "MINOR": 82
+                            },
+                            "N": "ttyS18"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS19",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS19",
+                                "DEVNAME": "/dev/ttyS19",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7028,
+                                "MINOR": 83
+                            },
+                            "N": "ttyS19"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS2",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS2",
+                                "DEVNAME": "/dev/ttyS2",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7035,
+                                "MINOR": 66
+                            },
+                            "N": "ttyS2"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS20",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS20",
+                                "DEVNAME": "/dev/ttyS20",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7043,
+                                "MINOR": 84
+                            },
+                            "N": "ttyS20"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS21",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS21",
+                                "DEVNAME": "/dev/ttyS21",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7050,
+                                "MINOR": 85
+                            },
+                            "N": "ttyS21"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS22",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS22",
+                                "DEVNAME": "/dev/ttyS22",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7057,
+                                "MINOR": 86
+                            },
+                            "N": "ttyS22"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS23",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS23",
+                                "DEVNAME": "/dev/ttyS23",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7065,
+                                "MINOR": 87
+                            },
+                            "N": "ttyS23"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS24",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS24",
+                                "DEVNAME": "/dev/ttyS24",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7073,
+                                "MINOR": 88
+                            },
+                            "N": "ttyS24"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS25",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS25",
+                                "DEVNAME": "/dev/ttyS25",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7081,
+                                "MINOR": 89
+                            },
+                            "N": "ttyS25"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS26",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS26",
+                                "DEVNAME": "/dev/ttyS26",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7088,
+                                "MINOR": 90
+                            },
+                            "N": "ttyS26"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS27",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS27",
+                                "DEVNAME": "/dev/ttyS27",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7097,
+                                "MINOR": 91
+                            },
+                            "N": "ttyS27"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS28",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS28",
+                                "DEVNAME": "/dev/ttyS28",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7105,
+                                "MINOR": 92
+                            },
+                            "N": "ttyS28"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS29",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS29",
+                                "DEVNAME": "/dev/ttyS29",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7113,
+                                "MINOR": 93
+                            },
+                            "N": "ttyS29"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS3",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS3",
+                                "DEVNAME": "/dev/ttyS3",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7122,
+                                "MINOR": 67
+                            },
+                            "N": "ttyS3"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS30",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS30",
+                                "DEVNAME": "/dev/ttyS30",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7131,
+                                "MINOR": 94
+                            },
+                            "N": "ttyS30"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS31",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS31",
+                                "DEVNAME": "/dev/ttyS31",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7140,
+                                "MINOR": 95
+                            },
+                            "N": "ttyS31"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS4",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS4",
+                                "DEVNAME": "/dev/ttyS4",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7149,
+                                "MINOR": 68
+                            },
+                            "N": "ttyS4"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS5",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS5",
+                                "DEVNAME": "/dev/ttyS5",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7158,
+                                "MINOR": 69
+                            },
+                            "N": "ttyS5"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS6",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS6",
+                                "DEVNAME": "/dev/ttyS6",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7167,
+                                "MINOR": 70
+                            },
+                            "N": "ttyS6"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS7",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS7",
+                                "DEVNAME": "/dev/ttyS7",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7177,
+                                "MINOR": 71
+                            },
+                            "N": "ttyS7"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS8",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS8",
+                                "DEVNAME": "/dev/ttyS8",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7186,
+                                "MINOR": 72
+                            },
+                            "N": "ttyS8"
+                        },
+                        {
+                            "P": "/devices/platform/serial8250/tty/ttyS9",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/platform/serial8250/tty/ttyS9",
+                                "DEVNAME": "/dev/ttyS9",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7196,
+                                "MINOR": 73
+                            },
+                            "N": "ttyS9"
+                        },
+                        {
+                            "P": "/devices/pnp0/00:00",
+                            "E": {
+                                "SUBSYSTEM": "pnp",
+                                "DRIVER": "rtc_cmos",
+                                "DEVPATH": "/devices/pnp0/00:00"
+                            }
+                        },
+                        {
+                            "P": "/devices/pnp0/00:00/rtc/rtc0",
+                            "S": "rtc",
+                            "E": {
+                                "DEVLINKS": "/dev/rtc",
+                                "SUBSYSTEM": "rtc",
+                                "MAJOR": 254,
+                                "DEVPATH": "/devices/pnp0/00:00/rtc/rtc0",
+                                "DEVNAME": "/dev/rtc0",
+                                "USEC_INITIALIZED": 7283,
+                                "MINOR": 0
+                            },
+                            "L": "-100",
+                            "N": "rtc0"
+                        },
+                        {
+                            "P": "/devices/pnp0/00:01",
+                            "E": {
+                                "SUBSYSTEM": "pnp",
+                                "DRIVER": "i8042 kbd",
+                                "DEVPATH": "/devices/pnp0/00:01"
+                            }
+                        },
+                        {
+                            "P": "/devices/pnp0/00:02",
+                            "E": {
+                                "SUBSYSTEM": "pnp",
+                                "DRIVER": "i8042 aux",
+                                "DEVPATH": "/devices/pnp0/00:02"
+                            }
+                        },
+                        {
+                            "P": "/devices/pnp0/00:03",
+                            "E": {
+                                "SUBSYSTEM": "pnp",
+                                "DEVPATH": "/devices/pnp0/00:03"
+                            }
+                        },
+                        {
+                            "P": "/devices/pnp0/00:04",
+                            "E": {
+                                "SUBSYSTEM": "pnp",
+                                "DRIVER": "serial",
+                                "DEVPATH": "/devices/pnp0/00:04"
+                            }
+                        },
+                        {
+                            "P": "/devices/pnp0/00:04/tty/ttyS0",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/pnp0/00:04/tty/ttyS0",
+                                "DEVNAME": "/dev/ttyS0",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 7654,
+                                "MINOR": 64
+                            },
+                            "N": "ttyS0"
+                        },
+                        {
+                            "P": "/devices/pnp0/00:05",
+                            "E": {
+                                "SUBSYSTEM": "pnp",
+                                "DEVPATH": "/devices/pnp0/00:05"
+                            }
+                        },
+                        {
+                            "P": "/devices/power",
+                            "E": {
+                                "SUBSYSTEM": "event_source",
+                                "DEVPATH": "/devices/power"
+                            }
+                        },
+                        {
+                            "P": "/devices/software",
+                            "E": {
+                                "SUBSYSTEM": "event_source",
+                                "DEVPATH": "/devices/software"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/broadcast",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/broadcast"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent0",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clocksource/clocksource0",
+                            "E": {
+                                "SUBSYSTEM": "clocksource",
+                                "DEVPATH": "/devices/system/clocksource/clocksource0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/container/PNP0A06:01",
+                            "E": {
+                                "SUBSYSTEM": "container",
+                                "DEVPATH": "/devices/system/container/PNP0A06:01"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/cpu/cpu0",
+                            "E": {
+                                "MODALIAS": "x86cpu:vendor:0000:family:0006:model:002A:feature:,0000,0001,0002,0003,0004,0005,0006,0007,0008,0009,000B,000C,000D,000E,000F,0010,0011,0013,0017,0018,0019,001A,001B,002B,0034,003A,003B,003D,0068,006F,0070,0072,0074,0075,007D,0080,0081,0085,0089,008C,008D,0091,0093,0094,0095,0096,0097,0098,0099,009A,009B,009C,009D,009E,009F,00C0,00C5,00E4,0101,0103,0120,0123,0125,0127,0128,0129,012A",
+                                "SUBSYSTEM": "cpu",
+                                "DRIVER": "processor",
+                                "DEVPATH": "/devices/system/cpu/cpu0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/machinecheck/machinecheck0",
+                            "E": {
+                                "SUBSYSTEM": "machinecheck",
+                                "DEVPATH": "/devices/system/machinecheck/machinecheck0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory0",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory1",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory1"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory2",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory2"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory3",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory3"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/node/node0",
+                            "E": {
+                                "SUBSYSTEM": "node",
+                                "DEVPATH": "/devices/system/node/node0"
+                            }
+                        },
+                        {
+                            "P": "/devices/tracepoint",
+                            "E": {
+                                "SUBSYSTEM": "event_source",
+                                "DEVPATH": "/devices/tracepoint"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/254:0",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/254:0"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:0",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:0"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:1",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:1"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:2",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:2"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:3",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:3"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:4",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:4"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:5",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:5"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:6",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:6"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/7:7",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/7:7"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/default",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/default"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop0",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop0",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop0",
+                                "USEC_INITIALIZED": 92833,
+                                "MINOR": 0
+                            },
+                            "N": "loop0"
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop1",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop1",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop1",
+                                "USEC_INITIALIZED": 93033,
+                                "MINOR": 1
+                            },
+                            "N": "loop1"
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop2",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop2",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop2",
+                                "USEC_INITIALIZED": 93232,
+                                "MINOR": 2
+                            },
+                            "N": "loop2"
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop3",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop3",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop3",
+                                "USEC_INITIALIZED": 93428,
+                                "MINOR": 3
+                            },
+                            "N": "loop3"
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop4",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop4",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop4",
+                                "USEC_INITIALIZED": 93649,
+                                "MINOR": 4
+                            },
+                            "N": "loop4"
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop5",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop5",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop5",
+                                "USEC_INITIALIZED": 93847,
+                                "MINOR": 5
+                            },
+                            "N": "loop5"
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop6",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop6",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop6",
+                                "USEC_INITIALIZED": 94042,
+                                "MINOR": 6
+                            },
+                            "N": "loop6"
+                        },
+                        {
+                            "P": "/devices/virtual/block/loop7",
+                            "E": {
+                                "SUBSYSTEM": "block",
+                                "SYSTEMD_READY": 0,
+                                "MAJOR": 7,
+                                "TAGS": ":systemd:",
+                                "DEVNAME": "/dev/loop7",
+                                "DEVTYPE": "disk",
+                                "DEVPATH": "/devices/virtual/block/loop7",
+                                "USEC_INITIALIZED": 96240,
+                                "MINOR": 7
+                            },
+                            "N": "loop7"
+                        },
+                        {
+                            "P": "/devices/virtual/dmi/id",
+                            "E": {
+                                "MODALIAS": "dmi:bvnSeaBIOS:bvrrel-1.7.5-0-ge51488c-20150524_160643-cloud127:bd04/01/2014:svnQEMU:pnStandardPC(i440FX+PIIX,1996):pvrpc-i440fx-2.1:cvnQEMU:ct1:cvrpc-i440fx-2.1:",
+                                "SUBSYSTEM": "dmi",
+                                "DEVPATH": "/devices/virtual/dmi/id"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/drm/ttm",
+                            "E": {
+                                "SUBSYSTEM": "drm",
+                                "DEVTYPE": "ttm",
+                                "DEVPATH": "/devices/virtual/drm/ttm"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/graphics/fbcon",
+                            "E": {
+                                "SUBSYSTEM": "graphics",
+                                "DEVPATH": "/devices/virtual/graphics/fbcon"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/input/mice",
+                            "E": {
+                                "SUBSYSTEM": "input",
+                                "MAJOR": 13,
+                                "DEVNAME": "/dev/input/mice",
+                                "MINOR": 63,
+                                "DEVPATH": "/devices/virtual/input/mice"
+                            },
+                            "N": "input/mice"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/full",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/full",
+                                "DEVNAME": "/dev/full",
+                                "DEVMODE": 666,
+                                "MINOR": 7
+                            },
+                            "N": "full"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/kmem",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVNAME": "/dev/kmem",
+                                "MINOR": 2,
+                                "DEVPATH": "/devices/virtual/mem/kmem"
+                            },
+                            "N": "kmem"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/kmsg",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/kmsg",
+                                "DEVNAME": "/dev/kmsg",
+                                "DEVMODE": 644,
+                                "MINOR": 11
+                            },
+                            "N": "kmsg"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/mem",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVNAME": "/dev/mem",
+                                "MINOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/mem"
+                            },
+                            "N": "mem"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/null",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/null",
+                                "DEVNAME": "/dev/null",
+                                "DEVMODE": 666,
+                                "MINOR": 3
+                            },
+                            "N": "null"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/port",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVNAME": "/dev/port",
+                                "MINOR": 4,
+                                "DEVPATH": "/devices/virtual/mem/port"
+                            },
+                            "N": "port"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/random",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/random",
+                                "DEVNAME": "/dev/random",
+                                "DEVMODE": 666,
+                                "MINOR": 8
+                            },
+                            "N": "random"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/urandom",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/urandom",
+                                "DEVNAME": "/dev/urandom",
+                                "DEVMODE": 666,
+                                "MINOR": 9
+                            },
+                            "N": "urandom"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/zero",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/zero",
+                                "DEVNAME": "/dev/zero",
+                                "DEVMODE": 666,
+                                "MINOR": 5
+                            },
+                            "N": "zero"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/autofs",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/autofs",
+                                "MINOR": 235,
+                                "DEVPATH": "/devices/virtual/misc/autofs"
+                            },
+                            "N": "autofs"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/cpu_dma_latency",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/cpu_dma_latency",
+                                "MINOR": 62,
+                                "DEVPATH": "/devices/virtual/misc/cpu_dma_latency"
+                            },
+                            "N": "cpu_dma_latency"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/device-mapper",
+                            "S": "device-mapper",
+                            "E": {
+                                "DEVLINKS": "/dev/device-mapper",
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVPATH": "/devices/virtual/misc/device-mapper",
+                                "DEVNAME": "/dev/mapper/control",
+                                "USEC_INITIALIZED": 87597,
+                                "MINOR": 236
+                            },
+                            "N": "mapper/control"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/hpet",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/hpet",
+                                "MINOR": 228,
+                                "DEVPATH": "/devices/virtual/misc/hpet"
+                            },
+                            "N": "hpet"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/kvm",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVPATH": "/devices/virtual/misc/kvm",
+                                "DEVNAME": "/dev/kvm",
+                                "TAGS": ":seat:uaccess:",
+                                "USEC_INITIALIZED": 13565,
+                                "MINOR": 232
+                            },
+                            "N": "kvm"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/loop-control",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/loop-control",
+                                "MINOR": 237,
+                                "DEVPATH": "/devices/virtual/misc/loop-control"
+                            },
+                            "N": "loop-control"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/mcelog",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/mcelog",
+                                "MINOR": 227,
+                                "DEVPATH": "/devices/virtual/misc/mcelog"
+                            },
+                            "N": "mcelog"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/microcode",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/cpu/microcode",
+                                "MINOR": 184,
+                                "DEVPATH": "/devices/virtual/misc/microcode"
+                            },
+                            "N": "cpu/microcode"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/network_latency",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/network_latency",
+                                "MINOR": 61,
+                                "DEVPATH": "/devices/virtual/misc/network_latency"
+                            },
+                            "N": "network_latency"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/network_throughput",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/network_throughput",
+                                "MINOR": 60,
+                                "DEVPATH": "/devices/virtual/misc/network_throughput"
+                            },
+                            "N": "network_throughput"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/nvram",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/nvram",
+                                "MINOR": 144,
+                                "DEVPATH": "/devices/virtual/misc/nvram"
+                            },
+                            "N": "nvram"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/psaux",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/psaux",
+                                "MINOR": 1,
+                                "DEVPATH": "/devices/virtual/misc/psaux"
+                            },
+                            "N": "psaux"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/snapshot",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/snapshot",
+                                "MINOR": 231,
+                                "DEVPATH": "/devices/virtual/misc/snapshot"
+                            },
+                            "N": "snapshot"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/vga_arbiter",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/vga_arbiter",
+                                "MINOR": 63,
+                                "DEVPATH": "/devices/virtual/misc/vga_arbiter"
+                            },
+                            "N": "vga_arbiter"
+                        },
+                        {
+                            "P": "/devices/virtual/net/lo",
+                            "E": {
+                                "SUBSYSTEM": "net",
+                                "DEVPATH": "/devices/virtual/net/lo",
+                                "INTERFACE": "lo",
+                                "USEC_INITIALIZED": 4423,
+                                "IFINDEX": 1,
+                                "ID_NET_LINK_FILE": "/usr/lib/systemd/network/99-default.link"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/thermal/cooling_device0",
+                            "E": {
+                                "SUBSYSTEM": "thermal",
+                                "DEVPATH": "/devices/virtual/thermal/cooling_device0"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/tty/console",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 5,
+                                "DEVNAME": "/dev/console",
+                                "MINOR": 1,
+                                "DEVPATH": "/devices/virtual/tty/console"
+                            },
+                            "N": "console"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/ptmx",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 5,
+                                "DEVPATH": "/devices/virtual/tty/ptmx",
+                                "DEVNAME": "/dev/ptmx",
+                                "DEVMODE": 666,
+                                "MINOR": 2
+                            },
+                            "N": "ptmx"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 5,
+                                "DEVPATH": "/devices/virtual/tty/tty",
+                                "DEVNAME": "/dev/tty",
+                                "DEVMODE": 666,
+                                "MINOR": 0
+                            },
+                            "N": "tty"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty0",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty0",
+                                "MINOR": 0,
+                                "DEVPATH": "/devices/virtual/tty/tty0"
+                            },
+                            "N": "tty0"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty1",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty1",
+                                "MINOR": 1,
+                                "DEVPATH": "/devices/virtual/tty/tty1"
+                            },
+                            "N": "tty1"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty10",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty10",
+                                "MINOR": 10,
+                                "DEVPATH": "/devices/virtual/tty/tty10"
+                            },
+                            "N": "tty10"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty11",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty11",
+                                "MINOR": 11,
+                                "DEVPATH": "/devices/virtual/tty/tty11"
+                            },
+                            "N": "tty11"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty12",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty12",
+                                "MINOR": 12,
+                                "DEVPATH": "/devices/virtual/tty/tty12"
+                            },
+                            "N": "tty12"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty13",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty13",
+                                "MINOR": 13,
+                                "DEVPATH": "/devices/virtual/tty/tty13"
+                            },
+                            "N": "tty13"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty14",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty14",
+                                "MINOR": 14,
+                                "DEVPATH": "/devices/virtual/tty/tty14"
+                            },
+                            "N": "tty14"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty15",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty15",
+                                "MINOR": 15,
+                                "DEVPATH": "/devices/virtual/tty/tty15"
+                            },
+                            "N": "tty15"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty16",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty16",
+                                "MINOR": 16,
+                                "DEVPATH": "/devices/virtual/tty/tty16"
+                            },
+                            "N": "tty16"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty17",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty17",
+                                "MINOR": 17,
+                                "DEVPATH": "/devices/virtual/tty/tty17"
+                            },
+                            "N": "tty17"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty18",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty18",
+                                "MINOR": 18,
+                                "DEVPATH": "/devices/virtual/tty/tty18"
+                            },
+                            "N": "tty18"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty19",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty19",
+                                "MINOR": 19,
+                                "DEVPATH": "/devices/virtual/tty/tty19"
+                            },
+                            "N": "tty19"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty2",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty2",
+                                "MINOR": 2,
+                                "DEVPATH": "/devices/virtual/tty/tty2"
+                            },
+                            "N": "tty2"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty20",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty20",
+                                "MINOR": 20,
+                                "DEVPATH": "/devices/virtual/tty/tty20"
+                            },
+                            "N": "tty20"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty21",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty21",
+                                "MINOR": 21,
+                                "DEVPATH": "/devices/virtual/tty/tty21"
+                            },
+                            "N": "tty21"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty22",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty22",
+                                "MINOR": 22,
+                                "DEVPATH": "/devices/virtual/tty/tty22"
+                            },
+                            "N": "tty22"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty23",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty23",
+                                "MINOR": 23,
+                                "DEVPATH": "/devices/virtual/tty/tty23"
+                            },
+                            "N": "tty23"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty24",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty24",
+                                "MINOR": 24,
+                                "DEVPATH": "/devices/virtual/tty/tty24"
+                            },
+                            "N": "tty24"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty25",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty25",
+                                "MINOR": 25,
+                                "DEVPATH": "/devices/virtual/tty/tty25"
+                            },
+                            "N": "tty25"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty26",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty26",
+                                "MINOR": 26,
+                                "DEVPATH": "/devices/virtual/tty/tty26"
+                            },
+                            "N": "tty26"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty27",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty27",
+                                "MINOR": 27,
+                                "DEVPATH": "/devices/virtual/tty/tty27"
+                            },
+                            "N": "tty27"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty28",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty28",
+                                "MINOR": 28,
+                                "DEVPATH": "/devices/virtual/tty/tty28"
+                            },
+                            "N": "tty28"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty29",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty29",
+                                "MINOR": 29,
+                                "DEVPATH": "/devices/virtual/tty/tty29"
+                            },
+                            "N": "tty29"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty3",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty3",
+                                "MINOR": 3,
+                                "DEVPATH": "/devices/virtual/tty/tty3"
+                            },
+                            "N": "tty3"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty30",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty30",
+                                "MINOR": 30,
+                                "DEVPATH": "/devices/virtual/tty/tty30"
+                            },
+                            "N": "tty30"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty31",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty31",
+                                "MINOR": 31,
+                                "DEVPATH": "/devices/virtual/tty/tty31"
+                            },
+                            "N": "tty31"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty32",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty32",
+                                "MINOR": 32,
+                                "DEVPATH": "/devices/virtual/tty/tty32"
+                            },
+                            "N": "tty32"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty33",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty33",
+                                "MINOR": 33,
+                                "DEVPATH": "/devices/virtual/tty/tty33"
+                            },
+                            "N": "tty33"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty34",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty34",
+                                "MINOR": 34,
+                                "DEVPATH": "/devices/virtual/tty/tty34"
+                            },
+                            "N": "tty34"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty35",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty35",
+                                "MINOR": 35,
+                                "DEVPATH": "/devices/virtual/tty/tty35"
+                            },
+                            "N": "tty35"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty36",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty36",
+                                "MINOR": 36,
+                                "DEVPATH": "/devices/virtual/tty/tty36"
+                            },
+                            "N": "tty36"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty37",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty37",
+                                "MINOR": 37,
+                                "DEVPATH": "/devices/virtual/tty/tty37"
+                            },
+                            "N": "tty37"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty38",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty38",
+                                "MINOR": 38,
+                                "DEVPATH": "/devices/virtual/tty/tty38"
+                            },
+                            "N": "tty38"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty39",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty39",
+                                "MINOR": 39,
+                                "DEVPATH": "/devices/virtual/tty/tty39"
+                            },
+                            "N": "tty39"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty4",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty4",
+                                "MINOR": 4,
+                                "DEVPATH": "/devices/virtual/tty/tty4"
+                            },
+                            "N": "tty4"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty40",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty40",
+                                "MINOR": 40,
+                                "DEVPATH": "/devices/virtual/tty/tty40"
+                            },
+                            "N": "tty40"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty41",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty41",
+                                "MINOR": 41,
+                                "DEVPATH": "/devices/virtual/tty/tty41"
+                            },
+                            "N": "tty41"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty42",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty42",
+                                "MINOR": 42,
+                                "DEVPATH": "/devices/virtual/tty/tty42"
+                            },
+                            "N": "tty42"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty43",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty43",
+                                "MINOR": 43,
+                                "DEVPATH": "/devices/virtual/tty/tty43"
+                            },
+                            "N": "tty43"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty44",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty44",
+                                "MINOR": 44,
+                                "DEVPATH": "/devices/virtual/tty/tty44"
+                            },
+                            "N": "tty44"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty45",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty45",
+                                "MINOR": 45,
+                                "DEVPATH": "/devices/virtual/tty/tty45"
+                            },
+                            "N": "tty45"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty46",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty46",
+                                "MINOR": 46,
+                                "DEVPATH": "/devices/virtual/tty/tty46"
+                            },
+                            "N": "tty46"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty47",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty47",
+                                "MINOR": 47,
+                                "DEVPATH": "/devices/virtual/tty/tty47"
+                            },
+                            "N": "tty47"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty48",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty48",
+                                "MINOR": 48,
+                                "DEVPATH": "/devices/virtual/tty/tty48"
+                            },
+                            "N": "tty48"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty49",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty49",
+                                "MINOR": 49,
+                                "DEVPATH": "/devices/virtual/tty/tty49"
+                            },
+                            "N": "tty49"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty5",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty5",
+                                "MINOR": 5,
+                                "DEVPATH": "/devices/virtual/tty/tty5"
+                            },
+                            "N": "tty5"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty50",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty50",
+                                "MINOR": 50,
+                                "DEVPATH": "/devices/virtual/tty/tty50"
+                            },
+                            "N": "tty50"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty51",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty51",
+                                "MINOR": 51,
+                                "DEVPATH": "/devices/virtual/tty/tty51"
+                            },
+                            "N": "tty51"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty52",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty52",
+                                "MINOR": 52,
+                                "DEVPATH": "/devices/virtual/tty/tty52"
+                            },
+                            "N": "tty52"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty53",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty53",
+                                "MINOR": 53,
+                                "DEVPATH": "/devices/virtual/tty/tty53"
+                            },
+                            "N": "tty53"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty54",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty54",
+                                "MINOR": 54,
+                                "DEVPATH": "/devices/virtual/tty/tty54"
+                            },
+                            "N": "tty54"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty55",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty55",
+                                "MINOR": 55,
+                                "DEVPATH": "/devices/virtual/tty/tty55"
+                            },
+                            "N": "tty55"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty56",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty56",
+                                "MINOR": 56,
+                                "DEVPATH": "/devices/virtual/tty/tty56"
+                            },
+                            "N": "tty56"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty57",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty57",
+                                "MINOR": 57,
+                                "DEVPATH": "/devices/virtual/tty/tty57"
+                            },
+                            "N": "tty57"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty58",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty58",
+                                "MINOR": 58,
+                                "DEVPATH": "/devices/virtual/tty/tty58"
+                            },
+                            "N": "tty58"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty59",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty59",
+                                "MINOR": 59,
+                                "DEVPATH": "/devices/virtual/tty/tty59"
+                            },
+                            "N": "tty59"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty6",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty6",
+                                "MINOR": 6,
+                                "DEVPATH": "/devices/virtual/tty/tty6"
+                            },
+                            "N": "tty6"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty60",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty60",
+                                "MINOR": 60,
+                                "DEVPATH": "/devices/virtual/tty/tty60"
+                            },
+                            "N": "tty60"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty61",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty61",
+                                "MINOR": 61,
+                                "DEVPATH": "/devices/virtual/tty/tty61"
+                            },
+                            "N": "tty61"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty62",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty62",
+                                "MINOR": 62,
+                                "DEVPATH": "/devices/virtual/tty/tty62"
+                            },
+                            "N": "tty62"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty63",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty63",
+                                "MINOR": 63,
+                                "DEVPATH": "/devices/virtual/tty/tty63"
+                            },
+                            "N": "tty63"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty7",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty7",
+                                "MINOR": 7,
+                                "DEVPATH": "/devices/virtual/tty/tty7"
+                            },
+                            "N": "tty7"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty8",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty8",
+                                "MINOR": 8,
+                                "DEVPATH": "/devices/virtual/tty/tty8"
+                            },
+                            "N": "tty8"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty9",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVNAME": "/dev/tty9",
+                                "MINOR": 9,
+                                "DEVPATH": "/devices/virtual/tty/tty9"
+                            },
+                            "N": "tty9"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs",
+                                "MINOR": 0,
+                                "DEVPATH": "/devices/virtual/vc/vcs"
+                            },
+                            "N": "vcs"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs1",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs1",
+                                "MINOR": 1,
+                                "DEVPATH": "/devices/virtual/vc/vcs1"
+                            },
+                            "N": "vcs1"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs10",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs10",
+                                "MINOR": 10,
+                                "DEVPATH": "/devices/virtual/vc/vcs10"
+                            },
+                            "N": "vcs10"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs2",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs2",
+                                "MINOR": 2,
+                                "DEVPATH": "/devices/virtual/vc/vcs2"
+                            },
+                            "N": "vcs2"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs3",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs3",
+                                "MINOR": 3,
+                                "DEVPATH": "/devices/virtual/vc/vcs3"
+                            },
+                            "N": "vcs3"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs4",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs4",
+                                "MINOR": 4,
+                                "DEVPATH": "/devices/virtual/vc/vcs4"
+                            },
+                            "N": "vcs4"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs5",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs5",
+                                "MINOR": 5,
+                                "DEVPATH": "/devices/virtual/vc/vcs5"
+                            },
+                            "N": "vcs5"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs6",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs6",
+                                "MINOR": 6,
+                                "DEVPATH": "/devices/virtual/vc/vcs6"
+                            },
+                            "N": "vcs6"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcs7",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcs7",
+                                "MINOR": 7,
+                                "DEVPATH": "/devices/virtual/vc/vcs7"
+                            },
+                            "N": "vcs7"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa",
+                                "MINOR": 128,
+                                "DEVPATH": "/devices/virtual/vc/vcsa"
+                            },
+                            "N": "vcsa"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa1",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa1",
+                                "MINOR": 129,
+                                "DEVPATH": "/devices/virtual/vc/vcsa1"
+                            },
+                            "N": "vcsa1"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa10",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa10",
+                                "MINOR": 138,
+                                "DEVPATH": "/devices/virtual/vc/vcsa10"
+                            },
+                            "N": "vcsa10"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa2",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa2",
+                                "MINOR": 130,
+                                "DEVPATH": "/devices/virtual/vc/vcsa2"
+                            },
+                            "N": "vcsa2"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa3",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa3",
+                                "MINOR": 131,
+                                "DEVPATH": "/devices/virtual/vc/vcsa3"
+                            },
+                            "N": "vcsa3"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa4",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa4",
+                                "MINOR": 132,
+                                "DEVPATH": "/devices/virtual/vc/vcsa4"
+                            },
+                            "N": "vcsa4"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa5",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa5",
+                                "MINOR": 133,
+                                "DEVPATH": "/devices/virtual/vc/vcsa5"
+                            },
+                            "N": "vcsa5"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa6",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa6",
+                                "MINOR": 134,
+                                "DEVPATH": "/devices/virtual/vc/vcsa6"
+                            },
+                            "N": "vcsa6"
+                        },
+                        {
+                            "P": "/devices/virtual/vc/vcsa7",
+                            "E": {
+                                "SUBSYSTEM": "vc",
+                                "MAJOR": 7,
+                                "DEVNAME": "/dev/vcsa7",
+                                "MINOR": 135,
+                                "DEVPATH": "/devices/virtual/vc/vcsa7"
+                            },
+                            "N": "vcsa7"
+                        },
+                        {
+                            "P": "/devices/virtual/vtconsole/vtcon0",
+                            "E": {
+                                "SUBSYSTEM": "vtconsole",
+                                "DEVPATH": "/devices/virtual/vtconsole/vtcon0"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/vtconsole/vtcon1",
+                            "E": {
+                                "SUBSYSTEM": "vtconsole",
+                                "DEVPATH": "/devices/virtual/vtconsole/vtcon1"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/workqueue/writeback",
+                            "E": {
+                                "SUBSYSTEM": "workqueue",
+                                "DEVPATH": "/devices/virtual/workqueue/writeback"
+                            }
+                        }
+                    ]
+                }
+            },
+            "mgrcompat_|-smbios-records-system_|-smbios.records_|-module_run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.430383",
+                "result": true,
+                "duration": 4.587,
+                "__run_num__": 7,
+                "changes": {
+                    "ret": [{
+                        "data": {
+                            "manufacturer": "QEMU",
+                            "product_name": "Standard PC (i440FX + PIIX, 1996)",
+                            "uuid": "4A531BB7-612F-E846-9D94-63AF964E00E9",
+                            "version": "pc-i440fx-2.1",
+                            "wake-up_type": "Power Switch"
+                        },
+                        "description": "System Information",
+                        "handle": "0x0100",
+                        "type": 1
+                    }]
+                }
+            },
+            "mgrcompat_|-fqdns_|-network.fqdns_|-module_run": {
+                "__id__": "fqdns",
+                "__run_num__": 13,
+                "__sls__": "hardware.profileupdate",
+                "changes": {
+                    "ret": {
+                        "fqdns": [
+                            "minionsles12-suma3pg.vagrant.local"
+                        ]
+                    }
+                },
+                "comment": "Module function network.fqdns executed",
+                "duration": 105.654,
+                "name": "network.fqdns",
+                "result": true,
+                "start_time": "12:58:12.430383"
+            },
+            "mgrcompat_|-network-ips_|-sumautil.primary_ips_|-module_run": {
+                "comment": "Module function sumautil.primary_ips executed",
+                "name": "sumautil.primary_ips",
+                "start_time": "12:58:12.413295",
+                "result": true,
+                "duration": 8.849,
+                "__run_num__": 4,
+                "changes": {
+                    "ret": {
+                        "IPv4": {
+                            "interface": "eth1",
+                            "source": "172.24.108.98",
+                            "destination": "172.31.131.162",
+                            "gateway": null
+                        },
+                        "IPv6": {
+                            "interface": "eth0",
+                            "source": "fe80::5054:ff:fed0:91",
+                            "destination": "fe80::5054:ff:fe5a:ce80",
+                            "gateway": null
+                        }
+                    }
+                }
+            },
+            "mgrcompat_|-grains_|-grains.items_|-module_run": {
+                "comment": "Module function grains.items executed",
+                "name": "grains.items",
+                "start_time": "12:58:12.369619",
+                "result": true,
+                "duration": 1.982,
+                "__run_num__": 0,
+                "changes": {
+                    "ret": {
+                        "biosversion": "rel-1.7.5-0-ge51488c-20150524_160643-cloud127",
+                        "kernel": "Linux",
+                        "domain": "vagrant.local",
+                        "biosreleasedate": "04/01/2014",
+                        "zmqversion": "4.0.4",
+                        "kernelrelease": "3.12.53-60.30-default",
+                        "pythonpath": [
+                            "/usr/bin",
+                            "/usr/lib/python27.zip",
+                            "/usr/lib64/python2.7",
+                            "/usr/lib64/python2.7/plat-linux2",
+                            "/usr/lib64/python2.7/lib-tk",
+                            "/usr/lib64/python2.7/lib-old",
+                            "/usr/lib64/python2.7/lib-dynload",
+                            "/usr/lib64/python2.7/site-packages",
+                            "/usr/local/lib64/python2.7/site-packages",
+                            "/usr/local/lib/python2.7/site-packages",
+                            "/usr/lib/python2.7/site-packages"
+                        ],
+                        "ip_interfaces": {
+                            "lo": [
+                                "127.0.0.1",
+                                "::1"
+                            ],
+                            "eth1": [
+                                "172.17.247.221",
+                                "fe80::5054:ff:fe73:b7a8"
+                            ],
+                            "eth0": [
+                                "192.168.121.244",
+                                "fe80::5054:ff:fe96:17eb"
+                            ]
+                        },
+                        "shell": "/bin/bash",
+                        "mem_total": 489,
+                        "saltversioninfo": [
+                            2015,
+                            8,
+                            7,
+                            0
+                        ],
+                        "SSDs": [],
+                        "server": "suma3pg.vagrant.local",
+                        "id": "clisles12sp1-suma3pg.vagrant.local",
+                        "susemanager": {
+                            "activation_key": "1-sles12sp1"
+                        },
+                        "osrelease": "12.1",
+                        "ps": "ps -efH",
+                        "server_id": 1704458941,
+                        "uuid": "4a531bb7-612f-e846-9d94-63af964e00e9",
+						"instance_id": "i-abcdef1234567890",
+                        "ip6_interfaces": {
+                            "lo": [
+                                "::1"
+                            ],
+                            "eth1": [
+                                "fe80::5054:ff:fe73:b7a8"
+                            ],
+                            "eth0": [
+                                "fe80::5054:ff:fe96:17eb"
+                            ]
+                        },
+                        "num_cpus": 1,
+                        "hwaddr_interfaces": {
+                            "lo": "00:00:00:00:00:00",
+                            "eth1": "52:54:00:73:b7:a8",
+                            "eth0": "52:54:00:96:17:eb"
+                        },
+                        "init": "systemd",
+                        "ip4_interfaces": {
+                            "lo": [
+                                "127.0.0.1"
+                            ],
+                            "eth1": [
+                                "172.17.247.221"
+                            ],
+                            "eth0": [
+                                "192.168.121.244"
+                            ]
+                        },
+                        "osfullname": "SLES",
+                        "master": "suma3pg",
+                        "ipv4": [
+                            "127.0.0.1",
+                            "172.17.247.221",
+                            "192.168.121.244"
+                        ],
+                        "ipv6": [
+                            "::1",
+                            "fe80::5054:ff:fe73:b7a8",
+                            "fe80::5054:ff:fe96:17eb"
+                        ],
+                        "role": "client",
+                        "cpusockets": 1,
+                        "cpu_flags": [
+                            "fpu",
+                            "vme",
+                            "de",
+                            "pse",
+                            "tsc",
+                            "msr",
+                            "pae",
+                            "mce",
+                            "cx8",
+                            "apic",
+                            "sep",
+                            "mtrr",
+                            "pge",
+                            "mca",
+                            "cmov",
+                            "pat",
+                            "pse36",
+                            "clflush",
+                            "mmx",
+                            "fxsr",
+                            "sse",
+                            "sse2",
+                            "ss",
+                            "syscall",
+                            "nx",
+                            "pdpe1gb",
+                            "rdtscp",
+                            "lm",
+                            "constant_tsc",
+                            "rep_good",
+                            "nopl",
+                            "eagerfpu",
+                            "pni",
+                            "pclmulqdq",
+                            "vmx",
+                            "ssse3",
+                            "fma",
+                            "cx16",
+                            "pcid",
+                            "sse4_1",
+                            "sse4_2",
+                            "x2apic",
+                            "movbe",
+                            "popcnt",
+                            "tsc_deadline_timer",
+                            "aes",
+                            "xsave",
+                            "avx",
+                            "f16c",
+                            "rdrand",
+                            "hypervisor",
+                            "lahf_lm",
+                            "abm",
+                            "xsaveopt",
+                            "vnmi",
+                            "ept",
+                            "fsgsbase",
+                            "bmi1",
+                            "avx2",
+                            "smep",
+                            "bmi2",
+                            "erms",
+                            "invpcid"
+                        ],
+                        "localhost": "clisles12sp1-suma3pg",
+                        "lsb_distrib_id": "SLES",
+                        "fqdn_ip4": [
+                            "127.0.0.1"
+                        ],
+                        "fqdn_ip6": [],
+                        "nodename": "clisles12sp1-suma3pg",
+                        "saltversion": "2015.8.7",
+                        "lsb_distrib_release": "12.1",
+                        "systemd": {
+                            "version": "210",
+                            "features": "+PAM +LIBWRAP +AUDIT +SELINUX -IMA +SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP +APPARMOR"
+                        },
+                        "saltpath": "/usr/lib/python2.7/site-packages/salt",
+                        "host": "clisles12sp1-suma3pg",
+                        "os_family": "Suse",
+                        "oscodename": "SUSE Linux Enterprise Server 12 SP1",
+                        "gpus": [],
+                        "pythonversion": [
+                            2,
+                            7,
+                            9,
+                            "final",
+                            0
+                        ],
+                        "manufacturer": "QEMU",
+                        "total_num_cpus": 1,
+                        "num_gpus": 0,
+                        "virtual": "kvm",
+                        "cpu_model": "Intel Xeon E312xx (Sandy Bridge)",
+                        "fqdn": "clisles12sp1-suma3pg.vagrant.local",
+                        "pythonexecutable": "/usr/bin/python",
+                        "productname": "Standard PC (i440FX + PIIX, 1996)",
+                        "osarch": "x86_64",
+                        "cpuarch": "x86_64",
+                        "lsb_distrib_codename": "SUSE Linux Enterprise Server 12 SP1",
+                        "osrelease_info": [
+                            12,
+                            1
+                        ],
+                        "locale_info": {
+                            "detectedencoding": "UTF-8",
+                            "defaultlanguage": "en_US",
+                            "defaultencoding": "UTF-8"
+                        },
+                        "path": "/sbin:/usr/sbin:/usr/local/sbin:/root/bin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib/mit/bin:/usr/lib/mit/sbin",
+                        "machine_id": "e9492337c6664c1aa8fe2798ba439f57",
+                        "os": "SUSE"
+                    }
+                }
+            }
+        },
+        "retcode": 0,
+        "success": true,
+        "cmd": "_return",
+        "_stamp": "2016-04-07T08:41:02.846934",
+        "fun": "state.apply",
+        "out": "highstate",
+        "id": "minionsles12-suma3pg.vagrant.local",
+        "metadata": {
+            "suma-action-id": 60
+        }
+    }
+}

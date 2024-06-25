@@ -61,11 +61,11 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.6
+Version:        5.0.10
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
-Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/java/%{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 ExcludeArch:    ia64
@@ -131,7 +131,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.20
+BuildRequires:  salt-netapi-client >= 0.21
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -214,7 +214,7 @@ Requires:       objectweb-asm >= 9.2
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
-Requires:       salt-netapi-client >= 0.20
+Requires:       salt-netapi-client >= 0.21
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
@@ -243,6 +243,7 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
 Requires:       tomcat-native
@@ -547,8 +548,6 @@ install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config
 # Adjust product tree tag
 %if 0%{?is_opensuse}
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
-%else
-sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
 # Adjust languages
 sed -i -e '/# NOTE: for the RPMs this is defined at the SPEC!/d' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
@@ -576,11 +575,8 @@ install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{spacewalksni
 install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/keep_system_id
 install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_reactivation_key
 install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_delete_system
-install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register
 install -m 644 conf/cobbler/snippets/redhat_register_using_salt    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register_using_salt
 install -m 644 conf/cobbler/snippets/minion_script    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/minion_script
-install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register
-install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
 
@@ -748,11 +744,8 @@ fi
 %config %{spacewalksnippetsdir}/keep_system_id
 %config %{spacewalksnippetsdir}/post_reactivation_key
 %config %{spacewalksnippetsdir}/post_delete_system
-%config %{spacewalksnippetsdir}/redhat_register
 %config %{spacewalksnippetsdir}/redhat_register_using_salt
 %config %{spacewalksnippetsdir}/minion_script
-%config %{spacewalksnippetsdir}/sles_register
-%config %{spacewalksnippetsdir}/sles_register_script
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
 %if 0%{?suse_version}

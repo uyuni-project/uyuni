@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Tue Jun 18 18:14:24 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Update translations
+
+-------------------------------------------------------------------
+Mon Jun 10 16:53:10 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Remove spacewalk-abrt related commands
+
+-------------------------------------------------------------------
+Fri May 03 14:23:03 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * Update translations
+
+-------------------------------------------------------------------
 Thu Apr 04 18:50:08 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5-0

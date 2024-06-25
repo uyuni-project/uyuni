@@ -4,11 +4,6 @@
 .btn-success,
 .btn-warning,
 .btn-danger {
-  // We use flex to ensure icons etc are correctly aligned in buttons
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-
   color: inherit;
   font-weight: bold;
   padding: 8px 16px;
@@ -22,6 +17,11 @@
 
   &:hover {
     text-decoration: none;
+  }
+
+  &.btn-sm {
+    padding: 6px 14px;
+    font-size: 12px;
   }
 
   .input-group-btn & {
@@ -68,24 +68,6 @@
   i[class*="icon-"],
   i[class*="spacewalk-icon"] {
     margin: 0;
-  }
-}
-
-.btn-link {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      color: $link-color;
-      font-weight: normal;
-    }
-
-    &:not(:disabled):not(.disabled):not(.text-muted):hover {
-      text-decoration: underline;
-    }
   }
 }
 
@@ -196,12 +178,17 @@
 .input-group-btn .btn {
   border-width: 1px;
   padding: 6px 12px;
+  height: $input-height;
   z-index: 100;
 
   &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     border-width: 1px;
     bottom: -1px;
     left: -1px;
+  }
+
+  &:last-child {
+    margin-left: -1px;
   }
 }
 

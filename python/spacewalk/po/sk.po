@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:07+0200\n"
+"POT-Creation-Date: 2024-06-18 14:54+0200\n"
 "PO-Revision-Date: 2022-08-11 16:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
@@ -40,7 +40,7 @@ msgid "Invalid request received (%s)."
 msgstr "Prijatá neplatná požiadavka (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:134
+#: ../server/apacheRequest.py:126
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -49,7 +49,7 @@ msgstr ""
 "DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
 "%s"
 
-#: ../server/apacheRequest.py:164
+#: ../server/apacheRequest.py:156
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -59,15 +59,12 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:679
+#: ../server/apacheRequest.py:671
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Neplatné URI %s"
 
-#: ../server/configFilesHandler.py:141 ../server/handlers/app/packages.py:220
-#: ../server/handlers/xmlrpc/registration.py:247
-#: ../server/handlers/xmlrpc/registration.py:1276
-#: ../server/handlers/xmlrpc/registration.py:1395
+#: ../server/handlers/app/packages.py:220
 #, python-format
 msgid ""
 "\n"
@@ -79,11 +76,6 @@ msgstr ""
 "                   Pre ďalšiu pomoc kontaktujte administrátora svojej "
 "organizácie."
 
-#: ../server/handlers/applet/applet.py:84
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
-
 #: ../server/handlers/sat/auth.py:46
 msgid "ISS is disabled on this server."
 msgstr "Na tomto serveri je ISS zakázané."
@@ -92,16 +84,6 @@ msgstr "Na tomto serveri je ISS zakázané."
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nie je povolený pre ISS."
-
-#: ../server/handlers/xmlrpc/errata.py:71
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Očakávaný názov balíka, nie: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:127
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Očakávaný balík, nie: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, python-format
@@ -115,66 +97,6 @@ msgstr "Neplatný kľúč sedenia"
 #: ../server/handlers/xmlrpc/proxy.py:100
 msgid "This server ID no longer exists"
 msgstr "Toto ID servera už neexistuje"
-
-#: ../server/handlers/xmlrpc/queue.py:490
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Neplatný typ hodnoty akcie %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:525
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Akcia %s nepatrí k serveru %s"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-msgid "Required data missing"
-msgstr "Chýbajú požadované dáta"
-
-#: ../server/handlers/xmlrpc/registration.py:230
-msgid "Required members missing"
-msgstr "Chýbajú požadovaní členovia"
-
-#: ../server/handlers/xmlrpc/registration.py:238
-msgid "Attempt to register a system to an invalid username"
-msgstr "Pokus o registráciu systému na neplatné používateľské meno"
-
-#: ../server/handlers/xmlrpc/registration.py:897
-msgid "Invalid system release version requested"
-msgstr "Požaduje sa neplatná verzia vydania systému"
-
-#: ../server/handlers/xmlrpc/registration.py:1153
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Nepodarilo sa nájsť platné sieťové rozhranie, ipaddr a ip6addr sa nenašli."
-
-#: ../server/handlers/xmlrpc/registration.py:1219
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "Uvítacia správa {PRODUCT_NAME}"
-
-#: ../server/handlers/xmlrpc/registration.py:1230
-msgid "Privacy Statement"
-msgstr "Vyhlásenie o ochrane súkromia"
-
-#: ../server/handlers/xmlrpc/registration.py:1252
-msgid "Expected a dictionary as a product argument"
-msgstr "Očakávaný slovník ako argument produktu"
-
-#: ../server/handlers/xmlrpc/registration.py:1470
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Neplatná hodnota '%s' pre %s (%s)"
-
-#: ../server/handlers/xmlrpc/scap.py:125
-msgid "Invalid system_id/action_id pair."
-msgstr "Neplatný pár system_id/action_id."
-
-#. pylint: disable-next=invalid-name
-#: ../server/handlers/xmlrpc/up2date.py:264
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
@@ -300,7 +222,7 @@ msgstr "Požaduje sa neplatný balík RPM %s"
 msgid "Package not found"
 msgstr "Balík nebol nájdený"
 
-#: ../server/rhnServer/server_class.py:105
+#: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
 msgstr "Architektúra `%s' nie je podporovaná"
@@ -1016,7 +938,7 @@ msgstr "Chyba pri vytváraní cesty súboru pre podrobné výsledky SCAP"
 msgid "Invalid content encoding"
 msgstr "Neplatné kódovanie obsahu"
 
-#: ../common/rhnException.py:319
+#: ../common/rhnException.py:317
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -1032,7 +954,7 @@ msgstr ""
 "     podrobnosti o tom, čo ste sa pokúsili urobiť, keď sa vyskytla táto\n"
 "     chyba, a podrobnosti o tom, ako tento problém reprodukovať.\n"
 
-#: ../common/rhnException.py:371
+#: ../common/rhnException.py:368
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -1041,17 +963,17 @@ msgstr ""
 "Chybová správa:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:373
+#: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Kód triedy chyby: %s\n"
 
-#: ../common/rhnException.py:376
+#: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Informácia o triede chýb: %s\n"
 
-#: ../common/rhnException.py:378
+#: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
 msgstr "Vysvetlenie: %s"
@@ -1263,16 +1185,16 @@ msgstr "Importovanie stromov schopných kickstart (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Importované stromy schopné kickstart (%d)"
 
-#: ../satellite_tools/reposync.py:136 ../satellite_tools/satsync.py:516
+#: ../satellite_tools/reposync.py:138 ../satellite_tools/satsync.py:516
 msgid "+++ sending log as an email +++"
 msgstr "+++ odosielanie záznamu ako e-mail +++"
 
-#: ../satellite_tools/reposync.py:139
+#: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s sync. správa od %s"
 
-#: ../satellite_tools/reposync.py:149 ../satellite_tools/satsync.py:528
+#: ../satellite_tools/reposync.py:151 ../satellite_tools/satsync.py:528
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
@@ -2048,6 +1970,65 @@ msgstr "  28 - chyba: --master je platné iba s --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznáma verzia výpisu, vyskúšajte jeden z %s"
+
+#, python-brace-format
+#~ msgid "Your system was not found in the {PRODUCT_NAME} database"
+#~ msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
+
+#, python-format
+#~ msgid "Expected a package name, not: %s"
+#~ msgstr "Očakávaný názov balíka, nie: %s"
+
+#, python-format
+#~ msgid "Expected a package, not: %s"
+#~ msgstr "Očakávaný balík, nie: %s"
+
+#, python-format
+#~ msgid "Invalid action value type %s (%s)"
+#~ msgstr "Neplatný typ hodnoty akcie %s (%s)"
+
+#, python-format
+#~ msgid "Action %s does not belong to server %s"
+#~ msgstr "Akcia %s nepatrí k serveru %s"
+
+#~ msgid "Required data missing"
+#~ msgstr "Chýbajú požadované dáta"
+
+#~ msgid "Required members missing"
+#~ msgstr "Chýbajú požadovaní členovia"
+
+#~ msgid "Attempt to register a system to an invalid username"
+#~ msgstr "Pokus o registráciu systému na neplatné používateľské meno"
+
+#~ msgid "Invalid system release version requested"
+#~ msgstr "Požaduje sa neplatná verzia vydania systému"
+
+#~ msgid ""
+#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
+#~ "found."
+#~ msgstr ""
+#~ "Nepodarilo sa nájsť platné sieťové rozhranie, ipaddr a ip6addr sa nenašli."
+
+#, python-brace-format
+#~ msgid "{PRODUCT_NAME} Welcome Message"
+#~ msgstr "Uvítacia správa {PRODUCT_NAME}"
+
+#~ msgid "Privacy Statement"
+#~ msgstr "Vyhlásenie o ochrane súkromia"
+
+#~ msgid "Expected a dictionary as a product argument"
+#~ msgstr "Očakávaný slovník ako argument produktu"
+
+#, python-format
+#~ msgid "Invalid value '%s' for %s (%s)"
+#~ msgstr "Neplatná hodnota '%s' pre %s (%s)"
+
+#~ msgid "Invalid system_id/action_id pair."
+#~ msgstr "Neplatný pár system_id/action_id."
+
+#, python-format
+#~ msgid "Invalid value %s (%s)"
+#~ msgstr "Neplatná hodnota %s (%s)"
 
 #, python-format
 #~ msgid ""

@@ -73,6 +73,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.cloud.test.TestCloudPaygManagerBuilder;
+import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -114,11 +116,13 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
-    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
+    private final AttestationManager attestationManager = new AttestationManager();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private RegularMinionBootstrapper regularMinionBootstrapper =
-            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper =
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager, attestationManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -132,7 +136,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     private SystemManager systemManager =
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-            systemManager, serverGroupManager, new CloudPaygManager());
+            systemManager, serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
     private ErrataHandler errataHandler = new ErrataHandler();
 
@@ -325,7 +329,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertFalse(child2.isBaseChannel());
 
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new CloudPaygManager());
+                serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
 
         int sid = server.getId().intValue();
         int rc1 = sh.setBaseChannel(admin, sid, base.getLabel());
@@ -354,7 +358,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testSetBaseChannel() throws Exception {
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new CloudPaygManager());
+                serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
 
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -875,7 +879,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         childChan.setParentChannel(baseChan);
 
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new CloudPaygManager());
+                serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
 
         int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());
         int return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of(childChan.getLabel()));
