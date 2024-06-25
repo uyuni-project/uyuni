@@ -23,6 +23,11 @@ class NamespaceKickstart
   def create_profile(name, kstreelabel, kshost)
     @test.call('kickstart.profile.createProfile', sessionKey: @test.token, profileLabel: name, vmType: 'none', kickstartableTreeLabel: kstreelabel, kickstartHost: kshost, rootPassword: 'linux', updateType: 'all')
   end
+
+  def create_profile_using_import_file(name, kstreelabel, filename)
+    file_content = File.read(filename)
+    @test.call('kickstart.importRawFile', sessionKey: @test.token, profileLabel: name, vmType: 'none', kickstartableTreeLabel: kstreelabel, kickstartFileContents: file_content )
+  end
 end
 
 # Kickstart.profile namespace

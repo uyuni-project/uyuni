@@ -19,13 +19,12 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
     # TODO: Move to SUMA API
-    When I create distro "testdistro"
+    When I create "testdistro" kickstart tree via the API
 
   Scenario: Create dummy profile
     Given cobblerd is running
-    And distro "testdistro" exists
     # TODO: Move to SUMA API
-    When I create profile "testprofile" for distro "testdistro"
+    When I create a kickstart profile for "testprofile" via the API using import file for distro "testdistro"
 
   Scenario: Check cobbler created distro and profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -56,7 +55,7 @@ Feature: Cobbler and distribution autoinstallation
     And I should see a "fedora_kickstart_distro" link
 
   Scenario: Create a distribution via the API, without kernel options
-    When I create a kickstart tree via the API
+    When I create "fedora_kickstart_distro_api" kickstart tree via the API
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     Then I should see a "fedora_kickstart_distro_api" link
 
@@ -175,7 +174,6 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "System record created" text
     And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "autoyast=" on server
 
-  @slow
   Scenario: Create a cobbler system record via API
     When I create a system record
     And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "inst.ks=.*testserver:1" on server
@@ -183,54 +181,15 @@ Feature: Cobbler and distribution autoinstallation
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
     And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
-  @slow
-  Scenario: Cleanup: delete test profile
-    # TODO: Move to SUMA API
-    When I remove profile "testprofile"
-    When I follow the left menu "Systems > Autoinstallation > Profiles"
-    Then I should see a "fedora_kickstart_profile" text
-    And I follow "fedora_kickstart_profile"
-    Then I should see a "Autoinstallation: fedora_kickstart_profile" text
-    And I follow "Delete Autoinstallation"
-    And I click on "Delete Autoinstallation"
-    Then I should see a "Autoinstallation was deleted successfully" text
-    And I should see a "fedora_kickstart_profile_upload" text
-    And I follow "fedora_kickstart_profile_upload"
-    Then I should see a "Autoinstallation: fedora_kickstart_profile_upload" text
-    And I follow "Delete Autoinstallation"
-    And I click on "Delete Autoinstallation"
-    Then I should see a "Autoinstallation was deleted successfully" text
-    And I should not see a "fedora_kickstart_profile" text
-    And I should not see a "fedora_kickstart_profile_upload" text
-
-  @slow
-  Scenario: Cleanup: delete test distros
-    # TODO: Move to SUMA API
-    When I remove distro "testdistro"
+  Scenario: Cleanup: delete test profiles and distros using API
+    When I wait for "10" seconds
+    When I delete profile and distro using the API for "testdistro"
+    When I delete profile and distro using the API for "fedora_kickstart_distro"
+    When I delete profile and distro using the API for "fedora_kickstart_distro_api"
+    When I delete profile and distro using the API for "fedora_kickstart_distro_kernel_api"
+    When I delete profile and distro using the API for "SLE-15-FAKE"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
-    Then I should see a "fedora_kickstart_distro" text
-    And I follow "fedora_kickstart_distro"
-    Then I should see a " Edit Autoinstallable Distribution" text
-    And I follow "Delete Distribution"
-    And I click on "Delete Distribution"
-    Then I should see a "Autoinstallable Distribution deleted successfully" text
-    And I follow "fedora_kickstart_distro_api"
-    Then I should see a " Edit Autoinstallable Distribution" text
-    And I follow "Delete Distribution"
-    And I click on "Delete Distribution"
-    Then I should see a "Autoinstallable Distribution deleted successfully" text
-    And I should see a "fedora_kickstart_distro_kernel_api" text
-    And I follow "fedora_kickstart_distro_kernel_api"
-    Then I should see a " Edit Autoinstallable Distribution" text
-    And I follow "Delete Distribution"
-    And I click on "Delete Distribution"
-    Then I should see a "Autoinstallable Distribution deleted successfully" text
-    And I should see a "SLE-15-FAKE" text
-    And I follow "SLE-15-FAKE"
-    Then I should see a " Edit Autoinstallable Distribution" text
-    And I follow "Delete Distribution"
-    And I click on "Delete Distribution"
-    Then I should see a "Autoinstallable Distribution deleted successfully" text
+    And I should not see a "testdistro" text
     And I should not see a "fedora_kickstart_distro" text
     And I should not see a "fedora_kickstart_distro_api" text
     And I should not see a "fedora_kickstart_distro_kernel_api" text
@@ -238,6 +197,7 @@ Feature: Cobbler and distribution autoinstallation
 
 @flaky
   Scenario: Check for errors in Cobbler monitoring
+    When I wait for "5" seconds
     Then the local logs for Cobbler should not contain errors
 
   Scenario: Logout from the Cobbler API

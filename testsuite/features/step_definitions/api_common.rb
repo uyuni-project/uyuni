@@ -587,8 +587,20 @@ When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "
   $api_test.system.set_variables(sid, variables)
 end
 
-When(/^I create a kickstart tree via the API$/) do
-  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
+When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
+  if distro_name =='fedora_kickstart_distro_api'
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
+  elsif distro_name == 'testdistro'
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
+  else
+    # Raise an error for unrecognized value
+    raise ArgumentError, "Unrecognized value: #{distro_name}"
+  end
+end
+
+When(/^I create a kickstart profile for "([^"]*)" via the API using import file for distro "([^"]*)"$/) do |profile_name, distro_name|
+  canonical_path = Pathname.new(File.join(File.dirname(__FILE__), '/../upload_files/autoinstall/cobbler/mock/empty.xml')).cleanpath
+  $api_test.kickstart.create_profile_using_import_file(profile_name, distro_name, canonical_path)
 end
 
 When(/^I create a kickstart tree with kernel options via the API$/) do
@@ -597,4 +609,8 @@ end
 
 When(/^I update a kickstart tree via the API$/) do
   $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'generic_rpm', 'self_update=0', 'self_update=1')
+end
+
+When(/^I delete profile and distro using the API for "([^"]*)"$/) do |distro_name|
+  $api_test.kickstart.tree.delete_tree_and_profiles(distro_name)
 end
