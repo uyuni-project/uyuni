@@ -950,6 +950,14 @@ fi
 if [ $REGISTER_THIS_BOX -eq 1 ]; then
     echo "* registering"
 
+    PREV_MASTER="$(sed -n 's/^master: //p' $SUSEMANAGER_MASTER_FILE 2> /dev/null)"
+    # Remove old minion keys so reregistration do different master works
+    # Delete the pki config only in case of changing the master
+    if [ -d "$MINION_PKI_CONF" -a "$HOSTNAME" != "$PREV_MASTER" ]; then
+        echo "* removing old Salt PKI files"
+        rm -r "$MINION_PKI_CONF"
+    fi
+
     echo "$MYNAME" > "$MINION_ID_FILE"
     cat <<EOF > "$SUSEMANAGER_MASTER_FILE"
 master: $HOSTNAME
@@ -990,11 +998,6 @@ system-environment:
       _:
         SALT_RUNNING: 1
 EOF
-
-# Remove old minion keys so reregistration do different master works
-if [ -d "$MINION_PKI_CONF" ]; then
-    rm -r "$MINION_PKI_CONF"
-fi
 
 if [ -n "$SNAPSHOT_ID" ]; then
     cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"
