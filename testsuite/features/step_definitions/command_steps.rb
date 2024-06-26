@@ -704,7 +704,7 @@ When(/^I wait until rhn-search is responding$/) do
   end
 end
 
-Then(/^I wait until mgr-sync refresh is finished$/) do
+When(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
   repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
