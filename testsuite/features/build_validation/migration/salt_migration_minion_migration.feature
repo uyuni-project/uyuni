@@ -33,8 +33,8 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     And I wait until I do not see "Loading..." text
     And I check radio button "SLE-Product-SLES15-SP5-Pool for x86_64"
     And I wait until I see "SLE-Module-Basesystem15-SP5-Pool for x86_64" text
-    And I check "SLE-Manager-Tools15-Pool for x86_64 SP4"
-    And I check "SLE-Manager-Tools15-Updates for x86_64 SP4"
+    And I check "SLE-Manager-Tools15-Pool for x86_64 SP5"
+    And I check "SLE-Manager-Tools15-Updates for x86_64 SP5"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -70,6 +70,7 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "file /etc/salt/minion.d"
+    And I enter the hostname of "salt_migration_minion" as "target"
     And I click on preview
     Then I should see "salt_migration_minion" hostname
     And I wait until I do not see "pending" text
@@ -78,6 +79,7 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     And I expand the results for "salt_migration_minion"
     Then I should see "/etc/salt/minion.d: cannot open `/etc/salt/minion.d' (No such file or directory)" in the command output for "salt_migration_minion"
     When I enter command "file /etc/venv-salt-minion/minion.d"
+    And I enter the hostname of "salt_migration_minion" as "target"
     And I click on preview
     Then I should see "salt_migration_minion" hostname
     And I wait until I do not see "pending" text
