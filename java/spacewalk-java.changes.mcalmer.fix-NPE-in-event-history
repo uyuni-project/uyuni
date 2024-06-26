@@ -1,0 +1,1 @@
+- prevent NPE when listing history events without completion time (bsc#1146701)
