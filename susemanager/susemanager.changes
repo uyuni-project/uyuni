@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 26 15:04:06 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Add bootstrap repository data for SUSE Liberty Linux 7 LTSS
+    (bsc#1226958)
+
+-------------------------------------------------------------------
 Mon Jun 10 16:36:26 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7-0
