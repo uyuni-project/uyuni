@@ -1,42 +1,38 @@
-#!/bin/bash
+#!/bin/sh -e
 
-set -e
+function configure_cobbler_networking() {
+    # Backport of upstream script
+    # https://github.com/cobbler/cobbler/blob/main/system-tests/scripts/bootstrap
+    server=192.168.1.1
+    bridge=pxe
+    etc_qemu=$(test -e /etc/qemu-kvm && echo /etc/qemu-kvm || echo /etc/qemu)
 
-zypper --non-interactive --gpg-auto-import-keys ref
+    ip link add ${bridge} type bridge
+    ip address add ${server}/24 dev ${bridge}
+    ip link set up dev ${bridge}
 
-# Packages required to run the cobbler unit tests
-zypper in -y  --no-recommends cobbler-tests cobbler-tests-containers
+    mkdir -p ${etc_qemu}
+    echo allow ${bridge} >>${etc_qemu}/bridge.conf
 
-cp /root/cobbler-apache.conf /etc/apache2/conf.d/cobbler.conf
-cp /root/modules.conf /etc/cobbler/modules.conf
-cp /root/cobbler_web.conf /etc/apache2/vhosts.d/cobbler_web.conf
-cp /root/apache2 /etc/sysconfig/apache2
-cp /root/sample.ks /var/lib/cobbler/kickstarts/sample.ks
+    sed -i "s/127\.0\.0\.1/${server}/g" /etc/cobbler/settings.yaml
+}
 
-# migrate modules.conf
-/usr/share/cobbler/bin/settings-migration-v1-to-v2.sh -s
+function start_httpd() {
+    # TODO: This should not be necessary after next Cobbler release
+    # See https://github.com/openSUSE/cobbler/pull/97
+    /usr/sbin/start_apache2 -D SYSTEMD  -k start || :
+}
 
-# start apache - required by cobbler tests
-/usr/sbin/start_apache2 -D SYSTEMD  -k start
+function configure_cobbler() {
+    # Configure and start Cobbler services necessary for testing
+    setup-supervisor.sh || :
+}
 
-# start cobbler daemon
-cobblerd
+function run_tests() {
+    pytest --junitxml=/reports/cobbler.xml
+}
 
-ln -s /usr/share/cobbler/ /code
-
-# Configure DHCP
-sed -i 's/DHCPD_INTERFACE=""/DHCPD_INTERFACE="ANY"/' /etc/sysconfig/dhcpd
-echo "subnet 172.17.0.0 netmask 255.255.255.0 {}"  >> /etc/dhcpd.conf
-sed -i "s/dhcpd -4 -f/dhcpd -f/g" /code/docker/develop/supervisord/conf.d/dhcpd.conf
-sed -i "s/nogroup pxe/nogroup/g" /code/docker/develop/supervisord/conf.d/dhcpd.conf
-
-# Configure PAM
-useradd -p $(perl -e 'print crypt("test", "password")') test
-
-sh /code/docker/develop/scripts/setup-supervisor.sh || true
-
-# execute the tests
-
-cd /code/tests
-
-pytest --junitxml=/reports/cobbler.xml
+configure_cobbler_networking
+start_httpd
+configure_cobbler
+run_tests
