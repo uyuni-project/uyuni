@@ -109,8 +109,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return return true if any products are available, otherwise false
      */
     public static boolean hasProducts() {
-        return getSession().createQuery("SELECT productId FROM SUSEProduct")
-                .stream().findAny().isPresent();
+        return getSession().createQuery("SELECT count(p) > 0 FROM SUSEProduct p", Boolean.class)
+            .uniqueResult();
     }
 
     /**
