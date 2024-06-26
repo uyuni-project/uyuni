@@ -1,0 +1,2 @@
+- update last sync refresh timestamp only when at least one time
+  products were synced before
