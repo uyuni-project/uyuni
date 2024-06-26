@@ -31,7 +31,7 @@ class NamespaceKickstart
   # @param filename [String] Contents of the kickstart file to import.
   def create_profile_using_import_file(name, kstreelabel, filename)
     file_content = File.read(filename)
-    @test.call('kickstart.importRawFile', sessionKey: @test.token, profileLabel: name, vmType: 'none', kickstartableTreeLabel: kstreelabel, kickstartFileContents: file_content )
+    @test.call('kickstart.importRawFile', sessionKey: @test.token, profileLabel: name, vmType: 'none', kickstartableTreeLabel: kstreelabel, kickstartFileContents: file_content)
   end
 end
 

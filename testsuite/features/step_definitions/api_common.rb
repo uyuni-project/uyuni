@@ -593,8 +593,6 @@ When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
     $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
   when 'testdistro'
     $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
-  when 'buildisodistro'
-    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
   else
     # Raise an error for unrecognized value
     raise ArgumentError, "Unrecognized value: #{distro_name}"
