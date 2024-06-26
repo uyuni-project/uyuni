@@ -85,6 +85,17 @@ public class RecurringCustomStateHandler extends BaseHandler {
 
         List<String> states = (List<String>) actionProps.get("states");
         Set<RecurringStateConfig> stateConfig = new HashSet<>();
+        if (states.contains("reboot") && states.contains("rebootifneeded")) {
+            throw new InvalidArgsException("'reboot' and 'rebootifneeded' cannot be used together.");
+        }
+        else if (states.contains("reboot")) {
+            stateConfig.add(stateConfigFactory.getRecurringState(loggedInUser, "reboot", states.size()));
+            states.remove("reboot");
+        }
+        else if (states.contains("rebootifneeded")) {
+            stateConfig.add(stateConfigFactory.getRecurringState(loggedInUser, "rebootifneeded", states.size()));
+            states.remove("rebootifneeded");
+        }
         for (int i = 0; i < states.size(); i++) {
             try {
                 stateConfig.add(stateConfigFactory.getRecurringState(loggedInUser, states.get(i), i + 1L));
@@ -129,6 +140,17 @@ public class RecurringCustomStateHandler extends BaseHandler {
             }
 
             Set<RecurringStateConfig> stateConfig = new HashSet<>();
+            if (states.contains("reboot") && states.contains("rebootifneeded")) {
+                throw new InvalidArgsException("'reboot' and 'rebootifneeded' cannot be used together.");
+            }
+            else if (states.contains("reboot")) {
+                stateConfig.add(stateConfigFactory.getRecurringState(loggedInUser, "reboot", states.size()));
+                states.remove("reboot");
+            }
+            else if (states.contains("rebootifneeded")) {
+                stateConfig.add(stateConfigFactory.getRecurringState(loggedInUser, "rebootifneeded", states.size()));
+                states.remove("rebootifneeded");
+            }
             for (int i = 0; i < states.size(); i++) {
                 try {
                     stateConfig.add(stateConfigFactory.getRecurringState(loggedInUser, states.get(i), i + 1L));
