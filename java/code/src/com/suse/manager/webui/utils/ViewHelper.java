@@ -93,7 +93,8 @@ public enum ViewHelper {
         "/rhn/manager/schedule/recurring-actions",
         "/rhn/manager/schedule/maintenance/calendars",
         "/rhn/manager/multiorg/recurring-actions",
-        "/rhn/manager/schedule/maintenance/schedules"
+        "/rhn/manager/schedule/maintenance/schedules",
+        "/rhn/manager/admin/config/monitoring"
     );
 
     ViewHelper() { }
