@@ -588,9 +588,12 @@ When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "
 end
 
 When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
-  if distro_name =='fedora_kickstart_distro_api'
+  case distro_name
+  when 'fedora_kickstart_distro_api'
     $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
-  elsif distro_name == 'testdistro'
+  when 'testdistro'
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
+  when 'buildisodistro'
     $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
   else
     # Raise an error for unrecognized value

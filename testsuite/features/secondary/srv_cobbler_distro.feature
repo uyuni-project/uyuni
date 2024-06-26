@@ -18,12 +18,10 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
-    # TODO: Move to SUMA API
     When I create "testdistro" kickstart tree via the API
 
   Scenario: Create dummy profile
     Given cobblerd is running
-    # TODO: Move to SUMA API
     When I create a "testprofile" profile via the API using import file for "testdistro" distribution
 
   Scenario: Check cobbler created distro and profile
