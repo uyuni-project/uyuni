@@ -92,7 +92,8 @@ public enum ViewHelper {
         "/rhn/audit/scap/Search.do",
         "/rhn/manager/schedule/recurring-actions",
         "/rhn/manager/schedule/maintenance/calendars",
-        "/rhn/manager/multiorg/recurring-actions"
+        "/rhn/manager/multiorg/recurring-actions",
+        "/rhn/manager/schedule/maintenance/schedules"
     );
 
     ViewHelper() { }
