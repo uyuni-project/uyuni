@@ -18,8 +18,8 @@ mgr_inst_snpguest:
 
 mgr_write_request_data:
   cmd.run:
-    - name: /usr/bin/echo "{{ salt['pillar.get']('attestation_data:nonce') }}" | base64 -d > /tmp/cocoattest/request-data.txt
-    - onlyif: /usr/bin/grep -x /usr/bin/base64
+    - name: /usr/bin/echo "{{ salt['pillar.get']('attestation_data:nonce') }}" | /usr/bin/base64 -d > /tmp/cocoattest/request-data.txt
+    - onlyif: /usr/bin/test -x /usr/bin/base64
     - require:
       - file: mgr_create_attestdir
 
@@ -32,7 +32,7 @@ mgr_create_snpguest_report:
 
 mgr_snpguest_report:
   cmd.run:
-    - name: /usr/bin/cat /tmp/cocoattest/report.bin | base64
+    - name: /usr/bin/cat /tmp/cocoattest/report.bin | /usr/bin/base64
     - require:
       - cmd: mgr_create_snpguest_report
       - file: mgr_create_attestdir

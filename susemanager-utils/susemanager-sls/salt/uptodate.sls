@@ -10,7 +10,7 @@ mgr_keep_system_up2date_updatestack:
       - 103
       - 106
       - 0
-    - onlyif: '/usr/bin/zypper patch-check --updatestack-only; r=$?; test $r -eq 100 || test $r -eq 101'
+    - onlyif: '/usr/bin/zypper patch-check --updatestack-only; r=$?; /usr/bin/test $r -eq 100 || /usr/bin/test $r -eq 101'
     - require:
       - sls: channels
 
@@ -63,6 +63,6 @@ mgr_reboot_if_needed:
     - onlyif:
       - /usr/bin/test -e /boot/do_purge_kernels
 {%- else %}
-    - onlyif: '/usr/bin/zypper ps -s; [ $? -eq 102 ] || [ {{ patch_need_reboot }} -eq 0 ]'
+    - onlyif: '/usr/bin/zypper ps -s; /usr/bin/test $? -eq 102 || /usr/bin/test {{ patch_need_reboot }} -eq 0 '
 {%- endif %}
 {%- endif %}

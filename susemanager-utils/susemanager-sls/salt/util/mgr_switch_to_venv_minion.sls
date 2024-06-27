@@ -97,7 +97,7 @@ mgr_purge_non_venv_salt_conf_dir:
   file.absent:
     - name: /etc/salt
     - unless:
-      - /usr/bin/find /etc/salt -type f -print -quit | grep -q .
+      - /usr/bin/find /etc/salt -type f -print -quit | /usr/bin/grep -q .
     - require:
       - cmd: mgr_purge_non_venv_salt_pki_dir
 {%- endif %}

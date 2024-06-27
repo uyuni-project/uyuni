@@ -18,7 +18,7 @@ oraclerelease:
 amazonrelease:
   cmd.run:
     - name: /usr/bin/cat /etc/system-release
-    - onlyif: /usr/bin/test -f /etc/system-release && grep -qi Amazon /etc/system-release
+    - onlyif: /usr/bin/test -f /etc/system-release && /usr/bin/grep -qi Amazon /etc/system-release
 almarelease:
   cmd.run:
     - name: /usr/bin/cat /etc/almalinux-release
