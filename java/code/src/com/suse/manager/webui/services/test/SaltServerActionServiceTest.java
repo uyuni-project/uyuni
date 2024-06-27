@@ -42,7 +42,6 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
-import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -74,6 +73,8 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
@@ -109,7 +110,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -690,6 +690,15 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSubscribeChannels() throws Exception {
+        saltServerActionService.setCommitTransaction(false);
+
+        SaltService saltService = new SaltService() {
+            @Override
+            public void refreshPillar(MinionList minionList) {
+            }
+        };
+        ChannelsChangedEventMessageAction ccema = new ChannelsChangedEventMessageAction(saltService);
+
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch1.setParentChannel(base);
@@ -701,7 +710,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        SubscribeChannelsAction action = (SubscribeChannelsAction)ActionManager.createAction(
+        SubscribeChannelsAction action = (SubscribeChannelsAction) ActionManager.createAction(
                 user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe to channels", Date.from(now.toInstant()));
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
@@ -713,50 +722,38 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         ActionFactory.addServerToAction(minion1, action);
 
-        saltServerActionService.setCommitTransaction(false);
         Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
+        ccema.execute(new ChannelsChangedEventMessage(minion1.getId(), user.getId()));
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
         assertEquals(1, calls.size());
 
-        Map<String, Object> pillar = (Map<String, Object>)((Map<String, Object>)calls.keySet().stream()
+        Map<String, Object> payload = calls.keySet().stream()
                 .findFirst()
-                .get().getPayload().get("kwarg")).get("pillar");
-        assertEquals("mgr_channels_new", pillar.get("_mgr_channels_items_name"));
-        Map<String, Object> channels = (Map<String, Object>)pillar.get("mgr_channels_new");
-        assertEquals(3, channels.size());
-        assertTrue(channels.keySet().contains(base.getLabel()));
-        assertTrue(channels.keySet().contains(ch1.getLabel()));
-        assertTrue(channels.keySet().contains(ch2.getLabel()));
+                .get().getPayload();
 
-        assertTokenPillarValue(base, action, channels);
-        assertTokenPillarValue(ch1, action, channels);
-        assertTokenPillarValue(ch2, action, channels);
+        assertEquals("state.apply", payload.get("fun"));
+        assertEquals("channels", ((List<String>) ((Map<String, Object>) payload.get("kwarg")).get("mods")).get(0));
 
-        action = (SubscribeChannelsAction)ActionFactory.lookupById(action.getId());
+        minion1 = TestUtils.reload(minion1);
+        assertEquals(3, minion1.getChannels().size());
+        assertEquals(base.getId(), minion1.getBaseChannel().getId());
+        assertEquals(2, minion1.getChildChannels().size());
+        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1.getId())));
+        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2.getId())));
 
-        assertEquals(3,  action.getDetails().getAccessTokens().size());
-        assertTrue(action.getDetails().getAccessTokens().stream()
-                .allMatch(token ->
-                        token.getStart().toInstant().isAfter(now.toInstant()) &&
-                        token.getStart().toInstant().isBefore(now.toInstant().plus(10, ChronoUnit.SECONDS))));
-        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(AccessToken::getValid));
-        assertTokenExists(base, action);
-        assertTokenExists(ch1, action);
-        assertTokenExists(ch2, action);
+        assertEquals(3, minion1.getAccessTokens().size());
+        assertTokenChannel(minion1, base);
+        assertTokenChannel(minion1, ch1);
+        assertTokenChannel(minion1, ch2);
     }
 
-    private void assertTokenExists(Channel channel, SubscribeChannelsAction action) {
-        assertEquals(1, action.getDetails().getAccessTokens().stream()
-                .filter(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel)).count());
-    }
-
-    private void assertTokenPillarValue(Channel channel, SubscribeChannelsAction action, Map<String, Object> channels) {
-        AccessToken tokenForChannel = action.getDetails().getAccessTokens().stream()
-                .filter(token -> token.getChannels().contains(channel)).findFirst().get();
-        assertEquals(tokenForChannel.getToken(), ((Map<String, Object>)channels.get(channel.getLabel())).get("token"));
+    private void assertTokenChannel(MinionServer minionIn, Channel channel) {
+        assertTrue(minionIn.getAccessTokens().stream()
+                .anyMatch(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel)),
+                channel.getLabel());
     }
 
     private SaltServerActionService countSaltActionCalls(AtomicInteger counter) {
