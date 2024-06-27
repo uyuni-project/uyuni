@@ -86,7 +86,7 @@ mgr_buildimage_kiwi_bundle:
 # KIWI Legacy
 #
 
-{%- set kiwi_help = salt['cmd.run']('kiwi --help') %}
+{%- set kiwi_help = salt['cmd.run']('/usr/bin/kiwi --help') %}
 {%- set have_bundle_build = kiwi_help.find('--bundle-build') > 0 %}
 
 # i586 build on x86_64 host must be called with linux32
@@ -141,13 +141,13 @@ mgr_buildimage_kiwi_bundle_dir:
 
 mgr_buildimage_kiwi_bundle_tarball:
   cmd.run:
-    - name: "cd '{{ dest_dir }}' && tar czf '{{ bundle_dir }}'`basename *.packages .packages`-{{ bundle_id }}.tgz --no-recursion `find . -maxdepth 1 -type f`"
+    - name: "cd '{{ dest_dir }}' && /usr/bin/tar czf '{{ bundle_dir }}'`basename *.packages .packages`-{{ bundle_id }}.tgz --no-recursion `/usr/bin/find . -maxdepth 1 -type f`"
     - require:
       - file: mgr_buildimage_kiwi_bundle_dir
 
 mgr_buildimage_kiwi_bundle:
   cmd.run:
-    - name: "cd '{{ bundle_dir }}' && sha256sum *.tgz > `echo *.tgz`.sha256"
+    - name: "cd '{{ bundle_dir }}' && /usr/bin/sha256sum *.tgz > `/usr/bin/echo *.tgz`.sha256"
     - require:
       - cmd: mgr_buildimage_kiwi_bundle_tarball
 
