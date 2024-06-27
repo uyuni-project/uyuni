@@ -32,6 +32,15 @@ input[type="checkbox"] {
   margin: 0 5px 0 0;
 }
 
+.checkbox {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  
+  & + .checkbox {
+    margin-top: -5px;
+  }
+}
+
 // Here and below, these offer Bootstrap 3 compatibility
 .form-horizontal {
   .control-label {
