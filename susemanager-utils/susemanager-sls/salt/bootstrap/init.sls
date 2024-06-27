@@ -186,10 +186,10 @@ salt-minion-package:
 {# hack until transactional_update.run is fixed to use venv-salt-call #}
 {# Writing  to the future - find latest etc overlay which was created for package installation and use that as etc root #}
 {# this only works here in bootstrap when we are not running in transaction #}
-{%- set pending_transaction_id = salt['cmd.run']('snapper --no-dbus list --columns=number | grep "+" | tr -d "+"', python_shell=True) %}
+{%- set pending_transaction_id = salt['cmd.run']('/usr/bin/snapper --no-dbus list --columns=number | /usr/bin/grep "+" | tr -d "+"', python_shell=True) %}
 {%- if not pending_transaction_id %}
 {#  if we did not get pending transaction id, write to current upperdir #}
-{%- set pending_transaction_id = salt['cmd.run']('snapper --no-dbus list --columns number | grep "*" | tr -d "*"', python_shell=True) %}
+{%- set pending_transaction_id = salt['cmd.run']('/usr/bin/snapper --no-dbus list --columns number | /usr/bin/grep "*" | tr -d "*"', python_shell=True) %}
 {%- endif %}
 {# increase transaction id by 1 since jinja is doing this before new transaction for package install is created #}
 {# this is working under assumption there will be only one transaction between jinja render and actual package installation #}

@@ -11,8 +11,8 @@ mgr_copy_initrd:
 
 {% set loader_type = salt['cmd.run']('if [ -f /etc/sysconfig/bootloader ]; then source /etc/sysconfig/bootloader 2> /dev/null; fi;
 if [ -z "${LOADER_TYPE}" ]; then
-if [ $(which grubonce 2> /dev/null) ] && [ !$(which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="grub";
-elif [ $(which elilo 2> /dev/null) ] && [ !$(which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="elilo";
+if [ $(/usr/bin/which grubonce 2> /dev/null) ] && [ !$(/usr/bin/which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="grub";
+elif [ $(/usr/bin/which elilo 2> /dev/null) ] && [ !$(/usr/bin/which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="elilo";
 fi;
 fi; echo "${LOADER_TYPE}"', python_shell=True) %}
 {% if loader_type == 'grub' %}
@@ -27,7 +27,7 @@ mgr_create_grub_entry:
 
 mgr_grub_boot_once:
   cmd.run:
-    - name: grubonce "{{ pillar.get('uyuni-reinstall-name') }}"
+    - name: /usr/sbin/grubonce "{{ pillar.get('uyuni-reinstall-name') }}"
     - onchanges:
       - file: mgr_create_grub_entry
 {% elif loader_type == 'elilo' %}
