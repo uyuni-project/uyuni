@@ -48,6 +48,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -144,7 +146,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         boolean isActionChainInvolved = isActionChainResult.filter(isActionChain -> isActionChain).orElse(false);
         isActionChainResult.filter(isActionChain -> isActionChain).ifPresent(isActionChain -> {
-            if (!jobResult.isPresent()) {
+            if (jobResult.isEmpty()) {
                 return;
             }
             AtomicReference<Optional<User>> scheduler = new AtomicReference<>(Optional.empty());
@@ -198,36 +200,49 @@ public class JobReturnEventMessageAction implements MessageAction {
                     actionChainResult,
                     stateResult -> false);
 
-            boolean packageRefreshNeeded = !isFunctionTestMode && actionChainResult.entrySet().stream()
+            if (isFunctionTestMode) {
+                return;
+            }
+
+            Set<PackageChangeOutcome> packageRefreshNeeded = actionChainResult.entrySet().stream()
                     .map(entry -> SaltActionChainGeneratorService.parseActionChainStateId(entry.getKey())
                             .map(stateId -> handlePackageChanges(jobReturnEvent, entry.getValue().getName(),
                                     Optional.ofNullable(entry.getValue().getChanges().getRet())))
-                            .orElse(false))
-                    .collect(Collectors.toList())//This is needed to make sure we don't return early but execute
-                    .stream()                    // handlePackageChange for all the results in actions chain result.
-                    .anyMatch(Boolean.TRUE::equals);
-            if (packageRefreshNeeded) {
+                            .orElse(PackageChangeOutcome.DONE)
+                    ).collect(Collectors.toSet());
+
+            if (packageRefreshNeeded.contains(PackageChangeOutcome.NEEDS_DELAYED_REFRESHING)) {
+                schedulePackageRefresh(scheduler.get(), jobReturnEvent.getMinionId(),
+                                       Date.from(Instant.now().plusSeconds(60)));
+            }
+            else if (packageRefreshNeeded.contains(PackageChangeOutcome.NEEDS_REFRESHING)) {
                 schedulePackageRefresh(scheduler.get(), jobReturnEvent.getMinionId());
             }
         });
 
         //For all jobs except when action chains are involved or the action was in test mode
-        if (!isActionChainInvolved && !isFunctionTestMode && handlePackageChanges(jobReturnEvent,
-                Optional.ofNullable(function).map(Xor::right), jobResult)) {
+        if (!isActionChainInvolved && !isFunctionTestMode) {
             Date earliest = new Date();
-            Optional<User> scheduler = Optional.empty();
-            if (actionId.isPresent()) {
-                Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
-                if (action.isPresent()) {
-                    scheduler = Optional.ofNullable(action.get().getSchedulerUser());
-                    if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.add(Calendar.SECOND, 30);
-                        earliest = calendar.getTime();
+            PackageChangeOutcome changeOutcome = handlePackageChanges(jobReturnEvent,
+                            Optional.ofNullable(function).map(Xor::right), jobResult);
+            if (changeOutcome != PackageChangeOutcome.DONE) {
+                if (changeOutcome == PackageChangeOutcome.NEEDS_DELAYED_REFRESHING) {
+                    earliest = Date.from(Instant.now().plusSeconds(60));
+                }
+                Optional<User> scheduler = Optional.empty();
+                if (actionId.isPresent()) {
+                    Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
+                    if (action.isPresent()) {
+                        scheduler = Optional.ofNullable(action.get().getSchedulerUser());
+                        if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.add(Calendar.SECOND, 30);
+                            earliest = calendar.getTime();
+                        }
                     }
                 }
+                schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), earliest);
             }
-            schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), earliest);
         }
 
         // Check if event was triggered in response to state scheduled at minion start-up event
@@ -294,29 +309,30 @@ public class JobReturnEventMessageAction implements MessageAction {
      * @param jobReturnEvent jobReturnEvent
      * @param function salt module name
      * @param jobResult result
-     * @return return false If there is enough information to update database with new Package information(delta)
-     *         return true If information is not enough and a full package refresh is needed
+     * @return return a PackageChangeOutcome
+     *         DONE when there is enough information to update database with new Package information(delta)
+     *         NEEDS_REFRESHING when information is not enough and a full package refresh is needed.
+     *         If a refresh should happen with a delay, NEEDS_DELAYED_REFRESHING is returned
      */
-    private boolean handlePackageChanges(JobReturnEvent jobReturnEvent, Optional<Xor<String[], String>> function,
-                                                Optional<JsonElement> jobResult) {
+    private PackageChangeOutcome handlePackageChanges(JobReturnEvent jobReturnEvent,
+                    Optional<Xor<String[], String>> function, Optional<JsonElement> jobResult) {
 
         return MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).flatMap(minionServer ->
                 jobResult.map(result -> {
-                    boolean fullPackageRefreshNeeded = false;
+                    PackageChangeOutcome refreshType = PackageChangeOutcome.DONE;
                     try {
-                        if (forcePackageListRefresh(jobReturnEvent) ||
-                                saltUtils.handlePackageChanges(function, result,
-                                        minionServer) ==  PackageChangeOutcome.NEEDS_REFRESHING) {
-                            fullPackageRefreshNeeded = true;
-                        }
+                        refreshType = saltUtils.handlePackageChanges(function, result, minionServer);
                     }
                      catch (JsonParseException e) {
                         LOG.warn("Could not determine if packages changed in call to {} because of a parse error",
                                  function, e);
                     }
-                    return fullPackageRefreshNeeded;
+                    if (refreshType == PackageChangeOutcome.DONE && forcePackageListRefresh(jobReturnEvent)) {
+                        refreshType = PackageChangeOutcome.NEEDS_REFRESHING;
+                    }
+                    return refreshType;
                 })
-        ).orElse(false);
+        ).orElse(PackageChangeOutcome.DONE);
     }
 
     /**

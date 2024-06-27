@@ -218,7 +218,11 @@ public class SaltUtils {
         /**
          * A separate full refresh is necessary.
          */
-        NEEDS_REFRESHING
+        NEEDS_REFRESHING,
+        /**
+         * A separate full refresh is necessary, but salt was updated and we need delay refreshing
+         */
+        NEEDS_DELAYED_REFRESHING
     }
 
     /**
@@ -347,6 +351,13 @@ public class SaltUtils {
         );
 
         if (fullRefreshNeeded) {
+            boolean needDelay = changes.entrySet()
+                    .stream().anyMatch(e ->
+                            e.getKey().startsWith("salt") ||
+                                    e.getKey().equals("venv-salt-minion"));
+            if (needDelay) {
+                return PackageChangeOutcome.NEEDS_DELAYED_REFRESHING;
+            }
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
         else {
@@ -454,12 +465,10 @@ public class SaltUtils {
                 .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
                 .collect(Collectors.toList());
         for (StateApplyResult<JsonElement> value : collect) {
-              Map<String, Change<Xor<String, List<Pkg.Info>>>> delta =
-                      extractPackageDelta(value.getChanges());
-
-            if (applyChangesFromStateModule(delta, server) ==
-                    PackageChangeOutcome.NEEDS_REFRESHING) {
-                return PackageChangeOutcome.NEEDS_REFRESHING;
+            Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = extractPackageDelta(value.getChanges());
+            PackageChangeOutcome changeOutcome = applyChangesFromStateModule(delta, server);
+            if (changeOutcome != PackageChangeOutcome.DONE) {
+                return changeOutcome;
             }
         }
         return PackageChangeOutcome.DONE;
