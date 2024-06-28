@@ -1,0 +1,1 @@
+- Fix package profile update on CentOS 7 when yum-utils is not installed (bsc#1227133)
