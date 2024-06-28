@@ -341,4 +341,11 @@ transactional_update_set_reboot_method_systemd:
     - unless:
       - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
+{# Cannot use the service module due to dbus, disable service manually #}
+{% set systemd_timer_file = '/etc/systemd/system/timers.target.wants/transactional-update.timer' %}
+{%- if salt['file.file_exists'](systemd_timer_file) %}
+disable_reboot_timer_transactional_minions:
+  file.absent:
+    - name: {{ systemd_timer_file }}
+{%- endif %}
 {%- endif %}
