@@ -209,6 +209,9 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     }
 
     private Cpe deriveFromProductOVALTest(TestType productTest) {
+        // Example of the content of an OVAL product test:
+        // <rpminfo_test id="oval:org.opensuse.security:tst:2009856174" version="1" comment="sles-release is ==15.6"...
+
         String testComment = productTest.getComment();
         String productPart = null;
         String versionPart = null;
