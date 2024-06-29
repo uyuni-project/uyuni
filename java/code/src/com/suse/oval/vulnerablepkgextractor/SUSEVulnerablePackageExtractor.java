@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  */
 public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Pattern RELEASE_PACKAGE_REGEX = Pattern.compile(
-            "^\\s*(?<releasePackage>[-a-zA-Z_0-9]+) is\\s*==\\s*(?<releasePackageVersion>[0-9.]+)\\s*$");
+            "^\\s*(?<releasePackage>[-a-zA-Z_0-9]+) is\\s*(==|>=)\\s*(?<releasePackageVersion>[0-9.]+)\\s*$");
     private final OVALLookupHelper ovalLookupHelper;
 
     /**
@@ -219,7 +219,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
 
         Matcher matcher = RELEASE_PACKAGE_REGEX.matcher(testComment);
         if (!matcher.matches()) {
-            throw new IllegalStateException("Failed to derive CPE from OVAL test");
+            throw new IllegalStateException("Failed to derive CPE from OVAL test comment: " + testComment);
         }
 
         String releasePackage = matcher.group("releasePackage");
