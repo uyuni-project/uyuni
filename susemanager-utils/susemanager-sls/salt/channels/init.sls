@@ -84,6 +84,9 @@ mgrchannels_enable_yum_plugins:
 {%- endif %}
 {%- endif %}
 
+{%- set apt_version = salt['pkg.version']("apt") %}
+{%- set apt_sources_deb822 = grains['os_family'] == 'Debian' and apt_version and salt['pkg.version_cmp'](apt_version, "2.7.12") >= 0 %}
+
 mgrchannels_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -91,8 +94,6 @@ mgrchannels_repo:
 {%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
     - name: "/etc/yum.repos.d/susemanager:channels.repo"
 {%- elif grains['os_family'] == 'Debian' %}
-{%- set apt_version = salt['pkg.version']("apt") %}
-{%- set apt_sources_deb822 = apt_version and salt['pkg.version_cmp'](apt_version, "2.7.12") >= 0 %}
 {%- if apt_sources_deb822 %}
     - name: "/etc/apt/sources.list.d/susemanager:channels.sources"
 {%- else %}
@@ -118,7 +119,12 @@ mgrchannels_repo:
 {%- endif %}
 {%- endif %}
 
-{%- set apt_version = salt['pkg.version']("apt") %}
+{%- if grains['os_family'] == 'Debian' and not apt_sources_deb822 %}
+mgrchannels_repo_remove_old_channels_list:
+  file.absent:
+    - name: "/etc/apt/sources.list.d/susemanager:channels.list"
+{%- endif %}
+
 {%- set apt_support_acd = grains['os_family'] == 'Debian' and apt_version and salt['pkg.version_cmp'](apt_version, "1.6.10") > 0 %}
 
 {%- if apt_support_acd %}
