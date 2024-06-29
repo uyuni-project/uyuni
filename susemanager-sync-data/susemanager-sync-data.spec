@@ -46,9 +46,10 @@ install -m 0644 oval.config.json    %{buildroot}%{_datadir}/susemanager/oval/ova
 %defattr(-,root,root,-)
 %dir %{_datadir}/susemanager
 %dir %{_datadir}/susemanager/scc
+%dir %{_datadir}/susemanager/oval
 %{_datadir}/susemanager/scc/channel_families.json
 %{_datadir}/susemanager/scc/additional_products.json
 %{_datadir}/susemanager/scc/additional_repositories.json
-%{_datadir}/susemanager/scc/oval.config.json
+%{_datadir}/susemanager/oval/oval.config.json
 
 %changelog
