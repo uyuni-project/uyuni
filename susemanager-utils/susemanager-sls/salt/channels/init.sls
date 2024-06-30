@@ -119,7 +119,7 @@ mgrchannels_repo:
 {%- endif %}
 {%- endif %}
 
-{%- if grains['os_family'] == 'Debian' and not apt_sources_deb822 %}
+{%- if apt_sources_deb822 %}
 mgrchannels_repo_remove_old_channels_list:
   file.absent:
     - name: "/etc/apt/sources.list.d/susemanager:channels.list"
