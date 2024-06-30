@@ -21,6 +21,7 @@
 # it could let the monitoring feature disabled for the Debian-like minion
 
 @skip_if_containerized_server
+@skip_if_github_validation
 @scope_monitoring
 Feature: Disable and re-enable monitoring of the server
 
