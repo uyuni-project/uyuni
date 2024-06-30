@@ -14,6 +14,7 @@ RUN zypper ref && \
       cpio \
       spacecmd \
       expect \
+      prometheus \
       wget && \
     zypper addrepo --no-gpgcheck obs://systemsmanagement:Uyuni:Utils systemsmanagement:uyuni:utils && \
     zypper -n install obs-to-maven yarn && \

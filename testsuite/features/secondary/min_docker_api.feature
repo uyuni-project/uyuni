@@ -13,9 +13,9 @@
 # - features/secondary/buildhost_docker_build_image.feature
 # - features/secondary/buildhost_docker_auth_registry.feature
 
-@skip_if_github_validation
 @skip_if_cloud
 @scope_building_container_images
+@no_auth_registry
 Feature: API "image" namespace for containers and sub-namespaces
 
   Scenario: Test "image.store" namespace
@@ -23,12 +23,14 @@ Feature: API "image" namespace for containers and sub-namespaces
     And I list image store types and image stores via API
     And I set and get details of image store via API
 
+  @scc_credentials
   Scenario: Test "image.profiles" namespace
     When I create and delete profiles via API
     And I create and delete profile custom values via API
     And I list image profiles via API
     And I set and get profile details via API
 
+  @scc_credentials
   Scenario: Cleanup: remove custom system info
     Given I am authorized for the "Admin" section
     When I follow the left menu "Systems > Custom System Info"

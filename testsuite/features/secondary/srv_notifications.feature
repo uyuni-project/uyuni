@@ -2,7 +2,6 @@
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
-@skip_if_github_validation
 Feature: Test the notification/notification-messages feature
 
   Scenario: Log in as admin user

@@ -6,4 +6,5 @@
 - features/github_validation/init_clients/sle_minion.feature
 - features/github_validation/init_clients/min_rhlike_salt.feature
 - features/github_validation/init_clients/min_deblike_salt.feature
+- features/github_validation/init_clients/buildhost_bootstrap.feature
 ## Container features END ###

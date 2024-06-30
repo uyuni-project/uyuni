@@ -15,11 +15,11 @@
 # - features/secondary/srv_docker_cve_audit.feature
 # If the image is not created, the message shown is "There are no entries to show."
 
-@skip_if_github_validation
 @skip_if_cloud
 @buildhost
 @scope_retail
 @scope_building_container_images
+@scc_credentials
 Feature: Build OS images
 
   Scenario: Create an OS image profile with activation key
