@@ -2408,6 +2408,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.SLES.equals(getOs());
     }
 
+    boolean isSLES() {
+        return ServerConstants.SLES.equalsIgnoreCase(getOs());
+    }
+    boolean isSLED() {
+        return ServerConstants.SLED.equalsIgnoreCase(getOs());
+    }
+
     /**
      * Return <code>true</code> if OS supports Confidential Computing Attestation
      *
@@ -2453,6 +2460,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
     }
 
+    boolean isLeap() {
+       return ServerConstants.LEAP.equalsIgnoreCase(getOs());
+    }
+
     boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
     }
@@ -2471,6 +2482,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.OPENSUSEMICROOS.equals(getOs());
     }
 
+    boolean isUbuntu() {
+        return ServerConstants.UBUNTU.equalsIgnoreCase(getOs());
+    }
+
     boolean isUbuntu1804() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
     }
@@ -2483,6 +2498,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
     }
 
+    boolean isDebian() {
+        return ServerConstants.DEBIAN.equalsIgnoreCase(getOs());
+    }
+
     boolean isDebian12() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("12");
     }
@@ -2493,6 +2512,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isDebian10() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
+    }
+
+    boolean isRHEL() {
+        return ServerConstants.RHEL.equals(getOs());
     }
 
     /**

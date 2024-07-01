@@ -28,7 +28,8 @@ public enum PatchStatus {
     AFFECTED_FULL_PATCH_APPLICABLE("Affected, full patch available in assigned channel", 4),
     NOT_AFFECTED("Not affected", 5),
     PATCHED("Patched", 6),
-    AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT("Affected, patch available in a Product Migration target", 7);
+    AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT("Affected, patch available in a Product Migration target", 7),
+    UNKNOWN("Unknown, CVE metadata not available", 8);
 
     /**
      * The lower the more severe
