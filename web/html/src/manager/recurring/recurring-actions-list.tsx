@@ -5,11 +5,12 @@ import { pageSize } from "core/user-preferences";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
+import { IconTag } from "components/icontag";
 import { Utils as MessagesUtils } from "components/messages";
-import { InnerPanel } from "components/panels/InnerPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";
+import { HelpLink } from "components/utils";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
@@ -108,140 +109,135 @@ class RecurringActionsList extends React.Component<Props, State> {
     ];
 
     return (
-      <InnerPanel
-        title={t("Recurring Actions")}
-        icon="spacewalk-icon-salt"
-        buttons={disableCreate ? [] : buttons}
-        summary={
-          <>
-            <p>{t("The following recurring actions have been created.")}</p>
-            {disableCreate ? (
-              <p>
-                {t(
-                  "To create new recurring actions head to the system, group or organization you want to create the action for."
-                )}
-              </p>
-            ) : null}
-          </>
-        }
-        // We only want to display the help icon in the 'Schedule > Recurring Actions' page so we use disableCreate as
-        // an indicator whether we currently render this page
-        helpUrl={disableCreate ? "reference/schedule/recurring-actions.html" : ""}
-      >
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <div>
-              <h3>Schedules</h3>
-            </div>
-          </div>
-          <div>
-            <Table
-              selectable={false}
-              data={isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
-              identifier={(action) => action.recurringActionId}
-              /* Using 0 to hide table header/footer */
-              initialItemsPerPage={disableCreate ? pageSize : 0}
-              emptyText={t(emptyListText)}
-              searchField={<RecurringActionsSearch />}
-              ref={this.tableRef}
-            >
-              <Column
-                columnKey="active"
-                header={t("Active")}
-                cell={(row) => (
-                  <Toggler
-                    value={row.active}
-                    disabled={isReadOnly(row)}
-                    className="btn"
-                    handler={() => (isReadOnly(row) ? null : this.toggleActive(row))}
-                  />
-                )}
+      <>
+        <h1>
+          <IconTag type="spacewalk-icon-salt" />
+          {t(" Recurring Actions ")}
+          <HelpLink url="reference/schedule/recurring-actions.html" />
+        </h1>
+        <p>
+          {
+            <>
+              <p>{t("The following recurring actions have been created.")}</p>
+              {disableCreate ? (
+                <p>
+                  {t(
+                    "To create new recurring actions head to the system, group or organization you want to create the action for."
+                  )}
+                </p>
+              ) : null}
+            </>
+          }
+        </p>
+        {/* We only want to display the help icon in the 'Schedule > Recurring Actions' page so we use disableCreate as */}
+        {/* an indicator whether we currently render this page */}
+        <div className="pull-right btn-group">{disableCreate ? [] : buttons}</div>
+        <h3>Schedules</h3>
+        <Table
+          selectable={false}
+          data={isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
+          identifier={(action) => action.recurringActionId}
+          /* Using 0 to hide table header/footer */
+          initialItemsPerPage={disableCreate ? pageSize : 0}
+          emptyText={t(emptyListText)}
+          searchField={<RecurringActionsSearch />}
+          ref={this.tableRef}
+        >
+          <Column
+            columnKey="active"
+            header={t("Active")}
+            cell={(row) => (
+              <Toggler
+                value={row.active}
+                disabled={isReadOnly(row)}
+                className="btn"
+                handler={() => (isReadOnly(row) ? null : this.toggleActive(row))}
               />
-              <Column
-                columnClass="text-center"
-                headerClass="text-center"
-                columnKey={isFilteredList ? "scheduleName" : "schedule_name"}
-                comparator={Utils.sortByText}
-                header={t("Schedule Name")}
-                cell={(row) => row.scheduleName}
-              />
-              <Column
-                columnClass="text-center"
-                headerClass="text-center"
-                columnKey="frequency"
-                header={t("Frequency")}
-                cell={(row) => row.cron}
-              />
-              <Column
-                columnClass="text-center"
-                headerClass="text-center"
-                columnKey={isFilteredList ? "targetType" : "target_type"}
-                comparator={Utils.sortByText}
-                header={t("Target Type")}
-                cell={(row) => targetTypeToString(row.targetType)}
-              />
-              <Column
-                columnClass="text-center"
-                headerClass="text-center"
-                columnKey={isFilteredList ? "targetName" : "target_name"}
-                comparator={Utils.sortByText}
-                header={t("Target Name")}
-                cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId, row.targetAccessible)}
-              />
-              <Column
-                columnClass="text-center"
-                headerClass="text-center"
-                columnKey={isFilteredList ? "actionType" : "action_type"}
-                comparator={Utils.sortByText}
-                header={t("Action Type")}
-                cell={(row) => row.actionTypeDescription}
-              />
-              <Column
-                columnClass="text-right"
-                headerClass="text-right"
-                header={t("Actions")}
-                cell={(row) => (
-                  <div className="btn-group">
-                    <Button
-                      className="btn-default btn-sm"
-                      title={t("Details")}
-                      icon="fa-list"
-                      handler={() => {
-                        this.props.onSelect(row);
-                      }}
-                    />
-                    <Button
-                      className="btn-default btn-sm"
-                      title={t("Edit")}
-                      disabled={isReadOnly(row)}
-                      icon="fa-edit"
-                      handler={() => {
-                        this.props.onEdit(row);
-                      }}
-                    />
-                    <ModalButton
-                      className="btn-default btn-sm"
-                      title={t("Delete")}
-                      disabled={isReadOnly(row)}
-                      icon="fa-trash"
-                      target="delete-modal"
-                      item={row}
-                      onClick={(i) => this.selectToDelete(i)}
-                    />
-                  </div>
-                )}
-              />
-            </Table>
-            <DeleteDialog
-              id="delete-modal"
-              title={t("Delete Recurring Action Schedule")}
-              content={t("Are you sure you want to delete the selected item?")}
-              onConfirm={() => this.deleteSchedule(this.state.itemToDelete, this.tableRef)}
-              onClosePopUp={() => this.selectToDelete(null)}
-            />
-          </div>
-        </div>
-      </InnerPanel>
+            )}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey={isFilteredList ? "scheduleName" : "schedule_name"}
+            comparator={Utils.sortByText}
+            header={t("Schedule Name")}
+            cell={(row) => row.scheduleName}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey="frequency"
+            header={t("Frequency")}
+            cell={(row) => row.cron}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey={isFilteredList ? "targetType" : "target_type"}
+            comparator={Utils.sortByText}
+            header={t("Target Type")}
+            cell={(row) => targetTypeToString(row.targetType)}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey={isFilteredList ? "targetName" : "target_name"}
+            comparator={Utils.sortByText}
+            header={t("Target Name")}
+            cell={(row) => targetNameLink(row.targetName, row.targetType, row.targetId, row.targetAccessible)}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey={isFilteredList ? "actionType" : "action_type"}
+            comparator={Utils.sortByText}
+            header={t("Action Type")}
+            cell={(row) => row.actionTypeDescription}
+          />
+          <Column
+            columnClass="text-right"
+            headerClass="text-right"
+            header={t("Actions")}
+            cell={(row) => (
+              <div className="btn-group">
+                <Button
+                  className="btn-default btn-sm"
+                  title={t("Details")}
+                  icon="fa-list"
+                  handler={() => {
+                    this.props.onSelect(row);
+                  }}
+                />
+                <Button
+                  className="btn-default btn-sm"
+                  title={t("Edit")}
+                  disabled={isReadOnly(row)}
+                  icon="fa-edit"
+                  handler={() => {
+                    this.props.onEdit(row);
+                  }}
+                />
+                <ModalButton
+                  className="btn-default btn-sm"
+                  title={t("Delete")}
+                  disabled={isReadOnly(row)}
+                  icon="fa-trash"
+                  target="delete-modal"
+                  item={row}
+                  onClick={(i) => this.selectToDelete(i)}
+                />
+              </div>
+            )}
+          />
+        </Table>
+        <DeleteDialog
+          id="delete-modal"
+          title={t("Delete Recurring Action Schedule")}
+          content={t("Are you sure you want to delete the selected item?")}
+          onConfirm={() => this.deleteSchedule(this.state.itemToDelete, this.tableRef)}
+          onClosePopUp={() => this.selectToDelete(null)}
+        />
+      </>
     );
   }
 }

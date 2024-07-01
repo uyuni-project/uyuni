@@ -13,6 +13,9 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/multiorg/OrgConfigDetails.do",
   "/rhn/manager/notification-messages",
   "rhn/channels/software/Search.do",
+  "/rhn/manager/schedule/recurring-actions",
+  "/rhn/manager/schedule/maintenance/calendars",
+  "/rhn/manager/multiorg/recurring-actions",
 ];
 
 export const onEndNavigate = () => {

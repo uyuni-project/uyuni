@@ -116,6 +116,7 @@ function IconTag(props: Props) {
     "sort-down": "fa fa-arrow-circle-down",
     "sort-up": "fa fa-arrow-circle-up",
     spinner: "fa fa-spinner fa-spin",
+    "spacewalk-icon-salt": "fa spacewalk-icon-salt",
     "system-state": "fa spacewalk-icon-salt-add",
     "system-bare-metal-legend": "fa fa-1-5x spacewalk-icon-bare-metal",
     "system-bare-metal": "fa spacewalk-icon-bare-metal",
