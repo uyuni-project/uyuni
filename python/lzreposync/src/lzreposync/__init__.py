@@ -72,6 +72,6 @@ def main():
     logging.getLogger().setLevel(args.loglevel)
     rpm_repository = RPMRepo(args.name, args.cache, args.url)  # TODO args.url should be args.repo, no ?
     packages = rpm_repository.get_packages_metadata()  # packages is a generator
-    for batch in batched(packages, args.batch_size):
+    for i, batch in enumerate(batched(packages, args.batch_size)):
         logging.info(f"Importing a batch of {len(batch)} packages...")
-        import_package_batch(batch)
+        import_package_batch(batch, i, len(batch))
