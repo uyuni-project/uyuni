@@ -3,6 +3,7 @@
 }
 
 .modal-header {
+  // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
   border-bottom: 1px solid #e5e5e5;
   padding: 15px;
 
@@ -57,6 +58,7 @@
 .modal-footer {
   margin: 0;
   padding: 15px;
+  // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
   border-top: 1px solid #e5e5e5;
 
   .btn + .btn {

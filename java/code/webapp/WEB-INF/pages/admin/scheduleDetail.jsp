@@ -70,7 +70,7 @@
                     <label for="parent" class="col-lg-3 control-label">
                         <bean:message key="schedule.edit.jsp.frequency"/>:
                     </label>
-                    <div class="">
+                    <div class="col-lg-9">
                         <jsp:include page="/WEB-INF/pages/common/fragments/repeat-task-picker.jspf">
                             <jsp:param name="widget" value="date"/>
                         </jsp:include>
