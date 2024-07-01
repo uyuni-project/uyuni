@@ -227,24 +227,25 @@ class PrimaryParser:
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
         elt_name = node.localName
-        dependencies = []
         for child_node in node.childNodes:
             if child_node.nodeType == node.ELEMENT_NODE:
-                dependency = {}
                 for attr_name in ('name', 'version', 'flags'):
-
                     attr_mapped_name = map_dependency_attribute(elt_name, attr_name)
-                    attr = child_node.getAttributeNode(
-                        "ver" if attr_name == "version" else attr_name  # mapping attr name
-                    )
+                    if type(self.current_hdr.get(attr_mapped_name)) is not type([]):  # Check if list is not initialized
+                        self.current_hdr[attr_mapped_name] = []
+                    attr = child_node.getAttributeNode("ver" if attr_name == "version" else attr_name)  # map attr name
                     if attr:
-                        dependency[attr_mapped_name] = attr.value
+                        if attr_name != "flags":
+                            # TODO fix: flags value error: ValueError: invalid literal for int() with base 10: 'EQ',
+                            #  we're ignoring the 'flags' for the moment
+                            self.current_hdr[attr_mapped_name].append(attr.value.encode('ASCII'))
                     else:
-                        dependency[attr_mapped_name] = None
-                # print(f"APPENDING DEPENDENCY {dependency.items()}")
-                dependencies.append(dependency)
-        # print(f"HAROUNE DEBUG: SETTING COMPLEX {elt_name}, NUM DEPENDENCIES={len(dependencies)}", )
-        self.current_hdr[elt_name] = dependencies
+                        if not attr_name == "flags":
+                            # Setting some fake data TODO:fix
+                            self.current_hdr[attr_mapped_name].append(b'')
+                        else:
+                            # attr_name == "flags" # Setting some fake data TODO:fix
+                            self.current_hdr[attr_mapped_name].append(0)
 
     def set_text_element_node(self, node):
         """
