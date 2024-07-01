@@ -28,6 +28,14 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     # all_packages = set()  # TODO: see reposync
 
     for package in to_process:
+
+        # Ignoring packages with arch='aarch64_ilp32' for the moment
+        # TODO: fix later. Note: we should make this more generalized with possibly other unrecognized archs
+        if package["header"]["arch"] == "aarch64_ilp32":
+            logging.debug("Ignoring package {} - Cannot process arch {}".
+                          format(package["checksum"], package["header"]["arch"]))
+            batch_size -= 1
+            continue
         try:
             print(f"INFO: Importing package {package['name']}")
             import_count += 1
