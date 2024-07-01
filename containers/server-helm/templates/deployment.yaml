@@ -547,6 +547,27 @@ spec:
             mountPath: /var/lib/uyuni-tools
   {{- end }}
 {{- end }}
+{{- if and (not .Values.migration) (and .Values.hub (and .Values.hub.api .Values.hub.api.replicas)) }}
+      - name: hub-xmlrpc-api
+        image: {{- include "deployment.container.image" (dict "name" "hub-xmlrpc-api" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        ports:
+          - containerPort: 2830
+        env:
+          - name: HUB_API_URL
+            value: http://uyuni-tcp:80/rpc/api
+          - name: HUB_CONNECT_TIMEOUT
+            value: "{{ .Values.hubConnectTimeout | default 10 }}"
+          - name: HUB_REQUEST_TIMEOUT
+            value: "{{ .Values.hubRequestTimeout | default 10 }}"
+          - name: HUB_CONNECT_USING_SSL
+            value: "true"
+        volumeMounts:
+          - name: ca-cert
+            mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+            readOnly: true
+            subPath: ca.crt
+{{- end }}
       volumes:
       - name: tmp
         emptyDir:
