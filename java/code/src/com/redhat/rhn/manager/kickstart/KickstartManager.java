@@ -68,7 +68,7 @@ public class KickstartManager extends BaseManager {
      * @return the rendered kickstart contents
      */
     public String renderKickstart(String host, KickstartData data) {
-        return renderKickstart(host, KickstartUrlHelper.getCobblerProfileUrl(data));
+        return renderKickstart(host, KickstartUrlHelper.getCobblerProfileUrl(data, false));
     }
 
     /**
@@ -94,7 +94,7 @@ public class KickstartManager extends BaseManager {
      * @return the rendered kickstart contents
      */
     public String renderKickstart(KickstartData data) {
-        return renderKickstart(KickstartUrlHelper.getCobblerProfileUrl(data));
+        return renderKickstart(KickstartUrlHelper.getCobblerProfileUrl(data, false));
     }
 
 
