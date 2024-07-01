@@ -207,7 +207,7 @@ class PrimaryParser:
                 value = node.getAttributeNode(attr).value
                 if actual_name == "archivesize":
                     value = int(value)
-                elif actual_name == "buildtime":  # TODO can be optimized and be more general (eg mapping function for time)
+                elif actual_name == "buildtime":
                     value = datetime.datetime.fromtimestamp(float(value))
                 if actual_name in package_data:
                     self.currentPackage[actual_name] = value
@@ -216,8 +216,6 @@ class PrimaryParser:
                     self.current_hdr[actual_name] = value
             else:
                 continue
-                # logging.warning("Couldn't map the attribute: %s to any importLib attribute, ignoring attribute",
-                #               extended_name)
 
     def set_complex_element_node(self, node):
         """
@@ -289,7 +287,7 @@ class PrimaryParser:
             # node in searchedChars:
             self.set_text_element_node(node)
         elif node.nodeType == node.ELEMENT_NODE and is_complex(node.localName):
-            # dealing with ["provides", "requires", "enhances", "obsoletes"]
+            # dealing with ["provides", "requires", "enhances", "obsoletes", etc..]
             self.set_complex_element_node(node)
 
     def set_package_header(self, node):
