@@ -43,7 +43,11 @@
        <div class="panel-body">
          <table class="table">
            <tr>
-             <td><bean:message key="erratasearch.jsp.searchfor"/></td>
+             <td>
+              <label class="w-100 control-label" for="searchfor">
+                <bean:message key="erratasearch.jsp.searchfor"/>
+              </label>
+            </td>
              <td>
               <div class="row-0">
                 <div class="col-md-5">
@@ -56,7 +60,12 @@
                 </div>
              </td>
            </tr>
-           <tr><td><bean:message key="erratasearch.jsp.whatsearch"/></td>
+           <tr>
+            <td>
+              <label class="w-100 control-label" for="whatsearch">
+                <bean:message key="erratasearch.jsp.whatsearch"/>
+              </label>
+            </td>
              <td>
                 <div class="row-0">
                   <div class="col-md-5">
@@ -72,7 +81,12 @@
                 </div>
              </td>
            </tr>
-           <tr><td><bean:message key="erratasearch.jsp.types_to_search"/></td>
+           <tr>
+            <td>
+              <label class="w-100 control-label" for="typeToSearch">
+                <bean:message key="erratasearch.jsp.types_to_search"/>
+              </label>
+            </td>
              <td>
                 <div class="checkbox icon-wrapper">
                   <html:checkbox property="errata_type_bug">
@@ -95,7 +109,11 @@
             </td>
            </tr>
            <tr>
-            <td><bean:message key="erratasearch.jsp.issue_date"/></td>
+            <td>
+              <label class="w-100 control-label" for="issueDate">
+                <bean:message key="erratasearch.jsp.issue_date"/>
+              </label>
+            </td>
                 <td>
                   <div class="checkbox">
                     <html:checkbox styleId="issueDateOptionsCheckBox" property="optionIssueDateSearch" onclick="javascript:issueDateSearchOptions()" >
@@ -129,7 +147,11 @@
                 </td>
            </tr>
            <tr>
-              <td><label for="fineGrainedlabel"><bean:message key="systemsearch.jsp.finegrainedlabel"/></label></td>
+              <td>
+                <label class="w-100 control-label" for="fineGrainedlabel">
+                  <bean:message key="systemsearch.jsp.finegrainedlabel"/>
+                </label>
+              </td>
               <td>
                 <div class="checkbox">
                   <html:checkbox property="fineGrained" styleId="fineGrainedlabel"> <label for="fineGrainedlabel"><bean:message key="systemsearch.jsp.finegrained"/></label></html:checkbox>

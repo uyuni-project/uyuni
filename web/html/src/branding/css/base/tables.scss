@@ -9,6 +9,10 @@
   > tbody > tr:last-child > * {
     border-bottom-width: 0;
   }
+
+  .table {
+    background-color: $white;
+  }
 }
 
 .table > thead > tr.active > th {
