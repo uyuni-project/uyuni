@@ -103,22 +103,14 @@ class PrimaryParser:
         self.primaryFile = primary_file
         self.currentPackage = None
         self.current_hdr = None
-        self.searchedChars = ["arch",
-                              "name",
-                              "summary",
-                              "description",
-                              "packager",
-                              "url",
-                              "license",
-                              "vendor",
-                              "group",
-                              "buildhost",
-                              "sourcerpm",
-                              "provides",
-                              "requires",
-                              "obsoletes",
-                              "enhances",
-                              ]  # Elements that has text content or have child elements (Not self-closing elements)
+
+        # XML elements that has text content or have child elements (Not self-closing elements)
+        self.searchedChars = ["arch", "name", "summary", "description", "packager", "url", "license", "vendor", "group",
+                              "buildhost", "sourcerpm", "provides", "requires", "obsoletes", "enhances", "oldenhances",
+                              "conflicts", "suggests", "oldsuggests", "supplements", "oldsupplements", "recommends",
+                              "oldrecommends", "breaks", "predepends", "changelog"]
+
+        # Self-closing elements: relevant values are their attributes'
         self.searchedAttrs = {
             # "location": ["href"],  # TODO complete
             "time": ["build"],
@@ -126,7 +118,66 @@ class PrimaryParser:
             "checksum": ["type"],
             "size": ["package", "installed", "archive"],
             "header-range": ["start", "end"]
-        }  # Self-closing elements: relevant values are their attributes'
+        }
+
+    def parse_primary(self):
+        """
+        Parser the given primary.xml file (gzip format) using xml.dom.pulldom This is an incremental parsing,
+        it means that not the whole xml file is loaded in memory at once, but package by package.
+        """
+        if not self.primaryFile:
+            print("Error: primary_file not defined!")
+            raise ValueError("primary_file missing")
+
+        with gzip.open(self.primaryFile) as gz_primary:
+            doc = pulldom.parse(gz_primary)
+            for event, node in doc:
+                if event == pulldom.START_ELEMENT and node.namespaceURI == COMMON_NS and node.tagName == "package":
+                    # New package
+                    doc.expandNode(node)
+                    self.currentPackage = {}
+                    self.current_hdr = {}
+
+                    ### SETTING FAKE DATA FOR SOME ATTRIBUTES
+                    # TODO: Fix these fake attributes
+                    self.current_hdr["rpmversion"] = '1'
+                    self.current_hdr["size"] = 10000
+                    self.current_hdr["payloadformat"] = "cpio"
+                    self.current_hdr["cookie"] = "cookie_test"
+                    self.current_hdr["sigsize"] = 10000
+                    self.current_hdr["sigmd5"] = "sigmd5_test"
+                    # Setting possibly missing attributes: checking for all dependencies
+                    # importLib doesn't accept None values but rather empty arrays ([])
+                    possibly_missing_dependencies = ["provides", "provideversion", "provideflags", "requirename",
+                                                     "requireversion", "requireflags", "changelogname", "changelogtext",
+                                                     "changelogtime", "obsoletename", "obsoleteversion", "obsoleteflags",
+                                                     "conflictname", "conflictversion", "conflictflags", 1159, 1160,
+                                                     1161, 1156, 1157, 1158, 5052, 5053, 5054, 5055, 5056, 5057, 5049,
+                                                     5050, 5051, 5046, 5047, 5048]
+                    for dep in possibly_missing_dependencies:
+                        if not self.current_hdr.get(dep):
+                            self.current_hdr[dep] = []
+
+                    header_tags = [
+                        rpm.RPMTAG_DSAHEADER,
+                        rpm.RPMTAG_RSAHEADER,
+                        rpm.RPMTAG_SIGGPG,
+                        rpm.RPMTAG_SIGPGP,
+                        rpm.RPMTAG_FILEDIGESTALGO
+                    ]
+                    for ht in header_tags:
+                        self.current_hdr[ht] = None
+
+                    # Parsing package's metadata
+                    for child_node in node.childNodes:
+                        if child_node.nodeType == child_node.ELEMENT_NODE:
+                            self.set_element_node(child_node)
+
+                    is_source = is_source_package(node)
+                    package_header = RPM_Header(self.current_hdr, is_source=is_source)
+                    self.currentPackage["header"] = package_header
+
+                    yield self.currentPackage
 
     def set_checksum_node(self, node):
         """
