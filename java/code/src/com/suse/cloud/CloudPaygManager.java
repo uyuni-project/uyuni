@@ -124,6 +124,12 @@ public class CloudPaygManager {
      * @return true when a refresh happened, otherwise false
      */
     public boolean checkRefreshCache(boolean force) {
+        if (complainceInfo != null &&
+                !complainceInfo.isPaygInstance() &&
+                complainceInfo.getCloudProvider() == CloudProvider.None &&
+                Files.isReadable(PAYG_COMPLIANCE_INFO_JSON)) {
+            force = true;
+        }
         // if isCompliant is false, we re-detect
         if (force || !isCompliant || Duration.between(cacheTime, Instant.now()).toHours() >= 1) {
             // cached values older than 1 hour - time to refresh
