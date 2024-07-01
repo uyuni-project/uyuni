@@ -4,9 +4,7 @@ from xml.dom import pulldom
 
 import rpm
 
-from lzreposync.rpm_utils import RPMHeader
-from spacewalk.server.importlib.headerSource import rpmProvides, rpmRequires, rpmEnhances, rpmObsoletes
-from spacewalk.server.importlib.importLib import Package, Checksum, Dependency
+from spacewalk.server.importlib import headerSource
 from uyuni.common.rhn_rpm import RPM_Header
 
 COMMON_NS = "http://linux.duke.edu/metadata/common"
@@ -15,14 +13,24 @@ RPM_NS = "http://linux.duke.edu/metadata/rpm"
 # Data to be included in the package object
 package_data = ["package_size", "checksum", "checksum_type", "header_start", "header_end"]
 
-ignored_attributes = ["provideversion", "provideflags", "requirename", "requireversion", "requireflags", "conflictname",
-                      "conflictversion", "conflictflags", "obsoletename", "obsoleteversion", "obsoleteflags",
-                      'filenames', 'filedevices', 'fileinodes', 'filemodes', 'fileusername', 'filegroupname',
-                      'filerdevs', 'filesizes', 'longfilesizes', 'filemtimes', 'filemd5s', 'filelinktos', 'fileflags',
-                      'fileverifyflags', 'filelangs']
-
-ignored_dependencies = [1159, 1160, 1161, 1156, 1157, 1158, 5052, 5053, 5054, 5055, 5056, 5057, 5049, 5050, 5051, 5046,
-                        5047, 5048]
+# List of complex attributes and their mapping classes in importLib
+complex_attrs = {
+    "provides": headerSource.rpmProvides,
+    "requires": headerSource.rpmRequires,
+    "enhances": headerSource.rpmEnhances,
+    "obsoletes": headerSource.rpmObsoletes,
+    "conflicts": headerSource.rpmConflicts,
+    "breaks": headerSource.rpmBreaks,
+    "oldenhances": headerSource.rpmOldEnhances,
+    "suggests": headerSource.rpmSuggests,
+    "oldsuggests": headerSource.rpmOldSuggests,
+    "supplements": headerSource.rpmSupplements,
+    "oldsupplements": headerSource.rpmOldSupplements,
+    "recommends": headerSource.rpmRecommends,
+    "oldrecommends": headerSource.rpmOldRecommends,
+    "predepends": headerSource.rpmPredepends,
+    "changelog": headerSource.rpmChangeLog
+}
 
 
 def map_attribute(attribute: str):
@@ -54,14 +62,9 @@ def map_dependency_attribute(dependency_name, attribute):
     We'll be using the mapping used in headerSource.py
     """
 
-    if dependency_name == "provides":
-        return rpmProvides.tagMap.get(attribute)
-    if dependency_name == "requires":
-        return rpmRequires.tagMap.get(attribute)
-    if dependency_name == "enhances":
-        return rpmEnhances.tagMap.get(attribute)  # TODO Note: there's also 'rpmOldEnhances'..what to choose ?
-    if dependency_name == "obsoletes":
-        return rpmObsoletes.tagMap.get(attribute)
+    dependency_cls = complex_attrs.get(dependency_name)
+    if dependency_cls:
+        return dependency_cls.tagMap.get(attribute)
 
 
 def is_complex(attribute: str):
@@ -69,7 +72,7 @@ def is_complex(attribute: str):
     Return True if the attribute is represented by a list of objects in importLib
     Eg: provides: [Dependency]
     """
-    return attribute in ["provides", "requires", "enhances", "obsoletes"]
+    return attribute in complex_attrs.keys()
 
 
 def get_text(node):
