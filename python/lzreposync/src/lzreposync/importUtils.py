@@ -25,6 +25,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     #     mount_point = CFG.MOUNT_POINT
     import_count = 0
     failed_packages = 0
+    batch_size = len(to_process)
     # all_packages = set()  # TODO: see reposync
 
     for package in to_process:
@@ -63,7 +64,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
         finally:
             try:
                 # importing packages by batch or if the current packages is the last
-                if mpm_bin_batch:  # TODO: possibly more conditions
+                if mpm_bin_batch and len(mpm_bin_batch) == batch_size:  # TODO: possibly more conditions
                     importer = packageImport.PackageImport(
                         mpm_bin_batch, backend, caller=upload_caller
                     )
