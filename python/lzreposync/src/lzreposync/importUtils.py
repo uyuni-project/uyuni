@@ -23,7 +23,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     # pylint: disable-next=invalid-name
     # with cfg_component("server.susemanager") as CFG:
     #     mount_point = CFG.MOUNT_POINT
-    import_count = 0  # TODO:can we make it this way? sum(p[1] for p in to_process) instead of incrementing in the loop
+    import_count = 0
     failed_packages = 0
     # all_packages = set()  # TODO: see reposync
 
@@ -37,14 +37,14 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
             batch_size -= 1
             continue
         try:
-            print(f"INFO: Importing package {package['name']}")
+            # print(f"INFO: Importing package. HEADER= {package['header'].keys()}")
             import_count += 1
             pkg = mpmSource.create_package(
                 package["header"],
-                size=package["package_size"],  # TODO: in reposync they use 'payload size': we don't have that in primary
+                size=package["package_size"],
                 checksum_type=package["checksum_type"],
                 checksum=package["checksum"],
-                relpath="/var",  # TODO: check what is this 'relpath'
+                relpath="/var",  # TODO: what is 'relpath' ?
                 org_id=1,  # TODO: correct
                 header_start=package["header_start"],
                 header_end=package["header_end"],
