@@ -4,6 +4,35 @@ from lzreposync.filelists_parser import FilelistsParser
 from lzreposync.primary_parser import PrimaryParser
 
 
+def set_fake_files_data(package, files_count):
+    """
+    Fake data related to the files. Eg: 'filedevices', 'fileinodes', 'filemodes', ect
+    TODO: This is just a dump implementation to make things work, it can be enhanced and generalized later on
+    """
+    # TODO search how we can set the correct values
+
+    package["header"]["filedevices"] = [1 for _ in range(files_count)]
+    package["header"]["fileinodes"] = [i for i in range(files_count)]
+    package["header"]["filemodes"] = [16877 for _ in range(files_count)]
+    package["header"]["fileusername"] = [b'root' for _ in range(files_count)]
+    package["header"]["filegroupname"] = [b'root' for _ in range(files_count)]
+    package["header"]["filerdevs"] = [0 for _ in range(files_count)]
+    package["header"]["filesizes"] = [500 for _ in range(files_count)]
+    package["header"]["longfilesizes"] = [500 for _ in range(files_count)]
+    package["header"]["filemtimes"] = [1712697084 for _ in range(files_count)]
+    package["header"]["filemd5s"] = [b'9e3b73207' for _ in range(files_count)]  # can be b''
+    package["header"]["filelinktos"] = [b'' for _ in range(files_count)]
+    package["header"]["fileflags"] = [0 for _ in range(files_count)]
+    package["header"]["fileverifyflags"] = [4294967295 for _ in range(files_count)]
+    package["header"]["filelangs"] = [b'' for _ in range(files_count)]
+
+
+def set_fake_capabilities_version(package):
+    """
+    Set the version list values for the capabilities. Eg: 'provideversion', 'requireversion', ect
+    """
+
+
 class MetadataParser:
     def __init__(self, primary_parser, filelists_parser):
         self.primary_parser = primary_parser
@@ -22,6 +51,9 @@ class MetadataParser:
 
         for package in self.primary_parser.parse_primary():  # parse_primary() is a generator
             package["header"]["filenames"] = self.filelists_parser.get_package_filelist(package["checksum"])["files"]
+            files_count = len(package["header"]["filenames"])
+            set_fake_files_data(package, files_count)
+            set_fake_capabilities_version(package)
             yield package
 
 
