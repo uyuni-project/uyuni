@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023 SUSE LLC.
+# Copyright (c) 2013-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'rake'
@@ -274,6 +274,15 @@ namespace :jenkins do
     end
   end
 
+  desc 'Generate Rakefiles for products and Salt migration tests'
+  task :generate_rake_files_migration_tests do
+    migration_features_files = Rake::FileList['features/build_validation/migration/*.feature']
+    migration_features_files.each do |feature_file|
+      feature_name = File.basename(feature_file, '.feature')
+      sh "echo '- #{feature_file}' >> run_sets/build_validation/build_validation_#{feature_name}.yml", verbose: false
+    end
+  end
+
   desc 'Generate all the Rakefiles needed for Build Validation'
   task :generate_rake_files_build_validation do
     instances = []
@@ -292,5 +301,7 @@ namespace :jenkins do
     Rake::Task['jenkins:generate_rake_files_add_activation_keys'].reenable
     Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].invoke(instances)
     Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].reenable
+    Rake::Task['jenkins:generate_rake_files_migration_tests'].invoke
+    Rake::Task['jenkins:generate_rake_files_migration_tests'].reenable
   end
 end
