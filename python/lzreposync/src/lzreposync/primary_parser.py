@@ -183,10 +183,9 @@ class PrimaryParser:
         """
         Parse the given "checksum" node and the result Checksum object to the current package
         """
-        # TODO: fix later
-        # if not self.currentPackage:
-        #     print("Error: No package being parsed!")
-        #     raise ValueError("No package being parsed")
+        if type(self.currentPackage) is not type({}):
+            print("Error: No package being parsed!")
+            raise ValueError("No package being parsed")
 
         self.currentPackage["checksum"] = get_text(node)
         self.currentPackage["checksum_type"] = node.attributes["type"].value
@@ -196,10 +195,9 @@ class PrimaryParser:
         Parse the given attribute element node and add its information to the currentPackage.
         node: self-closing element. Eg: <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
         """
-        # TODO: fix later
-        # if not self.currentPackage:
-        #     print("Error: No package being parsed!")
-        #     raise ValueError("No package being parsed")
+        if type(self.currentPackage) is not type({}):
+            print("Error: No package being parsed!")
+            raise ValueError("No package being parsed")
 
         elt_name = node.localName
         for attr in node.attributes.keys():
@@ -227,10 +225,9 @@ class PrimaryParser:
         each node has a list of Dependencies.
         The names should be mapped the same as in HeaderSource.py: rpmProvides, rpmRequires, etc..
         """
-        # TODO: fix later
-        # if not self.currentPackage:
-        #     print("Error: No package being parsed!")
-        #     raise ValueError("No package being parsed")
+        if type(self.currentPackage) is not type({}):
+            print("Error: No package being parsed!")
+            raise ValueError("No package being parsed")
         elt_name = node.localName
         dependencies = []
         for child_node in node.childNodes:
@@ -255,10 +252,9 @@ class PrimaryParser:
         """
         Parse and set elements with text content. Eg: <summary>GStreamer ...</summary>
         """
-        # TODO: fix later
-        # if not self.currentPackage:
-        #     print("Error: No package being parsed!")
-        #     raise ValueError("No package being parsed")
+        if type(self.currentPackage) is not type({}):
+            print("Error: No package being parsed!")
+            raise ValueError("No package being parsed")
 
         mapped_name = map_attribute(node.localName)
         if mapped_name:
@@ -276,10 +272,9 @@ class PrimaryParser:
         """
         Parse the given node and the corresponding information to the corresponding package's attribute
         """
-        # TODO: fix later
-        # if not self.currentPackage:
-        #     print("Error: No package being parsed!")
-        #     raise ValueError("No package being parsed")
+        if type(self.currentPackage) is not type({}):
+            print("Error: No package being parsed!")
+            raise ValueError("No package being parsed")
 
         if node.nodeType == node.ELEMENT_NODE and node.namespaceURI == COMMON_NS and node.localName == "format":
             # Recursively set the child elements of the <format> element
