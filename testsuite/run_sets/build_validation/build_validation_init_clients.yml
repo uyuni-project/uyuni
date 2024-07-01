@@ -39,6 +39,8 @@
 - features/build_validation/init_clients/ubuntu2004_ssh_minion.feature
 - features/build_validation/init_clients/ubuntu2204_minion.feature
 - features/build_validation/init_clients/ubuntu2204_ssh_minion.feature
+- features/build_validation/init_clients/ubuntu2404_minion.feature
+- features/build_validation/init_clients/ubuntu2404_ssh_minion.feature
 
 - features/build_validation/init_clients/debian10_minion.feature
 - features/build_validation/init_clients/debian10_ssh_minion.feature
