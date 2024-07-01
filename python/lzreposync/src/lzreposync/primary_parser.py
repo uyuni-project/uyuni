@@ -255,17 +255,12 @@ class PrimaryParser:
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
 
-        mapped_name = map_attribute(node.localName)
+        mapped_name = map_attribute(node.localName) or node.localName
         if mapped_name:
-            if mapped_name in package_data:  # TODO: optimize if statements
+            if mapped_name in package_data:
                 self.currentPackage[mapped_name] = get_text(node)
             else:
                 self.current_hdr[mapped_name] = get_text(node)
-        else:
-            if node.localName in package_data:
-                self.currentPackage[node.localName] = get_text(node)
-            else:
-                self.current_hdr[node.localName] = get_text(node)
 
     def set_element_node(self, node):
         """
