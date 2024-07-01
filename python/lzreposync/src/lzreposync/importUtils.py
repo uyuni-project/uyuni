@@ -1,7 +1,6 @@
 import logging
 import sys
 
-from lzreposync.exceptions import FormatError
 from spacewalk.satellite_tools.syncLib import log2, log
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import importLib, mpmSource, packageImport
@@ -95,9 +94,6 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
                 #  The problem with this code, is that if one package from a batch fails, all the batch (the rest of it)
                 #  also fails
                 continue
-            except FormatError as e:
-                e_message = f"Exception: {e}"
-                raise e
             except Exception as e:
                 failed_packages += 1
                 e_message = f"Exception: {e}"
