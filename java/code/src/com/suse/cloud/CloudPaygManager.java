@@ -143,7 +143,7 @@ public class CloudPaygManager {
 
     private boolean detectHasSCCCredentials() {
         return CredentialsFactory.listSCCCredentials().stream()
-                .anyMatch(c -> mgr.isSCCCredentials(c));
+                .anyMatch(mgr::isSCCCredentials);
     }
 
     private boolean detectIsCompliant() {
