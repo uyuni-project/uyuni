@@ -138,6 +138,7 @@ class SNPGuestWorkerTest {
         verifyNoInteractions(sequenceFinder);
         verifyNoInteractions(snpWrapper);
     }
+
     @Test
     @DisplayName("Rejects report if processor model is unknown")
     void rejectsWithUnknownProcessorModel() {
@@ -148,6 +149,102 @@ class SNPGuestWorkerTest {
         assertEquals(
             String.join(System.lineSeparator(),
                 "- Unable to identify Epyc processor generation for attestation report",
+                ""
+            ),
+            result.getProcessOutput()
+        );
+
+        // Verify no files have been created
+        verifyNoInteractions(directoryProvider);
+
+        // Verify no checks have been performed
+        verifyNoInteractions(sequenceFinder);
+        verifyNoInteractions(snpWrapper);
+    }
+
+    @Test
+    @DisplayName("Rejects report if nonce is null")
+    void rejectsWithNullNonce() {
+        // Set the model as UNKNOWN
+        report.setRandomNonce(null);
+        report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
+
+        assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- Unable to verify: randomized nonce not found",
+                ""
+            ),
+            result.getProcessOutput()
+        );
+
+        // Verify no files have been created
+        verifyNoInteractions(directoryProvider);
+
+        // Verify no checks have been performed
+        verifyNoInteractions(sequenceFinder);
+        verifyNoInteractions(snpWrapper);
+    }
+
+    @Test
+    @DisplayName("Rejects report if nonce is empty")
+    void rejectsWithEmptyNonce() {
+        // Set the model as UNKNOWN
+        report.setRandomNonce(new byte[0]);
+        report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
+
+        assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- Unable to verify: randomized nonce not found",
+                ""
+            ),
+            result.getProcessOutput()
+        );
+
+        // Verify no files have been created
+        verifyNoInteractions(directoryProvider);
+
+        // Verify no checks have been performed
+        verifyNoInteractions(sequenceFinder);
+        verifyNoInteractions(snpWrapper);
+    }
+
+    @Test
+    @DisplayName("Rejects report if data is null")
+    void rejectsWithNullReport() {
+        // Set the model as UNKNOWN
+        report.setReport(null);
+        report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
+
+        assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- Unable to verify: attestation report not found",
+                ""
+            ),
+            result.getProcessOutput()
+        );
+
+        // Verify no files have been created
+        verifyNoInteractions(directoryProvider);
+
+        // Verify no checks have been performed
+        verifyNoInteractions(sequenceFinder);
+        verifyNoInteractions(snpWrapper);
+    }
+
+    @Test
+    @DisplayName("Rejects report if data is empty")
+    void rejectsWithEmptyReport() {
+        // Set the model as UNKNOWN
+        report.setReport(new byte[0]);
+        report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
+
+        assertFalse(worker.process(session, result));
+        assertEquals(
+            String.join(System.lineSeparator(),
+                "- Unable to verify: attestation report not found",
                 ""
             ),
             result.getProcessOutput()
