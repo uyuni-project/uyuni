@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
+// TEST
+
 package com.suse.manager.webui;
 
 import java.text.MessageFormat;
