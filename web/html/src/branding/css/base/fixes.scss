@@ -48,3 +48,15 @@ div.checkbox.icon-wrapper i.fa {
 .pull-left {
   float: left !important;
 }
+
+// TODO: Need to replace .hidden class with .d-none
+
+.hidden {
+  @extend .d-none;
+}
+
+.hidden-xs {
+  @extend .d-none;
+  @extend .d-md-block;
+}
+
