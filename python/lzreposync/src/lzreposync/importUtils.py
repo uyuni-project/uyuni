@@ -28,6 +28,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     import_count = 0
     failed_packages = 0
     batch_size = len(to_process)
+    initial_size = batch_size
     # all_packages = set()  # TODO: see reposync
 
     for package in to_process:
@@ -112,5 +113,5 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
         ),
     )
 
-    log(0, "Failed packages: {}".format(failed_packages))
-    # TODO: return somthing ?
+    return initial_size-batch_size  # return the number of failed packages
+    # TODO: return somthing else?
