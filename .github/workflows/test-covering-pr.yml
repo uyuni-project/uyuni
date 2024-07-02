@@ -29,6 +29,15 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
         run: echo "result=$(node .github/scripts/test_covering_pr.js ${{ steps.files.outputs.added_modified }})" >> $GITHUB_OUTPUT
+      - id: debugme
+        name: debug
+        env:
+          REDIS_USER: ${{ secrets.REDIS_USER }}
+          REDIS_PASS: ${{ secrets.REDIS_PASS }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+        run: echo "result=$(node .github/scripts/test_covering_pr.js ${{ steps.files.outputs.added_modified }})"
+
       - name: Write a comment into the Pull Request
         uses: actions-cool/maintain-one-comment@v3
         with:
