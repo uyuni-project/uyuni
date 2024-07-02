@@ -77,8 +77,8 @@ const Promote = (props: Props) => {
           ) : (
             <React.Fragment>
               <dl className="row">
-                <dt className="col-xs-4">{t("Version")}:</dt>
-                <dd className="col-xs-8">
+                <dt className="col-4 col-xs-4">{t("Version")}:</dt>
+                <dd className="col-8 col-xs-8">
                   <BuildVersion
                     id={`${props.environmentPromote.version}_promote_${props.environmentTarget.id}`}
                     text={
@@ -90,8 +90,8 @@ const Promote = (props: Props) => {
                 </dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-4">{t("Target environment")}:</dt>
-                <dd className="col-xs-8">{props.environmentTarget.name}</dd>
+                <dt className="col-4 col-xs-4">{t("Target environment")}:</dt>
+                <dd className="col-8 col-xs-8">{props.environmentTarget.name}</dd>
               </dl>
             </React.Fragment>
           )
