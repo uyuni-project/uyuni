@@ -95,6 +95,25 @@ def is_source_package(node):
         return False
 
 
+def map_flag(flag:str)->int:
+    """
+    Map the given flag into the correct int value
+    For more information, please see: https://github.com/rpm-software-management/createrepo_c/blob/424616d851d6fe58e89ae9b1b318853f8a899195/src/misc.c#L50
+    """
+    if flag == "LT":
+        return 2
+    elif flag == "GT":
+        return 4
+    elif flag == "EQ":
+        return 8
+    elif flag == "LE":
+        return 10
+    elif flag == "GE":
+        return 12
+    else:
+        return 0
+
+
 class PrimaryParser:
     def __init__(self, primary_file):
         """
@@ -239,13 +258,14 @@ class PrimaryParser:
                             # TODO fix: flags value error: ValueError: invalid literal for int() with base 10: 'EQ',
                             #  we're ignoring the 'flags' for the moment
                             self.current_hdr[attr_mapped_name].append(attr.value.encode('ASCII'))
+                        else:
+                            self.current_hdr[attr_mapped_name].append(map_flag(attr.value))
                     else:
-                        if not attr_name == "flags":
+                        if attr_name == "flags":
+                            self.current_hdr[attr_mapped_name].append(0)
+                        else:
                             # Setting some fake data TODO:fix
                             self.current_hdr[attr_mapped_name].append(b'')
-                        else:
-                            # attr_name == "flags" # Setting some fake data TODO:fix
-                            self.current_hdr[attr_mapped_name].append(0)
 
     def set_text_element_node(self, node):
         """
