@@ -1,0 +1,2 @@
+- Added missing attest on boot field in the response of 
+  getCoCoAttestationConfig API
