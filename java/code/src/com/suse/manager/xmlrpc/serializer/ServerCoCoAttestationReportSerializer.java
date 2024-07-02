@@ -64,7 +64,9 @@ public class ServerCoCoAttestationReportSerializer  extends ApiResponseSerialize
             r.put("result_type", res.getResultType().name());
             r.put("result_status", res.getStatus().name());
             r.put("result_description", res.getDescription());
-            r.put("result_attested", res.getAttested());
+            if (res.getAttested() != null) {
+                r.put("result_attested", res.getAttested());
+            }
             results.add(r);
         });
         builder.add("results", results);
