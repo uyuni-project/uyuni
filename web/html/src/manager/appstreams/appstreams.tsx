@@ -3,45 +3,24 @@ import { useState } from "react";
 import { ActionChain } from "components/action-schedule";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages";
 
-import { AppStreamModule, ChannelAppStream } from "./appstreams.type";
+import { ChannelAppStream } from "./appstreams.type";
 import { AppStreamsChangesConfirm } from "./changes-confirm-appstreams";
 import { AppStreamsList } from "./list-appstreams";
+import { getStreamName, handleModuleEnableDisable } from "./utils";
 
 type Props = {
   channelsAppStreams: Array<ChannelAppStream>;
 };
 
-export const getStreamName = (module: AppStreamModule) => `${module.name}:${module.stream}`;
-
 const AppStreams = ({ channelsAppStreams }: Props) => {
   const [appStreams, setAppStreams] = useState<ChannelAppStream[]>(channelsAppStreams);
-  const [toEnable, setToEnable] = useState<Array<string>>([]);
-  const [toDisable, setToDisable] = useState<Array<string>>([]);
+  const [toEnable, setToEnable] = useState<Map<number, Array<string>>>(new Map());
+  const [toDisable, setToDisable] = useState<Map<number, Array<string>>>(new Map());
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const [scheduledMsg, setScheduledMsg] = useState<MessageType[]>([]);
 
-  const isStreamEnabled = (stream: AppStreamModule) =>
-    toEnable.includes(getStreamName(stream)) || (stream.enabled && !toDisable.includes(getStreamName(stream)));
-
-  const handleEnableDisable = (appStream: AppStreamModule) => {
-    const stream = `${appStream.name}:${appStream.stream}`;
-    if (appStream.enabled) {
-      setToDisable((prevState) =>
-        prevState.includes(stream) ? prevState.filter((it) => it !== stream) : prevState.concat(stream)
-      );
-    } else {
-      setToEnable((prevState) =>
-        prevState.includes(stream) ? prevState.filter((it) => it !== stream) : prevState.concat(stream)
-      );
-    }
-
-    // Disable every other stream of the module
-    appStreams.forEach((ch) =>
-      ch.appStreams[appStream.name]
-        ?.filter((as) => getStreamName(as) !== stream && isStreamEnabled(as))
-        .forEach((as) => handleEnableDisable(as))
-    );
-  };
+  const handleEnableDisable = (channel, appStream) =>
+    handleModuleEnableDisable(channel, appStream, appStreams, toEnable, toDisable, setToEnable, setToDisable);
 
   /**
    * After scheduling the action, apply the changes optimistically to the currently displayed list
@@ -55,7 +34,9 @@ const AppStreams = ({ channelsAppStreams }: Props) => {
         ...Object.keys(ch.appStreams).reduce((acc, key) => {
           acc[key] = ch.appStreams[key].map((as) => ({
             ...as,
-            enabled: toEnable.includes(getStreamName(as)) || (!toDisable.includes(getStreamName(as)) && as.enabled),
+            enabled:
+              toEnable.get(ch.channel.id)?.includes(getStreamName(as)) ||
+              (!toDisable.get(ch.channel.id)?.includes(getStreamName(as)) && as.enabled),
           }));
           return acc;
         }, {}),
@@ -98,16 +79,16 @@ const AppStreams = ({ channelsAppStreams }: Props) => {
   };
 
   const handleReset = () => {
-    setToEnable([]);
-    setToDisable([]);
+    setToEnable(new Map());
+    setToDisable(new Map());
   };
 
   const showContent = () => {
     if (showConfirm) {
       return (
         <AppStreamsChangesConfirm
-          toEnable={toEnable}
-          toDisable={toDisable}
+          toEnable={[...toEnable.values()].flat()}
+          toDisable={[...toDisable.values()].flat()}
           onCancelClick={() => setShowConfirm(false)}
           onConfirm={handleConfirmChanges}
           onError={handleConfirmError}

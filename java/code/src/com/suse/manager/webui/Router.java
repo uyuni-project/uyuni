@@ -34,7 +34,6 @@ import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
-import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.AnsibleController;
 import com.suse.manager.webui.controllers.CSVDownloadController;
 import com.suse.manager.webui.controllers.CVEAuditController;
@@ -64,6 +63,8 @@ import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
+import com.suse.manager.webui.controllers.activationkeys.ActivationKeysController;
+import com.suse.manager.webui.controllers.activationkeys.ActivationKeysViewsController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.appstreams.AppStreamsController;
@@ -188,6 +189,7 @@ public class Router implements SparkApplication {
 
         // Activation Keys API
         ActivationKeysController.initRoutes();
+        ActivationKeysViewsController.initRoutes(jade);
 
         SsmController.initRoutes();
 
