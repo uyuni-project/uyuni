@@ -521,7 +521,7 @@ class RepoSync(object):
             CFG.set("DEBUG", log_level)
             rhnLog.initLOG(log_path, log_level)
             # os.fchown isn't in 2.4 :/
-            os.system("chgrp " + CFG.httpd_group + " " + log_path)
+            os.system("/usr/bin/chgrp " + CFG.httpd_group + " " + log_path)
 
         # pylint: disable-next=consider-using-f-string
         log2disk(0, "Command: %s" % str(sys.argv))
