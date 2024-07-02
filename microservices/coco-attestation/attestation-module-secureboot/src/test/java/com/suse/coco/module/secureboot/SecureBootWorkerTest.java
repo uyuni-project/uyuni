@@ -52,14 +52,20 @@ class SecureBootWorkerTest {
         result.setStatus(AttestationStatus.PENDING);
         result.setReportId(5L);
 
-        reportMessages = Map.of(1L, "SecureBoot enabled\n",
-                2L, "SecureBoot enabled\nSecureBoot validation is disabled in shim\n",
-                3L, "SecureBoot disabled\n",
-                4L, "SecureBoot disabled\nPlatform is in Setup Mode\n",
-                5L, "Cannot determine secure boot state.\n",
-                6L, "Failed to read \"SetupMode\" variable: XYZ\n",
-                7L, "Failed to read \"SecureBoot\" variable: ABC\n"
-                );
+        reportMessages = Map.ofEntries(
+            Map.entry(1L, "SecureBoot enabled\n"),
+            Map.entry(2L, "SecureBoot enabled\nSecureBoot validation is disabled in shim\n"),
+            Map.entry(3L, "SecureBoot disabled\n"),
+            Map.entry(4L, "SecureBoot disabled\nPlatform is in Setup Mode\n"),
+            Map.entry(5L, "Cannot determine secure boot state.\n"),
+            Map.entry(6L, "Failed to read \"SetupMode\" variable: XYZ\n"),
+            Map.entry(7L, "Failed to read \"SecureBoot\" variable: ABC\n"),
+            Map.entry(8L, "EFI variables are not supported on this system\n"),
+            Map.entry(9L, "This system doesn't support Secure Boot\n"),
+            Map.entry(10L, "Could not allocate space: reasons\n"),
+            Map.entry(11L, "Totally unexpected error message\n")
+        );
+
         // Common mocking
         when(session.selectOne(eq("SecureBootModule.retrieveReport"), anyLong()))
                 .thenAnswer(invocation -> reportMessages.get(invocation.getArgument(1, Long.class)));
