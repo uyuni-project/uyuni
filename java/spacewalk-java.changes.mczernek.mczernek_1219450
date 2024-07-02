@@ -1,1 +1,2 @@
 - Do not explicitly trigger Cobbler sync when adding a system via SUMA API
+  (bsc#1219450)
