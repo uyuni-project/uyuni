@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 
+// TEST
+
 package com.suse.manager.utils;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CP_PUSH_ROOT_PATH;
