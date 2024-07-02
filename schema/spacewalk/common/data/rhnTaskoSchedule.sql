@@ -22,7 +22,7 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'cobbler-sync-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='cobbler-sync-bunch'),
-        current_timestamp, '0 * * * * ?');
+        current_timestamp, '0 0/5 * * * ?');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'channel-repodata-default',
