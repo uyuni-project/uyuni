@@ -91,21 +91,16 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
             rhnSQL.commit()
             del mpm_src_batch
 
-            except (KeyboardInterrupt, rhnSQL.SQLError):
-                raise
-            except InvalidArchError as e:
-                # TODO: fix this InvalidArchError: "Unknown arch aarch64_ilp32"
-                #  The problem with this code, is that if one package from a batch fails, all the batch (the rest of it)
-                #  also fails
-                continue
-            except Exception as e:
-                failed_packages += 1
-                e_message = f"Exception: {e}"
-                log2(0, 1, e_message, stream=sys.stderr)
-                raise e
-            finally:
-                # Cleanup if cache..if applied
-                pass
+    except (KeyboardInterrupt, rhnSQL.SQLError):
+        raise
+    except Exception as e:
+        failed_packages += 1
+        e_message = f"Exception: {e}"
+        log2(0, 1, e_message, stream=sys.stderr)
+        raise e
+    finally:
+        # Cleanup if cache..if applied
+        pass
 
         # package.clear_header()  # TODO See reposync
     rhnSQL.closeDB()
