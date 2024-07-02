@@ -31,6 +31,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     initial_size = batch_size
     # all_packages = set()  # TODO: see reposync
 
+    # Formatting the packages for importLib
     for package in to_process:
 
         # Ignoring packages with arch='aarch64_ilp32' for the moment
@@ -64,29 +65,31 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
         except Exception:
             failed_packages += 1
             # TODO: maybe other stuff to do (like in the reposync)
-        finally:
-            try:
-                # importing packages by batch or if the current packages is the last
-                if mpm_bin_batch and len(mpm_bin_batch) == batch_size:  # TODO: possibly more conditions
-                    importer = packageImport.PackageImport(
-                        mpm_bin_batch, backend, caller=upload_caller
-                    )
-                    importer.setUploadForce(1)
-                    importer.run()
-                    rhnSQL.commit()
-                    del importer.batch
-                    del mpm_bin_batch
-                    mpm_bin_batch = importLib.Collection()
 
-                if mpm_src_batch:  # TODO: possibly more conditions
-                    src_importer = packageImport.SourcePackageImport(
-                        mpm_src_batch, backend, caller=upload_caller
-                    )
-                    src_importer.setUploadForce(1)
-                    src_importer.run()
-                    rhnSQL.commit()
-                    del mpm_src_batch
-                    mpm_src_batch = importLib.Collection()
+    # Importing packages
+    try:
+        # Importing the batch of binary packages
+        if mpm_bin_batch:
+            logging.debug("Importing a batch of %d Binary packages..." % len(mpm_bin_batch))
+            importer = packageImport.PackageImport(
+                mpm_bin_batch, backend, caller=upload_caller
+            )
+            importer.setUploadForce(1)
+            importer.run()
+            rhnSQL.commit()
+            del importer.batch
+            del mpm_bin_batch
+
+        # Importing the batch of source packages
+        if mpm_src_batch:
+            logging.debug("Importing a batch of %d Source packages..." % len(mpm_src_batch))
+            src_importer = packageImport.SourcePackageImport(
+                mpm_src_batch, backend, caller=upload_caller
+            )
+            src_importer.setUploadForce(1)
+            src_importer.run()
+            rhnSQL.commit()
+            del mpm_src_batch
 
             except (KeyboardInterrupt, rhnSQL.SQLError):
                 raise
