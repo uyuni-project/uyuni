@@ -68,7 +68,10 @@ public enum ViewHelper {
         "/rhn/account/EditAddress.do",
         "/rhn/multiorg/OrgConfigDetails.do",
         "/rhn/manager/notification-messages",
-        "rhn/channels/software/Search.do"
+        "rhn/channels/software/Search.do",
+        "/rhn/systems/details/SystemRemoteCommand.do",
+        "/rhn/manager/systems/details/highstate",
+        "/rhn/manager/systems/details/recurring-actions"
     );
 
     ViewHelper() { }
