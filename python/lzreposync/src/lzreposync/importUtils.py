@@ -1,14 +1,16 @@
+import logging
 import sys
 
 from spacewalk.satellite_tools.syncLib import log2, log
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import importLib, mpmSource, packageImport
 from spacewalk.server.importlib.backendOracle import SQLBackend
+from spacewalk.server.importlib.importLib import InvalidArchError
 
 
 # TODO: rename 'to_process' into 'package_batch'
 # TODO: 'to_disassociate', 'to_link': are they important ?
-def import_package_batch(to_process, batch_index, batch_count):
+def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     # Prepare SQL statements
     rhnSQL.closeDB(committing=False, closing=False)  # TODO: not sure what this exactly do
     rhnSQL.initDB()
@@ -23,20 +25,29 @@ def import_package_batch(to_process, batch_index, batch_count):
     # pylint: disable-next=invalid-name
     # with cfg_component("server.susemanager") as CFG:
     #     mount_point = CFG.MOUNT_POINT
-    import_count = 0  # TODO:can we make it this way? sum(p[1] for p in to_process) instead of incrementing in the loop
+    import_count = 0
     failed_packages = 0
+    batch_size = len(to_process)
     # all_packages = set()  # TODO: see reposync
 
     for package in to_process:
+
+        # Ignoring packages with arch='aarch64_ilp32' for the moment
+        # TODO: fix later. Note: we should make this more generalized with possibly other unrecognized archs
+        if package["header"]["arch"] == "aarch64_ilp32":
+            logging.debug("Ignoring package {} - Cannot process arch {}".
+                          format(package["checksum"], package["header"]["arch"]))
+            batch_size -= 1
+            continue
         try:
-            print(f"INFO: Importing package {package['name']}")
+            # print(f"INFO: Importing package. HEADER= {package['header'].keys()}")
             import_count += 1
             pkg = mpmSource.create_package(
                 package["header"],
-                size=package["package_size"],  # TODO: in reposync they use 'payload size': we don't have that in primary
-                checksum_type=package["checksum"]["type"],
-                checksum=package["checksum"]["value"],
-                relpath="/var",  # TODO: check what is this 'relpath'
+                size=package["package_size"],
+                checksum_type=package["checksum_type"],
+                checksum=package["checksum"],
+                relpath="/var",  # TODO: what is 'relpath' ?
                 org_id=1,  # TODO: correct
                 header_start=package["header_start"],
                 header_end=package["header_end"],
@@ -55,7 +66,7 @@ def import_package_batch(to_process, batch_index, batch_count):
         finally:
             try:
                 # importing packages by batch or if the current packages is the last
-                if mpm_bin_batch:  # TODO: possibly more conditions
+                if mpm_bin_batch and len(mpm_bin_batch) == batch_size:  # TODO: possibly more conditions
                     importer = packageImport.PackageImport(
                         mpm_bin_batch, backend, caller=upload_caller
                     )
@@ -78,15 +89,22 @@ def import_package_batch(to_process, batch_index, batch_count):
 
             except (KeyboardInterrupt, rhnSQL.SQLError):
                 raise
+            except InvalidArchError as e:
+                # TODO: fix this InvalidArchError: "Unknown arch aarch64_ilp32"
+                #  The problem with this code, is that if one package from a batch fails, all the batch (the rest of it)
+                #  also fails
+                continue
             except Exception as e:
+                failed_packages += 1
                 e_message = f"Exception: {e}"
                 log2(0, 1, e_message, stream=sys.stderr)
+                raise e
             finally:
                 # Cleanup if cache..if applied
                 pass
 
         # package.clear_header()  # TODO See reposync
-    # rhnSQL.closeDB()
+    rhnSQL.closeDB()
     log(
         0,
         " Pacakge batch #{} of {} completed...".format(
@@ -94,4 +112,5 @@ def import_package_batch(to_process, batch_index, batch_count):
         ),
     )
 
+    log(0, "Failed packages: {}".format(failed_packages))
     # TODO: return somthing ?

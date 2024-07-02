@@ -224,12 +224,20 @@ class Database(sql_base.Database):
                     "Attribute sslrootcert needs to be set if sslmode is set."
                 )
 
+            # self.dbh = psycopg2.connect(
+            #     " ".join(
+            #         # pylint: disable-next=consider-using-f-string
+            #         "%s=%s" % (k, re.escape(str(v)))
+            #         for k, v in list(dsndata.items())
+            #     )
+            # )
+
             self.dbh = psycopg2.connect(
-                " ".join(
-                    # pylint: disable-next=consider-using-f-string
-                    "%s=%s" % (k, re.escape(str(v)))
-                    for k, v in list(dsndata.items())
-                )
+                dbname="susemanager",
+                user="spacewalk",
+                password="spacewalk",
+                host="localhost",
+                port="5432"
             )
 
             # convert all DECIMAL types to float (let Python to choose one)
