@@ -392,25 +392,27 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
           </div>
         }
       >
-        <div className="row" style={{ display: "flex" }}>
-          <div className="col-sm-9">
-            <div className="col-md-4 text-left">
-              <label>{t("Monitoring")}</label>
-            </div>
-            <div className="col-md-8">
-              {exportersStatus ? (
-                <ExportersList exporters={exportersStatus} messages={exportersMessages} />
-              ) : (
-                <ListPlaceholder />
-              )}
-              {restartNeeded ? (
-                <div>
-                  <Icon type="system-reboot" className="text-warning fa-1-5x" />
-                  <a href="/rhn/admin/config/Restart.do?">{t("Restarting")}</a>
-                  {t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.")}
-                </div>
-              ) : null}
-              <ExportersMessages messages={exportersMessages} />
+        <div className="row">
+          <div className="col-md-9">
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label>{t("Monitoring")}</label>
+              </div>
+              <div className="col-md-8">
+                {exportersStatus ? (
+                  <ExportersList exporters={exportersStatus} messages={exportersMessages} />
+                ) : (
+                  <ListPlaceholder />
+                )}
+                {restartNeeded ? (
+                  <div>
+                    <Icon type="system-reboot" className="text-warning fa-1-5x" />
+                    <a href="/rhn/admin/config/Restart.do?">{t("Restarting")}</a>
+                    {t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.")}
+                  </div>
+                ) : null}
+                <ExportersMessages messages={exportersMessages} />
+              </div>
             </div>
           </div>
           <HelpPanel isUyuni={props.isUyuni} />
