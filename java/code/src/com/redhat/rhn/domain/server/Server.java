@@ -574,6 +574,15 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public Long getCheckinCount() {
         return serverInfo.getCheckinCounter();
     }
+
+    /**
+     * Gets the  uptimeData for this server
+     * @return uptimeData string
+     */
+    public String getLastUptimeData() {
+        return serverInfo.getUptimeData();
+    }
+
     /**
      * Getter for id
      *
@@ -2180,11 +2189,14 @@ public class Server extends BaseDomainHelper implements Identifiable {
             srvInfo.setServer(this);
             setServerInfo(srvInfo);
             srvInfo.setCheckinCounter(0L);
+            srvInfo.setUptimeData("");
         }
 
         srvInfo.setCheckin(new Date());
         srvInfo.setCheckinCounter(
                 Optional.ofNullable(srvInfo.getCheckinCounter()).orElse(0L) + 1);
+        srvInfo.setUptimeData(
+                String.valueOf(Optional.ofNullable(srvInfo.getUptimeData())));
 
     }
 

@@ -22,7 +22,8 @@ CREATE TABLE rhnServerInfo
     checkin          TIMESTAMPTZ
                          DEFAULT (current_timestamp),
     checkin_counter  NUMERIC
-                         DEFAULT (0)
+                         DEFAULT (0),
+    uptime_data      text
 )
 
 
