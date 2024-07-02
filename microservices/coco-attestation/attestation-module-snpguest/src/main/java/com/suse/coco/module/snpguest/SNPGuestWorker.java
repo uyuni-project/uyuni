@@ -85,9 +85,19 @@ public class SNPGuestWorker implements AttestationWorker {
 
              LOGGER.debug("Loaded report {}", report);
              if (report.getCpuGeneration() == EpycGeneration.UNKNOWN) {
-                 appendError("Unable to identify Epyc processor generation for attestation report");
+                appendError("Unable to identify Epyc processor generation for attestation report");
                 return false;
             }
+
+            if (report.getRandomNonce() == null || report.getRandomNonce().length == 0) {
+                appendError("Unable to verify: randomized nonce not found");
+                return false;
+            }
+
+             if (report.getReport() == null || report.getReport().length == 0) {
+                 appendError("Unable to verify: attestation report not found");
+                 return false;
+             }
 
             try (var workingDir = directoryProvider.createDirectoryFor(result.getId(), report)) {
                 // Ensure the nonce is present in the report
