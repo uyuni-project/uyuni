@@ -44,6 +44,7 @@ public class CoCoAttestationConfigSerializer extends ApiResponseSerializer<Serve
                 .add("enabled", src.isEnabled())
                 .add("environment_type", src.getEnvironmentType().name())
                 .add("system_id", src.getServer().getId())
+                .add("attest_on_boot", src.isAttestOnBoot())
                 .build();
     }
 }
