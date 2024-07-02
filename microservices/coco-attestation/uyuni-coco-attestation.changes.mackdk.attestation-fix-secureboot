@@ -1,0 +1,2 @@
+- Mark Secure Boot as succeeded only if the correct message is 
+  present
