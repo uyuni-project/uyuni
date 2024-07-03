@@ -14,7 +14,7 @@
  */
 
 package com.suse.manager.admin;
-
+//TEST
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
