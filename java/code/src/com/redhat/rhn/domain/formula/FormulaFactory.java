@@ -178,51 +178,57 @@ public class FormulaFactory {
         }).setPillar(formData);
 
         if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
-            Set<MinionServer> minions = getGroupMinions(group);
-            minions.forEach(minion -> {
-                if (!hasMonitoringDataEnabled(formData)) {
-                    if (!serverHasMonitoringFormulaEnabled(minion)) {
-                        systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
-                    }
-                }
-                else {
-                    systemEntitlementManager.grantMonitoringEntitlement(minion);
-                }
-            });
+            saveGroupForPrometheusExporters(formData, group);
         }
-
         // Handle Saltboot group - create Cobbler profile
-        if (SALTBOOT_GROUP.equals(formulaName)) {
-            Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
-            String kernelOptions = "MINION_ID_PREFIX=" + group.getName();
-            kernelOptions += " MASTER=" + saltboot.get("download_server");
-            if (Boolean.TRUE.equals(saltboot.get("disable_id_prefix"))) {
-                kernelOptions += " DISABLE_ID_PREFIX=1";
-            }
-            if (Boolean.TRUE.equals(saltboot.get("disable_unique_suffix"))) {
-                kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
-            }
-            if ("FQDN".equals(saltboot.get("minion_id_naming"))) {
-                kernelOptions += " USE_FQDN_MINION_ID=1";
-            }
-            else if ("HWType".equals(saltboot.get("minion_id_naming"))) {
-                kernelOptions += " DISABLE_HOSTNAME_ID=1";
-            }
-            if (StringUtils.isNotEmpty((String) saltboot.get("default_kernel_parameters"))) {
-                kernelOptions += " " + saltboot.get("default_kernel_parameters");
-            }
-            String bootImage = (String)saltboot.get("default_boot_image");
-            String bootImageVersion = (String)saltboot.get("default_boot_image_version");
-
-            try {
-                SaltbootUtils.createSaltbootProfile(group.getName(), kernelOptions, group.getOrg(),
-                        bootImage, bootImageVersion);
-            }
-            catch (SaltbootException e) {
-                throw new ValidatorException(e.getMessage());
-            }
-
+        else if (SALTBOOT_GROUP.equals(formulaName)) {
+            saveGroupForSaltBoot(formData, group);
         }
+    }
+
+    private static void saveGroupForSaltBoot(Map<String, Object> formData, ServerGroup group) {
+        Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
+        String kernelOptions = "MINION_ID_PREFIX=" + group.getName();
+        kernelOptions += " MASTER=" + saltboot.get("download_server");
+        if (Boolean.TRUE.equals(saltboot.get("disable_id_prefix"))) {
+            kernelOptions += " DISABLE_ID_PREFIX=1";
+        }
+        if (Boolean.TRUE.equals(saltboot.get("disable_unique_suffix"))) {
+            kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
+        }
+        if ("FQDN".equals(saltboot.get("minion_id_naming"))) {
+            kernelOptions += " USE_FQDN_MINION_ID=1";
+        }
+        else if ("HWType".equals(saltboot.get("minion_id_naming"))) {
+            kernelOptions += " DISABLE_HOSTNAME_ID=1";
+        }
+        if (StringUtils.isNotEmpty((String) saltboot.get("default_kernel_parameters"))) {
+            kernelOptions += " " + saltboot.get("default_kernel_parameters");
+        }
+        String bootImage = (String)saltboot.get("default_boot_image");
+        String bootImageVersion = (String)saltboot.get("default_boot_image_version");
+
+        try {
+            SaltbootUtils.createSaltbootProfile(group.getName(), kernelOptions, group.getOrg(),
+                    bootImage, bootImageVersion);
+        }
+        catch (SaltbootException e) {
+            throw new ValidatorException(e.getMessage());
+        }
+    }
+
+    private static void saveGroupForPrometheusExporters(Map<String, Object> formData, ServerGroup group) {
+        Set<MinionServer> minions = getGroupMinions(group);
+        minions.forEach(minion -> {
+            if (!hasMonitoringDataEnabled(formData)) {
+                if (!serverHasMonitoringFormulaEnabled(minion)) {
+                    systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
+                }
+            }
+            else {
+                systemEntitlementManager.grantMonitoringEntitlement(minion);
+            }
+        });
     }
 
     /**
