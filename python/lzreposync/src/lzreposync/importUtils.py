@@ -96,7 +96,7 @@ def import_package_batch(to_process, batch_index=-1):
         failed_packages += 1
         e_message = f"Exception: {e}"
         log2(0, 1, e_message, stream=sys.stderr)
-        raise e
+        # raise e # Ignore the package and continue
     finally:
         # Cleanup if cache..if applied
         pass
