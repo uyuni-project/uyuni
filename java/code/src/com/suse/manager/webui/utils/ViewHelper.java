@@ -100,7 +100,8 @@ public enum ViewHelper {
         "/rhn/manager/admin/setup/products",
         "/rhn/systems/details/SystemRemoteCommand.do",
         "/rhn/manager/systems/details/highstate",
-        "/rhn/manager/systems/details/recurring-actions"
+        "/rhn/manager/systems/details/recurring-actions",
+        "/rhn/manager/cm/build"
     );
 
     ViewHelper() { }

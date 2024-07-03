@@ -345,67 +345,77 @@ class BuildImage extends React.Component<Props, State> {
         helpUrl="reference/images/images-build.html"
       >
         <Messages items={this.state.messages} />
-        <Form
-          model={this.state.model}
-          className="image-build-form"
-          onChange={this.onFormChange}
-          onSubmit={this.onBuild}
-          onValidate={this.onValidate}
-          divClass="col-md-7"
-        >
-          <Select
-            name="profileId"
-            required
-            label={t("Image Profile")}
-            onChange={this.handleProfileChange}
-            labelClass="col-md-3"
-            divClass="col-md-9"
-            invalidHint={
-              <span>
-                Image Profile is required.&nbsp;
-                <a href={"/rhn/manager/cm/imageprofiles/create?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.
-              </span>
-            }
-            options={this.state.profiles}
-            getOptionValue={(option) => option.profileId}
-          />
+        <div className="row">
+          <Form
+            model={this.state.model}
+            className="image-build-form col-md-7"
+            onChange={this.onFormChange}
+            onSubmit={this.onBuild}
+            onValidate={this.onValidate}
+          >
+            <Select
+              name="profileId"
+              required
+              label={t("Image Profile")}
+              onChange={this.handleProfileChange}
+              labelClass="col-md-3"
+              divClass="col-md-9"
+              invalidHint={
+                <span>
+                  Image Profile is required.&nbsp;
+                  <a href={"/rhn/manager/cm/imageprofiles/create?url_bounce=" + this.getBounceUrl()}>
+                    Create a new one
+                  </a>
+                  .
+                </span>
+              }
+              options={this.state.profiles}
+              getOptionValue={(option) => option.profileId}
+            />
 
-          {this.state.profile.imageType === "dockerfile" && (
-            <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest" />
-          )}
-
-          <Select
-            name="buildHostId"
-            required
-            label={t("Build Host")}
-            labelClass="col-md-3"
-            divClass="col-md-9"
-            getOptionLabel={(option) => option.name}
-            getOptionValue={(option) => option.id}
-            options={this.state.hosts}
-          />
-
-          <ActionSchedule
-            earliest={this.state.model.earliest}
-            actionChains={window.actionChains}
-            actionType="image.build"
-            onActionChainChanged={this.onActionChainChanged}
-            onDateTimeChanged={this.onDateTimeChanged}
-          />
-
-          <FormGroup>
-            <div className="col-md-offset-3 offset-md-3 col-md-9">
-              <SubmitButton
-                id="submit-btn"
-                className="btn-success"
-                icon="fa-cogs"
-                text={t("Build")}
-                disabled={this.state.isInvalid}
+            {this.state.profile.imageType === "dockerfile" && (
+              <Text
+                name="version"
+                label={t("Version")}
+                labelClass="col-md-3"
+                divClass="col-md-9"
+                placeholder="latest"
               />
-            </div>
-          </FormGroup>
-        </Form>
-        {this.renderProfileSummary()}
+            )}
+
+            <Select
+              name="buildHostId"
+              required
+              label={t("Build Host")}
+              labelClass="col-md-3"
+              divClass="col-md-9"
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.id}
+              options={this.state.hosts}
+            />
+
+            <ActionSchedule
+              earliest={this.state.model.earliest}
+              actionChains={window.actionChains}
+              actionType="image.build"
+              onActionChainChanged={this.onActionChainChanged}
+              onDateTimeChanged={this.onDateTimeChanged}
+            />
+
+            <FormGroup>
+              <div className="col-md-offset-3 offset-md-3 col-md-9">
+                <SubmitButton
+                  id="submit-btn"
+                  className="btn-success"
+                  icon="fa-cogs"
+                  text={t("Build")}
+                  disabled={this.state.isInvalid}
+                />
+              </div>
+            </FormGroup>
+          </Form>
+          {this.renderProfileSummary()}
+        </div>
       </TopPanel>
     );
   }
