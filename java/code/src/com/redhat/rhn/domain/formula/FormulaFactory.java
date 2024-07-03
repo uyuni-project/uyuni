@@ -44,6 +44,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -477,7 +478,7 @@ public class FormulaFactory {
         File layoutFileManager = new File(metadataDirManager + layoutFilePath);
         File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
 
-        Yaml yaml = new Yaml(new SafeConstructor());
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
             if (layoutFileStandalone.exists()) {
                 return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layoutFileStandalone)));
@@ -858,7 +859,7 @@ public class FormulaFactory {
         File metadataFileManager = new File(metadataDirManager + metadataFilePath);
         File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
 
-        Yaml yaml = new Yaml(new SafeConstructor());
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
             if (metadataFileStandalone.isFile()) {
                 return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileStandalone));
@@ -911,7 +912,7 @@ public class FormulaFactory {
         File pillarExampleFileManager = new File(metadataDirManager + pillarExamplePath);
         File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
 
-        Yaml yaml = new Yaml(new SafeConstructor());
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
             if (pillarExampleFileStandalone.isFile()) {
                 return (Map<String, Object>) yaml.load(new FileInputStream(pillarExampleFileStandalone));
