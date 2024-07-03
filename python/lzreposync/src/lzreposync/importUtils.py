@@ -10,7 +10,7 @@ from spacewalk.server.importlib.importLib import InvalidArchError
 
 # TODO: rename 'to_process' into 'package_batch'
 # TODO: 'to_disassociate', 'to_link': are they important ?
-def import_package_batch(to_process, batch_index=-1, batch_count=-1):
+def import_package_batch(to_process, batch_index=-1):
     # Prepare SQL statements
     rhnSQL.closeDB(committing=False, closing=False)  # TODO: not sure what this exactly do
     rhnSQL.initDB()
@@ -70,7 +70,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     try:
         # Importing the batch of binary packages
         if mpm_bin_batch:
-            logging.debug("Importing a batch of %d Binary packages..." % len(mpm_bin_batch))
+            log(0, " Importing a sub batch of {} Binary packages...".format(len(mpm_bin_batch)))
             importer = packageImport.PackageImport(
                 mpm_bin_batch, backend, caller=upload_caller
             )
@@ -82,7 +82,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
 
         # Importing the batch of source packages
         if mpm_src_batch:
-            logging.debug("Importing a batch of %d Source packages..." % len(mpm_src_batch))
+            log(0, " Importing a sub batch of {} Source packages...".format(len(mpm_src_batch)))
             src_importer = packageImport.SourcePackageImport(
                 mpm_src_batch, backend, caller=upload_caller
             )
@@ -106,9 +106,7 @@ def import_package_batch(to_process, batch_index=-1, batch_count=-1):
     rhnSQL.closeDB()
     log(
         0,
-        " Pacakge batch #{} of {} completed...".format(
-            batch_index, batch_count
-        ),
+        " Pacakge batch #{} completed...".format(batch_index)
     )
 
     return initial_size-batch_size  # return the number of failed packages
