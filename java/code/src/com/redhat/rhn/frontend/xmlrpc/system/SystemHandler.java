@@ -5247,7 +5247,7 @@ public class SystemHandler extends BaseHandler {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
         return minionServer.getOptCocoAttestationConfig()
-                .orElse(new ServerCoCoAttestationConfig());
+                .orElse(new ServerCoCoAttestationConfig(false, minionServer));
     }
 
     /**

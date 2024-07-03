@@ -141,10 +141,8 @@ public class AttestationFactory extends HibernateFactory {
      */
     public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
                                                              boolean enabledIn, boolean attestOnBootIn) {
-        ServerCoCoAttestationConfig cnf = new ServerCoCoAttestationConfig();
-        cnf.setServer(serverIn);
+        ServerCoCoAttestationConfig cnf = new ServerCoCoAttestationConfig(enabledIn, serverIn);
         cnf.setEnvironmentType(typeIn);
-        cnf.setEnabled(enabledIn);
         cnf.setAttestOnBoot(attestOnBootIn);
         save(cnf);
         serverIn.setCocoAttestationConfig(cnf);
