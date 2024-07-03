@@ -41,6 +41,7 @@ class Backend:
             return self.__backend
 
         Backend.__backend = SQLBackend()
+        Backend.__backend.setSessionTimeZoneToUTC()
         return Backend.__backend
 
 
