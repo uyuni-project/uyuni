@@ -5,7 +5,6 @@ from spacewalk.satellite_tools.syncLib import log2, log
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import importLib, mpmSource, packageImport
 from spacewalk.server.importlib.backendOracle import SQLBackend
-from spacewalk.server.importlib.importLib import InvalidArchError
 
 
 # TODO: rename 'to_process' into 'package_batch'
