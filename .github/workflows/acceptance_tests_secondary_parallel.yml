@@ -1,7 +1,7 @@
 name: acceptance-tests-secondary-parallel
 on:
   workflow_run:
-    workflows: [Suggested tests to cover this Pull Request]
+    workflows: ["Suggested tests to cover this Pull Request"]
     types: [completed]
   schedule:
     - cron: '0 */12 * * *'
