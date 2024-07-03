@@ -14,7 +14,7 @@
  */
 
 package com.suse.cloud.domain;
-
+//TEST
 import java.util.Arrays;
 import java.util.Objects;
 
