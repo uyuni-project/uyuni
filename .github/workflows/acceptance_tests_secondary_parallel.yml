@@ -1,10 +1,8 @@
 name: acceptance-tests-secondary-parallel
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
+  workflow_run:
+    workflows: ["Suggested tests to cover this Pull Request"]
+    branches: ["ci_fast_secondary", "ci_fast_secondary_test"]
   schedule:
     - cron: '0 */12 * * *'
 concurrency:
