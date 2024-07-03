@@ -71,7 +71,7 @@ class ChannelMapper:
         self.last_modified_sql = rhnSQL.prepare(
             """
         select
-            to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
+            TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnChannel
         where id = :channel_id
@@ -413,7 +413,7 @@ class SqlPackageMapper:
         self.last_modified_sql = rhnSQL.prepare(
             """
         select
-            to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
+            TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnPackage
         where id = :package_id
@@ -648,7 +648,7 @@ class SqlErratumMapper:
         self.last_modified_sql = rhnSQL.prepare(
             """
         select
-            to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
+            TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnErrata
         where id = :erratum_id
