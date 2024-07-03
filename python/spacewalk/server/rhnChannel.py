@@ -606,7 +606,7 @@ def channel_info(channel):
         c.summary,
         c.description,
         c.update_tag,
-        to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+        TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
     from
         rhnChannel c,
         rhnChannelArch ca
@@ -633,7 +633,7 @@ def get_base_channel(server_id, none_ok=0):
         c.name,
         c.summary,
         c.description,
-        to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+        TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
     from rhnChannel c, rhnChannelArch ca, rhnServerChannel sc
     where sc.server_id = :server_id
       and sc.channel_id = c.id
@@ -773,7 +773,7 @@ def base_channel_for_rel_arch(release, server_arch, org_id=-1,
                c.name,
                c.summary,
                c.description,
-               to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+               TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnChannel c,
                rhnChannelArch ca
         where c.channel_arch_id = ca.id
@@ -894,7 +894,7 @@ def get_channel_for_release_arch(release, server_arch, org_id=None):
                    c.name,
                    c.summary,
                    c.description,
-                   to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                   TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
               from rhnDistChannelMap dcm,
                    rhnChannel c,
                    rhnChannelArch ca,
@@ -922,7 +922,7 @@ def get_channel_for_release_arch(release, server_arch, org_id=None):
                    c.name,
                    c.summary,
                    c.description,
-                   to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                   TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
               from rhnOrgDistChannelMap odcm,
                    rhnChannel c,
                    rhnChannelArch ca,
@@ -963,8 +963,8 @@ def applet_channels_for_uuid(uuid):
                c.name,
                c.summary,
                c.description,
-               to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
-               to_char(s.channels_changed, 'YYYYMMDDHH24MISS') server_channels_changed
+               TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified,
+               TO_CHAR(s.channels_changed at time zone 'UTC', 'YYYYMMDDHH24MISS') server_channels_changed
           from rhnChannelArch ca,
                rhnChannel c,
                rhnServerChannel sc,
@@ -1017,7 +1017,7 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
         c.name,
         c.summary,
         c.description,
-        to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
+        TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified,
         -- If user_id is null, then the channel is subscribable
         rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe')
             subscribable
@@ -1604,7 +1604,7 @@ def _list_packages(channel, cache_prefix, function):
 def getChannelInfoForKickstart(kickstart):
     query = """
     select c.label,
-           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+           TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
       from rhnChannel c,
            rhnKickstartableTree kt
      where c.id = kt.channel_id
@@ -1618,7 +1618,7 @@ def getChannelInfoForKickstart(kickstart):
 def getChannelInfoForKickstartOrg(kickstart, org_id):
     query = """
     select c.label,
-           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+           TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
       from rhnChannel c,
            rhnKickstartableTree kt
      where c.id = kt.channel_id
@@ -1639,7 +1639,7 @@ def getChannelInfoForKickstartSession(session):
 
     query = """
     select c.label,
-           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+           TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
       from rhnChannel c,
            rhnKickstartableTree kt,
            rhnKickstartSession ks
@@ -1655,7 +1655,7 @@ def getChannelInfoForKickstartSession(session):
 def getChildChannelInfoForKickstart(kickstart, child):
     query = """
     select c.label,
-           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+           TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
       from rhnChannel c,
            rhnKickstartableTree kt,
            rhnKickstartSession ks,

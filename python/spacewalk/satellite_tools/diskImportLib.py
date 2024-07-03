@@ -40,6 +40,7 @@ class Backend:
             return self.__backend
 
         Backend.__backend = SQLBackend()
+        Backend.__backend.setSessionTimeZoneToUTC()
         return Backend.__backend
 
 # get_backend() returns a shared instance of an Oracle backend

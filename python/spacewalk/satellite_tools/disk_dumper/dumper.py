@@ -110,7 +110,7 @@ class XML_Dumper:
         query = """
             select c.id channel_id, c.label,
                    ct.label as checksum_type,
-                   TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                   TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
               from rhnChannel c left outer join rhnChecksumType ct on c.checksum_type_id = ct.id,
                    rhnChannelFamilyMembers cfm,
                    (%s
@@ -123,7 +123,7 @@ class XML_Dumper:
     def get_packages_statement(self):
         query = """
             select p.id package_id,
-                   TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                   TO_CHAR(p.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
               from rhnChannelPackage cp, rhnPackage p,
                    rhnChannelFamilyMembers cfm,
                    (%s
@@ -138,7 +138,7 @@ class XML_Dumper:
     def get_source_packages_statement(self):
         query = """
             select ps.id package_id,
-                   TO_CHAR(ps.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                   TO_CHAR(ps.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
               from rhnChannelPackage cp, rhnPackage p, rhnPackageSource ps,
                    rhnChannelFamilyMembers cfm,
                    (%s
@@ -156,7 +156,7 @@ class XML_Dumper:
     def get_errata_statement(self):
         query = """
             select e.id errata_id,
-                   TO_CHAR(e.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                   TO_CHAR(e.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
               from rhnChannelErrata ce, rhnErrata e,
                    rhnChannelFamilyMembers cfm,
                    (%s
@@ -327,7 +327,7 @@ class XML_Dumper:
 
     _query_get_channel_packages = rhnSQL.Statement("""
         select cp.package_id,
-               TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
+               TO_CHAR(p.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnChannelPackage cp,
                rhnPackage p
          where cp.channel_id = :channel_id
@@ -512,7 +512,7 @@ class XML_Dumper:
 
     _query_validate_kickstarts = rhnSQL.Statement("""
         select kt.label kickstart_label,
-               TO_CHAR(kt.modified, 'YYYYMMDDHH24MISS') last_modified
+               TO_CHAR(kt.modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnKickstartableTree kt
          where kt.channel_id = :channel_id
            and kt.org_id is null
@@ -786,7 +786,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
                c.label, ca.label channel_arch, c.basedir, c.name,
                c.summary, c.description, c.gpg_key_url, c.update_tag,
                c.installer_updates, ct.label checksum_type,
-               TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
+               TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified,
                pc.label parent_channel, c.channel_access
           from rhnChannel c left outer join rhnChannel pc on c.parent_channel = pc.id
                left outer join rhnChecksumType ct on c.checksum_type_id = ct.id, rhnChannelArch ca
@@ -822,7 +822,7 @@ class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
     iterator_query = rhnSQL.Statement("""
         select c.id, c.label, ca.label channel_arch, c.basedir, c.name,
                c.summary, c.description, c.gpg_key_url, c.installer_updates, c.update_tag, c.org_id,
-               TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
+               TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified,
                c.channel_product_id,
                pc.label parent_channel,
                cp.product channel_product,
@@ -857,7 +857,7 @@ class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
                 c.checksum_type,
                 c.checksum,
                 p.package_size,
-                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') as last_modified
+                TO_CHAR(p.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
             from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe,
                 rhnPackageArch pa, rhnChecksumView c
             where p.id = :package_id
@@ -889,7 +889,7 @@ class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
                 p.payload_size,
                 p.installed_size,
                 p.build_host,
-                TO_CHAR(p.build_time, 'YYYYMMDDHH24MISS') as build_time,
+                TO_CHAR(p.build_time at time zone 'UTC', 'YYYYMMDDHH24MISS') as build_time,
                 sr.name as source_rpm,
                 c.checksum_type,
                 c.checksum,
@@ -901,7 +901,7 @@ class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
                 p.header_end,
                 p.copyright,
                 p.cookie,
-                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') as last_modified
+                TO_CHAR(p.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
             from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe,
                 rhnPackageArch pa, rhnPackageGroup pg, rhnSourceRPM sr,
                 rhnChecksumView c
@@ -927,7 +927,7 @@ class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
                 ps.rpm_version,
                 ps.payload_size,
                 ps.build_host,
-                TO_CHAR(ps.build_time, 'YYYYMMDDHH24MISS') build_time,
+                TO_CHAR(ps.build_time at time zone 'UTC', 'YYYYMMDDHH24MISS') build_time,
                 sig.checksum sigchecksum,
                 sig.checksum_type sigchecksum_type,
                 ps.vendor,
@@ -935,7 +935,7 @@ class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
                 ps.package_size,
                 c.checksum_type,
                 c.checksum,
-                TO_CHAR(ps.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                TO_CHAR(ps.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
             from rhnPackageSource ps, rhnPackageGroup pg, rhnSourceRPM sr,
                  rhnChecksumView c, rhnChecksumView sig
             where ps.id = :package_id
@@ -964,9 +964,9 @@ class ErrataDumper(exportLib.ErrataDumper):
                 e.synopsis,
                 e.topic,
                 e.solution,
-                TO_CHAR(e.issue_date, 'YYYYMMDDHH24MISS') issue_date,
-                TO_CHAR(e.update_date, 'YYYYMMDDHH24MISS') update_date,
-                TO_CHAR(e.last_modified, 'YYYYMMDDHH24MISS') last_modified,
+                TO_CHAR(e.issue_date at time zone 'UTC', 'YYYYMMDDHH24MISS') issue_date,
+                TO_CHAR(e.update_date at time zone 'UTC', 'YYYYMMDDHH24MISS') update_date,
+                TO_CHAR(e.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified,
                 e.refers_to,
                 e.notes,
                 e.errata_from,
@@ -992,7 +992,7 @@ class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper)
                ktt.label "kstree-type-label",
                kit.name "install-type-name",
                kit.label "install-type-label",
-               TO_CHAR(kt.last_modified, 'YYYYMMDDHH24MISS') "last-modified"
+               TO_CHAR(kt.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') "last-modified"
           from rhnKickstartableTree kt,
                rhnKSTreeType ktt,
                rhnKSInstallType kit,

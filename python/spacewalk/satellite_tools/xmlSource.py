@@ -1264,8 +1264,8 @@ def _normalizeDateType(value):
     except ValueError:
         # string
         return value
-    # Timestamp
-    return backendLib.localtime(value)
+    # Timestamp in UTC
+    return backendLib.gmtime(value)
 
 
 #
