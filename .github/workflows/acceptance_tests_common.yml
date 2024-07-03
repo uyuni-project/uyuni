@@ -34,6 +34,7 @@ jobs:
     needs: paths-filter
     if: needs.paths-filter.outputs.require_acceptance_tests == 'true'
     steps:
+      - run: cat ${{ github.event.workflow_run.id }}
       - name: download recommended tests
         uses: actions/download-artifact@v4
         with:
