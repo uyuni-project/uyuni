@@ -178,6 +178,14 @@ def test_get_modules(importer):
             "396.module_el8.1.0+6019+b22674e1",
             "noarch",
         ),
+        (
+            "php-pecl-gmagick-0:2.0.5~RC1-4.el8.remi.7.2.x86_64",
+            "php-pecl-gmagick",
+            "0",
+            "2.0.5~RC1",
+            "4.el8.remi.7.2",
+            "x86_64",
+        ),
     ],
 )
 def test_parse_rpm_name(nevra_input, name, epoch, version, release, arch):
