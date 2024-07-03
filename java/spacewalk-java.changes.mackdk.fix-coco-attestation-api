@@ -1,3 +1,5 @@
+- Report a server/report id mismatch when calling 
+  getCoCoAttestationResultDetails
 - Prevent the API for confidential computing to work on systems
   without OS support
 - Ensure getCoCoAttestationConfig works when a configuration is 
