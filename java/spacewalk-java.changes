@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 03 14:52:13 CEST 2024 - rosuna@suse.com
+
+- version 4.3.78-0
+  * Remove usage of deprecated constructor (bsc#1227306)
+
+-------------------------------------------------------------------
 Fri Jun 07 11:46:01 CEST 2024 - rosuna@suse.com
 
 - version 4.3.77-0
