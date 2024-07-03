@@ -34,6 +34,12 @@ jobs:
     needs: paths-filter
     if: needs.paths-filter.outputs.require_acceptance_tests == 'true'
     steps:
+      - name: download recommended tests
+        uses: actions/download-artifact@v4
+        with:
+          name: recommended_tests.xml
+          path: recommended_tests.xml
+      - run: cat recommended_tests.xml
       - name: fix podman
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
       - name: welcome_message
