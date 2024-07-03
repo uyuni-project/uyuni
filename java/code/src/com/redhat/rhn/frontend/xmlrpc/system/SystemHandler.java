@@ -9185,8 +9185,13 @@ public class SystemHandler extends BaseHandler {
             throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
         }
 
-        return attestationManager.lookupCoCoAttestationResult(loggedInUser, server, resultId)
+        try {
+            return attestationManager.lookupCoCoAttestationResult(loggedInUser, server, resultId)
                 .orElseThrow(() -> new EntityNotExistsFaultException(resultId));
+        }
+        catch (LookupException ex) {
+            throw new EntityNotExistsFaultException(resultId);
+        }
     }
 
     /**
