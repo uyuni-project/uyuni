@@ -39,11 +39,20 @@ public class ServerCoCoAttestationConfig {
     private CoCoEnvironmentType environmentType;
     private boolean attestOnBoot;
 
+    // Default empty constructor for hibernate
+    protected ServerCoCoAttestationConfig() {
+        this(false, null);
+    }
+
     /**
      * Constructor
+     *
+     * @param enabledIn if attestation is enabled for this server
+     * @param serverIn the server
      */
-    public ServerCoCoAttestationConfig() {
-        enabled = false;
+    public ServerCoCoAttestationConfig(boolean enabledIn, Server serverIn) {
+        enabled = enabledIn;
+        server = serverIn;
         environmentType = CoCoEnvironmentType.NONE;
         attestOnBoot = false;
     }
