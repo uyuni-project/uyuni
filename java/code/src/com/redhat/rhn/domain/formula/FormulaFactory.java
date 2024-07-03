@@ -36,6 +36,7 @@ import com.suse.utils.Maps;
 import com.suse.utils.Opt;
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -102,7 +103,7 @@ public class FormulaFactory {
         String message = "";
         boolean error = false;
         if (!new File(METADATA_DIR_STANDALONE_SALT).canRead()) {
-            message += (error ? " and '" : " '") + METADATA_DIR_STANDALONE_SALT + "'";
+            message += " '" + METADATA_DIR_STANDALONE_SALT + "'";
             error = true;
         }
         if (!new File(metadataDirManager).canRead()) {
@@ -131,10 +132,8 @@ public class FormulaFactory {
         List<String> formulasList = new LinkedList<>();
 
         for (File f : files) {
-            if (f.isDirectory() && new File(f, LAYOUT_FILE).isFile()) {
-                if (!formulasList.contains(f.getName())) {
-                    formulasList.add(f.getName());
-                }
+            if (f.isDirectory() && new File(f, LAYOUT_FILE).isFile() && !formulasList.contains(f.getName())) {
+                formulasList.add(f.getName());
             }
         }
         return FormulaFactory.orderFormulas(formulasList);
@@ -197,19 +196,19 @@ public class FormulaFactory {
             Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
             String kernelOptions = "MINION_ID_PREFIX=" + group.getName();
             kernelOptions += " MASTER=" + saltboot.get("download_server");
-            if ((Boolean)saltboot.get("disable_id_prefix")) {
+            if (Boolean.TRUE.equals(saltboot.get("disable_id_prefix"))) {
                 kernelOptions += " DISABLE_ID_PREFIX=1";
             }
-            if ((Boolean)saltboot.get("disable_unique_suffix")) {
+            if (Boolean.TRUE.equals(saltboot.get("disable_unique_suffix"))) {
                 kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
             }
-            if (saltboot.get("minion_id_naming") == "FQDN") {
+            if ("FQDN".equals(saltboot.get("minion_id_naming"))) {
                 kernelOptions += " USE_FQDN_MINION_ID=1";
             }
-            else if (saltboot.get("minion_id_naming") == "HWType") {
+            else if ("HWType".equals(saltboot.get("minion_id_naming"))) {
                 kernelOptions += " DISABLE_HOSTNAME_ID=1";
             }
-            if (!((String)saltboot.get("default_kernel_parameters")).isEmpty()) {
+            if (StringUtils.isNotEmpty((String) saltboot.get("default_kernel_parameters"))) {
                 kernelOptions += " " + saltboot.get("default_kernel_parameters");
             }
             String bootImage = (String)saltboot.get("default_boot_image");
@@ -455,17 +454,16 @@ public class FormulaFactory {
      * @return the converted map
      */
     public static Map<String, Object> convertIntegers(Map<String, Object> map) {
-        for (String key : map.keySet()) {
-            Object value = map.get(key);
+        map.forEach((key, value) -> {
             if (value instanceof Double) {
-                if (((Double)value) % 1 == 0) {
-                    map.put(key, ((Double)value).intValue());
+                if (((Double) value) % 1 == 0) {
+                    map.put(key, ((Double) value).intValue());
                 }
             }
             else if (value instanceof Map) {
                 convertIntegers((Map<String, Object>) value);
             }
-        }
+        });
         return map;
     }
 
@@ -599,7 +597,7 @@ public class FormulaFactory {
                 .filter(pillar -> pillar.getCategory().equals(ORDER_PILLAR_CATEGORY))
                 .findFirst()
                 .orElseGet(() -> Pillar.createGlobalPillar(ORDER_PILLAR_CATEGORY, Collections.emptyMap()));
-        orderPillar.setPillar(Collections.singletonMap("formula_order", orderedList));
+        orderPillar.setPillar(Collections.singletonMap(ORDER_PILLAR_CATEGORY, orderedList));
     }
 
     /**
@@ -630,15 +628,15 @@ public class FormulaFactory {
             }
         }
         catch (YAMLException e) {
-            LOG.error("Unable to parse metadata file: " + name, e);
+            LOG.error("Unable to parse metadata file: {} ", name, e);
             return Collections.emptyMap();
         }
         catch (IOException e) {
-            LOG.error("IO Error at metadata file: " + name, e);
+            LOG.error("IO Error at metadata file: {}", name, e);
             return Collections.emptyMap();
         }
         catch (Exception e) {
-            LOG.error("Error in metadata file: " + name, e);
+            LOG.error("Error in metadata file: {}", name, e);
             return Collections.emptyMap();
         }
     }
@@ -710,8 +708,7 @@ public class FormulaFactory {
      */
     public static boolean isMemberOfGroupHavingMonitoring(Server server) {
         return server.getManagedGroups().stream()
-                .map(FormulaFactory::hasMonitoringDataEnabled)
-                .anyMatch(Boolean::booleanValue);
+                .anyMatch(FormulaFactory::hasMonitoringDataEnabled);
     }
 
     /**
@@ -741,18 +738,13 @@ public class FormulaFactory {
 
     /**
      * Find endpoint information from given formula data
-     * @param formulaName name of the formula to examine
      * @param formulaData formula data to extract information from
      * @return list of endpoint information objects
      */
-    public static List<EndpointInfo> getEndpointsFromFormulaData(String formulaName, FormulaData formulaData) {
-        return getExportersEndpoints(formulaData);
-    }
-
-    private static List<EndpointInfo> getExportersEndpoints(FormulaData formulaData) {
+    public static List<EndpointInfo> getEndpointsFromFormulaData(FormulaData formulaData) {
         Map<String, Object> formulaValues = formulaData.getFormulaValues();
         if (formulaValues.containsKey("exporters")) {
-            Boolean proxyEnabled = Maps.getValueByPath(formulaValues, "proxy_enabled")
+            boolean proxyEnabled = Maps.getValueByPath(formulaValues, "proxy_enabled")
                     .filter(Boolean.class::isInstance)
                     .map(Boolean.class::cast)
                     .orElse(false);
@@ -761,7 +753,7 @@ public class FormulaFactory {
                     .map(Number.class::cast)
                     .map(Number::intValue) : Optional.empty();
             String proxyPath = proxyEnabled ? "/proxy" : null;
-            Boolean tlsEnabled = Maps.getValueByPath(formulaValues, "tls:enabled")
+            boolean tlsEnabled = Maps.getValueByPath(formulaValues, "tls:enabled")
                     .filter(Boolean.class::isInstance)
                     .map(Boolean.class::cast)
                     .orElse(false);
