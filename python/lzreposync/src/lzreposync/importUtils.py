@@ -71,7 +71,7 @@ def import_package_batch(to_process, batch_index=-1):
         if mpm_bin_batch:
             log(0, " Importing a sub batch of {} Binary packages...".format(len(mpm_bin_batch)))
             importer = packageImport.PackageImport(
-                mpm_bin_batch, backend, caller=upload_caller
+                mpm_bin_batch, backend, caller=upload_caller, import_signatures=False
             )
             importer.setUploadForce(1)
             importer.run()

@@ -239,7 +239,7 @@ class ChannelPackageSubscription(GenericPackageImport):
 
 # pylint: disable-next=missing-class-docstring
 class PackageImport(ChannelPackageSubscription):
-    def __init__(self, batch, backend, caller=None, update_last_modified=0):
+    def __init__(self, batch, backend, caller=None, update_last_modified=0, import_signatures=True):
         ChannelPackageSubscription.__init__(self, batch, backend, caller=caller)
         self.ignoreUploaded = 1
         self._update_last_modified = update_last_modified
@@ -250,6 +250,7 @@ class PackageImport(ChannelPackageSubscription):
         self.suseProdfile_data = {}
         self.suseEula_data = {}
         self.extraTags = {}
+        self.import_signatures = import_signatures
 
     def _skip_tag(self, package, tag):
         # Allow all tags in case of DEB packages
@@ -424,7 +425,8 @@ class PackageImport(ChannelPackageSubscription):
                 ignoreUploaded=self.ignoreUploaded,
                 transactional=self.transactional,
             )
-            # self._import_signatures()
+            if self.import_signatures:
+                self._import_signatures()
         except:
             # Oops
             self.backend.rollback()
