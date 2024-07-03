@@ -42,6 +42,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -271,23 +272,23 @@ public class FormulaFactory {
             Map<String, Object> saltboot = (Map<String, Object>) formData.get("saltboot");
             String kernelOptions = "MINION_ID_PREFIX=" + group.getName();
             kernelOptions += " MASTER=" + saltboot.get("download_server");
-            if ((Boolean)saltboot.get("disable_id_prefix")) {
+            if (Boolean.TRUE.equals(saltboot.get("disable_id_prefix"))) {
                 kernelOptions += " DISABLE_ID_PREFIX=1";
             }
-            if ((Boolean)saltboot.get("disable_unique_suffix")) {
+            if (Boolean.TRUE.equals(saltboot.get("disable_unique_suffix"))) {
                 kernelOptions += " DISABLE_UNIQUE_SUFFIX=1";
             }
-            if (saltboot.get("minion_id_naming") == "FQDN") {
+            if ("FQDN".equals(saltboot.get("minion_id_naming"))) {
                 kernelOptions += " USE_FQDN_MINION_ID=1";
             }
-            else if (saltboot.get("minion_id_naming") == "HWType") {
+            else if ("HWType".equals(saltboot.get("minion_id_naming"))) {
                 kernelOptions += " DISABLE_HOSTNAME_ID=1";
             }
-            if (!((String)saltboot.get("default_kernel_parameters")).isEmpty()) {
+            if (StringUtils.isNotEmpty((String) saltboot.get("default_kernel_parameters"))) {
                 kernelOptions += " " + saltboot.get("default_kernel_parameters");
             }
-            String bootImage = (String)saltboot.get("default_boot_image");
-            String bootImageVersion = (String)saltboot.get("default_boot_image_version");
+            String bootImage = (String) saltboot.get("default_boot_image");
+            String bootImageVersion = (String) saltboot.get("default_boot_image_version");
 
             try {
                 SaltbootUtils.createSaltbootProfile(group.getName(), kernelOptions, group.getOrg(),
