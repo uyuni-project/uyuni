@@ -1,4 +1,4 @@
 - Prevent error while serializing an attestation report without an 
   attested date
-- Added missing attest on boot field in the response of 
-  getCoCoAttestationConfig API
+- Added missing support for field attest on boot in the
+  getCoCoAttestationConfig and setCoCoAttestationConfig API

@@ -5283,8 +5283,14 @@ public class SystemHandler extends BaseHandler {
                             c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
                             c.setAttestOnBoot(attestOnBoot);
                         },
-                        () -> attestationManager.createConfig(loggedInUser, minionServer,
-                                CoCoEnvironmentType.valueOf(environmentType), enabled));
+                        () -> attestationManager.createConfig(
+                            loggedInUser,
+                            minionServer,
+                            CoCoEnvironmentType.valueOf(environmentType),
+                            enabled,
+                            attestOnBoot
+                        )
+                );
         return 1;
     }
 
