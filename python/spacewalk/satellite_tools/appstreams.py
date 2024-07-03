@@ -286,7 +286,7 @@ class ModuleMdImporter:
         pattern = re.compile(
             r"(?P<name>[a-zA-Z0-9._+-]+)-"
             r"(?P<epoch>\d+:)?"
-            r"(?P<version>[a-zA-Z0-9._-]+)-"
+            r"(?P<version>[a-zA-Z0-9._-~]+)-"
             r"(?P<release>[a-zA-Z0-9._+-]+)\."
             r"(?P<arch>[a-zA-Z0-9._-]+)"
         )
