@@ -50,6 +50,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
@@ -76,7 +77,7 @@ public class AnsibleController {
 
     private static final Logger LOG = LogManager.getLogger(AnsibleController.class);
     private static final Gson GSON = Json.GSON;
-    private static final Yaml YAML = new Yaml(new SafeConstructor());
+    private static final Yaml YAML = new Yaml(new SafeConstructor(new LoaderOptions()));
 
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
 
