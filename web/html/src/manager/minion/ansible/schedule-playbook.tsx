@@ -108,7 +108,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
         <div className="panel panel-default">
           <div className="panel-heading">
             <div>
-              <h3>{t("Schedule Playbook Executionsss")}</h3>
+              <h3>{t("Schedule Playbook Execution")}</h3>
             </div>
           </div>
           <div className="panel-body">
