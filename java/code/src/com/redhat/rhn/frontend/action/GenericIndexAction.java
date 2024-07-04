@@ -70,7 +70,7 @@ public class GenericIndexAction extends RhnAction {
     private String getNonCompliantByosInPayg(User user) {
             List<Server> servers = ServerFactory.listSystemsInSsm(user);
             return servers.stream()
-                    .filter(s -> !s.isAllowedOnPayg())
+                    .filter(s -> s.isDeniedOnPayg())
                     .map(Server::getName)
                     .collect(Collectors.joining(","));
     }

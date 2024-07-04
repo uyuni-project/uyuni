@@ -325,7 +325,7 @@ public class MinionServerFactory extends HibernateFactory {
         List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(action.getId());
         return allMinions.stream().filter(
                 minionSummary -> MinionServerFactory.findByMinionId(minionSummary.getMinionId())
-                .map(server -> !server.isAllowedOnPayg())
+                .map(server -> server.isDeniedOnPayg())
                 .orElse(false)).collect(Collectors.toList());
     }
 }
