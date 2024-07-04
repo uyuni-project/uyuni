@@ -40,16 +40,16 @@ def import_package_batch(to_process, batch_index=-1):
         # TODO: fix later. Note: we should make this more generalized with possibly other unrecognized archs
         if package["header"]["arch"] == "aarch64_ilp32":
             logging.debug(
-                "Ignoring package %s - Cannot process arch %s",
-                package["checksum"],
-                package["header"]["arch"],
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                "Ignoring package {} - Cannot process arch {}".format(
+                    package["checksum"], package["header"]["arch"]
+                )
             )
             batch_size -= 1
             continue
 
         # pylint: disable=W0703,W0706
         try:
-            # print(f"INFO: Importing package. HEADER= {package['header'].keys()}")
             import_count += 1
             pkg = mpmSource.create_package(
                 package["header"],
@@ -81,7 +81,11 @@ def import_package_batch(to_process, batch_index=-1):
         # Importing the batch of binary packages
         if mpm_bin_batch:
             log(
-                0, " Importing a sub batch of %d Binary packages...", len(mpm_bin_batch)
+                0,
+                # pylint: disable-next=consider-using-f-string
+                " Importing a sub batch of {} Binary packages...".format(
+                    len(mpm_bin_batch)
+                ),
             )
             importer = packageImport.PackageImport(
                 mpm_bin_batch, backend, caller=upload_caller, import_signatures=False
@@ -94,8 +98,13 @@ def import_package_batch(to_process, batch_index=-1):
 
         # Importing the batch of source packages
         if mpm_src_batch:
+            # pylint: disable-next=consider-using-f-string
             log(
-                0, " Importing a sub batch of %d Source packages...", len(mpm_src_batch)
+                0,
+                # pylint: disable-next=consider-using-f-string
+                " Importing a sub batch of {} Source packages...".format(
+                    len(mpm_src_batch)
+                ),
             )
             src_importer = packageImport.SourcePackageImport(
                 mpm_src_batch, backend, caller=upload_caller

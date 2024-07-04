@@ -61,5 +61,9 @@ class MetadataParser:
             )["files"]
             files_count = len(package["header"]["filenames"])
             package = set_fake_files_data(package, files_count)
-            print(f"Yielding pacakge {package['checksum']}")
+
+            logging.debug(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                "Yielding pacakge {}".format(package["checksum"])
+            )
             yield package
