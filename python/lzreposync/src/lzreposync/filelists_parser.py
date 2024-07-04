@@ -1,3 +1,5 @@
+#  pylint: disable=missing-module-docstring
+
 import gzip
 import logging
 import os
@@ -7,12 +9,9 @@ from xml.dom import pulldom
 
 
 def map_attribute(attr):
-    attrMap = {
-        "ver": "version",
-        "rel": "release"
-    }
-    if attrMap.get(attr):
-        return attrMap.get(attr)
+    attr_map = {"ver": "version", "rel": "release"}
+    if attr_map.get(attr):
+        return attr_map.get(attr)
     return attr
 
 
@@ -30,11 +29,13 @@ def cache_xml_node(node, cache_dir):
         logging.debug("Creating cache directory: %s", cache_dir)
         os.makedirs(cache_dir)
 
+    # pylint: disable-next=unspecified-encoding
     with open(cache_file, "w") as pkg_files:
-        logging.debug("Caching file %s" % cache_file)
+        logging.debug("Caching file %s", cache_file)
         pkg_files.write(xml_content)
 
 
+# pylint: disable-next=missing-class-docstring
 class FilelistsParser:
     def __init__(self, filelists_file, cache_dir=".cache"):
         """
@@ -86,6 +87,7 @@ class FilelistsParser:
                 logging.error("Couldn't find filelist file for package %s", pkgid)
                 return
 
+        # pylint: disable-next=unspecified-encoding
         filelist_xml = open(os.path.join(self.cache_dir, pkgid), "r")
         tree = ET.parse(filelist_xml)
         root = tree.getroot()
@@ -103,6 +105,7 @@ class FilelistsParser:
         for file in root[1:]:
             filelist["files"].append(file.text)
 
+        filelist_xml.close()
         return filelist
 
     def clear_cache(self):

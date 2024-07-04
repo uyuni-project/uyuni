@@ -1,3 +1,5 @@
+#  pylint: disable=missing-module-docstring
+
 import logging
 import sys
 
@@ -11,7 +13,9 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 # TODO: 'to_disassociate', 'to_link': are they important ?
 def import_package_batch(to_process, batch_index=-1):
     # Prepare SQL statements
-    rhnSQL.closeDB(committing=False, closing=False)  # TODO: not sure what this exactly do
+    rhnSQL.closeDB(
+        committing=False, closing=False
+    )  # TODO: not sure what this exactly do
     rhnSQL.initDB()
 
     backend = SQLBackend()
@@ -36,10 +40,15 @@ def import_package_batch(to_process, batch_index=-1):
         # Ignoring packages with arch='aarch64_ilp32' for the moment
         # TODO: fix later. Note: we should make this more generalized with possibly other unrecognized archs
         if package["header"]["arch"] == "aarch64_ilp32":
-            logging.debug("Ignoring package {} - Cannot process arch {}".
-                          format(package["checksum"], package["header"]["arch"]))
+            logging.debug(
+                "Ignoring package %s - Cannot process arch %s",
+                package["checksum"],
+                package["header"]["arch"],
+            )
             batch_size -= 1
             continue
+
+        # pylint: disable=W0703,W0706
         try:
             # print(f"INFO: Importing package. HEADER= {package['header'].keys()}")
             import_count += 1
@@ -52,10 +61,10 @@ def import_package_batch(to_process, batch_index=-1):
                 org_id=1,  # TODO: correct
                 header_start=package["header_start"],
                 header_end=package["header_end"],
-                channels=[]
+                channels=[],
             )
 
-            if package['header'].is_source:
+            if package["header"].is_source:
                 mpm_src_batch.append(pkg)
             else:
                 mpm_bin_batch.append(pkg)
@@ -66,10 +75,13 @@ def import_package_batch(to_process, batch_index=-1):
             # TODO: maybe other stuff to do (like in the reposync)
 
     # Importing packages
+    # pylint: disable=W0703,W0706
     try:
         # Importing the batch of binary packages
         if mpm_bin_batch:
-            log(0, " Importing a sub batch of {} Binary packages...".format(len(mpm_bin_batch)))
+            log(
+                0, " Importing a sub batch of %d Binary packages...", len(mpm_bin_batch)
+            )
             importer = packageImport.PackageImport(
                 mpm_bin_batch, backend, caller=upload_caller, import_signatures=False
             )
@@ -81,7 +93,9 @@ def import_package_batch(to_process, batch_index=-1):
 
         # Importing the batch of source packages
         if mpm_src_batch:
-            log(0, " Importing a sub batch of {} Source packages...".format(len(mpm_src_batch)))
+            log(
+                0, " Importing a sub batch of %d Source packages...", len(mpm_src_batch)
+            )
             src_importer = packageImport.SourcePackageImport(
                 mpm_src_batch, backend, caller=upload_caller
             )
@@ -103,10 +117,8 @@ def import_package_batch(to_process, batch_index=-1):
 
         # package.clear_header()  # TODO See reposync
     rhnSQL.closeDB()
-    log(
-        0,
-        " Pacakge batch #{} completed...".format(batch_index)
-    )
+    # pylint: disable-next=consider-using-f-string
+    log(0, " Pacakge batch #{} completed...".format(batch_index))
 
-    return initial_size-batch_size  # return the number of failed packages
+    return initial_size - batch_size  # return the number of failed packages
     # TODO: return somthing else?

@@ -1,15 +1,17 @@
+#  pylint: disable=missing-module-docstring
+
 import argparse
 import logging
 from itertools import islice
 
-from lzreposync.importUtils import import_package_batch
+from lzreposync.import_utils import import_package_batch
 from lzreposync.rpm_repo import RPMRepo
 
 
 # TODO: put this function in a better location
 def batched(iterable, n):
     if n < 1:
-        raise ValueError('n must be at least one')
+        raise ValueError("n must be at least one")
     iterator = iter(iterable)
     while batch := tuple(islice(iterator, n)):
         yield batch
@@ -26,7 +28,7 @@ def main():
         "--url",
         "-u",
         help="The target url of the remote repository of which we'll "
-             "parse the metadata",
+        "parse the metadata",
         dest="url",
         type=str,
     )
@@ -70,9 +72,11 @@ def main():
     args = parser.parse_args()
 
     logging.getLogger().setLevel(args.loglevel)
-    rpm_repository = RPMRepo(args.name, args.cache, args.url)  # TODO args.url should be args.repo, no ?
+    rpm_repository = RPMRepo(
+        args.name, args.cache, args.url
+    )  # TODO args.url should be args.repo, no ?
     packages = rpm_repository.get_packages_metadata()  # packages is a generator
     failed = 0
     for i, batch in enumerate(batched(packages, args.batch_size)):
         failed += import_package_batch(batch, i)
-    logging.debug("Completed import with %d failed packages" % failed)
+    logging.debug("Completed import with %d failed packages", failed)

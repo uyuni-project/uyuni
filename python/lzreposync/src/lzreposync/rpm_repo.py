@@ -1,3 +1,5 @@
+#  pylint: disable=missing-module-docstring
+
 import hashlib
 import logging
 import os
@@ -33,14 +35,17 @@ def get_text(node_list):
     for node in node_list:
         if node.nodeType == node.TEXT_NODE:
             rc.append(node.data)
-        return ''.join(rc)
+        return "".join(rc)
 
 
+# pylint: disable-next=missing-class-docstring
 class RPMRepo(Repo):
 
     def __init__(self, name, cache_path, repository):
         super().__init__(name, cache_path, repository)
-        self.signature_verified = False  # Tell whether the signature is checked against the repomd.xml file
+        self.signature_verified = (
+            False  # Tell whether the signature is checked against the repomd.xml file
+        )
 
     def verify_signature(self):
         """
@@ -57,8 +62,11 @@ class RPMRepo(Repo):
         logging.debug("Downloading repomd.xml file to %s", downloaded_repomd_path)
         urllib.request.urlretrieve(repomd_url, downloaded_repomd_path)
 
-        with urllib.request.urlopen(repomd_signature_url) as repomd_sig_fd, \
-                urllib.request.urlopen(repomd_pub_key_url) as repo_pub_key_fd:
+        with urllib.request.urlopen(
+            repomd_signature_url
+        ) as repomd_sig_fd, urllib.request.urlopen(
+            repomd_pub_key_url
+        ) as repo_pub_key_fd:
             gpg.import_keys(repo_pub_key_fd.read())
             verified = gpg.verify_file(repomd_sig_fd, downloaded_repomd_path)
 
@@ -92,8 +100,12 @@ class RPMRepo(Repo):
             if event == pulldom.START_ELEMENT and node.tagName == "data":
                 doc.expandNode(node)
                 files[node.getAttribute("type")] = {
-                    "location": node.getElementsByTagName("location")[0].getAttribute("href"),
-                    "checksum": get_text(node.getElementsByTagName("checksum")[0].childNodes)
+                    "location": node.getElementsByTagName("location")[0].getAttribute(
+                        "href"
+                    ),
+                    "checksum": get_text(
+                        node.getElementsByTagName("checksum")[0].childNodes
+                    ),
                 }
         return files
 
@@ -106,7 +118,7 @@ class RPMRepo(Repo):
             self.metadata_files = self.get_metadata_files()
         md_file_url = urljoin(
             self.repository,
-            self.metadata_files[file_name]['location'].lstrip("/repodata")
+            self.metadata_files[file_name]["location"].lstrip("/repodata"),
         )
         return md_file_url
 
@@ -128,7 +140,9 @@ class RPMRepo(Repo):
             if not verified:
                 raise SignatureVerificationException("repomd.xml")
 
-        hash_file = os.path.join(self.cache_dir, self.name) + ".hash"  # TODO change for both primary and filelists
+        hash_file = (
+            os.path.join(self.cache_dir, self.name) + ".hash"
+        )  # TODO change for both primary and filelists
 
         primary_url = self.find_metadata_file_url("primary")
         primary_hash = self.find_metadata_file_checksum("primary")
@@ -155,8 +169,7 @@ class RPMRepo(Repo):
 
                     # Verify the checksum of the md file (currently primary.xml)
                     if primary_hash != hash_func.hexdigest():
-                        raise ChecksumVerificationException(
-                            "primary.xml.gz")
+                        raise ChecksumVerificationException("primary.xml.gz")
 
                     # Downloading filelists.xml.gz
                     with urllib.request.urlopen(filelists_url) as filelists_fd:
@@ -171,15 +184,16 @@ class RPMRepo(Repo):
 
                     # Verify the checksum of the md file (currently primary.xml)
                     if filelists_hash != hash_func.hexdigest():
-                        raise ChecksumVerificationException(
-                            "filelists.xml.gz")
+                        raise ChecksumVerificationException("filelists.xml.gz")
 
                     # Work on temporary file without loading it into memory at once
                     primary_tmp_file.seek(0)
                     filelists_tmp_file.seek(0)
                     primary_parser = PrimaryParser(primary_tmp_file)
                     filelists_parser = FilelistsParser(filelists_tmp_file)
-                    metadata_parser = MetadataParser(primary_parser=primary_parser, filelists_parser=filelists_parser)
+                    metadata_parser = MetadataParser(
+                        primary_parser=primary_parser, filelists_parser=filelists_parser
+                    )
                     yield from metadata_parser.parse_packages_metadata()
                     filelists_parser.clear_cache()  # TODO can we make this execute automatically
                 break
@@ -209,7 +223,8 @@ class RPMRepo(Repo):
                     os.remove(os.path.join(self.cache_dir, f))
 
             # Cache the hash of the file
-            with open(hash_file, 'w') as fw:
+            # pylint: disable-next=unspecified-encoding
+            with open(hash_file, "w") as fw:
                 logging.debug("Caching file hash in file: %s", hash_file)
                 fw.write(primary_hash)
         except OSError as error:
