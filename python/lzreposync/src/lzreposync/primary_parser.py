@@ -205,6 +205,11 @@ class PrimaryParser:
                     self.current_hdr["sigmd5"] = "sigmd5_test"
                     # Setting possibly missing attributes: checking for all dependencies
                     # importLib doesn't accept None values but rather empty arrays ([])
+                    # TODO: Double check the following list, it might not be completely correct,
+                    #  because, the hdr can have two type of keys referring to the same element (for example: '1156' and 'suggestsname' refer to the same thing),
+                    #  so the list should contain only keys that we looked for during and the parsing, and the missing ones,
+                    #  which means, for example, we shouldn't look for possibly missing '1156' key while we've already
+                    #  set the 'suggestsname' key
                     possibly_missing_dependencies = [
                         "provides",
                         "provideversion",
