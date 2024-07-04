@@ -1,3 +1,6 @@
+#  pylint: disable=missing-module-docstring
+
+
 def test_download_and_parse_metadata():
     """TODO"""
 
