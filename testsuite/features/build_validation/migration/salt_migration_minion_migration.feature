@@ -111,11 +111,3 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     And I click on "Confirm"
     When I wait until event "Package Removal scheduled by admin" is completed
     Then "adobe-sourcecodepro-fonts" should not be installed on "salt_migration_minion"
-
-  Scenario: Cleanup: remove the minion in the Salt migration context
-    Given I am on the Systems overview page of this "salt_migration_minion"
-    And I follow "Delete System"
-    Then I should see a "Confirm System Profile Deletion" text
-    When I click on "Delete Profile"
-    And I wait until I see "has been deleted" text
-    Then "salt_migration_minion" should not be registered
