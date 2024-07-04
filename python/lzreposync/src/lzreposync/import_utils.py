@@ -61,6 +61,7 @@ def import_package_batch(to_process, batch_index=-1):
                 header_start=package["header_start"],
                 header_end=package["header_end"],
                 channels=[],
+                ignore_fullFileList=True,
             )
 
             if package["header"].is_source:

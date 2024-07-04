@@ -119,6 +119,7 @@ def create_package(
     header_start=None,
     header_end=None,
     channels=[],
+    ignore_fullFileList=False,
 ):
     if header.packaging == "rpm":
         return headerSource.createPackage(
@@ -131,6 +132,7 @@ def create_package(
             header_start=header_start,
             header_end=header_end,
             channels=channels,
+            ignore_fullFileList=ignore_fullFileList,
         )
     if header.packaging == "deb":
         return debPackage.debBinaryPackage(
