@@ -71,8 +71,10 @@ def import_package_batch(to_process, batch_index=-1):
         except (KeyboardInterrupt, rhnSQL.SQLError):
             raise
         except Exception:
-            failed_packages += 1
-            # TODO: maybe other stuff to do (like in the reposync)
+            # failed_packages += 1
+            e_message = f"Exception: {e}"
+            log2(0, 1, e_message, stream=sys.stderr)
+            # raise e # Ignore the package and continue
 
     # Importing packages
     # pylint: disable=W0703,W0706
@@ -107,7 +109,7 @@ def import_package_batch(to_process, batch_index=-1):
     except (KeyboardInterrupt, rhnSQL.SQLError):
         raise
     except Exception as e:
-        failed_packages += 1
+        # failed_packages += 1
         e_message = f"Exception: {e}"
         log2(0, 1, e_message, stream=sys.stderr)
         # raise e # Ignore the package and continue
