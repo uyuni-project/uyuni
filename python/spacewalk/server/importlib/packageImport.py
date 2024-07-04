@@ -239,7 +239,14 @@ class ChannelPackageSubscription(GenericPackageImport):
 
 # pylint: disable-next=missing-class-docstring
 class PackageImport(ChannelPackageSubscription):
-    def __init__(self, batch, backend, caller=None, update_last_modified=0, import_signatures=True):
+    def __init__(
+        self,
+        batch,
+        backend,
+        caller=None,
+        update_last_modified=0,
+        import_signatures=True,
+    ):
         ChannelPackageSubscription.__init__(self, batch, backend, caller=caller)
         self.ignoreUploaded = 1
         self._update_last_modified = update_last_modified
