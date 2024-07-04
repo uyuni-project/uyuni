@@ -108,7 +108,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
         <div className="panel panel-default">
           <div className="panel-heading">
             <div>
-              <h3>{t("Schedule Playbook Execution")}</h3>
+              <h3>{t("Schedule Playbook Executionsss")}</h3>
             </div>
           </div>
           <div className="panel-body">
@@ -135,13 +135,12 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
                   />
                 </div>
               </div>
-              <div className="col-sm-offset-3 offset-sm-3 col-sm-6">
-                <Check
-                  name="flushCache"
-                  label={t("Flush Ansible fact cache")}
-                  title={t("Clear the fact cache for every host in inventory")}
-                />
-              </div>
+              <Check
+                name="flushCache"
+                label={t("Flush Ansible fact cache")}
+                title={t("Clear the fact cache for every host in inventory")}
+                divClass="col-sm-offset-3 offset-sm-3 col-sm-6"
+              />
             </Form>
           </div>
         </div>

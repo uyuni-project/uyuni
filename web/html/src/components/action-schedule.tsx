@@ -309,10 +309,8 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     return (
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
-          <div className="form-group">
-            {pickers}
-            {this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()}
-          </div>
+          {pickers}
+          {this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()}
         </div>
       </div>
     );
