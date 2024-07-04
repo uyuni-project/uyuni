@@ -2270,13 +2270,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return true if this server is allowed to be managed by SUSE Manager PAYG
+     * @return true if this server is denied to be managed by SUSE Manager PAYG
      */
-    public boolean isAllowedOnPayg() {
+    public boolean isDeniedOnPayg() {
         if (isPayg()) {
-            return true;
+            return false;
         }
-        return getInstalledProducts().stream()
+        return !getInstalledProducts().stream()
                 .map(InstalledProduct::getSUSEProduct)
                 .filter(Objects::nonNull)
                 .allMatch(p -> {
@@ -2285,7 +2285,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     }
                     ChannelFamily cf = p.getChannelFamily();
                     if (cf != null) {
-                        return cf.getLabel().equals("SMP") || cf.getLabel().equals("SLE-M-T");
+                        return cf.getLabel().startsWith("SMP") || cf.getLabel().equals("SLE-M-T");
                     }
                     return false;
                 });
