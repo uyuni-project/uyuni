@@ -29,7 +29,6 @@ def import_package_batch(to_process, batch_index=-1):
     # with cfg_component("server.susemanager") as CFG:
     #     mount_point = CFG.MOUNT_POINT
     import_count = 0
-    failed_packages = 0
     batch_size = len(to_process)
     initial_size = batch_size
     # all_packages = set()  # TODO: see reposync
@@ -70,8 +69,7 @@ def import_package_batch(to_process, batch_index=-1):
                 mpm_bin_batch.append(pkg)
         except (KeyboardInterrupt, rhnSQL.SQLError):
             raise
-        except Exception:
-            # failed_packages += 1
+        except Exception as e:
             e_message = f"Exception: {e}"
             log2(0, 1, e_message, stream=sys.stderr)
             # raise e # Ignore the package and continue
@@ -109,7 +107,6 @@ def import_package_batch(to_process, batch_index=-1):
     except (KeyboardInterrupt, rhnSQL.SQLError):
         raise
     except Exception as e:
-        # failed_packages += 1
         e_message = f"Exception: {e}"
         log2(0, 1, e_message, stream=sys.stderr)
         # raise e # Ignore the package and continue
