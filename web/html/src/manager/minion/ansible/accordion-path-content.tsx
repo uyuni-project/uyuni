@@ -127,8 +127,8 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
       <div key={p.toString() + "_" + i.toString()}>
         {i === 0 ? <br /> : null}
         <dl className="row">
-          <dt className="col-xs-2">{t("Playbook File Name")}:</dt>
-          <dd className="col-xs-8">
+          <dt className="col-2 col-xs-2">{t("Playbook File Name")}:</dt>
+          <dd className="col-8 col-xs-8">
             <Button
               icon="fa-file-text-o"
               text={p.name}
@@ -138,12 +138,12 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           </dd>
         </dl>
         <dl className="row">
-          <dt className="col-xs-2">{t("Full Path")}:</dt>
-          <dd className="col-xs-8">{p.fullPath}</dd>
+          <dt className="col-2 col-xs-2">{t("Full Path")}:</dt>
+          <dd className="col-8 col-xs-8">{p.fullPath}</dd>
         </dl>
         <dl className="row">
-          <dt className="col-xs-2">{t("Custom Inventory")}:</dt>
-          <dd className="col-xs-8">{p.customInventory}</dd>
+          <dt className="col-2 col-xs-2">{t("Custom Inventory")}:</dt>
+          <dd className="col-8 col-xs-8">{p.customInventory}</dd>
         </dl>
         {i < content.length - 1 ? <hr /> : null}
       </div>
@@ -163,8 +163,8 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
       <div>
         <br />
         <dl className="row">
-          <dt className="col-xs-2">{t("Registered Systems")}:</dt>
-          <dd className="col-xs-8">
+          <dt className="col-2 col-xs-2">{t("Registered Systems")}:</dt>
+          <dd className="col-8 col-xs-8">
             <ul>
               {content?.knownSystems.map((s) => (
                 <li key={s.id + "_" + s.name}>
@@ -175,8 +175,8 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           </dd>
         </dl>
         <dl className="row">
-          <dt className="col-xs-2">{t("Unknown Hostnames")}:</dt>
-          <dd className="col-xs-8">
+          <dt className="col-2 col-xs-2">{t("Unknown Hostnames")}:</dt>
+          <dd className="col-8 col-xs-8">
             <ul>
               {content?.unknownSystems.map((s) => (
                 <li key={s + "_hostname"}>

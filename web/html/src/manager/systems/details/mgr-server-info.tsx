@@ -80,30 +80,30 @@ class MgrServer extends React.Component<Props, State> {
           <div className="panel panel-default">
             <div className="panel-body">
               <dl className="row">
-                <dt className="col-xs-2">{t("Name")}</dt>
-                <dd className="col-xs-10">{this.props.name}</dd>
+                <dt className="col-2 col-xs-2">{t("Name")}</dt>
+                <dd className="col-10 col-xs-10">{this.props.name}</dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-2">{t("Version")}</dt>
-                <dd className="col-xs-10">{this.props.version}</dd>
+                <dt className="col-2 col-xs-2">{t("Version")}</dt>
+                <dd className="col-10 col-xs-10">{this.props.version}</dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-2">{t("Report Database Name")}</dt>
-                <dd className="col-xs-10">{this.props.reportDbName}</dd>
+                <dt className="col-2 col-xs-2">{t("Report Database Name")}</dt>
+                <dd className="col-10 col-xs-10">{this.props.reportDbName}</dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-2">{t("Report Database Host")}</dt>
-                <dd className="col-xs-10">
+                <dt className="col-2 col-xs-2">{t("Report Database Host")}</dt>
+                <dd className="col-10 col-xs-10">
                   {this.props.reportDbHost}:{this.props.reportDbPort}
                 </dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-2">{t("Report Database User")}</dt>
-                <dd className="col-xs-10">{this.props.reportDbUser}</dd>
+                <dt className="col-2 col-xs-2">{t("Report Database User")}</dt>
+                <dd className="col-10 col-xs-10">{this.props.reportDbUser}</dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-2">{t("Report Database Last Synced")}</dt>
-                <dd className="col-xs-10">{this.props.reportDbLastSynced}</dd>
+                <dt className="col-2 col-xs-2">{t("Report Database Last Synced")}</dt>
+                <dd className="col-10 col-xs-10">{this.props.reportDbLastSynced}</dd>
               </dl>
             </div>
           </div>

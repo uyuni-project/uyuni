@@ -34,10 +34,10 @@
                     <rhn:csrf/>
                     <table class="table">
                         <tr>
-                            <td class="col-xs-3">
+                            <td class="col-3 col-xs-3">
                                 <bean:message key="scapsearch.jsp.searchfor"/>:
                             </td>
-                            <td class="col-xs-9">
+                            <td class="col-9 col-xs-9">
                                 <div class="row-0">
                                     <div class="col-sm-7">
                                         <div class="input-group">
