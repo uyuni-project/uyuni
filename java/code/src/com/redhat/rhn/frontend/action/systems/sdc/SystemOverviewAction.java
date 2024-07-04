@@ -180,7 +180,7 @@ public class SystemOverviewAction extends RhnAction {
         // Inform user that SUMA cannot manage BYOS instances if SUMA is PAYG and not SCC credentials are set.
         if (cloudPaygManager.isPaygInstance()) {
             cloudPaygManager.checkRefreshCache(true);
-            if (!s.isAllowedOnPayg() && !cloudPaygManager.hasSCCCredentials()) {
+            if (s.isDeniedOnPayg() && !cloudPaygManager.hasSCCCredentials()) {
                 createErrorMessage(request, "message.payg.errorbyosnoscc", null);
             }
         }
