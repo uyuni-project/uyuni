@@ -2443,7 +2443,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return true if the installer type is of SLE Micro
      */
     boolean isSLEMicro() {
-        return ServerConstants.SLEMICRO.equals(getOs());
+        return ServerConstants.SLEMICRO.equals(getOs()) || ServerConstants.SLMICRO.equals(getOs());
     }
 
     /**
