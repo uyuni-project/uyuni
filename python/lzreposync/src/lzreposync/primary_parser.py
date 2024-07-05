@@ -98,10 +98,7 @@ def get_text(node):
 
 def is_source_package(node):
     arch_node = node.getElementsByTagName("arch")[0]
-    if get_text(arch_node) == "src":
-        return True
-    else:
-        return False
+    return get_text(arch_node) == "src"
 
 
 def map_flag(flag: str) -> int:
@@ -129,7 +126,12 @@ class PrimaryParser:
         """
         primary_file: In gzip format
         """
-        self.primary_file = primary_file
+        if self.is_valid_primary_file(primary_file):
+            self.primary_file = primary_file
+        else:
+            raise ValueError(
+                f"Bad format for primary file {primary_file}. Accepted formats: gzip"
+            )
         self.current_package = None
         self.current_hdr = None
 
@@ -173,14 +175,30 @@ class PrimaryParser:
             "header-range": ["start", "end"],
         }
 
+    def is_valid_primary_file(self, primary_file):
+        """
+        Check whether the format of the given primary file is supported.
+        Currently supported: Gzip
+        """
+        # Checking Gzip format
+        with gzip.open(primary_file) as fd:
+            # Checking the file magic number
+            try:
+                fd.read(1)
+                try:
+                    # If primary_file is an Object-like file, set the file's cursor at the beginning again
+                    primary_file.seek(0)
+                except AttributeError:
+                    pass
+                return True
+            except OSError:
+                return False
+
     def parse_primary(self):
         """
-        Parser the given primary.xml file (gzip format) using xml.dom.pulldom This is an incremental parsing,
+        Parser the primary.xml file (gzip format) using xml.dom.pulldom This is an incremental parsing,
         it means that not the whole xml file is loaded in memory at once, but package by package.
         """
-        if not self.primary_file:
-            print("Error: primary_file not defined!")
-            raise ValueError("primary_file missing")
 
         with gzip.open(self.primary_file) as gz_primary:
             doc = pulldom.parse(gz_primary)
@@ -274,8 +292,7 @@ class PrimaryParser:
         """
         Parse the given "checksum" node and the result Checksum object to the current package
         """
-        # pylint: disable-next=unidiomatic-typecheck
-        if type(self.current_package) is not type({}):
+        if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
 
@@ -288,7 +305,7 @@ class PrimaryParser:
         node: self-closing element. Eg: <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
         """
         # pylint: disable-next=unidiomatic-typecheck
-        if type(self.current_package) is not type({}):
+        if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
 
@@ -317,7 +334,7 @@ class PrimaryParser:
         The names should be mapped the same as in HeaderSource.py: rpmProvides, rpmRequires, etc..
         """
         # pylint: disable-next=unidiomatic-typecheck
-        if type(self.current_package) is not type({}):
+        if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
         elt_name = node.localName
@@ -356,7 +373,7 @@ class PrimaryParser:
         Parse and set elements with text content. Eg: <summary>GStreamer ...</summary>
         """
         # pylint: disable-next=unidiomatic-typecheck
-        if type(self.current_package) is not type({}):
+        if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
 
@@ -372,7 +389,7 @@ class PrimaryParser:
         Parse the given node and the corresponding information to the corresponding package's attribute
         """
         # pylint: disable-next=unidiomatic-typecheck
-        if type(self.current_package) is not type({}):
+        if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
 

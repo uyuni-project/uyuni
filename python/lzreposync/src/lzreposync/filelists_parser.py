@@ -10,9 +10,7 @@ from xml.dom import pulldom
 
 def map_attribute(attr):
     attr_map = {"ver": "version", "rel": "release"}
-    if attr_map.get(attr):
-        return attr_map.get(attr)
-    return attr
+    return attr_map.get(attr, attr)
 
 
 def cache_xml_node(node, cache_dir):
@@ -29,8 +27,7 @@ def cache_xml_node(node, cache_dir):
         logging.debug("Creating cache directory: %s", cache_dir)
         os.makedirs(cache_dir)
 
-    # pylint: disable-next=unspecified-encoding
-    with open(cache_file, "w") as pkg_files:
+    with open(cache_file, "w", encoding="utf-8") as pkg_files:
         logging.debug("Caching file %s", cache_file)
         pkg_files.write(xml_content)
 
@@ -87,25 +84,25 @@ class FilelistsParser:
                 logging.error("Couldn't find filelist file for package %s", pkgid)
                 return
 
-        # pylint: disable-next=unspecified-encoding
-        filelist_xml = open(os.path.join(self.cache_dir, pkgid), "r")
-        tree = ET.parse(filelist_xml)
-        root = tree.getroot()
+        with open(
+            os.path.join(self.cache_dir, pkgid), "r", encoding="utf-8"
+        ) as filelist_xml:
+            tree = ET.parse(filelist_xml)
+            root = tree.getroot()
 
-        filelist = {}
-        filelist["pkgid"] = pkgid
-        filelist["files"] = []
-        # Setting version information (normally it is the same as the one in primary.xml file for the same package)
-        for attr in ("ver", "epoch", "rel"):
-            try:
-                filelist[map_attribute(attr)] = root[0].attrib[attr]
-            except KeyError as key:
-                logging.debug("missing %s information for package %s", key, pkgid)
+            filelist = {}
+            filelist["pkgid"] = pkgid
+            filelist["files"] = []
+            # Setting version information (normally it is the same as the one in primary.xml file for the same package)
+            for attr in ("ver", "epoch", "rel"):
+                try:
+                    filelist[map_attribute(attr)] = root[0].attrib[attr]
+                except KeyError as key:
+                    logging.debug("missing %s information for package %s", key, pkgid)
 
-        for file in root[1:]:
-            filelist["files"].append(file.text)
+            for file in root[1:]:
+                filelist["files"].append(file.text)
 
-        filelist_xml.close()
         return filelist
 
     def clear_cache(self):
