@@ -1891,7 +1891,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream()
                 .collect(Collectors.groupingBy(MgrSyncChannelDto::getStatus));
         assertEquals(2, collect.get(MgrSyncStatus.INSTALLED).size());
-        assertEquals(113, collect.get(MgrSyncStatus.AVAILABLE).size());
+        assertEquals(163, collect.get(MgrSyncStatus.AVAILABLE).size());
     }
 
     /**
