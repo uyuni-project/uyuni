@@ -573,12 +573,12 @@ def checks(server_key_content,server_cert_content, certData):
     """
     Perform different checks on the input data
     """
+    checkCompleteCAChain(server_cert_content, certData)
+
     if not getPrivateKey(server_key_content):
         raise CertCheckError("Unable to read the server key. Is it maybe encrypted?")
 
     checkKeyBelongToCert(server_key_content, server_cert_content)
-
-    checkCompleteCAChain(server_cert_content, certData)
 
 
 def getContainersSetup(root_ca_content, intermediate_ca_content, server_cert_content, server_key_content):
