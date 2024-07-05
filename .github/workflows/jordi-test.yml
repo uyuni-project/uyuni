@@ -1,0 +1,14 @@
+name: Jordi Test
+
+on:
+  workflow_run:
+    workflows: [Java checkstyle]
+    types: [completed]
+
+jobs:
+  test-1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.even.workflow_run.id }}
+
+
