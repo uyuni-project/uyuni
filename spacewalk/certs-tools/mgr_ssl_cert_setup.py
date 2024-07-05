@@ -157,22 +157,53 @@ def checkOptions(
 def readAllFiles(
     root_ca_file, server_cert_file, server_key_file, intermediate_ca_files
 ):
-    # pylint: disable-next=invalid-name
-    allFiles = [root_ca_file, server_cert_file, server_key_file]
-    allFiles.extend(intermediate_ca_files)
 
-    contents = []
-    for input_file in allFiles:
-        # pylint: disable-next=unspecified-encoding
-        with open(input_file, "r") as f:
-            contents.append(f.read())
+    intermediate_cas = []
+    clist = readSplitCertificates(root_ca_file)
+    root_ca = clist[0]
+    intermediate_cas.extend(clist[1:])
+
+    clist = readSplitCertificates(server_cert_file)
+    server_cert = clist[0]
+    intermediate_cas.extend(clist[1:])
+
+    for ica in intermediate_ca_files:
+        clist = readSplitCertificates(ica)
+        intermediate_cas.extend(clist)
+
+    server_key = ""
+    with open(server_key_file, "r", encoding="utf-8") as f:
+        server_key = f.read()
 
     return FilesContent(
-        root_ca=contents[0],
-        server_cert=contents[1],
-        server_key=contents[2],
-        intermediate_cas=contents[3:],
+        root_ca=root_ca,
+        server_cert=server_cert,
+        server_key=server_key,
+        intermediate_cas=intermediate_cas,
     )
+
+
+# pylint: disable-next=invalid-name
+def readSplitCertificates(certfile):
+
+    # pylint: disable-next=invalid-name
+    isContent = False
+    cert_list = []
+    cert = ""
+    with open(certfile, "r", encoding="utf-8") as f:
+        certs_content = f.read()
+        for line in certs_content.splitlines(keepends=True):
+            if not isContent and line.startswith("-----BEGIN"):
+                # pylint: disable-next=invalid-name
+                isContent = True
+                cert = ""
+            if isContent:
+                cert += line
+            if isContent and line.startswith("-----END"):
+                cert_list.append(cert)
+                # pylint: disable-next=invalid-name
+                isContent = False
+    return cert_list
 
 
 # pylint: disable-next=invalid-name
@@ -184,25 +215,8 @@ def prepareData(root_ca_content, server_cert_content, intermediate_ca_content):
     ret = dict()
 
     # pylint: disable-next=invalid-name
-    allCAs = [root_ca_content]
-    allCAs.extend(intermediate_ca_content)
-
-    # pylint: disable-next=invalid-name
-    isContent = False
-    content = []
-    for ca in allCAs:
-        cert = ""
-        for line in ca.splitlines(keepends=True):
-            if not isContent and line.startswith("-----BEGIN"):
-                # pylint: disable-next=invalid-name
-                isContent = True
-                cert = ""
-            if isContent:
-                cert += line
-            if isContent and line.startswith("-----END"):
-                content.append(cert)
-                # pylint: disable-next=invalid-name
-                isContent = False
+    content = [root_ca_content]
+    content.extend(intermediate_ca_content)
 
     for cert in content:
         data = getCertData(cert)
@@ -524,11 +538,11 @@ def deployApache(apache_cert_content, server_key_content):
     if os.path.exists(APACHE_CRT_FILE):
         os.remove(APACHE_CRT_FILE)
     # pylint: disable-next=unspecified-encoding
-    with open(APACHE_KEY_FILE, "w") as f:
+    with open(APACHE_KEY_FILE, "w", encoding="utf-8") as f:
         f.write(server_key_content)
     os.chmod(APACHE_KEY_FILE, int("0600", 8))
     # pylint: disable-next=unspecified-encoding
-    with open(APACHE_CRT_FILE, "w") as f:
+    with open(APACHE_CRT_FILE, "w", encoding="utf-8") as f:
         f.write(apache_cert_content)
     # exists on server and proxy
     os.system("/usr/bin/spacewalk-setup-httpd")
@@ -547,7 +561,7 @@ def deployPg(server_key_content):
         if os.path.exists(PG_KEY_FILE):
             os.remove(PG_KEY_FILE)
         # pylint: disable-next=unspecified-encoding
-        with open(PG_KEY_FILE, "w") as f:
+        with open(PG_KEY_FILE, "w", encoding="utf-8") as f:
             f.write(server_key_content)
         os.chmod(PG_KEY_FILE, int("0600", 8))
         os.chown(PG_KEY_FILE, pg_uid, pg_gid)
