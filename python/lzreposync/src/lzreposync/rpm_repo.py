@@ -198,6 +198,7 @@ class RPMRepo(Repo):
                     filelists_parser.clear_cache()  # TODO can we make this execute automatically
                 break
             except urllib.error.HTTPError as e:
+                # TODO: check for primary and filelists separately (if one fails, don't download both files again)
                 # We likely hit the repo while it changed:
                 # At the time we read repomd.xml referred to an primary.xml.gz
                 # that does not exist anymore.
