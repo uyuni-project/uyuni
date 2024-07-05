@@ -151,12 +151,11 @@ class RPMRepo(Repo):
 
         for cnt in range(1, 4):
             try:
-                logging.debug("Parsing primary %s, try %s", primary_url, cnt)
-
                 # Download the primary.xml.gz and filelists.xml.gz to temporary files first to avoid
                 # connection resets
                 with tempfile.TemporaryFile() as primary_tmp_file, tempfile.TemporaryFile() as filelists_tmp_file:
                     # Downloading primary.xml.gz
+                    logging.debug("Downloading primary %s, try %s", primary_url, cnt)
                     with urllib.request.urlopen(primary_url) as primary_fd:
                         # Avoid loading large documents into memory at once
                         hash_func = hashlib.sha256()
@@ -172,6 +171,7 @@ class RPMRepo(Repo):
                         raise ChecksumVerificationException("primary.xml.gz")
 
                     # Downloading filelists.xml.gz
+                    logging.debug("Downloading filelists %s, try %s", primary_url, cnt)
                     with urllib.request.urlopen(filelists_url) as filelists_fd:
                         # Avoid loading large documents into memory at once
                         hash_func = hashlib.sha256()
