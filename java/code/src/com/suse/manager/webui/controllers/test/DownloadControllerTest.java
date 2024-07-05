@@ -48,7 +48,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -919,12 +918,17 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testValidateMinionOnPaygWithProducts() throws Exception {
-        CloudPaygManager cpg = new TestCloudPaygManagerBuilder()
-                .withPaygInstance()
-                .withoutSCCCredentials()
-                .build();
+        CloudPaygManager cpg = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+            @Override
+            public boolean hasSCCCredentials() {
+                return false;
+            }
+        };
 
-        downloadController = new DownloadController(cpg);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setInstalledProducts(Collections.emptySet());
 
@@ -941,7 +945,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         accessToken.setMinion(minion);
         TestUtils.saveAndFlush(accessToken);
         try {
-            downloadController.validateMinionInPayg(accessToken.getToken());
+            DownloadController.validateMinionInPayg(accessToken.getToken(), cpg);
         }
         catch (spark.HaltException e) {
             fail("BYOS minions are forbidden");
@@ -952,7 +956,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         minion.setInstalledProducts(Set.of(new InstalledProduct(sles)));
         TestUtils.saveAndFlush(accessToken);
         try {
-            downloadController.validateMinionInPayg(accessToken.getToken());
+            DownloadController.validateMinionInPayg(accessToken.getToken(), cpg);
             fail("BYOS minions are forbidden");
         }
         catch (spark.HaltException e) {
@@ -966,7 +970,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         minion.setInstalledProducts(Set.of(new InstalledProduct(alma)));
         TestUtils.saveAndFlush(accessToken);
         try {
-            downloadController.validateMinionInPayg(accessToken.getToken());
+            DownloadController.validateMinionInPayg(accessToken.getToken(), cpg);
         }
         catch (spark.HaltException e) {
             fail("Free products should be allowed");
