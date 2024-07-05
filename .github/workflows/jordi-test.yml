@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows: [Java checkstyle]
     types: [completed]
+    branches:
+    - '*/**'
 
 jobs:
   test-1:
