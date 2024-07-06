@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-21 14:53+0200\n"
-"PO-Revision-Date: 2023-03-31 13:14+0000\n"
-"Last-Translator: Georg Mayer <georgbmayer@yahoo.com>\n"
+"PO-Revision-Date: 2024-07-06 12:47+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend-4-3/"
 "de/>\n"
 "Language: de\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -1359,22 +1359,22 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
-msgstr ""
+msgstr "Kanaldaten vollständig"
 
 #: ../satellite_tools/satsync.py:735
 #, python-format
 msgid "%10s import from %s"
-msgstr ""
+msgstr "%10s importieren von %s"
 
 #: ../satellite_tools/satsync.py:738
-#, python-format
+#, fuzzy, python-format
 msgid "%10s import from %s - %s"
-msgstr ""
+msgstr "%10s importieren von %s - %s"
 
 #: ../satellite_tools/satsync.py:742
 #, python-format
 msgid "%10s"
-msgstr ""
+msgstr "%10s"
 
 #: ../satellite_tools/satsync.py:749
 msgid "p"
@@ -1386,15 +1386,15 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
-msgstr ""
+msgstr "   p = zuvor importierter/synchronisierter Kanal"
 
 #: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
-msgstr ""
+msgstr "   . = Kanal noch nicht importiert/synchronisiert"
 
 #: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr ""
+msgstr "   e = Kanal wird nicht mehr unterstützt (Dienstende)"
 
 #: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
@@ -1403,25 +1403,24 @@ msgstr ""
 #: ../satellite_tools/satsync.py:770
 #, python-format
 msgid "   %s:"
-msgstr ""
+msgstr "   %s:"
 
 #: ../satellite_tools/satsync.py:771
 #, python-format
 msgid "      %s %-40s %4s %s"
-msgstr ""
+msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:772
-#, fuzzy
 msgid "base-channels"
-msgstr "Konflikt zwischen Basis-Channels"
+msgstr "Basiskanäle"
 
 #: ../satellite_tools/satsync.py:785 ../satellite_tools/satsync.py:1619
 msgid "NONE RELEVANT"
-msgstr ""
+msgstr "NICHT RELEVANT"
 
 #: ../satellite_tools/satsync.py:807
 msgid "end-of-service"
-msgstr ""
+msgstr "Dienstende"
 
 #: ../satellite_tools/satsync.py:808
 msgid "e"
@@ -1429,7 +1428,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:814
 msgid "   typos:"
-msgstr ""
+msgstr "   Tippfehler:"
 
 #: ../satellite_tools/satsync.py:815
 msgid "?"
@@ -1438,7 +1437,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:830
 #, python-format
 msgid "XXX: imported channels: %s"
-msgstr ""
+msgstr "XXX: importierte Kanäle: %s"
 
 #: ../satellite_tools/satsync.py:831
 #, python-format
@@ -1452,6 +1451,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:854
 msgid "ERROR: these channels either do not exist or are not available:"
 msgstr ""
+"FEHLER: diese Kanäle existieren entweder nicht oder sind nicht verfügbar:"
 
 #: ../satellite_tools/satsync.py:858
 #, python-format
@@ -1487,7 +1487,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1101 ../satellite_tools/satsync.py:1169
 msgid "NONE MISSING"
-msgstr ""
+msgstr "KEINE FEHLEN"
 
 #: ../satellite_tools/satsync.py:1110
 msgid "Processing rpm packages complete"
@@ -1516,9 +1516,9 @@ msgid "Downloading source package metadata"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:1354 ../satellite_tools/satsync.py:2049
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to save file %s: %s"
-msgstr "System kann nicht berechtigt werden"
+msgstr ""
 
 #. for
 #. Retried a number of times and it still failed; log the
