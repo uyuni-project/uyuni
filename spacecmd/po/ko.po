@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-21 14:54+0200\n"
-"PO-Revision-Date: 2023-12-08 10:34+0000\n"
+"PO-Revision-Date: 2024-07-06 17:47+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
 "ko/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -3015,8 +3015,9 @@ msgstr ""
 "  -c CLONE_NAME"
 
 #: ../src/spacecmd/kickstart.py:2193
+#, fuzzy
 msgid "Kickstart Profiles"
-msgstr "Kickstart 프로파일"
+msgstr "킥스타트 프로파일"
 
 #: ../src/spacecmd/kickstart.py:2198
 msgid "Original Profile:"
