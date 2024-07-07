@@ -368,32 +368,42 @@ public class CVEAuditManagerOVAL {
 
         OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.loadDefaultConfig());
         for (OVALProduct product : productsToSync) {
-            LOG.debug("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
-            OVALDownloadResult downloadResult;
             try {
-                downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+                syncOVALForProduct(product, ovalDownloader);
             }
-            catch (IOException e) {
-                throw new RuntimeException("Failed to download OVAL data", e);
+            catch (Exception e) {
+                LOG.error("Failed to sync OVAL for product '{} {}'",
+                        product.getOsFamily().fullname(), product.getOsVersion(), e);
             }
-            LOG.debug("Downloading finished");
-
-            LOG.debug("OVAL vulnerability file: {}",
-                    downloadResult.getVulnerabilityFile().map(File::getAbsoluteFile).orElse(null));
-            LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
-
-            downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
-                extractAndSaveOVALData(product, ovalVulnerabilityFile);
-                LOG.debug("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
-            });
-
-            downloadResult.getPatchFile().ifPresent(patchFile -> {
-                extractAndSaveOVALData(product, patchFile);
-                LOG.debug("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
-            });
-
-            LOG.debug("Saving OVAL finished");
         }
+    }
+
+    private static void syncOVALForProduct(OVALProduct product, OVALDownloader ovalDownloader) {
+        LOG.debug("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+        OVALDownloadResult downloadResult;
+        try {
+            downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failed to download OVAL data", e);
+        }
+        LOG.debug("Downloading finished");
+
+        LOG.debug("OVAL vulnerability file: {}",
+                downloadResult.getVulnerabilityFile().map(File::getAbsoluteFile).orElse(null));
+        LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
+
+        downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
+            extractAndSaveOVALData(product, ovalVulnerabilityFile);
+            LOG.debug("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+        });
+
+        downloadResult.getPatchFile().ifPresent(patchFile -> {
+            extractAndSaveOVALData(product, patchFile);
+            LOG.debug("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+        });
+
+        LOG.debug("Saving OVAL finished");
     }
 
     /**
