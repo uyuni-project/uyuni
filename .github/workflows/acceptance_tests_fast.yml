@@ -14,5 +14,5 @@ jobs:
     with:
       secondary_tests: "18_run_secondary_tests.sh"
       server_id: "secondary"
-      recommended_tests: "recommended-tests.xml"
+      recommended_tests: 'recommended-tests.xml'
 
