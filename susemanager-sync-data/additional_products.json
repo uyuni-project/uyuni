@@ -4036,7 +4036,7 @@
         "repositories" : [
             {
                 "id" : -129,
-                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=os",
+                "url" : "https://vault.centos.org/centos/7/os/x86_64/",
                 "name" : "centos7",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7",
@@ -4046,7 +4046,7 @@
             },
             {
                 "id" : -130,
-                "url" : "http://mirror.centos.org/centos-7/7/atomic/x86_64",
+                "url" : "https://vault.centos.org/centos/7/atomic/x86_64/",
                 "name" : "centos7-atomic",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 Atomic",
@@ -4056,7 +4056,7 @@
             },
             {
                 "id" : -131,
-                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=centosplus",
+                "url" : "https://vault.centos.org/centos/7/centosplus/x86_64/",
                 "name" : "centos7-centosplus",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 Plus",
@@ -4066,7 +4066,7 @@
             },
             {
                 "id" : -133,
-                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=cr",
+                "url" : "https://vault.centos.org/centos/7/cr/x86_64/",
                 "name" : "centos7-cr",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 CR",
@@ -4076,7 +4076,7 @@
             },
             {
                 "id" : -134,
-                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=extras",
+                "url" : "https://vault.centos.org/centos/7/extras/x86_64/",
                 "name" : "centos7-extras",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 Extras",
@@ -4086,7 +4086,7 @@
             },
             {
                 "id" : -135,
-                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=fasttrack",
+                "url" : "https://vault.centos.org/centos/7/fasttrack/x86_64/",
                 "name" : "centos7-fasttrack",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 FastTrack",
@@ -4096,7 +4096,7 @@
             },
             {
                 "id" : -138,
-                "url" : "http://mirror.centos.org/centos-7/7/rt/x86_64",
+                "url" : "https://vault.centos.org/centos/7/rt/x86_64/",
                 "name" : "centos7-rt",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 RT",
@@ -4106,7 +4106,7 @@
             },
             {
                 "id" : -141,
-                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=updates",
+                "url" : "https://vault.centos.org/centos/7/updates/x86_64/",
                 "name" : "centos7-updates",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 Updates",
