@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -50,7 +50,7 @@ Feature: Register a salt-ssh system via API
 
   Scenario: Check spacecmd system ID of SSH minion bootstrapped via API
     Given I am on the Systems overview page of this "ssh_minion"
-    Then I run spacecmd listevents for "ssh_minion"
+    Then I run spacecmd listeventhistory for "ssh_minion"
 
   Scenario: Check events history for failures on SSH minion after API bootstrap
     Given I am on the Systems overview page of this "ssh_minion"

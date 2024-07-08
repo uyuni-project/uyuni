@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features when running in sequential:
@@ -44,7 +44,7 @@ Feature: Register a Salt minion via API
 
   Scenario: Check spacecmd system ID of minion bootstrapped via API
     Given I am on the Systems overview page of this "sle_minion"
-    Then I run spacecmd listevents for "sle_minion"
+    Then I run spacecmd listeventhistory for "sle_minion"
 
   Scenario: API bootstrap: subscribe to base channel
     Given I am on the Systems overview page of this "sle_minion"
