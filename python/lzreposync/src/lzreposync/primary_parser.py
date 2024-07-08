@@ -264,7 +264,7 @@ class PrimaryParser:
                         5048,
                     ]
                     for dep in possibly_missing_dependencies:
-                        if not self.current_hdr.get(dep):
+                        if dep not in self.current_hdr:
                             self.current_hdr[dep] = []
 
                     header_tags = [
