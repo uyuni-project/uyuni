@@ -4,9 +4,9 @@ export type Channel = {
   name: string;
 };
 
-interface AppStreams {
+export type AppStreams = {
   [key: string]: Array<AppStreamModule>;
-}
+};
 
 export type ChannelAppStream = {
   channel: Channel;
