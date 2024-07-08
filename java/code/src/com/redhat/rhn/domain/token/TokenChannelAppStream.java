@@ -111,4 +111,8 @@ public class TokenChannelAppStream {
     public void setChannel(Channel channelIn) {
         channel = channelIn;
     }
+
+    public String getAppStream() {
+        return name + ":" + stream;
+    }
 }

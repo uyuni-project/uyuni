@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyAlreadyExistsException;
@@ -31,9 +32,12 @@ import com.redhat.rhn.frontend.xmlrpc.configchannel.XmlRpcConfigChannelHelper;
 import org.hibernate.NonUniqueObjectException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ActivationKeyCloneCommand
@@ -104,6 +108,17 @@ public class ActivationKeyCloneCommand {
 
         // Contact method
         cak.setContactMethod(ak.getContactMethod());
+
+        // AppStreams
+        Map<Channel, List<TokenChannelAppStream>> tcasMap = akm.listTokenChannelAppStreams(ak).stream().collect(
+            Collectors.groupingBy(TokenChannelAppStream::getChannel)
+        );
+        tcasMap.forEach((channel, streams) -> {
+            var toInclude = streams.stream().map(TokenChannelAppStream::getAppStream).collect(Collectors.toList());
+            akm.saveChannelAppStreams(
+                cak, channel, toInclude, Collections.emptyList()
+            );
+        });
     }
 
     /**
