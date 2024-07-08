@@ -28,7 +28,12 @@ jobs:
           REDIS_PASS: ${{ secrets.REDIS_PASS }}
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
-        run: echo "result=$(node .github/scripts/test_covering_pr.js ${{ steps.files.outputs.added_modified }})" >> $GITHUB_OUTPUT
+        run: echo "result=$(node .github/scripts/test_covering_pr.js ${{ steps.files.outputs.added_modified }})" | tee recommended-tests.xml >> $GITHUB_OUTPUT
+      - name: Publish recommended tests as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: recommended-tests.xml
+          path: recommended-tests.xml
       - name: Write a comment into the Pull Request
         uses: actions-cool/maintain-one-comment@v3
         with:
