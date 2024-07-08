@@ -8,6 +8,10 @@ on:
       server_id:
         required: true
         type: string
+      recommended_tests:
+        required: false
+        type: string
+
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
@@ -41,6 +45,8 @@ jobs:
     steps:
       - name: fix podman
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
+      - name: install python deps
+        run: pip install pyyaml
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v4
@@ -66,6 +72,17 @@ jobs:
           key: ${{ runner.os }}-build-cache-uyuni-nodejs-${{ hashFiles('**/web/html/src/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-cache-uyuni-nodejs-
+      - name: Download recommended tests
+        if: ${{ inputs.recommended_tests != '' }}   
+        uses: actions/download-artifact@v4
+        with:
+          name: recommended-tests.xml
+          path: recommended-tests.xml
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: read recommended tests
+        if: ${{ inputs.recommended_tests != '' }}
+        run: python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }} > testsuite/run_sets/filter.yml && echo "DEBUG" && cat testsuite/run_sets/filter.yml
       - name: create_tmp
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
@@ -76,6 +93,9 @@ jobs:
         run: ./testsuite/podman_runner/04_setup_ssh_controller.sh 
       - name: install_gems_in_controller
         run: ./testsuite/podman_runner/05_install_gems_in_controller.sh
+      - name: filter tests
+        if: ${{ inputs.recommended_tests != '' }}
+        run: ./testsuite/podman_runner/19_filter_secondary_tests.sh && cat testsuite/run_sets/secondary_fast.yml
       - name: collect_and_tag_flaky_tests_in_controller
         # Until we refactor the usage of the secret, it only runs on uyuni-project/uyuni repository branches
         if: github.repository == 'uyuni-project/uyuni'
@@ -115,7 +135,7 @@ jobs:
       - name: split_secondary
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
       - name: run_secondary_tests
-        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
+        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }}
       - name: get_server_logs
         if: ${{ failure() }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}

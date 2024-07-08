@@ -1,0 +1,16 @@
+name: acceptance-tests-fast
+on:
+  workflow_run:
+    workflows: [Suggested tests to cover this Pull Request]
+    types: [completed]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+jobs:
+  acceptance-tests-fast:
+    uses: "./.github/workflows/acceptance_tests_common.yml"
+    with:
+      secondary_tests: "19_run_secondary_fast.sh"
+      server_id: "secondary_f"
+      recommended_tests: 'recommended-tests.xml'
+
