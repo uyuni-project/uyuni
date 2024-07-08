@@ -8,6 +8,10 @@ on:
       server_id:
         required: true
         type: string
+      recommended_tests:
+        required: false
+        type: string
+
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
@@ -61,6 +65,12 @@ jobs:
           key: ${{ runner.os }}-build-cache-uyuni-nodejs-${{ hashFiles('**/web/html/src/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-cache-uyuni-nodejs-
+      - name: Download recommended tests
+        if: {{ inputs.recommended_tests != "" }}   
+        uses: actions/download-artifact@v4
+        with:
+          name: recommended-tests.xml
+          path: recommended-tests.xml
       - name: create_tmp
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
