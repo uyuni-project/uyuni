@@ -73,6 +73,9 @@ jobs:
           path: recommended-tests.xml
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: debug recommended tests
+        if: ${{ inputs.recommended_tests != '' }}   
+        run: cat ${{ recommended_tests }}
       - name: create_tmp
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
