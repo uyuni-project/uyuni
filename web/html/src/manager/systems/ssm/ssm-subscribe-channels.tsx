@@ -338,10 +338,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     } else if (action === "NO_CHANGE" && childReqChannels && childReqByChannels) {
       // in this case we can't make any assumptions about the actual assignment of the channel,
       // let's reset both the forward and backward deps
-
-      // TODO: This is a bug and is probably not what was intended. Did you mean `...childReqByChannels` instead?
-      // @ts-expect-error: No overload matches this call.
-      dependencies = Array.from(childReqChannels).concat(childReqByChannels);
+      dependencies = Array.from(childReqChannels).concat(...childReqByChannels);
     }
 
     // change the channel AND its dependencies
