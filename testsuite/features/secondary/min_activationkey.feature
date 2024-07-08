@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -112,7 +112,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Check system ID of bootstrapped minion
     Given I am on the Systems overview page of this "sle_minion"
-    Then I run spacecmd listevents for "sle_minion"
+    Then I run spacecmd listeventhistory for "sle_minion"
 
 @susemanager
   Scenario: Verify that minion bootstrapped with base channel
