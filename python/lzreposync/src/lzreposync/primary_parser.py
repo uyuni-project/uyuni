@@ -341,8 +341,8 @@ class PrimaryParser:
                 for attr_name in ("name", "version", "flags"):
                     attr_mapped_name = map_dependency_attribute(elt_name, attr_name)
                     # pylint: disable-next=unidiomatic-typecheck
-                    if type(self.current_hdr.get(attr_mapped_name)) is not type(
-                        []
+                    if not isinstance(
+                        self.current_hdr.get(attr_mapped_name), list
                     ):  # Check if list is not initialized
                         self.current_hdr[attr_mapped_name] = []
                     attr = child_node.getAttributeNode(
