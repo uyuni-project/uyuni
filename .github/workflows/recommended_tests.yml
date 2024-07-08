@@ -1,0 +1,48 @@
+name: Recommended Tests
+
+on:
+  pull_request_target:
+    paths:
+      - '**.java'
+
+jobs:
+  generate_recommended_tests:
+    name: Generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pull Request code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm i ioredis
+      - id: changed_files
+        uses: Ana06/get-changed-files@v2.3.0
+        with:
+          filter: '*.java'
+      - id: tests_covering_pr
+        name: Tests covering PR
+        env:
+          REDIS_USER: ${{ secrets.REDIS_USER }}
+          REDIS_PASS: ${{ secrets.REDIS_PASS }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+        run: |
+          recommended_tests=$(node .github/scripts/test_covering_pr.js ${{ steps.changed_files.outputs.added_modified }})
+          echo "recommended_tests=$recommended_tests" >> $GITHUB_OUTPUT
+          echo "Recommended Tests: $recommended_tests"
+    outputs:
+      recommended_tests: ${{ steps.tests_covering_pr.outputs.recommended_tests }}
+
+  run_recommended_tests:
+    name: Run
+    needs: generate_recommended_tests
+    uses: ./.github/workflows/acceptance_tests_common.yml
+    with:
+      secondary_tests: "19_run_recommended_tests.sh"
+      server_id: "secondary_f"
+      recommended_tests: ${{ needs.generate_recommended_tests.outputs.recommended_tests }}
