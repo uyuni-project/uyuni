@@ -22,5 +22,4 @@ public enum MgrSyncStatus {
     INSTALLED,
     UNAVAILABLE
 }
-//TEST
 
