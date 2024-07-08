@@ -1,4 +1,4 @@
-name: Jordi Test
+name: JordiTest
 
 on:
   workflow_run:
