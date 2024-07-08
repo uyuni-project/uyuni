@@ -133,6 +133,7 @@ public class RegistrationUtils {
         List<String> statesToApply = new ArrayList<>();
         statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
         statesToApply.add(ApplyStatesEventMessage.CHANNELS);
+        handleActivationKeyAppStreams(activationKey, statesToApply, statesToApplyPillar);
         statesToApply.add(ApplyStatesEventMessage.PACKAGES);
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
@@ -141,8 +142,6 @@ public class RegistrationUtils {
             // SSH Minions need this to set last booted value.
             statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
         }
-
-        handleActivationKeyAppStreams(activationKey, statesToApply, statesToApplyPillar);
 
         MessageQueue.publish(new ApplyStatesEventMessage(
                 minion.getId(),
