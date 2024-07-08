@@ -1,4 +1,4 @@
-name: acceptance-tests-secondary
+name: acceptance-tests-fast
 on:
   workflow_run:
     workflows: [Suggested tests to cover this Pull Request]
@@ -9,7 +9,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 jobs:
-  acceptance-tests-secondary:
+  acceptance-tests-fast:
     uses: ./.github/workflows/acceptance_tests_common.yml
     with:
       secondary_tests: "18_run_secondary_tests.sh"
