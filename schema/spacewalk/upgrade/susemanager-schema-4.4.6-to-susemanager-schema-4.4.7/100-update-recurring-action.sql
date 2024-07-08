@@ -18,40 +18,49 @@ CREATE TABLE IF NOT EXISTS suseInternalState
   label             VARCHAR(128) NOT NULL
 );
 
-DELETE FROM suseInternalState;
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (1, 'certs', 'Certificates')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (1, 'certs', 'Certificates');
+         VALUES (2, 'channels', 'Channels')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (2, 'channels', 'Channels');
+         VALUES (3, 'hardware.profileupdate', 'Hardware Profile Update')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (3, 'hardware.profileupdate', 'Hardware Profile Update');
+         VALUES (4, 'packages', 'Packages')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (4, 'packages', 'Packages');
+         VALUES (5, 'packages.profileupdate', 'Package Profile Update')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (5, 'packages.profileupdate', 'Package Profile Update');
+         VALUES (6, 'uptodate', 'Update System')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (6, 'uptodate', 'Update System');
+         VALUES (7, 'util.syncbeacons', 'Sync Beacons')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (7, 'util.syncbeacons', 'Sync Beacons');
+         VALUES (8, 'util.syncall', 'Sync All')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (8, 'util.syncall', 'Sync All');
+         VALUES (9, 'util.syncgrains', 'Sync Grains')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (9, 'util.syncgrains', 'Sync Grains');
+         VALUES (10, 'util.syncmodules', 'Sync Modules')
+         ON CONFLICT DO NOTHING;
 
 INSERT INTO suseInternalState (id, name, label)
-         VALUES (10, 'util.syncmodules', 'Sync Modules');
-
-INSERT INTO suseInternalState (id, name, label)
-         VALUES (11, 'util.syncstates', 'Sync States');
+         VALUES (11, 'util.syncstates', 'Sync States')
+         ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS suseRecurringHighstate
 (
