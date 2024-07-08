@@ -1,11 +1,11 @@
 import { Panel } from "components/panels/Panel";
 
-import { AppStreamModule, Channel } from "./appstreams.type";
+import { AppStreamModule, AppStreams, Channel } from "./appstreams.type";
 import { ChannelAppStreams } from "./channel-appstreams";
 
 interface Props {
   channel: Channel;
-  appStreams: Map<string, AppStreamModule[]>;
+  appStreams: AppStreams;
   toEnable: Map<number, string[]>;
   toDisable: Map<number, string[]>;
   onToggle: (arg: AppStreamModule) => void;
