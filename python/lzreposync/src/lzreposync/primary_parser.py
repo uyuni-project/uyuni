@@ -304,7 +304,6 @@ class PrimaryParser:
         Parse the given attribute element node and add its information to the currentPackage.
         node: self-closing element. Eg: <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
         """
-        # pylint: disable-next=unidiomatic-typecheck
         if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
@@ -333,7 +332,6 @@ class PrimaryParser:
         each node has a list of Dependencies.
         The names should be mapped the same as in HeaderSource.py: rpmProvides, rpmRequires, etc..
         """
-        # pylint: disable-next=unidiomatic-typecheck
         if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
@@ -372,7 +370,6 @@ class PrimaryParser:
         """
         Parse and set elements with text content. Eg: <summary>GStreamer ...</summary>
         """
-        # pylint: disable-next=unidiomatic-typecheck
         if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")
@@ -388,7 +385,6 @@ class PrimaryParser:
         """
         Parse the given node and the corresponding information to the corresponding package's attribute
         """
-        # pylint: disable-next=unidiomatic-typecheck
         if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
             raise ValueError("No package being parsed")

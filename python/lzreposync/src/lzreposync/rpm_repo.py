@@ -224,8 +224,7 @@ class RPMRepo(Repo):
                     os.remove(os.path.join(self.cache_dir, f))
 
             # Cache the hash of the file
-            # pylint: disable-next=unspecified-encoding
-            with open(hash_file, "w") as fw:
+            with open(hash_file, "w", encoding="utf-8") as fw:
                 logging.debug("Caching file hash in file: %s", hash_file)
                 fw.write(primary_hash)
         except OSError as error:
