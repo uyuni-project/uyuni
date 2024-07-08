@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 jobs:
   acceptance-tests-secondary-parallel:
-    uses: ./.github/workflows/acceptance_tests_common.yml
+    uses: "./.github/workflows/acceptance_tests_common.yml"
     strategy:
       fail-fast: false
       matrix:
