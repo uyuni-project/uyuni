@@ -631,6 +631,7 @@ def createPackage(
     header_start,
     header_end,
     channels,
+    expand_full_filelist=True,
 ):
     """
     Returns a populated instance of rpmBinaryPackage or rpmSourcePackage
@@ -644,7 +645,8 @@ def createPackage(
 
     # bug #524231 - we need to call fullFilelist() for RPM v3 file list
     # to expand correctly
-    header.hdr.fullFilelist()
+    if expand_full_filelist:
+        header.hdr.fullFilelist()
     p.populate(
         header,
         size,
