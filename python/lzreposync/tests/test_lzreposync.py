@@ -207,20 +207,10 @@ class LazyRepoSyncTest(unittest.TestCase):
         Create header with full information
         """
 
-        # Primary test file
-        with open("primary-sample-2-.xml", "r", encoding="utf-8") as primary_xml:
-            # Convert it to gzip format
-            compressed_primary = gzip.compress(bytes(primary_xml.read(), "utf-8"))
-            primary_xml_file_obj = io.BytesIO(compressed_primary)
+        # primary & filelists test file
+        primary_parser = PrimaryParser("test-files/primary-sample-2.xml.gz")
+        file_lists_parser = FilelistsParser("test-files/filelists-sample-2.xml.gz")
 
-        # FileLists test file
-        with open("filelists-sample-2-.xml", "r", encoding="utf-8") as file_lists_xml:
-            # Convert it to gzip format
-            compressed_file_lists = gzip.compress(bytes(file_lists_xml.read(), "utf-8"))
-            file_lists_xml_obj_file = io.BytesIO(compressed_file_lists)
-
-        primary_parser = PrimaryParser(primary_xml_file_obj)
-        file_lists_parser = FilelistsParser(file_lists_xml_obj_file)
         rpm_metadata_parser = MetadataParser(primary_parser, file_lists_parser)
         package_gen = rpm_metadata_parser.parse_packages_metadata()
 
@@ -266,6 +256,54 @@ class LazyRepoSyncTest(unittest.TestCase):
         )
 
         file_lists_parser.clear_cache()
+
+    def test_arch_filter_primary(self):
+        """
+        Test the primary.xml parsing functionality with the 'arch' filter
+        """
+
+        primary_gz_test = "test-files/primary-sample-10.xml.gz"
+        archs = {
+            "x86_64": 1,
+            "aarch64": 2,
+            "ppc64le": 4,
+            "noarch": 3,
+            "(x86_64|aarch64)": 3,
+            "(ppc64le|noarch)": 7,
+            ".*": 10,
+        }
+
+        for arch, count in archs.items():
+            primary_parser = PrimaryParser(primary_gz_test, arch_filter=arch)
+            parsed_packages = list(primary_parser.parse_primary())
+            self.assertEqual(len(parsed_packages), count)
+
+    def test_arch_filter_file_lists(self):
+        """
+        Test the filelists.xml parsing functionality with the 'arch' filter
+        """
+        file_lists_gz_test = "test-files/filelists-sample-10.xml.gz"
+        archs = {
+            "aarch64": 2,
+            "ppc64le": 2,
+            "src": 2,
+            "x86_64": 2,
+            "s390x": 2,
+            "(ppc64le|s390x|src)": 6,
+            ".*": 10,
+        }
+
+        for arch, count in archs.items():
+            file_lists_parser = FilelistsParser(file_lists_gz_test, arch_filter=arch)
+            file_lists_parser.parse_filelists()
+            self.assertEqual(file_lists_parser.num_parsed_packages, count)
+
+            file_lists_parser.clear_cache()
+
+    def test_arch_filter_packages(self):
+        """
+        Test the parse metadata functionality (both primary and filelists) with the 'arch' filter
+        """
 
     def test_insert_batch_into_db(self):
         """
