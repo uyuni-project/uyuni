@@ -79,10 +79,14 @@ def main():
     )
 
     args = parser.parse_args()
+    arch = args.arch
+    if arch != ".*":
+        # pylint: disable-next=consider-using-f-string
+        arch = "(noarch|{})".format(args.arch)
 
     logging.getLogger().setLevel(args.loglevel)
     rpm_repository = RPMRepo(
-        args.name, args.cache, args.url, args.arch
+        args.name, args.cache, args.url, arch
     )  # TODO args.url should be args.repo, no ?
     packages = rpm_repository.get_packages_metadata()  # packages is a generator
     failed = 0
