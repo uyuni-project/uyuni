@@ -1,1 +1,0 @@
-- Fix recurring custom state configs being deleted during migration (bsc#1227491)

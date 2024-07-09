@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 09 13:25:19 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.9-0
+  * Fix recurring custom state configs being deleted during
+    migration (bsc#1227491)
+
+-------------------------------------------------------------------
 Mon Jun 10 16:38:45 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8-0
