@@ -59,6 +59,7 @@ $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
 $is_using_paygo_server = (ENV.fetch('IS_USING_PAYGO_SERVER', 'False') == 'True')
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
+$beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
@@ -702,6 +703,12 @@ Before('@srv_scc_access_logging') do
   skip_this_scenario unless scc_access_logging_grain?
 end
 
+# do test only if we have beta channels enabled
+Before('@beta') do
+  skip_this_scenario unless $beta_enabled
+end
+
+# check whether the server has the scc_access_logging variable set
 def scc_access_logging_grain?
   cmd = 'grep "\"scc_access_logging\": true" /etc/salt/grains'
   _out, code = get_target('server').run(cmd, check_errors: false)

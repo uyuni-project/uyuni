@@ -51,11 +51,18 @@ Feature: Reposync works as expected
 @scc_credentials
 @susemanager
   Scenario: Check reposync of Client Tools being finished
-    Then I wait until the channel "sle-manager-tools15-pool-x86_64-sp4" has been synced
+    When I wait until the channel "sle-manager-tools15-pool-x86_64-sp4" has been synced
     And I wait until the channel "sle-manager-tools15-updates-x86_64-sp4" has been synced
     And I wait until the channel "res8-manager-tools-updates-x86_64-rocky" has been synced
     And I wait until the channel "res8-manager-tools-pool-x86_64-rocky" has been synced
     And I wait until the channel "ubuntu-2204-suse-manager-tools-amd64" has been synced
+
+@beta
+@scc_credentials
+@susemanager
+  Scenario: Check reposync of Client Tools being finished
+    When I wait until the channel "sle-manager-tools15-beta-pool-x86_64-sp4" has been synced
+    And I wait until the channel "sle-manager-tools15-beta-updates-x86_64-sp4" has been synced
 
 @uyuni
   Scenario: Check reposync of Client Tools being finished
