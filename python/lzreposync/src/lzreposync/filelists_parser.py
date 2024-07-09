@@ -34,7 +34,7 @@ def cache_xml_node(node, cache_dir):
 
 # pylint: disable-next=missing-class-docstring
 class FilelistsParser:
-    def __init__(self, filelists_file, cache_dir=".cache"):
+    def __init__(self, filelists_file, cache_dir="./.cache"):
         """
         filelists_file: In gzip format
         """
