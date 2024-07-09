@@ -61,6 +61,9 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
                 }
                 else {
                     JsonElement json = TypeAdapters.JSON_ELEMENT.read(in);
+                    if (json.isJsonObject() && json.getAsJsonObject().size() == 0) {
+                        return Optional.empty();
+                    }
                     try {
                         A value = innerAdapter.fromJsonTree(json);
                         return Optional.of(value);
@@ -83,7 +86,11 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
 
             @Override
             public void write(JsonWriter out, Optional<A> optional) throws IOException {
-                innerAdapter.write(out, optional.orElse(null));
+                if (optional.isPresent()) {
+                    innerAdapter.write(out, optional.get());
+                } else {
+                    out.nullValue();
+                }
             }
         };
     }
