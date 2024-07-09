@@ -372,11 +372,6 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
               {t("Cobbler")}
             </a>
           </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/BootstrapSystems.do?">
-              {t("Bare-metal systems")}
-            </a>
-          </li>
           <li className="active js-spa">
             <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
           </li>
