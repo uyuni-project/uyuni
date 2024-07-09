@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filelists xmlns="http://linux.duke.edu/metadata/filelists" packages="2">
+<package pkgid="5f32047b55c0ca2dcc00a00270cd0b10df4df40c6cd9355eeff9b6aa0997657b" name="gstreamer-plugins-bad" arch="aarch64">
+  <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
+  <file>/usr/lib64/gstreamer-1.0/libgstaccurip.so</file>
+  <file>/usr/lib64/gstreamer-1.0/libgstadpcmdec.so</file>
+  <file>/usr/lib64/gstreamer-1.0/libgstadpcmenc.so</file>
+  <file>/usr/lib64/gstreamer-1.0/libgstaes.so</file>
+  <file>/usr/lib64/gstreamer-1.0/libgstaom.so</file>
+  <file>/usr/share/gstreamer-1.0/presets/GstFreeverb.prs</file>
+  <file type="dir">/usr/share/licenses/gstreamer-plugins-bad</file>
+  <file>/usr/share/licenses/gstreamer-plugins-bad/COPYING</file>
+</package>
+<package pkgid="5aac91b3ec4b358b22fe50cf0a23d6ea6139ca2f1909f99b6c3b5734ca12530f" name="gstreamer-plugins-bad" arch="ppc64le">
+  <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
+  <file>/usr/lib64/gstreamer-1.0/libgstaccurip.so</file>
+  <file>/usr/lib64/gstreamer-1.0/libgstadpcmdec.so</file>
+  <file>/usr/lib64/gstreamer-1.0/libgstadpcmenc.so</file>
+  <file>/usr/lib64/gstreamer-1.0/libgstaes.so</file>
+  <file type="dir">/usr/share/licenses/gstreamer-plugins-bad</file>
+  <file>/usr/share/licenses/gstreamer-plugins-bad/COPYING</file>
+</package>
+</filelists>
