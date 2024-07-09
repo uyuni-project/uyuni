@@ -78,7 +78,7 @@ jobs:
         run: cat ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
       - name: debug 2 recommended tests
         if: ${{ inputs.recommended_tests != '' }}
-        run: python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
+        run: echo SEC_TESTS=$(python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}) >> $GITHUB_ENV
       - name: create_tmp
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
@@ -128,7 +128,7 @@ jobs:
       - name: split_secondary
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
       - name: run_secondary_tests
-        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
+        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} ${{ env.SEC_TESTS }}
       - name: get_server_logs
         if: ${{ failure() }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
