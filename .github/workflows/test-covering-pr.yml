@@ -28,8 +28,7 @@ jobs:
           REDIS_PASS: ${{ secrets.REDIS_PASS }}
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
-        run: echo "result=$(node .github/scripts/test_covering_pr.js ${{ steps.files.outputs.added_modified }})"
-#        run: echo "result=$(node .github/scripts/test_covering_pr.js ${{ steps.files.outputs.added_modified }})" | tee recommended-tests.xml >> $GITHUB_OUTPUT
+        run: echo "result=$(node .github/scripts/test_covering_pr.js ${{ steps.files.outputs.added_modified }})" | tee recommended-tests.xml >> $GITHUB_OUTPUT
       - name: Publish recommended tests as artifacts
         uses: actions/upload-artifact@v4
         with:
