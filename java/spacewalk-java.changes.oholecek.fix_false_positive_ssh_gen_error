@@ -1,0 +1,1 @@
+- fix false positive ssh key generation error (bsc#1226491)
