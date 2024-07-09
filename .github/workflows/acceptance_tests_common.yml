@@ -78,7 +78,7 @@ jobs:
         run: cat ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
       - name: debug 2 recommended tests
         if: ${{ inputs.recommended_tests != '' }}
-        run: python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}
+        run: python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
       - name: create_tmp
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
