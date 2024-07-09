@@ -53,6 +53,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -204,7 +205,8 @@ public class MinionActionUtils {
      * @return the date to run the action
      */
     public static Date getScheduleDate(Optional<LocalDateTime> earliest) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(earliest.orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
     }
 
