@@ -13,7 +13,6 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers;
-//TEST
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
