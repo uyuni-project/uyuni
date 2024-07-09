@@ -2,6 +2,7 @@
 
 import datetime
 import gzip
+import re
 from xml.dom import pulldom
 
 import rpm
@@ -122,7 +123,7 @@ def map_flag(flag: str) -> int:
 
 #  pylint: disable-next=missing-class-docstring
 class PrimaryParser:
-    def __init__(self, primary_file):
+    def __init__(self, primary_file, arch_filter=".*"):
         """
         primary_file: In gzip format
         """
@@ -134,6 +135,7 @@ class PrimaryParser:
             )
         self.current_package = None
         self.current_hdr = None
+        self.arch_filter = arch_filter
 
         # XML elements that has text content or have child elements (Not self-closing elements)
         self.searched_chars = [
@@ -210,6 +212,11 @@ class PrimaryParser:
                 ):
                     # New package
                     doc.expandNode(node)
+
+                    arch_node = node.getElementsByTagName("arch")[0]
+                    pkg_arch = get_text(arch_node)
+                    if not re.fullmatch(self.arch_filter, pkg_arch):  # Filter by arch
+                        continue
                     self.current_package = {}
                     self.current_hdr = {}
 

@@ -41,8 +41,8 @@ def get_text(node_list):
 # pylint: disable-next=missing-class-docstring
 class RPMRepo(Repo):
 
-    def __init__(self, name, cache_path, repository):
-        super().__init__(name, cache_path, repository)
+    def __init__(self, name, cache_path, repository, arch_filter=".*"):
+        super().__init__(name, cache_path, repository, arch_filter)
         self.signature_verified = (
             False  # Tell whether the signature is checked against the repomd.xml file
         )
@@ -189,8 +189,10 @@ class RPMRepo(Repo):
                     # Work on temporary file without loading it into memory at once
                     primary_tmp_file.seek(0)
                     filelists_tmp_file.seek(0)
-                    primary_parser = PrimaryParser(primary_tmp_file)
-                    filelists_parser = FilelistsParser(filelists_tmp_file)
+                    primary_parser = PrimaryParser(primary_tmp_file, self.arch_filter)
+                    filelists_parser = FilelistsParser(
+                        filelists_tmp_file, self.arch_filter
+                    )
                     metadata_parser = MetadataParser(
                         primary_parser=primary_parser, filelists_parser=filelists_parser
                     )

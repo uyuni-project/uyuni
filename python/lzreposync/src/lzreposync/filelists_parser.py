@@ -3,6 +3,7 @@
 import gzip
 import logging
 import os
+import re
 import shutil
 import xml.etree.ElementTree as ET
 from xml.dom import pulldom
@@ -34,13 +35,15 @@ def cache_xml_node(node, cache_dir):
 
 # pylint: disable-next=missing-class-docstring
 class FilelistsParser:
-    def __init__(self, filelists_file, cache_dir="./.cache"):
+    def __init__(self, filelists_file, cache_dir="./.cache", arch_filter=".*"):
         """
         filelists_file: In gzip format
         """
         self.filelists_file = filelists_file
         self.cache_dir = cache_dir
+        self.arch_filter = arch_filter
         self.num_packages = -1  # The number of packages in the given filelist file
+        self.num_parsed_packages = 0  # The number packages parsed
         self.parsed = False  # Tell whether the filelists file has been parsed or not
 
     def parse_filelists(self):
@@ -60,8 +63,11 @@ class FilelistsParser:
 
                 elif event == pulldom.START_ELEMENT and node.tagName == "package":
                     doc.expandNode(node)
-                    # Save the content of the package's filelist info in cache directory
-                    cache_xml_node(node, self.cache_dir)
+                    pkg_arch = node.getAttributeNode("arch").value
+                    if re.fullmatch(self.arch_filter, pkg_arch):  # Filter by arch
+                        # Save the content of the package's filelist info in cache directory
+                        cache_xml_node(node, self.cache_dir)
+                        self.num_parsed_packages += 1
 
             self.parsed = True
 

@@ -69,11 +69,20 @@ def main():
         type=int,
     )
 
+    parser.add_argument(
+        "-a",
+        "--arch",
+        help="A filter for package architecture. Can be a regex, for example: 'x86_64',  '(x86_64|arch_64)'",
+        default=".*",
+        dest="arch",
+        type=str,
+    )
+
     args = parser.parse_args()
 
     logging.getLogger().setLevel(args.loglevel)
     rpm_repository = RPMRepo(
-        args.name, args.cache, args.url
+        args.name, args.cache, args.url, args.arch
     )  # TODO args.url should be args.repo, no ?
     packages = rpm_repository.get_packages_metadata()  # packages is a generator
     failed = 0
