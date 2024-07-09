@@ -249,8 +249,7 @@ class ZyppoSync:
                 else:
                     # pylint: disable-next=consider-using-f-string
                     log(3, "CMD out: {}".format(outs.decode("utf-8")))
-            # pylint: disable-next=undefined-variable
-            except TimeoutExpired:
+            except subprocess.TimeoutExpired:
                 process.kill()
                 log(0, "Timeout exceeded while importing keys to rpm database")
             keycont = f.read()
