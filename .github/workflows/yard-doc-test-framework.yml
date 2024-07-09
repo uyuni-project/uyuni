@@ -1,0 +1,51 @@
+name: Generate YARD Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  generate_documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.5.9'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y rdoc
+          gem install yard yard-cucumber
+
+      - name: Generate .yard/config
+        run: |
+          $HOME/.yard
+          echo '--- !ruby/hash-with-ivars:SymbolHash
+          elements:
+            :load_plugins: true
+            :ignored_plugins: []
+            :autoload_plugins: []
+            :safe_mode: false
+            :"yard-cucumber":
+              language:
+                step_definitions: [ "Given", "When", "Then", "And", "But"]
+              menus: [ "features", "directories", "tags", "steps", "step definitions" ]
+          ivars:
+            :@symbolize_value: false%' > $HOME/.yard/config
+
+      - name: Generate YARD Documentation
+        run: |
+          cd testsuite
+          yard doc --protected --private features/step_definitions/*.rb features/support/*.rb features/support/**/*.rb features/**/*.feature features/**/**/*.feature
+
+      - name: Archive documentation as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: yard-docs
+          path: testsuite/doc

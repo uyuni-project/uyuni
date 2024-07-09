@@ -1627,7 +1627,7 @@ When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
   folder_delete(node, folder) if folder_exists?(node, folder)
 end
 
-## ReportDB ##
+# ReportDB
 
 Given(/^I can connect to the ReportDB on the Server$/) do
   # connect and quit database

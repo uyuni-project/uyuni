@@ -2,6 +2,142 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   EnabledByDefault: true
+  SuggestExtensions: false
+  TargetRubyVersion: 2.5
+
+Style/MissingElse:
+  Enabled: false
+
+Bundler/GemComment:
+  Exclude:
+    - 'Gemfile'
+
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: false
+
+Layout/HashAlignment:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Layout/RedundantLineBreak:
+  Enabled: false
+
+Layout/SingleLineBlockChain:
+  Enabled: false
+
+Lint/ConstantResolution:
+  Enabled: false
+
+Lint/NumberConversion:
+  Enabled: false
+
+Lint/OrAssignmentToConstant:
+  Enabled: false
+
+Lint/SymbolConversion:
+  EnforcedStyle: consistent
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 20
 
 Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Security/Open:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/CollectionMethods:
+  Enabled: false
+
+Style/DateTime:
+  Enabled: false
+
+Style/EmptyElse:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/RedundantBegin:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: false
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/ImplicitRuntimeError:
+  Enabled: false
+
+Style/InlineComment:
+  Enabled: false
+
+Style/IpAddresses:
+  Enabled: false
+
+Style/FormatStringToken:
+  EnforcedStyle: template
+
+Style/SafeNavigation:
+  Enabled: false
+
+Style/StringHashKeys:
+  Enabled: false
+
+Style/TopLevelMethodDefinition:
+  Enabled: false
+
+Style/Copyright:
+  Enabled: true
+  AutocorrectNotice: |
+    # Copyright (c) 2024 SUSE LLC.
+    # Licensed under the terms of the MIT license.
+  Notice: '.*Copyright.*SUSE LLC.*'
+
+Style/DisableCopsWithinSourceCodeDirective:
+  Enabled: false
+
+Style/OptionHash:
   Enabled: false

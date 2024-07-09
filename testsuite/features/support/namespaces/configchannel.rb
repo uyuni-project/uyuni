@@ -1,87 +1,72 @@
 # Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# Configuration Channel namespace
+# Represents a configuration channel in the Uyuni API.
 class NamespaceConfigchannel
-  ##
-  # It initializes the api_test variable.
+  # Initializes the NamespaceConfigchannel object.
   #
-  # Args:
-  #   api_test: This is the test object that is passed in from the test script.
+  # @param api_test [Object] The test object passed in from the test script.
   def initialize(api_test)
     @test = api_test
   end
 
-  ##
-  # Returns true if the configuration channel exists, false otherwise.
+  # Checks if the configuration channel exists.
   #
-  # Args:
-  #   channel: The channel to check for existence.
+  # @param channel [String] The channel to check for existence.
+  # @return [Boolean] Returns true if the configuration channel exists, false otherwise.
   def channel_exists(channel)
     @test.call('configchannel.channelExists', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Lists the files in a configuration channel.
   #
-  # Args:
-  #   channel: The configuration channel to list files from.
+  # @param channel [String] The configuration channel to list files from.
   def list_files(channel)
     @test.call('configchannel.listFiles', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Returns a list of systems subscribed to the given configuration channel.
   #
-  # Args:
-  #   channel: The configuration channel you want to list the subscribed systems for.
+  # @param channel [String] The configuration channel to list the subscribed systems for.
   def list_subscribed_systems(channel)
     @test.call('configchannel.listSubscribedSystems', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Gets a file revision of a configuration channel.
   #
-  # Args:
-  #   channel: The configuration channel name.
-  #   file_path: A file path.
-  #   revision: A revision number.
+  # @param channel [String] The configuration channel name.
+  # @param file_path [String] A file path.
+  # @param revision [Integer] A revision number.
   def get_file_revision(channel, file_path, revision)
     @test.call('configchannel.getFileRevision', sessionKey: @test.token, label: channel, filePath: file_path, revision: revision)
   end
 
-  ##
   # Creates a new configuration channel.
   #
-  # Args:
-  #   label: The label of the configuration channel.
-  #   name: The name of the configuration channel.
-  #   description: A description of the configuration channel.
-  #   type: TODO
+  # @param label [String] The label of the configuration channel.
+  # @param name [String] The name of the configuration channel.
+  # @param description [String] A description of the configuration channel.
+  # @param type [String] The type of the configuration channel.
   def create(label, name, description, type)
     @test.call('configchannel.create', sessionKey: @test.token, label: label, name: name, description: description, type: type)
   end
 
-  ##
   # Creates a new configuration channel with path information.
   #
-  # Args:
-  #   label: The label of the configuration channel.
-  #   name: The name of the configuration channel.
-  #   description: A short description of the configuration channel.
-  #   type: normal, local_override, server_import, state
-  #   info: Path information.
+  # @param label [String] The label of the configuration channel.
+  # @param name [String] The name of the configuration channel.
+  # @param description [String] A short description of the configuration channel.
+  # @param type [String] The type of the configuration channel.
+  # @param info [Hash] Path information.
   def create_with_pathinfo(label, name, description, type, info)
     @test.call('configchannel.create', sessionKey: @test.token, label: label, name: name, description: description, type: type, pathInfo: info)
   end
 
-  ##
   # Creates or updates a file in a channel.
   #
-  # Args:
-  #   channel: The configuration channel to create or update the file in.
-  #   file: The file name, including the path.
-  #   contents: The contents of the file.
+  # @param channel [String] The configuration channel to create or update the file in.
+  # @param file [String] The file name, including the path.
+  # @param contents [String] The contents of the file.
   def create_or_update_path(channel, file, contents)
     @test.call('configchannel.createOrUpdatePath',
                sessionKey: @test.token,
@@ -95,20 +80,16 @@ class NamespaceConfigchannel
               )
   end
 
-  ##
   # Deploys all systems to the given configuration channel.
   #
-  # Args:
-  #   channel: The configuration channel to deploy to.
+  # @param channel [String] The configuration channel to deploy to.
   def deploy_all_systems(channel)
     @test.call('configchannel.deployAllSystems', sessionKey: @test.token, label: channel)
   end
 
-  ##
   # Deletes the specified channels.
   #
-  # Args:
-  #   channels: A list of configuration channel names to delete.
+  # @param channels [Array<String>] A list of configuration channel names to delete.
   def delete_channels(channels)
     @test.call('configchannel.deleteChannels', sessionKey: @test.token, labels: channels)
   end

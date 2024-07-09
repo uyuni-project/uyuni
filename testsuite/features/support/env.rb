@@ -17,7 +17,7 @@ require 'set'
 require_relative 'twopence_env'
 require_relative 'commonlib'
 
-## code coverage analysis
+# code coverage analysis
 # SimpleCov.start
 
 server = ENV['SERVER']

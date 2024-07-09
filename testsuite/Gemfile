@@ -3,31 +3,36 @@
 
 source 'https://rubygems.org'
 
-gem 'require_all', "~> 3.0"
 gem 'capybara', '3.35.3'
 gem 'cucumber', '7.1.0'
-gem 'cucumber-html-formatter', "~> 17.0"
-gem 'selenium-webdriver', "~> 3.142"
-gem 'rack', "~> 3.0"
-gem 'rack-test', "~> 2.0"
-gem 'nokogiri', "~> 1.12"
-gem 'rake', "~> 13.0"
-gem 'jwt', "~> 2.6"
-gem 'mime-types', "~> 3.4"
-gem 'xmlrpc', "~> 0.3"
+gem 'cucumber-html-formatter', '~> 17.0'
 gem 'faraday', '1.10.0'
 gem 'ffi', '~> 1.16.0'
-gem 'minitest', "~> 5.15"
-gem 'websocket', "~> 1.2"
-gem 'websocket-driver', "~> 0.7"
-gem 'syntax', "~> 1.2"
-gem 'parallel_tests', "~> 3.12"
-gem 'simplecov', "~> 0.22"
-gem 'rubocop', '0.83.0'
+gem 'jwt', '~> 2.6'
+# mini_mime > 1.1.2, requires ruby 2.6
+gem 'mime-types', '~> 3.4'
+gem 'mini_mime', '1.1.2'
+gem 'minitest', '~> 5.15.0'
+gem 'netrc', '~> 0.11.0'
+gem 'nokogiri', '~> 1.12.0'
+gem 'parallel_tests', '~> 3.12.0'
+gem 'parallel', '~> 1.24.0'
+gem 'pg', '~> 1.4'
+gem 'public_suffix', '~> 4.0'
+gem 'rack', '~> 3.0'
+gem 'rack-test', '~> 2.0'
+gem 'rake', '~> 13.0'
+gem 'redis', '~> 5.0'
+gem 'redis-client', '~> 0.19.1'
+gem 'require_all', '~> 3.0'
+# gem 'rubocop', '1.17.0'
+gem 'selenium-webdriver', '~> 3.142'
+gem 'simplecov', '~> 0.22'
+gem 'syntax', '~> 1.2'
 # Pre-requisite:
 # Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
 # or build and install from https://github.com/openSUSE/twopence
-gem 'twopence', "~> 0.4"
-gem 'pg', "~> 1.4"
-gem 'public_suffix', '~> 4.0'
-gem 'netrc', '~> 0.11.0'
+gem 'twopence', '~> 0.4'
+gem 'websocket', '~> 1.2'
+gem 'websocket-driver', '~> 0.7'
+gem 'xmlrpc', '~> 0.3'

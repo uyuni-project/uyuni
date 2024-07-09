@@ -10,9 +10,28 @@ require 'pp'
 # any  = ct.system_get_key('vbox-ug', 'uid')
 # list = ct.get_list('systems')
 
-# Class for clobber test
+# This class provides methods for interacting with the Cobbler server.
+#
+# The `CobblerTest` class is responsible for creating a new XMLRPC::client object and checking if the server is running.
+# It also provides methods for logging in and out of Cobbler, creating distributions, profiles, and systems, modifying them,
+# and performing other operations on the Cobbler server.
+#
+# Example usage:
+#
+# ```ruby
+# cobbler = CobblerTest.new
+# cobbler.login('admin', 'password')
+# cobbler.distro_create('my_distro', '/path/to/kernel', '/path/to/initrd')
+# cobbler.profile_create('my_profile', 'my_distro', '/path/to/kickstart')
+# cobbler.system_create('my_system', 'my_profile')
+# cobbler.logout
+# ```
+#
+# For more information on the Cobbler API, refer to the official documentation: https://cobbler.readthedocs.io/
+#
+# @attr_reader [XMLRPC::Client] server The XMLRPC::Client object for communicating with the Cobbler server.
+# @attr_reader [String] token The authentication token obtained after successful login.
 class CobblerTest
-  ##
   # Creates a new XMLRPC::client object, and then checks to see if the server is running.
   def initialize
     server_address = ENV['SERVER']
@@ -20,28 +39,30 @@ class CobblerTest
     raise(SystemCallError, "No running server at found at #{server_address}") unless running?
   end
 
-  ##
   # Logs into Cobbler and returns the session token.
   #
-  # Args:
-  #   user: The username used to log in.
-  #   pass: The password for the user.
+  # @param user [String] The username for logging in to Cobbler.
+  # @param pass [String] The password for logging in to Cobbler.
+  # @return [String] The authentication token obtained after successful login.
+  # @raise [StandardError] If the login to Cobbler fails.
   def login(user, pass)
-    @token = @server.call('login', user, pass)
-  rescue StandardError
-    raise(StandardError, "Login to Cobbler failed. #{$ERROR_INFO}")
+    begin
+      @token = @server.call('login', user, pass)
+    rescue StandardError
+      raise(StandardError, "Login to Cobbler failed. #{$ERROR_INFO}")
+    end
   end
 
-  ##
   # Logs out of Cobbler.
   #
   def logout
-    @server.call('logout', @token)
-  rescue StandardError
-    raise(StandardError, "Logout to Cobbler failed. #{$ERROR_INFO}")
+    begin
+      @server.call('logout', @token)
+    rescue StandardError
+      raise(StandardError, "Logout to Cobbler failed. #{$ERROR_INFO}")
+    end
   end
 
-  ##
   # Returns true or false depending on whether the server is running.
   def running?
     result = true
@@ -53,14 +74,12 @@ class CobblerTest
     result
   end
 
-  ##
   # Returns a list of the names of the systems, profiles, or distros in the database.
   #
-  # Args:
-  #   what: The type of list you want to get.  Valid values are:
-  #        - systems
-  #        - profiles
-  #        - distros
+  # @param what [String] The parameter indicating the type of items to retrieve.
+  #   Valid values are 'systems', 'profiles', and 'distros'.
+  # @return [Array<String>] An array containing the names of the retrieved items.
+  # @raise [ArgumentError] If the specified parameter is not one of the valid values.
   def get_list(what)
     result = []
     raise(ArgumentError, "Unknown get_list parameter '#{what}'") unless %w[systems profiles distros].include?(what)
@@ -70,14 +89,13 @@ class CobblerTest
     result
   end
 
-  ##
   # Creates a new distribution with a specific name, kernel, initrd, and breed, and saves it.
   #
-  # Args:
-  #   name: The name of the distribution.
-  #   kernel: The path to the kernel file.
-  #   initrd: The initrd file for the distribution.
-  #   breed: The type of distribution.  This can be one of the following: redhat, debian, suse. Defaults to suse.
+  # @param name [String] The name of the distribution.
+  # @param kernel [String] The kernel file path for the distribution.
+  # @param initrd [String] The initrd file path for the distribution.
+  # @param breed [String] The breed of the distribution (default is 'suse').
+  # @return [Integer] The ID of the created distribution.
   def distro_create(name, kernel, initrd, breed = 'suse')
     begin
       distro_id = @server.call('new_distro', @token)
@@ -92,13 +110,12 @@ class CobblerTest
     distro_id
   end
 
-  ##
   # Creates a new profile, modifies it, and saves it.
   #
-  # Args:
-  #   name: The name of the profile.
-  #   distro: The name of the distribution you want to use.
-  #   location: The location of the kickstart file.
+  # @param name [String] The name of the profile.
+  # @param distro [String] The name of the distribution you want to use.
+  # @param location [String] The location of the kickstart file.
+  # @return [Integer] The ID of the created profile.
   def profile_create(name, distro, location)
     begin
       profile_id = @server.call('new_profile', @token)
@@ -120,13 +137,12 @@ class CobblerTest
     profile_id
   end
 
-  ##
   # Creates a system, sets its name and profile, and saves it.
   # Every system needs at least a name and a profile.
   #
-  # Args:
-  #   name: The name of the system.
-  #   profile: The name of the profile to use for the system.
+  # @param name [String] The name of the system.
+  # @param profile [String] The name of the profile to use for the system.
+  # @return [Integer] The ID of the created system.
   def system_create(name, profile)
     begin
       system_id = @server.call('new_system', @token)
@@ -147,14 +163,12 @@ class CobblerTest
     system_id
   end
 
-  ##
   # Removes a system from the Spacewalk server.
   #
   # The first thing this function does is check to see if the system exists. If it doesn't, it raises an error. If it
   # does, it calls the remove_system function on the Spacewalk server. If that fails, it raises an error.
   #
-  # Args:
-  #   name: The name of the system to be removed.
+  # @param name [String] The name of the system to be removed.
   def system_remove(name)
     raise(IndexError, "System cannot be found. #{$ERROR_INFO}") unless element_exists('systems', name)
 
@@ -165,40 +179,32 @@ class CobblerTest
     end
   end
 
-  ##
-  # Checks if a distribution exists in the database by using 'distro' as the table name, 'name' as the column and the name of the distro.
   # Checks if a Cobbler item exists in the database by using
   # 'distros|profiles|systems|repos' as the table name,
   # 'name' as the column and the name of the item.
   #
-  # Args:
-  #   element_type: The type of the element
-  #   name: The name of the element.
+  # @param element_type [String] The type of the element.
+  # @param name [String] The name of the distro.
   def element_exists(element_type, name)
     exists(element_type, 'name', name)
   end
 
-  ##
   # Gets a key's value from a repository.
   #
-  # Args:
-  #   name: The name of the repo
-  #   key: The key to get the value of
+  # @param name [String] The name of the repo
+  # @param key [String] The key to get the value of
   #
-  # Returns:
-  #   The value of the key in the repo.
+  # @return [Object] The value of the key in the repo.
   def repo_get_key(name, key)
     return get('repo', name, key) if element_exists('repos', name)
     raise(IndexError, "Repo #{name} does not exist") unless element_exists('repos', name)
   end
 
-  ##
   # Checks if a specific object with a certain key and value exists in the database.
   #
-  # Args:
-  #   what: The name of the object you want to check for.
-  #   key: The key to check for.
-  #   value: The value to check for.
+  # @param what [String] The name of the object you want to check for.
+  # @param key [String] The key to check for.
+  # @param value [Object] The value to check for.
   def exists(what, key, value)
     result = false
     ret = @server.call("get_#{what}")
@@ -208,13 +214,11 @@ class CobblerTest
     result
   end
 
-  ##
   # Retrieves an object from the server based on its type, name and key.
   #
-  # Args:
-  #   what: The type of object you want to get. This can be one of the following: # TODO
-  #   name: The name of the object you want to get the ID of.
-  #   key: The key to look for in the hash.
+  # @param what [String] The type of object you want to get.
+  # @param name [String] The name of the object you want to get the ID of.
+  # @param key [String] The key to look for in the hash.
   def get(what, name, key)
     result = nil
     ret = @server.call("get_#{what}")
@@ -224,14 +228,13 @@ class CobblerTest
     result
   end
 
-  ##
   # Modifies a profile and saves it afterwards.
   #
   # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-profile
-  # Args:
-  #   name: The name of the profile
-  #   attribute: The attribute you want to modify
-  #   value: The new value you want to set for attribute
+  #
+  # @param name [String] The name of the profile
+  # @param attribute [String] The attribute you want to modify
+  # @param value [Object] The new value you want to set for attribute
   def profile_modify(name, attribute, value)
     begin
       # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: profile.uid
@@ -252,14 +255,13 @@ class CobblerTest
     profile
   end
 
-  ##
   # Modifies a distribution and saves it afterwards.
   #
   # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-distro
-  # Args:
-  #   name: The name of the distribution
-  #   attribute: The attribute you want to modify
-  #   value: The new value you want to set for attribute
+  #
+  # @param name [String] The name of the distribution
+  # @param attribute [String] The attribute you want to modify
+  # @param value [Object] The new value you want to set for attribute
   def distro_modify(name, attribute, value)
     begin
       # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: distro.uid
@@ -280,14 +282,13 @@ class CobblerTest
     distro
   end
 
-  ##
   # Modifies a system and saves it afterwards.
   #
   # For more information, see https://cobbler.readthedocs.io/en/latest/cobbler.html#cobbler-system
-  # Args:
-  #   name: The name of the system
-  #   attribute: The attribute you want to modify
-  #   value: The new value you want to set for attribute
+  #
+  # @param name [String] The name of the system
+  # @param attribute [String] The attribute you want to modify
+  # @param value [Object] The new value you want to set for attribute
   def system_modify(name, attribute, value)
     begin
       # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: system.uid
@@ -308,14 +309,12 @@ class CobblerTest
     system
   end
 
-  ##
   # Removes a distribution from the Spacewalk server.
   #
   # The first thing this function does is check to see if the distribution exists. If it doesn't, it raises an error.
   # If it does, it calls the remove_distro function on the Spacewalk server. If that fails, it raises an error.
   #
-  # Args:
-  #   name: The name of the distribution to be removed.
+  # @param name [String] The name of the distribution to be removed.
   def distro_remove(name)
     raise(::IndexError, "Distribution cannot be found. #{$ERROR_INFO}") unless element_exists('distros', name)
 
@@ -326,14 +325,12 @@ class CobblerTest
     end
   end
 
-  ##
   # Removes a profile from the Spacewalk server.
   #
   # The first thing this function does is check to see if the profile exists. If it doesn't, it raises an error. If it
   # does, it calls the remove_profile function on the Spacewalk server. If that fails, it raises an error.
   #
-  # Args:
-  #   name: The name of the profile to be removed.
+  # @param name [String] The name of the profile to be removed.
   def profile_remove(name)
     raise(::IndexError, "Profile cannot be found. #{$ERROR_INFO}") unless element_exists('profiles', name)
 
@@ -344,13 +341,11 @@ class CobblerTest
     end
   end
 
-  ##
   # Get a handle for a system.
   #
   # Get a handle for a system which allows you to use the functions modify_* or save_* to manipulate it.
   #
-  # Args:
-  #   name: The name of the system to get the ID of
+  # @param name [String] The name of the system to get the ID of
   def get_system_handle(name)
     begin
       # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: system.uid
@@ -361,13 +356,11 @@ class CobblerTest
     system
   end
 
-  ##
   # Get a handle for a profile.
   #
   # Get a handle for a profile which allows you to use the functions modify_* or save_* to manipulate it.
   #
-  # Args:
-  #   name: The name of the profile to get the ID of
+  # @param name [String] The name of the profile to get the ID of
   def get_profile_handle(name)
     begin
       # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: profile.uid
@@ -378,13 +371,11 @@ class CobblerTest
     system
   end
 
-  ##
   # Get a handle for a distribution.
   #
   # Get a handle for a distribution which allows you to use the functions modify_* or save_* to manipulate it.
   #
-  # Args:
-  #   name: The name of the distribution to get the ID of
+  # @param name [String] The name of the distribution to get the ID of
   def get_distro_handle(name)
     begin
       # TODO: Starting with Cobbler 3.4.0 the handle will be the UID: distro.uid
