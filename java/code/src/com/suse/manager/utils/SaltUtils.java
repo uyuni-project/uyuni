@@ -2121,8 +2121,8 @@ public class SaltUtils {
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        List<ServerAction> serverActions = ActionFactory
-                .listServerActionsForServer(minion);
+        List<ServerAction> serverActions = ActionFactory.listServerActionsForServerAndTypes(minion,
+                List.of(ActionFactory.TYPE_REBOOT));
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             if (shouldCleanupAction(bootTime, sa)) {
