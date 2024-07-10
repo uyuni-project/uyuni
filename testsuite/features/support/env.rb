@@ -688,7 +688,7 @@ Before('@cloud') do
   skip_this_scenario unless $is_cloud_provider
 end
 
-# skip tests if executed in containers for the githug validation
+# skip tests if executed in containers for the github validation
 Before('@skip_if_github_validation') do
   skip_this_scenario if $is_container_provider
 end

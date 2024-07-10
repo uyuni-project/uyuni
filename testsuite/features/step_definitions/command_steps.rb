@@ -912,14 +912,15 @@ end
 When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
   node = get_target(host)
   os_family = node.os_family
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^opensuse/, /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
-  elsif os_family =~ /^centos/
+  when /^centos/, /^rocky/
     pkgs = 'openscap-utils scap-security-guide-redhat'
-  elsif os_family =~ /^ubuntu/
+  when /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
   else
-    raise "The node #{node.hostname} has not a supported OS Family (#{os_family})"
+    raise ScriptError, "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
