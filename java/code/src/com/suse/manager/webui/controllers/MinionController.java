@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-//TEST
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
