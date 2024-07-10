@@ -59,28 +59,26 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
                     in.nextNull();
                     return Optional.empty();
                 }
-                else {
-                    JsonElement json = TypeAdapters.JSON_ELEMENT.read(in);
-                    if (json.isJsonObject() && json.getAsJsonObject().size() == 0) {
+                JsonElement json = TypeAdapters.JSON_ELEMENT.read(in);
+                if (json.isJsonObject() && json.getAsJsonObject().size() == 0) {
+                    return Optional.empty();
+                }
+                try {
+                    A value = innerAdapter.fromJsonTree(json);
+                    return Optional.of(value);
+                }
+                catch (JsonSyntaxException e) {
+                    /*
+                     * Note : This is a workaround and it only exists because salt doesn't differentiate between a
+                     * non-existent grain and a grain which exists but has value set to empty String.
+                     *
+                     * If an object is expected but instead empty string comes in then we return empty Optional.
+                     */
+                    if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString() &&
+                            json.getAsString().isEmpty()) {
                         return Optional.empty();
                     }
-                    try {
-                        A value = innerAdapter.fromJsonTree(json);
-                        return Optional.of(value);
-                    }
-                    catch (JsonSyntaxException e) {
-                        /**
-                         * Note : This is a workaround and it only exists because salt doesn't differentiate between a
-                         * non-existent grain and a grain which exists but has value set to empty String.
-                         *
-                         * If an object is expected but instead empty string comes in then we return empty Optional.
-                         */
-                        if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString() &&
-                                json.getAsString().isEmpty()) {
-                            return Optional.empty();
-                        }
-                        throw e;
-                    }
+                    throw e;
                 }
             }
 
@@ -88,7 +86,8 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
             public void write(JsonWriter out, Optional<A> optional) throws IOException {
                 if (optional.isPresent()) {
                     innerAdapter.write(out, optional.get());
-                } else {
+                }
+                else {
                     out.nullValue();
                 }
             }
