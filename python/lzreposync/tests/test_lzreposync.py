@@ -76,6 +76,7 @@ class LazyRepoSyncTest(unittest.TestCase):
             "checksum_type": "sha256",
             "header_start": "6200",
             "header_end": "149568",
+            "remote_path": "aarch64/gstreamer-plugins-bad-1.22.0-lp155.3.4.1.aarch64.rpm",
         }
         package_header_data = {
             "name": "gstreamer-plugins-bad",

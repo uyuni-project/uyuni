@@ -56,13 +56,15 @@ def import_package_batch(to_process, batch_index=-1):
                 size=package["package_size"],
                 checksum_type=package["checksum_type"],
                 checksum=package["checksum"],
-                relpath="/var",  # TODO: what is 'relpath' ?
+                relpath=None,  # This is the path on the filesystem
                 org_id=1,  # TODO: correct
                 header_start=package["header_start"],
                 header_end=package["header_end"],
                 channels=[],
                 expand_full_filelist=False,
+                remote_path=package["remote_path"],
             )
+            # TODO: complete the remote_path attribute for deb packages
 
             if package["header"].is_source:
                 mpm_src_batch.append(pkg)

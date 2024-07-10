@@ -20,6 +20,7 @@ package_data = [
     "checksum_type",
     "header_start",
     "header_end",
+    "remote_path",
 ]
 
 # List of complex attributes and their mapping classes in importLib
@@ -58,6 +59,7 @@ def map_attribute(attribute: str):
         "size/archive": "archivesize",
         "header-range/start": "header_start",
         "header-range/end": "header_end",
+        "location/href": "remote_path",
     }
 
     if attribute in attributes:
@@ -169,7 +171,7 @@ class PrimaryParser:
 
         # Self-closing elements: relevant values are their attributes'
         self.searched_attrs = {
-            # "location": ["href"],  # TODO complete
+            "location": ["href"],
             "time": ["build"],
             "version": ["epoch", "ver", "rel"],
             "checksum": ["type"],

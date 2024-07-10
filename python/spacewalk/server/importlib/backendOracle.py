@@ -233,6 +233,7 @@ class OracleBackend(Backend):
                 "vendor": DBstring(64),
                 "payload_format": DBstring(32),
                 "path": DBstring(1000),
+                "remote_path": DBstring(1000),
                 "copyright": DBstring(128),
                 "cookie": DBstring(128),
                 "header_start": DBint(),
@@ -744,7 +745,6 @@ class OracleBackend(Backend):
 
 
 class PostgresqlBackend(OracleBackend):
-
     """
     PostgresqlBackend specific implementation. The bulk of the OracleBackend
     is not actually Oracle specific, so we'll re-use as much as we can and just
