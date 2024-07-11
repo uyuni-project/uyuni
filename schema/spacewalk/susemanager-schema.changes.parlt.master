@@ -1,0 +1,1 @@
+- Fix custom state recurring actions being inserted into recurringHighstate table on migration if the table was empty (bsc#1227667)
