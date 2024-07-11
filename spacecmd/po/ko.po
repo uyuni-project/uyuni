@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 14:55+0200\n"
-"PO-Revision-Date: 2024-07-06 17:47+0000\n"
+"PO-Revision-Date: 2024-07-11 09:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
 "\n"
@@ -3035,7 +3035,6 @@ msgstr ""
 "  -c CLONE_NAME"
 
 #: ../src/spacecmd/kickstart.py:2193
-#, fuzzy
 msgid "Kickstart Profiles"
 msgstr "킥스타트 프로파일"
 
