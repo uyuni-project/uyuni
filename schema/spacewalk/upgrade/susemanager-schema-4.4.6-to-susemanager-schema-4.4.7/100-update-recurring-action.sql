@@ -73,15 +73,13 @@ CREATE TABLE IF NOT EXISTS suseRecurringHighstate
                     DEFAULT 'N'
 );
 
-ALTER TABLE suseRecurringAction ADD COLUMN IF NOT EXISTS test_mode CHAR(1) DEFAULT 'N' NOT NULL;
-INSERT INTO suseRecurringHighstate (rec_id, test_mode)
-         SELECT id, test_mode FROM suseRecurringAction
-         WHERE NOT EXISTS (SELECT id FROM suseRecurringHighstate);
-ALTER TABLE suseRecurringAction DROP COLUMN IF EXISTS test_mode;
-
 ALTER TABLE suseRecurringAction ADD COLUMN IF NOT EXISTS action_type VARCHAR(32) NULL;
 UPDATE suseRecurringAction SET action_type = 'HIGHSTATE' WHERE action_type IS NULL;
 ALTER TABLE suseRecurringAction ALTER COLUMN action_type SET NOT NULL;
+
+ALTER TABLE suseRecurringAction ADD COLUMN IF NOT EXISTS test_mode CHAR(1) DEFAULT 'N' NOT NULL;
+INSERT INTO suseRecurringHighstate (SELECT id, test_mode FROM suseRecurringAction WHERE action_type='HIGHSTATE') ON CONFLICT DO NOTHING;
+ALTER TABLE suseRecurringAction DROP COLUMN IF EXISTS test_mode;
 
 CREATE TABLE IF NOT EXISTS suseRecurringState
 (
