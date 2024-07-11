@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 14:55+0200\n"
-"PO-Revision-Date: 2024-07-04 18:46+0000\n"
+"PO-Revision-Date: 2024-07-11 09:47+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -864,7 +864,6 @@ msgstr "비가상 시스템"
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
 #: ../html/src/manager/systems/list-filter.tsx:6
-#, fuzzy
 msgid "Proxy"
 msgstr "프록시"
 
