@@ -93,10 +93,12 @@ class DebRepo:
         proxy_pass="",
         gpg_verify=True,
         channel_label=None,
+        timeout=None,
     ):
         self.url = url
         parts = url.rsplit('/dists/', 1)
         self.base_url = [parts[0]]
+        self.timeout = timeout
 
         parsed_url = urlparse.urlparse(url)
         query = urlparse.parse_qsl(parsed_url.query)
@@ -181,7 +183,9 @@ class DebRepo:
 
         :return:
         """
-        if not repo.DpkgRepo(self.url, self._get_proxies(), self.gpg_verify).verify_packages_index():
+        if not repo.DpkgRepo(
+            self.url, self._get_proxies(), self.gpg_verify, self.timeout
+        ).verify_packages_index():
             raise repo.GeneralRepoException("Package index checksum failure")
 
     def _get_proxies(self):
@@ -214,8 +218,13 @@ class DebRepo:
             return filename
         for _ in range(0, RETRIES):
             try:
-                data = requests.get(url, proxies=self._get_proxies(), cert=(self.sslclientcert, self.sslclientkey),
-                                    verify=self.sslcacert)
+                data = requests.get(
+                    url,
+                    proxies=self._get_proxies(),
+                    cert=(self.sslclientcert, self.sslclientkey),
+                    verify=self.sslcacert,
+                    timeout=self.timeout,
+                )
                 if not data.ok:
                     return ''
                 filename = os.path.join(self.basecachedir, os.path.basename(urlparse.urlparse(url).path))
@@ -330,23 +339,6 @@ class ContentSource:
             self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
             self.channel_label = channel_label
 
-            # SUSE vendor repositories belongs to org = NULL
-            # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
-            root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
-            self.repo = DebRepo(url, root,
-                                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
-                                self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure),
-                                channel_label=channel_label)
-            self.repo.verify()
-
-            self.num_packages = 0
-            self.num_excluded = 0
-
-            # keep authtokens for mirroring
-            (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
-            if query:
-                self.authtoken = query
-
             # configure network connection
             try:
                 # bytes per second
@@ -358,6 +350,30 @@ class ContentSource:
                 self.timeout = int(CFG.REPOSYNC_TIMEOUT)
             except ValueError:
                 self.timeout = 300
+
+            # SUSE vendor repositories belongs to org = NULL
+            # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+            root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
+            self.repo = DebRepo(
+                url,
+                root,
+                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage"),
+                self.proxy_addr,
+                self.proxy_user,
+                self.proxy_pass,
+                gpg_verify=not (insecure),
+                channel_label=channel_label,
+                timeout=self.timeout,
+            )
+            self.repo.verify()
+
+            self.num_packages = 0
+            self.num_excluded = 0
+
+            # keep authtokens for mirroring
+            (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
+            if query:
+                self.authtoken = query
 
     def get_md_checksum_type(self):
         pass
