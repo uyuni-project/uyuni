@@ -3,6 +3,7 @@
 import datetime
 import gzip
 import re
+from urllib.parse import urljoin
 from xml.dom import pulldom
 
 import rpm
@@ -125,7 +126,7 @@ def map_flag(flag: str) -> int:
 
 #  pylint: disable-next=missing-class-docstring
 class PrimaryParser:
-    def __init__(self, primary_file, arch_filter=".*"):
+    def __init__(self, primary_file, repository="", arch_filter=".*"):
         """
         primary_file: In gzip format
         """
@@ -137,6 +138,7 @@ class PrimaryParser:
             )
         self.current_package = None
         self.current_hdr = None
+        self.repository = repository
         self.arch_filter = arch_filter
 
         # XML elements that has text content or have child elements (Not self-closing elements)
@@ -217,7 +219,10 @@ class PrimaryParser:
 
                     arch_node = node.getElementsByTagName("arch")[0]
                     pkg_arch = get_text(arch_node)
-                    if not re.fullmatch(self.arch_filter, pkg_arch):  # Filter by arch
+                    # Filter by arch and ignoring src packages
+                    if pkg_arch == "src" or not re.fullmatch(
+                        self.arch_filter, pkg_arch
+                    ):
                         continue
                     self.current_package = {}
                     self.current_hdr = {}
@@ -290,6 +295,11 @@ class PrimaryParser:
                     for child_node in node.childNodes:
                         if child_node.nodeType == child_node.ELEMENT_NODE:
                             self.set_element_node(child_node)
+
+                    # Set the full url for the remote_path
+                    self.current_package["remote_path"] = urljoin(
+                        self.repository, self.current_package.get("remote_path", "")
+                    )
 
                     is_source = is_source_package(node)
                     package_header = RPM_Header(self.current_hdr, is_source=is_source)

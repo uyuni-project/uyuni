@@ -53,9 +53,9 @@ class RPMRepo(Repo):
         """
         gpg = gnupg.GPG()
 
-        repomd_url = self.get_repo_path("repomd.xml")
-        repomd_signature_url = urljoin(self.repository, "repomd.xml.asc")
-        repomd_pub_key_url = urljoin(self.repository, "repomd.xml.key")
+        repomd_url = self.get_repo_path("repodata/repomd.xml")
+        repomd_signature_url = urljoin(self.repository, "repodata/repomd.xml.asc")
+        repomd_pub_key_url = urljoin(self.repository, "repodata/repomd.xml.key")
         downloaded_repomd_path = "/tmp/repomd.xml"
 
         # Download and save the repomd.xml locally
@@ -92,7 +92,7 @@ class RPMRepo(Repo):
                                     }
         }
         """
-        repomd_url = self.get_repo_path("repomd.xml")
+        repomd_url = self.get_repo_path("repodata/repomd.xml")
         repomd_path = urllib.request.urlopen(repomd_url)
         doc = pulldom.parse(repomd_path)
         files = {}
@@ -118,7 +118,7 @@ class RPMRepo(Repo):
             self.metadata_files = self.get_metadata_files()
         md_file_url = urljoin(
             self.repository,
-            self.metadata_files[file_name]["location"].lstrip("/repodata"),
+            self.metadata_files[file_name]["location"],
         )
         return md_file_url
 
@@ -189,7 +189,11 @@ class RPMRepo(Repo):
                     # Work on temporary file without loading it into memory at once
                     primary_tmp_file.seek(0)
                     filelists_tmp_file.seek(0)
-                    primary_parser = PrimaryParser(primary_tmp_file, self.arch_filter)
+                    primary_parser = PrimaryParser(
+                        primary_file=primary_tmp_file,
+                        repository=self.repository,
+                        arch_filter=self.arch_filter,
+                    )
                     filelists_parser = FilelistsParser(
                         filelists_tmp_file, self.arch_filter
                     )
