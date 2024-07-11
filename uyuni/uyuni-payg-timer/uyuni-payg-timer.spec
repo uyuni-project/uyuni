@@ -24,7 +24,7 @@
 %endif
 
 Name:           uyuni-payg-timer
-Version:        5.0.2
+Version:        5.1.0
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -35,7 +35,7 @@ Group:          System/Fhs
 BuildRequires:  systemd-rpm-macros
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires:	mgradm
+Requires:       mgradm
 %systemd_requires
 
 %description
@@ -63,7 +63,6 @@ install -m 755 uyuni-payg-extract-data.py %{buildroot}/%{_sbindir}/uyuni-payg-ex
 %{_sbindir}/uyuni-payg-extract-data
 %{_unitdir}/uyuni-payg-timer.timer
 %{_unitdir}/uyuni-payg-timer.service
-
 
 %pre
 %service_add_pre uyuni-payg-timer.service uyuni-payg-timer.timer

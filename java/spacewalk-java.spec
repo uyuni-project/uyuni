@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.11
+Version:        5.1.0
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -211,6 +211,7 @@ Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm >= 9.2
+Requires:       openssl
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
@@ -243,7 +244,6 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
-Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
 Requires:       tomcat-native
@@ -724,7 +724,6 @@ fi
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/nav
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/pages
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/*.xml
-
 
 # all jars in WEB-INF/lib/
 %dir %{serverdir}/tomcat

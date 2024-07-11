@@ -25,7 +25,7 @@
 %global wwwdocroot %{wwwroot}/htdocs
 
 Name:           spacewalk-branding
-Version:        5.0.2
+Version:        5.1.0
 Release:        0
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only AND OFL-1.1
@@ -45,9 +45,9 @@ Requires(pre):  tomcat
 Requires:       susemanager-advanced-topics_en-pdf
 Requires:       susemanager-best-practices_en-pdf
 Requires:       susemanager-docs_en
+Requires:       susemanager-frontend-libs
 Requires:       susemanager-getting-started_en-pdf
 Requires:       susemanager-reference_en-pdf
-Requires:       susemanager-frontend-libs
 
 %description
 Spacewalk specific branding, CSS, and images.

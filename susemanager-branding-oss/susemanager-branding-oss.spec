@@ -21,7 +21,7 @@
 %global wwwdocroot %{wwwroot}/htdocs
 
 Name:           susemanager-branding-oss
-Version:        5.0.4
+Version:        5.1.0
 Release:        0
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2022--2024 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %{!?java_version: %global java_version 11}
 %if 0%{?suse_version}
@@ -30,7 +31,7 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.2
+Version:        5.1.0
 Release:        0
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
