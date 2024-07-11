@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jul 11 17:42:49 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.10-0
+  * Fix custom state recurring actions being inserted into
+    recurringHighstate table on migration if the table was
+    empty (bsc#1227667)
+
+-------------------------------------------------------------------
 Tue Jul 09 13:25:19 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.9-0
