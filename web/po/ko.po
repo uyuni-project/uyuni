@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-05 10:00+0200\n"
-"PO-Revision-Date: 2024-07-04 18:47+0000\n"
+"PO-Revision-Date: 2024-07-11 09:47+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
 "\n"
@@ -5072,7 +5072,6 @@ msgid "Leave empty when no reactivation is wanted"
 msgstr "재활성화를 원하지 않는 경우 비워둡니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
-#, fuzzy
 msgid "Proxy"
 msgstr "프록시"
 
