@@ -1,1 +1,1 @@
-- collect spacewalk-setup-cobbler return code (bsc#1226847)
+- spacewalk-setup should stop if spacewalk-setup-cobbler fails (bsc#1226847)
