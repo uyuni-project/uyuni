@@ -10,3 +10,15 @@ deploy.host = d52.suse.de
 # Uncomment to get javascript sourcemaps in Reactjs pages
 #javascript.devel = true
 
+# Define the way to deploy. Possible values:
+#
+# local             : deploy to local instance of uyuni
+# remote (default)  : deploy to remote instance of uyuni defined in deploy.host through ssh connection.
+# container         : use mgrctl to deploy to a containerized server. The deploy.host will be ignored.
+# remote-container  : use SSH to connect to deploy.host, then run mgrctl on the remote system and deploy to
+#                     a containerized server
+#deploy.mode = remote
+
+# Backend to be used by mgrctl when deploying in container and remote-container mode. By default, mgrctl tries to
+# autodetect the correct backend. Possible values can be looked up by checking mgrctl documentation.
+#container.backend = podman
