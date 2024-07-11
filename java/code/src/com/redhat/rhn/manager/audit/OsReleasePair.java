@@ -57,7 +57,7 @@ public class OsReleasePair {
                     serverOsFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
                     serverOsFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP) {
                 // Removing the minor version part: 15.6 --> 15
-                serverOsRelease = serverOsRelease.replace("\\..*", "");
+                serverOsRelease = serverOsRelease.replaceFirst("\\..*$", "");
             }
 
             CVEAuditManagerOVAL.OVALProduct ovalProduct = null;
