@@ -15,8 +15,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           uyuni-coco-attestation
-Version:        5.0.4
+Version:        5.1.0
 Release:        0
 Summary:        Uyuni utility for Confidential Computing Attestation
 License:        GPL-2.0-only
@@ -26,16 +27,16 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  java-devel >= 11
 BuildRequires:  maven-local
-BuildRequires:  mvn(org.uyuni-project:uyuni-java-parent:pom:)
-BuildRequires:  mvn(org.uyuni-project:uyuni-java-common)
+BuildRequires:  mvn(com.mchange:c3p0)
+BuildRequires:  mvn(com.mchange:mchange-commons-java)
 BuildRequires:  mvn(org.apache.commons:commons-ognl)
 BuildRequires:  mvn(org.apache.logging.log4j:log4j-api)
 BuildRequires:  mvn(org.apache.logging.log4j:log4j-core)
-BuildRequires:  mvn(org.postgresql:postgresql)
 BuildRequires:  mvn(org.javassist:javassist)
 BuildRequires:  mvn(org.mybatis:mybatis)
-BuildRequires:  mvn(com.mchange:mchange-commons-java)
-BuildRequires:  mvn(com.mchange:c3p0)
+BuildRequires:  mvn(org.postgresql:postgresql)
+BuildRequires:  mvn(org.uyuni-project:uyuni-java-common)
+BuildRequires:  mvn(org.uyuni-project:uyuni-java-parent:pom:)
 
 %description
 System daemon used by Uyuni to validate the results of confidential computing attestation.
@@ -61,7 +62,6 @@ Summary:        Confidential computing SecureBoot attestation module for Uyuni
 
 %description module-secureboot
 Module for the Uyuni Confidential Computing Attestation for SecureBoot uses the output of mokutil.
-
 
 %package        javadoc
 Summary:        API documentation for %{name}

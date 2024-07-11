@@ -68,12 +68,11 @@ Name:           spacewalk-client-tools
 Summary:        Support programs and libraries for Spacewalk
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
-Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          admin
 %else
 Group:          System Environment/Base
 %endif
-Version:        5.0.6
+Version:        5.1.0
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
@@ -410,7 +409,6 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/__pycache__/pkgplatform.*
 %endif
 %endif
-
 
 %if "%{_vendor}" == "debbuild"
 
