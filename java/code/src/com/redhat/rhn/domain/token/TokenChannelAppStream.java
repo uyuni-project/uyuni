@@ -40,16 +40,15 @@ public class TokenChannelAppStream {
     /**
      * Constructs a TokenChannelAppStream.
      *
-     * @param tokenIn   the token
-     * @param channelIn the channel
-     * @param nameIn    the name of the appStream module
-     * @param streamIn  the stream of the appStream module
+     * @param tokenIn     the token
+     * @param channelIn   the channel
+     * @param appStreamIn the appStream in the format name:stream
      */
-    public TokenChannelAppStream(Token tokenIn, Channel channelIn, String nameIn, String streamIn) {
+    public TokenChannelAppStream(Token tokenIn, Channel channelIn, String appStreamIn) {
         token = tokenIn;
         channel = channelIn;
-        name = nameIn;
-        stream = streamIn;
+        name = appStreamIn.split(":")[0];
+        stream = appStreamIn.split(":")[1];
     }
 
     @Id

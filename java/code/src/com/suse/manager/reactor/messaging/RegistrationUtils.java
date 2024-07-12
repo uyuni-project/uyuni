@@ -47,7 +47,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
@@ -180,7 +179,7 @@ public class RegistrationUtils {
             List<String> statesToApply,
             Map<String, Object> statesToApplyPillar) {
         if (activationKey.isPresent() && activationKey.get().getChannels().stream().anyMatch(Channel::isModular)) {
-            var appStreamsToEnable = ActivationKeyManager.getInstance().listTokenChannelAppStreams(activationKey.get());
+            var appStreamsToEnable = activationKey.get().getAppStreams();
             if (!appStreamsToEnable.isEmpty()) {
                 statesToApply.add(SaltServerActionService.APPSTREAMS_CONFIGURE);
                 var appStreamsParams = appStreamsToEnable

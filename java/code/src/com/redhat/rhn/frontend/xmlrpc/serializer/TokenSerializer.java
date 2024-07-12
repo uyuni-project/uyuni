@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.Token;
+import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.token.TokenPackage;
 
 import com.suse.manager.api.ApiResponseSerializer;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * ActivationKeySerializer
@@ -116,6 +118,14 @@ public class TokenSerializer extends ApiResponseSerializer<Token> {
            }
            packages.add(pkgMap);
        }
+
+       // Channel label is the key and a List of appStreams (name:stream) for each channel.
+       Map<String, List<String>> appStreams = token.getAppStreams().stream()
+           .collect(Collectors.groupingBy(
+               tokenChannelAppStream -> tokenChannelAppStream.getChannel().getLabel(),
+               Collectors.mapping(TokenChannelAppStream::getAppStream, Collectors.toList())
+           ));
+
        builder.add("description", token.getNote());
 
        int usageLimit = 0;
@@ -130,6 +140,7 @@ public class TokenSerializer extends ApiResponseSerializer<Token> {
        builder.add("server_group_ids", serverGroupIds);
        builder.add("package_names", packageNames);
        builder.add("packages", packages);
+       builder.add("app_streams", appStreams);
 
        Boolean universalDefault = token.isOrgDefault();
        builder.add("universal_default", universalDefault);
