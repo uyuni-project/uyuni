@@ -32,10 +32,8 @@ import com.redhat.rhn.frontend.xmlrpc.configchannel.XmlRpcConfigChannelHelper;
 import org.hibernate.NonUniqueObjectException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -110,15 +108,11 @@ public class ActivationKeyCloneCommand {
         cak.setContactMethod(ak.getContactMethod());
 
         // AppStreams
-        Map<Channel, List<TokenChannelAppStream>> tcasMap = akm.listTokenChannelAppStreams(ak).stream().collect(
-            Collectors.groupingBy(TokenChannelAppStream::getChannel)
-        );
-        tcasMap.forEach((channel, streams) -> {
-            var toInclude = streams.stream().map(TokenChannelAppStream::getAppStream).collect(Collectors.toList());
-            akm.saveChannelAppStreams(
-                cak, channel, toInclude, Collections.emptyList()
-            );
-        });
+        Set<TokenChannelAppStream> clonedAppStreams = ak.getAppStreams().stream()
+            .map(appStream -> new TokenChannelAppStream(
+                cak.getToken(), appStream.getChannel(), appStream.getAppStream()
+            )).collect(Collectors.toSet());
+        cak.getAppStreams().addAll(clonedAppStreams);
     }
 
     /**
