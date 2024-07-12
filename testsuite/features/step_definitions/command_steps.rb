@@ -1559,7 +1559,9 @@ When(/^I reboot the server through SSH$/) do
 
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
     out, _code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include?('dead') && out.to_s.include?('running')
+    # mgr-check-payg.service will be inactive (dead) for Uyuni, so we cannot check that all services are running
+    # we look for the status displayed by apache2.service, the webserver, when it is ready
+    if out.to_s.include? 'Processing requests...'
       log 'Server spacewalk service is up'
       break
     end
@@ -1629,7 +1631,9 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   default_timeout = 300
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
     out, _code = server_node.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include?('dead') && out.to_s.include?('running')
+    # mgr-check-payg.service will be inactive (dead) for Uyuni, so we cannot check that all services are running
+    # we look for the status displayed by apache2.service, the webserver, when it is ready
+    if out.to_s.include? 'Processing requests...'
       log 'Server: spacewalk service is up'
       break
     end
