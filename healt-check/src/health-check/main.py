@@ -10,6 +10,7 @@ from utils import HealthException, run_command
 from loki.loki_manager import *
 from loki.logs_gatherer import *
 from config_loader import ConfigLoader
+from exporters.supportconfig import exporter
 
 console = Console()
 
@@ -94,12 +95,13 @@ def run(ctx, exporter_port, loki, logs, since, clean):
 
             console.log("[bold]Deploying promtail and Loki")
             run_loki(supportconfig_path=supportconfig_path, config=config, verbose=verbose)
-
             wait_loki_init()
 
+            exporter.prepare_exporter(config=config, supportconfig_path=supportconfig_path)
+
             console.print(Markdown("## Relevant Errors"))
-            loki_url = f"http://localhost:3100"
-            show_full_error_logs(loki_url, since, console)
+            loki_url = f"http://loki:3100"
+            show_full_error_logs(loki_url, 30, console)
 
     except HealthException as err:
         console.log("[red bold]" + str(err))

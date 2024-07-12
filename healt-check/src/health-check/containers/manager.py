@@ -22,15 +22,27 @@ def podman(cmd, server=None, console=None):
             "podman is required {}".format("on " + server if server else "")
         )
 
-def build_image(name, image_path=None, verbose=False):
+def build_image(name, image_path=None, build_args = [], verbose=False):
     """
     Build a container image
     """
-    expanded_path = os.path.join("/home/ygutierrez/src/uyuni/healt-check/src/containers", image_path or name)
+    build_options = [
+        "-t",
+        f"{name}"
+    ]
+
+    if build_args:
+         [build_options.append(f"--build-arg={param}") for param in build_args]
+    
+    podman_args = ["build"]
+    podman_args.extend(build_options)
+    podman_args.append(image_path)
+    console.log("podman_args:", podman_args)
     process = podman(
-        ["build", "-t", name, expanded_path],
+        podman_args,\
         console=console if verbose else None,
     )
+
     if process.returncode != 0:
         raise HealthException(f"Failed to build {name} image")
 

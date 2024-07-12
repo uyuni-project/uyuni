@@ -17,7 +17,6 @@ class ConfigLoader:
             return yaml.safe_load(file)
     
     def load_jinja_template(self, template_name):
-
         return self.jinja_env.get_template(template_name)
     
     def load_dockerfile_dir(self, dockerfile_dir):
@@ -31,6 +30,9 @@ class ConfigLoader:
 
     def get_config_file_path(self, component):
         return os.path.join(self.base_dir, "config", component, "config.yaml")
+    
+    def get_sources_path(self):
+        return self.base_dir
 
 if __name__ == "__main__":
     config = ConfigLoader()

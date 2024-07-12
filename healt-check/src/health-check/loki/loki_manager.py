@@ -49,7 +49,7 @@ def run_loki(supportconfig_path=None, config=None, verbose=False):
                 "--replace",
                 "-d",
                 "--network",
-                "podman",
+                "health-check-network",
                 "-p",
                 "3100:3100",
                 "--name",
@@ -68,7 +68,7 @@ def run_loki(supportconfig_path=None, config=None, verbose=False):
             "run",
             "--replace",
             "--network",
-            "podman",
+            "health-check-network",
             "-p",
             "9081:9081",            
             "-d",
@@ -152,6 +152,7 @@ def wait_loki_init():
         console.log("Waiting for promtail metrics to be collected")
         time.sleep(1)
         response = requests.get(f"http://localhost:9081/metrics")
+        console.log("promtail metrics 9081 status code", response.status_code)
         if response.status_code == 200:
             content = response.content.decode()
             active = re.findall("promtail_targets_active_total ([0-9]+)", content)
@@ -167,7 +168,8 @@ def wait_loki_init():
 
         # check if loki is ready
         console.log("Waiting for loki to be ready")
-        response = requests.get(f"http://localhost:3100/ready")
+        response = requests.get("http://localhost:3100/ready")
+        console.log("loki 3100 status code", response.status_code)
         if response.status_code == 200:
             content = response.content.decode()
             if content == "ready\n":
@@ -176,6 +178,7 @@ def wait_loki_init():
         # check if promtail is ready
         console.log("Waiting for promtail to be ready")
         response = requests.get(f"http://localhost:9081/ready")
+        console.log("promtail ready 9081 status code", response.status_code)
         if response.status_code == 200:
             content = response.content.decode()
             if content == "Ready":
