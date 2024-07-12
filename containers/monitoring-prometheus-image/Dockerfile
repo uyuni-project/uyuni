@@ -8,7 +8,7 @@
 
 #!BuildTag: opensuse/prometheus:latest
 
-FROM opensuse/tumbleweed:latest
+FROM opensuse/leap:15.6
 
 MAINTAINER openSUSE (https://www.opensuse.org/)
 
