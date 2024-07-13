@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.token.test;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,7 +30,9 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
+import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.DuplicateAppStreamException;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -223,6 +226,61 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         Token token = user.getOrg().getToken();
         assertEquals(channels, token.getChannels());
         assertEquals(usageLimit, token.getUsageLimit());
+    }
+
+    @Test
+    public void testHasAppStreamModuleEnabled() throws Exception {
+        ActivationKey key = createActivationKey();
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        key.getAppStreams().add(
+            new TokenChannelAppStream(key.getToken(), channel, "ruby:3.3")
+        );
+
+        assertTrue(manager.hasAppStreamModuleEnabled(key, channel, "ruby", "3.3"));
+        assertFalse(manager.hasAppStreamModuleEnabled(key, channel, "ruby", "3.2"));
+        assertFalse(manager.hasAppStreamModuleEnabled(key, channel, "nginx", "3.3"));
+    }
+
+    @Test
+    public void testSaveChannelAppStreams() throws Exception {
+        ActivationKey key = createActivationKey();
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        List<String> toInclude = List.of("php:8.1", "nginx:1.24");
+        List<String> toRemove = List.of();
+
+        manager.saveChannelAppStreams(key, channel, toInclude, toRemove);
+
+        assertTrue(key.getAppStreams().stream().anyMatch(appStream -> appStream.getAppStream().equals("php:8.1")));
+        assertTrue(key.getAppStreams().stream().anyMatch(appStream -> appStream.getAppStream().equals("nginx:1.24")));
+
+        assertThrows(DuplicateAppStreamException.class, () ->
+            manager.saveChannelAppStreams(key, channel, List.of("php:8.2"), List.of())
+        );
+
+        toInclude = List.of("php:8.2");
+        toRemove = List.of("php:8.1");
+        manager.saveChannelAppStreams(key, channel, toInclude, toRemove);
+        assertFalse(key.getAppStreams().stream().anyMatch(appStream -> appStream.getAppStream().equals("php:8.1")));
+        assertTrue(key.getAppStreams().stream().anyMatch(appStream -> appStream.getAppStream().equals("php:8.2")));
+    }
+
+    @Test
+    public void testRemoveAppStreams() throws Exception {
+        ActivationKey key = createActivationKey();
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        key.getAppStreams().add(new TokenChannelAppStream(key.getToken(), channel, "nodejs:18"));
+        key.getAppStreams().add(new TokenChannelAppStream(key.getToken(), channel, "mariadb:10.11"));
+
+        List<String> toRemove = List.of("mariadb:10.11");
+
+        manager.removeAppStreams(key, toRemove);
+
+        assertFalse(key.getAppStreams().stream()
+                .anyMatch(appStream -> appStream.getAppStream().equals("mariadb:10.11")));
+        assertTrue(key.getAppStreams().stream()
+                .anyMatch(appStream -> appStream.getAppStream().equals("nodejs:18")));
     }
 
     public ActivationKey createActivationKey() {
