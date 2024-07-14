@@ -4,6 +4,7 @@ import argparse
 import logging
 from itertools import islice
 
+from lzreposync import db_utils
 from lzreposync.import_utils import import_package_batch
 from lzreposync.rpm_repo import RPMRepo
 
@@ -31,6 +32,7 @@ def main():
         "parse the metadata",
         dest="url",
         type=str,
+        default=None,
     )
 
     parser.add_argument(
@@ -78,6 +80,16 @@ def main():
         type=str,
     )
 
+    parser.add_argument(
+        "--channel",
+        help="The channel id of which you want to synchronize repositories",
+        dest="channel",
+        type=int,
+        default=None,
+    )
+
+    # TODO encapsulate everything in a class LzRepoSync
+
     args = parser.parse_args()
     arch = args.arch
     if arch != ".*":
@@ -85,11 +97,38 @@ def main():
         arch = "(noarch|{})".format(args.arch)
 
     logging.getLogger().setLevel(args.loglevel)
-    rpm_repository = RPMRepo(
-        args.name, args.cache, args.url, arch
-    )  # TODO args.url should be args.repo, no ?
-    packages = rpm_repository.get_packages_metadata()  # packages is a generator
-    failed = 0
-    for i, batch in enumerate(batched(packages, args.batch_size)):
-        failed += import_package_batch(batch, i)
-    logging.debug("Completed import with %d failed packages", failed)
+    if args.url:
+        rpm_repository = RPMRepo(args.name, args.cache, args.url, arch)
+        packages = rpm_repository.get_packages_metadata()  # packages is a generator
+        failed = 0
+        for i, batch in enumerate(batched(packages, args.batch_size)):
+            failed += import_package_batch(batch, i)
+        logging.debug("Completed import with %d failed packages", failed)
+
+    else:
+        # No url specified
+        if args.channel:
+            channel_id = args.channel
+            target_repos = db_utils.get_repositories_by_channel_id(channel_id)
+            for repo in target_repos:
+                if repo.repo_type == "yum":
+                    rpm_repository = RPMRepo(
+                        repo.repo_label, args.cache, repo.source_url, arch
+                    )
+                    logging.debug("Importing package for repo %s", repo.repo_label)
+                    failed = 0
+                    packages = rpm_repository.get_packages_metadata()
+                    for i, batch in enumerate(batched(packages, args.batch_size)):
+                        failed += import_package_batch(batch, i)
+                    logging.debug(
+                        "Completed import for repo %s with %d failed packages",
+                        repo.repo_label,
+                        failed,
+                    )
+
+                else:
+                    # TODO: handle repositories other than rpm
+                    logging.debug("Not supported repo type: %s", repo.repo_type)
+                    continue
+        else:
+            logging.error("Either --url or --channel must be specified")
