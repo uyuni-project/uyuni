@@ -12,12 +12,15 @@ class Repo(metaclass=abc.ABCMeta):
         self.name = name
         self.cache_dir = os.path.join(cache_path, str(name))
         self.repository = repository
+        if not self.repository.endswith("/"):
+            # TODO there might be a better solution
+            self.repository += "/"
         self.arch_filter = arch_filter
         self.metadata_files = None
 
     def get_repo_path(self, path):
         #  pylint: disable-next=consider-using-f-string
-        return "{}/{}".format(self.repository, path)
+        return "{}/{}".format(self.repository.rstrip("/"), path.lstrip("/"))
 
     # @profile
     @abc.abstractmethod
