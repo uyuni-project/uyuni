@@ -42,7 +42,12 @@ def get_text(node_list):
 class RPMRepo(Repo):
 
     def __init__(self, name, cache_path, repository, arch_filter=".*"):
-        super().__init__(name, cache_path, repository, arch_filter)
+        super().__init__(
+            name=name,
+            cache_path=cache_path,
+            repository=repository,
+            arch_filter=arch_filter,
+        )
         self.signature_verified = (
             False  # Tell whether the signature is checked against the repomd.xml file
         )
