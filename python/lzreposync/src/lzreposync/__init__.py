@@ -90,9 +90,9 @@ def main():
 
     parser.add_argument(
         "--channel",
-        help="The channel id of which you want to synchronize repositories",
+        help="The channel label of which you want to synchronize repositories",
         dest="channel",
-        type=int,
+        type=str,
         default=None,
     )
 
@@ -113,12 +113,12 @@ def main():
     else:
         # No url specified
         if args.channel:
-            channel_id = args.channel
-            target_repos = db_utils.get_repositories_by_channel_id(channel_id)
+            channel_label = args.channel
+            target_repos = db_utils.get_repositories_by_channel_label(channel_label)
             for repo in target_repos:
                 if repo.repo_type == "yum":
                     rpm_repository = RPMRepo(
-                        repo.repo_label, args.cache, repo.source_url, arch
+                        repo.repo_label, args.cache, repo.source_url, repo.channel_arch
                     )
                     logging.debug("Importing package for repo %s", repo.repo_label)
                     failed = import_repository_package_batches(
