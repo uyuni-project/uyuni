@@ -1,22 +1,26 @@
-"""
-This is a minimal implementation of the lazy reposync parser.
-It downloads the target repository's metadata file(s) from the
-given url and parses it(them)
-"""
+#  pylint: disable=missing-module-docstring
+
+
 import abc
 import os
 
 
+#  pylint: disable-next=missing-class-docstring
 class Repo(metaclass=abc.ABCMeta):
 
-    def __init__(self, name, cache_path, repository):
+    def __init__(self, name, cache_path, repository, arch_filter=".*"):
         self.name = name
         self.cache_dir = os.path.join(cache_path, str(name))
         self.repository = repository
+        if not self.repository.endswith("/"):
+            # TODO there might be a better solution
+            self.repository += "/"
+        self.arch_filter = arch_filter
         self.metadata_files = None
 
     def get_repo_path(self, path):
-        return "{}/{}".format(self.repository, path)
+        #  pylint: disable-next=consider-using-f-string
+        return "{}/{}".format(self.repository.rstrip("/"), path.lstrip("/"))
 
     # @profile
     @abc.abstractmethod
