@@ -1,0 +1,1 @@
+- Autoinstallation: prevent "duplicate IP address" issues cause by container networks (bsc#1226461)
