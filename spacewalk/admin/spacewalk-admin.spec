@@ -100,7 +100,6 @@ fi
 %{_unitdir}/salt-secrets-config.service
 %{_unitdir}/cobbler-refresh-mkloaders.service
 %{_unitdir}/mgr-websockify.service
-%{_unitdir}/mgr-check-payg.service
 %{_unitdir}/uyuni-check-database.service
 %{_unitdir}/uyuni-update-config.service
 %{_unitdir}/*.service.d
