@@ -41,6 +41,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -267,6 +268,7 @@ public class RouteFactory {
      */
     private Gson initGsonWithSerializers() {
         GsonBuilder builder = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateSerializer())
                 .registerTypeAdapter(Map.class, new MapDeserializer())
                 .registerTypeAdapter(List.class, new ListDeserializer());
 
