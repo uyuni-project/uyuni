@@ -1,0 +1,1 @@
+- Fix the date format output when using the HTTP API to use iso8601 format (bsc#1227543)
