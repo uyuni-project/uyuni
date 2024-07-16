@@ -16,6 +16,7 @@ package com.suse.manager.reactor.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
@@ -60,8 +61,16 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
                     return Optional.empty();
                 }
                 JsonElement json = TypeAdapters.JSON_ELEMENT.read(in);
-                if (json.isJsonObject() && json.getAsJsonObject().size() == 0) {
-                    return Optional.empty();
+                if (json.isJsonObject()) {
+                    JsonObject jsonObject = json.getAsJsonObject();
+                    if (jsonObject.size() == 0) {
+                        return Optional.empty();
+                    }
+                    else if (jsonObject.size() == 1 && jsonObject.has("value")) {
+                        JsonElement value = jsonObject.get("value");
+                        A result = innerAdapter.fromJsonTree(value);
+                        return Optional.of(result);
+                    }
                 }
                 try {
                     A value = innerAdapter.fromJsonTree(json);
