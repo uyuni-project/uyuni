@@ -28957,8 +28957,8 @@ given channel.</source>
         <target state="final">有可用于此系统的未处理软件包管理堆栈更新。在启动产品迁移之前，请更新软件更新堆栈相关的所有软件包。</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
-        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="final">在此系统上安装的 &lt;strong&gt;Salt&lt;/strong&gt;软件包版本已过时。在启动产品迁移之前，请将该软件包更新到最新版本。</target>
+        <source>The installed &lt;strong&gt;{0}&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+        <target state="final">在此系统上安装的 &lt;strong&gt;{0}&lt;/strong&gt;软件包版本已过时。在启动产品迁移之前，请将该软件包更新到最新版本。</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
