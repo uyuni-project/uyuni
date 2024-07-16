@@ -93,6 +93,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String IS_MINION = "isMinion";
     private static final String IS_SUSE_MINION = "isSUSEMinion";
     private static final String IS_SALT_UP_TO_DATE = "isSaltUpToDate";
+    private static final String SALT_PACKAGE = "saltPackage";
 
     // Form parameters
     private static final String ACTION_STEP = "step";
@@ -149,10 +150,15 @@ public class SPMigrationAction extends RhnAction {
         request.setAttribute(IS_SUSE_MINION, isSUSEMinion);
 
         // Check if the salt package on the minion is up to date (for minions only)
+        String saltPackage = "salt";
+        if (PackageFactory.lookupByNameAndServer("venv-salt-minion", server) != null) {
+            saltPackage = "venv-salt-minion";
+        }
         boolean isSaltUpToDate = PackageManager.
-                getServerNeededUpdatePackageByName(server.getId(), "salt") == null;
+                getServerNeededUpdatePackageByName(server.getId(), saltPackage) == null;
         logger.debug("salt package is up-to-date? {}", isSaltUpToDate);
         request.setAttribute(IS_SALT_UP_TO_DATE, isSaltUpToDate);
+        request.setAttribute(SALT_PACKAGE, saltPackage);
 
         // Check if this server supports distribution upgrades via capabilities
         // (for traditional clients only)
