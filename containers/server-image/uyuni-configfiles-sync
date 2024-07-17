@@ -58,7 +58,7 @@ init() {
         echo $RANDOM | sha256sum | head -c 64 > $DEFAULTS_STORAGE/.buildhash
     fi
     echo -n "Initializing environment for persistent volume $PV ... "
-    TARGET="$DEFAULTS_STORAGE/$(echo $PV | sed 's/\//-/g')"
+    TARGET="$DEFAULTS_STORAGE/$(echo $PV | sed 's/\//_/g')"
     mkdir -p $TARGET
     echo "$PV" > $TARGET/.pv
     # Calculate the packages that are owning the files under this path
