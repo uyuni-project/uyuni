@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete Red Hat-like minion and register as SSH minion
@@ -82,7 +82,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     Then I should see "rhlike_minion" hostname
     When I wait for "15" seconds
     And I expand the results for "rhlike_minion"
-    Then I should see a "rhel fedora" text
+    Then I should see a "rhel centos fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
 
   Scenario: Check events history for failures on SSH-managed Red Hat-like minion

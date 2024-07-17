@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_res
@@ -19,5 +19,5 @@ Feature: Remote command on the Red Hat-like Salt minion
     Then I should see "rhlike_minion" hostname
     When I wait for "15" seconds
     And I expand the results for "rhlike_minion"
-    Then I should see a "rhel fedora" text
+    Then I should see a "rhel centos fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
