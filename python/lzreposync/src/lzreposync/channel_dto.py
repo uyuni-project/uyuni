@@ -1,16 +1,15 @@
 #  pylint: disable=missing-module-docstring
-
+from dataclasses import dataclass
 from typing import List
 
 from lzreposync.repo_dto import RepoDTO
 
 
+@dataclass
 class ChannelDTO:
     """
     A temporary data structure to hold some minor channel information
     """
-
-    def __init__(self, label, repositories: List[RepoDTO], channel_arch=None):
-        self.label = label
-        self.repositories = repositories
-        self.channel_arch = channel_arch
+    label: str
+    repositories: List[RepoDTO]
+    channel_arch: str = None
