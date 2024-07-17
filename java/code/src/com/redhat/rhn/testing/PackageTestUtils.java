@@ -155,6 +155,7 @@ public class PackageTestUtils {
         master.setPackageName(PackageNameTest.createTestPackageName("ptf-" + ptfNumber));
         master.setDescription("Master PTF package of ptf-" + ptfNumber + " for RHN-JAVA unit tests. Please disregard.");
         master.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(null, ptfVersion, "0", PackageType.RPM));
+        master.setIsPtfPackage(true);
 
         addProvidesHeader(master, findOrCreateCapability(SpecialCapabilityNames.PTF, ptfNumber + "-" + ptfVersion), 8L);
         addProvidesHeader(master, findOrCreateCapability("ptf-" + ptfNumber, ptfVersion + "-0"), 8L);
@@ -175,6 +176,7 @@ public class PackageTestUtils {
         ptfPackage.setDescription("Package part of ptf-" + ptfNumber + " for RHN-JAVA unit tests. Please disregard.");
         ptfPackage.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(null, "1",
             "0" + "." + ptfNumber + "." + ptfVersion + ".PTF", PackageType.RPM));
+        ptfPackage.setIsPartOfPtfPackage(true);
 
         addProvidesHeader(ptfPackage, findOrCreateCapability(SpecialCapabilityNames.PTF_PACKAGE), 0L);
         addProvidesHeader(ptfPackage, findOrCreateCapability(ptfPackage.getPackageName().getName(),
@@ -199,6 +201,7 @@ public class PackageTestUtils {
         PackageEvr evr = original.getPackageEvr();
         ptfPackage.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), evr.getVersion(),
             evr.getRelease() + "." + ptfNumber + "." + ptfVersion + ".PTF", original.getPackageType()));
+        ptfPackage.setIsPartOfPtfPackage(true);
 
         addProvidesHeader(ptfPackage, findOrCreateCapability(SpecialCapabilityNames.PTF_PACKAGE), 0L);
         addProvidesHeader(ptfPackage, findOrCreateCapability(ptfPackage.getPackageName().getName(),

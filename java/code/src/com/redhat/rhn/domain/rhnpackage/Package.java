@@ -55,6 +55,8 @@ public class Package extends BaseDomainHelper {
     private String path;
     private String headerSignature;
     private String copyright;
+    private Boolean isPtfPackage = false;
+    private Boolean isPartOfPtfPackage = false;
     private String cookie;
     private Date lastModified;
     private Boolean lockPending = Boolean.FALSE;
@@ -259,6 +261,34 @@ public class Package extends BaseDomainHelper {
      */
     public void setId(Long i) {
         this.id = i;
+    }
+
+    /**
+     * @return Returns the isPtfPackage.
+     */
+    public Boolean getIsPtfPackage() {
+        return isPtfPackage;
+    }
+
+    /**
+     * @param p The isPtfPackage to set.
+     */
+    public void setIsPtfPackage(Boolean p) {
+        this.isPtfPackage = p;
+    }
+
+    /**
+     * @return Returns the isPartOfPtfPackage.
+     */
+    public Boolean getIsPartOfPtfPackage() {
+        return isPartOfPtfPackage;
+    }
+
+    /**
+     * @param p The isPartOfPtfPackage to set.
+     */
+    public void setIsPartOfPtfPackage(Boolean p) {
+        this.isPartOfPtfPackage = p;
     }
 
     /**
