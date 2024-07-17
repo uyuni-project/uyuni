@@ -18,7 +18,7 @@ def batched(iterable, n):
         yield batch
 
 
-def import_repository_package_batches(repository, batch_size):
+def import_repository_packages_batch(repository, batch_size):
     failed = 0
     packages = repository.get_packages_metadata()
     for i, batch in enumerate(batched(packages, batch_size)):
@@ -107,7 +107,7 @@ def main():
     logging.getLogger().setLevel(args.loglevel)
     if args.url:
         rpm_repository = RPMRepo(args.name, args.cache, args.url, arch)
-        failed = import_repository_package_batches(rpm_repository, args.batch_size)
+        failed = import_repository_packages_batch(rpm_repository, args.batch_size)
         logging.debug("Completed import with %d failed packages", failed)
 
     else:
@@ -121,7 +121,7 @@ def main():
                         repo.repo_label, args.cache, repo.source_url, repo.channel_arch
                     )
                     logging.debug("Importing package for repo %s", repo.repo_label)
-                    failed = import_repository_package_batches(
+                    failed = import_repository_packages_batch(
                         rpm_repository, args.batch_size
                     )
                     logging.debug(
