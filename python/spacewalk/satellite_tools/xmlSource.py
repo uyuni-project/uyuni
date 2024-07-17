@@ -43,9 +43,8 @@ RHEL234_REGEX = re.compile("rhel-[^-]*-[aew]s-(4|3|2.1)")
 
 
 class ParseException(Exception):
+    """general parser exception (generated at this level)."""
 
-    """general parser exception (generated at this level).
-    """
     pass
 
 
@@ -69,7 +68,6 @@ class IncompatibleVersionError(ParseException):
 
 
 class RecoverableParseException(SAXParseException, Exception):
-
     """exception wrapper for a critical, but possibly recoverable, XML parser
        error.
     """
@@ -77,9 +75,8 @@ class RecoverableParseException(SAXParseException, Exception):
 
 
 class FatalParseException(SAXParseException, Exception):
+    """exception wrapper for a critical XML parser error."""
 
-    """exception wrapper for a critical XML parser error.
-    """
     pass
 
 # XML Node
@@ -105,8 +102,7 @@ class Node:
 
 # Base class we use as a SAX parsing handler
 class BaseDispatchHandler(ContentHandler, ErrorHandler):
-
-    """ Base class we use as a SAX parsing handler
+    """Base class we use as a SAX parsing handler
 
         We expect the meaningful data to be on the third level.
         The root element defines what the export contains, while the collection
@@ -748,7 +744,6 @@ class ExtraTagItem(BaseItem):
 addItem(ExtraTagItem)
 
 class DependencyItem(BaseItem):
-
     """virtual class - common settings for dependency items"""
     item_class = importLib.Dependency
     tagMap = {
@@ -1302,7 +1297,6 @@ class IncompletePackageContainer(ContainerHandler):
 
 
 class PackageContainer(IncompletePackageContainer):
-
     """Inherits from IncompletePackageContainer, since we need to postprocess the
        channel information
     """

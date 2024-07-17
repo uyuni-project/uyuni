@@ -127,8 +127,10 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         standard = PackageTest.createTestPackage(admin.getOrg());
         standardUpdated = PackageTestUtils.newVersionOfPackage(standard, null, "2.0.0", null, admin.getOrg());
         standardUpdatedPtf = PackageTestUtils.createPtfPackage(standardUpdated, "123456", "1", admin.getOrg());
+        standardUpdatedPtf.setIsPartOfPtfPackage(true);
         ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", admin.getOrg());
         ptfMasterUpdated = PackageTestUtils.newVersionOfPackage(ptfMaster, null, "2", null, admin.getOrg());
+        ptfMasterUpdated.setIsPtfPackage(true);
         ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", admin.getOrg());
         ptfPackageUpdated = PackageTestUtils.createPtfPackage("123456", "2", admin.getOrg());
 
