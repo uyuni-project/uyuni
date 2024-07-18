@@ -82,6 +82,22 @@ namespace :utils do
       end
     end
   end
+  desc 'Filter set test'
+  task :filter_secondary, [:filter_yaml, :input_yaml, :output_yaml], do |_t, args|
+    filter_yaml = args[:filter_yaml]
+    input_yaml = args[:input_yaml]
+    output_yaml = args[:output_yaml]
+    filter_t = YAML.load_file(filter_yaml)
+    input_t = YAML.load_file(input_yaml)
+    output_t = []
+    for i in filter_t
+      for j in input_t
+        if j.include?(i)
+          output_t.append(j)
+        end
+      end
+    end
+    File.write(output_yaml, output_t.to_yaml)
 
   desc 'Generate feature file for a client from a template and include it in a yaml file'
   task :generate_feature, [:template_path, :client_name, :output_path, :yaml_path] do |_t, args|

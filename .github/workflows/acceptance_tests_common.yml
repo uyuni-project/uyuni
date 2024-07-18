@@ -75,12 +75,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: debug recommended tests
         if: ${{ inputs.recommended_tests != '' }}   
-        run: cat ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
+        run: ls . && ls testsuite && cat ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
       - name: read recommended tests
         if: ${{ inputs.recommended_tests != '' }}
-        run: echo SEC_TESTS="$(python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }})" >> $GITHUB_ENV
-      - name: debug 2 recommended_tests
-        run: echo ${{ env.SEC_TESTS }}
+        run: python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
       - name: create_tmp
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
