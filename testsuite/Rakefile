@@ -83,7 +83,7 @@ namespace :utils do
     end
   end
   desc 'Filter set test'
-  task :filter_secondary, [:filter_yaml, :input_yaml, :output_yaml], do |_t, args|
+  task :filter_secondary, [:filter_yaml, :input_yaml, :output_yaml] do |_t, args|
     filter_yaml = args[:filter_yaml]
     input_yaml = args[:input_yaml]
     output_yaml = args[:output_yaml]
