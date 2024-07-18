@@ -87,6 +87,13 @@ namespace :utils do
     filter_yaml = args[:filter_yaml]
     input_yaml = args[:input_yaml]
     output_yaml = args[:output_yaml]
+    puts "DEBUG"
+    puts "filter_yaml"
+    puts filter_yaml
+    puts "input_yaml"
+    puts input_yaml
+    puts "output yaml"
+    puts output_yaml
     filter_t = YAML.load_file(filter_yaml)
     input_t = YAML.load_file(input_yaml)
     output_t = []
