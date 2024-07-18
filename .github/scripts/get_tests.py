@@ -18,6 +18,7 @@ pattern = re.compile(r'<li>[a-z|_]*')
 match  = pattern.findall(result)
 tests = []
 for i in match:
-    tests += i.replace("<li>", "")
+    i = i.replace("<li>","")
+    tests.append(i)
 
-print(tests)
+print(yaml.dump(tests))
