@@ -126,8 +126,11 @@ jobs:
         run: ./testsuite/podman_runner/17_run_init_clients_tests.sh
       - name: split_secondary
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
+      - name: filter tests
+        if: ${{ inputs.recommended_tests != '' }}
+        run: ./testsuite/podman_runner/19_filter_secondary_tests.sh 
       - name: run_secondary_tests
-        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} ${{ env.SEC_TESTS }}
+        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }}
       - name: get_server_logs
         if: ${{ failure() }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
