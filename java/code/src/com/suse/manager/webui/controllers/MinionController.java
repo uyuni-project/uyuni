@@ -22,7 +22,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-//TYEST
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.OrgFactory;
