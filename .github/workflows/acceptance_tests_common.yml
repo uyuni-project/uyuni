@@ -40,6 +40,8 @@ jobs:
     steps:
       - name: fix podman
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
+      - name: install python deps
+        run: pip install pyyaml
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v4
@@ -73,12 +75,9 @@ jobs:
           path: recommended-tests.xml
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: debug recommended tests
-        if: ${{ inputs.recommended_tests != '' }}   
-        run: ls . && ls testsuite && cat ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
       - name: read recommended tests
         if: ${{ inputs.recommended_tests != '' }}
-        run: python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }}
+        run: python .github/scripts/get_tests.py ${{ inputs.recommended_tests }}/${{ inputs.recommended_tests }} > testsuite/run_sets/filter.yml
       - name: create_tmp
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network

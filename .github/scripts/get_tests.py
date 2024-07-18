@@ -1,6 +1,7 @@
 import os.path
 import re
 import sys
+import yaml
 
 if len(sys.argv) != 2:
     print("Expecting the xml file as argument")
@@ -15,8 +16,8 @@ with open(file_path, 'r') as file:
     result = file.read()
 pattern = re.compile(r'<li>[a-z|_]*')
 match  = pattern.findall(result)
-tests = ""
+tests = []
 for i in match:
-    tests += " " + i.replace("<li>", "")
+    tests += i.replace("<li>", "")
 
 print(tests)
