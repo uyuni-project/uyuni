@@ -98,6 +98,7 @@ namespace :utils do
       end
     end
     File.write(output_yaml, output_t.to_yaml)
+  end
 
   desc 'Generate feature file for a client from a template and include it in a yaml file'
   task :generate_feature, [:template_path, :client_name, :output_path, :yaml_path] do |_t, args|
