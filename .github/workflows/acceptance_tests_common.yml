@@ -128,7 +128,7 @@ jobs:
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
       - name: filter tests
         if: ${{ inputs.recommended_tests != '' }}
-        run: ./testsuite/podman_runner/19_filter_secondary_tests.sh 
+        run: ./testsuite/podman_runner/19_filter_secondary_tests.sh && cat testsuite/run_sets/secondary_fast.yml
       - name: run_secondary_tests
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }}
       - name: get_server_logs
