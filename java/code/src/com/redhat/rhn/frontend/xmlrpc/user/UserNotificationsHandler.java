@@ -62,7 +62,7 @@ public class UserNotificationsHandler extends BaseHandler {
      * @param notifications Notification list
      * @apidoc.doc Set notifications of the given user as read
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("Collection", "notifications", "The target notification.")
+     * @apidoc.param #array_single_desc("int", "notifications", "The list of notification IDs to set as 'read'.")
      * @apidoc.returntype #return_int_success()
      */
     public int setNotificationsRead(User user, List<Integer> notifications) {
