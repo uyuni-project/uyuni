@@ -97,7 +97,7 @@ public class UserNotificationsHandler extends BaseHandler {
      * @return int number of deleted notifications
      * @apidoc.doc Deletes multiple notifications
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("collection", "notifications", "List of notification ids.")
+     * @apidoc.param #array_single_desc("int", "notifications", "The list of notification IDs to delete.")
      * @apidoc.returntype #return_int_success()
      */
     public int deleteNotifications(User user, List<Integer> notifications) {
