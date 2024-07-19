@@ -37,7 +37,7 @@ public class UserNotificationsHandler extends BaseHandler {
      * @return Returns a list of notifications
      * @apidoc.doc Get all notifications from a user.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("boolean", "unread", "Read notifications.")
+     * @apidoc.param #param_desc("boolean", "unread", "If true, return only unread notifications.")
      * @apidoc.returntype
      * #return_array_begin()
      *     $UserNotificationSerializer
