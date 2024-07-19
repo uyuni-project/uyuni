@@ -40,8 +40,11 @@ import time
 import traceback
 import yaml
 
-# Import RHN libs
-from spacewalk.common.rhnConfig import RHNOptions
+try:
+    # Import RHN libs
+    from spacewalk.common.rhnConfig import RHNOptions
+except ImportError:
+    RHNOptions = None
 
 # Import pyzmq lib
 import zmq
@@ -362,11 +365,12 @@ class SaltBroker(object):
 if __name__ == "__main__":
     # Try to get config from /etc/rhn/rhn.conf
     rhn_parent = None
-    rhn_proxy_conf = RHNOptions(component="proxy")
-    rhn_proxy_conf.parse()
-    if rhn_proxy_conf.get("rhn_parent"):
-        log.debug("Using 'rhn_parent' from /etc/rhn/rhn.conf as 'master'")
-        rhn_parent = rhn_proxy_conf["rhn_parent"]
+    if RHNOptions is not None:
+        rhn_proxy_conf = RHNOptions(component="proxy")
+        rhn_proxy_conf.parse()
+        if rhn_proxy_conf.get("rhn_parent"):
+            log.debug("Using 'rhn_parent' from /etc/rhn/rhn.conf as 'master'")
+            rhn_parent = rhn_proxy_conf["rhn_parent"]
 
     # Check for the config file
     if not os.path.isfile(SALT_BROKER_CONF_FILE):
