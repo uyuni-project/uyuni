@@ -8,8 +8,8 @@
 
 ARG PATCH_VERSION="0.24.0"
 
-#!BuildTag: suse/alertmanager:${PATCH_VERSION}
-#!BuildTag: suse/alertmanager:latest
+#!BuildTag: uyuni/blackbox_exporter:${PATCH_VERSION}
+#!BuildTag: uyuni/blackbox_exporter:latest
 
 ARG BASE=bci/bci-base:15.6
 FROM $BASE
@@ -22,7 +22,7 @@ ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.uyuni.alertmanager
+# labelprefix=org.opensuse.uyuni.blackbox_exporter
 LABEL org.opencontainers.image.title="${PRODUCT} Blackbox Exporter"
 LABEL org.opencontainers.image.description="Blackbox Exporter container image for ${PRODUCT}."
 LABEL org.opencontainers.image.version="${PATCH_VERSION}"

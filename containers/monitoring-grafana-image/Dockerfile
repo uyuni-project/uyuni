@@ -8,8 +8,8 @@
 
 ARG PATCH_VERSION="9.5.18"
 
-#!BuildTag: suse/alertmanager:${PATCH_VERSION}
-#!BuildTag: suse/alertmanager:latest
+#!BuildTag: uyuni/grafana:${PATCH_VERSION}
+#!BuildTag: uyuni/grafana:latest
 
 ARG BASE=bci/bci-base:15.6
 FROM $BASE
@@ -22,7 +22,7 @@ ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.uyuni.alertmanager
+# labelprefix=org.opensuse.uyuni.grafana
 LABEL org.opencontainers.image.title="${PRODUCT} Grafana"
 LABEL org.opencontainers.image.description="Grafana container image for ${PRODUCT}."
 LABEL org.opencontainers.image.version="${PATCH_VERSION}"
