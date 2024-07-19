@@ -28,6 +28,7 @@
 '''
 
 # Import python libs
+import ipaddress
 import logging
 import logging.handlers
 import multiprocessing
@@ -56,6 +57,18 @@ SUPERVISOR_TIMEOUT = 5
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
+
+
+def ip_bracket(addr, strip=False):
+    """
+    Ensure IP addresses are URI-compatible - specifically, add brackets
+    around IPv6 literals if they are not already present.
+    """
+    addr = str(addr)
+    addr = addr.lstrip("[")
+    addr = addr.rstrip("]")
+    addr = ipaddress.ip_address(addr)
+    return ("[{}]" if addr.version == 6 and not strip else "{}").format(addr)
 
 
 class AbstractChannelProxy(multiprocessing.Process):
@@ -112,7 +125,7 @@ class AbstractChannelProxy(multiprocessing.Process):
                 )
             )
             self.backend = context.socket(self._backend_sock_type)
-            self.set_sockopts(self.backend, self._BACKEND_SOCKOPTS)
+            self.set_sockopts(self.backend, self._BACKEND_SOCKOPTS, self.opts["master_ip"])
 
             self.reconnect_retries = self.opts["drop_after_retries"]
             if self.reconnect_retries != -1:
@@ -135,7 +148,7 @@ class AbstractChannelProxy(multiprocessing.Process):
             )
 
             self.frontend = context.socket(self._frontend_sock_type)
-            self.set_sockopts(self.frontend, self._FRONTEND_SOCKOPTS)
+            self.set_sockopts(self.frontend, self._FRONTEND_SOCKOPTS, self.opts["interface"])
 
             self.frontend.bind(self._frontend_uri)
 
@@ -154,13 +167,23 @@ class AbstractChannelProxy(multiprocessing.Process):
             log.error("Exception: %s", exc)
             log.debug("Traceback: %s", traceback.format_exc())
 
-    def set_sockopts(self, socket, sockopts):
+    def set_sockopts(self, socket, sockopts, addr=None):
         for opt, opt_src in sockopts:
             if opt_src in self.opts:
                 socket.setsockopt(
                     opt,
                     self.opts[opt_src],
                 )
+        if (
+            self.opts["ipv6"] is True
+            or (addr is not None and ":" in addr)
+        ) and hasattr(zmq, "IPV4ONLY"):
+            # IPv6 sockets work for both IPv6 and IPv4 addresses
+            socket.setsockopt(zmq.IPV4ONLY, 0)
+        if (
+            addr is not None and ":" in addr
+        ) and hasattr(zmq, "IPV6"):
+            socket.setsockopt(zmq.IPV6, 1)
 
     def backend_socket_monitor(self, monitor_socket):
         while monitor_socket.poll():
@@ -228,11 +251,11 @@ class PubChannelProxy(AbstractChannelProxy):
         self.frontend_type = "XPUB"
 
         self._backend_uri = "tcp://{}:{}".format(
-            self.opts["master_ip"],
+            ip_bracket(self.opts["master_ip"]),
             self.opts["publish_port"],
         )
         self._frontend_uri = "tcp://{}:{}".format(
-            self.opts["interface"],
+            ip_bracket(self.opts["interface"]),
             self.opts["publish_port"],
         )
 
@@ -256,11 +279,11 @@ class RetChannelProxy(AbstractChannelProxy):
         self.frontend_type = "ROUTER"
 
         self._backend_uri = "tcp://{}:{}".format(
-            self.opts["master_ip"],
+            ip_bracket(self.opts["master_ip"]),
             self.opts["ret_port"],
         )
         self._frontend_uri = "tcp://{}:{}".format(
-            self.opts["interface"],
+            ip_bracket(self.opts["interface"]),
             self.opts["ret_port"],
         )
 
@@ -377,6 +400,7 @@ if __name__ == "__main__":
         "publish_port": "4505",
         "ret_port": "4506",
         "interface": "0.0.0.0",
+        "ipv6": False,
         "tcp_keepalive": True,
         "tcp_keepalive_idle": 300,
         "tcp_keepalive_cnt": -1,
