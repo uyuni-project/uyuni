@@ -17,6 +17,7 @@ require 'set'
 require_relative 'code_coverage'
 require_relative 'twopence_env'
 require_relative 'commonlib'
+require 'timeout'
 
 # code coverage analysis
 # SimpleCov.start
@@ -130,17 +131,21 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      Dir.mkdir('screenshots') unless File.directory?('screenshots')
-      path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-      # only click on Details when we have errors during bootstrapping and more Details available
-      click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
-      # a TimeoutError may be raised while a page is still (re)loading
-      find('#page-body', wait: 3) if scenario.exception.is_a?(TimeoutError)
-      page.driver.browser.save_screenshot(path)
-      attach path, 'image/png'
-      attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+      Timeout.timeout(DEFAULT_TIMEOUT) do
+        Dir.mkdir('screenshots') unless File.directory?('screenshots')
+        path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+        # only click on Details when we have errors during bootstrapping and more Details available
+        click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
+        # a TimeoutError may be raised while a page is still (re)loading
+        find('#page-body', wait: 3) if scenario.exception.is_a?(TimeoutError)
+        page.driver.browser.save_screenshot(path)
+        attach path, 'image/png'
+        attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+      end
+    rescue Timeout::Error
+      warn "Timeout occurred while saving screenshot for scenario: #{scenario.name}"
     rescue StandardError => e
-      warn e.message
+      warn "An error occurred while processing scenario: #{scenario.name}\nError message: #{e.message}"
     ensure
       print_server_logs
       previous_url = current_url
