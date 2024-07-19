@@ -8,8 +8,8 @@
 
 ARG PATCH_VERSION="0.26.0"
 
-#!BuildTag: suse/alertmanager:${PATCH_VERSION}
-#!BuildTag: suse/alertmanager:latest
+#!BuildTag: uyuni/alertmanager:${PATCH_VERSION}
+#!BuildTag: uyuni/alertmanager:latest
 
 ARG BASE=bci/bci-base:15.6
 FROM $BASE
