@@ -6,6 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
+#!BuildTag: uyuni/prometheus:${PATCH_VERSION}
 #!BuildTag: uyuni/prometheus:latest
 
 ARG BASE=bci/bci-base:15.6
