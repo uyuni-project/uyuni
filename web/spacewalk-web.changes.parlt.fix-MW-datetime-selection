@@ -1,0 +1,1 @@
+- Fix datetime selection when using maintenance windows (bsc#1228036)
