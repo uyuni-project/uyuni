@@ -125,6 +125,7 @@ Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
+# Embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
@@ -135,7 +136,7 @@ After do |scenario|
       path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
 
       # Check if the page is visible before taking a screenshot
-      if page.has_selector?('body', wait: Capybara.default_max_wait_time)
+      if page.has_selector?('header', wait: Capybara.default_max_wait_time) || page.has_selector?('#username-field', wait: Capybara.default_max_wait_time)
         if page.has_content?('Bootstrap Minions') && page.has_content?('Details')
           begin
             click_button('Details')
@@ -150,7 +151,7 @@ After do |scenario|
 
         # Save the screenshot with a timeout
         begin
-          Timeout.timeout(Capybara.default_max_wait_time) do
+          Timeout.timeout(Capybara.default_max_wait_time) do # Adjust the timeout value as needed
             page.driver.browser.save_screenshot(path)
           end
         rescue Timeout::Error
