@@ -131,7 +131,7 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      Timeout.timeout(DEFAULT_TIMEOUT) do
+      Timeout.timeout(Capybara.default_max_wait_time) do
         Dir.mkdir('screenshots') unless File.directory?('screenshots')
         path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
         # only click on Details when we have errors during bootstrapping and more Details available
