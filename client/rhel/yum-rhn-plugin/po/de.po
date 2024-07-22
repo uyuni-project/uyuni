@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-21 14:53+0200\n"
-"PO-Revision-Date: 2023-03-31 13:14+0000\n"
-"Last-Translator: Georg Mayer <georgbmayer@yahoo.com>\n"
+"POT-Creation-Date: 2024-07-22 09:35+0200\n"
+"PO-Revision-Date: 2024-07-18 11:46+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
 "plugin-4-3/de/>\n"
 "Language: de\n"
@@ -24,17 +24,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../rhnplugin.py:49
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error communicating with {PRODUCT_NAME} ."
-msgstr "Bei der Kommunikation mit RHN trat ein Fehler auf."
+msgstr "Bei der Kommunikation mit {PRODUCT_NAME} trat ein Fehler auf."
 
 #: ../rhnplugin.py:64
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
-msgstr "RHN Channel-Unterstützung wird deaktiviert."
+msgstr "{PRODUCT_NAME} oder RHN Classic-Unterstützung wird deaktiviert."
 
 #. If non-root notify user Spacewalk repo not accessible
 #: ../rhnplugin.py:71
