@@ -125,22 +125,38 @@ Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
-# embed a screenshot after each failed scenario
+# Embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+
   if scenario.failed?
     begin
       Timeout.timeout(Capybara.default_max_wait_time) do
         Dir.mkdir('screenshots') unless File.directory?('screenshots')
         path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-        # only click on Details when we have errors during bootstrapping and more Details available
-        click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
-        # a TimeoutError may be raised while a page is still (re)loading
-        find('#page-body', wait: 3) if scenario.exception.is_a?(TimeoutError)
-        page.driver.browser.save_screenshot(path)
-        attach path, 'image/png'
-        attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+
+        # Check if the page is visible before taking a screenshot
+        if page.visible?
+          if page.has_content?('Bootstrap Minions') && page.has_content?('Details')
+            begin
+              click_button('Details')
+            rescue Capybara::ElementNotFound
+              warn "Button 'Details' not found on the page."
+            rescue Capybara::ElementNotInteractable
+              warn "Button 'Details' found but not interactable."
+            end
+          else
+            warn "Page content is missing or session appears to be inactive."
+          end
+
+          # Save the screenshot
+          page.driver.browser.save_screenshot(path)
+          attach path, 'image/png'
+          attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+        else
+          warn "Page is not visible; unable to take a screenshot."
+        end
       end
     rescue Timeout::Error
       warn "Timeout occurred while saving screenshot for scenario: #{scenario.name}"
@@ -153,6 +169,7 @@ After do |scenario|
       visit previous_url
     end
   end
+
   page.instance_variable_set(:@touched, false)
 end
 
