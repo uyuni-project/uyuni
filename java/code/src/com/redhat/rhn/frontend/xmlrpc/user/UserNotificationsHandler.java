@@ -28,6 +28,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Provides API to manage user notifications.
+ * @apidoc.namespace user.notifications
+ * @apidoc.doc Provides methods to manage user notifications.
+ */
 public class UserNotificationsHandler extends BaseHandler {
     private static final Logger LOG = LogManager.getLogger(UserNotificationsHandler.class);
 
