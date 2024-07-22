@@ -6,6 +6,8 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
+ARG PATCH_VERSION="2.45.0"
+
 #!BuildTag: uyuni/prometheus:${PATCH_VERSION}
 #!BuildTag: uyuni/prometheus:latest
 
@@ -18,7 +20,6 @@ ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
-ARG PATCH_VERSION="2.45.0"
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.prometheus
