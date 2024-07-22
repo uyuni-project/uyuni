@@ -583,7 +583,7 @@ SELECT PN.name as NAME,
          pe.id as evr_id,
          pa.label as arch,
          sp.installtime,
-         a.name || ':' || a.stream as appstream
+         appStream.name || ':' || appStream.stream as appstream
     FROM rhnPackageName pn
             INNER JOIN rhnServerPackage sp ON sp.name_id = pn.id
             INNER JOIN rhnServer s ON sp.server_id = s.id
@@ -591,8 +591,12 @@ SELECT PN.name as NAME,
             LEFT JOIN rhnPackageArch pa ON sp.package_arch_id = pa.id
             LEFT JOIN highest_id_packages hp ON hp.name_id = sp.name_id AND hp.evr_id = sp.evr_id AND hp.package_arch_id = sp.package_arch_id
             LEFT JOIN rhnpackage p ON hp.id = p.id
-            LEFT JOIN suseAppstreamPackage ap on ap.package_id = hp.id
-            LEFT JOIN suseAppstream a on a.id = ap.module_id
+            LEFT JOIN (
+                select a.name as name, a.stream as stream, ap.package_id as package_id
+                from suseAppStreamPackage ap
+                inner join suseAppStream a on a.id = ap.module_id
+                inner join rhnServerChannel sc on sc.channel_id = a.channel_id and sc.server_id = :sid
+            ) appStream on appStream.package_id = hp.id
     WHERE sp.server_id = :sid
     ORDER BY nvre
   </query>
@@ -919,8 +923,12 @@ SELECT rp.id AS package_id,
            JOIN rhnPackage rp ON rp.name_id = latest.name_id
                              AND rp.evr_id =  lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)
                              AND rp.package_arch_id = latest.arch_id
-           LEFT JOIN suseAppstreamPackage appStreamPkg on appStreamPkg.package_id = rp.id
-           LEFT JOIN suseAppstream appStream on appStream.channel_id = latest.channel_id and appStream.id = appStreamPkg.module_id
+          LEFT JOIN (
+              SELECT asp.package_id, ast.name, ast.stream, ast.id AS module_id, ast.channel_id
+                FROM suseAppstreamPackage asp
+                JOIN suseAppstream ast ON asp.module_id = ast.id
+              ) appStream ON appStream.package_id = rp.id
+                          AND appStream.channel_id = latest.channel_id
           WHERE EXISTS (
                          SELECT 1 FROM rhnChannelPackage rcp
                            JOIN rhnServerChannel rsc ON rsc.channel_id = rcp.channel_id
@@ -1170,7 +1178,7 @@ SELECT  n.id AS id,
         n.name ||'-'|| evr_t_as_vre_simple(latest.evr) || '.' || latest_pa.label AS nvrea,
         n.name ||'-'|| evr_t_as_vre_simple(spe.evr) || '.' || spa.label AS installed_package,
         n.id || '|' || lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)|| '|' || latest.package_arch_id AS id_combo,
-        a.name || ':' || a.stream AS appstream
+        appStream.name || ':' || appStream.stream AS appstream
   FROM
        rhnServerPackage sp
   join rhnPackageName n
@@ -1199,8 +1207,12 @@ SELECT  n.id AS id,
   LEFT JOIN rhnPackage p ON p.name_id = latest.package_name_id
      AND p.evr_id = latest.package_evr_id
      AND p.package_arch_id = latest.package_arch_id
-  LEFT JOIN suseAppstreamPackage ap on ap.package_id = p.id
-  LEFT JOIN suseAppstream a on a.id = ap.module_id
+       LEFT JOIN (
+         select a.name as name, a.stream as stream, ap.package_id as package_id
+         from suseAppStreamPackage ap
+         inner join suseAppStream a on a.id = ap.module_id
+         inner join rhnServerChannel sc on sc.channel_id = a.channel_id and sc.server_id = :sid
+       ) appStream on appStream.package_id = p.id
  where sp.server_id = :sid
  order by upper(n.name)
   </query>
