@@ -24,6 +24,13 @@ mgr_salt_minion_inst:
     - require:
       - pkg: mgr_salt_minion_inst
 
+{%- if salt_minion_name == 'venv-salt-minion' %}
+rm_old_venv_python_env:
+  cmd.run:
+    - name: /usr/lib/venv-salt-minion/bin/post_start_cleanup.sh
+    - onlyif: test -f /usr/lib/venv-salt-minion/bin/post_start_cleanup.sh
+{%- endif %}
+
 mgr_salt_minion_run:
   service.running:
     - name: {{ salt_minion_name }}

@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #
@@ -83,7 +83,7 @@ Feature: Register a Salt minion with a bootstrap script
 
   Scenario: Check spacecmd system ID of bootstrapped minion
     Given I am on the Systems overview page of this "sle_minion"
-    Then I run spacecmd listevents for "sle_minion"
+    Then I run spacecmd listeventhistory for "sle_minion"
 
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"

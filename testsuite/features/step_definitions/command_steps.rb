@@ -149,6 +149,7 @@ end
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
   channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel) ||
                             CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+  channels_to_synchronize = filter_channels(channels_to_synchronize, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channel #{channel} or #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil? || channels_to_synchronize.empty?
 
   channels_to_synchronize.each do |os_product_version_channel|
@@ -321,6 +322,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
   next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).nil?
 
   channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  channels_to_kill = filter_channels(channels_to_kill, ['beta']) unless $beta_enabled
   log "Killing channels:\n#{channels_to_kill}"
   time_spent = 0
   checking_rate = 10
@@ -408,6 +410,7 @@ end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
   channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
 
   time_spent = 0
@@ -909,14 +912,15 @@ end
 When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
   node = get_target(host)
   os_family = node.os_family
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^opensuse/, /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
-  elsif os_family =~ /^centos/
+  when /^centos/, /^rocky/
     pkgs = 'openscap-utils scap-security-guide-redhat'
-  elsif os_family =~ /^ubuntu/
+  when /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
   else
-    raise "The node #{node.hostname} has not a supported OS Family (#{os_family})"
+    raise ScriptError, "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
@@ -1624,7 +1628,7 @@ When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
   folder_delete(node, folder) if folder_exists?(node, folder)
 end
 
-## ReportDB ##
+# ReportDB
 
 Given(/^I can connect to the ReportDB on the Server$/) do
   # connect and quit database
@@ -1889,7 +1893,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
 
   # Reset the API client to take the new CA into account
   log 'Resetting the API client'
-  new_api_client
+  $api_test = new_api_client
 
   raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'

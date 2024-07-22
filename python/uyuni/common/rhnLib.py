@@ -14,6 +14,7 @@
 #
 
 import os
+import calendar
 import re
 import time
 from datetime import tzinfo, timedelta
@@ -97,7 +98,7 @@ def timestamp(s):
     timeval = list(time.strptime(s, format_string))
     # No daylight information available
     timeval[8] = -1
-    return time.mktime(tuple(timeval))
+    return calendar.timegm(tuple(timeval))
 
 
 def checkValue(val, *args):

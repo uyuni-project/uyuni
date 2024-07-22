@@ -170,7 +170,7 @@ class ZyppoSync:
                     log(0, "Failed to import keys into rpm database ({}): {}".format(process.returncode, outs.decode('utf-8')))
                 else:
                     log(3, "CMD out: {}".format(outs.decode('utf-8')))
-            except TimeoutExpired:
+            except subprocess.TimeoutExpired:
                 process.kill()
                 log(0, "Timeout exceeded while importing keys to rpm database")
             keycont = f.read()

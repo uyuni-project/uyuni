@@ -28,9 +28,6 @@
 - features/secondary/min_rhlike_openscap_audit.feature
 - features/secondary/min_rhlike_remote_command.feature
 - features/secondary/min_rhlike_ssh.feature
-- features/secondary/trad_rhlike_client.feature
-# temporarily disabled by the RRTGs
-#- features/secondary/trad_rhlike_migrate_to_min.feature
 - features/secondary/min_deblike_openscap_audit.feature
 - features/secondary/min_deblike_remote_command.feature
 - features/secondary/min_deblike_ssh.feature

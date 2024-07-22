@@ -92,6 +92,14 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
         ManagerInfoFactory.setLastMgrSyncRefresh();
         Optional<Date> lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
 
+        // no products synced - this should prevent setting the date
+        assertTrue(lastRefreshDate.isEmpty(), "Last refresh date is unexpectedly set");
+
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        ManagerInfoFactory.setLastMgrSyncRefresh();
+        lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
+        assertTrue(lastRefreshDate.isPresent(), "Last refresh date is unexpectedly empty");
+
         // Repos are newer than credentials -> no refresh
         assertFalse(SCCCachingFactory.refreshNeeded(lastRefreshDate));
 

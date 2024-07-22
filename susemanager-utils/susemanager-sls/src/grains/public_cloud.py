@@ -38,6 +38,7 @@ HOST = 'http://{0}/'.format(INTERNAL_API_IP)
 INSTANCE_ID = None
 
 AMAZON_URL_PATH = 'latest/meta-data/'
+AMAZON_TOKEN_URL_PATH = "latest/api/token"
 AZURE_URL_PATH = 'metadata/instance/compute/'
 AZURE_API_ARGS = '?api-version=2017-08-01&format=text'
 GOOGLE_URL_PATH = 'computeMetadata/v1/instance/'
@@ -59,14 +60,33 @@ def __virtual__():
             'http_connect_timeout': 0.1,
             'http_request_timeout': 0.1,
         }
+        api_token = None
+        header_dict = data[2]
         try:
+            if data[0] == "amazon":
+                token_ret = http.query(
+                    os.path.join(HOST, AMAZON_TOKEN_URL_PATH),
+                    status=True,
+                    header_dict={"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
+                    method="PUT",
+                    raise_error=False,
+                    opts=opts,
+                )
+                if token_ret.get("status") == 200:
+                    api_token = token_ret.get("body")
+                    if api_token:
+                        if not header_dict:
+                            header_dict = {}
+                        header_dict.update({"X-aws-ec2-metadata-token": api_token})
             ret = {
                 data[0]: http.query(data[1],
                                     status=True,
-                                    header_dict=data[2],
+                                    header_dict=header_dict,
                                     raise_error=False,
                                     opts=opts)
             }
+            if ret.get("amazon", {}).get("status") == 200:
+                ret.get("amazon", {})["api_token"] = api_token
         except:
             ret = { data[0]: dict() }
         return ret
@@ -93,8 +113,13 @@ def __virtual__():
     for i in results:
         api_ret.update(i)
 
-    if _is_valid_endpoint(api_ret['amazon'], 'instance-id'):
-        INSTANCE_ID = http.query(os.path.join(HOST, AMAZON_URL_PATH, 'instance-id'), raise_error=False)['body']
+    if _is_valid_endpoint(api_ret["amazon"], "instance-id"):
+        api_token = api_ret["amazon"].get("api_token")
+        INSTANCE_ID = http.query(
+            os.path.join(HOST, AMAZON_URL_PATH, "instance-id"),
+            raise_error=False,
+            header_dict={"X-aws-ec2-metadata-token": api_token} if api_token else None,
+        )["body"]
         return True
     elif _is_valid_endpoint(api_ret['azure'], 'vmId'):
         INSTANCE_ID = http.query(os.path.join(HOST, AZURE_URL_PATH, 'vmId') + AZURE_API_ARGS, header_dict={"Metadata":"true"}, raise_error=False)['body']

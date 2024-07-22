@@ -1,14 +1,18 @@
+"""A collection of utility runner functions for Uyuni."""
+
 from subprocess import Popen, PIPE
 import logging
 import stat
 import grp
 import shlex
 import os
+import os.path
 import shutil
 import salt.utils
 import tempfile
 
 import certs.mgr_ssl_cert_setup
+
 
 log = logging.getLogger(__name__)
 
@@ -87,7 +91,12 @@ def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", option
     return ret
 
 def remove_ssh_known_host(user, hostname, port):
-    return __salt__['salt.cmd']('ssh.rm_known_host', user, hostname, None, port)
+    """Remove an SSH known host entry from Salt SSH's database."""
+    config_path = os.path.join(os.path.expanduser(f"~{user}"), ".ssh", "known_hosts")
+    if not os.path.exists(config_path):
+        config_path = None
+    # pylint: disable-next=undefined-variable
+    return __salt__["salt.cmd"]("ssh.rm_known_host", user, hostname, config_path, port)
 
 
 def _cmd(cmd):

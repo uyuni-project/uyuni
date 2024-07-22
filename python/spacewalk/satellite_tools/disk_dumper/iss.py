@@ -256,7 +256,7 @@ class Dumper(dumper.XML_Dumper):
         try:
             query = """
                  select ch.id channel_id, label,
-                      TO_CHAR(last_modified, 'YYYYMMDDHH24MISS') last_modified
+                      TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
                    from rhnChannel ch
                   where ch.label = :label
                 """
@@ -405,7 +405,7 @@ class Dumper(dumper.XML_Dumper):
             if self.whole_errata and self.start_date:
                 query = """
                  select rp.id package_id,
-                            TO_CHAR(rp.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                            TO_CHAR(rp.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
                  from rhnChannelPackage rcp, rhnPackage rp
                     left join rhnErrataPackage rep on rp.id = rep.package_id
                         left join rhnErrata re on rep.errata_id = re.id
@@ -415,7 +415,7 @@ class Dumper(dumper.XML_Dumper):
             else:
                 query = """
                  select rp.id package_id,
-                TO_CHAR(rp.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                TO_CHAR(rp.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
            from rhnPackage rp, rhnChannelPackage rcp
           where rcp.channel_id = :channel_id
             and rcp.package_id = rp.id
@@ -582,7 +582,7 @@ class Dumper(dumper.XML_Dumper):
         try:
             query = """
                 select  kt.id kstree_id, kt.label kickstart_label,
-                        TO_CHAR(kt.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                        TO_CHAR(kt.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
                   from  rhnKickstartableTree kt
                  where   kt.channel_id = :channel_id
                  """
@@ -623,10 +623,10 @@ class Dumper(dumper.XML_Dumper):
                     select rktf.relative_filename "relative-path",
                            c.checksum_type "checksum-type", c.checksum,
                            rktf.file_size "file-size",
-                           TO_CHAR(rktf.last_modified, 'YYYYMMDDHH24MISS') "last-modified",
+                           TO_CHAR(rktf.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') "last-modified",
                            rkt.base_path "base-path",
                            rkt.label "label",
-                           TO_CHAR(rkt.modified, 'YYYYMMDDHH24MISS') "modified"
+                           TO_CHAR(rkt.modified at time zone 'UTC', 'YYYYMMDDHH24MISS') "modified"
                       from rhnKSTreeFile rktf, rhnKickstartableTree rkt,
                            rhnChecksumView c
                      where rktf.kstree_id = :kstree_id

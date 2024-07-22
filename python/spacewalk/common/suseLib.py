@@ -430,7 +430,7 @@ def channelForProduct(product, parent_id=None, org_id=None,
         c.name,
         c.summary,
         c.description,
-        to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
+        TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified,
         -- If user_id is null, then the channel is subscribable
         rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe') subscribable
         FROM rhnChannel c

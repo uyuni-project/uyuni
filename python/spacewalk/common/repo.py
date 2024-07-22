@@ -76,7 +76,13 @@ class DpkgRepo:
                 key = "/".join(parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:] + [key])
             return self[key]
 
-    def __init__(self, url: str, proxies: dict = None, gpg_verify: bool = True):
+    def __init__(
+        self,
+        url: str,
+        proxies: dict = None,
+        gpg_verify: bool = True,
+        timeout: typing.Optional[int] = None,
+    ):
         self._url = url
         self._flat_checked: typing.Optional[int] = None
         self._flat: bool = False
@@ -84,6 +90,7 @@ class DpkgRepo:
         self._release = DpkgRepo.EntryDict(self)
         self.proxies = proxies
         self.gpg_verify = gpg_verify
+        self.timeout = timeout
 
     def append_index_file(self, index_file: str) -> str:
         """
@@ -123,7 +130,11 @@ class DpkgRepo:
                             "File not found: {}".format(
                                 packages_url.replace("file://", "")), exc_info=True)
                 else:
-                    resp = requests.get(packages_url, proxies=self.proxies)
+                    resp = requests.get(
+                        packages_url,
+                        proxies=self.proxies,
+                        timeout=self.timeout,
+                    )
                     if resp.status_code == http.HTTPStatus.OK:
                         self._pkg_index = cnt_fname, resp.content
                         break
@@ -249,7 +260,11 @@ class DpkgRepo:
                 )
                 out = process.communicate(response.content, timeout=90)
             else:
-                signature_response = requests.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
+                signature_response = requests.get(
+                    self._get_parent_url(response.url, 1, "Release.gpg"),
+                    proxies=self.proxies,
+                    timeout=self.timeout,
+                )
                 if signature_response.status_code != http.HTTPStatus.OK:
                     return False
                 else:
@@ -352,9 +367,17 @@ class DpkgRepo:
     def _get_release_index_from_http(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
         logging.debug("Fetching release file from local http: {}".format(self._url))
-        resp = requests.get(self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies)
+        resp = requests.get(
+            self._get_parent_url(self._url, 2, "InRelease"),
+            proxies=self.proxies,
+            timeout=self.timeout,
+        )
         if resp.status_code != http.HTTPStatus.OK:
-            resp = requests.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
+            resp = requests.get(
+                self._get_parent_url(self._url, 2, "Release"),
+                proxies=self.proxies,
+                timeout=self.timeout,
+            )
 
         try:
             if resp.status_code not in [
@@ -378,9 +401,17 @@ class DpkgRepo:
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
 
             if not self._release and self.is_flat():
-                resp = requests.get(self._get_parent_url(self._url, 0, "InRelease"), proxies=self.proxies)
+                resp = requests.get(
+                    self._get_parent_url(self._url, 0, "InRelease"),
+                    proxies=self.proxies,
+                    timeout=self.timeout,
+                )
                 if resp.status_code != http.HTTPStatus.OK:
-                    resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
+                    resp = requests.get(
+                        self._get_parent_url(self._url, 0, "Release"),
+                        proxies=self.proxies,
+                        timeout=self.timeout,
+                    )
 
                 if resp.status_code == http.HTTPStatus.OK:
                     if self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):

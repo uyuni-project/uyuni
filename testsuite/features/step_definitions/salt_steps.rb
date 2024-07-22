@@ -483,10 +483,10 @@ When(/^I disable repositories after installing Salt on this "([^"]*)"$/) do |hos
 end
 
 # minion bootstrap steps
-Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
+Then(/^I run spacecmd listeventhistory for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   get_target('server').run('spacecmd -u admin -p admin clear_caches')
-  get_target('server').run("spacecmd -u admin -p admin system_listevents #{system_name}")
+  get_target('server').run("spacecmd -u admin -p admin system_listeventhistory #{system_name}")
 end
 
 When(/^I enter KVM Server password$/) do

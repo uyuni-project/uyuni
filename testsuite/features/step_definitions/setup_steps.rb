@@ -514,7 +514,7 @@ When(/^I register "([^"]*)" as traditional client$/) do |client|
   step %(I register "#{client}" as traditional client with activation key "1-SUSE-KEY-x86_64")
 end
 
-And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
+When(/^I register "([^"]*)" as traditional client with activation key "([^"]*)"$/) do |client, key|
   node = get_target(client)
   if client.include? 'sle'
     node.run('zypper --non-interactive install wget', timeout: 500)
