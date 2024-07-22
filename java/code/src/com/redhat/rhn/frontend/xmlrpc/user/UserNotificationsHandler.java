@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Provides API to manage user notifications.
@@ -117,7 +118,7 @@ public class UserNotificationsHandler extends BaseHandler {
                     });
                 })
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toList());
         int cnt = UserNotificationFactory.delete(collect);
         return cnt == notifications.size() ? 1 : 0;
     }
