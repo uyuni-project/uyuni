@@ -88,7 +88,7 @@
         <dependency org="manager-43" name="sitemesh" rev="2.1" />
         <dependency org="manager-43" name="slf4j-api" rev="1.7.30" />
         <dependency org="manager-43" name="log4j-slf4j-impl" rev="2.17.2" />
-        <dependency org="manager-43" name="snakeyaml" rev="1.33" />
+        <dependency org="manager-43" name="snakeyaml" rev="2.2" />
         <dependency org="manager-43" name="spark-core" rev="2.7.2" />
         <dependency org="manager-43" name="spark-template-jade" rev="2.3" />
         <dependency org="manager-43" name="spy" rev="0.8.7" />
