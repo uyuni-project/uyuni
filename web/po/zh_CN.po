@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:00+0200\n"
+"POT-Creation-Date: 2024-07-22 09:35+0200\n"
 "PO-Revision-Date: 2024-05-09 12:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -293,7 +293,7 @@ msgstr "无法执行操作。"
 #: ../html/src/manager/admin/setup/products/products.tsx:1181
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
 msgid "Confirm"
 msgstr "确认"
@@ -328,8 +328,8 @@ msgstr "第一页"
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
 #: ../html/src/manager/admin/setup/products/products.tsx:457
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1093
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1124
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
 msgid "Prev"
 msgstr "上一页"
@@ -337,8 +337,8 @@ msgstr "上一页"
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
 #: ../html/src/manager/admin/setup/products/products.tsx:463
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1074
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1100
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
 msgid "Next"
 msgstr "下一页"
@@ -808,7 +808,7 @@ msgstr "发生错误。监视状态未知。请刷新页面。"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:767
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "系统"
@@ -997,7 +997,7 @@ msgstr "主机"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:777
 #: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr "状态"
@@ -1013,7 +1013,7 @@ msgstr "从不"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
 #: ../html/src/manager/admin/setup/products/products.tsx:468
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:865
 msgid "of"
 msgstr "/"
 
@@ -1285,7 +1285,7 @@ msgstr "已镜像此产品。"
 #: ../html/src/manager/admin/setup/products/products.tsx:959
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:489
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:547
 msgid "recommended"
 msgstr "建议"
@@ -1293,7 +1293,7 @@ msgstr "建议"
 #: ../html/src/manager/admin/setup/products/products.tsx:977
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:426
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
 msgid "include recommended"
 msgstr "包括建议项"
@@ -2614,7 +2614,7 @@ msgid "Choose the channel to be elected as the new base channel"
 msgstr "选择要用作新基础通道的通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:538
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "Child Channels"
 msgstr "子通道"
@@ -2776,7 +2776,7 @@ msgid ""
 msgstr "安排任务时出错。请确保任务日程安排程序正在运行。"
 
 #: ../html/src/manager/images/image-build.tsx:205
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1043
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1040
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:375
 msgid "Action has been successfully added to the Action Chain "
 msgstr "操作已成功添加到操作链 "
@@ -5134,7 +5134,7 @@ msgid "No Change"
 msgstr "无更改"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:41
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:518
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:515
 msgid "Subscribe"
 msgstr "订阅"
 
@@ -5191,89 +5191,89 @@ msgstr "自定义通道"
 msgid "Systems subscribed to"
 msgstr "系统已订阅"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:423
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:638
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:658
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:420
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:635
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:655
 msgid "(Couldn't determine new base channel)"
 msgstr "（无法确定新的基础通道）"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:448
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:673
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:445
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:670
 msgid "system(s) to subscribe"
 msgstr "个系统要订阅"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:456
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "（无）"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:462
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:682
 msgid "system(s) incompatible"
 msgstr "个系统不兼容"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:507
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:504
 msgid "No change"
 msgstr "无更改"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:529
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:526
 msgid "Unsubscribe"
 msgstr "取消订阅"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:542
 msgid "Below is a list of channels in your organization. "
 msgstr "下面是您组织中的通道列表。 "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:544
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr "要防止对某个通道进行更改，请选中该通道对应的 \"不执行任何操作\"。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:548
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
 msgstr "要让选定的系统订阅某个通道，请选中该通道对应的 \"已订阅\"。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:549
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:546
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
 msgstr "要让选定的系统取消订阅某个通道，请选中该通道对应的 \"已取消订阅\"。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:559
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:728
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:556
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:725
 msgid "Systems to subscribe to"
 msgstr "要订阅以下通道的系统"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:650
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:647
 msgid "(None)"
 msgstr "（无）"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:660
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:657
 msgid " (system default)"
 msgstr " （系统默认）"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:710
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:707
 msgid "Channel Changes Overview"
 msgstr "通道更改概览"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:757
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:754
 msgid "Channel Changes Actions"
 msgstr "通道更改操作"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:786
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
 msgid "Scheduled"
 msgstr "已安排"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:794
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:791
 msgid "Unknown error. Could not schedule channel change"
 msgstr "未知错误。无法安排通道更改"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:917
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:914
 msgid "Some changes scheduled successfully."
 msgstr "已成功安排某些更改。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1050
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1047
 msgid "Channel changes scheduled."
 msgstr "已安排通道更改。"
 

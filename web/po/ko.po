@@ -17,11 +17,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:00+0200\n"
+"POT-Creation-Date: 2024-07-22 09:35+0200\n"
 "PO-Revision-Date: 2024-07-11 09:47+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
-"\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
+">\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -299,7 +299,7 @@ msgstr "작업을 수행할 수 없습니다."
 #: ../html/src/manager/admin/setup/products/products.tsx:1181
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
 msgid "Confirm"
 msgstr "확인"
@@ -334,8 +334,8 @@ msgstr "첫 번째"
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
 #: ../html/src/manager/admin/setup/products/products.tsx:457
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1093
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1124
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
 msgid "Prev"
 msgstr "이전"
@@ -343,8 +343,8 @@ msgstr "이전"
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
 #: ../html/src/manager/admin/setup/products/products.tsx:463
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1074
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1100
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
 msgid "Next"
 msgstr "다음"
@@ -830,7 +830,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:767
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "시스템"
@@ -1019,7 +1019,7 @@ msgstr "호스트"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:777
 #: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
 msgstr "상태"
@@ -1035,7 +1035,7 @@ msgstr "안 함"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
 #: ../html/src/manager/admin/setup/products/products.tsx:468
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:865
 msgid "of"
 msgstr "/"
 
@@ -1315,7 +1315,7 @@ msgstr "이 제품은 미러링되었습니다."
 #: ../html/src/manager/admin/setup/products/products.tsx:959
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:489
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:547
 msgid "recommended"
 msgstr "권장"
@@ -1323,7 +1323,7 @@ msgstr "권장"
 #: ../html/src/manager/admin/setup/products/products.tsx:977
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:426
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
 msgid "include recommended"
 msgstr "권장에 포함"
@@ -2660,7 +2660,7 @@ msgid "Choose the channel to be elected as the new base channel"
 msgstr "새 기본 채널로 선택할 채널 선택"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:538
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "Child Channels"
 msgstr "하위 채널"
@@ -2834,7 +2834,7 @@ msgstr ""
 "십시오."
 
 #: ../html/src/manager/images/image-build.tsx:205
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1043
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1040
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:375
 msgid "Action has been successfully added to the Action Chain "
 msgstr "작업이 작업 체인에 추가되었습니다. "
@@ -5225,7 +5225,7 @@ msgid "No Change"
 msgstr "변경 사항 없음"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:41
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:518
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:515
 msgid "Subscribe"
 msgstr "가입"
 
@@ -5285,52 +5285,52 @@ msgstr "사용자 정의 채널"
 msgid "Systems subscribed to"
 msgstr "시스템 가입 대상"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:423
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:638
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:658
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:420
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:635
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:655
 msgid "(Couldn't determine new base channel)"
 msgstr "(새 기본 채널을 결정할 수 없음)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:448
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:673
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:445
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:670
 msgid "system(s) to subscribe"
 msgstr "가입할 시스템"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:456
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(없음)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:462
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:682
 msgid "system(s) incompatible"
 msgstr "호환되지 않는 시스템"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:507
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:504
 msgid "No change"
 msgstr "변경 사항 없음"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:529
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:526
 msgid "Unsubscribe"
 msgstr "가입 취소"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:542
 msgid "Below is a list of channels in your organization. "
 msgstr "조직의 채널 목록은 아래와 같습니다. "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:544
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
 "채널을 변경하려면 해당 채널에 대해 아무 작업도 하지 않음을 선택하십시오."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:548
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
 msgstr ""
 "선택한 시스템을 채널에 가입시키려면 해당 채널에 대하여 가입됨을 선택하십시오."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:549
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:546
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
@@ -5338,40 +5338,40 @@ msgstr ""
 "선택한 시스템의 채널 가입을 취소하려면 해당 채널에 대하여 가입 취소됨을 선택"
 "하십시오."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:559
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:728
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:556
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:725
 msgid "Systems to subscribe to"
 msgstr "가입할 시스템"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:650
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:647
 msgid "(None)"
 msgstr "(없음)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:660
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:657
 msgid " (system default)"
 msgstr " (시스템 기본값)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:710
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:707
 msgid "Channel Changes Overview"
 msgstr "채널 변경 사항 개요"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:757
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:754
 msgid "Channel Changes Actions"
 msgstr "채널 변경 사항 작업"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:786
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
 msgid "Scheduled"
 msgstr "예약됨"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:794
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:791
 msgid "Unknown error. Could not schedule channel change"
 msgstr "알 수 없는 오류가 발생했습니다. 채널 변경을 예약하지 못했습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:917
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:914
 msgid "Some changes scheduled successfully."
 msgstr "일부 변경이 예약되었습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1050
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1047
 msgid "Channel changes scheduled."
 msgstr "채널 변경이 예약되었습니다."
 
