@@ -147,7 +147,7 @@ After do |scenario|
               warn "Button 'Details' found but not interactable."
             end
           else
-            warn "Page content is missing or session appears to be inactive."
+            warn "Page not on minion system or details."
           end
 
           # Save the screenshot
