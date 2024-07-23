@@ -23,7 +23,8 @@ FROM rhnserverchannel sc
     INNER JOIN suseappstreampackage sasp ON sasp.module_id = sas.id
     LEFT JOIN suseserverappstream ssa ON ssa.name = sas.name
         AND ssa.stream = sas.stream
-        AND sas.arch = ssa.arch
+        AND ssa.arch = sas.arch
+        AND ssa.server_id = sc.server_id
 WHERE ssa.id IS NULL
 
 UNION
