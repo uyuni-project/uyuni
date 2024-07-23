@@ -146,7 +146,7 @@ After do |scenario|
             log "Button 'Details' found but not interactable."
           end
         else
-          log "Page not on minion system or details."
+          log 'Page not on minion system or details.'
         end
 
         # Save the screenshot with a timeout
@@ -160,7 +160,7 @@ After do |scenario|
           warn "Timeout occurred while taking a screenshot for scenario: #{scenario.name}"
         end
       else
-        warn "Page is not visible; unable to take a screenshot."
+        warn 'Page is not visible; unable to take a screenshot.'
       end
     rescue StandardError => e
       warn "An error occurred while processing scenario: #{scenario.name}\nError message: #{e.message}"
