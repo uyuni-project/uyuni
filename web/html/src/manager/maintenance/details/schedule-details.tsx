@@ -6,11 +6,11 @@ import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 import { AsyncButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
+import { IconTag } from "components/icontag";
 import { SystemLink } from "components/links";
 import { Utils as MessagesUtils } from "components/messages";
 import { MessageType } from "components/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
-import { InnerPanel } from "components/panels/InnerPanel";
 import { TabLabel } from "components/tab-container";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -166,64 +166,72 @@ const SystemPicker = (props: SystemPickerProps) => {
 
   return (
     <>
-      <InnerPanel
-        title={t("Assigned Systems")}
-        icon="fa-desktop"
-        buttons={[
-          <Toggler
-            text={t("Cancel affected actions")}
-            className="btn"
-            handler={() => setCancelActions(!isCancelActions)}
-            value={isCancelActions}
-          />,
-          isCancelActions && selectedSystems.length > 0 ? (
-            <ModalButton
-              target="cancel-confirm"
-              text={t("Save Changes")}
-              className="btn-success"
-              disabled={!hasChanges}
-            />
-          ) : (
-            <AsyncButton action={onAssign} defaultType="btn-success" text={t("Save Changes")} disabled={!hasChanges} />
-          ),
-        ]}
+      <h2>
+        <IconTag type="event-type-system" />
+        {t("Assigned Systems")}
+      </h2>
+      <div className="clearfix mb-3">
+        <div className="pull-right btn-group">
+          {[
+            <Toggler
+              text={t("Cancel affected actions")}
+              className="btn"
+              handler={() => setCancelActions(!isCancelActions)}
+              value={isCancelActions}
+            />,
+            isCancelActions && selectedSystems.length > 0 ? (
+              <ModalButton
+                target="cancel-confirm"
+                text={t("Save Changes")}
+                className="btn-success"
+                disabled={!hasChanges}
+              />
+            ) : (
+              <AsyncButton
+                action={onAssign}
+                defaultType="btn-success"
+                text={t("Save Changes")}
+                disabled={!hasChanges}
+              />
+            ),
+          ]}
+        </div>
+      </div>
+      <Table
+        data="/rhn/manager/api/maintenance/schedule/systems"
+        identifier={(system) => system.id}
+        searchField={<SearchField placeholder={t("Search systems")} />}
+        selectable
+        selectedItems={selectedSystems}
+        onSelect={onSelect}
+        initialSortColumnKey="name"
       >
-        <Table
-          data="/rhn/manager/api/maintenance/schedule/systems"
-          identifier={(system) => system.id}
-          searchField={<SearchField placeholder={t("Search systems")} />}
-          selectable
-          selectedItems={selectedSystems}
-          onSelect={onSelect}
-          initialSortColumnKey="name"
-        >
-          <Column
-            columnKey="name"
-            sortable
-            header={t("System")}
-            cell={(system) => (
-              <SystemLink id={system.id} newWindow>
-                {system.name}
-              </SystemLink>
-            )}
-          />
-          <Column
-            columnKey="scheduleName"
-            sortable
-            header={t("Current Schedule")}
-            cell={(system) =>
-              system.scheduleId &&
-              (system.scheduleId === props.scheduleId ? (
-                <span>{system.scheduleName}</span>
-              ) : (
-                <a href={`/rhn/manager/schedule/maintenance/schedules#/details/${system.scheduleId}`}>
-                  {system.scheduleName}
-                </a>
-              ))
-            }
-          />
-        </Table>
-      </InnerPanel>
+        <Column
+          columnKey="name"
+          sortable
+          header={t("System")}
+          cell={(system) => (
+            <SystemLink id={system.id} newWindow>
+              {system.name}
+            </SystemLink>
+          )}
+        />
+        <Column
+          columnKey="scheduleName"
+          sortable
+          header={t("Current Schedule")}
+          cell={(system) =>
+            system.scheduleId &&
+            (system.scheduleId === props.scheduleId ? (
+              <span>{system.scheduleName}</span>
+            ) : (
+              <a href={`/rhn/manager/schedule/maintenance/schedules#/details/${system.scheduleId}`}>
+                {system.scheduleName}
+              </a>
+            ))
+          }
+        />
+      </Table>
       <CancelActionsDialog id="cancel-confirm" onConfirmAsync={onAssign} />
     </>
   );
