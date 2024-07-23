@@ -44,6 +44,7 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/systems/details/SystemRemoteCommand.do",
   "/rhn/manager/systems/details/highstate",
   "/rhn/manager/systems/details/recurring-actions",
+  "/rhn/manager/cm/build",
 ];
 
 export const onEndNavigate = () => {
