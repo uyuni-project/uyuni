@@ -89,7 +89,10 @@ public enum ViewHelper {
         "/rhn/manager/systems/keys",
         "/rhn/manager/audit/cve",
         "/rhn/errata/Search.do",
-        "/rhn/audit/scap/Search.do"
+        "/rhn/audit/scap/Search.do",
+        "/rhn/manager/schedule/recurring-actions",
+        "/rhn/manager/schedule/maintenance/calendars",
+        "/rhn/manager/multiorg/recurring-actions"
     );
 
     ViewHelper() { }
