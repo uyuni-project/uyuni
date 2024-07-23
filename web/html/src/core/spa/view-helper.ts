@@ -28,6 +28,7 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/software/packages/Details.do",
   "/rhn/manager/systems/details/formulas",
   "/rhn/manager/cm/imagestores",
+  "/rhn/manager/systems/details/highstate",
 ];
 
 export const onEndNavigate = () => {
