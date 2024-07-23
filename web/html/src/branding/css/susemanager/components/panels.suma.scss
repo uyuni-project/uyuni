@@ -18,5 +18,14 @@
         border-bottom: none;
       }
     }
+
+    > .panel-body .list-group {
+      border: 1px solid $eos-bc-gray-100;
+
+      .list-group-item:hover {
+        background-color: $eos-bc-gray-100;
+        text-decoration: none;
+      }
+    }
   }
 }
