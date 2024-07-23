@@ -94,7 +94,10 @@ public enum ViewHelper {
         "/rhn/manager/schedule/maintenance/calendars",
         "/rhn/manager/multiorg/recurring-actions",
         "/rhn/manager/schedule/maintenance/schedules",
-        "/rhn/manager/admin/config/monitoring"
+        "/rhn/manager/admin/config/monitoring",
+        "/rhn/admin/config/GeneralConfig.do",
+        "/rhn/manager/admin/config/monitoring",
+        "/rhn/manager/admin/setup/products"
     );
 
     ViewHelper() { }
