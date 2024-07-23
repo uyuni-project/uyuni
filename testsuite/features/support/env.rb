@@ -153,17 +153,15 @@ After do |scenario|
         begin
           Timeout.timeout(Capybara.default_max_wait_time) do # Adjust the timeout value as needed
             page.driver.browser.save_screenshot(path)
+            attach path, 'image/png'
+            attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
           end
         rescue Timeout::Error
           warn "Timeout occurred while taking a screenshot for scenario: #{scenario.name}"
         end
-        attach path, 'image/png'
-        attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
       else
         warn "Page is not visible; unable to take a screenshot."
       end
-    rescue Timeout::Error
-      warn "Timeout occurred while saving screenshot for scenario: #{scenario.name}"
     rescue StandardError => e
       warn "An error occurred while processing scenario: #{scenario.name}\nError message: #{e.message}"
     ensure
