@@ -97,7 +97,10 @@ public enum ViewHelper {
         "/rhn/manager/admin/config/monitoring",
         "/rhn/admin/config/GeneralConfig.do",
         "/rhn/manager/admin/config/monitoring",
-        "/rhn/manager/admin/setup/products"
+        "/rhn/manager/admin/setup/products",
+        "/rhn/systems/details/SystemRemoteCommand.do",
+        "/rhn/manager/systems/details/highstate",
+        "/rhn/manager/systems/details/recurring-actions"
     );
 
     ViewHelper() { }
