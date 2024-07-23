@@ -318,7 +318,13 @@ Serializable {
      * @return true if the nic is a container network
      */
     public boolean isContainerNetwork() {
-        return ("bridge".equals(module) && (getName().startsWith("docker") || getName().startsWith("cni-podman") || getName().startsWith("podman")));
+        return (
+            "bridge".equals(module) && (
+                    getName().startsWith("docker") ||
+                    getName().startsWith("cni-podman") ||
+                    getName().startsWith("podman") ||
+                    getName().startsWith("cni")
+            ) || getName().startsWith("flannel"));
     }
 
     /**

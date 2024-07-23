@@ -75,6 +75,15 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         netint1.setModule("bridge");
         netint1.setName("cni-podman0");
         assertTrue(netint1.isContainerNetwork());
+        netint1.setModule("bridge");
+        netint1.setName("cni0");
+        assertTrue(netint1.isContainerNetwork());
+        netint1.setModule("foobar");
+        netint1.setName("flannel.1");
+        assertTrue(netint1.isContainerNetwork());
+        netint1.setModule("foobar");
+        netint1.setName("eth0");
+        assertFalse(netint1.isContainerNetwork());
     }
 
     /**
