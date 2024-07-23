@@ -31,6 +31,7 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/manager/systems/details/highstate",
   "/rhn/manager/systems/keys",
   "/rhn/manager/audit/cve",
+  "/rhn/errata/Search.do",
 ];
 
 export const onEndNavigate = () => {
