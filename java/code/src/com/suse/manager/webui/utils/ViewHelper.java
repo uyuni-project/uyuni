@@ -86,7 +86,8 @@ public enum ViewHelper {
         "/rhn/manager/systems/details/formulas",
         "/rhn/manager/cm/imagestores",
         "/rhn/manager/systems/details/highstate",
-        "/rhn/manager/systems/keys"
+        "/rhn/manager/systems/keys",
+        "/rhn/manager/audit/cve"
     );
 
     ViewHelper() { }
