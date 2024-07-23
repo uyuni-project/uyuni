@@ -6,9 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
-ARG PATCH_VERSION="2.45.0"
-
-#!BuildTag: uyuni/prometheus:${PATCH_VERSION}
+#!BuildTag: uyuni/prometheus:%%prometheus_patch_version%%
 #!BuildTag: uyuni/prometheus:latest
 
 ARG BASE=bci/bci-base:15.6
@@ -24,16 +22,16 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.prometheus
 LABEL org.opencontainers.image.title="${PRODUCT} Prometheus"
-LABEL org.opencontainers.image.description="Prometheus container image for ${PRODUCT}."
-LABEL org.opencontainers.image.version="${PATCH_VERSION}"
+LABEL org.opencontainers.image.description="Prometheus container image for ${PRODUCT}"
+LABEL org.opencontainers.image.version="%%prometheus_patch_version%%"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/prometheus:${PATCH_VERSION}.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/prometheus:%%prometheus_patch_version%%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends golang-github-prometheus-prometheus=${PATCH_VERSION} curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends golang-github-prometheus-prometheus curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/prometheus"]
 EXPOSE 9090
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
