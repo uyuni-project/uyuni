@@ -37,6 +37,7 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/manager/schedule/maintenance/calendars",
   "/rhn/manager/multiorg/recurring-actions",
   "/rhn/manager/schedule/maintenance/schedules",
+  "/rhn/manager/admin/config/monitoring",
 ];
 
 export const onEndNavigate = () => {
