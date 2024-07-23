@@ -6,9 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
-ARG PATCH_VERSION="0.24.0"
-
-#!BuildTag: uyuni/blackbox_exporter:${PATCH_VERSION}
+#!BuildTag: uyuni/blackbox_exporter:%%blackbox_exporter_patch_version%%
 #!BuildTag: uyuni/blackbox_exporter:latest
 
 ARG BASE=bci/bci-base:15.6
@@ -24,16 +22,16 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.blackbox_exporter
 LABEL org.opencontainers.image.title="${PRODUCT} Blackbox Exporter"
-LABEL org.opencontainers.image.description="Blackbox Exporter container image for ${PRODUCT}."
-LABEL org.opencontainers.image.version="${PATCH_VERSION}"
+LABEL org.opencontainers.image.description="Blackbox Exporter container image for ${PRODUCT}"
+LABEL org.opencontainers.image.version="%%blackbox_exporter_patch_version%%"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/blackbox_exporter:${PATCH_VERSION}.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/blackbox_exporter:%%blackbox_exporter_patch_version%%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends prometheus-blackbox_exporter=${PATCH_VERSION} curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends prometheus-blackbox_exporter curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/blackbox_exporter"]
 CMD ["--config.file=/etc/prometheus/blackbox.yml"]
 EXPOSE 9115

@@ -6,9 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
-ARG PATCH_VERSION="9.5.18"
-
-#!BuildTag: uyuni/grafana:${PATCH_VERSION}
+#!BuildTag: uyuni/grafana:%%grafana_patch_version%%
 #!BuildTag: uyuni/grafana:latest
 
 ARG BASE=bci/bci-base:15.6
@@ -24,16 +22,16 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.grafana
 LABEL org.opencontainers.image.title="${PRODUCT} Grafana"
-LABEL org.opencontainers.image.description="Grafana container image for ${PRODUCT}."
-LABEL org.opencontainers.image.version="${PATCH_VERSION}"
+LABEL org.opencontainers.image.description="Grafana container image for ${PRODUCT}"
+LABEL org.opencontainers.image.version="%%grafana_patch_version%%"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/grafana:${PATCH_VERSION}.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/grafana:%%grafana_patch_version%%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
 
-RUN set -euo pipefail; zypper -n in --no-recommends grafana=${PATCH_VERSION}; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+RUN set -euo pipefail; zypper -n in --no-recommends grafana; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENV GF_PATHS_DATA="/var/lib/grafana"
 ENV GF_PATHS_HOME="/usr/share/grafana"
 ENV GF_PATHS_LOGS="/var/log/grafana"
