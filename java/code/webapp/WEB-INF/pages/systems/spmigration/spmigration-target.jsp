@@ -47,7 +47,7 @@
         </c:when>
         <c:when test="${isMinion and not isSaltUpToDate}">
             <div class="alert alert-warning">
-                <bean:message key="spmigration.jsp.error.update-salt-package-needed" />
+                <bean:message key="spmigration.jsp.error.update-salt-package-needed" arg0="${saltPackage}"/>
             </div>
         </c:when>
         <c:otherwise>

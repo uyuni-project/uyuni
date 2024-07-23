@@ -28958,8 +28958,8 @@ given channel.</source>
         <target state="translated">このシステムには未解決のパッケージ管理スタックの更新が存在しています。製品移行を行なう前に、パッケージに関連する全てのソフトウェア更新スタックを更新してください。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
-        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="translated">インストールされている &lt;strong&gt;Salt&lt;/strong&gt; パッケージのバージョンが古くなっています。製品移行を行なう前に、パッケージを最新バージョンに更新してください。</target>
+        <source>The installed &lt;strong&gt;{0}&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+        <target state="translated">インストールされている &lt;strong&gt;{0}&lt;/strong&gt; パッケージのバージョンが古くなっています。製品移行を行なう前に、パッケージを最新バージョンに更新してください。</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
