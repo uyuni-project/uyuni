@@ -101,7 +101,9 @@ public enum ViewHelper {
         "/rhn/systems/details/SystemRemoteCommand.do",
         "/rhn/manager/systems/details/highstate",
         "/rhn/manager/systems/details/recurring-actions",
-        "/rhn/manager/cm/build"
+        "/rhn/manager/cm/build",
+        "/rhn/admin/ScheduleDetail.do",
+        "/rhn/manager/systems/cmd"
     );
 
     ViewHelper() { }

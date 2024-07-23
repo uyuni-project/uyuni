@@ -1,0 +1,13 @@
+// These styles are migrated verbatim from the old theme, please don't use it for new code
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 21px;
+  font-size: 21px;
+  line-height: inherit;
+  color: inherit;
+  border: 0;
+  // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
+  border-bottom: 1px solid #e5e5e5;
+}

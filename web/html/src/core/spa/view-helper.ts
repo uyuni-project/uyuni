@@ -45,6 +45,8 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/manager/systems/details/highstate",
   "/rhn/manager/systems/details/recurring-actions",
   "/rhn/manager/cm/build",
+  "/rhn/admin/ScheduleDetail.do",
+  "/rhn/manager/systems/cmd",
 ];
 
 export const onEndNavigate = () => {
