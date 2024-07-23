@@ -1,7 +1,7 @@
 // These are all leftovers from the old theme, hopefully we can drop most of this over time
 .text-muted {
   &, &:hover, &:focus {
-    color: $eos-bc-gray-100;
+    color: $eos-bc-gray-100!important;
   }
 }
 

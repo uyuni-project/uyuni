@@ -4,7 +4,6 @@
 @import "../base/tools.scss";
 @import "../base/setup-wizard.scss";
 @import "../base/notifications.scss";
-@import "../base/fixes.scss";
 @import "../base/network.scss";
 @import "../base/inputs.scss";
 @import "../base/forms.scss";
@@ -29,6 +28,7 @@
 @import "./components/pre.scss";
 
 @import "./bootstrap-fixes.scss";
+@import "../base/fixes.scss";
 
 // Responsive overrides
 @import "../base/responsive-rules.scss";

@@ -74,7 +74,11 @@ public enum ViewHelper {
         "/rhn/manager/contentmanagement/projects",
         "/rhn/kickstart/cobbler/DefaultSnippetList.do",
         "/rhn/systems/details/packages/PackageList.do",
-        "/rhn/software/channels/All.do"
+        "/rhn/software/channels/All.do",
+        "rhn/channels/software/Search.do",
+        "/rhn/manager/systems/ssm/coco/settings",
+        "/rhn/systems/ssm/audit/ScheduleXccdf.do",
+        "/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"
     );
 
     ViewHelper() { }
