@@ -141,12 +141,12 @@ After do |scenario|
           begin
             click_button('Details')
           rescue Capybara::ElementNotFound
-            warn "Button 'Details' not found on the page."
+            log "Button 'Details' not found on the page."
           rescue Capybara::ElementNotInteractable
-            warn "Button 'Details' found but not interactable."
+            log "Button 'Details' found but not interactable."
           end
         else
-          warn "Page not on minion system or details."
+          log "Page not on minion system or details."
         end
 
         # Save the screenshot with a timeout
