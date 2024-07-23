@@ -1,10 +1,43 @@
 {
-  "name": "uyuni-dev-container",
+  "name": "uyuni-devcontainer",
   "build": { "dockerfile": "Dockerfile" },
-  "remoteEnv": {
-    "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk"
+
+  "containerEnv": {
+    "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk",
+    "ANT_HOME": "/usr/share/ant"
   },
-  "postCreateCommand": "cd /workspaces/uyuni &&  ant -f java/manager-build.xml ivy"
-  
-  // More info: https://containers.dev/implementors/json_reference/
+
+  "portsAttributes": {
+    "8001": {
+      "label": "Debug Taskomatic",
+      "onAutoForward": "notify"
+    },
+    "8002": {
+      "label": "Debug Search Server",
+      "onAutoForward": "notify"
+    },
+
+    "8003": {
+      "label": "Debug Tomcat",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "nickheap.vscode-ant",
+        "vscjava.vscode-java-debug",
+        "redhat.java",
+        "shengchen.vscode-checkstyle",
+        "SonarSource.sonarlint-vscode",
+        "vscjava.vscode-java-test",
+        "vscjava.vscode-maven",
+        "vscjava.vscode-java-dependency",
+        "ckolkman.vscode-postgres"
+      ]
+    }
+  },
+
+  "postCreateCommand": "cd ${containerWorkspaceFolder} &&  ant -f java/manager-build.xml ivy && yarn install"
 }
