@@ -143,6 +143,9 @@ class ModuleMdImporter:
                     f"{no_stream_added} new package(s) imported for module {stream.get_NSVCA()}.",
                 )
 
+        refresh_newest_package = rhnSQL.Procedure("rhn_channel.refresh_newest_package")
+        refresh_newest_package(self.channel_id, "backend.appstreams.import_modules")
+
         rhnSQL.commit()
         log(2, f"{no_total_added} of {no_total_pkgs} packages matched.")
 
