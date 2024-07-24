@@ -1,0 +1,1 @@
+- Fix typo on directories to cleanup when deleting a system (bsc#1228101)
