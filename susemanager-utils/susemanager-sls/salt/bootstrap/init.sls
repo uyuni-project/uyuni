@@ -321,4 +321,7 @@ transactional_update_set_reboot_method_systemd:
     - unless:
       - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
+disable_reboot_timer_transactional_minions:
+  cmd.run:
+    - name: systemctl disable transactional-update.timer
 {%- endif %}
