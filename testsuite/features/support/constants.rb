@@ -750,6 +750,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         debian-12-main-updates-amd64
         debian-12-suse-manager-tools-amd64
       ],
+    'sll-7-ltss' => # CHECKED
+      %w[
+        res-7-ltss-updates-x86_64
+        res-7-suse-manager-tools-x86_64-lbt7
+      ],
     'sll-9' => # CHECKED
       %w[
         sll-cb-9-updates-x86_64
@@ -1515,6 +1520,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-x86_64' => 840,
+  'res-7-ltss-updates-x86_64' => 960,
+  'res-7-suse-manager-tools-x86_64-lbt7' => 120,
   'res7-suse-manager-tools-x86_64' => 300,
   'res7-x86_64' => 21_000,
   'rhel-x86_64-server-7' => 60,
