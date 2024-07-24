@@ -1,0 +1,1 @@
+- sumautil: properly detect bridge interfaces (bsc#1226461)
