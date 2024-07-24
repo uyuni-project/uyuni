@@ -98,19 +98,57 @@ class SSLSocket:
         Initializes the SSL connection.
         """
         self._check_closed()
-        self._ctx = SSL.SSLContext(SSL.PROTOCOL_TLS_CLIENT)
-        self._ctx.options |= SSL.OP_NO_TLSv1
-        self._ctx.options |= SSL.OP_NO_TLSv1_1
-        self._ctx.verify_mode = SSL.CERT_REQUIRED
-        self._ctx.check_hostname = True
-        self._ctx.load_default_certs(SSL.Purpose.SERVER_AUTH)
-        if self._trusted_certs:
-            # We have been supplied with trusted CA certs
-            for f in self._trusted_certs:
-                self._ctx.load_verify_locations(f)
-        self._connection = self._ctx.wrap_socket(
-            self._sock, server_hostname=server_name
-        )
+        if hasattr(SSL, "PROTOCOL_TLS_CLIENT"):
+            self._ctx = SSL.SSLContext(SSL.PROTOCOL_TLS_CLIENT)
+            self._ctx.options |= SSL.OP_NO_TLSv1
+            self._ctx.options |= SSL.OP_NO_TLSv1_1
+            self._ctx.verify_mode = SSL.CERT_REQUIRED
+            self._ctx.check_hostname = True
+            self._ctx.load_default_certs(SSL.Purpose.SERVER_AUTH)
+            if self._trusted_certs:
+                # We have been supplied with trusted CA certs
+                for f in self._trusted_certs:
+                    self._ctx.load_verify_locations(f)
+            self._connection = self._ctx.wrap_socket(
+                self._sock, server_hostname=server_name
+            )
+        else:
+            # This needs to be kept for old traditional clients
+            # SSL method to use
+            if hasattr(SSL, "PROTOCOL_TLS"):
+                self._ssl_method = SSL.PROTOCOL_TLS
+            else:
+                self._ssl_method = SSL.PROTOCOL_SSLv23
+
+            if hasattr(SSL, "SSLContext"):
+                self._ctx = SSL.SSLContext(self._ssl_method)
+                self._ctx.verify_mode = SSL.CERT_REQUIRED
+                self._ctx.check_hostname = True
+                self._ctx.load_default_certs(SSL.Purpose.SERVER_AUTH)
+                if self._trusted_certs:
+                    # We have been supplied with trusted CA certs
+                    for f in self._trusted_certs:
+                        self._ctx.load_verify_locations(f)
+
+                # pylint: disable-next=deprecated-method
+                self._connection = self._ctx.wrap_socket(
+                    self._sock, server_hostname=server_name
+                )
+            else:
+                # Python 2.6-2.7.8
+                cacert = None
+                if self._trusted_certs:
+                    # seems python2.6 supports only 1
+                    cacert = self._trusted_certs[0]
+                # pylint: disable-next=deprecated-method
+                self._connection = SSL.wrap_socket(
+                    self._sock,
+                    ssl_version=self._ssl_method,
+                    cert_reqs=SSL.CERT_REQUIRED,
+                    ca_certs=cacert,
+                )
+                # pylint: disable-next=used-before-assignment
+                match_hostname(self._connection.getpeercert(), server_name)
 
     # pylint: disable-next=unused-argument
     def makefile(self, mode, bufsize=None):
