@@ -864,27 +864,15 @@ SELECT P.id, P.summary, PP.name as provider
         SELECT pid as package_id
           FROM suseServerChannelsRetractedPackagesView
          WHERE sid = :sid
-    ), ptfPackages AS (
-        SELECT pp.package_id
-          FROM rhnpackagecapability pc
-                  INNER JOIN rhnpackageprovides pp ON pc.id = pp.capability_id
-         WHERE pc.name = 'ptf()'
-    ), partOfPtfPackages AS (
-        SELECT pp.package_id
-          FROM rhnpackagecapability pc
-                  INNER JOIN rhnpackageprovides pp ON pc.id = pp.capability_id
-         WHERE pc.name = 'ptf-package()'
     )
     SELECT pk.id AS package_id
               -- Convert the ids to 0/1 flags
               , SIGN(COALESCE(rp.package_id, 0)) AS retracted
-              , SIGN(COALESCE(mp.package_id, 0)) AS master_ptf_package
-              , SIGN(COALESCE(pp.package_id, 0)) AS part_of_ptf
+              , SIGN(COALESCE(CAST(pk.is_ptf AS INTEGER), 0))::int AS master_ptf_package
+              , SIGN(COALESCE(CAST(pk.is_part_of_ptf AS INTEGER), 0))::int AS part_of_ptf
       FROM rhnpackage pk
               LEFT JOIN retractedPackages rp ON rp.package_id = pk.id
-              LEFT JOIN ptfPackages mp ON mp.package_id = pk.id
-              LEFT JOIN partOfPtfPackages pp ON pp.package_id = pk.id
-     WHERE pk.id IN (%s) AND ( rp.package_id IS NOT NULL OR mp.package_id IS NOT NULL OR pp.package_id IS NOT NULL )
+     WHERE pk.id IN (%s) AND ( rp.package_id IS NOT NULL OR pk.is_ptf = TRUE OR pk.is_part_of_ptf = TRUE )
 </query>
 
 <mode name="system_available_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
@@ -2459,9 +2447,7 @@ WITH ptfInstalled AS (
     SELECT sp.*
       FROM rhnserverpackage sp
                 INNER JOIN rhnpackage pk ON sp.name_id = pk.name_id AND sp.evr_id = pk.evr_id AND sp.package_arch_id = pk.package_arch_id
-                INNER JOIN rhnpackageprovides pp ON pk.id = pp.package_id
-                INNER JOIN rhnpackagecapability pc ON pp.capability_id = pc.id
-     WHERE sp.server_id = :sid AND pc.name = 'ptf()'
+     WHERE sp.server_id = :sid AND pk.is_ptf = TRUE
 ), highest_id_packages AS (
     SELECT p.name_id, p.evr_id, p.package_arch_id, max(p.id) AS id
       FROM ptfInstalled pi
@@ -2501,9 +2487,7 @@ ORDER BY nvre
 WITH ptf_packages AS (
     SELECT DISTINCT pk.*
       FROM rhnpackage pk
-                INNER JOIN rhnpackageprovides pp ON pk.id = pp.package_id
-                INNER JOIN rhnpackagecapability pc ON pp.capability_id = pc.id
-     WHERE pc.name = 'ptf()'
+     WHERE pk.is_ptf = TRUE
 )
 SELECT rp.id AS package_id,
        pn.name || '-' || evr_t_as_vre_simple(latest.evr) AS NVRE,
