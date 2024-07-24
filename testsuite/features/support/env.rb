@@ -45,6 +45,8 @@ $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PRO
 $custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
 $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
+$current_user = 'admin'
+$current_password = 'admin'
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -144,7 +146,7 @@ After do |scenario|
     ensure
       print_server_logs
       previous_url = current_url
-      step 'I am authorized for the "Admin" section'
+      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
       visit previous_url
     end
   end
