@@ -770,8 +770,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'rockylinux8' =>
       %w[
-        rockylinux8-x86_64
-        rockylinux8-appstream-x86_64
+        rockylinux-8-x86_64
+        rockylinux-8-appstream-x86_64
       ],
     'rockylinux9' => # CHECKED
       %w[
