@@ -17,6 +17,7 @@ require 'set'
 require_relative 'code_coverage'
 require_relative 'twopence_env'
 require_relative 'commonlib'
+require 'timeout'
 
 # code coverage analysis
 # SimpleCov.start
@@ -124,23 +125,45 @@ Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
-# embed a screenshot after each failed scenario
+# Embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+
   if scenario.failed?
     begin
       Dir.mkdir('screenshots') unless File.directory?('screenshots')
       path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-      # only click on Details when we have errors during bootstrapping and more Details available
-      click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
-      # a TimeoutError may be raised while a page is still (re)loading
-      find('#page-body', wait: 3) if scenario.exception.is_a?(TimeoutError)
-      page.driver.browser.save_screenshot(path)
-      attach path, 'image/png'
-      attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+
+      # Check if the page is visible before taking a screenshot
+      if page.has_selector?('header', wait: Capybara.default_max_wait_time) || page.has_selector?('#username-field', wait: Capybara.default_max_wait_time)
+        if page.has_content?('Bootstrap Minions') && page.has_content?('Details')
+          begin
+            click_button('Details')
+          rescue Capybara::ElementNotFound
+            log "Button 'Details' not found on the page."
+          rescue Capybara::ElementNotInteractable
+            log "Button 'Details' found but not interactable."
+          end
+        else
+          log 'Page not on minion system or details.'
+        end
+
+        # Save the screenshot with a timeout
+        begin
+          Timeout.timeout(Capybara.default_max_wait_time) do # Adjust the timeout value as needed
+            page.driver.browser.save_screenshot(path)
+            attach path, 'image/png'
+            attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+          end
+        rescue Timeout::Error
+          warn "Timeout occurred while taking a screenshot for scenario: #{scenario.name}"
+        end
+      else
+        warn 'Page is not visible; unable to take a screenshot.'
+      end
     rescue StandardError => e
-      warn e.message
+      warn "An error occurred while processing scenario: #{scenario.name}\nError message: #{e.message}"
     ensure
       print_server_logs
       previous_url = current_url
@@ -148,6 +171,7 @@ After do |scenario|
       visit previous_url
     end
   end
+
   page.instance_variable_set(:@touched, false)
 end
 
