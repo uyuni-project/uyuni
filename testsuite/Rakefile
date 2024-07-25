@@ -93,7 +93,7 @@ namespace :utils do
     sh "echo '- #{output_filepath}' >> #{args[:yaml_path]}", verbose: false
     # When two minions with the same version but different architectures create a bootstrap repository, they will share the same directory
     # To prevent one minion to delete the other minion bootstrap repository, disable the flush option for s390 minion.
-    if args[:flush] == 'true'
+    if args[:flush]
       # This will generate `minion_create_bootstrap_repository.feature` with the flush option active
       sh "sed -i 's/<optional-flush-option>//g' #{output_filepath}", verbose: false
     else
