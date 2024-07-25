@@ -19,7 +19,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I follow "Create Channel"
     And I enter "Custom Channel for Rocky 8 DVD" as "Channel Name"
     And I enter "rocky-8-iso" as "Channel Label"
-    And I select "RHEL8-Pool for x86_64" from "Parent Channel"
+    And I select "rockylinux-8 for x86_64" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for Rocky 8 DVD created" text
@@ -90,9 +90,8 @@ Feature: Add the Rocky 8 distribution custom repositories
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 8" text
     When I click on "Attach/Detach Sources"
     And I wait until I do not see "Loading" text
-    And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
+    And I select "rockylinux-8 for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for Rocky 8 DVD"
-    And I check "RES-AS-8-Updates for x86_64"
     And I check "Custom Channel for rocky8_minion"
     And I click on "Save"
     Then I should see a "Custom Channel for Rocky 8 DVD" text
