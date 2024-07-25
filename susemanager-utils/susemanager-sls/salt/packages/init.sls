@@ -28,6 +28,14 @@ mgr_install_flavor_check:
       - mgrcompat: sync_states
 {%- endif %}
 
+{%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease'] < 8 %}
+  pkg.installed:
+    - name: yum-utils
+    - require:
+      - file: mgrchannels_*
+      - mgrcompat: sync_states
+{%- endif %}
+
 mgr_refresh_grains:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
   saltutil.sync_grains:
