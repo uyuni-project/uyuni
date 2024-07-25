@@ -8,4 +8,4 @@ As the system administrator
 I create all bootstrap repos with --with-custom-channels option
 
   Scenario: Create the bootstrap repository for <client>
-    When I create the bootstrap repository for "<client>" on the server <flush>
+    When I create the bootstrap repository for "<client>" on the server <optional-flush-option>

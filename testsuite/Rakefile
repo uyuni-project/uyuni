@@ -91,11 +91,14 @@ namespace :utils do
     sh "sed 's/<client>/#{args[:client_name]}/g' #{args[:template_path]} > #{output_filepath}", verbose: false
     sh "sed -i 's/<type>/salt/g' #{output_filepath}", verbose: false
     sh "echo '- #{output_filepath}' >> #{args[:yaml_path]}", verbose: false
-    # Flush bootstrap repository for all minions except s390 minions
+    # When two minions with the same version but different architectures create a bootstrap repository, they will share the same directory
+    # To prevent one minion to delete the other minion bootstrap repository, disable the flush option for s390 minion.
     if args[:flush] == 'true'
-      sh "sed -i 's/<flush>//g' #{output_filepath}", verbose: false
+      # This will generate `minion_create_bootstrap_repository.feature` with the flush option active
+      sh "sed -i 's/<optional-flush-option>//g' #{output_filepath}", verbose: false
     else
-      sh "sed -i 's/<flush>/without flushing/g' #{output_filepath}", verbose: false
+      # This will generate `minion_create_bootstrap_repository.feature` with the flush option disable
+      sh "sed -i 's/<optional-flush-option>/without flushing/g' #{output_filepath}", verbose: false
     end
   end
 
@@ -154,7 +157,7 @@ namespace :utils do
     clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
     clients.each do |client|
       # disable flush option for s390 minions
-      flush = client.include?('s390') ? 'false' : 'true'
+      flush = !client.include?('s390')
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/create_bootstrap_repositories/create_bootstrap_repository.template',
         File.basename(client, '.feature'),
