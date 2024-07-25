@@ -59,6 +59,8 @@ CREATE TABLE rhnPackage
     header_sig       VARCHAR(64),
     copyright        VARCHAR(128),
     cookie           VARCHAR(128),
+    is_ptf           BOOLEAN DEFAULT (FALSE),
+    is_part_of_ptf   BOOLEAN DEFAULT (FALSE),
     last_modified    TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
     created          TIMESTAMPTZ
@@ -88,3 +90,5 @@ CREATE INDEX rhn_package_nid_evrid_idx
 
 CREATE SEQUENCE rhn_package_id_seq;
 
+CREATE INDEX rhn_package_is_ptf_idx ON rhnPackage (is_ptf);
+CREATE INDEX rhn_package_is_part_of_ptf_idx ON rhnPackage (is_part_of_ptf);

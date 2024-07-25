@@ -270,6 +270,16 @@ class PackageImport(ChannelPackageSubscription):
                 dep['capability'] = nv
                 if nv not in self.capabilities:
                     self.capabilities[nv] = None
+
+        # Check whether package is a PTF or part of PTF
+        package["is_ptf"] = False
+        package["is_part_of_ptf"] = False
+        for cap in package["provides"]:
+            if cap["capability"][0] == "ptf()":
+                package["is_ptf"] = True
+            elif cap["capability"][0] == "ptf-package()":
+                package["is_part_of_ptf"] = True
+
         # Process files too
         fileList = package['files']
         for f in fileList:
