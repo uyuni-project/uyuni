@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -57,6 +58,31 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
                                             .uniqueResult();
 
         assertEquals(netint1, netint2);
+    }
+
+    /**
+     * Test NetworkInterface.isContainerNetwork
+     * @throws Exception something bad happened
+     */
+    @Test
+    public void testIsContainerNetwork() throws Exception {
+        NetworkInterface netint1 = createTestNetworkInterface();
+        assertFalse(netint1.isContainerNetwork());
+        netint1.setModule("bridge");
+        netint1.setName("docker0");
+        assertTrue(netint1.isContainerNetwork());
+        netint1.setModule("bridge");
+        netint1.setName("cni-podman0");
+        assertTrue(netint1.isContainerNetwork());
+        netint1.setModule("bridge");
+        netint1.setName("cni0");
+        assertTrue(netint1.isContainerNetwork());
+        netint1.setModule("foobar");
+        netint1.setName("flannel.1");
+        assertTrue(netint1.isContainerNetwork());
+        netint1.setModule("foobar");
+        netint1.setName("eth0");
+        assertFalse(netint1.isContainerNetwork());
     }
 
     /**

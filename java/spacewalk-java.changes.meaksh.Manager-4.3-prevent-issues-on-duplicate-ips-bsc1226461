@@ -1,0 +1,1 @@
+- Autoinstallation: prevent issues with duplicate IP address due to some networks (bsc#1226461)
