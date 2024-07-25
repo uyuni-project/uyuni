@@ -374,9 +374,9 @@ echo 'some more hello'
         assert_args_expect(shell.do_kickstart_list.call_args_list,
                            [(('', True), {})])
 
-    def test_kickstart_delete_some_invalid_profile(self, shell):
+    def test_kickstart_delete_wildcard_arg(self, shell):
         """
-        Test do_kickstart_delete invalid profile (not found).
+        Test do_kickstart_delete with a wildcard argument
 
         :param shell:
         :return:
@@ -387,19 +387,18 @@ echo 'some more hello'
         logger = MagicMock()
         with patch("spacecmd.kickstart.logging", logger) as lgr:
             spacecmd.kickstart.do_kickstart_delete(
-                shell, "fourth_profile zero_profile first_profile second_profile")
+                shell, "*_profile")
 
-        assert not shell.client.kickstart.deleteProfile.called
         assert not shell.help_kickstart_delete.called
-        assert logger.error.called
+        assert not logger.error.called
+        assert shell.client.kickstart.deleteProfile.called
         assert shell.do_kickstart_list.called
         assert logger.debug.called
 
-        assert_expect(logger.debug.call_args_list,
-                      "Got labels to delete of ['first_profile', 'second_profile']")
-        assert_args_expect(logger.error.call_args_list,
-                           [(('The following kickstart labels are invalid:',
-                              'fourth_profile, zero_profile'), {})])
+        assert_args_expect(shell.client.kickstart.deleteProfile.call_args_list,
+                           [((shell.session, "first_profile"), {}),
+                            ((shell.session, "second_profile"), {}),
+                            ((shell.session, "third_profile"), {})])
 
     def test_kickstart_delete_profile_all_yes(self, shell):
         """
