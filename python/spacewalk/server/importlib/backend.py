@@ -1201,11 +1201,13 @@ class Backend:
         affected_errata_ids = {}
         for op_type in ["insert", "update", "delete"]:
             op_values = getattr(dml, op_type)
-            for table_name, values_hash in list(op_values.items()):
+            for table_name, values_hash in op_values.items():
                 if table_name == "rhnErrata":
                     field = "id"
                 elif "errata_id" in values_hash:
                     field = "errata_id"
+                else:
+                    continue
 
                 # Now we know in which field to look for changes
                 for erratum_id in values_hash[field]:
