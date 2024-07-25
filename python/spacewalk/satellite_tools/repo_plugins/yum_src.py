@@ -157,8 +157,7 @@ class ZyppoSync:
                 all_keys_file,
             ]
             _log_command(args)
-            # pylint: disable-next=subprocess-run-check
-            process = subprocess.run(args)
+            process = subprocess.run(args, check=False)
             args = [
                 "gpg",
                 "--verbose",
@@ -208,8 +207,7 @@ class ZyppoSync:
                         "gpg-pubkey-{}-{}".format(key, zypper_gpg_keys[key]),
                     ]
                     _log_command(args)
-                    # pylint: disable-next=subprocess-run-check
-                    subprocess.run(args)
+                    subprocess.run(args, check=False)
                     log(
                         3,
                         # pylint: disable-next=consider-using-f-string
@@ -248,8 +246,7 @@ class ZyppoSync:
                     key_id,
                 ]
                 _log_command(args)
-                # pylint: disable-next=subprocess-run-check
-                subprocess.run(args)
+                subprocess.run(args, check=False)
                 args = [
                     "rpmkeys",
                     "-vv",
