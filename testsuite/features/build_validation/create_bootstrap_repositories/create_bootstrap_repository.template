@@ -8,4 +8,4 @@ Feature: Create bootstrap repository for <client>
   I create all bootstrap repos with --with-custom-channels option
 
   Scenario: Create the bootstrap repository for <client>
-    When I create the bootstrap repository for "<client>" on the server
+    When I create the bootstrap repository for "<client>" on the server <optional-flush-option>
