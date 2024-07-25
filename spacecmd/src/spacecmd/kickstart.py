@@ -209,16 +209,10 @@ def do_kickstart_delete(self, args):
         self.help_kickstart_delete()
         return 1
 
-    mismatched = sorted(set(args).difference(set(all_labels)))
-    if mismatched:
-        logging.error(_N("The following kickstart labels are invalid:"),
-                      ", ".join(mismatched))
-        return 1
-    else:
-        for label in labels:
-            if self.options.yes or self.user_confirm(_("Delete profile %s [y/N]:") % label):
-                self.client.kickstart.deleteProfile(self.session, label)
-        return 0
+    for label in labels:
+        if self.options.yes or self.user_confirm(_("Delete profile %s [y/N]:") % label):
+            self.client.kickstart.deleteProfile(self.session, label)
+    return 0
 
 ####################
 
