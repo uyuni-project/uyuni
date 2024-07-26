@@ -9,7 +9,7 @@ $input-height: 35px;
 
 .form-control,
 .form-control--react-select > div:first-of-type {
-  color: $eos-bc-gray-1000 !important;
+  color: $eos-bc-gray-1000;
   height: $input-height;
   max-width: 100%;
   border: 1px solid $input-border-color !important;
@@ -23,6 +23,20 @@ $input-height: 35px;
   &:focus,
   &:active {
     background: #fff;
+  }
+
+  // This is like writing `div&`, except this nonsense is valid syntax, see https://stackoverflow.com/a/28357148/1470607
+  @at-root #{selector-unify(&, div)},
+  &[disabled],
+  &[readonly],
+  fieldset[disabled] & {
+    background-color: $gray-lighter;
+    opacity: 1;
+  }
+
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
   }
 }
 
@@ -39,6 +53,7 @@ $input-height: 35px;
     color: $eos-bc-gray-700;
     pointer-events: auto;
     cursor: not-allowed;
+    background: $gray-lighter;
 
     &:focus {
       border-color: $input-border-color !important;
@@ -58,7 +73,9 @@ $input-height: 35px;
   &::placeholder {
     color: $input-placeholder;
     opacity: 1;
+    background: $gray-lighter;
   }
+
 }
 
 .form-control-static {
@@ -66,11 +83,22 @@ $input-height: 35px;
   padding-bottom: 8px;
 }
 
+div.form-control {
+  background: $gray-lighter;
+
+  &:focus,
+  &:active {
+    background: $gray-lighter;
+  }
+}
+
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
-  &:hover {
-    border: 1px solid $eos-bc-blue-500 !important;
-    outline: none !important;
+  outline: none !important;
+
+  &[class*="--is-focused"],
+  &[class*="--menu-is-open"] {
+    border-color: $eos-bc-blue-500 !important;
   }
 }
 
@@ -78,6 +106,16 @@ textarea.form-control,
 select[multiple],
 select[size] {
   height: auto;
+}
+
+// We need to manually handle these cases to fix legacy DOM structures
+.input-group {
+  --bs-border-width: 1px;
+}
+
+.input-group-btn:not(:first-child) .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .input-group-text {
@@ -89,4 +127,14 @@ select[size] {
   > .fa {
     margin: 0 !important;
   }
+}
+
+.input-group {
+  align-items: center;
+}
+
+.input-group-addon {
+  color: $eos-bc-gray-900;
+  background: $gray-lighter;
+  font-size: 1em;
 }

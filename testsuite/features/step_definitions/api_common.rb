@@ -136,6 +136,21 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
   refute($api_test.user.remove_role(luser, rolename) != 1)
 end
 
+Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, password|
+  $current_user = user
+  $current_password = password
+  next if $api_test.user.list_users.to_s.include? user
+
+  $api_test.user.create(user, password, user, user, "#{user}@mail.com")
+  roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
+  roles.each do |role|
+    $api_test.user.add_role(user, role)
+  end
+  add_context('user', user)
+  add_context('password', 'linux')
+  log "New user #{user} created"
+end
+
 # channel namespace
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
@@ -587,8 +602,21 @@ When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "
   $api_test.system.set_variables(sid, variables)
 end
 
-When(/^I create a kickstart tree via the API$/) do
-  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
+When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
+  case distro_name
+  when 'fedora_kickstart_distro_api'
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
+  when 'testdistro'
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
+  else
+    # Raise an error for unrecognized value
+    raise ArgumentError, "Unrecognized value: #{distro_name}"
+  end
+end
+
+When(/^I create a "([^"]*)" profile via the API using import file for "([^"]*)" distribution$/) do |profile_name, distro_name|
+  canonical_path = Pathname.new(File.join(File.dirname(__FILE__), '/../upload_files/autoinstall/cobbler/mock/empty.xml')).cleanpath
+  $api_test.kickstart.create_profile_using_import_file(profile_name, distro_name, canonical_path)
 end
 
 When(/^I create a kickstart tree with kernel options via the API$/) do
@@ -597,4 +625,8 @@ end
 
 When(/^I update a kickstart tree via the API$/) do
   $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'generic_rpm', 'self_update=0', 'self_update=1')
+end
+
+When(/^I delete profile and distribution using the API for "([^"]*)" kickstart tree$/) do |distro_name|
+  $api_test.kickstart.tree.delete_tree_and_profiles(distro_name)
 end

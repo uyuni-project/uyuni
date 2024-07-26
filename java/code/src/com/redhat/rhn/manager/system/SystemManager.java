@@ -2164,8 +2164,10 @@ public class SystemManager extends BaseManager {
     }
 
     private Supplier<RhnRuntimeException> raiseAndLog(String message) {
-        log.error(message);
-        return () -> new RhnRuntimeException(message);
+        return () -> {
+            log.error(message);
+            return new RhnRuntimeException(message);
+        };
     }
 
     private Optional<Server> findByAnyFqdn(Set<String> fqdns) {
@@ -2195,6 +2197,7 @@ public class SystemManager extends BaseManager {
                 info = new ProxyInfo();
                 info.setServer(server);
                 server.setProxyInfo(info);
+                SystemManager.updateSystemOverview(server.getId());
             }
             info.setSshPort(port);
             info.setSshPublicKey(sshPublicKey.getBytes());
@@ -2234,6 +2237,8 @@ public class SystemManager extends BaseManager {
         info.setSshPublicKey(sshPublicKey.getBytes());
         server.setProxyInfo(info);
 
+        // No need to call `updateSystemOverview`
+        // It will be called inside the method setBaseEntitlement. If we remove this line we need to manually call it
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         return server;
     }

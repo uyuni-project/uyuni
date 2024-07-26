@@ -704,7 +704,7 @@ When(/^I wait until rhn-search is responding$/) do
   end
 end
 
-Then(/^I wait until mgr-sync refresh is finished$/) do
+When(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
   repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
@@ -1048,18 +1048,22 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
+When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+
   cmd =
     if parent_channel.nil?
-      "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
+      "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels"
     else
-      "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
+      "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels"
     end
-  log 'Creating the boostrap repository on the server:'
+
+  cmd += ' --flush' unless without_flushing
+
+  log 'Creating the bootstrap repository on the server:'
   log "  #{cmd}"
   get_target('server').run(cmd)
 end
@@ -1555,7 +1559,9 @@ When(/^I reboot the server through SSH$/) do
 
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
     out, _code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include?('dead') && out.to_s.include?('running')
+    # mgr-check-payg.service will be inactive (dead) for Uyuni, so we cannot check that all services are running
+    # we look for the status displayed by apache2.service, the webserver, when it is ready
+    if out.to_s.include? 'Processing requests...'
       log 'Server spacewalk service is up'
       break
     end
@@ -1625,7 +1631,9 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   default_timeout = 300
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
     out, _code = server_node.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include?('dead') && out.to_s.include?('running')
+    # mgr-check-payg.service will be inactive (dead) for Uyuni, so we cannot check that all services are running
+    # we look for the status displayed by apache2.service, the webserver, when it is ready
+    if out.to_s.include? 'Processing requests...'
       log 'Server: spacewalk service is up'
       break
     end
@@ -1638,7 +1646,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
 
   # Reset the API client to take the new CA into account
   log 'Resetting the API client'
-  new_api_client
+  $api_test = new_api_client
 
   raise SystemCallError, 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise ScriptError, 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'

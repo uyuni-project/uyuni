@@ -415,8 +415,8 @@ public class FormulaManager {
 
         return minions.stream().flatMap(minion -> FormulaFactory.getCombinedFormulasByServer(minion)
                 .stream()
-                .flatMap(formulaName -> FormulaFactory.getEndpointsFromFormulaData(formulaName,
-                        getCombinedFormulaDataForSystemAndFormula(minion,
+                .flatMap(formulaName -> FormulaFactory.getEndpointsFromFormulaData(
+                    getCombinedFormulaDataForSystemAndFormula(minion,
                                 Optional.ofNullable(managedGroupsPerServer.get(minion.getId())),
                                 groupsFormulaData, formulaName)).stream())
         ).collect(Collectors.toList());

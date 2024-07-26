@@ -32,7 +32,10 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.channel.Modules;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple3;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -42,6 +45,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -83,6 +87,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -908,6 +913,62 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         assertEquals("2.5.1", pack.getVersion());
         assertEquals("X", pack.getRelease());
         assertEquals("amd64-deb", pack.getArch());
+    }
+
+    @Test
+    public void testValidateMinionOnPaygWithProducts() throws Exception {
+        CloudPaygManager cpg = new TestCloudPaygManagerBuilder()
+                .withPaygInstance()
+                .withoutSCCCredentials()
+                .build();
+
+        downloadController = new DownloadController(cpg);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setInstalledProducts(Collections.emptySet());
+
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/smallBase", true);
+        HibernateFactory.getSession().flush();
+
+        // Test case - Token passed minion has no products
+        DownloadTokenBuilder tokenBuilderPass = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilderPass.useServerSecret();
+        tokenBuilderPass.setExpirationTimeMinutesInTheFuture(30);
+
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilderPass);
+        accessToken.setMinion(minion);
+        TestUtils.saveAndFlush(accessToken);
+        try {
+            downloadController.validateMinionInPayg(accessToken.getToken());
+        }
+        catch (spark.HaltException e) {
+            fail("BYOS minions are forbidden");
+        }
+
+        // Test case - Token fail as minion has a BYOS product
+        SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
+        minion.setInstalledProducts(Set.of(new InstalledProduct(sles)));
+        TestUtils.saveAndFlush(accessToken);
+        try {
+            downloadController.validateMinionInPayg(accessToken.getToken());
+            fail("BYOS minions are forbidden");
+        }
+        catch (spark.HaltException e) {
+            assertEquals(HttpStatus.SC_FORBIDDEN, e.getStatusCode());
+            assertEquals("Bring-your-own-subscription instances in Pay-as-you-go SUMA instances is not " +
+                    "allowed without SCC credentials.", e.getBody());
+        }
+
+        // Test case - Token passed minion has a free product
+        SUSEProduct alma = SUSEProductFactory.lookupByProductId(-39);
+        minion.setInstalledProducts(Set.of(new InstalledProduct(alma)));
+        TestUtils.saveAndFlush(accessToken);
+        try {
+            downloadController.validateMinionInPayg(accessToken.getToken());
+        }
+        catch (spark.HaltException e) {
+            fail("Free products should be allowed");
+        }
     }
 
     @Test

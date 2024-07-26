@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 18 18:11:01 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.9-0
+  * Implement IMDSv2 for AWS instance detection (bsc#1226090)
+
+-------------------------------------------------------------------
 Mon Jun 10 16:40:05 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8-0

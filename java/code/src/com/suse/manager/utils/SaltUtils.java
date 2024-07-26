@@ -1536,8 +1536,10 @@ public class SaltUtils {
                 .orElse(null));
 
         result.getRebootRequired()
-                .map(flag -> (Boolean) flag.getChanges().getRet().get("reboot_required"))
-                .ifPresent(flag -> server.setRebootRequiredAfter(flag ? new Date() : null));
+            .map(rr -> rr.getChanges().getRet())
+            .filter(Objects::nonNull)
+            .map(ret -> (Boolean) ret.get("reboot_required"))
+            .ifPresent(flag -> server.setRebootRequiredAfter(flag ? new Date() : null));
 
         // Update live patching version
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()

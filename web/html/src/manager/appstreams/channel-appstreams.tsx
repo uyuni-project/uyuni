@@ -1,16 +1,25 @@
-import { getStreamName } from "./appstreams";
-import { AppStreamModule } from "./appstreams.type";
+import { AppStreamModule, Channel } from "./appstreams.type";
+import { getStreamName } from "./utils";
 
 interface Props {
+  channel: Channel;
   streams: AppStreamModule[];
   moduleName: string;
-  toEnable: string[];
-  toDisable: string[];
-  showPackages: (string) => void;
+  toEnable: Map<number, string[]>;
+  toDisable: Map<number, string[]>;
+  showPackages?: (string) => void;
   onToggle: (AppStreamModule) => void;
 }
 
-export const ChannelAppStreams = ({ streams, moduleName, showPackages, toEnable, toDisable, onToggle }: Props) => {
+export const ChannelAppStreams = ({
+  channel,
+  streams,
+  moduleName,
+  showPackages,
+  toEnable,
+  toDisable,
+  onToggle,
+}: Props) => {
   // Sort stream names alphanumerically in descending order
   streams.sort((m1, m2) => getStreamName(m2).localeCompare(getStreamName(m1), "en", { numeric: true }));
   return (
@@ -19,17 +28,21 @@ export const ChannelAppStreams = ({ streams, moduleName, showPackages, toEnable,
         const stream = getStreamName(moduleStream);
 
         const changedModules = streams.map((s) => {
-          const isChanged = s.enabled ? toDisable.includes(getStreamName(s)) : toEnable.includes(getStreamName(s));
+          const isChanged = s.enabled
+            ? toDisable.get(channel.id)?.includes(getStreamName(s))
+            : toEnable.get(channel.id)?.includes(getStreamName(s));
           return isChanged ? s.name : null;
         });
 
         const changedStatus = changedModules.includes(moduleName);
-        const enabled = toEnable.includes(stream) || (moduleStream.enabled && !toDisable.includes(stream));
+        const enabled =
+          toEnable.get(channel.id)?.includes(stream) ||
+          (moduleStream.enabled && !toDisable.get(channel.id)?.includes(stream));
         return (
           <tr key={`${moduleStream.name}_${moduleStream.stream}`} className={changedStatus ? "changed" : ""}>
             {streamIdx === 0 && <td rowSpan={streams.length}>{moduleName}</td>}
             <td>
-              <button className={"btn btn-link"} onClick={() => showPackages(stream)}>
+              <button className={"btn btn-link"} onClick={() => showPackages && showPackages(stream)}>
                 {enabled ? <strong>{stream}</strong> : stream}
               </button>
             </td>

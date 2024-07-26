@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
-import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import org.apache.commons.lang3.StringUtils;
@@ -281,7 +280,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             }
             catch (XmlRpcException e) {
                 if (e.getCause() != null && e.getCause().getMessage() != null &&
-                        e.getCause().getMessage().contains("IP address duplicated")) {
+                        e.getCause().getMessage().contains("IP address duplicate")) {
                     return new ValidatorError(
                             "frontend.actions.systems.virt.duplicateipaddressvalue",
                             serverName);
@@ -303,7 +302,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
         catch (XmlRpcException e) {
             if (e.getCause() != null && e.getCause().getMessage() != null &&
-                    e.getCause().getMessage().contains("IP address duplicated")) {
+                    e.getCause().getMessage().contains("IP address duplicate")) {
                 return new ValidatorError(
                         "frontend.actions.systems.virt.duplicateipaddressvalue",
                         serverName);
@@ -324,7 +323,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         if (saveCobblerId && server != null) {
             server.setCobblerId(rec.getId());
         }
-        return new CobblerSyncCommand(user).store();
+        return null;
     }
 
     private void processRedHatManagementKeys(SystemRecord rec, Profile profile) {
@@ -467,7 +466,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     private Optional<Network> processSingleNetworkInterface(NetworkInterface networkInterfaceIn) {
         // don't create a physical network device for a bond
-        if (!networkInterfaceIn.isVirtBridge() && !networkInterfaceIn.isBond()) {
+        if (!networkInterfaceIn.isVirtBridge() && !networkInterfaceIn.isBond() &&
+                !networkInterfaceIn.isContainerNetwork()) {
             if (networkInterfaceIn.isPublic()) {
                 return Optional.of(setupPublicInterface(networkInterfaceIn));
             }

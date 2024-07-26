@@ -50,6 +50,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
@@ -61,7 +62,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -76,7 +79,7 @@ public class AnsibleController {
 
     private static final Logger LOG = LogManager.getLogger(AnsibleController.class);
     private static final Gson GSON = Json.GSON;
-    private static final Yaml YAML = new Yaml(new SafeConstructor());
+    private static final Yaml YAML = new Yaml(new SafeConstructor(new LoaderOptions()));
 
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
 
@@ -325,7 +328,8 @@ public class AnsibleController {
     }
 
     private static Date getScheduleDate(LocalDateTime dateTime) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 

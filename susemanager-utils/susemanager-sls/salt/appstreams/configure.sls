@@ -1,3 +1,5 @@
+include:
+- channels
 {% if pillar.get('param_appstreams_disable') %}
 disable_appstreams:
   appstreams.disabled:
@@ -14,8 +16,9 @@ enable_appstreams:
 {%- for module_name, stream in pillar.get('param_appstreams_enable', []) %}
       - {{ module_name }}:{{ stream }}
 {%- endfor %}
-    {% if pillar.get('param_appstreams_disable') %}
     - require:
+      - file: /etc/yum.repos.d/susemanager:channels.repo
+    {% if pillar.get('param_appstreams_disable') %}
       - appstreams: disable_appstreams
     {%- endif %}
 {%- endif %}

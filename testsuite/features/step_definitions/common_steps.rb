@@ -295,7 +295,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
   case os_family
-  when /^opensuse/, /^sles/
+  when /^opensuse/, /^sles/, /micro/
     node.run_until_ok('zypper --non-interactive refresh -s')
   when /^centos/, /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2023-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create the CLM filters for RH-like minions
@@ -49,10 +49,10 @@ Feature: Create the CLM filters for RH-like minions
     When I click on "Create Filter"
     Then I wait at most 10 seconds until I see modal containing "Create a new filter" text
     Then I should see a "Create a new filter" text
-    When I enter "php-8.1" as "filter_name"
+    When I enter "php-8.2" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I select "equals" from "matcher"
     And I enter "php" as "moduleName"
-    And I enter "8.1" as "moduleStream"
+    And I enter "8.2" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
-    Then I should see a "php-8.1" text
+    Then I should see a "php-8.2" text

@@ -9,6 +9,7 @@
   .panel-footer {
     padding: 10px 15px;
     background: transparent !important;
+    border-top: 1px solid $eos-bc-gray-100;
 
     &:empty {
       display: none;

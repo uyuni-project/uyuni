@@ -132,4 +132,4 @@ Feature: Create bootstrap repositories
 
 @sle15sp5s390_minion
   Scenario: Create the bootstrap repository for a SLES 15 SP5 s390x minion
-    When I create the bootstrap repository for "sle15sp5s390_minion" on the server
+    When I create the bootstrap repository for "sle15sp5s390_minion" on the server without flushing

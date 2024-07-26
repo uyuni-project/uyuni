@@ -197,7 +197,10 @@ def check_billing_adapter_status():
         try:
             with open(cnf, encoding="utf-8") as f:
                 cspConfig = json.load(f)
-                if len(cspConfig["errors"]) > 0:
+                if (
+                    not cspConfig["billing_api_access_ok"]
+                    and len(cspConfig["errors"]) > 0
+                ):
                     errstr = "\n  ".join(cspConfig["errors"])
                     print(
                         f"CPS Billing Adapter reported errors:\n  {errstr}",
@@ -215,12 +218,13 @@ def check_billing_adapter_status():
 def perform_compliants_checks():
     # defaults
     cloudProvider = "None"
-    modifiedPackages = False
+    modified_packages = False
     billing_service_running = False
     billing_status = False
-    isPaygInstance = is_payg_instance()
+    has_metering_access = False
+    is_payg = is_payg_instance()
 
-    if isPaygInstance:
+    if is_payg:
         if os.path.isfile("/usr/bin/ec2metadata"):
             cloudProvider = "AWS"
         elif os.path.isfile("/usr/bin/azuremetadata"):
@@ -228,21 +232,17 @@ def perform_compliants_checks():
         elif os.path.isfile("/usr/bin/gcemetadata"):
             cloudProvider = "GCE"
 
-        modifiedPackages = (
-            has_package_modifications("csp-billing-adapter-service")
-            or has_package_modifications("python3-csp-billing-adapter")
-            or has_package_modifications("python3-csp-billing-adapter-local")
-        )
+        check_pkgs = [
+            "python-instance-billing-flavor-check",
+            "csp-billing-adapter-service",
+            "python3-csp-billing-adapter-local",
+        ]
         if cloudProvider == "AWS":
-            modifiedPackages = modifiedPackages or has_package_modifications(
-                "python3-csp-billing-adapter-amazon"
-            )
+            check_pkgs.append("python3-csp-billing-adapter-amazon")
         elif cloudProvider == "AZURE":
-            modifiedPackages = (
-                modifiedPackages
-                or has_package_modifications("python311-azure-mgmt-billing")
-                or has_package_modifications("python3-csp-billing-adapter-microsoft")
-            )
+            check_pkgs.append("python3-csp-billing-adapter-microsoft")
+
+        modified_packages = any(has_package_modifications(pkg) for pkg in check_pkgs)
 
         billing_service_running = is_service_running("csp-billing-adapter.service")
 
@@ -255,14 +255,14 @@ def perform_compliants_checks():
         has_metering_access
         and billing_service_running
         and billing_status
-        and not modifiedPackages
+        and not modified_packages
     )
 
     return {
-        "isPaygInstance": isPaygInstance,
+        "isPaygInstance": is_payg,
         "compliant": compliant,
         "cloudProvider": cloudProvider,
-        "hasModifiedPackages": modifiedPackages,
+        "hasModifiedPackages": modified_packages,
         "billingServiceRunning": billing_service_running,
         "billingServiceStatus": billing_status,
         "hasMeteringAccess": has_metering_access,

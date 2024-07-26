@@ -314,6 +314,20 @@ Serializable {
     }
 
     /**
+     * true if the nic is a container network
+     * @return true if the nic is a container network
+     */
+    public boolean isContainerNetwork() {
+        return (
+            "bridge".equals(module) && (
+                    getName().startsWith("docker") ||
+                    getName().startsWith("cni-podman") ||
+                    getName().startsWith("podman") ||
+                    getName().startsWith("cni")
+            ) || getName().startsWith("flannel"));
+    }
+
+    /**
      * isVirtBridge tells if nic is a virtual bridge
      * @return true if the nic is a virtual bridge, false otherwise
      */

@@ -1,0 +1,2 @@
+- fix NullPointerException when context has no timezone set
+- enhance optional type adapter to parse legacy JSON data from DB

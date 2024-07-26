@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 26 15:02:21 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.6-0
+  * Remove PKI of Salt Minion only in case of changing the Master
+    with the bootstrap script
+
+-------------------------------------------------------------------
 Mon Jun 10 16:47:59 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5-0

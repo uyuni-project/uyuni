@@ -42,8 +42,7 @@ CONF_FILES =
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
 		spacewalk-wait-for-taskomatic.service salt-secrets-config.service \
-		mgr-websockify.service uyuni-check-database.service uyuni-update-config.service cobbler-refresh-mkloaders.service \
-		mgr-check-payg.service
+		mgr-websockify.service uyuni-check-database.service uyuni-update-config.service cobbler-refresh-mkloaders.service
 
 SYSTEMD_OVERRIDE_SERVICES = tomcat.service apache2.service salt-master.service salt-api.service rhn-search.service \
 			    taskomatic.service salt-secrets-config.service cobbler-refresh-mkloaders.service
