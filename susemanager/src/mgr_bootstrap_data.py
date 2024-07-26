@@ -556,6 +556,56 @@ PKGLIST15_PPC = [
 PKGLIST15_Z = [
 ]
 
+
+PKGLIST15_6_TRAD = [
+    "libdbus-glib-1-2",
+    "glib2-tools",
+    "girepository-1_0",
+    "libgudev-1_0-0",
+    "libgirepository-1_0-1",
+    "libgio-2_0-0",
+    "libgobject-2_0-0",
+    "libnewt0_52",
+    "libslang2",
+    "newt",
+    "python3-asn1crypto",
+    "python3-cffi",
+    "python3-cryptography",
+    "python3-dmidecode",
+    "python3-dbus-python",
+    "python3-dmidecode",
+    "python3-extras*", # needed for new python3-libxml2 on SLE15SP4, but not required on SLE15SP1
+    "python3-gobject",
+    "python3-libxml2|python3-libxml2-python", # was renamed - old name was python3-libxml2-python
+    "python3-netifaces",
+    "python3-newt",
+    "python3-pyasn1",
+    "python3-pycparser",
+    "python3-pyOpenSSL",
+    "python3-pyudev",
+    "python3-packaging",
+    "python3-setuptools",
+    "python3-appdirs",
+    "python3-pyparsing",
+    "hwdata",
+    "python3-hwdata",
+    "python3-rhnlib",
+    "spacewalk-check",
+    "spacewalk-client-setup",
+    "spacewalk-client-tools",
+    "python3-spacewalk-check",
+    "python3-spacewalk-client-setup",
+    "python3-spacewalk-client-tools",
+    "python3-uyuni-common-libs*",
+    "mgr-daemon|spacewalksd",
+    "shared-mime-info",
+    "suseRegisterInfo",
+    "python3-suseRegisterInfo",
+    "zypp-plugin-spacewalk",
+    "python3-zypp-plugin",
+    "python3-zypp-plugin-spacewalk",
+]
+
 PKGLISTUBUNTU1604 = [
     "libsodium18",
     "dctrl-tools",
@@ -1389,25 +1439,25 @@ DATA = {
     "SLE-15-SP6-aarch64": {
         "PDID": [2615, 1709],
         "BETAPDID": [1925],
-        "PKGLIST": PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "PKGLIST": PKGLIST15_6_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
     },
     "SLE-15-SP6-ppc64le": {
         "PDID": [2616, 1710],
         "BETAPDID": [1926],
-        "PKGLIST": PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        "PKGLIST": PKGLIST15_6_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
     },
     "SLE-15-SP6-s390x": {
         "PDID": [2617, 1711],
         "BETAPDID": [1927],
-        "PKGLIST": PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        "PKGLIST": PKGLIST15_6_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
     },
     "SLE-15-SP6-x86_64": {
         "PDID": [2618, 1712],
         "BETAPDID": [1928],
-        "PKGLIST": PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "PKGLIST": PKGLIST15_6_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
     },
     # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!
