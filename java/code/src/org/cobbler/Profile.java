@@ -22,11 +22,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -185,22 +185,7 @@ public class Profile extends CobblerObject {
      */
     @SuppressWarnings("unchecked")
     public static List<Profile> list(CobblerConnection connection) {
-        List<Profile> profiles = new LinkedList<>();
-        List<Map<String, Object>> cProfiles = (List<Map<String, Object>>)
-                connection.invokeMethod("get_profiles");
-
-        for (Map<String, Object> profMap : cProfiles) {
-            Profile profile = new Profile(connection);
-            profile.dataMap = profMap;
-            profile.dataMapResolved = (Map<String, Object>) connection.invokeMethod(
-                    "get_profile",
-                    profile.getName(), // object name
-                    false, // flatten
-                    true // resolved
-            );
-            profiles.add(profile);
-        }
-        return profiles;
+        return list(connection, Set.of());
     }
 
 
@@ -214,26 +199,27 @@ public class Profile extends CobblerObject {
     @SuppressWarnings("unchecked")
     public static List<Profile> list(CobblerConnection connection,
                                      Set<String> excludes) {
-        List<Profile> profiles = new LinkedList<>();
-        List<Map<String, Object>> cProfiles = (List<Map<String, Object>>)
-                connection.invokeMethod("get_profiles");
-
-        for (Map<String, Object> profMap : cProfiles) {
-            Profile profile = new Profile(connection);
-            profile.dataMap = profMap;
-            profile.dataMapResolved = (Map<String, Object>) connection.invokeMethod(
-                    "get_profile",
-                    profile.getName(), // object name
-                    false, // flatten
-                    true // resolved
-            );
-            if (!excludes.contains(profile.getId())) {
-                profiles.add(profile);
-            }
-
-
-        }
-        return profiles;
+        return ((List<Map<String, Object>>) connection.invokeMethod("get_profiles")).stream()
+                .map(profMap -> {
+                    Profile profile = new Profile(connection);
+                    profile.dataMap = profMap;
+                    Object profileObj = connection.invokeMethod(
+                            "get_profile",
+                            profile.getName(), // object name
+                            false, // flatten
+                            true // resolved
+                    );
+                    // get_profiles may include profiles that have been deleted in the mean time
+                    if (profileObj instanceof Map) {
+                        profile.dataMapResolved = (Map<String, Object>) profileObj;
+                        if (!excludes.contains(profile.getId())) {
+                            return profile;
+                        }
+                    }
+                    return null;
+                })
+                .filter(profile -> profile != null)
+                .collect(Collectors.toList());
     }
 
     /**
