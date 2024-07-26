@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-05-27 18:46+0000\n"
+"PO-Revision-Date: 2024-07-26 21:47+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
@@ -713,12 +713,14 @@ msgstr "Konfigurácia stavu nesmie byť prázdna"
 
 #: ../html/src/components/states-picker.tsx:123
 msgid "Reboot state will be put last."
-msgstr ""
+msgstr "Stav reštartu bude uvedený ako posledný."
 
 #: ../html/src/components/states-picker.tsx:132
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr ""
+"Stavy \"Reštartovať systém\" a \"Reštartovať systém v prípade potreby\" sa "
+"nemôžu používať spoločne."
 
 #: ../html/src/components/states-picker.tsx:152
 msgid "State assignments have been saved."
@@ -4116,9 +4118,8 @@ msgid "Maintenance Schedules"
 msgstr "Plány údržby"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
-#, fuzzy
 msgid "Maintenance Calendars"
-msgstr "Vymazať kalendár údržby"
+msgstr "Kalendáre údržby"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
@@ -4955,9 +4956,8 @@ msgid "Configure states to execute"
 msgstr "Konfigurovať stavy na vykonanie"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
-#, fuzzy
 msgid " Recurring Actions "
-msgstr "Opakujúce sa akcie"
+msgstr " Opakujúce sa akcie "
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:121
 msgid "The following recurring actions have been created."
@@ -5283,12 +5283,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
-msgstr ""
+msgstr "Chyba pri aktualizácii aktivačného kľúča."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
-#, fuzzy
 msgid "Activation key has been modified."
-msgstr "Pre obrazy kiwi je potrebný aktivačný kľúč."
+msgstr "Aktivačný kľúč bol zmenený."
 
 #: ../html/src/manager/systems/all-list.tsx:37
 msgid " Systems "
