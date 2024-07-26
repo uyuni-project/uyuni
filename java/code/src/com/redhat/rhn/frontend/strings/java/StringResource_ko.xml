@@ -11223,8 +11223,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">설치된 소프트웨어(패키지 및 제품)에 대한 업데이트 정보</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
-        <source>Update the system, rebooting if required</source>
-        <target state="final">시스템을 업데이트하십시오. 필요한 경우 재부팅하십시오.</target>
+        <source>Update the system</source>
+        <target state="needs-adaptation">시스템을 업데이트하십시오. 필요한 경우 재부팅하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
@@ -11485,6 +11485,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="final">기밀 컴퓨팅 구성을 업데이트하는 동안 오류가 발생했습니다. 서버 로그에서 세부 정보를 확인하십시오.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="internal_state.reboot" xml:space="preserve">
+        <source>Perform a reboot</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
+        <source>Perform a reboot, only if required</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
