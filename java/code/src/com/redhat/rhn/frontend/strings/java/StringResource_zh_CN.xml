@@ -11225,8 +11225,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">更新所安装软件（软件包和产品）的相关信息</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
-        <source>Update the system, rebooting if required</source>
-        <target state="final">更新系统，并根据需要进行重引导</target>
+        <source>Update the system</source>
+        <target state="needs-adaptation">更新系统，并根据需要进行重引导</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
@@ -11487,6 +11487,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="final">上载机密计算配置时发生错误。请查看服务器日志了解详细信息。</target>
       </trans-unit>
-    </body>
+    <trans-unit id="internal_state.reboot" xml:space="preserve">
+        <source>Perform a reboot</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
+        <source>Perform a reboot, only if required</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
