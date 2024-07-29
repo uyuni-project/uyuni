@@ -47,6 +47,9 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/manager/cm/build",
   "/rhn/admin/ScheduleDetail.do",
   "/rhn/manager/systems/cmd",
+  "/rhn/kickstart/KickstartIpRanges.do",
+  "/rhn/channels/manage/repos/RepoCreate.do",
+  "/rhn/systems/details/Overview",
 ];
 
 export const onEndNavigate = () => {
