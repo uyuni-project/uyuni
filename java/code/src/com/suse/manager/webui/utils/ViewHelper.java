@@ -102,11 +102,11 @@ public enum ViewHelper {
         "/rhn/manager/systems/details/recurring-actions",
         "/rhn/manager/cm/build",
         "/rhn/admin/ScheduleDetail.do",
-        "/rhn/manager/systems/cmd"
+        "/rhn/manager/systems/cmd",
         "/rhn/kickstart/KickstartIpRanges.do",
         "/rhn/channels/manage/repos/RepoCreate.do",
-        "/rhn/systems/details/Overview"
-        "/rhn/manager/formula-catalog"
+        "/rhn/systems/details/Overview",
+        "/rhn/manager/formula-catalog",
         "/rhn/errata/manage/CloneErrata.do"
     );
 
