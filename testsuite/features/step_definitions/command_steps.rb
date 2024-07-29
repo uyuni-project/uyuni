@@ -1584,7 +1584,7 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    And I wait at most 600 seconds until event "System reboot scheduled by #{$current_user}" is completed
     Then I should see a "This action's status is: Completed" text
   )
 end
