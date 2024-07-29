@@ -1,0 +1,10 @@
+- Report a server/report id mismatch when calling 
+  getCoCoAttestationResultDetails
+- Prevent the API for confidential computing to work on systems
+  without OS support
+- Ensure getCoCoAttestationConfig works when a configuration is 
+  not present
+- Prevent error while serializing an attestation report without an 
+  attested date
+- Added missing support for field attest on boot in the
+  getCoCoAttestationConfig and setCoCoAttestationConfig API

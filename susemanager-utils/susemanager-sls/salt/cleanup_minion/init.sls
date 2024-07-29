@@ -20,6 +20,9 @@ mgrchannels_repo_clean_all:
 mgrchannels_repo_clean_channels:
   file.absent:
     - name: /etc/apt/sources.list.d/susemanager:channels.list
+mgrchannels_repo_clean_channels_deb822:
+  file.absent:
+    - name: /etc/apt/sources.list.d/susemanager:channels.sources
 mgrchannels_repo_clean_auth:
   file.absent:
     - name: /etc/apt/auth.conf.d/susemanager.conf
@@ -43,15 +46,16 @@ mgr_remove_salt_config_altname:
 
 mgr_remove_salt_priv_key:
   file.absent:
-     - name: {{ salt_config_dir }}/pki/minion.pem
+     - name: {{ salt_config_dir }}/pki/minion/minion.pem
 
 mgr_remove_salt_pub_key:
   file.absent:
-     - name: {{ salt_config_dir }}/pki/minion.pub
+     - name: {{ salt_config_dir }}/pki/minion/minion.pub
 
 mgr_remove_salt_master_key:
+
   file.absent:
-     - name: {{ salt_config_dir }}/pki/minion_master.pub
+     - name: {{ salt_config_dir }}/pki/minion/minion_master.pub
 
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 mgr_disable_salt:

@@ -5,7 +5,8 @@
         <dependency org="suse" name="antlr" rev="2.7.7" />
         <dependency org="suse" name="asm" rev="9.3" />
         <dependency org="suse" name="bcel" rev="5.2" />
-        <dependency org="suse" name="byte-buddy" rev="1.11.12" />
+        <dependency org="suse" name="byte-buddy" rev="1.14.16" />
+        <dependency org="suse" name="byte-buddy-dep" rev="1.14.16" />
         <dependency org="suse" name="c3p0" rev="0.9.5.5" />
         <dependency org="suse" name="cglib" rev="3.3.0" />
         <dependency org="suse" name="classmate" rev="1.5.1" />

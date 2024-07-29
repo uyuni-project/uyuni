@@ -57,6 +57,7 @@ public class Token implements Identifiable {
     private Set<Channel> channels = new HashSet<>();
     private Set<ServerGroup> serverGroups = new HashSet<>();
     private Set<TokenPackage> packages = new HashSet<>();
+    private Set<TokenChannelAppStream> appStreams = new HashSet<>();
 
     /**
      * @return Returns the entitlements.
@@ -438,6 +439,20 @@ public class Token implements Identifiable {
      */
     public void setPackages(Set<TokenPackage> packagesIn) {
         this.packages = packagesIn;
+    }
+
+    /**
+     * @return the app streams associated with the token
+     */
+    public Set<TokenChannelAppStream> getAppStreams() {
+        return appStreams;
+    }
+
+    /**
+     * @param appStreamsIn the app streams to set
+     */
+    public void setAppStreams(Set<TokenChannelAppStream> appStreamsIn) {
+        appStreams = appStreamsIn;
     }
 
     /**

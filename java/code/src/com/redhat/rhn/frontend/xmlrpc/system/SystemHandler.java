@@ -5215,6 +5215,11 @@ public class SystemHandler extends BaseHandler {
     public Integer scheduleCoCoAttestation(User loggedInUser, Integer sid, Date earliestOccurrence) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser)
                 .asMinionServer().orElseThrow(NoSuchSystemException::new);
+
+        if (!minionServer.doesOsSupportCoCoAttestation()) {
+            throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
+        }
+
         try {
             CoCoAttestationAction action = attestationManager.scheduleAttestationAction(loggedInUser, minionServer,
                     earliestOccurrence);
@@ -5246,8 +5251,13 @@ public class SystemHandler extends BaseHandler {
     public ServerCoCoAttestationConfig getCoCoAttestationConfig(User loggedInUser, Integer sid) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
+
+        if (!minionServer.doesOsSupportCoCoAttestation()) {
+            throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
+        }
+
         return minionServer.getOptCocoAttestationConfig()
-                .orElse(new ServerCoCoAttestationConfig());
+                .orElse(new ServerCoCoAttestationConfig(false, minionServer));
     }
 
     /**
@@ -5276,6 +5286,11 @@ public class SystemHandler extends BaseHandler {
                                             Boolean attestOnBoot) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
+
+        if (!minionServer.doesOsSupportCoCoAttestation()) {
+            throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
+        }
+
         minionServer.getOptCocoAttestationConfig()
                 .ifPresentOrElse(
                         c -> {
@@ -5283,8 +5298,14 @@ public class SystemHandler extends BaseHandler {
                             c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
                             c.setAttestOnBoot(attestOnBoot);
                         },
-                        () -> attestationManager.createConfig(loggedInUser, minionServer,
-                                CoCoEnvironmentType.valueOf(environmentType), enabled));
+                        () -> attestationManager.createConfig(
+                            loggedInUser,
+                            minionServer,
+                            CoCoEnvironmentType.valueOf(environmentType),
+                            enabled,
+                            attestOnBoot
+                        )
+                );
         return 1;
     }
 
@@ -6539,7 +6560,8 @@ public class SystemHandler extends BaseHandler {
             data.setForce(false);
             data.setEarliest(
                 Optional.ofNullable(date).map((localDate) -> {
-                    ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+                    ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                            .orElse(TimeZone.getDefault()).toZoneId();
                     return LocalDateTime.ofInstant(localDate.toInstant(), zoneId);
                 })
             );
@@ -9117,6 +9139,11 @@ public class SystemHandler extends BaseHandler {
     public List<ServerCoCoAttestationReport> listCoCoAttestationReports(User loggedInUser, Integer sid, Date earliest,
                                                                         Integer offset, Integer limit) {
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+
+        if (!server.doesOsSupportCoCoAttestation()) {
+            throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
+        }
+
         return attestationManager.listCoCoAttestationReportsForUserAndServer(loggedInUser, server, earliest,
             offset, limit);
     }
@@ -9154,8 +9181,18 @@ public class SystemHandler extends BaseHandler {
     @ReadOnly
     public CoCoAttestationResult getCoCoAttestationResultDetails(User loggedInUser, Integer sid, Integer resultId) {
         Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
-        return attestationManager.lookupCoCoAttestationResult(loggedInUser, server, resultId)
+
+        if (!server.doesOsSupportCoCoAttestation()) {
+            throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
+        }
+
+        try {
+            return attestationManager.lookupCoCoAttestationResult(loggedInUser, server, resultId)
                 .orElseThrow(() -> new EntityNotExistsFaultException(resultId));
+        }
+        catch (LookupException ex) {
+            throw new EntityNotExistsFaultException(resultId);
+        }
     }
 
     /**

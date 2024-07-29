@@ -16,4 +16,9 @@ an array is expected, but a String is passed). Check all of these things.
 
 Both of these are valid names for the same method, so use whichever you prefer.
 
+== Why are some available methods listed several times?
+
+The methods are overloaded: the same method name, but a different set of parameters.
+
+
 

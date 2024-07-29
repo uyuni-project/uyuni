@@ -143,4 +143,8 @@ public class AppStream {
     public void setRpms(Set<AppStreamApi> rpmsIn) {
         rpms = rpmsIn;
     }
+
+    public String getAppStreamKey() {
+        return name + ":" + stream;
+    }
 }

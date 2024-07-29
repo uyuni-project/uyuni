@@ -16,8 +16,10 @@ package com.suse.manager.reactor.utils;
 
 import com.redhat.rhn.frontend.context.Context;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
+import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
@@ -27,6 +29,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
+import java.util.TimeZone;
 
 /**
  * Parses a ISO 8601 DateTime String into a LocalDateTime
@@ -48,10 +52,20 @@ public class LocalDateTimeISOAdapter extends TypeAdapter<LocalDateTime> {
         if (jsonReader.peek() == JsonToken.NULL) {
             throw new JsonParseException("null is not a valid value for LocalDateTime");
         }
+        if (jsonReader.peek() == JsonToken.BEGIN_OBJECT) {
+            JsonObject json = TypeAdapters.JSON_ELEMENT.read(jsonReader).getAsJsonObject();
+            JsonObject date = json.getAsJsonObject("date");
+            JsonObject time = json.getAsJsonObject("time");
+            return LocalDateTime.of(
+                    date.get("year").getAsInt(), date.get("month").getAsInt(), date.get("day").getAsInt(),
+                    time.get("hour").getAsInt(), time.get("minute").getAsInt(), time.get("second").getAsInt(),
+                    time.get("nano").getAsInt());
+        }
         String dateStr = jsonReader.nextString();
         try {
             ZonedDateTime p = ZonedDateTime.parse(dateStr);
-            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+            ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                    .orElse(TimeZone.getDefault()).toZoneId();
             return LocalDateTime.ofInstant(p.toInstant(), zoneId);
         }
         catch (DateTimeParseException e) {

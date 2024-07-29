@@ -654,7 +654,7 @@ public class DownloadController {
         if (accessToken.isPresent()) {
             cloudPaygManager.checkRefreshCache(true); // Refresh to have latest SCC data
             MinionServer minion = accessToken.get().getMinion();
-            if (!cloudPaygManager.hasSCCCredentials() && !minion.isPayg()) {
+            if (!cloudPaygManager.hasSCCCredentials() && minion.isDeniedOnPayg()) {
                 halt(HttpStatus.SC_FORBIDDEN,
                         "Bring-your-own-subscription instances in Pay-as-you-go SUMA instances is not " +
                         "allowed without SCC credentials.");

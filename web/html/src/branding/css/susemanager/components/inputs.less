@@ -53,9 +53,11 @@
 
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
-  &:hover {
+  outline: none !important;
+
+  &[class*="--is-focused"],
+  &[class*="--menu-is-open"] {
     border-color: @eos-bc-blue-500 !important;
-    outline: none !important;
   }
 }
 
@@ -72,7 +74,12 @@ select[size] {
 }
 
 .input-group-addon {
+  color: @eos-bc-gray-900;
   border-color: @input-border-color !important;
   background: @gray-lighter;
   font-size: 1em;
+
+  > .fa:first-child:last-child {
+    margin: 0;
+  }
 }

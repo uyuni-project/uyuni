@@ -2164,8 +2164,10 @@ public class SystemManager extends BaseManager {
     }
 
     private Supplier<RhnRuntimeException> raiseAndLog(String message) {
-        log.error(message);
-        return () -> new RhnRuntimeException(message);
+        return () -> {
+            log.error(message);
+            return new RhnRuntimeException(message);
+        };
     }
 
     private Optional<Server> findByAnyFqdn(Set<String> fqdns) {

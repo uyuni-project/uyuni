@@ -1,0 +1,1 @@
+- Fix yum-utils package missing on CentOS7 minions (bsc#1227133)

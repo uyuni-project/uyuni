@@ -287,8 +287,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'oracle9_ssh_minion' => 'oraclelinux9 for x86_64',
     'rhel9_minion' => 'EL9-Pool for x86_64',
     'rhel9_ssh_minion' => 'EL9-Pool for x86_64',
-    'rocky8_minion' => 'RHEL8-Pool for x86_64',
-    'rocky8_ssh_minion' => 'RHEL8-Pool for x86_64',
+    'rocky8_minion' => 'rockylinux-8 for x86_64',
+    'rocky8_ssh_minion' => 'rockylinux-8 for x86_64',
     'rocky9_minion' => 'rockylinux-9 for x86_64',
     'rocky9_ssh_minion' => 'rockylinux-9 for x86_64',
     'ubuntu2004_minion' => 'ubuntu-2004-amd64-main for amd64',
@@ -425,7 +425,7 @@ LABEL_BY_BASE_CHANNEL = {
     'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
     'EL9-Pool for x86_64' => 'no-appstream-liberty-9-result-el9-pool-x86_64',
     'oraclelinux9 for x86_64' => 'no-appstream-oracle-9-result-oraclelinux9-x86_64',
-    'RHEL8-Pool for x86_64' => 'no-appstream-8-result-rhel8-pool-x86_64',
+    'rockylinux-8 for x86_64' => 'no-appstream-8-result-rockylinux-8-x86_64',
     'rockylinux-9 for x86_64' => 'no-appstream-9-result-rockylinux-9-x86_64',
     'ubuntu-2004-amd64-main for amd64' => 'ubuntu-2004-amd64-main-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
@@ -501,6 +501,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
     'oraclelinux9 for x86_64' => 'oracle-9-x86_64',
     'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
+    'rockylinux-8 for x86_64' => 'rockylinux-8-x86_64',
     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
     'ubuntu-2004-amd64-main for amd64' => 'ubuntu-20.04-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-22.04-amd64',
@@ -576,6 +577,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
     'oraclelinux9 for x86_64' => nil,
     'RHEL8-Pool for x86_64' => nil,
+    'rockylinux-8 for x86_64' => nil,
     'rockylinux-9 for x86_64' => nil,
     'ubuntu-2004-amd64-main for amd64' => nil,
     'ubuntu-2204-amd64-main for amd64' => nil,
@@ -750,6 +752,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         debian-12-main-updates-amd64
         debian-12-suse-manager-tools-amd64
       ],
+    'sll-7-ltss' => # CHECKED
+      %w[
+        res-7-ltss-updates-x86_64
+        res-7-suse-manager-tools-x86_64-lbt7
+      ],
     'sll-9' => # CHECKED
       %w[
         sll-cb-9-updates-x86_64
@@ -770,8 +777,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'rockylinux8' =>
       %w[
-        rockylinux8-x86_64
-        rockylinux8-appstream-x86_64
+        rockylinux-8-x86_64
+        rockylinux-8-appstream-x86_64
       ],
     'rockylinux9' => # CHECKED
       %w[
@@ -1515,6 +1522,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'oraclelinux9-appstream-x86_64' => 2100,
   'oraclelinux9-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-x86_64' => 840,
+  'res-7-ltss-updates-x86_64' => 960,
+  'res-7-suse-manager-tools-x86_64-lbt7' => 120,
   'res7-suse-manager-tools-x86_64' => 300,
   'res7-x86_64' => 21_000,
   'rhel-x86_64-server-7' => 60,

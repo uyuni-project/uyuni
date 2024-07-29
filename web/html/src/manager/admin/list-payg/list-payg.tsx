@@ -143,30 +143,6 @@ const ListPayg = (props: Props) => {
     </Table>
   );
 
-  const prevStyle = { marginLeft: "10px", verticalAlign: "middle" };
-  const activeStep = _SETUP_WIZARD_STEPS.find((step) => step.active);
-  const currentStepIndex = activeStep ? _SETUP_WIZARD_STEPS.indexOf(activeStep) : -1;
-  const footer = (
-    <div className="panel-footer">
-      <div className="btn-group">
-        {currentStepIndex > 1 ? (
-          <a className="btn btn-default" href={_SETUP_WIZARD_STEPS[currentStepIndex - 1].url}>
-            <i className="fa fa-arrow-left"></i>
-            {t("Prev")}
-          </a>
-        ) : null}
-        {currentStepIndex < _SETUP_WIZARD_STEPS.length - 1 ? (
-          <a className="btn btn-success" href={_SETUP_WIZARD_STEPS[currentStepIndex + 1].url}>
-            <i className="fa fa-arrow-right"></i>
-            {t("Next")}
-          </a>
-        ) : null}
-      </div>
-      <span style={prevStyle}>
-        {currentStepIndex + 1}&nbsp;{t("of")}&nbsp;{_SETUP_WIZARD_STEPS.length}
-      </span>
-    </div>
-  );
   const addPayg = () => {
     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/setup/payg/create`);
   };
@@ -174,25 +150,20 @@ const ListPayg = (props: Props) => {
     <div className="responsive-wizard">
       {title}
       {tabs}
-      <div className="panel panel-default" id="products-content">
-        <div className="panel-body">
-          <SectionToolbar>
-            <div className="action-button-wrapper">
-              <div className="btn-group">
-                <Button
-                  id="addPAYG"
-                  icon="fa-plus"
-                  className={"btn-success"}
-                  text={t("Add PAYG Connection")}
-                  handler={addPayg}
-                />
-              </div>
-            </div>
-          </SectionToolbar>
-          {pageContent}
+      <SectionToolbar>
+        <div className="action-button-wrapper">
+          <div className="btn-group">
+            <Button
+              id="addPAYG"
+              icon="fa-plus"
+              className={"btn-success"}
+              text={t("Add PAYG Connection")}
+              handler={addPayg}
+            />
+          </div>
         </div>
-      </div>
-      {footer}
+      </SectionToolbar>
+      {pageContent}
     </div>
   );
 };

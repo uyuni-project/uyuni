@@ -138,7 +138,13 @@ bootstrap_repo:
 {%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
     - name: /etc/yum.repos.d/susemanager:bootstrap.repo
 {%- elif grains['os_family'] == 'Debian' %}
+{%- set apt_version = salt['pkg.version']("apt") %}
+{%- set apt_sources_deb822 = apt_version and salt['pkg.version_cmp'](apt_version, "2.7.12") >= 0 %}
+{%- if apt_sources_deb822 %}
+    - name: /etc/apt/sources.list.d/susemanager_bootstrap.sources
+{%- else %}
     - name: /etc/apt/sources.list.d/susemanager_bootstrap.list
+{%- endif %}
 {%- endif %}
     - source:
       - salt://bootstrap/bootstrap.repo
@@ -341,4 +347,7 @@ transactional_update_set_reboot_method_systemd:
     - unless:
       - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
+disable_reboot_timer_transactional_minions:
+  cmd.run:
+    - name: systemctl disable transactional-update.timer
 {%- endif %}

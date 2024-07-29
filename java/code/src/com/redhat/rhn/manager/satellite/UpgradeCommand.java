@@ -398,7 +398,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
         try {
             List<String> minionIds = MinionServerFactory.listMinions()
                     .stream().map(MinionServer::getMinionId).collect(Collectors.toList());
-            GlobalInstanceHolder.SALT_API.syncAll(new MinionList(minionIds));
+            GlobalInstanceHolder.SALT_API.syncAllAsync(new MinionList(minionIds));
             log.info("Sync all scheduled on all systems");
         }
         catch (Exception e) {

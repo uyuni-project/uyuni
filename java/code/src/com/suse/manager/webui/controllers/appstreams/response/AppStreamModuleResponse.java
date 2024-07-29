@@ -15,7 +15,6 @@
 package com.suse.manager.webui.controllers.appstreams.response;
 
 import com.redhat.rhn.domain.channel.AppStream;
-import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -23,16 +22,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class AppStreamModuleResponse {
 
     /**
-     * Constructs an AppStreamModuleResponse object based on the provided AppStream and Server objects.
+     * Constructs an AppStreamModuleResponse object based on the provided AppStream.
      *
      * @param appStreamIn The AppStream object to extract information from.
-     * @param serverIn The Server object to check for module enablement.
+     * @param enabledIn Whether the AppStream is enabled.
      */
-    public AppStreamModuleResponse(AppStream appStreamIn, Server serverIn) {
+    public AppStreamModuleResponse(AppStream appStreamIn, boolean enabledIn) {
         this.name = appStreamIn.getName();
         this.stream = appStreamIn.getStream();
         this.arch = appStreamIn.getArch();
-        this.enabled = serverIn.hasAppStreamModuleEnabled(this.name, this.stream);
+        this.enabled = enabledIn;
     }
 
     private final String name;

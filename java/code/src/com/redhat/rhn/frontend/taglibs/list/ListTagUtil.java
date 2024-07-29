@@ -645,7 +645,7 @@ public class ListTagUtil {
         StringBuilder sb = new StringBuilder();
 
         // create a new row
-        sb.append("<div class=\"input-group input-group-sm\">");
+        sb.append("<div class=\"input-group\">");
 
         String placeHolder = StringUtils.defaultString(ls.getMessage("message.filterby", fields.get(0)));
         sb.append(String.format("<input autofocus=\"autofocus\" type=\"text\" " +

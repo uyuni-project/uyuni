@@ -79,6 +79,7 @@ import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticHandler;
 import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
+import com.redhat.rhn.frontend.xmlrpc.user.UserNotificationsHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
 import com.redhat.rhn.manager.formula.FormulaManager;
@@ -226,6 +227,7 @@ public class HandlerFactory {
         factory.addHandler("taskomatic.org", new TaskomaticOrgHandler());
         factory.addHandler("user", userHandler);
         factory.addHandler("user.external", new UserExternalHandler());
+        factory.addHandler("user.notifications", new UserNotificationsHandler());
         return factory;
     }
 
