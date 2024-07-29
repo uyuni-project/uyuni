@@ -160,9 +160,7 @@ module LavandaBasic
     else
       out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
     end
-    if check_errors
-      raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
-    end
+    raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" if check_errors && !successcodes.include?(code)
     STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
     if separated_results
       [out, err, code]
@@ -210,5 +208,30 @@ module LavandaBasic
       sleep 2
       result
     end
+  end
+
+  # Checks if the node is offline.
+  #
+  # @return [Boolean] true if the node is offline, false otherwise.
+  def node_offline?
+    run('echo test', timeout: 0, check_errors: false).first.empty?
+  end
+
+  # Wait until the node goes offline
+  def wait_until_offline
+    sleep 1 until node_offline?
+    $stdout.puts "Node #{hostname} is offline."
+  end
+
+  # Wait until the node comes back online
+  #
+  # @param timeout [Integer] The maximum time to wait for the node to come online, in seconds.
+  def wait_until_online(timeout: DEFAULT_TIMEOUT)
+    repeat_until_timeout(timeout: timeout, report_result: true, message: "#{hostname} did not come back online within #{timeout} seconds.") do
+      break unless node_offline?
+
+      sleep 1
+    end
+    $stdout.puts "Node #{hostname} is online."
   end
 end

@@ -1825,6 +1825,13 @@ When(/^I reboot the server through SSH$/) do
   end
 end
 
+When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) do |host|
+  node = get_target(host)
+  node.run('reboot', check_errors: false, verbose: true)
+  node.wait_until_offline
+  node.wait_until_online
+end
+
 When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
   node = get_target(host)
   node.run('reboot')

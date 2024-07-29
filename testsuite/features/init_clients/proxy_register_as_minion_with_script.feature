@@ -55,6 +55,13 @@ Feature: Setup SUSE Manager proxy
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"
 
+  Scenario: Use correct kernel image on the proxy
+    When I remove package "kernel-default-base" from this "proxy"
+    And I install package "kernel-default" on this "proxy"
+
+  Scenario: Reboot the proxy to use the new kernel
+    When I reboot the "proxy" host through SSH, waiting until it comes back
+
 @susemanager
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
