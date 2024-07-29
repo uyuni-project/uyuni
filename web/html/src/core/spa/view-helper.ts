@@ -52,6 +52,7 @@ const BOOTSTRAP_READY_PAGES: PathString[] = [
   "/rhn/kickstart/KickstartIpRanges.do",
   "/rhn/channels/manage/repos/RepoCreate.do",
   "/rhn/systems/details/Overview",
+  "/rhn/manager/formula-catalog",
 ];
 
 export const onEndNavigate = () => {
