@@ -165,18 +165,17 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
   raise ScriptError, "Minion #{host} is intact" unless output.include? 'False'
 end
 
-# user salt steps
 When(/^I click on preview$/) do
   # Define the maximum number of attempts
   max_attempts = 2
 
-  for attempt in 1..max_attempts
+  (1..max_attempts).each do |attempt|
     # Click the preview button
     find('button#preview').click
 
     # Wait for up to 3 seconds for the run button to be visible
     if page.has_button?('run', visible: true, wait: 3)
-      puts "The run button is visible."
+      puts 'The run button is visible.'
       break
     else
       puts "The run button is not visible after clicking preview (attempt #{attempt})."
