@@ -1,0 +1,5 @@
+## Add non MU repositories for rocky8 BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/rocky8_minion_add_iso.feature
+
+## Add non MU repositories END ###
