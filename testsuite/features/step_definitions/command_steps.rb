@@ -1342,8 +1342,10 @@ end
 
 When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
   node = get_target(host)
-  return_code = folder_delete(node, folder) if folder_exists?(node, folder)
-  raise ScriptError, 'Folder exists and can not be removed' unless return_code.zero?
+  if folder_exists?(node, folder)
+    return_code = folder_delete(node, folder)
+    raise ScriptError, "Folder '#{folder}' exists and cannot be removed" unless return_code.zero?
+  end
 end
 
 # ReportDB
