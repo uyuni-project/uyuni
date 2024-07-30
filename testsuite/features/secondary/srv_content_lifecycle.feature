@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -8,11 +8,34 @@ Feature: Content lifecycle
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Create CLM filter to remove all fonts packages
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    And I enter "remove fonts packages" as "filter_name"
+    And I select "Package (Name)" from "type"
+    And I select "contains" from "matcher"
+    And I enter "fonts" as "name"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "remove fonts packages" text
+
+  Scenario: Create CLM filter to enable Ruby 2.7 module
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    And I enter "ruby 2.7 module" as "filter_name"
+    And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "ruby" as "moduleName"
+    And I enter "2.7" as "moduleStream"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "ruby 2.7 module" text
+
   Scenario: Create a content lifecycle project
     When I follow the left menu "Content Lifecycle > Projects"
-    Then I should see a "Content Lifecycle Projects" text
-    And I should see a "There are no entries to show." text
-    When I follow "Create Project"
+    And I follow "Create Project"
     Then I should see a "Create a new Content Lifecycle Project" text
     And I should see a "Project Properties" text
     When I enter "clp_label" as "label"
@@ -32,6 +55,7 @@ Feature: Content lifecycle
     And I should see a "Filters" text
     And I should see a "Environment Lifecycle" text
 
+@susemanager
   Scenario: Add a source to the project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
@@ -42,11 +66,41 @@ Feature: Content lifecycle
     And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
+@uyuni
+  Scenario: Add a source to the project
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    And I click on "Attach/Detach Sources"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
+    And I click on "Save"
+    And I wait until I see "openSUSE Leap 15.5 (x86_64)" text
+    Then I should see a "Version 1: (draft - not built) - Check the changes below" text
+
+@susemanager
   Scenario: Verify added sources
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
     And I should see a "Build (2)" text
+
+@uyuni
+  Scenario: Verify added sources
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    Then I should see a "openSUSE Leap 15.5 (x86_64)" text
+    And I should see a "Build (1)" text
+
+  Scenario: Add fonts packages filter to the project
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    Then I should see a "Content Lifecycle Project - clp_name" text
+    When I click on "Attach/Detach Filters"
+    And I check the "remove fonts packages" CLM filter
+    And I click on "Save"
+    And I wait until I see "Deny" text
+    Then I should see a "remove fonts packages" text
+    When I follow the left menu "Content Lifecycle > Filters"
+    Then I should see a "clp_name" text
 
   Scenario: Add environments to the project
     When I follow the left menu "Content Lifecycle > Projects"
@@ -75,6 +129,19 @@ Feature: Content lifecycle
     Then I wait until I see "qa_name" text
     And I should see a "qa_desc" text
 
+@susemanager
+  Scenario: Build the sources in the project
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    Then I should see a "not built" text in the environment "qa_name"
+    When I click on "Build (3)"
+    Then I should see a "Version 1 history" text
+    When I enter "test version message 1" as "message"
+    And I click the environment build button
+    And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
+    And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
+
+@uyuni
   Scenario: Build the sources in the project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
@@ -136,8 +203,15 @@ Feature: Content lifecycle
     And I follow "clp_name"
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
-    Then I should see a "There are no entries to show." text
-  
+    
+  Scenario: Cleanup: remove the CLM filters
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click the "remove fonts packages" item delete button
+    And I click the "ruby 2.7 module" item delete button
+    Then I should not see a "remove fonts packages" text
+    And I should not see a "ruby 2.7 module" text
+
+@susemanager
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
       | clp_label-prod_label-fake-base-channel-suse-like           |

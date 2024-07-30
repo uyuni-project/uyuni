@@ -936,6 +936,15 @@ When(/^I (check|uncheck) "([^"]*)" in the list$/) do |check_option, text|
   row.set(check_option == 'check')
 end
 
+When(/^I (check|uncheck) the "([^"]*)" CLM filter$/) do |check_option, text|
+  within(:xpath, '//div[@class=\'modal-body\']') do
+    checkbox = find(:xpath, ".//label[contains(text(), '#{text}')]/input[@type='checkbox']")
+    raise "#{text} CLM filter not found" if checkbox.nil?
+
+    checkbox.set(check_option == 'check')
+  end
+end
+
 #
 # Test if an option is selected
 #
