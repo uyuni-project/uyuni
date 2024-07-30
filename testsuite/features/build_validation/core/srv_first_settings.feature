@@ -32,7 +32,7 @@ Feature: Very first settings
     When I remove package "kernel-default-base" from this "server"
     And I install package "kernel-default" on this "server"
 
-  Scenario: Reboot the sever to use the new kernel
+  Scenario: Reboot the server to use the new kernel
     When I reboot the server through SSH
 
   Scenario: Create testing username
