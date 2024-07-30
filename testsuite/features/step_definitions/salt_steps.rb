@@ -167,7 +167,27 @@ end
 
 # user salt steps
 When(/^I click on preview$/) do
-  find('button#preview').click
+  # Define the maximum number of attempts
+  max_attempts = 2
+  attempts = 0
+
+  while attempts < max_attempts
+    attempts += 1
+
+    # Click the preview button
+    find('button#preview').click
+
+    # Wait for up to 3 seconds for the run button to be visible
+    if page.has_button?('run', visible: true, wait: 3)
+      puts "The run button is visible."
+      return true
+    else
+      puts "The run button is not visible after clicking preview (attempt #{attempts})."
+    end
+  end
+
+  # If the run button is still not visible after the maximum attempts, raise an error
+  raise "Preview button not working: the run button is not visible after #{max_attempts} attempts."
 end
 
 When(/^I click on stop waiting$/) do
