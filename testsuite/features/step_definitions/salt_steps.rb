@@ -165,6 +165,7 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
   raise ScriptError, "Minion #{host} is intact" unless output.include? 'False'
 end
 
+# user salt steps
 When(/^I click on preview$/) do
   # Define the maximum number of attempts
   max_attempts = 2
