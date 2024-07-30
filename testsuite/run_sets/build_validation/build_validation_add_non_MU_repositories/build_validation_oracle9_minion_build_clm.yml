@@ -1,5 +1,0 @@
-## Add non MU repositories for oracle9 BEGIN ###
-
-- features/build_validation/add_non_MU_repositories/oracle9_minion_build_clm.feature
-
-## Add non MU repositories END ###
