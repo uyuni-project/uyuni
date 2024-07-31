@@ -166,6 +166,9 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
+
+
+# WORKAROUND : Click preview button retry to fix https://github.com/SUSE/spacewalk/issues/24893
 When(/^I click on preview$/) do
   # Define the maximum number of attempts
   max_attempts = 2
