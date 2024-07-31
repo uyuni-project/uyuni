@@ -38,6 +38,7 @@ end
 #
 # @param node [Node] The node on which the folder should be deleted.
 # @param folder [String] The name of the folder to be deleted.
+# @return [Integer] The exit code of the operation.
 def folder_delete(node, folder)
   _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
   code
