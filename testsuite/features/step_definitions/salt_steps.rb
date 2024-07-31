@@ -172,7 +172,7 @@ When(/^I click on preview$/) do
 
   (1..max_attempts).each do |attempt|
     if page.has_button?('stop', visible: true)
-      puts 'Stop button visible, searching request ongoing'
+      puts 'Stop button visible, searching request ongoing.'
     else
       # Click the preview button
       find('button#preview').click
