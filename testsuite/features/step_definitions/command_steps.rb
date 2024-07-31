@@ -1340,14 +1340,12 @@ Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
   raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target('server'), "#{folder}/sql_statements.sql.gz")
 end
 
-Then(/^export folder "(.*?)" shouldn't exist on "(.*?)"$/) do |folder, host|
-  node = get_target(host)
-  raise ScriptError, 'Folder exists' if folder_exists?(node, folder)
-end
-
 When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
   node = get_target(host)
-  folder_delete(node, folder) if folder_exists?(node, folder)
+  if folder_exists?(node, folder)
+    return_code = folder_delete(node, folder)
+    raise ScriptError, "Folder '#{folder}' exists and cannot be removed" unless return_code.zero?
+  end
 end
 
 # ReportDB
