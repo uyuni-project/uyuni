@@ -112,7 +112,7 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
       detail = format_detail(message, last_result, report_result)
       raise ScriptError, "Giving up after #{attempts} attempts#{detail}" if attempts == retries
 
-      raise TimeoutError, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
+      raise Timeout::Error, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
     end
   rescue Timeout::Error => e
     $stdout.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
