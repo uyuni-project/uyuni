@@ -80,7 +80,7 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client.read_timeout = 240
     # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048 enable-features=NetworkService,NetworkServiceInProcess]
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
     chrome_options << 'headless' unless $debug_mode
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
