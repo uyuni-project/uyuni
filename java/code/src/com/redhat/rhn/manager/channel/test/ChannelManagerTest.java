@@ -40,6 +40,9 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -96,6 +99,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ChannelManagerTest
@@ -437,6 +441,40 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 user, s);
 
         assertTrue(channels.size() >= 2);
+    }
+
+
+    @Test
+    public void testBaseChannelsForLiberty() throws Exception {
+        Server s = MinionServerFactoryTest.createTestMinionServer(user);
+
+        // load official product data as test data into the DB
+        s.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/data4", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // "mirror" the products and mandatory base channels
+        SUSEProduct resProduct = SUSEProductFactory.findSUSEProduct("res", "7", "", "x86_64", true);
+        assertNotNull(resProduct);
+        SUSEProduct resLtssProduct = SUSEProductFactory.findSUSEProduct("res-ltss", "7", "", "x86_64", true);
+        assertNotNull(resLtssProduct);
+        SUSEProductTestUtils.createBaseChannelForBaseProduct(resProduct, user);
+        SUSEProductTestUtils.createBaseChannelForBaseProduct(resLtssProduct, user);
+
+        // Test: list base channels for Liberty 7
+        SUSEProductTestUtils.installSUSEProductOnServer(resProduct, s);
+
+        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
+
+        assertEquals(2, channels.size());
+        List<String> expectedNames = new ArrayList<>(List.of(
+                "Channel for SUSE Liberty Linux 7 x86_64",
+                "Channel for SUSE Liberty Linux LTSS 7 x86_64"));
+        List<String> names = channels.stream().map(EssentialChannelDto::getName).collect(Collectors.toList());
+        expectedNames.removeAll(names);
+        assertTrue(expectedNames.isEmpty(), "Missing expected channel names: " + expectedNames);
     }
 
     public static ReleaseChannelMap createReleaseChannelMap(Channel channel, String product,
