@@ -133,9 +133,8 @@ public class ChannelManager extends BaseManager {
     public static final String QRY_ROLE_SUBSCRIBE = "subscribe";
 
     // Valid RHEL 4 EUS Channel Versions (from rhnReleaseChannelMap):
-    public static final Set<String> RHEL4_EUS_VERSIONS;
+    protected static final Set<String> RHEL4_EUS_VERSIONS = new HashSet<>();
     static {
-        RHEL4_EUS_VERSIONS = new HashSet<>();
         RHEL4_EUS_VERSIONS.add("4AS");
         RHEL4_EUS_VERSIONS.add("4ES");
     }

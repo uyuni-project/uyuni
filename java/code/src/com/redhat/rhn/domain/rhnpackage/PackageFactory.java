@@ -260,9 +260,9 @@ public class PackageFactory extends HibernateFactory {
     public static List<Package> listPackagesByPackageName(PackageName pn) {
         Session session = HibernateFactory.getSession();
 
-        return session.getNamedQuery("Package.findByPackageName").setParameter("packageName",
-                pn).list();
-
+        return session.createNamedQuery("Package.findByPackageName", Package.class)
+                .setParameter("packageName", pn)
+                .list();
     }
 
     /**
