@@ -27,7 +27,7 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "sle_client" should be correct
     And the system name for "sle_client" should be correct
     And the uptime for "sle_client" should be correct
-    And I should see several text fields for "sle_client"
+    And I should see several text fields
 
 @sle_minion
   Scenario: SLE minion hardware refresh
