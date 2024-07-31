@@ -127,7 +127,6 @@ Feature: Smoke tests for <client>
     And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro
-# We already use the reboot feature for sle micro in the other scenarios as a mandatory step.
   Scenario: Reboot the <client> and wait until reboot is completed
     Given I am on the Systems overview page of this "<client>"
     When I follow first "Schedule System Reboot"
