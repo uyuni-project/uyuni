@@ -171,11 +171,14 @@ When(/^I click on preview$/) do
   max_attempts = 2
 
   (1..max_attempts).each do |attempt|
-    # Click the preview button
-    find('button#preview').click
-
+    if page.has_button?('stop', visible: true)
+      puts 'Stop button visible, searching request ongoing'
+    else
+      # Click the preview button
+      find('button#preview').click
+    end
     # Wait for up to 3 seconds for the run button to be visible
-    if page.has_button?('run', visible: true, wait: 3)
+    if page.has_button?('run', visible: true, wait: 5)
       puts 'The run button is visible.'
       break
     else
