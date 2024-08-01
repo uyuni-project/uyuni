@@ -61,7 +61,8 @@ public class SCCSystemRegistrationManager {
                 .map(c -> new SCCUpdateSystemJson(
                         c.get("scc_login").toString(),
                         c.get("scc_passwd").toString(),
-                        (Date) c.get("checkin")))
+                        (Date) c.get("checkin"),
+                        c.get("uptime_data").toString()))
                 .collect(Collectors.toList());
 
         ArrayList<List<SCCUpdateSystemJson>> batches = new ArrayList<>(

@@ -174,7 +174,7 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
                     "SCCSystemId.login" + i,
                     new SCCRegisterSystemJson(
                             "SCCRegisterSystemJson.login" + i, "SCCRegisterSystemJson.pwd" + i,
-                            null, null, null, null)
+                            null, null, null, null, null)
             );
         }
         return context;

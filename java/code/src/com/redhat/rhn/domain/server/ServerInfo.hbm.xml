@@ -16,5 +16,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             constrained="true"/>
         <property name="checkin" type="timestamp" column="checkin"/>
         <property name="checkinCounter" type="long" column="checkin_counter"/>
+        <property name="uptimeData" type="string" column="uptime_data"/>
     </class>
 </hibernate-mapping>

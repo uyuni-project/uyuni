@@ -49,3 +49,7 @@ INSERT INTO suseInternalState (id, name, label)
 
 INSERT INTO suseInternalState (id, name, label)
          VALUES (14, 'rebootifneeded', 'Reboot system if needed');
+
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (15, 'uptimetracker.requestdata', 'Uptime Tracking Data');
+
