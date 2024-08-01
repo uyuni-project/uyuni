@@ -1,0 +1,1 @@
+- spacewalk-setup should stop if spacewalk-setup-cobbler fails (bsc#1226847)
