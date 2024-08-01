@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>coco-attestation</artifactId>
-        <version>5.0.4</version>
+        <version>5.0.5</version>
     </parent>
 
     <groupId>org.uyuni-project.coco-attestation.module</groupId>
