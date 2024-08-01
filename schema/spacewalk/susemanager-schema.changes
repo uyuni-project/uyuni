@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Aug 01 16:54:53 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.11-0
+  * Remove unused MinionActionChainCleanup job
+  * Execute the cobbler-sync-default task once per 5 minutes by
+    default (bsc#1219450)
+  * Introduce new attributes to detect PTF packages (bsc#1225619)
+  * Remove reboot from uptodate state, introduce reboot and
+    rebootifneeded states
+  * Fix queries related to Appstreams to avoid inconsistencies
+    when listing packages
+
+-------------------------------------------------------------------
 Thu Jul 11 17:42:49 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.10-0
