@@ -36,6 +36,8 @@ public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
 
     private final SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
     private List<SCCRegCacheItem> testSystems;
+    private static final String UPTIME_TEST = "[\"2024-06-26:000000000000000000001111\"," +
+                                               "\"2024-06-27:111111111111110000000000\"]";
 
     /**
      * Sets up systems for testing purposes.
@@ -53,6 +55,7 @@ public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
             Server testSystem = ServerTestUtils.createTestSystem();
             ServerInfo serverInfo = testSystem.getServerInfo();
             serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+            serverInfo.setUptimeData(UPTIME_TEST);
             testSystem.setServerInfo(serverInfo);
             if (i < paygSystemSize) {
                 testSystem.setPayg(true);

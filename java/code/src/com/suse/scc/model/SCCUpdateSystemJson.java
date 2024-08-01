@@ -27,17 +27,22 @@ public class SCCUpdateSystemJson {
     private String password;
     @SerializedName("last_seen_at")
     private Date lastSeenAt;
+    @SerializedName("online_at")
+    private String onlineAt;
 
     /**
      * Constructor
      * @param loginIn the login
      * @param passwdIn the password
      * @param lastSeenIn last seen date
+     * @param onlineAtIn the system online data
      */
-    public SCCUpdateSystemJson(String loginIn, String passwdIn, Date lastSeenIn) {
+    public SCCUpdateSystemJson(String loginIn, String passwdIn, Date lastSeenIn,
+            String onlineAtIn) {
         login = loginIn;
         password = passwdIn;
         lastSeenAt = lastSeenIn;
+        onlineAt = onlineAtIn;
     }
 
     /**
@@ -59,5 +64,11 @@ public class SCCUpdateSystemJson {
      */
     public Date getLastSeenAt() {
         return lastSeenAt;
+    }
+    /**
+     * @return Returns the system online data.
+     */
+    public String getOnlineAt() {
+        return onlineAt;
     }
 }

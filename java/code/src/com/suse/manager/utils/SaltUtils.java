@@ -124,6 +124,7 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
+import com.suse.manager.webui.utils.salt.custom.UptimeTrackerRequestData;
 import com.suse.manager.webui.websocket.VirtNotifications;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -2046,6 +2047,13 @@ public class SaltUtils {
     public void updateSystemInfo(JsonElement jsonResult, MinionServer minion) {
         SystemInfo systemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
         updateSystemInfo(systemInfo, minion);
+        UptimeTrackerRequestData uptimeTrackerData  = Json.GSON.fromJson(jsonResult, UptimeTrackerRequestData.class);
+        Optional<StateApplyResult<CmdResult>> uptimeTrackerReport = uptimeTrackerData.getUptimeTrackerReport();
+        LOG.error("TEST: " + uptimeTrackerData);
+        uptimeTrackerReport.ifPresent(report -> {
+                LOG.error("comment: " + report.getComment());
+                LOG.error("stdout: " + report.getChanges().getStdout());
+            });
     }
 
 

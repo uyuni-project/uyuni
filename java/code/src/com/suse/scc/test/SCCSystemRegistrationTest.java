@@ -63,6 +63,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
     private Integer systemSize;
     private Integer batchSize;
 
+    private static final String UPTIME_TEST = "[\"2024-06-26:000000000000000000001111\"," +
+                                               "\"2024-06-27:111111111111110000000000\"]";
 
     @Override
     @BeforeEach
@@ -88,6 +90,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
             Server testSystem = ServerTestUtils.createTestSystem();
             ServerInfo serverInfo = testSystem.getServerInfo();
             serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+            serverInfo.setUptimeData(UPTIME_TEST);
             testSystem.setServerInfo(serverInfo);
             this.servers.add(testSystem);
         }
