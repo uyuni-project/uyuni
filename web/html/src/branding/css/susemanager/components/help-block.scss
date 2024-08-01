@@ -3,6 +3,6 @@
   display: block;
   margin-top: 5px;
   margin-bottom: 10px;
-  // TODO: After the migration is complete, replace this with a brand color, this color isn't used anywhere else right now
-  color: #425074;
+  // TODO: After the migration is complete, pick a good color for this
+  color: $body-color;
 }
