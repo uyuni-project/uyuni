@@ -604,5 +604,71 @@
     "from_product": "Open_Enterprise_Server-11.2-None.x86_64", 
     "to_pdid": "44", 
     "to_product": "Open_Enterprise_Server-11.3-None.x86_64"
+  },
+  {
+	  "from_pdid": -7,
+	  "from_product": "rhel-base-7-None.x86_64",
+	  "to_pdid": 2702,
+	  "to_product": "res-ltss-7-None.x86_64"
+  },
+  {
+	  "from_pdid": -12,
+	  "from_product": "centos-7-None.x86_64",
+	  "to_pdid": 2702,
+	  "to_product": "res-ltss-7-None.x86_64"
+  },
+  {
+	  "from_pdid": -12,
+	  "from_product": "centos-7-None.x86_64",
+	  "to_pdid": 1251,
+	  "to_product": "res-7-None.x86_64"
+  },
+  {
+	  "from_pdid": -14,
+	  "from_product": "oraclelinux-7-None.x86_64",
+	  "to_pdid": 1251,
+	  "to_product": "res-7-None.x86_64"
+  },
+  {
+	  "from_pdid": -14,
+	  "from_product": "oraclelinux-7-None.x86_64",
+	  "to_pdid": 2778,
+	  "to_product": "res-ol-ltss-7-None.x86_64"
+  },
+  {
+	  "from_pdid": -17,
+	  "from_product": "oraclelinux-8-None.x86_64",
+	  "to_pdid": -8,
+	  "to_product": "rhel-base-8-None.x86_64"
+  },
+  {
+	  "from_pdid": -24,
+	  "from_product": "rockylinux-8-None.x86_64",
+	  "to_pdid": -8,
+	  "to_product": "rhel-base-8-None.x86_64"
+  },
+  {
+	  "from_pdid": -26,
+	  "from_product": "almalinux-8-None.x86_64",
+	  "to_pdid": -8,
+	  "to_product": "rhel-base-8-None.x86_64"
+  },
+  {
+	  "from_pdid": -41,
+	  "from_product": "oraclelinux-9-None.x86_64",
+	  "to_pdid": -35,
+	  "to_product": "el-base-9-None.x86_64"
+  },
+  {
+	  "from_pdid": -36,
+	  "from_product": "rockylinux-9-None.x86_64",
+	  "to_pdid": -35,
+	  "to_product": "el-base-9-None.x86_64"
+  },
+  {
+	  "from_pdid": -38,
+	  "from_product": "almalinux-9-None.x86_64",
+	  "to_pdid": -35,
+	  "to_product": "el-base-9-None.x86_64"
   }
 ]
