@@ -594,6 +594,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Liberty Linux LTSS 7" as the filtered product description
     And I select "SUSE Liberty Linux LTSS 7 x86_64" as a product
     Then I should see the "SUSE Liberty Linux LTSS 7 x86_64" selected
+    When I open the sub-list of the product "SUSE Liberty Linux LTSS 7 x86_64"
     And I should see the "SUSE Manager Client Tools for RHEL, Liberty and Clones 7 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Liberty Linux LTSS 7 x86_64" product has been added
