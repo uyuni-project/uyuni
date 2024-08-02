@@ -138,23 +138,18 @@ body {
         color: $gray;
       }
     }
-    #wizard-faq img {
-      margin: 1em 0;
-    }
   }
 
   #wizard-faq {
+    display: flex;
+    flex-direction: column;
     border-left: 1px solid $eos-bc-gray-100;
-    text-align: center;
-    img:first-child {
-      margin-top: 1em;
-      margin-bottom: 1em;
-    }
-    h4,
-    p {
-      text-align: left;
+
+    img {
+      margin: 1em auto;
     }
   }
+
   .panel[data-target="#modal-edit-credentials"] {
     cursor: pointer;
   }
