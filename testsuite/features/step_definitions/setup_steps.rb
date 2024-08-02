@@ -207,7 +207,7 @@ Given(/^I update the profile of "([^"]*)"$/) do |client|
   node.run('rhn-profile-sync', timeout: 500)
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
+When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |seconds, host, is_salt|
   steps %(
     When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "#{host}", refreshing the page
@@ -218,11 +218,15 @@ When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) 
     get_target(host).run('rhn_check -vvv')
   else
     steps %(
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Apply states" is completed
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Hardware List Refresh" is completed
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Package List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Apply states" is completed
+      And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Hardware List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Package List Refresh" is completed
     )
   end
+end
+
+When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until onboarding is completed for "#{host}"#{is_salt})
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
