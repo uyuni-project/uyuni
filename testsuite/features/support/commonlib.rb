@@ -67,7 +67,7 @@ end
 def product_version_full
   cmd = 'salt-call --local grains.get product_version | tail -n 1'
   out, code = get_target('server').run(cmd)
-  return out.strip if code.zero? && !out.nil?
+  out.strip if code.zero? && !out.nil?
 end
 
 # Determines whether to use the Salt bundle based on the product and product version.
@@ -183,7 +183,7 @@ end
 # @param locator [String] (optional) The locator for the button element.
 # @param options [Hash] (optional) Additional options for the click_button method.
 def click_button_and_wait(locator = nil, **options)
-  click_button(locator, options)
+  click_button(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -197,7 +197,7 @@ end
 # @param locator [String, nil] The locator for the link to click.
 # @param options [Hash] Additional options for the click action.
 def click_link_and_wait(locator = nil, **options)
-  click_link(locator, options)
+  click_link(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -211,7 +211,7 @@ end
 # @param locator [String] (optional) The locator for the link or button to click.
 # @param options [Hash] (optional) Additional options for the click operation.
 def click_link_or_button_and_wait(locator = nil, **options)
-  click_link_or_button(locator, options)
+  click_link_or_button(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -253,7 +253,7 @@ end
 # @param optional_filter_block [Block] An optional filter block to be passed to the `find` method.
 # @return [Capybara::Node::Element] The element after extending it with the CapybaraNodeElementExtension module.
 def find_and_wait_click(*args, **options, &optional_filter_block)
-  element = find(*args, options, &optional_filter_block)
+  element = find(*args, **options, &optional_filter_block)
   element.extend(CapybaraNodeElementExtension)
 end
 
