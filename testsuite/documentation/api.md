@@ -1,4 +1,13 @@
-# Testing the API with a standalone script
+# API
+
+## General
+
+We use 2 different APIs for testing
+
+- SUSE Manager: XML-RPC API (HTTPS + XML)
+- Uyuni: REST API (HTTPS + JSON), which we internally call HTTP API
+
+## Testing the API with a standalone script
 
 You can use this template:
 
