@@ -146,4 +146,7 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'system-profile-refresh', 'co
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'payg-dimension-computation', 'com.redhat.rhn.taskomatic.task.payg.PaygComputeDimensionsTask');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'oval-data-sync', 'com.redhat.rhn.taskomatic.task.OVALDataSync');
+
 commit;

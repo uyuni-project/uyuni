@@ -361,6 +361,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                WHERE USP.user_id = :user_id AND USP.server_id = s.id)
         ]]>
     </sql-query>
+    
+    <sql-query name="Server.listAllServersOsAndRelease">
+        <![CDATA[
+            SELECT DISTINCT s.os, s.release FROM rhnServer s
+        ]]>
+    </sql-query>
 
     <sql-query name="Server.findSimpleMinionsByServerIds">
         <![CDATA[
