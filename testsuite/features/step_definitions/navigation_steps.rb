@@ -278,6 +278,17 @@ When(/^I click on "([^"]*)" and confirm$/) do |text|
   end
 end
 
+# Click on a button and confirm in alert box
+When(/^I click on "([^"]*)" and confirm alert box$/) do |text|
+  begin
+    accept_confirm do
+      click_button(text)
+    end
+  rescue Capybara::ModalNotFound
+    warn 'Modal not found'
+  end
+end
+
 #
 # Click on a link
 #

@@ -35,7 +35,7 @@ When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} stop", check_errors: false)
   else
     node.run("systemctl stop #{pkgname}", check_errors: false)
@@ -47,7 +47,7 @@ When(/^I start salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} start", check_errors: false)
   else
     node.run("systemctl start #{pkgname}", check_errors: false)
@@ -59,7 +59,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} restart", check_errors: false)
   else
     node.run("systemctl restart #{pkgname}", check_errors: false)
@@ -126,7 +126,7 @@ end
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
+  family = os_family.match?(/^opensuse/) ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 
@@ -385,7 +385,7 @@ Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
-      open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
+      URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
         tmpfile.write(urlfile.read)
       end
     rescue OpenURI::HTTPError => e
