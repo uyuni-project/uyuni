@@ -10,6 +10,7 @@ require 'capybara/cucumber'
 require 'cucumber'
 # require 'simplecov'
 require 'minitest/autorun'
+require 'minitest/unit'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
@@ -18,6 +19,8 @@ require 'timeout'
 require_relative 'code_coverage'
 require_relative 'twopence_env'
 require_relative 'commonlib'
+
+$stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 
 # code coverage analysis
 # SimpleCov.start
@@ -74,38 +77,28 @@ end
 # Fix a problem with minitest and cucumber options passed through rake
 MultiTest.disable_autorun
 
-# register chromedriver headless mode
+# register chromedriver in headless mode
 def capybara_register_driver
-  Capybara.register_driver(:headless_chrome) do |app|
-    client = Selenium::WebDriver::Remote::Http::Default.new
+  Capybara.register_driver :selenium_chrome_headless do |app|
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
-    client.read_timeout = 240
-    # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048 remote-debugging-port=9222]
-    chrome_options << 'headless' unless $debug_mode
-    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: {
-        args: chrome_options,
-        w3c: false,
-        prefs: {
-          download: {
-            prompt_for_download: false,
-            default_directory: '/tmp/downloads'
-          }
-        }
-      },
-      unexpectedAlertBehaviour: 'accept',
-      unhandledPromptBehavior: 'accept'
+    client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 30, read_timeout: 240)
+    chrome_options = Selenium::WebDriver::Chrome::Options.new(
+      args: %w[disable-dev-shm-usage ignore-certificate-errors window-size=2048,2048 js-flags=--max_old_space_size=2048 remote-debugging-port=9222]
     )
+    chrome_options.args << 'headless=new' unless $debug_mode
+    chrome_options.add_preference('prompt_for_download', false)
+    chrome_options.add_preference('download.default_directory', '/tmp/downloads')
+    chrome_options.add_preference('unhandledPromptBehavior', 'accept')
+    chrome_options.add_preference('unexpectedAlertBehaviour', 'accept')
 
-    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities, http_client: client)
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options, http_client: client)
   end
 end
 
 $capybara_driver = capybara_register_driver
 Selenium::WebDriver.logger.level = :error unless $debug_mode
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
+Capybara.default_driver = :selenium_chrome_headless
+Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
