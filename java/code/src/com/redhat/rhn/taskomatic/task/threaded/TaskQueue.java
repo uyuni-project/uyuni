@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TaskQueue {
 
+    private final String queueName;
     private QueueDriver queueDriver;
     private ThreadPoolExecutor executor = null;
     private int executingWorkers = 0;
@@ -36,6 +37,15 @@ public class TaskQueue {
     private byte[] emptyQueueWait = new byte[0];
     private boolean taskQueueDone = true;
     private TaskoRun queueRun = null;
+
+    /**
+     * Default constructor
+     *
+     * @param queueNameIn the name of the queue
+     */
+    public TaskQueue(String queueNameIn) {
+        this.queueName = queueNameIn;
+    }
 
     /**
      * Store the QueueDriver instance used when run() is called
@@ -134,6 +144,7 @@ public class TaskQueue {
         executor = setupQueue(workers);
 
         if (queueDriver.isBlockingTaskQueue()) {
+            queueDriver.getLogger().debug("Waiting for empty queue");
             try {
                 waitForEmptyQueue();
             }
@@ -149,7 +160,7 @@ public class TaskQueue {
         if (isTaskQueueDone()) {
             // everything done
             if (queueRun != null) {
-                queueDriver.getLogger().debug("Finishing run {}", queueRun.getId());
+                queueDriver.getLogger().debug("Finishing Task Queue run {}", queueRun.getId());
                 queueRun.finished();
                 queueRun.saveStatus(TaskoRun.STATUS_FINISHED);
             }
@@ -159,6 +170,9 @@ public class TaskQueue {
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
             changeRun(null);
+        }
+        else {
+            queueDriver.getLogger().debug("TaskQueue is not done. Leaving the run {} as RUNNING", queueRun.getId());
         }
     }
 
@@ -205,7 +219,7 @@ public class TaskQueue {
     private ThreadPoolExecutor setupQueue(BlockingQueue<Runnable> workers) {
         int size = queueDriver.getMaxWorkers();
 
-        TaskThreadFactory factory = new TaskThreadFactory();
+        TaskThreadFactory factory = new TaskThreadFactory(queueName);
         ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(size, size, 5, TimeUnit.SECONDS, workers, factory);
 
         poolExecutor.allowCoreThreadTimeOut(false);
