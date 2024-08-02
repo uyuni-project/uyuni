@@ -26,8 +26,10 @@ jobs:
           filters: |
             java:
               - 'java/**'
+              - '!*.changes.*'
             web:
               - 'web/html/src/**'
+              - '!*.changes.*'
             testsuite:
               - 'testsuite/**'
               - '!testsuite/features/build_validation/**'
