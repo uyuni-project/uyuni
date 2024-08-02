@@ -15,20 +15,36 @@
 package com.redhat.rhn.taskomatic.task.threaded;
 
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * ThreadFactory impl for Taskomatic
  */
 public class TaskThreadFactory implements ThreadFactory {
 
+    private final AtomicInteger threadNumberSequence = new AtomicInteger(0);
+
+    private final String queueName;
+
+    /**
+     * Create a thread factory
+     * @param queueNameIn the name of the queue
+     */
+    public TaskThreadFactory(String queueNameIn) {
+        this.queueName = queueNameIn;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public Thread newThread(Runnable task) {
-        Thread retval = new Thread(task);
-        retval.setDaemon(true);
-        return retval;
+        int taskNumber = threadNumberSequence.incrementAndGet();
+
+        Thread thread = new Thread(task);
+        thread.setName("TaskQueue-" + queueName + "-" + taskNumber);
+        thread.setDaemon(true);
+        return thread;
     }
 
 }
