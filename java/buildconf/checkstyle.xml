@@ -87,7 +87,7 @@
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <module name="JavadocMethod">
-            <property name="scope" value="${javadoc.method.scope}" />
+            <property name="accessModifiers" value="${javadoc.method.scope}" />
             <property name="allowMissingParamTags" value="${javadoc.lazy}" />
             <property name="allowMissingReturnTag" value="${javadoc.lazy}" />
         </module>

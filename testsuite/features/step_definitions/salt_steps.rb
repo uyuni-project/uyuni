@@ -192,7 +192,6 @@ When(/^I click on preview$/) do
   end
 end
 
-
 When(/^I click on stop waiting$/) do
   find('button#stop').click
 end
