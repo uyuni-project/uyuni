@@ -21,7 +21,7 @@ try:
     import inspect
 
     hashlib_has_usedforsecurity = (
-        "usedforsecurity" in inspect.getargspec(hashlib.new)[0]
+        "usedforsecurity" in inspect.getfullargspec(hashlib.new)[0]
     )
 except ImportError:
     import md5
