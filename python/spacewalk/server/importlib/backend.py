@@ -2636,7 +2636,7 @@ class Backend:
 
         for package in packages:
             if not isinstance(package, SourcePackage):
-                raise TypeError("Expected a Package instance")
+                raise TypeError("Expected a SourcePackage instance")
 
         # Process the packages
 
