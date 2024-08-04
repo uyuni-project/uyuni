@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lzreposync"
+version = "0.1"
+dependencies = [
+     "memory_profiler",
+     "pytest",
+     "requests",
+     "python-gnupg"
+]
+
+[project.scripts]
+lzreposync = "lzreposync:main"
