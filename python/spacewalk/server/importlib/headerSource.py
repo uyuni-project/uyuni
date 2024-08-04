@@ -635,6 +635,7 @@ def createPackage(
     header_start,
     header_end,
     channels,
+    expand_full_filelist=True,
     remote_path=None,
 ):
     """
