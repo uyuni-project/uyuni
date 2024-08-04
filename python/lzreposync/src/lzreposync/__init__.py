@@ -2,23 +2,35 @@
 
 import argparse
 import logging
+from itertools import islice
 
-from lzreposync import db_utils, updates_util
-from lzreposync.db_utils import (
-    get_compatible_arches,
-    get_channel_info_by_label,
-    get_all_arches,
-    create_channel,
-    ChannelAlreadyExistsException,
-    NoSourceFoundForChannel,
-)
+from lzreposync import db_utils
+from lzreposync.deb_repo import DebRepo
 from lzreposync.import_utils import (
     import_package_batch,
-    batched,
-    import_repository_packages_in_batch,
 )
 from lzreposync.rpm_repo import RPMRepo
-from spacewalk.satellite_tools.repo_plugins.deb_src import DebRepo
+from spacewalk.server import rhnChannel, rhnSQL
+
+
+# TODO: put this function in a better location
+def batched(iterable, n):
+    if n < 1:
+        raise ValueError("n must be at least one")
+    iterator = iter(iterable)
+    while batch := tuple(islice(iterator, n)):
+        yield batch
+
+
+# TODO: group channel and channel label together
+def import_repository_packages_in_batch(
+    repository, batch_size, channel=None, channel_label=None
+):
+    failed = 0
+    packages = repository.get_packages_metadata()  # packages is a generator
+    for i, batch in enumerate(batched(packages, batch_size)):
+        failed += import_package_batch(batch, i, True, channel, channel_label)
+    return failed
 
 
 def main():
@@ -48,7 +60,7 @@ def main():
     )
 
     parser.add_argument(
-        "-D",
+        "-d",
         "--debug",
         help="Show debug messages",
         action="store_const",
