@@ -1687,12 +1687,11 @@ public class ChannelManager extends BaseManager {
      *
      * @param usr requesting list
      * @param s Server to check against
-     * @return List of Channel objects that match
+     * @return Set of Channel objects that match
      */
-    public static List<EssentialChannelDto> listBaseChannelsForSystem(User usr,
-            Server s) {
+    public static Set<EssentialChannelDto> listBaseChannelsForSystem(User usr, Server s) {
 
-        List<EssentialChannelDto> channelDtos = new LinkedList<>();
+        Set<EssentialChannelDto> channelDtos = new HashSet<>();
         PackageEvr releaseEvr = PackageManager.lookupReleasePackageEvrFor(s);
         if (releaseEvr != null) {
             String rhelVersion =
@@ -1801,23 +1800,23 @@ public class ChannelManager extends BaseManager {
      * Given a base-channel, find all the base channels available to the specified user
      * that a system with the specified channel may be re-subscribed to.
      *
-     * @param u User of interest
+     * @param u      User of interest
      * @param inChan Base-channel of interest
-     * @return List of channels that a system subscribed to "c" could be re-subscribed to
+     * @return Set of channels that a system subscribed to "c" could be re-subscribed to
      */
-    public static List<EssentialChannelDto> listCompatibleBaseChannelsForChannel(User u, Channel inChan) {
+    public static Set<EssentialChannelDto> listCompatibleBaseChannelsForChannel(User u, Channel inChan) {
         // Get all the custom-channels owned by this org and add them
-        List<EssentialChannelDto> retval = ChannelFactory.listCustomBaseChannelsForSSM(u, inChan)
+        Set<EssentialChannelDto> retval = ChannelFactory.listCustomBaseChannelsForSSM(u, inChan)
                 .stream()
                 .map(EssentialChannelDto::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         retval.addAll(ChannelFactory.listCompatibleDcmForChannelSSMInNullOrg(u, inChan)
                .stream()
                .map(EssentialChannelDto::new)
-               .collect(Collectors.toList()));
+               .collect(Collectors.toSet()));
 
-        List<EssentialChannelDto> eusBaseChans = new LinkedList<>();
+        Set<EssentialChannelDto> eusBaseChans = new HashSet<>();
 
         ReleaseChannelMap rcm = lookupDefaultReleaseChannelMapForChannel(inChan);
         if (rcm != null) {
