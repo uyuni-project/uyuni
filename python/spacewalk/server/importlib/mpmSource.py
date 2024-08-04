@@ -119,6 +119,7 @@ def create_package(
     header_start=None,
     header_end=None,
     channels=[],
+    remote_path=None,
 ):
     if header.packaging == "rpm":
         return headerSource.createPackage(
@@ -131,6 +132,7 @@ def create_package(
             header_start=header_start,
             header_end=header_end,
             channels=channels,
+            remote_path=remote_path,
         )
     if header.packaging == "deb":
         return debPackage.debBinaryPackage(
@@ -141,6 +143,7 @@ def create_package(
             path=relpath,
             org_id=org_id,
             channels=channels,
+            remote_path=remote_path,
         )
     if header.is_source:
         raise NotImplementedError()
