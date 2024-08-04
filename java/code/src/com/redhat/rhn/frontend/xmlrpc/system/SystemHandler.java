@@ -713,8 +713,7 @@ public class SystemHandler extends BaseHandler {
         Channel baseChannel = server.getBaseChannel();
         List<Map<String, Object>> returnList = new ArrayList<>();
 
-        List<EssentialChannelDto> list =
-                ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
+        Set<EssentialChannelDto> list = ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
         for (EssentialChannelDto ch : list) {
             Boolean currentBase = (baseChannel != null) &&
                     baseChannel.getId().equals(ch.getId());

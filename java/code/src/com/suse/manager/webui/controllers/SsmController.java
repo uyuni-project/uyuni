@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -111,8 +112,7 @@ public class SsmController {
             SsmAllowedBaseChannelsJson allowedBaseJson = new SsmAllowedBaseChannelsJson();
             allowedBaseJson.setBase(new SsmChannelDto(c.getId(), c.getName(), c.isCustom()));
 
-            List<EssentialChannelDto> compatibles = ChannelManager
-                    .listCompatibleBaseChannelsForChannel(user, c);
+            Set<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
 
             allowedBaseJson.setAllowedBaseChannels(
                 compatibles.stream().map(cc ->

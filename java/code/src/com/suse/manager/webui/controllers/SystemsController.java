@@ -385,8 +385,7 @@ public class SystemsController {
      */
     public String getAvailableBaseChannels(Request request, Response response, User user) {
         return withServer(request, response, user, (server) -> {
-            List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(
-                    user, server);
+            Set<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(user, server);
             List<ChannelsJson.ChannelJson> baseChannels =
                     orgChannels.stream().map(c -> new ChannelsJson.ChannelJson(c.getId(),
                             c.getLabel(),
