@@ -69,6 +69,7 @@ class MetadataParser:
                 # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                 "Yielding pacakge {}".format(package["checksum"])
             )
+            # pylint: disable=W0703,W0706
             try:
                 rpm_package = mpmSource.create_package(
                     package["header"],
