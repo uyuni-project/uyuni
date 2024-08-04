@@ -56,6 +56,7 @@ CREATE TABLE rhnPackage
                          CONSTRAINT rhn_package_compat_check
                              CHECK (compat in ( 1 , 0 )),
     path             VARCHAR(1000),
+    remote_path	     VARCHAR(1000),
     header_sig       VARCHAR(64),
     copyright        VARCHAR(128),
     cookie           VARCHAR(128),
