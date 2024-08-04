@@ -33,15 +33,6 @@ def import_repository_packages_in_batch(
     return failed
 
 
-# TODO: put this function in a better location
-def batched(iterable, n):
-    if n < 1:
-        raise ValueError('n must be at least one')
-    iterator = iter(iterable)
-    while batch := tuple(islice(iterator, n)):
-        yield batch
-
-
 def main():
     parser = argparse.ArgumentParser(
         description="Lazy reposync service",
@@ -53,7 +44,7 @@ def main():
         "--url",
         "-u",
         help="The target url of the remote repository of which we'll "
-             "parse the metadata",
+        "parse the metadata",
         dest="url",
         type=str,
         default=None,
