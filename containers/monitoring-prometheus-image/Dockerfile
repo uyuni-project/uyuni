@@ -22,8 +22,9 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.prometheus
 LABEL org.opencontainers.image.title="${PRODUCT} Prometheus"
+LABEL org.opencontainers.image.name="monitoring-prometheus-image"
 LABEL org.opencontainers.image.description="Prometheus container image for ${PRODUCT}"
-LABEL org.opencontainers.image.version="%%prometheus_patch_version%%"
+LABEL org.opencontainers.image.version=5.0.8
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
