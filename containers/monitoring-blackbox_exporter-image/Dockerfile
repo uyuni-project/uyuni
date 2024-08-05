@@ -22,8 +22,9 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.blackbox_exporter
 LABEL org.opencontainers.image.title="${PRODUCT} Blackbox Exporter"
+LABEL org.opencontainers.image.name="monitoring-blackbox_exporter-image"
 LABEL org.opencontainers.image.description="Blackbox Exporter container image for ${PRODUCT}"
-LABEL org.opencontainers.image.version="%%blackbox_exporter_patch_version%%"
+LABEL org.opencontainers.image.version=5.0.8
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
