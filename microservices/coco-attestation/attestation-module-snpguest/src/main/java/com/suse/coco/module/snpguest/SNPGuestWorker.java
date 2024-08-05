@@ -218,18 +218,18 @@ public class SNPGuestWorker implements AttestationWorker {
             processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Standard output: >")
                 .append(System.lineSeparator());
             processOutput.getStandardOutput().lines()
-                .forEach(line -> {
-                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator());
-                });
+                .forEach(line ->
+                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator())
+                );
         }
 
         if (processOutput.hasStandardError()) {
             processBuilder.append(" ".repeat(INDENT_SIZE)).append("- Standard error: >")
                 .append(System.lineSeparator());
             processOutput.getStandardError().lines()
-                .forEach(line -> {
-                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator());
-                });
+                .forEach(line ->
+                    processBuilder.append(" ".repeat(INDENT_SIZE * 2)).append(line).append(System.lineSeparator())
+                );
         }
 
         return processBuilder.toString();
