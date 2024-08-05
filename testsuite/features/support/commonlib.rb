@@ -344,7 +344,7 @@ end
 def extract_logs_from_node(node, host)
   begin
     os_family = node.os_family
-    if os_family =~ /^opensuse/ && !$is_gh_validation && !transactional_system?(host)
+    if os_family.match?(/^opensuse/) && !$is_gh_validation && !transactional_system?(host)
       node.run('zypper --non-interactive install tar')
     elsif transactional_system?(host)
       node.run('transactional-update --continue -n pkg install tar')
@@ -469,7 +469,7 @@ def get_os_version(node)
 
   os_version.delete! '"'
   # on SLES, we need to replace the dot with '-SP'
-  os_version.gsub!('.', '-SP') if os_family =~ /^sles/
+  os_version.gsub!('.', '-SP') if os_family.match?(/^sles/)
   $stdout.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
   [os_version, os_family]
 end
@@ -486,9 +486,9 @@ def get_gpg_keys(node, target = get_target('server'))
   case os_family
   when /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
-    os_version = 12 if os_version =~ /^15/
+    os_version = 12 if os_version.match?(/^15/)
     # SLE12 GPG keys don't contain service pack strings
-    os_version = os_version.split('-')[0] if os_version =~ /^12/
+    os_version = os_version.split('-')[0] if os_version.match?(/^12/)
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
   when /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)
@@ -533,21 +533,21 @@ def get_system_name(host)
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
+        word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
   when 'sle12sp5_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.sle12sp5terminal-/
+        word.match?(/example.sle12sp5terminal-/)
       end
     system_name = 'sle12sp5terminal.example.org' if system_name.nil?
   when 'sle15sp4_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.sle15sp4terminal-/
+        word.match?(/example.sle15sp4terminal-/)
       end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
   else

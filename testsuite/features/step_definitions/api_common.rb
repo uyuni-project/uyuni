@@ -102,7 +102,7 @@ When(/^I call user\.list_roles\(\) on user "([^"]*)"$/) do |user|
 end
 
 Then(/^I should get at least one role that matches "([^"]*)" suffix$/) do |suffix|
-  refute(@roles.find_all { |el| el =~ /#{suffix}/ }.empty?)
+  refute(@roles.find_all { |el| el.match?(/#{suffix}/) }.empty?)
 end
 
 Then(/^I should get role "([^"]*)"$/) do |rolename|

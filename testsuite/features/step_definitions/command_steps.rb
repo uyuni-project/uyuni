@@ -466,7 +466,7 @@ end
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
     output, _code = get_target('server').run("grep #{content} #{file}", check_errors: false)
-    break if output =~ /#{content}/
+    break if output.match?(/#{content}/)
 
     sleep 2
     "\n-----\n#{output}\n-----\n"
@@ -1288,8 +1288,8 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   os_version = node.os_version.gsub('-SP', '.')
   os_family = node.os_family
   # TODO: Check why tools_update_repo is not available on the openSUSE minion
-  repositories = os_family =~ /^opensuse/ ? 'tools_pool_repo' : 'tools_pool_repo tools_update_repo'
-  if (os_family =~ /^opensuse/ || os_family =~ /^sles/) && (product != 'Uyuni')
+  repositories = os_family.match?(/^opensuse/) ? 'tools_pool_repo' : 'tools_pool_repo tools_update_repo'
+  if (os_family.match?(/^opensuse/) || os_family.match?(/^sles/)) && (product != 'Uyuni')
     repositories.concat(' tools_additional_repo')
     # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
     # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
