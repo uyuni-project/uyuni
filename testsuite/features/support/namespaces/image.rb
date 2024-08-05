@@ -12,8 +12,7 @@ class NamespaceImage
     @store = NamespaceImageStore.new(api_test)
   end
 
-  attr_reader :profile
-  attr_reader :store
+  attr_reader :profile, :store
 
   # Deletes an image based on its ID.
   #

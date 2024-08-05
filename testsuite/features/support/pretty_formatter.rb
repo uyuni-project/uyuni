@@ -7,4 +7,5 @@ require_relative 'custom_formatter'
 # CustomFormatter module
 module CustomFormatter
   PrettyFormatter = PrependsFeatureName.formatter(Cucumber::Formatter::Pretty)
+  public_constant :PrettyFormatter
 end

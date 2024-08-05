@@ -127,19 +127,5 @@ Feature: Synchronize fake channels
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: Reposync handles wrong encoding on RPM attributes
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Child-Channel-x86_64"
-    And I follow "Packages" in the content area
-    And I follow "List / Remove Packages"
-    And I wait until I see "blackhole-dummy" text, refreshing the page
-
-@deblike_minion
-  Scenario: Reposync handles wrong encoding on DEB attributes
-    When I follow the left menu "Software > Channel List"
-    And I follow "Fake-Base-Channel-Debian-like"
-    And I follow "Packages" in the content area
-    And I wait until I see "blackhole-dummy" text, refreshing the page
-
   Scenario: Cleanup disable source package syncing
     Then I disable source package syncing

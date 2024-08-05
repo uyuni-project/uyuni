@@ -9,14 +9,14 @@ end
 
 # extract various data from Retail yaml configuration
 def read_terminals_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
+  name = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
   tree = YAML.load_file(name)
   tree['branches'].values[0]['terminals'].keys
 end
 
 # Extract the branch prefix from the Retail yaml configuration
 def read_branch_prefix_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
+  name = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
   tree = YAML.load_file(name)
   tree['branches'].values[0]['branch_prefix']
 end

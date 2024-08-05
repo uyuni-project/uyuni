@@ -147,7 +147,7 @@ end
 
 When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
   tmp_dir = '/var/cache/cobbler'
-  out, code = get_target('server').run("cat >#{tmp_dir}/test_image <<-EOF
+  _out, _code = get_target('server').run("cat >#{tmp_dir}/test_image <<-EOF
 BIOS
 UEFI
 EOF")
@@ -200,15 +200,15 @@ end
 When(/^I copy autoinstall mocked files on server$/) do
   target_dirs = '/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock'
   get_target('server').run("mkdir -p #{target_dirs}")
-  base_dir = File.dirname(__FILE__) + '/../upload_files/autoinstall/cobbler/'
+  base_dir = "#{File.dirname(__FILE__)}/../upload_files/autoinstall/cobbler/"
   source_dir = '/var/autoinstall/'
   return_codes = []
-  return_codes << file_inject(get_target('server'), base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
-  return_codes << file_inject(get_target('server'), base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
-  return_codes << file_inject(get_target('server'), base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject(get_target('server'), base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject(get_target('server'), base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
-  raise 'File injection failed' unless return_codes.all?(&:zero?)
+  return_codes << file_inject(get_target('server'), "#{base_dir}fedora12/vmlinuz", "#{source_dir}Fedora_12_i386/images/pxeboot/vmlinuz")
+  return_codes << file_inject(get_target('server'), "#{base_dir}fedora12/initrd.img", "#{source_dir}Fedora_12_i386/images/pxeboot/initrd.img")
+  return_codes << file_inject(get_target('server'), "#{base_dir}mock/empty.xml", "#{source_dir}mock/empty.xml")
+  return_codes << file_inject(get_target('server'), "#{base_dir}sles15sp4/initrd", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd")
+  return_codes << file_inject(get_target('server'), "#{base_dir}sles15sp4/linux", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux")
+  raise ScriptError, 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
 When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
@@ -225,18 +225,20 @@ When(/^I start local monitoring of Cobbler$/) do
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
   get_target('server').run("rm #{cobbler_log_file}", check_errors: false)
   _result, code = get_target('server').run("test -f #{cobbler_conf_file}.old", check_errors: false)
-  if !code.zero?
+  if code.zero?
+    get_target('server').run('systemctl restart cobblerd')
+  else
     handler_name = 'FileLogger02'
     formatter_name = 'JSONlogfile'
     handler_class = "\"\n[handler_#{handler_name}]\n" \
-                  "class=FileHandler\n" \
-                  "level=DEBUG\n" \
-                  "formatter=#{formatter_name}\n" \
-                  "args=('#{cobbler_log_file}', 'a')\n\n" \
-                  "[formatter_#{formatter_name}]\n" \
-                  "format ={\\''threadName\\'': \\''%(threadName)s\\'', " \
-                  "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
-                  "\\''message\\'': \\''%(message)s\\''}\n\""
+                    "class=FileHandler\n" \
+                    "level=DEBUG\n" \
+                    "formatter=#{formatter_name}\n" \
+                    "args=('#{cobbler_log_file}', 'a')\n\n" \
+                    "[formatter_#{formatter_name}]\n" \
+                    "format ={\\''threadName\\'': \\''%(threadName)s\\'', " \
+                    "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
+                    "\\''message\\'': \\''%(message)s\\''}\n\""
     command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
               "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 1))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
@@ -246,8 +248,6 @@ When(/^I start local monitoring of Cobbler$/) do
               "sed -e \"$(($line_number + 2))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
               "echo -e #{handler_class} >> #{cobbler_conf_file}"
     get_target('server').run("#{command} && systemctl restart cobblerd")
-  else
-    get_target('server').run('systemctl restart cobblerd')
   end
   # give cobbler a few seconds to come up
   sleep 3

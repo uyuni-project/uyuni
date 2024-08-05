@@ -39,29 +39,17 @@ Then(/^the action status is "(.*?)"$/) do |status|
 end
 
 Then(/^package "(.*?)" is reported as pending to be locked$/) do |pkg|
-  xpath_query = '//td[' \
-                "a[text()='#{pkg}'] and " \
-                "i[@class='fa fa-clock-o'] and " \
-                "span[@class='label label-info' and contains(text(), 'Locking...')]]"
+  xpath_query = "//td[a[text()='#{pkg}'] and i[@class='fa fa-clock-o'] and span[@class='label label-info' and contains(text(), 'Locking...')]]"
   find(:xpath, xpath_query)
 end
 
 Then(/^package "(.*?)" is reported as pending to be unlocked$/) do |pkg|
-  xpath_query = '//td[' \
-                "a[text()='#{pkg}'] and " \
-                "i[@class='fa fa-clock-o'] and " \
-                "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
+  xpath_query = "//td[a[text()='#{pkg}'] and i[@class='fa fa-clock-o'] and span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
   find(:xpath, xpath_query)
 end
 
 Then(/^package "(.*?)" cannot be selected$/) do |pkg|
-  xpath_query = '//tr[' \
-                "td[input[@type='checkbox' and @disabled]] and " \
-                'td[ ' \
-                "a[text()='#{pkg}'] and " \
-                "i[@class='fa fa-clock-o'] and " \
-                "span[@class='label label-info']" \
-                ']]'
+  xpath_query = "//tr[td[input[@type='checkbox' and @disabled]] and td[ a[text()='#{pkg}'] and i[@class='fa fa-clock-o'] and span[@class='label label-info']]]"
   find(:xpath, xpath_query)
 end
 
@@ -70,17 +58,14 @@ Then(/^only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
 
   # ensure these packages are found as pending to be unlocked
   pkgs.each do |pkg|
-    xpath_query = '//td[' + # Looking for 1 td element with...
-                  "a[text()='#{pkg}'] and " \
-                  "i[@class='fa fa-clock-o'] and " \
-                  "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
+    xpath_query = "//td[#{"a[text()='#{pkg}'] and " \
+      "i[@class='fa fa-clock-o'] and " \
+      "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"}"
     find(:xpath, xpath_query)
   end
 
   # ensure no other packages are set as pending to be unlocked
-  xpath_query = '//td[' \
-                "i[@class='fa fa-clock-o'] and " \
-                "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
+  xpath_query = "//td[i[@class='fa fa-clock-o'] and span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
   matches = all(:xpath, xpath_query)
 
   raise "Matches count #{matches.size} is different than packages count #{pkgs.size}" if matches.size != pkgs.size

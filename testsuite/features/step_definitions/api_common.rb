@@ -52,7 +52,7 @@ end
 When(/^I unsubscribe "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, channel|
   system_name1 = get_system_name(host1)
   node_id1 = $api_test.system.retrieve_server_id(system_name1)
-  $api_test.system.config.remove_channels([ node_id1 ], [ channel ])
+  $api_test.system.config.remove_channels([node_id1], [channel])
 end
 
 When(/^I create a system record$/) do
@@ -67,12 +67,11 @@ end
 
 When(/^I wait for the OpenSCAP audit to finish$/) do
   @sle_id = $api_test.system.retrieve_server_id(get_target('sle_minion').full_hostname)
-  begin
-    repeat_until_timeout(message: 'Process did not complete') do
-      scans = $api_test.system.scap.list_xccdf_scans(@sle_id)
-      # in the openscap test, we schedule 2 scans
-      break if scans.length > 1
-    end
+
+  repeat_until_timeout(message: 'Process did not complete') do
+    scans = $api_test.system.scap.list_xccdf_scans(@sle_id)
+    # in the openscap test, we schedule 2 scans
+    break if scans.length > 1
   end
 end
 
@@ -204,11 +203,7 @@ end
 When(/^I create the following channels:$/) do |table|
   channels = table.hashes
   channels.each do |ch|
-    assert_equal(1,
-      $api_test.channel.software.create(
-        ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']
-      )
-    )
+    assert_equal(1, $api_test.channel.software.create(ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']))
   end
 end
 
@@ -317,7 +312,8 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][base_channel]
   key = $api_test.activationkey.create(id, description, base_channel_label, 100)
   raise StandardError, 'Error creating activation key via the API' if key.nil?
-  STDOUT.puts "Activation key #{key} created" unless key.nil?
+
+  $stdout.puts "Activation key #{key} created" unless key.nil?
 
   is_ssh_minion = client.include? 'ssh_minion'
   $api_test.activationkey.set_details(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
@@ -336,23 +332,24 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'ssh_minion', 'minion'
   client.sub! 'buildhost', 'minion'
   client.sub! 'terminal', 'minion'
-  custom_channel = if client.include? 'alma8'
-                     'no-appstream-alma-8-result-custom_channel_alma8_minion'
-                   elsif client.include? 'alma9'
-                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
-                   elsif client.include? 'liberty9'
-                     'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
-                   elsif client.include? 'oracle9'
-                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
-                   elsif client.include? 'rocky8'
-                     'no-appstream-8-result-custom_channel_rocky8_minion'
-                   elsif client.include? 'rocky9'
-                     'no-appstream-9-result-custom_channel_rocky9_minion'
-                   else
-                     "custom_channel_#{client}"
-                   end
+  custom_channel =
+    if client.include? 'alma8'
+      'no-appstream-alma-8-result-custom_channel_alma8_minion'
+    elsif client.include? 'alma9'
+      'no-appstream-alma-9-result-custom_channel_alma9_minion'
+    elsif client.include? 'liberty9'
+      'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
+    elsif client.include? 'oracle9'
+      'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
+    elsif client.include? 'rocky8'
+      'no-appstream-8-result-custom_channel_rocky8_minion'
+    elsif client.include? 'rocky9'
+      'no-appstream-9-result-custom_channel_rocky9_minion'
+    else
+      "custom_channel_#{client}"
+    end
   child_channels.push(custom_channel)
-  STDOUT.puts "Child_channels for #{key}: <#{child_channels}>"
+  $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
   $api_test.activationkey.add_child_channels(key, child_channels)
@@ -404,7 +401,7 @@ end
 
 # Schedule scenario
 When(/^I call actionchain\.add_script_run\(\) with the script "(.*?)"$/) do |script|
-  refute($api_test.actionchain.add_script_run($client_id, $chain_label, 'root', 'root', 300, "#!/bin/bash\n" + script) < 1)
+  refute($api_test.actionchain.add_script_run($client_id, $chain_label, 'root', 'root', 300, "#!/bin/bash\n#{script}") < 1)
 end
 
 Then(/^I should be able to see all these actions in the action chain$/) do
@@ -412,7 +409,7 @@ Then(/^I should be able to see all these actions in the action chain$/) do
   refute_nil(actions)
   log 'Running actions:'
   actions.each do |action|
-    log "\t- " + action['label']
+    log "\t- #{action['label']}"
   end
 end
 
@@ -453,8 +450,8 @@ When(/^I call actionchain\.remove_action\(\) on each action within the chain$/) 
   actions = $api_test.actionchain.list_chain_actions($chain_label)
   refute_nil(actions)
   actions.each do |action|
-    refute($api_test.actionchain.remove_action($chain_label, action['id']) < 0)
-    log "\t- Removed \"" + action['label'] + '" action'
+    refute($api_test.actionchain.remove_action($chain_label, action['id']).negative?)
+    log "\t- Removed \"#{action['label']}\" action"
   end
 end
 
@@ -464,12 +461,13 @@ end
 
 # Scheduling the action chain
 When(/^I schedule the action chain$/) do
-  refute($api_test.actionchain.schedule_chain($chain_label, DateTime.now) < 0)
+  refute($api_test.actionchain.schedule_chain($chain_label, DateTime.now).negative?)
 end
 
 When(/^I wait until there are no more action chains$/) do
   repeat_until_timeout(message: 'Action Chains still present') do
     break if $api_test.actionchain.list_chains.empty?
+
     $api_test.actionchain.list_chains.each do |label|
       log "Chain still present: #{label}"
     end
@@ -481,21 +479,20 @@ end
 # schedule API
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
-  assert_includes(
-    $api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label
-  )
+  assert_includes($api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label)
 end
 
 Then(/^I cancel all scheduled actions$/) do
-  actions = $api_test.schedule.list_in_progress_actions.reject do |action|
-    action['prerequisite']
-  end
+  actions =
+    $api_test.schedule.list_in_progress_actions.reject do |action|
+      action['prerequisite']
+    end
 
   actions.each do |action|
     log "\t- Try to cancel \"#{action['name']}\" action"
     begin
       $api_test.schedule.cancel_actions([action['id']])
-    rescue
+    rescue StandardError
       $api_test.schedule.list_in_progress_systems(action['id']).each do |system|
         $api_test.schedule.fail_system_action(system['server_id'], action['id'])
       end
@@ -507,6 +504,7 @@ end
 Then(/^I wait until there are no more scheduled actions$/) do
   repeat_until_timeout(message: 'Scheduled actions still present') do
     break if $api_test.schedule.list_in_progress_actions.empty?
+
     $api_test.schedule.list_in_progress_actions.each do |action|
       log "Action still in progress: #{action}"
     end
@@ -653,7 +651,6 @@ When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "
   # this call will raise a SystemCallError if matching systems already exist, the Error message will include a list of the matchings system IDs
   sid = $api_test.system.create_system_profile(name, 'hostname' => hostname)
   $stdout.puts "system_id: #{sid}"
-
   $api_test.system.create_system_record_with_sid(sid, kslabel)
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash

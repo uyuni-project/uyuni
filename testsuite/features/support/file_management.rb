@@ -10,8 +10,7 @@ require 'net/http'
 # @param file [String] The path of the file to check.
 # @return [Boolean] Returns true if the file exists, false otherwise.
 def file_exists?(node, file)
-  _out, local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
-  code.zero? && local.zero?
+  node.file_exists(file)
 end
 
 # Deletes a file on the specified node.
@@ -20,8 +19,7 @@ end
 # @param [String] file The path of the file to be deleted.
 # @return [void]
 def file_delete(node, file)
-  _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
-  code
+  node.file_delete(file)
 end
 
 # Checks if a folder exists on the given node.
@@ -30,8 +28,7 @@ end
 # @param file [String] The path of the folder to check.
 # @return [Boolean] Returns true if the folder exists, false otherwise.
 def folder_exists?(node, file)
-  _out, local, _remote, code = node.test_and_store_results_together("test -d #{file}", 'root', 500)
-  code.zero? && local.zero?
+  node.folder_exists(file)
 end
 
 # Deletes a folder on the specified node.
@@ -40,8 +37,7 @@ end
 # @param folder [String] The name of the folder to be deleted.
 # @return [Integer] The exit code of the operation.
 def folder_delete(node, folder)
-  _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
-  code
+  node.folder_delete(folder)
 end
 
 # This function extracts a file from a node
@@ -51,7 +47,7 @@ end
 # @param remote_file [String] The path of the remote file to be extracted.
 # @param local_file [String] The path of the local file to which the remote file will be extracted.
 def file_extract(node, remote_file, local_file)
-  code, _remote = node.extract_file(remote_file, local_file, 'root', false)
+  code, _local = node.extract_file(remote_file, local_file, 'root', false)
   code
 end
 
@@ -84,7 +80,7 @@ end
 # @param file [String] The name of the destination file.
 # @return [Integer] The return code indicating the success or failure of the file injection.
 def inject_salt_pillar_file(source, file)
-  dest = '/srv/pillar/' + file
+  dest = "/srv/pillar/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
 
@@ -122,7 +118,7 @@ def get_checksum_path(dir, original_file_name, file_url)
   cmd = "ls -1 #{dir}"
   # when using a mirror, the checksum file should be present and in the same directory of the file
   if $mirror
-    output, _code = $is_container_provider ? server.run_local(cmd) : server.run(cmd)
+    output, _code = server.run(cmd)
     files = output.split("\n")
     checksum_file = files.find { |file| checksum_file_names.include?(file) }
 
@@ -164,7 +160,7 @@ end
 def validate_checksum_with_file(original_file_name, file_path, checksum_path)
   # search the checksum file for what should be the only non-comment line containing the original file name
   cmd = "grep -v '^#' #{checksum_path} | grep '#{original_file_name}'"
-  checksum_line, _code = $is_container_provider ? get_target('server').run_local(cmd) : get_target('server').run(cmd)
+  checksum_line, _code = get_target('server').run(cmd)
   raise "SHA256 checksum entry for #{original_file_name} not found in #{checksum_path}" unless checksum_line
 
   # this relies on the fact that SHA256 hashes have a fixed length of 64 hexadecimal characters to extract the checksum
@@ -184,6 +180,6 @@ end
 # @return [Boolean] Returns true if the file's checksum matches the expected checksum, false otherwise.
 def validate_checksum(file_path, expected_checksum)
   cmd = "sha256sum -b #{file_path} | awk '{print $1}'"
-  file_checksum, _code = $is_container_provider ? get_target('server').run_local(cmd) : get_target('server').run(cmd)
+  file_checksum, _code = get_target('server').run(cmd)
   file_checksum.strip == expected_checksum
 end

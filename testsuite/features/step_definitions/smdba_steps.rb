@@ -101,13 +101,11 @@ When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do 
 end
 
 Then(/^I should see error message that asks "(.*?)" belong to the same UID\/GID as "(.*?)" directory$/) do |bkp_dir, data_dir|
-  assert_includes($output,
-                  "The \"#{bkp_dir}\" directory must belong to the same user and group as \"#{data_dir}\" directory.")
+  assert_includes($output, "The \"#{bkp_dir}\" directory must belong to the same user and group as \"#{data_dir}\" directory.")
 end
 
 Then(/^I should see error message that asks "(.*?)" has same permissions as "(.*?)" directory$/) do |bkp_dir, data_dir|
-  assert_includes($output,
-                  "The \"#{bkp_dir}\" directory must have the same permissions as \"#{data_dir}\" directory.")
+  assert_includes($output, "The \"#{bkp_dir}\" directory must have the same permissions as \"#{data_dir}\" directory.")
 end
 
 Then(/^I remove backup directory "(.*?)"$/) do |bkp_dir|
@@ -127,14 +125,8 @@ Then(/^base backup is taken$/) do
 end
 
 Then(/^in "(.*?)" directory there is "(.*?)" file and at least one backup checkpoint file$/) do |bkp_dir, archive_file|
-  refute_includes(
-    get_target('server').run("test -f #{bkp_dir}/#{archive_file} && echo \"exists\" || echo \"missing\"", check_errors: false),
-    'missing'
-  )
-  refute_includes(
-    get_target('server').run("ls #{bkp_dir}/*.backup 1>/dev/null 2>/dev/null && echo \"exists\" || echo \"missing\"", check_errors: false),
-    'missing'
-  )
+  refute_includes(get_target('server').run("test -f #{bkp_dir}/#{archive_file} && echo \"exists\" || echo \"missing\"", check_errors: false), 'missing')
+  refute_includes(get_target('server').run("ls #{bkp_dir}/*.backup 1>/dev/null 2>/dev/null && echo \"exists\" || echo \"missing\"", check_errors: false), 'missing')
 end
 
 Then(/^parameter "(.*?)" in the configuration file "(.*?)" is "(.*?)"$/) do |param, cfg_file, fuzzy_value|
@@ -156,10 +148,7 @@ When(/^in the database I create dummy table "(.*?)" with column "(.*?)" and valu
   get_target('server').run("sudo -u postgres psql -d #{$db} -c 'drop table dummy' 2>/dev/null", check_errors: false)
   get_target('server').run("sudo -u postgres psql -d #{$db} -af #{fn}", check_errors: false)
   get_target('server').run("file -f #{fn} && rm #{fn}")
-  assert_includes(
-    get_target('server').run("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", check_errors: false)[0],
-    val
-  )
+  assert_includes(get_target('server').run("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", check_errors: false)[0], val)
   log "Table \"#{tbl}\" has been created with some dummy data inside"
 end
 
@@ -171,7 +160,5 @@ When(/^I restore database from the backup$/) do
 end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|
-  assert_includes(
-    get_target('server').run('smdba backup-hot --enable=off', check_errors: false)[0], 'Finished'
-  )
+  assert_includes(get_target('server').run('smdba backup-hot --enable=off', check_errors: false)[0], 'Finished')
 end

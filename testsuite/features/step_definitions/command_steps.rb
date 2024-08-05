@@ -77,7 +77,7 @@ Then(/^it should be possible to reach the build sources$/) do
 end
 
 Then(/^it should be possible to reach the Docker profiles$/) do
-  git_profiles = ENV['GITPROFILES']
+  git_profiles = ENV.fetch('GITPROFILES', nil)
   url = git_profiles.sub(/github\.com/, 'raw.githubusercontent.com')
                     .sub(/\.git#:/, '/master/')
                     .sub(/$/, '/Docker/Dockerfile')
@@ -85,14 +85,14 @@ Then(/^it should be possible to reach the Docker profiles$/) do
 end
 
 Then(/^it should be possible to reach the authenticated registry$/) do
-  if not ($auth_registry.nil? || $auth_registry.empty?)
+  unless $auth_registry.nil? || $auth_registry.empty?
     url = "https://#{$auth_registry}"
     get_target('server').run("curl --insecure --location #{url} --output /dev/null")
   end
 end
 
 Then(/^it should be possible to reach the not authenticated registry$/) do
-  if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
+  unless $no_auth_registry.nil? || $no_auth_registry.empty?
     url = "https://#{$no_auth_registry}"
     get_target('server').run("curl --insecure --location #{url} --output /dev/null")
   end
@@ -102,8 +102,8 @@ end
 
 When(/^I delete these channels with spacewalk-remove-channel:$/) do |table|
   channels_cmd = 'spacewalk-remove-channel '
-  table.raw.each { |x| channels_cmd = channels_cmd + ' -c ' + x[0] }
-  $command_output, return_code = get_target('server').run(channels_cmd, check_errors: false)
+  table.raw.each { |x| channels_cmd = "#{channels_cmd} -c #{x[0]}" }
+  $command_output, _return_code = get_target('server').run(channels_cmd, check_errors: false)
 end
 
 When(/^I list channels with spacewalk-remove-channel$/) do
@@ -132,12 +132,12 @@ When(/^I use spacewalk-channel to remove "([^"]*)"$/) do |child_channel|
 end
 
 When(/^I use spacewalk-channel to list channels$/) do
-  command = "spacewalk-channel --list"
+  command = 'spacewalk-channel --list'
   $command_output, _code = get_target('client').run(command)
 end
 
 When(/^I use spacewalk-channel to list available channels$/) do
-  command = "spacewalk-channel --available-channels -u admin -p admin"
+  command = 'spacewalk-channel --available-channels -u admin -p admin'
   $command_output, _code = get_target('client').run(command)
 end
 
@@ -225,7 +225,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   if host == 'server'
     salt = 'salt'
   end
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
+  result, _return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding('UTF-8')
     log line
@@ -241,7 +241,7 @@ When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
       'salt'
     end
   changelog_file = use_salt_bundle ? 'changelog.gz' : 'changelog.Debian.gz'
-  result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
+  result, _return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding('UTF-8')
     log line
@@ -285,12 +285,14 @@ When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |ser
 end
 
 Then(/^I should see the "([^"]*)" paygo products$/) do |paygo_product|
-  raise "Error : #{paygo_product} is an incorrect paygo product" unless %w[server sle15sp5_paygo_minion sle12sp5_paygo_minion sleforsap15sp5_paygo_minion].include?(paygo_product)
+  raise ArgumentError, "Error : #{paygo_product} is an incorrect paygo product" unless %w[server sle15sp5_paygo_minion sle12sp5_paygo_minion sleforsap15sp5_paygo_minion].include?(paygo_product)
+
   command_output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
   output_lines = command_output.split("\n")
-  raise "Error : Product list is empty" if output_lines.length.zero?
+  raise ScriptError, 'Error : Product list is empty' if output_lines.length.zero?
+
   missing_elements = PAYGO_DEFAULT_PRODUCTS[paygo_product] - output_lines
-  raise "Error: Missing product(s) #{missing_elements}for the paygo product #{paygo_product}" unless missing_elements.empty?
+  raise ScriptError, "Error: Missing product(s) #{missing_elements}for the paygo product #{paygo_product}" unless missing_elements.empty?
 end
 
 When(/^I execute mgr-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
@@ -335,11 +337,12 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
       sleep checking_rate
       next
     end
-    channel = process.split(' ')[5].strip
+    channel = process.split[5].strip
     log "Repo-sync process for channel '#{channel}' running." if Time.now.sec % 5
     next unless CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version].include? channel
+
     channels_to_kill.delete(channel)
-    pid = process.split(' ')[0]
+    pid = process.split[0]
     get_target('server').run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
 
@@ -396,6 +399,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
       break if channel_is_synced(channel)
+
       log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
@@ -459,6 +463,7 @@ When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, con
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
     output, _code = get_target('server').run("grep #{content} #{file}", check_errors: false)
     break if output =~ /#{content}/
+
     sleep 2
     "\n-----\n#{output}\n-----\n"
   end
@@ -470,6 +475,7 @@ Then(/^I wait until "([^"]*)" is rejected on server$/) do |minion|
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
     output, _code = get_target('server').run("grep \"#{content}\" #{file}", check_errors: false)
     break if output =~ /#{content}/
+
     sleep 2
     "\n-----\n#{output}\n-----\n"
   end
@@ -477,7 +483,8 @@ end
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
   output, _code = get_target('server').run("grep -F '#{content}' #{file}", check_errors: false)
-  raise "'#{content}' not found in file #{file}" if output !~ /#{content}/
+  raise ScriptError, "'#{content}' not found in file #{file}" if output !~ /#{content}/
+
   "\n-----\n#{output}\n-----\n"
 end
 
@@ -520,6 +527,7 @@ When(/^I extract the log files from all our active nodes$/) do
   $node_by_host.each do |_host, node|
     next if node.nil?
 
+    $stdout.puts "Node: #{node.full_hostname}"
     extract_logs_from_node(node)
   end
 end
@@ -533,11 +541,11 @@ Then(/^the repo file should contain the (custom|normal) download endpoint on the
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
   real_uri = URI.parse(base_url)
-  log 'Real protocol: ' + real_uri.scheme + '  host: ' + real_uri.host + '  port: ' + real_uri.port.to_s
+  log "Real protocol: #{real_uri.scheme}  host: #{real_uri.host}  port: #{real_uri.port}"
   normal_download_endpoint = "https://#{get_target('proxy').full_hostname}:443"
   expected_uri = URI.parse(type == 'custom' ? $custom_download_endpoint : normal_download_endpoint)
-  log 'Expected protocol: ' + expected_uri.scheme + '  host: ' + expected_uri.host + '  port: ' + expected_uri.port.to_s
-  raise 'Some parameters are not as expected' unless real_uri.scheme == expected_uri.scheme && real_uri.host == expected_uri.host && real_uri.port == expected_uri.port
+  log "Expected protocol: #{expected_uri.scheme}  host: #{expected_uri.host}  port: #{expected_uri.port}"
+  raise ScriptError, 'Some parameters are not as expected' unless real_uri.scheme == expected_uri.scheme && real_uri.host == expected_uri.host && real_uri.port == expected_uri.port
 end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
@@ -550,7 +558,8 @@ When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_
   from_node = get_target(from_host)
   to_node = get_target(to_host)
   return_code = file_extract(from_node, file_path, file_path)
-  raise 'File extraction failed' unless return_code.zero?
+  raise ScriptError, 'File extraction failed' unless return_code.zero?
+
   return_code = file_inject(to_node, file_path, file_path)
   raise 'File injection failed' unless return_code.zero?
 end
@@ -564,9 +573,9 @@ Then(/^the PXE default profile should be disabled$/) do
 end
 
 When(/^the server starts mocking an IPMI host$/) do
-  ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
-    source = File.dirname(__FILE__) + '/../upload_files/' + file
-    dest = '/etc/ipmi/' + file
+  %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
+    source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+    dest = "/etc/ipmi/#{file}"
     return_code = file_inject(get_target('server'), source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
@@ -582,18 +591,18 @@ end
 When(/^the server starts mocking a Redfish host$/) do
   get_target('server').run('mkdir -p /root/Redfish-Mockup-Server/')
   %w[redfishMockupServer.py rfSsdpServer.py].each do |file|
-    source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
-    dest = '/root/Redfish-Mockup-Server/' + file
+    source = "#{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/#{file}"
+    dest = "/root/Redfish-Mockup-Server/#{file}"
     return_code = file_inject(get_target('server'), source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
   get_target('server').run('curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
   get_target('server').run('unzip DSP2043_2019.1.zip')
-  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
-        "-H #{get_target('server').full_hostname} -p 8443 " \
-        "-S -D /root/DSP2043_2019.1/public-catfish/ " \
-        "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
-        "< /dev/null > /dev/null 2>&1 &"
+  cmd = '/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py ' \
+    "-H #{get_target('server').full_hostname} -p 8443 " \
+    '-S -D /root/DSP2043_2019.1/public-catfish/ ' \
+    '--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key ' \
+    '< /dev/null > /dev/null 2>&1 &'
   get_target('server').run(cmd)
 end
 
@@ -605,17 +614,19 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   system_name = get_system_name(host)
   # copy state file to server
   file = 'user_defined_state.sls'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/srv/salt/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/srv/salt/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
   # generate top file and copy it to server
   script = "base:\n" \
            "  '#{system_name}':\n" \
            "    - user_defined_state\n"
   path = generate_temp_file('top.sls', script)
   return_code = file_inject(get_target('server'), path, '/srv/salt/top.sls')
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
   `rm #{path}`
   # make both files readeable by salt
   get_target('server').run('chgrp salt /srv/salt/*')
@@ -631,14 +642,14 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
 end
 
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
-  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+  raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
   case host
   when 'server'
     get_target('server').run("/usr/sbin/configure-tftpsync.sh #{ENV['PROXY']}")
   when 'proxy'
     cmd = "/usr/sbin/configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
---server-fqdn=#{ENV['SERVER']} \
+--server-fqdn=#{get_target('server').full_hostname} \
 --proxy-fqdn='proxy.example.org'"
     get_target('proxy').run(cmd)
   else
@@ -647,7 +658,7 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 end
 
 When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
-  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+  raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
   node = get_target(host)
   target = '/srv/tftpboot/pxelinux.cfg/default'
@@ -665,22 +676,21 @@ end
 When(/^I clean the search index on the server$/) do
   output, _code = get_target('server').run('/usr/sbin/rhn-search cleanindex', check_errors: false)
   log 'Search reindex finished.' if output.include?('Index files have been deleted and database has been cleaned up, ready to reindex')
-  raise 'The output includes an error log' if output.include?('ERROR')
+  raise ScriptError, 'The output includes an error log' if output.include?('ERROR')
+
   step 'I wait until rhn-search is responding'
 end
 
 When(/^I wait until rhn-search is responding$/) do
   step 'I wait until "rhn-search" service is active on "server"'
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
-    begin
-      log "Search by hostname: #{get_target('sle_minion').hostname}"
-      result = $api_test.system.search.hostname(get_target('sle_minion').hostname)
-      log result
-      break if get_target('sle_minion').full_hostname.include? result.first['hostname']
-    rescue StandardError => e
-      log "rhn-search still not responding.\nError message: #{e.message}"
-      sleep 3
-    end
+    log "Search by hostname: #{get_target('sle_minion').hostname}"
+    result = $api_test.system.search.hostname(get_target('sle_minion').hostname)
+    log result
+    break if get_target('sle_minion').full_hostname.include? result.first['hostname']
+  rescue StandardError => e
+    log "rhn-search still not responding.\nError message: #{e.message}"
+    sleep 3
   end
 end
 
@@ -689,8 +699,9 @@ When(/^I wait until mgr-sync refresh is finished$/) do
   # limit the result to important lines to have at least 1 match in the output we get
   cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
   repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
-    result, code = get_target('server').run(cmd, check_errors: false)
+    result, _code = get_target('server').run(cmd, check_errors: false)
     break if result.include? 'SLES'
+
     sleep 5
   end
 end
@@ -767,6 +778,7 @@ When(/^I wait at most (\d+) seconds until file "([^"]*)" exists on "([^"]*)"$/) 
   node = get_target(host)
   repeat_until_timeout(timeout: seconds.to_i) do
     break if file_exists?(node, file)
+
     sleep(1)
   end
 end
@@ -774,6 +786,7 @@ end
 When(/^I wait until file "(.*)" exists on server$/) do |file|
   repeat_until_timeout do
     break if file_exists?(get_target('server'), file)
+
     sleep(1)
   end
 end
@@ -813,12 +826,12 @@ When(/^I register this client for SSH push via tunnel$/) do
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
-	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
+     "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
   path = generate_temp_file('push-registration.exp', script)
-  step 'I copy "' + path + '" to "server"'
+  step "I copy \"#{path}\" to \"server\""
   `rm #{path}`
   # perform the registration
   filename = File.basename(path)
@@ -1026,7 +1039,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
-    result, return_code = node.run(cmd, check_errors: false)
+    _result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
   end
 end
@@ -1076,13 +1089,14 @@ When(/^I open avahi port on the proxy$/) do
   get_target('proxy').run('firewall-offline-cmd --zone=public --add-service=mdns')
 end
 
-When(/^I copy server\'s keys to the proxy$/) do
+When(/^I copy server's keys to the proxy$/) do
   %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
-    return_code = file_extract(get_target('server'), '/root/ssl-build/' + file, '/tmp/' + file)
-    raise 'File extraction failed' unless return_code.zero?
+    return_code = file_extract(get_target('server'), "/root/ssl-build/#{file}", "/tmp/#{file}")
+    raise ScriptError, 'File extraction failed' unless return_code.zero?
+
     get_target('proxy').run('mkdir -p /root/ssl-build')
-    return_code = file_inject(get_target('proxy'), '/tmp/' + file, '/root/ssl-build/' + file)
-    raise 'File injection failed' unless return_code.zero?
+    return_code = file_inject(get_target('proxy'), "/tmp/#{file}", "/root/ssl-build/#{file}")
+    raise ScriptError, 'File injection failed' unless return_code.zero?
   end
 end
 
@@ -1107,7 +1121,7 @@ When(/^I configure the proxy$/) do
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
   path = generate_temp_file('config-answers.txt', settings)
-  step 'I copy "' + path + '" to "proxy"'
+  step "I copy \"#{path}\" to \"proxy\""
   `rm #{path}`
   # perform the configuration
   filename = File.basename(path)
@@ -1135,6 +1149,7 @@ Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "
   cmd = "dumpsolv /var/cache/zypp/solv/spacewalk:fake-rpm-suse-channel/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
   metadata_buildtime, return_code = node.run(cmd)
   raise "Command failed: #{cmd}" unless return_code.zero?
+
   cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
   rpm_buildtime, return_code = node.run(cmd)
   raise "Command failed: #{cmd}" unless return_code.zero?
@@ -1169,320 +1184,6 @@ When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
   get_target('server').run(command)
 end
 
-When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
-  node = get_target(host)
-  disk_path = "/tmp/#{vm_name}_disk.qcow2"
-
-  # Create the throwable overlay image
-  raise '/var/testsuite-data/leap-disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/leap-disk-image-template.qcow2')
-  node.run("cp /var/testsuite-data/leap-disk-image-template.qcow2 #{disk_path}")
-
-  # Actually define the VM, but don't start it
-  raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  # Use 'ide' bus for Xen and 'virtio' bus for KVM
-  bus_type = 'virtio'
-  node.run(
-    "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
-    "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
-    "--serial file,path=/tmp/#{vm_name}.console.log "\
-    "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
-  )
-end
-
-When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
-  node = get_target(host)
-
-  networks = {
-    "test-net0" => { "bridge" => "virbr0", "subnet" => 124 },
-    "test-net1" => { "bridge" => "virbr1", "subnet" => 126 }
-  }
-
-  net = networks[net_name]
-  netdef = "<network>" \
-           "  <name>#{net_name}</name>"\
-           "  <forward mode='nat'/>"\
-           "  <bridge name='#{net['bridge']}' stp='on' delay='0'/>"\
-           "  <ip address='192.168.#{net['subnet']}.1' netmask='255.255.255.0'>"\
-           "    <dhcp>"\
-           "      <range start='192.168.#{net['subnet']}.2' end='192.168.#{net['subnet']}.254'/>"\
-           "    </dhcp>"\
-           "  </ip>"\
-           "</network>"
-
-  # Some networks like the default one may already be defined.
-  _output, code = node.run("virsh net-dumpxml #{net_name}", check_errors: false)
-  node.run("echo -e \"#{netdef}\" >/tmp/#{net_name}.xml && virsh net-define /tmp/#{net_name}.xml") unless code.zero?
-
-  # Ensure the network is started
-  node.run("virsh net-start #{net_name}", check_errors: false)
-end
-
-When(/^I delete ([^ ]*) virtual network on "([^"]*)"((?: without error control)?)$/) do |net_name, host, error_control|
-  node = get_target(host)
-  _output, code = node.run("virsh net-dumpxml #{net_name}", check_errors: false)
-  if code.zero?
-    steps %(
-      When I run "virsh net-destroy #{net_name}" on "#{host}"#{error_control}
-      And I run "virsh net-undefine #{net_name}" on "#{host}"#{error_control}
-    )
-  end
-end
-
-When(/^I create ([^ ]*) virtual storage pool on "([^"]*)"$/) do |pool_name, host|
-  node = get_target(host)
-
-  pool_def = %(<pool type='dir'>
-      <name>#{pool_name}</name>
-      <capacity unit='bytes'>0</capacity>
-      <allocation unit='bytes'>0</allocation>
-      <available unit='bytes'>0</available>
-      <source>
-      </source>
-      <target>
-        <path>/var/lib/libvirt/images/#{pool_name}</path>
-      </target>
-    </pool>
-  )
-
-  # Some pools like the default one may already be defined.
-  _output, code = node.run("virsh pool-dumpxml #{pool_name}", check_errors: false)
-  node.run("echo -e \"#{pool_def}\" >/tmp/#{pool_name}.xml && virsh pool-define /tmp/#{pool_name}.xml") unless code.zero?
-  node.run("mkdir -p /var/lib/libvirt/images/#{pool_name}")
-
-  # Ensure the pool is started
-  node.run("virsh pool-start #{pool_name}", check_errors: false)
-end
-
-When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error control)?)$/) do |pool_name, host, error_control|
-  node = get_target(host)
-  _output, code = node.run("virsh pool-dumpxml #{pool_name}", check_errors: false)
-  if code.zero?
-    steps %(
-      When I run "virsh pool-destroy #{pool_name}" on "#{host}"#{error_control}
-      And I run "virsh pool-undefine #{pool_name}" on "#{host}"#{error_control}
-    )
-  end
-
-  # only delete the folders we created
-  step %(I run "rm -rf /var/lib/libvirt/images/#{pool_name}" on "#{host}"#{error_control}) if pool_name.start_with? "test-"
-end
-
-Then(/^I should see "([^"]*)" virtual machine (shut off|running|paused) on "([^"]*)"$/) do |vm, state, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never reached state #{state}") do
-    output, _code = node.run("virsh domstate #{vm}")
-    break if output.strip == state
-    sleep 3
-  end
-end
-
-When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} OS failed did not come up yet") do
-    _output, code = node.run("grep -i 'login\:' /tmp/#{vm}.console.log", check_errors: false)
-    break if code.zero?
-    sleep 1
-  end
-end
-
-Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} still exists") do
-    _output, code = node.run("virsh dominfo #{vm}", check_errors: false)
-    break if code == 1
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    has_memory = output.include? "<memory unit='KiB'>#{Integer(mem) * 1024}</memory>"
-    has_vcpus = output.include? ">#{vcpu}</vcpu>"
-    break if has_memory and has_vcpus
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{type} graphics device") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    check_nographics = type == "no" and not output.include? '<graphics'
-    break if output.include? "<graphics type='#{type}'" or check_nographics
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*) NIC using "([^"]*)" network$/) do |vm, host, count, net|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{count} network interface using #{net}") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    break if Nokogiri::XML(output).xpath("//interface/source[@network='#{net}']").size == count.to_i
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a NIC with ([0-9a-zA-Z:]*) MAC address$/) do |vm, host, mac|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a network interface with #{mac} MAC address") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    break if output.include? "<mac address='#{mac}'/>"
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) disk$/) do |vm, host, path, bus|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} #{bus} disk") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@file')[0].to_s.include? path) && (x.xpath('target/@bus')[0].to_s == bus)
-    end
-    break if !disks.empty?
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) disk from pool "([^"]*)"$/) do |vm, host, vol, bus, pool|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{vol} #{bus} disk from pool #{pool}") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
-        (x.xpath('target/@bus')[0].to_s == bus.downcase)
-    end
-    break if !disks.empty?
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$/) do |vm, host, presence, bus|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk")
-    disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
-    break if (disk_index.nil? && presence == 'no') ||
-             (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should have "([^"]*)" attached to a cdrom$/) do |vm, host, path|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} attached to cdrom") do
-    output, _code = node.run("virsh dumpxml #{vm}")
-    tree = Nokogiri::XML(output)
-    disks = tree.xpath("//disk")
-    disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
-    source = !disk_index.nil? && disks[disk_index].xpath('source/@file')[0].to_s || ""
-    break if source == path
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot using autoyast$/) do |vm, host|
-  node = get_target(host)
-  output, _code = node.run("virsh dumpxml #{vm}")
-  tree = Nokogiri::XML(output)
-  has_kernel = tree.xpath('//os/kernel').size == 1
-  has_initrd = tree.xpath('//os/initrd').size == 1
-  has_autoyast = tree.xpath('//os/cmdline')[0].to_s.include? ' autoyast='
-  unless has_kernel && has_initrd && has_autoyast
-    raise 'Wrong kernel/initrd/cmdline configuration, '\
-          "kernel: #{has_kernel ? '' : 'not'} set, "\
-          "initrd: #{has_initrd ? '' : 'not'} set, "\
-          "autoyast kernel parameter: #{has_autoyast ? '' : 'not'} set"
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot on hard disk at next start$/) do |vm, host|
-  node = get_target(host)
-  output, _code = node.run("virsh dumpxml --inactive #{vm}")
-  tree = Nokogiri::XML(output)
-  has_kernel = tree.xpath('//os/kernel').size == 1
-  has_initrd = tree.xpath('//os/initrd').size == 1
-  has_cmdline = tree.xpath('//os/cmdline').size == 1
-  unless !has_kernel && !has_initrd && !has_cmdline
-    raise 'Virtual machine will not boot on hard disk at next start, '\
-          "kernel: #{has_kernel ? '' : 'not'} set, "\
-          "initrd: #{has_initrd ? '' : 'not'} set, "\
-          "cmdline: #{has_cmdline ? '' : 'not'} set"
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((?: at next start)?)$/) do |vm, host, stop, next_start|
-  node = get_target(host)
-  inactive = next_start == ' at next start' ? '--inactive' : ''
-  output, _code = node.run("virsh dumpxml #{inactive} #{vm}")
-  tree = Nokogiri::XML(output)
-  on_reboot = tree.xpath('//on_reboot/text()')[0].to_s
-  unless on_reboot == 'destroy' && stop == 'stop' || on_reboot == 'restart' && stop == 'not stop'
-    raise "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}"
-  end
-end
-
-Then(/^"([^"]*)" virtual machine on "([^"]*)" should be UEFI enabled$/) do |vm, host|
-  node = get_target(host)
-  output, _code = node.run("virsh dumpxml #{vm}")
-  tree = Nokogiri::XML(output)
-  has_loader = tree.xpath('//os/loader').size == 1
-  has_nvram = tree.xpath('//os/nvram').size == 1
-  unless has_loader && has_nvram
-    raise "No loader and nvram set: not UEFI enabled"
-  end
-end
-
-When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
-  node = get_target(host)
-  node.run("qemu-img create -f qcow2 #{path} 1G")
-end
-
-When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without error control$/) do |volumes, pool, host|
-  node = get_target(host)
-  output, _code = node.run("virsh vol-list #{pool} | sed -n -e 's/^[[:space:]]*\([^[:space:]]\+\).*$/\1/;/#{volumes}/p'", check_errors: false)
-  output.each_line { |volume| node.run("virsh vol-delete #{volume} #{pool}", check_errors: false) }
-end
-
-When(/^I refresh the "([^"]*)" storage pool of this "([^"]*)"$/) do |pool, host|
-  node = get_target(host)
-  node.run("virsh pool-refresh #{pool}")
-end
-
-Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual network on #{host} still exists") do
-    _output, code = node.run("virsh net-info #{vm}", check_errors: false)
-    break if code == 1
-    sleep 3
-  end
-end
-
-Then(/^I should see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{vm} virtual network on #{host} still doesn't exist") do
-    _output, code = node.run("virsh net-info #{vm}", check_errors: false)
-    break if code.zero?
-    sleep 3
-  end
-end
-
-Then(/^"([^"]*)" virtual network on "([^"]*)" should have "([^"]*)" IPv4 address with ([0-9]+) prefix$/) do |net, host, ip, prefix|
-  node = get_target(host)
-  repeat_until_timeout(message: "#{net} virtual net on #{host} never got #{ip}/#{prefix} IPv4 address") do
-    output, _code = node.run("virsh net-dumpxml #{net}")
-    tree = Nokogiri::XML(output)
-    ips = tree.xpath('//ip[@family="ipv4"]')
-    break if !ips.empty? && ips[0]['address'] == ip and ips[0]['prefix'] == prefix
-    sleep 3
-  end
-end
-
 # WORKAROUND
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed
@@ -1515,15 +1216,17 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   # Gather all the ids of package refreshes existing at SUMA
   refreshes, = get_target('server').run('spacecmd -u admin -p admin schedule_list | grep \'Package List Refresh\' | cut -f1 -d\' \'', check_errors: false)
   node_refreshes = ''
-  refreshes.split(' ').each do |refresh_id|
+  refreshes.split.each do |refresh_id|
     next unless refresh_id.match('/[0-9]{1,4}/')
+
     refresh_result, = get_target('server').run("spacecmd -u admin -p admin schedule_details #{refresh_id}") # Filter refreshes for specific system
     next unless refresh_result.include? node
+
     node_refreshes += "^#{refresh_id}|"
   end
   cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('|')}'"
   repeat_until_timeout(timeout: long_wait_delay, message: '\'refresh package list\' did not finish') do
-    result, code = get_target('server').run(cmd, check_errors: false)
+    result, _code = get_target('server').run(cmd, check_errors: false)
     sleep 1
     next if result.include? '0    0    1'
     break if result.include? '1    0    0'
@@ -1536,7 +1239,7 @@ When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |pac
   get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   result, _code = get_target('server').run(command, check_errors: false)
-  packages.split(' ').each do |package|
+  packages.split.each do |package|
     pkg = package.strip
     raise "package #{pkg} is not installed" unless result.include? pkg
   end
@@ -1549,6 +1252,7 @@ When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) 
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
     result, _code = get_target('server').run(command, check_errors: false)
     break if result.include? pkg
+
     sleep 1
   end
 end
@@ -1558,7 +1262,7 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is still present") do
-    result, code = get_target('server').run(command, check_errors: false)
+    result, _code = get_target('server').run(command, check_errors: false)
     sleep 1
     break unless result.include? pkg
   end
@@ -1569,14 +1273,12 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   os_version = node.os_version.gsub('-SP', '.')
   os_family = node.os_family
   repositories = 'tools_pool_repo tools_update_repo'
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    if product != 'Uyuni'
-      repositories.concat(' tools_additional_repo')
-      # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
-      # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
-      if os_version.to_f >= 15.3
-        node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
-      end
+  if (os_family =~ /^opensuse/ || os_family =~ /^sles/) && (product != 'Uyuni')
+    repositories.concat(' tools_additional_repo')
+    # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
+    # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
+    if os_version.to_f >= 15.3
+      node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
     end
   end
   step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
@@ -1588,23 +1290,24 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   if host == 'server'
     salt_call = 'salt-call'
   end
-  source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
-  remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
+  source = "#{File.dirname(__FILE__)}/../upload_files/salt/#{state}.sls"
+  remote_file = "/usr/share/susemanager/salt/#{state}.sls"
   return_code = file_inject(node, source, remote_file)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
   node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
 When(/^I copy unset package file on server$/) do
-  base_dir = File.dirname(__FILE__) + '/../upload_files/unset_package/'
-  return_code = file_inject(get_target('server'), base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
-  raise 'File injection failed' unless return_code.zero?
+  base_dir = "#{File.dirname(__FILE__)}/../upload_files/unset_package/"
+  return_code = file_inject(get_target('server'), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
+  raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 
 When(/^I copy vCenter configuration file on server$/) do
-  base_dir = File.dirname(__FILE__) + '/../upload_files/virtualization/'
-  return_code = file_inject(get_target('server'), base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
-  raise 'File injection failed' unless return_code.zero?
+  base_dir = "#{File.dirname(__FILE__)}/../upload_files/virtualization/"
+  return_code = file_inject(get_target('server'), "#{base_dir}vCenter.json", '/var/tmp/vCenter.json')
+  raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 
 When(/^I export software channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
@@ -1620,14 +1323,14 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise "Folder #{folder} not found" unless file_exists?(get_target('server'), folder + '/sql_statements.sql.gz')
+  raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target('server'), "#{folder}/sql_statements.sql.gz")
 end
 
 When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
   node = get_target(host)
   if folder_exists?(node, folder)
     return_code = folder_delete(node, folder)
-    raise "Folder '#{folder}' exists and cannot be removed" unless return_code.zero?
+    raise ScriptError, "Folder '#{folder}' exists and cannot be removed" unless return_code.zero?
   end
 end
 
@@ -1641,7 +1344,8 @@ end
 
 Given(/^I have a user with admin access to the ReportDB$/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
-  raise 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
+  raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
+
   # extract only the line for the suma user
   suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)/]
   raise 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
@@ -1654,7 +1358,8 @@ When(/^I create a read-only user for the ReportDB$/) do
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection in server failed' unless return_code.zero?
+  raise ScriptError, 'File injection in server failed' unless return_code.zero?
+
   get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
 end
 
@@ -1668,7 +1373,8 @@ When(/^I delete the read-only user for the ReportDB$/) do
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection in server failed' unless return_code.zero?
+  raise ScriptError, 'File injection in server failed' unless return_code.zero?
+
   get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
 end
 
@@ -1760,10 +1466,10 @@ end
 
 When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
   # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
-  command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
+  command = 'echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert' \
             " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
-            " 2048 galaxy-noise@suse.de --ca-pass cert_pass --ssl-cname proxy.example.org" \
-            " && rm cert_pass"
+            ' 2048 galaxy-noise@suse.de --ca-pass cert_pass --ssl-cname proxy.example.org' \
+            ' && rm cert_pass'
   get_target('server').run(command)
 end
 
@@ -1814,8 +1520,8 @@ When(/^I reboot the server through SSH$/) do
   check_restart(get_target('server').public_ip, temp_server, default_timeout)
 
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
-    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include? 'dead' and out.to_s.include? 'running'
+    out, _code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include?('dead') && out.to_s.include?('running')
       log 'Server spacewalk service is up'
       break
     end
@@ -1857,7 +1563,7 @@ end
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   server_node = get_target('server')
   old_hostname = server_node.hostname
-  new_hostname = old_hostname + '-renamed'
+  new_hostname = "#{old_hostname}-renamed"
   log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
@@ -1890,7 +1596,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   default_timeout = 300
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
     out, _code = server_node.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include? 'dead' and out.to_s.include? 'running'
+    if !out.to_s.include?('dead') && out.to_s.include?('running')
       log 'Server: spacewalk service is up'
       break
     end
@@ -1923,14 +1629,17 @@ When(/^I check all certificates after renaming the server hostname$/) do
     os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial
     next unless ENV.key? ENV_VAR_BY_HOST[target]
+
     # Red Hat-like and Debian-like minions store their certificates in a different location
-    certificate = if os_family =~ /^centos/ || os_family =~ /^rocky/
-                    '/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT'
-                  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
-                    '/usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt'
-                  else
-                    '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT'
-                  end
+    certificate =
+      case os_family
+      when /^centos/, /^rocky/
+        '/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+      when /^ubuntu/, /^debian/
+        '/usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt'
+      else
+        '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+      end
     get_target(target).run("test -s #{certificate}", successcodes: [0], check_errors: true)
 
     command_minion = "openssl x509 -noout -text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
@@ -1996,6 +1705,7 @@ When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
   repeat_until_timeout(report_result: true) do
     command_output, code = node.run('cloud-init status --wait', check_errors: true, verbose: false)
     break if command_output.include?('done')
+
     sleep 2
     raise StandardError 'Error during cloud-init.' if code == 1
   end
@@ -2007,16 +1717,18 @@ When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   node = get_target(host)
 
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-  raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+  raise ScriptError, "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise ScriptError, "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+
   node.init_hostname(hostname)
 
   fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+  raise ScriptError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise ScriptError, "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+
   node.init_full_hostname(fqdn)
 
-  STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
+  $stdout.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
   os_version, os_family = get_os_version(node)
   node.init_os_family(os_family)
   node.init_os_version(os_version)

@@ -33,21 +33,13 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
   original_iso_name = url.split('/').last
   checksum_path = get_checksum_path(iso_dir, original_iso_name, url)
 
-  raise "SHA256 checksum validation failed" unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
+  raise ScriptError, 'SHA256 checksum validation failed' unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
 
-  if $is_container_provider
-    mount_point = '/srv/www/distributions'
-    get_target('server').run("mkdir -p #{mount_point}")
-    # this needs to be run outside the container
-    get_target('server').run_local("mgradm distro copy #{iso_path} #{name}", verbose: true)
-    get_target('server').run("ln -s #{mount_point}/#{name} /srv/www/htdocs/pub/")
-  else
-    mount_point = "/srv/www/htdocs/pub/#{name}"
-    cmd = "mkdir -p #{mount_point} && " \
-          "grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab && " \
-          "umount #{iso_path}; mount #{iso_path}"
-    get_target('server').run(cmd, verbose: true)
-  end
+  mount_point = "/srv/www/htdocs/pub/#{name}"
+  cmd = "mkdir -p #{mount_point} && " \
+        "grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab && " \
+        "umount #{iso_path}; mount #{iso_path}"
+  get_target('server').run(cmd, verbose: true)
 end
 
 Then(/^the hostname for "([^"]*)" should be correct$/) do |host|
@@ -58,7 +50,7 @@ end
 Then(/^the kernel for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   kernel_version, _code = node.run('uname -r')
-  log 'I should see kernel version: ' + kernel_version
+  log "I should see kernel version: #{kernel_version}"
   step %(I should see a "#{kernel_version.strip}" text)
 end
 
@@ -95,11 +87,10 @@ end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
   client_id = $api_test.system.search_by_name(get_system_name(host)).first['id']
-  step %(I should see a "#{client_id.to_s}" text)
+  step %(I should see a "#{client_id}" text)
 end
 
 Then(/^the system name for "([^"]*)" should be correct$/) do |host|
-  node = get_target(host)
   system_name = get_system_name(host)
   step %(I should see a "#{system_name}" text)
 end
@@ -110,8 +101,8 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   rounded_uptime_minutes = uptime[:minutes].round
   rounded_uptime_hours = uptime[:hours].round
   # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
-  eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
-  rounded_uptime_days = ((uptime[:seconds] + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
+  eleven_hours_in_seconds = 39_600 # 11 hours * 60 minutes * 60 seconds
+  rounded_uptime_days = ((uptime[:seconds] + eleven_hours_in_seconds) / 86_400.0).round # 60 seconds * 60 minutes * 24 hours
 
   # select the text in the time HTML element associated with 'Last Booted'
   ui_uptime_text = find(:xpath, '//td[contains(text(), "Last Booted")]/following-sibling::td/time').text
@@ -266,6 +257,7 @@ Then(/^I should see the power is "([^"]*)"$/) do |status|
   within(:xpath, '//*[@for=\'powerStatus\']/..') do
     repeat_until_timeout(message: "power is not #{status}") do
       break if check_text_and_catch_request_timeout_popup?(status)
+
       find(:xpath, '//button[@value="Get status"]').click
     end
     raise "Power status #{status} not found" unless check_text_and_catch_request_timeout_popup?(status)
@@ -292,14 +284,15 @@ end
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/ || os_family =~ /micro/
+  case os_family
+  when /^opensuse/, /^sles/, /micro/
     node.run_until_ok('zypper --non-interactive refresh -s')
-  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
+  when /^centos/, /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)
-  elsif os_family =~ /^ubuntu/
+  when /^ubuntu/
     node.run('apt-get update')
   else
-    raise "The host #{host} has not yet a implementation for that step"
+    raise ScriptError, "The host #{host} has not yet a implementation for that step"
   end
 end
 
@@ -307,6 +300,7 @@ end
 # these steps currently work only for traditional clients
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
+
   target = get_target('client')
   arch, _code = target.run('uname -m')
   arch.chomp!
@@ -316,6 +310,7 @@ end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
+
   target = get_target('client')
   arch, _code = target.run('uname -m')
   arch.chomp!
@@ -325,12 +320,13 @@ end
 
 Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   raise 'Invalid target.' unless host == 'sle_client'
+
   node = get_target('client')
   arch, _code = node.run('uname -m')
   arch.chomp!
-  dir_file = client_raw_repodata_dir("fake-rpm-suse-channel")
-  _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
-  raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
+  dir_file = client_raw_repodata_dir('fake-rpm-suse-channel')
+  out, _code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
+  raise "File #{dir_file}/*#{file} not exist" unless out.lines.count >= 1
 end
 
 Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
@@ -352,7 +348,7 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
-  srvurl = "https://#{ENV['SERVER']}/APP"
+  srvurl = "https://#{get_target('server').full_hostname}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1}"
   get_target('server').run(command, timeout: 500)
   # TODO: instead of next line, wait for package to appear inside /var/spacewalk/packages

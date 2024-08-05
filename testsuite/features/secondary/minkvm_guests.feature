@@ -26,7 +26,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I create test-net1 virtual network on "kvm_server"
     And I delete default virtual storage pool on "kvm_server"
     And I create test-pool0 virtual storage pool on "kvm_server"
-    And I create "test-vm" virtual machine on "kvm_server"
+    And I create a leap virtual machine named "test-vm" without cloudinit on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
 

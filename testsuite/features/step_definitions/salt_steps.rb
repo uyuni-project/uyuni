@@ -95,6 +95,7 @@ When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   repeat_until_timeout(timeout: 600, message: "A Salt job is still running on #{minion}") do
     output, _code = target.run("#{salt_call} -lquiet saltutil.running", verbose: true)
     break if output == "local:\n"
+
     sleep 3
   end
 end
@@ -253,15 +254,7 @@ When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |
 end
 
 When(/^I configure salt minion on "([^"]*)"$/) do |host|
-  content = %(
-master: #{get_target('server').full_hostname}
-server_id_use_crc: adler32
-enable_legacy_startup_events: False
-enable_fqdns_grains: False
-start_event_grains:
-  - machine_id
-  - saltboot_initrd
-  - susemanager)
+  content = %( master: #{get_target('server').full_hostname} server_id_use_crc: adler32 enable_legacy_startup_events: False enable_fqdns_grains: False start_event_grains: - machine_id - saltboot_initrd - susemanager)
   step %(I store "#{content}" into file "susemanager.conf" in salt minion config directory on "#{host}")
 end
 
@@ -291,7 +284,8 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  raise "Checkbox is not #{state}" if has_xpath?(xpath_query)
+  raise ScriptError, "Checkbox is not #{state}" if has_xpath?(xpath_query)
+
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
   assert has_xpath?(xpath_query), 'Checkbox could not be found'
@@ -332,6 +326,7 @@ When(/^I wait until there is no pillar refresh salt job active$/) do
   repeat_until_timeout(message: 'pillar refresh job still active') do
     output, = get_target('server').run('salt-run jobs.active')
     break unless output.include?('saltutil.refresh_pillar')
+
     sleep 1
   end
 end
@@ -367,6 +362,7 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "Output has more than one line: #{output}", report_result: true) do
     output, _code = pillar_get(key, minion)
     break if output.split("\n").length == 1
+
     sleep 1
   end
 end
@@ -440,6 +436,7 @@ When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
   repeat_until_timeout(timeout: 60, retries: 30, message: 'Search button not enabled', report_result: true) do
     break unless find('button#search').disabled?
+
     sleep 1
   end
   find('button#search').click
@@ -470,7 +467,8 @@ Then(/^the salt event log on server should contain no failures$/) do
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
   # print failures from salt event log
   output, _code = get_target('server').run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
@@ -513,7 +511,7 @@ Then(/^I run spacecmd listeventhistory for "([^"]*)"$/) do |host|
 end
 
 When(/^I enter KVM Server password$/) do
-  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password")
+  step %(I enter "#{ENV.fetch('VIRTHOST_KVM_PASSWORD', nil)}" as "password")
 end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
@@ -546,8 +544,7 @@ end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |files, host|
   system_name = host == '*' ? '*' : get_system_name(host)
-  script = "base:\n" \
-            "  '#{system_name}':\n"
+  script = "base:\n  '#{system_name}':\n"
   files.split(/, */).each do |file|
     script += "    - '#{file}'\n"
   end
@@ -559,8 +556,8 @@ end
 When(/^I install the package download endpoint pillar file on the server$/) do
   filepath = '/srv/pillar/pkg_endpoint.sls'
   uri = URI.parse($custom_download_endpoint)
-  content = "pkg_download_point_protocol: #{uri.scheme}\n"\
-            "pkg_download_point_host: #{uri.host}\n"\
+  content = "pkg_download_point_protocol: #{uri.scheme}\n" \
+            "pkg_download_point_host: #{uri.host}\n" \
             "pkg_download_point_port: #{uri.port}"
   get_target('server').run("echo -e \"#{content}\" > #{filepath}")
 end
@@ -572,13 +569,14 @@ When(/^I delete the package download endpoint pillar file from the server$/) do
 end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/srv/formula_metadata/' + formula + '/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/srv/formula_metadata/#{formula}/#{file}"
 
-  get_target('server').run('mkdir -p /srv/formula_metadata/' + formula)
+  get_target('server').run("mkdir -p /srv/formula_metadata/#{formula}")
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  get_target('server').run('chmod 644 ' + dest)
+  raise ScriptError, 'File injection failed' unless return_code.zero?
+
+  get_target('server').run("chmod 644 #{dest}")
 end
 
 When(/^I migrate "([^"]*)" from salt-minion to venv-salt-minion$/) do |host|
@@ -599,7 +597,7 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host.include? 'ssh_minion'
     cmd = 'mgr-salt-ssh'
-  elsif host.include? 'minion' or host.include? 'build' or host.include? 'proxy'
+  elsif host.include?('minion') || host.include?('build') || host.include?('proxy')
     cmd = 'salt'
   end
   log "Salt command: #{cmd} #{system_name} state.highstate"

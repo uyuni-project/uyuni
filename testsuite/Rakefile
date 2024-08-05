@@ -9,7 +9,7 @@ require 'rake/task'
 require 'parallel'
 
 junit_results = '-f junit -o results_junit'
-build_number = ENV['BUILD_NUMBER']
+build_number = ENV.fetch('BUILD_NUMBER', nil)
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
 
 namespace :cucumber do
@@ -19,21 +19,21 @@ namespace :cucumber do
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       filename = File.basename(entry, '.yml').to_sym
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      node_name = ENV['NODE']
+      node_name = ENV.fetch('NODE', nil)
       node_result_extension = node_name.nil? ? '' : "_#{node_name}"
       json_results = "-f json -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.json"
       html_results = "-f html -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.html"
-      profiles = ENV['PROFILE']
+      profiles = ENV.fetch('PROFILE', nil)
       # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
       # it will act as an intersection of tags, not as an union of them.
       include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
-      tags = ENV['TAGS']
+      tags = ENV.fetch('TAGS', nil)
       # We provide the list of tags including the '@', so if necessary we can provide a negative tag '~@' on this list.
       # We generate the tags list as an union of tags (using 'or' between them),
       # not as an intersection of them (using 'and')
       include_tags =  tags.nil? ? [] : ['--tags', tags]
       cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] +
-        %w[-f pretty -r features] + include_tags
+                      %w[-f pretty -r features] + include_tags
       # Immediately fail a feature if a scenario on it fails
       cucumber_opts << '--fail-fast' if filename.to_s.include?('core') || filename.to_s.include?('build_validation_init_client')
       features = YAML.safe_load(File.read(entry))
@@ -51,12 +51,11 @@ namespace :parallel do
       json_results = "-f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json"
       html_results = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html"
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
-      profiles = ENV['PROFILE']
+      profiles = ENV.fetch('PROFILE', nil)
       include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
-      tags = ENV['TAGS']
+      tags = ENV.fetch('TAGS', nil)
       include_tags =  tags.nil? ? '' : "--tags #{tags}"
-      cucumber_opts = "#{include_profiles} #{include_tags} #{html_results} #{json_results} #{junit_results} " \
-                      '-f CustomFormatter::PrettyFormatter -r features '
+      cucumber_opts = "#{include_profiles} #{include_tags} #{html_results} #{json_results} #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
       sh "bundle exec parallel_cucumber -n 6 -o '#{cucumber_opts}' #{features}"
     end
   end
@@ -70,19 +69,18 @@ namespace :utils do
       puts 'sets should be 2 or greater'
     else
       all_secondary_p = YAML.load_file('run_sets/secondary_parallelizable.yml')
-      if all_secondary_p.length%sets_n != 0
-        size = (all_secondary_p.length/sets_n) + 1
-      else
-        size = all_secondary_p.length/sets_n
-      end
+      size =
+        if (all_secondary_p.length % sets_n).zero?
+          all_secondary_p.length / sets_n
+        else
+          (all_secondary_p.length / sets_n) + 1
+        end
       split_sets = all_secondary_p.each_slice(size).to_a
       puts "split_sets.length: #{split_sets.length}"
-      (1..split_sets.length).each { |i|
+      (1..split_sets.length).each do |i|
         puts "writing #{i}"
-        File.open("run_sets/secondary_parallelizable_#{i}.yml", 'w') { |file|
-          file.write(split_sets[i - 1].to_yaml)
-        }
-      }
+        File.write("run_sets/secondary_parallelizable_#{i}.yml", split_sets[i - 1].to_yaml)
+      end
     end
   end
 
@@ -113,7 +111,7 @@ namespace :utils do
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/smoke_tests/smoke_tests.template',
-        File.basename(client,'.feature'),
+        File.basename(client, '.feature'),
         'features/build_validation/smoke_tests'
       )
       Rake::Task['utils:generate_feature'].reenable
@@ -128,7 +126,7 @@ namespace :utils do
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/add_MU_repositories/add_maintenance_update_repositories.template',
-        File.basename(client,'.feature'),
+        File.basename(client, '.feature'),
         'features/build_validation/add_MU_repositories'
       )
       Rake::Task['utils:generate_feature'].reenable
@@ -142,7 +140,7 @@ namespace :utils do
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/add_activation_keys/add_activation_key.template',
-        File.basename(client,'.feature'),
+        File.basename(client, '.feature'),
         'features/build_validation/add_activation_keys'
       )
       Rake::Task['utils:generate_feature'].reenable
@@ -152,14 +150,14 @@ namespace :utils do
   desc 'Generate feature to create bootstrap repositories for all the clients'
   task :generate_create_bootstrap_repositories_features do
     clients = Rake::FileList['features/build_validation/init_clients/*.feature']
-    clients.reject! { |client| client.include? 'ssh'}
+    clients.reject! { |client| client.include? 'ssh' }
     clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
     clients.each do |client|
       # disable flush option for s390 minions
       flush = !client.include?('s390')
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/create_bootstrap_repositories/create_bootstrap_repository.template',
-        File.basename(client,'.feature'),
+        File.basename(client, '.feature'),
         'features/build_validation/create_bootstrap_repositories',
         flush
       )
@@ -188,6 +186,7 @@ namespace :utils do
     sh "cp cucumber_report/cucumber_report.html #{result_folder}"
   end
 
+  # Returns the type of client by its name
   def get_client_type(name)
     if name.include? '_client'
       'traditional'
@@ -203,7 +202,6 @@ namespace :utils do
 end
 
 namespace :jenkins do
-
   desc 'Generate Rakefiles runstep'
   task :generate_rake_run_step, [:extension, :client_name, :output_path, :yaml_path] do |_t, args|
     output_filepath = "#{args[:output_path]}/#{args[:client_name]}#{args[:extension]}.feature"
@@ -215,9 +213,10 @@ namespace :jenkins do
     minions = args[:instances]
     minions.each do |minion|
       next if minion.include?('ssh')
+
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '_create_bootstrap_repository',
-        File.basename(minion,'.feature'),
+        File.basename(minion, '.feature'),
         'features/build_validation/create_bootstrap_repositories',
         "run_sets/build_validation/build_validation_create_bootstrap_repository_#{minion}.yml"
       )
@@ -229,10 +228,11 @@ namespace :jenkins do
   task :generate_rake_files_init_clients, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('proxy') or minion.include?('monitoring')
+      next if minion.include?('proxy') || minion.include?('monitoring')
+
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '',
-        File.basename(minion,'.feature'),
+        File.basename(minion, '.feature'),
         'features/build_validation/init_clients',
         "run_sets/build_validation/build_validation_init_client_#{minion}.yml"
       )
@@ -245,9 +245,10 @@ namespace :jenkins do
     minions = args[:instances]
     minions.each do |minion|
       next if minion.include?('ssh')
+
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '_add_maintenance_update_repositories',
-        File.basename(minion,'.feature'),
+        File.basename(minion, '.feature'),
         'features/build_validation/add_MU_repositories',
         "run_sets/build_validation/build_validation_add_maintenance_update_repositories_#{minion}.yml"
       )
@@ -261,7 +262,7 @@ namespace :jenkins do
     minions.each do |minion|
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '_add_activation_key',
-        File.basename(minion,'.feature'),
+        File.basename(minion, '.feature'),
         'features/build_validation/add_activation_keys',
         "run_sets/build_validation/build_validation_add_activation_key_#{minion}.yml"
       )
@@ -273,10 +274,11 @@ namespace :jenkins do
   task :generate_rake_files_smoke_tests, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('proxy') or minion.include?('monitoring')
+      next if minion.include?('proxy') || minion.include?('monitoring')
+
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '_smoke_tests',
-        File.basename(minion,'.feature'),
+        File.basename(minion, '.feature'),
         'features/build_validation/smoke_tests',
         "run_sets/build_validation/build_validation_smoke_tests_#{minion}.yml"
       )
@@ -298,7 +300,7 @@ namespace :jenkins do
     instances = []
     ENV.select { |k, _v| k.include?('MINION') || k.include?('PROXY') || k.include?('CLIENT') || k.include?('MONITORING') }.each do |key, _value|
       # Convert ENV variables into testsuite variables
-      instance = "#{key}".downcase
+      instance = key.to_s.downcase
       instances << instance.gsub('sshminion', 'ssh_minion')
     end
     Rake::Task['jenkins:generate_rake_files_smoke_tests'].invoke(instances)
