@@ -1533,38 +1533,38 @@ def do_softwarechannel_removepackages(self, args):
         return 1
 
     channel = args.pop(0)
-    package_list = args
+    passed_packages = args
 
     # get all the packages in the channel
-    packages = \
-        self.client.channel.software.listAllPackages(self.session,
-                                                     channel)
+    channel_packages = self.client.channel.software.listAllPackages(
+        self.session,
+        channel
+    )
 
-    # build full names for those packages
-    installed_packages = build_package_names(packages)
+    packages = {build_package_name(p): p["id"] for p in channel_packages}
 
     # find matching packages that are in the channel
-    package_names = filter_results(installed_packages, package_list)
+    packages_to_remove = filter_results(list(packages.keys()), passed_packages)
+    ids_to_remove = [
+        p_id for p_name, p_id in packages.items() if p_name in packages_to_remove
+    ]
 
-    # get the package IDs from the names
-    package_ids = []
-    for package in package_names:
-        package_ids += self.get_package_id(package)
-
-    if not package_ids:
+    if not ids_to_remove:
         logging.warning(_N('No packages to remove'))
         return 1
 
     print(_('Packages'))
     print('--------')
-    print('\n'.join(sorted(package_names)))
+    print('\n'.join(sorted(packages_to_remove)))
 
     if not self.user_confirm(_('Remove these packages [y/N]:')):
         return 1
 
-    self.client.channel.software.removePackages(self.session,
-                                                channel,
-                                                package_ids)
+    self.client.channel.software.removePackages(
+        self.session,
+        channel,
+        ids_to_remove
+    )
 
     return 0
 
