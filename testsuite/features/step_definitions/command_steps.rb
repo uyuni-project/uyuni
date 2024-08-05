@@ -571,14 +571,16 @@ Then(/^the PXE default profile should be disabled$/) do
 end
 
 When(/^the server starts mocking an IPMI host$/) do
+  server = get_target('server')
+  server.run('mkdir -p /etc/ipmi')
   %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
     source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
     dest = "/etc/ipmi/#{file}"
-    return_code = file_inject(get_target('server'), source, dest)
+    return_code = file_inject(server, source, dest)
     raise ScriptError, 'File injection failed' unless return_code.zero?
   end
-  get_target('server').run('chmod +x /etc/ipmi/fake_ipmi_host.sh')
-  get_target('server').run('ipmi_sim -n < /dev/null > /dev/null &')
+  server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh')
+  server.run('ipmi_sim -n < /dev/null > /dev/null &')
 end
 
 When(/^the server stops mocking an IPMI host$/) do
