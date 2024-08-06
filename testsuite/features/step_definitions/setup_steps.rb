@@ -208,6 +208,16 @@ Given(/^I update the profile of "([^"]*)"$/) do |client|
   node.run('rhn-profile-sync', timeout: 500)
 end
 
+When(/^I wait at most (\d+) seconds until I see the name of "([^"]*)", refreshing the page$/) do |seconds, host|
+  system_name = get_system_name(host)
+  repeat_until_timeout(message: "I can't see the system '#{system_name}'", timeout: seconds.to_i) do
+    step 'I wait until I do not see "Loading..." text'
+    break if has_content?(system_name, wait: 3)
+
+    refresh_page
+  end
+end
+
 When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |seconds, host, is_salt|
   steps %(
     When I follow the left menu "Systems > Overview"
