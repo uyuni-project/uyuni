@@ -12,6 +12,8 @@ Feature: Push a package with unset vendor
     Given I am authorized for the "Admin" section
 
   @uyuni
+  @sle_minion
+  @scc_credentials
   Scenario: Pre-requisite: SLES minion must be subscribed to the openSUSE Leap Micro 5.5 channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -23,8 +25,7 @@ Feature: Push a package with unset vendor
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    When I follow "scheduled" in the content area
-    And I wait until I see "1 system successfully completed this action." text, refreshing the page
+    And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Pre-requisite: mgr-push package must be installed on the SLES minion
     Given I am on the Systems overview page of this "sle_minion"
