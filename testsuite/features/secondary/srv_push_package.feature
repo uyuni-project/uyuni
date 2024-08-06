@@ -12,8 +12,6 @@ Feature: Push a package with unset vendor
     Given I am authorized for the "Admin" section
 
   @uyuni
-  @sle_minion
-  @scc_credentials
   Scenario: Pre-requisite: SLES minion must be subscribed to the openSUSE Leap Micro 5.5 channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
