@@ -68,7 +68,7 @@ public class TaskQueueFactory {
         synchronized (queues) {
             retval = queues.get(name);
             if (retval == null) {
-                retval = new TaskQueue();
+                retval = new TaskQueue(name);
                 QueueDriver<?> driver = driverClass.getDeclaredConstructor().newInstance();
                 driver.setLogger(loggerIn);
                 driver.initialize();

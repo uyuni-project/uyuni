@@ -94,7 +94,6 @@ BuildRequires:  mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
-BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-activation
@@ -183,7 +182,6 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
@@ -359,7 +357,6 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       concurrent
 Requires:       hibernate-commons-annotations
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
