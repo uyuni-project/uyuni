@@ -17,9 +17,6 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -39,8 +36,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
@@ -73,52 +68,33 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             log.error("Server with id {} not found.", serverId);
             return;
         }
-        Optional<MinionServer> optMinion = s.asMinionServer();
-        optMinion.ifPresent(minion -> {
-            // This code acts only on salt minions
+        s.asMinionServer().ifPresentOrElse(
+                minion -> {
+                    // This code acts only on salt minions
 
-            // Trigger update of the errata cache
-            ErrataManager.insertErrataCacheTask(minion);
+                    // Trigger update of the errata cache
+                    ErrataManager.insertErrataCacheTask(minion);
 
-            // Regenerate the pillar data
-            MinionPillarManager.INSTANCE.generatePillar(minion);
+                    // Regenerate the pillar data
+                    MinionPillarManager.INSTANCE.generatePillar(minion);
 
-            // push the changed pillar data to the minion
-            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+                    // push the changed pillar data to the minion
+                    saltApi.refreshPillar(new MinionList(minion.getMinionId()));
 
-            if (msg.isScheduleApplyChannelsState()) {
-                User user = UserFactory.lookupById(event.getUserId());
-                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                        Collections.singletonList(minion.getId()),
-                        Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
-                        new Date());
-                try {
-                    TASKOMATIC_API.scheduleActionExecution(action, false);
-                }
-                catch (TaskomaticApiException e) {
-                    log.error("Could not schedule channels state application for system: {}", s.getId());
-                }
-            }
-
-        });
-        if (!optMinion.isPresent()) {
-            try {
-                // This code acts only on traditional systems
-                List<Package> prodPkgs =
-                        PackageFactory.findMissingProductPackagesOnServer(serverId);
-                if (event.getUserId() != null) {
-                    User user = UserFactory.lookupById(event.getUserId());
-                    ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());
-                }
-                else if (s.getCreator() != null) {
-                    ActionManager.schedulePackageInstall(s.getCreator(), prodPkgs, s,
-                            new Date());
-                }
-            }
-            catch (TaskomaticApiException e) {
-                log.error("Could not schedule state application for system: {}", s.getId());
-                throw new RuntimeException(e);
-            }
-        }
+                    if (msg.isScheduleApplyChannelsState()) {
+                        User user = UserFactory.lookupById(event.getUserId());
+                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                                Collections.singletonList(minion.getId()),
+                                Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                                new Date());
+                        try {
+                            TASKOMATIC_API.scheduleActionExecution(action, false);
+                        }
+                        catch (TaskomaticApiException e) {
+                            log.error("Could not schedule channels state application for system: {}", s.getId());
+                        }
+                    }
+                },
+                () -> log.error("Traditional Clients are not supported"));
     }
 }
