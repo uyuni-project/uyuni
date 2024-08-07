@@ -1785,7 +1785,7 @@ public class ChannelManager extends BaseManager {
         }
 
         listPossibleSuseBaseChannelsForServer(s).ifPresent(channelDtos::addAll);
-        listCompatibleBaseChannelsForServer(s).ifPresent(channelDtos::addAll);
+        channelDtos.addAll(listCompatibleBaseChannelsForServer(s));
 
         // Get all the possible base-channels owned by this Org
         channelDtos.addAll(listCustomBaseChannelsForServer(s));
@@ -1802,7 +1802,7 @@ public class ChannelManager extends BaseManager {
      * @param s the server to switch the base channel
      * @return Optional List of possible base channels where this system can change to
      */
-    public static Optional<Set<EssentialChannelDto>> listCompatibleBaseChannelsForServer(Server s) {
+    public static Set<EssentialChannelDto> listCompatibleBaseChannelsForServer(Server s) {
         log.debug("listCompatibleChannels called");
 
         Optional<InstalledProduct> installedBaseProduct = s.getInstalledProducts()
@@ -1813,22 +1813,21 @@ public class ChannelManager extends BaseManager {
         return Opt.fold(installedBaseProduct,
                 () -> {
                     log.info("Server has no base product installed");
-                    return empty();
+                    return Collections.emptySet();
                 },
                 bp -> {
                     if (COMPATIBLE_PRODUCTS.containsKey(bp)) {
                         SUSEProduct compatProduct = COMPATIBLE_PRODUCTS.get(bp).getSUSEProduct();
                         if (compatProduct != null) {
-                            Set<EssentialChannelDto> channelDtos = compatProduct.getSuseProductChannels()
+                            return compatProduct.getSuseProductChannels()
                                     .stream()
                                     .map(SUSEProductChannel::getChannel)
                                     .filter(Channel::isBaseChannel)
                                     .map(EssentialChannelDto::new)
                                     .collect(Collectors.toSet());
-                            return of(channelDtos);
                         }
                     }
-                    return empty();
+                    return Collections.emptySet();
                 });
     }
 
@@ -1850,14 +1849,13 @@ public class ChannelManager extends BaseManager {
                     .anyMatch(l -> l.equals(baseChannelIn.getLabel()))) {
                 SUSEProduct targetProduct = compatProducts.getValue().getSUSEProduct();
                 if (targetProduct != null) {
-                    Set<EssentialChannelDto> compat = targetProduct
+                    targetProduct
                             .getSuseProductChannels()
                             .stream()
                             .map(SUSEProductChannel::getChannel)
                             .filter(Channel::isBaseChannel)
                             .map(EssentialChannelDto::new)
-                            .collect(Collectors.toSet());
-                    retval.addAll(compat);
+                            .forEach(retval::add);
                 }
             }
         }
@@ -1880,10 +1878,10 @@ public class ChannelManager extends BaseManager {
                 .map(EssentialChannelDto::new)
                 .collect(Collectors.toSet());
 
-        retval.addAll(ChannelFactory.listCompatibleDcmForChannelSSMInNullOrg(u, inChan)
+        ChannelFactory.listCompatibleDcmForChannelSSMInNullOrg(u, inChan)
                .stream()
                .map(EssentialChannelDto::new)
-               .collect(Collectors.toSet()));
+               .forEach(retval::add);
 
         Set<EssentialChannelDto> eusBaseChans = new HashSet<>();
 
