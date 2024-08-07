@@ -1,0 +1,2 @@
+- Stop the attestation processing gracefully when receiving a 
+  termination signal
