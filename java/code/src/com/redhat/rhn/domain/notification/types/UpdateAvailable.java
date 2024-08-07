@@ -58,14 +58,17 @@ public class UpdateAvailable implements NotificationData {
 
         try {
             Process patchProc = runtime.exec(new String[]{"/bin/bash", "-c",
-                    "LC_ALL=C zypper lp -r " + repo + " | grep 'applicable patch'"});
+                    "LC_ALL=C /usr/bin/zypper lp -r " + repo + " | /usr/bin/grep 'applicable patch'"});
             patchProc.waitFor();
             // 0 here means there are patches
             hasUpdates = (0 == patchProc.exitValue());
             if (!hasUpdates && !mgr) {
                 // Check for updates on uyuni when there are no patches
-                Process updateProc = runtime.exec(new String[]{"/bin/bash", "-c",
-                        "LC_ALL=C zypper lu -r " + UYUNI_UPDATE_REPO + " | grep 'Available Version'"});
+                Process updateProc = runtime.exec(new String[]{
+                    "/bin/bash",
+                    "-c",
+                    "LC_ALL=C /usr/bin/zypper lu -r " + UYUNI_UPDATE_REPO + " | /usr/bin/grep 'Available Version'"
+                });
                 updateProc.waitFor();
                 hasUpdates = (0 == updateProc.exitValue());
             }
