@@ -40,7 +40,10 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     private Server server;
 
     @BeforeEach
-    public void setup() {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
         action = new TestScapSetupAction();
 
         server = MinionServerFactoryTest.createTestMinionServer(user);
