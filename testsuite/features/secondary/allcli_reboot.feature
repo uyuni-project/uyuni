@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC.
+# Copyright (c) 2017-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 #
 # Idempotency note:
@@ -14,7 +14,7 @@
 # - features/secondary/min_deblike_openscap_audit.feature
 # - features/secondary/min_deblike_remote_command.feature
 # - features/secondary/min_deblike_ssh.feature
-# If the minions take over the alloted 10 minutes to reboot, 
+# If the minions take over the alloted 10 minutes to reboot,
 # the following features could fail due to the minions not being reachable.
 # Depending on how long they take to reboot, even more features could fail.
 

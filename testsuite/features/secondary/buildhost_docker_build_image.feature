@@ -1,11 +1,11 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
 #
 # This feature is a dependency for:
-# - features/secondary/srv_docker_cve_audit.feature 
+# - features/secondary/srv_docker_cve_audit.feature
 #
 # This feature depends on:
 # - features/secondary/min_docker_api.feature
@@ -76,7 +76,7 @@ Feature: Build container images
     Then the list of packages of image "suse_simple" with version "latest" is not empty
 
   Scenario: Build the suse_real_key image with and without activation key
-    Given I am on the Systems overview page of this "build_host"  
+    Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_real_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_real_key scheduled" is completed
     And I wait at most 60 seconds until all "3" container images are built correctly on the Image List page

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -12,7 +12,7 @@ Feature: Use salt formulas
       Given I am authorized
 
    #container already has locale formula installed
-   @skip_if_containerized_server 
+   @skip_if_containerized_server
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
 

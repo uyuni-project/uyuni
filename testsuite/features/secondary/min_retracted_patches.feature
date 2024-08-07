@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_retracted_patches
@@ -53,7 +53,7 @@ Feature: Retracted patches
     Then I should see a "No systems." text
     When I remove package "rute-dummy" from this "sle_minion"
     And I wait until package "rute-dummy" is removed from "sle_minion" via spacecmd
-   
+
   Scenario: Target systems for stable packages should not be empty
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
@@ -62,7 +62,7 @@ Feature: Retracted patches
     And I follow "rute-dummy-2.0-1.2.x86_64"
     And I follow "Target Systems"
     And I refresh page until I see "sle_minion" hostname as text
-   
+
   Scenario: Target systems for retracted packages should be empty
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
@@ -105,7 +105,7 @@ Feature: Retracted patches
     Then the table row for "rute-dummy-0815" should contain "retracted" icon
     And the table row for "rute-dummy-0816" should not contain "retracted" icon
     And the table row for "rute-dummy-0817" should contain "retracted" icon
- 
+
   Scenario: Retracted packages in the channel packages list
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
@@ -118,7 +118,7 @@ Feature: Retracted patches
   Scenario: SSM: Retracted package should not be available for installation
     When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
-    And I check the "sle_minion" client 
+    And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages" in the content area
     And I follow "Install"

@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization

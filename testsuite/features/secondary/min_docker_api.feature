@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Note: image building via API is not tested here

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_changing_software_channels
