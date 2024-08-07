@@ -444,6 +444,7 @@ spec:
           - name: SSH_AUTH_SOCK
             value: /tmp/ssh_auth_sock
 {{- end }}
+{{- if not .Values.migration }}
         livenessProbe:
           exec:
             command:
@@ -460,6 +461,7 @@ spec:
               - multi-user.target
           periodSeconds: 10
           timeoutSeconds: 10
+{{- end }}
         volumeMounts:
           - mountPath: /run
             name: tmp
