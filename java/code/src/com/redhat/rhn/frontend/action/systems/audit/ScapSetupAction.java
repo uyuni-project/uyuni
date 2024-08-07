@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.systems.audit;
 
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -24,48 +23,67 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.audit.ScapManager;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.List;
+import java.util.Objects;
+
 /**
  * ScapSetupAction
  */
 
 public abstract class ScapSetupAction extends RhnAction {
-    private static final String SCAP_ENABLED = "scapEnabled";
-    private static final String REQUIRED_PKG = "requiredPackage";
-    private static final String OPENSCAP_SUSE_PKG = "openscap-utils";
-    private static final String OPENSCAP_REDHAT_PKG = "openscap-scanner";
-    private static final String OPENSCAP_DEBIAN_PKG = "libopenscap8";
+    public static final String SCAP_ENABLED = "scapEnabled";
+    public static final String REQUIRED_PKG = "requiredPackage";
+
+    private static final List<String> OPENSCAP_SUSE_PKG = List.of("openscap-utils");
+    private static final List<String> OPENSCAP_REDHAT_PKG = List.of("openscap-scanner");
+    private static final List<String> OPENSCAP_DEBIAN_PKG = List.of("libopenscap25", "openscap-common");
+    private static final List<String> OPENSCAP_DEBIAN_LEGACY_PKG = List.of("libopenscap8");
 
     protected void setupScapEnablementInfo(RequestContext context) {
         Server server = context.lookupAndBindServer();
         User user = context.getCurrentUser();
-        boolean enabled = false;
-        String requiredPkg = "";
+
+        boolean enabled;
+        List<String> requiredPackages;
+
         if (server.asMinionServer().isPresent()) {
             MinionServer minion = server.asMinionServer().get();
             switch (minion.getOsFamily()) {
                 case "Suse":
-                    requiredPkg = OPENSCAP_SUSE_PKG;
+                    requiredPackages = OPENSCAP_SUSE_PKG;
                     break;
 
                 case "Debian":
-                    requiredPkg = OPENSCAP_DEBIAN_PKG;
+                    requiredPackages = getPackagesForVersion(minion.getRelease());
                     break;
 
                 default:
-                    requiredPkg = OPENSCAP_REDHAT_PKG;
+                    requiredPackages = OPENSCAP_REDHAT_PKG;
             }
-            InstalledPackage installedPkg =
-                    PackageFactory.lookupByNameAndServer(requiredPkg, server);
-            if (installedPkg != null) {
-                enabled = true;
-            }
+
+            // Verify all the packages are installed
+            enabled = requiredPackages.stream()
+                .map(pkg -> PackageFactory.lookupByNameAndServer(pkg, server))
+                .noneMatch(Objects::isNull);
         }
         else {
             enabled = ScapManager.isScapEnabled(server, user);
+            requiredPackages = List.of();
         }
+
         context.getRequest().setAttribute(SCAP_ENABLED, enabled);
-        context.getRequest().setAttribute(REQUIRED_PKG, requiredPkg);
+        context.getRequest().setAttribute(REQUIRED_PKG, String.join(" ", requiredPackages));
 
         SdcHelper.ssmCheck(context.getRequest(), server.getId(), user);
+    }
+
+    private static List<String> getPackagesForVersion(String debianRelease) {
+        if (NumberUtils.isParsable(debianRelease) && Integer.parseInt(debianRelease) <= 11) {
+            return OPENSCAP_DEBIAN_LEGACY_PKG;
+        }
+
+        return OPENSCAP_DEBIAN_PKG;
     }
 }
