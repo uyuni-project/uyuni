@@ -73,7 +73,6 @@ $input-height: 35px;
   &::placeholder {
     color: $input-placeholder;
     opacity: 1;
-    background: $gray-lighter;
   }
 
 }
@@ -121,11 +120,14 @@ select[size] {
 .input-group-text {
   --bs-border-width: 1px;
   font-size: 1em;
+  line-height: 1.5;
   background: $gray-lighter;
   padding: 6px 12px;
 
   > .fa {
     margin: 0 !important;
+    font-size: inherit;
+    line-height: inherit;
   }
 }
 

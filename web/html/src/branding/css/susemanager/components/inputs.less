@@ -78,8 +78,14 @@ select[size] {
   border-color: @input-border-color !important;
   background: @gray-lighter;
   font-size: 1em;
+  line-height: 1.5;
 
   > .fa:first-child:last-child {
     margin: 0;
+  }
+
+  > .fa {
+    font-size: inherit;
+    line-height: inherit;
   }
 }
