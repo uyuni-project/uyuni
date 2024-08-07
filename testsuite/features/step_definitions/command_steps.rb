@@ -579,8 +579,8 @@ When(/^the server starts mocking an IPMI host$/) do
     return_code = file_inject(server, source, dest)
     raise ScriptError, 'File injection failed' unless return_code.zero?
   end
-  server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh')
-  server.run('ipmi_sim -n < /dev/null > /dev/null &')
+  server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh', verbose: true, check_errors: true)
+  server.run('ipmi_sim -n < /dev/null > /dev/null &', verbose: true, check_errors: true)
 end
 
 When(/^the server stops mocking an IPMI host$/) do
