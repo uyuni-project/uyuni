@@ -25,7 +25,7 @@ spmigration:
 
 spmigration:
   cmd.run:
-    - name: cat {{ logname }}
+    - name: /usr/bin/cat {{ logname }}
     - require:
       - cmd: re_install_from_SLL
 
