@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC.
+# Copyright (c) 2018-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -8,8 +8,8 @@ Feature: State Configuration channels
   In order to configure systems through Salt
   I want to be able to use channels from the state tab
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create the 1st state channel
     When I follow the left menu "Configuration > Channels"
@@ -74,7 +74,7 @@ Feature: State Configuration channels
     And I wait until I see "Execute States" text
     When I click on "Execute States"
     Then I should see a "Applying the config channels has been scheduled" text
-    When I wait until event "Apply states [custom] scheduled by admin" is completed
+    When I wait until event "Apply states [custom] scheduled" is completed
     And I wait until file "/root/statechannel" exists on "sle_minion"
     And I wait until file "/root/statechannel2" exists on "sle_minion"
 

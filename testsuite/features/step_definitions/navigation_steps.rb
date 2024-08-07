@@ -378,6 +378,8 @@ end
 
 Given(/^I am not authorized$/) do
   begin
+    xpath_logout = '//a[@href=\'/rhn/Logout.do\']'
+    find(:xpath, xpath_logout).click if has_xpath?(xpath_logout)
     page.reset!
   rescue NoMethodError
     log 'The browser session could not be cleaned.'
@@ -404,6 +406,8 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step 'I am authorized as "admin" with password "admin"'
   when 'Images'
     step 'I am authorized as "kiwikiwi" with password "kiwikiwi"'
+  when 'Docker'
+    step 'I am authorized as "docker" with password "docker"'
   else
     log "Section #{section} not supported"
   end
@@ -541,7 +545,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 end
 
 Given(/^I am authorized$/) do
-  step 'I am authorized as "testing" with password "testing"'
+  step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
 end
 
 When(/^I sign out$/) do

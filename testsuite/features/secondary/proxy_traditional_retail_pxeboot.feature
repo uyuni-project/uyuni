@@ -24,8 +24,8 @@ Feature: PXE boot a Retail terminal behind a traditional proxy
   As the system administrator
   I PXE boot one of the terminals
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
@@ -102,7 +102,7 @@ Feature: PXE boot a Retail terminal behind a traditional proxy
     When I follow "States" in the content area
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     And I disable repositories after installing branch server
     Then socket "tftp" is enabled on "proxy"
     And socket "tftp" is active on "proxy"
@@ -223,7 +223,7 @@ Feature: PXE boot a Retail terminal behind a traditional proxy
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove the package from the new Retail terminal
     When I navigate to the Systems overview page of this "pxeboot_minion"
@@ -235,7 +235,7 @@ Feature: PXE boot a Retail terminal behind a traditional proxy
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I wait until event "Package Removal scheduled by admin" is completed
+    When I wait until event "Package Removal scheduled" is completed
 
   Scenario: Cleanup: let the terminal be reinstalled again
     When I navigate to the Systems overview page of this "pxeboot_minion"
@@ -299,4 +299,4 @@ Feature: PXE boot a Retail terminal behind a traditional proxy
     When I follow "States" in the content area
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed

@@ -724,3 +724,17 @@ def filter_channels(channels, filters = [])
   end
   channels
 end
+
+# Mutex for processes accessing the API of the server via admin user
+def api_lock?
+  File.open('server_api_call.lock', File::CREAT) do |file|
+    return !file.flock(File::LOCK_EX)
+  end
+end
+
+# Unlock the Mutex for processes accessing the API of the server via admin user
+def api_unlock
+  File.open('server_api_call.lock') do |file|
+    file.flock(File::LOCK_UN)
+  end
+end
