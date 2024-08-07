@@ -18,6 +18,7 @@ Feature: Push a package with unset vendor
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check radio button "openSUSE Leap Micro 5.5 (x86_64)"
+    And I wait until I do not see "Loading..." text
     And I check "Uyuni Client Tools for openSUSE Leap Micro 5.5 (x86_64)"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
