@@ -102,7 +102,7 @@ Feature: Use advanced features of Salt formulas
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Clear values" and confirm
+     And I click on "Clear values" and confirm alert box
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
      When I wait for "1" seconds
@@ -208,7 +208,7 @@ Feature: Use advanced features of Salt formulas
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Clear values" and confirm
+     And I click on "Clear values" and confirm alert box
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
      When I wait for "1" seconds

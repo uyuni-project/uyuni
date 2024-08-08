@@ -80,7 +80,7 @@ Feature: Use salt formulas
   Scenario: Reset the formula on the minion
      When I follow "Formulas" in the content area
      And I follow first "Locale" in the content area
-     And I click on "Clear values" and confirm
+     And I click on "Clear values" and confirm alert box
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
 
