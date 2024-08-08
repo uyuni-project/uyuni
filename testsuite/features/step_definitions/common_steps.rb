@@ -513,10 +513,11 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   get_target('server').run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
-When(/^I push package "([^"]*)" into "([^"]*)" channel through "([^"]*)"$/) do |package, channel, minion|
-  command = "mgrpush -u admin -p admin --server=#{get_target('server').full_hostname} --nosig -c #{channel} #{package}"
+When(/^I push package "([^"]*)" into "([^"]*)" channel through "([^"]*)"$/) do |package_filepath, channel, minion|
+  command = "mgrpush -u admin -p admin --server=#{get_target('server').full_hostname} --nosig -c #{channel} #{package_filepath}"
   get_target(minion).run(command, timeout: 500)
-  get_target('server').run_until_ok("find . -name \"#{package}\" | grep -q \"#{package}\"", timeout: 500)
+  package_filename = File.basename(package_filepath)
+  get_target('server').run_until_ok("find /var/spacewalk/packages -name \"#{package_filename}\" | grep -q \"#{package_filename}\"", timeout: 500)
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
