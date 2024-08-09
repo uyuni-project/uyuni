@@ -480,8 +480,11 @@ public class Config {
                 }
             }
         }
-        else {
+        else if (f.isFile()) {
             fileList.add(f);
+        }
+        else {
+            logger.warn("Ignoring path {} since it's not readable", f);
         }
     }
 
