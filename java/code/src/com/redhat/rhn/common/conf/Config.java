@@ -17,15 +17,16 @@ package com.redhat.rhn.common.conf;
 
 import com.redhat.rhn.common.util.StringUtil;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
 /**
  * The Config class acts as an abstraction layer between our configuration
@@ -83,18 +85,17 @@ public class Config {
     /** hash of configuration properties */
     private final Properties configValues = new Properties();
     /** set of configuration file names */
-    private final TreeSet<File> fileList = new TreeSet<>((f1, f2) -> {
+    private final TreeSet<Path> fileList = new TreeSet<>((f1, f2) -> {
         // Need to make sure we read the child namespace before the base
         // namespace.  To do that, we sort the list in reverse order based
         // on the length of the file name.  If two filenames have the same
         // length, then we need to do a lexigraphical comparison to make
         // sure that the filenames themselves are different.
-
-        int lenDif = f2.getAbsolutePath().length() - f1.getAbsolutePath().length();
-
+        int lenDif = f2.toAbsolutePath().toString().length() - f1.toAbsolutePath().toString().length();
         if (lenDif != 0) {
             return lenDif;
         }
+
         return f2.compareTo(f1);
     });
 
@@ -449,32 +450,30 @@ public class Config {
         configValues.setProperty(s, "0");
     }
 
-    private void getFiles(String path) {
-        File f = new File(path);
-
-        if (f.isDirectory()) {
-            // bugzilla: 154517; only add items that end in .conf
-            File[] files = f.listFiles();
-            if (files == null) {
-                LOGGER.error("Unable to list files in path : {}", path);
-                return;
+    private void getFiles(String location) {
+        Path path = Path.of(location);
+        if (Files.isDirectory(path) && Files.isReadable(path)) {
+            try (Stream<Path> filesInDirectory = Files.list(path)) {
+                PathMatcher configMatcher = path.getFileSystem().getPathMatcher("glob:*.conf");
+                filesInDirectory
+                    .filter(file -> Files.isRegularFile(file) && Files.isReadable(file))
+                    .filter(file -> configMatcher.matches(file.getFileName()))
+                    .forEach(fileList::add);
             }
-            for (File file : files) {
-                if (file.getName().endsWith((".conf"))) {
-                    fileList.add(file);
-                }
+            catch (IOException ex) {
+                LOGGER.error("Unable to list files in directory {}", location);
             }
         }
-        else if (f.isFile()) {
-            fileList.add(f);
+        else if (Files.isRegularFile(path) && Files.isReadable(path)) {
+            fileList.add(path);
         }
         else {
-            LOGGER.warn("Ignoring path {} since it's not readable", f);
+            LOGGER.warn("Ignoring path {} since it's not accessible", path);
         }
     }
 
-    private String makeNamespace(File f) {
-        String ns = f.getName();
+    private String makeNamespace(Path f) {
+        String ns = f.getFileName().toString();
 
         // This is really hokey, but it works. Basically, rhn.conf doesn't
         // match the standard rhn_foo.conf convention. So, to create the
@@ -496,18 +495,18 @@ public class Config {
      * Parse all of the added files.
      */
     public void parseFiles() {
-        for (File curr : fileList) {
+        for (Path curr : fileList) {
 
             Properties props = new Properties();
             try {
-                String configString = FileUtils.readFileToString(curr, StandardCharsets.UTF_8);
+                String configString = Files.readString(curr, StandardCharsets.UTF_8);
                 props.load(new StringReader(configString.replace("\\", "\\\\")));
             }
             catch (IOException e) {
                 LOGGER.error("Could not parse file {}", curr, e);
             }
             String ns = makeNamespace(curr);
-            LOGGER.debug("Adding namespace: {} for file: {}", () -> ns, () -> curr.getAbsolutePath());
+            LOGGER.debug("Adding namespace: {} for file: {}", () -> ns, () -> curr.toAbsolutePath());
 
             // loop through all of the config values in the properties file
             // making sure the prefix is there.
