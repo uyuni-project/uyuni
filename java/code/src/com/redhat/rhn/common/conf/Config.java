@@ -46,10 +46,7 @@ import java.util.TreeSet;
  */
 public class Config {
 
-
-    private static Logger logger = LogManager.getLogger(Config.class);
-
-
+    private static final Logger LOGGER = LogManager.getLogger(Config.class);
 
     //
     // Location of config files
@@ -183,10 +180,8 @@ public class Config {
     public String getString(String name, String defValue) {
         String ret = getString(name);
         if (ret == null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("getString() - returning default value");
-            }
-            ret = defValue;
+            LOGGER.debug("getString() - returning default value");
+            return defValue;
         }
         return ret;
     }
@@ -206,9 +201,7 @@ public class Config {
      * @return the value
      */
     public String getString(String value) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() called with: {}", StringUtil.sanitizeLogInput(value));
-        }
+        LOGGER.debug("getString() -     getString() called with: {}", () -> StringUtil.sanitizeLogInput(value));
         if (value == null) {
             return null;
         }
@@ -220,16 +213,14 @@ public class Config {
             property = value.substring(lastDot + 1);
             ns = value.substring(0, lastDot);
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> Getting property: {}",
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getString() -     getString() -> Getting property: {}",
                     StringUtil.sanitizeLogInput(property));
         }
         String result = configValues.getProperty(property);
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> result: {}", result);
-        }
+        LOGGER.debug("getString() -     getString() -> result: {}", result);
         if (result == null) {
-            if (!"".equals(ns)) {
+            if (!ns.isEmpty()) {
                 result = configValues.getProperty(ns + "." + property);
             }
             else {
@@ -241,11 +232,9 @@ public class Config {
                 }
             }
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> returning: {}", result);
-        }
+        LOGGER.debug("getString() -     getString() -> returning: {}", result);
 
-        if (result == null || result.equals("")) {
+        if (StringUtils.isEmpty(result)) {
             return null;
         }
 
@@ -422,9 +411,7 @@ public class Config {
      */
     public boolean getBoolean(String s, boolean defaultValue) {
         String value = getString(s);
-        if (logger.isDebugEnabled()) {
-            logger.debug("getBoolean() - {} is : {}", s, value);
-        }
+        LOGGER.debug("getBoolean() - {} is : {}", s, value);
         if (value == null) {
             return defaultValue;
         }
@@ -434,9 +421,7 @@ public class Config {
         // get the job done for an integer as a String.
         for (String trueValue : TRUE_VALUES) {
             if (trueValue.equalsIgnoreCase(value)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("getBoolean() - Returning true: {}", value);
-                }
+                LOGGER.debug("getBoolean() - Returning true: {}", value);
                 return true;
             }
         }
@@ -471,7 +456,7 @@ public class Config {
             // bugzilla: 154517; only add items that end in .conf
             File[] files = f.listFiles();
             if (files == null) {
-                logger.error("Unable to list files in path : {}", path);
+                LOGGER.error("Unable to list files in path : {}", path);
                 return;
             }
             for (File file : files) {
@@ -484,7 +469,7 @@ public class Config {
             fileList.add(f);
         }
         else {
-            logger.warn("Ignoring path {} since it's not readable", f);
+            LOGGER.warn("Ignoring path {} since it's not readable", f);
         }
     }
 
@@ -519,21 +504,19 @@ public class Config {
                 props.load(new StringReader(configString.replace("\\", "\\\\")));
             }
             catch (IOException e) {
-                logger.error("Could not parse file {}", curr, e);
+                LOGGER.error("Could not parse file {}", curr, e);
             }
             String ns = makeNamespace(curr);
-            logger.debug("Adding namespace: {} for file: {}", ns, curr.getAbsolutePath());
+            LOGGER.debug("Adding namespace: {} for file: {}", () -> ns, () -> curr.getAbsolutePath());
 
             // loop through all of the config values in the properties file
             // making sure the prefix is there.
             Properties newProps = new Properties();
             for (Object oIn : props.keySet()) {
                 String key = (String) oIn;
-                String newKey = key;
-                if (!key.startsWith(ns)) {
-                    newKey = ns + "." + key;
-                }
-                logger.debug("Adding: {}: {}", newKey, props.getProperty(key));
+                String newKey = key.startsWith(ns) ? key : ns + "." + key;
+
+                LOGGER.debug("Adding: {}: {}", () -> newKey, () -> props.getProperty(key));
                 newProps.put(newKey, props.getProperty(key));
             }
             configValues.putAll(newProps);
@@ -568,10 +551,7 @@ public class Config {
         for (Map.Entry<Object, Object> entry : configValues.entrySet()) {
             String key = (String) entry.getKey();
             if (key.startsWith(namespace)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Looking for key: [{}]", key);
-                }
-
+                LOGGER.debug("Looking for key: [{}]", key);
                 if (!namespace.equals(newNamespace)) {
                     key = key.replaceFirst(namespace, newNamespace);
                 }
