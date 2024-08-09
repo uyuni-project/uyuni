@@ -124,16 +124,19 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
     valid_uptime_messages << 'a day ago'
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
     valid_uptime_messages = diffs.map { |n| "#{rounded_uptime_hours + n} hours ago" }
+    valid_uptime_messages.map! { |time| time == '1 hours ago' ? 'an hour ago' : time }
   elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
     valid_uptime_messages << 'an hour ago'
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours <= 1
     valid_uptime_messages += diffs.map { |n| "#{rounded_uptime_minutes + n} minutes ago" }
+    valid_uptime_messages.map! { |time| time == '1 minutes ago' ? 'a minute ago' : time }
   elsif uptime[:seconds] >= 45 && rounded_uptime_minutes == 1
     valid_uptime_messages << 'a minute ago'
   elsif uptime[:seconds] < 45
     valid_uptime_messages << 'a few seconds ago'
   elsif rounded_uptime_days < 25 # shows "a month ago" from 25 days onwards
     valid_uptime_messages += diffs.map { |n| "#{rounded_uptime_days + n} days ago" }
+    valid_uptime_messages.map! { |time| time == '1 days ago' ? 'a day ago' : time }
   else
     valid_uptime_messages << 'a month ago'
   end
