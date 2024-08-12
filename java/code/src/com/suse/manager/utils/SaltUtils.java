@@ -912,20 +912,19 @@ public class SaltUtils {
             DistUpgradeDryRunSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                     jsonResult, DistUpgradeDryRunSlsResult.class);
             if (distUpgradeSlsResult.getSpmigration() != null) {
-                return distUpgradeSlsResult.getSpmigration()
-                        .getChanges().getRetOpt()
-                        .orElse("") + " " + distUpgradeSlsResult
-                        .getSpmigration().getComment();
+                return String.join(" ",
+                                   distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt().orElse(""),
+                                   distUpgradeSlsResult.getSpmigration().getComment());
             }
         }
         catch (JsonSyntaxException e) {
             try {
                 DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeOldSlsResult.class);
-                return distUpgradeSlsResult.getSpmigration()
-                        .getChanges().getRetOpt().map(ModuleRun::getComment)
-                        .orElse("") + " " + distUpgradeSlsResult
-                        .getSpmigration().getComment();
+                return String.join(" ",
+                                   distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt()
+                                           .map(ModuleRun::getComment).orElse(""),
+                                   distUpgradeSlsResult.getSpmigration().getComment());
             }
             catch (JsonSyntaxException ex) {
                 LOG.error("Unable to parse dry run result", ex);
