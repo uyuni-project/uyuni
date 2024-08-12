@@ -1,0 +1,2 @@
+- added log string to the journal when services are stopped 
+  because of insufficent disk space
