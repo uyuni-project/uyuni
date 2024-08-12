@@ -1,154 +1,83 @@
-# Copyright (c) 2016-2023 SUSE LLC.
+# Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require 'twopence'
 require 'timeout'
+require_relative 'network_utils'
 
-# Extend the objects node VMs with useful methods needed for testsuite.
-# All function added here will be available like get_target('server').run
-#  or get_target('sle_minion').run_until_ok etc.
-module LavandaBasic
-  # Initializes the hostnames, only one time.
+# The RemoteNode class represents a remote node.
+# It is used to interact with the remote node through SSH.
+class RemoteNode
+  attr_accessor :host, :hostname, :port, :user, :password, :target, :full_hostname, :private_ip, :public_ip, :private_interface, :public_interface, :os_family, :os_version, :has_mgrctl
+
+  # Initializes a new remote node.
   #
-  # @param hostname [String] The hostname to initialize.
-  def init_hostname(hostname)
-    @in_hostname = hostname.strip
+  # @param host [String] The hostname of the remote node.
+  # @param port [Integer] The port to use for the SSH connection.
+  # @param user [String] The user to use for the SSH connection.
+  # @param password [String] The password to use for the SSH connection
+  # @return [RemoteNode] The remote node.
+  def initialize(host, port: 22, user: 'root', password: nil)
+    @host = host
+    @port = port
+    @user = user
+    @password = password
+    puts "Initializing a remote node for '#{@host}'."
+    raise(NotImplementedError, "Host #{@host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? @host
+
+    unless ENV.key? ENV_VAR_BY_HOST[@host]
+      warn "Host #{@host} is not defined as environment variable."
+      return
+    end
+
+    @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
+    out, _err, _code = ssh('hostname', host: @target)
+    @hostname = out.strip
+    raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
+
+    $named_nodes[host] = @hostname
+    if @host == 'server'
+      _out, _err, code = ssh('which mgrctl', host: @target)
+      @has_mgrctl = code.zero?
+      out, _code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
+    else
+      out, _err, _code = ssh('hostname -f', host: @target)
+    end
+    @full_hostname = out.strip
+    raise StandardError, "No FQDN for '#{@hostname}'. Response code: #{code}" if @full_hostname.empty?
+
+    # Remove /etc/motd, or any output from run will contain the content of /etc/motd
+    run('rm -f /etc/motd && touch /etc/motd')
+    $stdout.puts "Host '#{@host}' is alive with determined hostname #{@hostname} and FQDN #{@full_hostname}" unless $build_validation
+    @os_version, @os_family = get_os_version
+
+    if (PRIVATE_ADDRESSES.key? host) && !$private_net.nil?
+      @private_ip = net_prefix + PRIVATE_ADDRESSES[host]
+      @private_interface = 'eth1'
+    end
+
+    ip = client_public_ip
+    @public_ip = ip unless ip.empty?
+
+    $node_by_host[@host] = self
+    $host_by_node[self] = @host
   end
 
-  # Initializes the fully qualified domain name (FQDN) instance variable.
+  # Runs a command on the remote node.
   #
-  # @param fqdn [String] The fully qualified domain name of the host.
-  def init_full_hostname(fqdn)
-    @in_full_hostname = fqdn.strip
+  # @param command [String] The command to run.
+  # @param host [String] The hostname of the remote node.
+  # @return [Array<String, String, Integer>] The exit code and the output.
+  def ssh(command, host: @full_hostname)
+    ssh_command(command, host, port: @port, user: @user, password: @password)
   end
 
-  # Initializes the private IP instance variable.
+  # Copies a file from the local machine to the remote node.
   #
-  # @param private_ip [String] The private IP address of the instance.
-  def init_private_ip(private_ip)
-    @in_private_ip = private_ip
-  end
-
-  # Initializes the public IP instance variable.
-  #
-  # @param public_ip [String] The public IP address of the server.
-  def init_public_ip(public_ip)
-    @in_public_ip = public_ip
-  end
-
-  # Initializes the private interface instance variable.
-  #
-  # @param private_interface [Boolean] A boolean value that indicates whether the interface is private or not.
-  def init_private_interface(private_interface)
-    @in_private_interface = private_interface
-  end
-
-  # Initializes the public interface instance variable.
-  #
-  # @param public_interface [String] The name of the public interface.
-  def init_public_interface(public_interface)
-    @in_public_interface = public_interface
-  end
-
-  # Initializes the OS family instance variable.
-  #
-  # @param os_family [String] The OS family to initialize.
-  def init_os_family(os_family)
-    @in_os_family = os_family
-  end
-
-  # Initializes the OS version instance variable.
-  #
-  # @param os_version [String] The version of the operating system.
-  def init_os_version(os_version)
-    @in_os_version = os_version
-  end
-
-  # Initializes the `@in_has_mgrctl` variable to true.
-  def init_has_mgrctl
-    @in_has_mgrctl = true
-  end
-
-  # Getter functions, executed on testsuite
-
-  # Returns the hostname.
-  #
-  # @return [String] The hostname.
-  # @raise [KeyError] If the hostname is empty.
-  def hostname
-    raise KeyError, 'empty hostname, something wrong' if @in_hostname.nil? || @in_hostname.empty?
-
-    @in_hostname
-  end
-
-  # Returns the fully qualified domain name (FQDN).
-  #
-  # @return [String] The fully qualified domain name (FQDN).
-  # @raise [KeyError] If the FQDN is empty.
-  def full_hostname
-    raise KeyError, 'empty hostname, something wrong' if @in_full_hostname.nil? || @in_full_hostname.empty?
-
-    @in_full_hostname
-  end
-
-  # Returns the private IP address.
-  #
-  # @return [String] The private IP address.
-  # @raise [KeyError] If the private IP address is empty.
-  def private_ip
-    raise KeyError, 'empty private_ip, something wrong' if @in_private_ip.nil? || @in_private_ip.empty?
-
-    @in_private_ip
-  end
-
-  # Returns the public IP address.
-  #
-  # @return [String] The public IP address.
-  # @raise [KeyError] If the public IP address is empty.
-  def public_ip
-    raise KeyError, 'empty public_ip, something wrong' if @in_public_ip.nil? || @in_public_ip.empty?
-
-    @in_public_ip
-  end
-
-  # Returns the private interface.
-  #
-  # @return [String] The private interface.
-  # @raise [KeyError] If the private interface is empty.
-  def private_interface
-    raise KeyError, 'empty private_interface, something wrong' if @in_private_interface.nil? || @in_private_interface.empty?
-
-    @in_private_interface
-  end
-
-  # Returns the public interface.
-  #
-  # @return [String] The public interface.
-  # @raise [KeyError] If the public interface is empty.
-  def public_interface
-    raise KeyError, 'empty public_interface, something wrong' if @in_public_interface.nil? || @in_public_interface.empty?
-
-    @in_public_interface
-  end
-
-  # Returns the OS family.
-  #
-  # @return [String] The OS family.
-  # @raise [KeyError] If the OS family is empty.
-  def os_family
-    raise KeyError, 'empty os_family, something wrong' if @in_os_family.nil? || @in_os_family.empty?
-
-    @in_os_family
-  end
-
-  # Returns the OS version.
-  #
-  # @return [String] The OS version.
-  # @raise [KeyError] If the OS version is empty.
-  def os_version
-    raise KeyError, 'empty os_version, something wrong' if @in_os_version.nil? || @in_os_version.empty?
-
-    @in_os_version
+  # @param local_path [String] The path to the file to copy.
+  # @param remote_path [String] The path in the destination.
+  # @param host [String] The hostname of the remote node.
+  def scp(local_path, remote_path, host: @full_hostname)
+    scp_command(local_path, remote_path, host, port: @port, user: @user, password: @password)
   end
 
   # Runs a command and returns the output, error, and exit code.
@@ -164,7 +93,7 @@ module LavandaBasic
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @in_has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
+    cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
@@ -180,11 +109,7 @@ module LavandaBasic
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, Integer>] The output, error, and exit code.
   def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    if separated_results
-      out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
-    else
-      out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
-    end
+    out, err, code = ssh_command(cmd, @target, user: user, timeout: timeout, buffer_size: buffer_size)
     out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
     raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
@@ -192,7 +117,7 @@ module LavandaBasic
     if separated_results
       [out, err, code]
     else
-      [out, code]
+      [out + err, code]
     end
   end
 
@@ -246,21 +171,19 @@ module LavandaBasic
   #
   # @param local_file [String] The path to the file to copy.
   # @param remote_file [String] The path in the destination.
-  # @param user [String] The owner of the file.
-  # @param dots [Boolean] Whether to display progress dots.
   # @return [Integer] The exit code.
-  def inject(local_file, remote_file, user = 'root', dots = true)
-    if @in_has_mgrctl
+  def inject(local_file, remote_file)
+    if @has_mgrctl
       tmp_folder, _code = run_local('mktemp -d')
       tmp_file = File.join(tmp_folder.strip, File.basename(local_file))
-      code, _remote = inject_file(local_file, tmp_file, user, dots)
+      code, _remote = scp(local_file, tmp_file)
       if code.zero?
         _out, code = run_local("mgrctl cp --user #{user} #{tmp_file} server:#{remote_file}")
         raise ScriptError, "Failed to copy #{tmp_file} to container" unless code.zero?
       end
       run_local("rm -r #{tmp_folder}")
     else
-      code, _remote = inject_file(local_file, remote_file, user, dots)
+      code, _remote = scp(local_file, remote_file)
     end
     code
   end
@@ -269,22 +192,20 @@ module LavandaBasic
   #
   # @param remote_file [String] The path in the destination.
   # @param local_file [String] The path to the file to copy.
-  # @param user [String] The owner of the file.
-  # @param dots [Boolean] Whether to display progress dots.
   # @return [Integer] The exit code.
-  def extract(remote_file, local_file, user = 'root', dots = true)
-    if @in_has_mgrctl
+  def extract(remote_file, local_file)
+    if @has_mgrctl
       tmp_folder, _code = run_local('mktemp -d')
       tmp_file = File.join(tmp_folder.strip, File.basename(remote_file))
       _out, code = run_local("mgrctl cp --user #{user} server:#{remote_file} #{tmp_file}")
       raise ScriptError, "Failed to extract #{remote_file} from container" unless code.zero?
 
-      code, _remote = extract_file(tmp_file, local_file, user, dots)
+      code, _remote = scp(tmp_file, local_file)
       raise ScriptError, "Failed to extract #{tmp_file} from host" unless code.zero?
 
       run_local("rm -r #{tmp_folder}")
     else
-      code, _local = extract_file(remote_file, local_file, user, dots)
+      code, _local = scp(remote_file, local_file)
     end
     code
   end
@@ -295,11 +216,11 @@ module LavandaBasic
   # @param file [String] The path of the file to check.
   # @return [Boolean] Returns true if the file exists, false otherwise.
   def file_exists(file)
-    if @in_has_mgrctl
+    if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -f #{file}'", check_errors: false)
       exists = code.zero?
     else
-      _out, local, _remote, code = test_and_store_results_together("test -f #{file}", 'root', 500)
+      _out, local, _remote, code = ssh("test -f #{file}")
       exists = code.zero? && local.zero?
     end
     exists
@@ -311,11 +232,11 @@ module LavandaBasic
   # @param file [String] The path of the folder to check.
   # @return [Boolean] Returns true if the folder exists, false otherwise.
   def folder_exists(file)
-    if @in_has_mgrctl
+    if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -d #{file}'", check_errors: false)
       exists = code.zero?
     else
-      _out, local, _remote, code = test_and_store_results_together("test -d #{file}", 'root', 500)
+      _out, local, _remote, code = ssh("test -d #{file}")
       exists = code.zero? && local.zero?
     end
     exists
@@ -327,10 +248,10 @@ module LavandaBasic
   # @param file [String] The path of the file to be deleted.
   # @return [Integer] The exit code of the file deletion operation.
   def file_delete(file)
-    if @in_has_mgrctl
+    if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'rm #{file}'", check_errors: false)
     else
-      _out, _local, _remote, code = test_and_store_results_together("rm #{file}", 'root', 500)
+      _out, _local, _remote, code = ssh("rm #{file}")
     end
     code
   end
@@ -341,10 +262,10 @@ module LavandaBasic
   # @param folder [String] The path of the folder to be deleted.
   # @return [Integer] The exit code of the operation.
   def folder_delete(folder)
-    if @in_has_mgrctl
+    if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'rm -rf #{folder}'", check_errors: false)
     else
-      _out, _local, _remote, code = test_and_store_results_together("rm -rf #{folder}", 'root', 500)
+      _out, _local, _remote, code = ssh("rm -rf #{folder}")
     end
     code
   end
@@ -353,7 +274,10 @@ module LavandaBasic
   #
   # @return [Boolean] true if the node is offline, false otherwise.
   def node_offline?
-    run_local('echo test', timeout: 0, check_errors: false).first.empty?
+    result = run_local('echo test', timeout: 0, check_errors: false).first
+    return true if result.nil?
+
+    result.empty?
   end
 
   # Wait until the node goes offline
@@ -372,5 +296,44 @@ module LavandaBasic
       sleep 1
     end
     $stdout.puts "Node #{hostname} is online."
+  end
+
+  private
+
+  # Obtain the Public IP for a node
+  def client_public_ip
+    %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
+      output, code = run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
+      next unless code.zero?
+
+      @public_interface = dev
+      return '' if output.empty?
+
+      return output.split[1].split('/')[0]
+    end
+    raise ArgumentError, "Cannot resolve public ip of #{host}"
+  end
+
+  # Extract the OS version and OS family
+  # We get these data decoding the values in '/etc/os-release'
+  def get_os_version
+    os_family_raw, code = run('grep "^ID=" /etc/os-release', check_errors: false)
+    return nil, nil unless code.zero?
+
+    os_family = os_family_raw.strip.split('=')[1]
+    return nil, nil if os_family.nil?
+
+    os_family.delete! '"'
+    os_version_raw, code = run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
+    return nil, nil unless code.zero?
+
+    os_version = os_version_raw.strip.split('=')[1]
+    return nil, nil if os_version.nil?
+
+    os_version.delete! '"'
+    # on SLES, we need to replace the dot with '-SP'
+    os_version.gsub!('.', '-SP') if os_family =~ /^sles/
+    $stdout.puts "Node: #{@hostname}, OS Version: #{os_version}, Family: #{os_family}"
+    [os_version, os_family]
   end
 end

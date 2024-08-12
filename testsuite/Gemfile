@@ -3,9 +3,11 @@
 
 source 'https://rubygems.org'
 
+gem 'bcrypt_pbkdf', '~> 1.0'
 gem 'capybara', '3.40.0'
 gem 'cucumber', '9.2.0'
 gem 'cucumber-html-formatter', '21.7.0'
+gem 'ed25519', '~> 1.2'
 gem 'faraday', '~>2.10.1'
 gem 'ffi', '~> 1.17'
 gem 'jwt', '~> 2.8'
@@ -13,6 +15,8 @@ gem 'mime-types', '~> 3.5'
 gem 'mini_mime', '1.1.5'
 gem 'minitest', '~> 5.25.1'
 gem 'netrc', '~> 0.11.0'
+gem 'net-scp', '~> 4.0.0'
+gem 'net-ssh', '~> 6.1.0'
 gem 'nokogiri', '~> 1.16'
 gem 'parallel', '~> 1.26'
 gem 'parallel_tests', '~> 4.7'
@@ -28,10 +32,6 @@ gem 'rubocop', '1.65.1'
 gem 'selenium-webdriver', '4.23.0'
 gem 'simplecov', '~> 0.22'
 gem 'syntax', '~> 1.2'
-# Pre-requisite:
-# Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
-# or build and install from https://github.com/openSUSE/twopence
-gem 'twopence', '~> 0.4'
 gem 'websocket', '~> 1.2'
 gem 'websocket-driver', '~> 0.7'
 gem 'xmlrpc', '~> 0.3'

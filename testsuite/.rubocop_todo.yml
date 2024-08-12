@@ -185,7 +185,6 @@ Style/OptionalBooleanParameter:
     - 'features/support/api_test.rb'
     - 'features/support/code_coverage.rb'
     - 'features/support/http_client.rb'
-    - 'features/support/lavanda.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).

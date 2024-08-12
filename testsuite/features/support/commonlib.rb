@@ -451,29 +451,6 @@ def check_restart(host, node, time_out)
   end
 end
 
-# Extract the OS version and OS family
-# We get these data decoding the values in '/etc/os-release'
-def get_os_version(node)
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
-  return nil, nil unless code.zero?
-
-  os_family = os_family_raw.strip.split('=')[1]
-  return nil, nil if os_family.nil?
-
-  os_family.delete! '"'
-  os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
-  return nil, nil unless code.zero?
-
-  os_version = os_version_raw.strip.split('=')[1]
-  return nil, nil if os_version.nil?
-
-  os_version.delete! '"'
-  # on SLES, we need to replace the dot with '-SP'
-  os_version.gsub!('.', '-SP') if os_family.match?(/^sles/)
-  $stdout.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
-  [os_version, os_family]
-end
-
 #
 # Retrieves the GPG keys for a given node and target.
 #
@@ -532,7 +509,7 @@ end
 def get_system_name(host)
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
-  # therefore they are not represented by a twopence node
+  # therefore they are not represented by a RemoteNode
   when 'pxeboot_minion'
     output, _code = get_target('server').run('salt-key')
     system_name =

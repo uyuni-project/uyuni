@@ -1554,7 +1554,7 @@ end
 
 # rebooting via SSH
 When(/^I reboot the server through SSH$/) do
-  temp_server = twopence_init('server')
+  temp_server = RemoteNode.new('server')
   temp_server.run('reboot > /dev/null 2> /dev/null &')
   default_timeout = 300
 
@@ -1754,7 +1754,7 @@ end
 
 When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   # special handling for e.g. nested VMs that will only be crated later in the test suite
-  # this step is normally done in twopence_init.rb
+  # this step is normally done in RemoteNode.rb
   node = get_target(host)
 
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)

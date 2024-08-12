@@ -30,10 +30,9 @@ to run lists of Cucumber features stored in YAML format
 
 ### Communication with test VMs
 
-* [`lavanda`](https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/support/lavanda.rb) offers Ruby
-convenience extensions for twopence
-* [`twopence`](https://github.com/openSUSE/twopence) allows to run commands, import and extract files as one would do
-with `ssh` and `scp`, but with a test-oriented approach (timeouts, etc.)
+* [`RemoteNode`] is a custom Ruby class that allows to communicate with remote test machines via SSH and SCP
+* [`net-ssh`] is a Ruby library that allows to communicate with remote machines via SSH
+* [`net-scp`] is a Ruby library that allows to copy files to and from remote machines via SCP
 
 ### Simulation of user interaction
 
