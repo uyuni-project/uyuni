@@ -107,6 +107,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
     When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
     And I kill running spacewalk-repo-sync for "leap15.5-x86_64"
+    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
+    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
 
 @containerized_server
 @proxy
