@@ -1287,9 +1287,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-x86_64-non-oss-updates
         opensuse_leap15_5-x86_64-updates
         opensuse_leap15_5-x86_64-sle-updates
+        uyuni-proxy-devel-leap-x86_64
+      ],
+    # this on its own is needed due to the reposync killing in Uyuni
+    'leap15.5-client-tools-x86_64' => # CHECKED
+      %w[
         opensuse_leap15_5-uyuni-client-x86_64
         opensuse_leap15_5-uyuni-client-devel-x86_64
-        uyuni-proxy-devel-leap-x86_64
       ],
     'leap15.6-x86_64' => # CHECKED
       %w[
