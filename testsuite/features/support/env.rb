@@ -318,14 +318,6 @@ Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_ssh_minion']
 end
 
-Before('@debian10_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_minion']
-end
-
-Before('@debian10_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_ssh_minion']
-end
-
 Before('@debian11_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_minion']
 end
@@ -348,14 +340,6 @@ end
 
 Before('@sle12sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_ssh_minion']
-end
-
-Before('@sle15sp1_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_minion']
-end
-
-Before('@sle15sp1_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_ssh_minion']
 end
 
 Before('@sle15sp2_minion') do
