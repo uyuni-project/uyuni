@@ -23,6 +23,7 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -80,8 +81,7 @@ public class FileConfigurationSource extends BaseConfigurationSource {
         commonFilePrefix = filePrefixIn;
         fallbackNamespaces = fallbackNamespacesIn;
 
-        fileSourcesIn.stream()
-            .flatMap(path -> getConfigurationFiles(path))
+        getConfigurationStream(fileSourcesIn)
             .sorted(CONFIG_PATH_COMPARATOR)
             .map(file -> loadProperties(file))
             .forEach(props -> configValues.putAll(props));
@@ -143,19 +143,34 @@ public class FileConfigurationSource extends BaseConfigurationSource {
             .collect(Collectors.toUnmodifiableSet());
     }
 
-    private static Stream<Path> getConfigurationFiles(Path path) {
-        if (Files.isDirectory(path)) {
-            try {
-                return Files.list(path)
-                    .filter(file -> file.getFileName().toString().endsWith(".conf"));
+    private static Stream<Path> getConfigurationStream(List<Path> locationsList) {
+        if (locationsList == null || locationsList.isEmpty()) {
+            return Stream.empty();
+        }
+
+        Stream.Builder<Path> streamBuilder = Stream.builder();
+        for (Path path : locationsList) {
+            if (Files.isDirectory(path) && Files.isReadable(path)) {
+                try (Stream<Path> filesInDirectory = Files.list(path)) {
+                    PathMatcher configMatcher = path.getFileSystem().getPathMatcher("glob:*.conf");
+                    filesInDirectory
+                        .filter(file -> Files.isRegularFile(file) && Files.isReadable(file))
+                        .filter(file -> configMatcher.matches(file.getFileName()))
+                        .forEach(file -> streamBuilder.add(file));
+                }
+                catch (IOException ex) {
+                    LOGGER.error("Unable to list file in directory {}", path);
+                }
             }
-            catch (IOException ex) {
-                LOGGER.error("Unable to list file in directory {}", path);
-                return Stream.empty();
+            else if (Files.isRegularFile(path) && Files.isReadable(path)) {
+                streamBuilder.add(path);
+            }
+            else {
+                LOGGER.warn("Ignoring path {} since it's not accessible", path);
             }
         }
 
-        return Stream.of(path);
+        return streamBuilder.build();
     }
 
     private Properties loadProperties(Path file) {
