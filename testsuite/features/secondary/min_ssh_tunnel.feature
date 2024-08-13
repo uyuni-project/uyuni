@@ -74,8 +74,9 @@ Feature: Register a Salt system to be managed via SSH tunnel
     When I enter command "echo 'My remote command output'"
     And I enter the hostname of "ssh_minion" as "target"
     And I click on preview
-    Then I wait until I see "Target systems (1)" text
-    When I click on run
+    Then I should see a "Target systems (1)" text
+    When I wait until I do not see "pending" text
+    And I click on run
     And I wait until I see "show response" text
     And I expand the results for "ssh_minion"
     Then I should see "My remote command output" in the command output for "ssh_minion"
