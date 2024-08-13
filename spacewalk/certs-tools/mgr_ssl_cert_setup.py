@@ -269,6 +269,8 @@ def getCertData(cert):
                 data["subjectKeyIdentifier"] = line.strip().upper()
             elif nextval == "authorityKeyIdentifier" and line.startswith("    keyid:"):
                 data["authorityKeyIdentifier"] = line[10:].strip().upper()
+            elif nextval == "authorityKeyIdentifier" and re.match("^\s+[0-9A-Fa-f]{2}:.+$", line):
+                data["authorityKeyIdentifier"] = line.strip().upper()
         elif "subject_hash" not in data:
             # subject_hash comes first without key to identify it
             data["subject_hash"] = line.strip()
