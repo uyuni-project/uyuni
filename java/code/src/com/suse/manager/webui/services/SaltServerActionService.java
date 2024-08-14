@@ -114,6 +114,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -212,7 +213,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1440,40 +1440,20 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> subscribeChanelsAction(
             List<MinionSummary> minionSummaries, SubscribeChannelsActionDetails actionDetails) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        SystemManager sysMgr = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
 
         List<MinionServer> minions = MinionServerFactory.lookupByMinionIds(
                 minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toSet()));
 
         minions.forEach(minion ->
-            // change channels in DB and fire a ChannelsChangedEventMessage
-            // the ChannelsChangedEventMessageAction regenerate pillar and refresh Tokens
-            // but does not execute a "state.apply channels"
-            SystemManager.updateServerChannels(
+            // change channels in DB and execult the ChannelsChangedEventMessageAction
+            // which regenerate pillar and refresh Tokens but does not execute a "state.apply channels"
+            sysMgr.updateServerChannels(
                     actionDetails.getParentAction().getSchedulerUser(),
                     minion,
                     Optional.ofNullable(actionDetails.getBaseChannel()),
                     actionDetails.getChannels())
         );
-        if (commitTransaction) {
-            // we must be sure that new channel assignments and action Details are in the database
-            // before we return and send the salt calls to update the minions.
-            HibernateFactory.commitTransaction();
-
-            try {
-                for (int k = 0; k < 10; k = k + 1) {
-                    // check, if all channels got valid tokens before we send the update to the minions.
-                    // can only work, if we commit the transaction. In unit tests this just cause 10 seconds wait
-                    if (minions.stream().allMatch(MinionServer::hasValidTokensForAllChannels)) {
-                        break;
-                    }
-                    LOG.error("Waiting for all channel tokens being refreshed");
-                    TimeUnit.SECONDS.sleep(1);
-                }
-            }
-            catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
         ret.put(State.apply(List.of(ApplyStatesEventMessage.CHANNELS), Optional.empty()),
                 minionSummaries);
 
