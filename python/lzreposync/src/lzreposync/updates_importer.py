@@ -3,6 +3,7 @@
 import re
 import sys
 from datetime import datetime
+
 from dateutil.parser import parse as parse_date
 from dateutil.tz import tzutc
 
@@ -29,10 +30,11 @@ YUM = "{http://linux.duke.edu/metadata/common}"
 
 
 # pylint: disable-next=missing-class-docstring
-class LzRepoSync(object):
+class UpdatesImporter:
     def __init__(
         self,
         channel_label,
+        available_packages,
         repo_type=None,
         fail=False,
         no_errata=False,
@@ -40,6 +42,9 @@ class LzRepoSync(object):
         deep_verify=False,
         force_null_org_content=False,
     ):
+        """
+        :available_packages: a dict of available packages in the format: {name-epoch-version-release-arch:1}
+        """
         self.channel_label = channel_label
         self.fail = fail  # Information used when handling exceptions
         self.no_errata = no_errata
@@ -48,13 +53,9 @@ class LzRepoSync(object):
         self.regen = False  # TODO what's this ?
         self.all_errata = set()
         self.error_messages = []
-        # TODO: !!IMPORTANT: add self.available_packages[ident] = 1 when importing packages (see reposync.py line 1375-1382)
-        self.available_packages = {}
+        self.available_packages = available_packages
 
         rhnSQL.initDB()
-
-        # setup logging
-        # TODO
 
         self.channel = self.load_channel()
         if not self.channel:
@@ -100,7 +101,7 @@ class LzRepoSync(object):
                 refresh_newest_package = rhnSQL.Procedure(
                     "rhn_channel.refresh_newest_package"
                 )
-                refresh_newest_package(self.channel[id], "backend.importPatches")
+                refresh_newest_package(self.channel["id"], "backend.importPatches")
 
         # TODO: there's something called disassociate_erratum() in Reposync ==> must check
 
@@ -151,7 +152,7 @@ class LzRepoSync(object):
             for n in notice["version"].split("."):
                 new_version = (new_version + int(n)) * 100
             notice["version"] = new_version / 100
-            if LzRepoSync.is_old_suse_style(notice):
+            if UpdatesImporter.is_old_suse_style(notice):
                 # old suse style; we need to append the version to id
                 # to get a seperate patch for every issue
                 # pylint: disable-next=consider-using-f-string
@@ -730,7 +731,7 @@ class LzRepoSync(object):
         if notice["description"] is not None:
             # sometimes CVE numbers appear in the description, but not in
             # the reference list
-            cves = LzRepoSync.find_cves(notice["description"])
+            cves = UpdatesImporter.find_cves(notice["description"])
         if notice["references"] is not None:
             cves.extend(
                 [cve["id"][:20] for cve in notice["references"] if cve["type"] == "cve"]
@@ -750,7 +751,10 @@ class LzRepoSync(object):
          Beginning 2014, the NUMBER has no maximal length anymore.
          We limit the length at 20 chars, because of the DB column size
         """
-        cves = list()
+        cves = []
         # pylint: disable-next=anomalous-backslash-in-string
         cves.extend([cve[:20] for cve in set(re.findall("CVE-\d{4}-\d+", text))])
         return cves
+
+    def __del__(self):
+        rhnSQL.closeDB()

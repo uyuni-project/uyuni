@@ -18,12 +18,16 @@ class PackagesParser:
         """
         # TODO: check file format
         self.packages_file = packages_file
+        if not repository.endswith("/"):
+            repository += "/"
         self.repo = repository
+        self.parsed_packages = 0
 
     def parse_packages(self):
         for package in self.split_packages(self.packages_file):
             pkg_hdr = self.get_deb_package_hdr(package)
             pkg_deb_header = LzDebHeader(pkg_hdr)
+            self.parsed_packages += 1
             yield pkg_deb_header
 
     @staticmethod

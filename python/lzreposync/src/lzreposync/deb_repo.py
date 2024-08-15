@@ -3,16 +3,15 @@
 import logging
 import os
 import time
+import urllib.parse as urlparse  # pylint: disable=F0401,E0611
 from shutil import copyfile
+from urllib.parse import unquote
 
 import requests
 
-from lzreposync.deb_metadata_parser import DebMetadataParser
+from lzreposync.deb_metadata_parser import DEBMetadataParser
 from lzreposync.packages_parser import PackagesParser
 from lzreposync.repo import Repo
-import urllib.parse as urlparse  # pylint: disable=F0401,E0611
-from urllib.parse import unquote
-
 from lzreposync.translation_parser import TranslationParser
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
@@ -128,19 +127,18 @@ class DebRepo(Repo):
             return filename
         for _ in range(0, RETRIES):
             try:
-                data = requests.get(url)
+                data = requests.get(
+                    url
+                )  # TODO: Consider adding a timeout (pylint W3101)
                 if not data.ok:
                     return ""
                 filename = os.path.join(
                     self.cache_dir, os.path.basename(urlparse.urlparse(url).path)
                 )
-                fd = open(filename, "wb")
-                try:
+                with open(filename, "wb") as fd:
                     for chunk in data.iter_content(chunk_size=1024):
                         fd.write(chunk)
-                finally:
-                    if fd is not None:
-                        fd.close()
+
                 return filename
             except requests.exceptions.RequestException as exc:
                 print("ERROR: requests.exceptions.RequestException occurred:", exc)
@@ -160,11 +158,12 @@ class DebRepo(Repo):
         )
         packages_parser = PackagesParser(packages_file, repository=base_url)
         translation_parser = TranslationParser(translation_file, self.cache_dir)
-        metadata_parser = DebMetadataParser(
+        metadata_parser = DEBMetadataParser(
             packages_parser=packages_parser, translation_parser=translation_parser
         )
         yield from metadata_parser.parse_packages_metadata()
         translation_parser.clear_cache()  # TODO can we make this execute automatically
+        packages_file.close()  # TODO optimize
 
     def download_packages_file(self):
         """
@@ -196,8 +195,8 @@ class DebRepo(Repo):
                 decompressed = fileutils.decompress_open(filename)
             if decompressed:
                 return decompressed
-            else:
-                print("ERROR: Download of Packages md file failed.")
+            print(f"ERROR: Download of Packages{extension} md file failed.")
+        return None
 
     def download_translation_file(self):
         """
@@ -232,7 +231,9 @@ class DebRepo(Repo):
                 decompressed = fileutils.decompress_open(filename)
             if decompressed:
                 return decompressed
-            else:
-                print("ERROR: Download of Translation descriptions file failed.")
+            print(
+                f"ERROR: Download of Translation{extension} descriptions file failed."
+            )
+        return None
 
     # TODO: delete the downloaded pacakges.gz(xz)/translation.. files after finishing

@@ -2,35 +2,20 @@
 
 import argparse
 import logging
-from itertools import islice
 
-from lzreposync import db_utils
+from lzreposync import db_utils, updates_util
+from lzreposync.db_utils import (
+    get_compatible_arches,
+    get_channel_info_by_label,
+    get_all_arches,
+)
 from lzreposync.deb_repo import DebRepo
 from lzreposync.import_utils import (
     import_package_batch,
+    batched,
+    import_repository_packages_in_batch,
 )
 from lzreposync.rpm_repo import RPMRepo
-from spacewalk.server import rhnChannel, rhnSQL
-
-
-# TODO: put this function in a better location
-def batched(iterable, n):
-    if n < 1:
-        raise ValueError("n must be at least one")
-    iterator = iter(iterable)
-    while batch := tuple(islice(iterator, n)):
-        yield batch
-
-
-# TODO: group channel and channel label together
-def import_repository_packages_in_batch(
-    repository, batch_size, channel=None, channel_label=None
-):
-    failed = 0
-    packages = repository.get_packages_metadata()  # packages is a generator
-    for i, batch in enumerate(batched(packages, batch_size)):
-        failed += import_package_batch(batch, i, True, channel, channel_label)
-    return failed
 
 
 def main():
@@ -74,7 +59,7 @@ def main():
         "--cache",
         help="Path to the cache directory",
         dest="cache",
-        default=".lzreposync-cache",
+        default=".",
         type=str,
     )
 
@@ -112,7 +97,13 @@ def main():
         default=None,
     )
 
-    # TODO encapsulate everything in a class LzRepoSync
+    parser.add_argument(
+        "--import-updates",
+        help="Import related patches/updates",
+        action="store_true",
+        dest="import_updates",
+        default=False,
+    )
 
     args = parser.parse_args()
     arch = args.arch
@@ -126,47 +117,76 @@ def main():
         if not args.repo_type:
             print("ERROR: --type (yum/deb) must be specified when using --url")
             return  # TODO: maybe add some custom exception
-        elif args.repo_type == "yum":
+        if args.repo_type == "yum":
             repo = RPMRepo(args.name, args.cache, args.url, arch)
         elif args.repo_type == "deb":
             repo = DebRepo(args.name, args.cache, args.url, None)
         else:
             print(f"ERROR: not supported repo_type: {args.repo_type}")
             return
-        failed = import_repository_packages_in_batch(repo, args.batch_size)
+        compatible_arches = get_all_arches()
+        failed = import_repository_packages_in_batch(
+            repo, args.batch_size, compatible_arches=compatible_arches
+        )
         logging.debug("Completed import with %d failed packages", failed)
 
     else:
         # No url specified
         if args.channel:
             channel_label = args.channel
-            # TODO: remove the following (channel =..)..this should be done inside the LzReposync class
-            rhnSQL.initDB()
-            channel = rhnChannel.channel_info(channel_label)
-            rhnSQL.closeDB()
-
+            channel = get_channel_info_by_label(
+                channel_label
+            )  # TODO handle None exception
+            if not channel:
+                logging.error("Couldn't fetch channel with label %s", channel_label)
+                return
+            compatible_arches = get_compatible_arches(int(channel["id"]))
+            if args.arch and args.arch != ".*" and args.arch not in compatible_arches:
+                logging.error(
+                    "Not compatible arch: %s for channel: %s",
+                    args.channel_arch,
+                    args.channel,
+                )
+                return
             target_repos = db_utils.get_repositories_by_channel_label(channel_label)
             for repo in target_repos:
                 if repo.repo_type == "yum":
-                    repo_obj = RPMRepo(
+                    rpm_repo = RPMRepo(
                         repo.repo_label, args.cache, repo.source_url, repo.channel_arch
                     )
+                    logging.debug("Importing package for repo %s", repo.repo_label)
+                    failed = import_repository_packages_in_batch(
+                        rpm_repo,
+                        args.batch_size,
+                        channel,
+                        compatible_arches=compatible_arches,
+                        import_updates=args.import_updates,
+                    )
+                    logging.debug(
+                        "Completed import for repo %s with %d failed packages",
+                        repo.repo_label,
+                        failed,
+                    )
                 elif repo.repo_type == "deb":
-                    repo_obj = DebRepo(
+                    dep_repo = DebRepo(
                         repo.repo_label, args.cache, repo.source_url, repo.channel_label
+                    )
+                    logging.debug("Importing package for repo %s", repo.repo_label)
+                    failed = import_repository_packages_in_batch(
+                        dep_repo,
+                        args.batch_size,
+                        channel,
+                        compatible_arches=compatible_arches,
+                    )
+                    logging.debug(
+                        "Completed import for repo %s with %d failed packages",
+                        repo.repo_label,
+                        failed,
                     )
                 else:
                     # TODO: handle repositories other than yum and deb
                     logging.debug("Not supported repo type: %s", repo.repo_type)
                     continue
-                logging.debug("Importing package for repo %s", repo.repo_label)
-                failed = import_repository_packages_in_batch(
-                    repo_obj, args.batch_size, channel, channel_label
-                )
-                logging.debug(
-                    "Completed import for repo %s with %d failed packages",
-                    repo.repo_label,
-                    failed,
-                )
+
         else:
             logging.error("Either --url or --channel must be specified")
