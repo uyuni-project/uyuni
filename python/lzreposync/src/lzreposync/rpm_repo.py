@@ -15,7 +15,7 @@ import gnupg
 from lzreposync.filelists_parser import FilelistsParser
 from lzreposync.primary_parser import PrimaryParser
 from lzreposync.repo import Repo
-from lzreposync.rpm_metadata_parser import MetadataParser
+from lzreposync.rpm_metadata_parser import RPMMetadataParser
 
 
 class ChecksumVerificationException(ValueError):
@@ -48,9 +48,7 @@ class RPMRepo(Repo):
             repository=repository,
             arch_filter=arch_filter,
         )
-        self.signature_verified = (
-            False  # Tell whether the signature is checked against the repomd.xml file
-        )
+        self.signature_verified = True  # Tell whether the signature is checked against the repomd.xml file TODO: complete logic
 
     def verify_signature(self):
         """
@@ -121,6 +119,10 @@ class RPMRepo(Repo):
         """
         if not self.metadata_files:
             self.metadata_files = self.get_metadata_files()
+        md_file = self.metadata_files.get(file_name)
+        if not md_file:
+            print(f"File {md_file} does not exist in this repository")
+            return None
         md_file_url = urljoin(
             self.repository,
             self.metadata_files[file_name]["location"],
@@ -202,7 +204,7 @@ class RPMRepo(Repo):
                     filelists_parser = FilelistsParser(
                         filelists_tmp_file, self.arch_filter
                     )
-                    metadata_parser = MetadataParser(
+                    metadata_parser = RPMMetadataParser(
                         primary_parser=primary_parser, filelists_parser=filelists_parser
                     )
                     yield from metadata_parser.parse_packages_metadata()

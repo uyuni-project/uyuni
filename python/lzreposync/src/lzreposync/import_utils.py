@@ -1,7 +1,14 @@
 #  pylint: disable=missing-module-docstring
-
+import logging
+import os
 import sys
+from itertools import islice
 
+from lzreposync import updates_util
+from lzreposync.rpm_repo import RPMRepo
+from lzreposync.deb_metadata_parser import DEBMetadataParser
+from lzreposync.rpm_metadata_parser import RPMMetadataParser
+from lzreposync.updates_importer import UpdatesImporter
 from spacewalk.satellite_tools.syncLib import log2, log
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import importLib, packageImport
@@ -11,7 +18,102 @@ from spacewalk.server.importlib.headerSource import rpmBinaryPackage
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 
 
-# TODO: remove this function from here and include it as a method in LzReposync class
+def batched(iterable, n):
+    if n < 1:
+        raise ValueError("n must be at least one")
+    iterator = iter(iterable)
+    while batch := tuple(islice(iterator, n)):
+        yield batch
+
+
+def import_packages_updates(channel, repository, available_packages):
+    """
+    :available_packages: a dict of available packages in the format: { name-epoch-version-release-arch : 1 }
+    """
+    if not isinstance(repository, RPMRepo):
+        logging.error("Can only import patches of rpm repositories !")
+        return
+    updateinfo_url = repository.find_metadata_file_url("updateinfo")
+    if not updateinfo_url:
+        logging.debug("Couldn't find updateinfo url in repository %s", repository.name)
+    else:
+        # TODO possible exception handling
+        updateinfo_file = updates_util.download_file(updateinfo_url)
+        _, notices = updates_util.get_updates(updateinfo_file)
+        patches_importer = UpdatesImporter(
+            channel_label=channel["label"], available_packages=available_packages
+        )
+        patches_importer.import_updates(notices)
+        # Deleting the patches_importer will call the rhnSQL.closeDB() and free up a db connection
+        del patches_importer
+        os.remove(updateinfo_file)
+
+
+# TODO: group channel and channel label together
+def import_repository_packages_in_batch(
+    repository, batch_size, channel=None, compatible_arches=None, import_updates=False
+):
+    """
+    Return the number of failed packages
+    """
+    total_failed = 0
+    packages = repository.get_packages_metadata()  # packages is a generator
+
+    for i, batch in enumerate(batched(packages, batch_size)):
+        available_packages = {}
+        failed, _, avail_pkgs = import_package_batch(
+            to_process=batch,
+            compatible_archs=compatible_arches,
+            batch_index=i,
+            to_link=True,
+            channel=channel,
+        )
+        total_failed += failed
+        available_packages.update(avail_pkgs)
+        # Importing updates/patches
+        # TODO: for the updates import, download the updateinfo file once and pass it each time to the update function
+        #  currently we're downloading the file each time in the loop (for each batch)
+        if import_updates and isinstance(repository, RPMRepo):
+            import_packages_updates(
+                channel=channel,
+                repository=repository,
+                available_packages=available_packages,
+            )
+
+        del available_packages
+
+    return total_failed
+
+
+def import_packages_in_batch_from_parser(
+    parser, batch_size, channel=None, compatible_arches=None
+):
+    """
+    Import packages form parser
+    parser: RPMMetadataParser | DEBMetadataParser
+    Return a tuple of (failed, available_packages)
+    ( available_packages: a dict of available packages in the format: {name-epoch-version-release-arch:1} )
+    """
+    if not (
+        isinstance(parser, RPMMetadataParser) or isinstance(parser, DEBMetadataParser)
+    ):
+        raise ValueError(
+            "Invalid parser. Should be of type RPMMetadataParser or DEBMetadataParser"
+        )
+    total_failed = 0
+    packages = parser.parse_packages_metadata()  # packages is a generator
+    for i, batch in enumerate(batched(packages, batch_size)):
+        failed, _, _ = import_package_batch(
+            to_process=batch,
+            compatible_archs=compatible_arches,
+            batch_index=i,
+            to_link=True,
+            channel=channel,
+        )
+        total_failed += failed
+    return total_failed
+
+
 def disassociate_package(checksum_type, checksum, channel):
     log(
         3,
@@ -38,7 +140,6 @@ def disassociate_package(checksum_type, checksum, channel):
     )
 
 
-# TODO: should be changed to 'self.channel_label' and 'self.channel' when changing to LzReposync class
 def associate_package(pack, channel_label, channel):
     pack["channels"] = [{"label": channel_label, "id": channel["id"]}]
 
@@ -49,19 +150,22 @@ def chunks(seq, n):
     return (seq[i : i + n] for i in range(0, len(seq), n))
 
 
-# TODO: 'to_disassociate', 'to_link': are they important ?
-# TODO: 'to_link'
-# TODO: update the 'channel' and 'channel_label' parameters
+# TODO: 'to_disassociate'
 def import_package_batch(
-    to_process, batch_index=-1, to_link=True, channel=None, channel_label=None
+    to_process, compatible_archs=None, batch_index=-1, to_link=True, channel=None
 ):
     """
     Importing rpm packages
+    return a tuple of: (failed, skipped, available_packages)
+    ( available_packages a dict of available packages in the format: {name-epoch-version-release-arch:1} )
     """
-    # Prepare SQL statements
+    if compatible_archs is None:
+        compatible_archs = []
+    available_packages = {}
+    skipped = 0
     rhnSQL.closeDB(
         committing=False, closing=False
-    )  # TODO: not sure what this exactly do
+    )  # TODO: is this correct (reposync does this already)
     rhnSQL.initDB()
 
     backend = SQLBackend()
@@ -81,7 +185,9 @@ def import_package_batch(
 
     # Formatting the packages for importLib
     for package in to_process:
-
+        if package["arch"] not in compatible_archs:
+            logging.debug("Arch %s is not supported. Skipping...", package["arch"])
+            continue
         # pylint: disable=W0703,W0706
         try:
             import_count += 1
@@ -92,12 +198,32 @@ def import_package_batch(
             else:
                 # it is rpmSourcePacakge
                 mpm_src_batch.append(package)
+            if compatible_archs and package.arch not in compatible_archs:
+                # skip packages with incompatible architecture
+                skipped += 1
+                continue
+            epoch = ""
+            if package["epoch"] and package["epoch"] != "0":
+                # pylint: disable-next=consider-using-f-string
+                epoch = "%s:" % package["epoch"]
+            # pylint: disable-next=consider-using-f-string
+            ident = "%s-%s%s-%s.%s" % (
+                package["name"],
+                epoch,
+                package["version"],
+                package["release"],
+                package["arch"],
+            )
+            # TODO: this is how reposync actually does, the 'available_packages' dict will be used by the patches import
+            #  later on. Is this the most memory efficient approach: storing thousands of pacakges' evr in memory for
+            #  later processing ?
+            available_packages[ident] = 1
         except (KeyboardInterrupt, rhnSQL.SQLError):
             raise
         except Exception as e:
             e_message = f"Exception: {e}"
             log2(0, 1, e_message, stream=sys.stderr)
-            # raise e # Ignore the package and continue
+            raise e  # Ignore the package and continue
 
     # Importing packages
     # pylint: disable=W0703,W0706
@@ -143,7 +269,7 @@ def import_package_batch(
     except Exception as e:
         e_message = f"Exception: {e}"
         log2(0, 1, e_message, stream=sys.stderr)
-        # raise e # Ignore the package and continue
+        raise e  # Ignore the package and continue
     finally:
         # Cleanup if cache..if applied
         pass
@@ -160,7 +286,7 @@ def import_package_batch(
         import_batches = list(
             chunks(
                 [
-                    associate_package(pack, channel_label, channel)
+                    associate_package(pack, channel["label"], channel)
                     for pack in to_process
                 ],
                 1000,
@@ -185,5 +311,5 @@ def import_package_batch(
     # pylint: disable-next=consider-using-f-string
     log(0, " Pacakge batch #{} completed...".format(batch_index))
 
-    return initial_size - batch_size  # return the number of failed packages
-    # TODO: update the return value
+    failed = initial_size - batch_size
+    return failed, skipped, available_packages

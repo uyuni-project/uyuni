@@ -10,7 +10,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import mpmSource
 
 
-def set_fake_files_data(package, files_count):
+def set_fake_file_data(package, files_count):
     """
     Fake data related to the files. Eg: 'filedevices', 'fileinodes', 'filemodes', ect
     TODO: This is just a dump implementation to make things work, it can be enhanced and generalized later on
@@ -18,8 +18,8 @@ def set_fake_files_data(package, files_count):
     # TODO search how we can set the correct values
 
     package["header"]["filedevices"] = [1 for _ in range(files_count)]
-    package["header"]["fileinodes"] = [i for i in range(files_count)]
-    package["header"]["filemodes"] = [16877 for _ in range(files_count)]
+    package["header"]["fileinodes"] = [1 for i in range(files_count)]
+    # package["header"]["filemodes"] = [16877 for _ in range(files_count)]
     package["header"]["fileusername"] = [b"root" for _ in range(files_count)]
     package["header"]["filegroupname"] = [b"root" for _ in range(files_count)]
     package["header"]["filerdevs"] = [0 for _ in range(files_count)]
@@ -38,18 +38,28 @@ def set_fake_files_data(package, files_count):
 
 
 # pylint: disable-next=missing-class-docstring
-class MetadataParser:
+class BadParserException(Exception):
+    def __init__(self, parser):
+        super().__init__(f"Bad Parser {parser}")
+
+
+# pylint: disable-next=missing-class-docstring
+class RPMMetadataParser:
     def __init__(self, primary_parser, filelists_parser):
         self.primary_parser = primary_parser
         self.filelists_parser = filelists_parser
 
     def parse_packages_metadata(self):
+        """
+        Parse both primary.xml and filelists.xml files and return yield packages metadata
+        Yield an instance inheriting from spacewalk.server.importLib.IncompletePackage
+        """
         if not isinstance(self.primary_parser, PrimaryParser):
             logging.error("Bad primary_parser %s", self.primary_parser)
-            return []  # TODO should we return None instead ?
+            raise BadParserException(self.primary_parser)
         if not isinstance(self.filelists_parser, FilelistsParser):
             logging.error("Bad filelists_parser %s", self.primary_parser)
-            return []
+            raise BadParserException(self.primary_parser)
 
         # pylint: disable-next=consider-using-f-string
         log(0, " Parsing %s" % self.filelists_parser.filelists_file)
@@ -62,8 +72,11 @@ class MetadataParser:
             package["header"]["filenames"] = self.filelists_parser.get_package_filelist(
                 package["checksum"]
             )["files"]
+            package["header"]["filemodes"] = self.filelists_parser.get_package_filelist(
+                package["checksum"]
+            )["filetypes"]
             files_count = len(package["header"]["filenames"])
-            package = set_fake_files_data(package, files_count)
+            package = set_fake_file_data(package, files_count)
 
             logging.debug(
                 # pylint: disable-next=logging-format-interpolation,consider-using-f-string
@@ -92,5 +105,5 @@ class MetadataParser:
             except Exception as e:
                 e_message = f"Exception: {e}"
                 log2(0, 1, e_message, stream=sys.stderr)
-                # raise e  # Ignore the package and continue
-                continue
+                raise e  # Ignore the package and continue
+                # continue

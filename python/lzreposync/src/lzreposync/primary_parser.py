@@ -50,13 +50,14 @@ def map_attribute(attribute: str):
     name in the importLib Package class.
     If no mapping found, return None.
     """
+    # TODO: there's still a time/file attribute not yet handled
     attributes = {
         "version/ver": "version",
         "version/rel": "release",
         "version/epoch": "epoch",
         "time/build": "buildtime",
         "size/package": "package_size",
-        "size/installed": "installed_size",
+        "size/installed": "size",  # becomes "installed_size" in the db
         "size/archive": "archivesize",
         "header-range/start": "header_start",
         "header-range/end": "header_end",
@@ -78,6 +79,7 @@ def map_dependency_attribute(dependency_name, attribute):
     dependency_cls = complex_attrs.get(dependency_name)
     if dependency_cls:
         return dependency_cls.tagMap.get(attribute)
+    return None
 
 
 def is_complex(attribute: str):
@@ -112,16 +114,15 @@ def map_flag(flag: str) -> int:
     """
     if flag == "LT":
         return 2
-    elif flag == "GT":
+    if flag == "GT":
         return 4
-    elif flag == "EQ":
+    if flag == "EQ":
         return 8
-    elif flag == "LE":
+    if flag == "LE":
         return 10
-    elif flag == "GE":
+    if flag == "GE":
         return 12
-    else:
-        return 0
+    return 0
 
 
 #  pylint: disable-next=missing-class-docstring
@@ -129,6 +130,7 @@ class PrimaryParser:
     def __init__(self, primary_file, repository="", arch_filter=".*"):
         """
         primary_file: In gzip format
+        # TODO: use  uyuni.common.fileutils.decompress_open for different format handling (gz, xz, ect), However! we should close the file manually
         """
         if self.is_valid_primary_file(primary_file):
             self.primary_file = primary_file
@@ -140,46 +142,6 @@ class PrimaryParser:
         self.current_hdr = None
         self.repository = repository
         self.arch_filter = arch_filter
-
-        # XML elements that has text content or have child elements (Not self-closing elements)
-        self.searched_chars = [
-            "arch",
-            "name",
-            "summary",
-            "description",
-            "packager",
-            "url",
-            "license",
-            "vendor",
-            "group",
-            "buildhost",
-            "sourcerpm",
-            "provides",
-            "requires",
-            "obsoletes",
-            "enhances",
-            "oldenhances",
-            "conflicts",
-            "suggests",
-            "oldsuggests",
-            "supplements",
-            "oldsupplements",
-            "recommends",
-            "oldrecommends",
-            "breaks",
-            "predepends",
-            "changelog",
-        ]
-
-        # Self-closing elements: relevant values are their attributes'
-        self.searched_attrs = {
-            "location": ["href"],
-            "time": ["build"],
-            "version": ["epoch", "ver", "rel"],
-            "checksum": ["type"],
-            "size": ["package", "installed", "archive"],
-            "header-range": ["start", "end"],
-        }
 
     def is_valid_primary_file(self, primary_file):
         """
@@ -204,6 +166,7 @@ class PrimaryParser:
         """
         Parser the primary.xml file (gzip format) using xml.dom.pulldom This is an incremental parsing,
         it means that not the whole xml file is loaded in memory at once, but package by package.
+        IMPORTANT!: We are ignoring 'src' packages
         """
 
         with gzip.open(self.primary_file) as gz_primary:
@@ -371,10 +334,8 @@ class PrimaryParser:
                     )  # map attr name
                     if attr:
                         if attr_name != "flags":
-                            # TODO fix: flags value error: ValueError: invalid literal for int() with base 10: 'EQ',
-                            #  we're ignoring the 'flags' for the moment
                             self.current_hdr[attr_mapped_name].append(
-                                attr.value.encode("ASCII")
+                                attr.value.encode("utf-8")
                             )
                         else:
                             self.current_hdr[attr_mapped_name].append(

@@ -8,13 +8,16 @@ import shutil
 import xml.etree.ElementTree as ET
 from xml.dom import pulldom
 
+S_IFDIR = 0o40000  # In octal
+S_IFREG = 0o100000
 
-def map_attribute(attr):
+
+def _map_attribute(attr):
     attr_map = {"ver": "version", "rel": "release"}
     return attr_map.get(attr, attr)
 
 
-def cache_xml_node(node, cache_dir):
+def _cache_xml_node(node, cache_dir):
     """
     Saving the content of the given xml node into a xml file in the given cache directory
     node: of type xml.dom.minidom.Element
@@ -31,6 +34,24 @@ def cache_xml_node(node, cache_dir):
     with open(cache_file, "w", encoding="utf-8") as pkg_files:
         logging.debug("Caching file %s", cache_file)
         pkg_files.write(xml_content)
+
+
+def _map_filetype(filetype):
+    """
+    Map the file type with the corresponding value.
+    For more info, see: https://en.wikibooks.org/wiki/C_Programming/POSIX_Reference/sys/stat.h#Member_constants
+    Eg: type="dir" ==> S_IFDIR=0o40000 (octal) ==> 16384 (decimal)
+    """
+    filetype_map = {
+        "dir": S_IFDIR,
+    }
+    # TODO: there's a type "ghost", to wat to map it
+    return filetype_map.get(filetype, S_IFREG)
+
+
+# pylint: disable-next=missing-class-docstring
+class PackageFilelistNotFound(Exception):
+    """Exception thrown when the requested package's filelist information was not found"""
 
 
 # pylint: disable-next=missing-class-docstring
@@ -66,7 +87,7 @@ class FilelistsParser:
                     pkg_arch = node.getAttributeNode("arch").value
                     if re.fullmatch(self.arch_filter, pkg_arch):  # Filter by arch
                         # Save the content of the package's filelist info in cache directory
-                        cache_xml_node(node, self.cache_dir)
+                        _cache_xml_node(node, self.cache_dir)
                         self.num_parsed_packages += 1
 
             self.parsed = True
@@ -88,7 +109,7 @@ class FilelistsParser:
                 self.parsed = True
             else:
                 logging.error("Couldn't find filelist file for package %s", pkgid)
-                return
+                raise PackageFilelistNotFound()
 
         with open(filelist_path, "r", encoding="utf-8") as filelist_xml:
             tree = ET.parse(filelist_xml)
@@ -96,16 +117,21 @@ class FilelistsParser:
 
             filelist = {}
             filelist["pkgid"] = pkgid
+            # filelist["files"]: list[dict] = [("filename" "filetype")] TODO complete filemodes
             filelist["files"] = []
+            filelist["filetypes"] = []
             # Setting version information (normally it is the same as the one in primary.xml file for the same package)
             for attr in ("ver", "epoch", "rel"):
                 try:
-                    filelist[map_attribute(attr)] = root[0].attrib[attr]
+                    filelist[_map_attribute(attr)] = root[0].attrib[attr]
                 except KeyError as key:
                     logging.debug("missing %s information for package %s", key, pkgid)
 
             for file in root[1:]:
+                # Setting file mode
+                filetype = _map_filetype(file.attrib.get("type"))
                 filelist["files"].append(file.text)
+                filelist["filetypes"].append(filetype)
 
         return filelist
 
@@ -114,5 +140,5 @@ class FilelistsParser:
         Remove the cached filelist files from the cache directory, including the cache directory
         """
         if os.path.exists(self.cache_dir):
-            logging.debug("Removing %s directory and its content")
+            logging.debug("Removing %s directory and its content", self.cache_dir)
             shutil.rmtree(self.cache_dir)
