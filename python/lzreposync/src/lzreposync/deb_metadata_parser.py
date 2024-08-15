@@ -10,8 +10,13 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import mpmSource
 
 
+class BadParserException(Exception):
+    def __init__(self, parser):
+        super().__init__(f"Bad Parser {parser}")
+
+
 #  pylint: disable-next=missing-class-docstring
-class DebMetadataParser:
+class DEBMetadataParser:
     def __init__(self, packages_parser, translation_parser):
         self.packages_parser = packages_parser
         self.translation_parser = translation_parser
@@ -23,10 +28,10 @@ class DebMetadataParser:
         """
         if not isinstance(self.packages_parser, PackagesParser):
             logging.error("Bad packages_parser %s", self.packages_parser)
-            return []  # TODO should we return None instead ?
+            raise BadParserException(self.packages_parser)
         if not isinstance(self.translation_parser, TranslationParser):
             logging.error("Bad translation_parser %s", self.translation_parser)
-            return []
+            raise BadParserException(self.translation_parser)
 
         # pylint: disable-next=consider-using-f-string
         log(0, " Parsing %s" % self.translation_parser.translation_file)

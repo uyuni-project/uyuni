@@ -9,7 +9,8 @@ dependencies = [
      "memory_profiler",
      "pytest",
      "requests",
-     "python-gnupg"
+     "python-gnupg",
+     "more_itertools"
 ]
 
 [project.scripts]

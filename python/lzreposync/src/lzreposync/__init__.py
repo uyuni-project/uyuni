@@ -2,35 +2,20 @@
 
 import argparse
 import logging
-from itertools import islice
 
-from lzreposync import db_utils
+from lzreposync import db_utils, updates_util
+from lzreposync.db_utils import (
+    get_compatible_arches,
+    get_channel_info_by_label,
+    get_all_arches,
+)
 from lzreposync.deb_repo import DebRepo
 from lzreposync.import_utils import (
     import_package_batch,
+    batched,
+    import_repository_packages_in_batch,
 )
 from lzreposync.rpm_repo import RPMRepo
-from spacewalk.server import rhnChannel, rhnSQL
-
-
-# TODO: put this function in a better location
-def batched(iterable, n):
-    if n < 1:
-        raise ValueError("n must be at least one")
-    iterator = iter(iterable)
-    while batch := tuple(islice(iterator, n)):
-        yield batch
-
-
-# TODO: group channel and channel label together
-def import_repository_packages_in_batch(
-    repository, batch_size, channel=None, channel_label=None
-):
-    failed = 0
-    packages = repository.get_packages_metadata()  # packages is a generator
-    for i, batch in enumerate(batched(packages, batch_size)):
-        failed += import_package_batch(batch, i, True, channel, channel_label)
-    return failed
 
 
 def main():
@@ -157,11 +142,11 @@ def main():
     if args.url:
         if not args.repo_type:
             print("ERROR: --type (yum/deb) must be specified when using --url")
-            return
+            return  # TODO: maybe add some custom exception
         if args.repo_type == "yum":
             repo = RPMRepo(args.name, args.cache, args.url, arch)
         elif args.repo_type == "deb":
-            repo = DebRepo(args.url, args.cache, "/tmp", gpg_verify=False)
+            repo = DebRepo(args.name, args.cache, args.url, None)
         else:
             print(f"ERROR: not supported repo_type: {args.repo_type}")
             return
@@ -175,11 +160,13 @@ def main():
         # No url specified
         if args.channel:
             channel_label = args.channel
-            channel = get_channel_info_by_label(channel_label)
+            channel = get_channel_info_by_label(
+                channel_label
+            )  # TODO handle None exception
             if not channel:
                 logging.error("Couldn't fetch channel with label %s", channel_label)
                 return
-            compatible_arches = get_compatible_arches(channel_label)
+            compatible_arches = get_compatible_arches(int(channel["id"]))
             if args.arch and args.arch != ".*" and args.arch not in compatible_arches:
                 logging.error(
                     "Not compatible arch: %s for channel: %s",
@@ -187,11 +174,7 @@ def main():
                     args.channel,
                 )
                 return
-            try:
-                target_repos = db_utils.get_repositories_by_channel_label(channel_label)
-            except NoSourceFoundForChannel as e:
-                print("Error:", e.msg)
-                return
+            target_repos = db_utils.get_repositories_by_channel_label(channel_label)
             for repo in target_repos:
                 if repo.repo_type == "yum":
                     rpm_repo = RPMRepo(
@@ -203,7 +186,7 @@ def main():
                         args.batch_size,
                         channel,
                         compatible_arches=compatible_arches,
-                        no_errata=args.no_errata,
+                        import_updates=args.import_updates,
                     )
                     logging.debug(
                         "Completed import for repo %s with %d failed packages",
@@ -212,12 +195,8 @@ def main():
                     )
                 elif repo.repo_type == "deb":
                     dep_repo = DebRepo(
-                        repo.source_url,
-                        args.cache,
-                        pkg_dir="/tmp",
-                        channel_label=repo.channel_label,
-                        gpg_verify=False,
-                    )  # TODO add gpg_verify argument to the cli
+                        repo.repo_label, args.cache, repo.source_url, repo.channel_label
+                    )
                     logging.debug("Importing package for repo %s", repo.repo_label)
                     failed = import_repository_packages_in_batch(
                         dep_repo,

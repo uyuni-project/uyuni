@@ -10,7 +10,7 @@ class TranslationParser:
     def __init__(self, translation_file, cache_dir="./.cache"):
         """
         Note: currently, we're handling uncompressed file-like objects (eg: "_io.TextIOWrapper")
-        # TODO: handle gz/xz compressed files
+        # TODO: use  uyuni.common.fileutils.decompress_open for different format handling (gz, xz, ect), However! we should close the file manually
         """
         self.translation_file = translation_file
         self.cache_dir = cache_dir
@@ -39,7 +39,7 @@ class TranslationParser:
                 curr_description = line.split(": ")[1]
                 reading_description = True
             elif reading_description:
-                curr_description += line
+                curr_description += line.strip(" ")
         return True
 
     def cache_pacakge_description(self, package_checksum, package_description):
@@ -72,12 +72,12 @@ class TranslationParser:
                 self.parsed = self.parse_translation_file()
             else:
                 logging.error("Couldn't find description file for %s", description_md5)
-                return
+                return None
 
         # Checking again
         if not os.path.exists(pacakge_description_path):
             logging.error("Couldn't find description file for %s", description_md5)
-            return
+            return None
 
         with open(pacakge_description_path, "r", encoding="utf-8") as pkg_desc_file:
             return pkg_desc_file.read()
