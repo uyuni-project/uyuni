@@ -354,6 +354,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
         sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
         Server server = MinionServerFactoryTest.createTestMinionServer(admin);
@@ -470,6 +471,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
         sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
         Server server = MinionServerFactoryTest.createTestMinionServer(admin);
@@ -595,6 +597,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
         sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
@@ -619,6 +622,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
         server = reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
@@ -632,6 +638,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         sa.execute(first.get(), false, false, Optional.empty());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
 
         server = TestUtils.reload(server);
         assertEquals(1, result);
@@ -671,6 +680,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
         SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
         sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
         List<Long> finishedActions = new ArrayList<>();
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
@@ -695,6 +705,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
         server = reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
@@ -709,6 +722,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
 
         server = TestUtils.reload(server);
         assertEquals(1, result);

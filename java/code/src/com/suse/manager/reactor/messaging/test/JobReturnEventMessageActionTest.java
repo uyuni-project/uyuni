@@ -79,8 +79,6 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -2056,20 +2054,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleSubscribeChannels(
                     with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
-        saltServerActionService.setCommitTransaction(false);
 
         SaltService saltService = new SaltService() {
             @Override
             public void refreshPillar(MinionList minionList) {
             }
         };
-        ChannelsChangedEventMessageAction ccema = new ChannelsChangedEventMessageAction(saltService);
-
-        /* remove comment when testing with real message queue
-        saltServerActionService.setCommitTransaction(true);
-        MessageQueue.registerAction(ccema, ChannelsChangedEventMessage.class);
-        MessageQueue.startMessaging();
-        */
+        saltServerActionService.setSaltApi(saltService);
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
@@ -2098,13 +2089,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         action.addServerAction(sa);
 
         saltServerActionService.callsForAction(action);
-
-
-        // callsForAction would fire ChannelChangedEventMessage asynchronous to generate tokens.
-        // We emulate this here only
-        // comment this block when testing with real message queue
-        assertFalse(minion.hasValidTokensForAllChannels(), "Unexpected minion has tokens for all channels");
-        ccema.execute(new ChannelsChangedEventMessage(minion.getId(), user.getId()));
         assertTrue(minion.hasValidTokensForAllChannels(), "Unexpected minion miss tokens for some channels");
 
         // Setup an event message from file contents
@@ -2115,11 +2099,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
-
-        /* remove comment when testing with real message queue
-        MessageQueue.stopMessaging();
-        MessageQueue.deRegisterAction(ccema, ChannelsChangedEventMessage.class);
-        */
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
         assertEquals(0L, (long)sa.getResultCode());
@@ -2169,24 +2148,18 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
 
-        saltServerActionService.setCommitTransaction(false);
         Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
-
-        // artifically expire tokens
-        action.getDetails().getAccessTokens().forEach(t -> t.setMinion(null));
         HibernateFactory.getSession().flush();
 
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("subscribe.channels.success.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        // artifically expire tokens
+        minion.getAccessTokens().forEach(t -> t.setMinion(null));
 
-        // Process the event message
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
 
+        MinionServer reloaded = HibernateFactory.reload(minion);
         // check that tokens are really gone
-        assertEquals(0, minion.getAccessTokens().size());
+        assertEquals(0, reloaded.getAccessTokens().size());
     }
 
     private void assertTokenChannel(MinionServer minion, Channel channel) {
