@@ -198,6 +198,10 @@ class Database(sql_base.Database):
 
         sql_base.Database.__init__(self)
 
+    def close(self):
+        if self.dbh is not None:
+            self.dbh.close()
+
     def connect(self, reconnect=1):
         try:
             dsndata = {
