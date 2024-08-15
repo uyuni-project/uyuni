@@ -73,8 +73,6 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
@@ -690,15 +688,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSubscribeChannels() throws Exception {
-        saltServerActionService.setCommitTransaction(false);
-
-        SaltService saltService = new SaltService() {
-            @Override
-            public void refreshPillar(MinionList minionList) {
-            }
-        };
-        ChannelsChangedEventMessageAction ccema = new ChannelsChangedEventMessageAction(saltService);
-
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch1.setParentChannel(base);
@@ -723,7 +712,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         ActionFactory.addServerToAction(minion1, action);
 
         Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
-        ccema.execute(new ChannelsChangedEventMessage(minion1.getId(), user.getId()));
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
