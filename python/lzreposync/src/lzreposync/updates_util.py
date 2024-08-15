@@ -1,6 +1,18 @@
 #  pylint: disable=missing-module-docstring
 import gzip
+import logging
+import os
+import time
 import xml.etree.ElementTree as etree
+from shutil import copyfile
+from urllib.parse import unquote, urlparse
+
+import requests
+
+RETRIES = 4
+RETRY_DELAY = 1
+FORMAT_PRIORITY = [".xz", ".gz", ""]
+log = logging.getLogger(__name__)
 
 
 #  pylint: disable-next=missing-class-docstring
@@ -11,7 +23,7 @@ class UpdateNoticeException(Exception):
 
 
 #  pylint: disable-next=missing-class-docstring
-class UpdateNotice(object):
+class UpdateNotice:
     """
     Simplified UpdateNotice class implementation
     https://github.com/rpm-software-management/yum/blob/master/yum/update_md.py
@@ -204,3 +216,29 @@ def get_updates(infile, md_type="updateinfo"):
             return ("updateinfo", notices.values())
     else:
         return ("", [])
+
+
+def download_file(url, cache_dir="."):
+    logging.debug("updates_util: Downloading %s", url)
+    if url.startswith("file://"):
+        srcpath = unquote(url[len("file://") :])
+        if not os.path.exists(srcpath):
+            return ""
+        filename = cache_dir + "/" + os.path.basename(url)
+        copyfile(srcpath, filename)
+        return filename
+    for _ in range(0, RETRIES):
+        try:
+            data = requests.get(url)  # TODO: consider using a timeout argument pylint:W3101
+            if not data.ok:
+                return ""
+            filename = os.path.join(cache_dir, os.path.basename(urlparse(url).path))
+            with open(filename, "wb") as fd:
+                for chunk in data.iter_content(chunk_size=1024):
+                    fd.write(chunk)
+            return filename
+        except requests.exceptions.RequestException as exc:
+            print("ERROR: requests.exceptions.RequestException occurred:", exc)
+            time.sleep(RETRY_DELAY)
+
+    return ""
