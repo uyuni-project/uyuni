@@ -1,7 +1,60 @@
 #  pylint: disable=missing-module-docstring
 
 from lzreposync.repo_dto import RepoDTO
-from spacewalk.server import rhnSQL
+from spacewalk.common.rhnConfig import cfg_component
+from spacewalk.server import rhnSQL, rhnChannel
+
+
+# Stolen from python/spacewalk/satellite_tools/reposync.py
+def get_compatible_arches(channel_id):
+    """Return a list of compatible package arch labels for this channel"""
+    rhnSQL.initDB()
+    h = rhnSQL.prepare(
+        """select pa.label
+                          from rhnChannelPackageArchCompat cpac,
+                          rhnChannel c,
+                          rhnpackagearch pa
+                          where c.id = :channel_id
+                          and c.channel_arch_id = cpac.channel_arch_id
+                          and cpac.package_arch_id = pa.id"""
+    )
+    h.execute(channel_id=channel_id)
+    # pylint: disable-next=invalid-name
+    with cfg_component("server.susemanager") as CFG:
+        arches = [
+            k["label"]
+            for k in h.fetchall_dict()
+            if CFG.SYNC_SOURCE_PACKAGES or k["label"] not in ["src", "nosrc"]
+        ]
+    rhnSQL.closeDB()
+    return arches
+
+
+def get_all_arches():
+    """
+    return the list of all compatible packages' arches regardless of the channel arch
+    """
+    rhnSQL.initDB()
+    h = rhnSQL.prepare(
+        """
+    SELECT pa.label FROM rhnchannelpackagearchcompat cpac, rhnpackagearch pa 
+    WHERE pa.id = cpac.package_arch_id"""
+    )
+    h.execute()
+    all_arches = list(map(lambda d: d.get("label"), h.fetchall_dict()))
+    rhnSQL.closeDB()
+    return all_arches
+
+
+def get_channel_info_by_label(channel_label):
+    # TODO: possible exception handling
+    rhnSQL.initDB()
+    channel = rhnChannel.channel_info(channel_label)
+    print(
+        f"===> HAROUNE fetched channel = {channel}, for channel label = {channel_label}"
+    )
+    rhnSQL.closeDB()
+    return channel or None
 
 
 def get_repositories_by_channel_label(channel_label):
@@ -41,3 +94,8 @@ def get_repositories_by_channel_label(channel_label):
     rhnSQL.closeDB()
 
     return list(repositories)
+
+
+if __name__ == "__main__":
+    _arches = get_all_arches()
+    print(f"All arches: {_arches}")
