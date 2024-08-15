@@ -50,7 +50,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        5.0.8
+Version:        5.0.9
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz

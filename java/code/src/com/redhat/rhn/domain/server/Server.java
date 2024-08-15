@@ -21,6 +21,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -2269,6 +2270,28 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * @return true if this server is denied to be managed by SUSE Manager PAYG
+     */
+    public boolean isDeniedOnPayg() {
+        if (isPayg()) {
+            return false;
+        }
+        return !getInstalledProducts().stream()
+                .map(InstalledProduct::getSUSEProduct)
+                .filter(Objects::nonNull)
+                .allMatch(p -> {
+                    if (p.getFree()) {
+                        return true;
+                    }
+                    ChannelFamily cf = p.getChannelFamily();
+                    if (cf != null) {
+                        return cf.getLabel().startsWith("SMP") || cf.getLabel().equals("SLE-M-T");
+                    }
+                    return false;
+                });
+    }
+
+    /**
      *
      * @param paygIn boolean
      */
@@ -2443,7 +2466,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return true if the installer type is of SLE Micro
      */
     boolean isSLEMicro() {
-        return ServerConstants.SLEMICRO.equals(getOs());
+        return ServerConstants.SLEMICRO.equals(getOs()) || ServerConstants.SLMICRO.equals(getOs());
     }
 
     /**

@@ -62,7 +62,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -326,7 +328,8 @@ public class AnsibleController {
     }
 
     private static Date getScheduleDate(LocalDateTime dateTime) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 

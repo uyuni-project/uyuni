@@ -166,8 +166,32 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
+
+# WORKAROUND : Click preview button retry to fix https://github.com/SUSE/spacewalk/issues/24893
 When(/^I click on preview$/) do
-  find('button#preview').click
+  # Define the maximum number of attempts
+  max_attempts = 2
+
+  (1..max_attempts).each do |attempt|
+    if page.has_button?('stop', visible: true)
+      puts 'Stop button visible, searching request ongoing.'
+    else
+      # Click the preview button
+      find('button#preview').click
+    end
+    # Wait for up to 3 seconds for the run button to be visible
+    if page.has_button?('run', visible: true, wait: 5)
+      puts 'The run button is visible.'
+      break
+    else
+      puts "The run button is not visible after clicking preview (attempt #{attempt})."
+    end
+  end
+
+  # After the loop, check if the run button is still not visible
+  unless page.has_button?('run', visible: true)
+    raise "Preview button not working: the run button is not visible after #{max_attempts} attempts."
+  end
 end
 
 When(/^I click on stop waiting$/) do

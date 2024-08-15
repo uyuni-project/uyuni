@@ -136,6 +136,21 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
   refute($api_test.user.remove_role(luser, rolename) != 1)
 end
 
+Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, password|
+  $current_user = user
+  $current_password = password
+  next if $api_test.user.list_users.to_s.include? user
+
+  $api_test.user.create(user, password, user, user, "#{user}@mail.com")
+  roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
+  roles.each do |role|
+    $api_test.user.add_role(user, role)
+  end
+  add_context('user', user)
+  add_context('password', 'linux')
+  log "New user #{user} created"
+end
+
 # channel namespace
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|

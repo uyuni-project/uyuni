@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.11
+Version:        5.0.12
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -89,7 +89,8 @@ BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
-BuildRequires:  byte-buddy >= 1.11
+BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.14
+BuildRequires:  mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
@@ -176,7 +177,8 @@ Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy >= 1.11
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
+Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
@@ -351,7 +353,8 @@ Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy >= 1.11
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
+Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate

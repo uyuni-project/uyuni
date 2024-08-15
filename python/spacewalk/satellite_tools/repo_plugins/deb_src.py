@@ -111,10 +111,12 @@ class DebRepo:
         proxy_pass="",
         gpg_verify=True,
         channel_label=None,
+        timeout=None,
     ):
         self.url = url
         parts = url.rsplit("/dists/", 1)
         self.base_url = [parts[0]]
+        self.timeout = timeout
 
         parsed_url = urlparse.urlparse(url)
         query = urlparse.parse_qsl(parsed_url.query)
@@ -211,7 +213,7 @@ class DebRepo:
         :return:
         """
         if not repo.DpkgRepo(
-            self.url, self._get_proxies(), self.gpg_verify
+            self.url, self._get_proxies(), self.gpg_verify, self.timeout
         ).verify_packages_index():
             raise repo.GeneralRepoException("Package index checksum failure")
 
@@ -256,6 +258,7 @@ class DebRepo:
                     proxies=self._get_proxies(),
                     cert=(self.sslclientcert, self.sslclientkey),
                     verify=self.sslcacert,
+                    timeout=self.timeout,
                 )
                 if not data.ok:
                     return ""
@@ -396,6 +399,18 @@ class ContentSource:
             self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
             self.channel_label = channel_label
 
+            # configure network connection
+            try:
+                # bytes per second
+                self.minrate = int(CFG.REPOSYNC_MINRATE)
+            except ValueError:
+                self.minrate = 1000
+            try:
+                # seconds
+                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+            except ValueError:
+                self.timeout = 300
+
             # SUSE vendor repositories belongs to org = NULL
             # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
             root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
@@ -408,6 +423,7 @@ class ContentSource:
                 self.proxy_pass,
                 gpg_verify=not (insecure),
                 channel_label=channel_label,
+                timeout=self.timeout,
             )
             self.repo.verify()
 
@@ -419,18 +435,6 @@ class ContentSource:
             (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
             if query:
                 self.authtoken = query
-
-            # configure network connection
-            try:
-                # bytes per second
-                self.minrate = int(CFG.REPOSYNC_MINRATE)
-            except ValueError:
-                self.minrate = 1000
-            try:
-                # seconds
-                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-            except ValueError:
-                self.timeout = 300
 
     def get_md_checksum_type(self):
         pass

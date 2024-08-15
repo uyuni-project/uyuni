@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyAlreadyExistsException;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ActivationKeyCloneCommand
@@ -104,6 +106,13 @@ public class ActivationKeyCloneCommand {
 
         // Contact method
         cak.setContactMethod(ak.getContactMethod());
+
+        // AppStreams
+        Set<TokenChannelAppStream> clonedAppStreams = ak.getAppStreams().stream()
+            .map(appStream -> new TokenChannelAppStream(
+                cak.getToken(), appStream.getChannel(), appStream.getAppStream()
+            )).collect(Collectors.toSet());
+        cak.getAppStreams().addAll(clonedAppStreams);
     }
 
     /**

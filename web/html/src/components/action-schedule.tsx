@@ -14,7 +14,8 @@ export type MaintenanceWindow = {
   id: number;
   from: string;
   to: string;
-  fromLocalDate: string;
+  fromMilliseconds: number;
+  toMilliseconds: number;
 };
 
 export type ActionChain = {
@@ -136,7 +137,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   onMaintenanceWindowChanged = (selectedItem: MaintenanceWindow) => {
-    const startDateStr = selectedItem.fromLocalDate;
+    const startDateStr = selectedItem.fromMilliseconds;
     this.onDateTimeChanged(localizedMoment(startDateStr));
   };
 
@@ -309,10 +310,8 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     return (
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
-          <div className="form-group">
-            {pickers}
-            {this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()}
-          </div>
+          {pickers}
+          {this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()}
         </div>
       </div>
     );

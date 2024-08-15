@@ -584,6 +584,22 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Liberty Linux 7 x86_64" product has been added
     And I wait until all synchronized channels for "res7" have finished
 
+@susemanager
+@centos7_minion
+  Scenario: Add SUSE Liberty Linux 7 LTSS
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Liberty Linux LTSS 7" as the filtered product description
+    And I select "SUSE Liberty Linux LTSS 7 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux LTSS 7 x86_64" selected
+    When I open the sub-list of the product "SUSE Liberty Linux LTSS 7 x86_64"
+    And I should see the "SUSE Manager Client Tools for RHEL, Liberty and Clones 7 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Liberty Linux LTSS 7 x86_64" product has been added
+    And I wait until all synchronized channels for "sll-7-ltss" have finished
+
 @uyuni
 @centos7_minion
   Scenario: Add CentOS 7
@@ -656,20 +672,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @rocky8_minion
-  Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
+  Scenario: Add Rocky Linux 8
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "RHEL and Liberty 8 Base" as the filtered product description
-    And I select "RHEL and Liberty 8 Base" as a product
-    Then I should see the "RHEL and Liberty 8 Base" selected
-    When I open the sub-list of the product "RHEL and Liberty 8 Base"
-    And I select "SUSE Liberty Linux 8" as a product
-    Then I should see the "SUSE Liberty Linux 8" selected
+    And I enter "Rocky Linux 8" as the filtered product description
+    And I select "Rocky Linux 8 x86_64" as a product
+    Then I should see the "Rocky Linux 8 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "RHEL and Liberty 8 Base" product has been added
-    And I wait until all synchronized channels for "res8" have finished
+    And I wait until I see "Rocky Linux 8 x86_64" product has been added
+    And I wait until all synchronized channels for "rockylinux8" have finished
 
 @uyuni
 @rocky8_minion
@@ -803,13 +816,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Manager Proxy Extension 5.0 x86_64 (BETA)" as the filtered product description
+    And I enter "SUSE Manager Proxy Extension 5.0 x86_64" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
-    And I select "SUSE Manager Proxy Extension 5.0 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Manager Proxy Extension 5.0 x86_64 (BETA)" selected
+    And I select "SUSE Manager Proxy Extension 5.0 x86_64" as a product
+    Then I should see the "SUSE Manager Proxy Extension 5.0 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Manager Proxy Extension 5.0 x86_64 (BETA)" product has been added
+    And I wait until I see "SUSE Manager Proxy Extension 5.0 x86_64" product has been added
     And I wait until all synchronized channels for "suma-proxy-extension-50" have finished
 
 @cloud
@@ -833,13 +846,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Manager Retail Branch Server Extension 5.0 x86_64 (BETA)" as the filtered product description
+    And I enter "SUSE Manager Retail Branch Server Extension 5.0 x86_64" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
-    And I select "SUSE Manager Retail Branch Server Extension 5.0 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Manager Retail Branch Server Extension 5.0 x86_64 (BETA)" selected
+    And I select "SUSE Manager Retail Branch Server Extension 5.0 x86_64" as a product
+    Then I should see the "SUSE Manager Retail Branch Server Extension 5.0 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64 (BETA)" product has been added
+    And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64" product has been added
     And I wait until all synchronized channels for "suma-retail-branch-server-extension-50" have finished
 
 # There are no channels for Retail under Uyuni

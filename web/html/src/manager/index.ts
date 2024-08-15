@@ -33,6 +33,7 @@ import ScheduleOptions from "./schedule-options";
 import Shared from "./shared";
 import Highstate from "./state";
 import Systems from "./systems";
+import ActivationKeys from "./systems/activation-key";
 import Virtualization from "./virtualization";
 
 const pages = {
@@ -58,6 +59,7 @@ const pages = {
   ...Systems,
   ...Virtualization,
   ...Appstreams,
+  ...ActivationKeys,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

@@ -11225,8 +11225,8 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <target state="translated">Aktualizovať informácie o nainštalovanom softvéri (balíky a produkty)</target>
       </trans-unit>
       <trans-unit id="internal_state.uptodate" xml:space="preserve">
-        <source>Update the system, rebooting if required</source>
-        <target state="translated">Aktualizovať systém a v prípade potreby reštartovať</target>
+        <source>Update the system</source>
+        <target state="needs-adaptation">Aktualizovať systém a v prípade potreby reštartovať</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
@@ -11487,6 +11487,14 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="translated">Pri aktualizácii konfigurácie dôveryhodného používania počítača došlo k chybe. Podrobné informácie nájdete v záznamoch servera.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="internal_state.reboot" xml:space="preserve">
+        <source>Perform a reboot</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
+        <source>Perform a reboot, only if required</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

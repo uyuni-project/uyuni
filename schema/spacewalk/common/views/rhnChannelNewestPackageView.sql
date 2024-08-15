@@ -52,9 +52,11 @@ FROM (
                 FROM rhnPackageEVR pe
                     INNER JOIN susePackageExcludingPartOfPtf p ON p.evr_id = pe.id
                     INNER JOIN suseChannelPackageRetractedStatusView cp ON cp.package_id = p.id
-                    LEFT JOIN suseAppstreamPackage appstreampkg ON appstreampkg.package_id = p.id
-                    LEFT JOIN suseAppstream appstream ON appstream.channel_id = cp.channel_id
-                        AND appstream.id = appstreampkg.module_id
+                    LEFT JOIN (
+                        SELECT a.id AS id, a.channel_id AS channel_id, ap.package_id AS package_id
+                        FROM suseAppStreamPackage ap
+                        INNER JOIN suseAppStream a ON a.id = ap.module_id
+                    ) appstream ON appstream.package_id = p.id AND appstream.channel_id = cp.channel_id
                     WHERE NOT cp.is_retracted
                     GROUP BY cp.channel_id, p.name_id, p.package_arch_id, appstream.id
                 ) m,

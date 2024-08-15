@@ -352,11 +352,22 @@ public class KickstartUrlHelper {
      * @param data the kickstart data
      * @return the url
      */
-    public static String getCobblerProfileUrl(KickstartData data) {
+    public static String getCobblerProfileInternalUrl(KickstartData data) {
         Profile prof = Profile.lookupById(
                 CobblerXMLRPCHelper.getAutomatedConnection(),
                         data.getCobblerId());
-        return "http://" + ConfigDefaults.get().getCobblerHost() + COBBLER_URL_BASE_PATH +
-                    prof.getName();
+        return "http://" + ConfigDefaults.get().getCobblerHost() + COBBLER_URL_BASE_PATH + prof.getName();
+    }
+
+    /**
+     * Get the cobbler profile url
+     * @param data the kickstart data
+     * @return the url
+     */
+    public static String getCobblerProfileUrl(KickstartData data) {
+        Profile prof = Profile.lookupById(
+                CobblerXMLRPCHelper.getAutomatedConnection(),
+                data.getCobblerId());
+        return "http://" + ConfigDefaults.get().getJavaHostname() + COBBLER_URL_BASE_PATH + prof.getName();
     }
 }

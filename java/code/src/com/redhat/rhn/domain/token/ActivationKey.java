@@ -437,6 +437,14 @@ public class ActivationKey extends BaseDomainHelper {
     }
 
     /**
+     * Get the appStreams related to this activation key.
+     * @return the Set of appStreams
+     */
+    public Set<TokenChannelAppStream> getAppStreams() {
+        return this.getToken().getAppStreams();
+    }
+
+    /**
      * Makes the Activation key prefix that will get
      *  added to the base key
      * @param org the org of the activation key

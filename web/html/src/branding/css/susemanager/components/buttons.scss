@@ -11,6 +11,14 @@
   }
 }
 
+.btn {
+  &,
+  &:active,
+  &:first-child:active {
+    border-color: transparent;
+  }
+}
+
 .btn,
 .btn-default,
 .btn-primary,

@@ -26,41 +26,6 @@ perform_report_db_schema_upgrade() {
     fi
 }
 
-isPayg() {
-    if [ ! -x /usr/bin/instance-flavor-check ]; then
-        return 1
-    fi
-
-    TYPE=$(/usr/bin/instance-flavor-check)
-    [ "$TYPE" == "PAYG" ]
-}
-
-enforce_service_installed_running() {
-  PACKAGE_NAME=$1
-  SERVICE_NAME=$2
-  isPayg
-  if [ $? -eq 0 ]; then
-
-    rpm -q $PACKAGE_NAME
-    if [ $? -ne 0 ]; then
-      echo "$PACKAGE_NAME not installed. Installing now..."
-      zypper --non-interactive install $PACKAGE_NAME
-      systemctl start $SERVICE_NAME
-    fi
-
-    systemctl is-active --quiet $SERVICE_NAME
-    if [ $? -ne 0 ]; then
-      echo "$SERVICE_NAME needs to be running."
-      exit 1
-    fi
-
-  fi
-}
-
-check_billing_service() {
-  enforce_service_installed_running billing-data-service billing-data-service
-}
-
 check_schema_version() {
     MIN_JAVA_SCHEMA=$( egrep -m1 "^java.min_schema_version[[:space:]]*=" /usr/share/rhn/config-defaults/rhn_java.conf | sed 's/^java.min_schema_version[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
     CMP=$(echo "select evr_t_compare(X.evr, evr_t('0', '$MIN_JAVA_SCHEMA', '0', 'rpm')) from (select PE.evr from rhnVersionInfo vi join rhnPackageEVR pe on vi.evr_id = pe.id where vi.label = 'schema') X;" | spacewalk-sql --select-mode - | sed -n 3p | xargs)
@@ -263,5 +228,4 @@ case $1 in
         wait-for-database) check_database;;
         check-database) check_database;;
         wait-for-taskomatic) wait_for_taskomatic;;
-        check-billing-service) check_billing_service;;
 esac

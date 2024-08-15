@@ -91,6 +91,7 @@ mgr_deploy_{{ keyname }}:
 {%- if args['gpgkeyurl'] is defined %}
 {%- set keys = args['gpgkeyurl'].split(' ') %}
 {%- for gpgkey in keys %}
+{%- set gpgkey = gpgkey|replace(pillar.get('mgr_origin_server', 'no-replace-origin-not-found'), pillar.get('mgr_server', '')) %}
 {%- if gpgkey not in gpg_urls %}
 {{ gpg_urls.append(gpgkey) | default("", True) }}
 {%- endif %}

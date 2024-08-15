@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Thu Aug 01 09:30:50 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.10-0
+  * Speed-up mgrutil.remove_ssh_known_host runner (bsc#1223312)
+  * Start using DEB822 format for repository sources beginning with
+    Ubuntu 24.04
+  * Disable transactional-update.timer on SUSE Linux Enterprise
+    Micro at bootstrap
+  * sumautil: properly detect bridge interfaces (bsc#1226461)
+  * Fix typo on directories to cleanup when deleting a system
+    (bsc#1228101)
+  * Granslate GPG URL if URL has server name and client behind
+    proxy (bsc#1223988)
+  * Fix yum-utils package missing on CentOS7 minions (bsc#1227133)
+  * Remove reboot from uptodate state, introduce reboot and
+    rebootifneeded states
+  * Fix package profile update on CentOS 7 when yum-utils is not
+    installed (bsc#1227133)
+
+-------------------------------------------------------------------
 Tue Jun 18 18:11:01 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.9-0

@@ -21,6 +21,15 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
 
+@susemanager
+  Scenario: Use correct kernel image on the SSH minion
+    When I remove package "kernel-default-base" from this "ssh_minion"
+    And I install package "kernel-default" on this "ssh_minion"
+
+@susemanager
+  Scenario: Reboot the SSH minion to use the new kernel
+    When I reboot the "ssh_minion" host through SSH, waiting until it comes back
+
 @proxy
   Scenario: Check connection from SSH minion to proxy
     Given I am on the Systems overview page of this "ssh_minion"

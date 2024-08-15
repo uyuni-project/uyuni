@@ -1,0 +1,29 @@
+.label {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: $eos-bc-gray-1000;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+}
+
+.label-success {
+  background-color: $eos-bc-green-500;
+}
+
+.label-info {
+  background-color: $eos-bc-cerulean-500;
+}
+
+.label-warning {
+  background-color: $eos-bc-yellow-500;
+}
+
+.label-danger {
+  color: $white;
+  background-color: $eos-bc-red-900;
+}

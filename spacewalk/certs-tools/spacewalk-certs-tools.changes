@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Aug 01 09:43:48 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7-0
+  * Support multiple certificates for root-ca-file and
+    server-cert-file
+
+-------------------------------------------------------------------
 Wed Jun 26 15:02:21 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0

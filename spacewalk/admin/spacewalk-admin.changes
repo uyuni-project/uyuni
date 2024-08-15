@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 01 09:42:29 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * Remove mgr-check-payg service
+
+-------------------------------------------------------------------
 Mon Jun 10 16:55:14 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7-0

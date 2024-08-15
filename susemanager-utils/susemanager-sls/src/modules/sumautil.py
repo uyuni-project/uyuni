@@ -115,11 +115,15 @@ def get_net_module(iface):
 
         salt '*' sumautil.get_net_module eth0
     """
-    sysfspath = os.path.join(SYSFS_NET_PATH, iface, "device/driver")
+    device_sysfspath = os.path.join(SYSFS_NET_PATH, iface, "device/driver")
+    bridge_sysfspath = os.path.join(SYSFS_NET_PATH, iface, "bridge")
 
-    return (
-        os.path.exists(sysfspath) and os.path.split(os.readlink(sysfspath))[-1] or None
-    )
+    if os.path.exists(device_sysfspath):
+        return os.path.split(os.readlink(device_sysfspath))[-1] or None
+    elif os.path.exists(bridge_sysfspath):
+        return "bridge"
+    else:
+        return None
 
 
 def get_net_modules():
