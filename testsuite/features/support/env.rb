@@ -222,7 +222,9 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
+  if web_session_is_active?
+    log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
+  end
 end
 
 Before do
