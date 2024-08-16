@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -82,6 +83,7 @@ public class AddErrataToChannelAction extends RhnListAction {
         }
 
         List<Long> channelPacks = ChannelFactory.getPackageIds(currentChan.getId());
+        List<Long> clonedErrataOriginalIds = ChannelFactory.getClonedErrataIds(currentChan.getId());
 
         for (Long pid : packageIds) {
             if (!channelPacks.contains(pid)) {
@@ -95,7 +97,10 @@ public class AddErrataToChannelAction extends RhnListAction {
         //        user).getElementValues();
         //ErrataManager.publishErrataToChannelAsync(currentChan, errataIds, user);
         List<ErrataOverview> errata = ErrataManager.errataInSet(user,
-                RhnSetDecl.setForChannelErrata(currentChan).get(user).getLabel());
+                RhnSetDecl.setForChannelErrata(currentChan).get(user).getLabel())
+                    .stream()
+                    .filter(it -> !clonedErrataOriginalIds.contains(it.getId()))
+                    .collect(Collectors.toList());
         Set<Long> eids = ErrataManager.cloneChannelErrata(errata, currentChan.getId(),
                 user);
 
