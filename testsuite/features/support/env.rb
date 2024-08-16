@@ -131,18 +131,18 @@ end
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
-
-  return unless scenario.failed?
-
-  Dir.mkdir('screenshots') unless File.directory?('screenshots')
-  path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-
-  if web_session_is_active?
-    handle_screenshot_and_relog(path)
-  else
-    warn 'Page is not visible; unable to take a screenshot.'
+  log "Current url is #{current_url}"
+  if scenario.failed?
+    begin
+      if web_session_is_active?
+        handle_screenshot_and_relog(scenario, current_epoch)
+      else
+        warn 'Page is not visible; unable to take a screenshot.'
+      end
+    ensure
+      print_server_logs
+    end
   end
-
   page.instance_variable_set(:@touched, false)
 end
 
@@ -152,7 +152,9 @@ def web_session_is_active?
 end
 
 # Take a screenshot and try to log back at suse manager server
-def handle_screenshot_and_relog(path)
+def handle_screenshot_and_relog(scenario, current_epoch)
+  Dir.mkdir('screenshots') unless File.directory?('screenshots')
+  path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
   Timeout.timeout(Capybara.default_max_wait_time) do
     begin
       click_details_if_present
@@ -163,10 +165,7 @@ def handle_screenshot_and_relog(path)
     rescue StandardError => e
       warn "An error occurred while processing scenario: #{scenario.name}\nError message: #{e.message}"
     ensure
-      print_server_logs
-      previous_url = current_url
-      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
-      visit previous_url
+      relog_and_visit_previous_url
     end
   end
 end
@@ -182,6 +181,13 @@ def click_details_if_present
   rescue Capybara::ElementNotInteractable
     log "Button 'Details' found but not interactable."
   end
+end
+
+# Relog and visit the previous URL
+def relog_and_visit_previous_url
+  previous_url = current_url
+  step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+  visit previous_url
 end
 
 # Process the code coverage for each feature when it ends
