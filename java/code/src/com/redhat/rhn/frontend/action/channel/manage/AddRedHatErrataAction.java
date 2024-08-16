@@ -68,6 +68,7 @@ public class AddRedHatErrataAction extends RhnListAction {
     private static final String CHANNEL_SUBMIT = "frontend.actions.channels.manager." +
             "add.viewErrata";
     private static final String CHECKED = "assoc_checked";
+    private static final String LIST_ALREADY_INCLUDED_PATCH = "list_already_included";
 
     private static final String SUBMITTED = "frontend.actions.channels.manager." +
             "add.submit";
@@ -108,7 +109,7 @@ public class AddRedHatErrataAction extends RhnListAction {
         List<SelectableChannel> channelList = null;
         String selectedChannelStr = null;
         Boolean checked = true;
-
+        boolean listAlreadyIncludedPatches = true;
 
         //Set initail strings
         selectedChannelStr = request.getParameter(SELECTED_CHANNEL_OLD);
@@ -191,6 +192,9 @@ public class AddRedHatErrataAction extends RhnListAction {
             checked = false;
         }
 
+        if (requestContext.isSubmitted() && request.getParameter(LIST_ALREADY_INCLUDED_PATCH) == null)  {
+            listAlreadyIncludedPatches = false;
+        }
 
         request.setAttribute(CHECKED, checked);
         request.setAttribute(SELECTED_CHANNEL, selectedChannelStr);
@@ -225,11 +229,8 @@ public class AddRedHatErrataAction extends RhnListAction {
         RhnListSetHelper helper = new RhnListSetHelper(request);
         RhnSet set =  getSetDecl(currentChan).get(user);
 
-
         DataResult dr = getData(request, selectedChannel, currentChan, channelList,
-                checked, user);
-
-
+                checked, listAlreadyIncludedPatches, user);
 
         request.setAttribute(RequestContext.PAGE_LIST, dr);
 
@@ -318,6 +319,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             Channel currentChan,
             List<SelectableChannel> selChannelList,
             boolean packageAssoc,
+            boolean listAlreadyIncludedPatches,
             User user) {
 
         if (selectedChan != null) {
@@ -326,7 +328,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             set.addElement(selectedChan.getId());
             RhnSetManager.store(set);
             return ChannelManager.findErrataFromRhnSetForTarget(currentChan,
-                    packageAssoc, user);
+                    packageAssoc, listAlreadyIncludedPatches, user);
         }
         else if (selChannelList != null) {
                 RhnSet set = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
@@ -336,7 +338,7 @@ public class AddRedHatErrataAction extends RhnListAction {
                 }
                 RhnSetManager.store(set);
                 return ChannelManager.findErrataFromRhnSetForTarget(currentChan,
-                        packageAssoc, user);
+                        packageAssoc, listAlreadyIncludedPatches, user);
 
         }
         else {
