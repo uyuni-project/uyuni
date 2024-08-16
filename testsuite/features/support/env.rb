@@ -137,7 +137,7 @@ After do |scenario|
   Dir.mkdir('screenshots') unless File.directory?('screenshots')
   path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
 
-  if page_has_visible_elements?
+  if web_session_is_active?
     handle_screenshot_and_relog(path)
   else
     warn 'Page is not visible; unable to take a screenshot.'
@@ -146,9 +146,9 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
-def page_has_visible_elements?
-  page.has_selector?('header', wait: Capybara.default_max_wait_time) ||
-    page.has_selector?('#username-field', wait: Capybara.default_max_wait_time)
+def web_session_is_active?
+  # Test is web session is open
+  page.has_selector?('header') || page.has_selector?('#username-field')
 end
 
 def handle_screenshot_and_relog(path)
