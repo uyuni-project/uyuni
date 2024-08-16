@@ -148,7 +148,7 @@ end
 
 # Test is web session is open
 def web_session_is_active?
-  page.has_selector?('header') || page.has_selector?('#username-field')
+  page.has_selector?('header', wait: 0) || page.has_selector?('#username-field', wait: 0)
 end
 
 # Take a screenshot and try to log back at suse manager server
@@ -227,11 +227,7 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  if web_session_is_active?
-    if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
-      log 'Timeout: Waiting AJAX transition'
-    end
-  end
+  log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
 Before do
