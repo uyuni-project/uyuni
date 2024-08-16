@@ -146,11 +146,12 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
+# Test is web session is open
 def web_session_is_active?
-  # Test is web session is open
   page.has_selector?('header') || page.has_selector?('#username-field')
 end
 
+# Take a screenshot and try to log back at suse manager server
 def handle_screenshot_and_relog(path)
   Timeout.timeout(Capybara.default_max_wait_time) do
     begin
@@ -170,6 +171,7 @@ def handle_screenshot_and_relog(path)
   end
 end
 
+# Try to get the minion details when on minion page
 def click_details_if_present
   return unless page.has_content?('Bootstrap Minions') && page.has_content?('Details')
 
