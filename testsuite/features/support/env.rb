@@ -161,7 +161,6 @@ def handle_screenshot_and_relog(scenario, current_epoch)
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
       attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
-
     rescue StandardError => e
       warn "An error occurred while processing scenario: #{scenario.name}\nError message: #{e.message}"
     ensure
@@ -229,7 +228,9 @@ end
 
 AfterStep do
   if web_session_is_active?
-    log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
+    if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
+      log 'Timeout: Waiting AJAX transition'
+    end
   end
 end
 
