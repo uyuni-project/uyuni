@@ -48,7 +48,7 @@ class RPMRepo(Repo):
             repository=repository,
             arch_filter=arch_filter,
         )
-        self.signature_verified = True  # Tell whether the signature is checked against the repomd.xml file TODO: complete logic
+        self.signature_verified = True  # Tell whether the signature is checked against the repomd.xml file TODO: complete
 
     def verify_signature(self):
         """
@@ -112,12 +112,13 @@ class RPMRepo(Repo):
                 }
         return files
 
-    def find_metadata_file_url(self, file_name) -> (str, str):
+    def find_metadata_file_url(self, file_name, update=False) -> (str, str):
         """
         Return the corresponding metadata file's url given its name.
         An example of these files can be 'primary', 'filelists', 'other', etc...
+        :update: download the latest version again, and override the local one
         """
-        if not self.metadata_files:
+        if not self.metadata_files or update:
             self.metadata_files = self.get_metadata_files()
         md_file = self.metadata_files.get(file_name)
         if not md_file:
@@ -147,9 +148,8 @@ class RPMRepo(Repo):
             if not verified:
                 raise SignatureVerificationException("repomd.xml")
 
-        hash_file = (
-            os.path.join(self.cache_dir, self.name) + ".hash"
-        )  # TODO change for both primary and filelists
+        primary_hash_file = os.path.join(self.cache_dir, "primary") + ".hash"
+        filelists_hash_file = os.path.join(self.cache_dir, "filelists") + ".hash"
 
         primary_url = self.find_metadata_file_url("primary")
         primary_hash = self.find_metadata_file_checksum("primary")
@@ -211,12 +211,14 @@ class RPMRepo(Repo):
                     filelists_parser.clear_cache()  # TODO can we make this execute automatically
                 break
             except urllib.error.HTTPError as e:
-                # TODO: check for primary and filelists separately (if one fails, don't download both files again)
                 # We likely hit the repo while it changed:
-                # At the time we read repomd.xml referred to an primary.xml.gz
+                # At the time we read repomd.xml referred to an primary.xml.gz and/or filelists.xml.gz
                 # that does not exist anymore.
                 if cnt < 3 and e.code == 404:
-                    primary_url = self.find_metadata_file_url("primary")
+                    primary_url = self.find_metadata_file_url("primary", update=True)
+                    filelists_url = self.find_metadata_file_url(
+                        "filelists", update=True
+                    )
                     time.sleep(2)
                 else:
                     raise
@@ -236,9 +238,12 @@ class RPMRepo(Repo):
                 for f in os.listdir(self.cache_dir):
                     os.remove(os.path.join(self.cache_dir, f))
 
-            # Cache the hash of the file
-            with open(hash_file, "w", encoding="utf-8") as fw:
-                logging.debug("Caching file hash in file: %s", hash_file)
+            # Cache the hash/checksum of primary
+            with open(primary_hash_file, "w", encoding="utf-8") as fw:
+                logging.debug("Caching file hash in file: %s", primary_hash_file)
                 fw.write(primary_hash)
+            with open(filelists_hash_file, "w", encoding="utf-8") as fw:
+                logging.debug("Caching file hash in file: %s", filelists_hash_file)
+                fw.write(filelists_hash)
         except OSError as error:
             logging.warning("Error caching the primary XML data: %s", error)

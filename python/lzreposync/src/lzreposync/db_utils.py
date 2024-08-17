@@ -1,30 +1,185 @@
 #  pylint: disable=missing-module-docstring
+import logging
+import time
+
+from psycopg2 import errors
+from psycopg2.errorcodes import UNIQUE_VIOLATION
 
 from lzreposync.repo_dto import RepoDTO
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import rhnSQL, rhnChannel
 
 
+# stolen from python/spacewalk/server/test/misc_functions.py
+def _new_channel_dict(**kwargs):
+    # pylint: disable-next=invalid-name
+    _counter = 0
+
+    label = kwargs.get("label")
+    if label is None:
+        # pylint: disable-next=consider-using-f-string
+        label = "rhn-unittest-%.3f-%s" % (time.time(), _counter)
+        # pylint: disable-next=invalid-name
+        _counter = _counter + 1
+
+    release = kwargs.get("release") or "release-" + label
+    # pylint: disable-next=redefined-outer-name
+    os = kwargs.get("os") or "Unittest Distro"
+    if "org_id" in kwargs:
+        # pylint: disable-next=unused-variable
+        org_id = kwargs["org_id"]
+    else:
+        org_id = "rhn-noc"
+
+    vdict = {
+        "label": label,
+        "name": kwargs.get("name") or label,
+        "summary": kwargs.get("summary") or label,
+        "description": kwargs.get("description") or label,
+        "basedir": kwargs.get("basedir") or "/",
+        "channel_arch": kwargs.get("channel_arch") or "i386",
+        "channel_families": [kwargs.get("channel_family") or label],
+        "org_id": kwargs.get("org_id"),
+        "gpg_key_url": kwargs.get("gpg_key_url"),
+        "gpg_key_id": kwargs.get("gpg_key_id"),
+        "gpg_key_fp": kwargs.get("gpg_key_fp"),
+        "end_of_life": kwargs.get("end_of_life"),
+        "dists": [
+            {
+                "release": release,
+                "os": os,
+            }
+        ],
+    }
+    return vdict
+
+
+class ChannelAlreadyExistsException(Exception):
+    """
+    Exception raised when a channel already exists in the db
+    """
+
+
+def create_channel(channel_label, channel_arch, org_id=1):
+    """
+    Create a new test channel with label :channel_label using the channel family private-channel-family-1
+    :channel_arch: eg: "x86_64"
+    """
+    rhnSQL.initDB()
+    try:
+        # Channel family "private-channel-family-1" is automatically created when starting the susemanager docker db
+        channel_family_label = "private-channel-family-1"
+
+        # Create a new channel using the channel family info
+        vdict = _new_channel_dict(
+            label=channel_label,
+            channel_family=channel_family_label,
+            org_id=org_id,
+            channel_arch=channel_arch,
+        )
+        c = rhnChannel.Channel()
+        c.load_from_dict(vdict)
+        c.save()
+        rhnSQL.commit()
+        return c
+    except errors.lookup(UNIQUE_VIOLATION) as exc:
+        print(f"INFO: Channel {channel_label} already exists!")
+        raise ChannelAlreadyExistsException() from exc
+    finally:
+        rhnSQL.closeDB()
+
+
+def create_content_source(
+    channel_label,
+    repo_label,
+    source_url,
+    metadata_signed="N",
+    org_id=1,
+    source_type="yum",
+    repo_id=1,
+):
+    """
+    Create a new content source and associate it with the given channel
+    source_type: yum|deb
+    """
+    try:
+        rhnSQL.initDB()
+        fetch_source_type_query = rhnSQL.prepare(
+            """
+            SELECT id from rhnContentSourceType where label = :source_type_label"""
+        )
+        fetch_source_type_query.execute(source_type_label=source_type)
+        type_id = fetch_source_type_query.fetchone_dict()["id"]
+
+        add_repo_query = rhnSQL.prepare(
+            """INSERT INTO rhnContentSource(id, org_id, type_id, source_url, label, metadata_signed) VALUES (:repo_id, :org_id, 
+            :type_id, :source_url, :label, :metadata_signed) 
+            """
+        )
+        add_repo_query.execute(
+            repo_id=repo_id,
+            org_id=org_id,
+            type_id=type_id,
+            source_url=source_url,
+            label=repo_label,
+            metadata_signed=metadata_signed,
+        )
+
+        fetch_source_id_query = rhnSQL.prepare(
+            """
+            SELECT id from rhnContentSource LIMIT 1"""
+        )
+        fetch_source_id_query.execute()
+        source_id = fetch_source_id_query.fetchone_dict()["id"]
+
+        # associate the source/repo with the channel
+        fetch_channel_id_query = rhnSQL.prepare(
+            """
+                SELECT id FROM rhnChannel WHERE label = :channel_label"""
+        )
+        fetch_channel_id_query.execute(channel_label=channel_label)
+        channel_id = fetch_channel_id_query.fetchone_dict()["id"]
+
+        associate_repo_channel_query = rhnSQL.prepare(
+            """INSERT INTO rhnChannelContentSource(source_id, channel_id) VALUES (:source_id, :channel_id)
+            """
+        )
+        associate_repo_channel_query.execute(source_id=source_id, channel_id=channel_id)
+        rhnSQL.commit()
+    except errors.lookup(UNIQUE_VIOLATION):
+        print(f"INFO: Source {repo_label} already exists!")
+    finally:
+        rhnSQL.closeDB()
+
+
 # Stolen from python/spacewalk/satellite_tools/reposync.py
-def get_compatible_arches(channel_id):
-    """Return a list of compatible package arch labels for this channel"""
+def get_compatible_arches(channel_label):
+    """Return a list of compatible package arch labels for the given channel"""
     rhnSQL.initDB()
     h = rhnSQL.prepare(
         """select pa.label
                           from rhnChannelPackageArchCompat cpac,
                           rhnChannel c,
                           rhnpackagearch pa
-                          where c.id = :channel_id
+                          where c.label = :channel_label
                           and c.channel_arch_id = cpac.channel_arch_id
                           and cpac.package_arch_id = pa.id"""
     )
-    h.execute(channel_id=channel_id)
+    h.execute(channel_label=channel_label)
+    res_dict = h.fetchall_dict()
+    if not res_dict:
+        logging.warning(
+            "Couldn't fetch compatible arches for channel: %s", channel_label
+        )
+        return None
     # pylint: disable-next=invalid-name
     with cfg_component("server.susemanager") as CFG:
         arches = [
             k["label"]
-            for k in h.fetchall_dict()
-            if CFG.SYNC_SOURCE_PACKAGES or k["label"] not in ["src", "nosrc"]
+            for k in res_dict
+            if CFG.SYNC_SOURCE_PACKAGES
+            or k["label"]
+            not in ["src", "nosrc"]  # TODO: what is CFG.SYNC_SOURCE_PACKAGES - ask team
         ]
     rhnSQL.closeDB()
     return arches
@@ -47,12 +202,12 @@ def get_all_arches():
 
 
 def get_channel_info_by_label(channel_label):
-    # TODO: possible exception handling
+    """
+    Fetch the channel information from the given label and return
+    the result in a dict like object
+    """
     rhnSQL.initDB()
     channel = rhnChannel.channel_info(channel_label)
-    print(
-        f"===> HAROUNE fetched channel = {channel}, for channel label = {channel_label}"
-    )
     rhnSQL.closeDB()
     return channel or None
 

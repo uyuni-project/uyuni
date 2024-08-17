@@ -8,6 +8,7 @@ from xml.dom import pulldom
 
 import rpm
 
+from lzreposync.filelists_parser import map_filetype
 from spacewalk.server.importlib import headerSource
 from uyuni.common.rhn_rpm import RPM_Header
 
@@ -50,7 +51,7 @@ def map_attribute(attribute: str):
     name in the importLib Package class.
     If no mapping found, return None.
     """
-    # TODO: there's still a time/file attribute not yet handled
+    # TODO: there's still a time/file attribute not yet handled - discuss with team
     attributes = {
         "version/ver": "version",
         "version/rel": "release",
@@ -125,7 +126,14 @@ def map_flag(flag: str) -> int:
     return 0
 
 
-#  pylint: disable-next=missing-class-docstring
+# pylint: disable-next=missing-class-docstring
+class PrimaryParseError(Exception):
+    """
+    Exception raised when an error occur when paring Primary file
+    """
+
+
+# pylint: disable-next=missing-class-docstring
 class PrimaryParser:
     def __init__(self, primary_file, repository="", arch_filter=".*"):
         """
@@ -141,9 +149,18 @@ class PrimaryParser:
         self.current_package = None
         self.current_hdr = None
         self.repository = repository
-        self.arch_filter = arch_filter
+        if arch_filter != ".*" and "noarch" not in arch_filter:
+            arch_filter = re.sub(
+                "[()]", "", arch_filter
+            )  # remove left & right parenthesis
+            # pylint: disable-next=consider-using-f-string
+            self.arch_filter = "(noarch|{})".format(arch_filter)
+        else:
+            self.arch_filter = arch_filter
+        print("INFO: Arch filter: ", self.arch_filter)
 
-    def is_valid_primary_file(self, primary_file):
+    @staticmethod
+    def is_valid_primary_file(primary_file):
         """
         Check whether the format of the given primary file is supported.
         Currently supported: Gzip
@@ -190,60 +207,8 @@ class PrimaryParser:
                     self.current_package = {}
                     self.current_hdr = {}
 
-                    ### SETTING FAKE DATA FOR SOME ATTRIBUTES
-                    # TODO: Fix these fake attributes
-                    self.current_hdr["rpmversion"] = "1"
-                    self.current_hdr["size"] = 10000
-                    self.current_hdr["payloadformat"] = "cpio"
-                    self.current_hdr["cookie"] = "cookie_test"
-                    self.current_hdr["sigsize"] = 10000
-                    self.current_hdr["sigmd5"] = "sigmd5_test"
-                    # Setting possibly missing attributes: checking for all dependencies
-                    # importLib doesn't accept None values but rather empty arrays ([])
-                    # TODO: Double check the following list, it might not be completely correct,
-                    #  because, the hdr can have two type of keys referring to the same element (for example: '1156' and 'suggestsname' refer to the same thing),
-                    #  so the list should contain only keys that we looked for during and the parsing, and the missing ones,
-                    #  which means, for example, we shouldn't look for possibly missing '1156' key while we've already
-                    #  set the 'suggestsname' key
-                    possibly_missing_dependencies = [
-                        "provides",
-                        "provideversion",
-                        "provideflags",
-                        "requirename",
-                        "requireversion",
-                        "requireflags",
-                        "changelogname",
-                        "changelogtext",
-                        "changelogtime",
-                        "obsoletename",
-                        "obsoleteversion",
-                        "obsoleteflags",
-                        "conflictname",
-                        "conflictversion",
-                        "conflictflags",
-                        1159,
-                        1160,
-                        1161,
-                        1156,
-                        1157,
-                        1158,
-                        5052,
-                        5053,
-                        5054,
-                        5055,
-                        5056,
-                        5057,
-                        5049,
-                        5050,
-                        5051,
-                        5046,
-                        5047,
-                        5048,
-                    ]
-                    for dep in possibly_missing_dependencies:
-                        if dep not in self.current_hdr:
-                            self.current_hdr[dep] = []
-
+                    # Faking up some data
+                    # used by self._extract_signatures() from rhn_rpm.py/RPM_Header
                     header_tags = [
                         rpm.RPMTAG_DSAHEADER,
                         rpm.RPMTAG_RSAHEADER,
@@ -253,6 +218,13 @@ class PrimaryParser:
                     ]
                     for ht in header_tags:
                         self.current_hdr[ht] = None
+
+                    # Setting possibly missing attributes: checking for all dependencies
+                    # ImportLib doesn't accept None values but rather empty arrays ([])
+                    for dep_class in complex_attrs.values():
+                        for dep_name in dep_class.tagMap.values():
+                            if dep_name not in self.current_hdr:
+                                self.current_hdr[dep_name] = []
 
                     # Parsing package's metadata
                     for child_node in node.childNodes:
@@ -270,7 +242,7 @@ class PrimaryParser:
 
                     yield self.current_package
 
-    def set_checksum_node(self, node):
+    def _set_checksum_node(self, node):
         """
         Parse the given "checksum" node and the result Checksum object to the current package
         """
@@ -281,7 +253,7 @@ class PrimaryParser:
         self.current_package["checksum"] = get_text(node)
         self.current_package["checksum_type"] = node.attributes["type"].value
 
-    def set_attribute_element_node(self, node):
+    def _set_attribute_element_node(self, node):
         """
         Parse the given attribute element node and add its information to the currentPackage.
         node: self-closing element. Eg: <version epoch="0" ver="1.22.0" rel="lp155.3.4.1"/>
@@ -295,9 +267,7 @@ class PrimaryParser:
             extended_name = "/".join([elt_name, attr])  # Eg: version/ver
             actual_name = map_attribute(extended_name)
             if actual_name:
-                value = node.getAttributeNode(
-                    attr
-                ).value  # TODO: I think this can be changed by getAttribute(attr)
+                value = node.getAttribute(attr)
                 if actual_name == "archivesize":
                     value = int(value)
                 elif actual_name == "buildtime":
@@ -310,11 +280,11 @@ class PrimaryParser:
             else:
                 continue
 
-    def set_complex_element_node(self, node):
+    def _set_complex_element_node(self, node):
         """
-        Parse and set complex elements. Complex means the it contains child nodes. Eg: "provides", "requires", etc
+        Parse and set complex elements. Complex means it contains child nodes. Eg: "provides", "requires", etc
         each node has a list of Dependencies.
-        The names should be mapped the same as in HeaderSource.py: rpmProvides, rpmRequires, etc..
+        The names should be mapped the same as in headerSource.py: rpmProvides, rpmRequires, etc..
         """
         if not isinstance(self.current_package, dict):
             print("Error: No package being parsed!")
@@ -329,26 +299,24 @@ class PrimaryParser:
                         self.current_hdr.get(attr_mapped_name), list
                     ):  # Check if list is not initialized
                         self.current_hdr[attr_mapped_name] = []
-                    attr = child_node.getAttributeNode(
+                    attr = child_node.getAttribute(
                         "ver" if attr_name == "version" else attr_name
                     )  # map attr name
                     if attr:
                         if attr_name != "flags":
                             self.current_hdr[attr_mapped_name].append(
-                                attr.value.encode("utf-8")
+                                attr.encode("utf-8")
                             )
                         else:
-                            self.current_hdr[attr_mapped_name].append(
-                                map_flag(attr.value)
-                            )
+                            self.current_hdr[attr_mapped_name].append(map_flag(attr))
                     else:
+                        # Setting fake data of not found attributes (can be considered as defaults)
                         if attr_name == "flags":
                             self.current_hdr[attr_mapped_name].append(0)
                         else:
-                            # Setting some fake data TODO:fix
                             self.current_hdr[attr_mapped_name].append(b"")
 
-    def set_text_element_node(self, node):
+    def _set_text_element_node(self, node):
         """
         Parse and set elements with text content. Eg: <summary>GStreamer ...</summary>
         """
@@ -379,18 +347,41 @@ class PrimaryParser:
             # Recursively set the child elements of the <format> element
             for child in node.childNodes:
                 self.set_element_node(child)
+        if node.nodeType == node.ELEMENT_NODE and node.localName == "file":
+            self._set_file_information(node)
         if (
             node.nodeType == node.ELEMENT_NODE
             and node.namespaceURI == COMMON_NS
             and node.localName == "checksum"
         ):
-            self.set_checksum_node(node)
+            self._set_checksum_node(node)
         if node.nodeType == node.ELEMENT_NODE and node.hasAttributes():
-            # node in searchedAttrs
-            self.set_attribute_element_node(node)
+            # node in ["time", "version", "checksum", "size", etc..]
+            self._set_attribute_element_node(node)
         elif node.nodeType == node.ELEMENT_NODE and not is_complex(node.localName):
-            # node in searchedChars:
-            self.set_text_element_node(node)
+            # node in ["arch", "name", "summary", "description", "packager", "url", etc..]
+            self._set_text_element_node(node)
         elif node.nodeType == node.ELEMENT_NODE and is_complex(node.localName):
-            # dealing with ["provides", "requires", "enhances", "obsoletes", etc..]
-            self.set_complex_element_node(node)
+            # dealing with complex attributes: ["provides", "requires", "enhances", "obsoletes", etc..]
+            self._set_complex_element_node(node)
+        # else:
+        #   we're not handling nodes with both attributes and text inside, because there was
+        #   no case where we found that type of node
+
+    def _set_file_information(self, node):
+        """
+        Set the <file> node information.
+        The information will basically be "filenames" and "filemodes"
+        """
+        if self.current_hdr.get("filenames") is None:
+            self.current_hdr["filenames"] = []
+        if self.current_hdr.get("filetypes") is None:
+            self.current_hdr["filetypes"] = []
+        if len(self.current_hdr["filenames"]) != len(self.current_hdr["filetypes"]):
+            # Normally, this should not happen
+            raise PrimaryParseError()
+
+        filename = get_text(node)
+        filetype = map_filetype(node.getAttribute("type"))
+        self.current_hdr["filenames"].append(filename)
+        self.current_hdr["filetypes"].append(filetype)
