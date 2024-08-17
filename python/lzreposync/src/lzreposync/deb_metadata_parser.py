@@ -54,11 +54,12 @@ class DEBMetadataParser:
                     checksum_type="md5",
                     checksum=deb_pkg_header["MD5sum"],
                     relpath=None,  # This is the path on the filesystem
-                    org_id=1,  # TODO: correct
+                    org_id=1,  # TODO: how to set this - ask team
                     channels=[],
                     expand_full_filelist=False,
                     remote_path=deb_pkg_header["remote_path"],
                 )
+                deb_package.arch = deb_pkg_header["arch"]
                 yield deb_package
             except (KeyboardInterrupt, rhnSQL.SQLError):
                 raise

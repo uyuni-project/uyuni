@@ -2,13 +2,18 @@
 import datetime
 import gzip
 import io
+import json
 import time
 import unittest
 
+import pytest
 from more_itertools import ilen
 from psycopg2 import errors
 from psycopg2.errorcodes import UNIQUE_VIOLATION
 
+from lzreposync.db_utils import get_all_arches
+from lzreposync.db_utils import get_channel_info_by_label
+from lzreposync.db_utils import get_compatible_arches
 from lzreposync.deb_metadata_parser import DEBMetadataParser
 from lzreposync.filelists_parser import FilelistsParser
 from lzreposync.import_utils import import_packages_in_batch_from_parser
@@ -19,6 +24,8 @@ from lzreposync.primary_parser import (
 from lzreposync.repo_dto import RepoDTO
 from lzreposync.rpm_metadata_parser import RPMMetadataParser
 from lzreposync.translation_parser import TranslationParser
+from lzreposync.updates_importer import UpdatesImporter
+from lzreposync.updates_util import get_updates
 from spacewalk.server import rhnSQL, rhnChannel
 from spacewalk.server.rhnChannel import channel_info
 from uyuni.common import fileutils
@@ -28,20 +35,21 @@ def test_verify_signature():
     """TODO"""
 
 
-def _get_all_arches():
+def _load_json_file(filename: str):
     """
-    return the list of all compatible packages' arches regardless of the channel arch
+    Read json file and return its dict representation
     """
-    rhnSQL.initDB()
-    h = rhnSQL.prepare(
-        """
-    SELECT pa.label FROM rhnchannelpackagearchcompat cpac, rhnpackagearch pa 
-    WHERE pa.id = cpac.package_arch_id"""
-    )
-    h.execute()
-    all_arches = list(map(lambda d: d.get("label"), h.fetchall_dict()))
-    rhnSQL.closeDB()
-    return all_arches
+
+    if not filename.endswith(".json"):
+        print(f"Error: Not valid json file: {filename}")
+        return None
+    try:
+        with open(filename, "r", encoding="utf-8") as json_f:
+            data = json.load(json_f)
+            return data
+    except FileNotFoundError:
+        print(f"Error: file {filename} does not exist !!")
+        return None
 
 
 def _get_repository_by_channel_label(channel_label):
@@ -143,8 +151,13 @@ def _new_channel_dict(**kwargs):
 
 
 def _empty_database():
-    # TODO: there are other tables that can be freed up
     rhnSQL.initDB()
+    delete_errata_sql = """
+            DELETE FROM rhnErrata"""
+    delete_errata_package_sql = """
+            DELETE FROM rhnErrataPackage"""
+    delete_channel_errata_sql = """
+            DELETE FROM rhnChannelErrata"""
     delete_channel_package_sql = """
             DELETE FROM rhnChannelPackage"""
     delete_channel_sql = """
@@ -155,6 +168,9 @@ def _empty_database():
             DELETE FROM rhnContentSource"""
     delete_channel_content_source_sql = """
             DELETE FROM rhnContentSource"""
+    rhnSQL.execute(delete_errata_sql)
+    rhnSQL.execute(delete_errata_package_sql)
+    rhnSQL.execute(delete_channel_errata_sql)
     rhnSQL.execute(delete_channel_package_sql)
     rhnSQL.execute(delete_package_sql)
     rhnSQL.execute(delete_channel_sql)
@@ -172,13 +188,13 @@ class LazyRepoSyncTest(unittest.TestCase):
 
     def tearDown(self):
         # Empty database
-        # _empty_database()
-        ...
+        _empty_database()
 
     @staticmethod
-    def _init_channel(test_channel_label, channel_arch, org_id=1):
+    def _init_channel(channel_label, channel_arch, org_id=1):
         """
-        Create a new test channel using the channel family private-channel-family-1
+        Create a new test channel with label :channel_label using the channel family private-channel-family-1
+        :channel_arch: eg: "x86_64"
         """
         rhnSQL.initDB()
         try:
@@ -187,14 +203,14 @@ class LazyRepoSyncTest(unittest.TestCase):
 
             # Create a new channel using the channel family info
             _create_channel(
-                test_channel_label,
+                channel_label,
                 channel_family_label,
                 org_id=org_id,
                 channel_arch=channel_arch,
             )
             rhnSQL.commit()
         except errors.lookup(UNIQUE_VIOLATION):
-            print(f"INFO: Channel {test_channel_label} already exists!")
+            print(f"INFO: Channel {channel_label} already exists!")
         finally:
             rhnSQL.closeDB()
 
@@ -314,12 +330,12 @@ class LazyRepoSyncTest(unittest.TestCase):
             package_files_5f32["pkgid"],
             "5f32047b55c0ca2dcc00a00270cd0b10df4df40c6cd9355eeff9b6aa0997657b",
         )
-        self.assertEqual(len(package_files_5f32["files"]), 5)
+        self.assertEqual(len(package_files_5f32["filenames"]), 5)
         self.assertEqual(package_files_5f32["version"], "1.1.0")
         self.assertEqual(package_files_5f32["epoch"], "0")
         self.assertEqual(package_files_5f32["release"], "lp155.3.4.1")
         self.assertEqual(
-            package_files_5f32["files"][0], "/usr/lib64/gstreamer-1.0/libgstaiff.so"
+            package_files_5f32["filenames"][0], "/usr/lib64/gstreamer-1.0/libgstaiff.so"
         )
         self.assertEqual(32768, package_files_5f32["filetypes"][0])
         self.assertEqual(16384, package_files_5f32["filetypes"][-1])
@@ -329,19 +345,20 @@ class LazyRepoSyncTest(unittest.TestCase):
             package_files_5aac["pkgid"],
             "5aac91b3ec4b358b22fe50cf0a23d6ea6139ca2f1909f99b6c3b5734ca12530f",
         )
-        self.assertEqual(len(package_files_5aac["files"]), 3)
+        self.assertEqual(len(package_files_5aac["filenames"]), 3)
         self.assertEqual(package_files_5aac["version"], "2.2.0")
         self.assertEqual(package_files_5aac["epoch"], "0")
         self.assertEqual(package_files_5aac["release"], "lp155.3.4.1")
         self.assertEqual(
-            package_files_5aac["files"][0], "/usr/lib64/gstreamer-1.0/libgstaccurip.so"
+            package_files_5aac["filenames"][0],
+            "/usr/lib64/gstreamer-1.0/libgstaccurip.so",
         )
 
     def test_parse_metadata(self):
         primary_parser = PrimaryParser("tests/test-files/primary-sample-2.xml.gz")
         file_lists_parser = FilelistsParser(
             "tests/test-files/filelists-sample-2.xml.gz"
-        )
+        )  # TODO: change the paths using ENV variables
         rpm_metadata_parser = RPMMetadataParser(primary_parser, file_lists_parser)
         package_gen = rpm_metadata_parser.parse_packages_metadata()
         package1 = next(package_gen)
@@ -354,7 +371,7 @@ class LazyRepoSyncTest(unittest.TestCase):
             pkgid, "5f32047b55c0ca2dcc00a00270cd0b10df4df40c6cd9355eeff9b6aa0997657b"
         )
         self.assertEqual(package1["name"], "gstreamer-plugins-bad")
-        # capabilities
+        # capabilities1
         self.assertEqual(5, len(package1["provides"]))
         self.assertEqual(6, len(package1["requires"]))
         self.assertEqual(1, len(package1["enhances"]))
@@ -372,19 +389,21 @@ class LazyRepoSyncTest(unittest.TestCase):
         """
 
         primary_gz_test = "tests/test-files/primary-sample-10.xml.gz"
-        archs = {
+        noarch_count = 3
+        arches = {
             "x86_64": 1,
             "aarch64": 2,
             "ppc64le": 4,
-            "noarch": 3,
             "(x86_64|aarch64)": 3,
-            "(ppc64le|noarch)": 7,
             ".*": 10,
         }
-        for arch, count in archs.items():
+        for arch, count in arches.items():
+            if arch != ".*":
+                # 'noarch' is always parsed
+                count += noarch_count
             primary_parser = PrimaryParser(primary_gz_test, arch_filter=arch)
             parsed_packages = list(primary_parser.parse_primary())
-            self.assertEqual(len(parsed_packages), count)
+            self.assertEqual(count, len(parsed_packages))
 
     def test_arch_filter_file_lists(self):
         """
@@ -413,15 +432,16 @@ class LazyRepoSyncTest(unittest.TestCase):
         """
         primary_gz = "tests/test-files/centos-stream-9-primary.xml.gz"
         # The existing archs and their counts
+        noarch_count = 5340
         arch_count = {
             "x86_64": 8788,
-            "noarch": 5340,
             "i686": 2574,
         }
         for arch, count in arch_count.items():
+            count += noarch_count  # 'noarch' is always parsed
             primary_parser = PrimaryParser(primary_gz, arch_filter=arch)
             parsed_packages = primary_parser.parse_primary()
-            self.assertEqual(ilen(parsed_packages), count)
+            self.assertEqual(count, ilen(parsed_packages))
             del primary_parser
             del parsed_packages
 
@@ -486,6 +506,7 @@ class LazyRepoSyncTest(unittest.TestCase):
 
         filelists_parser.clear_cache()
 
+    @pytest.mark.first
     def test_parse_and_import_centos_stream_9_repo(self):
         """
         Test parsing and importing repository metadata of centos stream 9
@@ -505,7 +526,7 @@ class LazyRepoSyncTest(unittest.TestCase):
             repo_label=test_repo_label,
             source_url=test_repo_url,
         )
-        compatible_arches = _get_all_arches()
+        compatible_arches = get_all_arches()
 
         primary_gz = "tests/test-files/centos-stream-9-primary.xml.gz"
         filelists_gz = "tests/test-files/centos-stream-9-filelists.xml.gz"
@@ -516,7 +537,7 @@ class LazyRepoSyncTest(unittest.TestCase):
         )
         import_packages_in_batch_from_parser(
             rpm_metadata_parser,
-            batch_size=20,
+            batch_size=100,
             channel=channel,
             compatible_arches=compatible_arches,
         )
@@ -551,10 +572,19 @@ class LazyRepoSyncTest(unittest.TestCase):
         num_packages = 349  # ignoring the 15 src packages
         test_repo_label = "videolan_Tumbleweed"
         test_repo_url = "http://download.videolan.org/SuSE/Tumbleweed/"
-        channel_arch = "x86_64"  # This is only the channel arch, the imported packages could be of different archs
+        channel_arch = "x86_64"  # This is only the channel arch, the imported packages could be of different arches
         batch_size = 20
 
-        # TODO: where are ['packager'] information stored in the db
+        self._init_channel(test_channel_label, channel_arch=channel_arch)
+        channel = self._get_channel_info(test_channel_label)
+        self._create_content_source(
+            channel_label=test_channel_label,
+            repo_label=test_repo_label,
+            source_url=test_repo_url,
+        )
+        compatible_arches = get_all_arches()
+
+        # TODO: where is the 'packager' information stored in the db ?
         first_package_info = {
             "checksum": "213fb460c2aed866c2c3b8eef964329c81812aa862f86d076b6637e50918b23f",
             "name": "dcatools",
@@ -587,21 +617,8 @@ class LazyRepoSyncTest(unittest.TestCase):
             ],
         }
 
-        self._init_channel(test_channel_label, channel_arch=channel_arch)
-        channel = self._get_channel_info(test_channel_label)
-        self._create_content_source(
-            channel_label=test_channel_label,
-            repo_label=test_repo_label,
-            source_url=test_repo_url,
-        )
-        compatible_arches = _get_all_arches()
-
-        primary_gz = (
-            "tests/test-files/c12180-tumbleweed-primary.xml.gz"
-        )
-        filelists_gz = (
-            "tests/test-files/42b53c-tumbleweed-filelists.xml.gz"
-        )
+        primary_gz = "tests/test-files/c12180-tumbleweed-primary.xml.gz"
+        filelists_gz = "tests/test-files/42b53c-tumbleweed-filelists.xml.gz"
 
         primary_parser = PrimaryParser(primary_gz)
         filelists_parser = FilelistsParser(filelists_gz)
@@ -734,7 +751,6 @@ class LazyRepoSyncTest(unittest.TestCase):
         rhnSQL.commit()
         rhnSQL.closeDB()
         filelists_parser.clear_cache()
-        # TODO Test erratum/patches (or not..it's already tested in reposync and it's the exact same code)
 
     def test_parse_packages_file_ubuntu_jammy_main_amd64(self):
         """
@@ -866,7 +882,7 @@ class LazyRepoSyncTest(unittest.TestCase):
             repo_label=test_repo_label,
             source_url=test_repo_url,
         )
-        compatible_arches = _get_all_arches()
+        compatible_arches = get_all_arches()
 
         packages_file = fileutils.decompress_open(
             "tests/test-files/Packages_ubuntu_jammy_main_amd64.gz"
@@ -990,6 +1006,164 @@ class LazyRepoSyncTest(unittest.TestCase):
         rhnSQL.commit()
         rhnSQL.closeDB()
         translation_parser.clear_cache()
+
+    def test_get_channel_info_by_label(self):
+
+        channel_label_good = "test_channel"
+        channel_arch = "x86_64"
+        channel_label_bad = "test_channel_bad"
+
+        self._init_channel(channel_label_good, channel_arch)
+
+        channel_good = get_channel_info_by_label(channel_label_good)
+        channel_bad = get_channel_info_by_label(channel_label_bad)
+
+        self.assertIsNotNone(channel_good)
+        self.assertEqual("channel-x86_64", channel_good.get("arch"))
+        self.assertEqual("test_channel", channel_good.get("label"))
+        self.assertIsNone(channel_bad)
+
+    def test_get_compatible_arches(self):
+
+        channel_label_good = "test_channel"
+        channel_arch = "x86_64"
+        channel_label_bad = "test_channel_bad"
+        expected_arches = [
+            "noarch",
+            "i386",
+            "i486",
+            "i586",
+            "i686",
+            "athlon",
+            "x86_64",
+            "ia32e",
+            "amd64",
+        ]
+
+        self._init_channel(channel_label_good, channel_arch)
+
+        compatible_arches_good = get_compatible_arches(channel_label_good)
+        compatible_arches_bad = get_compatible_arches(channel_label_bad)
+        self.assertIsNotNone(compatible_arches_good)
+        self.assertEqual(expected_arches, compatible_arches_good)
+        self.assertIsNone(compatible_arches_bad)
+
+    def test_import_updates_leap_15(self):
+        """
+        Test import "update/leap/15.5" repository metadata to the db and
+        import the corresponding updates/patches
+        test_repo: https://download.opensuse.org/update/leap/15.5/oss/
+        """
+
+        channel_label = "test_channel"
+        channel_arch = "x86_64"
+        repo_label = "update_leap_15"
+        repo_url = "https://download.opensuse.org/update/leap/15.5/oss/"
+        updateinfo_file = "tests/test-files/update-leap-15-updateinfo.xml.gz"
+        available_packages = _load_json_file(
+            "tests/test-files/available-packages-update-leap-15.json"
+        )  # currently not having any effect
+        self._init_channel(channel_label, channel_arch)
+        self._create_content_source(
+            channel_label, repo_label=repo_label, source_url=repo_url
+        )
+        channel = self._get_channel_info(channel_label)
+        compatible_arches = get_compatible_arches(channel_label)
+        primary_gz = "tests/test-files/update-leap-15-primary.xml.gz"
+        filelists_gz = "tests/test-files/update-leap-15-filelists.xml.gz"
+        primary_parser = PrimaryParser(primary_gz)
+        filelists_parser = FilelistsParser(filelists_gz)
+        rpm_metadata_parser = RPMMetadataParser(
+            primary_parser=primary_parser, filelists_parser=filelists_parser
+        )
+        import_packages_in_batch_from_parser(
+            rpm_metadata_parser,
+            batch_size=20,
+            channel=channel,
+            compatible_arches=compatible_arches,
+        )
+        notices = get_updates(updateinfo_file)
+        updates_importer = UpdatesImporter(
+            channel_label=channel_label, available_packages=available_packages
+        )
+        updates_importer.import_updates(notices)
+        del updates_importer
+
+        # Testing results
+        pack1_name = "rpmlint-mini"
+        pack2_name = "openSUSE-build-key"
+        rhnSQL.initDB()
+        fetch_errata_count_query = rhnSQL.prepare(
+            """
+        SELECT COUNT(id) FROM rhnErrata"""
+        )
+        fetch_errata_package_count = rhnSQL.prepare(
+            """
+        SELECT COUNT(*) FROM rhnErrataPackage"""
+        )
+        fetch_channel_errata_count = rhnSQL.prepare(
+            """
+        SELECT COUNT(*) FROM rhnChannelErrata"""
+        )
+        fetch_errata_info_query = rhnSQL.prepare(
+            """
+                    select e.id, e.advisory_name, e.advisory_rel, e.advisory_type, e.advisory_status, e.product, 
+                    e.synopsis, e.description 
+                    
+                    from rhnErrata e, 
+                    rhnPackage p, 
+                    rhnPackageName pn, 
+                    rhnErrataPackage errpack 
+                    
+                    where pn.id = p.name_id 
+                    and errpack.package_id = p.id 
+                    and errpack.errata_id = e.id 
+                    and pn.name = :package_name"""
+        )
+        fetch_errata_count_query.execute()
+        errata_count = fetch_errata_count_query.fetchone()[0]
+        fetch_errata_package_count.execute()
+        errata_package_count = fetch_errata_package_count.fetchone()[0]
+        fetch_channel_errata_count.execute()
+        channel_errata_count = fetch_channel_errata_count.fetchone()[0]
+        fetch_errata_info_query.execute(package_name=pack1_name)
+        pack1_errata = fetch_errata_info_query.fetchone_dict()
+        fetch_errata_info_query.execute(package_name=pack2_name)
+        pack2_errata = fetch_errata_info_query.fetchone_dict()
+        rhnSQL.closeDB()
+
+        self.assertEqual(24, errata_count)
+        self.assertEqual(24, channel_errata_count)
+        self.assertEqual(292, errata_package_count)
+        # pack 1 errata
+        self.assertEqual("openSUSE-2023-106", pack1_errata.get("advisory_name"))
+        self.assertEqual("Bug Fix Advisory", pack1_errata.get("advisory_type"))
+        self.assertEqual("stable", pack1_errata.get("advisory_status"))
+        self.assertEqual(1, pack1_errata.get("advisory_rel"))
+        self.assertEqual("openSUSE Leap 15.5 Update", pack1_errata.get("product"))
+        self.assertEqual(
+            "Recommended update for rpmlint-mini", pack1_errata.get("synopsis")
+        )
+        self.assertEqual(
+            "\nThis update for rpmlint-mini is a test update for Leap 15.5.\n",
+            pack1_errata.get("description"),
+        )
+        # pack 2 errata
+        self.assertEqual("openSUSE-2023-120", pack2_errata.get("advisory_name"))
+        self.assertEqual("Bug Fix Advisory", pack2_errata.get("advisory_type"))
+        self.assertEqual("stable", pack2_errata.get("advisory_status"))
+        self.assertEqual(1, pack2_errata.get("advisory_rel"))
+        self.assertEqual("openSUSE Leap 15.5 Update", pack2_errata.get("product"))
+        self.assertEqual(
+            "Recommended update for openSUSE-build-key", pack2_errata.get("synopsis")
+        )
+        self.assertEqual(
+            "This update for openSUSE-build-key fixes the following issues:\n\n- "
+            "gpg-pubkey-3fa1d6ce-63c9481c.asc: new SLES 15 4k RSA key.\n",
+            pack2_errata.get("description"),
+        )
+
+        filelists_parser.clear_cache()
 
 
 if __name__ == "__main__":

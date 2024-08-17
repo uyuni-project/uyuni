@@ -8,7 +8,8 @@ import shutil
 import xml.etree.ElementTree as ET
 from xml.dom import pulldom
 
-S_IFDIR = 0o40000  # In octal
+# In octal
+S_IFDIR = 0o40000
 S_IFREG = 0o100000
 
 
@@ -36,7 +37,7 @@ def _cache_xml_node(node, cache_dir):
         pkg_files.write(xml_content)
 
 
-def _map_filetype(filetype):
+def map_filetype(filetype):
     """
     Map the file type with the corresponding value.
     For more info, see: https://en.wikibooks.org/wiki/C_Programming/POSIX_Reference/sys/stat.h#Member_constants
@@ -45,7 +46,7 @@ def _map_filetype(filetype):
     filetype_map = {
         "dir": S_IFDIR,
     }
-    # TODO: there's a type "ghost", to wat to map it
+    # TODO: there's a type "ghost", how to map it
     return filetype_map.get(filetype, S_IFREG)
 
 
@@ -92,7 +93,7 @@ class FilelistsParser:
 
             self.parsed = True
 
-    def get_package_filelist(self, pkgid):
+    def get_package_filelist(self, pkgid) -> dict:
         """
         Read the filelist information for the package with the given pkgid,
         parse the information and return a dict containing the filelist info
@@ -117,8 +118,7 @@ class FilelistsParser:
 
             filelist = {}
             filelist["pkgid"] = pkgid
-            # filelist["files"]: list[dict] = [("filename" "filetype")] TODO complete filemodes
-            filelist["files"] = []
+            filelist["filenames"] = []
             filelist["filetypes"] = []
             # Setting version information (normally it is the same as the one in primary.xml file for the same package)
             for attr in ("ver", "epoch", "rel"):
@@ -129,8 +129,8 @@ class FilelistsParser:
 
             for file in root[1:]:
                 # Setting file mode
-                filetype = _map_filetype(file.attrib.get("type"))
-                filelist["files"].append(file.text)
+                filetype = map_filetype(file.attrib.get("type"))
+                filelist["filenames"].append(file.text)
                 filelist["filetypes"].append(filetype)
 
         return filelist
