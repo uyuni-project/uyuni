@@ -26,8 +26,9 @@ def batched(iterable, n):
         yield batch
 
 
-def import_packages_updates(channel, repository, available_packages):
+def import_repository_updates(channel, repository, available_packages: dict):
     """
+    Import the updates/patches of the given repo
     :available_packages: a dict of available packages in the format: { name-epoch-version-release-arch : 1 }
     """
     if not isinstance(repository, RPMRepo):
@@ -35,21 +36,24 @@ def import_packages_updates(channel, repository, available_packages):
         return
     updateinfo_url = repository.find_metadata_file_url("updateinfo")
     if not updateinfo_url:
-        logging.debug("Couldn't find updateinfo url in repository %s", repository.name)
+        logging.debug(
+            "Couldn't find 'updateinfo' file in repository %s", repository.name
+        )
     else:
-        # TODO possible exception handling
         updateinfo_file = updates_util.download_file(updateinfo_url)
-        _, notices = updates_util.get_updates(updateinfo_file)
-        patches_importer = UpdatesImporter(
+        if not updateinfo_file:
+            logging.error("Couldn't download updateinfo file: %s", updateinfo_url)
+            return
+        notices = updates_util.get_updates(updateinfo_file)
+        updates_importer = UpdatesImporter(
             channel_label=channel["label"], available_packages=available_packages
         )
-        patches_importer.import_updates(notices)
+        updates_importer.import_updates(notices)
         # Deleting the patches_importer will call the rhnSQL.closeDB() and free up a db connection
-        del patches_importer
+        del updates_importer
         os.remove(updateinfo_file)
 
 
-# TODO: group channel and channel label together
 def import_repository_packages_in_batch(
     repository, batch_size, channel=None, compatible_arches=None, import_updates=False
 ):
@@ -58,9 +62,8 @@ def import_repository_packages_in_batch(
     """
     total_failed = 0
     packages = repository.get_packages_metadata()  # packages is a generator
-
+    available_packages = {}
     for i, batch in enumerate(batched(packages, batch_size)):
-        available_packages = {}
         failed, _, avail_pkgs = import_package_batch(
             to_process=batch,
             compatible_archs=compatible_arches,
@@ -70,17 +73,15 @@ def import_repository_packages_in_batch(
         )
         total_failed += failed
         available_packages.update(avail_pkgs)
-        # Importing updates/patches
-        # TODO: for the updates import, download the updateinfo file once and pass it each time to the update function
-        #  currently we're downloading the file each time in the loop (for each batch)
-        if import_updates and isinstance(repository, RPMRepo):
-            import_packages_updates(
-                channel=channel,
-                repository=repository,
-                available_packages=available_packages,
-            )
+    # Importing updates/patches)
+    if import_updates and isinstance(repository, RPMRepo):
+        import_repository_updates(
+            channel=channel,
+            repository=repository,
+            available_packages=available_packages,
+        )
 
-        del available_packages
+    del available_packages
 
     return total_failed
 
@@ -94,14 +95,13 @@ def import_packages_in_batch_from_parser(
     Return a tuple of (failed, available_packages)
     ( available_packages: a dict of available packages in the format: {name-epoch-version-release-arch:1} )
     """
-    if not (
-        isinstance(parser, RPMMetadataParser) or isinstance(parser, DEBMetadataParser)
-    ):
+    if not isinstance(parser, (RPMMetadataParser, DEBMetadataParser)):
         raise ValueError(
             "Invalid parser. Should be of type RPMMetadataParser or DEBMetadataParser"
         )
     total_failed = 0
     packages = parser.parse_packages_metadata()  # packages is a generator
+    # TODO: (enhancement) can we add parallelism/multithreading here ? discuss with team
     for i, batch in enumerate(batched(packages, batch_size)):
         failed, _, _ = import_package_batch(
             to_process=batch,
@@ -150,7 +150,6 @@ def chunks(seq, n):
     return (seq[i : i + n] for i in range(0, len(seq), n))
 
 
-# TODO: 'to_disassociate'
 def import_package_batch(
     to_process, compatible_archs=None, batch_index=-1, to_link=True, channel=None
 ):
@@ -163,25 +162,19 @@ def import_package_batch(
         compatible_archs = []
     available_packages = {}
     skipped = 0
-    rhnSQL.closeDB(
-        committing=False, closing=False
-    )  # TODO: is this correct (reposync does this already)
+    rhnSQL.closeDB(committing=False, closing=False)
     rhnSQL.initDB()
 
     backend = SQLBackend()
     mpm_bin_batch = importLib.Collection()  # bin packages
     mpm_src_batch = importLib.Collection()  # src packages
 
-    # affected_channels = []  # TODO: not sure if we need it
+    # affected_channels = []  # TODO: not sure if we need it - discuss with team
 
-    upload_caller = "server.app.uploadPackage"  # TODO: not sure what this exactly do
-    # pylint: disable-next=invalid-name
-    # with cfg_component("server.susemanager") as CFG:
-    #     mount_point = CFG.MOUNT_POINT
+    upload_caller = "server.app.uploadPackage"
     import_count = 0
     batch_size = len(to_process)
     initial_size = batch_size
-    # all_packages = set()  # TODO: see reposync
 
     # Formatting the packages for importLib
     for package in to_process:
@@ -191,15 +184,18 @@ def import_package_batch(
         # pylint: disable=W0703,W0706
         try:
             import_count += 1
-            if isinstance(package, rpmBinaryPackage) or isinstance(
-                package, debBinaryPackage
-            ):
+            if isinstance(package, (rpmBinaryPackage, debBinaryPackage)):
                 mpm_bin_batch.append(package)
             else:
                 # it is rpmSourcePacakge
                 mpm_src_batch.append(package)
             if compatible_archs and package.arch not in compatible_archs:
                 # skip packages with incompatible architecture
+                logging.debug(
+                    "Skipping package %s with incompatible arch %s",
+                    package.get("name"),
+                    package.get("arch"),
+                )
                 skipped += 1
                 continue
             epoch = ""
@@ -214,16 +210,17 @@ def import_package_batch(
                 package["release"],
                 package["arch"],
             )
-            # TODO: this is how reposync actually does, the 'available_packages' dict will be used by the patches import
-            #  later on. Is this the most memory efficient approach: storing thousands of pacakges' evr in memory for
-            #  later processing ?
+
+            # the available_packages dict will be used later in the updates import
+            # It holds information about all the imported packages
+            # TODO discuss with team the use of it
             available_packages[ident] = 1
         except (KeyboardInterrupt, rhnSQL.SQLError):
             raise
         except Exception as e:
             e_message = f"Exception: {e}"
             log2(0, 1, e_message, stream=sys.stderr)
-            raise e  # Ignore the package and continue
+            raise e
 
     # Importing packages
     # pylint: disable=W0703,W0706
@@ -244,7 +241,6 @@ def import_package_batch(
             importer.run()
             rhnSQL.commit()
             del importer.batch
-            del mpm_bin_batch
 
         # Importing the batch of source packages
         if mpm_src_batch:
@@ -262,7 +258,6 @@ def import_package_batch(
             src_importer.setUploadForce(1)
             src_importer.run()
             rhnSQL.commit()
-            del mpm_src_batch
 
     except (KeyboardInterrupt, rhnSQL.SQLError):
         raise
@@ -271,43 +266,40 @@ def import_package_batch(
         log2(0, 1, e_message, stream=sys.stderr)
         raise e  # Ignore the package and continue
     finally:
-        # Cleanup if cache..if applied
-        pass
+        # Disassociate packages TODO: discuss with team the use if this (see reposync)
 
-    # Disassociate packages TODO
+        # Linking packages to the channel
+        if to_link and channel:
+            log(0, "")
+            log(0, "  Linking packages to the channel.")
 
-    # TODO: update the linking process and condition checking (see how reposync handles it, each package a part)
-    if to_link and channel:
-        log(0, "")
-        log(0, "  Linking packages to the channel.")
-
-        # Packages to append to channel
-        # TODO: can we do this reformat in a previous stage to avoid looping again over the lists (it depends on the to_link value)
-        import_batches = list(
-            chunks(
-                [
-                    associate_package(pack, channel["label"], channel)
-                    for pack in to_process
-                ],
-                1000,
+            # Packages to append to channel
+            import_batches = list(
+                chunks(
+                    [
+                        associate_package(pack, channel["label"], channel)
+                        for pack in list(mpm_bin_batch) + list(mpm_src_batch)
+                    ],
+                    1000,
+                )
             )
-        )
-        count = 0
-        for import_batch in import_batches:
-            backend = SQLBackend()
-            caller = "server.app.yumreposync"
-            importer = ChannelPackageSubscription(
-                import_batch, backend, caller=caller, repogen=False
-            )
-            importer.run()
-            backend.commit()
-            del importer.batch
-            count += len(import_batch)
-            # pylint: disable-next=consider-using-f-string
-            log(0, "    {} packages linked".format(count))
+            count = 0
+            for import_batch in import_batches:
+                backend = SQLBackend()
+                caller = "server.app.yumreposync"
+                importer = ChannelPackageSubscription(
+                    import_batch, backend, caller=caller, repogen=False
+                )
+                importer.run()
+                backend.commit()
+                del importer.batch
+                count += len(import_batch)
+                # pylint: disable-next=consider-using-f-string
+                log(0, "    {} packages linked".format(count))
 
-        # package.clear_header()  # TODO See reposync
-    rhnSQL.closeDB()
+        rhnSQL.closeDB()
+    del mpm_bin_batch
+    del mpm_src_batch
     # pylint: disable-next=consider-using-f-string
     log(0, " Pacakge batch #{} completed...".format(batch_index))
 

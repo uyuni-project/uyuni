@@ -34,7 +34,7 @@ class UpdatesImporter:
     def __init__(
         self,
         channel_label,
-        available_packages,
+        available_packages,  # TODO: discuss with team the use of this variable: available_packages
         repo_type=None,
         fail=False,
         no_errata=False,
@@ -50,7 +50,6 @@ class UpdatesImporter:
         self.no_errata = no_errata
         self.force_all_errata = force_all_errata
         self.deep_verify = deep_verify
-        self.regen = False  # TODO what's this ?
         self.all_errata = set()
         self.error_messages = []
         self.available_packages = available_packages
@@ -88,7 +87,7 @@ class UpdatesImporter:
                 processed_updates_count = self.upload_updates(notices)
             elif notices_type == "patches":
                 # TODO: Not handled
-                return
+                return None
 
             if processed_updates_count:
                 #  some errata could get retracted and this needs to be reflected in the newest package cache
@@ -140,7 +139,6 @@ class UpdatesImporter:
             log(0, "    Syncing %s new patch(es) to channel." % len(batch))
             importer = ErrataImport(batch, backend)
             importer.run()
-            self.regen = True
         elif notices:
             log(0, "    No new patch to sync.")
         return processed_updates

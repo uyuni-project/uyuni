@@ -8,6 +8,8 @@ from lzreposync.db_utils import (
     get_compatible_arches,
     get_channel_info_by_label,
     get_all_arches,
+    create_channel,
+    ChannelAlreadyExistsException,
 )
 from lzreposync.deb_repo import DebRepo
 from lzreposync.import_utils import (
@@ -142,7 +144,7 @@ def main():
     if args.url:
         if not args.repo_type:
             print("ERROR: --type (yum/deb) must be specified when using --url")
-            return  # TODO: maybe add some custom exception
+            return
         if args.repo_type == "yum":
             repo = RPMRepo(args.name, args.cache, args.url, arch)
         elif args.repo_type == "deb":
@@ -160,13 +162,11 @@ def main():
         # No url specified
         if args.channel:
             channel_label = args.channel
-            channel = get_channel_info_by_label(
-                channel_label
-            )  # TODO handle None exception
+            channel = get_channel_info_by_label(channel_label)
             if not channel:
                 logging.error("Couldn't fetch channel with label %s", channel_label)
                 return
-            compatible_arches = get_compatible_arches(int(channel["id"]))
+            compatible_arches = get_compatible_arches(channel_label)
             if args.arch and args.arch != ".*" and args.arch not in compatible_arches:
                 logging.error(
                     "Not compatible arch: %s for channel: %s",

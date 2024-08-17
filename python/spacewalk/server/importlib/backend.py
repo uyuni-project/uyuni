@@ -1213,6 +1213,7 @@ class Backend:
                     field = "errata_id"
 
                 # Now we know in which field to look for changes
+                # pylint: disable-next=possibly-used-before-assignment
                 for erratum_id in values_hash[field]:
                     affected_errata_ids[erratum_id] = None
 

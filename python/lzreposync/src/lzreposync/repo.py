@@ -10,12 +10,11 @@ class Repo(metaclass=abc.ABCMeta):
 
     def __init__(self, name, cache_path, repository, arch_filter=".*", repo_type="rpm"):
         self.name = name
-        self.cache_dir = os.path.join(cache_path, str(name))
+        self.cache_dir = cache_path
         if not os.path.exists(self.cache_dir):
             os.mkdir(self.cache_dir)
         self.repository = repository
-        if not self.repository.endswith("/"):
-            # TODO there might be a better solution
+        if self.repository and not self.repository.endswith("/"):
             self.repository += "/"
         self.arch_filter = arch_filter
         self.metadata_files = None

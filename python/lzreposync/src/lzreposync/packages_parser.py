@@ -4,21 +4,48 @@ import logging
 import sys
 from urllib.parse import urljoin
 
-from lzreposync.deb_utils import LzDebHeader
 from uyuni.common.rhn_pkg import InvalidPackageError
 from uyuni.common.usix import raise_with_tb
+
+
+#  pylint: disable-next=missing-class-docstring
+class LzDebHeader:
+    def __init__(self, hdr):
+        self.packaging = "deb"
+        self.signatures = []
+        self.is_source = 0
+        self.deb = None
+        self.hdr = hdr
+
+    @staticmethod
+    def is_signed():
+        return 0
+
+    def __getitem__(self, name):
+        return self.hdr.get(str(name))
+
+    def __setitem__(self, name, item):
+        self.hdr[name] = item
+
+    def __delitem__(self, name):
+        del self.hdr[name]
+
+    def __getattr__(self, name):
+        return getattr(self.hdr, name)
+
+    def __len__(self):
+        return len(self.hdr)
 
 
 #  pylint: disable-next=missing-class-docstring
 class PackagesParser:
     def __init__(self, packages_file, repository=""):
         """
-        packages_file: accepted formats: text # TODO accept it in gz and xz formats
+        packages_file: accepted formats: TextIOWrapper (uncompressed file object)
         repository: it is the base url of the repository, that contains the "/dists" and "/pool" right under it
         """
-        # TODO: check file format
         self.packages_file = packages_file
-        if not repository.endswith("/"):
+        if repository and not repository.endswith("/"):
             repository += "/"
         self.repo = repository
         self.parsed_packages = 0
@@ -35,7 +62,6 @@ class PackagesParser:
         """
         Lazy parsing of the Packages file
         packages_file: currently an "_io.TextIOWrapper" format (or any file-like object)
-        TODO: can be renamed to a more relevant function name
         """
         curr_package = {}
         for line in packages_file:
@@ -109,3 +135,4 @@ class PackagesParser:
         except Exception:
             e = sys.exc_info()[1]
             raise_with_tb(InvalidPackageError(e), sys.exc_info()[2])
+            return None
