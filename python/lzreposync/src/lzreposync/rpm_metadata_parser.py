@@ -13,10 +13,8 @@ from spacewalk.server.importlib import mpmSource
 def set_fake_file_data(package, files_count):
     """
     Fake data related to the files. Eg: 'filedevices', 'fileinodes', 'filemodes', ect
-    TODO: This is just a dump implementation to make things work, it can be enhanced and generalized later on
+    TODO: (enhancement) can we fake the data in a better way
     """
-    # TODO search how we can set the correct values
-
     package["header"]["filedevices"] = [1 for _ in range(files_count)]
     package["header"]["fileinodes"] = [1 for i in range(files_count)]
     # package["header"]["filemodes"] = [16877 for _ in range(files_count)]
@@ -33,6 +31,12 @@ def set_fake_file_data(package, files_count):
     package["header"]["fileflags"] = [0 for _ in range(files_count)]
     package["header"]["fileverifyflags"] = [4294967295 for _ in range(files_count)]
     package["header"]["filelangs"] = [b"" for _ in range(files_count)]
+
+    package["header"]["rpmversion"] = "1"
+    package["header"]["payloadformat"] = "cpio"
+    package["header"]["cookie"] = "cookie_test"
+    package["header"]["sigsize"] = 10000
+    package["header"]["sigmd5"] = "sigmd5_test"
 
     return package
 
@@ -69,15 +73,32 @@ class RPMMetadataParser:
         for (
             package
         ) in self.primary_parser.parse_primary():  # parse_primary() is a generator
-            package["header"]["filenames"] = self.filelists_parser.get_package_filelist(
+            parsed_filenames = self.filelists_parser.get_package_filelist(
                 package["checksum"]
-            )["files"]
-            package["header"]["filemodes"] = self.filelists_parser.get_package_filelist(
+            )["filenames"]
+            parsed_filetypes = self.filelists_parser.get_package_filelist(
                 package["checksum"]
             )["filetypes"]
+            if (
+                package["header"].get("filenames")
+                and package["header"].get("filetypes")
+                and len(package["header"].get("filenames"))
+                == len(package["header"].get("filetypes"))
+            ):
+                # Some file information has already been parsed from the Primary file.
+                # Remove duplicates
+                filenames = set(
+                    parsed_filenames
+                )  # using hash set will be faster for searching in O(1) time
+                for i in range(len(package["header"].get("filenames"))):
+                    if package["header"].get("filenames")[i] not in filenames:
+                        parsed_filenames.append(package["header"].get("filenames")[i])
+                        parsed_filetypes.append(package["header"].get("filetypes")[i])
+
+            package["header"]["filenames"] = parsed_filenames
+            package["header"]["filemodes"] = parsed_filetypes
             files_count = len(package["header"]["filenames"])
             package = set_fake_file_data(package, files_count)
-
             logging.debug(
                 # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                 "Yielding pacakge {}".format(package["checksum"])
@@ -97,6 +118,7 @@ class RPMMetadataParser:
                     expand_full_filelist=False,
                     remote_path=package["remote_path"],
                 )
+                rpm_package.arch = package["header"]["arch"]
 
                 yield rpm_package
 
