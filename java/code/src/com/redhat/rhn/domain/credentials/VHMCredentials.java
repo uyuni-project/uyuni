@@ -17,9 +17,9 @@ package com.redhat.rhn.domain.credentials;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.VIRT_HOST_MANAGER)

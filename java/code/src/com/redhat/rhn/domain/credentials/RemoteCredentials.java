@@ -18,8 +18,8 @@ package com.redhat.rhn.domain.credentials;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * Base class for all the credentials that can be used by {@link com.redhat.rhn.manager.content.ContentSyncManager}

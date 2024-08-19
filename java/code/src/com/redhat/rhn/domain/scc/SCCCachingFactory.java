@@ -53,7 +53,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 
 /**
  * Factory class for populating and reading from SCC caching tables.

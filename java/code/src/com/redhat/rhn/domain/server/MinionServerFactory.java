@@ -38,7 +38,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 
 /**
  * MinionFactory - the singleton class used to fetch and store

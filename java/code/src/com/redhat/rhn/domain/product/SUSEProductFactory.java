@@ -43,7 +43,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 
 /**
  * SUSEProductFactory - the class used to fetch and store

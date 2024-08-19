@@ -17,9 +17,9 @@ package com.redhat.rhn.domain.server.ansible;
 
 import com.redhat.rhn.domain.server.MinionServer;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 /**
  * Ansible Playbook path

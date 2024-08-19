@@ -72,8 +72,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
-import javax.persistence.Tuple;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Tuple;
 
 /**
  * ServerFactory - the singleton class used to fetch and store

@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 
 /**
  * Singleton representing Virtual Host Manager hibernate factory.
