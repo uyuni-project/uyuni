@@ -131,7 +131,6 @@ end
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
-  log "Current url is #{current_url}"
   if scenario.failed?
     begin
       if web_session_is_active?
