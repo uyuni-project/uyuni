@@ -162,14 +162,11 @@ def handle_screenshot_and_relog(scenario, current_epoch)
     page.driver.browser.save_screenshot(path)
     attach path, 'image/png'
     # Attach additional information
-    scenario_start_time_str = Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')
-    current_epoch_str = Time.at(current_epoch).strftime('%H:%M:%S:%L')
-    text_attachment = "#{scenario_start_time_str} - #{current_epoch_str} | Current URL: #{current_url}"
-    attach text_attachment, 'text/plain'
+    attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
   rescue StandardError => e
     warn "Error message: #{e.message}"
   ensure
-    Timeout.timeout(Capybara.default_max_wait_time) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       relog_and_visit_previous_url
     end
   end
