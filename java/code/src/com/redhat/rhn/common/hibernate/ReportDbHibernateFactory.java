@@ -46,7 +46,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.persistence.FlushModeType;
+import jakarta.persistence.FlushModeType;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
