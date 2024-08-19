@@ -15,7 +15,7 @@
             "totalCpuThreads": 16,
             "type": "vmware",
             "vms": {
-                "sles12sp1": "42302ff8-cee1-36cb-ea66-7137b8f228d9",
+                "sles12sp5": "42302ff8-cee1-36cb-ea66-7137b8f228d9",
                 "vCenter": "564d6d90-459c-2256-8f39-3cb2bd24b7b0"
             }
         },

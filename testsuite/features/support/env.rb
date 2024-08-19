@@ -81,7 +81,7 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client.read_timeout = 240
     # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048 remote-debugging-port=9222]
     chrome_options << 'headless' unless $debug_mode
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
@@ -353,14 +353,6 @@ Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_ssh_minion']
 end
 
-Before('@debian10_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_minion']
-end
-
-Before('@debian10_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_ssh_minion']
-end
-
 Before('@debian11_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_minion']
 end
@@ -383,14 +375,6 @@ end
 
 Before('@sle12sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_ssh_minion']
-end
-
-Before('@sle15sp1_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_minion']
-end
-
-Before('@sle15sp1_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_ssh_minion']
 end
 
 Before('@sle15sp2_minion') do
