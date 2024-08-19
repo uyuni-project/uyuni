@@ -18,15 +18,18 @@ Feature: Smoke tests for <client>
   - Install spacecmd from client tools
   - Enable Prometheus and Prometheus Exporter
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Create <client> user
+    Given I create a user with name "<client>" and password "linux"
+
+  Scenario: Log in as <client> user
+    Given I am authorized as "<client>" with password "linux"
 
   Scenario: Check that Software package refresh works on a <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I wait until event "Package List Refresh scheduled by <client>" is completed
 
   Scenario: Check that Hardware Refresh button works on a <client>
     Given I am on the Systems overview page of this "<client>"
@@ -36,7 +39,7 @@ Feature: Smoke tests for <client>
     And I wait until I see "Refresh Hardware List" text
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until event "Hardware List Refresh scheduled by <client>" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "<client>"
 
   Scenario: Client <client> grains are displayed correctly on the details page
@@ -79,12 +82,11 @@ Feature: Smoke tests for <client>
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled by <client>" is completed
     And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion
   Scenario: Remove package from <client>
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "List / Remove"
@@ -94,7 +96,7 @@ Feature: Smoke tests for <client>
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled by <client>" is completed
     And I reboot the "<client>" if it is a transactional system
 
   Scenario: Run a remote command on <client> minion
@@ -124,6 +126,17 @@ Feature: Smoke tests for <client>
     Then I should see a "Channel Subscriptions successfully changed for" text
     And I reboot the "<client>" if it is a transactional system
 
+@skip_for_sle_micro
+  Scenario: Reboot the <client> and wait until reboot is completed
+    Given I am on the Systems overview page of this "<client>"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    And I wait at most 600 seconds until event "System reboot scheduled by <client>" is completed
+    Then I should see a "This action's status is: Completed" text
+
   Scenario: Deploy the configuration file to <client>
     When I follow the left menu "Configuration > Channels"
     And I wait until I see "Centrally Managed Configuration Channel" text
@@ -143,16 +156,6 @@ Feature: Smoke tests for <client>
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
 
-  Scenario: Reboot the <client> and wait until reboot is completed
-    Given I am on the Systems overview page of this "<client>"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
-    Then I should see a "This action's status is: Completed" text
-
 @skip_for_sle_micro
   # The client tools of SLE Micro (intentionally) do not contain spacecmd
   Scenario: Install spacecmd from the client tools on the <client>
@@ -167,17 +170,19 @@ Feature: Smoke tests for <client>
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled by <client>" is completed
 
 @skip_for_sle_micro_ssh_minion
   Scenario: Enable Prometheus Node exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
+    And I wait until I see "Salt Formulas" text
     And I check the "prometheus-exporters" formula
     And I click on "Save"
     Then I wait until I see "Formula saved" text
     # Configure Prometheus exporter formula
     When I follow "Prometheus Exporters" in the content area
+    And I wait until I see "configure Prometheus exporters" text
     And I click on "Expand All Sections"
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "node" exporter
@@ -200,9 +205,10 @@ Feature: Smoke tests for <client>
   Scenario: Apply highstate for the Prometheus exporters on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "States" in the content area
+    And I wait until I see "Apply Highstate" text
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled by <client>" is completed
     And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion

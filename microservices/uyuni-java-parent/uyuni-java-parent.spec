@@ -16,7 +16,7 @@
 #
 
 Name:           uyuni-java-parent
-Version:        5.0.4
+Version:        5.0.5
 Release:        0
 Summary:        Parent POM for all Uyuni Maven components
 License:        GPL-2.0-only

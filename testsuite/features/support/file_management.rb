@@ -35,6 +35,7 @@ end
 #
 # @param node [Node] The node on which the folder should be deleted.
 # @param folder [String] The name of the folder to be deleted.
+# @return [Integer] The exit code of the operation.
 def folder_delete(node, folder)
   node.folder_delete(folder)
 end

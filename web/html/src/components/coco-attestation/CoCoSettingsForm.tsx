@@ -94,7 +94,7 @@ class CoCoSettingsForm extends React.Component<Props, State> {
         <BootstrapPanel>
           <div className="form-horizontal">
             <div className="form-group">
-              <div className="col-md-offset-3 col-md-6">
+              <div className="col-md-offset-3 offset-md-3 col-md-6">
                 <Toggler
                   className="checkbox"
                   text={t("Enable attestation")}
@@ -135,7 +135,7 @@ class CoCoSettingsForm extends React.Component<Props, State> {
             </div>
             {this.props.showOnScheduleOption && (
               <div className="form-group">
-                <div className="col-md-offset-3 col-md-6">
+                <div className="col-md-offset-3 offset-md-3 col-md-6">
                   <Toggler
                     className="checkbox"
                     text={t("Peform attestation on a schedule")}

@@ -53,6 +53,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -121,7 +123,8 @@ public class AppStreamsController {
     }
 
     private static Date getScheduleDate(LocalDateTime dateTime) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 
@@ -146,7 +149,7 @@ public class AppStreamsController {
                 .map(channel -> new ChannelAppStreamsResponse(
                     channel,
                     AppStreamsManager.listChannelAppStreams(channel.getId()),
-                    server
+                    server::hasAppStreamModuleEnabled
                 ))
                 .collect(Collectors.toList());
         data.put("channelsAppStreams", GSON.toJson(channelsAppStreams));

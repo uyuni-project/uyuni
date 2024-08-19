@@ -28,6 +28,15 @@ Feature: Bootstrap a Salt minion via the GUI
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"
 
+@susemanager
+  Scenario: Use correct kernel image on the SLES minion
+    When I remove package "kernel-default-base" from this "sle_minion"
+    And I install package "kernel-default" on this "sle_minion"
+
+@susemanager
+  Scenario: Reboot the SLES minion to use the new kernel
+    When I reboot the "sle_minion" host through SSH, waiting until it comes back
+
 @proxy
   Scenario: Check connection from minion to proxy
     Given I am on the Systems overview page of this "sle_minion"

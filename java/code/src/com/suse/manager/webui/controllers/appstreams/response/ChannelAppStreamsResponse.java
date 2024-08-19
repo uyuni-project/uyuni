@@ -16,32 +16,33 @@ package com.suse.manager.webui.controllers.appstreams.response;
 
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.server.Server;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiPredicate;
 
 public class ChannelAppStreamsResponse {
 
     /**
      * Constructs a ChannelAppStreamsResponse object based on the provided parameters.
      *
-     * @param channelIn         The channel that the AppStreams belong to.
-     * @param appStreamsIn      The set of AppStream objects associated with the channel.
-     * @param serverIn          The Server object used to check module enablement.
+     * @param channelIn               The channel that the AppStreams belong to.
+     * @param appStreamsIn            The set of AppStream objects associated with the channel.
+     * @param appStreamEnabledChecker The object used to check module enablement.
      */
     public ChannelAppStreamsResponse(
         Channel channelIn,
         List<AppStream> appStreamsIn,
-        Server serverIn
+        BiPredicate<String, String> appStreamEnabledChecker
     ) {
         channel = new ChannelJson(channelIn);
         appStreams = new HashMap<>();
         appStreamsIn.forEach(it -> {
-            var module = new AppStreamModuleResponse(it, serverIn);
+            var enabled = appStreamEnabledChecker.test(it.getName(), it.getStream());
+            var module = new AppStreamModuleResponse(it, enabled);
             if (appStreams.containsKey(it.getName())) {
                 appStreams.get(it.getName()).add(module);
             }

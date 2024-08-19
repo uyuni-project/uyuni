@@ -53,6 +53,10 @@ status_uptime:
 reboot_required:
   mgrcompat.module_run:
     - name: reboot_info.reboot_required
+    {%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease'] < 8 %}
+    - onlyif:
+      - which needs-restarting
+    {%- endif %}
 {%- endif %}
 
 kernel_live_version:

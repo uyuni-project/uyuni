@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC.
+# Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all steps concerning content lifecycle and hostname management
@@ -58,8 +58,12 @@ When(/^I click the "([^"]*)" item (.*?) button$/) do |name, action|
     when /delete/ then 'i[contains(@class, \'fa-trash\')]'
     else raise ScriptError, "Unknown element with description '#{action}'"
     end
-  xpath = "//td[contains(text(), '#{name}')]/ancestor::tr/td/div/button/#{button}"
-  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).click
+
+  td_element = find(:xpath, "//td[contains(text(), '#{name}')]")
+  raise ScriptError, "xpath: #{name} item not found" unless td_element
+
+  button_element = td_element.find(:xpath, "./ancestor::tr/td/button/#{button} | ./ancestor::tr/td/div/button/#{button}")
+  raise ScriptError, "xpath: #{action} button not found" unless button_element.click
 end
 
 When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|

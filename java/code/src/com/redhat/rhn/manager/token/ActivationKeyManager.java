@@ -37,8 +37,12 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.Scrubber;
+import com.redhat.rhn.frontend.xmlrpc.DuplicateAppStreamException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchAppStreamException;
+import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -59,6 +63,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ActivationKeyManager
@@ -564,5 +569,97 @@ public class ActivationKeyManager {
                 ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME)) {
             addConfigMgmtPackages(key);
         }
+    }
+
+    /**
+     * Checks if a specific app stream module is enabled for the given activation key and channel.
+     *
+     * @param activationKey the activation key containing the registration token for matching
+     * @param channel the channel to check
+     * @param module the name of the appStream module to check
+     * @param stream the stream of the appStream module to check
+     * @return {@code true} if the app stream module is included in the activation key and channel,
+     *         {@code false} otherwise
+     */
+    public boolean hasAppStreamModuleEnabled(
+        ActivationKey activationKey,
+        Channel channel,
+        String module,
+        String stream) {
+        return activationKey.getAppStreams()
+            .stream()
+            .anyMatch(it ->
+                it.getChannel().getId().equals(channel.getId()) &&
+                it.getName().equals(module) &&
+                it.getStream().equals(stream)
+            );
+    }
+
+    /**
+     * Saves the specified channel app streams by including and removing the given lists of app streams.
+     * The app streams are specified as a list of strings in the format "name:stream".
+     *
+     * @param activationKey the activation key containing the registration token
+     * @param channel the channel to which the app streams belong
+     * @param toInclude the list of app streams to include in the activation key
+     * @param toRemove the list of app streams to remove from the activation key
+     * @throws DuplicateAppStreamException if an app stream to include already exists in the activation key
+     */
+    public void saveChannelAppStreams(
+            ActivationKey activationKey,
+            Channel channel,
+            List<String> toInclude,
+            List<String> toRemove) {
+        removeAppStreams(activationKey, toRemove);
+        toInclude.forEach(appStream -> {
+            String moduleName = appStream.split(":")[0];
+            if (activationKey.getAppStreams().stream().anyMatch(it -> it.getName().equals(moduleName))) {
+                throw new DuplicateAppStreamException(
+                    "App stream '" + moduleName + "' already exists in the activation key."
+                );
+            }
+            activationKey.getAppStreams().add(
+                new TokenChannelAppStream(activationKey.getToken(), channel, appStream)
+            );
+        });
+    }
+
+    /**
+     * Removes the specified app streams from the activation key.
+     * The app streams to remove are specified as a list of strings in the format "name:stream".
+     *
+     * @param activationKey the activation key containing the registration token
+     * @param toRemove the list of app streams to remove from the activation key
+     */
+    public void removeAppStreams(ActivationKey activationKey, List<String> toRemove) {
+        activationKey.getAppStreams().removeIf(tokenAppStream -> toRemove.contains(tokenAppStream.getAppStream()));
+    }
+
+    /**
+     * Retrieves a map of app stream keys to the activation key channels that provide them.
+     *
+     * @param activationKey the activation key containing the channels to be checked
+     * @param appStreams a list of app stream keys (name:stream) to be mapped to their providing channels
+     * @return a map where the keys are app stream keys and the values are the channels that provide these app streams
+     * @throws NoSuchAppStreamException if an app stream key does not exist in any activation key channel
+     */
+    public Map<String, Channel> getChannelsProvidingAppStreams(ActivationKey activationKey, List<String> appStreams) {
+        var channelsAppStreams = activationKey.getChannels()
+            .stream()
+            .filter(Channel::isModular)
+            .collect(Collectors.toMap(
+                channel -> channel,
+                channel -> AppStreamsManager.listChannelAppStreams(channel.getId()))
+            );
+
+        return appStreams.stream().map(appStreamKey -> {
+            Channel channel = channelsAppStreams.entrySet().stream()
+                .findFirst()
+                .map(Map.Entry::getKey)
+                .orElseThrow(() -> new NoSuchAppStreamException(
+                    "The app stream " + appStreamKey + " doesn't exist in any activation key channel."
+                ));
+            return Map.entry(appStreamKey, channel);
+        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

@@ -22,6 +22,7 @@ After:
 - [ ] **DONE**
 
 ## Test coverage
+ℹ️ If a major new functionality is added, it is **strongly recommended** that tests for the new functionality are added to the Cucumber test suite
 - No tests: **add explanation**
 - No tests: already covered
 - Unit tests were added

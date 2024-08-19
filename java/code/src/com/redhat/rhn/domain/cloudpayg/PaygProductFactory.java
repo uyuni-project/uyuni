@@ -185,7 +185,9 @@ public class PaygProductFactory extends HibernateFactory {
         ChannelFamily family = product.getChannelFamily();
         String version = product.getVersion();
 
-        return ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL.equals(family.getLabel()) &&
+        // This exclude ALPHA and BETA versions
+        return List.of(ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL,
+                        ChannelFamilyFactory.PROXY_ARM_CHANNEL_FAMILY_LABEL).contains(family.getLabel()) &&
             RPM_VERSION_COMPARATOR.compare(version, "4.3") >= 0;
     }
 

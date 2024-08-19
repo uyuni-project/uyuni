@@ -38,10 +38,12 @@ public class SecureBootWorker implements AttestationWorker {
             result.setDetails(secureBootMsg);
             String bootMsgLowerCase = secureBootMsg.toLowerCase();
             // got these messages from mokutil source code
-            return !bootMsgLowerCase.contains("secureboot disabled") &&
+            return bootMsgLowerCase.contains("secureboot enabled") &&
+                    !bootMsgLowerCase.contains("secureboot disabled") &&
                     !bootMsgLowerCase.contains("is disabled in shim") &&
                     !bootMsgLowerCase.contains("cannot determine secure boot state") &&
-                    !bootMsgLowerCase.contains("failed to read");
+                    !bootMsgLowerCase.contains("failed to read") &&
+                    !bootMsgLowerCase.contains("efi variables are not supported on this system");
         }
         catch (Exception ex) {
             LOGGER.error("Unable to process attestation result {}", result.getId(), ex);

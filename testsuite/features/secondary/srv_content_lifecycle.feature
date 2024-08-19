@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -7,6 +7,31 @@ Feature: Content lifecycle
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Create CLM filter to remove all fonts packages
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    And I enter "remove fonts packages" as "filter_name"
+    And I select "Package (Name)" from "type"
+    And I select "contains" from "matcher"
+    And I enter "fonts" as "name"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "remove fonts packages" text
+
+  Scenario: Create CLM filter to enable Ruby 2.7 module
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    And I enter "ruby 2.7 module" as "filter_name"
+    And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "ruby" as "moduleName"
+    And I enter "2.7" as "moduleStream"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "ruby 2.7 module" text
 
   Scenario: Create a content lifecycle project
     When I follow the left menu "Content Lifecycle > Projects"
@@ -65,6 +90,18 @@ Feature: Content lifecycle
     Then I should see a "openSUSE Leap 15.5 (x86_64)" text
     And I should see a "Build (1)" text
 
+  Scenario: Add fonts packages filter to the project
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    Then I should see a "Content Lifecycle Project - clp_name" text
+    When I click on "Attach/Detach Filters"
+    And I check the "remove fonts packages" CLM filter
+    And I click on "Save"
+    And I wait until I see "Deny" text
+    Then I should see a "remove fonts packages" text
+    When I follow the left menu "Content Lifecycle > Filters"
+    Then I should see a "clp_name" text
+
   Scenario: Add environments to the project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
@@ -97,7 +134,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build (2)"
+    When I click on "Build (3)"
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
@@ -109,7 +146,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build (1)"
+    When I click on "Build (2)"
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
@@ -167,6 +204,13 @@ Feature: Content lifecycle
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
     Then I should not see a "clp_name" text
+    
+  Scenario: Cleanup: remove the CLM filters
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click the "remove fonts packages" item delete button
+    And I click the "ruby 2.7 module" item delete button
+    Then I should not see a "remove fonts packages" text
+    And I should not see a "ruby 2.7 module" text
 
 @susemanager
   Scenario: Cleanup: remove the created channels

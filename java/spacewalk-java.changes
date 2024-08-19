@@ -1,4 +1,62 @@
 -------------------------------------------------------------------
+Wed Jul 31 17:12:14 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.12-0
+  * Update setup wizard UI
+  * Report a server/report id mismatch when calling
+    getCoCoAttestationResultDetails
+  * Prevent the API for confidential computing to work on systems
+    without OS support
+  * Ensure getCoCoAttestationConfig works when a configuration is
+    not present
+  * Prevent error while serializing an attestation report without
+    an attested date
+  * Add missing support for field attest on boot in the
+    getCoCoAttestationConfig and setCoCoAttestationConfig API
+  * Require byte-buddy and byte-buddy-dep using maven dependencies
+  * Fix NullPointerException when context has no timezone set
+  * Enhance optional type adapter to parse legacy JSON data from DB
+  * Update last sync refresh timestamp only when at least one time
+    products were synced before
+  * Prevent error when listing history events without completion time
+    (bsc#1146701)
+  * Autoinstallation: prevent "duplicate IP address" issues cause by
+    container networks (bsc#1226461)
+  * Check the correct Salt package before product migration
+    (bsc#1224209)
+  * Remove reboot from uptodate state, introduce reboot and
+    rebootifneeded states
+  * Add API calls getNotifications, makeNotificationRead,
+    makeAllNotificationsRead, deleteNotification to
+    UserNotificationHandler
+  * Configure AppStreams via Activation Keys
+  * Fix package profile update on CentOS 7 when yum-utils is not
+    installed (bsc#1227133)
+  * Fix layout of advanced package search page
+  * Add info URL for Cobbler to clean the system profile
+    (bsc#1219645)
+  * Fix the URL to download the autoinstallation file (bsc#1226313)
+  * Fix input alignment and style issues on schedule creation page
+  * Add entry to apidoc faqs about methods listed more than ones
+    (bsc#1217248)
+  * Remove unused MinionActionChainCleanup job
+  * Allow free products and SUSE Manager Proxy being managed by
+    SUSE Manager Server PAYG
+  * Fix a race condition during PAYG setup by re-detecting compliance
+    when the instance report BYOS but payg_compliance.json is
+    available
+  * Show SUSE Manager Proxy for different architectures when using
+    SUSE Manager Server PAYG
+  * Do not explicitly trigger Cobbler sync when adding a system via
+    SUMA API (bsc#1219450)
+  * Improve SQL queries and performance to check for PTF packages
+    (bsc#1225619)
+  * Fix false positive SSH key generation error (bsc#1226491)
+  * Change syncAll call at start-up to be asynchronous (bsc#1224004)
+  * Fix transactional update check for SL Micro (bsc#1227406)
+  * Fix Appstream queries to avoid duplicates in packages lists
+
+-------------------------------------------------------------------
 Wed Jul 03 14:12:00 CEST 2024 - rosuna@suse.com
 
 - version 5.0.11-0

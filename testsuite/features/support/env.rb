@@ -14,6 +14,7 @@ require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
 require 'set'
+require 'timeout'
 require_relative 'code_coverage'
 require_relative 'twopence_env'
 require_relative 'commonlib'
@@ -45,6 +46,8 @@ $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PRO
 $custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
 $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
+$current_user = 'admin'
+$current_password = 'admin'
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -78,7 +81,7 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client.read_timeout = 240
     # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048 remote-debugging-port=9222]
     chrome_options << 'headless' unless $debug_mode
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
@@ -134,8 +137,8 @@ After do |scenario|
       path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
       # only click on Details when we have errors during bootstrapping and more Details available
       click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
-      # a TimeoutError may be raised while a page is still (re)loading
-      find('#page-body', wait: 3) if scenario.exception.is_a?(TimeoutError)
+      # a Timeout::Error may be raised while a page is still (re)loading
+      find('#page-body', wait: 3) if scenario.exception.is_a?(Timeout::Error)
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
       attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
@@ -144,7 +147,7 @@ After do |scenario|
     ensure
       print_server_logs
       previous_url = current_url
-      step 'I am authorized for the "Admin" section'
+      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
       visit previous_url
     end
   end
@@ -315,14 +318,6 @@ Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_ssh_minion']
 end
 
-Before('@debian10_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_minion']
-end
-
-Before('@debian10_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_ssh_minion']
-end
-
 Before('@debian11_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_minion']
 end
@@ -345,14 +340,6 @@ end
 
 Before('@sle12sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_ssh_minion']
-end
-
-Before('@sle15sp1_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_minion']
-end
-
-Before('@sle15sp1_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_ssh_minion']
 end
 
 Before('@sle15sp2_minion') do

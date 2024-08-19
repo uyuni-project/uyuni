@@ -4,9 +4,13 @@ export type Channel = {
   name: string;
 };
 
+export type AppStreams = {
+  [key: string]: Array<AppStreamModule>;
+};
+
 export type ChannelAppStream = {
   channel: Channel;
-  appStreams: Map<string, Array<AppStreamModule>>;
+  appStreams: AppStreams;
 };
 
 export type AppStreamModule = {

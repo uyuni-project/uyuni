@@ -107,6 +107,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -535,7 +536,8 @@ public class StatesAPI {
     }
 
     private Date getScheduleDate(ServerApplyStatesJson json) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(
             json.getEarliest().map(t -> t.atZone(zoneId).toInstant())
                 .orElseGet(Instant::now)
@@ -543,7 +545,8 @@ public class StatesAPI {
     }
 
     private Date getScheduleDate(ServerApplyHighstateJson json) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(
             json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
         );

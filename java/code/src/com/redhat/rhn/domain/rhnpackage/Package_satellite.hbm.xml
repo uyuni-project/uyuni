@@ -28,6 +28,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="path"            type="string" column="path"/>
         <property name="headerSignature" type="string" column="header_sig"/>
         <property name="copyright"       type="string" column="copyright"/>
+        <property name="isPtfPackage"       type="boolean"   column="is_ptf"/>
+        <property name="isPartOfPtfPackage" type="boolean"   column="is_part_of_ptf"/>
         <property name="cookie"          type="string" column="cookie"/>
         <property name="lastModified"    type="timestamp"   column="last_modified"/>
         <property name="created"         type="timestamp"   column="created"/>
