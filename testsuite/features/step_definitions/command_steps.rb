@@ -1054,6 +1054,10 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
 
+  $stdout.puts "base_channel: #{base_channel}"
+  $stdout.puts "channel: #{channel}"
+  $stdout.puts "parent_channel: #{parent_channel}"
+
   cmd =
     if parent_channel.nil?
       "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels"
