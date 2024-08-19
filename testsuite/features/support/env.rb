@@ -148,6 +148,8 @@ end
 
 # Test is web session is open
 def web_session_is_active?
+  # When no Web Session is open, current_url is equal to data:,
+  return false if current_url.empty? || current_url == 'data:,'
   page.has_selector?('header', wait: 0) || page.has_selector?('#username-field', wait: 0)
 end
 
@@ -160,7 +162,12 @@ def handle_screenshot_and_relog(scenario, current_epoch)
       click_details_if_present
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
-      attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+      # Attach additional information
+      scenario_start_time_str = Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')
+      current_epoch_str = Time.at(current_epoch).strftime('%H:%M:%S:%L')
+      text_attachment = "#{scenario_start_time_str} - #{current_epoch_str} | Current URL: #{current_url}"
+      attach text_attachment, 'text/plain'
+
     rescue StandardError => e
       warn "An error occurred while processing scenario: #{scenario.name}\nError message: #{e.message}"
     ensure
@@ -171,14 +178,14 @@ end
 
 # Try to get the minion details when on minion page
 def click_details_if_present
-  return unless page.has_content?('Bootstrap Minions') && page.has_content?('Details')
-
-  begin
-    click_button('Details')
-  rescue Capybara::ElementNotFound
-    log "Button 'Details' not found on the page."
-  rescue Capybara::ElementNotInteractable
-    log "Button 'Details' found but not interactable."
+  if page.has_content?('Bootstrap Minions') && page.has_content?('Details')
+    begin
+      click_button('Details')
+    rescue Capybara::ElementNotFound
+      log "Button 'Details' not found on the page."
+    rescue Capybara::ElementNotInteractable
+      log "Button 'Details' found but not interactable."
+    end
   end
 end
 
