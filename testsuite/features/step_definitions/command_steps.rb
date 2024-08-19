@@ -258,7 +258,7 @@ When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
   next_day_rotated_log = "#{current_log}-#{day_after}.xz"
   begin
     _, return_code = node.run("xzdec #{next_day_rotated_log} | grep -- #{pattern}")
-  rescue RuntimeError
+  rescue ScriptError
     _, return_code = node.run("grep -- #{pattern} #{current_log} || xzdec #{rotated_log} | grep -- #{pattern}")
   end
   raise 'Vendor change option not found in logs' unless return_code.zero?
