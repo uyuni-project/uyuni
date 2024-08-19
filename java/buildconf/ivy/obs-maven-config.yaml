@@ -5,6 +5,9 @@ repositories:
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.6
+  MicheleBussolotto_Other:
+    project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master:Other
+    repository: openSUSE_Leap_15.6
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
@@ -100,12 +103,13 @@ artifacts:
     jar: gson.jar
     repository: Leap
   - artifact: hibernate-c3p0
-    package: hibernate5-c3p0
+    package: hibernate6-c3p0
     jar: hibernate-c3p0
-    repository: Uyuni_Other
-  - artifact: hibernate-types-52
-    package: hibernate-types
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Other
+  - artifact: hypersistence-utils-hibernate-63
+    jar: hypersistence-utils-hibernate-63-3.8.2.jar
+    package: hypersistence-utils
+    repository: MicheleBussolotto_Other
   - artifact: jackson-annotations
     repository: Leap_sle
   - artifact: jackson-core
@@ -113,13 +117,13 @@ artifacts:
   - artifact: jackson-databind
     repository: Leap_sle
   - artifact: hibernate-commons-annotations
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Other
   - artifact: hibernate-core
-    package: hibernate5-core
-    repository: Uyuni_Other
-  - artifact: hibernate-ehcache
-    package: hibernate5-ehcache
-    repository: Uyuni_Other
+    package: hibernate6-core
+    repository: MicheleBussolotto_Other
+  - artifact: hibernate-jcache
+    package: hibernate6-jcache
+    repository: MicheleBussolotto_Other
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
     jar: httpasyncclient-[0-9.]+
@@ -138,7 +142,7 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jakarta-persistence-api
     package: jpa-api
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Other
   - artifact: java-saml
     jar: java-saml-[0-9.]+
     repository: Uyuni_Other
