@@ -149,7 +149,7 @@ end
 def web_session_is_active?
   # When no Web Session is open, current_url is equal to data:,
   return false if current_url.empty? || current_url == 'data:,'
-  page.has_selector?('header', wait: 0) || page.has_selector?('#username-field', wait: 0)
+  page.has_selector?('header') || page.has_selector?('#username-field')
 end
 
 # Take a screenshot and try to log back at suse manager server
