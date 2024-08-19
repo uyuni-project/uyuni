@@ -206,8 +206,10 @@ def check_disk_nevrao(abs_path, row, restore=None):
     for key in ('org_id', 'checksum_prefix', 'name', 'evr', 'arch', 'checksum',
                 'basename'):
         if file[key] != row[key]:
-            log(0, "File path mismatch: %s (%s: %s vs. %s)" % (abs_path, key, row[key],
-                                                               file[key]))
+            if is_orphaned_rpm(row["id"]):
+                log(0, f"{row['basename']} is orphaned, consider removing it")
+            else:
+                log(0, f"File path mismatch: {abs_path} ({key}: {row[key]} vs. {file[key]})")
             if restore:
                 log(2, "Beginning file path restoration: %s" % abs_path)
                 return restore_file_path(file, row)
@@ -356,6 +358,27 @@ def is_srpm(file):
         return True
     else:
         return False
+
+def is_orphaned_rpm(package_id: int) -> bool:
+    if not isinstance(package_id, int):
+        # Prevent possible SQL injections
+        raise ValueError("package_id must be an integer")
+
+    query = f"""
+    SELECT EXISTS (
+      SELECT 1 FROM rhnPackage p
+      JOIN rhnChannelPackage c ON c.package_id = p.id WHERE p.id = {package_id}
+    )
+    """
+
+    h = rhnSQL.prepare(query)
+    h.execute()
+    row = h.fetchone_dict()
+    if not row:
+        log(1, "RPM not in DB")
+        return False
+    # Package is an orphan when not associated with any channel
+    return not row.get("exists", True)
 
 def is_orphaned_srpm(path, file):
     if is_srpm(file):
