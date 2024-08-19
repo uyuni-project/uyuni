@@ -5238,7 +5238,7 @@ user before attempting to deactivate their account.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.config.success" xml:space="preserve">
-        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
+        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
