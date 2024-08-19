@@ -166,9 +166,12 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Override
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isAlibaba2() || isAmazon2() || isRocky8() ||
-                isRocky9() || isDebian12() || isDebian11() || isDebian10();
+        return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
+                isSLEMicro5() || // Micro 6 miss the node exporter
+                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
+                isAlibaba2() || isAmazon2() ||
+                isDebian12() || isDebian11() || isDebian10();
     }
 
     /**
