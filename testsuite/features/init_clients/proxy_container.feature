@@ -60,3 +60,8 @@ Feature: Setup containerized proxy
   Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy", refreshing the page
+
+  Scenario: Check if Monitoring can be enabled on the containerized proxy
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Properties" in the content area
+    Then the "monitoring_entitled" checkbox should be disabled
