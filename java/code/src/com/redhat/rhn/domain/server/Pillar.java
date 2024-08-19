@@ -46,8 +46,6 @@ import jakarta.persistence.criteria.Root;
  * <a href="https://github.com/uyuni-project/uyuni-rfc/pull/51">RFC</a>
  */
 
-
-@TypeDef(name = "json", typeClass = JsonType.class)
 @Entity
 @Table(name = "suseSaltPillar")
 public class Pillar implements Identifiable, Serializable {
@@ -79,7 +77,7 @@ public class Pillar implements Identifiable, Serializable {
     @Column(name = "category")
     private String category;
 
-    @Type(type = "json")
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> pillar = new TreeMap<>();
 

@@ -14,6 +14,8 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -98,13 +100,13 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
         return status;
     }
 
-    @Type(type = "json")
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb", name = "in_data")
     public Map<String, Object> getInData() {
         return inData;
     }
 
-    @Type(type = "json")
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb", name = "out_data")
     public Map<String, Object> getOutData() {
         return outData;
