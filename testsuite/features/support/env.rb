@@ -166,9 +166,7 @@ def handle_screenshot_and_relog(scenario, current_epoch)
   rescue StandardError => e
     warn "Error message: #{e.message}"
   ensure
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      relog_and_visit_previous_url
-    end
+    relog_and_visit_previous_url
   end
 end
 
@@ -187,9 +185,17 @@ end
 
 # Relog and visit the previous URL
 def relog_and_visit_previous_url
-  previous_url = current_url
-  step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
-  visit previous_url
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      previous_url = current_url
+      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+      visit previous_url
+    end
+  rescue Timeout::Error
+    warn "Timed out while attempting to relog and visit the previous URL: #{current_url}"
+  rescue StandardError => e
+    warn "An error occurred while relogging and visiting the previous URL: #{e.message}"
+  end
 end
 
 # Process the code coverage for each feature when it ends
