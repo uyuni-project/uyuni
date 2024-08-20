@@ -1,1 +1,1 @@
-- Require correct scap packages for Debian 12 (bsc#1227746)
+- Require correct scap packages for Ubuntu and Debian (bsc#1227746)

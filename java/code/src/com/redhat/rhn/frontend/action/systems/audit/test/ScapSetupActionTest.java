@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.frontend.action.systems.audit.ScapSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -57,6 +58,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void canSearchForCorrectPackageForSUSE() {
         server.setOsFamily("Suse");
+        server.setOs(ServerConstants.SLES);
         server.setRelease("15.6");
 
         action.setupScapEnablementInfo(mockContext);
@@ -69,6 +71,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void canSearchForCorrectPackageForRHEL() {
         server.setOsFamily("RedHat");
+        server.setOs(ServerConstants.ROCKY);
         server.setRelease("8");
 
         action.setupScapEnablementInfo(mockContext);
@@ -81,6 +84,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void canSearchForCorrectPackageForDebianLegacy() {
         server.setOsFamily("Debian");
+        server.setOs(ServerConstants.DEBIAN);
         server.setRelease("10");
 
         action.setupScapEnablementInfo(mockContext);
@@ -93,6 +97,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void canSearchForCorrectPackageForDebian() {
         server.setOsFamily("Debian");
+        server.setOs(ServerConstants.DEBIAN);
         server.setRelease("12");
 
         action.setupScapEnablementInfo(mockContext);
@@ -100,7 +105,36 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
         // The package is not installed. Scap should be disabled and the correct package should be requested
         assertEquals(false, mockContext.getRequest().getAttribute(ScapSetupAction.SCAP_ENABLED));
         assertEquals(
-            "libopenscap25 openscap-common",
+            "openscap-utils",
+            mockContext.getRequest().getAttribute(ScapSetupAction.REQUIRED_PKG)
+        );
+    }
+
+    @Test
+    public void canSearchForCorrectPackageForUbuntuLegacy() {
+        server.setOsFamily("Debian");
+        server.setOs(ServerConstants.UBUNTU);
+        server.setRelease("22.04");
+
+        action.setupScapEnablementInfo(mockContext);
+
+        // The package is not installed. Scap should be disabled and the correct package should be requested
+        assertEquals(false, mockContext.getRequest().getAttribute(ScapSetupAction.SCAP_ENABLED));
+        assertEquals("libopenscap8", mockContext.getRequest().getAttribute(ScapSetupAction.REQUIRED_PKG));
+    }
+
+    @Test
+    public void canSearchForCorrectPackageForUbuntu() {
+        server.setOsFamily("Debian");
+        server.setOs(ServerConstants.UBUNTU);
+        server.setRelease("24.04");
+
+        action.setupScapEnablementInfo(mockContext);
+
+        // The package is not installed. Scap should be disabled and the correct package should be requested
+        assertEquals(false, mockContext.getRequest().getAttribute(ScapSetupAction.SCAP_ENABLED));
+        assertEquals(
+            "openscap-utils",
             mockContext.getRequest().getAttribute(ScapSetupAction.REQUIRED_PKG)
         );
     }
@@ -108,6 +142,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void scapIsEnabledWhenCorrectPackageIsInstalled() {
         server.setOsFamily("Suse");
+        server.setOs(ServerConstants.SLES);
         server.setRelease("15.6");
 
         Package scapPackage = PackageTest.createTestPackage(user.getOrg(), "openscap-utils");
@@ -123,6 +158,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void scapIsEnabledWhenAllRequiredPackagesAreInstalled() {
         server.setOsFamily("Debian");
+        server.setOs(ServerConstants.DEBIAN);
         server.setRelease("12");
 
         Package scapLibPackage = PackageTest.createTestPackage(user.getOrg(), "libopenscap25");
@@ -133,11 +169,11 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
         // One package is missing. Scap should be disabled and the correct package should be requested
         assertEquals(false, mockContext.getRequest().getAttribute(ScapSetupAction.SCAP_ENABLED));
         assertEquals(
-            "libopenscap25 openscap-common",
+            "openscap-utils",
             mockContext.getRequest().getAttribute(ScapSetupAction.REQUIRED_PKG)
         );
 
-        Package scapCommonPackage = PackageTest.createTestPackage(user.getOrg(), "openscap-common");
+        Package scapCommonPackage = PackageTest.createTestPackage(user.getOrg(), "openscap-utils");
         PackageTestUtils.installPackageOnServer(scapCommonPackage, server);
 
         action.setupScapEnablementInfo(mockContext);
@@ -145,7 +181,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
         // Now everything is installed and scap should be enabled
         assertEquals(true, mockContext.getRequest().getAttribute(ScapSetupAction.SCAP_ENABLED));
         assertEquals(
-            "libopenscap25 openscap-common",
+            "openscap-utils",
             mockContext.getRequest().getAttribute(ScapSetupAction.REQUIRED_PKG)
         );
     }
