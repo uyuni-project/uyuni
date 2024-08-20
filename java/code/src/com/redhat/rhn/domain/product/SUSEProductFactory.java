@@ -29,11 +29,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -48,6 +44,7 @@ import java.util.stream.Stream;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 /**
@@ -101,8 +98,16 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return a list of all {@link SUSEProductSCCRepository}
      */
     public static List<SUSEProductSCCRepository> allProductRepos() {
-        Criteria c = getSession().createCriteria(SUSEProductSCCRepository.class);
-        return c.list();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<SUSEProductSCCRepository> query
+                = cb.createQuery(SUSEProductSCCRepository.class);
+
+        Root<SUSEProductSCCRepository> root = query.from(SUSEProductSCCRepository.class);
+
+        query.select(root);
+
+        return getSession().createQuery(query).getResultList();
     }
 
     /**
@@ -117,16 +122,10 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return map of all {@link SUSEProductSCCRepository} by ID triple
      */
     public static Map<Tuple3<Long, Long, Long>, SUSEProductSCCRepository> allProductReposByIds() {
-        return allProductRepos().stream().collect(
-                Collectors.toMap(
-                        e -> new Tuple3<>(
-                                e.getRootProduct().getProductId(),
-                                e.getProduct().getProductId(),
-                                e.getRepository().getSccId()
-                        ),
-                        e -> e
-                )
-        );
+        return allProductRepos().stream().collect(Collectors.toMap(
+                e -> new Tuple3<>(e.getRootProduct().getProductId(),
+                        e.getProduct().getProductId(), e.getRepository().getSccId()),
+                e -> e));
     }
 
     /**
@@ -146,20 +145,23 @@ public class SUSEProductFactory extends HibernateFactory {
                 .toList();
     }
 
-    /**
-     * lookup {@link SUSEProductSCCRepository} by given ID triple
-     * @param rootId root product id
-     * @param productId product id
-     * @param repoId repository id
-     * @return the product/repository item
-     */
-    public static Optional<SUSEProductSCCRepository> lookupProductRepoByIds(long rootId, long productId, long repoId) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
-        c.add(Restrictions.eq("rootProduct.productId", rootId));
-        c.add(Restrictions.eq("product.productId", productId));
-        c.add(Restrictions.eq("repository.sccId", repoId));
-        return Optional.ofNullable((SUSEProductSCCRepository) c.uniqueResult());
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<SUSEProductSCCRepository> query
+                = cb.createQuery(SUSEProductSCCRepository.class);
+
+        Root<SUSEProductSCCRepository> root = query.from(SUSEProductSCCRepository.class);
+
+        Predicate predicate = cb.equal(root.get("channelLabel"), channelLabel);
+
+        query.select(root).where(predicate);
+
+        return ((List<SUSEProductSCCRepository>) getSession().createQuery(query)
+                .getResultList())
+                .stream()
+                .sorted((a, b) -> RPM_VERSION_COMPARATOR.compare(
+                b.getProduct().getVersion(), a.getProduct().getVersion()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -462,41 +464,45 @@ public class SUSEProductFactory extends HibernateFactory {
     public static SUSEProduct findSUSEProduct(String name, String version, String release,
             String arch, boolean imprecise) {
 
-        Criteria c = getSession().createCriteria(SUSEProduct.class);
-        c.add(Restrictions.eq("name", name.toLowerCase()));
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
 
-        Disjunction versionCriterion = Restrictions.disjunction();
+        CriteriaQuery<SUSEProduct> query = cb.createQuery(SUSEProduct.class);
+
+        Root<SUSEProduct> root = query.from(SUSEProduct.class);
+
+        Predicate predicate = cb.equal(root.get("name"), name.toLowerCase());
+
         if (imprecise || version == null) {
-            versionCriterion.add(Restrictions.isNull("version"));
+            predicate = cb.and(predicate, cb.isNull(root.get("version")));
         }
         if (version != null) {
-            versionCriterion.add(Restrictions.eq("version", version.toLowerCase()));
+            predicate
+                    = cb.and(predicate, cb.equal(root.get("version"), version.toLowerCase()));
         }
-        c.add(versionCriterion);
 
-        Disjunction releaseCriterion = Restrictions.disjunction();
         if (imprecise || release == null) {
-            releaseCriterion.add(Restrictions.isNull("release"));
+            predicate = cb.and(predicate, cb.isNull(root.get("release")));
         }
         if (release != null) {
-            releaseCriterion.add(Restrictions.eq("release", release.toLowerCase()));
+            predicate
+                    = cb.and(predicate, cb.equal(root.get("release"), release.toLowerCase()));
         }
-        c.add(releaseCriterion);
 
-        Disjunction archCriterion = Restrictions.disjunction();
         if (imprecise || arch == null) {
-            archCriterion.add(Restrictions.isNull("arch"));
+            predicate = cb.and(predicate, cb.isNull(root.get("arch")));
         }
         if (arch != null) {
-            archCriterion.add(Restrictions.eq("arch",
+            predicate = cb.and(predicate, cb.equal(root.get("arch"),
                     PackageFactory.lookupPackageArchByLabel(arch)));
         }
-        c.add(archCriterion);
 
-        c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
-                .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
+        query.select(root).where(predicate);
 
-        List<SUSEProduct> result = c.list();
+        query.orderBy(cb.asc(root.get("name")), cb.asc(root.get("version")),
+                cb.asc(root.get("release")), cb.asc(root.get("arch")));
+
+        List<SUSEProduct> result = getSession().createQuery(query).getResultList();
+
         return result.isEmpty() ? null : result.get(0);
     }
 
@@ -517,10 +523,17 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSE product for given productId
      */
     public static SUSEProduct lookupByProductId(long productId) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProduct.class);
-        c.add(Restrictions.eq("productId", productId));
-        return (SUSEProduct) c.uniqueResult();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<SUSEProduct> query = cb.createQuery(SUSEProduct.class);
+
+        Root<SUSEProduct> root = query.from(SUSEProduct.class);
+
+        Predicate predicate = cb.equal(root.get("productId"), productId);
+
+        query.select(root).where(predicate);
+
+        return (SUSEProduct) getSession().createQuery(query).uniqueResult();
     }
 
     /**
@@ -547,33 +560,30 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Find all {@link SUSEProductChannel} relationships.
-     * @return list of SUSE product channel relationships
-     */
-    @SuppressWarnings("unchecked")
-    public static List<SUSEProductChannel> findAllSUSEProductChannels() {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductChannel.class);
-        return c.list();
-    }
-
-    /**
      * Find extensions for the product
-     * @param root the root product
+     * @param rootProduct the rootProduct product
      * @param base the base product
      * @param ext the extension product
      * @return the Optional of {@link SUSEProductExtension} product
      */
-    public static Optional<SUSEProductExtension> findSUSEProductExtension(SUSEProduct root,
-                                                           SUSEProduct base,
-                                                           SUSEProduct ext) {
-        Session session = getSession();
+    public static Optional<SUSEProductExtension> findSUSEProductExtension(
+            SUSEProduct rootProduct, SUSEProduct base, SUSEProduct ext) {
 
-        Criteria c = session.createCriteria(SUSEProductExtension.class)
-                .add(Restrictions.eq("rootProduct", root))
-                .add(Restrictions.eq("baseProduct", base))
-                .add(Restrictions.eq("extensionProduct", ext));
-        SUSEProductExtension result = (SUSEProductExtension) c.uniqueResult();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<SUSEProductExtension> query
+                = cb.createQuery(SUSEProductExtension.class);
+
+        Root<SUSEProductExtension> root = query.from(SUSEProductExtension.class);
+
+        Predicate predicate = cb.equal(root.get("rootProduct"), rootProduct);
+        predicate = cb.and(predicate, cb.equal(root.get("baseProduct"), base));
+        predicate = cb.and(predicate, cb.equal(root.get("extensionProduct"), ext));
+
+        query.select(root).where(predicate);
+
+        SUSEProductExtension result = getSession().createQuery(query).uniqueResult();
+
         if (result == null) {
             return Optional.empty();
         }
@@ -588,9 +598,17 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProductExtension> findAllSUSEProductExtensions() {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductExtension.class);
-        return c.list();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<SUSEProductExtension> query
+                = cb.createQuery(SUSEProductExtension.class);
+
+        Root<SUSEProductExtension> root = query.from(SUSEProductExtension.class);
+
+        query.select(root);
+
+        return getSession().createQuery(query).getResultList();
+
     }
 
     /**
@@ -609,17 +627,26 @@ public class SUSEProductFactory extends HibernateFactory {
     /**
      * Find all {@link SUSEProductExtension} of a product for a given root.
      * @param product product to find extensions of
-     * @param root root product to find extensions in
+     * @param rootProduct root product to find extensions in
      * @return list of product extension of the given product
      */
     @SuppressWarnings("unchecked")
-    public static List<SUSEProductExtension> findAllProductExtensionsOf(SUSEProduct product, SUSEProduct root) {
-        Session session = getSession();
+    public static List<SUSEProductExtension> findAllProductExtensionsOf(SUSEProduct product, SUSEProduct rootProduct) {
 
-        Criteria c = session.createCriteria(SUSEProductExtension.class)
-                .add(Restrictions.eq("rootProduct", root))
-                .add(Restrictions.eq("baseProduct", product));
-        return c.list();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<SUSEProductExtension> query
+                = cb.createQuery(SUSEProductExtension.class);
+
+        Root<SUSEProductExtension> root = query.from(SUSEProductExtension.class);
+
+        Predicate predicate = cb.equal(root.get("rootProduct"), rootProduct);
+        predicate = cb.and(predicate, cb.equal(root.get("baseProduct"), product));
+
+        query.select(root).where(predicate);
+
+        return getSession().createQuery(query).getResultList();
+
     }
 
     /**
@@ -661,7 +688,15 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
-        return getSession().createCriteria(SUSEProduct.class).list();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<SUSEProduct> query = cb.createQuery(SUSEProduct.class);
+
+        Root<SUSEProduct> root = query.from(SUSEProduct.class);
+
+        query.select(root);
+
+        return getSession().createQuery(query).getResultList();
     }
 
     /**
@@ -691,21 +726,28 @@ public class SUSEProductFactory extends HibernateFactory {
     public static Optional<InstalledProduct> findInstalledProduct(String name,
             String version, String release, PackageArch arch, boolean isBaseProduct) {
 
-        Criteria c = getSession().createCriteria(InstalledProduct.class);
-        c.add(Restrictions.eq("name", name));
-        c.add(Restrictions.eq("version", version));
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<InstalledProduct> query = cb.createQuery(InstalledProduct.class);
+
+        Root<InstalledProduct> root = query.from(InstalledProduct.class);
+
+        Predicate predicate = cb.equal(root.get("name"), name.toLowerCase());
+        predicate = cb.and(predicate, cb.equal(root.get("version"), version.toLowerCase()));
+        predicate = cb.and(predicate, cb.equal(root.get("arch"), arch));
+        predicate = cb.and(predicate, cb.equal(root.get("baseproduct"), isBaseProduct));
         if (StringUtils.isEmpty(release)) {
-            c.add(Restrictions.isNull("release"));
+            predicate = cb.and(predicate, cb.isNull(root.get("release")));
         }
         else {
-            c.add(Restrictions.eq("release", release));
+            predicate = cb.and(predicate, cb.equal(root.get("release"), release));
         }
-        c.add(Restrictions.eq("arch", arch));
-        c.add(Restrictions.eq("baseproduct", isBaseProduct));
-        c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
-                .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
 
-        return c.list().stream().findFirst();
+        query.select(root).where(predicate);
+        query.orderBy(cb.asc(root.get("name")), cb.asc(root.get("version")),
+                cb.asc(root.get("release")), cb.asc(root.get("arch")));
+
+        return getSession().createQuery(query).getResultList().stream().findFirst();
     }
 
     /**

@@ -104,14 +104,14 @@ public class ProfileCustomDataValue {
     /**
      * @return Returns the created.
      */
-    @Column(insertable = false, updatable = false)
+    @Column
     public Date getCreated() {
         return created;
     }
     /**
      * @return Returns the modified.
      */
-    @Column(insertable = false, updatable = false)
+    @Column
     public Date getModified() {
         return modified;
     }

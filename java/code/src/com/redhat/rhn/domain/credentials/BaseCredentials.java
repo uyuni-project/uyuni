@@ -62,7 +62,7 @@ import jakarta.persistence.Table;
 )
 @NamedQuery(
     name = "BaseCredentials.getLastSCCRefreshDate",
-    query = "SELECT MAX(modified) FROM BaseCredentials WHERE type IN ('scc', 'cloudrmt')"
+    query = "SELECT MAX(modified) FROM BaseCredentials"
 )
 public abstract class BaseCredentials extends BaseDomainHelper implements Credentials {
 

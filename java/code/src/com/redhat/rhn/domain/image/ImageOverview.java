@@ -27,13 +27,13 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -175,8 +175,7 @@ public class ImageOverview {
      * @return the build action
      */
     @ManyToOne
-    @JoinColumn(name = "build_action_id", referencedColumnName = "id", insertable = false,
-            updatable = false)
+    @JoinColumn(name = "build_action_id", referencedColumnName = "id")
     public Action getBuildAction() {
         return buildAction;
     }
@@ -185,8 +184,7 @@ public class ImageOverview {
      * @return the inspect action
      */
     @ManyToOne
-    @JoinColumn(name = "inspect_action_id", referencedColumnName = "id", insertable = false,
-            updatable = false)
+    @JoinColumn(name = "inspect_action_id", referencedColumnName = "id")
     public Action getInspectAction() {
         return inspectAction;
     }
@@ -195,7 +193,7 @@ public class ImageOverview {
      * @return true if the image has been built outside SUSE Manager
      */
     @Column(name = "external_image")
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isExternalImage() {
         return externalImage;
     }
@@ -204,7 +202,7 @@ public class ImageOverview {
      * @return true if the image is obsolete (has been replaced in the store)
      */
     @Column(name = "obsolete")
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isObsolete() {
         return obsolete;
     }
@@ -213,7 +211,7 @@ public class ImageOverview {
      * @return true if the image has been successfully built
      */
     @Column(name = "built")
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isBuilt() {
         return built;
     }
@@ -221,7 +219,8 @@ public class ImageOverview {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany
+    @JoinColumn(name = "image_info_custom_data_value_id")
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }
@@ -232,9 +231,9 @@ public class ImageOverview {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseImageInfoChannel",
         joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, updatable = false)},
+            @JoinColumn(name = "image_info_id", nullable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "channel_id", nullable = false, updatable = false)}
+            @JoinColumn(name = "channel_id", nullable = false)}
     )
     public Set<Channel> getChannels() {
         return channels;
@@ -246,9 +245,9 @@ public class ImageOverview {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseImageInfoInstalledProduct",
         joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, updatable = false)},
+            @JoinColumn(name = "image_info_id", nullable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "installed_product_id", nullable = false, updatable = false)
+            @JoinColumn(name = "installed_product_id", nullable = false)
     })
     public Set<InstalledProduct> getInstalledProducts() {
         return installedProducts;
@@ -257,7 +256,8 @@ public class ImageOverview {
     /**
      * @return the packages
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany
+    @JoinColumn(name = "packages_id")
     public Set<ImagePackage> getPackages() {
         return packages;
     }
@@ -277,7 +277,8 @@ public class ImageOverview {
     /**
      * @return the files
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany
+    @JoinColumn(name = "image_info_id")
     public Set<ImageFile> getImageFiles() {
         return imageFiles;
     }

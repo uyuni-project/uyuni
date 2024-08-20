@@ -30,8 +30,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,6 +47,7 @@ import java.util.Set;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 /**
@@ -106,10 +105,12 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabel(String label) {
-        return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("label", label))
-                .uniqueResult();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+        CriteriaQuery<VirtualHostManager> query = cb.createQuery(VirtualHostManager.class);
+        Root<VirtualHostManager> root = query.from(VirtualHostManager.class);
+        Predicate predicate = cb.equal(root.get("label"), label);
+        query.select(root).where(predicate);
+        return getSession().createQuery(query).uniqueResult();
     }
 
     /**
@@ -130,11 +131,17 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
-        return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("org", org))
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<VirtualHostManager> query = cb.createQuery(VirtualHostManager.class);
+
+        Root<VirtualHostManager> root = query.from(VirtualHostManager.class);
+
+        Predicate predicate = cb.equal(root.get("org"), org);
+        predicate = cb.and(predicate, cb.equal(root.get("id"), id));
+
+        query.select(root).where(predicate);
+        return getSession().createQuery(query).uniqueResult();
     }
 
     /**
@@ -163,11 +170,17 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
-        return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("org", org))
-                .add(Restrictions.eq("label", label))
-                .uniqueResult();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<VirtualHostManager> query = cb.createQuery(VirtualHostManager.class);
+
+        Root<VirtualHostManager> root = query.from(VirtualHostManager.class);
+
+        Predicate predicate = cb.equal(root.get("org"), org);
+        predicate = cb.and(predicate, cb.equal(root.get("label"), label));
+
+        query.select(root).where(predicate);
+        return getSession().createQuery(query).uniqueResult();
     }
 
     /**
@@ -177,11 +190,18 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers(Org org) {
-        return getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("org", org))
-                .addOrder(Order.asc("label"))
-                .list();
+
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<VirtualHostManager> query = cb.createQuery(VirtualHostManager.class);
+
+        Root<VirtualHostManager> root = query.from(VirtualHostManager.class);
+
+        Predicate predicate = cb.equal(root.get("org"), org);
+
+        query.select(root).where(predicate);
+        query.orderBy(cb.asc(root.get("label")));
+        return getSession().createQuery(query).getResultList();
     }
 
     /**
@@ -190,9 +210,15 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers() {
-        return getSession()
-                .createCriteria(VirtualHostManager.class)
-                .list();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<VirtualHostManager> query = cb.createQuery(VirtualHostManager.class);
+
+        Root<VirtualHostManager> root = query.from(VirtualHostManager.class);
+
+        query.select(root);
+
+        return getSession().createQuery(query).getResultList();
     }
 
     /**
@@ -473,10 +499,20 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(
             String identifier) {
-        VirtualHostManagerNodeInfo result = (VirtualHostManagerNodeInfo) getSession()
-                .createCriteria(VirtualHostManagerNodeInfo.class)
-                .add(Restrictions.eq("identifier", identifier))
-                .uniqueResult();
+
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<VirtualHostManagerNodeInfo> query =
+                cb.createQuery(VirtualHostManagerNodeInfo.class);
+
+        Root<VirtualHostManagerNodeInfo> root =
+                query.from(VirtualHostManagerNodeInfo.class);
+
+        Predicate predicate = cb.equal(root.get("identifier"), identifier);
+
+        query.select(root).where(predicate);
+
+        VirtualHostManagerNodeInfo result = getSession().createQuery(query).uniqueResult();
 
         return Optional.ofNullable(result);
     }

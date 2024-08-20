@@ -396,7 +396,7 @@ public class ErrataFactory extends HibernateFactory {
         ErrataFileType retval;
         try {
             retval = (ErrataFileType) getSession().getNamedQuery("ErrataFileType.findByLabel")
-                    .setString("label", label).setCacheable(true).uniqueResult();
+                    .setParameter("label", label).setCacheable(true).uniqueResult();
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException(e.getMessage(), e);
@@ -414,8 +414,8 @@ public class ErrataFactory extends HibernateFactory {
         List<ErrataFile> retval;
         try {
             Query<ErrataFile> q = getSession().getNamedQuery("ErrataFile.listByErrataAndFileType");
-            q.setLong("errata_id", errataId);
-            q.setString("file_type", fileType.toUpperCase());
+            q.setParameter("errata_id", errataId);
+            q.setParameter("file_type", fileType.toUpperCase());
             retval =  q.list();
         }
         catch (HibernateException e) {
@@ -446,7 +446,7 @@ public class ErrataFactory extends HibernateFactory {
         List<Errata> retval;
         try {
             retval = getSession().getNamedQuery("Errata.findByAdvisoryType")
-                    .setString("type", advisoryType)
+                    .setParameter("type", advisoryType)
                     //Retrieve from cache if there
                     .setCacheable(true).list();
         }
@@ -466,7 +466,7 @@ public class ErrataFactory extends HibernateFactory {
         Errata retval;
         try {
             retval = (Errata) getSession().getNamedQuery("Errata.findById")
-                    .setLong("id", id).uniqueResult();
+                    .setParameter("id", id).uniqueResult();
         }
         catch (HibernateException he) {
             log.error("Error loading ActionArchTypes from DB", he);

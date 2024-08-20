@@ -20,10 +20,14 @@ import com.suse.manager.matcher.MatcherJsonIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 /**
  * A factory for creating PinnedSubscription objects.
@@ -69,7 +73,11 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<PinnedSubscription> listPinnedSubscriptions() {
-        return getSession().createCriteria(PinnedSubscription.class).list();
+        String sql = "SELECT * FROM susePinnedSubscription";
+
+        TypedQuery<PinnedSubscription> query
+                = getSession().createNativeQuery(sql, PinnedSubscription.class);
+        return query.getResultList();
     }
 
     /**
@@ -96,7 +104,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     public void cleanStalePins() {
         getSession()
             .getNamedQuery("PinnedSubscription.cleanStalePins")
-            .setLong("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
+            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
             .executeUpdate();
     }
 
@@ -106,10 +114,10 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * @return PinnedSubscription object
      */
     public PinnedSubscription lookupById(Long id) {
+        String sql = "SELECT * FROM susePinnedSubscription WHERE id = :id";
         return (PinnedSubscription) getSession()
-                .createCriteria(PinnedSubscription.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
+                .createNativeQuery(sql, PinnedSubscription.class).setParameter("id", id)
+                .getSingleResult();
     }
 
     /**
@@ -120,10 +128,17 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId,
             Long subscriptionId) {
-        return (PinnedSubscription) getSession()
-                .createCriteria(PinnedSubscription.class)
-                .add(Restrictions.eq("systemId", systemId))
-                .add(Restrictions.eq("subscriptionId", subscriptionId))
-                .uniqueResult();
+
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        CriteriaQuery<PinnedSubscription> query = cb.createQuery(PinnedSubscription.class);
+
+        Root<PinnedSubscription> root = query.from(PinnedSubscription.class);
+
+        Predicate predicate = cb.equal(root.get("systemId"), systemId);
+        predicate = cb.and(predicate, cb.equal(root.get("subscriptionId"), subscriptionId));
+
+        query.select(root).where(predicate);
+        return getSession().createQuery(query).uniqueResult();
     }
 }

@@ -22,13 +22,13 @@ import com.suse.scc.model.SCCRepositoryJson;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -182,7 +182,7 @@ public class SCCRepository extends BaseDomainHelper {
      * @return the autorefresh
      */
     @Column(name = "autorefresh")
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isAutorefresh() {
         return autorefresh;
     }
@@ -218,7 +218,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the signed
      */
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isSigned() {
         return signed;
     }
@@ -233,7 +233,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Return true if this is for installer updates
      */
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     @Column(name = "installer_updates")
     public boolean isInstallerUpdates() {
         return installerUpdates;
