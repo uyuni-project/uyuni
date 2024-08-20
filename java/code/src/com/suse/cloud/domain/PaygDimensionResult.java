@@ -17,11 +17,11 @@ package com.suse.cloud.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Type;
 
 import java.util.StringJoiner;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -91,7 +91,7 @@ public class PaygDimensionResult {
     }
 
     @Column(name = "dimension")
-    @Type(type = "com.suse.cloud.domain.BillingDimensionEnumType")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public BillingDimension getDimension() {
         return dimension;
     }

@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -125,7 +126,7 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the mandatory.
      */
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     @Column(name = "mandatory")
     public boolean isMandatory() {
         return mandatory;

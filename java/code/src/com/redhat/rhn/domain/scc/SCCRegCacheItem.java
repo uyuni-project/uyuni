@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -178,7 +179,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      * @return true when updating the registration at SCC is required, otherwise false
      */
     @Column(name = "scc_reg_required")
-    @org.hibernate.annotations.Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isSccRegistrationRequired() {
         return sccRegistrationRequired;
     }

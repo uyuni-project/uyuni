@@ -28,6 +28,7 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -204,7 +205,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @return active - if action is active
      */
     @Column
-    @org.hibernate.annotations.Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isActive() {
         return active;
     }
