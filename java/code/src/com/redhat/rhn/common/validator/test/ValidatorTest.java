@@ -235,7 +235,7 @@ public class ValidatorTest  {
         TestObject to = new TestObject();
         to.setLongField(10L);
         assertNull(validator.validate("longField", to));
-        to.setLongField(100L);
+        to.setParameterField(100L);
         assertNotNull(validator.validate("longField", to));
         to.setThirdLongField(Long.MAX_VALUE);
         assertNull(validator.validate("thirdLongFiled", to));

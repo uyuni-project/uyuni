@@ -267,7 +267,7 @@ public class TestUtils {
     public static Object lookupFromCacheById(Long id, String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
-                        .setLong("id", id)
+                        .setParameter("id", id)
                         //Retrieve from cache if there
                         .setCacheable(true)
                         .uniqueResult();

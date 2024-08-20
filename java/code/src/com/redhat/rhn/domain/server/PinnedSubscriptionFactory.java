@@ -95,7 +95,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     public void cleanStalePins() {
         getSession()
             .getNamedQuery("PinnedSubscription.cleanStalePins")
-            .setLong("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
+            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
             .executeUpdate();
     }
 

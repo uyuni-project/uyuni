@@ -332,7 +332,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
                           .setParameter("id", id)
-                          .setParameter("org_id", orgIn.getId(), LongType.INSTANCE)
+                          .setParameter("org_id", orgIn.getId())
                           .uniqueResult();
     }
 

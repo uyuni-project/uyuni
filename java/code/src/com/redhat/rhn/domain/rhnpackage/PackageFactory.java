@@ -300,7 +300,7 @@ public class PackageFactory extends HibernateFactory {
      */
      public static PackageName lookupPackageName(Long id) {
          return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findById")
-                 .setLong("id", id).uniqueResult();
+                 .setParameter("id", id).uniqueResult();
     }
 
     /**
@@ -313,7 +313,7 @@ public class PackageFactory extends HibernateFactory {
      */
     public static PackageName lookupPackageName(String pn) {
         return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findByName")
-                .setString("name", pn).uniqueResult();
+                .setParameter("name", pn).uniqueResult();
     }
 
     /**
@@ -342,8 +342,8 @@ public class PackageFactory extends HibernateFactory {
             String release, String epoch, PackageArch arch) {
 
         List<Package> packages = HibernateFactory.getSession().getNamedQuery(
-                "Package.lookupByNevra").setParameter("org", org).setString("name", name)
-                .setString("version", version).setString("release", release).setParameter(
+                "Package.lookupByNevra").setParameter("org", org).setParameter("name", name)
+                .setParameter("version", version).setParameter("release", release).setParameter(
                         "arch", arch).list();
 
         if (epoch == null || packages.size() < 2) {
@@ -388,12 +388,12 @@ public class PackageFactory extends HibernateFactory {
         @SuppressWarnings("unchecked")
         List<Package> packages = HibernateFactory.getSession()
                 .getNamedQuery("Package.lookupByChannelLabelNevraCs")
-                .setString("channel", channel)
-                .setString("name", name)
-                .setString("version", version)
-                .setString("release", release)
-                .setString("arch", arch)
-                .setString("checksum", checksum.orElse(null))
+                .setParameter("channel", channel)
+                .setParameter("name", name)
+                .setParameter("version", version)
+                .setParameter("release", release)
+                .setParameter("arch", arch)
+                .setParameter("checksum", checksum.orElse(null))
                 .list();
 
         if (packages.isEmpty()) {

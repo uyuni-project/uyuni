@@ -790,7 +790,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
         return (ServerGroupType) HibernateFactory.getSession().getNamedQuery("ServerGroupType.findByLabel")
-                .setString("label", label)
+                .setParameter("label", label)
                 // Retrieve from cache if there
                 .setCacheable(true).uniqueResult();
 
@@ -894,7 +894,7 @@ public class ServerFactory extends HibernateFactory {
     public static ServerArch lookupServerArchByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ServerArch) session.getNamedQuery("ServerArch.findByLabel")
-                .setString("label", label)
+                .setParameter("label", label)
                 // Retrieve from cache if there
                 .setCacheable(true).uniqueResult();
     }
@@ -920,7 +920,7 @@ public class ServerFactory extends HibernateFactory {
     public static CPUArch lookupCPUArchByName(String name) {
         Session session = HibernateFactory.getSession();
         return (CPUArch) session.getNamedQuery("CPUArch.findByName")
-                .setString("name", name)
+                .setParameter("name", name)
                 // Retrieve from cache if there
                 .setCacheable(true).uniqueResult();
     }
@@ -1296,7 +1296,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
         return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupByTagName")
-                .setString("tag_name", tagName)
+                .setParameter("tag_name", tagName)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();
@@ -1308,7 +1308,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
         return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupById")
-                .setLong("id", tagId)
+                .setParameter("id", tagId)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();

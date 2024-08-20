@@ -461,7 +461,7 @@ public  class UserFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (RhnTimeZone) session
                 .getNamedQuery("RhnTimeZone.loadTimeZoneByOlsonName")
-                .setString("ton", olsonName)
+                .setParameter("ton", olsonName)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();

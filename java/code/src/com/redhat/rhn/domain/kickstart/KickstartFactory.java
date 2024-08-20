@@ -189,8 +189,8 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartData lookupKickstartDataByIdAndOrg(Org orgIn, Long ksid) {
         return (KickstartData)  HibernateFactory.getSession()
                 .getNamedQuery("KickstartData.findByIdAndOrg")
-                .setParameter("id", ksid, LongType.INSTANCE)
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter("id", ksid)
+                .setParameter(ORG_ID, orgIn.getId())
                 .uniqueResult();
     }
 
@@ -204,7 +204,7 @@ public class KickstartFactory extends HibernateFactory {
         return (KickstartData)  HibernateFactory.getSession()
                 .getNamedQuery("KickstartData.findByCobblerIdAndOrg")
                 .setParameter("id", cobblerId)
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId())
                 .uniqueResult();
     }
 
@@ -222,7 +222,7 @@ public class KickstartFactory extends HibernateFactory {
         return (KickstartData) HibernateFactory.getSession().
                 getNamedQuery("KickstartData.findByLabelAndOrg")
                 .setParameter(LABEL, label)
-                .setParameter(ORG_ID, orgId, LongType.INSTANCE)
+                .setParameter(ORG_ID, orgId)
                 .uniqueResult();
     }
 
@@ -241,7 +241,7 @@ public class KickstartFactory extends HibernateFactory {
         return (KickstartData) HibernateFactory.getSession().
                 getNamedQuery("KickstartData.findByCILabelAndOrg")
                 .setParameter(LABEL, label)
-                .setParameter(ORG_ID, orgId, LongType.INSTANCE)
+                .setParameter(ORG_ID, orgId)
                 .uniqueResult();
     }
 
@@ -482,7 +482,7 @@ public class KickstartFactory extends HibernateFactory {
         if (org != null) {
             query = session.getNamedQuery("CryptoKey.findByDescAndOrg")
                            .setParameter("description", description)
-                           .setParameter(ORG_ID, org.getId(), LongType.INSTANCE);
+                           .setParameter(ORG_ID, org.getId());
         }
         else {
             query = session.getNamedQuery("CryptoKey.findByDescAndNullOrg")
@@ -500,7 +500,7 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("CryptoKey.findByOrg")
-                .setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, org.getId())
                 .list();
     }
 
@@ -513,7 +513,7 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("SslCryptoKey.findByOrg")
-                .setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, org.getId())
                 .list();
     }
 
@@ -527,8 +527,8 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
         return (CryptoKey) session.getNamedQuery("CryptoKey.findByIdAndOrg")
-                .setParameter("key_id", keyId, LongType.INSTANCE)
-                .setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
+                .setParameter("key_id", keyId)
+                .setParameter(ORG_ID, org.getId())
                 .uniqueResult();
     }
 
@@ -542,8 +542,8 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
         Query<SslCryptoKey> query = session.getNamedQuery("SslCryptoKey.findByIdAndOrg");
-        return query.setParameter("key_id", keyId, LongType.INSTANCE)
-                .setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
+        return query.setParameter("key_id", keyId)
+                .setParameter(ORG_ID, org.getId())
                 .uniqueResult();
     }
 
@@ -573,7 +573,7 @@ public class KickstartFactory extends HibernateFactory {
         KickstartableTree retval = (KickstartableTree)
                 session.getNamedQuery("KickstartableTree.findByLabelAndOrg")
                 .setParameter(LABEL, label)
-                .setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, org.getId())
                 .uniqueResult();
         // If we don't find by label + org then
         // we try by label and NULL org (RHN owned channel)
@@ -611,8 +611,8 @@ public class KickstartFactory extends HibernateFactory {
         String query = "KickstartableTree.findByChannelAndOrg";
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(query).
-                setParameter("channel_id", channelId, LongType.INSTANCE).
-                setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
+                setParameter("channel_id", channelId).
+                setParameter(ORG_ID, org.getId())
                 //Retrieve from cache if there
                 .setCacheable(true).list();
     }
@@ -627,7 +627,7 @@ public class KickstartFactory extends HibernateFactory {
         String query = "KickstartableTree.findByChannelAndNullOrg";
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(query)
-                .setParameter("channel_id", channelId, LongType.INSTANCE)
+                .setParameter("channel_id", channelId)
                 // Retrieve from cache if there
                 .setCacheable(true).list();
     }
@@ -648,8 +648,8 @@ public class KickstartFactory extends HibernateFactory {
         query = "KickstartableTree.findByChannel";
         session = HibernateFactory.getSession();
         retval = session.getNamedQuery(query).
-                setParameter("channel_id", channelId, LongType.INSTANCE).
-                setParameter(ORG_ID, org.getId(), LongType.INSTANCE).
+                setParameter("channel_id", channelId).
+                setParameter(ORG_ID, org.getId()).
                 list();
         return retval;
     }
@@ -713,8 +713,8 @@ public class KickstartFactory extends HibernateFactory {
         if (treeId != null && org != null) {
             Session session = HibernateFactory.getSession();
             Query<KickstartableTree> query = session.getNamedQuery(queryName);
-            query.setParameter(ORG_ID, org.getId(), LongType.INSTANCE);
-            query.setParameter("tree_id", treeId, LongType.INSTANCE);
+            query.setParameter(ORG_ID, org.getId());
+            query.setParameter("tree_id", treeId);
             //Retrieve from cache if there
             return query.setCacheable(true).uniqueResult();
         }
@@ -735,7 +735,7 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartSession lookupKickstartSessionByServer(Long sidIn) {
         Session session = HibernateFactory.getSession();
         List<KickstartSession> ksessions = session.getNamedQuery("KickstartSession.findByServer")
-                .setParameter("server", sidIn, LongType.INSTANCE)
+                .setParameter("server", sidIn)
                 .list();
         if (!ksessions.isEmpty()) {
             return ksessions.iterator().next();
@@ -754,7 +754,7 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         List<KickstartSession> ksessions = session.getNamedQuery(
                 "KickstartSession.findDefaultKickstartSessionForKickstartData")
-                .setParameter("ksdata", ksdata.getId(), LongType.INSTANCE)
+                .setParameter("ksdata", ksdata.getId())
                 .setParameter("mode", KickstartSession.MODE_DEFAULT_SESSION)
                 .list();
         if (!ksessions.isEmpty()) {
@@ -793,7 +793,7 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartSession> lookupAllKickstartSessionsByServer(Long sidIn) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("KickstartSession.findByServer")
-                .setParameter("server", sidIn, LongType.INSTANCE)
+                .setParameter("server", sidIn)
                 .list();
     }
 
@@ -826,9 +826,9 @@ public class KickstartFactory extends HibernateFactory {
             Session session = HibernateFactory.getSession();
             Query<KickstartableTree> query = session.
                     getNamedQuery("KickstartableTree.verifyTreeAssignment");
-            query.setParameter("channel_id", channelId, LongType.INSTANCE);
-            query.setParameter(ORG_ID, orgId, LongType.INSTANCE);
-            query.setParameter("tree_id", treeId, LongType.INSTANCE);
+            query.setParameter("channel_id", channelId);
+            query.setParameter(ORG_ID, orgId);
+            query.setParameter("tree_id", treeId);
             KickstartableTree tree = query.uniqueResult();
             return tree != null;
         }
@@ -904,7 +904,7 @@ public class KickstartFactory extends HibernateFactory {
         String query = "KickstartData.lookupByTreeId";
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(query)
-                .setParameter("kstree_id", tree.getId(), LongType.INSTANCE)
+                .setParameter("kstree_id", tree.getId())
                 .list();
     }
 
@@ -944,7 +944,7 @@ public class KickstartFactory extends HibernateFactory {
         return (KickstartData) session
                 .getNamedQuery("KickstartData.findOrgDefault")
                 .setParameter("org", org)
-                .setParameter("isOrgDefault", "Y", StringType.INSTANCE)
+                .setParameter("isOrgDefault", "Y")
                 .uniqueResult();
     }
 
@@ -1074,8 +1074,8 @@ public class KickstartFactory extends HibernateFactory {
             KickstartData ksData, PackageName packageName) {
         return HibernateFactory.getSession()
                 .getNamedQuery("KickstartPackage.findByKickstartDataAndPackageName")
-                .setParameter("ks_data", ksData.getId(), LongType.INSTANCE)
-                .setParameter("package_name", packageName.getId(), LongType.INSTANCE)
+                .setParameter("ks_data", ksData.getId())
+                .setParameter("package_name", packageName.getId())
                 .list();
     }
 

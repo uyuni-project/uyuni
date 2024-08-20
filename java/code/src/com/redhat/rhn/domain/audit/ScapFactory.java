@@ -76,8 +76,8 @@ public class ScapFactory extends HibernateFactory {
     public static void clearTestResult(long serverId, long actionId) {
         List<XccdfTestResult> results = getSession()
                 .getNamedQuery("XccdfTestResult.findByActionId")
-                .setLong("serverId", serverId)
-                .setLong("actionId", actionId)
+                .setParameter("serverId", serverId)
+                .setParameter("actionId", actionId)
                 .list();
         results.forEach(ScapFactory::delete);
     }

@@ -430,9 +430,9 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Query<ConfigFile> query =
             session.getNamedQuery("ConfigFile.findByChannelAndName")
-                    .setLong("channel_id", channel)
-                    .setLong("name_id", name)
-                    .setLong("state_id", ConfigFileState.normal().
+                    .setParameter("channel_id", channel)
+                    .setParameter("name_id", name)
+                    .setParameter("state_id", ConfigFileState.normal().
                             getId());
         try {
             return query.uniqueResult();
@@ -463,7 +463,7 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long revId) {
         Session session = HibernateFactory.getSession();
         Query<ConfigRevision> q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
-        q.setLong("rev", revId);
+        q.setParameter("rev", revId);
         q.setParameter("cf", cf);
         return q.uniqueResult();
     }
@@ -514,7 +514,7 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (ConfigChannelType)
             session.getNamedQuery("ConfigChannelType.findByLabel")
-                                        .setString("label", label)
+                                        .setParameter("label", label)
                                         //Retrieve from cache if there
                                         .setCacheable(true)
                                         .uniqueResult();
@@ -531,7 +531,7 @@ public class ConfigurationFactory extends HibernateFactory {
     static ConfigFileState lookupConfigFileStateByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ConfigFileState)session.getNamedQuery("ConfigFileState.findByLabel")
-                                       .setString("label", label)
+                                       .setParameter("label", label)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();
@@ -545,7 +545,7 @@ public class ConfigurationFactory extends HibernateFactory {
     static ConfigFileType lookupConfigFileTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ConfigFileType)session.getNamedQuery("ConfigFileType.findByLabel")
-                                       .setString("label", label)
+                                       .setParameter("label", label)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();

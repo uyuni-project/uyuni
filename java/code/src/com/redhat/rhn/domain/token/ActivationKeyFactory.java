@@ -60,7 +60,7 @@ public class ActivationKeyFactory extends HibernateFactory {
 
         return (ActivationKey) HibernateFactory.getSession()
             .getNamedQuery("ActivationKey.findByKey")
-                                      .setString("key", key)
+                                      .setParameter("key", key)
                                       .uniqueResult();
     }
 
