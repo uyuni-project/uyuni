@@ -26,6 +26,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -232,6 +233,8 @@ public class MinionServer extends Server implements SaltConfigurable {
 
         Set<Channel> tokenChannels = AccessTokenFactory.listByMinion(this)
                 .stream()
+                .filter(AccessToken::getValid)
+                .filter(t -> t.getExpiration().toInstant().isAfter(Instant.now()))
                 .flatMap(t -> t.getChannels().stream())
                 .collect(Collectors.toSet());
 
