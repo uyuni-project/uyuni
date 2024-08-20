@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature: as this feature disables/re-enables monitoring capabilities
@@ -16,8 +16,8 @@ Feature: Monitor SUMA environment with Prometheus on a Red Hat-like Salt minion
   Scenario: Pre-requisite: enable Prometheus exporters repository on the Red Hat-like minion
     When I enable the necessary repositories before installing Prometheus exporters on this "rhlike_minion"
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Apply Prometheus exporter formulas on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
@@ -43,7 +43,7 @@ Feature: Monitor SUMA environment with Prometheus on a Red Hat-like Salt minion
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Visit monitoring endpoints on the Red Hat-like minion
     When I wait until "node" exporter service is active on "rhlike_minion"
@@ -63,7 +63,7 @@ Feature: Monitor SUMA environment with Prometheus on a Red Hat-like Salt minion
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Cleanup: disable Prometheus exporters repository on the Red Hat-like minion
     When I disable the necessary repositories before installing Prometheus exporters on this "rhlike_minion" without error control

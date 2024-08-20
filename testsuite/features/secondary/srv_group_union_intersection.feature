@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature will be fully tested only if we have a Red Hat-like client
@@ -7,8 +7,8 @@
 @scope_visualization
 Feature: Work with Union and Intersection buttons in the group list
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create a sles group
     When I follow the left menu "Systems > System Groups"
