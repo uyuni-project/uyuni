@@ -279,6 +279,7 @@ def makedirs(path,  mode=int('0755', 8), user=None, group=None):
         dirname = dirs_to_create.pop()
         try:
             os.mkdir(dirname, mode)
+            os.chmod(dirname, mode)
         except OSError:
             e = sys.exc_info()[1]
             if e.errno != 17:  # File exists
