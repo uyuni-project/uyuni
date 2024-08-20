@@ -17,7 +17,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             length="32" />
 
         <property name="advisoryStatus" column="advisory_status">
-            <type name="com.redhat.rhn.domain.errata.AdvisoryStatusEnumType">
+            <type name="converted::com.redhat.rhn.domain.errata.AdvisoryStatusConverter">
             </type>
         </property>
 
@@ -195,6 +195,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             WHERE (pn.name || '-' || COALESCE(pevr.epoch || ':', '') || pevr.version || '-' || pevr.release || '.' || parch.label) in (:nevras)
                 AND sid in (:sids)
         ]]>
+        <synchronize table="rhnChannel"/>
+        <synchronize table="rhnErrata"/>
+        <synchronize table="rhnpackage"/>
+        <synchronize table="rhnServer"/>
         <return-scalar column="pid" type="long" />
         <return-scalar column="sid" type="long" />
     </sql-query>
@@ -299,24 +303,4 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="restart_suggested" type="boolean" />
     </sql-query>
 
-    <sql-query name="Errata.listAvailableToOrgByIds">
-        <![CDATA[SELECT E.*, EC.original_id, CASE WHEN EC.original_id IS NULL THEN 0 ELSE 1 END as clazz_
-                 FROM rhnErrata as E
-                 LEFT JOIN rhnErrataCloned EC ON E.id = EC.id
-                 WHERE E.id in (:eids)
-                     AND (E.org_id = :orgId
-                          OR EXISTS (SELECT 1
-                                     FROM WEB_CUSTOMER ORG
-                                     INNER JOIN rhnTrustedOrgs TORG ON ORG.id = TORG.org_id
-                                     WHERE ORG.id = :orgId
-                                         AND E.org_id = TORG.org_trust_id)
-                          OR EXISTS (SELECT 1
-                                     FROM rhnAvailableChannels AC,
-                                     rhnChannelErrata CE
-                                     WHERE CE.errata_id = E.id
-                                         AND CE.channel_id = AC.channel_id
-                                         AND AC.org_id = :orgId))
-                          ]]>
-        <return alias="E" class="com.redhat.rhn.domain.errata.Errata" />
-    </sql-query>
 </hibernate-mapping>

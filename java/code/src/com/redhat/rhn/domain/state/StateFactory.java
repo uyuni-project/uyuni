@@ -22,15 +22,17 @@ import com.redhat.rhn.domain.server.ServerGroup;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
+
 
 /**
  * Factory class for working with states.
@@ -193,14 +195,26 @@ public class StateFactory extends HibernateFactory {
 
     private static <T extends StateRevision> Optional<T> latestRevision(
             Class<T> revisionType, String field, Object bean) {
-        DetachedCriteria maxQuery = DetachedCriteria.forClass(revisionType)
-                .add(Restrictions.eq(field, bean))
-                .setProjection(Projections.max("id"));
-        T revision = (T) getSession()
-                .createCriteria(revisionType)
-                .add(Restrictions.eq(field, bean))
-                .add(Property.forName("id").eq(maxQuery))
-                .uniqueResult();
+        // Get the CriteriaBuilder
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+
+        // Create the main query
+        CriteriaQuery<T> query = cb.createQuery(revisionType);
+        Root<T> root = query.from(revisionType);
+
+        // Create a subquery to get the maximum ID
+        Subquery<Long> subquery = query.subquery(Long.class);
+        Root<T> subRoot = subquery.from(revisionType);
+        subquery.select(cb.max(subRoot.get("id")))
+                .where(cb.equal(subRoot.get(field), bean));
+
+        // Add the subquery result as a restriction in the main query
+        query.select(root).where(cb.equal(root.get(field), bean),
+                cb.equal(root.get("id"), subquery));
+
+        // Execute the query
+        T revision = getSession().createQuery(query).getSingleResult();
+
         return Optional.ofNullable(revision);
     }
 

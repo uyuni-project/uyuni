@@ -16,19 +16,60 @@ package com.redhat.rhn.domain.rhnpackage;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+@Entity
+@Table(name = "rhnPackageProvides")
 
 /**
  * PackageArch
  */
-@Entity
-@Table(name = "rhnPackageProvides")
 public class PackageProvides extends PackageProperty implements Serializable {
 
-    /**
-     * Comment for <code>serialVersionUID</code>
-     */
-    private static final long serialVersionUID = -6384010981726804938L;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "package_id", insertable = false, updatable = false, nullable = false)
+    private Package pack;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "capability_id", insertable = false, updatable = false, nullable = false)
+    private PackageCapability capability;
+
+
+    @Column(name = "sense", nullable = false)
+    private Long sense;
+
+    /**
+     * Default Constructor.
+     */
+    public PackageProvides() {
+    }
+
+    public Package getPack() {
+        return pack;
+    }
+
+    public void setPack(Package packIn) {
+        this.pack = packIn;
+    }
+
+    public PackageCapability getCapability() {
+        return capability;
+    }
+
+    public void setCapability(PackageCapability capabilityIn) {
+        this.capability = capabilityIn;
+    }
+
+    public Long getSense() {
+        return sense;
+    }
+
+    public void setSense(Long senseIn) {
+        this.sense = senseIn;
+    }
 }

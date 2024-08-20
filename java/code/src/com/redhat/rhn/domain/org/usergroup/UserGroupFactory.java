@@ -57,8 +57,8 @@ public class UserGroupFactory extends HibernateFactory {
      * @param role the Role to base this new UserGroup on.
      * @return the UserGroup created
      */
-    public static UserGroup createUserGroup(Org org, Role role) {
-        UserGroup retval = new UserGroupImpl();
+    public static UserGroupImpl createUserGroup(Org org, Role role) {
+        UserGroupImpl retval = new UserGroupImpl();
         LocalizationService ls = LocalizationService.getInstance();
         // Concat the Role name with the letter s to form the UserGroup name
         // such as: "Organization Applicants"
@@ -166,8 +166,8 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static int deleteTemporaryRoles() {
         return HibernateFactory.getSession()
-        .getNamedQuery("UserGroupMembers.deleteTemporary")
-        .executeUpdate();
+                .createNativeQuery("DELETE FROM rhnUserGroupMembers WHERE temporary = 'Y'", Integer.class)
+                .executeUpdate();
     }
 
     /**

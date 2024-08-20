@@ -24,20 +24,49 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * ConfigChannel - Class representation of the table rhnConfigChannel.
  */
+@Entity
+@Table(name = "rhnConfigChannel")
 public class ConfigChannel extends BaseDomainHelper implements Identifiable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Assuming the ID is auto-generated or assigned
+    @Column(name = "id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @Column(name = "name", length = 128, nullable = false)
     private String name;
+
+    @Column(name = "label", length = 64, nullable = false)
     private String label;
+
+    @Column(name = "description", length = 1024)
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "confchan_type_id", nullable = false)
     private ConfigChannelType configChannelType;
 
-    private SortedSet<ConfigFile> configFiles;
+    @Transient
+    private SortedSet<ConfigFile> configFiles = new TreeSet<>();
 
     /**
      * Protected constructor

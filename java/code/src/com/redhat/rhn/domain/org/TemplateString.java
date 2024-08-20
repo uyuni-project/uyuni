@@ -16,15 +16,43 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+
+
 /**
  * TemplateString
  */
+@Entity
+@Table(name = "RHNTEMPLATESTRING")
 public class TemplateString extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "template_string_seq")
+    @SequenceGenerator(name = "template_string_seq", sequenceName = "RHN_TEMPLATE_STR_ID_SEQ", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "label", length = 64)
     private String label;
+
+    @Column(name = "value", length = 4000)
     private String value;
+
+    @Column(name = "description", length = 512)
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     private TemplateCategory category;
 
     /**

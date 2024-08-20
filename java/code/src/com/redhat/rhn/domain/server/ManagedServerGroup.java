@@ -16,19 +16,37 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 /**
  * This class represents the User Managed Server Groups
  * i.e. the types
  */
+@Entity
+@DiscriminatorValue("null")
 public class ManagedServerGroup extends ServerGroup {
 
-    private Set<User> associatedAdmins = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "rhnUserServerGroupPerms",
+            joinColumns = @JoinColumn(name = "server_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<UserImpl> associatedAdmins = new HashSet<>();
+    @Transient
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
@@ -38,7 +56,7 @@ public class ManagedServerGroup extends ServerGroup {
      * list does not include that.
      * @return a set of users
      */
-    protected Set<User> getAssociatedAdmins() {
+    protected Set<UserImpl> getAssociatedAdmins() {
         return associatedAdmins;
     }
 
@@ -50,7 +68,7 @@ public class ManagedServerGroup extends ServerGroup {
      * @param user needed for authentication
      * @return a set of users
      */
-    public Set<User> getAssociatedAdminsFor(User user) {
+    public Set<UserImpl> getAssociatedAdminsFor(User user) {
         serverGroupManager.validateAdminCredentials(user);
         return getAssociatedAdmins();
     }
@@ -59,8 +77,8 @@ public class ManagedServerGroup extends ServerGroup {
      * sets admins
      * @param newUsers the associated users of the group
      */
-    protected void setAssociatedAdmins(Set<User> newUsers) {
-        this.associatedAdmins = newUsers;
+    protected void setAssociatedAdmins(Set<UserImpl> newUsers) {
+        this.associatedAdmins.addAll(newUsers);
     }
 
     /**

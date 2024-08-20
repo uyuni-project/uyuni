@@ -19,12 +19,25 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+
 /**
  * ClientCapabilityId
  */
+@Embeddable
 public class ClientCapabilityId implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
+
+    @ManyToOne
+    @JoinColumn(name = "capability_name_id", nullable = false)
     private Capability capability;
 
     /**

@@ -109,8 +109,10 @@ public class ServerTestUtils {
                 release, addTo.getPackageType());
         testInstPack.setEvr(evr);
 
-        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(
-                I386_PACKAGE_ARCH_ID, "PackageArch.findById");
+        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", I386_PACKAGE_ARCH_ID).getSingleResult();
+
         testInstPack.setArch(parch);
 
         PackageName redhatRelease = PackageManager.lookupPackageName(REDHAT_RELEASE);

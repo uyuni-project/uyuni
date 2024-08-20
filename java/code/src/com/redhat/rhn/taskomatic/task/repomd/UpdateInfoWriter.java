@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.frontend.dto.Bug;
 import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -281,7 +282,7 @@ public class UpdateInfoWriter extends RepomdWriter {
         if (updateTag == null || updateTag.isEmpty()) {
             Channel current = channel;
             while (current.isCloned()) {
-                current = current.getOriginal();
+                current = current.asCloned().map(ClonedChannel::getOriginal).orElseThrow();
                 updateTag = current.getUpdateTag();
                 if (updateTag != null && !updateTag.isEmpty()) {
                     break;

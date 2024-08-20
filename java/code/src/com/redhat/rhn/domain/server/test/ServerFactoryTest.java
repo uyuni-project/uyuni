@@ -671,7 +671,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         netint.setServer(newS);
         newS.addNetworkInterface(netint);
 
-        ServerFactory.save(newS);
         TestUtils.saveAndReload(newS);
 
 
@@ -1086,7 +1085,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testErrataAction() throws Exception {
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
 
-        PackageArch parch1 = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        PackageArch parch1 = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", 100L).getSingleResult();
 
         Package zypper = new Package();
         PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"),
@@ -1173,8 +1174,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
         PackageName p2Name = PackageNameTest.createTestPackageName("testPackage2-" + TestUtils.randomString());
 
-        PackageArch parch1 = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
-        PackageArch parch2 = (PackageArch) TestUtils.lookupFromCacheById(101L, "PackageArch.findById");
+        PackageArch parch1 = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.label = :label
+                """, PackageArch.class).setParameter("label", 100L).getSingleResult();
+
+        PackageArch parch2 = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.label = :label
+                """, PackageArch.class).setParameter("label", 101L).getSingleResult();
 
         Package p1v1 = new Package();
         PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
@@ -1619,7 +1625,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testGetInstalledKernelVersions() throws Exception {
         Server srv = createTestServer(user);
-        PackageArch pkgArch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+
+        PackageArch pkgArch = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.label = :label
+                """, PackageArch.class).setParameter("label", 100L).getSingleResult();
 
         Package pkg1 = PackageTest.createTestPackage(null);
         PackageEvr pkgEvr1 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.1.0", "1", PackageType.RPM);

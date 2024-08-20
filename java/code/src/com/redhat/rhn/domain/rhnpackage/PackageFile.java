@@ -12,6 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.domain.rhnpackage;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
@@ -20,34 +21,116 @@ import com.redhat.rhn.domain.common.Checksum;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 /**
  * PackageArch
  */
-public class PackageFile extends BaseDomainHelper implements Serializable {
+@Entity
+@Table(name = "rhnPackageFile", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"package_id", "capability_id"})
+})
+public class PackageFile extends BaseDomainHelper {
 
     /**
      * Comment for <code>serialVersionUID</code>
      */
     private static final long serialVersionUID = 8009150853428038205L;
 
+    // Composite primary key
+    @EmbeddedId
+    private PackageFileId id;  // This will use the composite key class
+
+    @Column(name = "package_id", insertable = false, updatable = false)
     private Package pack;
+
+    @Column(name = "capability_id", insertable = false, updatable = false)
     private PackageCapability capability;
+
+    @Column(name = "device")
     private Long device;
+
+    @Column(name = "inode")
     private Long inode;
+
+    @Column(name = "file_mode")
     private Long fileMode;
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "groupname")
     private String groupname;
+
+    @Column(name = "rdev")
     private Long rdev;
+
+    @Column(name = "file_size")
     private Long fileSize;
+
+    @Column(name = "mtime")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date mtime;
+
+    @ManyToOne
+    @JoinColumn(name = "checksum_id")
     private Checksum checksum;
+
+    @Column(name = "linkto")
     private String linkTo;
+
+    @Column(name = "flags")
     private Long flags;
+
+    @Column(name = "verifyflags")
     private Long verifyFlags;
+
+    @Column(name = "lang")
     private String lang;
+
+    /**
+     * Default Constructor
+     */
+    public PackageFile() {
+        this.id = new PackageFileId();
+        this.pack = this.id.getPack();
+        this.capability = this.id.getCapability();
+    }
+
+    /**
+     * Constructor with parameters.
+     * @param packIn package
+     * @param capabilityIn package capability
+     */
+    public PackageFile(Package packIn, PackageCapability capabilityIn) {
+        this.pack = packIn;
+        this.capability = capabilityIn;
+        this.id = new PackageFileId(packIn, capabilityIn);
+    }
+
+    /**
+     * @return Id
+     */
+    public PackageFileId getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn the Id to set.
+     */
+    public void setId(PackageFileId idIn) {
+        id = idIn;
+    }
 
     /**
      * @return Returns the pack.

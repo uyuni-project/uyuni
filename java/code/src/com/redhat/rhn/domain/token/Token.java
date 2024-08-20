@@ -37,27 +37,96 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Token
  */
+@Entity
+@Table(name = "rhnRegToken")
 public class Token implements Identifiable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_REG_TOKEN_SEQ")
+    @SequenceGenerator(name = "RHN_REG_TOKEN_SEQ", sequenceName = "RHN_REG_TOKEN_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column(name = "note", length = 2048)
     private String note;
+
+    @Column(name = "disabled")
     private Long disabled;
+
+    @Column(name = "deploy_configs")
     private boolean deployConfigs;
+
+    @Column(name = "usage_limit")
     private Long usageLimit;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User creator;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @ManyToOne
+    @JoinColumn(name = "contact_method_id")
     private ContactMethod contactMethod;
-    private Set<Server> activatedSystems = new HashSet<>();
+
+    @OneToMany(mappedBy = "token")
+    private Set<Server> activatedServers = new HashSet<>();
+
+    @OneToMany(mappedBy = "token", fetch = FetchType.LAZY)
     private List<ConfigChannel> configChannels = new LinkedList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnRegTokenEntitlement",
+            joinColumns = @JoinColumn(name = "reg_token_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_group_type_id")
+    )
     private Set<ServerGroupType> entitlements = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnRegTokenChannels",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
     private Set<Channel> channels = new HashSet<>();
-    private Set<ServerGroup> serverGroups = new HashSet<>();
+
+    @OneToMany(mappedBy = "token", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TokenPackage> packages = new HashSet<>();
+
+    @OneToMany(mappedBy = "token", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TokenChannelAppStream> appStreams = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnRegTokenGroups",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_group_id")
+    )
+    private Set<ServerGroup> serverGroups = new HashSet<>();
 
     /**
      * @return Returns the entitlements.
@@ -465,14 +534,14 @@ public class Token implements Identifiable {
      * @return Returns the activated systems
      */
     public Set<Server> getActivatedServers() {
-        return activatedSystems;
+        return activatedServers;
     }
 
     /**
      * @param servers the activated servers to set.
      */
     protected void setActivatedServers(Set<Server> servers) {
-        this.activatedSystems = servers;
+        this.activatedServers = servers;
     }
 
     /**

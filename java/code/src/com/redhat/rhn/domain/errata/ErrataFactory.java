@@ -28,6 +28,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -229,7 +230,8 @@ public class ErrataFactory extends HibernateFactory {
                     throw new InvalidChannelException("Cloned channel expected: " +
                             chan.getLabel());
                 }
-                Channel original = chan.getOriginal();
+                Channel original = chan.asCloned().map(ClonedChannel::getOriginal)
+                        .orElseThrow(() -> new InvalidChannelException("Cloned channel expected: " + chan.getLabel()));
                 // see BZ 805714, if we are a clone of a clone the 1st clone
                 // may not have the errata we want
                 Set<Channel> associatedChannels = errata.getChannels();
@@ -959,7 +961,28 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds", Map.of("orgId", orgId), ids, "eids");
+        return getSession().createNativeQuery("""
+                SELECT E.*, EC.original_id, CASE WHEN EC.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                  FROM rhnErrata as E
+             LEFT JOIN rhnErrataCloned EC ON E.id = EC.id
+                 WHERE E.id in (:eids)
+                   AND (E.org_id = :orgId
+                        OR EXISTS (SELECT 1
+                                     FROM WEB_CUSTOMER ORG
+                               INNER JOIN rhnTrustedOrgs TORG ON ORG.id = TORG.org_id
+                                    WHERE ORG.id = :orgId
+                                      AND E.org_id = TORG.org_trust_id)
+                        OR EXISTS (SELECT 1
+                                     FROM rhnAvailableChannels AC,
+                                          rhnChannelErrata CE
+                                    WHERE CE.errata_id = E.id
+                                      AND CE.channel_id = AC.channel_id
+                                      AND AC.org_id = :orgId))
+                """, Errata.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .setParameter("eids", ids)
+                .setParameter("orgId", orgId)
+                .list();
     }
 
     /**

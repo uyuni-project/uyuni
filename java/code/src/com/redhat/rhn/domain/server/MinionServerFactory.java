@@ -27,19 +27,24 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.NoResultException;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -51,6 +56,22 @@ import javax.persistence.criteria.Root;
  * MinionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.server.MinionServer objects from the database.
  */
+@SqlResultSetMapping(
+        name = "findMinionServers",
+        classes = {
+                @ConstructorResult(
+                        targetClass = MinionServer.class,
+                        columns = {
+                                @ColumnResult(name = "server_id", type = Long.class),
+                                @ColumnResult(name = "minion_id", type = String.class),
+                                @ColumnResult(name = "os_family", type = String.class),
+                                @ColumnResult(name = "kernel_live_version", type = String.class),
+                                @ColumnResult(name = "ssh_push_port", type = Integer.class),
+                                @ColumnResult(name = "reboot_required_after", type = Date.class),
+                        }
+                )
+        }
+)
 public class MinionServerFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(MinionServerFactory.class);
@@ -61,11 +82,17 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static List<MinionServer> lookupByOrg(Long orgId) {
-        return HibernateFactory.getSession()
-                .createCriteria(MinionServer.class)
-                .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
-                .add(Restrictions.eq("org.id", orgId))
-                .list();
+        if (orgId == null) {
+            return List.of();
+        }
+
+        String sql = "SELECT DISTINCT * FROM suseMinionInfo WHERE org_id = :orgId";
+
+        TypedQuery<MinionServer> query
+                = getSession().createNativeQuery(sql, MinionServer.class);
+        query.setParameter("orgId", orgId);
+
+        return query.getResultList();
     }
 
     /**
@@ -91,10 +118,23 @@ public class MinionServerFactory extends HibernateFactory {
      * @return server corresponding to the given machine_id
      */
     public static Optional<MinionServer> findByMachineId(String machineId) {
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(MinionServer.class);
-        criteria.add(Restrictions.eq("machineId", machineId));
-        return Optional.ofNullable((MinionServer) criteria.uniqueResult());
+        if (machineId == null) {
+            return Optional.empty();
+        }
+        String sql = "SELECT * FROM suseMinionInfo WHERE machine_id = :machineId";
+
+        TypedQuery<MinionServer> query
+                = getSession().createNativeQuery(sql, MinionServer.class);
+        query.setParameter("machineId", machineId);
+
+        try {
+            // Attempt to get a single result
+            MinionServer result = query.getSingleResult();
+            return Optional.ofNullable(result);
+        }
+        catch (NoResultException e) {
+            return Optional.empty(); // Return empty if no result is found
+        }
     }
 
     /**
@@ -104,10 +144,13 @@ public class MinionServerFactory extends HibernateFactory {
      * @return server corresponding to the given machine_id
      */
     public static Optional<MinionServer> findByMinionId(String minionId) {
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(MinionServer.class);
-        criteria.add(Restrictions.eq("minionId", minionId));
-        return Optional.ofNullable((MinionServer) criteria.uniqueResult());
+        MinionServer result
+                = getSession().createQuery("""
+                        SELECT m FROM MinionServer m WHERE m.minionId = :minionId
+                        """,
+                        MinionServer.class)
+                        .setParameter("minionId", minionId).getSingleResult();
+        return Optional.ofNullable(result);
     }
 
     /**
@@ -115,25 +158,11 @@ public class MinionServerFactory extends HibernateFactory {
      *
      * @return a list of all minions
      */
-    @SuppressWarnings("unchecked")
     public static List<MinionServer> listMinions() {
-        return getSession().createCriteria(MinionServer.class)
-                .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
-                .list();
-    }
-
-    /**
-     * Find all minion ids that belong to an organization.
-     *
-     * @param orgId the organization id
-     * @return a list of minions ids belonging to the given organization
-     */
-    public static List<String> findMinionIdsByOrgId(Long orgId) {
-        return getSession().createCriteria(MinionServer.class)
-                .setProjection(Projections.property("minionId"))
-                .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
-                .add(Restrictions.eq("org.id", orgId))
-                .list();
+        String sql = "SELECT DISTINCT * FROM suseMinionInfo";
+        Query<MinionServer> query
+                = getSession().createNativeQuery(sql, MinionServer.class);
+        return query.getResultList();
     }
 
     /**
@@ -168,10 +197,12 @@ public class MinionServerFactory extends HibernateFactory {
             return emptyList();
         }
         else {
-            return HibernateFactory.getSession().createCriteria(MinionServer.class)
-                    .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
-                    .add(Restrictions.in("minionId", minionIds))
-                    .list();
+            CriteriaBuilder cb = getSession().getCriteriaBuilder();
+            CriteriaQuery<MinionServer> query = cb.createQuery(MinionServer.class);
+            Root<MinionServer> root = query.from(MinionServer.class);
+            Predicate predicate = cb.equal(root.get("minionId"), minionIds);
+            query.select(root).where(predicate).distinct(true);
+            return getSession().createQuery(query).getResultList();
         }
     }
 
@@ -180,11 +211,13 @@ public class MinionServerFactory extends HibernateFactory {
      * @return map of SSH minion id and its contact method
      */
     public static List<MinionServer> listSSHMinions() {
-        return HibernateFactory.getSession().createCriteria(MinionServer.class)
-                .createAlias("contactMethod", "m")
-                .add(Restrictions.in("m.label",
-                        "ssh-push", "ssh-push-tunnel"))
-                .list();
+        String sql = "SELECT ms.* FROM suseMinionInfo ms " +
+        "JOIN contact_method cm ON ms.contact_method_id = cm.id " +
+        "WHERE cm.label IN (:labels)";
+
+        return HibernateFactory.getSession().createNativeQuery(sql, MinionServer.class)
+                .setParameter("labels", Arrays.asList("ssh-push", "ssh-push-tunnel"))
+                .getResultList();
     }
 
    /**
@@ -231,9 +264,31 @@ public class MinionServerFactory extends HibernateFactory {
     private static List<MinionSummary> findMinionSummariesInStatus(Long actionId, List<ActionStatus> allowedStatues) {
         Session session = HibernateFactory.getSession();
 
-        Query<MinionSummary> query = session.createNamedQuery("Action.findMinionSummaries", MinionSummary.class)
-                                            .setParameter("id", actionId)
-                                            .setParameter("allowedStatues", allowedStatues);
+        if (allowedStatues == null || allowedStatues.isEmpty()) {
+            return Collections.emptyList(); // Return empty list if no statuses are provided
+        }
+
+        // Get status IDs (assuming ActionStatus has getId method that returns the ID of the status)
+        List<Long> statusIds = allowedStatues.stream()
+                .map(ActionStatus::getId) // or toString() depending on how your enum is represented
+                .collect(Collectors.toList());
+
+        // Create the query with parameter placeholder for a list
+        Query<MinionSummary> query = session.createNativeQuery("""
+            SELECT sa.server_id AS serverId,
+                   s.id AS minionId,
+                   s.digital_server_id AS digitalServerId,
+                   s.machine_id AS machineId,
+                   c.label AS contactMethodLabel,
+                   s.os AS os
+            FROM rhnServerAction sa
+            JOIN rhnServer s ON sa.server_id = s.id
+            JOIN suseServerContactMethod c ON s.contact_method_id = c.id
+            WHERE sa.action_id = :id
+            AND sa.status IN (:allowedStatues)
+            """)
+                .setParameter("id", actionId)
+                .setParameterList("allowedStatues", statusIds); // Use setParameterList for collections
 
         return query.getResultList();
     }

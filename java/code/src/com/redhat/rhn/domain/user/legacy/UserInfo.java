@@ -20,24 +20,67 @@ import com.redhat.rhn.domain.user.User;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * UserInfo represents the bean version of the DB table
  * RHNUSERINFO
  */
+@Entity
+@Table(name = "RHNUSERINFO")
 public class UserInfo extends AbstractUserChild {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long webUserId;
+
+    @Column(name = "page_size")
     private int pageSize;
-    private int emailNotify;
-    private boolean taskoNotify;
+
+    @Column(name = "use_pam_authentication")
     private boolean usePamAuthentication;
+
+    @Column(name = "email_notify")
+    private int emailNotify;
+
+    @Column(name = "tasko_notify", nullable = false)
+    private boolean taskoNotify;
+
+    @Column(name = "show_system_group_list")
     private String showSystemGroupList;
-    private String preferredLocale;
-    private String preferredDocsLocale;
+
+    @Column(name = "last_logged_in")
     private Date lastLoggedIn;
-    private RhnTimeZone timeZone;
-    private User user;
+
+    @Column(name = "preferred_locale")
+    private String preferredLocale;
+
+    @Column(name = "preferred_docs_locale")
+    private String preferredDocsLocale;
+
+    @Column(name = "csv_separator")
     private char csvSeparator;
+
+    @Column(name = "web_theme")
     private String webTheme;
 
+    @ManyToOne
+    @JoinColumn(name = "timezone_id")
+    private RhnTimeZone timeZone;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private UserImpl user;
     /**
      * Create a new empty user
      */
@@ -45,10 +88,10 @@ public class UserInfo extends AbstractUserChild {
     }
 
     protected void setUser(User u) {
-        user = u;
+        user = (UserImpl) u;
     }
 
-    protected User getUser() {
+    protected UserImpl getUser() {
         return user;
     }
 
@@ -230,4 +273,15 @@ public class UserInfo extends AbstractUserChild {
     public void setWebTheme(String webThemeIn) {
         this.webTheme = webThemeIn;
     }
+
+    @Override
+    public Long getWebUserId() {
+        return webUserId;
+    }
+
+    @Override
+    public void setWebUserId(Long webUserIdIn) {
+        webUserId = webUserIdIn;
+    }
+
 }

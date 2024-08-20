@@ -36,7 +36,6 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
 
 import java.sql.Types;
 import java.util.Collections;
@@ -159,7 +158,7 @@ public class OrgFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
 
         return (CustomDataKey) session.getNamedQuery("CustomDataKey.findById")
-                .setParameter("id", cikid, LongType.INSTANCE)
+                .setParameter("id", cikid)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -234,7 +233,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveUsers(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfActiveUsers")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId())
                 .uniqueResult();
 
     }
@@ -247,7 +246,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveSystems(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfSystems")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId())
                 .uniqueResult();
     }
 
@@ -259,7 +258,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getServerGroups(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfServerGroups")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId())
                 .uniqueResult();
     }
 
@@ -271,7 +270,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getConfigChannels(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfConfigChannels")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId())
                 .uniqueResult();
     }
 
@@ -309,10 +308,14 @@ public class OrgFactory extends HibernateFactory {
      * @return the Template found
      */
     public static TemplateString lookupTemplateByLabel(String label) {
+        // Obtain the current Hibernate session
         Session session = HibernateFactory.getSession();
-        return (TemplateString) session.getNamedQuery("TemplateString.findByLabel")
+
+        // Execute the native SQL query
+        return (TemplateString) session.createNativeQuery(
+                        "SELECT * FROM RHNTEMPLATESTRING t WHERE t.label = :label", TemplateString.class)
                 .setParameter("label", label)
-                //Retrieve from cache if there
+                // Retrieve from cache if available
                 .setCacheable(true)
                 .uniqueResult();
     }

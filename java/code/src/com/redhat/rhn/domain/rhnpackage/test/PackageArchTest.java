@@ -17,10 +17,10 @@ package com.redhat.rhn.domain.rhnpackage.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,9 +37,14 @@ public class PackageArchTest extends RhnBaseTestCase {
     public void testPackageArch() {
 
         Long testid = 100L;
-        String query = "PackageArch.findById";
-        PackageArch p1 = (PackageArch) TestUtils.lookupFromCacheById(testid, query);
-        PackageArch p2 = (PackageArch) TestUtils.lookupFromCacheById(p1.getId(), query);
+
+        PackageArch p1 = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", testid).getSingleResult();
+
+        PackageArch p2 = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", p1.getId()).getSingleResult();
 
         assertNotNull(p1.getArchType());
         assertEquals(p1.getLabel(), p2.getLabel());

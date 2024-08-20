@@ -24,6 +24,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
@@ -369,7 +370,7 @@ public class CVEAuditManager {
                 int i = 0;
                 Channel original = c;
                 while (original.isCloned()) {
-                    original = original.getOriginal();
+                    original = original.asCloned().map(ClonedChannel::getOriginal).orElseThrow();
                     // Revert the index if no channel has actually been added
                     i = relevantChannels.add(
                             new RankedChannel(original.getId(), ++i)) ? i : --i;
@@ -1084,8 +1085,9 @@ public class CVEAuditManager {
             // same channel, or the original channel if this is a clone.
             Optional<CVEPatchStatus> newerPatch = packageResults.stream()
                     .filter(r -> instChannel.getId().equals(r.getChannelId().get()) || (instChannel.isCloned() &&
-                            instChannel.getOriginal() != null && instChannel.getOriginal().getId()
-                            .equals(r.getChannelId().get())))
+                            instChannel.asCloned().map(ClonedChannel::getOriginal)
+                                    .map(Channel::getId)
+                                    .stream().anyMatch(id -> id.equals(r.getChannelId().get()))))
                     .filter(r -> li.getPackageEvr().get().compareTo(r.getPackageEvr().get()) < 0)
                     .max(evrComparator);
 

@@ -3,66 +3,6 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.org.Org"
-           table="WEB_CUSTOMER">
-        <id name="id" type="long" column="id">
-            <meta attribute="scope-set">protected</meta>
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">web_customer_id_seq</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-        <property name="name" type="string" />
-        <property name="created" type="timestamp" insert="false" update="false" />
-        <property name="modified" type="timestamp" insert="false" update="false" />
-
-        <one-to-one name="orgConfig"
-                    class="com.redhat.rhn.domain.org.OrgConfig"/>
-
-        <one-to-one name="orgAdminMgmt"
-                    class="com.redhat.rhn.domain.org.OrgAdminManagement"/>
-
-        <set table="rhnUserGroup" lazy="true" cascade="all" name="userGroups" >
-            <key column="org_id" />
-            <one-to-many class="com.redhat.rhn.domain.org.usergroup.UserGroupImpl" />
-        </set>
-
-        <set name="ownedChannels" table="rhnChannel" cascade="all" lazy="true"
-            inverse="true">
-            <key column="org_id" />
-            <one-to-many class="com.redhat.rhn.domain.channel.Channel" />
-        </set>
-
-        <set name="customDataKeys" cascade="all">
-            <key column="org_id" />
-            <one-to-many class="com.redhat.rhn.domain.org.CustomDataKey" />
-        </set>
-
-        <set name="trustedOrgs" access="field" table="rhnTrustedOrgs" outer-join="true" cascade="all" lazy="true">
-          <key column="org_id" />
-          <many-to-many column="org_trust_id" outer-join="true" class="com.redhat.rhn.domain.org.Org" />
-        </set>
-
-        <set name="allowedToSlaves"
-            table="rhnissslaveorgs"
-            inverse="true"
-            lazy="true"
-            fetch="select">
-            <key column="org_id" />
-            <many-to-many column="slave_id" class="com.redhat.rhn.domain.iss.IssSlave" />
-        </set>
-
-        <set name="pillars" lazy="true" inverse="true" cascade="all" access="field">
-            <key column="org_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.Pillar"/>
-        </set>
-
-        <join table="rhnRegTokenOrgDefault" optional="true">
-            <key column="org_id"/>
-            <many-to-one name="token" column="reg_token_id" not-null="true" unique="true"/>
-        </join>
-    </class>
-
     <query name="Org.findByName">
         <![CDATA[from com.redhat.rhn.domain.org.Org as o where o.name = :name]]>
     </query>

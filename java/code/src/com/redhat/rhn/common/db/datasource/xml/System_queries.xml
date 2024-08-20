@@ -1301,29 +1301,6 @@ ORDER BY PN.name, PE.evr
   </query>
 </callable-mode>
 
-<write-mode name="add_servers_to_server_group">
-  <query params="sgid">
-    INSERT INTO rhnServerGroupMembers(server_id, server_group_id)
-    SELECT S.id server_id, :sgid
-    FROM rhnServerGroup SG, rhnServer S
-    WHERE S.id IN (%s)
-      AND SG.id = :sgid
-      AND S.org_id = SG.org_id
-      AND NOT EXISTS (SELECT 1
-                      FROM rhnServerGroupMembers SGM
-                      WHERE SGM.server_id = S.id
-                        AND SGM.server_group_id = SG.id)
-  </query>
-</write-mode>
-
-<write-mode name="update_current_members_of_server_group">
-  <query params="sgid, members_count">
-    UPDATE rhnServerGroup
-    SET current_members = current_members + (:members_count)
-    WHERE id = :sgid
-  </query>
-</write-mode>
-
 <write-mode name="delete_from_servergroup">
   <query params="sgid">
     DELETE FROM rhnServerGroupMembers

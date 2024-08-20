@@ -17,21 +17,54 @@ package com.redhat.rhn.domain.user.legacy;
 
 import com.redhat.rhn.domain.user.User;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * Class PersonalInfo that reflects the DB representation of WEB_USER_PERSONAL_INFO
  * DB table: WEB_USER_PERSONAL_INFO
  */
+@Entity
+@Table(name = "WEB_USER_PERSONAL_INFO")
 public class PersonalInfo extends AbstractUserChild {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "web_user_id")
+    private Long webUserId;
 
+    @Column(name = "prefix", length = 12)
     private String prefix;
+
+    @Column(name = "first_names", length = 128)
     private String firstNames;
+
+    @Column(name = "last_name", length = 128)
     private String lastName;
+
+    @Column(name = "company", length = 128)
     private String company;
+
+    @Column(name = "title", length = 128)
     private String title;
+
+    @Column(name = "phone", length = 128)
     private String phone;
+
+    @Column(name = "fax", length = 128)
     private String fax;
+
+    @Column(name = "email", length = 128)
     private String email;
-    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "web_user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private UserImpl user;
 
     /**
      * Create a new empty user
@@ -40,10 +73,10 @@ public class PersonalInfo extends AbstractUserChild {
     }
 
     protected void setUser(User u) {
-        user = u;
+        user = (UserImpl) u;
     }
 
-    protected User getUser() {
+    protected UserImpl getUser() {
         return user;
     }
 
@@ -174,4 +207,16 @@ public class PersonalInfo extends AbstractUserChild {
     public void setEmail(String emailIn) {
         this.email = emailIn;
     }
+
+    @Override
+    public Long getWebUserId() {
+        return webUserId;
+    }
+
+    @Override
+    public void setWebUserId(Long webUserIdIn) {
+        webUserId = webUserIdIn;
+    }
+
+
 }

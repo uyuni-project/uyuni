@@ -206,7 +206,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
             sessionFactory = config.buildSessionFactory();
         }
-        catch (HibernateException e) {
+        catch (Exception e) {
             LOG.error("FATAL ERROR creating HibernateFactory", e);
         }
     }

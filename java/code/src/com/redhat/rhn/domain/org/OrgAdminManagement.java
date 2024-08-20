@@ -17,13 +17,45 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+
 /**
  * OrgAdminManagement
  */
+@Entity
+@Table(name = "rhnOrgAdminManagement")
 public class OrgAdminManagement extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "org_id")
     private Long orgId;
+
+    @OneToOne
+    @JoinColumn(name = "org_id", insertable = false, updatable = false)
+    private Org org;  // The foreign key relationship with Org entity
+
+    @Column(name = "enabled", nullable = false)
+    @Type(type = "yes_no")
     private boolean enabled;
+
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org orgIn) {
+        org = orgIn;
+    }
 
     /**
      * @return Returns the orgId.

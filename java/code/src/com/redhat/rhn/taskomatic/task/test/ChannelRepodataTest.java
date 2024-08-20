@@ -32,7 +32,6 @@ import com.redhat.rhn.taskomatic.task.ChannelRepodata;
 import com.redhat.rhn.taskomatic.task.RhnJob;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
-import org.hibernate.type.IntegerType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -101,9 +100,9 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
     }
 
     private static boolean isChannelProcessed(Channel channel) {
-        Integer items = (Integer) HibernateFactory.getSession()
-            .createSQLQuery("SELECT COUNT(*) AS count FROM rhnRepoRegenQueue WHERE channel_label = :label")
-            .addScalar("count", IntegerType.INSTANCE)
+        Integer items = HibernateFactory.getSession()
+            .createNativeQuery("SELECT COUNT(*) AS count FROM rhnRepoRegenQueue WHERE channel_label = :label",
+                    Integer.class)
             .setParameter("label", channel.getLabel())
             .getSingleResult();
 

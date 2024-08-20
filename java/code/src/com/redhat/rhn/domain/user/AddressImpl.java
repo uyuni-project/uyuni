@@ -18,21 +18,55 @@ package com.redhat.rhn.domain.user;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Class AddressImpl that implements Address
  */
+@Entity
+@Table(name = "WEB_USER_SITE_INFO")
 public class AddressImpl extends BaseDomainHelper implements Address {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_user_site_info_seq")
+    @SequenceGenerator(name = "web_user_site_info_seq", sequenceName = "WEB_USER_SITE_INFO_ID_SEQ", allocationSize = 1)
+    @Column(name = "id", insertable = false, updatable = false)
     private Long id;
+
+    @Column(name = "address1", length = 128)
     private String address1;
+
+    @Column(name = "address2", length = 128)
     private String address2;
+
+    @Column(name = "city", length = 128)
     private String city;
+
+    @Column(name = "state", length = 60)
     private String state;
+
+    @Column(name = "zip", length = 32)
     private String zip;
+
+    @Column(name = "country", length = 2)
     private String country;
+
+    @Column(name = "phone", length = 32)
     private String phone;
+
+    @Column(name = "fax", length = 32)
     private String fax;
+
+    @Column(name = "is_po_box", length = 1)
     private String isPoBox;
+
+    @Column(name = "type", length = 1)
     private String privType;
 
     /**

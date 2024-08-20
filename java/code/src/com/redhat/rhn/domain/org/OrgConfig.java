@@ -20,23 +20,55 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+
 /**
  * Class OrgConfig that reflects the DB representation of rhnOrgConfiguration DB table:
  * rhnOrgConfiguration
  */
+@Entity
+@Table(name = "rhnOrgConfiguration")
 public class OrgConfig extends BaseDomainHelper {
 
     protected static Logger log = LogManager.getLogger(OrgConfig.class);
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Or use another generation strategy as required
+    @Column(name = "org_id")
     private Long orgId;
-    private boolean stagingContentEnabled;
-    private boolean errataEmailsEnabled;
-    private boolean scapfileUploadEnabled;
-    private Long scapFileSizelimit;
-    private Long scapRetentionPeriodDays;
-    private boolean createDefaultSg;
-    private boolean clmSyncPatches;
 
+    @OneToOne
+    @JoinColumn(name = "org_id", insertable = false, updatable = false)
+    private Org org;
+
+    @Column(name = "staging_content_enabled", nullable = false)
+    private boolean stagingContentEnabled;
+
+    @Column(name = "errata_emails_enabled", nullable = false)
+    private boolean errataEmailsEnabled;
+
+    @Column(name = "scapfile_upload_enabled", nullable = false)
+    private boolean scapfileUploadEnabled;
+
+    @Column(name = "scap_file_sizelimit", nullable = false)
+    private Long scapFileSizelimit;
+
+    @Column(name = "scap_retention_period_days", nullable = true)
+    private Long scapRetentionPeriodDays;
+
+    @Column(name = "create_default_sg", nullable = false)
+    private boolean createDefaultSg;
+
+    @Column(name = "clm_sync_patches", nullable = false)
+    private boolean clmSyncPatches;
     /**
      * Gets the current value of org_id
      * @return Returns the value of org_id
@@ -161,4 +193,13 @@ public class OrgConfig extends BaseDomainHelper {
     public void setClmSyncPatches(boolean clmSyncPatchesIn) {
         clmSyncPatches = clmSyncPatchesIn;
     }
+
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org orgIn) {
+        org = orgIn;
+    }
+
 }

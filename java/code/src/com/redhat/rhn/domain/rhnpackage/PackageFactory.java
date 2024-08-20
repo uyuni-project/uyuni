@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -222,7 +223,9 @@ public class PackageFactory extends HibernateFactory {
      */
     public static PackageArch lookupPackageArchById(Long id) {
         return HibernateFactory.doWithoutAutoFlushing(
-          () -> singleton.lookupObjectByNamedQuery("PackageArch.findById", Map.of("id", id), true)
+          () -> HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", id).getSingleResult()
         );
     }
 
@@ -235,7 +238,16 @@ public class PackageFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("PackageArch.findByLabel", Map.of("label", label), true);
+
+        try {
+        return HibernateFactory.doWithoutAutoFlushing(
+                () -> HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.label = :label
+                """, PackageArch.class).setParameter("label", label).getSingleResult());
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

@@ -21,50 +21,94 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 /**
  * Class that represents the rhnServerGroupType table.
  *
  */
+@Entity
+@Table(name = "rhnServerGroupType")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)
 public class ServerGroupType extends AbstractLabelNameHelper {
-    private char permanent;
-    private char isBaseChar;
-    private Set<Feature> features = new HashSet<>();
 
-    /**
-     * @return Returns the isBase.
-     */
-    public char getIsBaseChar() {
-        return isBaseChar;
-    }
-    /**
-     * @param isBaseCharIn The isBase to set.
-     */
-    public void setIsBaseChar(char isBaseCharIn) {
-        this.isBaseChar = isBaseCharIn;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "label")
+    private String label;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "permanent", insertable = false, updatable = false)
+    private Character permanent;
+
+    @Column(name = "is_base", insertable = false, updatable = false)
+    private Character isBaseChar;
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnServerGroupTypeFeature",
+            joinColumns = @JoinColumn(name = "server_group_type_id"),
+            inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
+    private Set<Feature> features = new HashSet<>(); // Initialize as an empty set
+
+    // Getters and Setters
+
+    public Long getId() {
+        return id;
     }
 
-    /**
-     * @return true if this server group type is a base type, false otherwise
-     */
-    public boolean isBase() {
-        return getIsBaseChar() == 'Y';
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
-    /**
-     * @return Returns the permanent.
-     */
-    public char getPermanent() {
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+
+    public Character getPermanent() {
         return permanent;
     }
-    /**
-     * @param permanentIn The permanent to set.
-     */
-    public void setPermanent(char permanentIn) {
+
+    public void setPermanent(Character permanentIn) {
         this.permanent = permanentIn;
     }
 
-    /**
-     * @return Returns the features.
-     */
+    public Character getIsBaseChar() {
+        return isBaseChar;
+    }
+
+    public void setIsBaseChar(Character isBaseCharIn) {
+        this.isBaseChar = isBaseCharIn;
+    }
+
     public Set<Feature> getFeatures() {
         return features;
     }
@@ -73,7 +117,11 @@ public class ServerGroupType extends AbstractLabelNameHelper {
      * @param featuresIn The features to set.
      */
     public void setFeatures(Set<Feature> featuresIn) {
-        features = featuresIn;
+        this.features = featuresIn;
+    }
+
+    public boolean isBase() {
+        return getIsBaseChar() != null && getIsBaseChar() == 'Y';
     }
 
     /**
