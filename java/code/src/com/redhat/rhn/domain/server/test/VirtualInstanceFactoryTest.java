@@ -43,7 +43,6 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -300,7 +299,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
         VirtualInstance fromDb = (VirtualInstance) HibernateFactory.getSession()
-                .createCriteria(VirtualInstance.class)
+                .getCriteriaBuilder().createQuery(VirtualInstance.class)
                 .add(Restrictions.eq("hostSystem", host))
                 .add(Restrictions.eq("guestSystem", null))
                 .uniqueResult();

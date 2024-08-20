@@ -24,9 +24,7 @@ import com.redhat.rhn.frontend.dto.ChannelOverview;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,7 +77,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      */
     public static ChannelFamily lookupByLabel(String label, Org org) {
         Session session = getSession();
-        Criteria c = session.createCriteria(ChannelFamily.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(ChannelFamily.class);
         c.add(Restrictions.eq("label", label));
         c.add(Restrictions.or(Restrictions.eq("org", org),
               Restrictions.isNull("org")));
@@ -217,7 +215,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<ChannelFamily> lookupByLabelLike(String label, Org orgIn) {
         Session session = getSession();
-        Criteria c = session.createCriteria(ChannelFamily.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(ChannelFamily.class);
         c.add(Restrictions.like("label", label + "%"));
         c.add(Restrictions.or(Restrictions.eq("org", orgIn),
               Restrictions.isNull("org")));
@@ -244,7 +242,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<ChannelFamily> getAllChannelFamilies() {
         Session session = getSession();
-        Criteria c = session.createCriteria(ChannelFamily.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(ChannelFamily.class);
         return c.list();
     }
 }

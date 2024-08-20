@@ -34,11 +34,7 @@ import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -393,7 +389,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ChannelArch> getChannelArchitectures() {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(ChannelArch.class);
+        Criteria criteria = session.getCriteriaBuilder().createQuery(ChannelArch.class);
         return criteria.list();
     }
 
@@ -427,7 +423,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ChannelArch findArchByLabel(String label) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(ChannelArch.class);
+        Criteria criteria = session.getCriteriaBuilder().createQuery(ChannelArch.class);
         criteria.add(Restrictions.eq(LABEL, label));
         return (ChannelArch) criteria.uniqueResult();
     }
@@ -452,7 +448,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupByLabel(String label) {
         Session session = getSession();
-        Criteria c = session.createCriteria(Channel.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(Channel.class);
         c.add(Restrictions.eq(LABEL, label));
         return (Channel) c.uniqueResult();
     }
@@ -1105,7 +1101,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return true of the channels contains any distros
      */
     public static boolean containsDistributions(Channel ch) {
-        Criteria criteria = getSession().createCriteria(KickstartableTree.class);
+        Criteria criteria = getSession().getCriteriaBuilder().createQuery(KickstartableTree.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.eq("channel", ch));
         return ((Number)criteria.uniqueResult()).intValue() > 0;
@@ -1221,7 +1217,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ContentSource> listVendorContentSources() {
-        Criteria criteria = getSession().createCriteria(ContentSource.class);
+        Criteria criteria = getSession().getCriteriaBuilder().createQuery(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
         return criteria.list();
     }
@@ -1232,7 +1228,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return vendor content source if it exists
      */
     public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
-        Criteria criteria = getSession().createCriteria(ContentSource.class);
+        Criteria criteria = getSession().getCriteriaBuilder().createQuery(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
         if (repoUrl.contains("mirrorlist.centos.org") || repoUrl.contains("mirrors.rockylinux.org")) {
             criteria.add(Restrictions.eq("sourceUrl", repoUrl));
@@ -1275,7 +1271,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return channel product
      */
     public static ChannelProduct findChannelProduct(String product, String version) {
-        Criteria criteria = getSession().createCriteria(ChannelProduct.class);
+        Criteria criteria = getSession().getCriteriaBuilder().createQuery(ChannelProduct.class);
         criteria.add(Restrictions.eq("product", product));
         criteria.add(Restrictions.eq("version", version));
         return (ChannelProduct) criteria.uniqueResult();

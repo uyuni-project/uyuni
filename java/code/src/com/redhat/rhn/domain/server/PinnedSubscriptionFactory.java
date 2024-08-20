@@ -20,7 +20,6 @@ import com.suse.manager.matcher.MatcherJsonIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<PinnedSubscription> listPinnedSubscriptions() {
-        return getSession().createCriteria(PinnedSubscription.class).list();
+        return getSession().getCriteriaBuilder().createQuery(PinnedSubscription.class).list();
     }
 
     /**
@@ -107,7 +106,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     public PinnedSubscription lookupById(Long id) {
         return (PinnedSubscription) getSession()
-                .createCriteria(PinnedSubscription.class)
+                .getCriteriaBuilder().createQuery(PinnedSubscription.class)
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
     }
@@ -121,7 +120,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId,
             Long subscriptionId) {
         return (PinnedSubscription) getSession()
-                .createCriteria(PinnedSubscription.class)
+                .getCriteriaBuilder().createQuery(PinnedSubscription.class)
                 .add(Restrictions.eq("systemId", systemId))
                 .add(Restrictions.eq("subscriptionId", subscriptionId))
                 .uniqueResult();

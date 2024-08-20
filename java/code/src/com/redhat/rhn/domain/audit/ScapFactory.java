@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.Map;
@@ -118,7 +117,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the {@link XccdfRuleResultType} if any
      */
     public static Optional<XccdfRuleResultType> lookupRuleResultType(String label) {
-        return getSession().createCriteria(XccdfRuleResultType.class)
+        return getSession().getCriteriaBuilder().createQuery(XccdfRuleResultType.class)
                 .add(Restrictions.eq("label", label))
                 .list()
                 .stream().findFirst();

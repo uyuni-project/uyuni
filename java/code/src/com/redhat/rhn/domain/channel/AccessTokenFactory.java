@@ -25,7 +25,6 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
 import org.jose4j.lang.JoseException;
 
 import java.time.Duration;
@@ -60,7 +59,7 @@ public class AccessTokenFactory extends HibernateFactory {
     public static Optional<AccessToken> lookupById(long id) {
         return Optional.ofNullable(
                 (AccessToken)HibernateFactory.getSession()
-                .createCriteria(AccessToken.class)
+                .getCriteriaBuilder().createQuery(AccessToken.class)
                 .add(Restrictions.eq("id", id))
                 .uniqueResult()
         );
@@ -72,7 +71,7 @@ public class AccessTokenFactory extends HibernateFactory {
      */
     public static List<AccessToken> all() {
         return (List<AccessToken>) HibernateFactory.getSession()
-                .createCriteria(AccessToken.class)
+                .getCriteriaBuilder().createQuery(AccessToken.class)
                 .list();
     }
 
@@ -84,7 +83,7 @@ public class AccessTokenFactory extends HibernateFactory {
     public static Optional<AccessToken> lookupByToken(String token) {
         return Optional.ofNullable(
             (AccessToken)HibernateFactory.getSession()
-            .createCriteria(AccessToken.class)
+            .getCriteriaBuilder().createQuery(AccessToken.class)
             .add(Restrictions.eq("token", token))
             .uniqueResult()
         );

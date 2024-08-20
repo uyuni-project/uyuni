@@ -34,7 +34,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import java.io.IOException;
@@ -384,7 +383,7 @@ public class ConfigurationFactory extends HibernateFactory {
                                                             Org org,
                                                           ConfigChannelType cct) {
         Session session = HibernateFactory.getSession();
-        return (ConfigChannel) session.createCriteria(ConfigChannel.class).
+        return (ConfigChannel) session.getCriteriaBuilder().createQuery(ConfigChannel.class).
                         add(Restrictions.eq("org", org)).
                         add(Restrictions.eq("label", label)).
                         add(Restrictions.eq("configChannelType", cct)).

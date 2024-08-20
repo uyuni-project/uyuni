@@ -27,11 +27,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
@@ -63,7 +59,7 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static List<MinionServer> lookupByOrg(Long orgId) {
         return HibernateFactory.getSession()
-                .createCriteria(MinionServer.class)
+                .getCriteriaBuilder().createQuery(MinionServer.class)
                 .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("org.id", orgId))
                 .list();
@@ -93,7 +89,7 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static Optional<MinionServer> findByMachineId(String machineId) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(MinionServer.class);
+        Criteria criteria = session.getCriteriaBuilder().createQuery(MinionServer.class);
         criteria.add(Restrictions.eq("machineId", machineId));
         return Optional.ofNullable((MinionServer) criteria.uniqueResult());
     }
@@ -106,7 +102,7 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static Optional<MinionServer> findByMinionId(String minionId) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(MinionServer.class);
+        Criteria criteria = session.getCriteriaBuilder().createQuery(MinionServer.class);
         criteria.add(Restrictions.eq("minionId", minionId));
         return Optional.ofNullable((MinionServer) criteria.uniqueResult());
     }
@@ -118,7 +114,7 @@ public class MinionServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<MinionServer> listMinions() {
-        return getSession().createCriteria(MinionServer.class)
+        return getSession().getCriteriaBuilder().createQuery(MinionServer.class)
                 .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                 .list();
     }
@@ -130,7 +126,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @return a list of minions ids belonging to the given organization
      */
     public static List<String> findMinionIdsByOrgId(Long orgId) {
-        return getSession().createCriteria(MinionServer.class)
+        return getSession().getCriteriaBuilder().createQuery(MinionServer.class)
                 .setProjection(Projections.property("minionId"))
                 .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("org.id", orgId))
@@ -169,7 +165,7 @@ public class MinionServerFactory extends HibernateFactory {
             return emptyList();
         }
         else {
-            return HibernateFactory.getSession().createCriteria(MinionServer.class)
+            return HibernateFactory.getSession().getCriteriaBuilder().createQuery(MinionServer.class)
                     .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                     .add(Restrictions.in("minionId", minionIds))
                     .list();
@@ -181,7 +177,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @return map of SSH minion id and its contact method
      */
     public static List<MinionServer> listSSHMinions() {
-        return HibernateFactory.getSession().createCriteria(MinionServer.class)
+        return HibernateFactory.getSession().getCriteriaBuilder().createQuery(MinionServer.class)
                 .createAlias("contactMethod", "m")
                 .add(Restrictions.in("m.label",
                         "ssh-push", "ssh-push-tunnel"))

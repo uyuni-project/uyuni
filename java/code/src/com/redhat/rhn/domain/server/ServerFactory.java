@@ -54,14 +54,11 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.query.Query;
+import org.hibernate.sql.Restriction;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -217,9 +214,9 @@ public class ServerFactory extends HibernateFactory {
         }
 
         result = HibernateFactory.getSession()
-                .createCriteria(Server.class)
-                .add(Subqueries.propertyIn("id", proxyIds))
-                .add(Restrictions.eq("hostname", name))
+                .getCriteriaBuilder().createQuery(Server.class)
+                .add(SYSTEM_QUERIES.propertyIn("id", proxyIds))
+                .add(Restriction.eq("hostname", name))
                 .list()
                 .stream()
                 .findFirst();
@@ -233,17 +230,17 @@ public class ServerFactory extends HibernateFactory {
             String srippedHostname = name.split("\\.")[0];
 
             return HibernateFactory.getSession()
-                    .createCriteria(Server.class)
-                    .add(Subqueries.propertyIn("id", proxyIds))
+                    .getCriteriaBuilder().createQuery(Server.class)
+                    .add(SYSTEM_QUERIES.propertyIn("id", proxyIds))
                     .add(Restrictions.eq("hostname", srippedHostname))
                     .list()
                     .stream()
                     .findFirst();
         }
         else {
-            return HibernateFactory.getSession()
-                    .createCriteria(Server.class)
-                    .add(Subqueries.propertyIn("id", proxyIds))
+            return HibernateFactory.getSession().getCriteriaBuilder()
+                    .createQuery(Server.class)
+                    .add(SYSTEM_QUERIES.propertyIn("id", proxyIds))
                     .add(Restrictions.like("hostname", name + ".", MatchMode.START))
                     .list()
                     .stream()
@@ -756,7 +753,7 @@ public class ServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static Server lookupForeignSystemByDigitalServerId(String id) {
-        Criteria criteria = getSession().createCriteria(Server.class);
+        CriteriaQuery<Server> criteria = getSession().getCriteriaBuilder().createQuery(Server.class);
         criteria.add(Restrictions.eq("digitalServerId", id));
         for (Server server : (List<Server>) criteria.list()) {
             if (server.hasEntitlement(EntitlementManager.getByName("foreign_entitled"))) {
@@ -1341,7 +1338,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ContactMethod findContactMethodByLabel(String label) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(ContactMethod.class);
+        Criteria criteria = session.getCriteriaBuilder().createQuery(ContactMethod.class);
         criteria.add(Restrictions.eq("label", label));
         return (ContactMethod) criteria.uniqueResult();
     }
@@ -1500,7 +1497,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Optional<Server> findByMachineId(String machineId) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(Server.class);
+        Criteria criteria = session.getCriteriaBuilder().createQuery(Server.class);
         criteria.add(Restrictions.eq("machineId", machineId));
         return Optional.ofNullable((Server) criteria.uniqueResult());
     }
@@ -1511,7 +1508,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a {@link Capability} with the given name
      */
     public static Optional<Capability> findCapability(String name) {
-        Criteria criteria = getSession().createCriteria(Capability.class);
+        Criteria criteria = getSession().getCriteriaBuilder().createQuery(Capability.class);
         criteria.add(Restrictions.eq("name", name));
         return Optional.ofNullable((Capability) criteria.uniqueResult());
     }

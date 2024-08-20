@@ -35,9 +35,7 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -178,7 +176,7 @@ public class SCCCachingFactory extends HibernateFactory {
     public static List<SCCSubscription> lookupSubscriptions() {
         log.debug("Retrieving subscriptions from cache");
         Session session = getSession();
-        Criteria c = session.createCriteria(SCCSubscription.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SCCSubscription.class);
         return c.list();
     }
 
@@ -192,7 +190,7 @@ public class SCCCachingFactory extends HibernateFactory {
             return null;
         }
         Session session = getSession();
-        Criteria c = session.createCriteria(SCCSubscription.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SCCSubscription.class);
         c.add(Restrictions.eq("sccId", id));
         return (SCCSubscription) c.uniqueResult();
     }
@@ -215,7 +213,7 @@ public class SCCCachingFactory extends HibernateFactory {
     public static List<SCCOrderItem> lookupOrderItems() {
         log.debug("Retrieving orderItems from cache");
         Session session = getSession();
-        Criteria c = session.createCriteria(SCCOrderItem.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SCCOrderItem.class);
         return c.list();
     }
 

@@ -21,8 +21,6 @@ import com.redhat.rhn.domain.org.Org;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import java.util.List;
 import java.util.Map;

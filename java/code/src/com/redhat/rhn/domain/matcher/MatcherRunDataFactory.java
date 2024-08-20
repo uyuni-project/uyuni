@@ -45,7 +45,7 @@ public class MatcherRunDataFactory extends HibernateFactory {
      */
     public static MatcherRunData getSingle() {
         return (MatcherRunData) getSession()
-                .createCriteria(MatcherRunData.class)
+                .getCriteriaBuilder().createQuery(MatcherRunData.class)
                 .uniqueResult();
     }
 

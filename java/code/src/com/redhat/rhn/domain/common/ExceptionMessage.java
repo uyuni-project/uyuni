@@ -18,9 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 
 /**
@@ -44,7 +42,7 @@ public class ExceptionMessage {
      */
     public static ExceptionMessage lookup(long exceptionId) {
         Session session = HibernateFactory.getSession();
-        Criteria criteria = session.createCriteria(ExceptionMessage.class);
+        Criteria criteria = session.getCriteriaBuilder().createQuery(ExceptionMessage.class);
         criteria.add(Restrictions.or(
                 Restrictions.eq("id", -1 * exceptionId),
                 Restrictions.eq("id", exceptionId)));

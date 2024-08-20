@@ -74,7 +74,6 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

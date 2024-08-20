@@ -644,7 +644,7 @@ public class ContentManagementHandler extends BaseHandler {
 
         ContentFilter.Rule ruleObj = ContentFilter.Rule.lookupByLabel(rule);
         ContentFilter.EntityType entityTypeObj = ContentFilter.EntityType.lookupByLabel(entityType);
-        FilterCriteria criteriaObj = createCriteria(criteria).orElseThrow(
+        FilterCriteria criteriaObj = getCriteriaBuilder().createQuery(criteria).orElseThrow(
                 () -> new InvalidArgsException("criteria must be specified")
         );
 
@@ -737,7 +737,7 @@ public class ContentManagementHandler extends BaseHandler {
         else {
             ruleObj = Optional.of(ContentFilter.Rule.lookupByLabel(rule));
         }
-        Optional<FilterCriteria> criteriaObj = createCriteria(criteria);
+        Optional<FilterCriteria> criteriaObj = getCriteriaBuilder().createQuery(criteria);
 
         try {
             return contentManager.updateFilter(

@@ -22,10 +22,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -197,7 +193,7 @@ public class StateFactory extends HibernateFactory {
                 .add(Restrictions.eq(field, bean))
                 .setProjection(Projections.max("id"));
         T revision = (T) getSession()
-                .createCriteria(revisionType)
+                .getCriteriaBuilder().createQuery(revisionType)
                 .add(Restrictions.eq(field, bean))
                 .add(Property.forName("id").eq(maxQuery))
                 .uniqueResult();

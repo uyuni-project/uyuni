@@ -29,11 +29,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -101,7 +97,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return a list of all {@link SUSEProductSCCRepository}
      */
     public static List<SUSEProductSCCRepository> allProductRepos() {
-        Criteria c = getSession().createCriteria(SUSEProductSCCRepository.class);
+        Criteria c = getSession().getCriteriaBuilder().createQuery(SUSEProductSCCRepository.class);
         return c.list();
     }
 
@@ -138,7 +134,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static List<SUSEProductSCCRepository> lookupPSRByChannelLabel(String channelLabel) {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SUSEProductSCCRepository.class);
         c.add(Restrictions.eq("channelLabel", channelLabel));
         return ((List<SUSEProductSCCRepository>) c.list()).stream()
                 .sorted((a, b) ->
@@ -155,7 +151,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Optional<SUSEProductSCCRepository> lookupProductRepoByIds(long rootId, long productId, long repoId) {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SUSEProductSCCRepository.class);
         c.add(Restrictions.eq("rootProduct.productId", rootId));
         c.add(Restrictions.eq("product.productId", productId));
         c.add(Restrictions.eq("repository.sccId", repoId));
@@ -187,7 +183,7 @@ public class SUSEProductFactory extends HibernateFactory {
         if (!products.isEmpty()) {
             Collection<Long> ids = products.stream().map(SUSEProduct::getId).collect(Collectors.toList());
 
-            Criteria c = getSession().createCriteria(SUSEProduct.class);
+            Criteria c = getSession().getCriteriaBuilder().createQuery(SUSEProduct.class);
             c.add(Restrictions.not(Restrictions.in("id", ids)));
 
             for (SUSEProduct product : (List<SUSEProduct>) c.list()) {
@@ -462,7 +458,7 @@ public class SUSEProductFactory extends HibernateFactory {
     public static SUSEProduct findSUSEProduct(String name, String version, String release,
             String arch, boolean imprecise) {
 
-        Criteria c = getSession().createCriteria(SUSEProduct.class);
+        Criteria c = getSession().getCriteriaBuilder().createQuery(SUSEProduct.class);
         c.add(Restrictions.eq("name", name.toLowerCase()));
 
         Disjunction versionCriterion = Restrictions.disjunction();
@@ -518,7 +514,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static SUSEProduct lookupByProductId(long productId) {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProduct.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SUSEProduct.class);
         c.add(Restrictions.eq("productId", productId));
         return (SUSEProduct) c.uniqueResult();
     }
@@ -553,7 +549,7 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SUSEProductChannel> findAllSUSEProductChannels() {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductChannel.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SUSEProductChannel.class);
         return c.list();
     }
 
@@ -569,7 +565,7 @@ public class SUSEProductFactory extends HibernateFactory {
                                                            SUSEProduct ext) {
         Session session = getSession();
 
-        Criteria c = session.createCriteria(SUSEProductExtension.class)
+        Criteria c = session.getCriteriaBuilder().createQuery(SUSEProductExtension.class)
                 .add(Restrictions.eq("rootProduct", root))
                 .add(Restrictions.eq("baseProduct", base))
                 .add(Restrictions.eq("extensionProduct", ext));
@@ -589,7 +585,7 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SUSEProductExtension> findAllSUSEProductExtensions() {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductExtension.class);
+        Criteria c = session.getCriteriaBuilder().createQuery(SUSEProductExtension.class);
         return c.list();
     }
 
@@ -616,7 +612,7 @@ public class SUSEProductFactory extends HibernateFactory {
     public static List<SUSEProductExtension> findAllProductExtensionsOf(SUSEProduct product, SUSEProduct root) {
         Session session = getSession();
 
-        Criteria c = session.createCriteria(SUSEProductExtension.class)
+        Criteria c = session.getCriteriaBuilder().createQuery(SUSEProductExtension.class)
                 .add(Restrictions.eq("rootProduct", root))
                 .add(Restrictions.eq("baseProduct", product));
         return c.list();
@@ -661,7 +657,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
-        return getSession().createCriteria(SUSEProduct.class).list();
+        return getSession().getCriteriaBuilder().createQuery(SUSEProduct.class).list();
     }
 
     /**
@@ -691,7 +687,7 @@ public class SUSEProductFactory extends HibernateFactory {
     public static Optional<InstalledProduct> findInstalledProduct(String name,
             String version, String release, PackageArch arch, boolean isBaseProduct) {
 
-        Criteria c = getSession().createCriteria(InstalledProduct.class);
+        Criteria c = getSession().getCriteriaBuilder().createQuery(InstalledProduct.class);
         c.add(Restrictions.eq("name", name));
         c.add(Restrictions.eq("version", version));
         if (StringUtils.isEmpty(release)) {

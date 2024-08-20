@@ -30,8 +30,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -107,7 +105,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public VirtualHostManager lookupByLabel(String label) {
         return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
+                .getCriteriaBuilder().createQuery(VirtualHostManager.class)
                 .add(Restrictions.eq("label", label))
                 .uniqueResult();
     }
@@ -131,7 +129,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
         return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
+                .getCriteriaBuilder().createQuery(VirtualHostManager.class)
                 .add(Restrictions.eq("org", org))
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
@@ -164,7 +162,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
         return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
+                .getCriteriaBuilder().createQuery(VirtualHostManager.class)
                 .add(Restrictions.eq("org", org))
                 .add(Restrictions.eq("label", label))
                 .uniqueResult();
@@ -178,7 +176,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers(Org org) {
         return getSession()
-                .createCriteria(VirtualHostManager.class)
+                .getCriteriaBuilder().createQuery(VirtualHostManager.class)
                 .add(Restrictions.eq("org", org))
                 .addOrder(Order.asc("label"))
                 .list();
@@ -191,7 +189,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers() {
         return getSession()
-                .createCriteria(VirtualHostManager.class)
+                .getCriteriaBuilder().createQuery(VirtualHostManager.class)
                 .list();
     }
 
@@ -474,7 +472,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(
             String identifier) {
         VirtualHostManagerNodeInfo result = (VirtualHostManagerNodeInfo) getSession()
-                .createCriteria(VirtualHostManagerNodeInfo.class)
+                .getCriteriaBuilder().createQuery(VirtualHostManagerNodeInfo.class)
                 .add(Restrictions.eq("identifier", identifier))
                 .uniqueResult();
 
