@@ -15,8 +15,8 @@
 @skip_if_github_validation
 Feature: Register a salt-ssh system via API
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SSH minion system profile before API bootstrap test
     Given I am on the Systems overview page of this "ssh_minion"
@@ -72,7 +72,7 @@ Feature: Register a salt-ssh system via API
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
 @uyuni
   Scenario: API bootstrap: subscribe SSH minion to base channel
@@ -88,7 +88,7 @@ Feature: Register a salt-ssh system via API
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
 @proxy
   Scenario: Cleanup and flush the firewall rules

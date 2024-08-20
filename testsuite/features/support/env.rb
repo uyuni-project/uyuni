@@ -25,7 +25,6 @@ $stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 # code coverage analysis
 # SimpleCov.start
 
-server = ENV.fetch('SERVER', nil)
 if ENV['DEBUG']
   $debug_mode = true
   $stdout.puts('DEBUG MODE ENABLED.')
@@ -98,6 +97,7 @@ def capybara_register_driver
   end
 end
 
+# register chromedriver headless mode
 $capybara_driver = capybara_register_driver
 Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :selenium_chrome_headless
@@ -105,7 +105,7 @@ Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
-Capybara.app_host = "https://#{server}"
+Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
@@ -199,6 +199,22 @@ end
 
 Before('@skip') do
   skip_this_scenario
+end
+
+# Create a user for each feature
+Before do |scenario|
+  feature_path = scenario.location.file
+  $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
+  next if get_context('user_created') == true
+
+  # Core features are always handled using admin user, the rest will use its own user based on feature filename
+  if (feature_path.include? 'core') || (feature_path.include? 'reposync') || (feature_path.include? 'finishing')
+    $current_user = 'admin'
+    $current_password = 'admin'
+  else
+    step %(I create a user with name "#{$feature_filename}" and password "linux")
+    add_context('user_created', true)
+  end
 end
 
 # do some tests only if the corresponding node exists

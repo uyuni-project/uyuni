@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -6,8 +6,8 @@
 @deblike_minion
 Feature: Install and upgrade package on the Debian-like minion via Salt through the UI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package on Debian-like minion
     When I enable repository "test_repo_deb_pool" on this "deblike_minion"
@@ -18,7 +18,7 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    And I wait until I do not see "Package List Refresh scheduled" text, refreshing the page
     And I wait until package "virgo-dummy" is installed on "deblike_minion" via spacecmd
     And I wait until package "andromeda-dummy" is removed from "deblike_minion" via spacecmd
 
@@ -29,7 +29,7 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     And I should see a "1 package install has been scheduled for" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
     Then Deb package "andromeda-dummy" with version "2.0" should be installed on "deblike_minion"
 
   Scenario: Update a package on the Debian-like minion
@@ -40,7 +40,7 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
     And I click on "Upgrade Packages"
     And I click on "Confirm"
     And I should see a "1 package upgrade has been scheduled for" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
     Then Deb package "virgo-dummy" with version "2.0" should be installed on "deblike_minion"
 
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Debian-like minion

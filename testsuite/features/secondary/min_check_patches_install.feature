@@ -4,7 +4,7 @@
 @scope_onboarding
 Feature: Display patches
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-require: enable old packages to fake a possible installation
