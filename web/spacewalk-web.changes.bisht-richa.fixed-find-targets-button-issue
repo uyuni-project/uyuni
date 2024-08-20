@@ -1,1 +1,2 @@
 - Fix Find targets button behavior for the feature salt > remote commands page
+- Fix the missing background color for the pending status badge and show/hide the response Badge component.
