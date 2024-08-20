@@ -17,74 +17,96 @@ package com.redhat.rhn.frontend.action.systems.audit;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.audit.ScapManager;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
-import java.util.List;
-import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ScapSetupAction
  */
 
 public abstract class ScapSetupAction extends RhnAction {
+    private static final Logger LOGGER = LogManager.getLogger(ScapSetupAction.class);
+
     public static final String SCAP_ENABLED = "scapEnabled";
     public static final String REQUIRED_PKG = "requiredPackage";
 
-    private static final List<String> SPACEWALK_OSCAP = List.of("spacewalk-oscap");
-    private static final List<String> OPENSCAP_SUSE_PKG = List.of("openscap-utils");
-    private static final List<String> OPENSCAP_REDHAT_PKG = List.of("openscap-scanner");
-    private static final List<String> OPENSCAP_DEBIAN_PKG = List.of("libopenscap25", "openscap-common");
-    private static final List<String> OPENSCAP_DEBIAN_LEGACY_PKG = List.of("libopenscap8");
+    private static final String SPACEWALK_OSCAP = "spacewalk-oscap";
+    private static final String OPENSCAP_SUSE_PKG = "openscap-utils";
+    private static final String OPENSCAP_REDHAT_PKG = "openscap-scanner";
+    private static final String OPENSCAP_DEBIAN_PKG = "openscap-utils";
+    private static final String OPENSCAP_DEBIAN_LEGACY_PKG = "libopenscap8";
 
     protected void setupScapEnablementInfo(RequestContext context) {
         Server server = context.lookupAndBindServer();
         User user = context.getCurrentUser();
 
         boolean enabled;
-        List<String> requiredPackages;
+        String requiredPackage;
 
         if (server.asMinionServer().isPresent()) {
             MinionServer minion = server.asMinionServer().get();
             switch (minion.getOsFamily()) {
                 case "Suse":
-                    requiredPackages = OPENSCAP_SUSE_PKG;
+                    requiredPackage = OPENSCAP_SUSE_PKG;
                     break;
 
                 case "Debian":
-                    requiredPackages = getPackagesForVersion(minion.getRelease());
+                    requiredPackage = getPackageForDebianFamily(minion.getOs(), minion.getRelease());
                     break;
 
                 default:
-                    requiredPackages = OPENSCAP_REDHAT_PKG;
+                    requiredPackage = OPENSCAP_REDHAT_PKG;
             }
 
-            // Verify all the packages are installed
-            enabled = requiredPackages.stream()
-                .map(pkg -> PackageFactory.lookupByNameAndServer(pkg, server))
-                .noneMatch(Objects::isNull);
+            // Verify the packages is installed
+            enabled = PackageFactory.lookupByNameAndServer(requiredPackage, server) != null;
         }
         else {
             enabled = ScapManager.isScapEnabled(server, user);
-            requiredPackages = SPACEWALK_OSCAP;
+            requiredPackage = SPACEWALK_OSCAP;
         }
 
         context.getRequest().setAttribute(SCAP_ENABLED, enabled);
-        context.getRequest().setAttribute(REQUIRED_PKG, String.join(" ", requiredPackages));
+        context.getRequest().setAttribute(REQUIRED_PKG, requiredPackage);
 
         SdcHelper.ssmCheck(context.getRequest(), server.getId(), user);
     }
 
-    private static List<String> getPackagesForVersion(String debianRelease) {
-        if (NumberUtils.isParsable(debianRelease) && Integer.parseInt(debianRelease) <= 11) {
-            return OPENSCAP_DEBIAN_LEGACY_PKG;
-        }
+    private static String getPackageForDebianFamily(String os, String release) {
+        try {
+            switch (os) {
+                case ServerConstants.UBUNTU:
+                    int ubuntuVersion = Integer.parseInt(StringUtils.substringBefore(release, "."));
+                    if (ubuntuVersion <= 22) {
+                        return OPENSCAP_DEBIAN_LEGACY_PKG;
+                    }
 
-        return OPENSCAP_DEBIAN_PKG;
+                    return OPENSCAP_DEBIAN_PKG;
+
+                case ServerConstants.DEBIAN:
+                    int debianVersion = Integer.parseInt(release);
+                    if (debianVersion <= 11) {
+                        return OPENSCAP_DEBIAN_LEGACY_PKG;
+                    }
+
+                    return OPENSCAP_DEBIAN_PKG;
+
+                default:
+                    LOGGER.warn("Unable to identify os {}. Assuming default Debian package.", os);
+                    return OPENSCAP_DEBIAN_PKG;
+            }
+        }
+        catch (NumberFormatException ex) {
+            LOGGER.warn("The release number {} of {} is not parseable. Assuming default Debian package.", release, os);
+            return OPENSCAP_DEBIAN_PKG;
+        }
     }
 }
