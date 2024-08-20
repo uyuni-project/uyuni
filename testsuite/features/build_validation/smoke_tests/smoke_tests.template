@@ -156,6 +156,7 @@ Feature: Smoke tests for <client>
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
+    When I force picking pending events on "<client>" if necessary
     And I wait at most 600 seconds until event "System reboot scheduled by <client>" is completed
     Then I should see a "This action's status is: Completed" text
 
@@ -193,6 +194,7 @@ Feature: Smoke tests for <client>
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
+    When I force picking pending events on "<client>" if necessary
     And I wait until event "Package Install/Upgrade scheduled by <client>" is completed
 
 @skip_for_traditional
