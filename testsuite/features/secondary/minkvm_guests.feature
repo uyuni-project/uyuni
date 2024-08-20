@@ -12,8 +12,8 @@
 @scope_cobbler
 Feature: Manage KVM virtual machines via the GUI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
