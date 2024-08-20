@@ -19,9 +19,8 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,9 +31,8 @@ public class ChannelSyncFlag implements Serializable {
     @Column(name = "channel_id", nullable = false)
     private Long id;
 
-    @OneToOne(mappedBy = "channelSyncFlag")
-    @MapsId
-    @JoinColumn(name = "channel_id")
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private Channel channel;
 
     @Column(name = "no_strict", nullable = false)

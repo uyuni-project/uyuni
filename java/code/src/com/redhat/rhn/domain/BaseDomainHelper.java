@@ -47,7 +47,7 @@ public abstract class BaseDomainHelper implements Serializable {
      * Gets the current value of created
      * @return Date the current value
      */
-    @Column(name = "created", nullable = false, updatable = false)
+    @Column(name = "created", nullable = false)
     @CreationTimestamp
     public Date getCreated() {
         return this.created;

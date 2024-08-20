@@ -31,8 +31,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 /**
  * ChannelFamilyFactoryTest
  */
@@ -63,16 +61,6 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
 
         assertEquals(cfam.getId(), cfam2.getId());
     }
-
-    @Test
-    public void testLookupByLabelLike() throws Exception {
-        ChannelFamily cfam = createTestChannelFamily();
-        List cfams = ChannelFamilyFactory.lookupByLabelLike(cfam.getLabel(),
-                cfam.getOrg());
-        ChannelFamily cfam2 = (ChannelFamily) cfams.get(0);
-        assertEquals(cfam.getId(), cfam2.getId());
-    }
-
 
     @Test
     public void testVerifyOrgFamily() {

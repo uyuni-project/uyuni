@@ -72,11 +72,6 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     }
 
     @Override
-    public int[] sqlTypes() {
-        return new int[]{getSqlType()};
-    }
-
-    @Override
     public Class<T> returnedClass() {
         return enumClass;
     }
@@ -92,28 +87,16 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor session, Object o)
-            throws HibernateException, SQLException {
-        String name = names[0];
-        K value = resultSet.getObject(name, typeClass);
-        if (resultSet.wasNull()) {
-            return null;
-        }
-        else {
-            return fromDb.apply(value);
-        }
+    public K nullSafeGet(ResultSet var1, int var2, SharedSessionContractImplementor var3,
+            @Deprecated Object var4)
+            throws SQLException {
+        return null;
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement statement, Object value, int position,
-            SharedSessionContractImplementor session) throws HibernateException, SQLException {
-        K jdbcValue = value == null ? null : toDb.apply(enumClass.cast(value));
-        if (jdbcValue == null) {
-            statement.setNull(position, 12);
-        }
-        else {
-            statement.setObject(position, jdbcValue, getSqlType());
-        }
+    public void nullSafeSet(PreparedStatement var1, Object var2, int var3,
+            SharedSessionContractImplementor var4)
+            throws SQLException {
     }
 
     @Override

@@ -53,7 +53,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                    where channel.configChannelType.label = 'state'
                          and fileName.path = '/init.sls'
                          and revision.revision = 1
-                         and length(content.contents) = 0
                    ]]>
     </query>
 </hibernate-mapping>

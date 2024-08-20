@@ -62,7 +62,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </query>
 
         <query name="TaskoSchedule.listActiveByOrgAndBunch">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId = :org_id AND bunch_id = :bunch_id AND (activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill))]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId = :org_id AND bunch = :bunch_id AND (activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill))]]>
         </query>
 
         <query name="TaskoSchedule.listByOrgAndBunch">
@@ -70,7 +70,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </query>
 
         <query name="TaskoSchedule.listActiveInSatByBunch">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId is null AND bunch_id = :bunch_id AND activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill)]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId is null AND bunch.id = :bunch_id AND activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill)]]>
         </query>
 
         <query name="TaskoSchedule.listInSatByBunch">

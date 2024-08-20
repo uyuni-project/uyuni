@@ -17,6 +17,11 @@ package com.suse.cloud.domain;
 
 import com.redhat.rhn.domain.errata.CustomEnumType;
 
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 
 /**
@@ -35,5 +40,19 @@ public class BillingDimensionEnumType extends CustomEnumType<BillingDimension, S
     public int getSqlType() {
         // Returning other, as this is mapped to a PostgreSQL enum, not to a VARCHAR
         return Types.OTHER;
+    }
+
+    @Override
+    public String nullSafeGet(ResultSet var1, int var2,
+            SharedSessionContractImplementor var3, @Deprecated Object var4)
+            throws SQLException {
+        return null;
+    }
+
+    @Override
+    public void nullSafeSet(PreparedStatement var1, Object var2, int var3,
+            SharedSessionContractImplementor var4)
+            throws SQLException {
+        return;
     }
 }

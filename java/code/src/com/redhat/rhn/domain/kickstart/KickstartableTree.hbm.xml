@@ -104,7 +104,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="KickstartableTree.findBase">
         <![CDATA[select k from com.redhat.rhn.domain.kickstart.KickstartableTree as k,
                         com.redhat.rhn.domain.channel.Channel as c
-                        where c.id = k.channel
+                        where c.id = k.channel.id
                           and c.parentChannel is null
                         order by k.label
                         ]]>
@@ -133,7 +133,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="KickstartableTree.getUnsyncedKickstartTrees">
         <![CDATA[select k from com.redhat.rhn.domain.kickstart.KickstartableTree as k,
                         com.redhat.rhn.domain.channel.Channel as c
-                        where c.id = k.channel
+                        where c.id = k.channel.id
                           and k.cobblerId is null
                           and c.parentChannel is null
                         order by k.label]]>

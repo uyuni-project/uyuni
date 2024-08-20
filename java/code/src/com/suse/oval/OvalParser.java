@@ -22,9 +22,9 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 /**
  * The Oval Parser is responsible for parsing OVAL(Open Vulnerability and Assessment Language) documents

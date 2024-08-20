@@ -18,11 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
-
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,6 +38,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
 /**
  * Pillar - Class representation of the table suseSaltPillars entries

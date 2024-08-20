@@ -22,6 +22,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <query name="UserGroupMembers.deleteTemporary">
         <![CDATA[DELETE FROM com.redhat.rhn.domain.org.usergroup.UserGroupMembers as ugs
-                  where ugs.temporary = 'Y']]>
+                  where ugs.temporary = true]]>
     </query>
 </hibernate-mapping>

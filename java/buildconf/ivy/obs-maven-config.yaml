@@ -8,6 +8,12 @@ repositories:
   MicheleBussolotto_Other:
     project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.6
+  MicheleBussolotto_Java:
+    project: home:mbussolotto:branches:Java:packages
+    repository: openSUSE_Factory
+  Java:
+    project: Java:packages
+    repository: openSUSE_Factory
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
@@ -25,11 +31,11 @@ artifacts:
     repository: Leap_sle
   - artifact: byte-buddy
     package: byte-buddy
-    repository: Leap_sle
+    repository: MicheleBussolotto_Java
     jar: byte-buddy.jar
   - artifact: byte-buddy-dep
     package: byte-buddy
-    repository: Leap_sle
+    repository: MicheleBussolotto_Java
     jar: byte-buddy-dep.jar
   - artifact: c3p0
     repository: Leap
@@ -90,12 +96,9 @@ artifacts:
     repository: Uyuni_Other
   - artifact: dom4j
     repository: Leap_sle
-  - artifact: ehcache-core
-    package: ehcache
-    repository: Uyuni_Other
-  - artifact: geronimo-jta-1.1-api
-    package: geronimo-jta-1_1-api
-    repository: Leap
+  - artifact: jakarta.transaction-api
+    package: jakarta-transactions
+    repository: MicheleBussolotto_Java
   - artifact: google-gson
     jar: gson.jar
     repository: Leap
@@ -138,8 +141,8 @@ artifacts:
   - artifact: jade4j
     repository: Uyuni_Other
   - artifact: jakarta-persistence-api
-    package: jpa-api
-    repository: MicheleBussolotto_Other
+    jar: jakarta-persistence-api.jar
+    repository: MicheleBussolotto_Java
   - artifact: java-saml
     jar: java-saml-[0-9.]+
     repository: Uyuni_Other
@@ -149,6 +152,12 @@ artifacts:
   - artifact: javassist
     repository: Leap
   - artifact: jboss-logging
+    repository: Leap
+  - artifact: antlr4
+    package: antlr4-java
+    repository: Java
+  - artifact: jcache
+    package: jcache
     repository: Leap
   - artifact: jctools-core
     package: jctools
@@ -301,7 +310,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: velocity-engine-core
     repository: Uyuni_Other
-
   - artifact: jasper
     package: tomcat-lib
     jar: jasper\.jar
@@ -333,21 +341,22 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
-    repository: Leap_sle
-  - artifact: glassfish-jaxb-api
-    repository: Uyuni_Other
-  - artifact: jaxb-runtime
-    package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
-  - artifact: jaxb-impl
-    package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
-  - artifact: txw2
-    package: glassfish-jaxb-txw2
-    repository: Uyuni_Other
-  - artifact: glassfish-activation
-    repository: Uyuni_Other
-  - artifact: istack-commons-runtime
     repository: Leap
+  - artifact: jaxb-api
+    repository: MicheleBussolotto_Java
+    jar: jaxb-api/jakarta.xml.bind-api.jar
+  - artifact: jaxb-core
+    package: jaxb-core
+    repository: Java
+  - artifact: jaxb-runtime
+    package: jaxb-runtime
+    repository: Java
+  - artifact: jaxb-txw2
+    package: jaxb-txw2
+    repository: Java
+  - artifact: jakarta-activation
+    repository: MicheleBussolotto_Java
+  - artifact: istack-commons-runtime
+    repository: MicheleBussolotto_Java
   - artifact: stax-ex
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Java

@@ -15,9 +15,10 @@
 package com.redhat.rhn.common.hibernate;
 
 import org.hibernate.HibernateException;
-import org.hibernate.collection.internal.PersistentList;
 import org.hibernate.collection.spi.PersistentCollection;
+import org.hibernate.collection.spi.PersistentList;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.metamodel.CollectionClassification;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.usertype.UserCollectionType;
 
@@ -155,7 +156,19 @@ public class ForceRecreationListType implements UserCollectionType {
     }
 
     /**
-     *
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<?> getCollectionClass() {
+        return ForceRecreationListType.class;
+    }
+
+    @Override
+    public CollectionClassification getClassification() {
+        return CollectionClassification.LIST;
+    }
+
+    /**
      * ForceRecreationList
      */
     private static class ForceRecreationList extends PersistentList {
