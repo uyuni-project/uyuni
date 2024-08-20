@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -8,11 +8,11 @@ Feature: Use salt formulas
   As an authorized user
   I want to be able to install and use salt formulas
 
-   Scenario: Log in as admin user
-      Given I am authorized for the "Admin" section
+   Scenario: Log in as org admin user
+      Given I am authorized
 
    #container already has locale formula installed
-   @skip_if_containerized_server 
+   @skip_if_containerized_server
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
 
@@ -71,7 +71,7 @@ Feature: Use salt formulas
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     When I wait until event "Apply highstate scheduled by admin" is completed
+     When I wait until event "Apply highstate scheduled" is completed
      Then the timezone on "sle_minion" should be "+05"
      And the keymap on "sle_minion" should be "ca"
      And the language on "sle_minion" should be "fr_FR.UTF-8"
@@ -95,7 +95,7 @@ Feature: Use salt formulas
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     When I wait until event "Apply highstate scheduled by admin" is completed
+     When I wait until event "Apply highstate scheduled" is completed
      Then the timezone on "sle_minion" should be "CET"
      And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
@@ -162,7 +162,7 @@ Feature: Use salt formulas
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     When I wait until event "Apply highstate scheduled by admin" is completed
+     When I wait until event "Apply highstate scheduled" is completed
      Then the timezone on "sle_minion" should be "CET"
      And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"

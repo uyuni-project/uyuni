@@ -1,12 +1,12 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
 @scope_salt
 Feature: Coexistence with user-defined states
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create a user-defined state
     Given I am on the Systems overview page of this "sle_minion"
@@ -19,7 +19,7 @@ Feature: Coexistence with user-defined states
 
   Scenario: Trigger highstate from API
     When I schedule a highstate for "sle_minion" via API
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     Then file "/tmp/test_user_defined_state" should exist on "sle_minion"
 
   Scenario: Cleanup: remove user-defined state and the file it created
