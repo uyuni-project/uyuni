@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC.
+# Copyright (c) 2022-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require_relative 'namespaces/actionchain'
@@ -14,6 +14,7 @@ require_relative 'namespaces/system'
 require_relative 'namespaces/user'
 require_relative 'xmlrpc_client'
 require_relative 'http_client'
+require 'date'
 
 # Abstract parent class describing an API test
 class ApiTest
@@ -59,14 +60,39 @@ class ApiTest
     thread =
       Thread.new do
         @semaphore.synchronize do
-          @token = @connection.call('auth.login', login: 'admin', password: 'admin')
-          params[0][:sessionKey] = @token
-          response = @connection.call(name, *params)
-          @connection.call('auth.logout', sessionKey: @token)
+          begin
+            manage_api_lock(name)
+            response = make_api_call(name, *params)
+          ensure
+            @connection.call('auth.logout', sessionKey: @token) if @token
+            api_unlock if name.include?('user.')
+          end
           response
         end
       end
     thread.value
+  end
+
+  private
+
+  # Handles API lock management
+  def manage_api_lock(name)
+    if name.include?('user.')
+      repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'We couldn\'t get access to the API') do
+        break unless api_lock?
+
+        sleep 1
+      end
+      @token = @connection.call('auth.login', login: 'admin', password: 'admin')
+    else
+      @token = @connection.call('auth.login', login: $current_user, password: $current_password)
+    end
+  end
+
+  # Makes the actual API call
+  def make_api_call(name, *params)
+    params[0][:sessionKey] = @token
+    @connection.call(name, *params)
   end
 end
 
@@ -115,12 +141,11 @@ class ApiTestHttp < ApiTest
   # @return [Boolean] Whether the attribute is a valid Date or not.
   def date?(attribute)
     begin
-      ok = true
       Date.parse(attribute)
+      true
     rescue ArgumentError
-      ok = false
+      false
     end
-    ok
   end
 
   # It returns a string with the current date and time in the format `YYYY-MM-DDTHH:MM:SS.LLL+HHMM`

@@ -8,8 +8,8 @@ Feature: Push a package with unset vendor
   As an authorized user
   I want to push a package with unset vendor
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: mgr-push package must be installed on the SLES minion
     Given I am on the Systems overview page of this "sle_minion"
@@ -23,7 +23,7 @@ Feature: Push a package with unset vendor
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Push a package with unset vendor through the SLES minion
     When I copy unset package file on "sle_minion"
