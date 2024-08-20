@@ -93,8 +93,8 @@ class RemoteNode
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
-    run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+    cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub("'", '\'"\'"\'')}'" : cmd
+    run_local(cmd_prefixed, separated_results:, check_errors:, timeout:, user:, successcodes:, buffer_size:, verbose:)
   end
 
   # Runs a command locally and returns the output, error, and exit code.
@@ -109,7 +109,7 @@ class RemoteNode
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, Integer>] The output, error, and exit code.
   def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    out, err, code = ssh_command(cmd, @target, user: user, timeout: timeout, buffer_size: buffer_size)
+    out, err, code = ssh_command(cmd, @target, user:, timeout:, buffer_size:)
     out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
     raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
@@ -128,8 +128,8 @@ class RemoteNode
   # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host.
   # @return [Array<String, Integer>] The result and exit code.
   def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
-    repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
+    repeat_until_timeout(timeout:, report_result: true) do
+      result, code = run(cmd, check_errors: false, runs_in_container:)
       return [result, code] if code.zero?
 
       sleep 2
@@ -144,8 +144,8 @@ class RemoteNode
   # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host.
   # @return [Array<String, Integer>] The result and exit code.
   def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
-    repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
+    repeat_until_timeout(timeout:, report_result: true) do
+      result, code = run(cmd, check_errors: false, runs_in_container:)
       return [result, code] if code.nonzero?
 
       sleep 2
@@ -183,7 +183,7 @@ class RemoteNode
       end
       run_local("rm -r #{tmp_folder}")
     else
-      code, _remote = scp(local_file, remote_file)
+      code = scp(local_file, remote_file)
     end
     code
   end
@@ -200,12 +200,12 @@ class RemoteNode
       _out, code = run_local("mgrctl cp --user #{user} server:#{remote_file} #{tmp_file}")
       raise ScriptError, "Failed to extract #{remote_file} from container" unless code.zero?
 
-      code, _remote = scp(tmp_file, local_file)
+      code = scp(tmp_file, local_file)
       raise ScriptError, "Failed to extract #{tmp_file} from host" unless code.zero?
 
       run_local("rm -r #{tmp_folder}")
     else
-      code, _local = scp(remote_file, local_file)
+      code = scp(remote_file, local_file)
     end
     code
   end
@@ -218,12 +218,10 @@ class RemoteNode
   def file_exists(file)
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -f #{file}'", check_errors: false)
-      exists = code.zero?
     else
-      _out, local, _remote, code = ssh("test -f #{file}")
-      exists = code.zero? && local.zero?
+      _out, _err, code = ssh("test -f #{file}")
     end
-    exists
+    code.zero?
   end
 
   # Check if a folder exists on a node.
@@ -234,12 +232,10 @@ class RemoteNode
   def folder_exists(file)
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -d #{file}'", check_errors: false)
-      exists = code.zero?
     else
-      _out, local, _remote, code = ssh("test -d #{file}")
-      exists = code.zero? && local.zero?
+      _out, _err, code = ssh("test -d #{file}")
     end
-    exists
+    code.zero?
   end
 
   # Delete a file on a node.
@@ -251,7 +247,7 @@ class RemoteNode
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'rm #{file}'", check_errors: false)
     else
-      _out, _local, _remote, code = ssh("rm #{file}")
+      _out, _err, code = ssh("rm #{file}")
     end
     code
   end
@@ -265,7 +261,7 @@ class RemoteNode
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'rm -rf #{folder}'", check_errors: false)
     else
-      _out, _local, _remote, code = ssh("rm -rf #{folder}")
+      _out, _err, code = ssh("rm -rf #{folder}")
     end
     code
   end
@@ -290,7 +286,7 @@ class RemoteNode
   #
   # @param timeout [Integer] The maximum time to wait for the node to come online, in seconds.
   def wait_until_online(timeout: DEFAULT_TIMEOUT)
-    repeat_until_timeout(timeout: timeout, report_result: true, message: "#{hostname} did not come back online within #{timeout} seconds.") do
+    repeat_until_timeout(timeout:, report_result: true, message: "#{hostname} did not come back online within #{timeout} seconds.") do
       break unless node_offline?
 
       sleep 1
@@ -309,7 +305,7 @@ class RemoteNode
       @public_interface = dev
       return '' if output.empty?
 
-      return output.split[1].split('/')[0]
+      return output.split[1].split('/').first
     end
     raise ArgumentError, "Cannot resolve public ip of #{host}"
   end

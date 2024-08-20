@@ -476,8 +476,8 @@ Then(/^the salt event log on server should contain no failures$/) do
   file = 'salt_event_parser.py'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   # print failures from salt event log
   output, _code = get_target('server').run("python3 /tmp/#{file}")
@@ -587,8 +587,8 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   dest = "/srv/formula_metadata/#{formula}/#{file}"
 
   get_target('server').run("mkdir -p /srv/formula_metadata/#{formula}")
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   get_target('server').run("chmod 644 #{dest}")
 end

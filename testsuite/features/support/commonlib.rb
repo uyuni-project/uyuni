@@ -354,7 +354,7 @@ def extract_logs_from_node(node, host)
     node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
     `mkdir logs` unless Dir.exist?('logs')
     code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
-    raise ScriptError, 'Download log archive failed' unless code.zero?
+    raise ScriptError, 'Download log archive failed' unless code
   rescue RuntimeError => e
     $stdout.puts e.message
   end

@@ -262,7 +262,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{local_file}")
   return_code = file_extract(node, local_file, local_file)
-  raise ScriptError, 'File extraction failed' unless return_code.zero?
+  raise ScriptError, 'File extraction failed' unless return_code
 
   output = File.read(local_file).each_line.select { |line| line.include? 'ERROR' }
   unless output.empty?
@@ -277,7 +277,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{local_file}")
   return_code = file_extract(node, local_file, local_file)
-  raise ScriptError, 'File extraction failed' unless return_code.zero?
+  raise ScriptError, 'File extraction failed' unless return_code
 
   file_data = File.read(local_file).gsub("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
   data_hash = JSON.parse("[#{file_data}]")
