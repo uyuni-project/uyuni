@@ -1,0 +1,9 @@
+{
+  "name": "uyuni-dev-container",
+  "build": { "dockerfile": "Dockerfile" },
+  "remoteEnv": {
+    "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk"
+  },
+
+  "postCreateCommand": "cd /workspaces/uyuni &&  ant -f java/manager-build.xml ivy"
+}
