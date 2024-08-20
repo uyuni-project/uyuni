@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Note: image building via API is not tested here
@@ -30,7 +30,7 @@ Feature: API "image" namespace for containers and sub-namespaces
     And I set and get profile details via API
 
   Scenario: Cleanup: remove custom system info
-    Given I am authorized for the "Admin" section
+    Given I am authorized
     When I follow the left menu "Systems > Custom System Info"
     And I follow "arancio"
     And I follow "Delete Key"

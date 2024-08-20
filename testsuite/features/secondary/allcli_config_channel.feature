@@ -1,11 +1,11 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_configuration_channels
 Feature: Management of configuration of all types of clients in a single channel
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create a configuration channel for mixed client types
     When I follow the left menu "Configuration > Channels"
@@ -164,7 +164,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Compare Files"
     And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
-    When I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
+    When I wait until event "Show differences between profiled config files and deployed config files scheduled" is completed
     Then I should see a "Differences exist" link
     When I follow "Differences exist"
     Then I should see a "+COLOR=white" text
