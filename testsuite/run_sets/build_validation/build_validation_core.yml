@@ -14,6 +14,9 @@
 # configuration channel and configuration file for smoke tests
 - features/build_validation/core/srv_add_configuration_channel_and_file.feature
 
+# Create the CLM filters for RH-like minions
+- features/build_validation/core/srv_prepare_rh_like_clm_filters.feature
+
 # Add paygo connections
 - features/build_validation/paygo_testing/srv_paygo_connections.feature
 

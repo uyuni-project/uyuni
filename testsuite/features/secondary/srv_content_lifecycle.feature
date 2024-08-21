@@ -20,19 +20,6 @@ Feature: Content lifecycle
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "remove fonts packages" text
 
-  Scenario: Create CLM filter to enable Ruby 2.7 module
-    When I follow the left menu "Content Lifecycle > Filters"
-    And I click on "Create Filter"
-    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
-    Then I should see a "Create a new filter" text
-    And I enter "ruby 2.7 module" as "filter_name"
-    And I select "Module (Stream)" from "type"
-    And I select "equals" from "matcher"
-    And I enter "ruby" as "moduleName"
-    And I enter "2.7" as "moduleStream"
-    And I click on "Save" in "Create a new filter" modal
-    Then I should see a "ruby 2.7 module" text
-
   Scenario: Create a content lifecycle project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "Create Project"
@@ -208,9 +195,7 @@ Feature: Content lifecycle
   Scenario: Cleanup: remove the CLM filters
     When I follow the left menu "Content Lifecycle > Filters"
     And I click the "remove fonts packages" item delete button
-    And I click the "ruby 2.7 module" item delete button
     Then I should not see a "remove fonts packages" text
-    And I should not see a "ruby 2.7 module" text
 
 @susemanager
   Scenario: Cleanup: remove the created channels
