@@ -107,7 +107,6 @@ Style/ArrayFirstLast:
     - 'features/support/commonlib.rb'
     - 'features/support/http_client.rb'
     - 'features/support/namespaces/api.rb'
-    - 'features/support/twopence_init.rb'
 
 # Offense count: 2
 # Configuration parameters: AllowedMethods, RequireForNonPublicMethods.
@@ -116,7 +115,6 @@ Style/DocumentationMethod:
     - 'spec/**/*'
     - 'test/**/*'
     - 'features/support/commonlib.rb'
-    - 'features/support/twopence_init.rb'
 
 # Offense count: 5
 # This cop supports unsafe autocorrection (--autocorrect-all).
