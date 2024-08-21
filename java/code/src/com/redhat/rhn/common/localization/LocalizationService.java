@@ -48,6 +48,7 @@ import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Localization service class to simplify the job for producing localized
@@ -316,22 +317,19 @@ public class LocalizationService {
     // package (who calls this actually) - for debugging purposes
     private StackTraceElement getCallingMethod() {
         try {
-            throw new RuntimeException("Stacktrace Dummy Exception");
-        }
-        catch (RuntimeException e) {
-            try {
-                final String prefix = this.getClass().getPackage().getName();
-                for (StackTraceElement element : e.getStackTrace()) {
-                    if (!element.getClassName().startsWith(prefix)) {
-                        return element;
-                    }
+            String prefix = this.getClass().getPackage().getName();
+            StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
+            for (StackTraceElement element : stackTrace) {
+                if (!element.getClassName().startsWith(prefix)) {
+                    return element;
                 }
             }
-            catch (Exception err) {
-                // dont break - return nothing rather than stop
-                return null;
-            }
         }
+        catch (Exception err) {
+            // don't break - return nothing rather than stop
+            return null;
+        }
+
         return null;
     }
 
@@ -605,15 +603,11 @@ public class LocalizationService {
      * @return list of configured locales
      */
     public List<String> getConfiguredLocales() {
-        List<String> tmp = new LinkedList<>();
-        for (String key : this.supportedLocales.keySet()) {
-            LocaleInfo li = this.supportedLocales.get(key);
-            if (!li.isAlias()) {
-                tmp.add(key);
-            }
-        }
-        Collections.sort(tmp);
-        return Collections.unmodifiableList(tmp);
+        return supportedLocales.entrySet().stream()
+            .filter(entry -> !entry.getValue().isAlias())
+            .map(entry -> entry.getKey())
+            .sorted()
+            .collect(Collectors.toUnmodifiableList());
     }
 
     /**

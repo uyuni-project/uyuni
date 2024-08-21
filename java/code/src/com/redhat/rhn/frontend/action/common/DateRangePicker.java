@@ -32,13 +32,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class DateRangePicker {
 
-    private DynaActionForm form;
-    private HttpServletRequest req;
-    private Date defaultStartOffset;
-    private Date defaultEndOffset;
-    private int yearRangeDirection;
-    private String startKey;
-    private String endKey;
+    private final DynaActionForm form;
+    private final HttpServletRequest req;
+    private final Date defaultStartOffset;
+    private final Date defaultEndOffset;
+    private final int yearRangeDirection;
+    private final String startKey;
+    private final String endKey;
 
     /**
      * Construct a new DateRangePicker
@@ -48,7 +48,7 @@ public class DateRangePicker {
      * @param defaultStartDateIn number of days to offset the start from today
      * @param defaultEndOffsetIn number of days to offset the end from today
      * @param yearRangeDirectionIn If you want the year range selector to show years
-     * in the future or in the past. See DatePicker.YEAR_RANGE_POSATIVE, and
+     * in the future or in the past. See DatePicker.YEAR_RANGE_POSITIVE, and
      * DatePicker.YEAR_RANGE_NEGATIVE
      * @param startKeyIn the l10n key for the name of the start date
      * @param endKeyIn the l10n key for the name of the end date
@@ -78,10 +78,10 @@ public class DateRangePicker {
      */
     public DatePickerResults processDatePickers(boolean isSubmitted,
             boolean justDateRelevant) {
-        // Setup the date pickers
+        // Set up the date pickers
         Context ctx = Context.getCurrentContext();
-        DatePicker start = null;
-        DatePicker end = null;
+        DatePicker start;
+        DatePicker end;
         if (justDateRelevant) {
             start = new DatePicker("start", ctx.getLocale(), yearRangeDirection);
             end = new DatePicker("end", ctx.getLocale(), yearRangeDirection);
@@ -152,7 +152,7 @@ public class DateRangePicker {
      * DatePickerResults class to encapsulate the results of processing the DatePickers
      * in the form.
      */
-    public class DatePickerResults {
+    public static class DatePickerResults {
         private DatePicker start;
         private DatePicker end;
         private ActionMessages errors;

@@ -31,7 +31,6 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
-import com.suse.salt.netapi.calls.runner.Jobs.Info;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
@@ -89,18 +88,6 @@ public class MinionActionUtils {
                     .compose(flatMap(Json::asPrim))
                     .compose(flatMap(Json.getField(ScheduleMetadata.SUMA_ACTION_ID)))
                     .compose(Json::asObj);
-
-    /**
-    * Lookup job metadata to see if a package list refresh was requested.
-    *
-    * @param jobInfo job info containing the metadata
-    * @return true if a package list refresh was requested, otherwise false
-    */
-    private boolean forcePackageListRefresh(Info jobInfo) {
-        return jobInfo.getMetadata(ScheduleMetadata.class)
-                        .map(ScheduleMetadata::isForcePackageListRefresh)
-                        .orElse(false);
-    }
 
     /**
      * Checks the current status of the ServerAction by looking
@@ -165,11 +152,12 @@ public class MinionActionUtils {
                 saltApi.running(new MinionList(minionIds));
 
         serverActions.forEach(serverAction ->
-            serverAction.getServer().asMinionServer().map(minion -> running.get(minion.getMinionId()))
-              .ifPresent(r -> {
-                  r.consume(error -> LOG.error(error.toString()),
-                  runningInfos -> ActionFactory.save(updateMinionActionStatus(serverAction, runningInfos)));
-              })
+            serverAction.getServer().asMinionServer()
+                .map(minion -> running.get(minion.getMinionId()))
+                .ifPresent(r -> r.consume(
+                    error -> LOG.error(error.toString()),
+                    runningInfos -> ActionFactory.save(updateMinionActionStatus(serverAction, runningInfos))
+                ))
         );
     }
 

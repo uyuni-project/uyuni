@@ -98,7 +98,6 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -107,7 +106,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -243,15 +242,15 @@ public class StatesAPI {
 
         // Lookup assigned states
         List<ConfigChannel> assignedStates = handleTarget(type, id,
-                (serverId) -> {
+                serverId -> {
                     MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(id));
                     return StateFactory.latestConfigChannels(server);
                 },
-                (groupId) -> {
+                groupId -> {
                     ServerGroup group = getEntityIfExists(ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
                     return StateFactory.latestConfigChannels(group);
                 },
-                (orgId) -> {
+                orgId -> {
                     Org org = getEntityIfExists(OrgFactory.lookupById(id));
                     return StateFactory.latestConfigChannels(org);
                 }
@@ -293,18 +292,18 @@ public class StatesAPI {
 
         try {
             SaltConfigurable entity = handleTarget(json.getTargetType(), json.getTargetId(),
-                (serverId) -> {
+                serverId -> {
                         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(serverId));
                         checkUserHasPermissionsOnServer(server, user);
                         return server;
                 },
-                (groupId) -> {
+                groupId -> {
                         ServerGroup group =
                                 getEntityIfExists(ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
                         checkUserHasPermissionsOnServerGroup(user, group);
                         return group;
                 },
-                (orgId) -> {
+                orgId -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnOrg(org);
                         return org;
@@ -315,8 +314,8 @@ public class StatesAPI {
             return SparkApplicationHelper.json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()),
                     new TypeToken<>() { });
         }
-        catch (Throwable t) {
-            LOG.error(t.getMessage(), t);
+        catch (Exception ex) {
+            LOG.error("Unable to save config channels", ex);
             response.status(500);
             return "{}";
         }
@@ -331,9 +330,7 @@ public class StatesAPI {
      * @return unwrapped entity of type T
      */
     private <T> T getEntityIfExists(Optional<T> entity) {
-        return entity.orElseGet(() -> {
-            throw new NotFoundException();
-        });
+        return entity.orElseThrow(NotFoundException::new);
     }
 
     /**
@@ -404,7 +401,7 @@ public class StatesAPI {
             generateServerPackageState(server);
             return GSON.toJson(convertToJSON(state.getPackageStates()));
         }
-        catch (Throwable t) {
+        catch (Exception ex) {
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
@@ -479,15 +476,14 @@ public class StatesAPI {
         try {
             ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(),
                     json.getTargetId(),
-                    (serverId) -> {
+                    serverId -> {
                         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnServer(server, user);
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                                Arrays.asList(json.getTargetId()), json.getStates(),
-                                getScheduleDate(json));
-                        return action;
+                        return ActionManager.scheduleApplyStates(
+                            user, List.of(json.getTargetId()), json.getStates(), getScheduleDate(json)
+                        );
                     },
-                    (groupId) -> {
+                    groupId -> {
                         ServerGroup group = getEntityIfExists(
                                 ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(), user.getOrg()));
                         checkUserHasPermissionsOnServerGroup(user, group);
@@ -498,18 +494,13 @@ public class StatesAPI {
 
                         List<String> states = json.getStates();
                         if (states.size() == 1 && "custom_groups".equals(states.get(0))) {
-                            String state = SaltStateGeneratorService.INSTANCE
-                                    .getServerGroupGeneratedStateName(groupId);
-                            states = Arrays.asList(state);
+                            String state = SaltStateGeneratorService.INSTANCE.getServerGroupGeneratedStateName(groupId);
+                            states = List.of(state);
                         }
 
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                                minionServerIds, states,
-                                getScheduleDate(json));
-
-                        return action;
+                        return ActionManager.scheduleApplyStates(user, minionServerIds, states, getScheduleDate(json));
                     },
-                    (orgId) -> {
+                    orgId -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnOrg(org);
                         List<Long> minionServerIds = MinionServerFactory
@@ -517,10 +508,9 @@ public class StatesAPI {
                                 .map(MinionServer::getId)
                                 .collect(Collectors.toList());
 
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                                minionServerIds, json.getStates(), getScheduleDate(json));
-
-                        return action;
+                        return ActionManager.scheduleApplyStates(
+                            user, minionServerIds, json.getStates(), getScheduleDate(json)
+                        );
                     }
             );
 
@@ -550,9 +540,9 @@ public class StatesAPI {
     }
 
     private <R> R handleTarget(StateTargetType targetType, long targetId,
-                                      Function<Long, R> serverHandler,
-                                      Function<Long, R> groupHandler,
-                                      Function<Long, R> orgHandler) {
+                                      LongFunction<R> serverHandler,
+                                      LongFunction<R> groupHandler,
+                                      LongFunction<R> orgHandler) {
         switch (targetType) {
             case SERVER:
                 return serverHandler.apply(targetId);
