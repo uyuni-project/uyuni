@@ -217,9 +217,11 @@ class DebRepo:
 
         :return:
         """
-        if not repo.DpkgRepo(
+        dpkg_repo = repo.DpkgRepo(
             self.url, self._get_proxies(), self.gpg_verify, self.timeout
-        ).verify_packages_index():
+        )
+        log.debug("DebRepo.verify() dpkg_repo=%s", dpkg_repo)
+        if not dpkg_repo.verify_packages_index():
             raise repo.GeneralRepoException("Package index checksum failure")
 
     def _get_proxies(self):
@@ -469,6 +471,7 @@ class ContentSource:
     def list_packages(self, filters, latest):
         """list packages"""
 
+        log.debug("ContentSource.list_packages(filters=%s, latest=%s)", filters, latest)
         pkglist = self.repo.get_package_list()
         self.num_packages = len(pkglist)
         if latest:
@@ -505,8 +508,11 @@ class ContentSource:
                     pack.name, pack.version, pack.release, pack.epoch, pack.arch
                 )
             except ValueError as e:
-                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
-                log(0, e)
+                log.error(
+                    "Skipping package %s. Package contains incorrect metadata.\n%s",
+                    new_pack,
+                    e,
+                )
                 continue
             new_pack.unique_id = pack
             new_pack.checksum_type = pack.checksum_type
