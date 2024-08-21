@@ -98,20 +98,6 @@ get_first_partition_device() {
     echo ${device}1
 }
 
-create_partition() {
-    test -z "$1" && die "create_parition called without argument"
-    local disk=$1
-    local result=$(parted -s $disk mklabel GPT 2>&1)
-    if [ $? != 0 ]; then
-        die "Creating new GPT label failed: $result"
-    fi
-    local result=$(parted -s $disk mkpart primary 2048s 100% 2>&1)
-    if [ $? != 0 ]; then
-        die "Partition setup failed: $result"
-    fi
-    rm -f $cmd_sequence
-}
-
 create_filesystem() {
     test -z "$2" && die "create_filesystem called without arguments"
     local part=$(get_first_partition_device $1)

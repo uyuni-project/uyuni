@@ -84,9 +84,6 @@ fi
 info "Checking disk for content signature"
 check_content_signature $storage_disk
 
-info "Creating partition on disk $storage_disk"
-create_partition $storage_disk
-
 info "Creating $storage_fs filesystem"
 create_filesystem $storage_disk $storage_fs
 
