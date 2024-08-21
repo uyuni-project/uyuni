@@ -108,10 +108,16 @@ Style/MethodCallWithArgsParentheses:
 Style/ModuleFunction:
   Enabled: false
 
+Style/HashSyntax:
+  Enabled: false
+
 Style/ImplicitRuntimeError:
   Enabled: false
 
 Style/InlineComment:
+  Enabled: false
+
+Style/InvertibleUnlessCondition:
   Enabled: false
 
 Style/IpAddresses:
