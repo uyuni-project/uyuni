@@ -171,8 +171,8 @@ public enum ViewHelper {
     @Deprecated
     public String renderTimezone() {
         Context ctx = Context.getCurrentContext();
-        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
-        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
+        Locale locale = ctx.getLocale();
+        TimeZone timezone = ctx.getTimezone();
         DateFormat tzFormat = new SimpleDateFormat("z", locale);
         tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return tzFormat.format(new Date());
@@ -204,8 +204,8 @@ public enum ViewHelper {
     @Deprecated
     public String renderDate(Date date) {
         Context ctx = Context.getCurrentContext();
-        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
-        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
+        Locale locale = ctx.getLocale();
+        TimeZone timezone = ctx.getTimezone();
         DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(date);

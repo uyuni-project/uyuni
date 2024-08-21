@@ -650,22 +650,12 @@ public class LocalizationService {
      * @return TimeZone from the Context
      */
     public  TimeZone determineTimeZone() {
-        TimeZone retval = null;
-        Context ctx = Context.getCurrentContext();
-
-        if (ctx != null) {
-            retval = ctx.getTimezone();
-        }
-        if (retval == null) {
-            log.debug("Context is null");
-            // Get the app server's default timezone
-            retval = TimeZone.getDefault();
-        }
+        TimeZone retval = Context.getCurrentContext().getTimezone();
         if (log.isDebugEnabled()) {
             log.debug("Determined timeZone to be: {}", retval);
         }
-        return retval;
 
+        return retval;
     }
 
     /**

@@ -104,6 +104,10 @@ public class Context {
      * @return Returns the timezone.
      */
     public TimeZone getTimezone() {
+        if (timezone == null) {
+            return TimeZone.getDefault();
+        }
+
         return timezone;
     }
 

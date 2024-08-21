@@ -87,10 +87,8 @@ public class DateRangePicker {
             end = new DatePicker("end", ctx.getLocale(), yearRangeDirection);
         }
         else {
-            start = new DatePicker("start", ctx.getTimezone(), ctx.getLocale(),
-                    yearRangeDirection);
-            end = new DatePicker("end", ctx.getTimezone(), ctx.getLocale(),
-                    yearRangeDirection);
+            start = new DatePicker("start", ctx.getTimezone(), ctx.getLocale(), yearRangeDirection);
+            end = new DatePicker("end", ctx.getTimezone(), ctx.getLocale(), yearRangeDirection);
         }
         ActionMessages errors = new ActionMessages();
         DatePickerResults retval = new DatePickerResults();

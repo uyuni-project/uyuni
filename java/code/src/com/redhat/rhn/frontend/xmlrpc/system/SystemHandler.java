@@ -6560,8 +6560,7 @@ public class SystemHandler extends BaseHandler {
             data.setForce(false);
             data.setEarliest(
                 Optional.ofNullable(date).map((localDate) -> {
-                    ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
-                            .orElse(TimeZone.getDefault()).toZoneId();
+                    ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
                     return LocalDateTime.ofInstant(localDate.toInstant(), zoneId);
                 })
             );

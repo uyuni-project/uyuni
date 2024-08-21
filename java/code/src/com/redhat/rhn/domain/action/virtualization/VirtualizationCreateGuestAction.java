@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.TimeZone;
 
 /**
  * CreateAction - Class representing TYPE_VIRTUALIZATION_CREATE
@@ -48,8 +47,7 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     public String getDetailsAsString() {
         if (details != null) {
             if (details.getEarliest().isEmpty()) {
-                ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
-                        .orElse(TimeZone.getDefault()).toZoneId();
+                ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
                 details.setEarliest(Optional.of(LocalDateTime.ofInstant(getEarliestAction().toInstant(), zoneId)));
             }
             return details.toJson();
