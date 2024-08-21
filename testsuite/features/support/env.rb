@@ -506,13 +506,11 @@ Before('@skip_for_debianlike') do |scenario|
 end
 
 Before('@skip_for_rocky9') do |scenario|
-  filename = scenario.location.file
-  skip_this_scenario if filename.include? 'rocky9'
+  skip_this_scenario if scenario.location.file.include? 'rocky9'
 end
 
 Before('@skip_for_alma9') do |scenario|
-  filename = scenario.location.file
-  skip_this_scenario if filename.include? 'alma9'
+  skip_this_scenario if scenario.location.file.include? 'alma9'
 end
 
 Before('@skip_for_minion') do |scenario|
@@ -527,6 +525,10 @@ Before('@skip_for_sle_micro_ssh_minion') do |scenario|
   sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion slmicro60_ssh_minion]
   current_feature_node = scenario.location.file.split(%r{(_smoke_tests.feature|/)})[-2]
   skip_this_scenario if sle_micro_ssh_nodes.include? current_feature_node
+end
+
+Before('@skip_for_sl_micro') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'slmicro'
 end
 
 # do some tests only if we have SCC credentials
