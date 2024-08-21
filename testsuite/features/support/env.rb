@@ -136,7 +136,7 @@ After do |scenario|
       if web_session_is_active?
         handle_screenshot_and_relog(scenario, current_epoch)
       else
-        warn 'Page is not visible; unable to take a screenshot.'
+        warn 'There is no active web session; unable to take a screenshot or relog.'
       end
     ensure
       print_server_logs
@@ -147,8 +147,7 @@ end
 
 # Test is web session is open
 def web_session_is_active?
-  # When no Web Session is open, current_url is equal to data:,
-  return false if current_url.empty? || current_url == 'data:,'
+  return false unless Capybara::Session.instance_created?
 
   page.has_selector?('header') || page.has_selector?('#username-field')
 end
@@ -172,7 +171,7 @@ end
 
 # Try to get the minion details when on minion page
 def click_details_if_present
-  return unless page.has_content?('Bootstrap Minions') && page.has_content?('Details')
+  return unless page.has_content?('Bootstrap Minions', wait:0) && page.has_content?('Details', wait:0)
 
   begin
     click_button('Details')
