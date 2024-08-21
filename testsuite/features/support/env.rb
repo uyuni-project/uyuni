@@ -171,7 +171,7 @@ end
 
 # Try to get the minion details when on minion page
 def click_details_if_present
-  return unless page.has_content?('Bootstrap Minions', wait:0) && page.has_content?('Details', wait:0)
+  return unless page.has_content?('Bootstrap Minions', wait: 0) && page.has_content?('Details', wait: 0)
 
   begin
     click_button('Details')
