@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%global debug_package %{nil}
 
 Name:           uyuni-storage-setup
 Version:        5.0.1
