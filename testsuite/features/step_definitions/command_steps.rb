@@ -511,8 +511,8 @@ end
 
 When(/^I execute spacewalk-debug on the server$/) do
   get_target('server').run('spacewalk-debug')
-  code = file_extract(get_target('server'), '/tmp/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
-  raise ScriptError, 'Download debug file failed' unless code
+  success = file_extract(get_target('server'), '/tmp/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
+  raise ScriptError, 'Download debug file failed' unless success
 end
 
 When(/^I extract the log files from all our active nodes$/) do
@@ -555,8 +555,8 @@ end
 When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_host, to_host|
   from_node = get_target(from_host)
   to_node = get_target(to_host)
-  return_code = file_extract(from_node, file_path, file_path)
-  raise ScriptError, 'File extraction failed' unless return_code
+  success = file_extract(from_node, file_path, file_path)
+  raise ScriptError, 'File extraction failed' unless success
 
   success = file_inject(to_node, file_path, file_path)
   raise ScriptError, 'File injection failed' unless success
@@ -1110,8 +1110,8 @@ When(/^I copy server's keys to the proxy$/) do
     end
   else
     %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
-      return_code = file_extract(get_target('server'), "/root/ssl-build/#{file}", "/tmp/#{file}")
-      raise ScriptError, 'File extraction failed' unless return_code
+      success = file_extract(get_target('server'), "/root/ssl-build/#{file}", "/tmp/#{file}")
+      raise ScriptError, 'File extraction failed' unless success
 
       get_target('proxy').run('mkdir -p /root/ssl-build')
       success = file_inject(get_target('proxy'), "/tmp/#{file}", "/root/ssl-build/#{file}")

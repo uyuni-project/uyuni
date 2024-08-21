@@ -25,11 +25,11 @@ def ssh_command(command, host, port: 22, user: 'root', password: nil, timeout: D
 
   if password.nil?
     # Not passing :password uses systems ssh keys to authenticate
-    Net::SSH.start(host, user, port:, verify_host_key: :never, timeout:, max_pkt_size: buffer_size) do |ssh|
+    Net::SSH.start(host, user, port: port, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size) do |ssh|
       stdout, stderr, exit_code = ssh_exec!(ssh, command)
     end
   else
-    Net::SSH.start(host, user, port:, password:, verify_host_key: :never, timeout:, max_pkt_size: buffer_size) do |ssh|
+    Net::SSH.start(host, user, port: port, password: password, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size) do |ssh|
       stdout, stderr, exit_code = ssh_exec!(ssh, command)
     end
   end
@@ -50,11 +50,11 @@ end
 def scp_command(local_path, remote_path, host, port: 22, user: 'root', password: nil, timeout: DEFAULT_TIMEOUT, buffer_size: 65_536)
   if password.nil?
     # Not passing :password uses systems ssh keys to authenticate
-    Net::SSH.start(host, user, port:, verify_host_key: :never, timeout:, max_pkt_size: buffer_size) do |ssh|
+    Net::SSH.start(host, user, port: port, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size) do |ssh|
       ssh.scp.upload! local_path, remote_path
     end
   else
-    Net::SSH.start(host, user, port:, password:, verify_host_key: :never, timeout:, max_pkt_size: buffer_size) do |ssh|
+    Net::SSH.start(host, user, port: port, password: password, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size) do |ssh|
       ssh.scp.upload! local_path, remote_path
     end
   end
