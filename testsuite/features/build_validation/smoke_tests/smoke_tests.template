@@ -180,8 +180,9 @@ Feature: Smoke tests for <client>
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
 
+# The client tools of SLE Micro and SL Micro (intentionally) do not contain spacecmd
 @skip_for_sle_micro
-  # The client tools of SLE Micro (intentionally) do not contain spacecmd
+@skip_for_sl_micro
   Scenario: Install spacecmd from the client tools on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
