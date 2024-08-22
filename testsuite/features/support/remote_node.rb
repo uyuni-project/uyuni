@@ -93,8 +93,8 @@ class RemoteNode
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub("'", '\'"\'"\'')}'" : cmd
-    run_local(cmd_prefixed, separated_results:, check_errors:, timeout:, user:, successcodes:, buffer_size:, verbose:)
+    cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
+    run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
   # Runs a command locally and returns the output, error, and exit code.
@@ -109,7 +109,7 @@ class RemoteNode
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, Integer>] The output, error, and exit code.
   def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    out, err, code = ssh_command(cmd, @target, user:, timeout:, buffer_size:)
+    out, err, code = ssh_command(cmd, @target, user: user, timeout: timeout, buffer_size: buffer_size)
     out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
     raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
@@ -128,8 +128,8 @@ class RemoteNode
   # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host.
   # @return [Array<String, Integer>] The result and exit code.
   def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
-    repeat_until_timeout(timeout:, report_result: true) do
-      result, code = run(cmd, check_errors: false, runs_in_container:)
+    repeat_until_timeout(timeout: timeout, report_result: true) do
+      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
       return [result, code] if code.zero?
 
       sleep 2
@@ -144,8 +144,8 @@ class RemoteNode
   # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host.
   # @return [Array<String, Integer>] The result and exit code.
   def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
-    repeat_until_timeout(timeout:, report_result: true) do
-      result, code = run(cmd, check_errors: false, runs_in_container:)
+    repeat_until_timeout(timeout: timeout, report_result: true) do
+      result, code = run(cmd, check_errors: false, runs_in_container: runs_in_container)
       return [result, code] if code.nonzero?
 
       sleep 2
@@ -286,7 +286,7 @@ class RemoteNode
   #
   # @param timeout [Integer] The maximum time to wait for the node to come online, in seconds.
   def wait_until_online(timeout: DEFAULT_TIMEOUT)
-    repeat_until_timeout(timeout:, report_result: true, message: "#{hostname} did not come back online within #{timeout} seconds.") do
+    repeat_until_timeout(timeout: timeout, report_result: true, message: "#{hostname} did not come back online within #{timeout} seconds.") do
       break unless node_offline?
 
       sleep 1

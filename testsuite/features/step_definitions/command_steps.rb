@@ -1102,7 +1102,7 @@ When(/^I copy server's keys to the proxy$/) do
     generate_certificate('proxy', get_target('proxy').full_hostname)
 
     %w[proxy.crt proxy.key ca.crt].each do |file|
-      success, = get_target('server').extract_file("/tmp/#{file}", "/tmp/#{file}")
+      success, = file_extract(get_target('server'), "/tmp/#{file}", "/tmp/#{file}")
       raise ScriptError, 'File extraction failed' unless success
 
       success = file_inject(get_target('proxy'), "/tmp/#{file}", "/tmp/#{file}")
