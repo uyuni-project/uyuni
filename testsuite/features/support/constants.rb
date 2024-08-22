@@ -221,7 +221,7 @@ PACKAGE_BY_CLIENT = {
 }.freeze
 
 # Names of our base/parent channels
-# The keys are the Twopence targets
+# The keys are the RemoteNode targets
 # The values can be found in the webUI under Software -> Manage -> Channels -> Create Channel
 # The required product has to be synced before
 # Then take a look at the Parent Channel selections

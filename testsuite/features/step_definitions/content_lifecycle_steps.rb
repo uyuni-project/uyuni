@@ -80,7 +80,7 @@ When(/^I add pre-generated SSH public key to authorized_keys of host "([^"]*)"$/
   target = get_target(host)
   ret_code = file_inject(target, "#{File.dirname(__FILE__)}/../upload_files/ssh_keypair/#{key_filename}", "/tmp/#{key_filename}")
   target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", timeout: 500)
-  raise ScriptError, 'Error copying ssh pubkey to host' if ret_code.nonzero?
+  raise ScriptError, 'Error copying ssh pubkey to host' unless ret_code
 end
 
 When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
@@ -95,8 +95,8 @@ end
 When(/^I add "([^"]*)" calendar file as url$/) do |file|
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/srv/www/htdocs/pub/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   get_target('server').run("chmod 644 #{dest}")
   url = "https://#{get_target('server').full_hostname}/pub/" + file
@@ -109,21 +109,21 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   dest = '/srv/playbooks/orion_dummy/'
   target.run("mkdir -p #{dest}")
   source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/orion_dummy/playbook_orion_dummy.yml"
-  return_code = file_inject(target, source, "#{dest}playbook_orion_dummy.yml")
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(target, source, "#{dest}playbook_orion_dummy.yml")
+  raise ScriptError, 'File injection failed' unless success
 
   source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/orion_dummy/hosts"
-  return_code = file_inject(target, source, "#{dest}hosts")
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(target, source, "#{dest}hosts")
+  raise ScriptError, 'File injection failed' unless success
 
   source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/orion_dummy/file.txt"
-  return_code = file_inject(target, source, "#{dest}file.txt")
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(target, source, "#{dest}file.txt")
+  raise ScriptError, 'File injection failed' unless success
 
   dest = '/srv/playbooks/'
   source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/playbook_ping.yml"
-  return_code = file_inject(target, source, "#{dest}playbook_ping.yml")
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(target, source, "#{dest}playbook_ping.yml")
+  raise ScriptError, 'File injection failed' unless success
 end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|

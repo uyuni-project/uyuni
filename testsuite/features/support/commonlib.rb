@@ -353,8 +353,8 @@ def extract_logs_from_node(node, host)
     node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
     node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
     `mkdir logs` unless Dir.exist?('logs')
-    code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
-    raise ScriptError, 'Download log archive failed' unless code.zero?
+    success = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
+    raise ScriptError, 'Download log archive failed' unless success
   rescue RuntimeError => e
     $stdout.puts e.message
   end
@@ -451,29 +451,6 @@ def check_restart(host, node, time_out)
   end
 end
 
-# Extract the OS version and OS family
-# We get these data decoding the values in '/etc/os-release'
-def get_os_version(node)
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
-  return nil, nil unless code.zero?
-
-  os_family = os_family_raw.strip.split('=')[1]
-  return nil, nil if os_family.nil?
-
-  os_family.delete! '"'
-  os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
-  return nil, nil unless code.zero?
-
-  os_version = os_version_raw.strip.split('=')[1]
-  return nil, nil if os_version.nil?
-
-  os_version.delete! '"'
-  # on SLES, we need to replace the dot with '-SP'
-  os_version.gsub!('.', '-SP') if os_family.match?(/^sles/)
-  $stdout.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
-  [os_version, os_family]
-end
-
 #
 # Retrieves the GPG keys for a given node and target.
 #
@@ -532,7 +509,7 @@ end
 def get_system_name(host)
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
-  # therefore they are not represented by a twopence node
+  # therefore they are not represented by a RemoteNode
   when 'pxeboot_minion'
     output, _code = get_target('server').run('salt-key')
     system_name =

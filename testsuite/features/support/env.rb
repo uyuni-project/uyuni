@@ -17,7 +17,7 @@ require 'multi_test'
 require 'set'
 require 'timeout'
 require_relative 'code_coverage'
-require_relative 'twopence_env'
+require_relative 'remote_nodes_env'
 require_relative 'commonlib'
 
 $stdout.puts("Using Ruby version: #{RUBY_VERSION}")
