@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 15:15+0100\n"
-"PO-Revision-Date: 2020-09-16 18:48+0000\n"
+"PO-Revision-Date: 2024-08-22 17:47+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/susemanager/"
-"cs/>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
+"susemanager-4-3/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../yast/susemanager_ask.rb:38
 msgid "Set up #{@product_name} from scratch"
@@ -308,13 +308,12 @@ msgstr ""
 "nenainstaluje správně."
 
 #: ../yast/susemanager_reqs.rb:263
-#, fuzzy
 msgid ""
 "The output of 'hostname -f' does not match the hostname from a reverse DNS "
 "lookup. The product will not install correctly."
 msgstr ""
-"Výstup 'hostname -f' neodpovídá skutečnému názvu hostitele. Produkt se "
-"nenainstaluje správně."
+"Výstup 'hostname -f' se liěí od názvu hostitele z reverzního hledání DNS. "
+"Produkt se nenainstaluje správně."
 
 #: ../yast/susemanager_reqs.rb:277
 msgid "Illegal Hostname"
