@@ -40,7 +40,6 @@ run-testsuite
 ```bash
 # add sumaform tools repository
 zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Tumbleweed/
-zypper install twopence
 
 # install required Ruby gems
 cd <your_repo>/testsuite
