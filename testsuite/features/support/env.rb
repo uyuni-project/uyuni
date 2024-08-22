@@ -123,31 +123,74 @@ Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
-# embed a screenshot after each failed scenario
+# Embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      Dir.mkdir('screenshots') unless File.directory?('screenshots')
-      path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-      # only click on Details when we have errors during bootstrapping and more Details available
-      click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
-      # a Timeout::Error may be raised while a page is still (re)loading
-      find('#page-body', wait: 3) if scenario.exception.is_a?(Timeout::Error)
-      page.driver.browser.save_screenshot(path)
-      attach path, 'image/png'
-      attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
-    rescue StandardError => e
-      warn e.message
+      if web_session_is_active?
+        handle_screenshot_and_relog(scenario, current_epoch)
+      else
+        warn 'There is no active web session; unable to take a screenshot or relog.'
+      end
     ensure
       print_server_logs
+    end
+  end
+  page.instance_variable_set(:@touched, false)
+end
+
+# Test is web session is open
+def web_session_is_active?
+  return false unless Capybara::Session.instance_created?
+
+  page.has_selector?('header') || page.has_selector?('#username-field')
+end
+
+# Take a screenshot and try to log back at suse manager server
+def handle_screenshot_and_relog(scenario, current_epoch)
+  Dir.mkdir('screenshots') unless File.directory?('screenshots')
+  path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+  begin
+    click_details_if_present
+    page.driver.browser.save_screenshot(path)
+    attach path, 'image/png'
+    # Attach additional information
+    attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+  rescue StandardError => e
+    warn "Error message: #{e.message}"
+  ensure
+    relog_and_visit_previous_url
+  end
+end
+
+# Try to get the minion details when on minion page
+def click_details_if_present
+  return unless page.has_content?('Bootstrap Minions', wait: 0) && page.has_content?('Details', wait: 0)
+
+  begin
+    click_button('Details')
+  rescue Capybara::ElementNotFound
+    log "Button 'Details' not found on the page."
+  rescue Capybara::ElementNotInteractable
+    log "Button 'Details' found but not interactable."
+  end
+end
+
+# Relog and visit the previous URL
+def relog_and_visit_previous_url
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       previous_url = current_url
       step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
       visit previous_url
     end
+  rescue Timeout::Error
+    warn "Timed out while attempting to relog and visit the previous URL: #{current_url}"
+  rescue StandardError => e
+    warn "An error occurred while relogging and visiting the previous URL: #{e.message}"
   end
-  page.instance_variable_set(:@touched, false)
 end
 
 # Process the code coverage for each feature when it ends
