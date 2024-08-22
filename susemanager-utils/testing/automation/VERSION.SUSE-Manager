@@ -1,10 +1,10 @@
 REGISTRY=registry.suse.de
-VER=head
-BASE_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-base
-PGSQL_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-pgsql
-NODEJS_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-nodejs
-PUSH2OBS_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-push-to-obs
-REPORTDB_DOC_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-reportdb-docs
+VER=5.0
+BASE_CONTAINER=devel/galaxy/manager/5.0/docker/containers/suma-$VER-base
+PGSQL_CONTAINER=devel/galaxy/manager/5.0/docker/containers/suma-$VER-pgsql
+NODEJS_CONTAINER=devel/galaxy/manager/5.0/docker/containers/suma-$VER-nodejs
+PUSH2OBS_CONTAINER=devel/galaxy/manager/5.0/docker/containers/suma-push-to-obs
+REPORTDB_DOC_CONTAINER=devel/galaxy/manager/5.0/docker/containers/suma-$VER-reportdb-docs
 # Base version for the idempotency test. All PostgreSQL since this version must be idempotent for the test to pass
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
 IDEMPOTENCY_SCHEMA_BASE_VERSION='4.3.8'
