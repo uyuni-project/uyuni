@@ -511,8 +511,8 @@ end
 
 When(/^I execute spacewalk-debug on the server$/) do
   get_target('server').run('spacewalk-debug')
-  code = file_extract(get_target('server'), '/tmp/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
-  raise ScriptError, 'Download debug file failed' unless code.zero?
+  success = file_extract(get_target('server'), '/tmp/spacewalk-debug.tar.bz2', 'spacewalk-debug.tar.bz2')
+  raise ScriptError, 'Download debug file failed' unless success
 end
 
 When(/^I extract the log files from all our active nodes$/) do
@@ -548,18 +548,18 @@ end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
-  return_code = file_inject(node, file, File.basename(file))
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(node, file, File.basename(file))
+  raise ScriptError, 'File injection failed' unless success
 end
 
 When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_host, to_host|
   from_node = get_target(from_host)
   to_node = get_target(to_host)
-  return_code = file_extract(from_node, file_path, file_path)
-  raise ScriptError, 'File extraction failed' unless return_code.zero?
+  success = file_extract(from_node, file_path, file_path)
+  raise ScriptError, 'File extraction failed' unless success
 
-  return_code = file_inject(to_node, file_path, file_path)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(to_node, file_path, file_path)
+  raise ScriptError, 'File injection failed' unless success
 end
 
 Then(/^the PXE default profile should be enabled$/) do
@@ -576,8 +576,8 @@ When(/^the server starts mocking an IPMI host$/) do
   %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
     source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
     dest = "/etc/ipmi/#{file}"
-    return_code = file_inject(server, source, dest)
-    raise ScriptError, 'File injection failed' unless return_code.zero?
+    success = file_inject(get_target('server'), source, dest)
+    raise ScriptError, 'File injection failed' unless success
   end
   server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh', verbose: true, check_errors: true)
   server.run('ipmi_sim -n < /dev/null > /dev/null &', verbose: true, check_errors: true)
@@ -595,16 +595,13 @@ When(/^the controller starts mocking a Redfish host$/) do
   if running_k3s?
     # On kubernetes, the server has no clue about certificates
     crt_path, key_path, _ca_path = generate_certificate('controller', hostname)
-    get_target('server').extract_file(crt_path, '/root/controller.crt')
-    get_target('server').extract_file(key_path, '/root/controller.key')
   else
     get_target('server').run("mgr-ssl-tool --gen-server -d /root/ssl-build --no-rpm -p spacewalk --set-hostname #{hostname} --server-cert=controller.crt --server-key=controller.key")
     key_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.key')
     crt_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.crt')
-
-    file_extract(get_target('server'), key_path.strip, '/root/controller.key')
-    file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
   end
+  file_extract(get_target('server'), key_path.strip, '/root/controller.key')
+  file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
 
   `curl --output /root/DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip`
   `unzip /root/DSP2043_2019.1.zip -d /root/`
@@ -627,16 +624,16 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   file = 'user_defined_state.sls'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/srv/salt/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   # generate top file and copy it to server
   script = "base:\n" \
            "  '#{system_name}':\n" \
            "    - user_defined_state\n"
   path = generate_temp_file('top.sls', script)
-  return_code = file_inject(get_target('server'), path, '/srv/salt/top.sls')
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), path, '/srv/salt/top.sls')
+  raise ScriptError, 'File injection failed' unless success
 
   `rm #{path}`
   # make both files readeable by salt
@@ -1015,8 +1012,8 @@ When(/I copy the tftpboot installation files from the build host to the server$/
   file = 'copy-tftpboot-files.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(node, source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(node, source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   hostname = get_target('server').full_hostname
   node.run("expect -f #{dest} #{hostname}")
@@ -1105,20 +1102,20 @@ When(/^I copy server's keys to the proxy$/) do
     generate_certificate('proxy', get_target('proxy').full_hostname)
 
     %w[proxy.crt proxy.key ca.crt].each do |file|
-      return_code, = get_target('server').extract_file("/tmp/#{file}", "/tmp/#{file}")
-      raise ScriptError, 'File extraction failed' unless return_code.zero?
+      success, = file_extract(get_target('server'), "/tmp/#{file}", "/tmp/#{file}")
+      raise ScriptError, 'File extraction failed' unless success
 
-      return_code = file_inject(get_target('proxy'), "/tmp/#{file}", "/tmp/#{file}")
-      raise ScriptError, 'File injection failed' unless return_code.zero?
+      success = file_inject(get_target('proxy'), "/tmp/#{file}", "/tmp/#{file}")
+      raise ScriptError, 'File injection failed' unless success
     end
   else
     %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
-      return_code = file_extract(get_target('server'), "/root/ssl-build/#{file}", "/tmp/#{file}")
-      raise ScriptError, 'File extraction failed' unless return_code.zero?
+      success = file_extract(get_target('server'), "/root/ssl-build/#{file}", "/tmp/#{file}")
+      raise ScriptError, 'File extraction failed' unless success
 
       get_target('proxy').run('mkdir -p /root/ssl-build')
-      return_code = file_inject(get_target('proxy'), "/tmp/#{file}", "/root/ssl-build/#{file}")
-      raise ScriptError, 'File injection failed' unless return_code.zero?
+      success = file_inject(get_target('proxy'), "/tmp/#{file}", "/root/ssl-build/#{file}")
+      raise ScriptError, 'File injection failed' unless success
     end
   end
 end
@@ -1312,22 +1309,22 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   end
   source = "#{File.dirname(__FILE__)}/../upload_files/salt/#{state}.sls"
   remote_file = "/usr/share/susemanager/salt/#{state}.sls"
-  return_code = file_inject(node, source, remote_file)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(node, source, remote_file)
+  raise ScriptError, 'File injection failed' unless success
 
   node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
 When(/^I copy unset package file on "(.*?)"$/) do |minion|
   base_dir = "#{File.dirname(__FILE__)}/../upload_files/unset_package/"
-  return_code = file_inject(get_target(minion), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target(minion), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
+  raise ScriptError, 'File injection failed' unless success
 end
 
 When(/^I copy vCenter configuration file on server$/) do
   base_dir = "#{File.dirname(__FILE__)}/../upload_files/virtualization/"
-  return_code = file_inject(get_target('server'), "#{base_dir}vCenter.json", '/var/tmp/vCenter.json')
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), "#{base_dir}vCenter.json", '/var/tmp/vCenter.json')
+  raise ScriptError, 'File injection failed' unless success
 end
 
 When(/^I export software channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
@@ -1377,8 +1374,8 @@ When(/^I create a read-only user for the ReportDB$/) do
   file = 'create_user_reportdb.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection in server failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection in server failed' unless success
 
   get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
 end
@@ -1392,8 +1389,8 @@ When(/^I delete the read-only user for the ReportDB$/) do
   file = 'delete_user_reportdb.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection in server failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection in server failed' unless success
 
   get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
 end
@@ -1554,7 +1551,7 @@ end
 
 # rebooting via SSH
 When(/^I reboot the server through SSH$/) do
-  temp_server = twopence_init('server')
+  temp_server = RemoteNode.new('server')
   temp_server.run('reboot > /dev/null 2> /dev/null &')
   default_timeout = 300
 
@@ -1754,7 +1751,7 @@ end
 
 When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   # special handling for e.g. nested VMs that will only be crated later in the test suite
-  # this step is normally done in twopence_init.rb
+  # this step is normally done in RemoteNode.rb
   node = get_target(host)
 
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)

@@ -47,7 +47,7 @@ end
 # @param remote_file [String] The path of the remote file to be extracted.
 # @param local_file [String] The path of the local file to which the remote file will be extracted.
 def file_extract(node, remote_file, local_file)
-  node.extract(remote_file, local_file, 'root', false)
+  node.extract(remote_file, local_file)
 end
 
 # Injects a local file into a remote node.
@@ -57,7 +57,7 @@ end
 # @param [String] remote_file The path to the remote file where the local file will be injected.
 # @return [void]
 def file_inject(node, local_file, remote_file)
-  node.inject(local_file, remote_file, 'root', false)
+  node.inject(local_file, remote_file)
 end
 
 # Generates a temporary file with the given name and content.
@@ -79,8 +79,8 @@ end
 # @return [Integer] The return code indicating the success or failure of the file injection.
 def inject_salt_pillar_file(source, file)
   dest = "/srv/pillar/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   # make file readable by salt
   get_target('server').run("chgrp salt #{dest}")
