@@ -2355,7 +2355,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports monitoring
      */
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
+        return isSLES12() || isSLES15() || isLeap15() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
                 isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
