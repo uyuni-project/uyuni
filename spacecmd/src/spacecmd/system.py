@@ -4563,7 +4563,10 @@ def do_system_bootstrap(self, args):
         if answer in ['y', 'Y']:
             options.saltssh = True
 
-    if isinstance(options.port, str) and options.port.isnumeric():
+    if isinstance(options.port, str):
+        if not options.port.isnumeric():
+            logging.error(_N("Provided port must be numeric"))
+            return 1
         options.port = int(options.port)
 
     if not options.hostname:
