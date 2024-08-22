@@ -34,7 +34,8 @@ public class UpdateAvailable implements NotificationData, Serializable {
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
     private static final Logger LOG = LogManager.getLogger(UpdateAvailable.class);
 
-    private static final String VERSION_ELEMENT_START = "<span id=\"current_version\">";
+    private static final String VERSION_ELEMENT_START = "<span";
+    private static final String VERSION_ELEMENT_ID_ATTRIBUTE = "id=\"current_version\"";
     private static final String VERSION_ELEMENT_END = "</span>";
 
     private final boolean isUyuni = ConfigDefaults.get().isUyuni();
@@ -103,22 +104,41 @@ public class UpdateAvailable implements NotificationData, Serializable {
     }
 
     /**
-     * Extracts the version from the given HTML content.
+     * Finds and retrieves the content of the first occurrence of a span element that has "current_version" as id
      *
      * @param html the HTML content
-     * @return the version
+     * @return the version as string
      */
     private static String extractVersion(String html) {
         int startIndex = html.indexOf(VERSION_ELEMENT_START);
         if (startIndex == -1) {
-            throw new IllegalArgumentException("Start tag not found!");
+            throw new IllegalArgumentException("Start tag " + VERSION_ELEMENT_START + " not found!");
         }
 
-        int endIndex = html.indexOf(VERSION_ELEMENT_END, startIndex);
-        if (endIndex == -1) {
-            throw new IllegalArgumentException("End tag not found!");
+        while (startIndex != -1) {
+            // Find the closing '>' of the opening <span> tag
+            int tagEndIndex = html.indexOf(">", startIndex);
+            if (tagEndIndex == -1) {
+                throw new IllegalArgumentException("Malformed HTML: Missing '>' in <span> tag!");
+            }
+
+            // Check if this is the span element who has id="current_version"
+            String spanTag = html.substring(startIndex, tagEndIndex + 1);
+            if (spanTag.contains(VERSION_ELEMENT_ID_ATTRIBUTE)) {
+                // Find the closing </span>
+                int endIndex = html.indexOf(VERSION_ELEMENT_END, tagEndIndex);
+                if (endIndex == -1) {
+                    throw new IllegalArgumentException("Matching tag " + VERSION_ELEMENT_END + " not found!");
+                }
+
+                return html.substring(tagEndIndex + 1, endIndex).trim();
+            }
+
+            // Look for the next span open tag
+            startIndex = html.indexOf(VERSION_ELEMENT_START, tagEndIndex);
         }
 
-        return html.substring(startIndex + VERSION_ELEMENT_START.length(), endIndex).trim();
+        return "Span element with id='current_version' not found!";
     }
+
 }
