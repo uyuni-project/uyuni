@@ -19,6 +19,7 @@ import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_NAME;
 import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_MGR;
 import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_UYUNI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -207,7 +208,10 @@ public class UpdateAvailableTest {
     static Stream<Arguments> invalidHtmlData() {
         return Stream.of(
                 Arguments.of(""),
+                Arguments.of("<html>Release Notes for v<div id=\"current_version\">2024-09</div>"),
                 Arguments.of("<html>Release Notes for v<span id=\"current_version\">"),
+                Arguments.of("<html>Release Notes for v<span id=\"current_version\" 2024-10</span>"),
+                Arguments.of("<html>Release Notes for v<span 2024-11</span"),
                 Arguments.of("<html>Release Notes for v<span id=\"otherid\">2024-08</span>")
         );
     }
@@ -228,6 +232,38 @@ public class UpdateAvailableTest {
         RhnRuntimeException thrown = assertThrows(RhnRuntimeException.class, updateAvailable::hasUpdateAvailable);
 
         assertTrue(thrown.getMessage().contains(FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX));
+    }
+
+    /**
+     * Test method hasUpdateAvailable is able to extract versions event when the element has more attributes than
+     * expected
+     * @param releaseNotesHtml the html content retrieved
+     */
+    @ParameterizedTest
+    @MethodSource("validHtmlData")
+    public void testSuccessWhenValidHtml(String releaseNotesHtml) {
+        // Set current product version
+        Config.get().setString(PRODUCT_NAME, UYUNI);
+        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return releaseNotesHtml;
+            }
+        };
+
+        assertDoesNotThrow(updateAvailable::hasUpdateAvailable);
+    }
+
+    static Stream<Arguments> validHtmlData() {
+        return Stream.of(
+                Arguments.of("<span id=\"current_version\">2025.01</span>"),
+                Arguments.of("...<span id=\"current_version\">2025.02</span>...not html"),
+                Arguments.of("<div><span class=\"some classes\" id=\"current_version\" " +
+                        "style=\"display:none\">2025.03</span></div>"),
+                Arguments.of("<span id=\"current_version\">2025.04</span><span id=\"current_version\">2025.05</span>")
+        );
     }
 
 }
