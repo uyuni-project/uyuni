@@ -2355,9 +2355,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports monitoring
      */
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8() ||
-                isRocky9() || isDebian12() || isDebian11() || isDebian10();
+        return isSLES12() || isSLES15() || isLeap15() ||
+                isSLEMicro5() || // Micro 6 miss the node exporter
+                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
+                isAlibaba2() || isAmazon2() ||
+                isDebian12() || isDebian11() || isDebian10();
     }
 
     /**
@@ -2366,7 +2369,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports PTF uninstallation
      */
     public boolean doesOsSupportPtf() {
-        return ServerConstants.SLES.equals(getOs());
+        return ServerConstants.SLES.equals(getOs()) || isSLEMicro();
     }
 
     /**
@@ -2391,10 +2394,24 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return true if the installer type is of SLE Micro
+     * @return true if the installer type is of SLE Micro (version independent)
      */
     boolean isSLEMicro() {
         return ServerConstants.SLEMICRO.equals(getOs()) || ServerConstants.SLMICRO.equals(getOs());
+    }
+
+    /**
+     * @return true if the installer type is of SLE Micro 5
+     */
+    boolean isSLEMicro5() {
+        return ServerConstants.SLEMICRO.equals(getOs()) && getRelease().startsWith("5.");
+    }
+
+    /**
+     * @return true if the installer type is of SE Micro 6
+     */
+    boolean isSEMicro6() {
+        return ServerConstants.SLMICRO.equals(getOs()) && getRelease().startsWith("6.");
     }
 
     /**
