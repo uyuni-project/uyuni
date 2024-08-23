@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-22 09:35+0200\n"
+"POT-Creation-Date: 2024-08-23 15:16+0200\n"
 "PO-Revision-Date: 2023-07-26 17:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
@@ -355,7 +355,7 @@ msgstr "Systémové skupiny"
 #: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
 #: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
 #: ../src/spacecmd/softwarechannel.py:1474
-#: ../src/spacecmd/softwarechannel.py:1558
+#: ../src/spacecmd/softwarechannel.py:1556
 #: ../src/spacecmd/softwarechannel.py:1810
 msgid "Packages"
 msgstr "Balíky"
@@ -3547,7 +3547,7 @@ msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) je príliš staré ( vyžaduje sa >= %s)"
 
 #: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:564
+#: ../src/spacecmd/utils.py:586
 #, python-format
 msgid "Could not read %s"
 msgstr "Nepodarilo sa prečítať %s"
@@ -4094,7 +4094,7 @@ msgid "No packages found to remove"
 msgstr "Nenašli sa žiadne balíky na odstránenie"
 
 #: ../src/spacecmd/package.py:210 ../src/spacecmd/package.py:268
-#: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
+#: ../src/spacecmd/softwarechannel.py:1560 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr "Odstrániť tieto balíky [a/N]:"
 
@@ -5834,8 +5834,8 @@ msgstr ""
 msgid ""
 "usage: softwarechannel_clonetree [options])\n"
 "             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/"
-"bar\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar"
+"\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "options:\n"
@@ -5852,8 +5852,8 @@ msgid ""
 msgstr ""
 "použitie: softwarechannel_clonetree [voľby])\n"
 "             napr.    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/"
-"bar\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar"
+"\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "voľby:\n"
@@ -5959,7 +5959,7 @@ msgstr ""
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
 msgstr "použitie: softwarechannel_removepackages KANÁL <BALÍK ...>"
 
-#: ../src/spacecmd/softwarechannel.py:1555
+#: ../src/spacecmd/softwarechannel.py:1553
 msgid "No packages to remove"
 msgstr "Žiadne balíky na odstránenie"
 
@@ -8679,85 +8679,85 @@ msgstr "Nenašli sa žiadne editory"
 msgid "Invalid time provided"
 msgstr "Zadaný neplatný čas"
 
-#: ../src/spacecmd/utils.py:459
+#: ../src/spacecmd/utils.py:481
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s je neznámy typ opráv chýb"
 
-#: ../src/spacecmd/utils.py:467
+#: ../src/spacecmd/utils.py:489
 msgid "Security Errata"
 msgstr "Bezpečnostné opravy chýb"
 
-#: ../src/spacecmd/utils.py:476
+#: ../src/spacecmd/utils.py:498
 msgid "Bug Fix Errata"
 msgstr "Opravy chýb odstraňujúce chyby"
 
-#: ../src/spacecmd/utils.py:485
+#: ../src/spacecmd/utils.py:507
 msgid "Enhancement Errata"
 msgstr "Vylepšovacie opravy chýb"
 
-#: ../src/spacecmd/utils.py:495
+#: ../src/spacecmd/utils.py:517
 msgid "Current Selections"
 msgstr "Aktuálne výbery"
 
-#: ../src/spacecmd/utils.py:505
+#: ../src/spacecmd/utils.py:527
 msgid "Available Configuration Channels"
 msgstr "Dostupné konfiguračné kanály"
 
-#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:533 ../src/spacecmd/utils.py:553
 msgid "Channel:"
 msgstr "Kanál:"
 
-#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
+#: ../src/spacecmd/utils.py:536 ../src/spacecmd/utils.py:556
 msgid "Invalid channel"
 msgstr "Neplatný kanál"
 
-#: ../src/spacecmd/utils.py:518
+#: ../src/spacecmd/utils.py:540
 msgid "New Rank:"
 msgstr "Nové poradie:"
 
-#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
+#: ../src/spacecmd/utils.py:547 ../src/spacecmd/utils.py:550
 msgid "Invalid rank"
 msgstr "Neplatné poradie"
 
-#: ../src/spacecmd/utils.py:539
+#: ../src/spacecmd/utils.py:561
 msgid "Clearing current selections"
 msgstr "Vymazanie aktuálnych výberov"
 
-#: ../src/spacecmd/utils.py:708
+#: ../src/spacecmd/utils.py:730
 msgid "Could not generate json data object!"
 msgstr "Nepodarilo sa vygenerovať dátový objekt json!"
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:737
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "Nepodarilo sa otvoriť súbor %s pre zápis: %s"
 
-#: ../src/spacecmd/utils.py:726
+#: ../src/spacecmd/utils.py:748
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "Nepodarilo sa otvoriť súbor %s pre čítanie: %s"
 
-#: ../src/spacecmd/utils.py:728
+#: ../src/spacecmd/utils.py:750
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "Nepodarilo sa spracovať dáta JSON z %s: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:730
+#: ../src/spacecmd/utils.py:752
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "Chyba pri spracovaní súboru %s: %s"
 
-#: ../src/spacecmd/utils.py:758
+#: ../src/spacecmd/utils.py:780
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "Preskočenie použitia spoločných reťazcov: oba reťazce sú rovnaké"
 
-#: ../src/spacecmd/utils.py:774
+#: ../src/spacecmd/utils.py:796
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "Preskočenie použitia spoločných reťazcov: počet podreťazcov sa líši"
 
-#: ../src/spacecmd/utils.py:860
+#: ../src/spacecmd/utils.py:882
 msgid "Parameter {} not a string type, but {}."
 msgstr "Parameter {} nie je typ reťazca, ale {}."
 
