@@ -180,33 +180,33 @@ artifacts:
     repository: Leap
   - artifact: netty-buffer
     package: netty
-    repository: Leap_sle
+    repository: Leap
   - artifact: netty-codec
     package: netty
     jar: netty-codec.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: netty-common
     package: netty
-    repository: Leap_sle
+    repository: Leap
   - artifact: netty-handler
     package: netty
     jar: netty-handler.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: netty-resolver
     package: netty
     jar: netty-resolver.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: netty-transport
     package: netty
     jar: netty-transport.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: netty-transport-native-unix-common
     package: netty
     jar: netty-transport-native-unix-common.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: netty-transport-native-unix-common-linux-x86_64
     package: netty
-    repository: Leap_sle
+    repository: Leap
   - artifact: client
     package: ongres-scram-client
     repository: Leap
@@ -331,7 +331,7 @@ artifacts:
   - artifact: hamcrest-library
     package: hamcrest
     jar: hamcrest/library
-    repository: Leap_sle
+    repository: Leap
   - artifact: junit
     repository: Leap
   - artifact: ical4j
