@@ -30,6 +30,8 @@ class RemoteNode
     end
 
     @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
+    # Remove /etc/motd, or any output from run will contain the content of /etc/motd
+    ssh('rm -f /etc/motd && touch /etc/motd', host: @target)
     out, _err, _code = ssh('hostname', host: @target)
     @hostname = out.strip
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
@@ -38,6 +40,8 @@ class RemoteNode
     if @host == 'server'
       _out, _err, code = ssh('which mgrctl', host: @target)
       @has_mgrctl = code.zero?
+      # Remove /etc/motd inside the container, or any output from run will contain the content of /etc/motd
+      run('rm -f /etc/motd && touch /etc/motd')
       out, _code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
     else
       out, _err, _code = ssh('hostname -f', host: @target)
@@ -45,8 +49,6 @@ class RemoteNode
     @full_hostname = out.strip
     raise StandardError, "No FQDN for '#{@hostname}'. Response code: #{code}" if @full_hostname.empty?
 
-    # Remove /etc/motd, or any output from run will contain the content of /etc/motd
-    run('rm -f /etc/motd && touch /etc/motd')
     $stdout.puts "Host '#{@host}' is alive with determined hostname #{@hostname} and FQDN #{@full_hostname}" unless $build_validation
     @os_version, @os_family = get_os_version
 
@@ -167,47 +169,47 @@ class RemoteNode
     end
   end
 
-  # Copies a local file to a remote node.
+  # Copies a file from the test runner (aka controller) into the remote node.
   #
-  # @param local_file [String] The path to the file to copy.
-  # @param remote_file [String] The path in the destination.
+  # @param test_runner_file [String] The path to the file to copy.
+  # @param remote_node_file [String] The path in the destination.
   # @return [Integer] The exit code.
-  def inject(local_file, remote_file)
+  def inject(test_runner_file, remote_node_file)
     if @has_mgrctl
       tmp_folder, _code = run_local('mktemp -d')
-      tmp_file = File.join(tmp_folder.strip, File.basename(local_file))
-      code, _remote = scp(local_file, tmp_file)
-      if code.zero?
-        _out, code = run_local("mgrctl cp --user #{user} #{tmp_file} server:#{remote_file}")
+      tmp_file = File.join(tmp_folder.strip, File.basename(test_runner_file))
+      success = get_target('localhost').scp(test_runner_file, tmp_file, host: @full_hostname)
+      if success
+        _out, code = run_local("mgrctl cp --user #{user} #{tmp_file} server:#{remote_node_file}")
         raise ScriptError, "Failed to copy #{tmp_file} to container" unless code.zero?
       end
       run_local("rm -r #{tmp_folder}")
     else
-      code = scp(local_file, remote_file)
+      success = get_target('localhost').scp(test_runner_file, remote_node_file, host: @full_hostname)
     end
-    code
+    success
   end
 
-  # Copies a remote file to a local one.
+  # Copies a file from the remote node into the test runner (aka controller).
   #
-  # @param remote_file [String] The path in the destination.
-  # @param local_file [String] The path to the file to copy.
+  # @param remote_node_file [String] The path in the destination.
+  # @param test_runner_file [String] The path to the file to copy.
   # @return [Integer] The exit code.
-  def extract(remote_file, local_file)
+  def extract(remote_node_file, test_runner_file)
     if @has_mgrctl
       tmp_folder, _code = run_local('mktemp -d')
-      tmp_file = File.join(tmp_folder.strip, File.basename(remote_file))
-      _out, code = run_local("mgrctl cp --user #{user} server:#{remote_file} #{tmp_file}")
-      raise ScriptError, "Failed to extract #{remote_file} from container" unless code.zero?
+      tmp_file = File.join(tmp_folder.strip, File.basename(remote_node_file))
+      _out, code = run_local("mgrctl cp --user #{user} server:#{remote_node_file} #{tmp_file}")
+      raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
 
-      code = scp(tmp_file, local_file)
-      raise ScriptError, "Failed to extract #{tmp_file} from host" unless code.zero?
+      success = scp(tmp_file, test_runner_file, host: get_target('localhost').full_hostname)
+      raise ScriptError, "Failed to extract #{tmp_file} from host" unless success
 
       run_local("rm -r #{tmp_folder}")
     else
-      code = scp(remote_file, local_file)
+      success = scp(remote_node_file, test_runner_file, host: get_target('localhost').full_hostname)
     end
-    code
+    success
   end
 
   # Check if a file exists on a node.
@@ -328,7 +330,7 @@ class RemoteNode
 
     os_version.delete! '"'
     # on SLES, we need to replace the dot with '-SP'
-    os_version.gsub!('.', '-SP') if os_family =~ /^sles/
+    os_version.gsub!('.', '-SP') if os_family.match(/^sles/)
     $stdout.puts "Node: #{@hostname}, OS Version: #{os_version}, Family: #{os_family}"
     [os_version, os_family]
   end
