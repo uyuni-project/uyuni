@@ -5,8 +5,8 @@ require 'net/scp'
 require 'net/ssh'
 require 'stringio'
 
-Net::SSH::Transport::Algorithms::ALGORITHMS.each_value { |algs| algs.reject! { |a| a =~ /^ecd(sa|h)-sha2/ } }
-Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t =~ /^ecd(sa|h)-sha2/ }
+Net::SSH::Transport::Algorithms::ALGORITHMS.each_value { |algs| algs.reject! { |a| a.match(/^ecd(sa|h)-sha2/) } }
+Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t.match(/^ecd(sa|h)-sha2/) }
 
 # This method is used to execute a command on a remote host using SSH and return the output of the command.
 #
