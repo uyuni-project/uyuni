@@ -27,7 +27,7 @@ When(/^I enter the SCC credentials$/) do
 end
 
 When(/^I wait until the SCC credentials are valid$/) do
-  scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
+  scc_username, _scc_password = ENV['SCC_CREDENTIALS'].split('|')
   within(:xpath, "//h3[contains(text(), '#{scc_username}')]/../..") do
     raise 'Success icon not found' unless find('i.text-success', wait: 30)
   end
@@ -55,6 +55,7 @@ When(/^I wait for the trash icon to appear for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
     repeat_until_timeout(message: 'Trash icon is still greyed out') do
       break unless find('i.fa-trash-o')[:style].include? 'not-allowed'
+
       sleep 1
     end
   end
@@ -86,7 +87,7 @@ When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |a
   raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
-When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
+When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
@@ -111,9 +112,9 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"]+)" button$/) do |timeout, item, button|
-  xpath_query = "//span[contains(text(), '#{item}')]/"\
-      "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
+  xpath_query = "//span[contains(text(), '#{item}')]/" \
+                "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
 When(/^I open the sub-list of the product "(.*?)"((?: if present)?)$/) do |product, if_present|
@@ -148,9 +149,7 @@ When(/^I wait until I see "(.*?)" product has been added$/) do |product|
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
     begin
       product_class = find(:xpath, xpath)[:class]
-      unless product_class.nil?
-        break if product_class.include?('product-installed')
-      end
+      break if !product_class.nil? && product_class.include?('product-installed')
     rescue Capybara::ElementNotFound => e
       log e
     end
@@ -166,9 +165,11 @@ Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
   output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   log "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
-  raise "Not included:\n #{match}" unless output.include? match
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
   match = "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
-  raise "Not included:\n #{match}" unless output.include? match
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
   match = "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
   raise "Not included:\n #{match}" unless output.include? match
 end
@@ -207,22 +208,36 @@ Given(/^I update the profile of "([^"]*)"$/) do |client|
   node.run('rhn-profile-sync', timeout: 500)
 end
 
-When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
+When(/^I wait at most (\d+) seconds until I see the name of "([^"]*)", refreshing the page$/) do |seconds, host|
+  system_name = get_system_name(host)
+  repeat_until_timeout(message: "I can't see the system '#{system_name}'", timeout: seconds.to_i) do
+    step 'I wait until I do not see "Loading..." text'
+    break if has_content?(system_name, wait: 3)
+
+    refresh_page
+  end
+end
+
+When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |seconds, host, is_salt|
   steps %(
     When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait until I see "System Status" text
   )
-  if get_client_type(host) == 'traditional' and is_salt.empty?
+  if (get_client_type(host) == 'traditional') && is_salt.empty?
     get_target(host).run('rhn_check -vvv')
   else
     steps %(
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Apply states" is completed
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Hardware List Refresh" is completed
-      And I wait 180 seconds until the event is picked up and #{DEFAULT_TIMEOUT} seconds until the event "Package List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Apply states" is completed
+      And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Hardware List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Package List Refresh" is completed
     )
   end
+end
+
+When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until onboarding is completed for "#{host}"#{is_salt})
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
@@ -232,6 +247,7 @@ Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
     get_target('server').run('spacecmd -u admin -p admin clear_caches')
     result, _code = get_target('server').run(command, check_errors: false, verbose: true)
     break if result.include? system_name
+
     sleep 1
   end
 end
@@ -247,21 +263,24 @@ When(/^I remember when I scheduled an action$/) do
   if defined?($moments)
     $moments[moment] = val
   else
-    $moments = {moment => val}
+    $moments = { moment => val }
   end
 end
 
 Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action$/) do |text, minutes|
   # TODO: is there a better way then page.all ?
   elements = all('div', text: text)
-  raise "Text #{text} not found in the page" if elements.nil?
+  raise ScriptError, "Text #{text} not found in the page" if elements.nil?
+
   match = elements[0].text.match(/#{text}\s*(\d+\/\d+\/\d+ \d+:\d+:\d+ (AM|PM)+ [^\s]+)/)
-  raise "No element found matching text '#{text}'" if match.nil?
-  text_time = DateTime.strptime("#{match.captures[0]}", '%m/%d/%C %H:%M:%S %p %Z')
-  raise 'Time the action was scheduled not found in memory' unless defined?($moments) and $moments['schedule_action']
+  raise ScriptError, "No element found matching text '#{text}'" if match.nil?
+
+  text_time = DateTime.strptime(match.captures[0].to_s, '%m/%d/%C %H:%M:%S %p %Z')
+  raise ScriptError, 'Time the action was scheduled not found in memory' unless defined?($moments) && $moments['schedule_action']
+
   initial = $moments['schedule_action']
-  after = initial + Rational(1, 1440) * minutes.to_i
-  raise "#{text_time.to_s} is not #{minutes} minutes later than '#{initial.to_s}'" unless (text_time + Rational(1, 1440)) >= after
+  after = initial + (Rational(1, 1440) * minutes)
+  raise ScriptError, "#{text_time} is not #{minutes} minutes later than '#{initial}'" unless (text_time + Rational(1, 1440)) >= after
 end
 
 Given(/^I have a valid token for organization "([^"]*)"$/) do |org|
@@ -356,7 +375,8 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath)['for']
 
-  raise "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
+  raise ScriptError, "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
+
   find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
 end
 
@@ -394,8 +414,8 @@ Then(/^the notification badge and the table should count the same amount of mess
     log 'All notification-messages are read, I expect no notification badge'
     raise "xpath: #{badge_xpath} found" if has_xpath?(badge_xpath)
   else
-    log 'Unread notification-messages count = ' + table_notifications_count
-    raise "xpath: #{badge_xpath} not found" unless find(:xpath, badge_xpath)
+    log "Unread notification-messages count = #{table_notifications_count}"
+    raise ScriptError, "xpath: #{badge_xpath} not found" unless find(:xpath, badge_xpath)
   end
 end
 
@@ -538,8 +558,8 @@ end
 
 Then(/^I (enable|disable) SCC forward on server$/) do |action|
   rhn_configuration_file = '/etc/rhn/rhn.conf'
-  scc_forward_parameter = "server.susemanager.forward_registration"
-  forward_status = action == "enable" ? 1 : 0
+  scc_forward_parameter = 'server.susemanager.forward_registration'
+  forward_status = action == 'enable' ? 1 : 0
   # Check if scc_forward_parameter is present in the configuration parameter
   _out, parameter_present = get_target('server').run("grep -q \"#{scc_forward_parameter}\" \"#{rhn_configuration_file}\"", check_errors: false)
   if parameter_present.zero?

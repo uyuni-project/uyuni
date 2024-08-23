@@ -1846,7 +1846,7 @@ public class SaltServerActionService {
         // Prepare the salt FS with kernel / initrd and pass params to kernel
         String cobblerSystemName = action.getDetails().getCobblerSystem();
         Map<String, String> bootParams = cobblerSystemName != null ?
-                prepareCobblerBoot(action.getDetails().getKickstartHost(), cobblerSystemName) :
+                prepareCobblerBoot(action.getDetails().getKickstartHost(), cobblerSystemName, false) :
                 null;
 
         Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
@@ -1945,7 +1945,8 @@ public class SaltServerActionService {
     }
 
     private Map<String, String> prepareCobblerBoot(String kickstartHost,
-                                                   String cobblerSystem) {
+                                                   String cobblerSystem,
+                                                   boolean autoinstall) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         SystemRecord system = SystemRecord.lookupByName(con, cobblerSystem);
         Profile profile = system.getProfile();
@@ -1959,7 +1960,9 @@ public class SaltServerActionService {
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
                 OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
         tree.createOrUpdateSaltFS();
-        String kOpts = buildKernelOptions(system, kickstartHost);
+        String kOpts = buildKernelOptions(system, kickstartHost, autoinstall);
+
+
         Map<String, String> pillar = new HashMap<>();
         pillar.put("kernel", saltFSKernel);
         pillar.put("initrd", saltFSInitrd);
@@ -1975,7 +1978,7 @@ public class SaltServerActionService {
         KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
         String cobblerSystem = ksActionDetails.getCobblerSystemName();
         String host = ksActionDetails.getKickstartHost();
-        Map<String, String> bootParams = prepareCobblerBoot(host, cobblerSystem);
+        Map<String, String> bootParams = prepareCobblerBoot(host, cobblerSystem, true);
         Map<String, Object> pillar = new HashMap<>(bootParams);
         pillar.put("uyuni-reinstall-name", "reinstall-system");
         String kOpts = bootParams.get("kopts");
@@ -2008,7 +2011,7 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private String buildKernelOptions(SystemRecord sys, String host) {
+    private String buildKernelOptions(SystemRecord sys, String host, boolean autoinstall) {
         String breed = sys.getProfile().getDistro().getBreed();
         Map<String, Object> kopts = sys.getResolvedKernelOptions();
         if (LOG.isDebugEnabled()) {
@@ -2042,6 +2045,11 @@ public class SaltServerActionService {
         }
         else if (breed.equals("debian") || breed.equals("ubuntu")) {
             kernelOptions += "auto-install/enable=true priority=critical netcfg/choose_interface=auto url=" + autoinst;
+        }
+
+        if (autoinstall) {
+            String infoUrl = "http://" + host + "/cblr/svc/op/nopxe/system/" + sys.getName();
+            kernelOptions += " info=" + infoUrl;
         }
         return kernelOptions;
     }

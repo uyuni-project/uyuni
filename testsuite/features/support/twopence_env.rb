@@ -38,6 +38,6 @@ end
 # Get the Twopence node passing the host (includes lazy initialization)
 def get_target(host, refresh: false)
   node = $node_by_host[host]
-  node = twopence_init(host) if node.nil? || refresh == true
+  node = twopence_init(host) if node.nil? || refresh
   node
 end

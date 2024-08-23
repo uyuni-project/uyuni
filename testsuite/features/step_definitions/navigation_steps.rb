@@ -55,6 +55,7 @@ end
 When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
   text = Regexp.new(text) if type == 'regex'
   next if has_content?(text, wait: 3)
+
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
 
@@ -86,7 +87,6 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?('This action\'s status is: Completed.', wait: 3)
-    raise 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
     raise SystemCallError, 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
 
     current = Time.now
@@ -100,7 +100,6 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
-  raise 'Overview System page didn\'t load' unless has_content?('Download CSV') || has_content?('Keys')
   raise ScriptError, 'Overview System page didn\'t load' unless has_content?('Download CSV') || has_content?('Keys')
 
   system_name = get_system_name(host)
@@ -210,6 +209,7 @@ When(/^I (include|exclude) the recommended child channels$/) do |action|
   toggle = "//span[@class='pointer']"
   step 'I wait at most 10 seconds until I see "include recommended" text'
   raise ScriptError, 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
+
   if action == 'include'
     toggle_off = '//i[contains(@class, \'fa-toggle-off\')]'
     find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
@@ -278,13 +278,11 @@ end
 #
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
-  begin
-    accept_alert do
-      step %(I click on "#{text}")
-    end
-  rescue Capybara::ModalNotFound
-    warn 'Modal not found'
+  accept_alert do
+    step %(I click on "#{text}")
   end
+rescue Capybara::ModalNotFound
+  warn 'Modal not found'
 end
 
 #
@@ -468,7 +466,7 @@ When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do
   begin
     system_name = get_system_name(host)
   rescue StandardError
-    raise ScriptError, "Host #{host} not found" if if_present.empty?
+    raise KeyError, "Host #{host} not found" if if_present.empty?
 
     log "Host #{host} is not deployed, not trying to select it"
     next
@@ -574,6 +572,7 @@ end
 
 Then(/^I am logged in$/) do
   raise ScriptError, 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
+
   text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
   raise ScriptError, 'The welcome message is not shown' unless has_content?(text)
 end
@@ -697,7 +696,7 @@ end
 Then(/^I should see "([^"]*)" hostname in element "([^"]*)"$/) do |host, element|
   system_name = get_system_name(host)
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(system_name)
+    raise ScriptError, "Text #{system_name} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(system_name)
   end
 end
 
@@ -929,11 +928,22 @@ When(/^I check the first row in the list$/) do
 end
 
 When(/^I (check|uncheck) "([^"]*)" in the list$/) do |check_option, text|
+  raise ArgumentError, 'The text to check can\'t be empty' if text.empty?
+
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
   row.set(check_option == 'check')
+end
+
+When(/^I (check|uncheck) the "([^"]*)" CLM filter$/) do |check_option, text|
+  within(:xpath, '//div[@class=\'modal-body\']') do
+    checkbox = find(:xpath, ".//label[contains(text(), '#{text}')]/input[@type='checkbox']")
+    raise "#{text} CLM filter not found" if checkbox.nil?
+
+    checkbox.set(check_option == 'check')
+  end
 end
 
 #
@@ -1023,7 +1033,7 @@ end
 # Click on a button in a modal window with a specific title
 When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   path = "//*[text() = \"#{title}\"]" \
-    '/ancestor::div[contains(@class, "modal-dialog")]'
+         '/ancestor::div[contains(@class, "modal-dialog")]'
 
   # We wait until the element becomes visible, because
   # the fade in animation might still be in progress
@@ -1038,19 +1048,17 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    begin
-      break if has_no_xpath?(path, wait: 1)
-    rescue Selenium::WebDriver::Error::StaleElementReferenceError
-      # We need to consider the case that after obtaining the element it is detached from the page document
-      break
-    end
+    break if has_no_xpath?(path, wait: 1)
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    # We need to consider the case that after obtaining the element it is detached from the page document
+    break
   end
 end
 
 # Wait until a modal window with a specific content is shown
 When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$/) do |timeout, title|
   path = "//*[contains(@class, \"modal-content\") and contains(., \"#{title}\")]" \
-    '/ancestor::div[contains(@class, "modal-dialog")]'
+         '/ancestor::div[contains(@class, "modal-dialog")]'
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise ScriptError, "#{title} modal did not appear" unless dialog

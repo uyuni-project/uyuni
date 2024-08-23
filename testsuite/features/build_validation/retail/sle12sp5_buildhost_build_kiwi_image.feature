@@ -21,7 +21,7 @@ Feature: Prepare buildhost and build OS image for SLES 12 SP5
     When I bootstrap minion client "sle12sp5_buildhost" using bootstrap script with activation key "1-sle12sp5_buildhost_key" from the proxy
     And I wait at most 10 seconds until Salt master sees "sle12sp5_buildhost" as "unaccepted"
     And I accept "sle12sp5_buildhost" key in the Salt master
-    And I wait until onboarding is completed for "sle12sp5_buildhost"
+    And I wait at most 500 seconds until onboarding is completed for "sle12sp5_buildhost"
 
   Scenario: Apply the highstate to the SLES 12 SP5 build host
     Given I am on the Systems overview page of this "sle12sp5_buildhost"

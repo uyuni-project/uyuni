@@ -102,13 +102,7 @@ class NamespaceActivationkey
   #   - "ssh-push-tunnel"
   # @return [Boolean] True if the details were set successfully, false otherwise.
   def set_details(id, description, base_channel_label, usage_limit, contact_method)
-    details = {
-      description: description,
-      base_channel_label: base_channel_label,
-      usage_limit: usage_limit,
-      universal_default: false,
-      contact_method: contact_method
-    }
+    details = { description: description, base_channel_label: base_channel_label, usage_limit: usage_limit, universal_default: false, contact_method: contact_method }
     @test.call('activationkey.setDetails', sessionKey: @test.token, key: id, details: details).to_i == 1
   end
 

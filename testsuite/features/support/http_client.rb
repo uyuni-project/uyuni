@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC.
+# Copyright (c) 2022-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'faraday'
@@ -13,9 +13,10 @@ class HttpClient
   # Creates a new HTTP client using the Faraday library.
   #
   # @param host [String] The host to connect to.
-  def initialize(host)
+  # @param ssl_verify [Boolean] Whether to verify SSL certificates (default is true).
+  def initialize(host, ssl_verify = true)
     puts 'Activating HTTP API'
-    @http_client = Faraday.new('https://' + host, request: { timeout: DEFAULT_TIMEOUT })
+    @http_client = Faraday.new("https://#{host}", request: { timeout: DEFAULT_TIMEOUT }, ssl: { verify: ssl_verify })
   end
 
   # It takes a name of a Spacewalk API call and a hash of parameters and returns a tuple of the HTTP method and the URL to
@@ -27,14 +28,12 @@ class HttpClient
   def prepare_call(name, params)
     short_name = name.split('.')[-1]
     call_type =
-      if short_name.start_with?('list', 'get', 'is', 'find') ||
-         name.start_with?('system.search.', 'packages.search.') ||
-         ['errata.applicableToChannels'].include?(name)
+      if short_name.start_with?('list', 'get', 'is', 'find') || name.start_with?('system.search.', 'packages.search.') || ['errata.applicableToChannels'].include?(name)
         'GET'
       else
         'POST'
       end
-    url = '/rhn/manager/api/' + name.tr('.', '/')
+    url = "/rhn/manager/api/#{name.tr('.', '/')}"
     if call_type == 'GET'
       url += '?'
       unless params.nil?

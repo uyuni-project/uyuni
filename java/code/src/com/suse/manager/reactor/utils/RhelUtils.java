@@ -17,6 +17,7 @@ package com.suse.manager.reactor.utils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.Server;
 
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utilities related to RHEL minions.
@@ -85,6 +87,14 @@ public class RhelUtils {
             Set<SUSEProduct> set = new HashSet<>(suseAdditionalProducts);
             suseBaseProduct.ifPresent(set::add);
             return set;
+        }
+
+        /**
+         * Add a product to the additional product set
+         * @param productIn the product to add
+         */
+        public void addSuseAdditionalProducts(SUSEProduct productIn) {
+            suseAdditionalProducts.add(productIn);
         }
 
         /**
@@ -254,17 +264,15 @@ public class RhelUtils {
         Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
                 .findSUSEProduct(productName, majorVersion, release, arch, true));
 
-        Optional<SUSEProduct> suseBaseProduct = suseProduct.filter(p -> p.isBase()).isPresent() ? suseProduct :
-                suseProduct.flatMap(resProduct -> {
-                    if (resProduct.isBase()) {
-                        return Optional.of(resProduct);
-                    }
-                    else {
-                        return Optional.ofNullable(SUSEProductFactory
-                                .findSUSEProduct(getBaseProductName(majorVersion), majorVersion, release, arch, true));
-                    }
-                })
-                .filter(SUSEProduct::isBase);
+        Optional<SUSEProduct> suseBaseProduct = suseProduct.flatMap(p -> {
+            if (p.isBase()) {
+                return Optional.of(p);
+            }
+            else {
+                return Optional.ofNullable(SUSEProductFactory
+                        .findSUSEProduct(getBaseProductName(majorVersion), majorVersion, release, arch, true));
+            }
+        }).filter(SUSEProduct::isBase);
 
         return Optional.of(new RhelProduct(suseBaseProduct, suseProduct.stream().collect(Collectors.toSet()), name,
                 majorVersion, release));
@@ -307,50 +315,75 @@ public class RhelUtils {
         var isSLL = RhelUtils
                 .checkForESProducts(channels, libertyReleasePackage, "SLL", "sll-release");
 
+        Optional<RhelProduct> rhelProducts = Optional.empty();
+
         // if we got either RES or an SLL find the corresponding SUSE product
         if (isRes) {
-            return RhelUtils.getRHELBasedSUSEProduct(rhelReleaseFile, centosReleaseFile, arch, "RES");
+            rhelProducts = RhelUtils.getRHELBasedSUSEProduct(rhelReleaseFile, centosReleaseFile, arch, "RES");
         }
-        if (isSLL) {
-            return RhelUtils.getRHELBasedSUSEProduct(rhelReleaseFile, centosReleaseFile, arch, "SLL");
+        else if (isSLL) {
+            rhelProducts = RhelUtils.getRHELBasedSUSEProduct(rhelReleaseFile, centosReleaseFile, arch, "SLL");
         }
 
         // next check if OracleLinux
-        if (oracleReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return oracleReleaseFile.map(v -> detectPlainRHEL(v, arch, "OracleLinux"));
+        else if (oracleReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            rhelProducts = oracleReleaseFile.map(v -> detectPlainRHEL(v, arch, "OracleLinux"));
         }
 
         // next check if Alibaba Cloud Linux
-        if (alibabaReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return alibabaReleaseFile.map(v -> detectPlainRHEL(v, arch, "Alibaba"));
+        else if (alibabaReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            rhelProducts = alibabaReleaseFile.map(v -> detectPlainRHEL(v, arch, "Alibaba"));
         }
 
         // next check if AlmaLinux
-        if (almaReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return almaReleaseFile.map(v -> detectPlainRHEL(v, arch, "AlmaLinux"));
+        else if (almaReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            rhelProducts = almaReleaseFile.map(v -> detectPlainRHEL(v, arch, "AlmaLinux"));
         }
 
         // next check if Amazon Linux
-        if (amazonReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return amazonReleaseFile.map(v -> detectPlainRHEL(v, arch, "AmazonLinux"));
+        else if (amazonReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            rhelProducts = amazonReleaseFile.map(v -> detectPlainRHEL(v, arch, "AmazonLinux"));
         }
 
         // next check if Rocky Linux
-        if (rockyReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return rockyReleaseFile.map(v -> detectPlainRHEL(v, arch, "Rocky"));
+        else if (rockyReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            rhelProducts = rockyReleaseFile.map(v -> detectPlainRHEL(v, arch, "Rocky"));
         }
 
         // next check if Centos
-        if (centosReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return centosReleaseFile.map(v -> detectPlainRHEL(v, arch, "CentOS"));
+        else if (centosReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            rhelProducts = centosReleaseFile.map(v -> detectPlainRHEL(v, arch, "CentOS"));
         }
 
         // if neither RES nor Centos then we probably got a plain RHEL
-        if (rhelReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return rhelReleaseFile.map(v -> detectPlainRHEL(v, arch, "RedHatEnterprise"));
+        else if (rhelReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            rhelProducts = rhelReleaseFile.map(v -> detectPlainRHEL(v, arch, "RedHatEnterprise"));
         }
 
-        return Optional.empty();
+        detectInstalledExtensionsOnRhel(rhelProducts, channels);
+
+        return rhelProducts;
+    }
+
+    private static void detectInstalledExtensionsOnRhel(Optional<RhelProduct> rhelProductsIn, Set<Channel> channelsIn) {
+
+        if (rhelProductsIn.isEmpty()  || rhelProductsIn.get().getSuseBaseProduct().isEmpty() || channelsIn.isEmpty()) {
+            return;
+        }
+        SUSEProduct baseProduct = rhelProductsIn.get().getSuseBaseProduct().get();
+        Set<SUSEProduct> extensions = channelsIn.stream()
+                .flatMap(channel -> {
+                    if (channel.isCloned()) {
+                        return channel.originChain().filter(c -> !c.isCloned());
+                    }
+                    else {
+                        return Stream.of(channel);
+                    }
+                })
+                .flatMap(c -> c.getSuseProductChannels().stream().map(SUSEProductChannel::getProduct))
+                .filter(p -> !p.equals(baseProduct))
+                .collect(Collectors.toSet());
+        rhelProductsIn.ifPresent(p -> extensions.forEach(p::addSuseAdditionalProducts));
     }
 
     /**
@@ -462,7 +495,7 @@ public class RhelUtils {
                         .findSUSEProduct(getBaseProductName(majorVersion), majorVersion, release, arch, true)) :
                 Optional.ofNullable(SUSEProductFactory
                         .findSUSEProduct(name, majorVersion, release, arch, true));
-        return new RhelProduct(suseProduct, Set.of(), name, majorVersion, release);
+        return new RhelProduct(suseProduct, new HashSet<>(), name, majorVersion, release);
     }
 
 }

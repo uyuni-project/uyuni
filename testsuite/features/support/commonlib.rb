@@ -21,7 +21,8 @@ end
 # @raise [ScriptError] If there is an error counting the items.
 def count_table_items
   items_label_xpath = '//span[contains(text(), \'Items \')]'
-  raise unless (items_label = find(:xpath, items_label_xpath).text)
+  raise ScriptError, 'Error counting items' unless (items_label = find(:xpath, items_label_xpath).text)
+
   items_label.split('of ')[1].strip
 end
 
@@ -30,6 +31,7 @@ end
 # @return [String] The product name.
 def product
   return $product unless $product.nil?
+
   _product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
   if code.zero?
     $product = 'Uyuni'
@@ -50,10 +52,12 @@ def product_version
   product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
   m = product_raw.match(/patterns-uyuni_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
+
   product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
   m = product_raw.match(/patterns-suma_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
-  raise 'Could not determine product version'
+
+  raise NotImplementedError, 'Could not determine product version'
 end
 
 # Retrieves the full product version using the 'salt-call' command.
@@ -63,7 +67,7 @@ end
 def product_version_full
   cmd = 'salt-call --local grains.get product_version | tail -n 1'
   out, code = get_target('server').run(cmd)
-  return out.strip if code.zero? && !out.nil?
+  out.strip if code.zero? && !out.nil?
 end
 
 # Determines whether to use the Salt bundle based on the product and product version.
@@ -82,7 +86,7 @@ end
 # @return [String] The reverse DNS lookup address in the format "x.x.x.in-addr.arpa".
 def get_reverse_net(net)
   a = net.split('.')
-  a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  "#{a[2]}.#{a[1]}.#{a[0]}.in-addr.arpa"
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds
@@ -112,7 +116,7 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
       detail = format_detail(message, last_result, report_result)
       raise ScriptError, "Giving up after #{attempts} attempts#{detail}" if attempts == retries
 
-      raise TimeoutError, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
+      raise Timeout::Error, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
     end
   rescue Timeout::Error => e
     $stdout.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
@@ -181,9 +185,9 @@ end
 def click_button_and_wait(locator = nil, **options)
   click_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
-  rescue StandardError, Capybara::ExpectationNotMet => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
+    $stdout.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -195,9 +199,9 @@ end
 def click_link_and_wait(locator = nil, **options)
   click_link(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
-  rescue StandardError, Capybara::ExpectationNotMet => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
+    $stdout.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -209,9 +213,9 @@ end
 def click_link_or_button_and_wait(locator = nil, **options)
   click_link_or_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
-  rescue StandardError, Capybara::ExpectationNotMet => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
+    $stdout.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -220,9 +224,9 @@ module CapybaraNodeElementExtension
   def click
     super
     begin
-      raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
-    rescue StandardError, Capybara::ExpectationNotMet => e
-      STDOUT.puts e.message # Skip errors related to .senna-loading element
+      warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+    rescue StandardError => e
+      $stdout.puts e.message # Skip errors related to .senna-loading element
     end
   end
 end
@@ -318,7 +322,7 @@ end
 def extract_logs_from_node(node)
   begin
     os_family = node.os_family
-    node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_gh_validation
+    node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
     node.run('journalctl > /var/log/messages', check_errors: false)
     node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
     node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
@@ -336,6 +340,20 @@ end
 # @return [String] The result from the SQL query.
 def reportdb_server_query(query)
   "echo \"#{query}\" | spacewalk-sql --reportdb --select-mode -"
+end
+
+# Retrieves the value of a variable in a configuration file
+#
+# @param [String] host The hostname or IP address of the target host.
+# @param [String] file_path The path of the configuration file
+# @param [String] variable_name The name of the variable
+# @return [Hash] The value of the variable
+def get_variable_from_conf_file(host, file_path, variable_name)
+  node = get_target(host)
+  variable_value, return_code = node.run("sed -n 's/^#{variable_name} = \\(.*\\)/\\1/p' < #{file_path}")
+  raise "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
+
+  variable_value.strip!
 end
 
 # Retrieves the uptime of a given host.
@@ -377,7 +395,7 @@ def check_shutdown(host, time_out)
   repeat_until_timeout(timeout: time_out, message: 'machine didn\'t reboot') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.nonzero?
-      STDOUT.puts "machine: #{host} went down"
+      $stdout.puts "machine: #{host} went down"
       break
     else
       sleep 1
@@ -396,7 +414,7 @@ def check_restart(host, node, time_out)
   repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.zero?
-      STDOUT.puts "machine: #{host} network is up"
+      $stdout.puts "machine: #{host} network is up"
       break
     else
       sleep 1
@@ -405,7 +423,7 @@ def check_restart(host, node, time_out)
   repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out, code = node.run('ls', check_errors: false, timeout: 10)
     if code.zero?
-      STDOUT.puts "machine: #{host} ssh is up"
+      $stdout.puts "machine: #{host} ssh is up"
       break
     else
       sleep 1
@@ -432,7 +450,7 @@ def get_os_version(node)
   os_version.delete! '"'
   # on SLES, we need to replace the dot with '-SP'
   os_version.gsub!('.', '-SP') if os_family =~ /^sles/
-  STDOUT.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
+  $stdout.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
   [os_version, os_family]
 end
 
@@ -445,13 +463,14 @@ end
 # @return [Array<String>] An array of GPG keys.
 def get_gpg_keys(node, target = get_target('server'))
   os_version, os_family = get_os_version(node)
-  if os_family =~ /^sles/
+  case os_family
+  when /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
     os_version = 12 if os_version =~ /^15/
     # SLE12 GPG keys don't contain service pack strings
     os_version = os_version.split('-')[0] if os_version =~ /^12/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
-  elsif os_family =~ /^centos/
+  when /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)
   else
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}*", check_errors: false)
@@ -589,17 +608,15 @@ end
 #
 # The API client is determined based on the `$debug_mode` and `product` variables.
 # If `$debug_mode` is true or the `product` is 'SUSE Manager', an `ApiTestXmlrpc` client is created.
-# Otherwise, an `ApiTestHttp` client is created with the `ssl_verify` parameter set to the negation of `$is_gh_validation`.
+# Otherwise, an `ApiTestHttp` client is created with the `ssl_verify` parameter set to the negation of `$is_container_provider`.
 #
 # @return [ApiTestXmlrpc, ApiTestHttp] The created API client.
 def new_api_client
   ssl_verify = !$is_container_provider
-  if $debug_mode
+  if $debug_mode || product == 'SUSE Manager'
     ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
-  elsif product == 'Uyuni' && !$debug_mode
-    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
   else
-    ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
+    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
   end
 end
 
@@ -610,6 +627,7 @@ end
 # @raise [TypeError] If minutes_to_add is not an Integer.
 def get_future_time(minutes_to_add)
   raise TypeError, 'minutes_to_add should be an Integer' unless minutes_to_add.is_a?(Integer)
+
   now = Time.new
   future_time = now + (60 * minutes_to_add)
   future_time.strftime('%H:%M').to_s.strip
@@ -668,6 +686,7 @@ def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
   repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
     list = $api_test.schedule.list_completed_actions
     break if list.any? { |a| a['id'] == actionid }
+
     sleep 2
   end
 end

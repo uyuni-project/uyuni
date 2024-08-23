@@ -1,3 +1,6 @@
+# Copyright (c) 2023 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 # Collect all the issues from a GitHub project board column
 # and tag the corresponding Cucumber feature files with a given tag
 #
@@ -41,22 +44,22 @@ def fetch_github_issues(organization, project_number, column, headers)
       }
     }
   GRAPHQL
-  
+
   gh_card_titles = []
-  
+
   loop do
     request_body = {
       query: graphql_query,
       variables: { organization: organization, number: project_number, after: after }
     }.to_json
-    
+
     http = Net::HTTP.new(graphql_endpoint.host, graphql_endpoint.port)
     http.use_ssl = true
     request = Net::HTTP::Post.new(graphql_endpoint.request_uri)
     request.body = request_body
     headers.each { |key, value| request[key] = value }
     response = http.request(request)
-    
+
     if response.code == '200'
       parsed_response = JSON.parse(response.body)
       if parsed_response['data']
@@ -74,12 +77,10 @@ def fetch_github_issues(organization, project_number, column, headers)
             puts "No data found in the GraphQL response for this item.: #{item}"
           end
         end
-        pageInfo = items['pageInfo']
-        if pageInfo && pageInfo['hasNextPage']
-          after = pageInfo['endCursor']
-        else
-          break
-        end
+        page_info = items['pageInfo']
+        break unless page_info && page_info['hasNextPage']
+
+        after = page_info['endCursor']
       else
         puts 'No data found in the GraphQL response.'
       end
@@ -110,63 +111,64 @@ def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_
       match_scenario = "Scenario: #{matches[2].strip}"
 
       temp_file_path = 'temp_file'
-      temp_file = File.open(temp_file_path, 'w')
+      File.open(temp_file_path, 'w') do |temp_file|
+        File.foreach(cucumber_file_path).with_index do |line, _index|
+          feature_match = line.include? match_feature
+          scenario_match = line.include? match_scenario
 
-      File.foreach(cucumber_file_path).with_index do |line, _index|
-        feature_match = line.include? match_feature
-        scenario_match = line.include? match_scenario
-
-        if feature_match
-          puts "\n\e[34mMatched feature\e[0m  => #{match_feature} in #{cucumber_file_path}"
-          temp_file.puts("@#{tag}")
-          features_tagged += 1
-          feature_matched = true
-        elsif feature_matched && scenario_match
-          puts "\e[33mMatched scenario\e[0m => #{match_scenario} in #{cucumber_file_path}"
-          temp_file.puts("@#{tag}")
-          scenarios_tagged += 1
-          feature_matched = false
-        else
-          # Do nothing
+          if feature_match
+            puts "\n\e[34mMatched feature\e[0m  => #{match_feature} in #{cucumber_file_path}"
+            temp_file.puts("@#{tag}")
+            features_tagged += 1
+            feature_matched = true
+          elsif feature_matched && scenario_match
+            puts "\e[33mMatched scenario\e[0m => #{match_scenario} in #{cucumber_file_path}"
+            temp_file.puts("@#{tag}")
+            scenarios_tagged += 1
+            feature_matched = false
+          else
+            # Do nothing
+          end
+          temp_file.puts(line)
         end
-        temp_file.puts(line)
       end
-
-      temp_file.close
       File.rename(temp_file_path, cucumber_file_path)
     end
   end
-  
+
   [features_tagged, scenarios_tagged]
 end
 
+# Main function
 def main
-  if ARGV.length != 1
+  if ARGV.length == 1
+    directory_path = ARGV[0]
+  else
     puts '\e[31mUsage: ruby collect_and_tag_flaky_tests.rb <directory_path>\e[0m'
     exit(1)
-  else
-    directory_path = ARGV[0]
   end
 
-  if !File.directory?(directory_path)
+  unless File.directory?(directory_path)
     puts '\e[31mThe specified path is not a directory.\e[0m'
     exit(1)
   end
-  
-  # Parse the .netrc file
-  netrc = Netrc.read
-  github_credentials = netrc['github.com']
-  if github_credentials.nil?
-    puts '\e[31mNo credentials found for github.com in .netrc file.\e[0m'
-    exit(1)
+
+  if ENV.key? 'GITHUB_TOKEN'
+    token = ENV.fetch('GITHUB_TOKEN', nil)
+  else
+    netrc = Netrc.read
+    github_credentials = netrc['github.com']
+    token = github_credentials.password unless github_credentials.nil?
   end
-  
+
+  exit(1) if token.nil?
+
   organization = 'SUSE'
   project_number = 23
   column = 'Flaky Tests'
   headers = {
     'Content-Type' => 'application/json',
-    'Authorization' => "Bearer #{github_credentials.password}",
+    'Authorization' => "Bearer #{token}"
   }
 
   gh_card_titles = fetch_github_issues(organization, project_number, column, headers)

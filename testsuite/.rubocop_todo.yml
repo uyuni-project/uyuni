@@ -29,7 +29,6 @@ Style/IfUnlessModifier:
     - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
     - 'features/step_definitions/setup_steps.rb'
-    - 'features/step_definitions/vm_steps.rb'
     - 'features/support/http_client.rb'
 
 Style/InlineComment:
@@ -42,13 +41,5 @@ Style/InlineComment:
 Style/OptionalBooleanParameter:
   Exclude:
     - 'features/support/api_test.rb'
-    - 'features/support/code_coverage.rb'
     - 'features/support/http_client.rb'
     - 'features/support/lavanda.rb'
-
-# Offense count: 1
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: forbid_mixed_logical_operators, forbid_logical_operators
-Style/UnlessLogicalOperators:
-  Exclude:
-    - 'features/step_definitions/vm_steps.rb'

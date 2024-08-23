@@ -58,6 +58,13 @@ Feature: Setup SUSE Manager proxy
     Then I should see "proxy" hostname
     And I should see a "Proxy" link in the content area
 
+  Scenario: Use correct kernel image on the proxy
+    When I remove package "kernel-default-base" from this "proxy"
+    And I install package "kernel-default" on this "proxy"
+
+  Scenario: Reboot the proxy to use the new kernel
+    When I reboot the "proxy" host through SSH, waiting until it comes back
+
   Scenario: Check events history for failures on the proxy
     Given I am on the Systems overview page of this "proxy"
     Then I check for failed events on history event page

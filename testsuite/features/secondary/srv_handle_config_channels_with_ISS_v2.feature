@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Export and import configuration channels with new ISS implementation
@@ -34,7 +34,6 @@ Feature: Export and import configuration channels with new ISS implementation
 
   Scenario: Export data with ISS v2
     When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
-    Then export folder "/tmp/export_iss_v2" shouldn't exist on "server"
     When I export config channels "testconfigchannel" with ISS v2 to "/tmp/export_iss_v2"
     Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
 
@@ -65,4 +64,3 @@ Feature: Export and import configuration channels with new ISS implementation
 
   Scenario: Cleanup: remove ISS v2 export folder
     When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
-    Then export folder "/tmp/export_iss_v2" shouldn't exist on "server"

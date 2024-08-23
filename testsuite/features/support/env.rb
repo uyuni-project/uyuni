@@ -8,7 +8,7 @@ require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
 require 'cucumber'
-#require 'simplecov'
+# require 'simplecov'
 require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
@@ -20,49 +20,47 @@ require_relative 'commonlib'
 # code coverage analysis
 # SimpleCov.start
 
-server = ENV['SERVER']
+server = ENV.fetch('SERVER', nil)
 if ENV['DEBUG']
   $debug_mode = true
-  STDOUT.puts('DEBUG MODE ENABLED.')
-end
-if ENV['REDIS_HOST']
-  $code_coverage_mode = true
-  STDOUT.puts('CODE COVERAGE MODE ENABLED.')
+  $stdout.puts('DEBUG MODE ENABLED.')
 end
 
 # Context per feature
 $context = {}
 
 # Other global variables
-$pxeboot_mac = ENV['PXEBOOT_MAC']
-$pxeboot_image = ENV['PXEBOOT_IMAGE'] || 'sles15sp3o'
-$sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
-$sle15sp4_terminal_mac = ENV['SLE15SP4_TERMINAL_MAC']
-$private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
-$mirror = ENV['MIRROR']
-$server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
-$custom_download_endpoint = ENV['CUSTOM_DOWNLOAD_ENDPOINT'] if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
-$no_auth_registry = ENV['NO_AUTH_REGISTRY'] if ENV['NO_AUTH_REGISTRY']
-$auth_registry = ENV['AUTH_REGISTRY'] if ENV['AUTH_REGISTRY']
-$server_instance_id = ENV['SERVER_INSTANCE_ID'] if ENV['SERVER_INSTANCE_ID']
+$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
+$pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp3o'
+$sle12sp5_terminal_mac = ENV.fetch('SLE12SP5_TERMINAL_MAC', nil)
+$sle15sp4_terminal_mac = ENV.fetch('SLE15SP4_TERMINAL_MAC', nil)
+$private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
+$mirror = ENV.fetch('MIRROR', nil)
+$server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
+$custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
+$no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
+$auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
+$server_instance_id = ENV.fetch('SERVER_INSTANCE_ID', nil) if ENV['SERVER_INSTANCE_ID']
+$current_user = 'admin'
+$current_password = 'admin'
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-STDOUT.sync = true
+$stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
-$is_cloud_provider = ENV['PROVIDER'].include? 'aws'
-$is_container_provider = ENV['PROVIDER'].include? 'podman'
+$is_cloud_provider = ENV.fetch('PROVIDER').include? 'aws'
+$is_container_provider = ENV.fetch('PROVIDER').include? 'podman'
 $is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
-$is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
+$is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_paygo_server = (ENV.fetch('IS_USING_PAYGO_SERVER', 'False') == 'True')
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
-custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
@@ -79,7 +77,7 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client.read_timeout = 180
     # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
     chrome_options << 'headless' unless $debug_mode
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
@@ -95,12 +93,8 @@ def capybara_register_driver
       unexpectedAlertBehaviour: 'accept',
       unhandledPromptBehavior: 'accept'
     )
-    Capybara::Selenium::Driver.new(
-      app,
-      browser: :chrome,
-      desired_capabilities: capabilities,
-      http_client: client
-    )
+
+    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities, http_client: client)
   end
 end
 
@@ -113,7 +107,7 @@ Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
-STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+$stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 # enable minitest assertions in steps
 World(MiniTest::Assertions)
@@ -121,12 +115,9 @@ World(MiniTest::Assertions)
 # Initialize the API client
 $api_test = new_api_client
 
-# Init CodeCoverage Handler
-$code_coverage = CodeCoverage.new(ENV['REDIS_HOST'], ENV['REDIS_PORT'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD']) if $code_coverage_mode
-
 # Define the current feature scope
 Before do |scenario|
-  $feature_scope = scenario.location.file.split(%r{(\.feature|\/)})[-2]
+  $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
 # embed a screenshot after each failed scenario
@@ -139,8 +130,8 @@ After do |scenario|
       path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
       # only click on Details when we have errors during bootstrapping and more Details available
       click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
-      # a TimeoutError may be raised while a page is still (re)loading
-      find('#page-body', wait: 3) if scenario.exception.is_a?(TimeoutError)
+      # a Timeout::Error may be raised while a page is still (re)loading
+      find('#page-body', wait: 3) if scenario.exception.is_a?(Timeout::Error)
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
       attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
@@ -149,54 +140,27 @@ After do |scenario|
     ensure
       print_server_logs
       previous_url = current_url
-      step 'I am authorized for the "Admin" section'
+      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
       visit previous_url
     end
   end
   page.instance_variable_set(:@touched, false)
 end
 
-# Process the code coverage for each feature when it ends
-def process_code_coverage
-  return if $feature_path.nil?
-
-  feature_filename = $feature_path.split(%r{(\.feature|\/)})[-2]
-  $code_coverage.jacoco_dump(feature_filename)
-  $code_coverage.push_feature_coverage(feature_filename)
-end
-
-# Dump feature code coverage into a Redis DB
-After do |scenario|
-  next unless $code_coverage_mode
-  next unless $feature_path != scenario.location.file
-
-  process_code_coverage
-  $feature_path = scenario.location.file
-end
-
-# Dump feature code coverage into a Redis DB, for the last feature
-AfterAll do
-  next unless $code_coverage_mode
-
-  process_code_coverage
-end
-
 # get the Cobbler log output when it fails
 After('@scope_cobbler') do |scenario|
   if scenario.failed?
-    STDOUT.puts '=> /var/log/cobbler/cobbler.log'
+    $stdout.puts '=> /var/log/cobbler/cobbler.log'
     out, _code = get_target('server').run('tail -n20 /var/log/cobbler/cobbler.log')
     out.each_line do |line|
-      STDOUT.puts line.to_s
+      $stdout.puts line.to_s
     end
-    STDOUT.puts
+    $stdout.puts
   end
 end
 
 AfterStep do
-  if has_css?('.senna-loading', wait: 0)
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
-  end
+  log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
 Before do
@@ -338,14 +302,6 @@ Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_ssh_minion']
 end
 
-Before('@debian10_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_minion']
-end
-
-Before('@debian10_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian10_ssh_minion']
-end
-
 Before('@debian11_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_minion']
 end
@@ -380,18 +336,6 @@ end
 
 Before('@sle12sp5_paygo_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_paygo_minion']
-end
-
-Before('@sle15sp1_client') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_client']
-end
-
-Before('@sle15sp1_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_minion']
-end
-
-Before('@sle15sp1_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp1_ssh_minion']
 end
 
 Before('@sle15sp2_client') do
@@ -586,13 +530,11 @@ Before('@skip_for_debianlike') do |scenario|
 end
 
 Before('@skip_for_rocky9') do |scenario|
-  filename = scenario.location.file
-  skip_this_scenario if filename.include? 'rocky9'
+  skip_this_scenario if scenario.location.file.include? 'rocky9'
 end
 
 Before('@skip_for_alma9') do |scenario|
-  filename = scenario.location.file
-  skip_this_scenario if filename.include? 'alma9'
+  skip_this_scenario if scenario.location.file.include? 'alma9'
 end
 
 Before('@skip_for_minion') do |scenario|
@@ -611,6 +553,10 @@ Before('@skip_for_sle_micro_ssh_minion') do |scenario|
   sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion slmicro60_ssh_minion]
   current_feature_node = scenario.location.file.split(%r{(_smoke_tests.feature|/)})[-2]
   skip_this_scenario if sle_micro_ssh_nodes.include? current_feature_node
+end
+
+Before('@skip_for_sl_micro') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'slmicro'
 end
 
 # do some tests only if we have SCC credentials
@@ -717,16 +663,16 @@ end
 
 # have more infos about the errors
 def print_server_logs
-  STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'
+  $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
   out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
-    STDOUT.puts line.to_s
+    $stdout.puts line.to_s
   end
-  STDOUT.puts
-  STDOUT.puts '=> /var/log/rhn/rhn_web_api.log'
+  $stdout.puts
+  $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
   out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
-    STDOUT.puts line.to_s
+    $stdout.puts line.to_s
   end
-  STDOUT.puts
+  $stdout.puts
 end

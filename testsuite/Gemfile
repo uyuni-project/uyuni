@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023 SUSE LLC.
+# Copyright (c) 2014-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 source 'https://rubygems.org'
@@ -15,8 +15,8 @@ gem 'mini_mime', '1.1.2'
 gem 'minitest', '~> 5.15.0'
 gem 'netrc', '~> 0.11.0'
 gem 'nokogiri', '~> 1.12.0'
-gem 'parallel_tests', '~> 3.12.0'
 gem 'parallel', '~> 1.24.0'
+gem 'parallel_tests', '~> 3.12.0'
 gem 'pg', '~> 1.4'
 gem 'public_suffix', '~> 4.0'
 gem 'rack', '~> 3.0'

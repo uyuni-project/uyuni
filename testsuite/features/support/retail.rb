@@ -9,14 +9,14 @@ end
 
 # extract various data from Retail yaml configuration
 def read_terminals_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
+  name = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
   tree = YAML.load_file(name)
   tree['branches'].values[0]['terminals'].keys
 end
 
 # Extract the branch prefix from the Retail yaml configuration
 def read_branch_prefix_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
+  name = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
   tree = YAML.load_file(name)
   tree['branches'].values[0]['branch_prefix']
 end
@@ -50,8 +50,6 @@ def compute_kiwi_profile_filename(host)
     raise 'Kiwi profile for 4.2 has been removed.'
   when 'sles15sp2', 'sles15sp2o'
     raise 'Kiwi profile for 4.1 has been removed.'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
     # 4.3 currently shares its profile with head
     'Kiwi/POS_Image-JeOS6_head'
@@ -71,8 +69,6 @@ def compute_kiwi_profile_name(host)
     raise 'Kiwi profile for 4.2 has been removed.'
   when 'sles15sp2', 'sles15sp2o'
     raise 'Kiwi profile for 4.1 has been removed.'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
     # 4.3 currently shares its profile with head
     'POS_Image_JeOS6_head'
@@ -91,8 +87,6 @@ def compute_kiwi_profile_version(host)
     raise 'Kiwi profile for 4.2 has been removed.'
   when 'sles15sp2', 'sles15sp2o'
     raise 'Kiwi profile for 4.1 has been removed.'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
     '6.0.0'
   else

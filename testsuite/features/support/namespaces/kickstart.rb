@@ -12,8 +12,7 @@ class NamespaceKickstart
     @profile = NamespaceKickstartProfile.new(api_test)
   end
 
-  attr_reader :tree
-  attr_reader :profile
+  attr_reader :tree, :profile
 
   # Creates a new kickstart profile using the default download URL for the kickstartable tree and kickstart host specified.
   #

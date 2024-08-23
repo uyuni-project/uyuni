@@ -790,6 +790,9 @@ public class SystemManager extends BaseManager {
                         log.warn("Hostname {}:{} could not be removed from /var/lib/salt/.ssh/known_hosts: {}",
                                 hostname, port, result.map(r -> r.getComment()).orElse(""));
                     }
+                    else {
+                        SaltSSHService.cleanupKnownHostsFromProxy(server);
+                    }
                 },
                 () -> log.warn("Unable to remove SSH key for {} from /var/lib/salt/.ssh/known_hosts: unknown hostname",
                         server.getName()));

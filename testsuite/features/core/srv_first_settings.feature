@@ -41,6 +41,13 @@ Feature: Very first settings
   Scenario: Wait for refresh of list of products to finish
     When I wait until mgr-sync refresh is finished
 
+  Scenario: Use correct kernel image on the server
+    When I remove package "kernel-default-base" from this "server"
+    And I install package "kernel-default" on this "server"
+
+  Scenario: Reboot the server to use the new kernel
+    When I reboot the server through SSH
+
   Scenario: Create testing username
     When I follow the left menu "Users > User List > Active"
     And I follow "Create User"

@@ -8,7 +8,7 @@ require 'date'
 require 'timeout'
 
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
-  git_profiles = ENV['GITPROFILES']
+  git_profiles = ENV.fetch('GITPROFILES', nil)
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")
 end
 
@@ -37,7 +37,8 @@ When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)"
     image_details = $api_test.image.get_details(image_id)
     log "Image Details: #{image_details}"
     break if image_details['buildStatus'] == 'completed'
-    raise 'image build failed.' if image_details['buildStatus'] == 'failed'
+    raise SystemCallError, 'image build failed.' if image_details['buildStatus'] == 'failed'
+
     sleep 5
   end
 end
@@ -58,7 +59,8 @@ When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)"
     image_details = $api_test.image.get_details(image_id)
     log "Image Details: #{image_details}"
     break if image_details['inspectStatus'] == 'completed'
-    raise 'image inspect failed.' if image_details['inspectStatus'] == 'failed'
+    raise SystemCallError, 'image inspect failed.' if image_details['inspectStatus'] == 'failed'
+
     sleep 5
   end
 end
@@ -71,6 +73,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
     step 'I wait until I do not see "There are no entries to show." text'
     raise 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Failed\')]]')
     break if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Built\')]]', count: count)
+
     sleep 5
   end
 end
@@ -163,8 +166,9 @@ When(/^I set and get details of image store via API$/) do
   $api_test.image.store.set_details('Norimberga', details_store)
   # test getDetails call
   details = $api_test.image.store.get_details('Norimberga')
-  raise "uri should be Germania but is #{details['uri']}" unless details['uri'] == 'Germania'
-  raise "username should be empty but is #{details['username']}" unless details['username'] == ''
+  raise ScriptError, "uri should be Germania but is #{details['uri']}" unless details['uri'] == 'Germania'
+  raise ScriptError, "username should be empty but is #{details['username']}" unless details['username'] == ''
+
   $api_test.image.store.delete('Norimberga')
 end
 
@@ -183,18 +187,20 @@ When(/^I create and delete profile custom values via API$/) do
   values['arancio'] = 'arancia API tests'
   $api_test.image.profile.set_custom_values('fakeone', values)
   pro_det = $api_test.image.profile.get_custom_values('fakeone')
-  raise "setting custom profile value failed: #{pro_det['arancio']} != 'arancia API tests'" unless pro_det['arancio'] == 'arancia API tests'
+  raise ScriptError, "setting custom profile value failed: #{pro_det['arancio']} != 'arancia API tests'" unless pro_det['arancio'] == 'arancia API tests'
+
   pro_type = $api_test.image.profile.list_image_profile_types
-  raise "Number of image profile types is #{pro_type.length}" unless pro_type.length == 2
-  raise "type #{pro_type[0]} is not dockerfile" unless pro_type[0] == 'dockerfile'
-  raise "type #{pro_type[1]} is not kiwi" unless pro_type[1] == 'kiwi'
+  raise ScriptError, "Number of image profile types is #{pro_type.length}" unless pro_type.length == 2
+  raise ScriptError, "type #{pro_type[0]} is not dockerfile" unless pro_type[0] == 'dockerfile'
+  raise ScriptError, "type #{pro_type[1]} is not kiwi" unless pro_type[1] == 'kiwi'
+
   key = ['arancio']
   $api_test.image.profile.delete_custom_values('fakeone', key)
 end
 
 When(/^I list image profiles via API$/) do
   ima_profiles = $api_test.image.profile.list_image_profiles
-  log $ima_profiles
+  log ima_profiles
   imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
   raise "label of container should be fakeone! #{imagelabel[0]['label']} != 'fakeone'" unless imagelabel[0]['label'] == 'fakeone'
 end
@@ -206,7 +212,8 @@ When(/^I set and get profile details via API$/) do
   details['activationKey'] = ''
   $api_test.image.profile.set_details('fakeone', details)
   cont_detail = $api_test.image.profile.get_details('fakeone')
-  raise "label test fail! #{cont_detail['label']} != 'fakeone'" unless cont_detail['label'] == 'fakeone'
-  raise "imagetype test fail! #{cont_detail['imageType']} != 'dockerfile'" unless cont_detail['imageType'] == 'dockerfile'
+  raise ScriptError, "label test fail! #{cont_detail['label']} != 'fakeone'" unless cont_detail['label'] == 'fakeone'
+  raise ScriptError, "imagetype test fail! #{cont_detail['imageType']} != 'dockerfile'" unless cont_detail['imageType'] == 'dockerfile'
+
   $api_test.image.profile.delete('fakeone')
 end

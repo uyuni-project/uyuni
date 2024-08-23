@@ -73,11 +73,12 @@ class NamespaceConfigchannel
                label: channel,
                path: file,
                isDir: false,
-               pathInfo: { contents: contents,
-                           owner: 'root',
-                           group: 'root',
-                           permissions: '644' }
-              )
+               pathInfo: {
+                 contents: contents,
+                 owner: 'root',
+                 group: 'root',
+                 permissions: '644'
+               })
   end
 
   # Deploys all systems to the given configuration channel.

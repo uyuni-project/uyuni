@@ -44,3 +44,11 @@ Feature: Bootstrap a SLES 15 SP4 traditional client
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle15sp4_client" hostname
+
+  Scenario: Use correct kernel image on the SLES 15 SP4 traditional
+    When I remove package "kernel-default-base" from this "sle15sp4_client"
+    And I install package "kernel-default" on this "sle15sp4_client"
+
+  Scenario: Reboot the SLES 15 SP4 traditional to use the new kernel
+    When I reboot the "sle15sp4_client" host through SSH, waiting until it comes back
+

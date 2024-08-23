@@ -488,6 +488,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         channel.setOrg(null);
         channel = TestUtils.saveAndReload(channel);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel, product, true);
+        channel = TestUtils.saveAndReload(channel);
         return channel;
     }
 

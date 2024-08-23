@@ -186,7 +186,9 @@ public class MatcherJsonIO {
                 Set<Long> productIds = productIdsForServer(system, needsEntitlements, entitlements)
                     .collect(Collectors.toSet());
                 boolean countVCores = !virtualHost && system.getInstalledProductSet()
-                        .map(s -> s.getBaseProduct().getChannelFamily()).stream()
+                        .map(productSet -> productSet.getBaseProduct())
+                        .map(baseProduct -> baseProduct.getChannelFamily())
+                        .stream()
                         .anyMatch(cf -> vCoreCountedChannelFamilies.contains(cf.getLabel()));
                 if (countVCores) {
                     // HACK: better would be to introduce a field in SystemJson and adapt subscription-matcher

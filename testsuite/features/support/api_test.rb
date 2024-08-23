@@ -48,8 +48,7 @@ class ApiTest
   attr_reader :schedule
   attr_reader :system
   attr_reader :user
-  attr_reader :token
-  attr_writer :token
+  attr_accessor :token
 
   # Calls a function with the given name and parameters, and returns its response.
   #
@@ -86,7 +85,7 @@ class ApiTestXmlrpc < ApiTest
   # @param attribute [Object] The attribute to check.
   # @return [Boolean] Whether the attribute is an XMLRPC::DateTime object or not.
   def date?(attribute)
-    attribute.class == XMLRPC::DateTime
+    attribute.instance_of?(XMLRPC::DateTime)
   end
 
   # Returns the current date and time as an XMLRPC::DateTime object.
@@ -103,9 +102,10 @@ class ApiTestHttp < ApiTest
   # It creates a new instance of the HttpClient class.
   #
   # @param host [String] The hostname of the server.
-  def initialize(host)
+  # @param ssl_verify [Boolean] Whether to verify SSL certificates or not.
+  def initialize(host, ssl_verify = true)
     super(host)
-    @connection = HttpClient.new(host)
+    @connection = HttpClient.new(host, ssl_verify)
   end
 
   # Attempts to parse a given string as a Date object, to validate it.

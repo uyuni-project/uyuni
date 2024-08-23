@@ -28,6 +28,13 @@ Feature: Bootstrap a SLES 15 SP4 Salt minion
     Then I should see a "accepted" text
     And the Salt master can reach "sle15sp4_minion"
 
+  Scenario: Use correct kernel image on the SLES 15 SP4 minion
+    When I remove package "kernel-default-base" from this "sle15sp4_minion"
+    And I install package "kernel-default" on this "sle15sp4_minion"
+
+  Scenario: Reboot the SLES 15 SP4 minion to use the new kernel
+    When I reboot the "sle15sp4_minion" host through SSH, waiting until it comes back
+
 @proxy
   Scenario: Check connection from SLES 15 SP4 minion to proxy
     Given I am on the Systems overview page of this "sle15sp4_minion"

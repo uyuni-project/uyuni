@@ -64,11 +64,6 @@ module LavandaBasic
     @in_os_version = os_version
   end
 
-  # Initializes the `@in_has_mgrctl` variable to true.
-  def init_has_mgrctl
-    @in_has_mgrctl = true
-  end
-
   # Getter functions, executed on testsuite
 
   # Returns the hostname.
@@ -76,7 +71,8 @@ module LavandaBasic
   # @return [String] The hostname.
   # @raise [KeyError] If the hostname is empty.
   def hostname
-    raise 'empty hostname, something wrong' if @in_hostname.empty?
+    raise KeyError, 'empty hostname, something wrong' if @in_hostname.nil? || @in_hostname.empty?
+
     @in_hostname
   end
 
@@ -85,7 +81,8 @@ module LavandaBasic
   # @return [String] The fully qualified domain name (FQDN).
   # @raise [KeyError] If the FQDN is empty.
   def full_hostname
-    raise 'empty hostname, something wrong' if @in_full_hostname.empty?
+    raise KeyError, 'empty hostname, something wrong' if @in_full_hostname.nil? || @in_full_hostname.empty?
+
     @in_full_hostname
   end
 
@@ -94,7 +91,8 @@ module LavandaBasic
   # @return [String] The private IP address.
   # @raise [KeyError] If the private IP address is empty.
   def private_ip
-    raise 'empty private_ip, something wrong' if @in_private_ip.empty?
+    raise KeyError, 'empty private_ip, something wrong' if @in_private_ip.nil? || @in_private_ip.empty?
+
     @in_private_ip
   end
 
@@ -103,7 +101,8 @@ module LavandaBasic
   # @return [String] The public IP address.
   # @raise [KeyError] If the public IP address is empty.
   def public_ip
-    raise 'empty public_ip, something wrong' if @in_public_ip.empty?
+    raise KeyError, 'empty public_ip, something wrong' if @in_public_ip.nil? || @in_public_ip.empty?
+
     @in_public_ip
   end
 
@@ -112,7 +111,8 @@ module LavandaBasic
   # @return [String] The private interface.
   # @raise [KeyError] If the private interface is empty.
   def private_interface
-    raise 'empty private_interface, something wrong' if @in_private_interface.empty?
+    raise KeyError, 'empty private_interface, something wrong' if @in_private_interface.nil? || @in_private_interface.empty?
+
     @in_private_interface
   end
 
@@ -121,7 +121,8 @@ module LavandaBasic
   # @return [String] The public interface.
   # @raise [KeyError] If the public interface is empty.
   def public_interface
-    raise 'empty public_interface, something wrong' if @in_public_interface.empty?
+    raise KeyError, 'empty public_interface, something wrong' if @in_public_interface.nil? || @in_public_interface.empty?
+
     @in_public_interface
   end
 
@@ -130,7 +131,8 @@ module LavandaBasic
   # @return [String] The OS family.
   # @raise [KeyError] If the OS family is empty.
   def os_family
-    raise 'empty os_family, something wrong' if @in_os_family.empty?
+    raise KeyError, 'empty os_family, something wrong' if @in_os_family.nil? || @in_os_family.empty?
+
     @in_os_family
   end
 
@@ -139,7 +141,8 @@ module LavandaBasic
   # @return [String] The OS version.
   # @raise [KeyError] If the OS version is empty.
   def os_version
-    raise 'empty os_version, something wrong' if @in_os_version.empty?
+    raise KeyError, 'empty os_version, something wrong' if @in_os_version.nil? || @in_os_version.empty?
+
     @in_os_version
   end
 
@@ -154,16 +157,15 @@ module LavandaBasic
   # @param buffer_size [Integer] The maximum buffer size in bytes.
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, Integer>] The output, error, and exit code.
-  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
+  def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
     if separated_results
       out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
     else
       out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
     end
-    if check_errors
-      raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
-    end
-    STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
+    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" if check_errors && !successcodes.include?(code)
+
+    $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
     if separated_results
       [out, err, code]
     else
@@ -180,6 +182,7 @@ module LavandaBasic
     repeat_until_timeout(timeout: timeout, report_result: true) do
       result, code = run(cmd, check_errors: false)
       return [result, code] if code.zero?
+
       sleep 2
       result
     end
@@ -194,6 +197,7 @@ module LavandaBasic
     repeat_until_timeout(timeout: timeout, report_result: true) do
       result, code = run(cmd, check_errors: false)
       return [result, code] if code.nonzero?
+
       sleep 2
       result
     end
@@ -207,8 +211,74 @@ module LavandaBasic
     repeat_until_timeout(report_result: true) do
       result, code = run("pgrep -x #{process} >/dev/null", check_errors: false)
       return [result, code] if code.nonzero?
+
       sleep 2
       result
     end
+  end
+
+  # Check if a file exists on a node.
+  # Handles checking in server container if possible.
+  #
+  # @param file [String] The path of the file to check.
+  # @return [Boolean] Returns true if the file exists, false otherwise.
+  def file_exists(file)
+    _out, local, _remote, code = test_and_store_results_together("test -f #{file}", 'root', 500)
+    code.zero? && local.zero?
+  end
+
+  # Check if a folder exists on a node.
+  # Handles checking in server container if possible.
+  #
+  # @param file [String] The path of the folder to check.
+  # @return [Boolean] Returns true if the folder exists, false otherwise.
+  def folder_exists(file)
+    _out, local, _remote, code = test_and_store_results_together("test -d #{file}", 'root', 500)
+    code.zero? && local.zero?
+  end
+
+  # Delete a file on a node.
+  # Handles checking in server container if possible.
+  #
+  # @param file [String] The path of the file to be deleted.
+  # @return [Integer] The exit code of the file deletion operation.
+  def file_delete(file)
+    _out, _local, _remote, code = test_and_store_results_together("rm #{file}", 'root', 500)
+    code
+  end
+
+  # Delete a folder on a node.
+  # Handles checking in server container if possible.
+  #
+  # @param folder [String] The path of the folder to be deleted.
+  # @return [Integer] The exit code of the operation.
+  def folder_delete(folder)
+    _out, _local, _remote, code = test_and_store_results_together("rm -rf #{folder}", 'root', 500)
+    code
+  end
+
+  # Checks if the node is offline.
+  #
+  # @return [Boolean] true if the node is offline, false otherwise.
+  def node_offline?
+    run('echo test', timeout: 0, check_errors: false).first.empty?
+  end
+
+  # Wait until the node goes offline
+  def wait_until_offline
+    sleep 1 until node_offline?
+    $stdout.puts "Node #{hostname} is offline."
+  end
+
+  # Wait until the node comes back online
+  #
+  # @param timeout [Integer] The maximum time to wait for the node to come online, in seconds.
+  def wait_until_online(timeout: DEFAULT_TIMEOUT)
+    repeat_until_timeout(timeout: timeout, report_result: true, message: "#{hostname} did not come back online within #{timeout} seconds.") do
+      break unless node_offline?
+
+      sleep 1
+    end
+    $stdout.puts "Node #{hostname} is online."
   end
 end
