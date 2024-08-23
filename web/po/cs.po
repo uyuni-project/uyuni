@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:37+0200\n"
-"PO-Revision-Date: 2022-09-19 19:13+0000\n"
+"PO-Revision-Date: 2024-08-22 17:47+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
 "Language: cs\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:436
 msgid "remaining"
@@ -45,14 +45,12 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "Zadejte prosím povinná pole: {0}"
+msgstr "Zadejte prosím povinná pole: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
-#, fuzzy
 msgid "Invalid format of fields: {fields}"
-msgstr "Neplatný formát polí: {0}"
+msgstr "Neplatný formát polí: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid ""
@@ -118,33 +116,32 @@ msgstr "Konfigurační kanály"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:112
 msgid "Previous month"
-msgstr ""
+msgstr "Předešlý měsic"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:113
 msgid "Next month"
-msgstr ""
+msgstr "Následující měsíc"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:114
 msgid "Previous year"
-msgstr ""
+msgstr "Předchozí rok"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:115
-#, fuzzy
 msgid "Next year"
-msgstr "Další"
+msgstr "Následující rok"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
-msgstr "Opravdu chcete {0} {1} "
+msgstr "Opravdu chcete {action} {name}"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-#, fuzzy
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
+msgstr ""
+"Opravdu chcete {action} vybrané položky {name}? (Vybráno {count} položek "
+"{name})"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -283,24 +280,21 @@ msgstr "Bez variant"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:82
 #: ../html/src/manager/state/highstate.tsx:64
-#, fuzzy
 msgid ""
 "Action has been successfully added to the action chain <link>'{name}'</link>."
-msgstr "Akce byla úspěšně přidána do Řetězce akcí "
+msgstr "Akce byla úspěšně přidána do řetězce akcí  <link>'{name}'</link>."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
-#, fuzzy
 msgid "The action has been <link>scheduled</link>."
-msgstr "Import obrazu byl naplánován."
+msgstr "Akce byla <link>naplánována</link>."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
-#, fuzzy
 msgid "Unable to clear selection"
-msgstr "Zpět k výběru systému"
+msgstr "Výběr nelze smazat"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:107
 msgid "Unable to perform action."
-msgstr ""
+msgstr "Akci nelze provést."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:339
@@ -321,9 +315,8 @@ msgstr "Zpět na seznam"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
 #: ../html/src/manager/packages/list.tsx:143
-#, fuzzy
 msgid "Filter by package name"
-msgstr "Filtrovat podle názvu"
+msgstr "Filtrovat dle názvu balíčku"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:214
 #: ../html/src/components/package/PackageListActionScheduler.tsx:246
@@ -365,12 +358,11 @@ msgstr "Poslední"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr ""
+msgstr "Strana <dropdown></dropdown> z {total}"
 
 #: ../html/src/components/pagination.tsx:115
-#, fuzzy
 msgid "Page {current} of {total}"
-msgstr "Strana {0} z {1}"
+msgstr "Strana {current} z {total}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Sunday"
@@ -455,9 +447,8 @@ msgstr "Kanál konfigurace stavu"
 #: ../html/src/components/ranking-table.tsx:23
 #: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:27
-#, fuzzy
 msgid "Internal State"
-msgstr "Interní stavy"
+msgstr "Vnitřní stav"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
@@ -472,9 +463,8 @@ msgid "There are no entries to show."
 msgstr "Žádné položky k zobrazení."
 
 #: ../html/src/components/salt-state-popup.tsx:50
-#, fuzzy
 msgid "Configuration Channel: {name}"
-msgstr "Konfigurační kanál: {0}"
+msgstr "Konfigurační kanál: {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -505,9 +495,8 @@ msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Máte neuložené změny. Chcete pokračovat?"
 
 #: ../html/src/components/states-picker.tsx:108
-#, fuzzy
 msgid "State configuration must not be empty"
-msgstr "Kanál konfigurace stavu"
+msgstr "Konfigurace stavu nesmí být prázdná"
 
 #: ../html/src/components/states-picker.tsx:139
 msgid "State assignments have been saved."
@@ -548,9 +537,8 @@ msgid "Reorder"
 msgstr "Přeuspořádat"
 
 #: ../html/src/components/states-picker.tsx:388
-#, fuzzy
 msgid "Search in states"
-msgstr "Vyhledávat systémy"
+msgstr "Vyhledávat ve stavech"
 
 #: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
@@ -565,22 +553,18 @@ msgid "Search"
 msgstr "Vyhledávání"
 
 #: ../html/src/components/states-picker.tsx:404
-#, fuzzy
 msgid "Edit State Ranks"
-msgstr "Výkonné stavy"
+msgstr "Upravit pořadí stavů"
 
 #: ../html/src/components/states-picker.tsx:404
-#, fuzzy
 msgid "Edit Channel Ranks"
-msgstr "Kanály SUSE"
+msgstr "Upravit pořadí kanálů"
 
 #: ../html/src/components/states-picker.tsx:407
-#, fuzzy
 msgid "Edit the ranking of the states by dragging them."
-msgstr "Přetažením upravte pořadí konfiguračních kanálů."
+msgstr "Přetažením upravte pořadí stavů."
 
 #: ../html/src/components/states-picker.tsx:408
-#, fuzzy
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "Přetažením upravte pořadí konfiguračních kanálů."
 
@@ -590,9 +574,8 @@ msgstr "Nejsou přiřazeny žádné stavy."
 
 #: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:251
-#, fuzzy
 msgid "State Name"
-msgstr "Poslední jméno (příjmení)"
+msgstr "Název stavu"
 
 #: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
@@ -600,9 +583,8 @@ msgstr "Název kanálu"
 
 #: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
-#, fuzzy
 msgid "State Label"
-msgstr "Stavový kanál"
+msgstr "Štítek stavu"
 
 #: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
@@ -631,16 +613,14 @@ msgstr "Přiřadit"
 #: ../html/src/components/states-picker.tsx:483
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
-msgstr ""
+msgstr "Vyberte systémy k okamžitému provedení stavu a potvrďte."
 
 #: ../html/src/components/states-picker.tsx:493
-#, fuzzy
 msgid "This table is empty"
-msgstr "Tento kanál je povinný"
+msgstr "Tato tabulka je prázdná"
 
 #: ../html/src/components/states-picker.tsx:500
 #: ../html/src/components/states-picker.tsx:542
-#, fuzzy
 msgid "System Name"
 msgstr "Název systému"
 
@@ -649,9 +629,8 @@ msgid "Execute States"
 msgstr "Výkonné stavy"
 
 #: ../html/src/components/states-picker.tsx:525
-#, fuzzy
 msgid "Select Sytems"
-msgstr "Vybraná rozhraní"
+msgstr "Vybrat systémy"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -664,25 +643,21 @@ msgstr "Systém uzamčen"
 
 #: ../html/src/components/table/SearchField.tsx:49
 #: ../html/src/components/table/TableFilter.tsx:45
-#, fuzzy
 msgid "Filter"
-msgstr "Filtry"
+msgstr "Filtr"
 
 #: ../html/src/components/table/SearchField.tsx:54
 #: ../html/src/components/table/TableFilter.tsx:49
-#, fuzzy
 msgid "Select a filter"
-msgstr "Vybrat plán"
+msgstr "Vybrat filtr"
 
 #: ../html/src/components/table/SearchPanel.tsx:57
-#, fuzzy
 msgid "Items {from} - {to} of {total}"
-msgstr "Položky {0} - {1} z {2}"
+msgstr "Položky {from} - {to} z {total}"
 
 #: ../html/src/components/table/SearchPanel.tsx:62
-#, fuzzy
 msgid "({selectedCount} selected)"
-msgstr "Odstranit vybrané"
+msgstr "({selectedCount} vybraných)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:384
@@ -695,9 +670,8 @@ msgstr "Vybrat vše"
 
 #: ../html/src/components/table/SelectSearchField.tsx:5
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
-#, fuzzy
 msgid "All"
-msgstr "Povolit"
+msgstr "Vše"
 
 #: ../html/src/components/table/TableDataHandler.tsx:409
 msgid "items per page"
