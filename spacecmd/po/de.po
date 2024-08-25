@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-23 15:16+0200\n"
-"PO-Revision-Date: 2021-11-07 18:12+0000\n"
-"Last-Translator: Michael Calmer <mc@suse.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd/de/"
-">\n"
+"PO-Revision-Date: 2024-08-25 15:47+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
+"de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -311,7 +311,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:978 ../src/spacecmd/configchannel.py:807
 #: ../src/spacecmd/configchannel.py:921 ../src/spacecmd/system.py:2951
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Konfigurationskanäle"
 
 #: ../src/spacecmd/activationkey.py:984 ../src/spacecmd/system.py:2956
 msgid "Entitlements"
@@ -902,7 +902,7 @@ msgstr ""
 #: ../src/spacecmd/group.py:190 ../src/spacecmd/softwarechannel.py:788
 #: ../src/spacecmd/system.py:3628
 msgid "Description:"
-msgstr ""
+msgstr "Beschreibung:"
 
 #: ../src/spacecmd/configchannel.py:483
 msgid "Type [normal, state]:"
@@ -1792,7 +1792,7 @@ msgstr ""
 #: ../src/spacecmd/errata.py:416 ../src/spacecmd/package.py:108
 #: ../src/spacecmd/softwarechannel.py:567
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: ../src/spacecmd/errata.py:422
 msgid "Notes"
@@ -5904,7 +5904,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2748
 msgid "Channel Name"
-msgstr ""
+msgstr "Kanalname"
 
 #: ../src/spacecmd/softwarechannel.py:2748
 msgid "Update Schedule"
