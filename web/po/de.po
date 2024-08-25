@@ -18,15 +18,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:37+0200\n"
-"PO-Revision-Date: 2022-01-11 14:51+0000\n"
-"Last-Translator: Michael Calmer <mc@suse.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
+"PO-Revision-Date: 2024-08-25 15:47+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web-4-3/de/>"
+"\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:436
 msgid "remaining"
@@ -45,13 +46,12 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "Pflichtfelder bitte ausfüllen: {0}"
+msgstr "Erforderliche Felder bitte ausfüllen: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
 msgid "Invalid format of fields: {fields}"
-msgstr ""
+msgstr "Ungültiges Format der Felder: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid ""
@@ -61,15 +61,15 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
-msgstr ""
+msgstr "Alle Abschnitte ausklappen"
 
 #: ../html/src/components/FormulaForm.tsx:275
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "Alle Abschnitte einklappen"
 
 #: ../html/src/components/FormulaForm.tsx:340
 msgid "Unnamed"
-msgstr ""
+msgstr "Unbenannt"
 
 #: ../html/src/components/FormulaForm.tsx:349
 msgid "Search by formula's group name"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:50
 msgid "new action chain"
-msgstr ""
+msgstr "neue Aktionskette"
 
 #: ../html/src/components/action-schedule.tsx:198
 msgid ""
@@ -108,30 +108,28 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Konfigurationskanäle"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:112
 msgid "Previous month"
-msgstr ""
+msgstr "Vorheriger Monat"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:113
 msgid "Next month"
-msgstr ""
+msgstr "Nächster Monat"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:114
 msgid "Previous year"
-msgstr ""
+msgstr "Vorheriges Jahr"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:115
-#, fuzzy
 msgid "Next year"
-msgstr "Nächste"
+msgstr "Nächstes Jahr"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
-msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
+msgstr ""
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
 msgid ""
@@ -241,7 +239,7 @@ msgstr "Passwort anzeigen/verstecken"
 
 #: ../html/src/components/formulas/SectionToggle.tsx:23
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "Sichtbarkeit des Abschnitts umschalten"
 
 #: ../html/src/components/input/FormMultiInput.tsx:158
 msgid "Remove"
@@ -277,7 +275,7 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 msgid "The action has been <link>scheduled</link>."
-msgstr ""
+msgstr "Die Aktion wurde <link>eingeplant</link>."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -301,13 +299,13 @@ msgstr "Bestätigen"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
-msgstr ""
+msgstr "Zurück zur Liste"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:208
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
 #: ../html/src/manager/packages/list.tsx:143
 msgid "Filter by package name"
-msgstr ""
+msgstr "Nach Paketname filtern"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:214
 #: ../html/src/components/package/PackageListActionScheduler.tsx:246
@@ -319,7 +317,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
-msgstr ""
+msgstr "Paketname"
 
 #: ../html/src/components/pagination.tsx:23
 msgid "First"
@@ -349,12 +347,11 @@ msgstr "Letzte"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr ""
+msgstr "Seite <dropdown></dropdown> von {total}"
 
 #: ../html/src/components/pagination.tsx:115
-#, fuzzy
 msgid "Page {current} of {total}"
-msgstr "Seite {0} von {1}"
+msgstr "Seite {current} von {total}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Sunday"
@@ -395,7 +392,7 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:332
 msgid "Select a Schedule"
-msgstr ""
+msgstr "Zeitplan auswählen"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:347
 msgid "Hourly:"
@@ -438,14 +435,14 @@ msgstr ""
 #: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:27
 msgid "Internal State"
-msgstr ""
+msgstr "Interner Zustand"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
 #: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:31
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Normaler Konfigurationskanal"
 
 #: ../html/src/components/ranking-table.tsx:44
 #: ../html/src/components/table/TableDataHandler.tsx:376
@@ -454,7 +451,7 @@ msgstr ""
 
 #: ../html/src/components/salt-state-popup.tsx:50
 msgid "Configuration Channel: {name}"
-msgstr ""
+msgstr "Konfigurationskanal: {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -478,7 +475,7 @@ msgstr "Bearbeiten"
 
 #: ../html/src/components/salt-state-popup.tsx:61
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "Konfigurationskanal bearbeiten"
 
 #: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
@@ -527,13 +524,12 @@ msgid "Reorder"
 msgstr "Umsortieren"
 
 #: ../html/src/components/states-picker.tsx:388
-#, fuzzy
 msgid "Search in states"
-msgstr "Suchen"
+msgstr "In Zuständen suchen"
 
 #: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "In Konfigurationskanälen suchen"
 
 #: ../html/src/components/states-picker.tsx:394
 #: ../html/src/manager/header/search/search.tsx:77
@@ -565,19 +561,17 @@ msgstr "Es sind keine States zugewiesen."
 
 #: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:251
-#, fuzzy
 msgid "State Name"
-msgstr "Nachname"
+msgstr "Zustandsname"
 
 #: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
-msgstr ""
+msgstr "Kanalname"
 
 #: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
-#, fuzzy
 msgid "State Label"
-msgstr "Bundesland"
+msgstr ""
 
 #: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
@@ -597,7 +591,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:268
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: ../html/src/components/states-picker.tsx:424
 msgid "Assign"
@@ -610,22 +604,20 @@ msgstr ""
 
 #: ../html/src/components/states-picker.tsx:493
 msgid "This table is empty"
-msgstr ""
+msgstr "Diese Tabelle ist leer"
 
 #: ../html/src/components/states-picker.tsx:500
 #: ../html/src/components/states-picker.tsx:542
-#, fuzzy
 msgid "System Name"
-msgstr "Nachname"
+msgstr "Systemname"
 
 #: ../html/src/components/states-picker.tsx:520
 msgid "Execute States"
 msgstr ""
 
 #: ../html/src/components/states-picker.tsx:525
-#, fuzzy
 msgid "Select Sytems"
-msgstr "Alles auswählen"
+msgstr "Systeme auswählen"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -639,22 +631,20 @@ msgstr "System gesperrt"
 #: ../html/src/components/table/SearchField.tsx:49
 #: ../html/src/components/table/TableFilter.tsx:45
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: ../html/src/components/table/SearchField.tsx:54
 #: ../html/src/components/table/TableFilter.tsx:49
-#, fuzzy
 msgid "Select a filter"
-msgstr "Alles auswählen"
+msgstr "Filter auswählen"
 
 #: ../html/src/components/table/SearchPanel.tsx:57
 msgid "Items {from} - {to} of {total}"
-msgstr ""
+msgstr "Elemente {from} - {to} von {total}"
 
 #: ../html/src/components/table/SearchPanel.tsx:62
-#, fuzzy
 msgid "({selectedCount} selected)"
-msgstr "({0} ausgewählt)"
+msgstr "({selectedCount} ausgewählt)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:384
@@ -668,7 +658,7 @@ msgstr "Alles auswählen"
 #: ../html/src/components/table/SelectSearchField.tsx:5
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: ../html/src/components/table/TableDataHandler.tsx:409
 msgid "items per page"
@@ -719,7 +709,7 @@ msgstr ""
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:22
 msgid "Required channels"
-msgstr ""
+msgstr "Erforderliche Kanäle"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:24
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:28
@@ -728,7 +718,7 @@ msgstr "keine"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
-msgstr ""
+msgstr "Diesen Kanal erfordern"
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -736,7 +726,7 @@ msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:10
 msgid "undefined"
-msgstr ""
+msgstr "undefiniert"
 
 #: ../html/src/core/intl/index.test.tsx:18
 #: ../html/src/core/intl/index.test.tsx:19
@@ -1008,7 +998,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:777
 #: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
 msgid "Last Update Status"
@@ -1163,7 +1153,7 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:162
 msgid ""
@@ -1534,7 +1524,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/ListTab.tsx:258
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
@@ -3424,7 +3414,7 @@ msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
-msgstr ""
+msgstr "Übersicht"
 
 #: ../html/src/manager/login/messages.tsx:14
 msgid ""
@@ -4184,11 +4174,11 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.tsx:533
 msgid "Created"
-msgstr ""
+msgstr "Erstellt"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:544
 msgid "Read|Delete"
@@ -4976,7 +4966,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:588
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
 msgid ""
@@ -5064,7 +5054,7 @@ msgstr ""
 #: ../html/src/manager/systems/list-filter.tsx:4
 #: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
-msgstr ""
+msgstr "Virtueller Host"
 
 #: ../html/src/manager/systems/list-filter.tsx:5
 #: ../html/src/manager/systems/virtual-list.tsx:71
