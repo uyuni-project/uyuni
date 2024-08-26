@@ -10,7 +10,8 @@ from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import rhnSQL, rhnChannel
 
 
-# stolen from python/spacewalk/server/test/misc_functions.py
+# TODO: move this function to a common place
+#  (copied from python/spacewalk/server/test/misc_functions.py)
 def _new_channel_dict(**kwargs):
     # pylint: disable-next=invalid-name
     _counter = 0
@@ -152,19 +153,19 @@ def create_content_source(
         rhnSQL.closeDB()
 
 
-# Stolen from python/spacewalk/satellite_tools/reposync.py
+# TODO: move this function to a common place
+#  (copied from python/spacewalk/satellite_tools/reposync.py
 def get_compatible_arches(channel_label):
     """Return a list of compatible package arch labels for the given channel"""
     rhnSQL.initDB()
     h = rhnSQL.prepare(
-        """select pa.label
-                          from rhnChannelPackageArchCompat cpac,
-                          rhnChannel c,
-                          rhnpackagearch pa
-                          where c.label = :channel_label
-                          and c.channel_arch_id = cpac.channel_arch_id
-                          and cpac.package_arch_id = pa.id"""
+        """SELECT pa.label 
+            FROM rhnChannelPackageArchCompat AS cpac
+            INNER JOIN rhnChannel AS c ON c.channel_arch_id = cpac.channel_arch_id
+            INNER JOIN rhnpackagearch AS pa ON cpac.package_arch_id = pa.id
+            WHERE c.label = :channel_label"""
     )
+
     h.execute(channel_label=channel_label)
     res_dict = h.fetchall_dict()
     if not res_dict:
@@ -177,9 +178,7 @@ def get_compatible_arches(channel_label):
         arches = [
             k["label"]
             for k in res_dict
-            if CFG.SYNC_SOURCE_PACKAGES
-            or k["label"]
-            not in ["src", "nosrc"]  # TODO: what is CFG.SYNC_SOURCE_PACKAGES - ask team
+            if CFG.SYNC_SOURCE_PACKAGES or k["label"] not in ["src", "nosrc"]
         ]
     rhnSQL.closeDB()
     return arches
@@ -212,6 +211,14 @@ def get_channel_info_by_label(channel_label):
     return channel or None
 
 
+class NoSourceFoundForChannel(Exception):
+    """Raised when no source(repository) was found"""
+
+    def __init__(self, channel_label):
+        self.msg = f"No resource found for channel {channel_label}"
+        super().__init__(self.msg)
+
+
 def get_repositories_by_channel_label(channel_label):
     """
     Fetch repositories information of a given channel form the database, and return a list of
@@ -220,20 +227,19 @@ def get_repositories_by_channel_label(channel_label):
     rhnSQL.initDB()
     h = rhnSQL.prepare(
         """
-        select c.label as channel_label, s.id, c_ark.name as channel_arch, s.source_url, s.metadata_signed, s.label as repo_label, cst.label as repo_type_label
-        from rhnChannel c,
-             rhnChannelArch c_ark,
-             rhnContentSource s,
-             rhnChannelContentSource cs,
-             rhnContentSourceType cst
-        where c.label = :channel_label
-          and c.channel_arch_id = c_ark.id
-          and s.id = cs.source_id
-          and cst.id = s.type_id
-          and cs.channel_id = c.id"""
+        SELECT c.label as channel_label, c_ark.name as channel_arch, s.id, s.source_url, s.metadata_signed, s.label as repo_label, cst.label as repo_type_label
+        FROM rhnChannel c
+        INNER JOIN rhnChannelArch c_ark ON c.channel_arch_id = c_ark.id
+        INNER JOIN rhnChannelContentSource cs ON c.id = cs.channel_id
+        INNER JOIN rhnContentSource s ON cs.source_id = s.id
+        INNER JOIN  rhnContentSourceType cst ON s.type_id = cst.id
+        WHERE c.label = :channel_label
+        """
     )
     h.execute(channel_label=channel_label)
     sources = h.fetchall_dict()
+    if not sources:
+        raise NoSourceFoundForChannel(channel_label)
     repositories = map(
         lambda source: RepoDTO(
             channel_label=source["channel_label"],

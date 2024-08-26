@@ -91,7 +91,7 @@ def import_packages_in_batch_from_parser(
 ):
     """
     Import packages form parser
-    parser: RPMMetadataParser | DEBMetadataParser
+    :parser: RPMMetadataParser | DEBMetadataParser
     Return a tuple of (failed, available_packages)
     ( available_packages: a dict of available packages in the format: {name-epoch-version-release-arch:1} )
     """
@@ -266,7 +266,6 @@ def import_package_batch(
         log2(0, 1, e_message, stream=sys.stderr)
         raise e  # Ignore the package and continue
     finally:
-        # Disassociate packages TODO: discuss with team the use if this (see reposync)
 
         # Linking packages to the channel
         if to_link and channel:
