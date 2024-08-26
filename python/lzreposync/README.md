@@ -15,11 +15,7 @@ $ pip install -e .
 ```
 3. Install other required dependencies (required by spacewalk and other modules)
 ```sh
-pip install pytest
-pip install pycurl
-pip install pyopenssl
 pip install rpm
-pip install psycopg2-binary
 ```
 4. Add a path configuration file (**Important!**)
 ```
@@ -68,7 +64,7 @@ sudo make -f Makefile.docker EXECUTOR=podman dockerrun_pg
 
 After installing with `pip install .` (or `pip install -e .`), `pytest tests/` runs all tests. Sometimes a `rehash` is required to ensure `.venv/bin/pytest` is used by your shell.
 
-You can connect to the database by:
+You can connect to the test database by:
 ```sh
 psql -h localhost -d susemanager -U spacewalk # password: spacewalk
 ```
