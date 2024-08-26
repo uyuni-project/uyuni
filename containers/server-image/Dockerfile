@@ -27,7 +27,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     ${PRODUCT_PATTERN_PREFIX}_server \
     ${PRODUCT_PATTERN_PREFIX}_retail \
     billing-data-service \
-    spacewalk-utils-extras \
     grub2-x86_64-efi \
     ed \
     susemanager-tftpsync \
