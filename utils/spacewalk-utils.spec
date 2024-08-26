@@ -96,7 +96,7 @@ Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-backend
 # Required by taskotop
 Requires:       spacewalk-backend-sql
-# Required by spacewalk-final-archive, spacewalk-watch-channel-sync.sh
+# Required by spacewalk-watch-channel-sync.sh
 Requires:       spacewalk-backend-tools >= 2.2.27
 # As spacewalk-utils owns {python3_sitelib}/utils
 Requires:       spacewalk-utils
@@ -157,7 +157,6 @@ popd
 %attr(755,root,root) %{_bindir}/spacewalk-api
 %attr(755,root,root) %{_bindir}/spacewalk-export
 %attr(755,root,root) %{_bindir}/spacewalk-export-channels
-%attr(755,root,root) %{_bindir}/spacewalk-final-archive
 %attr(755,root,root) %{_bindir}/spacewalk-manage-snapshots
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %attr(755,root,root) %{_bindir}/sw-ldap-user-sync
@@ -166,14 +165,13 @@ popd
 %{python3_sitelib}/utils/migrateSystemProfile.py*
 %{python3_sitelib}/utils/__pycache__/migrateSystemProfile.*
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
-%{_mandir}/man8/delete-old-systems-interactive.8%{?ext_man}
-%{_mandir}/man8/migrate-system-profile.8%{?ext_man}
-%{_mandir}/man8/spacewalk-api.8%{?ext_man}
-%{_mandir}/man8/spacewalk-export-channels.8%{?ext_man}
-%{_mandir}/man8/spacewalk-export.8%{?ext_man}
-%{_mandir}/man8/spacewalk-final-archive.8%{?ext_man}
-%{_mandir}/man8/spacewalk-manage-snapshots.8%{?ext_man}
-%{_mandir}/man8/sw-system-snapshot.8%{?ext_man}
-%{_mandir}/man8/taskotop.8%{?ext_man}
+%{_mandir}/man8/delete-old-systems-interactive.8.gz
+%{_mandir}/man8/migrate-system-profile.8.gz
+%{_mandir}/man8/spacewalk-api.8.gz
+%{_mandir}/man8/spacewalk-export-channels.8.gz
+%{_mandir}/man8/spacewalk-export.8.gz
+%{_mandir}/man8/spacewalk-manage-snapshots.8.gz
+%{_mandir}/man8/sw-system-snapshot.8.gz
+%{_mandir}/man8/taskotop.8.gz
 
 %changelog
