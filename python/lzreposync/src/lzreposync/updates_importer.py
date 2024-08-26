@@ -102,8 +102,6 @@ class UpdatesImporter:
                 )
                 refresh_newest_package(self.channel["id"], "backend.importPatches")
 
-        # TODO: there's something called disassociate_erratum() in Reposync ==> must check
-
     def upload_updates(self, notices):
         batch = []
         processed_updates = 0
