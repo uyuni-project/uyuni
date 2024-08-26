@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-utils
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -97,7 +97,7 @@ Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-backend
 # Required by taskotop
 Requires:       spacewalk-backend-sql
-# Required by spacewalk-final-archive, spacewalk-watch-channel-sync.sh
+# Required by spacewalk-watch-channel-sync.sh
 Requires:       spacewalk-backend-tools >= 2.2.27
 # As spacewalk-utils owns {python3_sitelib}/utils
 Requires:       spacewalk-utils
@@ -159,7 +159,6 @@ popd
 %attr(755,root,root) %{_bindir}/spacewalk-api
 %attr(755,root,root) %{_bindir}/spacewalk-export
 %attr(755,root,root) %{_bindir}/spacewalk-export-channels
-%attr(755,root,root) %{_bindir}/spacewalk-final-archive
 %attr(755,root,root) %{_bindir}/spacewalk-manage-snapshots
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %attr(755,root,root) %{_bindir}/sw-ldap-user-sync
@@ -173,7 +172,6 @@ popd
 %{_mandir}/man8/spacewalk-api.8.gz
 %{_mandir}/man8/spacewalk-export-channels.8.gz
 %{_mandir}/man8/spacewalk-export.8.gz
-%{_mandir}/man8/spacewalk-final-archive.8.gz
 %{_mandir}/man8/spacewalk-manage-snapshots.8.gz
 %{_mandir}/man8/sw-system-snapshot.8.gz
 %{_mandir}/man8/taskotop.8.gz
