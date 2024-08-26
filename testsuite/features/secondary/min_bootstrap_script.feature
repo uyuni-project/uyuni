@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/minssh_tunnel.feature
 # If the minion fails to bootstrap
 
 # TODO: This feature is not working within a proxy containerized environment
