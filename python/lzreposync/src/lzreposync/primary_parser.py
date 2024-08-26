@@ -51,7 +51,6 @@ def map_attribute(attribute: str):
     name in the importLib Package class.
     If no mapping found, return None.
     """
-    # TODO: there's still a time/file attribute not yet handled - discuss with team
     attributes = {
         "version/ver": "version",
         "version/rel": "release",

@@ -137,8 +137,7 @@ def main():
 
     arch = args.arch
     if arch != ".*":
-        # pylint: disable-next=consider-using-f-string
-        arch = "(noarch|{})".format(args.arch)
+        arch = f"(noarch|{args.arch})"
 
     logging.getLogger().setLevel(args.loglevel)
     if args.url:
