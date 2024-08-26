@@ -10,7 +10,10 @@ dependencies = [
      "pytest",
      "requests",
      "python-gnupg",
-     "more_itertools"
+     "more_itertools",
+     "pycurl",
+     "pyopenssl",
+     "psycopg2-binary"
 ]
 
 [project.scripts]
