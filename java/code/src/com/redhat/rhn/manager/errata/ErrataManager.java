@@ -641,9 +641,7 @@ public class ErrataManager extends BaseManager {
      */
     public static void deleteErratum(User user, Errata errata) {
         List<OwnedErrata> eids = new ArrayList<>();
-        OwnedErrata oErrata = new OwnedErrata();
-        oErrata.setId(errata.getId());
-        oErrata.setAdvisory(errata.getAdvisory());
+        OwnedErrata oErrata = new OwnedErrata(errata.getId(), errata.getAdvisory());
         eids.add(oErrata);
         deleteErrata(user, eids);
     }

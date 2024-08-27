@@ -25,10 +25,11 @@ public class OwnedErrata extends ErrataOverview {
     private String locallyModified;
     private Integer published;
 
-    public OwnedErrata(){
-        super();
-    }
-    
+    /**
+     * Constructor for OwnedErrata
+     * @param id the id
+     * @param advisory the advisory string
+     */
     public OwnedErrata(Long id, String advisory) {
         super();
         setId(id);
