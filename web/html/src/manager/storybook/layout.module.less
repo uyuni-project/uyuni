@@ -1,0 +1,29 @@
+:global(.old-theme),
+:global(.new-theme) {
+  .header {
+    padding: 8px 16px;
+    background: #eee;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #eee;
+
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+
+  .striped {
+    background: repeating-linear-gradient(-45deg, #fff, #fff 10px, #eee 10px, #eee 12px);
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+}
