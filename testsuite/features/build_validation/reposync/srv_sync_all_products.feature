@@ -783,7 +783,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @proxy
-  Scenario: Add SUSE Linux Enterprise Micro 5.5
+  Scenario: Add SUSE Linux Enterprise Micro 5.5 needed for Proxy
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
