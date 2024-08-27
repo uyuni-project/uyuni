@@ -89,22 +89,23 @@ export const Storybook = () => {
 
       {stories.map((group) => (
         <div key={`${group.title}`}>
-          {normalize(group.title) === activeTabHash && group.stories?.map((item) => (
-            <Fragment key={`${group.title}-${item.title}`}>
-              <p>
-                <code>{item.title}</code>
-              </p>
-              <div className={styles.story}>
-                <div>{item.component ? <item.component /> : null}</div>
-                {showCode ? (
-                  <pre>
-                    <code>{item.raw}</code>
-                  </pre>
-                ) : null}
-              </div>
-              <hr />
-            </Fragment>
-          ))}
+          {normalize(group.title) === activeTabHash &&
+            group.stories?.map((item) => (
+              <Fragment key={`${group.title}-${item.title}`}>
+                <p>
+                  <code>{item.title}</code>
+                </p>
+                <div className={styles.story}>
+                  <div>{item.component ? <item.component /> : null}</div>
+                  {showCode ? (
+                    <pre>
+                      <code>{item.raw}</code>
+                    </pre>
+                  ) : null}
+                </div>
+                <hr />
+              </Fragment>
+            ))}
         </div>
       ))}
     </>

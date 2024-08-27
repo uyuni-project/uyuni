@@ -16,7 +16,7 @@ export default () => {
         model["port_start"] = newModel["port_start"];
         model["port_end"] = newModel["port_end"];
       }}
-      onSubmit={() => console.log(model)}
+      onSubmit={() => Loggerhead.info(model)}
       divClass="col-md-12"
       formDirection="form-horizontal"
     >

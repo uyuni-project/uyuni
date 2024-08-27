@@ -1,9 +1,6 @@
 const fs = require("fs").promises;
 const path = require("path");
 
-// eslint-disable-next-line no-unused-vars
-const webpack = require("webpack");
-
 /** Automatically gather all imports for story files */
 module.exports = class GenerateStoriesPlugin {
   didApply = false;
@@ -17,7 +14,7 @@ module.exports = class GenerateStoriesPlugin {
   }
 
   /**
-   * @param {webpack.Compiler} compiler
+   * @param {import("webpack").Compiler} compiler
    */
   apply(compiler) {
     // See https://webpack.js.org/api/compiler-hooks/#hooks
@@ -31,7 +28,7 @@ module.exports = class GenerateStoriesPlugin {
 
   /**
    *
-   * @param {webpack.Compiler} compiler
+   * @param {import("webpack").Compiler} compiler
    * @param {Function} callback
    */
   async beforeOrWatchRun(compiler, callback) {
@@ -73,7 +70,7 @@ module.exports = class GenerateStoriesPlugin {
 };
 
 const storyTemplate = (filePath, safeName, groupName) =>
-`
+  `
 import ${safeName}_component from "${filePath}";
 import ${safeName}_raw from "${filePath}?raw";
 
@@ -87,7 +84,7 @@ export const ${safeName} = {
 `;
 
 const fileTemplate = (content) =>
-`
+  `
 /**
  * NB! This is a generated file!
  * Any changes you make here will be lost.

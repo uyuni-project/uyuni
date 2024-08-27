@@ -23,7 +23,7 @@ export default () => {
             onChange={(newModel) => {
               model["flavor"] = newModel["flavor"];
             }}
-            onSubmit={() => console.log(model)}
+            onSubmit={() => Loggerhead.info(model)}
             divClass="col-md-12"
             formDirection="form-horizontal"
           >

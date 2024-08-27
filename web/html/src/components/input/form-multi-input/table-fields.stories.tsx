@@ -23,7 +23,7 @@ export default () => {
       <Form
         model={model}
         onChange={setModel}
-        onSubmit={(result) => console.log(result)}
+        onSubmit={(result) => Loggerhead.info(result)}
         divClass="col-md-12"
         formDirection="form-horizontal"
       >
