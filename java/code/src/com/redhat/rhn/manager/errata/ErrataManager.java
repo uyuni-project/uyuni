@@ -650,7 +650,7 @@ public class ErrataManager extends BaseManager {
         OwnedErrata oErrata = new OwnedErrata();
         oErrata.setId(errata.getId());
         oErrata.setAdvisory(errata.getAdvisory());
-        return oErrata;        
+        return oErrata;
     }
 
     /**
