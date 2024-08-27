@@ -25,6 +25,16 @@ public class OwnedErrata extends ErrataOverview {
     private String locallyModified;
     private Integer published;
 
+    public OwnedErrata(){
+        super();
+    }
+    
+    public OwnedErrata(Long id, String advisory) {
+        super();
+        setId(id);
+        setAdvisory(advisory);
+    }
+
     /**
      * @param locallyModifiedIn The locallyModified to set.
      */
