@@ -597,7 +597,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess, ServerGroupType type) {
-        return createTestServer(owner, ensureOwnerAccess, type, TYPE_SERVER_MINION, new Date());
+        return createTestServer(owner, ensureOwnerAccess, type, TYPE_SERVER_NORMAL, new Date());
     }
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess, ServerGroupType type, int stype) {
@@ -607,6 +607,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private static Server createTestServer(User owner, boolean ensureOwnerAccess,
             ServerGroupType type, int stype, Date dateCreated) {
 
+        if (type.getAssociatedEntitlement().equals(EntitlementManager.SALT) && stype == TYPE_SERVER_NORMAL) {
+            stype = TYPE_SERVER_MINION;
+        }
         Server newS = createUnentitledTestServer(owner, ensureOwnerAccess, stype,
                 dateCreated);
 
@@ -662,7 +665,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         newS.addNetworkInterface(netint);
 
         ServerFactory.save(newS);
-        TestUtils.saveAndReload(newS);
+        newS = TestUtils.saveAndReload(newS);
 
 
         /* Since we added a server to the Org we need
@@ -785,7 +788,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess) {
         return createTestServer(owner, ensureOwnerAccess,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+                ServerConstants.getServerGroupTypeSaltEntitled());
     }
 
     private static Server createServer(int type) {
@@ -1351,6 +1354,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
+        ServerFactory.lookupById(proxy.getId());
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),
@@ -1413,10 +1417,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests looking up of a proxy server, assuming the proxy's FQDN is
      * in rhnServer.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServer() throws Exception {
+    public void testLookupProxyServer() {
         Server s = createTestServer(user,
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -1427,21 +1430,20 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).orElseThrow());
+        assertEquals(ServerFactory.lookupProxyServer(HOSTNAME).orElseThrow(), s);
 
         // plain hostname: imprecise lookup
         String simpleHostname = HOSTNAME.split("\\.")[0];
 
-        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).orElseThrow());
+        assertEquals(ServerFactory.lookupProxyServer(simpleHostname).orElseThrow(), s);
     }
 
     /**
      * Tests looking up of a proxy server, assuming the proxy's FQDN is
      * in rhnServer and FQDN name have different cases.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServerFQDNWithCaseName() throws Exception {
+    public void testLookupProxyServerFQDNWithCaseName() {
         Server s = createTestServer(user,
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -1454,16 +1456,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(hostCaseName).get());
+        assertEquals(ServerFactory.lookupProxyServer(hostCaseName).orElse(null), s);
     }
 
     /**
      * Tests looking up of a proxy server, assuming the proxy's FQDN is
      * in rhnServer and FQDN name with case different from the used in query.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServerFQDNIgnoreCase() throws Exception {
+    public void testLookupProxyServerFQDNIgnoreCase() {
         Server s = createTestServer(user,
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -1476,16 +1477,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(hostCaseName.toLowerCase()).get());
+        assertEquals(ServerFactory.lookupProxyServer(hostCaseName.toLowerCase()).orElse(null), s);
     }
 
     /**
      * Tests looking up of a proxy server, assuming the proxy's simple name is
      * in rhnServer.
-     * @throws Exception - if anything goes wrong.
      */
     @Test
-    public void testLookupProxyServerWithSimpleName() throws Exception {
+    public void testLookupProxyServerWithSimpleName() {
         Server s = createTestServer(user,
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -1498,9 +1498,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: imprecise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(fullyQualifiedDomainName).get());
+        assertEquals(ServerFactory.lookupProxyServer(fullyQualifiedDomainName).orElse(null), s);
         // plain hostname: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
+        assertEquals(ServerFactory.lookupProxyServer(simpleHostname).orElse(null), s);
     }
 
     @Test
@@ -1551,11 +1551,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test assigning maintenance windows to systems
-     *
-     * @throws Exception
      */
     @Test
-    public void testSetMaintenanceWindowToSystems() throws Exception {
+    public void testSetMaintenanceWindowToSystems() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         MaintenanceSchedule schedule = new MaintenanceManager().createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());

@@ -96,6 +96,14 @@ public class FormulaFactory {
     }
 
     /**
+     * Setter for {@link SystemEntitlementManager} required for testing
+     * @param mgr the entitlement manager
+     */
+    public static void setSystemEntitlementManager(SystemEntitlementManager mgr) {
+        systemEntitlementManager = mgr;
+    }
+
+    /**
      * Return a warning message in case some folder doesn't exist or have wrong access level.
      * @return a warning message if cannot access one folder. NULL if all folder are ok.
      */
