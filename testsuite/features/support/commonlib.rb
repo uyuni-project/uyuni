@@ -618,9 +618,9 @@ end
 def new_api_client
   ssl_verify = !$is_gh_validation
   if product == 'SUSE Manager'
-    ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
+    ApiTestXmlrpc.new(get_target('server').full_hostname)
   else
-    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
+    ApiTestHttp.new(get_target('server').full_hostname, ssl_verify)
   end
 end
 
