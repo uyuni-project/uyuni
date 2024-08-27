@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -42,7 +43,8 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
         // Create package
         // Create a set of System IDs
         for (int i = 0; i < 5; i++) {
-            Server s = ServerFactoryTest.createTestServer(user, true);
+            Server s = ServerFactoryTest.createTestServer(user, true,
+                    ServerConstants.getServerGroupTypeEnterpriseEntitled());
             updateMe.addElement(s.getId());
             ErrataFactoryTest.updateNeedsErrataCache(
                     e.getPackages().iterator().next().getId(),
