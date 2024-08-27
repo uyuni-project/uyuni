@@ -364,19 +364,16 @@ def is_orphaned_rpm(package_id: int) -> bool:
         # Prevent possible SQL injections
         raise ValueError("package_id must be an integer")
 
-    query = f"""
+    query = """
     SELECT EXISTS (
       SELECT 1 FROM rhnPackage p
-      JOIN rhnChannelPackage c ON c.package_id = p.id WHERE p.id = {package_id}
+      JOIN rhnChannelPackage c ON c.package_id = p.id WHERE p.id = :package_id
     )
     """
 
     h = rhnSQL.prepare(query)
-    h.execute()
+    h.execute(package_id=package_id)
     row = h.fetchone_dict()
-    if not row:
-        log(1, "RPM not in DB")
-        return False
     # Package is an orphan when not associated with any channel
     return not row.get("exists", True)
 
