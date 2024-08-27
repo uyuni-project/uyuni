@@ -37,6 +37,7 @@ import com.redhat.rhn.frontend.xmlrpc.PtfPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -100,7 +101,12 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        TaskomaticApi taskomaticApi = new TaskomaticApi();
+        TaskomaticApi taskomaticApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionExecution(Action action) {
+                // do nothing for test
+            }
+        };
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
         CloudPaygManager paygMgr = new TestCloudPaygManagerBuilder().build();
@@ -118,6 +124,8 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(unentitler, entitler);
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+
+        ActionManager.setTaskomaticApi(taskomaticApi);
 
         handler = new SystemHandler(taskomaticApi, xmlRpcHelper, entitlementManager, systemManager, groupManager,
             new TestCloudPaygManagerBuilder().build(), new AttestationManager());
