@@ -562,9 +562,10 @@ When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on t
   files.split(/, */).each do |file|
     script += "    - '#{file}'\n"
   end
-  path = generate_temp_file('top.sls', script)
-  inject_salt_pillar_file(path, 'top.sls')
-  `rm #{path}`
+  temp_file = generate_temp_file('top.sls', script)
+  inject_salt_pillar_file(temp_file.path, 'top.sls')
+  temp_file.close
+  temp_file.unlink
 end
 
 When(/^I install the package download endpoint pillar file on the server$/) do

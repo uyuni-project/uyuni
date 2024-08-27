@@ -7,20 +7,16 @@ require_relative 'network_utils'
 # The RemoteNode class represents a remote node.
 # It is used to interact with the remote node through SSH.
 class RemoteNode
-  attr_accessor :host, :hostname, :port, :user, :password, :target, :full_hostname, :private_ip, :public_ip, :private_interface, :public_interface, :os_family, :os_version, :has_mgrctl
+  attr_accessor :host, :hostname, :port, :target, :full_hostname, :private_ip, :public_ip, :private_interface, :public_interface, :os_family, :os_version, :has_mgrctl
 
   # Initializes a new remote node.
   #
   # @param host [String] The hostname of the remote node.
   # @param port [Integer] The port to use for the SSH connection.
-  # @param user [String] The user to use for the SSH connection.
-  # @param password [String] The password to use for the SSH connection
   # @return [RemoteNode] The remote node.
-  def initialize(host, port: 22, user: 'root', password: nil)
+  def initialize(host, port: 22)
     @host = host
     @port = port
-    @user = user
-    @password = password
     puts "Initializing a remote node for '#{@host}'."
     raise(NotImplementedError, "Host #{@host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? @host
 
@@ -31,7 +27,7 @@ class RemoteNode
 
     @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
     # Remove /etc/motd, or any output from run will contain the content of /etc/motd
-    ssh('rm -f /etc/motd && touch /etc/motd', host: @target)
+    ssh('rm -f /etc/motd && touch /etc/motd', host: @target) unless @host == 'localhost'
     out, _err, _code = ssh('hostname', host: @target)
     @hostname = out.strip
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
@@ -70,7 +66,7 @@ class RemoteNode
   # @param host [String] The hostname of the remote node.
   # @return [Array<String, String, Integer>] The exit code and the output.
   def ssh(command, host: @full_hostname)
-    ssh_command(command, host, port: @port, user: @user, password: @password)
+    ssh_command(command, host, port: @port)
   end
 
   # Copies a file from the local machine to the remote node.
@@ -79,7 +75,7 @@ class RemoteNode
   # @param remote_path [String] The path in the destination.
   # @param host [String] The hostname of the remote node.
   def scp(local_path, remote_path, host: @full_hostname)
-    scp_command(local_path, remote_path, host, port: @port, user: @user, password: @password)
+    scp_command(local_path, remote_path, host, port: @port)
   end
 
   # Runs a command and returns the output, error, and exit code.
@@ -89,14 +85,13 @@ class RemoteNode
   # @param separated_results [Boolean] Whether the results should be stored separately. Defaults to false.
   # @param check_errors [Boolean] Whether to check for errors or not. Defaults to true.
   # @param timeout [Integer] The timeout to be used, in seconds.
-  # @param user [String] The user to be used to run the command.
   # @param successcodes [Array<Integer>] An array with the values to be accepted as success codes from the command run.
   # @param buffer_size [Integer] The maximum buffer size in bytes.
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
-  def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
+  def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
     cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
-    run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+    run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
   # Runs a command locally and returns the output, error, and exit code.
@@ -105,13 +100,12 @@ class RemoteNode
   # @param separated_results [Boolean] Whether the results should be stored separately.
   # @param check_errors [Boolean] Whether to check for errors or not.
   # @param timeout [Integer] The timeout to be used, in seconds.
-  # @param user [String] The user to be used to run the command.
   # @param successcodes [Array<Integer>] An array with the values to be accepted as success codes from the command run.
   # @param buffer_size [Integer] The maximum buffer size in bytes.
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, Integer>] The output, error, and exit code.
-  def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    out, err, code = ssh_command(cmd, @target, user: user, timeout: timeout, buffer_size: buffer_size)
+  def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
+    out, err, code = ssh_command(cmd, @target, timeout: timeout, buffer_size: buffer_size)
     out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
     raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
@@ -180,7 +174,7 @@ class RemoteNode
       tmp_file = File.join(tmp_folder.strip, File.basename(test_runner_file))
       success = get_target('localhost').scp(test_runner_file, tmp_file, host: @full_hostname)
       if success
-        _out, code = run_local("mgrctl cp --user #{user} #{tmp_file} server:#{remote_node_file}")
+        _out, code = run_local("mgrctl cp #{tmp_file} server:#{remote_node_file}")
         raise ScriptError, "Failed to copy #{tmp_file} to container" unless code.zero?
       end
       run_local("rm -r #{tmp_folder}")
@@ -199,7 +193,7 @@ class RemoteNode
     if @has_mgrctl
       tmp_folder, _code = run_local('mktemp -d')
       tmp_file = File.join(tmp_folder.strip, File.basename(remote_node_file))
-      _out, code = run_local("mgrctl cp --user #{user} server:#{remote_node_file} #{tmp_file}")
+      _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}")
       raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
 
       success = scp(tmp_file, test_runner_file, host: get_target('localhost').full_hostname)
@@ -300,14 +294,28 @@ class RemoteNode
 
   # Obtain the Public IP for a node
   def client_public_ip
-    %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
-      output, code = run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
-      next unless code.zero?
+    if @os_family == 'macOS'
+      %w[en0 en1 en2 en3 en4 en5 en6 en7].each do |dev|
+        output, code = run_local("ipconfig getifaddr #{dev}", check_errors: false)
 
-      @public_interface = dev
-      return '' if output.empty?
+        next unless code.zero?
 
-      return output.split[1].split('/').first
+        @public_interface = dev
+        return '' if output.empty?
+
+        return output.strip
+      end
+    else
+      %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
+        output, code = run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
+
+        next unless code.zero?
+
+        @public_interface = dev
+        return '' if output.empty?
+
+        return output.split[1].split('/').first
+      end
     end
     raise ArgumentError, "Cannot resolve public ip of #{host}"
   end
@@ -316,17 +324,27 @@ class RemoteNode
   # We get these data decoding the values in '/etc/os-release'
   def get_os_version
     os_family_raw, code = run('grep "^ID=" /etc/os-release', check_errors: false)
+    os_family_raw, code = run('sw_vers --productName', check_errors: false) if code.nonzero?
     return nil, nil unless code.zero?
 
-    os_family = os_family_raw.strip.split('=')[1]
+    os_family = os_family_raw.strip
+    os_family = os_family.split('=')[1] unless os_family == 'macOS'
     return nil, nil if os_family.nil?
 
     os_family.delete! '"'
-    os_version_raw, code = run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
-    return nil, nil unless code.zero?
 
-    os_version = os_version_raw.strip.split('=')[1]
-    return nil, nil if os_version.nil?
+    if os_family == 'macOS'
+      os_version_raw, code = run('sw_vers --productVersion', check_errors: false)
+      return nil, nil unless code.zero?
+
+      os_version = os_version_raw.strip
+    else
+      os_version_raw, code = run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
+      return nil, nil unless code.zero?
+
+      os_version = os_version_raw.strip.split('=')[1]
+      return nil, nil if os_version.nil?
+    end
 
     os_version.delete! '"'
     # on SLES, we need to replace the dot with '-SP'
