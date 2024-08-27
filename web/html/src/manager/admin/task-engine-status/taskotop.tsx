@@ -2,7 +2,7 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages";
+import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages/messages";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";

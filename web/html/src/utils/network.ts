@@ -1,4 +1,4 @@
-import { MessageType, Utils as MessagesUtils } from "components/messages";
+import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { showErrorToastr } from "components/toastr";
 
 import { Utils } from "utils/functions";

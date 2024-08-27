@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { ActionChain } from "components/action-schedule";
 import { TopPanel } from "components/panels/TopPanel";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import { SimpleActionApi } from "../../SimpleActionApi";
 import { NetworkProperties } from "../network-properties";

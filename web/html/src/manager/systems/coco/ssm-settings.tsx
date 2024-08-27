@@ -2,7 +2,7 @@ import * as React from "react";
 
 import CoCoSettingsForm from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
-import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SystemData, TargetSystems } from "components/target-systems";

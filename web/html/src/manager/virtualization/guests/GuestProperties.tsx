@@ -1,14 +1,14 @@
 import * as React from "react";
 
 import { ActionChain } from "components/action-schedule";
-import { Check } from "components/input/Check";
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
-import { MessageType } from "components/messages";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Select } from "components/input";
+import { Check } from "components/input/check/Check";
+import { Text } from "components/input/text/Text";
+import { MessageType } from "components/messages/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 import Validation from "components/validation";
 
 import { VirtualizationPoolCapsApi } from "../pools/virtualization-pools-capabilities-api";

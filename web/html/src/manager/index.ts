@@ -32,19 +32,21 @@ import Salt from "./salt";
 import ScheduleOptions from "./schedule-options";
 import Shared from "./shared";
 import Highstate from "./state";
+import Storybook from "./storybook";
 import Systems from "./systems";
 import ActivationKeys from "./systems/activation-key";
 import Virtualization from "./virtualization";
 
 const pages = {
+  ...ActivationKeys,
   ...Admin,
+  ...Appstreams,
   ...Audit,
   ...ContentManagement,
   ...Errors,
   ...Groups,
   ...Header,
   ...Highstate,
-  ...RecurringActions,
   ...Images,
   ...Login,
   ...MaintenanceWindows,
@@ -53,16 +55,21 @@ const pages = {
   ...Organizations,
   ...Packages,
   ...Proxy,
+  ...RecurringActions,
   ...Salt,
   ...ScheduleOptions,
   ...Shared,
   ...Systems,
+  ...Storybook,
   ...Virtualization,
-  ...Appstreams,
-  ...ActivationKeys,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {
   SpaRenderer.addReactApp(pageName);
+
+  if (!pages[pageName]) {
+    throw new RangeError(`Found no page with name "${pageName}", did you bind the renderer in \`pages\`?`);
+  }
+
   return pages[pageName]();
 };

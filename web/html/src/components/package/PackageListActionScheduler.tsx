@@ -3,7 +3,7 @@ import * as React from "react";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink } from "components/links";
-import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
