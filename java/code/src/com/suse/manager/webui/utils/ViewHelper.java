@@ -110,7 +110,8 @@ public enum ViewHelper {
         "/rhn/errata/manage/CloneErrata.do",
         "/rhn/admin/setup/ProxySettings.do",
         "/rhn/admin/setup/MirrorCredentials.do",
-        "/rhn/manager/admin/setup/payg"
+        "/rhn/manager/admin/setup/payg",
+        "/rhn/manager/storybook"
     );
 
     ViewHelper() { }

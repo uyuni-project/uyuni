@@ -62,6 +62,7 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
+import com.suse.manager.webui.controllers.StorybookController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.activationkeys.ActivationKeysController;
 import com.suse.manager.webui.controllers.activationkeys.ActivationKeysViewsController;
@@ -248,6 +249,9 @@ public class Router implements SparkApplication {
 
         // Saltboot
         SaltbootController.initRoutes();
+
+        // Storybook
+        StorybookController.initRoutes(jade);
 
         // if the calls above opened Hibernate session, close it now
         HibernateFactory.closeSession();
