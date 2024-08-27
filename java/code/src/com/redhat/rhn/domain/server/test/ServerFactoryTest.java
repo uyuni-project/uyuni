@@ -146,7 +146,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String HOSTNAME = "foo.bar.com";
 
     private static final SystemQuery SYSTEM_QUERY = new TestSystemQuery();
-    private static final SaltApi SALT_API = new TestSaltApi();
+    private static final SaltApi SALT_API = new TestSaltApi() {
+        public void updateLibvirtEngine(MinionServer minion) {
+        }
+        public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+            return Optional.empty();
+        }
+    };
     private static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
     private static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
     private static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SALT_API);
@@ -603,7 +609,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess, ServerGroupType type) {
-        return createTestServer(owner, ensureOwnerAccess, type, TYPE_SERVER_MINION, new Date());
+        return createTestServer(owner, ensureOwnerAccess, type, TYPE_SERVER_NORMAL, new Date());
     }
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess, ServerGroupType type, int stype) {
@@ -613,6 +619,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private static Server createTestServer(User owner, boolean ensureOwnerAccess,
             ServerGroupType type, int stype, Date dateCreated) {
 
+        if (type.getAssociatedEntitlement().equals(EntitlementManager.SALT) && stype == TYPE_SERVER_NORMAL) {
+            stype = TYPE_SERVER_MINION;
+        }
         Server newS = createUnentitledTestServer(owner, ensureOwnerAccess, stype,
                 dateCreated);
 
@@ -668,7 +677,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         newS.addNetworkInterface(netint);
 
         ServerFactory.save(newS);
-        TestUtils.saveAndReload(newS);
+        newS = TestUtils.saveAndReload(newS);
 
 
         /* Since we added a server to the Org we need
@@ -791,7 +800,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess) {
         return createTestServer(owner, ensureOwnerAccess,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+                ServerConstants.getServerGroupTypeSaltEntitled());
     }
 
     private static Server createServer(int type) {
@@ -1357,6 +1366,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
+        ServerFactory.lookupById(proxy.getId());
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),

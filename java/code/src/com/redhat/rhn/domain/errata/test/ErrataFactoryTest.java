@@ -92,7 +92,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         //add bugs, keywords, and packages so we have something to work with...
         e.addBug(ErrataManagerTest.createTestBug(42L, "test bug 1"));
         e.addBug(ErrataManagerTest.createTestBug(43L, "test bug 2"));
-        e.addPackage(PackageTest.createTestPackage(user.getOrg()));
+        Package initPack = PackageTest.createTestPackage(user.getOrg(), "init-package-name");
+        e.addPackage(initPack);
         e.addKeyword("foo");
         e.addKeyword("bar");
         //save changes
@@ -101,11 +102,11 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setOrg(user.getOrg());
 
-        Package errataPack = PackageTest.createTestPackage(user.getOrg());
-        Package chanPack = PackageTest.createTestPackage(user.getOrg());
+        Package errataPack = PackageTest.createTestPackage(user.getOrg(), "errata-package-name");
+        Package chanPack = PackageTest.createTestPackage(user.getOrg(), "channel-package-name");
         //we have to set the 2nd package to a different EVR to not violate a
         //      unique constraint
-        PackageEvr evr =  PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983",
+        PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983",
                 errataPack.getPackageEvr().getPackageType());
         chanPack.setPackageName(errataPack.getPackageName());
         chanPack.setPackageEvr(evr);
@@ -113,15 +114,21 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         channel.addPackage(chanPack);
         e.addPackage(errataPack);
 
+        HibernateFactory.getSession().flush();
+
         List<Errata> errataList = new ArrayList<>();
         errataList.add(e);
         List<Errata> addedList = ErrataFactory.addToChannel(errataList, channel, user, false);
         Errata added = addedList.get(0);
         assertTrue(channel.getPackages().contains(errataPack));
         List<ErrataFile> errataFile =
-            ErrataFactory.lookupErrataFilesByErrataAndFileType(added.getId(), "RPM");
-        assertTrue(errataFile.get(0).getPackages().contains(errataPack));
+                ErrataFactory.lookupErrataFilesByErrataAndFileType(added.getId(), "RPM");
 
+        if (errataFile.stream()
+                .flatMap(ef -> ef.getPackages().stream())
+                .noneMatch(p -> p.equals(errataPack))) {
+            fail("Package not found");
+        }
     }
 
     @Test

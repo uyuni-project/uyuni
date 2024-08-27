@@ -108,7 +108,7 @@ import java.util.Set;
 public class KickstartScheduleCommand extends BaseSystemOperation {
 
     private static Logger log = LogManager.getLogger(KickstartScheduleCommand.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     public  static final String DHCP_NETWORK_TYPE = "dhcp";
     public  static final String LINK_NETWORK_TYPE = "link";
 
@@ -635,7 +635,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         ActionFactory.save(kickstartAction);
-        TASKOMATIC_API.scheduleActionExecution(kickstartAction);
+        taskomaticApi.scheduleActionExecution(kickstartAction);
         log.debug("** Created ksaction: {}", kickstartAction.getId());
 
         this.scheduledAction = kickstartAction;
@@ -815,7 +815,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         rebootAction.setName(rebootAction.getActionType().getName());
         log.debug("** saving reboot action: {}", rebootAction.getName());
         ActionFactory.save(rebootAction);
-        TASKOMATIC_API.scheduleActionExecution(rebootAction);
+        taskomaticApi.scheduleActionExecution(rebootAction);
         log.debug("** Saved rebootAction: {}", rebootAction.getId());
 
         return rebootAction;
@@ -1501,5 +1501,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
         }
         return null;
+    }
+
+    public void setTaskomaticApi(TaskomaticApi testApiIn) {
+        taskomaticApi = testApiIn;
     }
 }

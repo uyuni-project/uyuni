@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -40,15 +41,16 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -68,9 +70,18 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         builder = new GuestBuilder(user);
-        SaltApi saltApi = new TestSaltApi();
+        SaltApi saltApi = new TestSaltApi() {
+            public void updateLibvirtEngine(MinionServer minion) {
+            }
+            public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+                return Optional.empty();
+            }
+       };
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-        VirtManager virtManager = new TestVirtManager();
+        VirtManager virtManager = new TestVirtManager() {
+            public void updateLibvirtEngine(MinionServer minion) {
+            };
+        };
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
@@ -299,10 +310,10 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
-        VirtualInstance fromDb = (VirtualInstance) HibernateFactory.getSession()
-                .createCriteria(VirtualInstance.class)
-                .add(Restrictions.eq("hostSystem", host))
-                .add(Restrictions.eq("guestSystem", null))
+        VirtualInstance fromDb = HibernateFactory.getSession()
+                .createQuery("from VirtualInstance where hostSystem = :host and guestSystem IS NULL",
+                        VirtualInstance.class)
+                .setParameter("host", host)
                 .uniqueResult();
 
         VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
