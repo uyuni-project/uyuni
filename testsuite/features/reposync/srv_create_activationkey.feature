@@ -30,7 +30,7 @@
 # If the DEBLIKE-KEY fails to be created
 # - features/secondary/min_debike_salt.feature
 # If the SUSE-SSH-KEY-x86_64 fails to be created
-# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/minssh_tunnel.feature
 
 Feature: Create activation keys
   In order to register systems to the spacewalk server
