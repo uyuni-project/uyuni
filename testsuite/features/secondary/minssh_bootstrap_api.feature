@@ -26,7 +26,7 @@ Feature: Register a salt-ssh system via API
     Then "ssh_minion" should not be registered
 
 @proxy
-  Scenario: block direct access from server to sshminion to test proxy as jumphost
+  Scenario: Block direct access from server to sshminion to test proxy as jumphost
     Given I block connections from "server" on "ssh_minion"
 
   Scenario: Bootstrap a SLES SSH minion via API
@@ -73,5 +73,5 @@ Feature: Register a salt-ssh system via API
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @proxy
-  Scenario: cleanup and flush the firewall rules
+  Scenario: Cleanup and flush the firewall rules
     When I flush firewall on "ssh_minion"
