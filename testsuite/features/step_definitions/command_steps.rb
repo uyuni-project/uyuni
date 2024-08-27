@@ -631,11 +631,12 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   script = "base:\n" \
            "  '#{system_name}':\n" \
            "    - user_defined_state\n"
-  path = generate_temp_file('top.sls', script)
-  success = file_inject(get_target('server'), path, '/srv/salt/top.sls')
+  temp_file = generate_temp_file('top.sls', script)
+  success = file_inject(get_target('server'), temp_file.path, '/srv/salt/top.sls')
+  temp_file.close
+  temp_file.unlink
   raise ScriptError, 'File injection failed' unless success
 
-  `rm #{path}`
   # make both files readeable by salt
   get_target('server').run('chgrp salt /srv/salt/*')
 end
@@ -1149,11 +1150,13 @@ When(/^I configure the proxy$/) do
       "SSL_EMAIL=galaxy-noise@suse.de\n" \
       "SSL_CNAME_ASK=proxy.example.org\n"
     end
-  path = generate_temp_file('config-answers.txt', settings)
-  step "I copy \"#{path}\" to \"proxy\""
-  `rm #{path}`
+  temp_file = generate_temp_file('config-answers.txt', settings)
+  step "I copy \"#{temp_file.path}\" to \"proxy\""
+  filename = File.basename(temp_file.path)
+  temp_file.close
+  temp_file.unlink
+
   # perform the configuration
-  filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
   get_target('proxy').run(cmd, timeout: proxy_timeout, verbose: true)
