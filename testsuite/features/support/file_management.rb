@@ -64,12 +64,11 @@ end
 #
 # @param name [String] The name of the temporary file.
 # @param content [String] The content to be written to the temporary file.
-# @return [String] The path of the generated temporary file.
+# @return [File] The Tempfile instance.
 def generate_temp_file(name, content)
-  Tempfile.open(name) do |file|
-    file.write(content)
-    return file.path
-  end
+  file = Tempfile.new(name)
+  file.write(content)
+  file
 end
 
 # Create salt pillar file in the default pillar_roots location
@@ -84,7 +83,7 @@ def inject_salt_pillar_file(source, file)
 
   # make file readable by salt
   get_target('server').run("chgrp salt #{dest}")
-  return_code
+  success
 end
 
 # Reads the value of a variable from a given file on a given host
