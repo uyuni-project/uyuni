@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -30,6 +30,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,9 +48,10 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
     }
 
     @Test
-    public void shouldAddTraditionalStackDeprecationMessage() throws Exception {
+    public void shouldAddTraditionalStackDeprecationMessage() {
         // The server is created as a traditional system (enterprise entitled)
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(user, false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         HttpServletRequest request = new RhnMockHttpServletRequest();
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, server);
@@ -61,11 +63,11 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
         ActionMessage message = globalMessagesIterator.next();
         assertEquals(SystemDetailsMessageFilter.TRADITIONAL_STACK_MESSAGE_KEY, message.getKey());
         // Ensure only one message is present
-        assertFalse(globalMessagesIterator.hasNext());
+        Assertions.assertFalse(globalMessagesIterator.hasNext());
     }
 
     @Test
-    public void shouldNotAddTraditionalStackDeprecationMessage() throws Exception {
+    public void shouldNotAddTraditionalStackDeprecationMessage() {
         // The server is created as a salt system (salt entitled)
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
         HttpServletRequest request = new RhnMockHttpServletRequest();
