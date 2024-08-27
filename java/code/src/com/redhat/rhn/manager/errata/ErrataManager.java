@@ -310,7 +310,7 @@ public class ErrataManager extends BaseManager {
         removeErratumAndPackagesFromChannel(filteredErrata, srcErrata, tgtChannel, user);
         List<OwnedErrata> emptyChannelErrata = srcErrata.stream()
             .filter(t -> t.getChannels().isEmpty())
-            .map(e -> new OwnedErrata(e.getId(), e.getAdvisory()))
+            .map(ErrataManager::buildOwnedErrataFromErrata)
             .collect(Collectors.toList());
         ErrataManager.deleteErrata(user, emptyChannelErrata);
     }
@@ -641,9 +641,16 @@ public class ErrataManager extends BaseManager {
      */
     public static void deleteErratum(User user, Errata errata) {
         List<OwnedErrata> eids = new ArrayList<>();
-        OwnedErrata oErrata = new OwnedErrata(errata.getId(), errata.getAdvisory());
+        OwnedErrata oErrata = buildOwnedErrataFromErrata(errata);
         eids.add(oErrata);
         deleteErrata(user, eids);
+    }
+
+    private static OwnedErrata buildOwnedErrataFromErrata(Errata errata) {
+        OwnedErrata oErrata = new OwnedErrata();
+        oErrata.setId(errata.getId());
+        oErrata.setAdvisory(errata.getAdvisory());
+        return oErrata;        
     }
 
     /**
