@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -56,6 +57,7 @@ import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -283,7 +285,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         return testCommandExecution(server, ksdata, null, null, null);
     }
 
-    public static void setupChannelForKickstarting(Channel c) throws Exception {
+    public static void setupChannelForKickstarting(Channel c) {
 
         PackageManagerTest.addPackageToChannel("auto-kickstart-TestBootImage", c);
         Package p = PackageManagerTest.
@@ -308,6 +310,13 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         KickstartScheduleCommand cmd = new
                 KickstartScheduleCommand(server.getId(), ksdata.getId(),
                         user, new Date(), "rhn.webdev.redhat.com");
+        TaskomaticApi testApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionExecution(Action action) {
+                // do not call API in a test
+            }
+        };
+        KickstartScheduleCommand.setTaskomaticApi(testApi);
 
         PackageManagerTest.addPackageToSystemAndChannel(
                 ConfigDefaults.get().getKickstartPackageNames().get(0), server, c);
@@ -315,7 +324,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         cmd.setServerProfileId(otherServerId);
         cmd.setProfileId(profileId);
         ValidatorError ve = cmd.store();
-        assertEquals(ve.getKey(), "kickstart.schedule.noup2date");
+        assertEquals("kickstart.schedule.noup2date", ve.getKey());
         PackageManagerTest.
         addUp2dateToSystemAndChannel(user, server,
                 KickstartScheduleCommand.UP2DATE_VERSION, c);
