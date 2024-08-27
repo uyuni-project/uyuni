@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -56,6 +57,17 @@ import java.util.Map;
  */
 public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
 
+    private static final TaskomaticApi TASKO_TEST_API = new TaskomaticApi() {
+        @Override
+        public void scheduleActionChainExecution(ActionChain actionchain) {
+            // do not call API in a test
+        }
+        @Override
+        public void scheduleActionExecution(Action action) {
+            // do not call API in a test
+        }
+    };
+
     /**
      * {@inheritDoc}
      */
@@ -64,6 +76,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        ActionChainManager.setTaskomaticApi(TASKO_TEST_API);
     }
 
     /**

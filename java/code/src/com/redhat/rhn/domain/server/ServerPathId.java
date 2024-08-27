@@ -92,9 +92,9 @@ public class ServerPathId implements Serializable {
         if (!(other instanceof ServerPathId castOther)) {
             return false;
         }
-        return new EqualsBuilder().append(getServer(), castOther.getServer())
-                .append(getProxyServer(), castOther.getProxyServer())
-                .isEquals();
+        boolean equals1 = new EqualsBuilder().append(getServer(), castOther.getServer()).isEquals();
+        boolean equals2 = new EqualsBuilder().append(getProxyServer(), castOther.getProxyServer()).isEquals();
+        return equals1 && equals2;
     }
 
     /**

@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -88,7 +89,12 @@ import java.util.stream.Collectors;
  */
 @ExtendWith(JUnit5Mockery.class)
 public class ServerConfigHandlerTest extends BaseHandlerTestCase {
-    private final TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private final TaskomaticApi taskomaticApi = new TaskomaticApi() {
+        @Override
+        public void scheduleActionExecution(Action action) {
+            // disable for testing
+        }
+    };
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
@@ -111,6 +117,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testDeployConfiguration() {
+        ActionManager.setTaskomaticApi(taskomaticApi);
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.normal());
@@ -419,7 +426,8 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testAddPath() {
-        Server srv1 = ServerFactoryTest.createTestServer(regular, true);
+        Server srv1 = ServerFactoryTest.createTestServer(regular, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
         String contents = "HAHAHAHA";
@@ -466,7 +474,8 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListFiles() {
-        Server srv1 = ServerFactoryTest.createTestServer(regular, true);
+        Server srv1 = ServerFactoryTest.createTestServer(regular, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         for (int j = 0; j < 2; j++) {
             boolean local = j % 2 == 0;
@@ -513,7 +522,8 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testRemovePaths() {
-        Server srv1 = ServerFactoryTest.createTestServer(regular, true);
+        Server srv1 = ServerFactoryTest.createTestServer(regular, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         for (int i = 0; i < 2; i++) {
             boolean isLocal = i % 2 == 0;

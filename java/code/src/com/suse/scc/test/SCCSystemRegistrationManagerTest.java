@@ -58,9 +58,9 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -349,7 +349,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
         host.setHostname("LibVirtHost");
         host.setCpu(CPUTest.createTestCpu(host));
-        host.getGuests().stream()
+        host.getGuests()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("qemu")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -372,7 +372,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system -> new SCCSystemCredentialsJson(
                                         system.getLogin(),
                                         system.getPassword(),
-                                        new Random().nextLong())
+                                        new SecureRandom().nextLong())
                                 )
                                 .collect(Collectors.toList())
                 );
@@ -400,7 +400,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals(2, hostProps.getSockets());
                 assertEquals(20, hostProps.getCores());
                 assertEquals(40, hostProps.getThreads());
-                assertEquals("i386", hostProps.getArch());
+                assertEquals("x86_64", hostProps.getArch());
                 assertEquals("KVM", hostProps.getType());
                 assertEquals(1024, hostProps.getRamMb());
                 assertEquals(2, virtHostInfo.get(0).getSystems().size());
@@ -437,7 +437,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         sysEntMgr.setBaseEntitlement(host, EntitlementManager.FOREIGN);
         host.setHostname("VMwareHost");
         host.setCpu(CPUTest.createTestCpu(host));
-        host.getGuests().stream()
+        host.getGuests()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("vmware")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -459,7 +459,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system -> new SCCSystemCredentialsJson(
                                         system.getLogin(),
                                         system.getPassword(),
-                                        new Random().nextLong())
+                                        new SecureRandom().nextLong())
                                 )
                                 .collect(Collectors.toList())
                 );
@@ -487,7 +487,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals(2, hostProps.getSockets());
                 assertEquals(20, hostProps.getCores());
                 assertEquals(40, hostProps.getThreads());
-                assertEquals("i386", hostProps.getArch());
+                assertEquals("x86_64", hostProps.getArch());
                 assertEquals("VMware", hostProps.getType());
                 assertEquals(1024, hostProps.getRamMb());
                 assertEquals(2, virtHostInfo.get(0).getSystems().size());
@@ -539,7 +539,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         cpu.setNrThread(0L);
         host.setCpu(cpu);
         host.setRam(0L);
-        host.getGuests().stream()
+        host.getGuests()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("aws_nitro")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -561,7 +561,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                                 .map(system -> new SCCSystemCredentialsJson(
                                         system.getLogin(),
                                         system.getPassword(),
-                                        new Random().nextLong())
+                                        new SecureRandom().nextLong())
                                 )
                                 .collect(Collectors.toList())
                 );
@@ -589,7 +589,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals(0, hostProps.getSockets());
                 assertEquals(0, hostProps.getCores());
                 assertEquals(0, hostProps.getThreads());
-                assertEquals("i386", hostProps.getArch());
+                assertEquals("x86_64", hostProps.getArch());
                 assertEquals("Nitro", hostProps.getType());
                 assertEquals(0, hostProps.getRamMb());
                 assertEquals(2, virtHostInfo.get(0).getSystems().size());

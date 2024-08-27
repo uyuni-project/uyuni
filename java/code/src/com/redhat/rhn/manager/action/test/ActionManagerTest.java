@@ -68,6 +68,7 @@ import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -145,7 +146,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = LogManager.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
     private final SystemQuery systemQuery = new TestSystemQuery();
-    private final SaltApi saltApi = new TestSaltApi();
+    private final SaltApi saltApi = new TestSaltApi() {
+        @Override
+        public void deleteKey(String minionId) {
+            // do not call API in a test
+        }
+    };
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
@@ -387,8 +393,15 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSimpleCancelActions() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
         Action parent = createActionWithServerActions(user, 1);
-        List actionList = createActionList(user, new Action [] {parent});
+        List<Action> actionList = createActionList(user, parent);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
 
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1);
@@ -474,7 +487,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                             return MinionServerFactoryTest.createTestMinionServer(user);
                         }
                         else {
-                            return ServerFactoryTest.createTestServer(user, true);
+                            return ServerFactoryTest.createTestServer(user, true,
+                                    ServerConstants.getServerGroupTypeEnterpriseEntitled());
                         }
                     }
                     catch (Exception e) {
@@ -521,13 +535,20 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCancelActionWithChildren() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
         child.setPrerequisite(parent);
-        List actionList = createActionList(user, new Action [] {parent});
+        List<Action> actionList = createActionList(user, parent);
 
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 2);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
+
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent, 0);
         assertActionsForUser(user, 2); // shouldn't have been deleted
@@ -535,6 +556,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCancelActionWithMultipleServerActions() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
+
         Action parent = createActionWithServerActions(user, 2);
         List<Action> actionList = Collections.singletonList(parent);
 
@@ -587,7 +614,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testCancelActionWithFailedPrerequisite() {
+    public void testCancelActionWithFailedPrerequisite() throws TaskomaticApiException {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
         Server first = ServerFactoryTest.createTestServer(user, true);
         Server second = ServerFactoryTest.createTestServer(user, true);
         List<Server> servers = List.of(first, second);
@@ -619,6 +649,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             () -> ActionManager.cancelActions(user, actionsToCancel)
         );
 
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(Map.of(actionsToCancel.get(0), Set.of(first))));
+        } });
+
         // Should cancel, first server has a failed prerequisite
         Assertions.assertDoesNotThrow(
             () -> ActionManager.cancelActions(user, actionsToCancel, List.of(first.getId()))
@@ -648,6 +682,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testComplexHierarchy() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
         Action parent1 = createActionWithServerActions(user, 3);
         for (int i = 0; i < 9; i++) {
             Action child = createActionWithServerActions(user, 2);
@@ -660,11 +697,14 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
         assertServerActionCount(user, 42);
 
-        List actionList = createActionList(user, new Action [] {parent1, parent2});
+        List<Action> actionList = createActionList(user, parent1, parent2);
 
         assertServerActionCount(parent1, 3);
         assertActionsForUser(user, 20);
 
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent1, 0);
         assertActionsForUser(user, 20); // shouldn't have been deleted
@@ -674,6 +714,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCancelKickstartAction() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
         Session session = HibernateFactory.getSession();
         Action parentAction = createActionWithServerActions(user, 1);
         Server server = parentAction.getServerActions().iterator().next()
@@ -687,18 +729,21 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndFlush(ksSession);
         ksSession = reload(ksSession);
 
-        List actionList = createActionList(user, new Action [] {parentAction});
+        List<Action> actionList = createActionList(user, parentAction);
 
-        Query kickstartSessions = session.createQuery(
-                "from KickstartSession ks where ks.action = :action");
+        Query<KickstartSession> kickstartSessions = session.createQuery(
+                "from KickstartSession ks where ks.action = :action", KickstartSession.class);
         kickstartSessions.setParameter("action", parentAction);
-        List results = kickstartSessions.list();
+        List<KickstartSession> results = kickstartSessions.list();
         assertEquals(1, results.size());
 
         assertEquals(1, ksSession.getHistory().size());
-        KickstartSessionHistory history =
-            (KickstartSessionHistory)ksSession.getHistory().iterator().next();
+        KickstartSessionHistory history = ksSession.getHistory().iterator().next();
         assertEquals("created", history.getState().getLabel());
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
+        } });
 
         ActionManager.cancelActions(user, actionList);
 

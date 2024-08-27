@@ -87,6 +87,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         for (ChildChannelDto childIn : children) {
             if (childIn.getSubscribed()) {
                 found = true;
+                break;
             }
         }
         Assertions.assertTrue(found, "Enabled child not found.");
@@ -94,7 +95,6 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getAttribute(SystemChannelsAction.BASE_CHANNELS));
         assertNotNull(request.getAttribute(SystemChannelsAction.CUSTOM_BASE_CHANNELS));
         assertNotNull(form.get(SystemChannelsAction.NEW_BASE_CHANNEL_ID));
-
     }
 
     @Test
@@ -119,10 +119,10 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(SystemChannelsAction.NEW_BASE_CHANNEL_ID,
                 newBase.getId().toString());
         actionPerform();
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertEquals(newBase.getId(), server.getBaseChannel().getId());
-        verifyActionMessage("sdc.channels.edit.base_channel_updated");
-
+        verifyActionMessages(new String[]{"sdc.channels.edit.base_channel_updated",
+                "sdc.channels.edit.deploy.warning"});
     }
 
     @Test
@@ -130,10 +130,10 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         addDispatchCall("sdc.channels.confirmNewBase.modifyBaseSoftwareChannel");
         addRequestParameter(SystemChannelsAction.NEW_BASE_CHANNEL_ID, "-1");
         actionPerform();
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertNull(server.getBaseChannel());
-        verifyActionMessage("sdc.channels.edit.base_channel_updated");
-
+        verifyActionMessages(new String[]{"sdc.channels.edit.base_channel_updated",
+                "sdc.channels.edit.deploy.warning"});
     }
 
     @Test
@@ -149,16 +149,15 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         childchan[1] = child2.getId().toString();
         addRequestParameter(SystemChannelsAction.CHILD_CHANNELS, childchan);
         actionPerform();
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertTrue(TestUtils.
                 arraySearch(server.getChannels().toArray(), "getId", child1.getId()));
         assertTrue(TestUtils.
                 arraySearch(server.getChannels().toArray(), "getId", child2.getId()));
         assertFalse(TestUtils.
                 arraySearch(server.getChannels().toArray(), "getId", child3.getId()));
-        verifyActionMessage("sdc.channels.edit.child_channels_updated");
-
+        verifyActionMessages(new String[]{"sdc.channels.edit.child_channels_updated",
+                "sdc.channels.edit.deploy.warning"});
     }
-
 }
 
