@@ -266,7 +266,7 @@ class RemoteNode
   #
   # @return [Boolean] true if the node is offline, false otherwise.
   def node_offline?
-    result = run_local('echo test', timeout: 0, check_errors: false).first
+    result = run_local('echo test', check_errors: false).first
     return true if result.nil?
 
     result.empty?

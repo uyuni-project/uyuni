@@ -21,8 +21,12 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
   stderr = ''
   exit_code = nil
 
-  Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
-    stdout, stderr, exit_code = ssh_exec!(ssh, command)
+  begin
+    Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
+      stdout, stderr, exit_code = ssh_exec!(ssh, command)
+    end
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
+    # The connection times out or is refused
   end
 
   [stdout, stderr, exit_code]
@@ -37,8 +41,12 @@ end
 # @param [Integer] timeout The timeout to use when connecting to the remote host.
 # @param [Integer] buffer_size The buffer size to use when connecting to the remote host.
 def scp_command(local_path, remote_path, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 65_536)
-  Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
-    ssh.scp.upload! local_path, remote_path
+  begin
+    Net::SSH.start(host, nil, port: port, verify_host_key: :never, keepalive: true, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
+      ssh.scp.upload! local_path, remote_path
+    end
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
+    # The connection times out or is refused
   end
 end
 
@@ -66,7 +74,12 @@ def ssh_exec!(ssh, command)
       end
     end
   end
-  ssh.loop
+
+  begin
+    ssh.loop
+  rescue IOError
+    puts "The remote node #{ssh.host} has been disconnected."
+  end
 
   [stdout, stderr, exit_code]
 end
