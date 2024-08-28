@@ -7,7 +7,7 @@
 # 3) install and remove a package
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/minssh_tunnel.feature
 # If the minion fails to bootstrap again.
 
 @sle_minion
@@ -57,17 +57,17 @@ Feature: Register a Salt minion with a bootstrap script
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Install a package to the script-bootstrapped SLES minion
-   Given I am on the Systems overview page of this "sle_minion"
-   When I follow "Software" in the content area
-   And I follow "Install"
-   And I enter "orion-dummy" as the filtered package name
-   And I click on the filter button
-   And I check row with "orion-dummy" and arch of "sle_minion"
-   And I click on "Install Selected Packages"
-   And I click on "Confirm"
-   Then I should see a "1 package install has been scheduled for" text
-   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
-   Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Install"
+    And I enter "orion-dummy" as the filtered package name
+    And I click on the filter button
+    And I check row with "orion-dummy" and arch of "sle_minion"
+    And I click on "Install Selected Packages"
+    And I click on "Confirm"
+    Then I should see a "1 package install has been scheduled for" text
+    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
 
   Scenario: Run a remote command on normal SLES minion
     When I follow the left menu "Salt > Remote Commands"
@@ -86,5 +86,5 @@ Feature: Register a Salt minion with a bootstrap script
     Then I run spacecmd listeventhistory for "sle_minion"
 
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
-   When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
-   Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
+    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
+    Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
