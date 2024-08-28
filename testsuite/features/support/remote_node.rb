@@ -71,11 +71,20 @@ class RemoteNode
 
   # Copies a file from the local machine to the remote node.
   #
-  # @param local_path [String] The path to the file to copy.
+  # @param local_path [String] The path to the file to be uploaded.
   # @param remote_path [String] The path in the destination.
   # @param host [String] The hostname of the remote node.
-  def scp(local_path, remote_path, host: @full_hostname)
-    scp_command(local_path, remote_path, host, port: @port)
+  def scp_upload(local_path, remote_path, host: @full_hostname)
+    scp_upload_command(local_path, remote_path, host, port: @port)
+  end
+
+  # Copies a file from the local machine to the remote node.
+  #
+  # @param remote_path [String] The path of the file to be downloaded.
+  # @param local_path [String] The path to the destination file.
+  # @param host [String] The hostname of the remote node.
+  def scp_download(remote_path, local_path, host: @full_hostname)
+    scp_download_command(remote_path, local_path, host, port: @port)
   end
 
   # Runs a command and returns the output, error, and exit code.
@@ -170,16 +179,14 @@ class RemoteNode
   # @return [Integer] The exit code.
   def inject(test_runner_file, remote_node_file)
     if @has_mgrctl
-      tmp_folder, _code = run_local('mktemp -d')
-      tmp_file = File.join(tmp_folder.strip, File.basename(test_runner_file))
-      success = get_target('localhost').scp(test_runner_file, tmp_file, host: @full_hostname)
+      tmp_file = File.join('/tmp/', File.basename(test_runner_file))
+      success = get_target('localhost').scp_upload(test_runner_file, tmp_file, host: @full_hostname)
       if success
         _out, code = run_local("mgrctl cp #{tmp_file} server:#{remote_node_file}")
         raise ScriptError, "Failed to copy #{tmp_file} to container" unless code.zero?
       end
-      run_local("rm -r #{tmp_folder}")
     else
-      success = get_target('localhost').scp(test_runner_file, remote_node_file, host: @full_hostname)
+      success = get_target('localhost').scp_upload(test_runner_file, remote_node_file, host: @full_hostname)
     end
     success
   end
@@ -191,17 +198,15 @@ class RemoteNode
   # @return [Integer] The exit code.
   def extract(remote_node_file, test_runner_file)
     if @has_mgrctl
-      tmp_folder, _code = run_local('mktemp -d')
-      tmp_file = File.join(tmp_folder.strip, File.basename(remote_node_file))
+      tmp_file = File.join('/tmp/', File.basename(remote_node_file))
       _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}")
       raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
 
-      success = scp(tmp_file, test_runner_file, host: get_target('localhost').full_hostname)
+      success = get_target('localhost').scp_download(tmp_file, test_runner_file, host: @full_hostname)
       raise ScriptError, "Failed to extract #{tmp_file} from host" unless success
 
-      run_local("rm -r #{tmp_folder}")
     else
-      success = scp(remote_node_file, test_runner_file, host: get_target('localhost').full_hostname)
+      success = get_target('localhost').scp_download(remote_node_file, test_runner_file, host: @full_hostname)
     end
     success
   end
@@ -266,7 +271,7 @@ class RemoteNode
   #
   # @return [Boolean] true if the node is offline, false otherwise.
   def node_offline?
-    result = run_local('echo test', check_errors: false).first
+    result = run_local('echo test', timeout: 1, check_errors: false).first
     return true if result.nil?
 
     result.empty?
