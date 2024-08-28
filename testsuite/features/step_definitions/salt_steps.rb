@@ -254,7 +254,15 @@ When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |
 end
 
 When(/^I configure salt minion on "([^"]*)"$/) do |host|
-  content = %( master: #{get_target('server').full_hostname} server_id_use_crc: adler32 enable_legacy_startup_events: False enable_fqdns_grains: False start_event_grains: - machine_id - saltboot_initrd - susemanager)
+  content = %(
+master: #{get_target('server').full_hostname}
+server_id_use_crc: adler32
+enable_legacy_startup_events: False
+enable_fqdns_grains: False
+start_event_grains:
+ - machine_id
+ - saltboot_initrd
+ - susemanager)
   step %(I store "#{content}" into file "susemanager.conf" in salt minion config directory on "#{host}")
 end
 
