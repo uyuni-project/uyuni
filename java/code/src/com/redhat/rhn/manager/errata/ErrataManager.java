@@ -308,7 +308,7 @@ public class ErrataManager extends BaseManager {
                 .map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
                 .collect(Collectors.toUnmodifiableSet());
         removeErratumAndPackagesFromChannel(filteredErrata, srcErrata, tgtChannel, user);
-        List<OwnedErrata> emptyChannelErrata = srcErrata.stream()
+        List<OwnedErrata> emptyChannelErrata = filteredErrata.stream()
             .filter(t -> t.getChannels().isEmpty())
             .map(ErrataManager::buildOwnedErrataFromErrata)
             .collect(Collectors.toList());
