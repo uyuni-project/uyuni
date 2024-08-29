@@ -14,7 +14,7 @@ def process_os_family_and_version(host, fqdn, hostname, node)
 end
 
 # Obtain the Public IP for a node
-def client_public_ip(node)
+def client_public_ip(host, node)
   raise NotImplementedError, "Cannot resolve node for host '#{host}'" if node.nil?
 
   %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
@@ -36,7 +36,7 @@ def process_private_and_public_ip(host, node)
     node.init_private_interface('eth1')
   end
 
-  ip = client_public_ip node
+  ip = client_public_ip(host, node)
   node.init_public_ip(ip) unless ip.empty?
   node
 end
