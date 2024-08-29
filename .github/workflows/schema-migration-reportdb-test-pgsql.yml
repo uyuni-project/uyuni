@@ -13,7 +13,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
       - id: files
         uses: Ana06/get-changed-files@v2.3.0
         with:
