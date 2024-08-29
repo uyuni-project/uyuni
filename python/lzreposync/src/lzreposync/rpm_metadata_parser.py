@@ -47,85 +47,79 @@ class BadParserException(Exception):
         super().__init__(f"Bad Parser {parser}")
 
 
-# pylint: disable-next=missing-class-docstring
-class RPMMetadataParser:
-    def __init__(self, primary_parser, filelists_parser):
-        self.primary_parser = primary_parser
-        self.filelists_parser = filelists_parser
+def parse_rpm_packages_metadata(
+    primary_xml, filelists_xml, repository_url, cache_dir, arch_filter=".*"
+):
+    """
+    Parse both primary.xml and filelists.xml files and yield packages metadata
+    Yield an instance inheriting from spacewalk.server.importLib.IncompletePackage
+    :primary_xml: in Gzip format
+    :filelists_xml: in Gzip format
+    """
+    primary_parser = PrimaryParser(primary_xml, repository_url, arch_filter)
+    filelists_parser = FilelistsParser(filelists_xml, cache_dir, arch_filter)
 
-    def parse_packages_metadata(self):
-        """
-        Parse both primary.xml and filelists.xml files and return yield packages metadata
-        Yield an instance inheriting from spacewalk.server.importLib.IncompletePackage
-        """
-        if not isinstance(self.primary_parser, PrimaryParser):
-            logging.error("Bad primary_parser %s", self.primary_parser)
-            raise BadParserException(self.primary_parser)
-        if not isinstance(self.filelists_parser, FilelistsParser):
-            logging.error("Bad filelists_parser %s", self.primary_parser)
-            raise BadParserException(self.primary_parser)
+    # pylint: disable-next=consider-using-f-string
+    log(0, " Parsing %s" % filelists_parser.filelists_file)
+    # Parse and cache the content of filelists.xml
+    filelists_parser.parse_filelists()
 
-        # pylint: disable-next=consider-using-f-string
-        log(0, " Parsing %s" % self.filelists_parser.filelists_file)
-        # Parse and cache the content of filelists.xml
-        self.filelists_parser.parse_filelists()
+    for package in primary_parser.parse_primary():  # parse_primary() is a generator
+        parsed_filenames = filelists_parser.get_package_filelist(package["checksum"])[
+            "filenames"
+        ]
+        parsed_filetypes = filelists_parser.get_package_filelist(package["checksum"])[
+            "filetypes"
+        ]
+        if (
+            package["header"].get("filenames")
+            and package["header"].get("filetypes")
+            and len(package["header"].get("filenames"))
+            == len(package["header"].get("filetypes"))
+        ):
+            # Some file information has already been parsed from the Primary file.
+            # Remove duplicates
+            filenames = set(
+                parsed_filenames
+            )  # using hash set will be faster for searching in O(1) time
+            for i in range(len(package["header"].get("filenames"))):
+                if package["header"].get("filenames")[i] not in filenames:
+                    parsed_filenames.append(package["header"].get("filenames")[i])
+                    parsed_filetypes.append(package["header"].get("filetypes")[i])
 
-        for (
-            package
-        ) in self.primary_parser.parse_primary():  # parse_primary() is a generator
-            parsed_filenames = self.filelists_parser.get_package_filelist(
-                package["checksum"]
-            )["filenames"]
-            parsed_filetypes = self.filelists_parser.get_package_filelist(
-                package["checksum"]
-            )["filetypes"]
-            if (
-                package["header"].get("filenames")
-                and package["header"].get("filetypes")
-                and len(package["header"].get("filenames"))
-                == len(package["header"].get("filetypes"))
-            ):
-                # Some file information has already been parsed from the Primary file.
-                # Remove duplicates
-                filenames = set(
-                    parsed_filenames
-                )  # using hash set will be faster for searching in O(1) time
-                for i in range(len(package["header"].get("filenames"))):
-                    if package["header"].get("filenames")[i] not in filenames:
-                        parsed_filenames.append(package["header"].get("filenames")[i])
-                        parsed_filetypes.append(package["header"].get("filetypes")[i])
-
-            package["header"]["filenames"] = parsed_filenames
-            package["header"]["filemodes"] = parsed_filetypes
-            files_count = len(package["header"]["filenames"])
-            package = set_fake_file_data(package, files_count)
-            logging.debug(
-                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                "Yielding pacakge {}".format(package["checksum"])
+        package["header"]["filenames"] = parsed_filenames
+        package["header"]["filemodes"] = parsed_filetypes
+        files_count = len(package["header"]["filenames"])
+        package = set_fake_file_data(package, files_count)
+        logging.debug(
+            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+            "Yielding pacakge {}".format(package["checksum"])
+        )
+        # pylint: disable=W0703,W0706
+        try:
+            rpm_package = mpmSource.create_package(
+                package["header"],
+                size=package["package_size"],
+                checksum_type=package["checksum_type"],
+                checksum=package["checksum"],
+                relpath=None,  # This is the path on the filesystem
+                org_id=1,  # TODO: correct
+                header_start=package["header_start"],
+                header_end=package["header_end"],
+                channels=[],
+                expand_full_filelist=False,
+                remote_path=package["remote_path"],
             )
-            # pylint: disable=W0703,W0706
-            try:
-                rpm_package = mpmSource.create_package(
-                    package["header"],
-                    size=package["package_size"],
-                    checksum_type=package["checksum_type"],
-                    checksum=package["checksum"],
-                    relpath=None,  # This is the path on the filesystem
-                    org_id=1,  # TODO: correct
-                    header_start=package["header_start"],
-                    header_end=package["header_end"],
-                    channels=[],
-                    expand_full_filelist=False,
-                    remote_path=package["remote_path"],
-                )
-                rpm_package.arch = package["header"]["arch"]
+            rpm_package.arch = package["header"]["arch"]
 
-                yield rpm_package
+            yield rpm_package
 
-            except (KeyboardInterrupt, rhnSQL.SQLError):
-                raise
-            except Exception as e:
-                e_message = f"Exception: {e}"
-                log2(0, 1, e_message, stream=sys.stderr)
-                raise e  # Ignore the package and continue
-                # continue
+        except (KeyboardInterrupt, rhnSQL.SQLError):
+            raise
+        except Exception as e:
+            e_message = f"Exception: {e}"
+            log2(0, 1, e_message, stream=sys.stderr)
+            raise e  # Ignore the package and continue
+            # continue
+
+    filelists_parser.clear_cache()
