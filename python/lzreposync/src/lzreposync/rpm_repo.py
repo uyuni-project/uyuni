@@ -3,6 +3,7 @@
 import hashlib
 import logging
 import os
+import re
 import tempfile
 import time
 import urllib.error
@@ -11,11 +12,8 @@ from urllib.parse import urljoin
 from xml.dom import pulldom
 
 import gnupg
-
-from lzreposync.filelists_parser import FilelistsParser
-from lzreposync.primary_parser import PrimaryParser
 from lzreposync.repo import Repo
-from lzreposync.rpm_metadata_parser import RPMMetadataParser
+from lzreposync.rpm_metadata_parser import parse_rpm_packages_metadata
 
 
 class ChecksumVerificationException(ValueError):
@@ -42,6 +40,13 @@ def get_text(node_list):
 class RPMRepo(Repo):
 
     def __init__(self, name, cache_path, repository, arch_filter=".*"):
+        # Adding 'noarch' to be parsed if not specified
+        if arch_filter != ".*" and "noarch" not in arch_filter:
+            arch_filter = re.sub(
+                "[()]", "", arch_filter
+            )  # remove left & right parenthesis
+            arch_filter = f"(noarch|{arch_filter})"
+
         super().__init__(
             name=name,
             cache_path=cache_path,
@@ -196,19 +201,14 @@ class RPMRepo(Repo):
                     # Work on temporary file without loading it into memory at once
                     primary_tmp_file.seek(0)
                     filelists_tmp_file.seek(0)
-                    primary_parser = PrimaryParser(
-                        primary_file=primary_tmp_file,
-                        repository=self.repository,
-                        arch_filter=self.arch_filter,
+                    packages = parse_rpm_packages_metadata(
+                        primary_tmp_file,
+                        filelists_tmp_file,
+                        self.repository,
+                        self.cache_dir,
+                        self.arch_filter,
                     )
-                    filelists_parser = FilelistsParser(
-                        filelists_tmp_file, self.arch_filter
-                    )
-                    metadata_parser = RPMMetadataParser(
-                        primary_parser=primary_parser, filelists_parser=filelists_parser
-                    )
-                    yield from metadata_parser.parse_packages_metadata()
-                    filelists_parser.clear_cache()  # TODO can we make this execute automatically
+                    yield from packages
                 break
             except urllib.error.HTTPError as e:
                 # We likely hit the repo while it changed:
