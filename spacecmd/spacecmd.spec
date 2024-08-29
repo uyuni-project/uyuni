@@ -40,19 +40,19 @@
 %endif
 
 Name:           spacecmd
-Version:        5.0.9
+Version:        5.1.0
 Release:        0
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 License:        GPL-3.0-or-later
+URL:            https://github.com/uyuni-project/uyuni
+Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni packagers <devel@lists.uyuni-project.org>
 Group:          admin
 %else
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 %endif
-URL:            https://github.com/uyuni-project/uyuni
-Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || "%{_vendor}" == "debbuild"
 BuildArch:      noarch
 %endif
@@ -108,27 +108,27 @@ spacecmd is a command-line interface to Spacewalk and Red Hat Satellite servers
 # nothing to build
 
 %install
-%{__mkdir_p} %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}%{_bindir}
 
 %if 0%{?build_py3}
     sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' ./src/bin/spacecmd
 %endif
-%{__install} -p -m0755 src/bin/spacecmd %{buildroot}/%{_bindir}/
+install -p -m0755 src/bin/spacecmd %{buildroot}%{_bindir}/
 
-%{__mkdir_p} %{buildroot}/%{_sysconfdir}
-touch %{buildroot}/%{_sysconfdir}/spacecmd.conf
+mkdir -p %{buildroot}%{_sysconfdir}
+touch %{buildroot}%{_sysconfdir}/spacecmd.conf
 
-%{__mkdir_p} %{buildroot}/%{_sysconfdir}/bash_completion.d
-%{__install} -p -m0644 src/misc/spacecmd-bash-completion %{buildroot}/%{_sysconfdir}/bash_completion.d/spacecmd
+mkdir -p %{buildroot}%{_sysconfdir}/bash_completion.d
+install -p -m0644 src/misc/spacecmd-bash-completion %{buildroot}%{_sysconfdir}/bash_completion.d/spacecmd
 
-%{__mkdir_p} %{buildroot}/%{python_sitelib}/spacecmd
-%{__install} -p -m0644 src/spacecmd/*.py %{buildroot}/%{python_sitelib}/spacecmd/
+mkdir -p %{buildroot}%{python_sitelib}/spacecmd
+install -p -m0644 src/spacecmd/*.py %{buildroot}%{python_sitelib}/spacecmd/
 
-%{__mkdir_p} %{buildroot}/%{_mandir}/man1
-%{__gzip} -c src/doc/spacecmd.1 > %{buildroot}/%{_mandir}/man1/spacecmd.1.gz
+mkdir -p %{buildroot}%{_mandir}/man1
+gzip -c src/doc/spacecmd.1 > %{buildroot}%{_mandir}/man1/spacecmd.1.gz
 
-touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
-%{__chmod} 0644 %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
+touch %{buildroot}%{python_sitelib}/spacecmd/__init__.py
+chmod 0644 %{buildroot}%{python_sitelib}/spacecmd/__init__.py
 
 %if 0%{?suse_version}
 %if 0%{?build_py3}
@@ -138,7 +138,7 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %endif
 %endif
 
-make -C po install PREFIX=$RPM_BUILD_ROOT
+make -C po install PREFIX=%{buildroot}
 %find_lang spacecmd
 
 %files -f spacecmd.lang
@@ -148,7 +148,8 @@ make -C po install PREFIX=$RPM_BUILD_ROOT
 %ghost %config %{_sysconfdir}/spacecmd.conf
 %dir %{_sysconfdir}/bash_completion.d
 %{_sysconfdir}/bash_completion.d/spacecmd
-%doc src/doc/README src/doc/COPYING
-%doc %{_mandir}/man1/spacecmd.1.gz
+%license src/doc/COPYING
+%doc src/doc/README
+%{_mandir}/man1/spacecmd.1%{?ext_man}
 
 %changelog

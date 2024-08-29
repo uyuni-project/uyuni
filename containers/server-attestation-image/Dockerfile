@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-attestation:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.5
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
 
 # Architecture specific attestation modules are specified via project configuration
@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} Confidential Computing at
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.0.5
+LABEL org.opencontainers.image.version=5.1.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-attestation:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

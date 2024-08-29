@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-tftpd:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.5
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE AS base
 
 ARG PRODUCT_REPO
@@ -27,7 +27,7 @@ COPY tftp_wrapper.py /usr/bin/tftp_wrapper.py
 RUN chmod +x /usr/bin/tftp_wrapper.py
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.5
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
@@ -45,7 +45,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-tftpd-image
-LABEL org.opencontainers.image.version=5.0.7
+LABEL org.opencontainers.image.version=5.1.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-tftpd:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

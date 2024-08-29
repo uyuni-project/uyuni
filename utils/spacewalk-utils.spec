@@ -18,22 +18,21 @@
 
 
 Name:           spacewalk-utils
-Version:        5.0.4
+Version:        5.1.0
 Release:        0
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Productivity/Other
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
 BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 BuildRequires:  uyuni-base-common
-
+# Required by depsolver.py
+Requires:       (python3-PyYAML or python3-pyyaml)
 # Required by spacewalk-hostname-rename
 Requires:       bash
 # Required by spacewalk-hostname-rename
@@ -41,15 +40,7 @@ Requires:       cobbler
 # Required by spacewalk-hostname-rename
 Requires:       iproute
 # Required by spacewalk-hostname-rename
-%if 0%{?suse_version}
-Requires:       perl = %{perl_version}
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
-# Required by spacewalk-hostname-rename
 Requires:       perl-Satcon
-# Required by depsolver.py
-Requires:       (python3-PyYAML or python3-pyyaml)
 # Required by depsolver.py
 Requires:       python3-solv
 # Required by depsolver.py, cloneByDate.py, spacewalk-common-channels
@@ -76,6 +67,12 @@ Requires:       spacewalk-setup
 Requires:       susemanager-schema
 # Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
 Requires(pre):  uyuni-base-common
+BuildArch:      noarch
+%if 0%{?suse_version}
+Requires:       perl = %{perl_version}
+%else
+Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
+%endif
 
 %description
 Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
@@ -85,12 +82,12 @@ Summary:        Extra utilities that may run against a SUSE Manager/Uyuni server
 # Required by spacewalk-watch-channel-sync.sh
 Group:          Productivity/Other
 Requires:       bash
+# Required by sw-ldap-user-sync
+Requires:       python3-PyYAML
 # Required by taskotop
 Requires:       python3-curses
 # Required by sw-ldap-user-sync
 Requires:       python3-ldap
-# Required by sw-ldap-user-sync
-Requires:       python3-PyYAML
 # Required by migrate-system-profile
 Requires:       python3-rhnlib >= 2.5.20
 # Required by migrateSystemProfile.py, systemSnapshot.py
@@ -116,7 +113,7 @@ Extra utilities that may be run against a SUSE Manager server (unsupported) or a
 make all
 
 %install
-make install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
+make install PREFIX=%{buildroot} ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir}
 pushd %{buildroot}
 %if 0%{?suse_version}
@@ -148,9 +145,9 @@ popd
 %{python3_sitelib}/utils/__pycache__/systemSnapshot.*
 %{python3_sitelib}/utils/__pycache__/cloneByDate.*
 %{python3_sitelib}/utils/__pycache__/depsolver.*
-%{_mandir}/man8/spacewalk-clone-by-date.8.gz
-%{_mandir}/man8/spacewalk-hostname-rename.8.gz
-%{_mandir}/man8/spacewalk-sync-setup.8.gz
+%{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
+%{_mandir}/man8/spacewalk-hostname-rename.8%{?ext_man}
+%{_mandir}/man8/spacewalk-sync-setup.8%{?ext_man}
 
 %files extras
 %defattr(-,root,root)
@@ -169,14 +166,14 @@ popd
 %{python3_sitelib}/utils/migrateSystemProfile.py*
 %{python3_sitelib}/utils/__pycache__/migrateSystemProfile.*
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
-%{_mandir}/man8/delete-old-systems-interactive.8.gz
-%{_mandir}/man8/migrate-system-profile.8.gz
-%{_mandir}/man8/spacewalk-api.8.gz
-%{_mandir}/man8/spacewalk-export-channels.8.gz
-%{_mandir}/man8/spacewalk-export.8.gz
-%{_mandir}/man8/spacewalk-final-archive.8.gz
-%{_mandir}/man8/spacewalk-manage-snapshots.8.gz
-%{_mandir}/man8/sw-system-snapshot.8.gz
-%{_mandir}/man8/taskotop.8.gz
+%{_mandir}/man8/delete-old-systems-interactive.8%{?ext_man}
+%{_mandir}/man8/migrate-system-profile.8%{?ext_man}
+%{_mandir}/man8/spacewalk-api.8%{?ext_man}
+%{_mandir}/man8/spacewalk-export-channels.8%{?ext_man}
+%{_mandir}/man8/spacewalk-export.8%{?ext_man}
+%{_mandir}/man8/spacewalk-final-archive.8%{?ext_man}
+%{_mandir}/man8/spacewalk-manage-snapshots.8%{?ext_man}
+%{_mandir}/man8/sw-system-snapshot.8%{?ext_man}
+%{_mandir}/man8/taskotop.8%{?ext_man}
 
 %changelog

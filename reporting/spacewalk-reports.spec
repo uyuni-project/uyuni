@@ -24,18 +24,18 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           spacewalk-reports
+Version:        5.1.0
+Release:        0
 Summary:        Script based reporting
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Version:        5.0.2
-Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
 Requires:       %{pythonX}
 Requires:       spacewalk-branding
 BuildRequires:  /usr/bin/docbook2man
+BuildArch:      noarch
 
 %description
 Script based reporting to retrieve data from Spacewalk server in CSV format.
@@ -44,7 +44,7 @@ Script based reporting to retrieve data from Spacewalk server in CSV format.
 %setup -q
 
 %build
-/usr/bin/docbook2man *.sgml
+%{_bindir}/docbook2man *.sgml
 
 # Fixing shebang for Python 3
 %if 0%{?build_py3}
@@ -55,17 +55,17 @@ done
 %endif
 
 %install
-install -d $RPM_BUILD_ROOT/%{_bindir}
-install -d $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk
-install -d $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports/data
-install -d $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports/legacy
-install -d $RPM_BUILD_ROOT/%{_mandir}/man8
-install spacewalk-report $RPM_BUILD_ROOT/%{_bindir}
-install reports.py $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk
-install -m 644 reports/data/* $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports/data
-install -m 644 reports/legacy/* $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports/legacy
-install *.8 $RPM_BUILD_ROOT/%{_mandir}/man8
-chmod -x $RPM_BUILD_ROOT/%{_mandir}/man8/spacewalk-report.8*
+install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_datadir}/spacewalk
+install -d %{buildroot}%{_datadir}/spacewalk/reports/data
+install -d %{buildroot}%{_datadir}/spacewalk/reports/legacy
+install -d %{buildroot}%{_mandir}/man8
+install spacewalk-report %{buildroot}%{_bindir}
+install reports.py %{buildroot}%{_datadir}/spacewalk
+install -m 644 reports/data/* %{buildroot}%{_datadir}/spacewalk/reports/data
+install -m 644 reports/legacy/* %{buildroot}%{_datadir}/spacewalk/reports/legacy
+install *.8 %{buildroot}%{_mandir}/man8
+chmod -x %{buildroot}%{_mandir}/man8/spacewalk-report.8*
 
 %files
 %defattr(-,root,root)
@@ -74,7 +74,7 @@ chmod -x $RPM_BUILD_ROOT/%{_mandir}/man8/spacewalk-report.8*
 %{_datadir}/spacewalk/reports.py*
 %{_datadir}/spacewalk/reports
 %{_mandir}/man8/spacewalk-report.8*
-%doc COPYING
+%license COPYING
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %endif

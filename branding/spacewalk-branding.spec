@@ -18,44 +18,41 @@
 
 
 %global debug_package %{nil}
-
 %global susemanager_shared_path  %{_datadir}/susemanager
 %global wwwroot %{susemanager_shared_path}/www
 %global tomcat_path %{wwwroot}/tomcat
 %global wwwdocroot %{wwwroot}/htdocs
-
 Name:           spacewalk-branding
-Version:        5.0.2
+Version:        5.1.0
 Release:        0
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only AND OFL-1.1
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  java-devel >= 11
+Requires:       httpd
+Requires:       susemanager-advanced-topics_en-pdf
+Requires:       susemanager-best-practices_en-pdf
+Requires:       susemanager-docs_en
+Requires:       susemanager-frontend-libs
+Requires:       susemanager-getting-started_en-pdf
+Requires:       susemanager-reference_en-pdf
+Requires(pre):  tomcat
 #BuildArch:  noarch
 %if 0%{?suse_version}
 BuildRequires:  apache2
 %endif
-BuildRequires:  java-devel >= 11
-
-Requires:       httpd
-Requires(pre):  tomcat
-Requires:       susemanager-advanced-topics_en-pdf
-Requires:       susemanager-best-practices_en-pdf
-Requires:       susemanager-docs_en
-Requires:       susemanager-getting-started_en-pdf
-Requires:       susemanager-reference_en-pdf
-Requires:       susemanager-frontend-libs
 
 %description
 Spacewalk specific branding, CSS, and images.
 
 %package devel
-Requires:       %{name} = %{version}-%{release}
 Summary:        Spacewalk LESS source files for development use
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+Requires:       %{name} = %{version}-%{release}
 
 %description devel
 This package contains LESS source files corresponding to Spacewalk's
@@ -93,7 +90,7 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF/lib/
-%dir %{_prefix}/share/rhn
-%dir %{_prefix}/share/rhn/lib
+%dir %{_datadir}/rhn
+%dir %{_datadir}/rhn/lib
 
 %changelog

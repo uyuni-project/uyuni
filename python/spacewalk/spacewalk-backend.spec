@@ -20,7 +20,7 @@
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%global rhnroot %{_prefix}/share/rhn
+%global rhnroot %{_datadir}/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
 %global m2crypto m2crypto
@@ -47,14 +47,13 @@
 %endif
 
 Name:           spacewalk-backend
+Version:        5.1.0
+Release:        0
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        5.0.9
-Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch
 %endif
@@ -249,69 +248,69 @@ sed -i 's/PRODUCT_NAME = "Uyuni"/PRODUCT_NAME = "SUSE Manager"/' common/rhnConfi
 %endif
 
 %install
-install -d $RPM_BUILD_ROOT%{rhnroot}
-install -d $RPM_BUILD_ROOT%{python3rhnroot}
-install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
-install -d $RPM_BUILD_ROOT%{rhnconf}
-install -d $RPM_BUILD_ROOT/%{_unitdir}
-install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
+install -d %{buildroot}%{rhnroot}
+install -d %{buildroot}%{python3rhnroot}
+install -d %{buildroot}%{python3rhnroot}/common
+install -d %{buildroot}%{rhnconf}
+install -d %{buildroot}/%{_unitdir}
+install -d %{buildroot}%{_prefix}/lib/susemanager/bin/
 
-make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
+make -f Makefile.backend install PREFIX=%{buildroot} \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=python3
 
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
 
 # remove all unsupported translations
-cd $RPM_BUILD_ROOT
+cd %{buildroot}
 for d in usr/share/locale/*; do
   if [ ! -d "/$d" ]; then
     rm -rfv "./$d"
   fi
 done
 cd -
-ln -s satellite-sync $RPM_BUILD_ROOT/usr/bin/mgr-inter-sync
-ln -s satellite-sync.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/mgr-inter-sync.8.gz
-ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
+ln -s satellite-sync %{buildroot}%{_bindir}/mgr-inter-sync
+ln -s satellite-sync.8.gz %{buildroot}%{_mandir}/man8/mgr-inter-sync.8.gz
+ln -s rhn-satellite-exporter %{buildroot}%{_bindir}/mgr-exporter
 
-install -m 644 rhn-conf/signing.cnf $RPM_BUILD_ROOT%{rhnconf}/signing.conf
+install -m 644 rhn-conf/signing.cnf %{buildroot}%{rhnconf}/signing.conf
 
-install -m 644 satellite_tools/spacewalk-diskcheck.service $RPM_BUILD_ROOT/%{_unitdir}
-install -m 644 satellite_tools/spacewalk-diskcheck.timer $RPM_BUILD_ROOT/%{_unitdir}
+install -m 644 satellite_tools/spacewalk-diskcheck.service %{buildroot}/%{_unitdir}
+install -m 644 satellite_tools/spacewalk-diskcheck.timer %{buildroot}/%{_unitdir}
 
-install -m 644 satellite_tools/ulnauth.py $RPM_BUILD_ROOT/%{python3rhnroot}/satellite_tools
+install -m 644 satellite_tools/ulnauth.py %{buildroot}/%{python3rhnroot}/satellite_tools
 
 %find_lang %{name}-server
 
 %if 0%{?is_opensuse} || 0%{?fedora} || 0%{?rhel}
-sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's/^product_name.*/product_name = Uyuni/' %{buildroot}%{rhnconfigdefaults}/rhn.conf
 %endif
 
-sed -i 's|#DOCUMENTROOT#|%{documentroot}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
-sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
-sed -i 's|#HTTPD_GROUP#|%{apache_group}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
-sed -i 's|#HTTPD_USER#|%{apache_user}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
-sed -i 's|#REPORT_DB_SSLROOTCERT#|%{sslrootcert}RHN-ORG-TRUSTED-SSL-CERT|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#DOCUMENTROOT#|%{documentroot}|' %{buildroot}%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' %{buildroot}%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_GROUP#|%{apache_group}|' %{buildroot}%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_USER#|%{apache_user}|' %{buildroot}%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#REPORT_DB_SSLROOTCERT#|%{sslrootcert}RHN-ORG-TRUSTED-SSL-CERT|' %{buildroot}%{rhnconfigdefaults}/rhn.conf
 
-sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
-sed -i 's/@HTTPD_GROUP@/%{apache_group}/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
-sed -i 's/@HTTPD_USER@/%{apache_user}/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+sed -i 's/#LOGROTATE-3.8#//' %{buildroot}%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+sed -i 's/@HTTPD_GROUP@/%{apache_group}/' %{buildroot}%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+sed -i 's/@HTTPD_USER@/%{apache_user}/' %{buildroot}%{_sysconfdir}/logrotate.d/spacewalk-backend-*
 
 %if 0%{?suse_version}
 %py3_compile -O %{buildroot}/%{python3rhnroot}
 %fdupes %{buildroot}/%{python3rhnroot}
 %endif
 
-install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
+install -m 755 satellite_tools/mgr-update-pkg-extra-tags %{buildroot}%{_prefix}/lib/susemanager/bin/
 
 ## Install Zypper plugins only on SUSE machines
-install -Dd -m 0750 % $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
-%{__install} satellite_tools/spacewalk-uln-resolver $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
-%{__install} satellite_tools/spacewalk-extra-http-headers $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
+install -Dd -m 0750 % %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver
+install satellite_tools/spacewalk-uln-resolver %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
+install satellite_tools/spacewalk-extra-http-headers %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
 
 %post server
 %if 0%{?suse_version}
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES wsgi
 %endif
 if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
@@ -324,13 +323,13 @@ fi
 
 %post tools
 %if 0%{?rhel}
-%systemd_post spacewalk-diskcheck.service
-%systemd_post spacewalk-diskcheck.timer
+%{systemd_post} spacewalk-diskcheck.service
+%{systemd_post} spacewalk-diskcheck.timer
 %else
 %service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
 %endif
-if test -f /var/log/rhn/rhn_server_satellite.log; then
-    chown -f %{apache_user}:%{apache_group} /var/log/rhn/rhn_server_satellite.log
+if test -f %{_localstatedir}/log/rhn/rhn_server_satellite.log; then
+    chown -f %{apache_user}:%{apache_group} %{_localstatedir}/log/rhn/rhn_server_satellite.log
 fi
 
 %preun tools
@@ -343,8 +342,8 @@ fi
 
 %postun tools
 %if 0%{?rhel}
-%systemd_postun spacewalk-diskcheck.service
-%systemd_postun spacewalk-diskcheck.timer
+%{systemd_postun} spacewalk-diskcheck.service
+%{systemd_postun} spacewalk-diskcheck.timer
 %else
 %service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
 %endif
@@ -368,7 +367,7 @@ fi
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn.conf
 %attr(755,root,root) %{_bindir}/spacewalk-cfg-get
-%{_mandir}/man8/spacewalk-cfg-get.8.gz
+%{_mandir}/man8/spacewalk-cfg-get.8%{?ext_man}
 # wsgi stuff
 %dir %{rhnroot}/wsgi
 %{rhnroot}/wsgi/__init__.py*

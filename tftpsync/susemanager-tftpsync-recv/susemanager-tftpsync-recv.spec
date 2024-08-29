@@ -17,28 +17,28 @@
 
 
 Name:           susemanager-tftpsync-recv
-Version:        5.0.1
-Release:        1
+Version:        5.1.0
+Release:        0
 Summary:        Reciever for SUSE Manager tftp sync
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  uyuni-base-common
+Requires:       (apache2-mod_wsgi or python3-mod_wsgi)
+Requires:       python3
+Requires:       spacewalk-backend
+Requires:       spacewalk-proxy-common
+Requires(pre):  coreutils
+Requires(pre):  tftp
+Requires(pre):  uyuni-base-common
 BuildArch:      noarch
 %if 0%{?suse_version}
 Requires(pre):  apache2
 %else
 Requires(pre):  httpd
 %endif
-Requires(pre):  tftp
-Requires:       python3
-Requires:       spacewalk-backend
-Requires:       spacewalk-proxy-common
-Requires:       (apache2-mod_wsgi or python3-mod_wsgi)
-Requires(pre):  coreutils
-BuildRequires:  uyuni-base-common
-Requires(pre):  uyuni-base-common
 
 %description
 Use SUSE Manager Proxy as installation server. Provide the capability
@@ -59,13 +59,13 @@ install -p -D -m 755 configure-tftpsync.sh %{buildroot}%{_sbindir}/configure-tft
 install -p -D -m 644 rhn_tftpsync.conf %{buildroot}/%{_datadir}/rhn/config-defaults/rhn_tftpsync.conf
 
 %post
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES wsgi
 if [ -d /srv/tftpboot ]; then
     chmod 750 /srv/tftpboot
     chown wwwrun:tftp /srv/tftpboot
 fi
-if [ -f /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew ]; then
-    PARENT_FQDN=$( egrep -m1 "^proxy.rhn_parent[[:space:]]*=" /etc/rhn/rhn.conf | sed 's/^proxy.rhn_parent[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
+if [ -f %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew ]; then
+    PARENT_FQDN=$( grep -E -m1 "^proxy.rhn_parent[[:space:]]*=" %{_sysconfdir}/rhn/rhn.conf | sed 's/^proxy.rhn_parent[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
     if [ -z "$PARENT_FQDN" ]; then
             echo "Could not determine SUSE Manager Parent Hostname! Got /etc/rhn/rhn.conf vanished?" >&2;
             exit 1;
@@ -73,10 +73,10 @@ if [ -f /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew ]; then
 
     SUMA_IP=$(getent hosts $PARENT_FQDN | awk '{ print $1 }' || echo "")
 
-    sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/        Allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew
-    sed -i "s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew
+    sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/        Allow from $SUMA_IP/" %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew
+    sed -i "s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP/" %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew
 
-    mv /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+    mv %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf
 fi
 
 %files
@@ -85,9 +85,10 @@ fi
 %config(noreplace) %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf
 
 %defattr(-,root,root,-)
-%doc answers.txt COPYING README
+%license COPYING
+%doc answers.txt README
 %dir /srv/www/tftpsync
-%dir /%{_datadir}/rhn
+%dir %{_datadir}/rhn
 /srv/www/tftpsync/add
 /srv/www/tftpsync/delete
 %{_sbindir}/configure-tftpsync.sh

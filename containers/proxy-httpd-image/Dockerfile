@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-httpd:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.5
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE AS base
 
 
@@ -32,7 +32,7 @@ COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.5
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
@@ -50,7 +50,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-httpd-image
-LABEL org.opencontainers.image.version=5.0.7
+LABEL org.opencontainers.image.version=5.1.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

@@ -18,14 +18,14 @@
 
 
 Name:           spacewalk
-Version:        5.0.3
+Version:        5.1.0
 Release:        0
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
 Source:         https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
@@ -34,8 +34,8 @@ inventory, provision, update and control your Linux machines.
 
 %package common
 Summary:        Spacewalk Systems Management Application with postgresql database backend
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-
 BuildRequires:  python3
 BuildRequires:  spacewalk-backend
 BuildRequires:  spacewalk-base-minimal-config
@@ -97,6 +97,7 @@ inventory, provision, update and control your Linux machines.
 
 %package postgresql
 Summary:        Spacewalk Systems Management Application with PostgreSQL database backend
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       spacewalk-common = %{version}-%{release}
 Conflicts:      spacewalk-oracle
@@ -135,17 +136,17 @@ Version for PostgreSQL database backend.
 
 %install
 RDBMS="postgresql"
-install -d $RPM_BUILD_ROOT/%{_sysconfdir}
-install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
+install -d %{buildroot}%{_sysconfdir}
+install -d %{buildroot}%{_datadir}/spacewalk/setup/defaults.d
 for i in ${RDBMS} ; do
-    cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
+    cat <<EOF >%{buildroot}%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
 # database backend to be used by spacewalk
 db-backend = $i
 EOF
 done
-install -d $RPM_BUILD_ROOT/%{_bindir}
+install -d %{buildroot}%{_bindir}
 %if 0%{?rhel}
-ln -s /usr/pgsql-14/bin/initdb $RPM_BUILD_ROOT/%{_bindir}/initdb
+ln -s %{_prefix}/pgsql-14/bin/initdb %{buildroot}%{_bindir}/initdb
 %endif
 
 %files common

@@ -20,13 +20,13 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           perl-Satcon
+Version:        5.1.0
+Release:        0
 Summary:        Framework for configuration files
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
-Version:        5.0.1
-Release:        1
 URL:            https://github.com/uyuni-project/uyuni
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -64,15 +64,15 @@ make %{?_smp_mflags}
 
 %install
 
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
+make pure_install PERL_INSTALL_ROOT=%{buildroot}
 
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
+find %{buildroot} -type f -name .packlist -exec rm -f {} \;
+find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
-%{_fixperms} $RPM_BUILD_ROOT/*
+%{_fixperms} %{buildroot}/*
 
 %check
-make test
+%make_build test
 
 %files
 %doc README

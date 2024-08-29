@@ -17,21 +17,20 @@
 
 
 Name:           billing-data-service
-Version:        5.0.3
+Version:        5.1.0
 Release:        0
 Summary:        Server to request billing information
 License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://github.com/uyuni-project/uyuni
 Source:         %{name}-%{version}.tar.gz
-BuildArch:      noarch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       apache2
-Recommends:     csp-billing-adapter-service
 Requires:       python3-Flask
 Requires:       spacewalk-backend-sql
 Requires:       spacewalk-taskomatic
 Requires:       tomcat
+Recommends:     csp-billing-adapter-service
+BuildArch:      noarch
 
 %description
 Server to provide PAYG billing information in public clouds
@@ -76,7 +75,7 @@ done
 
 %posttrans
 if [ -f %{_unitdir}/billing-data-service.service ]; then
-    /usr/bin/systemctl --quiet enable billing-data-service.service 2>&1 ||:
+    %{_bindir}/systemctl --quiet enable billing-data-service.service 2>&1 ||:
 fi
 
 %files
