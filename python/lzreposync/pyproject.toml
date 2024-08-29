@@ -13,7 +13,9 @@ dependencies = [
      "more_itertools",
      "pycurl",
      "pyopenssl",
-     "psycopg2-binary"
+     "psycopg2-binary",
+     "urlgrabber",
+     "python-debian"
 ]
 
 [project.scripts]

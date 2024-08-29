@@ -11,13 +11,13 @@ from lzreposync.db_utils import (
     create_channel,
     ChannelAlreadyExistsException,
 )
-from lzreposync.deb_repo import DebRepo
 from lzreposync.import_utils import (
     import_package_batch,
     batched,
     import_repository_packages_in_batch,
 )
 from lzreposync.rpm_repo import RPMRepo
+from spacewalk.satellite_tools.repo_plugins.deb_src import DebRepo
 
 
 def main():
@@ -148,7 +148,7 @@ def main():
         if args.repo_type == "yum":
             repo = RPMRepo(args.name, args.cache, args.url, arch)
         elif args.repo_type == "deb":
-            repo = DebRepo(args.name, args.cache, args.url, None)
+            repo = DebRepo(args.url, args.cache, "/tmp", gpg_verify=False)
         else:
             print(f"ERROR: not supported repo_type: {args.repo_type}")
             return
@@ -195,8 +195,12 @@ def main():
                     )
                 elif repo.repo_type == "deb":
                     dep_repo = DebRepo(
-                        repo.repo_label, args.cache, repo.source_url, repo.channel_label
-                    )
+                        repo.source_url,
+                        args.cache,
+                        pkg_dir="/tmp",
+                        channel_label=repo.channel_label,
+                        gpg_verify=False,
+                    )  # TODO add gpg_verify argument to the cli
                     logging.debug("Importing package for repo %s", repo.repo_label)
                     failed = import_repository_packages_in_batch(
                         dep_repo,
