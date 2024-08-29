@@ -228,6 +228,8 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
+  next unless Capybara::Session.instance_created?
+
   log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
