@@ -325,6 +325,7 @@ def getCertData(cert):
             elif nextval == "authorityKeyIdentifier" and re.match(
                 r"^\s+[0-9A-Fa-f]{2}:.+$", line
             ):
+                # the regex check, if the line contain the hex value directly without identifier
                 data["authorityKeyIdentifier"] = line.strip().upper()
         elif "subject_hash" not in data:
             # subject_hash comes first without key to identify it
