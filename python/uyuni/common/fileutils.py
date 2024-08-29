@@ -284,6 +284,8 @@ def makedirs(path, mode=int("0755", 8), user=None, group=None):
     """
 
     dirs_to_create = []
+    if not path.endswith("/"):
+        path += "/"
     dirname = path
 
     uid, gid = getUidGid(user, group)
