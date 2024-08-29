@@ -21,24 +21,50 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
   stderr = ''
   exit_code = nil
 
-  Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
-    stdout, stderr, exit_code = ssh_exec!(ssh, command)
+  begin
+    Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
+      stdout, stderr, exit_code = ssh_exec!(ssh, command)
+    end
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
+    # The connection times out or is refused
   end
 
   [stdout, stderr, exit_code]
 end
 
-# This method is used to execute a command on a remote host using SSH and return the output of the command.
+# This method is used to upload a file on a remote host from the test-runner (aka controller) using SCP and return the output of the command.
 #
-# @param [String] local_path The path to the file to be copied.
+# @param [String] local_path The path to the file to be uploaded.
 # @param [String] remote_path The path to the destination file.
 # @param [String] host The hostname or IP address of the remote host.
 # @param [Integer] port The port to connect to on the remote host.
 # @param [Integer] timeout The timeout to use when connecting to the remote host.
 # @param [Integer] buffer_size The buffer size to use when connecting to the remote host.
-def scp_command(local_path, remote_path, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 65_536)
-  Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
-    ssh.scp.upload! local_path, remote_path
+def scp_upload_command(local_path, remote_path, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 65_536)
+  begin
+    Net::SSH.start(host, nil, port: port, verify_host_key: :never, keepalive: true, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
+      ssh.scp.upload! local_path, remote_path
+    end
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
+    # The connection times out or is refused
+  end
+end
+
+# This method is used to download a file from a remote host to the test-runner (aka controller) using SCP and return the output of the command.
+
+# @param [String] remote_path The path of the file to be downloaded.
+# @param [String] local_path The path to the destination file.
+# @param [String] host The hostname or IP address of the remote host.
+# @param [Integer] port The port to connect to on the remote host.
+# @param [Integer] timeout The timeout to use when connecting to the remote host.
+# @param [Integer] buffer_size The buffer size to use when connecting to the remote host.
+def scp_download_command(remote_path, local_path, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 65_536)
+  begin
+    Net::SSH.start(host, nil, port: port, verify_host_key: :never, keepalive: true, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
+      ssh.scp.download! remote_path, local_path
+    end
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
+    # The connection times out or is refused
   end
 end
 
@@ -66,7 +92,12 @@ def ssh_exec!(ssh, command)
       end
     end
   end
-  ssh.loop
+
+  begin
+    ssh.loop
+  rescue IOError
+    puts "The remote node #{ssh.host} has been disconnected."
+  end
 
   [stdout, stderr, exit_code]
 end
