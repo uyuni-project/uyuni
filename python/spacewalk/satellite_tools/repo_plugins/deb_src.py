@@ -201,12 +201,12 @@ class DebRepo:
 
         self.basecachedir = cache_dir
         # TODO: FIX for some reason this is not working (I might be passing the cache dir in a bad format)
-        # if not os.path.isdir(self.basecachedir):
-        #     # pylint: disable-next=invalid-name
-        #     with cfg_component(component=None) as CFG:
-        #         fileutils.makedirs(
-        #             self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group
-        #         )
+        if not os.path.isdir(self.basecachedir):
+            # pylint: disable-next=invalid-name
+            with cfg_component(component=None) as CFG:
+                fileutils.makedirs(
+                    self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group
+                )
         self.includepkgs = []
         self.exclude = []
         self.pkgdir = pkg_dir
