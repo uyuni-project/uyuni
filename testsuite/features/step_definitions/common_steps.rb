@@ -241,7 +241,7 @@ end
 When(/^I check the ram value of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_ram_value = 'grep MemTotal /proc/meminfo |awk \'{print $2}\''
-  ram_value, _local, _remote, _code = node.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value, _err, _code = node.ssh(get_ram_value)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
@@ -250,7 +250,7 @@ end
 When(/^I check the MAC address value of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_mac_address = 'cat /sys/class/net/eth0/address'
-  mac_address, _local, _remote, _code = node.test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address, _err, _code = node.ssh(get_mac_address)
   mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
@@ -259,7 +259,7 @@ end
 Then(/^I should see the CPU frequency of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_cpu_freq = 'cat /proc/cpuinfo  | grep -i \'CPU MHz\'' # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = node.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  cpu_freq, _err, _code = node.ssh(get_cpu_freq)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
