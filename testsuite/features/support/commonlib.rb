@@ -459,16 +459,16 @@ end
 #   Defaults to the server obtained from the `get_target` method.
 # @return [Array<String>] An array of GPG keys.
 def get_gpg_keys(node, target = get_target('server'))
-  os_version, os_family = get_os_version(node)
-  os_version_str = os_version.to_s
+  os_version = node.os_version
+  os_family = node.os_family
   case os_family
   when /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
-    if os_version_str.start_with?('15')
+    if os_version.start_with?('15')
       os_version = 12
-    elsif os_version_str.start_with?('12')
+    elsif os_version.start_with?('12')
       # SLE12 GPG keys don't contain service pack strings
-      os_version = os_version_str.slice(0, 2)
+      os_version = os_version.slice(0, 2)
     end
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
   when /^centos/
@@ -616,11 +616,20 @@ end
 #
 # @return [ApiTestXmlrpc, ApiTestHttp] The created API client.
 def new_api_client
+  hostname = get_target('server').full_hostname
   ssl_verify = !$is_gh_validation
-  if product == 'SUSE Manager'
-    ApiTestXmlrpc.new(get_target('server').full_hostname)
+
+  case $api_protocol
+  when 'xmlrpc'
+    ApiTestXmlrpc.new(hostname)
+  when 'http'
+    ApiTestHttp.new(hostname, ssl_verify)
   else
-    ApiTestHttp.new(get_target('server').full_hostname, ssl_verify)
+    if product == 'SUSE Manager'
+      ApiTestXmlrpc.new(hostname)
+    else
+      ApiTestHttp.new(hostname, ssl_verify)
+    end
   end
 end
 
