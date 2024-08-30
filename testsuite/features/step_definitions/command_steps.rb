@@ -1752,29 +1752,6 @@ When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
   end
 end
 
-When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
-  # special handling for e.g. nested VMs that will only be crated later in the test suite
-  # this step is normally done in RemoteNode.rb
-  node = get_target(host)
-
-  hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise ScriptError, "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-  raise ScriptError, "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
-
-  node.init_hostname(hostname)
-
-  fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise ScriptError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-  raise ScriptError, "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
-
-  node.init_full_hostname(fqdn)
-
-  $stdout.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
-  os_version, os_family = get_os_version(node)
-  node.init_os_family(os_family)
-  node.init_os_version(os_version)
-end
-
 When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, file, host|
   node = get_target(host)
   repeat_until_timeout(message: "Entry #{text} in file #{file} on #{host} not found") do
