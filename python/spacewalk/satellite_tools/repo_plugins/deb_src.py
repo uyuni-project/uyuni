@@ -259,6 +259,7 @@ class DebRepo:
                     cert=(self.sslclientcert, self.sslclientkey),
                     verify=self.sslcacert,
                     timeout=self.timeout,
+                    headers=self.http_headers,
                 )
                 if not data.ok:
                     return ""
@@ -425,6 +426,7 @@ class ContentSource:
                 channel_label=channel_label,
                 timeout=self.timeout,
             )
+            self.repo.http_headers = http_headers
             self.repo.verify()
 
             self.num_packages = 0
