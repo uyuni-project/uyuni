@@ -1740,7 +1740,6 @@ end
 
 When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
   node = get_target(host)
-  node.test_and_store_results_together('hostname', 'root', 500)
   node.run('cloud-init status --wait', check_errors: true, verbose: false)
 
   repeat_until_timeout(report_result: true) do
