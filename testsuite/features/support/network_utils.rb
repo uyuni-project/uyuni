@@ -19,7 +19,7 @@ Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t.match(/^ecd(sa|h)-sha2/) }
 def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 65_536)
   stdout = ''
   stderr = ''
-  exit_code = nil
+  exit_code = -1
 
   begin
     Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
@@ -73,7 +73,7 @@ private
 def ssh_exec!(ssh, command)
   stdout = ''
   stderr = ''
-  exit_code = nil
+  exit_code = -1
 
   ssh.open_channel do |channel|
     channel.exec(command) do |_ch, success|
