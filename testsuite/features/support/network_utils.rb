@@ -25,7 +25,7 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
     Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
       stdout, stderr, exit_code = ssh_exec!(ssh, command)
     end
-  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED, Errno::EHOSTUNREACH
     # The connection times out or is refused
   end
 

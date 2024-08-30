@@ -616,11 +616,20 @@ end
 #
 # @return [ApiTestXmlrpc, ApiTestHttp] The created API client.
 def new_api_client
+  hostname = get_target('server').full_hostname
   ssl_verify = !$is_gh_validation
-  if product == 'SUSE Manager'
-    ApiTestXmlrpc.new(get_target('server').full_hostname)
+
+  case $api_protocol
+  when 'xmlrpc'
+    ApiTestXmlrpc.new(hostname)
+  when 'http'
+    ApiTestHttp.new(hostname, ssl_verify)
   else
-    ApiTestHttp.new(get_target('server').full_hostname, ssl_verify)
+    if product == 'SUSE Manager'
+      ApiTestXmlrpc.new(hostname)
+    else
+      ApiTestHttp.new(hostname, ssl_verify)
+    end
   end
 end
 
