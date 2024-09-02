@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.UserPasswordUtils;
@@ -39,6 +40,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -98,9 +100,11 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
             addErrors(request, errors);
             return getStrutsDelegate().forwardParams(mapping.findForward(MISMATCH), params);
         }
-
+        
+        Map<String, String> errorMap = new HashMap<>();
         // Validate the rest of the password rules
-        UserPasswordUtils.validatePassword(errors, pw);
+        UserPasswordUtils.validatePassword(errorMap, pw);
+        errorMap.forEach((i,k) -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(i, k)));
         if (!errors.isEmpty()) {
             addErrors(request, errors);
             return getStrutsDelegate().forwardParams(mapping.findForward(BADPWD), params);

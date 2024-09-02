@@ -39,6 +39,7 @@ import org.apache.struts.action.ActionErrors;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.regex.Pattern;
@@ -303,8 +304,9 @@ public class CreateUserCommand {
     /**
      * @param passwordIn The password to set
      * @param validate if password requirements should be validated
+     * @return the validation errors map
      */
-    public void setPassword(ActionErrors errors, String passwordIn, boolean validate) {
+    public void setPassword(Map<String, String> errors, String passwordIn, boolean validate) {
         passwordErrors = new ArrayList<>(); //init password errors list
         if (validate) {
             UserPasswordUtils.validatePassword(errors, passwordIn);
@@ -315,7 +317,7 @@ public class CreateUserCommand {
     /**
      * @param passwordIn The password to set
      */
-    public void setPassword(ActionErrors errors, String passwordIn) {
+    public void setPassword(Map<String, String> errors, String passwordIn) {
         setPassword(errors, passwordIn, true);
     }
 

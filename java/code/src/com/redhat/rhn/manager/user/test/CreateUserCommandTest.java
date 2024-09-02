@@ -17,6 +17,8 @@ package com.redhat.rhn.manager.user.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.HashMap;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -60,7 +62,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         //Test invalid values
         command.setLogin(invalidLogin);
         command.setEmail(invalidEmail);
-        command.setPassword(invalidPassword);
+        command.setPassword(new HashMap<>(), invalidPassword);
         command.setPrefix(validPrefix);
         command.setFirstNames("testuser");
         command.setLastName("testuser");
@@ -94,7 +96,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         //Test invalid values
         command.setLogin(invalidLogin);
         command.setEmail(invalidEmail);
-        command.setPassword(invalidPassword);
+        command.setPassword(new HashMap<>(), invalidPassword);
         command.setPrefix(invalidPrefix);
         command.setFirstNames("testuser");
         command.setLastName("testuser");
@@ -106,7 +108,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         //Test valid values
         command.setLogin(validLogin);
         command.setEmail(validEmail);
-        command.setPassword(validPassword);
+        command.setPassword(new HashMap<>(), validPassword);
         command.setPrefix(validPrefix);
 
         errors = command.validate();
@@ -119,7 +121,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
         String login = TestUtils.randomString();
         command.setLogin(login);
-        command.setPassword("password");
+        command.setPassword(new HashMap<>(), "password");
         command.setEmail("rhn-java-unit-tests@redhat.com");
         command.setPrefix("Dr.");
         command.setFirstNames("Chuck Norris");
@@ -146,7 +148,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         command.setEmail("validemail@mycompany.com");
         command.setFirstNames("testuser");
         command.setLastName("testuser");
-        command.setPassword("validPassword");
+        command.setPassword(new HashMap<>(), "validPassword");
         command.setPrefix("Ms.");
 
         invalidUsername("foo&user", command);
@@ -195,7 +197,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     public void testValidatePasswordHasTabCharacter() {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
-        command.setPassword("aaaaa\tb");
+        command.setPassword(new HashMap<>(), "aaaaa\tb");
         command.setPrefix("Hr.");
         ValidatorError [] errors = command.validate();
         assertEquals(1, errors.length);
@@ -205,7 +207,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     public void testValidatePasswordHasNewlineCharacter() {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
-        command.setPassword("aaaaa\nb");
+        command.setPassword(new HashMap<>(), "aaaaa\nb");
         command.setPrefix("Hr.");
         ValidatorError [] errors = command.validate();
         assertEquals(1, errors.length);

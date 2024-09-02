@@ -28,6 +28,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -74,8 +76,9 @@ public abstract class UserEditActionHelper extends RhnAction {
 
         //Make sure password is not empty
         if (!pw.isEmpty()) {
-            UserPasswordUtils.validatePassword(errors, pw);
-
+            Map<String, String> errorMap = new HashMap<>();
+            UserPasswordUtils.validatePassword(errorMap, pw);
+            errorMap.forEach((i,k) -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(i, k)));
             //Set the password only if there are no errors at all
             if (errors.isEmpty()) {
                 targetUser.setPassword(pw);

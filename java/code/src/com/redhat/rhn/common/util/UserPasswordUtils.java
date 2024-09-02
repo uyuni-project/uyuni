@@ -26,13 +26,12 @@ public class UserPasswordUtils {
     private static final String PSW_MAX_OCCURENCE_REGEX = "$";
     private static final String PSW_NO_SPACE_TAB_NEWLINE_REGEX = "(?<spaces>=.[\\t\\n\\S+$])";
 
-    public static Map<String, String> validatePassword(String pw) {
+    public static void validatePassword(Map<String, String> errors, String pw) {
         // Validate the password
-        Map<String, String> errors = new HashMap<>();
         Pattern validationRegex = Pattern.compile(buildRegexValidationPattern());
         Matcher validationMatcher = validationRegex.matcher(pw);
         if(validationMatcher.matches()) {
-            return errors;
+            return;
         }
         if(validationMatcher.group("lowerchar").isEmpty()) {
             errors.put(
@@ -64,7 +63,6 @@ public class UserPasswordUtils {
                 ""
             );
         }
-        return errors;
     }
 
     private static String buildRegexValidationPattern() {

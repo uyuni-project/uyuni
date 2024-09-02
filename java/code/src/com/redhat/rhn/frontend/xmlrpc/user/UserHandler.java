@@ -499,7 +499,7 @@ public class UserHandler extends BaseHandler {
         CreateUserCommand command = new CreateUserCommand();
         command.setUsePamAuthentication(pamAuth);
         command.setLogin(login);
-        command.setPassword(password);
+        command.setPassword(new HashMap<>(), password);
         command.setFirstNames(firstName);
         command.setLastName(lastName);
         command.setEmail(email);

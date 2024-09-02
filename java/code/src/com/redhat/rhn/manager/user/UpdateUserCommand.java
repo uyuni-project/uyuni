@@ -23,9 +23,11 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionErrors;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.mail.internet.AddressException;
@@ -86,9 +88,10 @@ public class UpdateUserCommand {
      */
     public User updateUser() {
         ActionErrors errors = new ActionErrors();
+        Map<String, String> errorMap = new HashMap<>();
         if (needsUpdate) {
             validateEmail();
-            UserPasswordUtils.validatePassword(errors, unencryptedPassword);
+            UserPasswordUtils.validatePassword(errorMap, unencryptedPassword);
             validatePrefix();
             safePopulateUser();
             // ok update it

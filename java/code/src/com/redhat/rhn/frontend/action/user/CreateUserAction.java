@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.common.util.CryptHelper;
+import com.redhat.rhn.common.util.UserPasswordUtils;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.Address;
@@ -34,6 +35,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,14 +70,15 @@ public class CreateUserAction extends RhnAction {
         // Check passwords
         String passwd = (String)form.get(UserActionHelper.DESIRED_PASS);
         String passwdConfirm = (String)form.get(UserActionHelper.DESIRED_PASS_CONFIRM);
+        Map<String, String> errorMap = new HashMap<>();
         if (passwd.equals(passwdConfirm)) {
-            command.setPassword(errors, passwd, validatePassword);
+            command.setPassword(errorMap, passwd, validatePassword);
+            errorMap.forEach((i,k) -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(i, k)));
         }
         else {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("error.password_mismatch"));
         }
-
         // Put any validationErrors into ActionErrors object
         ValidatorError[] validationErrors = command.validate();
         for (ValidatorError err : validationErrors) {
