@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:26:36 CEST 2024 - rosuna@suse.com
+
+- version 4.3.29-0
+  * Speed up softwarechannel_removepackages (bsc#1227606)
+
+-------------------------------------------------------------------
 Thu Jun 06 16:02:06 CEST 2024 - rosuna@suse.com
 
 - version 4.3.28-0
