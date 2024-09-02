@@ -10,6 +10,7 @@ from lzreposync.db_utils import (
     get_all_arches,
     create_channel,
     ChannelAlreadyExistsException,
+    NoSourceFoundForChannel,
 )
 from lzreposync.import_utils import (
     import_package_batch,
@@ -47,7 +48,7 @@ def main():
     )
 
     parser.add_argument(
-        "-d",
+        "-D",
         "--debug",
         help="Show debug messages",
         action="store_const",
@@ -84,6 +85,7 @@ def main():
     )
 
     parser.add_argument(
+        "-c",
         "--channel",
         help="The channel label of which you want to synchronize repositories",
         dest="channel",
@@ -100,10 +102,10 @@ def main():
     )
 
     parser.add_argument(
-        "--import-updates",
-        help="Import related patches/updates",
+        "--no-errata",
+        help="Do not sync errata",
         action="store_true",
-        dest="import_updates",
+        dest="no_errata",
         default=False,
     )
 
@@ -173,7 +175,11 @@ def main():
                     args.channel,
                 )
                 return
-            target_repos = db_utils.get_repositories_by_channel_label(channel_label)
+            try:
+                target_repos = db_utils.get_repositories_by_channel_label(channel_label)
+            except NoSourceFoundForChannel as e:
+                print("Error:", e.msg)
+                return
             for repo in target_repos:
                 if repo.repo_type == "yum":
                     rpm_repo = RPMRepo(
@@ -185,7 +191,7 @@ def main():
                         args.batch_size,
                         channel,
                         compatible_arches=compatible_arches,
-                        import_updates=args.import_updates,
+                        no_errata=args.no_errata,
                     )
                     logging.debug(
                         "Completed import for repo %s with %d failed packages",
