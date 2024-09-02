@@ -6,4 +6,4 @@ description: Uyuni server containers.
 type: application
 home: https://www.uyuni-project.org/
 icon: https://www.uyuni-project.org/img/uyuni-logo.svg
-version: 5.0.7
+version: 5.1.0

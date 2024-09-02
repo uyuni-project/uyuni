@@ -20,19 +20,15 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           susemanager-schema
+Version:        5.1.0
+Release:        0
 Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-
-Version:        5.0.11
-Release:        0
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/schema/spacewalk/%{name}-rpmlintrc
-
-URL:            https://github.com/uyuni-project/uyuni
-BuildArch:      noarch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
 BuildRequires:  make
@@ -42,15 +38,14 @@ BuildRequires:  perl(Digest::SHA)
 BuildRequires:  perl(File::Find)
 Requires:       %{name}-utility
 Requires:       %{sbinpath}/restorecon
-
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
-
+BuildArch:      noarch
 %if 0%{?suse_version}
 BuildRequires:  fdupes
 %endif
 
-%define rhnroot /usr/share/susemanager/db
+%define rhnroot %{_datadir}/susemanager/db
 %define postgres %{rhnroot}/postgres
 %define spacewalk_folder Spacewalk
 %define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
@@ -60,12 +55,13 @@ susemanager-schema is the SQL schema for the SUSE Manager server.
 
 %package sanity
 Summary:        Schema source sanity check for Spacewalk database scripts
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-
 Requires:       perl(Digest::SHA)
 
 %package utility
 Summary:        Utility used by any DB schema in Spacewalk
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 
 %description sanity
@@ -84,39 +80,39 @@ pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
 pod2man spacewalk-sql spacewalk-sql.1
 
 %install
-install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}
-install -m 0755 -d $RPM_BUILD_ROOT%{postgres}
-install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
-install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
-install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
-install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
-install -m 0755 -d $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
-install -m 0755 lib/%{schema_upgrade_folder}/MainDb.pm $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
-install -m 0755 lib/%{schema_upgrade_folder}/ReportDb.pm $RPM_BUILD_ROOT%{perl_vendorlib}/%{schema_upgrade_folder}
+install -m 0755 -d %{buildroot}%{rhnroot}
+install -m 0755 -d %{buildroot}%{postgres}
+install -m 0644 postgres/main.sql %{buildroot}%{postgres}
+install -m 0644 postgres/end.sql %{buildroot}%{postgres}/upgrade-end.sql
+install -m 0755 -d %{buildroot}%{_bindir}
+install -m 0755 spacewalk-schema-upgrade %{buildroot}%{_bindir}
+install -m 0755 -d %{buildroot}%{perl_vendorlib}/%{schema_upgrade_folder}
+install -m 0755 lib/%{schema_upgrade_folder}/MainDb.pm %{buildroot}%{perl_vendorlib}/%{schema_upgrade_folder}
+install -m 0755 lib/%{schema_upgrade_folder}/ReportDb.pm %{buildroot}%{perl_vendorlib}/%{schema_upgrade_folder}
 
-install -m 0755 spacewalk-sql $RPM_BUILD_ROOT%{_bindir}
-install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
-( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade && tar xf - ) )
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
-cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
-cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
+install -m 0755 spacewalk-sql %{buildroot}%{_bindir}
+install -m 0755 -d %{buildroot}%{rhnroot}/schema-upgrade
+( cd upgrade && tar cf - --exclude='*.sql' . | ( cd %{buildroot}%{rhnroot}/schema-upgrade && tar xf - ) )
+mkdir -p %{buildroot}%{_mandir}/man1
+cp -p spacewalk-schema-upgrade.1 %{buildroot}%{_mandir}/man1
+cp -p spacewalk-sql.1 %{buildroot}%{_mandir}/man1
 
 %if 0%{?suse_version}
-mkdir -p $RPM_BUILD_ROOT/usr/share/susemanager/
-install -m 0644 update-messages.txt $RPM_BUILD_ROOT/usr/share/susemanager/
+mkdir -p %{buildroot}%{_datadir}/susemanager/
+install -m 0644 update-messages.txt %{buildroot}%{_datadir}/susemanager/
 %fdupes %{buildroot}/%{rhnroot}
 %endif
 
-install -m 755 schema-source-sanity-check.pl $RPM_BUILD_ROOT%{_bindir}/schema-source-sanity-check.pl
-install -m 755 blend $RPM_BUILD_ROOT%{_bindir}/blend
+install -m 755 schema-source-sanity-check.pl %{buildroot}%{_bindir}/schema-source-sanity-check.pl
+install -m 755 blend %{buildroot}%{_bindir}/blend
 
 %if 0%{?suse_version}
 %post
 if [ $1 -eq 2 ] ; then
-    cp /usr/share/susemanager/update-messages.txt /var/adm/update-messages/%{name}-%{version}-%{release}
+    cp %{_datadir}/susemanager/update-messages.txt %{_localstatedir}/adm/update-messages/%{name}-%{version}-%{release}
 else
     # new install: empty messages are not shown
-    touch /var/adm/update-messages/%{name}-%{version}-%{release}
+    touch %{_localstatedir}/adm/update-messages/%{name}-%{version}-%{release}
 fi
 %endif
 
@@ -129,13 +125,13 @@ systemctl try-restart uyuni-check-database.service ||:
 
 %files
 %defattr(-,root,root)
-%dir /usr/share/susemanager
+%dir %{_datadir}/susemanager
 %dir %{rhnroot}
 %{postgres}
 %{rhnroot}/schema-upgrade
 %if 0%{?suse_version}
-/usr/share/susemanager/update-messages.txt
-%ghost /var/adm/update-messages/%{name}-%{version}-%{release}
+%{_datadir}/susemanager/update-messages.txt
+%ghost %{_localstatedir}/adm/update-messages/%{name}-%{version}-%{release}
 %endif
 
 %files utility

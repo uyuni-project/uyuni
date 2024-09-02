@@ -17,25 +17,22 @@
 
 
 %global debug_package %{nil}
-
 #Compat macro for new _fillupdir macro introduced in Nov 2017
 %if ! %{defined _fillupdir}
-  %define _fillupdir /var/adm/fillup-templates
+  %define _fillupdir %{_localstatedir}/adm/fillup-templates
 %endif
-
 Name:           uyuni-payg-timer
-Version:        5.0.2
+Version:        5.1.0
 Release:        0
-URL:            https://github.com/uyuni-project/uyuni
-Source0:        %{name}-%{version}.tar.gz
-Source1:        uyuni-payg-timer-rpmlintrc
 Summary:        Uyuni PAYG Timer Package
 License:        GPL-2.0-only
 Group:          System/Fhs
+URL:            https://github.com/uyuni-project/uyuni
+Source0:        %{name}-%{version}.tar.gz
+Source1:        uyuni-payg-timer-rpmlintrc
 BuildRequires:  systemd-rpm-macros
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Requires:       mgradm
 BuildArch:      noarch
-Requires:	mgradm
 %systemd_requires
 
 %description
@@ -50,11 +47,11 @@ This package provide a timer for Cloud PAYG usage.
 # nothing to do here
 
 %install
-mkdir -p %{buildroot}/%{_unitdir}
-mkdir -p %{buildroot}/%{_sbindir}
-install -m 644 uyuni-payg-timer.timer  %{buildroot}/%{_unitdir}/
-install -m 644 uyuni-payg-timer.service  %{buildroot}/%{_unitdir}/
-install -m 755 uyuni-payg-extract-data.py %{buildroot}/%{_sbindir}/uyuni-payg-extract-data
+mkdir -p %{buildroot}%{_unitdir}
+mkdir -p %{buildroot}%{_sbindir}
+install -m 644 uyuni-payg-timer.timer  %{buildroot}%{_unitdir}/
+install -m 644 uyuni-payg-timer.service  %{buildroot}%{_unitdir}/
+install -m 755 uyuni-payg-extract-data.py %{buildroot}%{_sbindir}/uyuni-payg-extract-data
 
 %files
 %defattr(-,root,root)
@@ -63,7 +60,6 @@ install -m 755 uyuni-payg-extract-data.py %{buildroot}/%{_sbindir}/uyuni-payg-ex
 %{_sbindir}/uyuni-payg-extract-data
 %{_unitdir}/uyuni-payg-timer.timer
 %{_unitdir}/uyuni-payg-timer.service
-
 
 %pre
 %service_add_pre uyuni-payg-timer.service uyuni-payg-timer.timer
@@ -79,7 +75,7 @@ install -m 755 uyuni-payg-extract-data.py %{buildroot}/%{_sbindir}/uyuni-payg-ex
 
 %posttrans
 if [ -f %{_unitdir}/uyuni-payg-timer.timer ]; then
-    /usr/bin/systemctl --quiet enable uyuni-payg-timer.timer 2>&1 ||:
+    %{_bindir}/systemctl --quiet enable uyuni-payg-timer.timer 2>&1 ||:
 fi
 
 %changelog

@@ -22,15 +22,15 @@
 %endif
 
 Name:           spacewalk-ssl-cert-check
-Version:        5.0.1
-Release:        1
+Version:        5.1.0
+Release:        0
 Summary:        Check ssl certs for impending expiration
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/projects/ssl-cert-check/%{name}-rpmlintrc
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Obsoletes:      rhn-ssl-cert-check < %{version}
 Provides:       rhn-ssl-cert-check = %{version}
@@ -59,15 +59,15 @@ sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' ssl-ce
 
 %install
 
-install -d $RPM_BUILD_ROOT/etc/sysconfig/rhn
-install -d $RPM_BUILD_ROOT/%{_bindir}
-install -d $RPM_BUILD_ROOT%{_mandir}/man8/
+install -d %{buildroot}%{_sysconfdir}/sysconfig/rhn
+install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_mandir}/man8/
 install -D -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
 install -D -m 0644 %{name}.timer %{buildroot}%{_unitdir}/%{name}.timer
-install -m644 sysconfig.ssl-cert-check $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn/ssl-cert-check
-install -m755 timerscript.ssl-cert-check $RPM_BUILD_ROOT/%{_bindir}/ssl-cert-check-timerscript
-install -m755 ssl-cert-check $RPM_BUILD_ROOT/%{_bindir}/ssl-cert-check
-install -m644 ssl-cert-check.8 $RPM_BUILD_ROOT%{_mandir}/man8/
+install -m644 sysconfig.ssl-cert-check %{buildroot}%{_sysconfdir}/sysconfig/rhn/ssl-cert-check
+install -m755 timerscript.ssl-cert-check %{buildroot}%{_bindir}/ssl-cert-check-timerscript
+install -m755 ssl-cert-check %{buildroot}%{_bindir}/ssl-cert-check
+install -m644 ssl-cert-check.8 %{buildroot}%{_mandir}/man8/
 
 %pre
 %if !0%{?rhel}
@@ -76,7 +76,7 @@ install -m644 ssl-cert-check.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 
 %post
 %if 0%{?rhel}
-%systemd_post %{name}.timer
+%{systemd_post} %{name}.timer
 %else
 %service_add_post %{name}.timer
 %endif

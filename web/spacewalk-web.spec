@@ -31,25 +31,24 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
+Version:        5.1.0
+Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Version:        5.0.12
-Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 Source1:        node-modules.tar.gz
-Source2:	spacewalk-web-rpmlintrc
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
-Requires(pre):  uyuni-base-common
+Source2:        spacewalk-web-rpmlintrc
 BuildRequires:  gettext
 BuildRequires:  make
+BuildRequires:  nodejs >= 20
 BuildRequires:  spacewalk-backend
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
-BuildRequires:  nodejs >= 20
-
+Requires(pre):  uyuni-base-common
+BuildArch:      noarch
 %if 0%{?suse_version}
 BuildRequires:  apache2
 %else
@@ -65,6 +64,7 @@ but it does generate a number of sub-packages.
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
 License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-branding
@@ -86,6 +86,7 @@ This package contains the HTML files for the Spacewalk web site.
 %package -n spacewalk-html-debug
 Summary:        HTML document debug files for Spacewalk
 License:        GPL-2.0-only AND MIT
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       spacewalk-html
 
@@ -95,8 +96,18 @@ This package contains the debug files for spacewalk-html.
 %package -n spacewalk-base
 Summary:        Programs which need to be installed for the Spacewalk Web base classes
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+Requires:       httpd
+Requires:       sudo
+Requires:       perl(Params::Validate)
+Requires:       perl(XML::LibXML)
 Provides:       spacewalk(spacewalk-base) = %{version}-%{release}
+Obsoletes:      rhn-base < 5.3.0
+Obsoletes:      spacewalk-grail < %{version}
+Obsoletes:      spacewalk-pxt < %{version}
+Obsoletes:      spacewalk-sniglets < %{version}
+Provides:       rhn-base = 5.3.0
 %if 0%{?suse_version}
 Requires:       susemanager-frontend-libs
 %if 0%{?suse_version} >= 1500
@@ -109,15 +120,6 @@ Requires:       python-numpy
 Requires:       python-websockify
 %endif
 %endif
-Requires:       httpd
-Requires:       sudo
-Requires:       perl(Params::Validate)
-Requires:       perl(XML::LibXML)
-Obsoletes:      rhn-base < 5.3.0
-Obsoletes:      spacewalk-grail < %{version}
-Obsoletes:      spacewalk-pxt < %{version}
-Obsoletes:      spacewalk-sniglets < %{version}
-Provides:       rhn-base = 5.3.0
 
 %description -n spacewalk-base
 This package includes the core RHN:: packages necessary to manipulate the
@@ -126,12 +128,13 @@ database.  This includes RHN::* and RHN::DB::*.
 %package -n spacewalk-base-minimal
 Summary:        Core of Perl modules for %{name} package
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+Requires:       perl(DBI)
+Requires:       perl(Params::Validate)
 Provides:       spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 Obsoletes:      rhn-base-minimal < 5.3.0
 Provides:       rhn-base-minimal = 5.3.0
-Requires:       perl(DBI)
-Requires:       perl(Params::Validate)
 
 %description -n spacewalk-base-minimal
 Independent Perl modules in the RHN:: name-space.
@@ -141,10 +144,11 @@ sessions and exceptions.
 %package -n spacewalk-base-minimal-config
 Summary:        Configuration for %{name} package
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Provides:       spacewalk(spacewalk-base-minimal-config) = %{version}-%{release}
 Requires:       httpd
 Requires:       spacewalk-base-minimal = %{version}-%{release}
+Provides:       spacewalk(spacewalk-base-minimal-config) = %{version}-%{release}
 
 %description -n spacewalk-base-minimal-config
 Configuration file for spacewalk-base-minimal package.
@@ -152,12 +156,13 @@ Configuration file for spacewalk-base-minimal package.
 %package -n spacewalk-dobby
 Summary:        Perl modules and scripts to administer a PostgreSQL database
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+Requires:       %{sbinpath}/runuser
 Requires:       perl-Filesys-Df
+Conflicts:      spacewalk-oracle
 Obsoletes:      rhn-dobby < 5.3.0
 Provides:       rhn-dobby = 5.3.0
-Requires:       %{sbinpath}/runuser
-Conflicts:      spacewalk-oracle
 
 %description -n spacewalk-dobby
 Dobby is collection of Perl modules and scripts to administer a PostgreSQL
@@ -180,46 +185,46 @@ rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 
 %install
-make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-make -C html install PREFIX=$RPM_BUILD_ROOT INSTALL_DEST=%{www_path}
-make -C po install PREFIX=$RPM_BUILD_ROOT
+make -C modules install DESTDIR=%{buildroot} PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
+make -C html install PREFIX=%{buildroot} INSTALL_DEST=%{www_path}
+make -C po install PREFIX=%{buildroot}
 
-find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
+find %{buildroot} -type f -name perllocal.pod -exec rm -f {} \;
+find %{buildroot} -type f -name .packlist -exec rm -f {} \;
 
-mkdir -p $RPM_BUILD_ROOT/%{www_path}/pub
-mkdir -p $RPM_BUILD_ROOT/%{_prefix}/share/rhn/config-defaults
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily
+mkdir -p %{buildroot}%{www_path}/pub
+mkdir -p %{buildroot}/%{_datadir}/rhn/config-defaults
+mkdir -p %{buildroot}%{_sysconfdir}/init.d
+mkdir -p %{buildroot}%{_sysconfdir}/httpd/conf
+mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 
-install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
-install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
-install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
+install -m 644 conf/rhn_web.conf %{buildroot}%{_datadir}/rhn/config-defaults
+install -m 644 conf/rhn_dobby.conf %{buildroot}%{_datadir}/rhn/config-defaults
+install -m 755 modules/dobby/scripts/check-database-space-usage.sh %{buildroot}%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
 if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
   SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
-  SUMA_FULL_REL=$(sed -n 's/web\.version\s*=\s*\(.*\)/\1/p' $RPM_BUILD_ROOT%{_datadir}/rhn/config-defaults/rhn_web.conf)
-  echo "SUSE Manager release $SUMA_REL ($SUMA_FULL_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
+  SUMA_FULL_REL=$(sed -n 's/web\.version\s*=\s*\(.*\)/\1/p' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf)
+  echo "SUSE Manager release $SUMA_REL ($SUMA_FULL_REL)" > %{buildroot}%{_sysconfdir}/susemanager-release
 else
-  UYUNI_REL=$(sed -n 's/web\.version.uyuni\s*=\s*\(.*\)/\1/p' $RPM_BUILD_ROOT%{_datadir}/rhn/config-defaults/rhn_web.conf)
-  echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
+  UYUNI_REL=$(sed -n 's/web\.version.uyuni\s*=\s*\(.*\)/\1/p' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf)
+  echo "Uyuni release $UYUNI_REL" > %{buildroot}%{_sysconfdir}/uyuni-release
 fi
 
-%{__mkdir_p} %{buildroot}/%{www_path}/css
-%{__mkdir_p} %{buildroot}/%{www_path}/fonts
-%{__mkdir_p} %{buildroot}/%{www_path}/img
-%{__mkdir_p} %{buildroot}/%{www_path}/javascript
+mkdir -p %{buildroot}%{www_path}/css
+mkdir -p %{buildroot}%{www_path}/fonts
+mkdir -p %{buildroot}%{www_path}/img
+mkdir -p %{buildroot}%{www_path}/javascript
 pushd html/src/dist
-cp -pR css %{buildroot}/%{www_path}
-cp -pR fonts %{buildroot}/%{www_path}
-cp -pR img %{buildroot}/%{www_path}
-cp -pR javascript %{buildroot}/%{www_path}
+cp -pR css %{buildroot}%{www_path}
+cp -pR fonts %{buildroot}%{www_path}
+cp -pR img %{buildroot}%{www_path}
+cp -pR javascript %{buildroot}%{www_path}
 popd
 
 # Adjust default theme for SUSE Manager
 %if 0%{?sle_version} && ! (0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora})
-sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_web.conf
+sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf
 %endif
 
 %find_lang spacewalk-web
@@ -243,18 +248,18 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 
 %files -n spacewalk-base-minimal-config
 %defattr(644,root,root,755)
-%dir %{_prefix}/share/rhn
-%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
+%dir %{_datadir}/rhn
+%attr(644,root,%{apache_group}) %{_datadir}/rhn/config-defaults/rhn_web.conf
 
 %files -n spacewalk-dobby
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/db-control
-%{_mandir}/man1/db-control.1.gz
+%{_mandir}/man1/db-control.1%{?ext_man}
 %{perl_vendorlib}/Dobby.pm
-%attr(644,root,root) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
+%attr(644,root,root) %{_datadir}/rhn/config-defaults/rhn_dobby.conf
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-database-space-usage.sh
 %{perl_vendorlib}/Dobby/
-%dir %{_prefix}/share/rhn
+%dir %{_datadir}/rhn
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)

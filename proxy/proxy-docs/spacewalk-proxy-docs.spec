@@ -18,20 +18,20 @@
 
 
 Name:           spacewalk-proxy-docs
+Version:        5.1.0
+Release:        0
 Summary:        Spacewalk Proxy Server Documentation
 License:        OPL-1.0
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Version:        5.0.1
-Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
 BuildRequires:  susemanager-advanced-topics_en-pdf
 BuildRequires:  susemanager-reference_en-pdf
 BuildRequires:  xerces-j2
 Obsoletes:      rhns-proxy-docs < 5.3.0
 Provides:       rhns-proxy-docs = 5.3.0
+BuildArch:      noarch
 
 %description
 This package includes the SUSE Manager Proxy Quick Start guide
@@ -45,22 +45,22 @@ User Reference guides.
 #nothing to do here
 
 %install
-install -m 755 -d $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/%_defaultdocdir/%{name}
+install -m 755 -d %{buildroot}
+mkdir -p %{buildroot}/%{_defaultdocdir}/%{name}
 
 for book in reference advanced-topics; do
   pdf="%{_datadir}/doc/manual/susemanager-${book}_en-pdf/susemanager-${book}_en.pdf"
   test -f $pdf && \
-    cp -av $pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+    cp -av $pdf %{buildroot}/%{_defaultdocdir}/%{name}/
 done
 
-install -m 644 LICENSE $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
-install -m 644 squid.conf.sample $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+install -m 644 LICENSE %{buildroot}/%{_defaultdocdir}/%{name}/
+install -m 644 squid.conf.sample %{buildroot}/%{_defaultdocdir}/%{name}/
 
 %files
 %defattr(-,root,root)
-%docdir %_defaultdocdir/%{name}
-%dir %_defaultdocdir/%{name}
-%_defaultdocdir/%{name}/*
+%docdir %{_defaultdocdir}/%{name}
+%dir %{_defaultdocdir}/%{name}
+%{_defaultdocdir}/%{name}/*
 
 %changelog

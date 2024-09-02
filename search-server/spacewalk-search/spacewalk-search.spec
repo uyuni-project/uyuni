@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2022--2024 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -27,11 +27,12 @@
 %define oro (oro or jakarta-oro)
 
 Name:           spacewalk-search
+Version:        5.1.0
+Release:        0
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Version:        5.0.2
-Release:        0
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
@@ -39,9 +40,6 @@ Release:        0
 # make test-srpm
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
-
 BuildRequires:  %{oro}
 BuildRequires:  ant
 BuildRequires:  apache-commons-cli
@@ -90,6 +88,7 @@ Requires:       mvn(org.mybatis:mybatis)
 Obsoletes:      rhn-search < 5.3.0
 Requires:       log4j
 BuildRequires:  log4j
+BuildArch:      noarch
 
 %description
 This package contains the code for the Full Text Search Server for
@@ -102,41 +101,40 @@ Spacewalk Server.
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
 %endif
-rm -fr ${RPM_BUILD_ROOT}
 ant -Djar.version=%{version} install
-install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
-install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
-install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
-install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes
-install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search
-install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes
-install -d -m 755 $RPM_BUILD_ROOT%{_sbindir}
-install -d -m 755 $RPM_BUILD_ROOT%{_unitdir}
-install -d -m 755 $RPM_BUILD_ROOT%{_bindir}
-install -d -m 755 $RPM_BUILD_ROOT%{_var}/log/rhn/search
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -p -m 644 dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/
+install -d -m 755 %{buildroot}%{_datadir}/rhn/config-defaults
+install -d -m 755 %{buildroot}%{_datadir}/rhn/search
+install -d -m 755 %{buildroot}%{_datadir}/rhn/search/lib
+install -d -m 755 %{buildroot}%{_datadir}/rhn/search/classes
+install -d -m 755 %{buildroot}%{_var}/lib/rhn/search
+install -d -m 755 %{buildroot}%{_var}/lib/rhn/search/indexes
+install -d -m 755 %{buildroot}%{_sbindir}
+install -d -m 755 %{buildroot}%{_unitdir}
+install -d -m 755 %{buildroot}%{_bindir}
+install -d -m 755 %{buildroot}%{_var}/log/rhn/search
+install -d -m 755 %{buildroot}%{_sysconfdir}/logrotate.d
+install -p -m 644 dist/%{name}-%{version}.jar %{buildroot}%{_datadir}/rhn/search/lib/
 # using install -m does not preserve the symlinks
-cp -d lib/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib
+cp -d lib/* %{buildroot}%{_datadir}/rhn/search/lib
 
-install -p -m 644 src/config/etc/logrotate.d/rhn-search $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn-search
-install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
-install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
-install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
-install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-install -p -m 644 src/config/log4j2.xml $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j2.xml
-ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
+install -p -m 644 src/config%{_sysconfdir}/logrotate.d/rhn-search %{buildroot}%{_sysconfdir}/logrotate.d/rhn-search
+install -p -m 755 src/config/rhn-search %{buildroot}%{_sbindir}
+install -p -m 644 src/config/rhn-search.service %{buildroot}%{_unitdir}
+install -p -m 644 src/config/search/rhn_search.conf %{buildroot}%{_datadir}/rhn/config-defaults/rhn_search.conf
+install -p -m 644 src/config/search/rhn_search_daemon.conf %{buildroot}%{_datadir}/rhn/config-defaults/rhn_search_daemon.conf
+install -p -m 644 src/config/log4j2.xml %{buildroot}%{_datadir}/rhn/search/classes/log4j2.xml
+ln -s -f %{_datadir}/rhn/search/lib/spacewalk-search-%{version}.jar %{buildroot}%{_datadir}/rhn/search/lib/spacewalk-search.jar
 
 # add rc link
-mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
-ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
+mkdir -p  %{buildroot}%{_sbindir}/
+ln -sf service %{buildroot}/%{_sbindir}/rcrhn-search
 
 # cleanup unwanted jar
-rm -f $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/junit.jar
+rm -f %{buildroot}%{_datadir}/rhn/search/lib/junit.jar
 
 %post
 %if 0%{?rhel}
-%systemd_post rhn-search.service
+%{systemd_post} rhn-search.service
 %else
 %service_add_post rhn-search.service
 %endif
@@ -163,20 +161,20 @@ rm -f $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/junit.jar
 %files
 %defattr(644,root,root,755)
 %attr(755, root, root) %{_var}/log/rhn/search
-%dir /usr/share/rhn/search/classes/
-%{_prefix}/share/rhn/search/lib/*
+%dir %{_datadir}/rhn/search/classes/
+%{_datadir}/rhn/search/lib/*
 %attr(755, root, root) %{_sbindir}/rhn-search
 %attr(644, root, root) %{_unitdir}/rhn-search.service
-%{_prefix}/share/rhn/config-defaults/rhn_search.conf
-%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-%{_prefix}/share/rhn/search/classes/log4j2.xml
+%{_datadir}/rhn/config-defaults/rhn_search.conf
+%{_datadir}/rhn/config-defaults/rhn_search_daemon.conf
+%{_datadir}/rhn/search/classes/log4j2.xml
 %{_sysconfdir}/logrotate.d/rhn-search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes
 %dir %attr(755, root, root) %{_var}/lib/rhn
-%dir /usr/share/rhn
-%dir /usr/share/rhn/search
-%dir /usr/share/rhn/search/lib
+%dir %{_datadir}/rhn
+%dir %{_datadir}/rhn/search
+%dir %{_datadir}/rhn/search/lib
 %if 0%{?rhel}
 %dir %{_var}/log/rhn
 %else

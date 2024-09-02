@@ -17,7 +17,7 @@
 
 
 Name:           susemanager-sync-data
-Version:        5.0.6
+Version:        5.1.0
 Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -25,7 +25,6 @@ Group:          Productivity/Other
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Requires:       spacewalk-java-lib >= 2.5.59.7
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
@@ -37,17 +36,17 @@ This package contains data files with information used to channel syncing
 %build
 
 %install
-mkdir -p %{buildroot}/usr/share/susemanager/scc
-install -m 0644 channel_families.json %{buildroot}/usr/share/susemanager/scc/channel_families.json
-install -m 0644 additional_products.json    %{buildroot}/usr/share/susemanager/scc/additional_products.json
-install -m 0644 additional_repositories.json    %{buildroot}/usr/share/susemanager/scc/additional_repositories.json
+mkdir -p %{buildroot}%{_datadir}/susemanager/scc
+install -m 0644 channel_families.json %{buildroot}%{_datadir}/susemanager/scc/channel_families.json
+install -m 0644 additional_products.json    %{buildroot}%{_datadir}/susemanager/scc/additional_products.json
+install -m 0644 additional_repositories.json    %{buildroot}%{_datadir}/susemanager/scc/additional_repositories.json
 
 %files
 %defattr(-,root,root,-)
-%dir /usr/share/susemanager
-%dir /usr/share/susemanager/scc
-/usr/share/susemanager/scc/channel_families.json
-/usr/share/susemanager/scc/additional_products.json
-/usr/share/susemanager/scc/additional_repositories.json
+%dir %{_datadir}/susemanager
+%dir %{_datadir}/susemanager/scc
+%{_datadir}/susemanager/scc/channel_families.json
+%{_datadir}/susemanager/scc/additional_products.json
+%{_datadir}/susemanager/scc/additional_repositories.json
 
 %changelog
