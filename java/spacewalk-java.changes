@@ -1,4 +1,40 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:17:05 CEST 2024 - rosuna@suse.com
+
+- version 4.3.79-0
+  * Add info URL for cobbler to clean the system profile (bsc#1219645)
+  * Require correct scap packages for Ubuntu
+  * Require correct scap packages for Debian 12 (bsc#1227746)
+  * Fix finding system_checkin_threshold configuration value on Sytems
+    Overview page (bsc#1224108)
+  * Allow changing base channel to Liberty LTSS when the system is on
+    Liberty (bsc#1228326)
+  * Implement product migration from RHEL and Clones to Liberty
+  * Remove system also from proxy SSH known_hosts (bsc#1228345)
+  * Fix NullPointerException when generating subscription matcher
+    input (bsc#1228638)
+  * Allow free products and SUSE Manager Proxy being managed by SUSE Manager
+    Server PAYG
+  * Open bootstrap script directory URL in a new page (bsc#1225603)
+  * Delay package list refresh when Salt was updated (bsc#1217978)
+  * Add SLE Micro 5 to the list of systems which support monitoring (bsc#1227334)
+  * Add all SLE Micro systems to the list of systems which get PTF repositories
+  * Update last sync refresh timestamp only when at least one time products
+    were synced before
+  * Prevent NullPointerException when listing history events without completion
+    time (bsc#1146701)
+  * Autoinstallation: prevent issues with duplicate IP address due to some
+    networks (bsc#1226461)
+  * Improve SQL queries and performance to check for PTF packages (bsc#1225619)
+  * Check the correct Salt package before product migration (bsc#1224209)
+  * Fix the date format output when using the HTTP API to use ISO 8601
+    format (bsc#1227543)
+  * Fix transactional update check for SL Micro (bsc#1227406)
+  * Improve score comparison in system search to fix ISE (bsc#1228412)
+  * Fix package profile update on CentOS 7 when yum-utils is not
+    installed (bsc#1227133)
+
+-------------------------------------------------------------------
 Wed Jul 03 14:52:13 CEST 2024 - rosuna@suse.com
 
 - version 4.3.78-0

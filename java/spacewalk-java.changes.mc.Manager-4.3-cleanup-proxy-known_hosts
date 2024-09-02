@@ -1,1 +1,0 @@
-- remove system also from proxy ssh known_hosts (bsc#1228345)
