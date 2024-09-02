@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:11:12 CEST 2024 - rosuna@suse.com
+
+- version 4.3.11-0
+  * Change Errata CVE column to type text as a varchar reaches the
+    maximum (bsc#1226478)
+
+-------------------------------------------------------------------
 Fri Apr 12 17:20:44 CEST 2024 - rosuna@suse.com
 
 - version 4.3.10-0
