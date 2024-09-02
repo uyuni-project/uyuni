@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:00:33 CEST 2024 - rosuna@suse.com
+
+- version 4.3.40-0
+  * Fix channel selection using SSM (bsc#1226917)
+  * Fix datetime selection when using maintenance windows (bsc#1228036)
+
+-------------------------------------------------------------------
 Thu Jun 06 17:03:31 CEST 2024 - rosuna@suse.com
 
 - version 4.3.39-0
