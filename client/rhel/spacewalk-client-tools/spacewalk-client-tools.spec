@@ -77,7 +77,7 @@ Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          System Environment/Base
 %endif
-Version:        4.3.20
+Version:        4.3.21
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-0.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
