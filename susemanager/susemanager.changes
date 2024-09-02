@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:01:29 CEST 2024 - rosuna@suse.com
+
+- version 4.3.38-0
+  * Add missing package python3-ply to bootstrap repo definition (bsc#1228130)
+  * Create special bootstrap data for SUSE Manager Server 4.3 with LTSS
+    updates for Hub scenario (bsc#1211899)
+  * Add LTSS updates to SUSE Manager Proxy 4.3 bootstrap data
+  * Add traditional stack to boostrap repo on sles15sp6 (bsc#1228147)
+  * Change package to libdbus-glib-1-2 on sle15sp6 (bsc#1228147)
+
+-------------------------------------------------------------------
 Wed Jun 26 16:44:16 CEST 2024 - marina.latini@suse.com
 
 - version 4.3.37-0
