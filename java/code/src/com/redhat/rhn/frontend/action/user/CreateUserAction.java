@@ -67,7 +67,7 @@ public class CreateUserAction extends RhnAction {
         String passwd = (String)form.get(UserActionHelper.DESIRED_PASS);
         String passwdConfirm = (String)form.get(UserActionHelper.DESIRED_PASS_CONFIRM);
         if (passwd.equals(passwdConfirm)) {
-            command.setPassword(passwd, validatePassword);
+            command.setPassword(errors, passwd, validatePassword);
         }
         else {
             errors.add(ActionMessages.GLOBAL_MESSAGE,

@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.UserPasswordUtils;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -99,7 +100,7 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         }
 
         // Validate the rest of the password rules
-        validatePassword(errors, pw);
+        UserPasswordUtils.validatePassword(errors, pw);
         if (!errors.isEmpty()) {
             addErrors(request, errors);
             return getStrutsDelegate().forwardParams(mapping.findForward(BADPWD), params);

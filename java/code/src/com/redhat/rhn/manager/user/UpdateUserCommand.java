@@ -16,16 +16,17 @@ package com.redhat.rhn.manager.user;
 
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.UserPasswordUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts.action.ActionErrors;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -84,14 +85,18 @@ public class UpdateUserCommand {
      * @return The user updated.
      */
     public User updateUser() {
+        ActionErrors errors = new ActionErrors();
         if (needsUpdate) {
             validateEmail();
-            validatePassword();
+            UserPasswordUtils.validatePassword(errors, unencryptedPassword);
             validatePrefix();
             safePopulateUser();
-
             // ok update it
-            UserManager.storeUser(user);
+            if(errors.isEmpty()) {
+                UserManager.storeUser(user);
+            } else {
+                throw new IllegalArgumentException();
+            }
         }
         return user;
     }
@@ -122,34 +127,6 @@ public class UpdateUserCommand {
         }
     }
 
-    /**
-     * Private helper method to validate the password. This happens when the setPassword
-     * method of this class is called. Puts errors into the passwordErrors list.
-     */
-    private void validatePassword() {
-        if (!unencryptedPasswordChanged) {
-            return; // nothing to verify
-        }
-
-        String password = getUnencryptedPassword();
-        if (password == null || password.length() <
-                                    UserDefaults.get().getMinPasswordLength()) {
-            throw new IllegalArgumentException(LocalizationService.getInstance().
-                    getMessage("error.minpassword",
-                                    UserDefaults.get().getMinPasswordLength()));
-        }
-        else if (password.length() > UserDefaults.get().getMaxPasswordLength()) {
-            throw new IllegalArgumentException(LocalizationService.getInstance().
-                    getMessage("error.maxpassword"));
-        }
-
-        // Newlines and tab characters can slip through the API much easier than the UI:
-        if (Pattern.compile("[\\t\\n]").matcher(password).find()) {
-            throw new IllegalArgumentException(
-                "Password contains tab or newline characters.");
-        }
-
-    }
 
     private void validatePrefix() {
         if (prefixChanged && !validPrefixes.contains(prefix)) {

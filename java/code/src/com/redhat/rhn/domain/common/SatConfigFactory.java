@@ -43,6 +43,18 @@ public class SatConfigFactory extends HibernateFactory {
     public static final String EXT_AUTH_KEEP_ROLES = "extauth_keep_temproles";
     public static final String SYSTEM_CHECKIN_THRESHOLD = "system_checkin_threshold";
 
+    public static final String PSW_CHECK_LENGHT_MIN = "password_check_lenght_min";
+    public static final String PSW_CHECK_LENGHT_MAX = "password_check_lenght_max";
+    public static final String PSW_CHECK_LOWER_CHAR_FLAG = "password_check_lower_char_flag";
+    public static final String PSW_CHECK_UPPER_CHAR_FLAG = "password_check_upper_char_flag";
+    public static final String PSW_CHECK_DIGIT_FLAG = "password_check_digit_flag";
+    public static final String PSW_CHECK_CONSECUTIVE_CHAR_FLAG = "password_check_consecutive_char_flag";
+    public static final String PSW_CHECK_SPECIAL_CHAR_FLAG = "password_check_special_char_flag";
+    public static final String PSW_CHECK_RESTRICTED_OCCURENCE_FLAG = "password_check_restricted_occurrence_flag";
+    public static final String PSW_CHECK_MAX_OCCURENCE = "password_check_max_occurrence";
+    public static final String PSW_CHECK_SPECIAL_CHARACTERS = "password_check_special_characters";
+
+
     private SatConfigFactory() {
         super();
     }

@@ -20,6 +20,6 @@ VALUES ('password_check_special_char_flag', 'Password has to have at least a spe
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('password_check_restricted_occurrence_flag', 'Password has to have no repeating characters', null, 0);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_max_occurrence_flag', 'Maximum number of valid occurrence of a character', null, 1);
+VALUES ('password_check_max_occurrence', 'Maximum number of valid occurrence of a character', null, 2);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('password_check_special_characters', 'List of special characters to check in a password', null, '!$%&()*+,./:;<=>?[\\]^_{|}~');

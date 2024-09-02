@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts.action.ActionErrors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,6 +45,8 @@ import java.util.regex.Pattern;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+
+import com.redhat.rhn.common.util.UserPasswordUtils;
 
 /**
  * A command to create or edit users
@@ -265,28 +268,6 @@ public class CreateUserCommand {
         }
     }
 
-    /**
-     * Private helper method to validate the password. This happens when the setPassword
-     * method of this class is called. Puts errors into the passwordErrors list.
-     * @param passwordIn The password to check.
-     */
-    private void validatePassword(String passwordIn) {
-        if (passwordIn == null || passwordIn.length() <
-                                UserDefaults.get().getMinPasswordLength()) {
-            passwordErrors.add(new ValidatorError("error.minpassword",
-                                    UserDefaults.get().getMinPasswordLength()));
-        }
-
-        // Newlines and tab characters can slip through the API much easier than the UI:
-        if (Pattern.compile("[\\t\\n]").matcher(passwordIn).find()) {
-            passwordErrors.add(new ValidatorError("error.invalidpasswordcharacters"));
-        }
-
-        else if (passwordIn.length() > UserDefaults.get().getMaxPasswordLength()) {
-            passwordErrors.add(new ValidatorError("error.maxpassword",
-                    UserDefaults.get().getMaxPasswordLength()));
-        }
-    }
 
     /***** User accessors *****/
 
@@ -323,10 +304,10 @@ public class CreateUserCommand {
      * @param passwordIn The password to set
      * @param validate if password requirements should be validated
      */
-    public void setPassword(String passwordIn, boolean validate) {
+    public void setPassword(ActionErrors errors, String passwordIn, boolean validate) {
         passwordErrors = new ArrayList<>(); //init password errors list
         if (validate) {
-            validatePassword(passwordIn);
+            UserPasswordUtils.validatePassword(errors, passwordIn);
         }
         user.setPassword(passwordIn);
     }
@@ -334,8 +315,8 @@ public class CreateUserCommand {
     /**
      * @param passwordIn The password to set
      */
-    public void setPassword(String passwordIn) {
-        setPassword(passwordIn, true);
+    public void setPassword(ActionErrors errors, String passwordIn) {
+        setPassword(errors, passwordIn, true);
     }
 
     /**
