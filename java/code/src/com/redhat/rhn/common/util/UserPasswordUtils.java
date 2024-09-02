@@ -1,15 +1,9 @@
 package com.redhat.rhn.common.util;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.ActionMessage;
-
-import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 
