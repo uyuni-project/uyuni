@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:14:43 CEST 2024 - rosuna@suse.com
+
+- version 4.3.30-0
+  * Make ISSv1 timezone independent (bsc#1221505)
+  * reposync: introduce timeout when syncing DEB channels (bsc#1225960)
+  * yum_src: use proper name variable name for subprocess.TimeoutExpired
+  * Check and populate PTF attributes at the time of importing
+    packages (bsc#1225619)
+  * reposync: import GPG keys to RPM DB individually (bsc#1217003)
+  * Add log string to the journal when services are stopped
+    because of insufficient disk space
+
+-------------------------------------------------------------------
 Thu Jun 06 16:03:09 CEST 2024 - rosuna@suse.com
 
 - version 4.3.29-0
