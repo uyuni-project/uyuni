@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:03:34 CEST 2024 - rosuna@suse.com
+
+- version 4.3.19-0
+  * Fix CentOS 7 repo urls (bsc#1227526)
+  * Add channel family for SLES 12 SP5 LTSS Extended Security
+  * Implement product migration from RHEL and clones to Liberty
+
+-------------------------------------------------------------------
 Thu Jun 06 17:07:49 CEST 2024 - rosuna@suse.com
 
 - version 4.3.18-0
