@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:29:40 CEST 2024 - rosuna@suse.com
+
+- version 4.3.19-0
+  * Allow execute of ssh-keygen command on the Proxy to clean up SSH
+    known_hosts (bsc#1228345)
+
+-------------------------------------------------------------------
 Thu Jun 06 16:11:58 CEST 2024 - rosuna@suse.com
 
 - version 4.3.18-0
