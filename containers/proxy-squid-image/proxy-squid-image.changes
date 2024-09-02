@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:33:50 CEST 2024 - rosuna@suse.com
+
+- version 4.3.16
+  * Update the container version to SUSE Manager 4.3.14
+
+-------------------------------------------------------------------
 Thu Jun 13 09:19:14 CEST 2024 - rosuna@suse.com
 
 - version 4.3.15
