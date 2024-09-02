@@ -1,1 +1,0 @@
-- Speed-up mgrutil.remove_ssh_known_host runner (bsc#1223312)

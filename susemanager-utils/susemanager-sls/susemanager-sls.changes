@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:07:48 CEST 2024 - rosuna@suse.com
+
+- version 4.3.44-0
+  * Speed-up mgrutil.remove_ssh_known_host runner (bsc#1223312)
+  * Implement product migration from RHEL and clones to Liberty
+  * Disable transactional-update.timer on SLEM at bootstrap
+  * Explicitly remove old venv-minion environment when updating Python versions
+  * sumautil: properly detect bridge interfaces (bsc#1226461)
+  * Fix typo on directories to clean up when deleting a system (bsc#1228101)
+  * Translate GPG URL if it has server name and client behind proxy
+    (bsc#1223988)
+  * Fix yum-utils package missing on CentOS7 minions (bsc#1227133)
+  * Implement IMDSv2 for AWS instance detection (bsc#1226090)
+  * Fix package profile update on CentOS 7 when yum-utils is not
+    installed (bsc#1227133)
+  * Fix parsing passwords with special characters for PostgreSQL
+    exporter
+
+-------------------------------------------------------------------
 Fri Jun 07 11:44:25 CEST 2024 - rosuna@suse.com
 
 - version 4.3.43-0

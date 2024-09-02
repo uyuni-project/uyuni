@@ -1,2 +1,0 @@
-- translate gpg url if url has server name and client behind proxy
-  (bsc#1223988)
