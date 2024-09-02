@@ -63,6 +63,7 @@ init() {
     echo "$PV" > $TARGET/.pv
     # Calculate the packages that are owning the files under this path
     PKGNAMES=$(LANG=C rpm -q -qf $(find $PV) | egrep -v "^file .+ is not owned by any package" | sort -u)
+    echo "$PKGNAMES" > $TARGET/.pk
     # Sync the package files (non-configuration and configuration files) to our storage
     for pkg in $PKGNAMES; do
         for cfgfile in $(rpm -ql $pkg | grep "^$PV"); do
@@ -104,7 +105,7 @@ sync() {
     for PV_DIR in $(ls $DEFAULTS_STORAGE | grep -v "^\.buildhash$"); do
         SOURCES=$(echo "$DEFAULTS_STORAGE/$PV_DIR/" | tr -s /)
         PV=$(cat $SOURCES/.pv)
-        PKGNAMES=$(LANG=C rpm -q -qf $(find $PV) | egrep -v "^file .+ is not owned by any package" | sort -u)
+        PKGNAMES=$(cat $SOURCES/.pk)
         PACKAGES_ALL=$(echo -e "$PACKAGES_ALL\n$PKGNAMES")
         echo "- Processing pv: $PV"
         echo -n "  * Getting information for files to synchronize ... "
