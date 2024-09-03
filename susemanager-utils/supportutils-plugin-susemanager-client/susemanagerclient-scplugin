@@ -43,7 +43,6 @@ zypp-plugin-spacewalk
 salt-minion
 salt
 podman
-uyuni-proxy-systemd-services
 "
 
 for THISRPM in $RPMLIST; do
@@ -67,8 +66,7 @@ pconf_files \
     /etc/salt/minion \
     /etc/salt/minion.d/susemanager.conf \
     /etc/salt/minion.d/_schedule.conf \
-    /etc/uyuni/proxy/config.yaml \
-    /etc/sysconfig/uyuni-proxy-systemd-services
+    /etc/uyuni/proxy/config.yaml
 
 
 section_header "SUSE Manager Client Capabilities"
@@ -99,53 +97,6 @@ elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
         plugin_message "FIPS"
 else
         plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
-fi
-
-section_header "Proxy Containers Configuration Files"
-
-plugin_command "ls -l /etc/uyuni/proxy/"
-
-section_header "Proxy Containers Systems Status"
-
-systemd_status() {
-    if systemctl list-unit-files $1 >/dev/null; then
-        plugin_command "systemctl status $1"
-    fi
-}
-
-SERVICES="
-    uyuni-proxy-pod
-    uyuni-proxy-httpd
-    uyuni-proxy-salt-broker
-    uyuni-proxy-squid
-    uyuni-proxy-ssh
-    uyuni-proxy-tftpd
-"
-
-for SERVICE in $SERVICES; do
-    systemd_status "$SERVICE.service"
-done
-
-CONTAINERS="
-    uyuni-proxy-httpd
-    uyuni-proxy-ssh
-    uyuni-proxy-squid
-    uyuni-proxy-tftpd
-    uyuni-proxy-salt-broker
-"
-
-if which podman >/dev/null 2>&1; then
-    section_header "Proxy Containers Inspects"
-
-    for CONTAINER in $CONTAINERS; do
-        plugin_command "podman inspect $CONTAINER"
-    done
-
-    section_header "Proxy Containers Logs"
-
-    for CONTAINER in $CONTAINERS; do
-        plugin_command "podman logs $CONTAINER"
-    done
 fi
 
 section_header "Cloud / PAYG"
