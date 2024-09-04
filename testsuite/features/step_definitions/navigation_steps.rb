@@ -221,6 +221,10 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
   fill_in(field, with: text, fill_options: { clear: :backspace })
 end
 
+When(/^I enter "([^"]*)" in the placeholder "([^"]*)"$/) do |text, placeholder|
+  find("input[placeholder='#{placeholder}']").set(text)
+end
+
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
   future_time = get_future_time(minutes_to_add)
   fill_in(field, with: future_time, fill_options: { clear: :backspace })
