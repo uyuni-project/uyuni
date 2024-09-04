@@ -2,9 +2,9 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages, Utils } from "components/messages";
+import { Messages, Utils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
 

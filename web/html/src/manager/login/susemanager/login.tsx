@@ -5,7 +5,7 @@ import { docsLocale } from "core/user-preferences";
 
 import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 
 import { flatten } from "utils";
 

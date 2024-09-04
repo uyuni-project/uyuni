@@ -8,7 +8,7 @@ import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type/project.type";

@@ -3,10 +3,10 @@ import * as React from "react";
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
 
-import { Messages, Utils as MsgUtils } from "components/messages";
+import { Messages, Utils as MsgUtils } from "components/messages/messages";
 import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { ProjectEnvironmentType, ProjectHistoryEntry, ProjectMessageType } from "../../../type";

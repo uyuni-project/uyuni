@@ -57,6 +57,7 @@ const BOOTSTRAP_READY_PAGES: PathString[] = [
   "/rhn/admin/setup/ProxySettings.do",
   "/rhn/admin/setup/MirrorCredentials.do",
   "/rhn/manager/admin/setup/payg",
+  "/rhn/manager/storybook",
 ];
 
 export const onEndNavigate = () => {

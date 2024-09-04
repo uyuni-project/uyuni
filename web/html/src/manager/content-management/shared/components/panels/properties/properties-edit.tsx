@@ -5,7 +5,7 @@ import useRoles from "core/auth/use-roles";
 
 import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import produce from "utils/produce";
 
