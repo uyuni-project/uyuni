@@ -93,7 +93,6 @@ BuildRequires:  tftp
 Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(post): user(%{apache_user})
-Requires:       yast2-users
 %endif
 Requires(pre):  salt
 Requires:       cobbler
@@ -213,19 +212,6 @@ cp -r pub/empty %{buildroot}%{reporoot}/repositories/
 # empty repo for Ubuntu base fake channel
 cp -r pub/empty-deb %{buildroot}%{reporoot}/repositories/
 
-# YaST configuration
-mkdir -p %{buildroot}%{_datadir}/YaST2/clients
-mkdir -p %{buildroot}%{_datadir}/YaST2/scrconf
-mkdir -p %{buildroot}%{_datadir}/applications/YaST2
-mkdir -p %{buildroot}%{_sysconfdir}/YaST2
-install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
-install -m 0644 yast/*.scr %{buildroot}%{_datadir}/YaST2/scrconf
-%if 0%{?is_opensuse}
-install -m 0644 yast/org.uyuni-project.yast2.Uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
-%else
-install -m 0644 yast/com.suse.yast2.SUSEManager.desktop %{buildroot}%{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
-%endif
-
 %if 0%{?suse_version} > 1320
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_prefix}/lib/firewalld/services
@@ -282,21 +268,9 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_prefix}/lib/susemanager/hooks/
-%dir %{_sysconfdir}/YaST2
-%dir %{_datadir}/YaST2
-%dir %{_datadir}/YaST2/clients
-%dir %{_datadir}/YaST2/scrconf
-%dir %{_datadir}/applications/YaST2
 %dir %{_sysconfdir}/slp.reg.d
 %{_prefix}/lib/susemanager/bin/*
-%{_datadir}/YaST2/clients/*.rb
-%{_datadir}/YaST2/scrconf/*.scr
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
-%if 0%{?is_opensuse}
-%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
-%else
-%{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
-%endif
 %attr(775,%{salt_user},susemanager) %dir %{wwwroot}/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
