@@ -295,24 +295,6 @@ public class ErrataHandler extends BaseHandler {
             }
         }
 
-        if (details.containsKey("issue_date")) {
-            try {
-                errata.setIssueDate((Date)details.get("issue_date"));
-            }
-            catch (ClassCastException e) {
-                throw new InvalidParameterException("Wrong 'issue_date' format.");
-            }
-        }
-
-        if (details.containsKey("update_date")) {
-            try {
-                errata.setUpdateDate((Date)details.get("update_date"));
-            }
-            catch (ClassCastException e) {
-                throw new InvalidParameterException("Wrong 'update_date' format.");
-            }
-        }
-
         if (details.containsKey("synopsis")) {
             if (StringUtils.isBlank((String)details.get("synopsis"))) {
                 throw new InvalidParameterException("Synopsis is required.");
