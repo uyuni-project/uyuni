@@ -304,21 +304,22 @@ public class CreateUserCommand {
     /**
      * @param passwordIn The password to set
      * @param validate if password requirements should be validated
-     * @return the validation errors map
+     * @param errorsMap the errors map
      */
-    public void setPassword(Map<String, String> errors, String passwordIn, boolean validate) {
+    public void setPassword(Map<String, String> errorsMap, String passwordIn, boolean validate) {
         passwordErrors = new ArrayList<>(); //init password errors list
         if (validate) {
-            UserPasswordUtils.validatePassword(errors, passwordIn);
+            UserPasswordUtils.validatePassword(errorsMap, passwordIn);
         }
         user.setPassword(passwordIn);
     }
 
     /**
      * @param passwordIn The password to set
+     * @param errorsMap the errors map
      */
-    public void setPassword(Map<String, String> errors, String passwordIn) {
-        setPassword(errors, passwordIn, true);
+    public void setPassword(Map<String, String> errorsMap, String passwordIn) {
+        setPassword(errorsMap, passwordIn, true);
     }
 
     /**

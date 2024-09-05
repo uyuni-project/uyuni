@@ -95,9 +95,10 @@ public class UpdateUserCommand {
             validatePrefix();
             safePopulateUser();
             // ok update it
-            if(errors.isEmpty()) {
+            if (errors.isEmpty()) {
                 UserManager.storeUser(user);
-            } else {
+            }
+            else {
                 throw new IllegalArgumentException();
             }
         }

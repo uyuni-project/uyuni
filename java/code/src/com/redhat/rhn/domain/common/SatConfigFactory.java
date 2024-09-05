@@ -74,6 +74,25 @@ public class SatConfigFactory extends HibernateFactory {
     }
 
     /**
+     * return satellite configuration integer value for a specified key
+     * @param key key
+     * @param defaultValue value to use if no property value could be found
+     * @return value long value
+     */
+    public static Integer getSatConfigIntValue(String key, Integer defaultValue) {
+        String stringValue = getSatConfigValue(key);
+        if (stringValue != null) {
+            try {
+                return Integer.parseInt(stringValue);
+            }
+            catch (NumberFormatException nfe) {
+                LOG.error("Satellite configuration '{}' value ({}) cannot be converted to Integer.", key, stringValue);
+            }
+        }
+        return defaultValue;
+    }
+
+    /**
      * return satellite configuration long value for a specified key
      * @param key key
      * @param defaultValue value to use if no property value could be found

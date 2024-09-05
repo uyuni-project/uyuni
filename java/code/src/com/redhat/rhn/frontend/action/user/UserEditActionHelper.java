@@ -78,7 +78,7 @@ public abstract class UserEditActionHelper extends RhnAction {
         if (!pw.isEmpty()) {
             Map<String, String> errorMap = new HashMap<>();
             UserPasswordUtils.validatePassword(errorMap, pw);
-            errorMap.forEach((i,k) -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(i, k)));
+            errorMap.forEach((i, k) -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(i, k)));
             //Set the password only if there are no errors at all
             if (errors.isEmpty()) {
                 targetUser.setPassword(pw);
