@@ -68,6 +68,7 @@ end
 def generate_temp_file(name, content)
   file = Tempfile.new(name)
   file.write(content)
+  file.flush
   file
 end
 
