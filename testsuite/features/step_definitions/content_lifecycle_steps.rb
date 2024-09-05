@@ -45,7 +45,7 @@ When(/^I wait until I see "([^"]*)" text in the environment "([^"]*)"$/) do |tex
 end
 
 When(/^I add the "([^"]*)" channel to sources$/) do |channel|
-  within(:xpath, "//span[text()='#{channel}']/../..") do
+  within(:xpath, "//mark[text()='#{channel}']/../../..") do
     raise ScriptError, 'Add channel failed' unless find(:xpath, './/input[@type="checkbox"]').set(true)
   end
 end
