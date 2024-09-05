@@ -33,8 +33,8 @@ public class UserPasswordUtils {
 
     private static final Pattern PSW_LOWERCHAR_REGEX = Pattern.compile("\\p{javaLowerCase}+");
     private static final Pattern PSW_UPPERCHAR_REGEX = Pattern.compile("\\p{javaUpperCase}+");
-    private static final Pattern PSW_DIGIT_REGEX = Pattern.compile("\\d+");
-    private static final Pattern PSW_NO_SPACE_TAB_NEWLINE_REGEX = Pattern.compile("\\s+");
+    private static final Pattern PSW_DIGIT_REGEX = Pattern.compile("\\p{javaDigit}+");
+    private static final Pattern PSW_NO_SPACE_TAB_NEWLINE_REGEX = Pattern.compile("\\p{javaWhitespace}+");
 
     /**
      * Validate the password using the configurations from SatConfiguration
