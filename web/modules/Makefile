@@ -3,7 +3,7 @@
 
 TOP = ..
 
-SUBDIRS = pxt rhn dobby
+SUBDIRS = pxt rhn
 
 include $(TOP)/Makefile.defs
 # whitespace change to test checkin
