@@ -25,7 +25,7 @@ RUN mkdir /tmp/minima && \
     tar zxvf minima-linux-amd64.tar.gz && \
     cp minima /usr/bin/minima
 RUN /usr/bin/minima sync -c /etc/minima.yaml && \
-    mkdir /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/TestRepoAppstream &&
+    mkdir /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/TestRepoAppstream && \
     mv /srv/www/htdocs/pub/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Updates/rpm/* /srv/www/htdocs/pub/TestRepoRpmUpdates/ && \
     mv /srv/www/htdocs/pub/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Appstream/rhlike/* /srv/www/htdocs/pub/TestRepoAppStream/ && \
     rm -rf /srv/www/htdocs/pub/repositories/
