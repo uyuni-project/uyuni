@@ -1,0 +1,3 @@
+- Enable the synchronization of OVAL data
+- Enable the configuration of OVAL data sources
+- Add support for OVAL based cve auditing to SLE & Leap Micro

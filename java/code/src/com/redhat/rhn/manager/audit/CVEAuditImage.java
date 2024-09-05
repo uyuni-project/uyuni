@@ -94,5 +94,9 @@ public class CVEAuditImage implements CVEAuditSystem {
         return erratas;
     }
 
+    @Override
+    public Set<ScanDataSource> getScanDataSources() {
+        return Set.of();
+    }
 
 }

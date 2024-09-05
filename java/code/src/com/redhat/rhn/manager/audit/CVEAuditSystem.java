@@ -53,6 +53,12 @@ public interface CVEAuditSystem {
     Set<ErrataIdAdvisoryPair> getErratas();
 
     /**
+     * Return the data sources used to scan the system.
+     * @return the set of data sources
+     * */
+    Set<ScanDataSource> getScanDataSources();
+
+    /**
      * Return the closest channel as {@link String} for CSV file download.
      * @return closest channel name
      */
