@@ -154,7 +154,7 @@ class ZyppoSync:
             # which are not needed and can cause issues when importing into the RPMDB
             os.system(
                 # pylint: disable-next=consider-using-f-string
-                "gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(
+                "/usr/bin/gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(
                     SPACEWALK_GPG_KEYRING, f.name
                 )
             )
@@ -199,7 +199,7 @@ class ZyppoSync:
                     # We delete this key from the RPM database to allow importing the newer version.
                     os.system(
                         # pylint: disable-next=consider-using-f-string
-                        "rpm --dbpath {} -e gpg-pubkey-{}-{}".format(
+                        "/usr/bin/rpm --dbpath {} -e gpg-pubkey-{}-{}".format(
                             REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]
                         )
                     )
@@ -957,12 +957,12 @@ type=rpm-md
             sys.stdout.write(str(msg) + "\n")
             os.system(
                 # pylint: disable-next=consider-using-f-string
-                'awk \'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > "{0}/cert." c ".pem"}}\' < {1}'.format(
+                '/usr/bin/awk \'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > "{0}/cert." c ".pem"}}\' < {1}'.format(
                     _ssl_capath, self.sslcacert
                 )
             )
             # pylint: disable-next=consider-using-f-string
-            os.system("c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
+            os.system("/usr/bin/c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
             query_params["ssl_capath"] = _ssl_capath
         if self.sslclientcert:
             query_params["ssl_clientcert"] = self.sslclientcert

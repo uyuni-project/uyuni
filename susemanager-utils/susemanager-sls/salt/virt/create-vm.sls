@@ -139,7 +139,7 @@ domain_define:
 
 {{ pillar['cluster_definitions'] }}/{{ pillar['name'] }}.xml:
   mgrutils.cmd_dump:
-    - cmd: 'virsh dumpxml --inactive {{ pillar['name'] }}'
+    - cmd: '/usr/bin/virsh dumpxml --inactive {{ pillar['name'] }}'
     - require:
       - virt: {{ "domain_define" if cdrom_boot or ks_boot else "domain_first_boot_define" }}
 
@@ -156,7 +156,7 @@ domain_define:
 
 define_primitive:
   cmd.run:
-    - name: 'crm configure load update /tmp/{{ pillar['name'] }}-primitive.conf'
+    - name: '/usr/sbin/crm configure load update /tmp/{{ pillar['name'] }}-primitive.conf'
     - require:
       - file: /tmp/{{ pillar['name'] }}-primitive.conf
 
