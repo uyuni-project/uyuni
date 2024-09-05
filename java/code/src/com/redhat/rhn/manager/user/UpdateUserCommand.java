@@ -21,9 +21,7 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts.action.ActionErrors;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,15 +85,14 @@ public class UpdateUserCommand {
      * @return The user updated.
      */
     public User updateUser() {
-        ActionErrors errors = new ActionErrors();
-        Map<String, String> errorMap = new HashMap<>();
+        Map<String, String> errorMap;
         if (needsUpdate) {
             validateEmail();
-            UserPasswordUtils.validatePassword(errorMap, unencryptedPassword);
+            errorMap = UserPasswordUtils.validatePasswordFromSatConfiguration(unencryptedPassword);
             validatePrefix();
             safePopulateUser();
             // ok update it
-            if (errors.isEmpty()) {
+            if (errorMap.isEmpty()) {
                 UserManager.storeUser(user);
             }
             else {

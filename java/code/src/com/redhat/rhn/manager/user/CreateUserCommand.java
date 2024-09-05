@@ -19,6 +19,7 @@ import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.UserPasswordUtils;
 import com.redhat.rhn.common.validator.ParsedConstraint;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.common.ResetPassword;
@@ -34,7 +35,6 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts.action.ActionErrors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,12 +42,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.regex.Pattern;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
-import com.redhat.rhn.common.util.UserPasswordUtils;
 
 /**
  * A command to create or edit users
@@ -307,9 +304,8 @@ public class CreateUserCommand {
      * @param errorsMap the errors map
      */
     public void setPassword(Map<String, String> errorsMap, String passwordIn, boolean validate) {
-        passwordErrors = new ArrayList<>(); //init password errors list
         if (validate) {
-            UserPasswordUtils.validatePassword(errorsMap, passwordIn);
+            errorsMap = UserPasswordUtils.validatePasswordFromSatConfiguration(passwordIn);
         }
         user.setPassword(passwordIn);
     }

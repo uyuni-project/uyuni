@@ -39,7 +39,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,10 +98,9 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
             addErrors(request, errors);
             return getStrutsDelegate().forwardParams(mapping.findForward(MISMATCH), params);
         }
-        
-        Map<String, String> errorMap = new HashMap<>();
+
         // Validate the rest of the password rules
-        UserPasswordUtils.validatePassword(errorMap, pw);
+        Map<String, String> errorMap = UserPasswordUtils.validatePasswordFromSatConfiguration(pw);
         errorMap.forEach((i, k) -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(i, k)));
         if (!errors.isEmpty()) {
             addErrors(request, errors);
