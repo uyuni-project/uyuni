@@ -1,1 +1,1 @@
-- Do not install outdated package "spacewalk-utils-extras" on server image 
+- Do not install outdated package "spacewalk-utils-extras" on server image (bsc#1228945)
