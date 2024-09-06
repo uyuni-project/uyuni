@@ -73,6 +73,12 @@ Requires:       python3-curses
 Requires:       spacewalk-backend-sql
 BuildArch:      noarch
 
+%if 0%{?suse_version}
+Requires:       perl = %{perl_version}
+%else
+Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
+%endif
+
 %description
 Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
 
@@ -83,8 +89,6 @@ Group:          Productivity/Other
 Requires:       bash
 # Required by sw-ldap-user-sync
 Requires:       python3-PyYAML
-# Required by taskotop
-Requires:       python3-curses
 # Required by sw-ldap-user-sync
 Requires:       python3-ldap
 # Required by migrate-system-profile
@@ -143,10 +147,10 @@ popd
 %{python3_sitelib}/utils/__pycache__/systemSnapshot.*
 %{python3_sitelib}/utils/__pycache__/cloneByDate.*
 %{python3_sitelib}/utils/__pycache__/depsolver.*
-%{_mandir}/man8/spacewalk-clone-by-date.8.gz
-%{_mandir}/man8/spacewalk-hostname-rename.8.gz
-%{_mandir}/man8/spacewalk-sync-setup.8.gz
-%{_mandir}/man8/taskotop.8.gz
+%{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
+%{_mandir}/man8/spacewalk-hostname-rename.8%{?ext_man}
+%{_mandir}/man8/spacewalk-sync-setup.8%{?ext_man}
+%{_mandir}/man8/taskotop.8.%{?ext_man}
 
 %files extras
 %defattr(-,root,root)
@@ -163,12 +167,12 @@ popd
 %{python3_sitelib}/utils/migrateSystemProfile.py*
 %{python3_sitelib}/utils/__pycache__/migrateSystemProfile.*
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
-%{_mandir}/man8/delete-old-systems-interactive.8.gz
-%{_mandir}/man8/migrate-system-profile.8.gz
-%{_mandir}/man8/spacewalk-api.8.gz
-%{_mandir}/man8/spacewalk-export-channels.8.gz
-%{_mandir}/man8/spacewalk-export.8.gz
-%{_mandir}/man8/spacewalk-manage-snapshots.8.gz
-%{_mandir}/man8/sw-system-snapshot.8.gz
+%{_mandir}/man8/delete-old-systems-interactive.8%{?ext_man}
+%{_mandir}/man8/migrate-system-profile.8%{?ext_man}
+%{_mandir}/man8/spacewalk-api.8%{?ext_man}
+%{_mandir}/man8/spacewalk-export-channels.8%{?ext_man}
+%{_mandir}/man8/spacewalk-export.8%{?ext_man}
+%{_mandir}/man8/spacewalk-manage-snapshots.8%{?ext_man}
+%{_mandir}/man8/sw-system-snapshot.8%{?ext_man}
 
 %changelog
