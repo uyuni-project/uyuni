@@ -1,15 +1,26 @@
 {
-    "typescript.tsdk": "./web/html/src/node_modules/typescript/lib",
-    "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
-        "editor.tabSize": 2,
-        "files.insertFinalNewline": true,
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": "explicit"
-        },
+  "typescript.tsdk": "${workspaceFolder}/web/html/src/node_modules/typescript/lib",
+  "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
     },
-    "css.lint.emptyRules": "ignore",
-    "less.lint.emptyRules": "ignore",
-    "scss.lint.emptyRules": "ignore",
+  },
+  "css.lint.emptyRules": "ignore",
+  "less.lint.emptyRules": "ignore",
+  "scss.lint.emptyRules": "ignore",
+  "sonarlint.connectedMode.project": {
+    "connectionId": "uyuni-project",
+    "projectKey": "uyuni-project_uyuni"
+  },
+  "java.test.config": {
+    "vmArgs": [
+      "-Drhn.config.dir=${workspaceFolder}/java/buildconf/test",
+      "-Dlog4j2.configurationFile=${workspaceFolder}/java/buildconf/test/log4j2.properties"
+    ]
+  },
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms2G -Xlog:disable",
+  "java.checkstyle.configuration": "${workspaceFolder}/java/buildconf/checkstyle.xml",
 }
