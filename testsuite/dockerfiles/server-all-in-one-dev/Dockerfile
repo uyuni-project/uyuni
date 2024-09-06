@@ -2,14 +2,14 @@ ARG BASE
 ARG VERSION
 FROM ${BASE}:${VERSION}
 
-RUN zypper ref && \
+RUN zypper -n --gpg-auto-import-keys ref && \
       zypper -n install \
       java-17-openjdk-devel \
       openssh \
       rsync \
       apache-ivy \
       ant \
-      ant-junit5 \
+      ant-junit \
       servletapi5 \
       cpio \
       spacecmd \
@@ -25,7 +25,7 @@ RUN mkdir /tmp/minima && \
     tar zxvf minima-linux-amd64.tar.gz && \
     cp minima /usr/bin/minima
 RUN /usr/bin/minima sync -c /etc/minima.yaml && \
-    mkdir /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/TestRepoAppstream && \
+    mkdir /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/TestRepoAppStream && \
     mv /srv/www/htdocs/pub/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Updates/rpm/* /srv/www/htdocs/pub/TestRepoRpmUpdates/ && \
     mv /srv/www/htdocs/pub/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Appstream/rhlike/* /srv/www/htdocs/pub/TestRepoAppStream/ && \
     rm -rf /srv/www/htdocs/pub/repositories/
