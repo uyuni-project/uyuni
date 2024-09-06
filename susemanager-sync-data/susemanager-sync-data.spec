@@ -37,6 +37,7 @@ This package contains data files with information used to channel syncing
 
 %install
 mkdir -p %{buildroot}%{_datadir}/susemanager/scc
+mkdir -p %{buildroot}%{_datadir}/susemanager/oval
 install -m 0644 channel_families.json %{buildroot}%{_datadir}/susemanager/scc/channel_families.json
 install -m 0644 additional_products.json    %{buildroot}%{_datadir}/susemanager/scc/additional_products.json
 install -m 0644 additional_repositories.json    %{buildroot}%{_datadir}/susemanager/scc/additional_repositories.json
