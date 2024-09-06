@@ -16,7 +16,7 @@ launch=$(<"$scriptDir/../.vscode/launch.json.template")
 read -p "Enter new workspace name [$defaultWorkspaceName]: " workspaceName
 workspaceName=${workspaceName:-"$defaultWorkspaceName"}
 
-read -p "Enter default server hostname for launch configs [$defaultHostName]: " hostName
+read -p "Enter server hostname for launch configs [$defaultHostName]: " hostName
 hostName=${hostName:-"$defaultHostName"}
 
 # Indent every line, then remove it from the first line

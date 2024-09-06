@@ -16,6 +16,6 @@ There is a helper script provided at `scripts/generate-vscode-workspace.sh` whic
 ```
 $ ./scripts/generate-vscode-workspace.sh
 Enter new workspace name [uyuni]: 
-Enter default server hostname for launch configs [server.tf.local]: 
+Enter server hostname for launch configs [server.tf.local]: 
 $ open uyuni.code-workspace
 ```
