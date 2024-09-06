@@ -1398,6 +1398,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'el9-pool-x86_64' => 60,
   'fake-base-channel-debian-like' => 120,
   'fake-base-channel-rh-like' => 120,
+  'fake-base-channel-appstream' => 120,
   'fake-child-channel-i586' => 120,
   'fake-child-channel-suse-like' => 120,
   'fake-rpm-suse-channel' => 120,
