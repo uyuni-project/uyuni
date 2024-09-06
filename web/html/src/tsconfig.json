@@ -10,7 +10,8 @@
     "utils/**/*.tsx",
     "global.d.ts",
     "imports.d.ts",
-    "lib.es5.d.ts"
+    "lib.es5.d.ts",
+    "object.d.ts"
   ],
   "exclude": ["**/node_modules", "**/\\.*/"],
   "compilerOptions": {

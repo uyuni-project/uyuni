@@ -9,7 +9,7 @@ import {
   processChannelDependencies,
 } from "core/channels/utils/channels-dependencies.utils";
 
-import { MessageType } from "components/messages";
+import { MessageType } from "components/messages/messages";
 
 import { JsonResult } from "utils/network";
 import Network from "utils/network";

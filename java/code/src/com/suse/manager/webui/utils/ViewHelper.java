@@ -68,14 +68,13 @@ public enum ViewHelper {
         "/rhn/account/EditAddress.do",
         "/rhn/multiorg/OrgConfigDetails.do",
         "/rhn/manager/notification-messages",
-        "rhn/channels/software/Search.do",
+        "/rhn/channels/software/Search.do",
         "/rhn/activationkeys/List.do",
         "/rhn/manager/systems/list/all",
         "/rhn/manager/contentmanagement/projects",
         "/rhn/kickstart/cobbler/DefaultSnippetList.do",
         "/rhn/systems/details/packages/PackageList.do",
         "/rhn/software/channels/All.do",
-        "rhn/channels/software/Search.do",
         "/rhn/manager/systems/ssm/coco/settings",
         "/rhn/systems/ssm/audit/ScheduleXccdf.do",
         "/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do",
@@ -103,7 +102,16 @@ public enum ViewHelper {
         "/rhn/manager/systems/details/recurring-actions",
         "/rhn/manager/cm/build",
         "/rhn/admin/ScheduleDetail.do",
-        "/rhn/manager/systems/cmd"
+        "/rhn/manager/systems/cmd",
+        "/rhn/kickstart/KickstartIpRanges.do",
+        "/rhn/channels/manage/repos/RepoCreate.do",
+        "/rhn/systems/details/Overview",
+        "/rhn/manager/formula-catalog",
+        "/rhn/errata/manage/CloneErrata.do",
+        "/rhn/admin/setup/ProxySettings.do",
+        "/rhn/admin/setup/MirrorCredentials.do",
+        "/rhn/manager/admin/setup/payg",
+        "/rhn/manager/storybook"
     );
 
     ViewHelper() { }

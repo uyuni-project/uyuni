@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages, MessageType } from "components/messages";
+import { Messages, MessageType } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 import { SchedulePickerForm, WithMaintenanceSchedules } from "./schedule-picker";

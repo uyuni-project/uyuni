@@ -2,7 +2,7 @@ import * as React from "react";
 
 import _isNil from "lodash/isNil";
 
-import { FormContext } from "./Form";
+import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
 

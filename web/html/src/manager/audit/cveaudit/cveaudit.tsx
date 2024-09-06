@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { AsyncButton, LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { Highlight } from "components/table/Highlight";

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { StatesPicker } from "components/states-picker";
 
-import { Messages, MessageType } from "../components/messages";
+import { Messages, MessageType } from "./messages/messages";
 
 type ConfigChannelsProps = {
   matchUrl: (filter?: string) => any;

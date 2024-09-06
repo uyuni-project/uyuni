@@ -164,7 +164,7 @@ jQuery(document).on('click', '.navbar-toggle', function() {
 });
 
 function navbarToggleMobile() {
-  if (window.outerWidth <= 768) {
+  if (window.matchMedia("(max-width: 768px)").matches) {
     jQuery('aside').addClass('in collapse');
   }
 };
