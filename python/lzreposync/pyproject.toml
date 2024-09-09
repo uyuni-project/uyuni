@@ -10,12 +10,12 @@ dependencies = [
      "pytest",
      "requests",
      "python-gnupg",
-     "more_itertools",
      "pycurl",
      "pyopenssl",
      "psycopg2-binary",
      "urlgrabber",
-     "python-debian"
+     "python-debian",
+     "python-dateutil"
 ]
 
 [project.scripts]

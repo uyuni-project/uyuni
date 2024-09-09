@@ -64,7 +64,7 @@ sudo make -f Makefile.docker EXECUTOR=podman dockerrun_pg
 # Wait a few seconds until the db is fully initialized
 ```
 
-After installing with `pip install .` (or `pip install -e .`), `pytest tests/` runs all tests. Sometimes a `rehash` is required to ensure `.venv/bin/pytest` is used by your shell.
+After installing with `pip install .` (or `pip install -e .`), `python3.11 -m pytest pytest tests/` runs all tests. Sometimes a `rehash` is required to ensure `.venv/bin/pytest` is used by your shell.
 
 You can connect to the test database by:
 ```sh
