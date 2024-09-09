@@ -48,6 +48,8 @@ $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY'
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 $current_user = 'admin'
 $current_password = 'admin'
+$chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
+$chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -81,8 +83,9 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client.read_timeout = 240
     # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048 remote-debugging-port=9222]
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
     chrome_options << 'headless' unless $debug_mode
+    chrome_options << "remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
         args: chrome_options,
