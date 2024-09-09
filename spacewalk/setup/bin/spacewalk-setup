@@ -241,7 +241,9 @@ sub setup_cobbler {
 
   my %options = ();
   Spacewalk::Setup::read_config('/usr/share/rhn/config-defaults/rhn.conf',\%options);
-  system(COBBLER_COMMAND . " --apache2-config-directory " . $options{'httpd_config_dir'} . " -f " . $answers->{'hostname'});
+
+  Spacewalk::Setup::system_or_exit([COBBLER_COMMAND, '--apache2-config-directory', $options{'httpd_config_dir'}, '-f', $answers->{'hostname'}], 1,
+               'Could not setup cobbler');
 
   my $skip_rhnconf = 0;
   open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
