@@ -116,7 +116,7 @@ export function AllSystems(props: Props) {
                 <a href={`/rhn/systems/details/packages/ExtraPackagesList.do?sid=${item.id}`}>{item.extraPkgCount}</a>
               );
             }
-            return item.outdatedPackages;
+            return item.extraPkgCount;
           }}
         />
 
