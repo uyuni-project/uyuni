@@ -268,6 +268,7 @@ def rhn_popen(cmd, progressCallback=None, bufferSize=16384, outputLog=None):
 
     return exitcode, child_out, child_err
 
+
 def _split_dirs(path):
     """Split the given directory into a list of directories.
 
@@ -297,6 +298,7 @@ def _split_dirs(path):
 
     return list(reversed(_split(path, [])))
 
+
 def makedirs(path, mode=0o0755, user=None, group=None):
     """Creates all required directories on a path and changes its owner and group
 
@@ -318,7 +320,7 @@ def makedirs(path, mode=0o0755, user=None, group=None):
         raise OSError(f"*** ERROR: group {group} doesn't exist. Cannot create path.")
 
     dirs_to_create = _split_dirs(path)
-    for dirname in  dirs_to_create:
+    for dirname in dirs_to_create:
         if os.path.isdir(dirname):
             continue
 

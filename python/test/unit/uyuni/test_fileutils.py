@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 import pytest
 
 from uyuni.common import fileutils
@@ -16,4 +17,5 @@ from uyuni.common import fileutils
     ],
 )
 def test_split_dirs(path, expected):
+    # pylint: disable-next=protected-access
     assert fileutils._split_dirs(path) == expected
