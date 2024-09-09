@@ -73,11 +73,14 @@ def import_repository_packages_in_batch(
         available_packages.update(avail_pkgs)
     # Importing updates/patches (sync errata)
     if not no_errata and isinstance(repository, RPMRepo):
-        import_repository_updates(
-            channel=channel,
-            repository=repository,
-            available_packages=available_packages,
-        )
+        if not channel:
+            logging.warning("Couldn't import updates, no channel was specified !")
+        else:
+            import_repository_updates(
+                channel=channel,
+                repository=repository,
+                available_packages=available_packages,
+            )
 
     del available_packages
 
