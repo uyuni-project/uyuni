@@ -1,2 +1,2 @@
 
-ALTER TABLE rhnpackage ADD COLUMN IF NOT EXISTS remote_path VARCHAR(1000);
+ALTER TABLE rhnpackage ADD COLUMN IF NOT EXISTS remote_path TEXT;
