@@ -30,36 +30,14 @@ When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   $output, _code = get_target('server').run("cat #{filename}")
 end
 
-When(/^I stop salt-minion on "(.*?)"$/) do |minion|
+When(/^I (start|restart|stop) salt-minion on "(.*?)"$/) do |action, minion|
   node = get_target(minion)
   os_version = node.os_version
   os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run("rcvenv-salt-minion stop", check_errors: false)
+    node.run("rcvenv-salt-minion #{action}", check_errors: false)
   else
-    node.run('systemctl stop venv-salt-minion stop', check_errors: false)
-  end
-end
-
-When(/^I start salt-minion on "(.*?)"$/) do |minion|
-  node = get_target(minion)
-  os_version = node.os_version
-  os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run("rcvenv-salt-minion start", check_errors: false)
-  else
-    node.run('systemctl start venv-salt-minion stop', check_errors: false)
-  end
-end
-
-When(/^I restart salt-minion on "(.*?)"$/) do |minion|
-  node = get_target(minion)
-  os_version = node.os_version
-  os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
-    node.run("rcvenv-salt-minion restart", check_errors: false)
-  else
-    node.run('systemctl restart venv-salt-minion stop', check_errors: false)
+    node.run("systemctl #{action} venv-salt-minion", check_errors: false)
   end
 end
 
