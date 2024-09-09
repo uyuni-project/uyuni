@@ -30,6 +30,7 @@ zypp-plugin-spacewalk
 salt-minion
 salt
 podman
+uyuni-proxy-systemd-services
 "
 
 for THISRPM in $RPMLIST; do
@@ -53,7 +54,8 @@ conf_files $OF \
     /etc/salt/minion \
     /etc/salt/minion.d/susemanager.conf \
     /etc/salt/minion.d/_schedule.conf \
-    /etc/uyuni/proxy/config.yaml
+    /etc/uyuni/proxy/config.yaml  \
+    /etc/sysconfig/uyuni-proxy-systemd-services
 
 
 log_entry $OF note "SUSE Manager Client Log Files"
@@ -80,4 +82,47 @@ log_entry $OF note "Cloud / PAYG"
 log_cmd $OF "test -e /usr/bin/instance-flavor-check && /usr/bin/instance-flavor-check"
 rpm_verify $OF "python-instance-billing-flavor-check"
 
+####################################################################
+#### The instance where a proxy is running, is just a managed client
+####################################################################
 
+log_entry $OF note "Proxy Containers Configuration Files"
+
+log_cmd $OF "ls -l /etc/uyuni/proxy/"
+
+log_entry $OF note "Proxy Containers Systems Status"
+
+SERVICES="
+    uyuni-proxy-pod
+    uyuni-proxy-httpd
+    uyuni-proxy-salt-broker
+    uyuni-proxy-squid
+    uyuni-proxy-ssh
+    uyuni-proxy-tftpd
+"
+
+for SERVICE in $SERVICES; do
+    check_service $OF $SERVICE
+done
+
+CONTAINERS="
+    uyuni-proxy-httpd
+    uyuni-proxy-ssh
+    uyuni-proxy-squid
+    uyuni-proxy-tftpd
+    uyuni-proxy-salt-broker
+"
+
+if which podman >/dev/null 2>&1; then
+    log_entry $OF note "Proxy Containers Inspects"
+
+    for CONTAINER in $CONTAINERS; do
+        log_cmd $OF "podman inspect $CONTAINER"
+    done
+
+    log_entry $OF note "Proxy Containers Logs"
+
+    for CONTAINER in $CONTAINERS; do
+        log_cmd $OF "podman logs $CONTAINER"
+    done
+fi
