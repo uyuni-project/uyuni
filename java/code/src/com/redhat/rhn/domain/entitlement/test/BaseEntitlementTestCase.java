@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -72,7 +73,8 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
 
     @Test
     public void testIsAllowedOnServer() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user);
+        Server traditional = ServerTestUtils.createTestSystem(user,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
 
         systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
@@ -84,7 +86,8 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
 
     @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user);
+        Server traditional = ServerTestUtils.createTestSystem(user,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
 
         systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);

@@ -417,6 +417,13 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             }
         }
 
+        TaskomaticApi taskomaticTestApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionChainExecution(ActionChain actionchain) {
+            }
+        };
+
+        ActionChainFactory.setTaskomaticApi(taskomaticTestApi);
         ActionChainFactory.schedule(actionChain, new Date());
 
         // check actions are scheduled in correct order

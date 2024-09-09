@@ -130,7 +130,7 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertFalse(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
-                packageName + evrGreater + ".x86_64");
+                packageName + evrGreater + ".i386");
         filter = contentManager.createFilter(packageName + "nevra-lower-filter2", DENY, PACKAGE, criteria, user);
         assertFalse(filter.test(pack));
 
@@ -223,7 +223,7 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         assertFalse(filter.test(pack));
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "nevra",
-                packageName + evrGreater + ".x86_64");
+                packageName + evrGreater + ".i386");
         filter = contentManager.createFilter(packageName + "nevra-lower-filter2", DENY, PACKAGE, criteria, user);
         assertFalse(filter.test(pack));
 

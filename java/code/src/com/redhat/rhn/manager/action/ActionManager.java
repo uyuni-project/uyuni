@@ -102,6 +102,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
@@ -417,6 +418,13 @@ public class ActionManager extends BaseManager {
                     )
                 )
                 .filter(p -> !p.getRight().isEmpty())
+                // select Actions that have no minions besides those in the specified set
+                // (those that have any other minion should NOT be unscheduled!)
+                .filter(e -> e.getKey().getServerActions().stream()
+                        .map(ServerAction::getServer)
+                        .filter(MinionServerUtils::isMinionServer)
+                        .allMatch(s -> e.getValue().contains(s))
+                )
                 .collect(toMap(
                     Pair::getLeft,
                     Pair::getRight

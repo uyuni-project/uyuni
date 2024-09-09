@@ -70,8 +70,7 @@ public class ServerTestUtils {
      * @throws Exception if error
      */
     public static Server createTestSystem(User creator) throws Exception {
-        return createTestSystem(creator,
-            ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        return createTestSystem(creator, ServerConstants.getServerGroupTypeSaltEntitled());
     }
 
     /**
@@ -150,7 +149,7 @@ public class ServerTestUtils {
     public static Server createVirtHostWithGuests(User user, int numberOfGuests,
                                                   SystemEntitlementManager systemEntitlementManager)
         throws Exception {
-        return createVirtHostWithGuests(user, numberOfGuests, false, systemEntitlementManager);
+        return createVirtHostWithGuests(user, numberOfGuests, true, systemEntitlementManager);
     }
 
     /**
@@ -315,7 +314,8 @@ public class ServerTestUtils {
      */
     public static Server createForeignSystem(User user, String digitalServerId)
             throws Exception {
-        Server existingHost = ServerTestUtils.createTestSystem(user);
+        Server existingHost = ServerTestUtils.createTestSystem(user,
+                ServerConstants.getServerGroupTypeForeignEntitled());
         existingHost.setName(TestUtils.randomString());
         existingHost.setDigitalServerId(digitalServerId);
         GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(existingHost,

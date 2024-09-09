@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -132,7 +133,8 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         // Create a system
-        Server srv1 = ServerFactoryTest.createTestServer(user, true);
+        Server srv1 = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         // Create a local for that system

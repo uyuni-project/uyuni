@@ -2418,8 +2418,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isAmazon2023() ||
-                isRocky8() || isRocky9() || isDebian12() || isDebian11() || isDebian10();
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isAlibaba2() || isAmazon2() ||
+                isAmazon2023() || isRocky8() || isRocky9() || isDebian12() || isDebian11() || isDebian10();
     }
 
     /**
