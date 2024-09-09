@@ -78,12 +78,13 @@ end
 # @param file [String] The name of the destination file.
 # @return [Integer] The return code indicating the success or failure of the file injection.
 def inject_salt_pillar_file(source, file)
-  dest = "/srv/pillar/#{file}"
+  pillars_dir = '/srv/pillar/'
+  dest = File.join(pillars_dir, file)
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless success
 
   # make file readable by salt
-  get_target('server').run("chgrp salt #{dest}")
+  get_target('server').run("chown -R salt:salt #{dest}")
   success
 end
 
