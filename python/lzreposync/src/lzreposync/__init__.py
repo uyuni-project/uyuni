@@ -119,6 +119,11 @@ def main():
 
     args = parser.parse_args()
 
+    # Remove any existing handlers (loggers)
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+    logging.getLogger().setLevel(args.loglevel)
+
     # Creating a new channel
     if args.channel_info:
         channel_label, channel_arch = args.channel_info[0], args.channel_info[1]
@@ -140,7 +145,6 @@ def main():
     if arch != ".*":
         arch = f"(noarch|{args.arch})"
 
-    logging.getLogger().setLevel(args.loglevel)
     if args.url:
         if not args.repo_type:
             print("ERROR: --type (yum/deb) must be specified when using --url")
