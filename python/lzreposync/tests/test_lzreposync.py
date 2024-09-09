@@ -3,14 +3,16 @@ import datetime
 import gzip
 import io
 import json
+import os
+import shutil
 import time
 import unittest
 
 import pytest
-from more_itertools import ilen
 from psycopg2 import errors
 from psycopg2.errorcodes import UNIQUE_VIOLATION
 
+from lzreposync import RPMRepo
 from lzreposync.db_utils import get_all_arches, get_repositories_by_channel_label
 from lzreposync.db_utils import get_channel_info_by_label
 from lzreposync.db_utils import get_compatible_arches
@@ -419,7 +421,7 @@ class LazyRepoSyncTest(unittest.TestCase):
             count += noarch_count  # 'noarch' is always parsed
             primary_parser = PrimaryParser(primary_gz, arch_filter=arch)
             parsed_packages = primary_parser.parse_primary()
-            self.assertEqual(count, ilen(parsed_packages))
+            self.assertEqual(count, sum(1 for _ in parsed_packages))
             del primary_parser
             del parsed_packages
 
@@ -712,7 +714,7 @@ class LazyRepoSyncTest(unittest.TestCase):
         )
         packages_gen = packages_parser.parse_packages()
 
-        self.assertEqual(num_packages, ilen(packages_gen))
+        self.assertEqual(num_packages, sum(1 for _ in packages_gen))
         del packages_parser
         del packages_gen
         packages_file.close()
@@ -1090,6 +1092,30 @@ class LazyRepoSyncTest(unittest.TestCase):
         self.assertEqual(repo_label, repo.repo_label)
         self.assertEqual(repo_url, repo.source_url)
         self.assertEqual("N", repo.metadata_singed)
+
+    def test_has_valid_gpg_signature(self):
+        """
+        NOTE!: to successfully run this test, you should have already added
+        the required gpg keyring on your system.
+        You should normally set up the SPACEWALK_GPG_HOMEDIR which is: /var/lib/spacewalk/gpgdir
+        Ideally, you run this while being on the uyuni-server
+        """
+        repomd_xml = "tests/test-files/repomd.xml"
+        repomd_xml_sig = "tests/test-files/repomd.xml.asc"
+        # Moving the file to a global path, known from anywhere (might not be the best approach)
+        shutil.copy(repomd_xml, "/tmp/")
+        shutil.copy(repomd_xml_sig, "/tmp/")
+        # pylint: disable-next=protected-access
+        valid_sig = RPMRepo._has_valid_gpg_signature(
+            "/tmp/repomd.xml", "/tmp/repomd.xml.asc"
+        )
+        # Remove the saved repomd.xml and repomd.xml.asc files
+        if os.path.exists("/tmp/repomd.xml"):
+            os.remove("/tmp/repomd.xml")
+        if os.path.exists("/tmp/repomd.xml.asc"):
+            os.remove("/tmp/repomd.xml.asc")
+
+        self.assertTrue(valid_sig)
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ import hashlib
 import logging
 import os
 import re
+import subprocess
 import tempfile
 import time
 import urllib.error
@@ -11,9 +12,12 @@ import urllib.request
 from urllib.parse import urljoin
 from xml.dom import pulldom
 
-import gnupg
 from lzreposync.repo import Repo
 from lzreposync.rpm_metadata_parser import parse_rpm_packages_metadata
+from spacewalk.common.repo import GeneralRepoException
+
+SPACEWALK_LIB = "/var/lib/spacewalk"
+SPACEWALK_GPG_HOMEDIR = os.path.join(SPACEWALK_LIB, "gpgdir")
 
 
 class ChecksumVerificationException(ValueError):
@@ -53,42 +57,106 @@ class RPMRepo(Repo):
             repository=repository,
             arch_filter=arch_filter,
         )
-        self.signature_verified = True  # Tell whether the signature is checked against the repomd.xml file TODO: complete
+        # Verify the gpg signature
+        logging.debug("Checking signature for file repomd.xml")
+        verified = self.verify_signature()
+        if not verified:
+            raise SignatureVerificationException("repomd.xml")
 
     def verify_signature(self):
         """
         Verify the signature of the repomd.xml file using GnuPG
         """
-        gpg = gnupg.GPG()
 
         repomd_url = self.get_repo_path("repodata/repomd.xml")
         repomd_signature_url = urljoin(self.repository, "repodata/repomd.xml.asc")
-        repomd_pub_key_url = urljoin(self.repository, "repodata/repomd.xml.key")
         downloaded_repomd_path = "/tmp/repomd.xml"
+        downloaded_repomd_asc_path = "/tmp/repomd.xml.asc"
 
-        # Download and save the repomd.xml locally
+        # Download and save the repomd.xml and the repomd.xml.asc files locally
         logging.debug("Downloading repomd.xml file to %s", downloaded_repomd_path)
         urllib.request.urlretrieve(repomd_url, downloaded_repomd_path)
+        logging.debug(
+            "Downloading repomd.xml.asc file to %s", downloaded_repomd_asc_path
+        )
+        urllib.request.urlretrieve(repomd_signature_url, downloaded_repomd_asc_path)
 
-        with urllib.request.urlopen(
-            repomd_signature_url
-        ) as repomd_sig_fd, urllib.request.urlopen(
-            repomd_pub_key_url
-        ) as repo_pub_key_fd:
-            gpg.import_keys(repo_pub_key_fd.read())
-            verified = gpg.verify_file(repomd_sig_fd, downloaded_repomd_path)
+        try:
+            verified = self._has_valid_gpg_signature(
+                downloaded_repomd_path, downloaded_repomd_asc_path
+            )
+            if verified:
+                logging.debug("Valid signature for file repomd.xml")
+            else:
+                logging.debug("Invalid signature for file repomd.xml")
+            return verified
+        except GeneralRepoException:
+            logging.error("Error verifying signature !")
+            raise
+        finally:
+            # Remove the saved repomd.xml and repomd.xml.asc files
+            if os.path.exists(downloaded_repomd_path):
+                logging.debug("Removing file %s", downloaded_repomd_path)
+                os.remove(downloaded_repomd_path)
+            if os.path.exists(downloaded_repomd_asc_path):
+                logging.debug("Removing file %s", downloaded_repomd_asc_path)
+                os.remove(downloaded_repomd_asc_path)
 
-        # Remove the saved repomd.xml file
-        if os.path.exists(downloaded_repomd_path):
-            logging.debug("Removing file %s", downloaded_repomd_path)
-            os.remove(downloaded_repomd_path)
-        if verified.valid:
-            logging.debug("Valid signature for file repomd.xml")
-            self.signature_verified = verified.valid
+    # pretty much like: spacewalk/common/repo.py:_has_valid_gpg_signature
+    @staticmethod
+    def _has_valid_gpg_signature(file: str, signature_file) -> bool:
+        """
+        Validate GPG signature of the given file.
+
+        :return: bool
+        """
+        process = None
+        file = file.replace("file://", "")
+        if os.access(file, os.R_OK):
+            # release_signature_file = os.path.join(file, "Release.gpg")
+            if os.access(signature_file, os.R_OK):
+                process = subprocess.Popen(
+                    [
+                        "gpg",
+                        "--verify",
+                        "--homedir",
+                        SPACEWALK_GPG_HOMEDIR,
+                        signature_file,
+                        file,
+                    ],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                process.wait(timeout=90)
+            else:
+                logging.error(
+                    "Signature file for GPG check could not be accessed: \
+                               '%s. Raising GeneralRepoException.",
+                    signature_file,
+                )
+                raise GeneralRepoException(
+                    f"Signature file for GPG check could not be accessed: {signature_file}"
+                )
         else:
-            logging.debug("Invalid signature for file repomd.xml")
+            logging.error(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                "No release file found: '{}'. Raising GeneralRepoException.".format(
+                    file
+                )
+            )
+            raise GeneralRepoException(f"No file found: {file}")
 
-        return verified.valid
+        if process.returncode == 0:
+            logging.debug("GPG signature is valid")
+            return True
+        else:
+            logging.debug(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                "GPG signature is invalid. gpg return code: {}".format(
+                    process.returncode
+                )
+            )
+            return False
 
     def get_metadata_files(self):
         """
@@ -147,11 +215,6 @@ class RPMRepo(Repo):
         if not self.repository:
             print("Error: target url not defined!")
             raise ValueError("Repository URL missing")
-        if not self.signature_verified:
-            logging.debug("Checking signature for file repomd.xml")
-            verified = self.verify_signature()
-            if not verified:
-                raise SignatureVerificationException("repomd.xml")
 
         primary_hash_file = os.path.join(self.cache_dir, "primary") + ".hash"
         filelists_hash_file = os.path.join(self.cache_dir, "filelists") + ".hash"
