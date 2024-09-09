@@ -68,8 +68,3 @@ Feature: Prepare buildhost and build OS image for SLES 12 SP5
     And I wait until no Salt job is running on "sle12sp5_buildhost"
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "sle12sp5_terminal"
-
-@skip_if_containerized_server
-  Scenario: Move the SLES 12 SP5 image to the branch server
-    When I apply state "image-sync" to "proxy"
-    Then the image for "sle12sp5_terminal" should exist on the branch server

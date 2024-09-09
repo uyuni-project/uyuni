@@ -6,9 +6,7 @@
 
 ## Core - Initialize clients BEGIN ##
 
-- features/init_clients/proxy_traditional.feature
 - features/init_clients/proxy_container.feature
-- features/init_clients/proxy_traditional_branch_network.feature
 - features/init_clients/proxy_container_branch_network.feature
 
 - features/init_clients/sle_minion.feature

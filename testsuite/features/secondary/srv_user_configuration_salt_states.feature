@@ -1,14 +1,10 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
 @scope_visualization
 @scope_salt
 Feature: Create organizations, users, groups, and activation keys using Salt states
-
-@skip_if_containerized_server
-  Scenario: Apply configuration salt state to server
-    When I manually install the "uyuni-config" formula on the server
 
   Scenario: Apply setup_users_configuration state to server
     When I apply "setup_users_configuration" local salt state on "server"
@@ -69,10 +65,6 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
 
   Scenario: Cleanup: apply configuration teardown salt state to server
     When I apply "teardown_users_configuration" local salt state on "server"
-
-@skip_if_containerized_server
-  Scenario: Cleanup: uninstall the uyuni-config formula from the server
-    And I manually uninstall the "uyuni-config" formula from the server
 
   Scenario: Cleanup: all organizations were successfully removed
     When I follow the left menu "Admin > Organizations"

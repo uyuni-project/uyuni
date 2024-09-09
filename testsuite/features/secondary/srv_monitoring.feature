@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature is a dependency for:
@@ -21,7 +21,6 @@
 # it could let the monitoring feature disabled for the Debian-like minion
 
 @skip_if_github_validation
-@skip_if_containerized_server
 @scope_monitoring
 Feature: Disable and re-enable monitoring of the server
 

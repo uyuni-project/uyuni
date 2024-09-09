@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 # After clicking the button we wait until we dont see the text. This normally
 # means that the page was refreshed, but in case of a timeout or other error,
@@ -9,7 +9,6 @@
 # All features following this one if the server fails to restart.
 
 @skip_if_github_validation
-@skip_if_containerized_server
 Feature: Restart the spacewalk services via UI
 
   Scenario: Restart the SUSE Manager through the WebUI Admin option

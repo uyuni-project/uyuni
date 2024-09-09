@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -61,11 +61,6 @@ Feature: Manage a group of systems
     And I should see "rhlike_minion" as link
     And I should see "sle_minion" as link
 
-   #container already has locale formula installed
-   @skip_if_containerized_server 
-   Scenario: Install the locale formula package on the server
-     When I manually install the "locale" formula on the server
-
    Scenario: I synchronize all Salt dynamic modules on "sle_minion"
      When I synchronize all Salt dynamic modules on "sle_minion"
 
@@ -105,10 +100,6 @@ Feature: Manage a group of systems
     Then I should see a "1 system groups removed." text
 
   # Red Hat-like minion is intentionally not removed from group
-
-  @skip_if_containerized_server 
-  Scenario: Cleanup: uninstall formula from the server
-    When I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove the new group
     When I follow the left menu "Systems > System Groups"
