@@ -101,7 +101,16 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
   <!-- -->
   <query params="channel_id">
   INSERT INTO rhnServerNeededCache (server_id, package_id, channel_id)
-          ( SELECT DISTINCT
+          ( WITH retracted_packages AS (
+            SELECT DISTINCT ep.package_id AS pid, sc.server_id AS sid
+            FROM rhnserverchannel sc
+              JOIN rhnchannel c ON c.id = sc.channel_id
+              JOIN rhnchannelerrata ce ON ce.channel_id = c.id
+              JOIN rhnerrata e ON e.id = ce.errata_id
+              JOIN rhnerratapackage ep ON ep.errata_id = e.id
+            WHERE e.advisory_status::text = 'retracted'::text
+              AND ep.package_id in (%s))
+            SELECT DISTINCT
              S.id as server_id,
              P.id as package_id,
              :channel_id as channel_id
@@ -118,7 +127,7 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
                          SC.channel_id = :channel_id
                   AND    SC.server_id = S.id
                   AND    p.id in (%s)
-                  AND    NOT EXISTS (SELECT 1 FROM suseServerChannelsRetractedPackagesView WHERE sid = S.id AND pid = P.id)
+                  AND    NOT EXISTS (SELECT 1 FROM retracted_packages WHERE sid = S.id AND pid = P.id)
                   AND    p.package_arch_id = spac.package_arch_id
                   AND    spac.server_arch_id = s.server_arch_id
                   AND    SP_EVR.id = SP.evr_id
