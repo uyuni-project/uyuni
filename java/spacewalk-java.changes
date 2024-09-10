@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Sep 10 13:38:01 CEST 2024 - rosuna@suse.com
+
+- version 4.3.80-0
+  * Use custom select instead of errata view for better performance
+    (bsc#1225619)
+
+-------------------------------------------------------------------
 Mon Sep 02 15:17:05 CEST 2024 - rosuna@suse.com
 
 - version 4.3.79-0

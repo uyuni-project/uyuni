@@ -1,2 +1,0 @@
-- use custom select instead of errata view for better performance
-  (bsc#1225619)
