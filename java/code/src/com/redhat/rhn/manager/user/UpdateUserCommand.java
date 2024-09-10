@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.mail.internet.AddressException;
@@ -85,18 +84,18 @@ public class UpdateUserCommand {
      * @return The user updated.
      */
     public User updateUser() {
-        Map<String, String> errorMap;
+        List<UserPasswordUtils.UserPasswordCheckFail> errors;
         if (needsUpdate) {
             validateEmail();
-            errorMap = UserPasswordUtils.validatePasswordFromSatConfiguration(unencryptedPassword);
+            errors = UserPasswordUtils.validatePasswordFromSatConfiguration(unencryptedPassword);
             validatePrefix();
             safePopulateUser();
             // ok update it
-            if (errorMap.isEmpty()) {
+            if (errors.isEmpty()) {
                 UserManager.storeUser(user);
             }
             else {
-                throw new IllegalArgumentException();
+                throw new UserPasswordUtils.PasswordValidationException(errors);
             }
         }
         return user;

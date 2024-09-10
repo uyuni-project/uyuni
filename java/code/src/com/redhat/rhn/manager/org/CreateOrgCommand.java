@@ -128,7 +128,7 @@ public class CreateOrgCommand {
         cmd.setLogin(this.login);
         cmd.setMakeOrgAdmin(true);
         cmd.setMakeSatAdmin(firstOrg);
-        cmd.setPassword(new HashMap<>(), this.password);
+        cmd.setPassword(this.password);
         cmd.setEmail(email);
         cmd.setUsePamAuthentication(this.usePam);
         cmd.setPrefix(this.prefix);

@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.common.util;
 
-import static com.redhat.rhn.common.util.UserPasswordUtils.UserPasswordCheckSettings.buildUserPasswordCheckSettingsFromSatFactory;
+import static com.redhat.rhn.common.util.UserPasswordUtils.PasswordPolicy.buildPasswordPolicyFromSatFactory;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 
 import java.util.ArrayList;
@@ -41,84 +43,111 @@ public class UserPasswordUtils {
      * @param password the password to validate
      * @return the errors map
      */
-    public static Map<String, String> validatePasswordFromSatConfiguration(String password) {
-        List<IUserPasswordChecks> checks =  buildChecksFromSettings(buildUserPasswordCheckSettingsFromSatFactory());
+    public static List<UserPasswordCheckFail> validatePasswordFromSatConfiguration(String password) {
+        List<UserPasswordChecks> checks =  buildChecksFromPolicy(buildPasswordPolicyFromSatFactory());
         return executeValidation(password, checks);
     }
 
     /**
      * Validate the password using the settings class, useful for testing
      * @param password the password to validate
-     * @param settings the settings
+     * @param policy the password policy settings
      * @return the errors map
      */
-    public static Map<String, String> validatePasswordFromSettings(String password,
-                                                                   UserPasswordCheckSettings settings) {
-        List<IUserPasswordChecks> checks = buildChecksFromSettings(settings);
+    public static List<UserPasswordCheckFail> validatePasswordFromPolicy(String password,
+                                                                 PasswordPolicy policy) {
+        List<UserPasswordChecks> checks = buildChecksFromPolicy(policy);
         return executeValidation(password, checks);
     }
 
-    private static List<IUserPasswordChecks> buildChecksFromSettings(UserPasswordCheckSettings settings) {
-        List<IUserPasswordChecks> checks = new ArrayList<>();
+    private static List<UserPasswordChecks> buildChecksFromPolicy(PasswordPolicy policy) {
+        List<UserPasswordChecks> checks = new ArrayList<>();
         // Check for uppercase letters
-        if (settings.isUpperCharFlag()) {
-            checks.add(password -> PSW_UPPERCHAR_REGEX.matcher(password).find() ?
-                    Optional.empty() :
-                    Optional.of(new UserPasswordCheckFail("no_uppercase", ""))
-            );
+        if (policy.isUpperCharFlag()) {
+            checks.add(UserPasswordUtils::upperCharCheck);
         }
         // Check for lowercase letters
-        if (settings.isLowerCharFlag()) {
-            checks.add(password -> PSW_LOWERCHAR_REGEX.matcher(password).find() ?
-                    Optional.empty() :
-                    Optional.of(new UserPasswordCheckFail("no_lowercase", ""))
-            );
+        if (policy.isLowerCharFlag()) {
+            checks.add(UserPasswordUtils::lowerCherCheck);
         }
         // Check for digits
-        if (settings.isDigitFlag()) {
-            checks.add(password -> PSW_DIGIT_REGEX.matcher(password).find() ?
-                    Optional.empty() :
-                    Optional.of(new UserPasswordCheckFail("no_digit", ""))
-            );
+        if (policy.isDigitFlag()) {
+            checks.add(UserPasswordUtils::digitCharCheck);
         }
         // Check for consecutive characters
-        if (settings.isConsecutiveCharsFlag()) {
-            checks.add(password -> !hasConsecutiveCharacters(password) ?
-                    Optional.empty() :
-                    Optional.of(new UserPasswordCheckFail("consecutive_characters_presents", ""))
-            );
+        if (policy.isConsecutiveCharsFlag()) {
+            checks.add(UserPasswordUtils::consecutiveCharCheck);
         }
         // Check for maximum occurrences of any character
-        if (settings.isRestrictedOccurrenceFlag()) {
-            checks.add(password -> !exceedsMaxOccurrences(password, settings.getMaxCharacterOccurrence()) ?
-                    Optional.empty() :
-                    Optional.of(new UserPasswordCheckFail(
-                            "max_occurrences",
-                            String.valueOf(settings.getMaxCharacterOccurrence())
-                            )
-                    )
-            );
+        if (policy.isRestrictedOccurrenceFlag()) {
+            checks.add(password -> restrictedCharCheck(password, policy.getMaxCharacterOccurrence()));
         }
         // Check for special characters
-        if (settings.isSpecialCharFlag()) {
-            checks.add(password -> hasSpecialCharacters(password, settings.getSpecialChars()) ?
-                    Optional.empty() :
-                    Optional.of(new UserPasswordCheckFail("special_characters", "1"))
-            );
+        if (policy.isSpecialCharFlag()) {
+            checks.add(password -> specialCharCheck(password, policy.getSpecialChars()));
         }
         // Always check for no spaces, tabs, or newlines
-        checks.add(password -> !PSW_NO_SPACE_TAB_NEWLINE_REGEX.matcher(password).find() ?
-                Optional.empty() :
-                Optional.of(new UserPasswordCheckFail("space_present", ""))
-        );
+        checks.add(UserPasswordUtils::spaceCharCheck);
         // Always check for length requirements
-        checks.add(password -> password.length() < settings.minLength ?
-                Optional.of(new UserPasswordCheckFail("min_lenght", "1")) :
-                Optional.empty());
-        checks.add(password -> password.length() > settings.maxLength ?
-                Optional.of(new UserPasswordCheckFail("max_lenght", "1")) :
-                Optional.empty());
+        checks.add(password -> minLengthCheck(password, policy.getMinLength()));
+        checks.add(password -> maxLengthCheck(password, policy.getMaxLength()));
         return checks;
+    }
+
+    private static Optional<UserPasswordCheckFail> lowerCherCheck(String password) {
+        return PSW_LOWERCHAR_REGEX.matcher(password).find() ?
+                Optional.empty() :
+                Optional.of(new UserPasswordCheckFail("error.nolowercasepassword", ""));
+    }
+
+    private static Optional<UserPasswordCheckFail> digitCharCheck(String password) {
+        return PSW_DIGIT_REGEX.matcher(password).find() ?
+                Optional.empty() :
+                Optional.of(new UserPasswordCheckFail("error.nodigitspassword", ""));
+    }
+
+    private static Optional<UserPasswordCheckFail> upperCharCheck(String password) {
+        return PSW_UPPERCHAR_REGEX.matcher(password).find() ?
+                Optional.empty() :
+                Optional.of(new UserPasswordCheckFail("error.nouppercasepassword", ""));
+    }
+
+    private static Optional<UserPasswordCheckFail> spaceCharCheck(String password) {
+        return !PSW_NO_SPACE_TAB_NEWLINE_REGEX.matcher(password).find() ?
+                Optional.empty() :
+                Optional.of(new UserPasswordCheckFail("error.spacesinpassword", ""));
+    }
+
+    private static Optional<UserPasswordCheckFail> consecutiveCharCheck(String password) {
+        return !hasConsecutiveCharacters(password) ?
+                Optional.empty() :
+                Optional.of(new UserPasswordCheckFail("consecutive_characters_presents", ""));
+    }
+
+    private static Optional<UserPasswordCheckFail> restrictedCharCheck(String password, int maxOccurences) {
+        return !exceedsMaxOccurrences(password, maxOccurences) ?
+                Optional.empty() :
+                Optional.of(
+                        new UserPasswordCheckFail("error.occurrencecharacterspassword", String.valueOf(maxOccurences))
+                );
+    }
+
+    private static Optional<UserPasswordCheckFail> minLengthCheck(String password, int minLength) {
+        return password.length() < minLength ?
+                Optional.of(new UserPasswordCheckFail("error.minpassword", String.valueOf(minLength))) :
+                Optional.empty();
+    }
+
+    private static Optional<UserPasswordCheckFail> maxLengthCheck(String password, int maxLength) {
+        return password.length() > maxLength ?
+                Optional.of(new UserPasswordCheckFail("error.maxpassword", String.valueOf(maxLength))) :
+                Optional.empty();
+    }
+
+    private static Optional<UserPasswordCheckFail> specialCharCheck(String password, String specialCharacters) {
+        return hasSpecialCharacters(password, specialCharacters) ?
+                Optional.empty() :
+                Optional.of(new UserPasswordCheckFail("error.nospecialcharacterspassword", specialCharacters));
     }
 
     private static boolean hasConsecutiveCharacters(String password) {
@@ -152,23 +181,20 @@ public class UserPasswordUtils {
         return false;
     }
 
-    private static Map<String, String> executeValidation(String pswd, List<IUserPasswordChecks> checks) {
+    private static List<UserPasswordCheckFail> executeValidation(String pswd, List<UserPasswordChecks> checks) {
         return checks.stream()
                 .map(check -> check.validate(pswd))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toMap(
-                        UserPasswordCheckFail::getLocalizedMessageId,
-                        UserPasswordCheckFail::getConfigurationParameter)
-                );
+                .collect(Collectors.toList());
     }
 
     @FunctionalInterface
-    private interface IUserPasswordChecks {
+    private interface UserPasswordChecks {
         Optional<UserPasswordCheckFail> validate(String password);
     }
 
-    public static class UserPasswordCheckSettings {
+    public static class PasswordPolicy {
         private final boolean upperCharFlag;
         private final boolean lowerCharFlag;
         private final boolean digitFlag;
@@ -193,7 +219,7 @@ public class UserPasswordUtils {
          * @param minLengthIn minimum password length
          * @param maxLengthIn maximum password length
          */
-        public UserPasswordCheckSettings(
+        public PasswordPolicy(
                 boolean upperCharFlagIn, boolean lowerCharFlagIn,
                 boolean digitFlagIn, boolean specialCharFlagIn,
                 String specialCharsIn, boolean consecutiveCharsFlagIn,
@@ -256,8 +282,8 @@ public class UserPasswordUtils {
          * Helper method to build checks settings from SatConfiguration
          * @return the settings for the user password settings
          */
-        public static UserPasswordCheckSettings buildUserPasswordCheckSettingsFromSatFactory() {
-            return new UserPasswordCheckSettings(
+        public static PasswordPolicy buildPasswordPolicyFromSatFactory() {
+            return new PasswordPolicy(
                     SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_UPPER_CHAR_FLAG),
                     SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_LOWER_CHAR_FLAG),
                     SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_DIGIT_FLAG),
@@ -272,11 +298,11 @@ public class UserPasswordUtils {
         }
     }
 
-    private static class UserPasswordCheckFail {
+    public static class UserPasswordCheckFail {
         private final String localizedMessageId;
         private final String configurationParameter;
 
-        private UserPasswordCheckFail(String localizedMessageIdIn, String configurationParameterIn) {
+        protected UserPasswordCheckFail(String localizedMessageIdIn, String configurationParameterIn) {
             localizedMessageId = localizedMessageIdIn;
             configurationParameter = configurationParameterIn;
         }
@@ -287,6 +313,44 @@ public class UserPasswordUtils {
 
         public String getConfigurationParameter() {
             return configurationParameter;
+        }
+
+        public String getLocalizedErrorMessage() {
+            return LocalizationService.getInstance().getMessage(getLocalizedMessageId(), getConfigurationParameter());
+        }
+
+        /**
+         * Helper method for converting to ValidatorError for UserCommands
+         * @return the validator error
+         */
+        public ValidatorError toValidatorError() {
+            return new ValidatorError(getLocalizedMessageId(), getConfigurationParameter());
+        }
+    }
+
+    /**
+     * Exception class for password validation, extends IllegalArgumentException for compatibility with older code
+     */
+    public static class PasswordValidationException extends IllegalArgumentException {
+        private final List<UserPasswordCheckFail> validationErrors;
+
+        /**
+         * Exception class for password validation
+         * @param validationErrorsIn a list of validation errors
+         */
+        public PasswordValidationException(List<UserPasswordCheckFail> validationErrorsIn) {
+            validationErrors = validationErrorsIn;
+        }
+
+        public List<UserPasswordCheckFail> getValidationErrors() {
+            return validationErrors;
+        }
+
+        @Override
+        public String getMessage() {
+            return "Password validation errors: " + getValidationErrors().stream()
+                    .map(UserPasswordCheckFail::getLocalizedMessageId)
+                    .collect(Collectors.joining("; "));
         }
     }
 

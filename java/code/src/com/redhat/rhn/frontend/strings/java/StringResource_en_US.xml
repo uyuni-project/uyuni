@@ -1349,22 +1349,58 @@
         </context-group>
       </trans-unit>
       <trans-unit id="error.minpassword" xml:space="preserve">
-        <source>Passwords must be at least {0} characters.</source>
+        <source>Password must be at least {0} characters.</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
-          <context context-type="paramnotes">Passwords must be no shorter than 5 characters.</context>
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Passwords must be no shorter than 8 characters.</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="error.invalidpasswordcharacters" xml:space="preserve">
+      <trans-unit id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
-        <source>Passwords cannot be more than {0} characters.</source>
+        <source>Password cannot be more than {0} characters.</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
+        <source>Password contains consecutive characters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.nodigitspassword" xml:space="preserve">
+        <source>Password must contain at least one digit.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.nouppercasepassword" xml:space="preserve">
+        <source>Password must contain at least one upper case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.nolowercasepassword" xml:space="preserve">
+        <source>Password must contain at least one lower case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
+        <source>Password must contain at least one special character, allowed special characters are: {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
+        <source>Password characters occurrences exceeded maximum allowed {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.password_mismatch" xml:space="preserve">

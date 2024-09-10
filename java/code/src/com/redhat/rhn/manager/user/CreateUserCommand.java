@@ -39,9 +39,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.stream.Collectors;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -301,21 +301,26 @@ public class CreateUserCommand {
     /**
      * @param passwordIn The password to set
      * @param validate if password requirements should be validated
-     * @param errorsMap the errors map
      */
-    public void setPassword(Map<String, String> errorsMap, String passwordIn, boolean validate) {
-        if (validate) {
-            errorsMap = UserPasswordUtils.validatePasswordFromSatConfiguration(passwordIn);
+    public void setPassword(String passwordIn, boolean validate) {
+        if (!validate) {
+            user.setPassword(passwordIn);
         }
-        user.setPassword(passwordIn);
+        else {
+            passwordErrors = UserPasswordUtils.validatePasswordFromSatConfiguration(passwordIn).stream()
+                    .map(UserPasswordUtils.UserPasswordCheckFail::toValidatorError)
+                    .collect(Collectors.toList());
+            if (passwordErrors.isEmpty()) {
+                user.setPassword(passwordIn);
+            }
+        }
     }
 
     /**
      * @param passwordIn The password to set
-     * @param errorsMap the errors map
      */
-    public void setPassword(Map<String, String> errorsMap, String passwordIn) {
-        setPassword(errorsMap, passwordIn, true);
+    public void setPassword(String passwordIn) {
+        setPassword(passwordIn, true);
     }
 
     /**

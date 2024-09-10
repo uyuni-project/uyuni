@@ -28,7 +28,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * UserEditSubmitAction, edit action submit handler for user detail page
@@ -74,8 +74,12 @@ public abstract class UserEditActionHelper extends RhnAction {
 
         //Make sure password is not empty
         if (!pw.isEmpty()) {
-            Map<String, String> errorMap = UserPasswordUtils.validatePasswordFromSatConfiguration(pw);
-            errorMap.forEach((i, k) -> errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(i, k)));
+            List<UserPasswordUtils.UserPasswordCheckFail> validationFails =
+                    UserPasswordUtils.validatePasswordFromSatConfiguration(pw);
+            validationFails.forEach(failure -> errors.add(
+                    ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage(failure.getLocalizedMessageId(), failure.getConfigurationParameter())
+            ));
             //Set the password only if there are no errors at all
             if (errors.isEmpty()) {
                 targetUser.setPassword(pw);

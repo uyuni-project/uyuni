@@ -18,7 +18,7 @@ import com.redhat.rhn.common.util.UserPasswordUtils;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import java.util.List;
 
 public class UserPasswordUtilsTest {
 
@@ -34,8 +34,8 @@ public class UserPasswordUtilsTest {
         int maxCharacterOccurrenceIn = 10;
         int minLengthIn = 4;
         int maxLengthIn = 10;
-        UserPasswordUtils.UserPasswordCheckSettings settings =
-                new UserPasswordUtils.UserPasswordCheckSettings(
+        UserPasswordUtils.PasswordPolicy settings =
+                new UserPasswordUtils.PasswordPolicy(
                         upperCharFlagIn,
                         lowerCharFlagIn,
                         digitFlagIn,
@@ -48,8 +48,17 @@ public class UserPasswordUtilsTest {
                         maxLengthIn
                 );
         String password = "\t";
-        Map<String, String> errors = UserPasswordUtils.validatePasswordFromSettings(password, settings);
-        errors.forEach((k, i) -> System.out.println(k));
+        List<UserPasswordUtils.UserPasswordCheckFail> errors =
+                UserPasswordUtils.validatePasswordFromPolicy(password, settings);
+        errors.forEach((k) -> System.out.println(k.getLocalizedErrorMessage()));
+    }
+
+    @Test
+    public void validateFromDefaultSatConfigurations() throws Exception {
+        String password = "\t";
+        List<UserPasswordUtils.UserPasswordCheckFail> errors =
+                UserPasswordUtils.validatePasswordFromSatConfiguration(password);
+        errors.forEach((k) -> System.out.println(k.getLocalizedErrorMessage()));
     }
 
     @Test
@@ -64,8 +73,8 @@ public class UserPasswordUtilsTest {
         int maxCharacterOccurrenceIn = 2;
         int minLengthIn = 1;
         int maxLengthIn = 6;
-        UserPasswordUtils.UserPasswordCheckSettings settings =
-                new UserPasswordUtils.UserPasswordCheckSettings(
+        UserPasswordUtils.PasswordPolicy settings =
+                new UserPasswordUtils.PasswordPolicy(
                         upperCharFlagIn,
                         lowerCharFlagIn,
                         digitFlagIn,
