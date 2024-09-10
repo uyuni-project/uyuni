@@ -375,7 +375,7 @@ class CVEAudit extends React.Component<Props, State> {
                     className={"fa fa-big " + PATCH_STATUS_LABEL[row.patchStatus].className}
                     title={PATCH_STATUS_LABEL[row.patchStatus].description}
                   />
-                  {row.patchStatus !== UNKNOWN && row.scanDataSources.length < 2 && (
+                  {row.patchStatus !== UNKNOWN && row.scanDataSources && row.scanDataSources.length < 2 && (
                     <i
                       className={"fa fa-big fa-dot-circle-o text-secondary"}
                       title={this.getPatchStatusAccuracyWarning(row)}
