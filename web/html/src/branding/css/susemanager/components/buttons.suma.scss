@@ -8,8 +8,7 @@
   font-weight: bold;
   padding: 8px 16px;
   position: relative;
-  border-style: solid;
-  border-width: 2px;
+  border: 2px solid transparent;
   filter: none;
   transition: none;
   text-decoration: none;
@@ -71,8 +70,15 @@
   }
 }
 
-// TODO: Add :active and :focus states for green etc
-// NB! Here and below, these are not nested because they're not used consistently along with .btn
+.btn {
+  background: transparent;
+
+  &.disabled,
+  &:disabled {
+    border-color: transparent;
+  }
+}
+
 .btn-default {
   &,
   &:active,
@@ -92,6 +98,7 @@
   }
 }
 
+// TODO: Make this obsolete and move it into the search module instead
 .btn-default-inverse {
   &,
   &:active,
@@ -157,10 +164,11 @@
   &.disabled {
     &,
     &:hover {
-      border-color: $eos-bc-cerulean-500;
+      background: $eos-bc-cerulean-400;
+      border-color: $eos-bc-cerulean-400;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover {
-        color: $white;
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+        background: $eos-bc-gray-900;
       }
     }
   }
@@ -179,11 +187,6 @@
       background: $eos-bc-red-500;
       border-color: $eos-bc-red-500;
       color: $eos-bc-white;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover {
-        background: $eos-bc-red-900;
-        border-color: $eos-bc-red-900;
-      }
 
       &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-gray-900;

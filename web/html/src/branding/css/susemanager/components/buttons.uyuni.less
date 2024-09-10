@@ -1,18 +1,92 @@
+.btn {
+  &, &:hover {
+    color: @body-color;
+    background: transparent;
+
+    &.disabled,
+    &:disabled {
+      border-color: transparent;
+    }
+  }
+}
+
+// These are grandfathered old styles so we're consistent between Bootstrap 3 and 5
 .btn-default {
-  background-image: linear-gradient(to bottom, #fff 0%, #e6e6e6 100%);
-  border-color: #ccc;;
-  color: #5F5F5F;
+  &, &:hover {
+    background-image: linear-gradient(to bottom, #fff 0%, #e6e6e6 100%);
+    border-color: #e6e6e6;
+    color: #5F5F5F;
+
+    &:hover {
+      border-color: #929292;
+    }
+
+    &, &:disabled, &.disabled {
+      border-color: #ccc;
+    }
+  }
 }
 
 .btn-primary,
 .btn-success {
-  background-image: linear-gradient(to bottom, #00da92 0%, #00C081 100%);
-  border-color: #00C081;
-  color: #fff;
+  &, &:hover {
+    background-image: linear-gradient(to bottom, #00da92 0%, #00C081 100%);
+    color: #fff;
+
+    &:hover {
+      border-color: #009060;
+    }
+
+    &, &:disabled, &.disabled {
+      border-color: #00C081;
+    }
+  }
 }
 
+.btn-warning {
+  &, &:hover {
+    background-image: linear-gradient(to bottom, #ffb638 0%, #e59409 100%);
+    color: #fff;
 
-.btn-warning,
+    &:hover {
+      border-color: #b46c00;
+    }
+
+    &, &:disabled, &.disabled {
+      color: #fff;
+      border-color: #e59409;
+    }
+  }
+}
+
 .btn-danger {
-  // Use the default Bootstrap styles
+  &, &:hover {
+    background-image: linear-gradient(to bottom, #f53933 0%, #c81b16 100%);
+    color: #fff;
+
+    &:hover {
+      border-color: #840703;
+    }
+
+    &, &:disabled, &.disabled {
+      color: #fff;
+      border-color: #c81b16;
+    }
+  }
+}
+
+.btn-info {
+  &, &:hover {
+    background-image: linear-gradient(to bottom, #59d4f9 0%, #23bdea 100%);
+    color: #fff;
+
+    &:hover {
+      border-color: #047fa4;
+    }
+
+    &, &:disabled, &.disabled {
+      color: #fff;
+      border-color: #23bdea;
+    }
+  }
 }
