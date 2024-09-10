@@ -126,11 +126,15 @@ class SharedHandler:
         # if this request is for an upstream server, use the original query string.
         # Otherwise, if it is for the local Squid instance, strip it so that
         # Squid will not keep multiple cached copies of the same resource
+        # Containers notes: when going for local proxy, use localhost as host to avoid
+        # hairpin problem.
         if self.httpProxy not in ['127.0.0.1:8080', 'localhost:8080']:
             if 'X-Suse-Auth-Token' in self.req.headers_in:
                 self.uri += '?%s' % self.req.headers_in['X-Suse-Auth-Token']
             elif query:
                 self.uri += '?%s' % query
+        else:
+            host = 'localhost'
 
         log_debug(3, 'Scheme:', scheme)
         log_debug(3, 'Host:', host)
@@ -172,6 +176,12 @@ class SharedHandler:
             'host':   host,
             'port':   port,
         }
+
+        # Containers notes: when going for local proxy, use localhost as host to avoid
+        # hairpin problem.
+        if self.httpProxy in ['127.0.0.1:8080', 'localhost:8080']:
+            params['host'] = 'localhost'
+
         if CFG.has_key('timeout'):
             params['timeout'] = CFG.TIMEOUT
         if self.httpProxy:
