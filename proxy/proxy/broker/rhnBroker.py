@@ -100,6 +100,10 @@ class BrokerHandler(SharedHandler):
                     socket.herror, socket.timeout):
                 # hostname probably didn't exist, fine
                 pass
+        if not hostname and CFG.has_key('PROXY_FQDN'):
+            # Not resolvable hostname, check container config
+            log_debug(2, "Using PROXY_FQDN config %s" % CFG.PROXY_FQDN)
+            hostname = CFG.PROXY_FQDN
         if not hostname:
             # okay, that didn't work, let's do a reverse dns lookup on my
             # ip address
