@@ -70,7 +70,6 @@
 - features/secondary/min_salt_user_states.feature
 - features/secondary/min_salt_minion_details.feature
 - features/secondary/min_config_state_channel.feature
-- features/secondary/min_config_state_channel_subscriptions.feature
 - features/secondary/min_config_state_channel_api.feature
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
