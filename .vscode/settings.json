@@ -23,4 +23,13 @@
   },
   "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms2G -Xlog:disable",
   "java.checkstyle.configuration": "${workspaceFolder}/java/buildconf/checkstyle.xml",
+  "java.checkstyle.properties": {
+    "checkstyle.cache.file": "${workspaceFolder}/java/build/checkstyle.cache.src",
+    "checkstyle.header.file": "${workspaceFolder}/java/buildconf/LICENSE.txt",
+    "checkstyle.suppressions.file": "${workspaceFolder}/java/buildconf/checkstyle-suppressions.xml",
+    "javadoc.lazy": "false",
+    "javadoc.method.scope": "public",
+    "javadoc.type.scope": "package",
+    "javadoc.var.scope": "package"
+  }
 }
