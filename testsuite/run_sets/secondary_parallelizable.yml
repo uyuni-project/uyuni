@@ -40,9 +40,7 @@
 - features/secondary/srv_task_status_engine.feature
 - features/secondary/srv_errata_api.feature
 
-- features/secondary/proxy_traditional_retail_pxeboot.feature
 - features/secondary/proxy_container_retail_pxeboot.feature
-- features/secondary/proxy_traditional_retail_mass_import.feature
 - features/secondary/proxy_container_retail_mass_import.feature
 
 - features/secondary/allcli_overview_systems_details.feature

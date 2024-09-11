@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -10,11 +10,6 @@ Feature: Use salt formulas
 
    Scenario: Log in as admin user
       Given I am authorized for the "Admin" section
-
-   #container already has locale formula installed
-   @skip_if_containerized_server 
-   Scenario: Install the locale formula package on the server
-     When I manually install the "locale" formula on the server
 
    Scenario: I synchronize all Salt dynamic modules on "sle_minion"
      When I synchronize all Salt dynamic modules on "sle_minion"
@@ -166,10 +161,6 @@ Feature: Use salt formulas
      Then the timezone on "sle_minion" should be "CET"
      And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
-
-  @skip_if_containerized_server
-  Scenario: Cleanup: uninstall formula package from the server
-     When I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
      When I click on the clear SSM button
