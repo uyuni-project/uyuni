@@ -89,9 +89,8 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I wait until I see "has been deleted" text
     Then "ssh_minion" should not be registered
 
-  Scenario: Cleanup: register a Salt minion after SSH tunnel tests
-    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the server
-    And I wait at most 10 seconds until Salt master sees "ssh_minion" as "unaccepted"
-    And I accept "ssh_minion" key in the Salt master
-    Then I should see "ssh_minion" via spacecmd
+  Scenario: Cleanup: register a SSH minion after SSH tunnel tests
+    When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
+    And I follow the left menu "Systems > Overview"
+    And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
