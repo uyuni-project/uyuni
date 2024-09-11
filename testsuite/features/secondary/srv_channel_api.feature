@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_api
@@ -37,3 +37,16 @@ Feature: API "channel" namespace and sub-namespaces
 
   Scenario: Check last synchronization of a synced channel
     Then channel "fake-child-channel-i586" should have attribute "yumrepo_last_sync" that is a date
+
+  @rhlike_minion
+  Scenario: Verify if a channel is modular via the API
+    When I verify channel "fake-base-channel-appstream" is modular via the API
+    And I verify channel "fake-rpm-suse-channel" is not modular via the API
+
+  @rhlike_minion
+  Scenario: List modular channels via the API
+    When channel "Fake-Base-Channel-AppStream" is present in the modular channels listed via the API
+
+  @rhlike_minion
+  Scenario: List available module streams for a given channel via the API
+    When "scorpio" module streams "2.0, 2.1" are available for channel "fake-base-channel-appstream" via the API

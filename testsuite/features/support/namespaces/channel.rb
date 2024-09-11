@@ -180,14 +180,14 @@ class NamespaceChannelAppstreams
   # @param label [String] The label of the channel.
   #
   # @return [Boolean] Returns true if the channel is modular, false otherwise
-  def is_modular(label)
+  def modular?(label)
     @test.call('channel.appstreams.isModular', sessionKey: @test.token, channelLabel: label)
   end
 
   # List modular channels in users organization.
   #
   # @return [Array<String>] An array of modular channel names.
-  def list_modular_channels()
+  def list_modular_channels
     channels = @test.call('channel.appstreams.listModular', sessionKey: @test.token)
     channels.map { |channel| channel['name'] }
   end
