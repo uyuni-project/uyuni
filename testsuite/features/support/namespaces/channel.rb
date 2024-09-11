@@ -9,9 +9,10 @@ class NamespaceChannel
   def initialize(api_test)
     @test = api_test
     @software = NamespaceChannelSoftware.new(api_test)
+    @appstreams = NamespaceChannelAppstreams.new(api_test)
   end
 
-  attr_reader :software
+  attr_reader :software, :appstreams
 
   # It returns the number of software channels in the system.
   #
@@ -162,5 +163,41 @@ class NamespaceChannelSoftware
   def list_system_channels(system_id)
     channels = @test.call('channel.software.listSystemChannels', sessionKey: @test.token, sid: system_id)
     channels.map { |channel| channel['name'] }
+  end
+end
+
+# channel.appstreams namespace
+class NamespaceChannelAppstreams
+  # Initializes a new instance of the NamespaceChannelAppstreams class.
+  #
+  # @param api_test [Object] The test object that is passed to the initialize method.
+  def initialize(api_test)
+    @test = api_test
+  end
+
+  # Check if channel is modular.
+  #
+  # @param label [String] The label of the channel.
+  #
+  # @return [Boolean] Returns true if the channel is modular, false otherwise
+  def is_modular(label)
+    @test.call('channel.appstreams.isModular', sessionKey: @test.token, channelLabel: label)
+  end
+
+  # List modular channels in users organization.
+  #
+  # @return [Array<String>] An array of modular channel names.
+  def list_modular_channels()
+    channels = @test.call('channel.appstreams.listModular', sessionKey: @test.token)
+    channels.map { |channel| channel['name'] }
+  end
+
+  # List available module streams for a given channel.
+  #
+  # @param label [String] The label of the channel.
+  #
+  # @return [Array<Object>] An array of objects representing each stream details
+  def list_module_streams(label)
+    @test.call('channel.appstreams.listModuleStreams', sessionKey: @test.token, channelLabel: label)
   end
 end
