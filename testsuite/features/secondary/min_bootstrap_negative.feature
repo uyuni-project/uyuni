@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -9,8 +9,8 @@ Feature: Negative tests for bootstrapping normal minions
   As an authorized user
   I want to avoid registration with invalid input parameters
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Bootstrap should fail when minion already exists
     When I follow the left menu "Systems > Bootstrapping"

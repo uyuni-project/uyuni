@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # skip if container because we do not have a domain name and the
@@ -11,8 +11,8 @@
 @rhlike_minion
 Feature: Maintenance windows
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
