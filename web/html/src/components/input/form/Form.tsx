@@ -70,12 +70,17 @@ export class Form extends React.Component<Props> {
 
   setModelValue = (name: string, value: any) => {
     const { model, errors } = this.props;
+
     if (value == null && model[name] != null) {
-      delete model[name];
-      this.props.onChange?.(model);
+      // Ensure the reference changes whenever a value changes
+      // TODO: Do we need structural clone here, or can we get away with a cheap spread?
+      const newModel = { ...model };
+      delete newModel[name];
+      this.props.onChange?.(newModel);
     } else if (value != null) {
-      model[name] = value;
-      this.props.onChange?.(model);
+      const newModel = { ...model };
+      newModel[name] = value;
+      this.props.onChange?.(newModel);
     }
     if (errors) {
       delete errors[name];

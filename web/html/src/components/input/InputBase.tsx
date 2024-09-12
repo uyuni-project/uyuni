@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import _debounce from "lodash/debounce";
 import _isNil from "lodash/isNil";
 
 import { FormContext } from "./form/Form";
@@ -155,9 +156,11 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
           }
           return filtered;
         }, {});
-        this.validate(values);
+        // TODO: Reenable
+        // this.validate(values);
       } else if (typeof name !== "undefined") {
-        this.validate(this.context.model[name]);
+        // TODO: Reenable
+        // this.validate(this.context.model[name]);
       }
     }
   }
@@ -197,48 +200,55 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
    * `this.props.name` is an array. This makes inferring validation types tricky, so we accept whatever inputs make sense
    * for a given branch.
    */
-  validate<InferredValueType = ValueType>(value: InferredValueType, errors?: Array<string> | Object): void {
-    const results: ReturnType<Validator>[] = [];
-    let isValid = true;
+  validate = _debounce(
+    <InferredValueType extends unknown = ValueType>(
+      value: InferredValueType,
+      errors?: Array<string> | Object
+    ): void => {
+      console.log("validate", value);
+      const results: ReturnType<Validator>[] = [];
+      let isValid = true;
 
-    if (Array.isArray(errors) && errors.length > 0) {
-      isValid = false;
-    }
-
-    if (!this.props.disabled && (value || this.props.required)) {
-      const noValue =
-        this.isEmptyValue(value) ||
-        (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
-      if (this.props.required && noValue) {
+      if (Array.isArray(errors) && errors.length > 0) {
         isValid = false;
-      } else if (this.props.validators) {
-        const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
-        validators.forEach((v) => {
-          results.push(Promise.resolve(v(value instanceof Object ? value : `${value || ""}`)));
-        });
       }
-    }
 
-    Promise.all(results).then((result) => {
-      result.forEach((r) => {
-        isValid = isValid && r;
-      });
-      this.setState(
-        (state) => ({
-          isValid: isValid,
-          errors: errors,
-          showErrors: state.showErrors || (Array.isArray(errors) && errors.length > 0),
-        }),
-        () => {
-          if (this.context.validateForm != null) {
-            this.context.validateForm();
-          }
+      if (!this.props.disabled && (value || this.props.required)) {
+        const noValue =
+          this.isEmptyValue(value) ||
+          (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
+        if (this.props.required && noValue) {
+          isValid = false;
+        } else if (this.props.validators) {
+          const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
+          validators.forEach((v) => {
+            results.push(Promise.resolve(v(value instanceof Object ? value : `${value || ""}`)));
+          });
         }
-      );
-    });
-  }
+      }
+
+      Promise.all(results).then((result) => {
+        result.forEach((r) => {
+          isValid = isValid && r;
+        });
+        this.setState(
+          (state) => ({
+            isValid: isValid,
+            errors: errors,
+            showErrors: state.showErrors || (Array.isArray(errors) && errors.length > 0),
+          }),
+          () => {
+            if (this.context.validateForm != null) {
+              this.context.validateForm();
+            }
+          }
+        );
+      });
+    }
+  );
 
   setValue = (name: string | undefined = undefined, value: ValueType) => {
+    console.log("setValue", name, value);
     if (name && this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }

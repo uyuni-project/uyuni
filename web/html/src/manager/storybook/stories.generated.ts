@@ -72,6 +72,17 @@ export const components_dialog_delete_stories_tsx = {
   raw: components_dialog_delete_stories_tsx_raw,
 };
 
+import components_input_async_validation_stories_tsx_component from "components/input/async-validation.stories.tsx";
+import components_input_async_validation_stories_tsx_raw from "components/input/async-validation.stories.tsx?raw";
+
+export const components_input_async_validation_stories_tsx = {
+  path: "components/input/async-validation.stories.tsx",
+  title: "async-validation.stories.tsx",
+  groupName: "input",
+  component: components_input_async_validation_stories_tsx_component,
+  raw: components_input_async_validation_stories_tsx_raw,
+};
+
 import components_input_check_Check_stories_tsx_component from "components/input/check/Check.stories.tsx";
 import components_input_check_Check_stories_tsx_raw from "components/input/check/Check.stories.tsx?raw";
 
