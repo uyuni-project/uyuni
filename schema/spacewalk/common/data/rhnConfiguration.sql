@@ -4,9 +4,9 @@ INSERT INTO rhnConfiguration (key, description, default_value) VALUES ('extauth_
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('system_checkin_threshold', 'Number of days before reporting a system as inactive', null, 1);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_lenght_min', 'Minimum number of characters in local user passwords', null, 12);
+VALUES ('password_check_length_min', 'Minimum number of characters in local user passwords', null, 4);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_lenght_max', 'Maximum number of characters in local user passwords', null, 32);
+VALUES ('password_check_length_max', 'Maximum number of characters in local user passwords', null, 32);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('password_check_lower_char_flag', 'Password has to have at least one lower alpha character', null, 1);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
