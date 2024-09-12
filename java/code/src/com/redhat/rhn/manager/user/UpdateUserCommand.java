@@ -16,12 +16,15 @@ package com.redhat.rhn.manager.user;
 
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.util.UserPasswordUtils;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationException;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +57,7 @@ public class UpdateUserCommand {
 
     /**
      * Constructor
+     *
      * @param userToUpdate User that will get updated.
      */
     public UpdateUserCommand(User userToUpdate) {
@@ -81,22 +85,17 @@ public class UpdateUserCommand {
 
     /**
      * Updates the user's password, email, prefix, first and last names.
+     *
      * @return The user updated.
      */
     public User updateUser() {
-        List<UserPasswordUtils.UserPasswordCheckFail> errors;
         if (needsUpdate) {
             validateEmail();
-            errors = UserPasswordUtils.validatePasswordFromSatConfiguration(unencryptedPassword);
+            validatePassword();
             validatePrefix();
             safePopulateUser();
             // ok update it
-            if (errors.isEmpty()) {
-                UserManager.storeUser(user);
-            }
-            else {
-                throw new UserPasswordUtils.PasswordValidationException(errors);
-            }
+            UserManager.storeUser(user);
         }
         return user;
     }
@@ -127,6 +126,22 @@ public class UpdateUserCommand {
         }
     }
 
+
+    private void validatePassword() {
+        if (!unencryptedPasswordChanged) {
+            return;
+        }
+        if (unencryptedPassword == null) {
+            throw new IllegalArgumentException("Invalid password: can't be null");
+        }
+        else {
+            List<PasswordPolicyCheckFail> errors =
+                    PasswordValidationUtils.validatePasswordFromSatConfiguration(unencryptedPassword);
+            if (!errors.isEmpty()) {
+                throw new PasswordValidationException(errors);
+            }
+        }
+    }
 
     private void validatePrefix() {
         if (prefixChanged && !validPrefixes.contains(prefix)) {

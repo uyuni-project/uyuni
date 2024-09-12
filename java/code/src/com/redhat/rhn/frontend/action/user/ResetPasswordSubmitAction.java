@@ -17,7 +17,8 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.util.UserPasswordUtils;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -101,9 +102,8 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         }
 
         // Validate the rest of the password rules
-        List<UserPasswordUtils.UserPasswordCheckFail> validationFails =
-                UserPasswordUtils.validatePasswordFromSatConfiguration(pw);
-        validationFails.forEach(failure -> errors.add(
+        List<PasswordPolicyCheckFail> failures = PasswordValidationUtils.validatePasswordFromSatConfiguration(pw);
+        failures.forEach(failure -> errors.add(
                 ActionMessages.GLOBAL_MESSAGE,
                 new ActionMessage(failure.getLocalizedMessageId(), failure.getConfigurationParameter())
         ));

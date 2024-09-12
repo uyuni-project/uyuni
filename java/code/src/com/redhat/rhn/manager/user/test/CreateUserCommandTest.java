@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -46,14 +47,12 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     @Test
     public void testLongNames() {
         int maxLogin = UserDefaults.get().getMaxUserLength();
-        int maxPassword = UserDefaults.get().getMaxPasswordLength();
         int emailLength = UserDefaults.get().getMaxEmailLength();
         Config.get().setString(UserDefaults.MAX_USER_LENGTH, String.valueOf(5));
-        Config.get().setString(UserDefaults.MAX_PASSWORD_LENGTH, String.valueOf(5));
         Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(5));
 
         String invalidLogin   = TestUtils.randomString();
-        String invalidPassword = "password";
+        String invalidPassword = "psw";
         String invalidEmail   = "foobar@foobar.com";
         String validPrefix = "Sr.";
 
@@ -68,8 +67,6 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         Object[] errors = command.validate();
         Config.get().setString(UserDefaults.MAX_USER_LENGTH,
                                         String.valueOf(maxLogin));
-        Config.get().setString(UserDefaults.MAX_PASSWORD_LENGTH,
-                                        String.valueOf(maxPassword));
         Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH,
                                             String.valueOf(emailLength));
         assertEquals(3, errors.length);
@@ -195,7 +192,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     public void testValidatePasswordHasTabCharacter() {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
-        command.setPassword("aaaaa\tb");
+        command.setPassword("abcdefg\tb");
         command.setPrefix("Hr.");
         ValidatorError [] errors = command.validate();
         assertEquals(1, errors.length);
@@ -205,7 +202,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     public void testValidatePasswordHasNewlineCharacter() {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
-        command.setPassword("aaaaa\nb");
+        command.setPassword("abcdefg\nb");
         command.setPrefix("Hr.");
         ValidatorError [] errors = command.validate();
         assertEquals(1, errors.length);

@@ -43,15 +43,15 @@ public class SatConfigFactory extends HibernateFactory {
     public static final String EXT_AUTH_KEEP_ROLES = "extauth_keep_temproles";
     public static final String SYSTEM_CHECKIN_THRESHOLD = "system_checkin_threshold";
 
-    public static final String PSW_CHECK_LENGHT_MIN = "password_check_lenght_min";
-    public static final String PSW_CHECK_LENGHT_MAX = "password_check_lenght_max";
+    public static final String PSW_CHECK_LENGTH_MIN = "password_check_length_min";
+    public static final String PSW_CHECK_LENGTH_MAX = "password_check_length_max";
     public static final String PSW_CHECK_LOWER_CHAR_FLAG = "password_check_lower_char_flag";
     public static final String PSW_CHECK_UPPER_CHAR_FLAG = "password_check_upper_char_flag";
     public static final String PSW_CHECK_DIGIT_FLAG = "password_check_digit_flag";
     public static final String PSW_CHECK_CONSECUTIVE_CHAR_FLAG = "password_check_consecutive_char_flag";
     public static final String PSW_CHECK_SPECIAL_CHAR_FLAG = "password_check_special_char_flag";
-    public static final String PSW_CHECK_RESTRICTED_OCCURENCE_FLAG = "password_check_restricted_occurrence_flag";
-    public static final String PSW_CHECK_MAX_OCCURENCE = "password_check_max_occurrence";
+    public static final String PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG = "password_check_restricted_occurrence_flag";
+    public static final String PSW_CHECK_MAX_OCCURRENCE = "password_check_max_occurrence";
     public static final String PSW_CHECK_SPECIAL_CHARACTERS = "password_check_special_characters";
 
 
@@ -143,7 +143,7 @@ public class SatConfigFactory extends HibernateFactory {
             params.put("value", value);
         }
         WriteMode m = ModeFactory.getWriteMode("util_queries",
-            "set_satconfig_value");
+                "set_satconfig_value");
         m.executeUpdate(params);
     }
 
@@ -164,7 +164,44 @@ public class SatConfigFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("key", key);
         WriteMode m = ModeFactory.getWriteMode("util_queries",
-            "reset_satconfig_default_value");
+                "reset_satconfig_default_value");
         m.executeUpdate(params);
     }
+
+    public static int getPswCheckLengthMin() {
+        return getSatConfigIntValue(PSW_CHECK_LENGTH_MIN, 8);
+    }
+
+    public static int getPswCheckLengthMax() {
+        return getSatConfigIntValue(PSW_CHECK_LENGTH_MAX, 32);
+    }
+
+    public static boolean getPswCheckLowerCharFlag() {
+        return getSatConfigBooleanValue(PSW_CHECK_LOWER_CHAR_FLAG);
+    }
+
+    public static boolean getPswCheckDigitFlag() {
+        return getSatConfigBooleanValue(PSW_CHECK_DIGIT_FLAG);
+    }
+
+    public static boolean getPswCheckConsecutiveCharFlag() {
+        return getSatConfigBooleanValue(PSW_CHECK_CONSECUTIVE_CHAR_FLAG);
+    }
+
+    public static boolean getPswCheckSpecialCharFlag() {
+        return getSatConfigBooleanValue(PSW_CHECK_SPECIAL_CHAR_FLAG);
+    }
+
+    public static boolean getPswCheckRestrictedOccurrenceFlag() {
+        return getSatConfigBooleanValue(PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG);
+    }
+
+    public static int getPswCheckMaxOccurrence() {
+        return getSatConfigIntValue(PSW_CHECK_MAX_OCCURRENCE, 2);
+    }
+
+    public static String getPswCheckSpecialCharacters() {
+        return getSatConfigValue(PSW_CHECK_SPECIAL_CHARACTERS);
+    }
+
 }

@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.UserDefaults;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -49,10 +50,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
 
     @Test
     public void testLongNames() {
-        int maxPassword = UserDefaults.get().getMaxPasswordLength();
         int emailLength = UserDefaults.get().getMaxEmailLength();
-
-        Config.get().setString(UserDefaults.MAX_PASSWORD_LENGTH, String.valueOf(5));
         Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(5));
 
 
@@ -64,9 +62,6 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         assertCommandThrows(IllegalArgumentException.class, command);
         command.setPassword(invalidPassword);
         assertCommandThrows(IllegalArgumentException.class, command);
-
-        Config.get().setString(UserDefaults.MAX_PASSWORD_LENGTH,
-                                        String.valueOf(maxPassword));
         Config.get().setString(UserDefaults.MAX_EMAIL_LENGTH, String.valueOf(emailLength));
 
     }
@@ -111,7 +106,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         assertCommandThrows(IllegalArgumentException.class, command);
 
         // minlen - 1
-        command.setPassword("1234");
+        command.setPassword("123");
         assertCommandThrows(IllegalArgumentException.class, command);
     }
 
@@ -137,12 +132,10 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
     @Test
     public void testValidPassword() {
         command.setEmail("jesusr@redhat.com");
+        // = minlen
+        assertPassword(StringUtils.repeat("a", SatConfigFactory.getPswCheckLengthMin()), command);
         // = maxlen
-        assertPassword(StringUtils.repeat("a", UserDefaults.get().
-                getMinPasswordLength()), command);
-        // = maxlen
-        assertPassword(StringUtils.repeat("a", UserDefaults.get().
-                getMaxPasswordLength()), command);
+        assertPassword(StringUtils.repeat("a", SatConfigFactory.getPswCheckLengthMax()), command);
 
         // random string
         String randomPassword = TestUtils.randomString();

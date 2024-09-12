@@ -19,7 +19,8 @@ import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.util.UserPasswordUtils;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.common.validator.ParsedConstraint;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.common.ResetPassword;
@@ -89,7 +90,6 @@ public class CreateUserCommand {
         validateEmail();
         validateLogin();
         validatePrefix();
-
         return errors.toArray(new ValidatorError[0]);
     }
 
@@ -307,8 +307,8 @@ public class CreateUserCommand {
             user.setPassword(passwordIn);
         }
         else {
-            passwordErrors = UserPasswordUtils.validatePasswordFromSatConfiguration(passwordIn).stream()
-                    .map(UserPasswordUtils.UserPasswordCheckFail::toValidatorError)
+            passwordErrors = PasswordValidationUtils.validatePasswordFromSatConfiguration(passwordIn).stream()
+                    .map(PasswordPolicyCheckFail::toValidatorError)
                     .collect(Collectors.toList());
             if (passwordErrors.isEmpty()) {
                 user.setPassword(passwordIn);

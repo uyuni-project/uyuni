@@ -16,7 +16,8 @@ package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.UserPasswordUtils;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -74,9 +75,8 @@ public abstract class UserEditActionHelper extends RhnAction {
 
         //Make sure password is not empty
         if (!pw.isEmpty()) {
-            List<UserPasswordUtils.UserPasswordCheckFail> validationFails =
-                    UserPasswordUtils.validatePasswordFromSatConfiguration(pw);
-            validationFails.forEach(failure -> errors.add(
+            List<PasswordPolicyCheckFail> failures = PasswordValidationUtils.validatePasswordFromSatConfiguration(pw);
+            failures.forEach(failure -> errors.add(
                     ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage(failure.getLocalizedMessageId(), failure.getConfigurationParameter())
             ));
