@@ -12,15 +12,17 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.util.test;
+package com.redhat.rhn.common.util.validation.password.test;
 
-import com.redhat.rhn.common.util.UserPasswordUtils;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class UserPasswordUtilsTest {
+public class PasswordValidationUtilsTest {
 
     @Test
     public void testPasswordMatcher() throws Exception {
@@ -34,8 +36,8 @@ public class UserPasswordUtilsTest {
         int maxCharacterOccurrenceIn = 10;
         int minLengthIn = 4;
         int maxLengthIn = 10;
-        UserPasswordUtils.PasswordPolicy settings =
-                new UserPasswordUtils.PasswordPolicy(
+        PasswordPolicy settings =
+                new PasswordPolicy(
                         upperCharFlagIn,
                         lowerCharFlagIn,
                         digitFlagIn,
@@ -48,16 +50,16 @@ public class UserPasswordUtilsTest {
                         maxLengthIn
                 );
         String password = "\t";
-        List<UserPasswordUtils.UserPasswordCheckFail> errors =
-                UserPasswordUtils.validatePasswordFromPolicy(password, settings);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, settings);
         errors.forEach((k) -> System.out.println(k.getLocalizedErrorMessage()));
     }
 
     @Test
     public void validateFromDefaultSatConfigurations() throws Exception {
         String password = "\t";
-        List<UserPasswordUtils.UserPasswordCheckFail> errors =
-                UserPasswordUtils.validatePasswordFromSatConfiguration(password);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromSatConfiguration(password);
         errors.forEach((k) -> System.out.println(k.getLocalizedErrorMessage()));
     }
 
@@ -73,8 +75,8 @@ public class UserPasswordUtilsTest {
         int maxCharacterOccurrenceIn = 2;
         int minLengthIn = 1;
         int maxLengthIn = 6;
-        UserPasswordUtils.PasswordPolicy settings =
-                new UserPasswordUtils.PasswordPolicy(
+        PasswordPolicy settings =
+                new PasswordPolicy(
                         upperCharFlagIn,
                         lowerCharFlagIn,
                         digitFlagIn,
