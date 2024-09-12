@@ -10,19 +10,21 @@ require 'capybara/cucumber'
 require 'cucumber'
 # require 'simplecov'
 require 'minitest/autorun'
+require 'minitest/unit'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
 require 'set'
 require 'timeout'
 require_relative 'code_coverage'
-require_relative 'twopence_env'
+require_relative 'remote_nodes_env'
 require_relative 'commonlib'
+
+$stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 
 # code coverage analysis
 # SimpleCov.start
 
-server = ENV.fetch('SERVER', nil)
 if ENV['DEBUG']
   $debug_mode = true
   $stdout.puts('DEBUG MODE ENABLED.')
@@ -64,6 +66,7 @@ $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
+$api_protocol = ENV.fetch('API_PROTOCOL', nil) if ENV['API_PROTOCOL'] # force the API protocol to be used. You can use 'http' or 'xmlrpc'
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
@@ -76,43 +79,34 @@ end
 # Fix a problem with minitest and cucumber options passed through rake
 MultiTest.disable_autorun
 
-# register chromedriver headless mode
+# register chromedriver in headless mode
 def capybara_register_driver
-  Capybara.register_driver(:headless_chrome) do |app|
-    client = Selenium::WebDriver::Remote::Http::Default.new
+  Capybara.register_driver :selenium_chrome_headless do |app|
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
-    client.read_timeout = 240
-    # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
-    chrome_options << 'headless' unless $debug_mode
-    chrome_options << "remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
-    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: {
-        args: chrome_options,
-        w3c: false,
-        prefs: {
-          download: {
-            prompt_for_download: false,
-            default_directory: '/tmp/downloads'
-          }
-        }
-      },
-      unexpectedAlertBehaviour: 'accept',
-      unhandledPromptBehavior: 'accept'
+    client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 30, read_timeout: 240)
+    chrome_options = Selenium::WebDriver::Chrome::Options.new(
+      args: %w[disable-dev-shm-usage ignore-certificate-errors window-size=2048,2048 js-flags=--max_old_space_size=2048]
     )
+    chrome_options.args << 'headless=new' unless $debug_mode
+    chrome_options.args << "remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
+    chrome_options.add_preference('prompt_for_download', false)
+    chrome_options.add_preference('download.default_directory', '/tmp/downloads')
+    chrome_options.add_preference('unhandledPromptBehavior', 'accept')
+    chrome_options.add_preference('unexpectedAlertBehaviour', 'accept')
 
-    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities, http_client: client)
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options, http_client: client)
   end
 end
 
+# register chromedriver headless mode
 $capybara_driver = capybara_register_driver
 Selenium::WebDriver.logger.level = :error unless $debug_mode
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
+Capybara.default_driver = :selenium_chrome_headless
+Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
-Capybara.app_host = "https://#{server}"
+Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
@@ -130,31 +124,74 @@ Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
-# embed a screenshot after each failed scenario
+# Embed a screenshot after each failed scenario
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      Dir.mkdir('screenshots') unless File.directory?('screenshots')
-      path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
-      # only click on Details when we have errors during bootstrapping and more Details available
-      click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
-      # a Timeout::Error may be raised while a page is still (re)loading
-      find('#page-body', wait: 3) if scenario.exception.is_a?(Timeout::Error)
-      page.driver.browser.save_screenshot(path)
-      attach path, 'image/png'
-      attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
-    rescue StandardError => e
-      warn e.message
+      if web_session_is_active?
+        handle_screenshot_and_relog(scenario, current_epoch)
+      else
+        warn 'There is no active web session; unable to take a screenshot or relog.'
+      end
     ensure
       print_server_logs
+    end
+  end
+  page.instance_variable_set(:@touched, false)
+end
+
+# Test is web session is open
+def web_session_is_active?
+  return false unless Capybara::Session.instance_created?
+
+  page.has_selector?('header') || page.has_selector?('#username-field')
+end
+
+# Take a screenshot and try to log back at suse manager server
+def handle_screenshot_and_relog(scenario, current_epoch)
+  Dir.mkdir('screenshots') unless File.directory?('screenshots')
+  path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+  begin
+    click_details_if_present
+    page.driver.browser.save_screenshot(path)
+    attach path, 'image/png'
+    # Attach additional information
+    attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
+  rescue StandardError => e
+    warn "Error message: #{e.message}"
+  ensure
+    relog_and_visit_previous_url
+  end
+end
+
+# Try to get the minion details when on minion page
+def click_details_if_present
+  return unless page.has_content?('Bootstrap Minions', wait: 0) && page.has_content?('Details', wait: 0)
+
+  begin
+    click_button('Details')
+  rescue Capybara::ElementNotFound
+    log "Button 'Details' not found on the page."
+  rescue Capybara::ElementNotInteractable
+    log "Button 'Details' found but not interactable."
+  end
+end
+
+# Relog and visit the previous URL
+def relog_and_visit_previous_url
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       previous_url = current_url
       step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
       visit previous_url
     end
+  rescue Timeout::Error
+    warn "Timed out while attempting to relog and visit the previous URL: #{current_url}"
+  rescue StandardError => e
+    warn "An error occurred while relogging and visiting the previous URL: #{e.message}"
   end
-  page.instance_variable_set(:@touched, false)
 end
 
 # Process the code coverage for each feature when it ends
@@ -195,6 +232,8 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
+  next unless Capybara::Session.instance_created?
+
   log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
@@ -206,6 +245,22 @@ end
 
 Before('@skip') do
   skip_this_scenario
+end
+
+# Create a user for each feature
+Before do |scenario|
+  feature_path = scenario.location.file
+  $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
+  next if get_context('user_created') == true
+
+  # Core features are always handled using admin user, the rest will use its own user based on feature filename
+  if (feature_path.include? 'core') || (feature_path.include? 'reposync') || (feature_path.include? 'finishing')
+    $current_user = 'admin'
+    $current_password = 'admin'
+  else
+    step %(I create a user with name "#{$feature_filename}" and password "linux")
+    add_context('user_created', true)
+  end
 end
 
 # do some tests only if the corresponding node exists

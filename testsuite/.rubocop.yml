@@ -3,7 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   EnabledByDefault: true
   SuggestExtensions: false
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.3
 
 Style/MissingElse:
   Enabled: false
@@ -108,10 +108,16 @@ Style/MethodCallWithArgsParentheses:
 Style/ModuleFunction:
   Enabled: false
 
+Style/HashSyntax:
+  Enabled: false
+
 Style/ImplicitRuntimeError:
   Enabled: false
 
 Style/InlineComment:
+  Enabled: false
+
+Style/InvertibleUnlessCondition:
   Enabled: false
 
 Style/IpAddresses:

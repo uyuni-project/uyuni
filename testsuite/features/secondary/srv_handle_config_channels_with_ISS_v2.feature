@@ -10,8 +10,8 @@ Feature: Export and import configuration channels with new ISS implementation
     When I install packages "inter-server-sync" on this "server"
     Then "inter-server-sync" should be installed on "server"
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create a configuration channel
     When I follow the left menu "Configuration > Channels"
