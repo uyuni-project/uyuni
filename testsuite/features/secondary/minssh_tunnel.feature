@@ -91,6 +91,6 @@ Feature: Register a Salt system to be managed via SSH tunnel
 
   Scenario: Cleanup: register a SSH minion after SSH tunnel tests
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
