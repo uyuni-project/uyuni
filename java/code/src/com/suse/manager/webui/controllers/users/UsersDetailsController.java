@@ -22,25 +22,20 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
 import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import spark.Request;
 import spark.Response;
@@ -62,7 +57,7 @@ public class UsersDetailsController {
      * @param jade the template engine
      */
     public void initRoutes(JadeTemplateEngine jade) {
-        post("/manager/api/systems/proxy", asJson(withOrgAdmin(this::validatePassword)));
+        post("/users/details/validatePassword", asJson(withOrgAdmin(this::validatePassword)));
     }
 
     /**
