@@ -648,7 +648,7 @@ end
 
 When(/"([^"]*)" module streams "([^"]*)" are available for channel "([^"]*)" via the API/) do |module_name, streams, channel_label|
   expected_streams = streams.split(',').map(&:strip)
-  available_streams = $api_test.channel.appstreams.listModuleStreams(channel_label)
+  available_streams = $api_test.channel.appstreams.list_module_streams(channel_label)
 
   expected_streams.each do |expected_stream|
     found =
