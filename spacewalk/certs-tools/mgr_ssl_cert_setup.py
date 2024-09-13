@@ -320,6 +320,8 @@ def getCertData(cert):
         elif line.startswith("    "):
             if nextval == "subjectKeyIdentifier":
                 data["subjectKeyIdentifier"] = line.strip().upper()
+            elif nextval == "authorityKeyIdentifier" and line.startswith("    keyid:"):
+                data["authorityKeyIdentifier"] = line[10:].strip().upper()
             elif nextval == "authorityKeyIdentifier" and re.match(
                 r"^\s+[0-9A-Fa-f]{2}:.+$", line
             ):
