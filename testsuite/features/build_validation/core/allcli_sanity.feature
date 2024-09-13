@@ -369,20 +369,6 @@ Feature: Sanity checks
     And "debian12_ssh_minion" should communicate with the server using public interface
     And the clock from "debian12_ssh_minion" should be exact
 
-@opensuse154arm_minion
-  Scenario: The openSUSE 15.4 ARM minion is healthy
-    Then "opensuse154arm_minion" should have a FQDN
-    And reverse resolution should work for "opensuse154arm_minion"
-    And "opensuse154arm_minion" should communicate with the server using public interface
-    And the clock from "opensuse154arm_minion" should be exact
-
-@opensuse154arm_ssh_minion
-  Scenario: The openSUSE 15.4 ARM SSH minion is healthy
-    Then "opensuse154arm_ssh_minion" should have a FQDN
-    And reverse resolution should work for "opensuse154arm_ssh_minion"
-    And "opensuse154arm_ssh_minion" should communicate with the server using public interface
-    And the clock from "opensuse154arm_ssh_minion" should be exact
-
 @opensuse155arm_minion
   Scenario: The openSUSE 15.5 ARM minion is healthy
     Then "opensuse155arm_minion" should have a FQDN
