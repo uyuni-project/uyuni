@@ -633,7 +633,7 @@ end
 
 When(/I verify channel "([^"]*)" is( not)? modular via the API/) do |channel_label, not_modular|
   is_modular = $api_test.channel.appstreams.modular?(channel_label)
-  expected = not_modular.nil? ? true : false
+  expected = not_modular.nil?
 
   raise ScriptError "channel '#{channel_label}' is modular? Expected: #{expected} - got: #{is_modular}" unless is_modular == expected
 end
@@ -641,22 +641,21 @@ end
 When(/channel "([^"]*)" is( not)? present in the modular channels listed via the API/) do |channel, not_present|
   modular_channels = $api_test.channel.appstreams.list_modular_channels
   is_present = modular_channels.include?(channel)
-  expected = not_present.nil? ? true : false
+  expected = not_present.nil?
 
   raise ScriptError "Expected #{modular_channels} to include '#{channel}'? #{expected} - got: #{is_present}" unless is_present == expected
 end
-
 
 When(/"([^"]*)" module streams "([^"]*)" are available for channel "([^"]*)" via the API/) do |module_name, streams, channel_label|
   expected_streams = streams.split(',').map(&:strip)
   available_streams = $api_test.channel.appstreams.listModuleStreams(channel_label)
 
   expected_streams.each do |expected_stream|
-    found = available_streams.any? do |stream|
-      stream['module'] == module_name && stream['stream'] == expected_stream
-    end
+    found =
+      available_streams.any? do |stream|
+        stream['module'] == module_name && stream['stream'] == expected_stream
+      end
 
     raise ScriptError, "Stream '#{expected_stream}' for module '#{module_name}' not found in the available streams for channel '#{channel_label}'" unless found
-
   end
 end
