@@ -19,7 +19,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -32,6 +31,7 @@ import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
