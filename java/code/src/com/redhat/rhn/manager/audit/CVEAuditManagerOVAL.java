@@ -28,12 +28,13 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
-import com.suse.oval.OvalParser;
 import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.config.OVALConfigLoader;
 import com.suse.oval.ovaldownloader.OVALDownloadResult;
 import com.suse.oval.ovaldownloader.OVALDownloader;
 import com.suse.oval.ovaltypes.OvalRootType;
+import com.suse.oval.parser.OVALResources;
+import com.suse.oval.parser.OvalParser;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.apache.logging.log4j.LogManager;
@@ -419,9 +420,18 @@ public class CVEAuditManagerOVAL {
      * Extracts OVAL metadata from the given {@code ovalFile}, clean it and save it to the database.
      * */
     private static void extractAndSaveOVALData(OVALProduct product, File ovalFile) {
-        OvalRootType ovalRoot = new OvalParser().parse(ovalFile);
-        OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
-        OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+        OvalParser ovalParser = new OvalParser();
+        OVALResources ovalResources = ovalParser.parseResources(ovalFile);
+        ovalParser.parseDefinitionsInBulk(ovalFile, (definitionsBulk) -> {
+            OvalRootType ovalRoot = new OvalRootType();
+            ovalRoot.setDefinitions(definitionsBulk);
+            ovalRoot.setTests(ovalResources.getTests());
+            ovalRoot.setObjects(ovalResources.getObjects());
+            ovalRoot.setStates(ovalResources.getStates());
+
+            OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+            OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+        });
     }
 
     /**
