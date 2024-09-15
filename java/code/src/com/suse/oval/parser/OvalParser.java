@@ -13,9 +13,10 @@
  * in this software or its documentation.
  */
 
-package com.suse.oval;
+package com.suse.oval.parser;
 
 import com.redhat.rhn.domain.rhnpackage.PackageType;
+
 import com.suse.oval.exceptions.OvalParserException;
 import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.AdvisoryAffectedType;
@@ -46,6 +47,14 @@ import com.suse.oval.ovaltypes.linux.RpminfoTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -57,19 +66,12 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Objects;
-
 /**
  * The Oval Parser is responsible for parsing OVAL(Open Vulnerability and Assessment Language) documents
  */
 public class OvalParser {
+    public static final int DEFINITIONS_BULK_SIZE = 500;
+
     private static final Logger LOG = LogManager.getLogger(OvalParser.class);
     private static final List<String> TEST_TYPES = List.of("rpminfo_test", "dpkginfo_test");
     private static final List<String> OBJECT_TYPES = List.of("rpminfo_object", "dpkginfo_object");
@@ -81,38 +83,86 @@ public class OvalParser {
      * @param ovalFile the OVAL file to parse
      * @return the parsed OVAL encapulated in a {@link OvalRootType} object=
      * */
-    public OvalRootType parse(File ovalFile) throws OvalParserException {
+    public OvalRootType parse(URL ovalFile) throws OvalParserException {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(OvalRootType.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             return (OvalRootType) unmarshaller.unmarshal(ovalFile);
         }
         catch (JAXBException e) {
-            throw new OvalParserException("Failed to parse the given OVAL file at: " + ovalFile.getAbsolutePath(), e);
+            throw new OvalParserException("Failed to parse the given OVAL file at: " + ovalFile, e);
         }
     }
 
     /**
-     * Parse the given OVAL file from a URL
+     * Parses the given OVAL file in bulks. For every bulk parsed, it calls {@link OVALDefinitionsBulkHandler#handle}.
      *
-     * @param url the URL to get the OVAL file from
-     * @return the parsed OVAL encapsulated in a {@link OvalRootType} object
+     * @param ovalFile an XML file containing OVAL definitions to be parsed.
+     * @param bulkHandler an operation to applied on every bulk of parsed OVAL definitions.
      * */
-    public OvalRootType parse(URL url) {
-        try {
-            return parseStax(new File(url.toURI()));
-        }
-        catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public OvalRootType parseStax(File ovalFile) {
+    public void parseDefinitionsInBulk(File ovalFile, OVALDefinitionsBulkHandler bulkHandler) {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         try {
             XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
 
-            OvalRootType ovalRoot = new OvalRootType();
+            List<DefinitionType> definitions = new ArrayList<>();
+
+            while (reader.hasNext()) {
+                XMLEvent nextEvent = reader.nextEvent();
+
+                if (nextEvent.isStartElement()) {
+                    String elementName = nextEvent.asStartElement().getName().getLocalPart();
+                    if (elementName.equals("definition")) {
+                        DefinitionType definitionType = parseDefinitionType(nextEvent.asStartElement(), reader);
+                        definitions.add(definitionType);
+
+                        if (definitions.size() == DEFINITIONS_BULK_SIZE) {
+                            bulkHandler.handle(definitions);
+                            definitions = new ArrayList<>();
+                        }
+                    }
+                }
+
+                if (nextEvent.isEndElement()) {
+                    if (nextEvent.asEndElement().getName().getLocalPart().equals("definitions")) {
+                        if (!definitions.isEmpty()) {
+                            bulkHandler.handle(definitions);
+                            definitions = new ArrayList<>();
+                        }
+                    }
+                }
+            }
+        }
+        catch (XMLStreamException | FileNotFoundException e) {
+            throw new OvalParserException("Failed to parse OVAL definitions from OVAL file at: " +
+                    ovalFile.getAbsolutePath(), e);
+        }
+    }
+    /**
+     * Utility method to parse all OVAL definitions at once instead of in bulks. To be used in testing.
+     *
+     * @param ovalFile an XML file containing OVAL definitions to be parsed.
+     * @return all OVAL definitions in {@code ovalFile}
+     * */
+    public List<DefinitionType> parseAllDefinitions(File ovalFile) {
+        List<DefinitionType> allDefinitions = new ArrayList<>();
+
+        parseDefinitionsInBulk(ovalFile, allDefinitions::addAll);
+
+        return allDefinitions;
+    }
+    /**
+     * Parses the list of objects, states and tests from the given {@code ovalFile}.
+     *
+     * @param ovalFile an XML file containing OVAL definitions to be parsed.
+     * @return an {@link OVALResources} object containing OVAL objects, states and tests.
+     * */
+    public OVALResources parseResources(File ovalFile) {
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        try {
+            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
+
+            OVALResources resources = new OVALResources();
 
             while (reader.hasNext()) {
                 XMLEvent nextEvent = reader.nextEvent();
@@ -121,52 +171,26 @@ public class OvalParser {
                     String elementName = nextEvent.asStartElement().getName().getLocalPart();
                     switch (elementName) {
                         case "objects":
-                            ovalRoot.setObjects(parseObjects(reader));
+                            resources.setObjects(parseObjects(reader));
                             break;
                         case "states":
-                            ovalRoot.setStates(parseStates(reader));
+                            resources.setStates(parseStates(reader));
                             break;
                         case "tests":
-                            ovalRoot.setTests(parseTests(reader));
-                            break;
-                        case "definitions":
-                            ovalRoot.setDefinitions(parseDefinitions(reader));
+                            resources.setTests(parseTests(reader));
                             break;
                         default: // Do nothing
                     }
                 }
             }
 
-            return ovalRoot;
-
+            return resources;
         }
         catch (XMLStreamException | FileNotFoundException e) {
-            throw new OvalParserException("Failed to parse the given OVAL file at: " + ovalFile.getAbsolutePath(), e);
+            throw new OvalParserException(
+                    "Failed to parse the OVAL resources(tests, states and objects) from OVAL file at: " +
+                            ovalFile.getAbsolutePath(), e);
         }
-    }
-
-    private List<DefinitionType> parseDefinitions(XMLEventReader reader) throws XMLStreamException {
-        List<DefinitionType> definitions = new ArrayList<>();
-
-        while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
-
-            if (nextEvent.isStartElement()) {
-                if (nextEvent.asStartElement().getName().getLocalPart().equals("definition")) {
-                    DefinitionType definitionType = parseDefinitionType(nextEvent.asStartElement(), reader);
-                    definitions.add(definitionType);
-                }
-            }
-
-            if (nextEvent.isEndElement()) {
-                if (nextEvent.asEndElement().getName().getLocalPart().equals("definitions")) {
-                    return definitions;
-                }
-            }
-        }
-
-        throw new OvalParserException("Unable to find the closing tag for </definitions>");
-
     }
 
     private DefinitionType parseDefinitionType(StartElement definitionElement, XMLEventReader reader)
@@ -425,7 +449,7 @@ public class OvalParser {
                 if (element.equals("rpminfo_test")) {
                     tests.add(parseTestType(nextEvent.asStartElement(), reader, PackageType.RPM));
                 }
-                else if(element.equals("dpkginfo_test_test")) {
+                else if (element.equals("dpkginfo_test_test")) {
                     tests.add(parseTestType(nextEvent.asStartElement(), reader, PackageType.DEB));
                 }
             }
@@ -462,6 +486,7 @@ public class OvalParser {
                 case "comment":
                     testType.setComment(attribute.getValue());
                     break;
+                default:
             }
         });
 
@@ -541,7 +566,6 @@ public class OvalParser {
 
         rpmStateElement.getAttributes().forEachRemaining(attribute -> {
             String attributeName = attribute.getName().getLocalPart();
-
             switch (attributeName) {
                 case "id":
                     stateType.setId(attribute.getValue());
@@ -660,7 +684,8 @@ public class OvalParser {
         ObjectType objectType;
         if (packageType == PackageType.DEB) {
             objectType = new DpkginfoObject();
-        } else {
+        }
+        else {
             objectType = new RpminfoObject();
         }
 
@@ -678,7 +703,6 @@ public class OvalParser {
                     break;
             }
         });
-
 
         while (reader.hasNext()) {
             XMLEvent nextEvent = reader.nextEvent();
