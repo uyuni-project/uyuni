@@ -24919,7 +24919,7 @@ given channel.</source>
         <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
-        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
+        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 5.0 or greater. Consider migrating to salt minions before this release.</source>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
