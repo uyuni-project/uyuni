@@ -20,9 +20,10 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Objects;
 
 /**
  * Installed Product
@@ -167,17 +168,19 @@ public class InstalledProduct extends BaseDomainHelper {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof InstalledProduct)) {
-            return false;
+    public boolean equals(final Object oIn) {
+        if (this == oIn) {
+            return true;
         }
-        InstalledProduct castOther = (InstalledProduct) other;
-        return new EqualsBuilder().append(getName(), castOther.getVersion())
-                .append(getVersion(), castOther.getVersion())
-                .append(getArch(), castOther.getArch())
-                .append(getRelease(), castOther.getRelease())
-                .append(isBaseproduct(), castOther.isBaseproduct())
-                .isEquals();
+        if (oIn instanceof InstalledProduct) {
+            InstalledProduct that = (InstalledProduct) oIn;
+            return isBaseproduct() == that.isBaseproduct() &&
+                    Objects.equals(getName(), that.getName()) &&
+                    Objects.equals(getVersion(), that.getVersion()) &&
+                    Objects.equals(getArch(), that.getArch()) &&
+                    Objects.equals(getRelease(), that.getRelease());
+        }
+        return false;
     }
 
     /**
