@@ -21,6 +21,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.user.User;
@@ -66,6 +67,8 @@ public class AdminViewsController {
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/admin/config/monitoring",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+        get("/manager/admin/config/password-policy",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
         get("/manager/admin/setup/payg/create",
@@ -85,6 +88,29 @@ public class AdminViewsController {
         Map<String, Object> data = new HashMap<>();
         data.put("isUyuni", ConfigDefaults.get().isUyuni());
         return new ModelAndView(data, "controllers/admin/templates/monitoring.jade");
+    }
+
+    /**
+     * Show password policy tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showPasswordPolicy(Request request, Response response, User user) {
+        PasswordPolicy pc = PasswordPolicy.buildPasswordPolicyFromSatFactory();
+        Map<String, Object> data = new HashMap<>();
+        data.put("minLength", pc.getMinLength());
+        data.put("maxLength", pc.getMaxLength());
+        data.put("digitsFlag", pc.isDigitFlag());
+        data.put("lowerCharFlag", pc.isLowerCharFlag());
+        data.put("upperCharFlag", pc.isUpperCharFlag());
+        data.put("consecutiveCharFlag", pc.isConsecutiveCharsFlag());
+        data.put("specialCharFlag", pc.isSpecialCharFlag());
+        data.put("specialCharList", pc.getSpecialChars());
+        data.put("restrictedOccurrenceFlag", pc.isRestrictedOccurrenceFlag());
+        data.put("maxCharOccurrence", pc.getMaxCharacterOccurrence());
+        return new ModelAndView(data, "controllers/admin/templates/password-policy.jade");
     }
 
     /**

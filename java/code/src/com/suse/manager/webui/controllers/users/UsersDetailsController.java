@@ -37,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
@@ -57,7 +58,7 @@ public class UsersDetailsController {
      * @param jade the template engine
      */
     public void initRoutes(JadeTemplateEngine jade) {
-        post("/users/details/validatePassword", asJson(withOrgAdmin(this::validatePassword)));
+        post("/rhn/users/validatePassword", asJson(withOrgAdmin(this::validatePassword)));
     }
 
     /**
