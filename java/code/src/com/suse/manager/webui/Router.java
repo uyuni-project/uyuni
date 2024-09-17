@@ -78,13 +78,9 @@ import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleController;
-import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
-import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
-import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 
 import org.apache.http.HttpStatus;
 
@@ -116,7 +112,6 @@ public class Router implements SparkApplication {
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         KubernetesManager kubernetesManager = GlobalInstanceHolder.KUBERNETES_MANAGER;
-        VirtManager virtManager = GlobalInstanceHolder.VIRT_MANAGER;
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
@@ -153,9 +148,6 @@ public class Router implements SparkApplication {
 
         // Virtual Host Managers
         VirtualHostManagerController.initRoutes(jade);
-
-        // Virtualization Routes
-        initVirtualizationRoutes(jade, virtManager);
 
         // Content Management Routes
         ContentManagementViewsController.initRoutes(jade);
@@ -278,15 +270,6 @@ public class Router implements SparkApplication {
                 response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
             }
         });
-    }
-
-    private void initVirtualizationRoutes(JadeTemplateEngine jade, VirtManager virtManager) {
-        VirtualGuestsController virtualGuestsController = new VirtualGuestsController(virtManager);
-        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
-        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
-        virtualGuestsController.initRoutes(jade);
-        virtualNetsController.initRoutes(jade);
-        virtualPoolsController.initRoutes(jade);
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade, KubernetesManager kubernetesManager) {

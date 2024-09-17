@@ -33,7 +33,6 @@ import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.menu.MenuTree;
@@ -42,7 +41,6 @@ import com.suse.manager.webui.services.ThrottlingService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.UserPreferenceUtils;
@@ -79,15 +77,14 @@ public class GlobalInstanceHolder {
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
     public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(SALT_API, SALT_UTILS);
     public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SALT_API);
-    public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
     public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =
             new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER, ATTESTATION_MANAGER);
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER =
             new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER, ATTESTATION_MANAGER);
     public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
-            new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
-            new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER,
+            new SystemUnentitler(MONITORING_MANAGER, SERVER_GROUP_MANAGER),
+            new SystemEntitler(SALT_API, MONITORING_MANAGER,
                     SERVER_GROUP_MANAGER)
     );
     public static final SystemManager SYSTEM_MANAGER = new SystemManager(ServerFactory.SINGLETON,

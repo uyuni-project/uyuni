@@ -25,8 +25,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.virtualization.VirtualizationActionHelper;
-
 import org.cobbler.test.MockConnection;
 import org.hibernate.TransactionException;
 
@@ -77,7 +75,6 @@ public class TestCaseHelper {
         ChannelManager.setTaskomaticApi(taskomaticApi);
         ErrataManager.setTaskomaticApi(taskomaticApi);
         RecurringActionManager.setTaskomaticApi(taskomaticApi);
-        VirtualizationActionHelper.setTaskomaticApi(taskomaticApi);
         ImageInfoFactory.setTaskomaticApi(taskomaticApi);
     }
 }

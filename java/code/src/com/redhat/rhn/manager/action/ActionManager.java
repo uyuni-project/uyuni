@@ -38,8 +38,6 @@ import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
-import com.redhat.rhn.domain.action.image.DeployImageAction;
-import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
@@ -64,7 +62,6 @@ import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ProxyConfig;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -105,7 +102,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -716,43 +712,6 @@ public class ActionManager extends BaseManager {
 
         List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
         return createConfigActionForServers(user, revisions, servers, type, earliest);
-    }
-
-    /**
-     * Schedule deployment of an image to a vhost.
-     *
-     * @return The created action
-     * @param user The user scheduling image deployment
-     * @param imageUrl The URL of the image to be deployed
-     * @param vcpus number of vcpus
-     * @param memkb memory in Kb
-     * @param bridge device
-     * @param proxy proxy configuration
-     */
-    public static Action createDeployImageAction(User user, String imageUrl,
-            Long vcpus, Long memkb, String bridge, ProxyConfig proxy) {
-        DeployImageAction a = (DeployImageAction) ActionFactory
-                .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
-        if (user != null) {
-            a.setSchedulerUser(user);
-            a.setOrg(user.getOrg());
-        }
-
-        DeployImageActionDetails details = new DeployImageActionDetails();
-        details.setParentAction(a);
-        details.setVcpus(vcpus);
-        details.setMemKb(memkb);
-        details.setBridgeDevice(bridge);
-        details.setDownloadUrl(imageUrl);
-        if (proxy != null) {
-            details.setProxyServer(proxy.getServer());
-            details.setProxyUser(proxy.getUser());
-            details.setProxyPass(new String(Base64.encodeBase64(
-                    proxy.getPass().getBytes())));
-        }
-        a.setDetails(details);
-        a.setName("Image Deployment: " + imageUrl);
-        return a;
     }
 
     /**

@@ -29,7 +29,6 @@ Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version
 Requires:       lsof
 Requires:       procps
 Requires:       python3
-Requires:       python3-websockify
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
 BuildRequires:  /usr/bin/pod2man
@@ -99,7 +98,6 @@ fi
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
 %{_unitdir}/salt-secrets-config.service
 %{_unitdir}/cobbler-refresh-mkloaders.service
-%{_unitdir}/mgr-websockify.service
 %{_unitdir}/uyuni-check-database.service
 %{_unitdir}/uyuni-update-config.service
 %{_unitdir}/*.service.d
