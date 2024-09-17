@@ -1,0 +1,1 @@
+- Fix date input in 'errata.setDetails' endpoint in the HTTP API
