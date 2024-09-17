@@ -31,7 +31,6 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledProduct;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -53,10 +52,8 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.maintenance.BaseProductManager;
 import com.suse.manager.matcher.MatcherJsonIO;
-import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
@@ -110,17 +107,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        VirtManager virtManager = new TestVirtManager() {
-            @Override
-            public void updateLibvirtEngine(MinionServer minion) {
-            }
-        };
         SaltApi saltApi = new TestSaltApi();
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
 
         baseProductManagerMock = mock(BaseProductManager.class);

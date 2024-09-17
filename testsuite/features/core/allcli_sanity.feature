@@ -68,13 +68,6 @@ Feature: Sanity checks
     And "deblike_minion" should communicate with the server using public interface
     And the clock from "deblike_minion" should be exact
 
-@virthost_kvm
-  Scenario: The KVM host is healthy
-    Then "kvm_server" should have a FQDN
-    And reverse resolution should work for "kvm_server"
-    And "kvm_server" should communicate with the server using public interface
-    And the clock from "kvm_server" should be exact
-
 @skip_if_cloud
   Scenario: The external resources can be reached
     Then it should be possible to reach the test packages
