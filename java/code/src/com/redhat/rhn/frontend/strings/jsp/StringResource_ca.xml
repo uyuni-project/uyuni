@@ -1787,14 +1787,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="details.jsp.account_details" xml:space="preserve">
         <source> My Account </source>
-        <target state="needs-adaptation">El meu compte</target>
+        <target state="translated"> El meu compte </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.personal_info" xml:space="preserve">
         <source> Personal Info </source>
-        <target state="needs-adaptation">Informació personal</target>
+        <target state="translated"> Informació personal </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -2267,7 +2267,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       <!-- edit_address.jsp -->
       <trans-unit id="edit_address.jsp.address" xml:space="preserve">
         <source> Address</source>
-        <target state="needs-adaptation">Adreça</target>
+        <target state="translated"> Adreça</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
