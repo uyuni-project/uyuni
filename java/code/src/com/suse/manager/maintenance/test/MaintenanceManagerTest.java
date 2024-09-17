@@ -294,7 +294,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         // assign an action not tied to maintenance mode
         Action allowedAction = MaintenanceTestUtils.createActionForServerAt(
-                        user, ActionFactory.TYPE_VIRTUALIZATION_START, sys1, "2020-04-13T08:15:00+02:00");
+                        user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sys1, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign maintenance window affected action inside a maintenance window
@@ -425,13 +425,13 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapActionEx = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
         Action coreActionEx = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
 
@@ -506,7 +506,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: Cancel all Actions
         Action sapAction3 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T09:59:00+02:00"); //moved
+                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T09:59:00+02:00"); //moved
         Action sapAction4 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
 
@@ -523,7 +523,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: No change
         Action coreAction3 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-04-30T11:59:30+02:00"); //stay
+                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-04-30T11:59:30+02:00"); //stay
         Action coreAction4 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
 
@@ -580,7 +580,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertEquals(ActionFactory.TYPE_VIRTUALIZATION_START, a.getActionType());
+                    assertEquals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, a.getActionType());
                     assertEquals(coreAction3, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(coreServer.getId(), s.getId()));
                 });

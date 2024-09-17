@@ -301,10 +301,6 @@ Before('@buildhost') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['build_host']
 end
 
-Before('@virthost_kvm') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['kvm_server']
-end
-
 Before('@alma8_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_minion']
 end

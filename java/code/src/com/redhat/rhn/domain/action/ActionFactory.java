@@ -52,26 +52,6 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSchedulePollerAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -420,71 +400,11 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_DAEMON_CONFIG)) {
             retval = new DaemonConfigAction();
         }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_SHUTDOWN)) {
-            retval = new VirtualizationShutdownGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_START)) {
-            retval = new VirtualizationStartGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_SUSPEND)) {
-            retval = new VirtualizationSuspendGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_RESUME)) {
-            retval = new VirtualizationResumeGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_REBOOT)) {
-            retval = new VirtualizationRebootGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_DESTROY)) {
-            retval = new VirtualizationDestroyGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_DELETE)) {
-            retval = new VirtualizationDeleteGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_SET_MEMORY)) {
-            retval = new VirtualizationSetMemoryGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_SET_VCPUS)) {
-            retval = new VirtualizationSetVcpusGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_GUEST_MIGRATE)) {
-            retval = new VirtualizationMigrateGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_SCHEDULE_POLLER)) {
-            retval = new VirtualizationSchedulePollerAction();
-        }
         else if (typeIn.equals(TYPE_VIRTIZATION_HOST_SUBSCRIBE_TO_TOOLS_CHANNEL)) {
             retval = new KickstartHostToolsChannelSubscriptionAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL)) {
             retval = new KickstartGuestToolsChannelSubscriptionAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_CREATE)) {
-            retval = new VirtualizationCreateGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_REFRESH)) {
-            retval = new VirtualizationPoolRefreshAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_START)) {
-            retval = new VirtualizationPoolStartAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_STOP)) {
-            retval = new VirtualizationPoolStopAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_DELETE)) {
-            retval = new VirtualizationPoolDeleteAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_CREATE)) {
-            retval = new VirtualizationPoolCreateAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_VOLUME_DELETE)) {
-            retval = new BaseVirtualizationVolumeAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE)) {
-            retval = new VirtualizationNetworkStateChangeAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_NETWORK_CREATE)) {
-            retval = new VirtualizationNetworkCreateAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -1022,33 +942,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Return whether an action type is a virtualization one.
-     *
-     * @param actionType type to check
-     * @return true if it is a virtualization action type
-     */
-    public static boolean isVirtualizationActionType(ActionType actionType) {
-        return actionType.equals(TYPE_VIRTUALIZATION_CREATE) ||
-                actionType.equals(TYPE_VIRTUALIZATION_DELETE) ||
-                actionType.equals(TYPE_VIRTUALIZATION_DESTROY) ||
-                actionType.equals(TYPE_VIRTUALIZATION_REBOOT) ||
-                actionType.equals(TYPE_VIRTUALIZATION_RESUME) ||
-                actionType.equals(TYPE_VIRTUALIZATION_SET_MEMORY) ||
-                actionType.equals(TYPE_VIRTUALIZATION_SET_VCPUS) ||
-                actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
-                actionType.equals(TYPE_VIRTUALIZATION_START) ||
-                actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
-                actionType.equals(TYPE_VIRTUALIZATION_GUEST_MIGRATE) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_CREATE) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_DELETE) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP) ||
-                actionType.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE) ||
-                actionType.equals(TYPE_VIRTUALIZATION_NETWORK_CREATE);
-    }
-
-    /**
      * The constant representing the Action Status QUEUED
      */
     public static final ActionStatus STATUS_QUEUED =
@@ -1257,60 +1150,6 @@ public class ActionFactory extends HibernateFactory {
             lookupActionTypeByLabel("rollback.rollback");
 
     /**
-     * The constant representing "Shuts down a Xen domain."  [ID:36]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_SHUTDOWN =
-            lookupActionTypeByLabel("virt.shutdown");
-
-    /**
-     * The constant representing "Starts up a Xen domain."  [ID:37]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_START =
-            lookupActionTypeByLabel("virt.start");
-
-    /**
-     * The constant representing "Suspends a Xen domain."  [ID:38]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_SUSPEND =
-            lookupActionTypeByLabel("virt.suspend");
-
-    /**
-     * The constant representing "Resumes a Xen domain."  [ID:39]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_RESUME =
-            lookupActionTypeByLabel("virt.resume");
-
-    /**
-     * The constant representing "Reboots a Xen domain."  [ID:40]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_REBOOT =
-            lookupActionTypeByLabel("virt.reboot");
-
-    /**
-     * The constant representing "Destroys a Xen Domain."  [ID:41]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_DESTROY =
-            lookupActionTypeByLabel("virt.destroy");
-
-    /**
-     * The constant representing "Sets the maximum memory usage for a Xen domain." [ID:42]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_SET_MEMORY =
-            lookupActionTypeByLabel("virt.setMemory");
-
-    /**
-     * The constant representing "Sets the Vcpu usage for a Xen domain." [ID:48]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_SET_VCPUS =
-            lookupActionTypeByLabel("virt.setVCPUs");
-
-    /**
-     * The constant representing "Sets when the poller should run."  [ID:43]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_SCHEDULE_POLLER =
-            lookupActionTypeByLabel("virt.schedulePoller");
-
-    /**
      * The constant representing "Schedule a package install of host specific
      * functionality."  [ID:44]
      */
@@ -1384,75 +1223,9 @@ public class ActionFactory extends HibernateFactory {
             lookupActionTypeByLabel("channels.subscribe");
 
     /**
-     * The constant representing "Deletes a virtual domain." [ID:507]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_DELETE =
-            lookupActionTypeByLabel("virt.delete");
-
-    /**
-     * The constant representing "Creates a virtual domain." [ID:508]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_CREATE =
-            lookupActionTypeByLabel("virt.create");
-
-    /**
-     * The constant representing "Refresh a virtual storage pool." [ID:509]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_POOL_REFRESH =
-            lookupActionTypeByLabel("virt.pool_refresh");
-
-    /**
-     * The constant representing "Start a virtual storage pool." [ID:510]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_POOL_START =
-            lookupActionTypeByLabel("virt.pool_start");
-
-    /**
-     * The constant representing "Stops a virtual storage pool." [ID:511]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_POOL_STOP =
-            lookupActionTypeByLabel("virt.pool_stop");
-
-    /**
-     * The constant representing "Deletes a virtual storage pool." [ID:512]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_POOL_DELETE =
-            lookupActionTypeByLabel("virt.pool_delete");
-
-    /**
-     * The constant representing "Creates a virtual storage pool." [ID:513]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_POOL_CREATE =
-            lookupActionTypeByLabel("virt.pool_create");
-
-    /**
-     * The constant representing "Deletes a virtual storage volume" [ID:514]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_VOLUME_DELETE =
-            lookupActionTypeByLabel("virt.volume_delete");
-
-    /**
-     * The constant representing "Change a virtual network state" [ID:519]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE =
-            lookupActionTypeByLabel("virt.network_state");
-
-    /**
-     * The constant representing "Creates a virtual network" [ID:520]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_NETWORK_CREATE =
-            lookupActionTypeByLabel("virt.network_create");
-
-    /**
      * The constant representing "Execute an Ansible playbook" [ID:521]
      */
     public static final ActionType TYPE_PLAYBOOK = lookupActionTypeByLabel("ansible.playbook");
-
-    /**
-     * The constant representing "Migrate a virtual domain" [ID:522]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_GUEST_MIGRATE =
-            lookupActionTypeByLabel("virt.guest_migrate");
 
     /**
      * The constant representing "Confidential Compute Attestation" [ID:523]

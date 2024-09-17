@@ -84,10 +84,8 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -160,11 +158,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
-        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltServiceMock, monitoringManager, serverGroupManager)
         );
         saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
         saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
@@ -2209,34 +2206,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         //Check the output of dependent actions
         assertEquals("Prerequisite failed", rebootSeverAction.getResultMsg());
         assertEquals("Prerequisite failed", runScriptSeverAction.getResultMsg());
-    }
-
-    @Test
-    public void testStateErrorResponse() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("demo-kvm1.tf.local");
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_CREATE);
-
-        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
-
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("virtcreate.failure.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-
-        // Process the event message
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
-
-        // Verify the action status
-        assertEquals(ActionFactory.STATUS_FAILED, action.getServerActions().stream()
-                .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus());
-
-        // Verify the action message
-        assertTrue(action.getServerActions().stream()
-                .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getResultMsg().contains("default-broken pool is not defined"));
     }
 
     @Test

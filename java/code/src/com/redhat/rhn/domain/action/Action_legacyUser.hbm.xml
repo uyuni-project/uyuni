@@ -253,89 +253,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </subclass>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction"
-                discriminator-value="36" lazy="true">
-          <join table="rhnActionVirtShutdown">
-            <key column="action_id"/>
-            <property name="uuid"/>
-            <property name="force" type="yes_no"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction"
-                discriminator-value="37" lazy="true">
-          <join table="rhnActionVirtStart">
-            <key column="action_id"/>
-            <property name="uuid"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction"
-                discriminator-value="38" lazy="true">
-          <join table="rhnActionVirtSuspend">
-            <key column="action_id"/>
-            <property name="uuid"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationResumeGuestAction"
-                discriminator-value="39" lazy="true">
-          <join table="rhnActionVirtResume">
-            <key column="action_id"/>
-            <property name="uuid"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction"
-                discriminator-value="40" lazy="true">
-          <join table="rhnActionVirtReboot">
-            <key column="action_id"/>
-            <property name="uuid"/>
-            <property name="force" type="yes_no"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction"
-                discriminator-value="41" lazy="true">
-          <join table="rhnActionVirtDestroy">
-            <key column="action_id"/>
-            <property name="uuid"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction"
-                discriminator-value="42" lazy="true">
-          <join table="rhnActionVirtSetMemory">
-            <key column="action_id"/>
-            <property name="uuid"/>
-            <property name="memory" type="java.lang.Integer"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction"
-                discriminator-value="48" lazy="true">
-          <join table="rhnActionVirtVcpu">
-            <key column="action_id"/>
-            <property name="uuid"/>
-            <property name="vcpu" type="java.lang.Integer"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSchedulePollerAction"
-                discriminator-value="43" lazy="true">
-          <join table="rhnActionVirtSchedulePoller">
-            <key column="action_id"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationHostPackageInstall"
-                discriminator-value="44" lazy="true">
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationGuestPackageInstall"
-                discriminator-value="45" lazy="true">
-        </subclass>
-
         <subclass name="com.redhat.rhn.domain.action.kickstart.KickstartHostToolsChannelSubscriptionAction"
                 discriminator-value="46" lazy="true">
         </subclass>
@@ -347,83 +264,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <subclass name="com.redhat.rhn.domain.action.CertificateUpdateAction"
                   discriminator-value="51" lazy="true">
         </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction"
-                discriminator-value="507" lazy="true">
-          <join table="rhnActionVirtDelete">
-            <key column="action_id"/>
-            <property name="uuid"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction"
-                discriminator-value="508" lazy="true">
-          <join table="rhnActionVirtCreate">
-            <key column="action_id"/>
-            <property name="uuid" type="string" column="uuid"/>
-            <property name="detailsAsString" type="string" column="details"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction"
-          discriminator-value="509" lazy="true">
-          <join table="rhnActionVirtPoolRefresh">
-            <key column="action_id"/>
-            <property name="poolName" type="string" column="pool_name"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction"
-          discriminator-value="510" lazy="true">
-          <join table="rhnActionVirtPoolStart">
-            <key column="action_id"/>
-            <property name="poolName" type="string" column="pool_name"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction"
-          discriminator-value="511" lazy="true">
-          <join table="rhnActionVirtPoolStop">
-            <key column="action_id"/>
-            <property name="poolName" type="string" column="pool_name"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction"
-          discriminator-value="512" lazy="true">
-          <join table="rhnActionVirtPoolDelete">
-            <key column="action_id"/>
-            <property name="poolName" type="string" column="pool_name"/>
-            <property name="purge" type="yes_no" column="purge"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction"
-          discriminator-value="513" lazy="true">
-          <join table="rhnActionVirtPoolCreate">
-            <key column="action_id"/>
-            <property name="poolName" type="string" column="pool_name"/>
-            <property name="uuid" type="string" column="uuid"/>
-            <property name="type" type="string" column="type"/>
-            <property name="target" type="string" column="target"/>
-            <property name="autostart" type="yes_no" column="autostart"/>
-            <property name="mode" type="string" column="permission_mode"/>
-            <property name="owner" type="string" column="permission_owner"/>
-            <property name="group" type="string" column="permission_group"/>
-            <property name="seclabel" type="string" column="permission_seclabel"/>
-            <property name="sourceAsString" type="string" column="source"/>
-          </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction"
-          discriminator-value="514" lazy="true">
-          <join table="rhnActionVirtVolDelete">
-            <key column="action_id"/>
-            <property name="poolName" type="string" column="pool_name"/>
-            <property name="volumeName" type="string" column="volume_name"/>
-          </join>
-        </subclass>
-
 
         <!-- PackageActions: 1, 3, 4, 8, 13, 14, 33 -->
         <!-- PackageAction is abstract - the subclasses only get instantiated -->
@@ -510,39 +350,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction"
-                  discriminator-value="519" lazy="true">
-            <join table="rhnActionVirtNetworkStateChange">
-                <key column="action_id"/>
-                <property name="networkName" type="string" column="network_name"/>
-                <property name="state" type="string" column="state"/>
-            </join>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction"
-                  discriminator-value="520" lazy="true">
-            <join table="rhnActionVirtNetworkCreate">
-                <key column="action_id"/>
-                <property name="networkName" type="string" column="network_name"/>
-                <property name="definitionAsString" type="string" column="definition"/>
-            </join>
-        </subclass>
-
         <!-- Ansible playbook action -->
         <subclass name="com.redhat.rhn.domain.action.salt.PlaybookAction" lazy="true" discriminator-value="521">
             <one-to-one name="details" class="com.redhat.rhn.domain.action.salt.PlaybookActionDetails"
                         outer-join="false" cascade="all" property-ref="parentAction"/>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction"
-                  discriminator-value="522" lazy="true">
-            <join table="rhnActionVirtMigrate">
-                <key column="action_id"/>
-                <property name="uuid"/>
-                <property name="primitive"/>
-                <property name="target"/>
-            </join>
-        </subclass>
         <!-- CoCoAttestation Action -->
         <subclass
             name="com.redhat.rhn.domain.action.CoCoAttestationAction"
@@ -577,42 +390,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
    <sql-query name="Action.findLastActionByServerIdAndActionTypeIdAndUserId">
         <![CDATA[
 select {ra.*}
-    from rhnAction {ra},
-    (select NULL as uuid, NULL as force from dual) ra_1_,
-    (select NULL as uuid from dual) ra_2_,
-    (select NULL as uuid from dual) ra_3_,
-    (select NULL as uuid from dual) ra_4_,
-    (select NULL as uuid, NULL as force from dual) ra_5_,
-    (select NULL as uuid from dual) ra_6_,
-    (select NULL as uuid, NULL as memory from dual) ra_7_,
-    (select NULL as uuid, NULL as vcpu from dual) ra_8_,
-    (select NULL as uuid from dual) ra_10_,
-    (select NULL as uuid,
-            NULL as details from dual) ra_11_,
-    (select NULL as pool_name from dual) ra_12_,
-    (select NULL as pool_name from dual) ra_13_,
-    (select NULL as pool_name from dual) ra_14_,
-    (select NULL as pool_name,
-            NULL as purge from dual) ra_15_,
-    (select NULL as pool_name,
-            NULL as uuid,
-            NULL as type,
-            NULL as target,
-            NULL as autostart,
-            NULL as permission_mode,
-            NULL as permission_owner,
-            NULL as permission_group,
-            NULL as permission_seclabel,
-            NULL as source from dual) ra_16_,
-    (select NULL as pool_name,
-            NULL as volume_name from dual) ra_17_,
-    (select NULL as network_name,
-            NULL as state from dual) ra_18_,
-    (select NULL as network_name,
-            NULL as definition from dual) ra_19_,
-    (select NULL as uuid,
-            NULL as primitive,
-            NULL as target from dual) ra_20_
+    from rhnAction {ra}
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -712,42 +490,7 @@ select sa.server_id
 
     <sql-query name="Action.lookupPendingMinionActions">
         <![CDATA[select {ra.*}
-                     from rhnAction {ra},
-                     (select NULL as uuid, NULL as force from dual) ra_1_,
-                     (select NULL as uuid from dual) ra_2_,
-                     (select NULL as uuid from dual) ra_3_,
-                     (select NULL as uuid from dual) ra_4_,
-                     (select NULL as uuid, NULL as force from dual) ra_5_,
-                     (select NULL as uuid from dual) ra_6_,
-                     (select NULL as uuid, NULL as memory from dual) ra_7_,
-                     (select NULL as uuid, NULL as vcpu from dual) ra_8_,
-                     (select NULL as uuid from dual) ra_10_,
-                     (select NULL as uuid,
-                             NULL as details from dual) ra_11_,
-                     (select NULL as pool_name from dual) ra_12_,
-                     (select NULL as pool_name from dual) ra_13_,
-                     (select NULL as pool_name from dual) ra_14_,
-                     (select NULL as pool_name,
-                             NULL as purge from dual) ra_15_,
-                     (select NULL as pool_name,
-                             NULL as uuid,
-                             NULL as type,
-                             NULL as target,
-                             NULL as autostart,
-                             NULL as permission_mode,
-                             NULL as permission_owner,
-                             NULL as permission_group,
-                             NULL as permission_seclabel,
-                             NULL as source from dual) ra_16_,
-                     (select NULL as pool_name,
-                             NULL as volume_name from dual) ra_17_,
-                     (select NULL as network_name,
-                             NULL as state from dual) ra_18_,
-                     (select NULL as network_name,
-                             NULL as definition from dual) ra_19_,
-                     (select NULL as uuid,
-                             NULL as primitive,
-                             NULL as target from dual) ra_20_
+                     from rhnAction {ra}
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id
