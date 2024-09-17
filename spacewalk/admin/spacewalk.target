@@ -13,7 +13,6 @@ Requires=cobblerd.service
 Requires=taskomatic.service
 Requires=spacewalk-wait-for-taskomatic.service
 Requires=salt-secrets-config.service
-Requires=mgr-websockify.service
 Requires=cobbler-refresh-mkloaders.service
 
 [Install]

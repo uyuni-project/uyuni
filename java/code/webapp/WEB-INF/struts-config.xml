@@ -6123,21 +6123,6 @@
                  path="/WEB-INF/pages/kickstart/powermanagement.jsp"/>
     </action>
 
-    <action path="/systems/details/virtualization/ProvisionVirtualizationWizard"
-        scope="request"
-    name="kickstartScheduleWizardForm"
-        type="com.redhat.rhn.frontend.action.systems.virtualization.ProvisionVirtualizationWizardAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="not system_is_virtual(); system_has_management_entitlement();system_feature(ftr_kickstart) or system_feature(ftr_snapshotting)"/>
-        <forward name="first"
-                 path="/WEB-INF/pages/systems/details/virtualization/provision/first.jsp"/>
-        <forward name="second"
-                path="/WEB-INF/pages/systems/details/virtualization/provision/second.jsp" />
-        <forward name="success"
-                 redirect="true" path="/systems/details/kickstart/SessionStatus.do"/>
-    </action>
-
     <action path="/kickstart/KickstartScriptCreate"
         scope="request"
         name="kickstartScriptForm"
@@ -7866,22 +7851,6 @@
         <forward name="default"
                  path="/WEB-INF/pages/admin/bunchDetail.jsp" />
      </action>
-
-    <!-- Image Deployment -->
-    <action path="/systems/details/virtualization/Deployment"
-            scope="request"
-            name="deployImageForm"
-            parameter="dispatch"
-            type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDeploymentAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequiredIfSubmitted" value="true" />
-      <set-property property="acls" value="not system_is_virtual(); system_has_management_entitlement()" />
-      <forward name="default"
-               path="/WEB-INF/pages/systems/details/virtualization/images/deployment.jsp" />
-      <forward name="submitted"
-               redirect="true"
-               path="/systems/details/virtualization/Deployment.do" />
-    </action>
 
     <!-- Product Migration -->
     <action path="/systems/details/SPMigration"
