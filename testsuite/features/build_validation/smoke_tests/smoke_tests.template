@@ -56,6 +56,7 @@ Feature: Smoke tests for <client>
 @skip_for_debianlike
 @skip_for_rocky9
 @skip_for_alma9
+@skip_for_sl_micro
   Scenario: Install a patch on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
@@ -70,6 +71,7 @@ Feature: Smoke tests for <client>
     And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion
+@skip_for_sl_micro
   Scenario: Install a package on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
@@ -174,6 +176,8 @@ Feature: Smoke tests for <client>
     And I wait until event "Package Install/Upgrade scheduled by <client>" is completed
 
 @skip_for_sle_micro_ssh_minion
+@skip_for_sl_micro
+  # WORKAROUND for SL Micro because of bsc#1227451 and bsc#1229567
   Scenario: Enable Prometheus Node exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
@@ -191,6 +195,8 @@ Feature: Smoke tests for <client>
     Then I should see a "Formula saved" text
 
 @skip_for_sle_micro
+@skip_for_sl_micro
+  # WORKAROUND for SL Micro because of bsc#1227451 and bsc#1229567
   Scenario: Enable Prometheus Apache and Postgres exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
@@ -203,6 +209,8 @@ Feature: Smoke tests for <client>
     Then I should see a "Formula saved" text
 
 @skip_for_sle_micro_ssh_minion
+@skip_for_sl_micro
+  # WORKAROUND for SL Micro because of bsc#1227451 and bsc#1229567
   Scenario: Apply highstate for the Prometheus exporters on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "States" in the content area
@@ -214,17 +222,23 @@ Feature: Smoke tests for <client>
 
 @skip_for_sle_micro_ssh_minion
 @sle_micro_minion
+@skip_for_sl_micro
   # workaround for SLE Micro minion issue bsc#1209374
+  # WORKAROUND for SL Micro because of bsc#1227451 and bsc#1229567
   Scenario: Enable and start Prometheus Node Exporter service
     And I start the "prometheus-node_exporter.service" service on "<client>"
     And I enable the "prometheus-node_exporter.service" service on "<client>"
 
 @skip_for_sle_micro_ssh_minion
+@skip_for_sl_micro
+  # WORKAROUND for SL Micro because of bsc#1227451 and bsc#1229567
   Scenario: Visit Node monitoring endpoint on the <client>
     When I wait until "node" exporter service is active on "<client>"
     And I visit "Prometheus node exporter" endpoint of this "<client>"
 
 @skip_for_sle_micro
+@skip_for_sl_micro
+  # WORKAROUND for SL Micro because of bsc#1227451 and bsc#1229567
   Scenario: Visit Apache and Postgres monitoring endpoint on the <client>
     When I wait until "apache" exporter service is active on "<client>"
     And I visit "Prometheus apache exporter" endpoint of this "<client>"
@@ -233,6 +247,8 @@ Feature: Smoke tests for <client>
 
 @skip_for_sle_micro_ssh_minion
 @monitoring_server
+@skip_for_sl_micro
+  # WORKAROUND for SL Micro because of bsc#1227451 and bsc#1229567
   Scenario: The data from <client> appear on Grafana dashboard
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
