@@ -7,7 +7,7 @@ import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
 
-type Validator = (...args: any[]) => boolean | Promise<boolean>;
+type Validator = (...args: any[]) => string | string[] | undefined | Promise<string | string[] | undefined>;
 
 export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.
@@ -32,7 +32,7 @@ export type InputBaseProps<ValueType = string> = {
   hideLabel?: boolean;
 
   /** Hint string to display */
-  hint?: React.ReactNode;
+  hint?: string;
 
   /** CSS class to use for the label */
   labelClass?: string;
@@ -61,10 +61,24 @@ export type InputBaseProps<ValueType = string> = {
   /** Indicates whether the field is disabled */
   disabled?: boolean;
 
-  /** An array of validators to run against the input, either sync or async, resolve with `true` for valid & `false` for invalid */
+  // TODO: Rename to `validate`
+  /**
+   *  Validate the input, either sync or async, resolve with `undefined` for valid or an error message for invalid
+   */
   validators?: Validator | Validator[];
 
-  /** Hint to display on a validation error */
+  /**
+   * Debounce async validation for `debounceValidate` milliseconds
+   *
+   */
+  debounceValidate?: number;
+
+  // TODO: Refactor this out
+  /**
+   * @deprecated
+   *
+   * Hint to display on a validation error
+   */
   invalidHint?: React.ReactNode;
 
   /** Function to call when the data model needs to be changed.
@@ -75,12 +89,17 @@ export type InputBaseProps<ValueType = string> = {
 
 type State = {
   isValid: boolean;
-  showErrors: boolean;
+  isTouched: boolean;
 
-  /** Error messages received from FormContext
-   *  (typically errors messages received from server response)
+  /**
+   * Error messages received from FormContext (typically errors messages received from a server response)
    */
-  errors?: Array<string> | Object;
+  formErrors?: string[];
+
+  /**
+   * Validation errors
+   */
+  validationErrors: (string | string[] | undefined)[];
 };
 
 export class InputBase<ValueType = string> extends React.Component<InputBaseProps<ValueType>, State> {
@@ -101,8 +120,9 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     super(props);
     this.state = {
       isValid: true,
-      showErrors: false,
-      errors: undefined,
+      isTouched: false,
+      formErrors: undefined,
+      validationErrors: [],
     };
   }
 
@@ -113,7 +133,8 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
       }
 
       const model = this.context.model || {};
-      const checkValueChange = (name, defaultValue) => {
+
+      const checkValueChange = (name: string, defaultValue?: ValueType) => {
         // If we don't have a value yet but do have a defaultValue, set it on the model
         if (typeof model[name] === "undefined" && typeof defaultValue !== "undefined") {
           this.setValue(name, defaultValue);
@@ -146,7 +167,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   }
 
   componentDidUpdate(prevProps) {
-    // Support validation when changing the following props on-the-fly
+    // Revalidate when changing the following props on-the-fly
     if (this.props.required !== prevProps.required || this.props.disabled !== prevProps.disabled) {
       const name = this.props.name;
       if (name instanceof Array) {
@@ -156,11 +177,9 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
           }
           return filtered;
         }, {});
-        // TODO: Reenable
-        // this.validate(values);
+        this.validate(values);
       } else if (typeof name !== "undefined") {
-        // TODO: Reenable
-        // this.validate(this.context.model[name]);
+        this.validate(this.context.model[name]);
       }
     }
   }
@@ -178,7 +197,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
   onBlur = () => {
     this.setState({
-      showErrors: true,
+      isTouched: true,
     });
   };
 
@@ -186,12 +205,23 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     return this.state.isValid;
   }
 
-  isEmptyValue(input: any) {
+  isEmptyValue(input: unknown) {
     if (typeof input === "string") {
       return input.trim() === "";
     }
     return _isNil(input);
   }
+
+  requiredValidator: Validator = <T extends ValueType>(value: T) => {
+    const hasNoValue =
+      this.isEmptyValue(value) ||
+      // TODO: Fix types
+      (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
+
+    if (hasNoValue) {
+      return this.props.label ? t(`${this.props.label} is required.`) : t("required");
+    }
+  };
 
   /**
    * Validate the input, updating state and errors if necessary.
@@ -201,57 +231,57 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
    * for a given branch.
    */
   validate = _debounce(
-    <InferredValueType extends unknown = ValueType>(
-      value: InferredValueType,
-      errors?: Array<string> | Object
-    ): void => {
-      console.log("validate", value);
-      const results: ReturnType<Validator>[] = [];
-      let isValid = true;
-
-      if (Array.isArray(errors) && errors.length > 0) {
-        isValid = false;
+    async <InferredValueType extends unknown = ValueType>(value: InferredValueType): Promise<void> => {
+      const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators] ?? [];
+      if (!this.props.disabled && this.props.required) {
+        validators.push(this.requiredValidator);
       }
 
-      if (!this.props.disabled && (value || this.props.required)) {
-        const noValue =
-          this.isEmptyValue(value) ||
-          (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
-        if (this.props.required && noValue) {
-          isValid = false;
-        } else if (this.props.validators) {
-          const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
-          validators.forEach((v) => {
-            results.push(Promise.resolve(v(value instanceof Object ? value : `${value || ""}`)));
-          });
-        }
-      }
-
-      Promise.all(results).then((result) => {
-        result.forEach((r) => {
-          isValid = isValid && r;
-        });
-        this.setState(
-          (state) => ({
-            isValid: isValid,
-            errors: errors,
-            showErrors: state.showErrors || (Array.isArray(errors) && errors.length > 0),
-          }),
-          () => {
-            if (this.context.validateForm != null) {
-              this.context.validateForm();
-            }
+      /**
+       * Each validator sets its own result independently, this way we can mix and match different speed async
+       * validators without having to wait all of them to finish
+       */
+      await Promise.all(
+        validators.map(async (validator, index) => {
+          // If the validator is debounced, it may be undefined
+          if (!validator) {
+            return;
           }
-        );
-      });
-    }
+
+          const result = await validator(value);
+          // console.log(validator, result);
+          this.setState((state) => {
+            const newValidationErrors = [...state.validationErrors];
+            if (result) {
+              newValidationErrors[index] = result;
+            } else {
+              newValidationErrors[index] = undefined;
+            }
+
+            return {
+              ...state,
+              validationErrors: newValidationErrors,
+            };
+          });
+        })
+      );
+
+      if (this.context.validateForm != null) {
+        this.context.validateForm();
+      }
+    },
+    this.props.debounceValidate ?? 0
   );
 
+  setFormErrors = (formErrors?: string[]) => {
+    this.setState({ formErrors });
+  };
+
   setValue = (name: string | undefined = undefined, value: ValueType) => {
-    console.log("setValue", name, value);
     if (name && this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }
+
     const propsName = this.props.name;
     if (propsName instanceof Array) {
       const values = Object.keys(this.context.model).reduce((filtered, key) => {
@@ -272,31 +302,31 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     if (this.props.onChange) this.props.onChange(name, value);
   };
 
-  pushHint(hints: React.ReactNode[], hint: React.ReactNode) {
+  pushHint(hints: React.ReactNode[], hint?: string | string[]) {
+    if (Array.isArray(hint)) {
+      hint.forEach((item) => this.pushHint(hints, item));
+      return;
+    }
+
     if (hint) {
       if (hints.length > 0) {
-        hints.push(<br />);
+        hints.push(<br key={hints.length} />);
       }
       hints.push(hint);
     }
   }
 
   render() {
-    const isError = this.state.showErrors && !this.state.isValid;
-    const requiredHint = this.props.label ? t(`${this.props.label} is required.`) : t("required");
-    const invalidHint = isError && (this.props.invalidHint || (this.props.required && requiredHint));
+    const hasFormError = !!this.state.formErrors?.length;
+    const hasError = hasFormError || (this.state.isTouched && !this.state.isValid);
+
     const hints: React.ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
-
-    const errors = Array.isArray(this.state.errors) ? this.state.errors : this.state.errors ? [this.state.errors] : [];
-    if (errors.length > 0) {
-      errors.forEach((error) => this.pushHint(hints, error));
-    } else {
-      this.pushHint(hints, invalidHint);
-    }
+    this.state.formErrors?.forEach((error) => this.pushHint(hints, error));
+    this.state.validationErrors.forEach((error) => this.pushHint(hints, error));
 
     return (
-      <FormGroup isError={isError} key={`${this.props.name}-group`} className={this.props.className}>
+      <FormGroup isError={hasError} key={`${this.props.name}-group`} className={this.props.className}>
         {this.props.label && (
           <Label
             name={this.props.label}

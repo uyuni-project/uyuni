@@ -10,8 +10,9 @@ type Props = {
    *  object. The value is the one displayed in the form */
   model?: any;
 
+  // TODO: This interface is bad, we need something more consistent
   /** Object storing form field errors */
-  errors?: object;
+  errors?: Record<string, string>;
 
   /** Function to trigger when the Submit button is clicked */
   onSubmit?: Function;
@@ -134,13 +135,21 @@ export class Form extends React.Component<Props> {
     }
   };
 
-  componentDidUpdate(prevProps: any) {
+  componentDidUpdate(prevProps: Props) {
+    /**
+     * Propagate any field errors passed down as props into the respective inputs.
+     * We do this here, not in InputBase, because it's cheaper, the Form knows when the `errors` prop has changed.
+     */
     if (prevProps.model !== this.props.model || prevProps.errors !== this.props.errors) {
       Object.keys(this.inputs).forEach((name) => {
         const names = this.splitComponentName(name);
         if (names.length === 1) {
-          this.inputs[name]?.validate(this.props.model[name], this.props.errors && this.props.errors[name]);
+          const error = this.props.errors?.[name];
+          if (error) {
+            this.inputs[name]?.setFormErrors([error]);
+          }
         } else {
+          // TODO: Fix all of this
           const values = Object.keys(this.props.model).reduce((filtered, key) => {
             if (names.includes(key)) {
               filtered[key] = this.props.model[key];
@@ -152,7 +161,7 @@ export class Form extends React.Component<Props> {
               return filtered.concat(this.props.errors[key]);
             }
             return filtered;
-          }, []);
+          }, [] as string[]);
           this.inputs[name]?.validate(values, errors);
         }
       });

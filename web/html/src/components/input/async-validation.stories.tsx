@@ -1,36 +1,24 @@
 import { useState } from "react";
 
-import { Form } from "./form/Form";
-import { Text } from "./text/Text";
+import { Form, Text } from "components/input";
+
+const timeout = (ms = 0) => new Promise<void>((resolve) => window.setTimeout(() => resolve(), ms));
 
 export default () => {
-  const [model, setModel] = useState({
-    firstname: "John",
-  });
+  const [model, setModel] = useState({ foo: "Foo" });
 
-  const isValid = (value: string): Promise<boolean> => {
-    return new Promise((resolve) => {
-      window.setTimeout(() => resolve(value.length > 2), 500);
-    });
+  const asyncValidator = async (value: string) => {
+    await timeout(300);
+
+    if (value.length < 3) {
+      return "Must be at least 3 characters long";
+    }
   };
 
   return (
-    <Form
-      model={model}
-      onChange={(newModel) => setModel(newModel)}
-      divClass="col-md-12"
-      formDirection="form-horizontal"
-    >
-      <p>Inputs support async validation:</p>
-      <Text
-        name="firstname"
-        label={t("First Name")}
-        required
-        invalidHint={t("Minimum 3 characters")}
-        labelClass="col-md-3"
-        divClass="col-md-6"
-        validators={[isValid]}
-      />
+    <Form model={model} onChange={(newModel) => setModel(newModel)}>
+      <p>Inputs support async validation with debounce:</p>
+      <Text name="foo" validators={[asyncValidator]} debounceValidate={500} />
     </Form>
   );
 };

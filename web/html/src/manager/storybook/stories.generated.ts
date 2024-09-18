@@ -259,6 +259,17 @@ export const components_input_text_Text_stories_tsx = {
   raw: components_input_text_Text_stories_tsx_raw,
 };
 
+import components_input_validation_messages_stories_tsx_component from "components/input/validation-messages.stories.tsx";
+import components_input_validation_messages_stories_tsx_raw from "components/input/validation-messages.stories.tsx?raw";
+
+export const components_input_validation_messages_stories_tsx = {
+  path: "components/input/validation-messages.stories.tsx",
+  title: "validation-messages.stories.tsx",
+  groupName: "input",
+  component: components_input_validation_messages_stories_tsx_component,
+  raw: components_input_validation_messages_stories_tsx_raw,
+};
+
 import components_messages_severities_stories_tsx_component from "components/messages/severities.stories.tsx";
 import components_messages_severities_stories_tsx_raw from "components/messages/severities.stories.tsx?raw";
 
