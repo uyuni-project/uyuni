@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:29+0200\n"
-"PO-Revision-Date: 2024-07-26 21:47+0000\n"
+"PO-Revision-Date: 2024-09-20 18:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
@@ -544,9 +544,8 @@ msgid "First Name"
 msgstr "Krstné meno"
 
 #: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:56
-#, fuzzy
 msgid "Last Name"
-msgstr "Názov úlohy"
+msgstr "Priezvisko"
 
 #: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
 #: ../html/src/manager/login/uyuni/login.tsx:76
@@ -1096,7 +1095,7 @@ msgstr "Žiadne dáta"
 
 #: ../html/src/components/utils/HelpIcon.stories.tsx:4
 msgid "Text to display on hover"
-msgstr ""
+msgstr "Text, ktorý sa má zobraziť pri prejdení myšou"
 
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
@@ -1118,9 +1117,8 @@ msgstr "Načítava sa..."
 
 #: ../html/src/components/utils/loading/text-border.stories.tsx:7
 #: ../html/src/components/utils/loading/text.stories.tsx:7
-#, fuzzy
 msgid "Loading text"
-msgstr "Načítava sa obsah.."
+msgstr "Načítavanie textu"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
@@ -1969,31 +1967,35 @@ msgstr "Ovplyvnené, čiastočná oprava je k dispozícii v priradenom kanáli"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
-msgstr ""
+msgstr "Neznáme, metadáta CVE nie sú k dispozícii"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
 msgid ""
 "It is not possible to scan the client server for CVE vulnerabilities without "
 "channels or OVAL metadata."
 msgstr ""
+"Bez kanálov alebo metadát OVAL nie je možné skenovať klientsky server na "
+"zraniteľnosti CVE."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
 msgid "Error, see console"
-msgstr ""
+msgstr "Chyba, pozrite si konzolu"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:239
-#, fuzzy
 msgid "Unknown patch status"
-msgstr "Neznáme názvy hostiteľov"
+msgstr "Neznámy stav opravy"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
 msgstr ""
+"Dáta OVAL nie sú synchronizované. Potenciálne prehliadnuté zraniteľnosti"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
 msgstr ""
+"Kanály produktu servera nie sú synchronizované; nie sú k dispozícii žiadne "
+"informácie o opravách"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
@@ -5394,13 +5396,15 @@ msgstr "Vytvoriť opakovanie sa"
 
 #: ../html/src/manager/storybook/storybook.tsx:47
 msgid "Development debugging page"
-msgstr ""
+msgstr "Stránka ladenia vývoja"
 
 #: ../html/src/manager/storybook/storybook.tsx:49
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
 msgstr ""
+"Toto je skrytá stránka používaná vývojármi, ak ste ju našli náhodou, dobrá "
+"práca!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
