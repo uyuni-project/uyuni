@@ -20,7 +20,7 @@
 # Old name and version+1 before renaming to mgr-push
 %define oldname rhnpush
 %define oldversion 5.5.114
-%global __python /usr/bin/python2
+%global __python %{_bindir}/python2
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
@@ -32,26 +32,25 @@
 %endif
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
-
 Name:           mgr-push
+Version:        5.1.0
+Release:        0
 Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
-Version:        5.0.2
-Release:        0
-Provides:       %{oldname} = %{oldversion}
-Obsoletes:      %{oldname} < %{oldversion}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-0.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/tools/mgr-push/%{name}-rpmlintrc
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
-BuildArch:      noarch
-%endif
-Requires:       %{pythonX}-%{name} = %{version}-%{release}
 BuildRequires:  docbook-utils
 BuildRequires:  gettext
 BuildRequires:  make
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
+Provides:       %{oldname} = %{oldversion}
+Obsoletes:      %{oldname} < %{oldversion}
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
+BuildArch:      noarch
+%endif
 
 %description
 rhnpush uploads package headers to the Spacewalk
@@ -62,22 +61,23 @@ per channel.
 %if 0%{?build_py2}
 %package -n python2-%{name}
 Summary:        Package uploader for the Spacewalk or Red Hat Satellite Server
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
-Provides:       python2-%{oldname} = %{oldversion}
-Obsoletes:      python2-%{oldname} < %{oldversion}
+BuildRequires:  python2-rhn-client-tools
+BuildRequires:  python2-uyuni-common-libs
 Requires:       %{name} = %{version}-%{release}
-%if 0%{?fedora} >= 28
-Requires:       python2-rpm
-BuildRequires:  python2-devel
-%else
-Requires:       rpm-python
-BuildRequires:  python-devel
-%endif
 Requires:       python2-rhn-client-tools
 Requires:       python2-uyuni-common-libs
 Requires:       rhnlib >= 2.8.3
-BuildRequires:  python2-rhn-client-tools
-BuildRequires:  python2-uyuni-common-libs
+Provides:       python2-%{oldname} = %{oldversion}
+Obsoletes:      python2-%{oldname} < %{oldversion}
+%if 0%{?fedora} >= 28
+BuildRequires:  python2-devel
+Requires:       python2-rpm
+%else
+BuildRequires:  python-devel
+Requires:       rpm-python
+%endif
 
 %description -n python2-%{name}
 Python 2 specific files for rhnpush.
@@ -86,22 +86,23 @@ Python 2 specific files for rhnpush.
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary:        Package uploader for the Spacewalk or Red Hat Satellite Server
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
+BuildRequires:  python3-devel
+BuildRequires:  python3-rhn-client-tools
+BuildRequires:  python3-rpm-macros
+BuildRequires:  python3-uyuni-common-libs
+Requires:       %{name} = %{version}-%{release}
+Requires:       python3-rhn-client-tools
+Requires:       python3-rhnlib >= 2.8.3
+Requires:       python3-uyuni-common-libs
 Provides:       python3-%{oldname} = %{oldversion}
 Obsoletes:      python3-%{oldname} < %{oldversion}
-Requires:       %{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       python3-rpm
 %else
 Requires:       rpm-python3
 %endif
-Requires:       python3-rhn-client-tools
-Requires:       python3-rhnlib >= 2.8.3
-Requires:       python3-uyuni-common-libs
-BuildRequires:  python3-devel
-BuildRequires:  python3-rhn-client-tools
-BuildRequires:  python3-rpm-macros
-BuildRequires:  python3-uyuni-common-libs
 
 %description -n python3-%{name}
 Python 3 specific files for rhnpush.
@@ -114,23 +115,23 @@ Python 3 specific files for rhnpush.
 make -f Makefile.rhnpush all
 
 %install
-install -d $RPM_BUILD_ROOT/%{python_sitelib}
+install -d %{buildroot}/%{python_sitelib}
 %if 0%{?build_py2}
-make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python_sitelib} \
+make -f Makefile.rhnpush install PREFIX=%{buildroot} ROOT=%{python_sitelib} \
     MANDIR=%{_mandir} PYTHON_VERSION=%{python_version}
 %endif
 
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhnpush
-install -d $RPM_BUILD_ROOT/%{python3_sitelib}
-make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
+install -d %{buildroot}/%{python3_sitelib}
+make -f Makefile.rhnpush install PREFIX=%{buildroot} ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir} PYTHON_VERSION=%{python3_version}
 %endif
 
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
-ln -s rhnpush%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhnpush
+ln -s rhnpush%{default_suffix} %{buildroot}%{_bindir}/rhnpush
 %if 0%{?suse_version}
-ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
+ln -s rhnpush %{buildroot}/%{_bindir}/mgrpush
 %endif
 
 %files
@@ -142,8 +143,8 @@ ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
 %{_bindir}/mgrpush
 %endif
 %config(noreplace) %attr(644,root,root) %{_sysconfdir}/sysconfig/rhn/rhnpushrc
-%{_mandir}/man8/rhnpush.8*
-%doc COPYING
+%{_mandir}/man8/rhnpush.8%{?ext_man}
+%license COPYING
 
 %if 0%{?build_py2}
 %files -n python2-%{name}

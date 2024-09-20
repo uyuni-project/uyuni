@@ -17,15 +17,14 @@
 
 
 Name:           uyuni-setup-reportdb
-Version:        5.0.3
-Release:        1
+Version:        5.1.0
+Release:        0
 Summary:        Tools to setup PostgreSQL database as reporting DB for Uyuni and SUSE Manager
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
 %if 0%{?suse_version}
 # Actual version set by prjconf, default is 14
 %{!?postgresql_version_min: %global postgresql_version_min 14}
@@ -34,7 +33,6 @@ Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
 Requires:       postgresql-server-implementation >= %{postgresql_version_min}
 Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
 Conflicts:      postgresql-server-implementation > %{postgresql_version_max}
-
 %else
 Requires:       postgresql-contrib >= 12
 Requires:       postgresql-server > 12
@@ -42,6 +40,7 @@ Requires:       postgresql-server > 12
 Requires:       lsof
 Requires:       susemanager-schema-utility
 Requires:       uyuni-reportdb-schema
+BuildArch:      noarch
 
 %description
 Script, which will setup PostgreSQL database as reporting DB for Uyuni and SUSE Manager Server
@@ -52,8 +51,8 @@ Script, which will setup PostgreSQL database as reporting DB for Uyuni and SUSE 
 %build
 
 %install
-install -d -m 755 %{buildroot}/%{_bindir}
-install -m 0755 bin/* %{buildroot}/%{_bindir}
+install -d -m 755 %{buildroot}%{_bindir}
+install -m 0755 bin/* %{buildroot}%{_bindir}
 
 %files
 %defattr(-,root,root,-)

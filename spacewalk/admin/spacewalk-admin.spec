@@ -17,15 +17,15 @@
 #
 
 
+Name:           spacewalk-admin
+Version:        5.1.0
+Release:        0
 Summary:        Various utility scripts and data files for Spacewalk installations
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Name:           spacewalk-admin
 URL:            https://github.com/uyuni-project/uyuni
-Version:        5.0.7
-Release:        0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       lsof
 Requires:       procps
 Requires:       python3
@@ -35,12 +35,12 @@ Requires:       perl(MIME::Base64)
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  make
 BuildRequires:  systemd
-BuildArch:      noarch
 BuildRequires:  spacewalk-config
 BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
 Requires:       susemanager-schema-utility
 Requires:       uyuni-setup-reportdb
+BuildArch:      noarch
 
 %description
 Various utility scripts and data files for Spacewalk installations.
@@ -58,20 +58,20 @@ sed -i 's/apache2.service/httpd.service/g' spacewalk-wait-for-tomcat.service
 sed -i 's/apache2.service/httpd.service/g' uyuni-check-database.service
 %endif
 
-make -f Makefile.admin install PREFIX=$RPM_BUILD_ROOT
+make -f Makefile.admin install PREFIX=%{buildroot}
 
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8/
-%{_bindir}/pod2man --section=8 rhn-config-schema.pl > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-config-schema.pl.8
-%{_bindir}/pod2man --section=8 man/spacewalk-service.pod > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-service.8
-%{_bindir}/pod2man --section=8 man/rhn-sat-restart-silent.pod > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-sat-restart-silent.8
-%{_bindir}/pod2man --section=8 rhn-config-satellite.pl > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-config-satellite.pl.8
-%{_bindir}/pod2man --section=8 man/rhn-deploy-ca-cert.pl.pod > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-deploy-ca-cert.pl.8
-%{_bindir}/pod2man --section=8 man/rhn-install-ssl-cert.pl.pod > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-install-ssl-cert.pl.8
-chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man8/*.8*
+mkdir -p %{buildroot}%{_mandir}/man8/
+%{_bindir}/pod2man --section=8 rhn-config-schema.pl > %{buildroot}%{_mandir}/man8/rhn-config-schema.pl.8
+%{_bindir}/pod2man --section=8 man/spacewalk-service.pod > %{buildroot}%{_mandir}/man8/spacewalk-service.8
+%{_bindir}/pod2man --section=8 man/rhn-sat-restart-silent.pod > %{buildroot}%{_mandir}/man8/rhn-sat-restart-silent.8
+%{_bindir}/pod2man --section=8 rhn-config-satellite.pl > %{buildroot}%{_mandir}/man8/rhn-config-satellite.pl.8
+%{_bindir}/pod2man --section=8 man/rhn-deploy-ca-cert.pl.pod > %{buildroot}%{_mandir}/man8/rhn-deploy-ca-cert.pl.8
+%{_bindir}/pod2man --section=8 man/rhn-install-ssl-cert.pl.pod > %{buildroot}%{_mandir}/man8/rhn-install-ssl-cert.pl.8
+chmod 0644 %{buildroot}%{_mandir}/man8/*.8*
 
 %post
-if [ -x /usr/bin/systemctl ]; then
-    /usr/bin/systemctl daemon-reload || :
+if [ -x %{_bindir}/systemctl ]; then
+    %{_bindir}/systemctl daemon-reload || :
 fi
 
 %files

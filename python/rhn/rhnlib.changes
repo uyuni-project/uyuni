@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 20 11:50:03 CEST 2024 - rosuna@suse.com
+
+- version 5.0.4-0
+  * Add the old TLS code for very old traditional clients still on
+    python 2.7 (bsc#1228198)
+
+-------------------------------------------------------------------
 Thu Jun 13 10:57:19 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.3-1

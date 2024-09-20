@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { MessageType } from "components/messages";
+import { MessageType } from "components/messages/messages";
 
 import Network, { JsonResult } from "utils/network";
 

@@ -329,7 +329,6 @@
     configuration for HttpSession timeout
   -->
   <session-config>
-    <session-timeout>60</session-timeout>
     <tracking-mode>COOKIE</tracking-mode>
   </session-config>
 

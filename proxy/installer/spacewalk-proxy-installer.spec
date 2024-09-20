@@ -28,14 +28,14 @@
 %define pythondir %{rhnroot}/proxy-installer
 
 Name:           spacewalk-proxy-installer
+Version:        5.1.0
+Release:        0
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Version:        5.0.1
-Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 Requires:       firewalld
@@ -87,39 +87,39 @@ Run configure-proxy.sh after installation to configure proxy.
 /usr/bin/gzip configure-proxy.sh.8
 
 %install
-mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
-mkdir -p $RPM_BUILD_ROOT/%{_usr}/sbin
-mkdir -p $RPM_BUILD_ROOT%{pythondir}
-mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
+mkdir -p %{buildroot}%{_bindir}
+mkdir -p %{buildroot}%{_mandir}/man8
+mkdir -p %{buildroot}%{_usr}/sbin
+mkdir -p %{buildroot}%{pythondir}
+mkdir -p %{buildroot}%{_prefix}/lib/firewalld/services
 
-install -m 755 -d $RPM_BUILD_ROOT%{defaultdir}
-install -m 644 squid.conf $RPM_BUILD_ROOT%{defaultdir}
-install -m 644 rhn.conf $RPM_BUILD_ROOT%{defaultdir}
-install -m 644 cobbler-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
-install -m 644 insights-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
-install -m 755 configure-proxy.sh $RPM_BUILD_ROOT/%{_usr}/sbin
-install -m 644 fetch-certificate.py  $RPM_BUILD_ROOT%{pythondir}
-install -m 755 spacewalk-setup-httpd $RPM_BUILD_ROOT/%{_bindir}
-install -m 644 get_system_id.xslt $RPM_BUILD_ROOT%{_usr}/share/rhn/
-install -m 644 rhn-proxy-activate.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
-install -m 644 configure-proxy.sh.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
-install -m 0644 suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
+install -m 755 -d %{buildroot}%{defaultdir}
+install -m 644 squid.conf %{buildroot}%{defaultdir}
+install -m 644 rhn.conf %{buildroot}%{defaultdir}
+install -m 644 cobbler-proxy.conf %{buildroot}%{defaultdir}
+install -m 644 insights-proxy.conf %{buildroot}%{defaultdir}
+install -m 755 configure-proxy.sh %{buildroot}%{_usr}/sbin
+install -m 644 fetch-certificate.py  %{buildroot}%{pythondir}
+install -m 755 spacewalk-setup-httpd %{buildroot}%{_bindir}
+install -m 644 get_system_id.xslt %{buildroot}%{_usr}/share/rhn/
+install -m 644 rhn-proxy-activate.8.gz %{buildroot}%{_mandir}/man8/
+install -m 644 configure-proxy.sh.8.gz %{buildroot}%{_mandir}/man8/
+install -m 0644 suse-manager-proxy.xml %{buildroot}%{_prefix}/lib/firewalld/services
 
 # Fixing shebang for Python 3
 for i in $(find . -type f);
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
-install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-activate
+install -m 755 rhn-proxy-activate.py %{buildroot}%{_usr}/sbin/rhn-proxy-activate
 
 %check
 
 %post
 %if 0%{?suse_version}
-if [ -f /etc/sysconfig/apache2 ]; then
-    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
-    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
+if [ -f %{_sysconfdir}/sysconfig/apache2 ]; then
+    sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES proxy_http
+    sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES headers
 fi
 %endif
 

@@ -17,19 +17,20 @@
 
 
 Name:           supportutils-plugin-susemanager-client
-Version:        5.0.3
+Version:        5.1.0
 Release:        0
-Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Client
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Documentation/SuSE
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
+Source:         %{name}-%{version}.tar.gz
+URL:            https://github.com/uyuni-project/uyuni
 BuildRequires:  supportutils
 Requires:       supportconfig-plugin-resource
 Requires:       supportconfig-plugin-tag
 Supplements:    packageand(salt-minion:supportutils)
 Supplements:    packageand(spacewalk-check:supportutils)
+BuildArch:      noarch
 
 %description
 Extends supportconfig functionality to include system information for
@@ -44,30 +45,26 @@ gzip -9f susemanagerclient-plugin.8
 
 %install
 pwd;ls -la
-rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins
-install -d $RPM_BUILD_ROOT/usr/share/man/man8
-install -d $RPM_BUILD_ROOT/sbin
+install -d %{buildroot}%{_prefix}/lib/supportconfig/plugins
+install -d %{buildroot}%{_mandir}/man8
+install -d %{buildroot}/sbin
 
 # if the new style rc file is available install the new version, otherwise the old one
 # Only SLE15 and newer support the new style rc file.
 # SLE12 and older only the old variant
-if [ -e /usr/lib/supportconfig/resources/supportconfig.rc ]; then
-    install -m 0544 susemanagerclient $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins/susemanagerclient
+if [ -e %{_prefix}/lib/supportconfig/resources/supportconfig.rc ]; then
+    install -m 0544 susemanagerclient %{buildroot}%{_prefix}/lib/supportconfig/plugins/susemanagerclient
 else
-    install -m 0544 susemanagerclient-scplugin $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins/susemanagerclient
+    install -m 0544 susemanagerclient-scplugin %{buildroot}%{_prefix}/lib/supportconfig/plugins/susemanagerclient
 fi
-install -m 0644 susemanagerclient-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/susemanagerclient-plugin.8.gz
+install -m 0644 susemanagerclient-plugin.8.gz %{buildroot}%{_mandir}/man8/susemanagerclient-plugin.8.gz
 
 %files
 %defattr(-,root,root)
-%doc COPYING.GPLv2
-/usr/lib/supportconfig
-/usr/lib/supportconfig/plugins
-/usr/lib/supportconfig/plugins/susemanagerclient
-/usr/share/man/man8/susemanagerclient-plugin.8.gz
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+%license COPYING.GPLv2
+%{_prefix}/lib/supportconfig
+%{_prefix}/lib/supportconfig/plugins
+%{_prefix}/lib/supportconfig/plugins/susemanagerclient
+%{_mandir}/man8/susemanagerclient-plugin.8%{?ext_man}
 
 %changelog

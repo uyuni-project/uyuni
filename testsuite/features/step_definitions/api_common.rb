@@ -10,7 +10,8 @@ require 'socket'
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $client_id = $api_test.system.search_by_name(system_name).first['id']
+  first_match = $api_test.system.search_by_name(system_name).first
+  $client_id = first_match['id'] unless first_match.nil?
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
 end
 
@@ -102,7 +103,7 @@ When(/^I call user\.list_roles\(\) on user "([^"]*)"$/) do |user|
 end
 
 Then(/^I should get at least one role that matches "([^"]*)" suffix$/) do |suffix|
-  refute(@roles.find_all { |el| el =~ /#{suffix}/ }.empty?)
+  refute(@roles.find_all { |el| el.match?(/#{suffix}/) }.empty?)
 end
 
 Then(/^I should get role "([^"]*)"$/) do |rolename|

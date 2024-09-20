@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Check } from "components/input/Check";
-import { Form } from "components/input/Form";
+import { Check } from "components/input/check/Check";
+import { Form } from "components/input/form/Form";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 

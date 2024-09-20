@@ -15,8 +15,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           uyuni-java-parent
-Version:        5.0.4
+Version:        5.1.0
 Release:        0
 Summary:        Parent POM for all Uyuni Maven components
 License:        GPL-2.0-only
@@ -42,7 +43,7 @@ Package that contains the parent POM used by all Uyuni Maven components.
 %{mvn_build} -j
 
 %install
-%mvn_install
+%{mvn_install}
 
 %files -f .mfiles
 %defattr(-,root,root)

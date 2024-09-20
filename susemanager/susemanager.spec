@@ -48,14 +48,14 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.0.8
+Version:        5.1.0
 Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
 
 %if 0%{?rhel}
@@ -93,14 +93,13 @@ BuildRequires:  tftp
 Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(post): user(%{apache_user})
-Requires:       yast2-users
 %endif
 Requires(pre):  salt
 Requires:       cobbler
 Requires:       openslp-server
 Requires:       spacewalk-admin
 Requires:       spacewalk-setup
-%ifarch %ix86 x86_64
+%ifarch %{ix86} x86_64
 Requires:       syslinux
 %endif
 %ifarch s390x ppc64le
@@ -137,11 +136,11 @@ Summary:        SUSE Manager Tools
 Group:          Productivity/Other
 
 %if 0%{?build_py3}
+BuildRequires:  python3-configobj
 Requires:       createrepo_c
 Requires:       python3
 Requires:       python3-configobj
 Requires:       python3-uyuni-common-libs
-BuildRequires:  python3-configobj
 %else
 Requires:       createrepo
 Requires:       python
@@ -195,16 +194,16 @@ install -m 0755 bin/* %{buildroot}/%{_prefix}/lib/susemanager/bin/
 ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
-mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
+mkdir -p %{buildroot}/%{_datadir}/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
-install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
+install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_datadir}/rhn/config-defaults
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
-make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
+make -C src install PREFIX=%{buildroot} PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
-mkdir -p %{buildroot}/etc/apache2/conf.d
-install empty-repo.conf %{buildroot}/etc/apache2/conf.d/empty-repo.conf
+mkdir -p %{buildroot}%{_sysconfdir}/apache2/conf.d
+install empty-repo.conf %{buildroot}%{_sysconfdir}/apache2/conf.d/empty-repo.conf
 
 # empty repo for rhel base channels
 mkdir -p %{buildroot}%{reporoot}/repositories/
@@ -212,19 +211,6 @@ cp -r pub/empty %{buildroot}%{reporoot}/repositories/
 
 # empty repo for Ubuntu base fake channel
 cp -r pub/empty-deb %{buildroot}%{reporoot}/repositories/
-
-# YaST configuration
-mkdir -p %{buildroot}%{_datadir}/YaST2/clients
-mkdir -p %{buildroot}%{_datadir}/YaST2/scrconf
-mkdir -p %{buildroot}%{_datadir}/applications/YaST2
-mkdir -p %{buildroot}/etc/YaST2
-install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
-install -m 0644 yast/*.scr %{buildroot}%{_datadir}/YaST2/scrconf
-%if 0%{?is_opensuse}
-install -m 0644 yast/org.uyuni-project.yast2.Uyuni.desktop %{buildroot}%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
-%else
-install -m 0644 yast/com.suse.yast2.SUSEManager.desktop %{buildroot}%{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
-%endif
 
 %if 0%{?suse_version} > 1320
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
@@ -239,7 +225,7 @@ install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_s
 rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
 %endif
 
-make -C po install PREFIX=$RPM_BUILD_ROOT
+make -C po install PREFIX=%{buildroot}
 
 %find_lang susemanager
 
@@ -249,54 +235,42 @@ make -C po install PREFIX=$RPM_BUILD_ROOT
 %check
 # we need to build a fake python dir. python did not work with
 # two site-package/spacewalk dirs having different content
-mkdir -p /var/tmp/fakepython/spacewalk
-cp -a %{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
-cp -a %{buildroot}%{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
-export PYTHONPATH=/var/tmp/fakepython/:%{_datadir}/rhn
+mkdir -p %{_localstatedir}/tmp/fakepython/spacewalk
+cp -a %{python_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
+cp -a %{buildroot}%{python_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
+export PYTHONPATH=%{_localstatedir}/tmp/fakepython/:%{_datadir}/rhn
 make -f Makefile.susemanager PYTHON_BIN=%{pythonX} unittest
 unset PYTHONPATH
-rm -rf /var/tmp/fakepython
+rm -rf %{_localstatedir}/tmp/fakepython
 %if !0%{?build_py3}
 pushd %{buildroot}
-find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+find -name '*.py' -print0 | xargs -0 python %{py_libdir}/py_compile.py
 popd
 %endif
 
 %post
 %if !0%{?suse_version}
-sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
+sed -i 's/su wwwrun www/su apache apache/' %{_sysconfdir}/logrotate.d/susemanager-tools
 %endif
 
 %posttrans
 
 %postun
 %if 0%{?suse_version}
-%{insserv_cleanup}
+%insserv_cleanup
 %endif
 # Cleanup
 sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
 %files -f susemanager.lang
 %defattr(-,root,root,-)
-%doc COPYING
+%license COPYING
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_prefix}/lib/susemanager/hooks/
-%dir /etc/YaST2
-%dir %{_datadir}/YaST2
-%dir %{_datadir}/YaST2/clients
-%dir %{_datadir}/YaST2/scrconf
-%dir %{_datadir}/applications/YaST2
 %dir %{_sysconfdir}/slp.reg.d
 %{_prefix}/lib/susemanager/bin/*
-%{_datadir}/YaST2/clients/*.rb
-%{_datadir}/YaST2/scrconf/*.scr
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
-%if 0%{?is_opensuse}
-%{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
-%else
-%{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
-%endif
 %attr(775,%{salt_user},susemanager) %dir %{wwwroot}/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
@@ -308,7 +282,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %defattr(-,root,root,-)
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
-%dir %{_prefix}/share/rhn/
+%dir %{_datadir}/rhn/
 %dir %{_datadir}/susemanager
 %dir %{wwwroot}
 %dir %{sharedwwwroot}
@@ -317,10 +291,10 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{reporoot}/repositories/empty
 %dir %{reporoot}/repositories/empty/repodata
 %dir %{reporoot}/repositories/empty-deb
-%dir /etc/apache2
-%dir /etc/apache2/conf.d
+%dir %{_sysconfdir}/apache2
+%dir %{_sysconfdir}/apache2/conf.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
-%{_prefix}/share/rhn/config-defaults/rhn_*.conf
+%{_datadir}/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
@@ -344,7 +318,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{reporoot}/repositories/empty/repodata/*.xml*
 %{reporoot}/repositories/empty-deb/Packages
 %{reporoot}/repositories/empty-deb/Release
-/etc/apache2/conf.d/empty-repo.conf
+%{_sysconfdir}/apache2/conf.d/empty-repo.conf
 
 %files bash-completion
 %{_datadir}/bash-completion/completions/mgr-sync

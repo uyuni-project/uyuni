@@ -28,20 +28,20 @@
 %endif
 
 Name:           spacewalk-config
+Version:        5.1.0
+Release:        0
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
-Version:        5.0.3
-Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?rhel} || 0%{?fedora}
 Requires(post): chkconfig
-Requires(preun):chkconfig
+Requires(preun): chkconfig
 # This is for /sbin/service
-Requires(preun):initscripts
+Requires(preun): initscripts
 %endif
 # We need package httpd to be able to assign group apache in files section
 Requires(pre):  %{apachepkg}
@@ -67,27 +67,26 @@ echo "%{name} %{version}" > version
 %build
 
 %install
-rm -Rf $RPM_BUILD_ROOT
 
-mkdir -p $RPM_BUILD_ROOT
-mv etc $RPM_BUILD_ROOT/
-mv var $RPM_BUILD_ROOT/
-mv usr $RPM_BUILD_ROOT/
+mkdir -p %{buildroot}
+mv etc %{buildroot}/
+mv var %{buildroot}/
+mv usr %{buildroot}/
 
 #TODO invert this logic: the default should be for suse, the if should contains directive for other distros
 %if 0%{?suse_version}
 export NO_BRP_STALE_LINK_ERROR=yes
-mv $RPM_BUILD_ROOT/etc/httpd $RPM_BUILD_ROOT%{apacheconfdir}
+mv %{buildroot}%{_sysconfdir}/httpd %{buildroot}%{apacheconfdir}
 %else
-sed -i 's|srv/www/htdocs|var/www/html|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/z-public.conf
-sed -i 's|/usr/share/apache2/|/usr/share/httpd/|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+sed -i 's|srv/www/htdocs|var/www/html|g' %{buildroot}%{apacheconfdir}/conf.d/z-public.conf
+sed -i 's|/usr/share/apache2/|/usr/share/httpd/|g' %{buildroot}%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 
 %endif
 
-touch $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf
+touch %{buildroot}%{_sysconfdir}/rhn/rhn.conf
 
-mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/certs/
-mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
+mkdir -p %{buildroot}%{_sysconfdir}/pki/tls/certs/
+mkdir -p %{buildroot}%{_sysconfdir}/pki/tls/private/
 
 %files
 %defattr(-,root,root,-)
@@ -109,7 +108,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %attr(0750,root,%{apache_group}) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn
 %attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 %license LICENSE
-%doc %{_mandir}/man5/rhn.conf.5*
+%{_mandir}/man5/rhn.conf.5*
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/pki
 %dir %{_sysconfdir}/pki/tls
@@ -120,36 +119,24 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 
 %pre
 # Set the group to allow Apache to access the conf files ...
-chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf 2> /dev/null || :
+chgrp %{apache_group} %{_sysconfdir}/rhn %{_sysconfdir}/rhn/rhn.conf 2> /dev/null || :
 # ... once we restrict access to some files that were too open in
 # the past.
-chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
+chmod o-rwx %{_sysconfdir}/rhn/rhn.conf* %{_sysconfdir}/sysconfig/rhn/backup-* %{_localstatedir}/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
 
 %post
 %if 0%{?suse_version}
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_wstunnel
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES xsendfile
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES filter
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES deflate
-sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
-sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES version
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES proxy
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES proxy_ajp
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES proxy_wstunnel
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES rewrite
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES headers
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES xsendfile
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES filter
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES deflate
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
+sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
-
-### TO-REMOVE AFTER: 2023-12-01
-if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
-    sed -i "s/taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=\(.\+\)/taskomatic.sshminion_action_executor.parallel_threads =\1/" /etc/rhn/rhn.conf
-fi
-if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.MinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
-    sed -i "s/taskomatic.com.redhat.rhn.taskomatic.task.MinionActionExecutor.parallel_threads[[:space:]]*=\(.\+\)/taskomatic.minion_action_executor.parallel_threads =\1/" /etc/rhn/rhn.conf
-fi
-if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task" /etc/rhn/rhn.conf >/dev/null; then
-    echo "WARNING: Found deprecated configuration items in /etc/rhn/rhn.conf"
-fi
-### END
 
 %changelog

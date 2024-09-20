@@ -1,0 +1,27 @@
+{
+  "name": "uyuni-test-container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  // Edit these variables to match your environment
+  "remoteEnv": {
+    "SERVER": "<user>-srv.mgr.suse.de",
+    "PROXY": "<user>-pxy.mgr.suse.de",
+    "MINION": "<user>-min-sles.mgr.suse.de",
+    "GITPROFILES": "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/internal_nue",
+    "AUTH_REGISTRY_CREDENTIALS": "cucutest|cucusecret",
+    "AUTH_REGISTRY": "registry.mgr.suse.de:5000/cucutest",
+    "NO_AUTH_REGISTRY": "registry.mgr.suse.de",
+    "SERVER_HTTP_PROXY": "http-proxy.mgr.suse.de:3128",
+    "CUSTOM_DOWNLOAD_ENDPOINT": "ftp://minima-mirror.mgr.suse.de:445",
+    "PROVIDER": "libvirt",
+    "CONTAINER_RUNTIME": "podman",
+    "IS_USING_BUILD_IMAGE": "False",
+    "IS_USING_PAYGO_SERVER": "False",
+    "IS_USING_SCC_REPOSITORIES": "False",
+    "CATCH_TIMEOUT_MESSAGE": "False",
+    "SERVER_INSTANCE_ID": "None",
+  }
+}
+// More info: https://containers.dev/implementors/json_reference/
+}

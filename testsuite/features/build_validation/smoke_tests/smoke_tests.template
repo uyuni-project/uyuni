@@ -126,6 +126,17 @@ Feature: Smoke tests for <client>
     Then I should see a "Channel Subscriptions successfully changed for" text
     And I reboot the "<client>" if it is a transactional system
 
+@skip_for_sle_micro
+  Scenario: Reboot the <client> and wait until reboot is completed
+    Given I am on the Systems overview page of this "<client>"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    And I wait at most 600 seconds until event "System reboot scheduled by <client>" is completed
+    Then I should see a "This action's status is: Completed" text
+
   Scenario: Deploy the configuration file to <client>
     When I follow the left menu "Configuration > Channels"
     And I wait until I see "Centrally Managed Configuration Channel" text
@@ -145,18 +156,9 @@ Feature: Smoke tests for <client>
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
 
-  Scenario: Reboot the <client> and wait until reboot is completed
-    Given I am on the Systems overview page of this "<client>"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by <client>" is completed
-    Then I should see a "This action's status is: Completed" text
-
+# The client tools of SLE Micro and SL Micro (intentionally) do not contain spacecmd
 @skip_for_sle_micro
-  # The client tools of SLE Micro (intentionally) do not contain spacecmd
+@skip_for_sl_micro
   Scenario: Install spacecmd from the client tools on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area

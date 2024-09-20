@@ -2,8 +2,8 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages as MessageContainer } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages as MessageContainer } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { TabContainer } from "components/tab-container";
 

@@ -1,4 +1,42 @@
 -------------------------------------------------------------------
+Thu Aug 01 16:45:13 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.12-0
+  * Update the WebUI version
+
+-------------------------------------------------------------------
+Wed Jul 31 16:55:21 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.11-0
+  * Fix btn-info style in new theme
+  * Fix missing margin in CVE audit list on cve page
+  * Fix broken layout of system formulas configuration page
+  * Fix table filters for description, first character dropdown
+    and toggle button.
+  * Fix channel selection using SSM (bsc#1226917)
+  * Fix broken layout in monitoring page
+  * Fix missing margin between inline radio buttons
+  * Fix OpenSCAP search page layout
+  * Remove Bare metal systems tab from General Configuration page
+  * Update setup wizard UI
+  * Remove reboot from uptodate state, introduce reboot and
+    rebootifneeded states
+  * Fix space between radio button and label in forms
+  * Fix layout of SSM subpages in updated theme
+  * Fix broken layout of build image page
+  * Fix layout of advanced package search page
+  * Fix badege color in salt key table
+  * Fix hidden section issue in Monitoring and General
+    Configuration pages
+  * Fix double padding in recurring actions table
+  * Fix missing top border in table footer
+  * Fix broken layout of system highstate page
+  * Fix input alignment and style issues on schedule creation page
+  * Fix datetime selection when using maintenance windows
+    (bsc#1228036)
+  * Configure AppStreams via Activation Keys
+
+-------------------------------------------------------------------
 Fri Jul 19 11:55:59 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.10-0

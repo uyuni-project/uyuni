@@ -17,22 +17,22 @@
 
 
 Name:           mgr-libmod
-Version:        5.0.2
-Release:        1
-Summary:        libmod app
+Version:        5.1.0
+Release:        0
+Summary:        Modular dependency resolver for content lifecycle management
 License:        MIT
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+URL:            https://github.com/uyuni-project/uyuni
 Source:         %{name}-%{version}.tar.gz
-Requires(pre):  coreutils
-Requires:       python3-libmodulemd
 BuildRequires:  python3-pytest
 BuildRequires:  python3-rpm-macros
+Requires:       python3-libmodulemd
+Requires(pre):  coreutils
+BuildArch:      noarch
 %if 0%{?rhel}
 BuildRequires:  python3-rpm-generators
 %endif
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
-URL:            https://github.com/uyuni-project/uyuni
 
 %description
 mgr-libmod
@@ -44,14 +44,14 @@ mgr-libmod
 %{__python3} setup.py build
 
 %install
-%{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
-mkdir -p %{buildroot}/usr/bin
-cp -R scripts/* %{buildroot}/usr/bin
+%{__python3} setup.py install --skip-build --root %{buildroot}
+mkdir -p %{buildroot}%{_bindir}
+cp -R scripts/* %{buildroot}%{_bindir}
 
 %files
 %defattr(-,root,root)
 %{python3_sitelib}/*
-/usr/bin/mgr-libmod
+%{_bindir}/mgr-libmod
 %license LICENSE
 
 %changelog

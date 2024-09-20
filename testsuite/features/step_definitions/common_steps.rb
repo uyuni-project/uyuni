@@ -124,16 +124,19 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
     valid_uptime_messages << 'a day ago'
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
     valid_uptime_messages = diffs.map { |n| "#{rounded_uptime_hours + n} hours ago" }
+    valid_uptime_messages.map! { |time| time == '1 hours ago' ? 'an hour ago' : time }
   elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
     valid_uptime_messages << 'an hour ago'
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours <= 1
     valid_uptime_messages += diffs.map { |n| "#{rounded_uptime_minutes + n} minutes ago" }
+    valid_uptime_messages.map! { |time| time == '1 minutes ago' ? 'a minute ago' : time }
   elsif uptime[:seconds] >= 45 && rounded_uptime_minutes == 1
     valid_uptime_messages << 'a minute ago'
   elsif uptime[:seconds] < 45
     valid_uptime_messages << 'a few seconds ago'
   elsif rounded_uptime_days < 25 # shows "a month ago" from 25 days onwards
     valid_uptime_messages += diffs.map { |n| "#{rounded_uptime_days + n} days ago" }
+    valid_uptime_messages.map! { |time| time == '1 days ago' ? 'a day ago' : time }
   else
     valid_uptime_messages << 'a month ago'
   end
@@ -238,7 +241,7 @@ end
 When(/^I check the ram value of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_ram_value = 'grep MemTotal /proc/meminfo |awk \'{print $2}\''
-  ram_value, _local, _remote, _code = node.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value, _err, _code = node.ssh(get_ram_value)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
@@ -247,7 +250,7 @@ end
 When(/^I check the MAC address value of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_mac_address = 'cat /sys/class/net/eth0/address'
-  mac_address, _local, _remote, _code = node.test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address, _err, _code = node.ssh(get_mac_address)
   mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
@@ -256,7 +259,7 @@ end
 Then(/^I should see the CPU frequency of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_cpu_freq = 'cat /proc/cpuinfo  | grep -i \'CPU MHz\'' # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = node.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  cpu_freq, _err, _code = node.ssh(get_cpu_freq)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
@@ -510,10 +513,11 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   get_target('server').run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
-When(/^I push package "([^"]*)" into "([^"]*)" channel through "([^"]*)"$/) do |package, channel, minion|
-  command = "mgrpush -u admin -p admin --server=#{get_target('server').full_hostname} --nosig -c #{channel} #{package}"
+When(/^I push package "([^"]*)" into "([^"]*)" channel through "([^"]*)"$/) do |package_filepath, channel, minion|
+  command = "mgrpush -u admin -p admin --server=#{get_target('server').full_hostname} --nosig -c #{channel} #{package_filepath}"
   get_target(minion).run(command, timeout: 500)
-  get_target('server').run_until_ok("find . -name \"#{package}\" | grep -q \"#{package}\"", timeout: 500)
+  package_filename = File.basename(package_filepath)
+  get_target('server').run_until_ok("find /var/spacewalk/packages -name \"#{package_filename}\" | grep -q \"#{package_filename}\"", timeout: 500)
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|

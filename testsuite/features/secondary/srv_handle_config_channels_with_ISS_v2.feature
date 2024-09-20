@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -10,8 +10,8 @@ Feature: Export and import configuration channels with new ISS implementation
     When I install packages "inter-server-sync" on this "server"
     Then "inter-server-sync" should be installed on "server"
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create a configuration channel
     When I follow the left menu "Configuration > Channels"
@@ -35,7 +35,6 @@ Feature: Export and import configuration channels with new ISS implementation
 
   Scenario: Export data with ISS v2
     When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
-    Then export folder "/tmp/export_iss_v2" shouldn't exist on "server"
     When I export config channels "testconfigchannel" with ISS v2 to "/tmp/export_iss_v2"
     Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
 
@@ -66,4 +65,3 @@ Feature: Export and import configuration channels with new ISS implementation
 
   Scenario: Cleanup: remove ISS v2 export folder
     When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
-    Then export folder "/tmp/export_iss_v2" shouldn't exist on "server"

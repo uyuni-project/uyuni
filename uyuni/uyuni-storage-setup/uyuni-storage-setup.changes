@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 22 09:37:28 CEST 2024 - rosuna@suse.com
+
+- version 5.0.2-0
+  * Do not build debuginfo package
+
+-------------------------------------------------------------------
 Thu Jun 20 13:31:15 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.1-0

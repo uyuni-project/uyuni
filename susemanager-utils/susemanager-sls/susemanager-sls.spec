@@ -30,10 +30,11 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.0.9
+Version:        5.1.0
 Release:        0
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
@@ -52,7 +53,6 @@ BuildRequires:  python-pytest
 BuildRequires:  python-salt
 Requires:       python-PyYAML >= 5.1
 %endif
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 %description
@@ -61,6 +61,7 @@ provided for the integration between infrastructure components.
 
 %package -n uyuni-config-modules
 Summary:        Salt modules to configure a Server
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 
 %description -n uyuni-config-modules
@@ -73,48 +74,48 @@ to configure a SUSE Manager or Uyuni Server.
 %build
 
 %install
-mkdir -p %{buildroot}/usr/share/susemanager/salt/_grains
-mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
-mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
-mkdir -p %{buildroot}/usr/share/susemanager/salt/_states
-mkdir -p %{buildroot}/usr/share/susemanager/salt-ssh
-mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
-mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
-mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
-mkdir -p %{buildroot}/usr/share/susemanager/modules/engines
-mkdir -p %{buildroot}/usr/share/susemanager/modules/roster
-mkdir -p %{buildroot}/usr/share/susemanager/pillar_data
-mkdir -p %{buildroot}/usr/share/susemanager/formulas
-mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
-mkdir -p %{buildroot}/usr/share/susemanager/reactor
-mkdir -p %{buildroot}/usr/share/susemanager/scap
+mkdir -p %{buildroot}%{_datadir}/susemanager/salt/_grains
+mkdir -p %{buildroot}%{_datadir}/susemanager/salt/_beacons
+mkdir -p %{buildroot}%{_datadir}/susemanager/salt/_modules
+mkdir -p %{buildroot}%{_datadir}/susemanager/salt/_states
+mkdir -p %{buildroot}%{_datadir}/susemanager/salt-ssh
+mkdir -p %{buildroot}%{_datadir}/susemanager/modules/pillar
+mkdir -p %{buildroot}%{_datadir}/susemanager/modules/tops
+mkdir -p %{buildroot}%{_datadir}/susemanager/modules/runners
+mkdir -p %{buildroot}%{_datadir}/susemanager/modules/engines
+mkdir -p %{buildroot}%{_datadir}/susemanager/modules/roster
+mkdir -p %{buildroot}%{_datadir}/susemanager/pillar_data
+mkdir -p %{buildroot}%{_datadir}/susemanager/formulas
+mkdir -p %{buildroot}%{_datadir}/susemanager/formulas/metadata
+mkdir -p %{buildroot}%{_datadir}/susemanager/reactor
+mkdir -p %{buildroot}%{_datadir}/susemanager/scap
 mkdir -p %{buildroot}/srv/formula_metadata
-cp -R salt/* %{buildroot}/usr/share/susemanager/salt
-cp -R salt-ssh/* %{buildroot}/usr/share/susemanager/salt-ssh
-cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
-cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
-cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
-cp -R modules/engines/* %{buildroot}/usr/share/susemanager/modules/engines
-cp -R modules/roster/* %{buildroot}/usr/share/susemanager/modules/roster
-cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
+cp -R salt/* %{buildroot}%{_datadir}/susemanager/salt
+cp -R salt-ssh/* %{buildroot}%{_datadir}/susemanager/salt-ssh
+cp -R modules/pillar/* %{buildroot}%{_datadir}/susemanager/modules/pillar
+cp -R modules/tops/* %{buildroot}%{_datadir}/susemanager/modules/tops
+cp -R modules/runners/* %{buildroot}%{_datadir}/susemanager/modules/runners
+cp -R modules/engines/* %{buildroot}%{_datadir}/susemanager/modules/engines
+cp -R modules/roster/* %{buildroot}%{_datadir}/susemanager/modules/roster
+cp -R formulas/* %{buildroot}%{_datadir}/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
-cp -R reactor/* %{buildroot}/usr/share/susemanager/reactor
-cp -R scap/* %{buildroot}/usr/share/susemanager/scap
+cp -R reactor/* %{buildroot}%{_datadir}/susemanager/reactor
+cp -R scap/* %{buildroot}%{_datadir}/susemanager/scap
 
 # Manually install Python part to already prepared structure
-cp src/beacons/*.py %{buildroot}/usr/share/susemanager/salt/_beacons
-cp src/grains/*.py %{buildroot}/usr/share/susemanager/salt/_grains/
-rm %{buildroot}/usr/share/susemanager/salt/_grains/__init__.py
-cp src/modules/*.py %{buildroot}/usr/share/susemanager/salt/_modules
-rm %{buildroot}/usr/share/susemanager/salt/_modules/__init__.py
-cp src/states/*.py %{buildroot}/usr/share/susemanager/salt/_states
-rm %{buildroot}/usr/share/susemanager/salt/_states/__init__.py
+cp src/beacons/*.py %{buildroot}%{_datadir}/susemanager/salt/_beacons
+cp src/grains/*.py %{buildroot}%{_datadir}/susemanager/salt/_grains/
+rm %{buildroot}%{_datadir}/susemanager/salt/_grains/__init__.py
+cp src/modules/*.py %{buildroot}%{_datadir}/susemanager/salt/_modules
+rm %{buildroot}%{_datadir}/susemanager/salt/_modules/__init__.py
+cp src/states/*.py %{buildroot}%{_datadir}/susemanager/salt/_states
+rm %{buildroot}%{_datadir}/susemanager/salt/_states/__init__.py
 
 # Install doc, examples
-mkdir -p %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
-cp src/doc/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/
-cp src/examples/uyuni_config_hardcode.sls %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples
-cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
+mkdir -p %{buildroot}%{_docdir}/uyuni-config-modules/examples/ldap
+cp src/doc/* %{buildroot}%{_docdir}/uyuni-config-modules/
+cp src/examples/uyuni_config_hardcode.sls %{buildroot}%{_docdir}/uyuni-config-modules/examples
+cp src/examples/ldap/* %{buildroot}%{_docdir}/uyuni-config-modules/examples/ldap
 
 %check
 cd test
@@ -125,66 +126,66 @@ py.test%{?rhel:-3}
 
 # Check that SLS files don't contain any call to "module.run" which has
 # been replaced by "mgrcompat.module_run" calls.
-! grep --include "*.sls" -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
+! grep --include "*.sls" -r "module\.run" %{buildroot}%{_datadir}/susemanager/salt || exit 1
 
 %pre
 # change /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 # from symlink into a real file
-if [ -L /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
-  rm -f /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
-  if [ -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ]; then
-    cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
-       /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
-  elif [ -f /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT ]; then
-    cp /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT \
-       /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+if [ -L %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
+  rm -f %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  if [ -f %{_sysconfdir}/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ]; then
+    cp %{_sysconfdir}/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
+       %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+  elif [ -f %{_sysconfdir}/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT ]; then
+    cp %{_sysconfdir}/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT \
+       %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
   fi
 fi
 
 %post
 # when uyuni roster module has changed, we need to remove the cache
-rm -f /var/cache/salt/master/roster/uyuni/minions.p
+rm -f %{_localstatedir}/cache/salt/master/roster/uyuni/minions.p
 
 # this will be filled with content when a certificate gets deployed
-if [ ! -e /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
-  touch /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+if [ ! -e %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT ]; then
+  touch %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 fi
 
 %posttrans
 # Run JMX exporter as Java Agent (bsc#1184617)
-grep -q 'prometheus_monitoring_enabled\s*=\s*1\s*$' /etc/rhn/rhn.conf
+grep -q 'prometheus_monitoring_enabled\s*=\s*1\s*$' %{_sysconfdir}/rhn/rhn.conf
 if [[ $? == 0 ]]; then
-  /usr/sbin/mgr-monitoring-ctl enable
+  %{_sbindir}/mgr-monitoring-ctl enable
 fi
 
 %files
 %defattr(-,root,root)
-%dir /usr/share/susemanager
-/usr/share/susemanager/salt
-/usr/share/susemanager/salt-ssh
-/usr/share/susemanager/pillar_data
-/usr/share/susemanager/modules
-/usr/share/susemanager/modules/pillar
-/usr/share/susemanager/modules/tops
-/usr/share/susemanager/modules/runners
-/usr/share/susemanager/modules/engines
-/usr/share/susemanager/modules/roster
-/usr/share/susemanager/formulas
-/usr/share/susemanager/reactor
-/usr/share/susemanager/scap
+%dir %{_datadir}/susemanager
+%{_datadir}/susemanager/salt
+%{_datadir}/susemanager/salt-ssh
+%{_datadir}/susemanager/pillar_data
+%{_datadir}/susemanager/modules
+%{_datadir}/susemanager/modules/pillar
+%{_datadir}/susemanager/modules/tops
+%{_datadir}/susemanager/modules/runners
+%{_datadir}/susemanager/modules/engines
+%{_datadir}/susemanager/modules/roster
+%{_datadir}/susemanager/formulas
+%{_datadir}/susemanager/reactor
+%{_datadir}/susemanager/scap
 /srv/formula_metadata
-%exclude /usr/share/susemanager/salt/_modules/uyuni_config.py
-%exclude /usr/share/susemanager/salt/_states/uyuni_config.py
-%ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+%exclude %{_datadir}/susemanager/salt/_modules/uyuni_config.py
+%exclude %{_datadir}/susemanager/salt/_states/uyuni_config.py
+%ghost %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
 %files -n uyuni-config-modules
 %defattr(-,root,root)
-%dir /usr/share/susemanager
-/usr/share/susemanager/salt/_modules/uyuni_config.py
-/usr/share/susemanager/salt/_states/uyuni_config.py
-%dir /usr/share/doc/packages/uyuni-config-modules
-%doc /usr/share/doc/packages/uyuni-config-modules/*
-%doc /usr/share/doc/packages/uyuni-config-modules/examples/*
-%doc /usr/share/doc/packages/uyuni-config-modules/examples/ldap/*
+%dir %{_datadir}/susemanager
+%{_datadir}/susemanager/salt/_modules/uyuni_config.py
+%{_datadir}/susemanager/salt/_states/uyuni_config.py
+%dir %{_docdir}/uyuni-config-modules
+%doc %{_docdir}/uyuni-config-modules/*
+%doc %{_docdir}/uyuni-config-modules/examples/*
+%doc %{_docdir}/uyuni-config-modules/examples/ldap/*
 
 %changelog

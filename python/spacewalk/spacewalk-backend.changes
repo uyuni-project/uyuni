@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Aug 01 09:36:37 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.9-0
+  * Support more NEVRA types when importing module metadata
+  * yum_src: use proper name variable name for
+    subprocess.TimeoutExpired
+  * Check and populate PTF attributes at the time of importing
+    packages (bsc#1225619)
+  * reposync: introduce timeout when syncing DEB channels
+    (bsc#1225960)
+  * Refresh channel newest packages after importing Appstreams
+    metadata
+
+-------------------------------------------------------------------
 Tue Jun 18 18:16:16 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8-0

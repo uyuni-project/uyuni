@@ -39,22 +39,20 @@
 %global is_deb 1
 %endif
 
+Name:           rhnlib
+Version:        5.1.0
+Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
-Name:           rhnlib
-Version:        5.0.3
-Release:        1
+URL:            https://github.com/uyuni-project/uyuni
+Source0:        %{name}-%{version}.tar.gz
 %if "%{_vendor}" == "debbuild"
 Group:          python
 Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 %else
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Development/Libraries
 %endif
-URL:            https://github.com/uyuni-project/uyuni
-Source0:        %{name}-%{version}.tar.gz
-
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
@@ -66,6 +64,7 @@ rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk
 %if 0%{?build_py2}
 %package -n python2-rhnlib
 Summary:        Python libraries for the Spacewalk project
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Development/Libraries
 
 %if "%{_vendor}" != "debbuild"
@@ -116,6 +115,7 @@ rhnlib is a collection of python modules used by the Spacewalk software.
 %if 0%{?build_py3}
 %package -n python3-rhnlib
 Summary:        Python libraries for the Spacewalk project
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          python
 
 %if "%{_vendor}" != "debbuild"
@@ -129,7 +129,7 @@ Requires:       python3-pyOpenSSL
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev
 BuildRequires:  rpm
-Requires(preun):python3-minimal
+Requires(preun): python3-minimal
 Requires(post): python3-minimal
 Requires:       python3-openssl
 %endif
@@ -176,22 +176,24 @@ make -f Makefile.rhnlib PYTHON=%{__python3}
 
 %install
 %if 0%{?build_py2}
-%{__python2} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root $RPM_BUILD_ROOT %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
+%{__python2} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root %{buildroot} %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
 %endif
 %if 0%{?build_py3}
-%{__python3} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root $RPM_BUILD_ROOT %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
+%{__python3} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root %{buildroot} %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
 %endif
 
 %if 0%{?build_py2}
 %files -n python2-rhnlib
 %defattr(-,root,root)
-%doc ChangeLog COPYING README TODO
+%license COPYING
+%doc ChangeLog README TODO
 %{python2_sitelib}/*
 %endif
 
 %if 0%{?build_py3}
 %files -n python3-rhnlib
-%doc ChangeLog COPYING README TODO
+%license COPYING
+%doc ChangeLog README TODO
 %{python3_sitelib}/*
 %endif
 

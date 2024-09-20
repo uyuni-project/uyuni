@@ -8,8 +8,8 @@ import { ProjectSoftwareSourceType } from "manager/content-management/shared/typ
 
 import { BaseChannelType, ChannelTreeType, ChildChannelType, isBaseChannel } from "core/channels/type/channels.type";
 
-import { Select } from "components/input/Select";
-import { Loading } from "components/utils/Loading";
+import { Select } from "components/input";
+import { Loading } from "components/utils/loading/Loading";
 import { VirtualList } from "components/virtual-list";
 
 import BaseChannel from "./base-channel";

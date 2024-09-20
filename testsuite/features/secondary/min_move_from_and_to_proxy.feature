@@ -1,12 +1,12 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_minion
 @proxy
 Feature: Move a minion from a proxy to direct connection
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete minion system profile before bootstrap
     Given I am on the Systems overview page of this "sle_minion"
@@ -57,8 +57,8 @@ Feature: Move a minion from a proxy to direct connection
     And I wait until I see "scheduled" text
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled by admin" completed during last minute, refreshing the page
-    And I wait until I see the event "Apply states [channels] scheduled by admin" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
 
   Scenario: Check direct connection
     Given I am on the Systems overview page of this "sle_minion"
@@ -83,8 +83,8 @@ Feature: Move a minion from a proxy to direct connection
     Given I am on the Systems overview page of this "sle_minion"
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled by admin" completed during last minute, refreshing the page
-    And I wait until I see the event "Apply states [channels] scheduled by admin" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
 
   Scenario: Check registration on proxy of minion
     Given I am on the Systems overview page of this "proxy"

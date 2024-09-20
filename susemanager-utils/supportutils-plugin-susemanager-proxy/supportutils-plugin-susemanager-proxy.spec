@@ -17,18 +17,19 @@
 
 
 Name:           supportutils-plugin-susemanager-proxy
-Version:        5.0.2
-Release:        1
-Source:         %{name}-%{version}.tar.gz
+Version:        5.1.0
+Release:        0
 Summary:        Supportconfig Plugin for SUSE Manager Proxy
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Documentation/SuSE
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
+Source:         %{name}-%{version}.tar.gz
+URL:            https://github.com/uyuni-project/uyuni
 Requires:       spacewalk-proxy-common
 Requires:       supportconfig-plugin-resource
 Requires:       supportconfig-plugin-tag
 Supplements:    packageand(spacewalk-proxy-installer:supportutils)
+BuildArch:      noarch
 
 %description
 Extends supportconfig functionality to include system information about
@@ -43,22 +44,18 @@ gzip -9f susemanagerproxy-plugin.8
 
 %install
 pwd;ls -la
-rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins
-install -d $RPM_BUILD_ROOT/usr/share/man/man8
-install -d $RPM_BUILD_ROOT/sbin
-install -m 0544 susemanagerproxy $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins
-install -m 0644 susemanagerproxy-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/susemanagerproxy-plugin.8.gz
+install -d %{buildroot}%{_prefix}/lib/supportconfig/plugins
+install -d %{buildroot}%{_mandir}/man8
+install -d %{buildroot}/sbin
+install -m 0544 susemanagerproxy %{buildroot}%{_prefix}/lib/supportconfig/plugins
+install -m 0644 susemanagerproxy-plugin.8.gz %{buildroot}%{_mandir}/man8/susemanagerproxy-plugin.8.gz
 
 %files
 %defattr(-,root,root)
-%doc COPYING.GPLv2
-/usr/lib/supportconfig
-/usr/lib/supportconfig/plugins
-/usr/lib/supportconfig/plugins/susemanagerproxy
-/usr/share/man/man8/susemanagerproxy-plugin.8.gz
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+%license COPYING.GPLv2
+%{_prefix}/lib/supportconfig
+%{_prefix}/lib/supportconfig/plugins
+%{_prefix}/lib/supportconfig/plugins/susemanagerproxy
+%{_mandir}/man8/susemanagerproxy-plugin.8%{?ext_man}
 
 %changelog

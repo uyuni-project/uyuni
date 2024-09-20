@@ -16,8 +16,9 @@
 #
 
 
+%global debug_package %{nil}
 Name:           uyuni-storage-setup
-Version:        5.0.1
+Version:        5.1.0
 Release:        0
 Summary:        Tools for managing storage on Uyuni
 License:        GPL-3.0-only
@@ -61,11 +62,11 @@ Scripts that help setting up Uyuni and SUSE Manager Proxy storage after deployme
 
 %install
 install -m 0755 -vd %{buildroot}%{_bindir}
-install -m 0755 -vd %{buildroot}/%{_usr}/lib/susemanager/
+install -m 0755 -vd %{buildroot}%{_usr}/lib/susemanager/
 
-install -m 755 scripts/mgr-storage-server %{buildroot}/%{_bindir}/mgr-storage-server
-install -m 755 scripts/mgr-storage-proxy %{buildroot}/%{_bindir}/mgr-storage-proxy
-install -m 755 scripts/susemanager-storage-setup-functions.sh %{buildroot}/%{_usr}/lib/susemanager/
+install -m 755 scripts/mgr-storage-server %{buildroot}%{_bindir}/mgr-storage-server
+install -m 755 scripts/mgr-storage-proxy %{buildroot}%{_bindir}/mgr-storage-proxy
+install -m 755 scripts/susemanager-storage-setup-functions.sh %{buildroot}%{_usr}/lib/susemanager/
 
 %files server
 %defattr(-,root,root)

@@ -33,9 +33,9 @@
 %global _buildshell /bin/bash
 %endif
 
-%{!?__python2:%global __python2 /usr/bin/python2}
-%{!?__python3:%global __python3 /usr/bin/python3}
 
+%{!?__python2:%global __python2 %{_bindir}/python2}
+%{!?__python3:%global __python3 %{_bindir}/python3}
 %if %{undefined python2_version}
 %global python2_version %(%{__python2} -Esc "import sys; sys.stdout.write('{0.major}.{0.minor}'.format(sys.version_info))")
 %endif
@@ -65,20 +65,20 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
+Version:        5.1.0
+Release:        0
 Summary:        Support programs and libraries for Spacewalk
 License:        GPL-2.0-only
+URL:            https://github.com/uyuni-project/uyuni
+Source0:        %{name}-%{version}.tar.gz
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          admin
 %else
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          System Environment/Base
 %endif
-Version:        5.0.6
-Source0:        %{name}-%{version}.tar.gz
-Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
-URL:            https://github.com/uyuni-project/uyuni
-Release:        0
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
 BuildArch:      noarch
 %endif
@@ -159,6 +159,7 @@ Summary:        Support programs and libraries for Spacewalk
 %if "%{_vendor}" == "debbuild"
 Group:          python
 %else
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          System Environment/Base
 %endif
 Provides:       python-%{name} = %{version}-%{release}
@@ -209,19 +210,19 @@ BuildRequires:  rpm-python
 %endif # if {_vendor} != "debbuild"
 
 %if "%{_vendor}" == "debbuild"
-Requires:       python-dmidecode
-Requires:       python-ethtool >= 0.4
-Requires:       python-rpm
-BuildRequires:  python-dev
-Requires:       python2-hwdata
 BuildRequires:  python-coverage
+BuildRequires:  python-dev
 BuildRequires:  python-rpm
 Requires:       gir1.2-gudev-1.0
 Requires:       python-dbus
+Requires:       python-dmidecode
+Requires:       python-ethtool >= 0.4
 Requires:       python-gi
 Requires:       python-pyudev
-Requires(preun):python-minimal
+Requires:       python-rpm
+Requires:       python2-hwdata
 Requires(post): python-minimal
+Requires(preun): python-minimal
 %endif
 
 %description -n python2-%{name}
@@ -234,6 +235,7 @@ Summary:        Support programs and libraries for Spacewalk
 %if "%{_vendor}" == "debbuild"
 Group:          python
 %else
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          System Environment/Base
 %endif
 Provides:       python3-rhn-client-tools = %{version}-%{release}
@@ -272,8 +274,8 @@ Requires:       gir1.2-gudev-1.0
 Requires:       python3-dbus
 Requires:       python3-gi
 Requires:       python3-pyudev
-Requires(preun):python3-minimal
 Requires(post): python3-minimal
+Requires(preun): python3-minimal
 %endif
 
 %if %{with test} && 0%{?rhel} != 6
@@ -296,25 +298,25 @@ make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
 %if 0%{?build_py2}
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
-        PREFIX=$RPM_BUILD_ROOT %{?is_deb:PLATFORM=deb}
+        PREFIX=%{buildroot} %{?is_deb:PLATFORM=deb}
 %endif
 %if 0%{?build_py3}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' test/*.py
+sed -i 's|#!%{_bindir}/python|#!%{_bindir}/python3|' test/*.py
 make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
-        PREFIX=$RPM_BUILD_ROOT %{?is_deb:PLATFORM=deb}
+        PREFIX=%{buildroot} %{?is_deb:PLATFORM=deb}
 %endif
 
-mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
-mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
-touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
+mkdir -p %{buildroot}%{_localstatedir}/lib/up2date
+mkdir -pm700 %{buildroot}%{_localstatedir}/spool/up2date
+touch %{buildroot}%{_localstatedir}/spool/up2date/loginAuth.pkl
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
-mkdir -p $RPM_BUILD_ROOT/%{_presetdir}
+mkdir -p %{buildroot}/%{_presetdir}
 %endif
 
 # remove all unsupported translations
-cd $RPM_BUILD_ROOT
+cd %{buildroot}
 for d in usr/share/locale/*; do
   if [ ! -d "/$d" ]; then
     rm -rfv "./$d"
@@ -326,8 +328,8 @@ cd -
 %find_lang rhn-client-tools
 %endif
 
-rm -rf $RPM_BUILD_ROOT/etc/pam.d
-rm -rf $RPM_BUILD_ROOT/etc/security/console.apps
+rm -rf %{buildroot}%{_sysconfdir}/pam.d
+rm -rf %{buildroot}%{_sysconfdir}/security/console.apps
 
 %if 0%{?suse_version}
 %if 0%{?build_py2}
@@ -351,9 +353,8 @@ make -f Makefile.rhn-client-tools test
 %files
 # No find_lang on Debian systems
 %{_datadir}/locale/
-/var/lib/up2date/
+%{_localstatedir}/lib/up2date/
 %else
-
 %files -f rhn-client-tools.lang
 %endif
 %defattr(-,root,root,-)
@@ -422,7 +423,6 @@ pycompile -p python2-%{name} -V -3.0
 %preun -n python2-%{name}
 # Ensure all *.py[co] files are deleted, per debian policy
 pyclean -p python2-%{name}
-
 %endif
 
 %if 0%{?build_py3}
@@ -433,7 +433,6 @@ py3compile -p python3-%{name} -V -4.0
 %preun -n python3-%{name}
 # Ensure all *.py[co] files are deleted, per debian policy
 py3clean -p python3-%{name}
-
 %endif
 %endif
 

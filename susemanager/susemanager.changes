@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Aug 01 09:27:16 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.9-0
+  * Create special bootstrap data for SUSE Manager Server 4.3 with
+    LTSS updates for Hub scenario (bsc#1211899)
+  * Add LTSS updates to SUSE Manager Proxy 4.3 bootstrap data
+
+-------------------------------------------------------------------
 Wed Jun 26 15:04:06 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8-0

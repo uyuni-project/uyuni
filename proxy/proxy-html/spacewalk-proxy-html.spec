@@ -24,14 +24,14 @@
 %endif
 
 Name:           spacewalk-proxy-html
+Version:        5.1.0
+Release:        0
 Summary:        The HTML component for Spacewalk Proxy
 License:        GPL-2.0-only
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Version:        5.0.1
-Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Obsoletes:      rhns-proxy-html < 5.3.0
 Provides:       rhns-proxy-html = 5.3.0
@@ -40,7 +40,6 @@ Requires:       httpd
 %description
 This package contains placeholder html pages, which the Spacewalk Server
 displays, if you navigate to it using your browser.
-
 
 %if 0%{?sle_version} && !0%{?is_opensuse}
 %define proxy_dir_name suse_proxy
@@ -55,15 +54,15 @@ displays, if you navigate to it using your browser.
 #nothing to do here
 
 %install
-install -m 755 -d $RPM_BUILD_ROOT%{htmldir}
-install -d -m 755 $RPM_BUILD_ROOT%{htmldir}/sources
-install -d -m 755 %{proxy_dir_name}/sources/css $RPM_BUILD_ROOT%{htmldir}/sources/css
-install -d -m 755 %{proxy_dir_name}/sources/fonts $RPM_BUILD_ROOT%{htmldir}/sources/fonts
-install -d -m 755 %{proxy_dir_name}/sources/img $RPM_BUILD_ROOT%{htmldir}/sources/img
-cp -pR %{proxy_dir_name}/sources/css/* $RPM_BUILD_ROOT%{htmldir}/sources/css/
-cp -pR %{proxy_dir_name}/sources/fonts/* $RPM_BUILD_ROOT%{htmldir}/sources/fonts/
-cp -pR %{proxy_dir_name}/sources/img/* $RPM_BUILD_ROOT%{htmldir}/sources/img/
-cp -pR %{proxy_dir_name}/*.html $RPM_BUILD_ROOT%{htmldir}/
+install -m 755 -d %{buildroot}%{htmldir}
+install -d -m 755 %{buildroot}%{htmldir}/sources
+install -d -m 755 %{proxy_dir_name}/sources/css %{buildroot}%{htmldir}/sources/css
+install -d -m 755 %{proxy_dir_name}/sources/fonts %{buildroot}%{htmldir}/sources/fonts
+install -d -m 755 %{proxy_dir_name}/sources/img %{buildroot}%{htmldir}/sources/img
+cp -pR %{proxy_dir_name}/sources/css/* %{buildroot}%{htmldir}/sources/css/
+cp -pR %{proxy_dir_name}/sources/fonts/* %{buildroot}%{htmldir}/sources/fonts/
+cp -pR %{proxy_dir_name}/sources/img/* %{buildroot}%{htmldir}/sources/img/
+cp -pR %{proxy_dir_name}/*.html %{buildroot}%{htmldir}/
 
 %files
 %defattr(-,root,root)

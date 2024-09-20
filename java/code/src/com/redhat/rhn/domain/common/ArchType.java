@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
@@ -98,19 +99,18 @@ public class ArchType extends BaseDomainHelper {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
+        if (o instanceof ArchType) {
+            ArchType archType = (ArchType) o;
+
+            return Objects.equals(getLabel(), archType.getLabel());
         }
-
-        ArchType archType = (ArchType) o;
-
-        return Objects.equals(id, archType.id);
+        return false;
     }
 
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return new HashCodeBuilder().append(getLabel()).toHashCode();
     }
 
     /** {@inheritDoc} */

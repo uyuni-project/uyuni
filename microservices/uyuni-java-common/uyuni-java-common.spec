@@ -15,8 +15,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           uyuni-java-common
-Version:        5.0.4
+Version:        5.1.0
 Release:        0
 Summary:        Common Java library for Uyuni Java components
 License:        GPL-2.0-only
@@ -26,11 +27,10 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  java-devel >= 11
 BuildRequires:  maven-local
-BuildRequires:  mvn(org.uyuni-project:uyuni-java-parent:pom:)
+BuildRequires:  mvn(com.mchange:c3p0)
 BuildRequires:  mvn(org.apache.logging.log4j:log4j-api)
 BuildRequires:  mvn(org.mybatis:mybatis)
-BuildRequires:  mvn(com.mchange:c3p0)
-
+BuildRequires:  mvn(org.uyuni-project:uyuni-java-parent:pom:)
 BuildArch:      noarch
 
 %description
@@ -49,7 +49,7 @@ Summary:        API documentation for %{name}
 %{mvn_build} -f
 
 %install
-%mvn_install
+%{mvn_install}
 
 %files -f .mfiles
 %defattr(-,root,root)

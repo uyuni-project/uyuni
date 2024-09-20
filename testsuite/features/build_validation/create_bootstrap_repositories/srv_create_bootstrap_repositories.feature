@@ -14,10 +14,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 12 SP5 minion
     When I create the bootstrap repository for "sle12sp5_minion" on the server
 
-@sle15sp1_minion
-  Scenario: Create the bootstrap repository for a SLES 15 SP1 minion
-    When I create the bootstrap repository for "sle15sp1_minion" on the server
-
 @sle15sp2_minion
   Scenario: Create the bootstrap repository for a SLES 15 SP2 minion
     When I create the bootstrap repository for "sle15sp2_minion" on the server
@@ -106,10 +102,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a Ubuntu 22.04 minion
     When I create the bootstrap repository for "ubuntu2204_minion" on the server
 
-@debian10_minion
-  Scenario: Create the bootstrap repository for a Debian 10 minion
-    When I create the bootstrap repository for "debian10_minion" on the server
-
 @debian11_minion
   Scenario: Create the bootstrap repository for a Debian 11 minion
     When I create the bootstrap repository for "debian11_minion" on the server
@@ -117,10 +109,6 @@ Feature: Create bootstrap repositories
 @debian12_minion
   Scenario: Create the bootstrap repository for a Debian 12 minion
     When I create the bootstrap repository for "debian12_minion" on the server
-
-@opensuse154arm_minion
-  Scenario: Create the bootstrap repository for a OpenSUSE 15.4 ARM minion
-    When I create the bootstrap repository for "opensuse154arm_minion" on the server
 
 @opensuse155arm_minion
   Scenario: Create the bootstrap repository for a OpenSUSE 15.5 ARM minion

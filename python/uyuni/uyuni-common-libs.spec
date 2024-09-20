@@ -17,7 +17,7 @@
 
 
 %global debug_package %{nil}
-%define __python /usr/bin/python2
+%define __python %{_bindir}/python2
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -45,16 +45,15 @@
 %global python2root %{python2_sitelib}/uyuni
 
 Name:           uyuni-common-libs
+Version:        5.1.0
+Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
-Version:        5.0.4
-Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  make
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
 Uyuni server and client libs
@@ -106,18 +105,18 @@ Python 3 libraries required by both Uyuni server and client tools.
 %setup -q
 
 %build
-make -f Makefile.common-libs all PYTHON_BIN=%{pythonX}
+%make_build -f Makefile.common-libs all PYTHON_BIN=%{pythonX}
 
 %install
-make -f Makefile.common-libs install PREFIX=$RPM_BUILD_ROOT \
+make -f Makefile.common-libs install PREFIX=%{buildroot} \
     MANDIR=%{_mandir} PYTHON_BIN=%{pythonX}
 
 %if 0%{?build_py3}
-install -d $RPM_BUILD_ROOT%{python2root}/common
-cp $RPM_BUILD_ROOT%{python3root}/__init__.py \
-    $RPM_BUILD_ROOT%{python2root}/
-cp $RPM_BUILD_ROOT%{python3root}/common/*.py \
-    $RPM_BUILD_ROOT%{python2root}/common
+install -d %{buildroot}%{python2root}/common
+cp %{buildroot}%{python3root}/__init__.py \
+    %{buildroot}%{python2root}/
+cp %{buildroot}%{python3root}/common/*.py \
+    %{buildroot}%{python2root}/common
 %endif
 
 %if 0%{?suse_version}
@@ -132,7 +131,7 @@ cp $RPM_BUILD_ROOT%{python3root}/common/*.py \
 %endif
 
 %if !(0%{?build_py2})
-rm -Rf $RPM_BUILD_ROOT%{python2root}
+rm -Rf %{buildroot}%{python2root}
 %endif
 
 %if 0%{?build_py2}

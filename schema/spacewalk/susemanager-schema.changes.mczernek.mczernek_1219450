@@ -1,2 +1,0 @@
-- Execute the cobbler-sync-default task once per 5 minutes by default
-  (bsc#1219450)

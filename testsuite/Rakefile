@@ -84,13 +84,21 @@ namespace :utils do
   end
 
   desc 'Generate feature file for a client from a template and include it in a yaml file'
-  task :generate_feature, [:template_path, :client_name, :output_path, :yaml_path] do |_t, args|
+  task :generate_feature, [:template_path, :client_name, :output_path] do |_t, args|
     # TODO: We want to use English language in our Cucumber .feature files,
     # so we need a map here to not use `rocky8_minion` but `Rocky 8 minion`
     output_filepath = "#{args[:output_path]}/#{args[:client_name]}_#{File.basename(args[:template_path], '.*')}.feature"
     sh "sed 's/<client>/#{args[:client_name]}/g' #{args[:template_path]} > #{output_filepath}", verbose: false
     sh "sed -i 's/<type>/salt/g' #{output_filepath}", verbose: false
-    sh "echo '- #{output_filepath}' >> #{args[:yaml_path]}", verbose: false
+    # When two minions with the same version but different architectures create a bootstrap repository, they will share the same directory
+    # To prevent one minion to delete the other minion bootstrap repository, disable the flush option for s390 minion.
+    if args[:flush]
+      # This will generate `minion_create_bootstrap_repository.feature` with the flush option active
+      sh "sed -i 's/<optional-flush-option>//g' #{output_filepath}", verbose: false
+    else
+      # This will generate `minion_create_bootstrap_repository.feature` with the flush option disable
+      sh "sed -i 's/<optional-flush-option>/without flushing/g' #{output_filepath}", verbose: false
+    end
   end
 
   desc 'Generate smoke tests for all the clients'
@@ -103,8 +111,7 @@ namespace :utils do
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/smoke_tests/smoke_tests.template',
         File.basename(client, '.feature'),
-        'features/build_validation/smoke_tests',
-        'run_sets/build_validation/build_validation_smoke_tests.yml'
+        'features/build_validation/smoke_tests'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -119,8 +126,7 @@ namespace :utils do
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/add_MU_repositories/add_maintenance_update_repositories.template',
         File.basename(client, '.feature'),
-        'features/build_validation/add_MU_repositories',
-        'run_sets/build_validation/build_validation_add_MU_repositories.yml'
+        'features/build_validation/add_MU_repositories'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -134,8 +140,7 @@ namespace :utils do
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/add_activation_keys/add_activation_key.template',
         File.basename(client, '.feature'),
-        'features/build_validation/add_activation_keys',
-        'run_sets/build_validation/build_validation_add_activation_keys.yml'
+        'features/build_validation/add_activation_keys'
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -147,11 +152,13 @@ namespace :utils do
     clients.reject! { |client| client.include? 'ssh' }
     clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
     clients.each do |client|
+      # disable flush option for s390 minions
+      flush = !client.include?('s390')
       Rake::Task['utils:generate_feature'].invoke(
         'features/build_validation/create_bootstrap_repositories/create_bootstrap_repository.template',
         File.basename(client, '.feature'),
         'features/build_validation/create_bootstrap_repositories',
-        'run_sets/build_validation/build_validation_create_bootstrap_repositories.yml'
+        flush
       )
       Rake::Task['utils:generate_feature'].reenable
     end
@@ -211,9 +218,13 @@ namespace :jenkins do
   task :generate_rake_files_init_clients, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('monitoring') || minion.include?('proxy')
-
-      Rake::Task['jenkins:generate_rake_run_step'].invoke('', File.basename(minion, '.feature'), 'features/build_validation/init_clients', "run_sets/build_validation/build_validation_init_client_#{minion}.yml")
+      next if minion.include?('proxy') or minion.include?('monitoring')
+      Rake::Task['jenkins:generate_rake_run_step'].invoke(
+        '',
+        File.basename(minion,'.feature'),
+        'features/build_validation/init_clients',
+        "run_sets/build_validation/build_validation_init_client_#{minion}.yml"
+      )
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
   end

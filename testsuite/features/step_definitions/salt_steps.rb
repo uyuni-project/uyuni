@@ -35,7 +35,7 @@ When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} stop", check_errors: false)
   else
     node.run("systemctl stop #{pkgname}", check_errors: false)
@@ -47,7 +47,7 @@ When(/^I start salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} start", check_errors: false)
   else
     node.run("systemctl start #{pkgname}", check_errors: false)
@@ -59,7 +59,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} restart", check_errors: false)
   else
     node.run("systemctl restart #{pkgname}", check_errors: false)
@@ -126,7 +126,7 @@ end
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
+  family = os_family.match?(/^opensuse/) ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 
@@ -166,8 +166,32 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
+
+# WORKAROUND : Click preview button retry to fix https://github.com/SUSE/spacewalk/issues/24893
 When(/^I click on preview$/) do
-  find('button#preview').click
+  # Define the maximum number of attempts
+  max_attempts = 2
+
+  (1..max_attempts).each do |attempt|
+    if page.has_button?('stop', visible: true)
+      puts 'Stop button visible, searching request ongoing.'
+    else
+      # Click the preview button
+      find('button#preview').click
+    end
+    # Wait for up to 3 seconds for the run button to be visible
+    if page.has_button?('run', visible: true, wait: 5)
+      puts 'The run button is visible.'
+      break
+    else
+      puts "The run button is not visible after clicking preview (attempt #{attempt})."
+    end
+  end
+
+  # After the loop, check if the run button is still not visible
+  unless page.has_button?('run', visible: true)
+    raise "Preview button not working: the run button is not visible after #{max_attempts} attempts."
+  end
 end
 
 When(/^I click on stop waiting$/) do
@@ -361,7 +385,7 @@ Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
-      open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
+      URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
         tmpfile.write(urlfile.read)
       end
     rescue OpenURI::HTTPError => e
@@ -452,8 +476,8 @@ Then(/^the salt event log on server should contain no failures$/) do
   file = 'salt_event_parser.py'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   # print failures from salt event log
   output, _code = get_target('server').run("python3 /tmp/#{file}")
@@ -538,9 +562,10 @@ When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on t
   files.split(/, */).each do |file|
     script += "    - '#{file}'\n"
   end
-  path = generate_temp_file('top.sls', script)
-  inject_salt_pillar_file(path, 'top.sls')
-  `rm #{path}`
+  temp_file = generate_temp_file('top.sls', script)
+  inject_salt_pillar_file(temp_file.path, 'top.sls')
+  temp_file.close
+  temp_file.unlink
 end
 
 When(/^I install the package download endpoint pillar file on the server$/) do
@@ -563,8 +588,8 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   dest = "/srv/formula_metadata/#{formula}/#{file}"
 
   get_target('server').run("mkdir -p /srv/formula_metadata/#{formula}")
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   get_target('server').run("chmod 644 #{dest}")
 end
