@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:27:21 CEST 2024 - rosuna@suse.com
+
+- version 4.3.26-0
+  * Fix private key format in jabberd certificate file (bsc#1228851)
+  * Fix parsing Authority Key Identifier when keyid is not prefixed (bsc#1229079)
+  * Support multiple certificates for root-ca-file and server-cert-file
+
+-------------------------------------------------------------------
 Wed Jun 26 16:41:28 CEST 2024 - marina.latini@suse.com
 
 - version 4.3.25-0

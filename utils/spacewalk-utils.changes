@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 02 14:59:19 CEST 2024 - rosuna@suse.com
+
+- version 4.3.21-0
+  * Drop unsupported tool spacewalk-final-archive as it is broken
+    and may disclose sensitive information (bsc#1228945)
+
+-------------------------------------------------------------------
 Thu Jun 06 17:01:59 CEST 2024 - rosuna@suse.com
 
 - version 4.3.20-0

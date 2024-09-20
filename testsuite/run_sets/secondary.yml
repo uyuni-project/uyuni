@@ -34,7 +34,7 @@
 - features/secondary/minssh_bootstrap_api.feature
 - features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
-- features/secondary/min_ssh_tunnel.feature
+- features/secondary/minssh_tunnel.feature
 - features/secondary/min_activationkey.feature
 - features/secondary/trad_migrate_to_minion_webui.feature
 - features/secondary/trad_migrate_to_minion_bootstrap.feature

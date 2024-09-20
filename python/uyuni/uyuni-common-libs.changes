@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Sep 02 15:05:19 CEST 2024 - rosuna@suse.com
+
+- version 4.3.11-0
+  * Enforce directory permissions at repo-sync when creating
+    directories (bsc#1229260)
+  * Make ISSv1 timezone independent (bsc#1221505)
+
+-------------------------------------------------------------------
 Fri Apr 12 17:18:11 CEST 2024 - rosuna@suse.com
 
 - version 4.3.10-0

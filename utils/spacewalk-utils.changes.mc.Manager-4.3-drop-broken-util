@@ -1,2 +1,0 @@
-- CVE-2024-22035: drop unsupported tool spacewalk-final-archive as
-  it is broken and may disclose sensitive information  (bsc#1228945)

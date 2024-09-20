@@ -1,1 +1,0 @@
-- change Errata cve column to type text as a varchar reaches the maximum (bsc#1226478)
