@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:34+0200\n"
+"POT-Creation-Date: 2024-09-20 14:29+0200\n"
 "PO-Revision-Date: 2024-06-11 09:46+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -337,7 +337,7 @@ msgstr "系统组"
 #: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
 #: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
 #: ../src/spacecmd/softwarechannel.py:1474
-#: ../src/spacecmd/softwarechannel.py:1558
+#: ../src/spacecmd/softwarechannel.py:1556
 #: ../src/spacecmd/softwarechannel.py:1810
 msgid "Packages"
 msgstr "软件包"
@@ -3480,7 +3480,7 @@ msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) 太旧（必须指定 >= %s）"
 
 #: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
-#: ../src/spacecmd/utils.py:579
+#: ../src/spacecmd/utils.py:600
 #, python-format
 msgid "Could not read %s"
 msgstr "无法读取 %s"
@@ -4025,7 +4025,7 @@ msgid "No packages found to remove"
 msgstr "未找到要去除的软件包"
 
 #: ../src/spacecmd/package.py:210 ../src/spacecmd/package.py:268
-#: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
+#: ../src/spacecmd/softwarechannel.py:1560 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr "去除这些软件包 [y/N]："
 
@@ -5830,7 +5830,7 @@ msgstr "softwarechannel_removepackages：从软件通道中去除软件包"
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
 msgstr "用法：softwarechannel_removepackages CHANNEL <软件包 ...>"
 
-#: ../src/spacecmd/softwarechannel.py:1555
+#: ../src/spacecmd/softwarechannel.py:1553
 msgid "No packages to remove"
 msgstr "没有可去除的软件包"
 
@@ -8176,23 +8176,27 @@ msgstr "代理系统 ID："
 msgid "Manage with Salt SSH"
 msgstr "使用 Salt SSH 管理"
 
-#: ../src/spacecmd/system.py:4567
+#: ../src/spacecmd/system.py:4568
+msgid "Provided port must be numeric"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4573
 msgid "Hostname must be provided"
 msgstr "必须提供主机名"
 
-#: ../src/spacecmd/system.py:4570
+#: ../src/spacecmd/system.py:4576
 msgid "Either a SSH Password or a private key must be provided"
 msgstr "必须提供 SSH 口令或私用密钥"
 
-#: ../src/spacecmd/system.py:4578
+#: ../src/spacecmd/system.py:4584
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr "服务器在引导时不支持重新激活密钥"
 
-#: ../src/spacecmd/system.py:4585
+#: ../src/spacecmd/system.py:4591
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "正在引导 \"{}\"。这可能需要一段时间。"
 
-#: ../src/spacecmd/system.py:4599
+#: ../src/spacecmd/system.py:4605
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
@@ -8472,85 +8476,85 @@ msgstr "未找到编辑器"
 msgid "Invalid time provided"
 msgstr "提供了无效时间"
 
-#: ../src/spacecmd/utils.py:474
+#: ../src/spacecmd/utils.py:495
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s 是未知勘误类型"
 
-#: ../src/spacecmd/utils.py:482
+#: ../src/spacecmd/utils.py:503
 msgid "Security Errata"
 msgstr "安全勘误"
 
-#: ../src/spacecmd/utils.py:491
+#: ../src/spacecmd/utils.py:512
 msgid "Bug Fix Errata"
 msgstr "Bug 修复勘误"
 
-#: ../src/spacecmd/utils.py:500
+#: ../src/spacecmd/utils.py:521
 msgid "Enhancement Errata"
 msgstr "增强勘误"
 
-#: ../src/spacecmd/utils.py:510
+#: ../src/spacecmd/utils.py:531
 msgid "Current Selections"
 msgstr "当前选择内容"
 
-#: ../src/spacecmd/utils.py:520
+#: ../src/spacecmd/utils.py:541
 msgid "Available Configuration Channels"
 msgstr "可用配置通道"
 
-#: ../src/spacecmd/utils.py:526 ../src/spacecmd/utils.py:546
+#: ../src/spacecmd/utils.py:547 ../src/spacecmd/utils.py:567
 msgid "Channel:"
 msgstr "通道："
 
-#: ../src/spacecmd/utils.py:529 ../src/spacecmd/utils.py:549
+#: ../src/spacecmd/utils.py:550 ../src/spacecmd/utils.py:570
 msgid "Invalid channel"
 msgstr "无效通道"
 
-#: ../src/spacecmd/utils.py:533
+#: ../src/spacecmd/utils.py:554
 msgid "New Rank:"
 msgstr "新排名："
 
-#: ../src/spacecmd/utils.py:540 ../src/spacecmd/utils.py:543
+#: ../src/spacecmd/utils.py:561 ../src/spacecmd/utils.py:564
 msgid "Invalid rank"
 msgstr "无效排名"
 
-#: ../src/spacecmd/utils.py:554
+#: ../src/spacecmd/utils.py:575
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:735
+#: ../src/spacecmd/utils.py:756
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:742
+#: ../src/spacecmd/utils.py:763
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:753
+#: ../src/spacecmd/utils.py:774
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:755
+#: ../src/spacecmd/utils.py:776
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:757
+#: ../src/spacecmd/utils.py:778
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:794
+#: ../src/spacecmd/utils.py:815
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:810
+#: ../src/spacecmd/utils.py:831
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:898
+#: ../src/spacecmd/utils.py:919
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2022-08-02 12:06+0000\n"
-"Last-Translator: Michael Calmer <mc@suse.com>\n"
+"POT-Creation-Date: 2024-09-20 14:29+0200\n"
+"PO-Revision-Date: 2024-08-25 15:47+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd/de/"
 ">\n"
 "Language: de\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -312,7 +312,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:978 ../src/spacecmd/configchannel.py:807
 #: ../src/spacecmd/configchannel.py:921 ../src/spacecmd/system.py:2951
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Konfigurationskanäle"
 
 #: ../src/spacecmd/activationkey.py:984 ../src/spacecmd/system.py:2956
 msgid "Entitlements"
@@ -325,7 +325,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
 #: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
 #: ../src/spacecmd/softwarechannel.py:1474
-#: ../src/spacecmd/softwarechannel.py:1558
+#: ../src/spacecmd/softwarechannel.py:1556
 #: ../src/spacecmd/softwarechannel.py:1810
 msgid "Packages"
 msgstr ""
@@ -903,7 +903,7 @@ msgstr ""
 #: ../src/spacecmd/group.py:190 ../src/spacecmd/softwarechannel.py:788
 #: ../src/spacecmd/system.py:3628
 msgid "Description:"
-msgstr ""
+msgstr "Beschreibung:"
 
 #: ../src/spacecmd/configchannel.py:483
 msgid "Type [normal, state]:"
@@ -1807,7 +1807,7 @@ msgstr ""
 #: ../src/spacecmd/errata.py:416 ../src/spacecmd/package.py:108
 #: ../src/spacecmd/softwarechannel.py:567
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: ../src/spacecmd/errata.py:422
 msgid "Notes"
@@ -3243,7 +3243,7 @@ msgid "API (%s) is too old (>= %s required)"
 msgstr ""
 
 #: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
-#: ../src/spacecmd/utils.py:579
+#: ../src/spacecmd/utils.py:600
 #, python-format
 msgid "Could not read %s"
 msgstr ""
@@ -3768,7 +3768,7 @@ msgid "No packages found to remove"
 msgstr ""
 
 #: ../src/spacecmd/package.py:210 ../src/spacecmd/package.py:268
-#: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
+#: ../src/spacecmd/softwarechannel.py:1560 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr ""
 
@@ -5402,7 +5402,7 @@ msgstr ""
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
 msgstr ""
 
-#: ../src/spacecmd/softwarechannel.py:1555
+#: ../src/spacecmd/softwarechannel.py:1553
 msgid "No packages to remove"
 msgstr ""
 
@@ -5917,7 +5917,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2748
 msgid "Channel Name"
-msgstr ""
+msgstr "Kanalname"
 
 #: ../src/spacecmd/softwarechannel.py:2748
 msgid "Update Schedule"
@@ -7573,23 +7573,27 @@ msgstr ""
 msgid "Manage with Salt SSH"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4567
+#: ../src/spacecmd/system.py:4568
+msgid "Provided port must be numeric"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4573
 msgid "Hostname must be provided"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4570
+#: ../src/spacecmd/system.py:4576
 msgid "Either a SSH Password or a private key must be provided"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4578
+#: ../src/spacecmd/system.py:4584
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4585
+#: ../src/spacecmd/system.py:4591
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4599
+#: ../src/spacecmd/system.py:4605
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
@@ -7860,85 +7864,85 @@ msgstr ""
 msgid "Invalid time provided"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:474
+#: ../src/spacecmd/utils.py:495
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:482
+#: ../src/spacecmd/utils.py:503
 msgid "Security Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:491
+#: ../src/spacecmd/utils.py:512
 msgid "Bug Fix Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:500
+#: ../src/spacecmd/utils.py:521
 msgid "Enhancement Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:510
+#: ../src/spacecmd/utils.py:531
 msgid "Current Selections"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:520
+#: ../src/spacecmd/utils.py:541
 msgid "Available Configuration Channels"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:526 ../src/spacecmd/utils.py:546
+#: ../src/spacecmd/utils.py:547 ../src/spacecmd/utils.py:567
 msgid "Channel:"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:529 ../src/spacecmd/utils.py:549
+#: ../src/spacecmd/utils.py:550 ../src/spacecmd/utils.py:570
 msgid "Invalid channel"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:533
+#: ../src/spacecmd/utils.py:554
 msgid "New Rank:"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:540 ../src/spacecmd/utils.py:543
+#: ../src/spacecmd/utils.py:561 ../src/spacecmd/utils.py:564
 msgid "Invalid rank"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:554
+#: ../src/spacecmd/utils.py:575
 msgid "Clearing current selections"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:735
+#: ../src/spacecmd/utils.py:756
 msgid "Could not generate json data object!"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:742
+#: ../src/spacecmd/utils.py:763
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:753
+#: ../src/spacecmd/utils.py:774
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:755
+#: ../src/spacecmd/utils.py:776
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr ""
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:757
+#: ../src/spacecmd/utils.py:778
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:794
+#: ../src/spacecmd/utils.py:815
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:810
+#: ../src/spacecmd/utils.py:831
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:898
+#: ../src/spacecmd/utils.py:919
 msgid "Parameter {} not a string type, but {}."
 msgstr ""
 

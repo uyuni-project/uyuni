@@ -3,10 +3,10 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/Range.tsx:46
-#: ../html/src/components/input/Range.tsx:47
-#: ../html/src/components/input/Range.tsx:59
-#: ../html/src/components/input/Range.tsx:60
+#: ../html/src/components/input/range/Range.tsx:46
+#: ../html/src/components/input/range/Range.tsx:47
+#: ../html/src/components/input/range/Range.tsx:59
+#: ../html/src/components/input/range/Range.tsx:60
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:199
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
@@ -17,16 +17,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2022-01-11 14:51+0000\n"
-"Last-Translator: Michael Calmer <mc@suse.com>\n"
+"POT-Creation-Date: 2024-09-20 14:29+0200\n"
+"PO-Revision-Date: 2024-08-25 15:47+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
@@ -44,7 +44,7 @@ msgstr ""
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
 msgid "The action has been <link>scheduled</link>."
-msgstr ""
+msgstr "Die Aktion wurde <link>eingeplant</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
@@ -75,7 +75,7 @@ msgstr ""
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
-msgstr ""
+msgstr "Zurück zur Liste"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
@@ -94,13 +94,12 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "Pflichtfelder bitte ausfüllen: {0}"
+msgstr "Erforderliche Felder bitte ausfüllen: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
 msgid "Invalid format of fields: {fields}"
-msgstr ""
+msgstr "Ungültiges Format der Felder: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid ""
@@ -110,15 +109,15 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
-msgstr ""
+msgstr "Alle Abschnitte ausklappen"
 
 #: ../html/src/components/FormulaForm.tsx:275
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "Alle Abschnitte einklappen"
 
 #: ../html/src/components/FormulaForm.tsx:340
 msgid "Unnamed"
-msgstr ""
+msgstr "Unbenannt"
 
 #: ../html/src/components/FormulaForm.tsx:349
 msgid "Search by formula's group name"
@@ -126,7 +125,7 @@ msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:50
 msgid "new action chain"
-msgstr ""
+msgstr "neue Aktionskette"
 
 #: ../html/src/components/action-schedule.tsx:198
 msgid ""
@@ -188,36 +187,36 @@ msgstr "System"
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
 msgid "Environment Type"
-msgstr ""
+msgstr "Umgebungstyp"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/manager/notifications/notification-messages.tsx:508
 msgid "Created"
-msgstr ""
+msgstr "Erstellt"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:90
 msgid "Last modified"
-msgstr ""
+msgstr "Zuletzt geändert"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:342
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:371
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:777
 #: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
 msgid "Attestation time"
 msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:408
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:683
@@ -229,7 +228,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/ListTab.tsx:258
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:115
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
@@ -242,30 +241,29 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:375
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
-#, fuzzy
 msgid "Status:"
-msgstr "Bundesland"
+msgstr "Status:"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
 msgid "Created on"
-msgstr ""
+msgstr "Erstellt am"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:75
 msgid "Last modified on"
-msgstr ""
+msgstr "Zuletzt geändert am"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
 #: ../html/src/manager/notifications/notification-messages.tsx:513
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:89
 msgid "{actionName} scheduled by {actionScheduledBy}"
-msgstr ""
+msgstr "{actionName} eingeplant von {actionScheduledBy}"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
 msgid "Attested on"
@@ -275,16 +273,15 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
-msgstr ""
+msgstr "Übersicht"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
-#, fuzzy
 msgid "Result Type:"
-msgstr "System"
+msgstr "Ergebnistyp:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:27
 msgid "Description:"
-msgstr ""
+msgstr "Beschreibung:"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:44
 msgid "Attested on:"
@@ -305,9 +302,8 @@ msgid "Save"
 msgstr "Speichern"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
-#, fuzzy
 msgid "Reset Changes"
-msgstr "Änderungen speichern"
+msgstr "Änderungen zurücksetzen"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
 msgid "Enable attestation"
@@ -315,7 +311,7 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
 msgid "Executions"
-msgstr ""
+msgstr "Ausführungen"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
 msgid "Peform attestation during the boot process"
@@ -326,9 +322,8 @@ msgid "Peform attestation on a schedule"
 msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
-#, fuzzy
 msgid "Select a schedule"
-msgstr "Alles auswählen"
+msgstr "Zeitplan auswählen"
 
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
@@ -336,39 +331,36 @@ msgstr "Alles auswählen"
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
-msgstr ""
+msgstr "N/V"
 
 #: ../html/src/components/combobox.tsx:96
-#, fuzzy
 msgid "Create {label}"
-msgstr "Bundesland"
+msgstr "{label} erstellen"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Konfigurationskanäle"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:112
 msgid "Previous month"
-msgstr ""
+msgstr "Vorheriger Monat"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:113
 msgid "Next month"
-msgstr ""
+msgstr "Nächster Monat"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:114
 msgid "Previous year"
-msgstr ""
+msgstr "Vorheriges Jahr"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:115
-#, fuzzy
 msgid "Next year"
-msgstr "Nächste"
+msgstr "Nächstes Jahr"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
-msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
+msgstr ""
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
 msgid ""
@@ -434,6 +426,16 @@ msgstr "Abbrechen"
 msgid "Delete"
 msgstr "Löschen"
 
+#: ../html/src/components/dialog/delete.stories.tsx:14
+#, fuzzy
+msgid "Delete project"
+msgstr "Projekt löschen"
+
+#: ../html/src/components/dialog/delete.stories.tsx:17
+#, fuzzy
+msgid "Are you sure you want to delete project "
+msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
+
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr " Keine Gruppe"
@@ -471,15 +473,19 @@ msgstr "Passwort anzeigen/verstecken"
 
 #: ../html/src/components/formulas/SectionToggle.tsx:23
 msgid "Toggle section visibility"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.tsx:158
-msgid "Remove"
-msgstr "Löschen"
+msgstr "Sichtbarkeit des Abschnitts umschalten"
 
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:49
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:58
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:47
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:58
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:66
+#: ../html/src/components/input/form/Form.stories.tsx:25
+#: ../html/src/components/input/text/Text.stories.tsx:25
+#: ../html/src/components/input/text/Text.stories.tsx:34
 msgid "Minimum 2 characters"
 msgstr "Mindestens 2 Zeichen"
 
@@ -487,21 +493,151 @@ msgstr "Mindestens 2 Zeichen"
 msgid "required"
 msgstr "notwendig"
 
-#: ../html/src/components/input/Range.test.tsx:71
+#: ../html/src/components/input/check/Check.stories.tsx:22
+#: ../html/src/components/input/datetime/DateTime.stories.tsx:25
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:66
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:55
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:75
+#: ../html/src/components/input/form/Form.stories.tsx:30
+#: ../html/src/components/input/password/Password.stories.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:37
+#: ../html/src/components/input/radio/horizontal.stories.tsx:36
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:36
+#: ../html/src/components/input/radio/vertical.stories.tsx:35
+#: ../html/src/components/input/range/Range.stories.tsx:24
+#: ../html/src/components/input/select/simple.stories.tsx:32
+#: ../html/src/components/input/text/Text.stories.tsx:38
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
+#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
+msgid "Submit"
+msgstr "Einreichen"
+
+#: ../html/src/components/input/datetime/DateTime.stories.tsx:24
+msgid "Time"
+msgstr "Zeit"
+
+#: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:158
+msgid "Remove"
+msgstr "Löschen"
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:24
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:24
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:32
+msgid "Users"
+msgstr "Benutzer"
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:47
+#: ../html/src/components/input/text/Text.stories.tsx:23
+msgid "First Name"
+msgstr "Vorname"
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:56
+#, fuzzy
+msgid "Last Name"
+msgstr "Vorname"
+
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
+#: ../html/src/manager/login/uyuni/login.tsx:76
+msgid "Login"
+msgstr "Login"
+
+#. ref={nameInputRef}
+#: ../html/src/components/input/form/Form.stories.tsx:23
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
+#: ../html/src/manager/images/image-view.tsx:643
+#: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
+msgid "Name"
+msgstr ""
+
+#: ../html/src/components/input/password/Password.stories.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:93
+#: ../html/src/manager/login/uyuni/login.tsx:88
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
+msgid "Password"
+msgstr "Passwort"
+
+#: ../html/src/components/input/password/Password.stories.tsx:25
+msgid "Minimum 4 characters"
+msgstr "Mindestens 4 Zeichen"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:26
+#: ../html/src/components/input/radio/horizontal.stories.tsx:26
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:25
+#: ../html/src/components/input/radio/vertical.stories.tsx:25
+#: ../html/src/components/input/select/async.stories.tsx:44
+#: ../html/src/components/input/select/simple.stories.tsx:26
+msgid "Level"
+msgstr "Niveau"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:32
+#: ../html/src/components/input/radio/horizontal.stories.tsx:31
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:31
+#: ../html/src/components/input/radio/vertical.stories.tsx:30
+msgid "Beginner"
+msgstr "Anfänger"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:33
+#: ../html/src/components/input/radio/horizontal.stories.tsx:32
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:32
+#: ../html/src/components/input/radio/vertical.stories.tsx:31
+msgid "Normal"
+msgstr "Normal"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:34
+#: ../html/src/components/input/radio/horizontal.stories.tsx:33
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:33
+#: ../html/src/components/input/radio/vertical.stories.tsx:32
+msgid "Expert"
+msgstr "Experte"
+
+#: ../html/src/components/input/range/Range.stories.tsx:23
+msgid "Port range"
+msgstr ""
+
+#: ../html/src/components/input/range/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr "Beide Werte müssen eine positive Zahl sein"
 
-#: ../html/src/components/input/Select.test.tsx:58
+#: ../html/src/components/input/select/Select.test.tsx:58
+#: ../html/src/components/input/select/custom.stories.tsx:34
 msgid "Start typing..."
 msgstr ""
 
-#: ../html/src/components/input/Select.test.tsx:59
+#: ../html/src/components/input/select/Select.test.tsx:59
 msgid "No flavor"
 msgstr "Keine Variante"
 
-#: ../html/src/components/input/Select.tsx:255
+#: ../html/src/components/input/select/Select.tsx:255
 msgid "No options"
-msgstr ""
+msgstr "Keine Optionen"
+
+#: ../html/src/components/input/select/custom.stories.tsx:32
+msgid "Flavor"
+msgstr "Variante"
+
+#: ../html/src/components/input/select/custom.stories.tsx:35
+msgid "No flavors"
+msgstr "Keine Varianten"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -527,7 +663,7 @@ msgstr "Bestätigen"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:241
 #: ../html/src/manager/packages/list.tsx:144
 msgid "Filter by package name"
-msgstr ""
+msgstr "Nach Paketname filtern"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:214
 #: ../html/src/components/package/PackageListActionScheduler.tsx:246
@@ -539,7 +675,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
-msgstr ""
+msgstr "Paketname"
 
 #: ../html/src/components/pagination.tsx:23
 msgid "First"
@@ -565,12 +701,11 @@ msgstr "Letzte"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr ""
+msgstr "Seite <dropdown></dropdown> von {total}"
 
 #: ../html/src/components/pagination.tsx:115
-#, fuzzy
 msgid "Page {current} of {total}"
-msgstr "Seite {0} von {1}"
+msgstr "Seite {current} von {total}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
@@ -641,7 +776,7 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:512
 msgid "Select a Schedule"
-msgstr ""
+msgstr "Zeitplan auswählen"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
@@ -654,14 +789,14 @@ msgstr ""
 #: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:27
 msgid "Internal State"
-msgstr ""
+msgstr "Interner Zustand"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
 #: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:31
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Normaler Konfigurationskanal"
 
 #: ../html/src/components/ranking-table.tsx:44
 #: ../html/src/components/table/TableDataHandler.tsx:376
@@ -670,7 +805,7 @@ msgstr ""
 
 #: ../html/src/components/salt-state-popup.tsx:50
 msgid "Configuration Channel: {name}"
-msgstr ""
+msgstr "Konfigurationskanal: {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -694,7 +829,7 @@ msgstr "Bearbeiten"
 
 #: ../html/src/components/salt-state-popup.tsx:61
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "Konfigurationskanal bearbeiten"
 
 #: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
@@ -752,13 +887,12 @@ msgid "Reorder"
 msgstr "Umsortieren"
 
 #: ../html/src/components/states-picker.tsx:415
-#, fuzzy
 msgid "Search in states"
-msgstr "Suchen"
+msgstr "In Zuständen suchen"
 
 #: ../html/src/components/states-picker.tsx:415
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "In Konfigurationskanälen suchen"
 
 #: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/header/search/search.tsx:77
@@ -790,19 +924,17 @@ msgstr "Es sind keine States zugewiesen."
 
 #: ../html/src/components/states-picker.tsx:448
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:251
-#, fuzzy
 msgid "State Name"
-msgstr "Nachname"
+msgstr "Zustandsname"
 
 #: ../html/src/components/states-picker.tsx:448
 msgid "Channel Name"
-msgstr ""
+msgstr "Kanalname"
 
 #: ../html/src/components/states-picker.tsx:449
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
-#, fuzzy
 msgid "State Label"
-msgstr "Bundesland"
+msgstr ""
 
 #: ../html/src/components/states-picker.tsx:449
 msgid "Channel Label"
@@ -822,7 +954,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:52
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:268
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: ../html/src/components/states-picker.tsx:451
 msgid "Assign"
@@ -835,51 +967,46 @@ msgstr ""
 
 #: ../html/src/components/states-picker.tsx:520
 msgid "This table is empty"
-msgstr ""
+msgstr "Diese Tabelle ist leer"
 
 #: ../html/src/components/states-picker.tsx:527
 #: ../html/src/components/states-picker.tsx:569
-#, fuzzy
 msgid "System Name"
-msgstr "Nachname"
+msgstr "Systemname"
 
 #: ../html/src/components/states-picker.tsx:547
 msgid "Execute States"
 msgstr ""
 
 #: ../html/src/components/states-picker.tsx:552
-#, fuzzy
 msgid "Select Sytems"
-msgstr "Alles auswählen"
+msgstr "Systeme auswählen"
 
 #: ../html/src/components/systems.tsx:21
-#, fuzzy
 msgid "Unprovisioned System"
-msgstr "System"
+msgstr "Nicht bereitgestelltes System"
 
 #: ../html/src/components/systems.tsx:26
 #: ../html/src/manager/systems/list-filter.tsx:7
-#, fuzzy
 msgid "Virtual Guest"
-msgstr "System"
+msgstr "Virtueller Gast"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
 #: ../html/src/manager/systems/list-filter.tsx:56
 #: ../html/src/manager/systems/virtual-list.tsx:63
 msgid "Virtual Host"
-msgstr ""
+msgstr "Virtueller Host"
 
 #: ../html/src/components/systems.tsx:36
-#, fuzzy
 msgid "Non-Virtual System"
-msgstr "System"
+msgstr "Nicht-virtuelles System"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:609
 #: ../html/src/manager/systems/list-filter.tsx:6
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
@@ -898,22 +1025,20 @@ msgstr "System gesperrt"
 #: ../html/src/components/table/SearchField.tsx:49
 #: ../html/src/components/table/TableFilter.tsx:45
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: ../html/src/components/table/SearchField.tsx:53
 #: ../html/src/components/table/TableFilter.tsx:49
-#, fuzzy
 msgid "Select a filter"
-msgstr "Alles auswählen"
+msgstr "Filter auswählen"
 
 #: ../html/src/components/table/SearchPanel.tsx:59
 msgid "Items {from} - {to} of {total}"
-msgstr ""
+msgstr "Elemente {from} - {to} von {total}"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
-#, fuzzy
 msgid "({selectedCount} selected)"
-msgstr "({0} ausgewählt)"
+msgstr "({selectedCount} ausgewählt)"
 
 #: ../html/src/components/table/SearchPanel.tsx:66
 #: ../html/src/manager/admin/setup/products/products.tsx:376
@@ -927,21 +1052,19 @@ msgstr "Alles auswählen"
 #: ../html/src/components/table/SelectSearchField.tsx:5
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: ../html/src/components/table/TableDataHandler.tsx:407
 msgid "items per page"
 msgstr "Einträge pro Seite"
 
 #: ../html/src/components/target-systems.tsx:22
-#, fuzzy
 msgid "Target Systems"
-msgstr "System"
+msgstr "Zielsysteme"
 
 #: ../html/src/components/target-systems.tsx:28
-#, fuzzy
 msgid "No systems specified."
-msgstr "System gesperrt"
+msgstr "Keine Systeme angegeben."
 
 #: ../html/src/components/tree/tree.tsx:112
 msgid "Invalid data"
@@ -951,11 +1074,15 @@ msgstr "Ungültige Daten"
 msgid "No data"
 msgstr "Keine Daten"
 
+#: ../html/src/components/utils/HelpIcon.stories.tsx:4
+msgid "Text to display on hover"
+msgstr ""
+
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "Hilfe"
 
-#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/components/utils/loading/Loading.tsx:16
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
@@ -967,6 +1094,12 @@ msgstr "Hilfe"
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:468
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
+msgstr "Laden..."
+
+#: ../html/src/components/utils/loading/text-border.stories.tsx:7
+#: ../html/src/components/utils/loading/text.stories.tsx:7
+#, fuzzy
+msgid "Loading text"
 msgstr "Laden..."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
@@ -989,7 +1122,7 @@ msgstr ""
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:22
 msgid "Required channels"
-msgstr ""
+msgstr "Erforderliche Kanäle"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:24
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:28
@@ -998,7 +1131,7 @@ msgstr "keine"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
-msgstr ""
+msgstr "Diesen Kanal erfordern"
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -1006,7 +1139,7 @@ msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:10
 msgid "undefined"
-msgstr ""
+msgstr "undefiniert"
 
 #: ../html/src/core/intl/index.test.tsx:18
 #: ../html/src/core/intl/index.test.tsx:19
@@ -1324,17 +1457,6 @@ msgstr ""
 msgid "User"
 msgstr "Benutzer"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:88
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
-msgstr "Passwort"
-
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
@@ -1623,7 +1745,7 @@ msgid " seconds"
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:336
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:365
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
 #: ../html/src/manager/virtualization/ListTab.tsx:235
@@ -1726,151 +1848,156 @@ msgstr ""
 msgid "Streams"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:41
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
 msgid "Affected, patches available in channels which are not assigned"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:49
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:57
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:58
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
 msgid "Affected, at least one patch available in an assigned channel"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:62
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:64
 msgid "Not affected"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:63
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
 msgid ""
 "The client is not affected because none of the known CVE vulnerable packages "
 "are installed."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:67
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
 msgid "Patched"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:68
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:70
 msgid "A patch has been successfully installed on the client."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:72
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:74
 msgid "Affected, patch is unavailable"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:73
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:75
 msgid ""
 "The client is affected by a vulnerability for which a patch has not yet been "
 "released."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:77
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid "Affected, patch is unavailable in relevant channels"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
 msgid ""
 "The client is affected by a vulnerability for which a patch has been "
 "released,"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:85
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:225
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
+msgid "Unknown, CVE metadata not available"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
+msgid ""
+"It is not possible to scan the client server for CVE vulnerabilities without "
+"channels or OVAL metadata."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
+msgid "Error, see console"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:239
+msgid "Unknown patch status"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
+msgid "OVAL data out of sync. Potential missed vulnerabilities"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
+msgid "Server product channels out of sync; no patch information available"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:232
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:261
 msgid "CVE"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:287
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
 msgid "Audit Servers"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:294
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:323
 msgid "Audit Images"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:312
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:341
 msgid "MITRE CVE link"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:324
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:353
 msgid "SUSE Security CVE link"
 msgstr ""
 
-#. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:643
-#: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
-msgid "Name"
-msgstr ""
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:419
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:487
 #, fuzzy
 msgid "No action required"
 msgstr "notwendig"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:425
 msgid "Install a new patch on this system."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:442
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:418
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:454
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:466
 msgid "Install a new partial patch on this system."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:474
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:477
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:479
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:510
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:513
 msgid "If you see this report a bug."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:458
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:494
 #: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:466
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:502
 msgid "Patch available but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:469
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:505
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
@@ -1878,11 +2005,11 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:470
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:506
 msgid "Errata"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:496
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:532
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
 msgstr ""
@@ -2751,15 +2878,15 @@ msgstr ""
 msgid "No environments created"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:101
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:100
 msgid "Environment updated successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:116
 msgid "Environment {name} deleted successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
@@ -3807,10 +3934,6 @@ msgstr ""
 msgid "Learn more about"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:76
-msgid "Login"
-msgstr "Login"
-
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
 msgstr ""
@@ -4486,14 +4609,14 @@ msgid "Delete Notification"
 msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:42
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:338
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 #: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:55
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:358
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 #: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
@@ -4963,20 +5086,20 @@ msgstr ""
 msgid "No target systems found"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:463
 msgid "Not all minions responded on time."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:489
 msgid "No minions matched the target expression."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:491
 msgid "Server returned an error: {message}"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:558
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:567
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
 msgid "Matching ssh-push minions..."
 msgstr ""
 
@@ -5115,6 +5238,16 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:138
 msgid "Create Recurring"
+msgstr ""
+
+#: ../html/src/manager/storybook/storybook.tsx:47
+msgid "Development debugging page"
+msgstr ""
+
+#: ../html/src/manager/storybook/storybook.tsx:49
+msgid ""
+"This is a hidden page used by developers, if you found it by accident, good "
+"job!"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
@@ -5932,11 +6065,6 @@ msgstr ""
 msgid "Graphics"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
-msgid "Submit"
-msgstr "Einreichen"
-
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
 msgid "Retry"
 msgstr ""
@@ -6704,33 +6832,3 @@ msgstr ""
 #, fuzzy
 #~ msgid "Documentation"
 #~ msgstr "Dokumentation"
-
-#~ msgid "Time"
-#~ msgstr "Zeit"
-
-#~ msgid "Users"
-#~ msgstr "Benutzer"
-
-#~ msgid "First Name"
-#~ msgstr "Vorname"
-
-#~ msgid "Minimum 4 characters"
-#~ msgstr "Mindestens 4 Zeichen"
-
-#~ msgid "Level"
-#~ msgstr "Niveau"
-
-#~ msgid "Beginner"
-#~ msgstr "Anfänger"
-
-#~ msgid "Normal"
-#~ msgstr "Normal"
-
-#~ msgid "Expert"
-#~ msgstr "Experte"
-
-#~ msgid "Flavor"
-#~ msgstr "Variante"
-
-#~ msgid "No flavors"
-#~ msgstr "Keine Varianten"

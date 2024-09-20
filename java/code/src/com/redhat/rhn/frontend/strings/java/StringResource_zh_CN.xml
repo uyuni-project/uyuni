@@ -6075,11 +6075,11 @@ user before attempting to deactivate their account.</source>
         <target state="translated">未处理的错误</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.success" xml:space="preserve">
-        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
+        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="translated">已成功生成引导脚本。可通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它</target>
+        <target state="needs-adaptation">已成功生成引导脚本。可通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -11493,6 +11493,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
   </trans-unit>
       <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
         <source>Perform a reboot, only if required</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
+        <source>Sync OVAL Data</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
+        <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
       <target state="new"/>
   </trans-unit>
       </body>
