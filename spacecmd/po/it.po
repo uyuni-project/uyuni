@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-27 11:19+0200\n"
+"POT-Creation-Date: 2024-09-20 14:42+0200\n"
 "PO-Revision-Date: 2023-05-26 18:14+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
@@ -303,7 +303,7 @@ msgstr ""
 msgid "Contact Method:         %s"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:970 ../src/spacecmd/kickstart.py:432
+#: ../src/spacecmd/activationkey.py:970 ../src/spacecmd/kickstart.py:426
 #: ../src/spacecmd/system.py:2942
 msgid "Software Channels"
 msgstr ""
@@ -482,7 +482,7 @@ msgid ""
 "                   labels, config-channel names "
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1482 ../src/spacecmd/kickstart.py:467
+#: ../src/spacecmd/activationkey.py:1482 ../src/spacecmd/kickstart.py:461
 #: ../src/spacecmd/system.py:2937
 msgid "Activation Keys"
 msgstr ""
@@ -802,7 +802,7 @@ msgid "Binary:          %s"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:303 ../src/spacecmd/configchannel.py:738
-#: ../src/spacecmd/configchannel.py:994 ../src/spacecmd/kickstart.py:1980
+#: ../src/spacecmd/configchannel.py:994 ../src/spacecmd/kickstart.py:1974
 #: ../src/spacecmd/snippet.py:163
 msgid "Contents"
 msgstr ""
@@ -842,13 +842,13 @@ msgid "usage: configchannel_details CHANNEL ..."
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:444 ../src/spacecmd/group.py:571
-#: ../src/spacecmd/kickstart.py:421
+#: ../src/spacecmd/kickstart.py:415
 #, python-format
 msgid "Label:       %s"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:445 ../src/spacecmd/group.py:572
-#: ../src/spacecmd/kickstart.py:420
+#: ../src/spacecmd/kickstart.py:414
 #, python-format
 msgid "Name:        %s"
 msgstr ""
@@ -860,8 +860,8 @@ msgid "Description: %s"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:447 ../src/spacecmd/cryptokey.py:218
-#: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:507
-#: ../src/spacecmd/kickstart.py:1976
+#: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:501
+#: ../src/spacecmd/kickstart.py:1970
 #, python-format
 msgid "Type:        %s"
 msgstr ""
@@ -984,12 +984,12 @@ msgstr ""
 
 #. get the contents of the script
 #: ../src/spacecmd/configchannel.py:638 ../src/spacecmd/configchannel.py:946
-#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2033
+#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2027
 #: ../src/spacecmd/snippet.py:143
 msgid "Read an existing file [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/configchannel.py:640 ../src/spacecmd/kickstart.py:2035
+#: ../src/spacecmd/configchannel.py:640 ../src/spacecmd/kickstart.py:2029
 msgid "File:"
 msgstr ""
 
@@ -1220,11 +1220,11 @@ msgstr ""
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr ""
 
-#: ../src/spacecmd/configchannel.py:1287 ../src/spacecmd/kickstart.py:2417
+#: ../src/spacecmd/configchannel.py:1287 ../src/spacecmd/kickstart.py:2411
 msgid "Error, no filename passed"
 msgstr ""
 
-#: ../src/spacecmd/configchannel.py:1295 ../src/spacecmd/kickstart.py:2425
+#: ../src/spacecmd/configchannel.py:1295 ../src/spacecmd/kickstart.py:2419
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr ""
@@ -2173,7 +2173,7 @@ msgstr ""
 msgid "usage: kickstart_list"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:86 ../src/spacecmd/kickstart.py:2189
+#: ../src/spacecmd/kickstart.py:86 ../src/spacecmd/kickstart.py:2183
 msgid "No kickstart profiles available"
 msgstr ""
 
@@ -2192,15 +2192,15 @@ msgid ""
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:116 ../src/spacecmd/kickstart.py:254
+#: ../src/spacecmd/kickstart.py:116 ../src/spacecmd/kickstart.py:248
 msgid "Virtualization Types"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:121 ../src/spacecmd/kickstart.py:259
+#: ../src/spacecmd/kickstart.py:121 ../src/spacecmd/kickstart.py:253
 msgid "Virtualization Type [none]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:129 ../src/spacecmd/kickstart.py:267
+#: ../src/spacecmd/kickstart.py:129 ../src/spacecmd/kickstart.py:261
 msgid "Distributions"
 msgstr ""
 
@@ -2223,12 +2223,12 @@ msgstr ""
 msgid "Passwords don't match"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:150 ../src/spacecmd/kickstart.py:275
-#: ../src/spacecmd/kickstart.py:2059 ../src/spacecmd/kickstart.py:2203
+#: ../src/spacecmd/kickstart.py:150 ../src/spacecmd/kickstart.py:269
+#: ../src/spacecmd/kickstart.py:2053 ../src/spacecmd/kickstart.py:2197
 msgid "The Kickstart name is required"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:154 ../src/spacecmd/kickstart.py:279
+#: ../src/spacecmd/kickstart.py:154 ../src/spacecmd/kickstart.py:273
 msgid "The distribution is required"
 msgstr ""
 
@@ -2252,25 +2252,21 @@ msgstr ""
 msgid "usage: kickstart_delete \"PROF*\""
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2686
-#: ../src/spacecmd/kickstart.py:2742 ../src/spacecmd/kickstart.py:2786
+#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2680
+#: ../src/spacecmd/kickstart.py:2736 ../src/spacecmd/kickstart.py:2780
 msgid "No valid kickstart labels passed as arguments!"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:214
-msgid "The following kickstart labels are invalid:"
-msgstr ""
-
-#: ../src/spacecmd/kickstart.py:219
+#: ../src/spacecmd/kickstart.py:213
 #, python-format
 msgid "Delete profile %s [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:227
+#: ../src/spacecmd/kickstart.py:221
 msgid "kickstart_import: Import a Kickstart profile from a file"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:228
+#: ../src/spacecmd/kickstart.py:222
 msgid ""
 "usage: kickstart_import [options])\n"
 "\n"
@@ -2281,16 +2277,16 @@ msgid ""
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:283 ../src/spacecmd/kickstart.py:2063
+#: ../src/spacecmd/kickstart.py:277 ../src/spacecmd/kickstart.py:2057
 msgid "A filename is required"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:313
+#: ../src/spacecmd/kickstart.py:307
 msgid ""
 "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:314
+#: ../src/spacecmd/kickstart.py:308
 msgid ""
 "usage: kickstart_import_raw [options])\n"
 "\n"
@@ -2301,426 +2297,426 @@ msgid ""
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:330
+#: ../src/spacecmd/kickstart.py:324
 msgid "kickstart_details: Show the details of a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:331
+#: ../src/spacecmd/kickstart.py:325
 msgid "usage: kickstart_details PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:360
+#: ../src/spacecmd/kickstart.py:354
 msgid "Invalid Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:422
+#: ../src/spacecmd/kickstart.py:416
 #, python-format
 msgid "Tree:        %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:423
+#: ../src/spacecmd/kickstart.py:417
 #, python-format
 msgid "Active:      %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:424
+#: ../src/spacecmd/kickstart.py:418
 #, python-format
 msgid "Advanced:    %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:425
+#: ../src/spacecmd/kickstart.py:419
 #, python-format
 msgid "Org Default: %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:428
+#: ../src/spacecmd/kickstart.py:422
 #, python-format
 msgid "Configuration Management: %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:429
+#: ../src/spacecmd/kickstart.py:423
 #, python-format
 msgid "Remote Commands:          %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:441
+#: ../src/spacecmd/kickstart.py:435
 msgid "Advanced Options"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:449
+#: ../src/spacecmd/kickstart.py:443
 msgid "Custom Options"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:456
+#: ../src/spacecmd/kickstart.py:450
 msgid "Partitioning"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:461
+#: ../src/spacecmd/kickstart.py:455
 msgid "Software"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:474
+#: ../src/spacecmd/kickstart.py:468
 msgid "Crypto Keys"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:481
+#: ../src/spacecmd/kickstart.py:475
 msgid "File Preservations"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:490
+#: ../src/spacecmd/kickstart.py:484
 msgid "Variables"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:497
+#: ../src/spacecmd/kickstart.py:491
 msgid "Scripts"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:508 ../src/spacecmd/kickstart.py:1977
+#: ../src/spacecmd/kickstart.py:502 ../src/spacecmd/kickstart.py:1971
 #, python-format
 msgid "Chroot:      %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:511 ../src/spacecmd/kickstart.py:1978
+#: ../src/spacecmd/kickstart.py:505 ../src/spacecmd/kickstart.py:1972
 #, python-format
 msgid "Interpreter: %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:538
+#: ../src/spacecmd/kickstart.py:532
 msgid "Could not retrieve the Kickstart file"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:544
+#: ../src/spacecmd/kickstart.py:538
 msgid "kickstart_getcontents: Show the contents of a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:545
+#: ../src/spacecmd/kickstart.py:539
 msgid "                   as they would be presented to a client"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:546
+#: ../src/spacecmd/kickstart.py:540
 msgid "usage: kickstart_getcontents LABEL"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:580
+#: ../src/spacecmd/kickstart.py:574
 msgid "kickstart_rename: Rename a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:581
+#: ../src/spacecmd/kickstart.py:575
 msgid "usage: kickstart_rename OLDNAME NEWNAME"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:611
+#: ../src/spacecmd/kickstart.py:605
 msgid ""
 "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
 "profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:613
+#: ../src/spacecmd/kickstart.py:607
 msgid "usage: kickstart_listcryptokeys PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:643
+#: ../src/spacecmd/kickstart.py:637
 msgid "No crypto keys has been found"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:651
+#: ../src/spacecmd/kickstart.py:645
 msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:652
+#: ../src/spacecmd/kickstart.py:646
 msgid "usage: kickstart_addcryptokeys PROFILE <KEY ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:680
+#: ../src/spacecmd/kickstart.py:674
 msgid "kickstart_removecryptokeys: Remove crypto keys from a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:682
+#: ../src/spacecmd/kickstart.py:676
 msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:724
+#: ../src/spacecmd/kickstart.py:718
 msgid ""
 "kickstart_listactivationkeys: List the activation keys associated with a "
 "Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:726
+#: ../src/spacecmd/kickstart.py:720
 msgid "usage: kickstart_listactivationkeys PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:760
+#: ../src/spacecmd/kickstart.py:754
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:762
+#: ../src/spacecmd/kickstart.py:756
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:793
+#: ../src/spacecmd/kickstart.py:787
 msgid ""
 "kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
 "profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:795
+#: ../src/spacecmd/kickstart.py:789
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:821
+#: ../src/spacecmd/kickstart.py:815
 msgid "Remove these keys [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:836
+#: ../src/spacecmd/kickstart.py:830
 msgid ""
 "kickstart_enableconfigmanagement: Enable configuration management on a "
 "Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:838
+#: ../src/spacecmd/kickstart.py:832
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:871
+#: ../src/spacecmd/kickstart.py:865
 msgid ""
 "kickstart_disableconfigmanagement: Disable configuration management on a "
 "Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:873
+#: ../src/spacecmd/kickstart.py:867
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:906
+#: ../src/spacecmd/kickstart.py:900
 msgid ""
 "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:908
+#: ../src/spacecmd/kickstart.py:902
 msgid "usage: kickstart_enableremotecommands PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:941
+#: ../src/spacecmd/kickstart.py:935
 msgid ""
 "kickstart_disableremotecommands: Disable remote commands on a Kickstart "
 "profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:943
+#: ../src/spacecmd/kickstart.py:937
 msgid "usage: kickstart_disableremotecommands PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:975
+#: ../src/spacecmd/kickstart.py:969
 msgid "kickstart_setlocale: Set the locale for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:976
+#: ../src/spacecmd/kickstart.py:970
 msgid "usage: kickstart_setlocale PROFILE LOCALE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1016
+#: ../src/spacecmd/kickstart.py:1010
 msgid "kickstart_setselinux: Set the SELinux mode for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1018
+#: ../src/spacecmd/kickstart.py:1012
 msgid "usage: kickstart_setselinux PROFILE MODE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1055
+#: ../src/spacecmd/kickstart.py:1049
 msgid ""
 "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1057
+#: ../src/spacecmd/kickstart.py:1051
 msgid "usage: kickstart_setpartitions PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1108
+#: ../src/spacecmd/kickstart.py:1102
 msgid "kickstart_setdistribution: Set the distribution for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1110
+#: ../src/spacecmd/kickstart.py:1104
 msgid "usage: kickstart_setdistribution PROFILE DISTRIBUTION"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1146
+#: ../src/spacecmd/kickstart.py:1140
 msgid "kickstart_enablelogging: Enable logging for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1147
+#: ../src/spacecmd/kickstart.py:1141
 msgid "usage: kickstart_enablelogging PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1181
+#: ../src/spacecmd/kickstart.py:1175
 msgid "kickstart_addvariable: Add a variable to a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1182
+#: ../src/spacecmd/kickstart.py:1176
 msgid "usage: kickstart_addvariable PROFILE KEY VALUE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1222
+#: ../src/spacecmd/kickstart.py:1216
 msgid "kickstart_updatevariable: Update a variable in a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1224
+#: ../src/spacecmd/kickstart.py:1218
 msgid "usage: kickstart_updatevariable PROFILE KEY VALUE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1261
+#: ../src/spacecmd/kickstart.py:1255
 msgid "kickstart_removevariables: Remove variables from a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1263
+#: ../src/spacecmd/kickstart.py:1257
 msgid "usage: kickstart_removevariables PROFILE <KEY ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1314
+#: ../src/spacecmd/kickstart.py:1308
 msgid "kickstart_listvariables: List the variables of a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1316
+#: ../src/spacecmd/kickstart.py:1310
 msgid "usage: kickstart_listvariables PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1351
+#: ../src/spacecmd/kickstart.py:1345
 msgid "kickstart_addoption: Set an option for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1352
+#: ../src/spacecmd/kickstart.py:1346
 msgid "usage: kickstart_addoption PROFILE KEY [VALUE]"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1401
+#: ../src/spacecmd/kickstart.py:1395
 #, python-format
 msgid "%s needs to be set as a custom option"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1409
+#: ../src/spacecmd/kickstart.py:1403
 msgid "kickstart_removeoptions: Remove options from a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1410
+#: ../src/spacecmd/kickstart.py:1404
 msgid "usage: kickstart_removeoptions PROFILE <OPTION ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1464
+#: ../src/spacecmd/kickstart.py:1458
 msgid "kickstart_listoptions: List the options of a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1466
+#: ../src/spacecmd/kickstart.py:1460
 msgid "usage: kickstart_listoptions PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1502
+#: ../src/spacecmd/kickstart.py:1496
 msgid ""
 "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1504
+#: ../src/spacecmd/kickstart.py:1498
 msgid "usage: kickstart_listcustomoptions PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1540
+#: ../src/spacecmd/kickstart.py:1534
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1542
+#: ../src/spacecmd/kickstart.py:1536
 msgid "usage: kickstart_setcustomoptions PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1592
+#: ../src/spacecmd/kickstart.py:1586
 msgid "kickstart_addchildchannels: Add a child channels to a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1594
+#: ../src/spacecmd/kickstart.py:1588
 msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1654
+#: ../src/spacecmd/kickstart.py:1648
 msgid ""
 "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1656
+#: ../src/spacecmd/kickstart.py:1650
 msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1701
+#: ../src/spacecmd/kickstart.py:1695
 msgid ""
 "kickstart_listchildchannels: List the child channels of a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1703
+#: ../src/spacecmd/kickstart.py:1697
 msgid "usage: kickstart_listchildchannels PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1740
+#: ../src/spacecmd/kickstart.py:1734
 msgid ""
 "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1742
+#: ../src/spacecmd/kickstart.py:1736
 msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1779
+#: ../src/spacecmd/kickstart.py:1773
 msgid ""
 "kickstart_removefilepreservations: Remove file preservations from a "
 "Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1781
+#: ../src/spacecmd/kickstart.py:1775
 msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1828
+#: ../src/spacecmd/kickstart.py:1822
 msgid "kickstart_listpackages: List the packages for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1830
+#: ../src/spacecmd/kickstart.py:1824
 msgid "usage: kickstart_listpackages PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1863
+#: ../src/spacecmd/kickstart.py:1857
 msgid "kickstart_addpackages: Add packages to a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1864
+#: ../src/spacecmd/kickstart.py:1858
 msgid "usage: kickstart_addpackages PROFILE <PACKAGE ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1899
+#: ../src/spacecmd/kickstart.py:1893
 msgid "kickstart_removepackages: Remove packages from a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1901
+#: ../src/spacecmd/kickstart.py:1895
 msgid "usage: kickstart_removepackages PROFILE <PACKAGE ...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1946
+#: ../src/spacecmd/kickstart.py:1940
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1948
+#: ../src/spacecmd/kickstart.py:1942
 msgid "usage: kickstart_listscripts PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1967
+#: ../src/spacecmd/kickstart.py:1961
 #, python-format
 msgid "No scripts has been found for profile '%s'"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1975
+#: ../src/spacecmd/kickstart.py:1969
 #, python-format
 msgid "ID:          %i"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1990
+#: ../src/spacecmd/kickstart.py:1984
 msgid "kickstart_addscript: Add a script to a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:1991
+#: ../src/spacecmd/kickstart.py:1985
 msgid ""
 "usage: kickstart_addscript PROFILE [options])\n"
 "\n"
@@ -2733,80 +2729,80 @@ msgid ""
 "  -t ENABLING_TEMPLATING"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2026
+#: ../src/spacecmd/kickstart.py:2020
 msgid "Profile Name:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2028
+#: ../src/spacecmd/kickstart.py:2022
 msgid "Pre/Post Script [post]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2029
+#: ../src/spacecmd/kickstart.py:2023
 msgid "Chrooted [Y/n]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2030
+#: ../src/spacecmd/kickstart.py:2024
 msgid "Interpreter [/bin/bash]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2067
+#: ../src/spacecmd/kickstart.py:2061
 msgid "The execution time is required"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2083
+#: ../src/spacecmd/kickstart.py:2077
 #, python-format
 msgid "Profile Name:   %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2084
+#: ../src/spacecmd/kickstart.py:2078
 #, python-format
 msgid "Execution Time: %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2085
+#: ../src/spacecmd/kickstart.py:2079
 #, python-format
 msgid "Chroot:         %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2086
+#: ../src/spacecmd/kickstart.py:2080
 #, python-format
 msgid "Template:       %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2087
+#: ../src/spacecmd/kickstart.py:2081
 #, python-format
 msgid "Interpreter:    %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2088
+#: ../src/spacecmd/kickstart.py:2082
 msgid "Contents:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2108
+#: ../src/spacecmd/kickstart.py:2102
 msgid "kickstart_removescript: Remove a script from a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2109
+#: ../src/spacecmd/kickstart.py:2103
 msgid "usage: kickstart_removescript PROFILE [ID]"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2139 ../src/spacecmd/kickstart.py:2152
+#: ../src/spacecmd/kickstart.py:2133 ../src/spacecmd/kickstart.py:2146
 msgid "Invalid script ID"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2147
+#: ../src/spacecmd/kickstart.py:2141
 msgid "Script ID:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2154
+#: ../src/spacecmd/kickstart.py:2148
 msgid "Remove this script [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2167
+#: ../src/spacecmd/kickstart.py:2161
 msgid "kickstart_clone: Clone a Kickstart profile"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2168
+#: ../src/spacecmd/kickstart.py:2162
 msgid ""
 "usage: kickstart_clone [options])\n"
 "\n"
@@ -2815,31 +2811,31 @@ msgid ""
 "  -c CLONE_NAME"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2193
+#: ../src/spacecmd/kickstart.py:2187
 msgid "Kickstart Profiles"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2198
+#: ../src/spacecmd/kickstart.py:2192
 msgid "Original Profile:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2199
+#: ../src/spacecmd/kickstart.py:2193
 msgid "Cloned Profile:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2207
+#: ../src/spacecmd/kickstart.py:2201
 msgid "The Kickstart clone name is required"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2212
+#: ../src/spacecmd/kickstart.py:2206
 msgid "Kickstart profile you've entered was not found"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2225
+#: ../src/spacecmd/kickstart.py:2219
 msgid "kickstart_export: export kickstart profile(s) to json format file"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2226
+#: ../src/spacecmd/kickstart.py:2220
 msgid ""
 "usage: kickstart_export <KSPROFILE>... [options])\n"
 "options:\n"
@@ -2853,85 +2849,85 @@ msgid ""
 "Note : KSPROFILE list is optional, default is to export ALL"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2358
+#: ../src/spacecmd/kickstart.py:2352
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2366
+#: ../src/spacecmd/kickstart.py:2360
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2386
+#: ../src/spacecmd/kickstart.py:2380
 #, python-format
 msgid "Exporting ks %s to %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2393
+#: ../src/spacecmd/kickstart.py:2387
 #, python-format
 msgid "File %s exists, "
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2394
+#: ../src/spacecmd/kickstart.py:2388
 msgid "confirm overwrite file? (y/n)"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2397
+#: ../src/spacecmd/kickstart.py:2391
 msgid "Error saving exported kickstart profiles to file"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2407
+#: ../src/spacecmd/kickstart.py:2401
 msgid "kickstart_import: import kickstart profile(s) from json file"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2408
+#: ../src/spacecmd/kickstart.py:2402
 msgid "usage: kickstart_import <JSONFILES...>"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2429
+#: ../src/spacecmd/kickstart.py:2423
 #, python-format
 msgid "Error importing kickstart %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2442
+#: ../src/spacecmd/kickstart.py:2436
 #, python-format
 msgid "ERROR : kickstart profile %s already exists! Skipping!"
 msgstr ""
 
 #. create the ks, we need to drop the org prefix from the ks name
-#: ../src/spacecmd/kickstart.py:2446
+#: ../src/spacecmd/kickstart.py:2440
 #, python-format
 msgid "Found ks %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2502
+#: ../src/spacecmd/kickstart.py:2496
 #, python-format
 msgid "Error adding %s script"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2510
+#: ../src/spacecmd/kickstart.py:2504
 #, python-format
 msgid "failed to add ip range %s-%s, continuing"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2524
+#: ../src/spacecmd/kickstart.py:2518
 #, python-format
 msgid "failed to add file preservation %s, skipping"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2526
+#: ../src/spacecmd/kickstart.py:2520
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2537
+#: ../src/spacecmd/kickstart.py:2531
 #, python-format
 msgid "Actvationkey %s does not exist on the "
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2548
+#: ../src/spacecmd/kickstart.py:2542
 #, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
 msgstr ""
@@ -2939,77 +2935,77 @@ msgstr ""
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
 #. fixup may be required
-#: ../src/spacecmd/kickstart.py:2557
+#: ../src/spacecmd/kickstart.py:2551
 msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2559
+#: ../src/spacecmd/kickstart.py:2553
 msgid " * Details->Preserve ks.cfg"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2560
+#: ../src/spacecmd/kickstart.py:2554
 msgid " * Details->Comment"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2564
+#: ../src/spacecmd/kickstart.py:2558
 msgid " * Details->Organization Default Profile"
 msgstr ""
 
 #. No way to set the kernel options
-#: ../src/spacecmd/kickstart.py:2566
+#: ../src/spacecmd/kickstart.py:2560
 msgid " * Details->Kernel Options"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2570
+#: ../src/spacecmd/kickstart.py:2564
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2586
+#: ../src/spacecmd/kickstart.py:2580
 msgid "no kickstart label given"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2589
+#: ../src/spacecmd/kickstart.py:2583
 msgid "invalid kickstart label "
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2606
+#: ../src/spacecmd/kickstart.py:2600
 msgid "kickstart_diff: diff kickstart files"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2608
+#: ../src/spacecmd/kickstart.py:2602
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2658
+#: ../src/spacecmd/kickstart.py:2652
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2659
+#: ../src/spacecmd/kickstart.py:2653
 msgid "usage: kickstart_getupdatetype PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2660
+#: ../src/spacecmd/kickstart.py:2654
 msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2661
+#: ../src/spacecmd/kickstart.py:2655
 msgid "usage: kickstart_getupdatetype \"PROF*\""
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2692 ../src/spacecmd/kickstart.py:2748
-#: ../src/spacecmd/kickstart.py:2792
+#: ../src/spacecmd/kickstart.py:2686 ../src/spacecmd/kickstart.py:2742
+#: ../src/spacecmd/kickstart.py:2786
 #, python-format
 msgid "kickstart label %s doesn't exist!"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2708
+#: ../src/spacecmd/kickstart.py:2702
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2709
+#: ../src/spacecmd/kickstart.py:2703
 msgid ""
 "usage: kickstart_setupdatetype [options] KS_LABEL)\n"
 "\n"
@@ -3017,71 +3013,71 @@ msgid ""
 "    -u UPDATE_TYPE ['red_hat', 'all', 'none']"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2723
+#: ../src/spacecmd/kickstart.py:2717
 msgid "Update Types"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2728
+#: ../src/spacecmd/kickstart.py:2722
 msgid "Update Type [none]:"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2759
+#: ../src/spacecmd/kickstart.py:2753
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2760
+#: ../src/spacecmd/kickstart.py:2754
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2761
+#: ../src/spacecmd/kickstart.py:2755
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2798
+#: ../src/spacecmd/kickstart.py:2792
 #, python-format
 msgid "noBase:        %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2799
+#: ../src/spacecmd/kickstart.py:2793
 #, python-format
 msgid "ignoreMissing: %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2801
+#: ../src/spacecmd/kickstart.py:2795
 #, python-format
 msgid "Kickstart Label: %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2802
+#: ../src/spacecmd/kickstart.py:2796
 #, python-format
 msgid "noBase:          %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2803
+#: ../src/spacecmd/kickstart.py:2797
 #, python-format
 msgid "ignoreMissing:   %s"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2812
+#: ../src/spacecmd/kickstart.py:2806
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2813
+#: ../src/spacecmd/kickstart.py:2807
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2814
+#: ../src/spacecmd/kickstart.py:2808
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2850
+#: ../src/spacecmd/kickstart.py:2844
 msgid "Selected profile does not exist"
 msgstr ""
 
-#: ../src/spacecmd/kickstart.py:2853 ../src/spacecmd/kickstart.py:2858
+#: ../src/spacecmd/kickstart.py:2847 ../src/spacecmd/kickstart.py:2852
 msgid "Enter valid input"
 msgstr ""
 
@@ -7561,24 +7557,28 @@ msgstr ""
 msgid "Manage with Salt SSH"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4568
+#: ../src/spacecmd/system.py:4569
+msgid "Provided port must be numeric"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4574
 #, fuzzy
 msgid "Hostname must be provided"
 msgstr "Nessuno script passato"
 
-#: ../src/spacecmd/system.py:4571
+#: ../src/spacecmd/system.py:4577
 msgid "Either a SSH Password or a private key must be provided"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4579
+#: ../src/spacecmd/system.py:4585
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4586
+#: ../src/spacecmd/system.py:4592
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4600
+#: ../src/spacecmd/system.py:4606
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"

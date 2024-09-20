@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-27 11:19+0200\n"
+"POT-Creation-Date: 2024-09-20 14:42+0200\n"
 "PO-Revision-Date: 2024-07-13 01:47+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -316,7 +316,7 @@ msgstr "部署配置通道：%s"
 msgid "Contact Method:         %s"
 msgstr "联系方法：%s"
 
-#: ../src/spacecmd/activationkey.py:970 ../src/spacecmd/kickstart.py:432
+#: ../src/spacecmd/activationkey.py:970 ../src/spacecmd/kickstart.py:426
 #: ../src/spacecmd/system.py:2942
 msgid "Software Channels"
 msgstr "软件通道"
@@ -519,7 +519,7 @@ msgstr ""
 "                   基础通道标签、子通道标签、配置通道名称中的\n"
 "                   foo 替换为 bar "
 
-#: ../src/spacecmd/activationkey.py:1482 ../src/spacecmd/kickstart.py:467
+#: ../src/spacecmd/activationkey.py:1482 ../src/spacecmd/kickstart.py:461
 #: ../src/spacecmd/system.py:2937
 msgid "Activation Keys"
 msgstr "激活密钥"
@@ -855,7 +855,7 @@ msgid "Binary:          %s"
 msgstr "二进制文件：%s"
 
 #: ../src/spacecmd/configchannel.py:303 ../src/spacecmd/configchannel.py:738
-#: ../src/spacecmd/configchannel.py:994 ../src/spacecmd/kickstart.py:1980
+#: ../src/spacecmd/configchannel.py:994 ../src/spacecmd/kickstart.py:1974
 #: ../src/spacecmd/snippet.py:163
 msgid "Contents"
 msgstr "内容"
@@ -898,13 +898,13 @@ msgid "usage: configchannel_details CHANNEL ..."
 msgstr "用法：configchannel_details CHANNEL ..."
 
 #: ../src/spacecmd/configchannel.py:444 ../src/spacecmd/group.py:571
-#: ../src/spacecmd/kickstart.py:421
+#: ../src/spacecmd/kickstart.py:415
 #, python-format
 msgid "Label:       %s"
 msgstr "标签：%s"
 
 #: ../src/spacecmd/configchannel.py:445 ../src/spacecmd/group.py:572
-#: ../src/spacecmd/kickstart.py:420
+#: ../src/spacecmd/kickstart.py:414
 #, python-format
 msgid "Name:        %s"
 msgstr "名称：%s"
@@ -916,8 +916,8 @@ msgid "Description: %s"
 msgstr "说明：%s"
 
 #: ../src/spacecmd/configchannel.py:447 ../src/spacecmd/cryptokey.py:218
-#: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:507
-#: ../src/spacecmd/kickstart.py:1976
+#: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:501
+#: ../src/spacecmd/kickstart.py:1970
 #, python-format
 msgid "Type:        %s"
 msgstr "类型：%s"
@@ -1047,12 +1047,12 @@ msgstr "修订版必须是整数"
 
 #. get the contents of the script
 #: ../src/spacecmd/configchannel.py:638 ../src/spacecmd/configchannel.py:946
-#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2033
+#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2027
 #: ../src/spacecmd/snippet.py:143
 msgid "Read an existing file [y/N]:"
 msgstr "读取现有文件 [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:640 ../src/spacecmd/kickstart.py:2035
+#: ../src/spacecmd/configchannel.py:640 ../src/spacecmd/kickstart.py:2029
 msgid "File:"
 msgstr "文件："
 
@@ -1321,11 +1321,11 @@ msgstr "configchannel_import：从 json 文件导入配置通道"
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr "用法：configchannel_import <JSON 文件...>"
 
-#: ../src/spacecmd/configchannel.py:1287 ../src/spacecmd/kickstart.py:2417
+#: ../src/spacecmd/configchannel.py:1287 ../src/spacecmd/kickstart.py:2411
 msgid "Error, no filename passed"
 msgstr "错误：未传递文件名"
 
-#: ../src/spacecmd/configchannel.py:1295 ../src/spacecmd/kickstart.py:2425
+#: ../src/spacecmd/configchannel.py:1295 ../src/spacecmd/kickstart.py:2419
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr "错误：无法读取 %s 中的 json 数据"
@@ -2328,7 +2328,7 @@ msgstr "kickstart_list：列出可用的 Kickstart 配置文件"
 msgid "usage: kickstart_list"
 msgstr "用法：kickstart_list"
 
-#: ../src/spacecmd/kickstart.py:86 ../src/spacecmd/kickstart.py:2189
+#: ../src/spacecmd/kickstart.py:86 ../src/spacecmd/kickstart.py:2183
 msgid "No kickstart profiles available"
 msgstr "没有可用的 kickstart 配置文件"
 
@@ -2354,15 +2354,15 @@ msgstr ""
 "  -p ROOT 口令\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
-#: ../src/spacecmd/kickstart.py:116 ../src/spacecmd/kickstart.py:254
+#: ../src/spacecmd/kickstart.py:116 ../src/spacecmd/kickstart.py:248
 msgid "Virtualization Types"
 msgstr "虚拟化类型"
 
-#: ../src/spacecmd/kickstart.py:121 ../src/spacecmd/kickstart.py:259
+#: ../src/spacecmd/kickstart.py:121 ../src/spacecmd/kickstart.py:253
 msgid "Virtualization Type [none]:"
 msgstr "虚拟化类型 [none]："
 
-#: ../src/spacecmd/kickstart.py:129 ../src/spacecmd/kickstart.py:267
+#: ../src/spacecmd/kickstart.py:129 ../src/spacecmd/kickstart.py:261
 msgid "Distributions"
 msgstr "发行套件"
 
@@ -2385,12 +2385,12 @@ msgstr "口令必须至少包含 5 个字符"
 msgid "Passwords don't match"
 msgstr "口令不匹配"
 
-#: ../src/spacecmd/kickstart.py:150 ../src/spacecmd/kickstart.py:275
-#: ../src/spacecmd/kickstart.py:2059 ../src/spacecmd/kickstart.py:2203
+#: ../src/spacecmd/kickstart.py:150 ../src/spacecmd/kickstart.py:269
+#: ../src/spacecmd/kickstart.py:2053 ../src/spacecmd/kickstart.py:2197
 msgid "The Kickstart name is required"
 msgstr "必须指定 Kickstart 名称"
 
-#: ../src/spacecmd/kickstart.py:154 ../src/spacecmd/kickstart.py:279
+#: ../src/spacecmd/kickstart.py:154 ../src/spacecmd/kickstart.py:273
 msgid "The distribution is required"
 msgstr "必须指定发行套件"
 
@@ -2414,25 +2414,21 @@ msgstr "用法：kickstart_delete PROFILE1 PROFILE2"
 msgid "usage: kickstart_delete \"PROF*\""
 msgstr "用法：kickstart_delete \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2686
-#: ../src/spacecmd/kickstart.py:2742 ../src/spacecmd/kickstart.py:2786
+#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2680
+#: ../src/spacecmd/kickstart.py:2736 ../src/spacecmd/kickstart.py:2780
 msgid "No valid kickstart labels passed as arguments!"
 msgstr "未传递有效 kickstart 标签作为参数！"
 
-#: ../src/spacecmd/kickstart.py:214
-msgid "The following kickstart labels are invalid:"
-msgstr "以下 kickstart 标签无效："
-
-#: ../src/spacecmd/kickstart.py:219
+#: ../src/spacecmd/kickstart.py:213
 #, python-format
 msgid "Delete profile %s [y/N]:"
 msgstr "删除配置文件 %s [y/N]："
 
-#: ../src/spacecmd/kickstart.py:227
+#: ../src/spacecmd/kickstart.py:221
 msgid "kickstart_import: Import a Kickstart profile from a file"
 msgstr "kickstart_import：从文件中导入 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:228
+#: ../src/spacecmd/kickstart.py:222
 msgid ""
 "usage: kickstart_import [options])\n"
 "\n"
@@ -2450,16 +2446,16 @@ msgstr ""
 "  -d 发行套件\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
-#: ../src/spacecmd/kickstart.py:283 ../src/spacecmd/kickstart.py:2063
+#: ../src/spacecmd/kickstart.py:277 ../src/spacecmd/kickstart.py:2057
 msgid "A filename is required"
 msgstr "必须指定文件名"
 
-#: ../src/spacecmd/kickstart.py:313
+#: ../src/spacecmd/kickstart.py:307
 msgid ""
 "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
 msgstr "kickstart_import_raw：从文件中导入原始 Kickstart 或 autoyast 配置文件"
 
-#: ../src/spacecmd/kickstart.py:314
+#: ../src/spacecmd/kickstart.py:308
 msgid ""
 "usage: kickstart_import_raw [options])\n"
 "\n"
@@ -2477,427 +2473,427 @@ msgstr ""
 "  -d 发行套件\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
-#: ../src/spacecmd/kickstart.py:330
+#: ../src/spacecmd/kickstart.py:324
 msgid "kickstart_details: Show the details of a Kickstart profile"
 msgstr "kickstart_details：显示 Kickstart 配置文件的细节"
 
-#: ../src/spacecmd/kickstart.py:331
+#: ../src/spacecmd/kickstart.py:325
 msgid "usage: kickstart_details PROFILE"
 msgstr "用法：kickstart_details PROFILE"
 
-#: ../src/spacecmd/kickstart.py:360
+#: ../src/spacecmd/kickstart.py:354
 msgid "Invalid Kickstart profile"
 msgstr "无效的 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:422
+#: ../src/spacecmd/kickstart.py:416
 #, python-format
 msgid "Tree:        %s"
 msgstr "树：%s"
 
-#: ../src/spacecmd/kickstart.py:423
+#: ../src/spacecmd/kickstart.py:417
 #, python-format
 msgid "Active:      %s"
 msgstr "活动：%s"
 
-#: ../src/spacecmd/kickstart.py:424
+#: ../src/spacecmd/kickstart.py:418
 #, python-format
 msgid "Advanced:    %s"
 msgstr "高级：%s"
 
-#: ../src/spacecmd/kickstart.py:425
+#: ../src/spacecmd/kickstart.py:419
 #, python-format
 msgid "Org Default: %s"
 msgstr "组织默认值：%s"
 
-#: ../src/spacecmd/kickstart.py:428
+#: ../src/spacecmd/kickstart.py:422
 #, python-format
 msgid "Configuration Management: %s"
 msgstr "配置管理：%s"
 
-#: ../src/spacecmd/kickstart.py:429
+#: ../src/spacecmd/kickstart.py:423
 #, python-format
 msgid "Remote Commands:          %s"
 msgstr "远程命令：%s"
 
-#: ../src/spacecmd/kickstart.py:441
+#: ../src/spacecmd/kickstart.py:435
 msgid "Advanced Options"
 msgstr "高级选项"
 
-#: ../src/spacecmd/kickstart.py:449
+#: ../src/spacecmd/kickstart.py:443
 msgid "Custom Options"
 msgstr "自定义选项"
 
-#: ../src/spacecmd/kickstart.py:456
+#: ../src/spacecmd/kickstart.py:450
 msgid "Partitioning"
 msgstr "分区"
 
-#: ../src/spacecmd/kickstart.py:461
+#: ../src/spacecmd/kickstart.py:455
 msgid "Software"
 msgstr "软件"
 
-#: ../src/spacecmd/kickstart.py:474
+#: ../src/spacecmd/kickstart.py:468
 msgid "Crypto Keys"
 msgstr "加密密钥"
 
-#: ../src/spacecmd/kickstart.py:481
+#: ../src/spacecmd/kickstart.py:475
 msgid "File Preservations"
 msgstr "文件保留项"
 
-#: ../src/spacecmd/kickstart.py:490
+#: ../src/spacecmd/kickstart.py:484
 msgid "Variables"
 msgstr "变量"
 
-#: ../src/spacecmd/kickstart.py:497
+#: ../src/spacecmd/kickstart.py:491
 msgid "Scripts"
 msgstr "脚本"
 
-#: ../src/spacecmd/kickstart.py:508 ../src/spacecmd/kickstart.py:1977
+#: ../src/spacecmd/kickstart.py:502 ../src/spacecmd/kickstart.py:1971
 #, python-format
 msgid "Chroot:      %s"
 msgstr "Chroot：%s"
 
-#: ../src/spacecmd/kickstart.py:511 ../src/spacecmd/kickstart.py:1978
+#: ../src/spacecmd/kickstart.py:505 ../src/spacecmd/kickstart.py:1972
 #, python-format
 msgid "Interpreter: %s"
 msgstr "解释器：%s"
 
-#: ../src/spacecmd/kickstart.py:538
+#: ../src/spacecmd/kickstart.py:532
 msgid "Could not retrieve the Kickstart file"
 msgstr "无法检索 Kickstart 文件"
 
-#: ../src/spacecmd/kickstart.py:544
+#: ../src/spacecmd/kickstart.py:538
 msgid "kickstart_getcontents: Show the contents of a Kickstart profile"
 msgstr "kickstart_getcontents：显示 Kickstart 配置文件在"
 
-#: ../src/spacecmd/kickstart.py:545
+#: ../src/spacecmd/kickstart.py:539
 msgid "                   as they would be presented to a client"
 msgstr "                   提供给客户端时的内容"
 
-#: ../src/spacecmd/kickstart.py:546
+#: ../src/spacecmd/kickstart.py:540
 msgid "usage: kickstart_getcontents LABEL"
 msgstr "用法：kickstart_getcontents LABEL"
 
-#: ../src/spacecmd/kickstart.py:580
+#: ../src/spacecmd/kickstart.py:574
 msgid "kickstart_rename: Rename a Kickstart profile"
 msgstr "kickstart_rename：重命名 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:581
+#: ../src/spacecmd/kickstart.py:575
 msgid "usage: kickstart_rename OLDNAME NEWNAME"
 msgstr "用法：kickstart_rename OLDNAME NEWNAME"
 
-#: ../src/spacecmd/kickstart.py:611
+#: ../src/spacecmd/kickstart.py:605
 msgid ""
 "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
 "profile"
 msgstr "kickstart_listcryptokeys：列出与 Kickstart 配置文件关联的加密密钥"
 
-#: ../src/spacecmd/kickstart.py:613
+#: ../src/spacecmd/kickstart.py:607
 msgid "usage: kickstart_listcryptokeys PROFILE"
 msgstr "用法：kickstart_listcryptokeys PROFILE"
 
-#: ../src/spacecmd/kickstart.py:643
+#: ../src/spacecmd/kickstart.py:637
 msgid "No crypto keys has been found"
 msgstr "未找到加密密钥"
 
-#: ../src/spacecmd/kickstart.py:651
+#: ../src/spacecmd/kickstart.py:645
 msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
 msgstr "kickstart_addcryptokeys：将加密密钥添加到 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:652
+#: ../src/spacecmd/kickstart.py:646
 msgid "usage: kickstart_addcryptokeys PROFILE <KEY ...>"
 msgstr "用法：kickstart_addcryptokeys PROFILE <密钥 ...>"
 
-#: ../src/spacecmd/kickstart.py:680
+#: ../src/spacecmd/kickstart.py:674
 msgid "kickstart_removecryptokeys: Remove crypto keys from a Kickstart profile"
 msgstr "kickstart_removecryptokeys：从 Kickstart 配置文件中去除加密密钥"
 
-#: ../src/spacecmd/kickstart.py:682
+#: ../src/spacecmd/kickstart.py:676
 msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
 msgstr "用法：kickstart_removecryptokeys PROFILE <密钥 ...>"
 
-#: ../src/spacecmd/kickstart.py:724
+#: ../src/spacecmd/kickstart.py:718
 msgid ""
 "kickstart_listactivationkeys: List the activation keys associated with a "
 "Kickstart profile"
 msgstr "kickstart_listactivationkeys：列出与 Kickstart 配置文件关联的激活密钥"
 
-#: ../src/spacecmd/kickstart.py:726
+#: ../src/spacecmd/kickstart.py:720
 msgid "usage: kickstart_listactivationkeys PROFILE"
 msgstr "用法：kickstart_listactivationkeys PROFILE"
 
-#: ../src/spacecmd/kickstart.py:760
+#: ../src/spacecmd/kickstart.py:754
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
 msgstr "kickstart_addactivationkeys：将激活密钥添加到 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:762
+#: ../src/spacecmd/kickstart.py:756
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
 msgstr "用法：kickstart_addactivationkeys PROFILE <密钥 ...>"
 
-#: ../src/spacecmd/kickstart.py:793
+#: ../src/spacecmd/kickstart.py:787
 msgid ""
 "kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
 "profile"
 msgstr "kickstart_removeactivationkeys：从 Kickstart 配置文件中去除激活密钥"
 
-#: ../src/spacecmd/kickstart.py:795
+#: ../src/spacecmd/kickstart.py:789
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
 msgstr "用法：kickstart_removeactivationkeys PROFILE <密钥 ...>"
 
-#: ../src/spacecmd/kickstart.py:821
+#: ../src/spacecmd/kickstart.py:815
 msgid "Remove these keys [y/N]:"
 msgstr "去除这些密钥 [y/N]："
 
-#: ../src/spacecmd/kickstart.py:836
+#: ../src/spacecmd/kickstart.py:830
 msgid ""
 "kickstart_enableconfigmanagement: Enable configuration management on a "
 "Kickstart profile"
 msgstr "kickstart_enableconfigmanagement：在 Kickstart 配置文件中启用配置管理"
 
-#: ../src/spacecmd/kickstart.py:838
+#: ../src/spacecmd/kickstart.py:832
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
 msgstr "用法：kickstart_enableconfigmanagement PROFILE"
 
-#: ../src/spacecmd/kickstart.py:871
+#: ../src/spacecmd/kickstart.py:865
 msgid ""
 "kickstart_disableconfigmanagement: Disable configuration management on a "
 "Kickstart profile"
 msgstr "kickstart_disableconfigmanagement：在 Kickstart 配置文件中禁用配置管理"
 
-#: ../src/spacecmd/kickstart.py:873
+#: ../src/spacecmd/kickstart.py:867
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
 msgstr "用法：kickstart_disableconfigmanagement PROFILE"
 
-#: ../src/spacecmd/kickstart.py:906
+#: ../src/spacecmd/kickstart.py:900
 msgid ""
 "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
 msgstr "kickstart_enableremotecommands：在 Kickstart 配置文件中启用远程命令"
 
-#: ../src/spacecmd/kickstart.py:908
+#: ../src/spacecmd/kickstart.py:902
 msgid "usage: kickstart_enableremotecommands PROFILE"
 msgstr "用法：kickstart_enableremotecommands PROFILE"
 
-#: ../src/spacecmd/kickstart.py:941
+#: ../src/spacecmd/kickstart.py:935
 msgid ""
 "kickstart_disableremotecommands: Disable remote commands on a Kickstart "
 "profile"
 msgstr "kickstart_disableremotecommands：在 Kickstart 配置文件中禁用远程命令"
 
-#: ../src/spacecmd/kickstart.py:943
+#: ../src/spacecmd/kickstart.py:937
 msgid "usage: kickstart_disableremotecommands PROFILE"
 msgstr "用法：kickstart_disableremotecommands PROFILE"
 
-#: ../src/spacecmd/kickstart.py:975
+#: ../src/spacecmd/kickstart.py:969
 msgid "kickstart_setlocale: Set the locale for a Kickstart profile"
 msgstr "kickstart_setlocale：设置 Kickstart 配置文件的区域设置"
 
-#: ../src/spacecmd/kickstart.py:976
+#: ../src/spacecmd/kickstart.py:970
 msgid "usage: kickstart_setlocale PROFILE LOCALE"
 msgstr "用法：kickstart_setlocale PROFILE LOCALE"
 
-#: ../src/spacecmd/kickstart.py:1016
+#: ../src/spacecmd/kickstart.py:1010
 msgid "kickstart_setselinux: Set the SELinux mode for a Kickstart profile"
 msgstr "kickstart_setselinux：设置 Kickstart 配置文件的 SELinux 模式"
 
-#: ../src/spacecmd/kickstart.py:1018
+#: ../src/spacecmd/kickstart.py:1012
 msgid "usage: kickstart_setselinux PROFILE MODE"
 msgstr "用法：kickstart_setselinux PROFILE MODE"
 
-#: ../src/spacecmd/kickstart.py:1055
+#: ../src/spacecmd/kickstart.py:1049
 msgid ""
 "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
 msgstr "kickstart_setpartitions：设置 Kickstart 配置文件的分区模式"
 
-#: ../src/spacecmd/kickstart.py:1057
+#: ../src/spacecmd/kickstart.py:1051
 msgid "usage: kickstart_setpartitions PROFILE"
 msgstr "用法：kickstart_setpartitions PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1108
+#: ../src/spacecmd/kickstart.py:1102
 msgid "kickstart_setdistribution: Set the distribution for a Kickstart profile"
 msgstr "kickstart_setdistribution：设置 Kickstart 配置文件的分发"
 
-#: ../src/spacecmd/kickstart.py:1110
+#: ../src/spacecmd/kickstart.py:1104
 msgid "usage: kickstart_setdistribution PROFILE DISTRIBUTION"
 msgstr "用法：kickstart_setdistribution PROFILE DISTRIBUTION"
 
-#: ../src/spacecmd/kickstart.py:1146
+#: ../src/spacecmd/kickstart.py:1140
 msgid "kickstart_enablelogging: Enable logging for a Kickstart profile"
 msgstr "kickstart_enablelogging：启用 Kickstart 配置文件的日志记录"
 
-#: ../src/spacecmd/kickstart.py:1147
+#: ../src/spacecmd/kickstart.py:1141
 msgid "usage: kickstart_enablelogging PROFILE"
 msgstr "用法：kickstart_enablelogging PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1181
+#: ../src/spacecmd/kickstart.py:1175
 msgid "kickstart_addvariable: Add a variable to a Kickstart profile"
 msgstr "kickstart_addvariable：将变量添加到 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:1182
+#: ../src/spacecmd/kickstart.py:1176
 msgid "usage: kickstart_addvariable PROFILE KEY VALUE"
 msgstr "用法：kickstart_addvariable PROFILE KEY VALUE"
 
-#: ../src/spacecmd/kickstart.py:1222
+#: ../src/spacecmd/kickstart.py:1216
 msgid "kickstart_updatevariable: Update a variable in a Kickstart profile"
 msgstr "kickstart_updatevariable：更新 Kickstart 配置文件中的变量"
 
-#: ../src/spacecmd/kickstart.py:1224
+#: ../src/spacecmd/kickstart.py:1218
 msgid "usage: kickstart_updatevariable PROFILE KEY VALUE"
 msgstr "用法：kickstart_updatevariable PROFILE KEY VALUE"
 
-#: ../src/spacecmd/kickstart.py:1261
+#: ../src/spacecmd/kickstart.py:1255
 msgid "kickstart_removevariables: Remove variables from a Kickstart profile"
 msgstr "kickstart_removevariables：从 Kickstart 配置文件中去除变量"
 
-#: ../src/spacecmd/kickstart.py:1263
+#: ../src/spacecmd/kickstart.py:1257
 msgid "usage: kickstart_removevariables PROFILE <KEY ...>"
 msgstr "用法：kickstart_removevariables PROFILE <密钥 ...>"
 
-#: ../src/spacecmd/kickstart.py:1314
+#: ../src/spacecmd/kickstart.py:1308
 msgid "kickstart_listvariables: List the variables of a Kickstart profile"
 msgstr "kickstart_listvariables：列出 Kickstart 配置文件的变量"
 
-#: ../src/spacecmd/kickstart.py:1316
+#: ../src/spacecmd/kickstart.py:1310
 msgid "usage: kickstart_listvariables PROFILE"
 msgstr "用法：kickstart_listvariables PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1351
+#: ../src/spacecmd/kickstart.py:1345
 msgid "kickstart_addoption: Set an option for a Kickstart profile"
 msgstr "kickstart_addoption：设置 Kickstart 配置文件的选项"
 
-#: ../src/spacecmd/kickstart.py:1352
+#: ../src/spacecmd/kickstart.py:1346
 msgid "usage: kickstart_addoption PROFILE KEY [VALUE]"
 msgstr "用法：kickstart_addoption PROFILE KEY [值]"
 
-#: ../src/spacecmd/kickstart.py:1401
+#: ../src/spacecmd/kickstart.py:1395
 #, python-format
 msgid "%s needs to be set as a custom option"
 msgstr "%s 需设置为自定义选项"
 
-#: ../src/spacecmd/kickstart.py:1409
+#: ../src/spacecmd/kickstart.py:1403
 msgid "kickstart_removeoptions: Remove options from a Kickstart profile"
 msgstr "kickstart_removeoptions：从 Kickstart 配置文件中去除选项"
 
-#: ../src/spacecmd/kickstart.py:1410
+#: ../src/spacecmd/kickstart.py:1404
 msgid "usage: kickstart_removeoptions PROFILE <OPTION ...>"
 msgstr "用法：kickstart_removeoptions PROFILE <选项 ...>"
 
-#: ../src/spacecmd/kickstart.py:1464
+#: ../src/spacecmd/kickstart.py:1458
 msgid "kickstart_listoptions: List the options of a Kickstart profile"
 msgstr "kickstart_listoptions：列出 Kickstart 配置文件的选项"
 
-#: ../src/spacecmd/kickstart.py:1466
+#: ../src/spacecmd/kickstart.py:1460
 msgid "usage: kickstart_listoptions PROFILE"
 msgstr "用法：kickstart_listoptions PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1502
+#: ../src/spacecmd/kickstart.py:1496
 msgid ""
 "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
 msgstr "kickstart_listcustomoptions：列出 Kickstart 配置文件的自定义选项"
 
-#: ../src/spacecmd/kickstart.py:1504
+#: ../src/spacecmd/kickstart.py:1498
 msgid "usage: kickstart_listcustomoptions PROFILE"
 msgstr "用法：kickstart_listcustomoptions PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1540
+#: ../src/spacecmd/kickstart.py:1534
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
 msgstr "kickstart_setcustomoptions：设置 Kickstart 配置文件的自定义选项"
 
-#: ../src/spacecmd/kickstart.py:1542
+#: ../src/spacecmd/kickstart.py:1536
 msgid "usage: kickstart_setcustomoptions PROFILE"
 msgstr "用法：kickstart_setcustomoptions PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1592
+#: ../src/spacecmd/kickstart.py:1586
 msgid "kickstart_addchildchannels: Add a child channels to a Kickstart profile"
 msgstr "kickstart_addchildchannels：将子通道添加到 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:1594
+#: ../src/spacecmd/kickstart.py:1588
 msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 msgstr "用法：kickstart_addchildchannels PROFILE <通道 ...>"
 
-#: ../src/spacecmd/kickstart.py:1654
+#: ../src/spacecmd/kickstart.py:1648
 msgid ""
 "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
 msgstr "kickstart_removechildchannels：从 Kickstart 配置文件中去除子通道"
 
-#: ../src/spacecmd/kickstart.py:1656
+#: ../src/spacecmd/kickstart.py:1650
 msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
 msgstr "用法：kickstart_removechildchannels PROFILE <通道 ...>"
 
-#: ../src/spacecmd/kickstart.py:1701
+#: ../src/spacecmd/kickstart.py:1695
 msgid ""
 "kickstart_listchildchannels: List the child channels of a Kickstart profile"
 msgstr "kickstart_listchildchannels：列出 Kickstart 配置文件的子通道"
 
-#: ../src/spacecmd/kickstart.py:1703
+#: ../src/spacecmd/kickstart.py:1697
 msgid "usage: kickstart_listchildchannels PROFILE"
 msgstr "用法：kickstart_listchildchannels PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1740
+#: ../src/spacecmd/kickstart.py:1734
 msgid ""
 "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr "kickstart_addfilepreservations：将文件保留项添加到 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:1742
+#: ../src/spacecmd/kickstart.py:1736
 msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 msgstr "用法：kickstart_addfilepreservations PROFILE <文件列表 ...>"
 
-#: ../src/spacecmd/kickstart.py:1779
+#: ../src/spacecmd/kickstart.py:1773
 msgid ""
 "kickstart_removefilepreservations: Remove file preservations from a "
 "Kickstart profile"
 msgstr ""
 "kickstart_removefilepreservations：从 Kickstart 配置文件中去除文件保留项"
 
-#: ../src/spacecmd/kickstart.py:1781
+#: ../src/spacecmd/kickstart.py:1775
 msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
 msgstr "用法：kickstart_removefilepreservations PROFILE <文件 ...>"
 
-#: ../src/spacecmd/kickstart.py:1828
+#: ../src/spacecmd/kickstart.py:1822
 msgid "kickstart_listpackages: List the packages for a Kickstart profile"
 msgstr "kickstart_listpackages：列出 Kickstart 配置文件的软件包"
 
-#: ../src/spacecmd/kickstart.py:1830
+#: ../src/spacecmd/kickstart.py:1824
 msgid "usage: kickstart_listpackages PROFILE"
 msgstr "用法：kickstart_listpackages PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1863
+#: ../src/spacecmd/kickstart.py:1857
 msgid "kickstart_addpackages: Add packages to a Kickstart profile"
 msgstr "kickstart_addpackages：将软件包添加到 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:1864
+#: ../src/spacecmd/kickstart.py:1858
 msgid "usage: kickstart_addpackages PROFILE <PACKAGE ...>"
 msgstr "用法：kickstart_addpackages PROFILE <软件包 ...>"
 
-#: ../src/spacecmd/kickstart.py:1899
+#: ../src/spacecmd/kickstart.py:1893
 msgid "kickstart_removepackages: Remove packages from a Kickstart profile"
 msgstr "kickstart_removepackages：从 Kickstart 配置文件中去除软件包"
 
-#: ../src/spacecmd/kickstart.py:1901
+#: ../src/spacecmd/kickstart.py:1895
 msgid "usage: kickstart_removepackages PROFILE <PACKAGE ...>"
 msgstr "用法：kickstart_removepackages PROFILE <软件包 ...>"
 
-#: ../src/spacecmd/kickstart.py:1946
+#: ../src/spacecmd/kickstart.py:1940
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
 msgstr "kickstart_listscripts：列出 Kickstart 配置文件的脚本"
 
-#: ../src/spacecmd/kickstart.py:1948
+#: ../src/spacecmd/kickstart.py:1942
 msgid "usage: kickstart_listscripts PROFILE"
 msgstr "用法：kickstart_listscripts PROFILE"
 
-#: ../src/spacecmd/kickstart.py:1967
+#: ../src/spacecmd/kickstart.py:1961
 #, python-format
 msgid "No scripts has been found for profile '%s'"
 msgstr "未找到配置文件 '%s' 的脚本"
 
-#: ../src/spacecmd/kickstart.py:1975
+#: ../src/spacecmd/kickstart.py:1969
 #, python-format
 msgid "ID:          %i"
 msgstr "ID：%i"
 
-#: ../src/spacecmd/kickstart.py:1990
+#: ../src/spacecmd/kickstart.py:1984
 msgid "kickstart_addscript: Add a script to a Kickstart profile"
 msgstr "kickstart_addscript：将脚本添加到 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:1991
+#: ../src/spacecmd/kickstart.py:1985
 msgid ""
 "usage: kickstart_addscript PROFILE [options])\n"
 "\n"
@@ -2919,80 +2915,80 @@ msgstr ""
 "  -c 在 chroot 环境中执行\n"
 "  -t 启用模板"
 
-#: ../src/spacecmd/kickstart.py:2026
+#: ../src/spacecmd/kickstart.py:2020
 msgid "Profile Name:"
 msgstr "配置文件名称："
 
-#: ../src/spacecmd/kickstart.py:2028
+#: ../src/spacecmd/kickstart.py:2022
 msgid "Pre/Post Script [post]:"
 msgstr "前/后脚本 [post]："
 
-#: ../src/spacecmd/kickstart.py:2029
+#: ../src/spacecmd/kickstart.py:2023
 msgid "Chrooted [Y/n]:"
 msgstr "Chroot [Y/n]："
 
-#: ../src/spacecmd/kickstart.py:2030
+#: ../src/spacecmd/kickstart.py:2024
 msgid "Interpreter [/bin/bash]:"
 msgstr "解释器 [/bin/bash]："
 
-#: ../src/spacecmd/kickstart.py:2067
+#: ../src/spacecmd/kickstart.py:2061
 msgid "The execution time is required"
 msgstr "必须指定执行时间"
 
-#: ../src/spacecmd/kickstart.py:2083
+#: ../src/spacecmd/kickstart.py:2077
 #, python-format
 msgid "Profile Name:   %s"
 msgstr "配置文件名称：%s"
 
-#: ../src/spacecmd/kickstart.py:2084
+#: ../src/spacecmd/kickstart.py:2078
 #, python-format
 msgid "Execution Time: %s"
 msgstr "执行时间：%s"
 
-#: ../src/spacecmd/kickstart.py:2085
+#: ../src/spacecmd/kickstart.py:2079
 #, python-format
 msgid "Chroot:         %s"
 msgstr "Chroot：%s"
 
-#: ../src/spacecmd/kickstart.py:2086
+#: ../src/spacecmd/kickstart.py:2080
 #, python-format
 msgid "Template:       %s"
 msgstr "模板：%s"
 
-#: ../src/spacecmd/kickstart.py:2087
+#: ../src/spacecmd/kickstart.py:2081
 #, python-format
 msgid "Interpreter:    %s"
 msgstr "解释器：%s"
 
-#: ../src/spacecmd/kickstart.py:2088
+#: ../src/spacecmd/kickstart.py:2082
 msgid "Contents:"
 msgstr "内容："
 
-#: ../src/spacecmd/kickstart.py:2108
+#: ../src/spacecmd/kickstart.py:2102
 msgid "kickstart_removescript: Remove a script from a Kickstart profile"
 msgstr "kickstart_removescript：从 Kickstart 配置文件中去除脚本"
 
-#: ../src/spacecmd/kickstart.py:2109
+#: ../src/spacecmd/kickstart.py:2103
 msgid "usage: kickstart_removescript PROFILE [ID]"
 msgstr "用法：kickstart_removescript PROFILE [ID]"
 
-#: ../src/spacecmd/kickstart.py:2139 ../src/spacecmd/kickstart.py:2152
+#: ../src/spacecmd/kickstart.py:2133 ../src/spacecmd/kickstart.py:2146
 msgid "Invalid script ID"
 msgstr "无效脚本 ID"
 
-#: ../src/spacecmd/kickstart.py:2147
+#: ../src/spacecmd/kickstart.py:2141
 msgid "Script ID:"
 msgstr "脚本 ID："
 
-#: ../src/spacecmd/kickstart.py:2154
+#: ../src/spacecmd/kickstart.py:2148
 msgid "Remove this script [y/N]:"
 msgstr "去除此脚本 [y/N]："
 
-#: ../src/spacecmd/kickstart.py:2167
+#: ../src/spacecmd/kickstart.py:2161
 msgid "kickstart_clone: Clone a Kickstart profile"
 msgstr "kickstart_clone：克隆 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:2168
+#: ../src/spacecmd/kickstart.py:2162
 msgid ""
 "usage: kickstart_clone [options])\n"
 "\n"
@@ -3006,31 +3002,31 @@ msgstr ""
 "  -n 名称\n"
 "  -c 克隆版本名称"
 
-#: ../src/spacecmd/kickstart.py:2193
+#: ../src/spacecmd/kickstart.py:2187
 msgid "Kickstart Profiles"
 msgstr "Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:2198
+#: ../src/spacecmd/kickstart.py:2192
 msgid "Original Profile:"
 msgstr "原始配置文件："
 
-#: ../src/spacecmd/kickstart.py:2199
+#: ../src/spacecmd/kickstart.py:2193
 msgid "Cloned Profile:"
 msgstr "克隆的配置文件："
 
-#: ../src/spacecmd/kickstart.py:2207
+#: ../src/spacecmd/kickstart.py:2201
 msgid "The Kickstart clone name is required"
 msgstr "必须指定 Kickstart 克隆版本名称"
 
-#: ../src/spacecmd/kickstart.py:2212
+#: ../src/spacecmd/kickstart.py:2206
 msgid "Kickstart profile you've entered was not found"
 msgstr "找不到您输入的 Kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:2225
+#: ../src/spacecmd/kickstart.py:2219
 msgid "kickstart_export: export kickstart profile(s) to json format file"
 msgstr "kickstart_export：将 Kickstart 配置文件导出到 json 格式的文件"
 
-#: ../src/spacecmd/kickstart.py:2226
+#: ../src/spacecmd/kickstart.py:2220
 msgid ""
 "usage: kickstart_export <KSPROFILE>... [options])\n"
 "options:\n"
@@ -3053,12 +3049,12 @@ msgstr ""
 "\n"
 "注意：KSPROFILE 列表是可选的，默认为全部导出"
 
-#: ../src/spacecmd/kickstart.py:2358
+#: ../src/spacecmd/kickstart.py:2352
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
 msgstr "正在将所有 kickstart 配置文件导出到 %s"
 
-#: ../src/spacecmd/kickstart.py:2366
+#: ../src/spacecmd/kickstart.py:2360
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
@@ -3066,74 +3062,74 @@ msgstr ""
 "错误：未传递有效 kickstart 配置文件，请使用 spacecmd kickstart_list 检查名称"
 "是否正确"
 
-#: ../src/spacecmd/kickstart.py:2386
+#: ../src/spacecmd/kickstart.py:2380
 #, python-format
 msgid "Exporting ks %s to %s"
 msgstr "正在将 ks %s 导出到 %s"
 
-#: ../src/spacecmd/kickstart.py:2393
+#: ../src/spacecmd/kickstart.py:2387
 #, python-format
 msgid "File %s exists, "
 msgstr "文件 %s 已存在， "
 
-#: ../src/spacecmd/kickstart.py:2394
+#: ../src/spacecmd/kickstart.py:2388
 msgid "confirm overwrite file? (y/n)"
 msgstr "请确认是否重写文件？(y/n)"
 
-#: ../src/spacecmd/kickstart.py:2397
+#: ../src/spacecmd/kickstart.py:2391
 msgid "Error saving exported kickstart profiles to file"
 msgstr "将导出的 kickstart 配置文件保存到文件时出错"
 
-#: ../src/spacecmd/kickstart.py:2407
+#: ../src/spacecmd/kickstart.py:2401
 msgid "kickstart_import: import kickstart profile(s) from json file"
 msgstr "kickstart_import：从 json 文件中导入 kickstart 配置文件"
 
-#: ../src/spacecmd/kickstart.py:2408
+#: ../src/spacecmd/kickstart.py:2402
 msgid "usage: kickstart_import <JSONFILES...>"
 msgstr "用法：kickstart_import <JSON 文件...>"
 
-#: ../src/spacecmd/kickstart.py:2429
+#: ../src/spacecmd/kickstart.py:2423
 #, python-format
 msgid "Error importing kickstart %s"
 msgstr "导入 kickstart %s 时出错"
 
-#: ../src/spacecmd/kickstart.py:2442
+#: ../src/spacecmd/kickstart.py:2436
 #, python-format
 msgid "ERROR : kickstart profile %s already exists! Skipping!"
 msgstr "错误：kickstart 配置文件 %s 已存在！正在跳过！"
 
 #. create the ks, we need to drop the org prefix from the ks name
-#: ../src/spacecmd/kickstart.py:2446
+#: ../src/spacecmd/kickstart.py:2440
 #, python-format
 msgid "Found ks %s"
 msgstr "已找到 ks %s"
 
-#: ../src/spacecmd/kickstart.py:2502
+#: ../src/spacecmd/kickstart.py:2496
 #, python-format
 msgid "Error adding %s script"
 msgstr "添加 %s 脚本时出错"
 
-#: ../src/spacecmd/kickstart.py:2510
+#: ../src/spacecmd/kickstart.py:2504
 #, python-format
 msgid "failed to add ip range %s-%s, continuing"
 msgstr "无法添加 IP 范围 %s-%s，正在继续"
 
-#: ../src/spacecmd/kickstart.py:2524
+#: ../src/spacecmd/kickstart.py:2518
 #, python-format
 msgid "failed to add file preservation %s, skipping"
 msgstr "无法添加文件保留项 %s，正在跳过"
 
-#: ../src/spacecmd/kickstart.py:2526
+#: ../src/spacecmd/kickstart.py:2520
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
 msgstr "文件保留列表 %s 不存在，正在跳过"
 
-#: ../src/spacecmd/kickstart.py:2537
+#: ../src/spacecmd/kickstart.py:2531
 #, python-format
 msgid "Actvationkey %s does not exist on the "
 msgstr "激活密钥 %s 不存在于 "
 
-#: ../src/spacecmd/kickstart.py:2548
+#: ../src/spacecmd/kickstart.py:2542
 #, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
 msgstr "Spacewalk 服务器上不存在 GPG/SSL 密钥 %s，正在跳过"
@@ -3141,77 +3137,77 @@ msgstr "Spacewalk 服务器上不存在 GPG/SSL 密钥 %s，正在跳过"
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
 #. fixup may be required
-#: ../src/spacecmd/kickstart.py:2557
+#: ../src/spacecmd/kickstart.py:2551
 msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
 msgstr "由于省略了一些 API 选项，无法导入某些设置，请检查并视需要手动予以修复"
 
-#: ../src/spacecmd/kickstart.py:2559
+#: ../src/spacecmd/kickstart.py:2553
 msgid " * Details->Preserve ks.cfg"
 msgstr " * 细节->保留 ks.cfg"
 
-#: ../src/spacecmd/kickstart.py:2560
+#: ../src/spacecmd/kickstart.py:2554
 msgid " * Details->Comment"
 msgstr " * 细节->注释"
 
-#: ../src/spacecmd/kickstart.py:2564
+#: ../src/spacecmd/kickstart.py:2558
 msgid " * Details->Organization Default Profile"
 msgstr " * 细节->组织默认配置文件"
 
 #. No way to set the kernel options
-#: ../src/spacecmd/kickstart.py:2566
+#: ../src/spacecmd/kickstart.py:2560
 msgid " * Details->Kernel Options"
 msgstr " * 细节->内核选项"
 
-#: ../src/spacecmd/kickstart.py:2570
+#: ../src/spacecmd/kickstart.py:2564
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
 msgstr " * 细节->后内核选项：%s"
 
-#: ../src/spacecmd/kickstart.py:2586
+#: ../src/spacecmd/kickstart.py:2580
 msgid "no kickstart label given"
 msgstr "未指定 kickstart 标签"
 
-#: ../src/spacecmd/kickstart.py:2589
+#: ../src/spacecmd/kickstart.py:2583
 msgid "invalid kickstart label "
 msgstr "无效的 kickstart 标签 "
 
-#: ../src/spacecmd/kickstart.py:2606
+#: ../src/spacecmd/kickstart.py:2600
 msgid "kickstart_diff: diff kickstart files"
 msgstr "kickstart_diff：比较 kickstart 文件的差异"
 
-#: ../src/spacecmd/kickstart.py:2608
+#: ../src/spacecmd/kickstart.py:2602
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "用法：kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/kickstart.py:2658
+#: ../src/spacecmd/kickstart.py:2652
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
 msgstr "kickstart_getupdatetype：获取 kickstart 配置文件的更新类型"
 
-#: ../src/spacecmd/kickstart.py:2659
+#: ../src/spacecmd/kickstart.py:2653
 msgid "usage: kickstart_getupdatetype PROFILE"
 msgstr "用法：kickstart_getupdatetype PROFILE"
 
-#: ../src/spacecmd/kickstart.py:2660
+#: ../src/spacecmd/kickstart.py:2654
 msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
 msgstr "用法：kickstart_getupdatetype PROFILE1 PROFILE2"
 
-#: ../src/spacecmd/kickstart.py:2661
+#: ../src/spacecmd/kickstart.py:2655
 msgid "usage: kickstart_getupdatetype \"PROF*\""
 msgstr "用法：kickstart_getupdatetype \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:2692 ../src/spacecmd/kickstart.py:2748
-#: ../src/spacecmd/kickstart.py:2792
+#: ../src/spacecmd/kickstart.py:2686 ../src/spacecmd/kickstart.py:2742
+#: ../src/spacecmd/kickstart.py:2786
 #, python-format
 msgid "kickstart label %s doesn't exist!"
 msgstr "kickstart 标签 %s 不存在！"
 
-#: ../src/spacecmd/kickstart.py:2708
+#: ../src/spacecmd/kickstart.py:2702
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
 msgstr "kickstart_setupdatetype：设置 kickstart 配置文件的更新类型"
 
-#: ../src/spacecmd/kickstart.py:2709
+#: ../src/spacecmd/kickstart.py:2703
 msgid ""
 "usage: kickstart_setupdatetype [options] KS_LABEL)\n"
 "\n"
@@ -3223,62 +3219,62 @@ msgstr ""
 "选项：\n"
 "    -u 更新类型 ['red_hat'、'all'、'none']"
 
-#: ../src/spacecmd/kickstart.py:2723
+#: ../src/spacecmd/kickstart.py:2717
 msgid "Update Types"
 msgstr "更新类型"
 
-#: ../src/spacecmd/kickstart.py:2728
+#: ../src/spacecmd/kickstart.py:2722
 msgid "Update Type [none]:"
 msgstr "更新类型 [none]："
 
-#: ../src/spacecmd/kickstart.py:2759
+#: ../src/spacecmd/kickstart.py:2753
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
 msgstr "kickstart_getsoftwaredetails：获取 kickstart 配置文件软件细节"
 
-#: ../src/spacecmd/kickstart.py:2760
+#: ../src/spacecmd/kickstart.py:2754
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
 msgstr "用法：kickstart_getsoftwaredetails KS_LABEL"
 
-#: ../src/spacecmd/kickstart.py:2761
+#: ../src/spacecmd/kickstart.py:2755
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 msgstr "用法：kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 
-#: ../src/spacecmd/kickstart.py:2798
+#: ../src/spacecmd/kickstart.py:2792
 #, python-format
 msgid "noBase:        %s"
 msgstr "noBase：%s"
 
-#: ../src/spacecmd/kickstart.py:2799
+#: ../src/spacecmd/kickstart.py:2793
 #, python-format
 msgid "ignoreMissing: %s"
 msgstr "ignoreMissing：%s"
 
-#: ../src/spacecmd/kickstart.py:2801
+#: ../src/spacecmd/kickstart.py:2795
 #, python-format
 msgid "Kickstart Label: %s"
 msgstr "Kickstart Label：%s"
 
-#: ../src/spacecmd/kickstart.py:2802
+#: ../src/spacecmd/kickstart.py:2796
 #, python-format
 msgid "noBase:          %s"
 msgstr "noBase：%s"
 
-#: ../src/spacecmd/kickstart.py:2803
+#: ../src/spacecmd/kickstart.py:2797
 #, python-format
 msgid "ignoreMissing:   %s"
 msgstr "ignoreMissing：%s"
 
-#: ../src/spacecmd/kickstart.py:2812
+#: ../src/spacecmd/kickstart.py:2806
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr "kickstart_setsoftwaredetails：设置 kickstart 配置文件软件细节。"
 
-#: ../src/spacecmd/kickstart.py:2813
+#: ../src/spacecmd/kickstart.py:2807
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 "用法：kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 
-#: ../src/spacecmd/kickstart.py:2814
+#: ../src/spacecmd/kickstart.py:2808
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
@@ -3286,11 +3282,11 @@ msgstr ""
 "用法：kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
 
-#: ../src/spacecmd/kickstart.py:2850
+#: ../src/spacecmd/kickstart.py:2844
 msgid "Selected profile does not exist"
 msgstr "选定的配置文件不存在"
 
-#: ../src/spacecmd/kickstart.py:2853 ../src/spacecmd/kickstart.py:2858
+#: ../src/spacecmd/kickstart.py:2847 ../src/spacecmd/kickstart.py:2852
 msgid "Enter valid input"
 msgstr "提供有效输入"
 
@@ -8160,23 +8156,27 @@ msgstr "代理系统 ID："
 msgid "Manage with Salt SSH"
 msgstr "使用 Salt SSH 管理"
 
-#: ../src/spacecmd/system.py:4568
+#: ../src/spacecmd/system.py:4569
+msgid "Provided port must be numeric"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4574
 msgid "Hostname must be provided"
 msgstr "必须提供主机名"
 
-#: ../src/spacecmd/system.py:4571
+#: ../src/spacecmd/system.py:4577
 msgid "Either a SSH Password or a private key must be provided"
 msgstr "必须提供 SSH 口令或私用密钥"
 
-#: ../src/spacecmd/system.py:4579
+#: ../src/spacecmd/system.py:4585
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr "服务器在引导时不支持重新激活密钥"
 
-#: ../src/spacecmd/system.py:4586
+#: ../src/spacecmd/system.py:4592
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "正在引导 \"{}\"。这可能需要一段时间。"
 
-#: ../src/spacecmd/system.py:4600
+#: ../src/spacecmd/system.py:4606
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
@@ -8541,6 +8541,9 @@ msgstr "参数 {} 不是字符串类型，而是 {}。"
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "获取 FQDN 时发生未经处理的异常："
+
+#~ msgid "The following kickstart labels are invalid:"
+#~ msgstr "以下 kickstart 标签无效："
 
 #, python-format
 #~ msgid "This method was removed since API version %s"
