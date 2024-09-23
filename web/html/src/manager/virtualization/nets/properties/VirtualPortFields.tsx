@@ -48,7 +48,7 @@ export function VirtualPortFields(props: Props) {
           label={t("Interface id")}
           labelClass="col-md-3"
           divClass="col-md-6"
-          validators={[Validation.matches(utils.uuidPattern)]}
+          validate={[Validation.matches(utils.uuidPattern)]}
         />
       )}
       {props.type === "802.1qbh" && model["virtualport-params-type"] === "vsi" && (
@@ -66,7 +66,7 @@ export function VirtualPortFields(props: Props) {
             label={t("VSI instance id")}
             labelClass="col-md-3"
             divClass="col-md-6"
-            validators={[Validation.matches(utils.uuidPattern)]}
+            validate={[Validation.matches(utils.uuidPattern)]}
             invalidHint={t("Value needs to be a valid UUID")}
           />
         </>

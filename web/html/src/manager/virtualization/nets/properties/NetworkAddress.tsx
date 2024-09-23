@@ -45,7 +45,7 @@ export const NetworkAddress = (props: Props) => {
   return (
     <InputBase
       name={[`${props.prefix}_address`, `${props.prefix}_prefix`]}
-      validators={[
+      validate={[
         utils.allOrNone,
         (values) => {
           const address = values[`${props.prefix}_address`] || "";

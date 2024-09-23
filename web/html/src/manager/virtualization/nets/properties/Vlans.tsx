@@ -53,7 +53,7 @@ export function Vlans(props: Props) {
                 divClass="col-md-12"
                 className="col-md-6"
                 required
-                validators={[Validation.isInt({ min: 0, max: 4095 })]}
+                validate={[Validation.isInt({ min: 0, max: 4095 })]}
                 invalidHint={t("Integer between 0 and 4095")}
               />
               <Select

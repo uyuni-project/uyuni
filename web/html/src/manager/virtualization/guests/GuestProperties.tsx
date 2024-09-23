@@ -131,7 +131,7 @@ export function GuestProperties(props: Props) {
                                     invalidHint={t("Can not contain the following characters: /\\")}
                                     labelClass="col-md-3"
                                     divClass="col-md-6"
-                                    validators={[Validation.matches(/^[^/\\]+$/)]}
+                                    validate={[Validation.matches(/^[^/\\]+$/)]}
                                   />
                                 )}
                                 {initialModel.vmType === undefined && (
@@ -166,7 +166,7 @@ export function GuestProperties(props: Props) {
                                   invalidHint={t("A positive integer is required")}
                                   labelClass="col-md-3"
                                   divClass="col-md-6"
-                                  validators={[Validation.isInt({ gt: 0 })]}
+                                  validate={[Validation.isInt({ gt: 0 })]}
                                 />
                                 <Text
                                   name="vcpu"
@@ -175,7 +175,7 @@ export function GuestProperties(props: Props) {
                                   invalidHint={t("A positive integer is required")}
                                   labelClass="col-md-3"
                                   divClass="col-md-6"
-                                  validators={[Validation.isInt({ gt: 0 })]}
+                                  validate={[Validation.isInt({ gt: 0 })]}
                                 />
                                 {initialModel.arch === undefined && (
                                   <Select

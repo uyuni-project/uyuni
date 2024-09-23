@@ -25,7 +25,7 @@ export default () => {
         invalidHint={t("Minimum 2 characters")}
         labelClass="col-md-3"
         divClass="col-md-6"
-        validators={[(value) => value.length > 2]}
+        validate={[(value) => value.length > 2]}
       />
       <SubmitButton className="btn-success" text={t("Submit")} />
     </Form>

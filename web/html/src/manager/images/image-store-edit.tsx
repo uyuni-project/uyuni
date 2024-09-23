@@ -258,7 +258,7 @@ class CreateImageStore extends React.Component<Props, State> {
             name="label"
             label={t("Label")}
             required
-            validators={this.isLabelUnique}
+            validate={this.isLabelUnique}
             invalidHint={t("Label is required and must be unique.")}
             labelClass="col-md-3"
             divClass="col-md-6"

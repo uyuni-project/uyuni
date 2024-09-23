@@ -56,7 +56,7 @@ export function IpConfig(props: Props) {
                 title={t(`DHCP${props.ipv6 ? "v6" : ""} address range ${index}`)}
                 divClass="col-md-11"
                 required
-                validators={[
+                validate={[
                   utils.allOrNone,
                   (value) =>
                     Object.values(value).every((item) => {
@@ -104,7 +104,7 @@ export function IpConfig(props: Props) {
                   divClass="col-md-12"
                   title={t(`DHCP${props.ipv6 ? "v6" : ""} host ${index} address`)}
                   required
-                  validators={[Validation.matches(address_pattern)]}
+                  validate={[Validation.matches(address_pattern)]}
                   invalidHint={t(`Needs to be an IPv${ip_version} address`)}
                   className="col-md-4"
                 />
@@ -115,7 +115,7 @@ export function IpConfig(props: Props) {
                     title={t(`DHCP host ${index} MAC address`)}
                     maxLength={17}
                     required
-                    validators={[Validation.matches(utils.macPattern)]}
+                    validate={[Validation.matches(utils.macPattern)]}
                     invalidHint={t("Needs to be a MAC address")}
                     className="col-md-4"
                   />

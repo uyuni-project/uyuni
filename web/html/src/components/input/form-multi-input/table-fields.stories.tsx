@@ -57,7 +57,7 @@ export default () => {
                 required
                 invalidHint={t("Minimum 2 characters")}
                 divClass="col-md-12"
-                validators={[(value) => value.length > 2]}
+                validate={[(value) => value.length > 2]}
                 className="col-md-4"
               />
               <Text
@@ -66,7 +66,7 @@ export default () => {
                 invalidHint={t("Minimum 2 characters")}
                 divClass="col-md-12"
                 className="col-md-4"
-                validators={[(value) => value.length > 2]}
+                validate={[(value) => value.length > 2]}
               />
               <Text name={`user${index}_age`} required divClass="col-md-12" className="col-md-4" />
             </>

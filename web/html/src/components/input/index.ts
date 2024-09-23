@@ -9,3 +9,4 @@ export * from "./radio/Radio";
 export * from "./range/Range";
 export * from "./select/Select";
 export * from "./text/Text";
+export * from "./validate";

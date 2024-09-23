@@ -10,8 +10,7 @@ type Props = {
    *  object. The value is the one displayed in the form */
   model?: any;
 
-  // TODO: This interface is bad, we need something more consistent
-  /** Object storing form field errors */
+  /** Form-wide errors, e.g. from a request response */
   errors?: Record<string, string>;
 
   /** Function to trigger when the Submit button is clicked */
@@ -149,20 +148,13 @@ export class Form extends React.Component<Props> {
             this.inputs[name]?.setFormErrors([error]);
           }
         } else {
-          // TODO: Fix all of this
-          const values = Object.keys(this.props.model).reduce((filtered, key) => {
-            if (names.includes(key)) {
-              filtered[key] = this.props.model[key];
-            }
-            return filtered;
-          }, {});
           const errors = Object.keys(this.props.errors || {}).reduce((filtered, key) => {
             if (names.includes(key) && this.props.errors?.[key]) {
               return filtered.concat(this.props.errors[key]);
             }
             return filtered;
           }, [] as string[]);
-          this.inputs[name]?.validate(values, errors);
+          this.inputs[name]?.setFormErrors(errors);
         }
       });
     }

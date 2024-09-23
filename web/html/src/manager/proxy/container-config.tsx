@@ -202,7 +202,7 @@ export function ProxyConfig() {
           placeholder={t("e.g., proxy.domain.com")}
           labelClass="col-md-3"
           divClass="col-md-6"
-          validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+          validate={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
           invalidHint={t("Has to be a valid FQDN address")}
         />
         <Text
@@ -213,14 +213,14 @@ export function ProxyConfig() {
           hint={t("The FQDN of the parent (server or proxy) to connect to.")}
           labelClass="col-md-3"
           divClass="col-md-6"
-          validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+          validate={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
           invalidHint={t("Has to be a valid FQDN address")}
         />
         <Text
           name="proxyPort"
           label={t("Proxy SSH port")}
           hint={t("Port range: 1 - 65535")}
-          validators={[Validation.isInt({ gt: 0, lt: 65536 })]}
+          validate={[Validation.isInt({ gt: 0, lt: 65536 })]}
           defaultValue="8022"
           labelClass="col-md-3"
           divClass="col-md-6"
@@ -231,7 +231,7 @@ export function ProxyConfig() {
           label={t("Max Squid cache size")}
           hint={t("The maximum value of the Squid cache in Megabytes")}
           required
-          validators={[Validation.isInt({ gt: 0 })]}
+          validate={[Validation.isInt({ gt: 0 })]}
           placeholder={t("e.g., 2048")}
           labelClass="col-md-3"
           divClass="col-md-6"
@@ -314,7 +314,7 @@ export function ProxyConfig() {
               <Text
                 name="country"
                 label={t("2-letter country code")}
-                validators={[Validation.matches(/^[A-Z]{2}$/)]}
+                validate={[Validation.matches(/^[A-Z]{2}$/)]}
                 maxLength={2}
                 labelClass="col-md-3"
                 divClass="col-md-2"

@@ -10,15 +10,15 @@ export default () => {
   const asyncValidator = async (value: string) => {
     await timeout(300);
 
-    if (value.length < 3) {
-      return "Must be at least 3 characters long";
+    if (!value.toLowerCase().includes("o")) {
+      return "Must include the letter 'o'";
     }
   };
 
   return (
     <Form model={model} onChange={(newModel) => setModel(newModel)}>
-      <p>Inputs support async validation with debounce:</p>
-      <Text name="foo" validators={[asyncValidator]} debounceValidate={500} />
+      <p>Async validation with debounce:</p>
+      <Text name="foo" validate={[asyncValidator]} debounceValidate={500} />
     </Form>
   );
 };

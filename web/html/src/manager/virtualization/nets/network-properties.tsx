@@ -273,7 +273,7 @@ export function NetworkProperties(props: Props) {
                       label={t("Maximum Transmission Unit (MTU)")}
                       labelClass="col-md-3"
                       divClass="col-md-6"
-                      validators={[Validation.isInt({ min: 0 })]}
+                      validate={[Validation.isInt({ min: 0 })]}
                       invalidHint={t("The value has to be a positive integer")}
                     />
                   )}
@@ -379,7 +379,7 @@ export function NetworkProperties(props: Props) {
                       label={t("VLAN tag")}
                       labelClass="col-md-3"
                       divClass="col-md-6"
-                      validators={[Validation.isInt({ min: 0, max: 4095 })]}
+                      validate={[Validation.isInt({ min: 0, max: 4095 })]}
                       invalidHint={t("Integer between 0 and 4095")}
                     />
                   )}
@@ -401,7 +401,7 @@ export function NetworkProperties(props: Props) {
                         title={t("NAT IPv4 range")}
                         labelClass="col-md-3"
                         divClass="col-md-6"
-                        validators={[
+                        validate={[
                           utils.allOrNone,
                           (value) =>
                             Object.values(value).every(
@@ -417,7 +417,7 @@ export function NetworkProperties(props: Props) {
                         title={t("NAT port range")}
                         labelClass="col-md-3"
                         divClass="col-md-6"
-                        validators={[
+                        validate={[
                           utils.allOrNone,
                           (value) =>
                             Object.values(value).every(

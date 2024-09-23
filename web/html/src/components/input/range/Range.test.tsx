@@ -69,7 +69,7 @@ describe("Range", () => {
         prefix="port"
         label="Port range"
         invalidHint={t("Both values need to be positive integers")}
-        validators={[
+        validate={[
           (value) => Object.values(value).every((item) => item != null),
           (value) => Object.values(value).every((item) => typeof item === "string" && item.match(/^[0-9]+$/)),
           ({ port_start, port_end }) => parseInt(port_start, 10) <= parseInt(port_end, 10),

@@ -6,8 +6,7 @@ import _isNil from "lodash/isNil";
 import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
-
-type Validator = (...args: any[]) => string | string[] | undefined | Promise<string | string[] | undefined>;
+import { Validator } from "./validate";
 
 export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.
@@ -61,11 +60,10 @@ export type InputBaseProps<ValueType = string> = {
   /** Indicates whether the field is disabled */
   disabled?: boolean;
 
-  // TODO: Rename to `validate`
   /**
    *  Validate the input, either sync or async, resolve with `undefined` for valid or an error message for invalid
    */
-  validators?: Validator | Validator[];
+  validate?: Validator | Validator[];
 
   /**
    * Debounce async validation for `debounceValidate` milliseconds
@@ -232,7 +230,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
    */
   validate = _debounce(
     async <InferredValueType extends unknown = ValueType>(value: InferredValueType): Promise<void> => {
-      const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators] ?? [];
+      const validators = Array.isArray(this.props.validate) ? this.props.validate : [this.props.validate] ?? [];
       if (!this.props.disabled && this.props.required) {
         validators.push(this.requiredValidator);
       }

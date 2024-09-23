@@ -47,7 +47,7 @@ export function DnsConfig(props: Props) {
                   divClass="col-md-12"
                   className="col-md-6"
                   title={t(`DNS forwarder ${index} domain name`)}
-                  validators={[Validation.matches(utils.dnsNamePattern)]}
+                  validate={[Validation.matches(utils.dnsNamePattern)]}
                   invalidHint={t("Has to be a valid qualified host name")}
                 />
                 <Text
@@ -55,7 +55,7 @@ export function DnsConfig(props: Props) {
                   divClass="col-md-12"
                   className="col-md-6"
                   title={t(`DNS forwarder ${index} address`)}
-                  validators={[Validation.matches(utils.ipPattern)]}
+                  validate={[Validation.matches(utils.ipPattern)]}
                   invalidHint={t("Has to be an IP address")}
                 />
               </>
@@ -96,7 +96,7 @@ export function DnsConfig(props: Props) {
                   className="col-md-6"
                   title={t(`DNS host ${index} address`)}
                   required
-                  validators={[Validation.matches(utils.ipPattern)]}
+                  validate={[Validation.matches(utils.ipPattern)]}
                   invalidHint={t("Has to be an IP address")}
                 />
                 <Text
@@ -105,7 +105,7 @@ export function DnsConfig(props: Props) {
                   className="col-md-6"
                   title={t(`DNS host ${index} names`)}
                   required
-                  validators={[
+                  validate={[
                     (value) =>
                       value.split(",").every((item) => item === "" || item.match(utils.dnsNamePattern) != null),
                   ]}
@@ -161,7 +161,7 @@ export function DnsConfig(props: Props) {
                   name={`dns_srvs${index}_domain`}
                   labelClass="col-md-3"
                   divClass="col-md-6"
-                  validators={[Validation.matches(utils.dnsNamePattern)]}
+                  validate={[Validation.matches(utils.dnsNamePattern)]}
                   invalidHint={t("Has to be a valid qualified host name")}
                 />
                 <Text
@@ -175,7 +175,7 @@ export function DnsConfig(props: Props) {
                   label={t("Port")}
                   title={t(`DNS SRV record ${index} port`)}
                   name={`dns_srvs${index}_port`}
-                  validators={[Validation.isInt({ min: 0 })]}
+                  validate={[Validation.isInt({ min: 0 })]}
                   invalidHint={t("The value has to be a positive integer")}
                   labelClass="col-md-3"
                   divClass="col-md-6"
@@ -184,7 +184,7 @@ export function DnsConfig(props: Props) {
                   label={t("Target priority")}
                   title={t(`DNS SRV record ${index} priority`)}
                   name={`dns_srvs${index}_priority`}
-                  validators={[Validation.isInt({ min: 0 })]}
+                  validate={[Validation.isInt({ min: 0 })]}
                   invalidHint={t("The value has to be a positive integer")}
                   labelClass="col-md-3"
                   divClass="col-md-6"
@@ -193,7 +193,7 @@ export function DnsConfig(props: Props) {
                   label={t("Target weight")}
                   title={t(`DNS SRV record ${index} weight`)}
                   name={`dns_srvs${index}_weight`}
-                  validators={[Validation.isInt({ min: 0 })]}
+                  validate={[Validation.isInt({ min: 0 })]}
                   invalidHint={t("The value has to be a positive integer")}
                   labelClass="col-md-3"
                   divClass="col-md-6"
@@ -236,7 +236,7 @@ export function DnsConfig(props: Props) {
                   divClass="col-md-12"
                   className="col-md-6"
                   required
-                  validators={[Validation.matches(utils.dnsNamePattern)]}
+                  validate={[Validation.matches(utils.dnsNamePattern)]}
                   invalidHint={t("Has to be a valid qualified host name")}
                 />
                 <Text

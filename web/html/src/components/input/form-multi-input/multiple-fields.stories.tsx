@@ -1,9 +1,8 @@
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
+import { Form, Text, Validate } from "components/input";
 
-import { Form } from "../form/Form";
-import { Text } from "../text/Text";
 import { FormMultiInput } from "./FormMultiInput";
 
 export default () => {
@@ -46,19 +45,17 @@ export default () => {
                 name={`user${index}_firstname`}
                 label={t("First Name")}
                 required
-                invalidHint={t("Minimum 2 characters")}
                 labelClass="col-md-3"
                 divClass="col-md-6"
-                validators={[(value) => value.length > 2]}
+                validate={[Validate.minLength(2)]}
               />
               <Text
                 name={`user${index}_lastname`}
                 label={t("Last Name")}
                 required
-                invalidHint={t("Minimum 2 characters")}
                 labelClass="col-md-3"
                 divClass="col-md-6"
-                validators={[(value) => value.length > 2]}
+                validate={[Validate.minLength(2)]}
               />
             </>
           )}

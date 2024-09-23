@@ -246,7 +246,7 @@ export function PoolProperties(props: Props) {
                     invalidHint={t("Can not contain the following characters: /\\")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    validators={[Validation.matches(/^[^/\\]+$/)]}
+                    validate={[Validation.matches(/^[^/\\]+$/)]}
                   />
                 )}
                 <Select
@@ -400,7 +400,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("PCI address formatted like 0000:00:00.0")}
-                          validators={[
+                          validate={[
                             Validation.matches(/^[0-9a-fA-F]{4}:[0-9a-fA-F]{2}:[0-9a-fA-F]{1}.[0-9a-fA-F]$/),
                           ]}
                         />
@@ -413,7 +413,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("PCI address formatted like 0000:00:00.0")}
-                          validators={[Validation.isInt]}
+                          validate={[Validation.isInt]}
                         />
                       )}
                       {adapter_fields.includes("parent") && (
@@ -431,7 +431,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("16 characters long hexadecimal value. Example: 500277a4100c4e21")}
-                          validators={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
+                          validate={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
                         />
                       )}
                       {adapter_fields.includes("parent_wwpn") && (
@@ -441,7 +441,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("16 characters long hexadecimal value. Example: 500277a4100c4e21")}
-                          validators={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
+                          validate={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
                         />
                       )}
                       {adapter_fields.includes("parent_fabric_wwn") && (
@@ -451,7 +451,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("16 characters long hexadecimal value. Example: 500277a4100c4e21")}
-                          validators={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
+                          validate={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
                         />
                       )}
                       {adapter_fields.includes("wwnn") && (
@@ -462,7 +462,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("16 characters long hexadecimal value. Example: 500277a4100c4e21")}
-                          validators={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
+                          validate={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
                         />
                       )}
                       {adapter_fields.includes("wwpn") && (
@@ -473,7 +473,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("16 characters long hexadecimal value. Example: 500277a4100c4e21")}
-                          validators={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
+                          validate={[Validation.matches(/^(0x)?[0-9a-fA-F]{16}$/)]}
                         />
                       )}
                       {adapter_fields.includes("managed") && (
@@ -538,7 +538,7 @@ export function PoolProperties(props: Props) {
                     label={t("Owner UID")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    validators={[Validation.isInt({ min: 0 })]}
+                    validate={[Validation.isInt({ min: 0 })]}
                     invalidHint={t("UID is a numeric value")}
                   />
                   <Text
@@ -546,7 +546,7 @@ export function PoolProperties(props: Props) {
                     label={t("Group ID")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    validators={[Validation.isInt({ min: 0 })]}
+                    validate={[Validation.isInt({ min: 0 })]}
                     invalidHint={t("GID is a numeric value")}
                   />
                   <Text
@@ -555,7 +555,7 @@ export function PoolProperties(props: Props) {
                     hint={t("target directory permissions in octal form, like 0775")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    validators={[Validation.isInt({ gt: 0 })]}
+                    validate={[Validation.isInt({ gt: 0 })]}
                     invalidHint={t("GID is a numeric value")}
                   />
                   {/* TODO Add Link to the UI Reference */}
