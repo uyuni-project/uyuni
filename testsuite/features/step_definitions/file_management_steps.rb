@@ -76,8 +76,8 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   boostrap_script = 'bootstrap-general.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{boostrap_script}"
   dest = "/tmp/#{boostrap_script}"
-  return_code = file_inject(target, source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(target, source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   system_name = get_system_name(host)
   output, = target.run("sed -i '/^set timeout /c\\set timeout #{DEFAULT_TIMEOUT}' /tmp/#{boostrap_script} && expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)

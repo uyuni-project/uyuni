@@ -2,9 +2,9 @@ import * as React from "react";
 
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
 
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
-import { Loading } from "components/utils/Loading";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
+import { Loading } from "components/utils/loading/Loading";
 
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
 import { availableChannelsType, Channel } from "./activation-key-channels-api";

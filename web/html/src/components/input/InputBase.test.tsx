@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { render, screen } from "utils/test-utils";
 
-import { Form } from "./Form";
+import { Form } from "./form/Form";
 import { InputBase } from "./InputBase";
 
 describe("InputBase", () => {

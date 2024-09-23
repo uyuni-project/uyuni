@@ -64,6 +64,7 @@ import xml.etree.ElementTree as etree
 
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
+from shlex import quote as sh_quote
 from uyuni.common import checksum, fileutils
 from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
@@ -146,22 +147,46 @@ class ZyppoSync:
         This method does update the Zypper RPM database with new keys coming from the Spacewalk GPG keyring
 
         """
+
+        def _log_command(args):
+            log(3, " ".join([sh_quote(x) for x in args]))
+
         spacewalk_gpg_keys = {}
         zypper_gpg_keys = {}
-        with tempfile.NamedTemporaryFile() as f:
+
+        with tempfile.TemporaryDirectory() as temp_dir:
             # Collect GPG keys from the Spacewalk GPG keyring
             # The '--export-options export-clean' is needed avoid exporting key signatures
             # which are not needed and can cause issues when importing into the RPMDB
-            os.system(
-                # pylint: disable-next=consider-using-f-string
-                "gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(
-                    SPACEWALK_GPG_KEYRING, f.name
-                )
-            )
+            all_keys_file = os.path.join(temp_dir, "_all_keys.gpg")
+            args = [
+                "gpg",
+                "-q",
+                "--batch",
+                "--no-options",
+                "--no-default-keyring",
+                "--no-permission-warning",
+                "--keyring",
+                SPACEWALK_GPG_KEYRING,
+                "--export",
+                "--export-options",
+                "export-clean",
+                "--with-colons",
+                "-a",
+                "--output",
+                all_keys_file,
+            ]
+            _log_command(args)
+            process = subprocess.run(args, check=False)
+            args = [
+                "gpg",
+                "--verbose",
+                "--with-colons",
+                all_keys_file,
+            ]
+            _log_command(args)
             process = subprocess.Popen(
-                ["gpg", "--verbose", "--with-colons", f.name],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.DEVNULL,
+                args, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
             )
             for line in process.stdout.readlines():
                 line_l = line.decode().split(":")
@@ -176,16 +201,21 @@ class ZyppoSync:
             )
 
             # Collect GPG keys from reposync Zypper RPM database
-            process = subprocess.Popen(
-                ["rpm", "-q", "gpg-pubkey", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH],
-                stdout=subprocess.PIPE,
-            )
+            args = ["rpm", "-q", "gpg-pubkey", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH]
+            _log_command(args)
+            process = subprocess.Popen(args, stdout=subprocess.PIPE)
             for line in process.stdout.readlines():
                 match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
                 if match:
                     zypper_gpg_keys[match.groups()[0]] = match.groups()[1]
             # pylint: disable-next=consider-using-f-string
-            log(3, "zypper keyIds:    {}".format([k for k in sorted(zypper_gpg_keys)]))
+            log(3, "zypper keyIds:    {}".format(sorted(zypper_gpg_keys.keys())))
+
+            keys_to_load = list(
+                set(spacewalk_gpg_keys).difference(set(zypper_gpg_keys))
+            )
+            # pylint: disable-next=consider-using-f-string
+            log(3, "diff keyIds:      {}".format(keys_to_load))
 
             # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.
             # pylint: disable-next=consider-using-dict-items
@@ -197,62 +227,80 @@ class ZyppoSync:
                 ):
                     # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
                     # We delete this key from the RPM database to allow importing the newer version.
-                    os.system(
+                    args = [
+                        "rpm",
+                        "--dbpath",
+                        REPOSYNC_ZYPPER_RPMDB_PATH,
+                        "-e",
                         # pylint: disable-next=consider-using-f-string
-                        "rpm --dbpath {} -e gpg-pubkey-{}-{}".format(
-                            REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]
-                        )
-                    )
+                        "gpg-pubkey-{}-{}".format(key, zypper_gpg_keys[key]),
+                    ]
+                    _log_command(args)
+                    subprocess.run(args, check=False)
                     log(
                         3,
                         # pylint: disable-next=consider-using-f-string
-                        "new version available for gpg-pubkey-{}-{}".format(
+                        "New version available for gpg-pubkey-{}-{}".format(
                             key, zypper_gpg_keys[key]
                         ),
                     )
+                    keys_to_load.append(key)
+
+            # pylint: disable-next=consider-using-f-string
+            log(3, "to load keyIds:   {}".format(keys_to_load))
 
             # Finally, once we deleted the existing old key releases from the Zypper RPM database
-            # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
+            # we proceed to import all missing keys from the Spacewalk GPG keyring. This will allow new GPG
             # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
             # properly
-            log(
-                3,
+            for key_id in keys_to_load:
                 # pylint: disable-next=consider-using-f-string
-                "rpmkeys -vv --dbpath {} --import {}".format(
-                    REPOSYNC_ZYPPER_RPMDB_PATH, f.name
-                ),
-            )
-            process = subprocess.Popen(
-                [
+                key_file = os.path.join(temp_dir, "{}.gpg".format(key_id))
+                args = [
+                    "gpg",
+                    "-q",
+                    "--batch",
+                    "--no-options",
+                    "--no-default-keyring",
+                    "--no-permission-warning",
+                    "--keyring",
+                    SPACEWALK_GPG_KEYRING,
+                    "--export",
+                    "--export-options",
+                    "export-clean",
+                    "--with-colons",
+                    "-a",
+                    "--output",
+                    key_file,
+                    key_id,
+                ]
+                _log_command(args)
+                subprocess.run(args, check=False)
+                args = [
                     "rpmkeys",
                     "-vv",
                     "--dbpath",
                     REPOSYNC_ZYPPER_RPMDB_PATH,
                     "--import",
-                    f.name,
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            )
-            try:
-                # pylint: disable-next=unused-variable
-                outs, errs = process.communicate(timeout=15)
-                if process.returncode is None or process.returncode > 0:
-                    log(
-                        0,
-                        # pylint: disable-next=consider-using-f-string
-                        "Failed to import keys into rpm database ({}): {}".format(
-                            process.returncode, outs.decode("utf-8")
-                        ),
-                    )
-                else:
-                    # pylint: disable-next=consider-using-f-string
-                    log(3, "CMD out: {}".format(outs.decode("utf-8")))
-            except subprocess.TimeoutExpired:
-                process.kill()
-                log(0, "Timeout exceeded while importing keys to rpm database")
-            keycont = f.read()
-            rhnLog.log_clean(5, keycont.decode("utf-8"))
+                    key_file,
+                ]
+                _log_command(args)
+                process = subprocess.Popen(
+                    args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+                )
+                try:
+                    outs, _ = process.communicate(timeout=15)
+                    if process.returncode is None or process.returncode > 0:
+                        log(
+                            0,
+                            # pylint: disable-next=consider-using-f-string
+                            "Failed to import key {} into rpm database, rpmkeys returned ({}): {}".format(
+                                key_id, process.returncode, outs.decode("utf-8")
+                            ),
+                        )
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    log(0, "Timeout exceeded while importing keys to rpm database")
 
 
 # pylint: disable-next=missing-class-docstring

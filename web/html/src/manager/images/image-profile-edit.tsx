@@ -5,12 +5,12 @@ import { default as ReactSelect } from "react-select";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Form } from "components/input/Form";
+import { Select } from "components/input";
+import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
-import { Messages } from "components/messages";
+import { Text } from "components/input/text/Text";
+import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { Utils } from "utils/functions";

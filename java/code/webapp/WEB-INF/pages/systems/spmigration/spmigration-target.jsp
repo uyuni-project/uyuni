@@ -38,9 +38,9 @@
                 <bean:message key="spmigration.jsp.error.update-zypp-plugin" />
             </div>
         </c:when>
-        <c:when test="${(isMinion and not isSUSEMinion)
-                or (not isMinion and not zyppPluginInstalled)
-                or targetProducts == null}">
+        <c:when test="${(isMinion and not (isSUSEMinion or isRedHatMinion))
+                       or (not isMinion and not zyppPluginInstalled)
+                       or targetProducts == null}">
             <div class="alert alert-warning">
                 <bean:message key="spmigration.jsp.error.unsupported" />
             </div>

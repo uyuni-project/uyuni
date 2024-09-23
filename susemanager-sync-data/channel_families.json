@@ -288,6 +288,10 @@
     "name" : "SUSE Linux Enterprise Server LTSS CORE 12 SP5 x86_64"
   },
   {
+    "label" : "SLES-12-SP5-LTSS-Extended-Security",
+    "name" : "SUSE Linux Enterprise Server LTSS Extended Security 12 SP5 x86_64"
+  },
+  {
     "label" : "SLES12-SP5-LTSS-PPC",
     "name" : "SUSE Linux Enterprise Server LTSS 12 SP5 PPC"
   },

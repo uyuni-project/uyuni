@@ -2417,9 +2417,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports monitoring
      */
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isAmazon2023() ||
-                isRocky8() || isRocky9() || isDebian12() || isDebian11() || isDebian10();
+        return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
+                isSLEMicro5() || // Micro 6 miss the node exporter
+                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
+                isAlibaba2() || isAmazon2() || isAmazon2023() ||
+                isDebian12() || isDebian11() || isDebian10();
     }
 
     /**
@@ -2428,7 +2431,14 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports PTF uninstallation
      */
     public boolean doesOsSupportPtf() {
-        return ServerConstants.SLES.equals(getOs());
+        return ServerConstants.SLES.equals(getOs()) || isSLEMicro();
+    }
+
+    boolean isSLES() {
+        return ServerConstants.SLES.equalsIgnoreCase(getOs());
+    }
+    boolean isSLED() {
+        return ServerConstants.SLED.equalsIgnoreCase(getOs());
     }
 
     /**
@@ -2463,10 +2473,24 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return true if the installer type is of SLE Micro
+     * @return true if the installer type is of SLE Micro (version independent)
      */
     boolean isSLEMicro() {
         return ServerConstants.SLEMICRO.equals(getOs()) || ServerConstants.SLMICRO.equals(getOs());
+    }
+
+    /**
+     * @return true if the installer type is of SLE Micro 5
+     */
+    boolean isSLEMicro5() {
+        return ServerConstants.SLEMICRO.equals(getOs()) && getRelease().startsWith("5.");
+    }
+
+    /**
+     * @return true if the installer type is of SE Micro 6
+     */
+    boolean isSEMicro6() {
+        return ServerConstants.SLMICRO.equals(getOs()) && getRelease().startsWith("6.");
     }
 
     /**
@@ -2474,6 +2498,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     boolean isSLES15() {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
+    }
+
+    boolean isLeap() {
+       return ServerConstants.LEAP.equalsIgnoreCase(getOs());
     }
 
     boolean isLeap15() {
@@ -2494,6 +2522,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.OPENSUSEMICROOS.equals(getOs());
     }
 
+    boolean isUbuntu() {
+        return ServerConstants.UBUNTU.equalsIgnoreCase(getOs());
+    }
+
     boolean isUbuntu1804() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
     }
@@ -2506,6 +2538,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
     }
 
+    boolean isDebian() {
+        return ServerConstants.DEBIAN.equalsIgnoreCase(getOs());
+    }
+
     boolean isDebian12() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("12");
     }
@@ -2516,6 +2552,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isDebian10() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
+    }
+
+    boolean isRHEL() {
+        return ServerConstants.RHEL.equals(getOs());
     }
 
     /**

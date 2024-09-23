@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Button } from "components/buttons";
-import { Messages, MessageType } from "components/messages";
+import { Messages, MessageType } from "components/messages/messages";
 
 import Network from "utils/network";
 
@@ -144,7 +144,7 @@ class SCCDialog extends React.Component<Props> {
 
   render() {
     return (
-      <div className="panel panel-default panel-body text-left">
+      <div>
         <h4>{t("Refresh the product catalog from SUSE Customer Center")}</h4>
         <hr />
         <div className="d-block">
@@ -170,7 +170,7 @@ class SCCDialog extends React.Component<Props> {
             })}
           </ul>
         </div>
-        <div className="text-left">
+        <div>
           <Button
             id="scc-refresh-button"
             className="btn btn-default"

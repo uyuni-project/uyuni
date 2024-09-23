@@ -67,7 +67,7 @@ end
 def product_version_full
   cmd = 'salt-call --local grains.get product_version | tail -n 1'
   out, code = get_target('server').run(cmd)
-  return out.strip if code.zero? && !out.nil?
+  out.strip if code.zero? && !out.nil?
 end
 
 # Determines whether to use the Salt bundle based on the product and product version.
@@ -183,7 +183,7 @@ end
 # @param locator [String] (optional) The locator for the button element.
 # @param options [Hash] (optional) Additional options for the click_button method.
 def click_button_and_wait(locator = nil, **options)
-  click_button(locator, options)
+  click_button(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -197,7 +197,7 @@ end
 # @param locator [String, nil] The locator for the link to click.
 # @param options [Hash] Additional options for the click action.
 def click_link_and_wait(locator = nil, **options)
-  click_link(locator, options)
+  click_link(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -211,7 +211,7 @@ end
 # @param locator [String] (optional) The locator for the link or button to click.
 # @param options [Hash] (optional) Additional options for the click operation.
 def click_link_or_button_and_wait(locator = nil, **options)
-  click_link_or_button(locator, options)
+  click_link_or_button(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -253,7 +253,7 @@ end
 # @param optional_filter_block [Block] An optional filter block to be passed to the `find` method.
 # @return [Capybara::Node::Element] The element after extending it with the CapybaraNodeElementExtension module.
 def find_and_wait_click(*args, **options, &optional_filter_block)
-  element = find(*args, options, &optional_filter_block)
+  element = find(*args, **options, &optional_filter_block)
   element.extend(CapybaraNodeElementExtension)
 end
 
@@ -344,7 +344,7 @@ end
 def extract_logs_from_node(node, host)
   begin
     os_family = node.os_family
-    if os_family =~ /^opensuse/ && !$is_gh_validation && !transactional_system?(host)
+    if os_family.match?(/^opensuse/) && !$is_gh_validation && !transactional_system?(host)
       node.run('zypper --non-interactive install tar')
     elsif transactional_system?(host)
       node.run('transactional-update --continue -n pkg install tar')
@@ -353,8 +353,8 @@ def extract_logs_from_node(node, host)
     node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
     node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
     `mkdir logs` unless Dir.exist?('logs')
-    code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
-    raise ScriptError, 'Download log archive failed' unless code.zero?
+    success = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
+    raise ScriptError, 'Download log archive failed' unless success
   rescue RuntimeError => e
     $stdout.puts e.message
   end
@@ -451,29 +451,6 @@ def check_restart(host, node, time_out)
   end
 end
 
-# Extract the OS version and OS family
-# We get these data decoding the values in '/etc/os-release'
-def get_os_version(node)
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', check_errors: false)
-  return nil, nil unless code.zero?
-
-  os_family = os_family_raw.strip.split('=')[1]
-  return nil, nil if os_family.nil?
-
-  os_family.delete! '"'
-  os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
-  return nil, nil unless code.zero?
-
-  os_version = os_version_raw.strip.split('=')[1]
-  return nil, nil if os_version.nil?
-
-  os_version.delete! '"'
-  # on SLES, we need to replace the dot with '-SP'
-  os_version.gsub!('.', '-SP') if os_family =~ /^sles/
-  $stdout.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
-  [os_version, os_family]
-end
-
 #
 # Retrieves the GPG keys for a given node and target.
 #
@@ -482,13 +459,17 @@ end
 #   Defaults to the server obtained from the `get_target` method.
 # @return [Array<String>] An array of GPG keys.
 def get_gpg_keys(node, target = get_target('server'))
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   case os_family
   when /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
-    os_version = 12 if os_version =~ /^15/
-    # SLE12 GPG keys don't contain service pack strings
-    os_version = os_version.split('-')[0] if os_version =~ /^12/
+    if os_version.start_with?('15')
+      os_version = 12
+    elsif os_version.start_with?('12')
+      # SLE12 GPG keys don't contain service pack strings
+      os_version = os_version.slice(0, 2)
+    end
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
   when /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)
@@ -528,26 +509,26 @@ end
 def get_system_name(host)
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
-  # therefore they are not represented by a twopence node
+  # therefore they are not represented by a RemoteNode
   when 'pxeboot_minion'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
+        word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
   when 'sle12sp5_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.sle12sp5terminal-/
+        word.match?(/example.sle12sp5terminal-/)
       end
     system_name = 'sle12sp5terminal.example.org' if system_name.nil?
   when 'sle15sp4_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.sle15sp4terminal-/
+        word.match?(/example.sle15sp4terminal-/)
       end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
   else
@@ -635,11 +616,20 @@ end
 #
 # @return [ApiTestXmlrpc, ApiTestHttp] The created API client.
 def new_api_client
+  hostname = get_target('server').full_hostname
   ssl_verify = !$is_gh_validation
-  if $debug_mode || product == 'SUSE Manager'
-    ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
+
+  case $api_protocol
+  when 'xmlrpc'
+    ApiTestXmlrpc.new(hostname)
+  when 'http'
+    ApiTestHttp.new(hostname, ssl_verify)
   else
-    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
+    if product == 'SUSE Manager'
+      ApiTestXmlrpc.new(hostname)
+    else
+      ApiTestHttp.new(hostname, ssl_verify)
+    end
   end
 end
 
@@ -723,4 +713,18 @@ def filter_channels(channels, filters = [])
     channels.delete_if { |channel| channel.include? filter }
   end
   channels
+end
+
+# Mutex for processes accessing the API of the server via admin user
+def api_lock?
+  File.open('server_api_call.lock', File::CREAT) do |file|
+    return !file.flock(File::LOCK_EX)
+  end
+end
+
+# Unlock the Mutex for processes accessing the API of the server via admin user
+def api_unlock
+  File.open('server_api_call.lock') do |file|
+    file.flock(File::LOCK_UN)
+  end
 end

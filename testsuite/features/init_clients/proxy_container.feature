@@ -29,6 +29,7 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
+  @skip_if_cloud
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
 
@@ -60,3 +61,8 @@ Feature: Setup containerized proxy
   Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy", refreshing the page
+
+  Scenario: Check if Monitoring can be enabled on the containerized proxy
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Properties" in the content area
+    Then the "monitoring_entitled" checkbox should be disabled

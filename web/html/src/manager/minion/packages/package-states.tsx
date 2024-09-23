@@ -8,7 +8,7 @@ import { useImmer } from "use-immer";
 import { AsyncButton } from "components/buttons";
 import { TextField } from "components/fields";
 import withPageWrapper from "components/general/with-page-wrapper";
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { showErrorToastr } from "components/toastr/toastr";
 

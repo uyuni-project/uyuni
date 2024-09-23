@@ -221,6 +221,10 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
   fill_in(field, with: text, fill_options: { clear: :backspace })
 end
 
+When(/^I enter "([^"]*)" in the placeholder "([^"]*)"$/) do |text, placeholder|
+  find("input[placeholder='#{placeholder}']").set(text)
+end
+
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
   future_time = get_future_time(minutes_to_add)
   fill_in(field, with: future_time, fill_options: { clear: :backspace })
@@ -272,6 +276,17 @@ When(/^I click on "([^"]*)" and confirm$/) do |text|
   begin
     accept_alert do
       step %(I click on "#{text}")
+    end
+  rescue Capybara::ModalNotFound
+    warn 'Modal not found'
+  end
+end
+
+# Click on a button and confirm in alert box
+When(/^I click on "([^"]*)" and confirm alert box$/) do |text|
+  begin
+    accept_confirm do
+      click_button(text)
     end
   rescue Capybara::ModalNotFound
     warn 'Modal not found'
@@ -378,6 +393,8 @@ end
 
 Given(/^I am not authorized$/) do
   begin
+    xpath_logout = '//a[@href=\'/rhn/Logout.do\']'
+    find(:xpath, xpath_logout).click if has_xpath?(xpath_logout)
     page.reset!
   rescue NoMethodError
     log 'The browser session could not be cleaned.'
@@ -404,6 +421,8 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step 'I am authorized as "admin" with password "admin"'
   when 'Images'
     step 'I am authorized as "kiwikiwi" with password "kiwikiwi"'
+  when 'Docker'
+    step 'I am authorized as "docker" with password "docker"'
   else
     log "Section #{section} not supported"
   end
@@ -541,7 +560,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 end
 
 Given(/^I am authorized$/) do
-  step 'I am authorized as "testing" with password "testing"'
+  step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
 end
 
 When(/^I sign out$/) do

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { DateTimePicker } from "components/datetime";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";

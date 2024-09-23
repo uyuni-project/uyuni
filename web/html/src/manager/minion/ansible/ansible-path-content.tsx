@@ -2,8 +2,8 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages, Utils } from "components/messages";
-import { Loading } from "components/utils/Loading";
+import { Messages, Utils } from "components/messages/messages";
+import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
 

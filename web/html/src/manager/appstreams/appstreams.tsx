@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { ActionChain } from "components/action-schedule";
-import { Messages, MessageType, Utils as MessageUtils } from "components/messages";
+import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 
 import { ChannelAppStream } from "./appstreams.type";
 import { AppStreamsChangesConfirm } from "./changes-confirm-appstreams";

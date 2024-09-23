@@ -1,0 +1,1 @@
+- allow execute of ssh-keygen command on the proxy to cleanup ssh known_hosts (bsc#1228345)

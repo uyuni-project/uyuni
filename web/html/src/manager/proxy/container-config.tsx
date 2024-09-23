@@ -3,11 +3,11 @@ import { useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { SubmitButton } from "components/buttons";
-import { Form } from "components/input/Form";
+import { Form } from "components/input/form/Form";
+import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
-import { FormMultiInput } from "components/input/FormMultiInput";
-import { Radio } from "components/input/Radio";
-import { Text } from "components/input/Text";
+import { Radio } from "components/input/radio/Radio";
+import { Text } from "components/input/text/Text";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";

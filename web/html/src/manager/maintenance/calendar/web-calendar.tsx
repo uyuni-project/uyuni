@@ -14,7 +14,7 @@ import moment from "moment";
 
 import { jsFormatPreferredLocale } from "core/user-preferences";
 
-import { MessageType, Utils as MessagesUtils } from "components/messages";
+import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 

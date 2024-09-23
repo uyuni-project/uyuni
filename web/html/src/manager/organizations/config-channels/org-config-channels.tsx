@@ -3,7 +3,7 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { ConfigChannels } from "components/config-channels";
-import { Utils as MessagesUtils } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 

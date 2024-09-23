@@ -2,7 +2,7 @@ import * as React from "react";
 
 import _isEmpty from "lodash/isEmpty";
 
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 
 import { ProjectMessageType } from "../../type";
 

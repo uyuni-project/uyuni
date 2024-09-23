@@ -4,7 +4,7 @@ import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-chan
 
 import { ChannelAnchorLink } from "components/links";
 import { Toggler } from "components/toggler";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import { Channel } from "./activation-key-channels-api";
 

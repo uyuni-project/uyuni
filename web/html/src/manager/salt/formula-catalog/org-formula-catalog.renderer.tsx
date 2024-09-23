@@ -2,7 +2,7 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { ServerMessageType } from "components/messages";
+import { ServerMessageType } from "components/messages/messages";
 
 import FormulaCatalog from "./org-formula-catalog";
 

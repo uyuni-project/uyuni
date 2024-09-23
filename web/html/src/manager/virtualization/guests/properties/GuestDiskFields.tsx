@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { FormContext } from "components/input/Form";
-import { Select } from "components/input/Select";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Select } from "components/input";
+import { FormContext } from "components/input/form/Form";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 
 import { GuestDiskFileFields } from "./GuestDiskFileFields";
 import { GuestDiskVolumeFields } from "./GuestDiskVolumeFields";

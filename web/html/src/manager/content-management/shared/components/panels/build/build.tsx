@@ -6,11 +6,11 @@ import _last from "lodash/last";
 import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Form } from "components/input/Form";
-import { Text } from "components/input/Text";
-import { Messages, Utils as MsgUtils } from "components/messages";
+import { Form } from "components/input/form/Form";
+import { Text } from "components/input/text/Text";
+import { Messages, Utils as MsgUtils } from "components/messages/messages";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import statesEnum from "../../../../shared/business/states.enum";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";

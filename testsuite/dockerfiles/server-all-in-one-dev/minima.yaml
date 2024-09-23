@@ -1,6 +1,7 @@
 storage:
   type: file
-  path: /srv/www/htdocs/pub/TestRepoRpmUpdates
+  path: /srv/www/htdocs/pub/
 
 http:
   - url: http://downloadcontent.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm
+  - url: http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Appstream/rhlike

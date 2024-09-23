@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Select } from "components/input";
-import { Form } from "components/input/Form";
+import { Form } from "components/input/form/Form";
 import { SelectSearchField } from "components/table/SelectSearchField";
 
 const renderSearchField = ({ filterOptions, field, criteria, onSearch, placeholder, name }) => {

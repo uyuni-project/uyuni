@@ -136,7 +136,7 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     And I follow this "pxeboot_minion" link
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "added system entitlement" completed during last minute, refreshing the page
+    And I wait until I see "added system entitlement" text, refreshing the page
     And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area

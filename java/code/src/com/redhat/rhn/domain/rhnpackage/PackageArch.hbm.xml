@@ -20,7 +20,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <many-to-one
             name="archType"
             class="com.redhat.rhn.domain.common.ArchType"
-            column="arch_type_id"/>
+            column="arch_type_id"
+            lazy="false"/>
     </class>
 
     <query name="PackageArch.findById">

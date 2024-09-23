@@ -18,19 +18,31 @@ package com.redhat.rhn.manager.audit;
 
 import static com.redhat.rhn.manager.audit.CVEAuditManager.SUCCESSOR_PRODUCT_RANK_BOUNDARY;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.OVALCleaner;
+import com.suse.oval.OsFamily;
+import com.suse.oval.OvalParser;
 import com.suse.oval.ShallowSystemPackage;
+import com.suse.oval.config.OVALConfigLoader;
+import com.suse.oval.ovaldownloader.OVALDownloadResult;
+import com.suse.oval.ovaldownloader.OVALDownloader;
+import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -82,28 +94,75 @@ public class CVEAuditManagerOVAL {
 
         Set<Server> clients = user.getServers();
         for (Server clientServer : clients) {
-            CVEAuditSystemBuilder systemAuditResult;
-            // We need this initially to be able to get errata and audit channels information for the OVAL
-            // implementation.
-            CVEAuditSystemBuilder auditWithChannelsResult =
-                    CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
+            CVEAuditSystemBuilder auditWithChannelsResult = null;
+            CVEAuditSystemBuilder auditWithOVALResult = null;
 
-            systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()),
-                    clientServer);
-            systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
-            systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
+            if (ConfigDefaults.get().isOvalEnabledForCveAudit() && checkOVALAvailability(clientServer)) {
+                auditWithOVALResult =
+                        doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
+            }
 
-            if (patchStatuses.contains(systemAuditResult.getPatchStatus())) {
+            if (checkChannelsErrataAvailability(clientServer)) {
+                auditWithChannelsResult =
+                        CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
+            }
+
+            CVEAuditSystemBuilder auditResult;
+            if (auditWithOVALResult != null && auditWithChannelsResult != null) {
+                auditWithOVALResult.setChannels(auditWithChannelsResult.getChannels());
+                auditWithOVALResult.setErratas(auditWithChannelsResult.getErratas());
+                auditWithOVALResult.setScanDataSources(ScanDataSource.OVAL, ScanDataSource.CHANNELS);
+                auditResult = auditWithOVALResult;
+            }
+            else if (auditWithOVALResult != null) {
+                auditWithOVALResult.setChannels(Collections.emptySet());
+                auditWithOVALResult.setErratas(Collections.emptySet());
+                auditWithOVALResult.setScanDataSources(ScanDataSource.OVAL);
+                auditResult = auditWithOVALResult;
+            }
+            else if (auditWithChannelsResult != null) {
+                auditWithChannelsResult.setScanDataSources(ScanDataSource.CHANNELS);
+                auditResult = auditWithChannelsResult;
+            }
+            else {
+                auditResult = new CVEAuditSystemBuilder(clientServer.getId());
+                auditResult.setPatchStatus(PatchStatus.UNKNOWN);
+                auditResult.setSystemID(clientServer.getId());
+                auditResult.setSystemName(clientServer.getName());
+            }
+
+            if (patchStatuses.contains(auditResult.getPatchStatus())) {
                 result.add(new CVEAuditServer(
-                        systemAuditResult.getId(),
-                        systemAuditResult.getSystemName(),
-                        systemAuditResult.getPatchStatus(),
-                        systemAuditResult.getChannels(),
-                        systemAuditResult.getErratas()));
+                        auditResult.getId(),
+                        auditResult.getSystemName(),
+                        auditResult.getPatchStatus(),
+                        auditResult.getChannels(),
+                        auditResult.getErratas(),
+                        auditResult.getScanDataSources()));
             }
         }
 
         return result;
+    }
+
+    /**
+     * Check if we have any OVAL vulnerability records for the given client OS in the database.
+     *
+     * @param clientServer the server to check
+     * @return {@code True}
+     * */
+    public static boolean checkOVALAvailability(Server clientServer) {
+        return OVALCachingFactory.checkOVALAvailability(clientServer.getCpe());
+    }
+
+    /**
+     * Check if we have any erratas assigned to the client's CVE channels.
+     *
+     * @param clientServer the server to check
+     * @return {@code True}
+     * */
+    public static boolean checkChannelsErrataAvailability(Server clientServer) {
+        return OVALCachingFactory.checkChannelsErrataAvailability(clientServer.getId());
     }
 
     private static boolean isCVEIdentifierUnknown(String cveIdentifier) {
@@ -297,5 +356,126 @@ public class CVEAuditManagerOVAL {
      * */
     public static void populateCVEChannels() {
         CVEAuditManager.populateCVEChannels();
+    }
+
+    /**
+     * Launches the OVAL synchronization process
+     * */
+    public static void syncOVAL() {
+        Set<OVALProduct> productsToSync = getProductsToSync();
+
+        LOG.debug("Detected {} products eligible for OVAL synchronization: {}", productsToSync.size(), productsToSync);
+
+        OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.loadDefaultConfig());
+        for (OVALProduct product : productsToSync) {
+            try {
+                syncOVALForProduct(product, ovalDownloader);
+            }
+            catch (Exception e) {
+                LOG.error("Failed to sync OVAL for product '{} {}'",
+                        product.getOsFamily().fullname(), product.getOsVersion(), e);
+            }
+        }
+    }
+
+    private static void syncOVALForProduct(OVALProduct product, OVALDownloader ovalDownloader) {
+        LOG.debug("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+        OVALDownloadResult downloadResult;
+        try {
+            downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failed to download OVAL data", e);
+        }
+        LOG.debug("Downloading finished");
+
+        LOG.debug("OVAL vulnerability file: {}",
+                downloadResult.getVulnerabilityFile().map(File::getAbsoluteFile).orElse(null));
+        LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
+
+        downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
+            extractAndSaveOVALData(product, ovalVulnerabilityFile);
+            LOG.debug("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+        });
+
+        downloadResult.getPatchFile().ifPresent(patchFile -> {
+            extractAndSaveOVALData(product, patchFile);
+            LOG.debug("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+        });
+
+        LOG.debug("Saving OVAL finished");
+    }
+
+    /**
+     * Extracts OVAL metadata from the given {@code ovalFile}, clean it and save it to the database.
+     * */
+    private static void extractAndSaveOVALData(OVALProduct product, File ovalFile) {
+        OvalRootType ovalRoot = new OvalParser().parse(ovalFile);
+        OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+        OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+    }
+
+    /**
+     * Identifies the OS products to synchronize OVAL data for.
+     * */
+    private static Set<OVALProduct> getProductsToSync() {
+        return ServerFactory.listAllServersOsAndRelease()
+                .stream()
+                .map(OsReleasePair::toOVALProduct)
+                .filter(Optional::isPresent)
+                .map(Optional::get).collect(Collectors.toSet());
+    }
+
+    public static class OVALProduct {
+        private OsFamily osFamily;
+        private String osVersion;
+
+        /**
+         * Default constructor
+         * @param osFamilyIn the os family
+         * @param osVersionIn the os version
+         * */
+        public OVALProduct(OsFamily osFamilyIn, String osVersionIn) {
+            this.osFamily = osFamilyIn;
+            this.osVersion = osVersionIn;
+        }
+
+        public OsFamily getOsFamily() {
+            return osFamily;
+        }
+
+        public void setOsFamily(OsFamily osFamilyIn) {
+            this.osFamily = osFamilyIn;
+        }
+
+        public String getOsVersion() {
+            return osVersion;
+        }
+
+        public void setOsVersion(String osVersionIn) {
+            this.osVersion = osVersionIn;
+        }
+
+        @Override
+        public boolean equals(Object oIn) {
+            if (this == oIn) {
+                return true;
+            }
+            if (oIn == null || getClass() != oIn.getClass()) {
+                return false;
+            }
+            OVALProduct that = (OVALProduct) oIn;
+            return osFamily == that.osFamily && Objects.equals(osVersion, that.osVersion);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(osFamily, osVersion);
+        }
+
+        @Override
+        public String toString() {
+            return osFamily.fullname() + " " + osVersion;
+        }
     }
 }

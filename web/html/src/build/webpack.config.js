@@ -7,6 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const autoprefixer = require("autoprefixer");
 
+const GenerateStoriesPlugin = require("./plugins/generate-stories-plugin");
+
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
 module.exports = (env, argv) => {
@@ -82,6 +84,10 @@ module.exports = (env, argv) => {
     new MiniCssExtractPlugin({
       chunkFilename: "css/[name].css",
     }),
+    new GenerateStoriesPlugin({
+      inputDir: path.resolve(__dirname, "../manager"),
+      outputFile: path.resolve(__dirname, "../manager/storybook/stories.generated.ts"),
+    }),
   ];
 
   if (isProductionMode) {
@@ -118,15 +124,30 @@ module.exports = (env, argv) => {
       publicPath: "/",
       hashFunction: "md5",
     },
+    // context: __dirname,
+    node: {
+      __filename: true,
+      __dirname: true,
+    },
     devtool: isProductionMode ? "source-map" : "eval-source-map",
     module: {
       rules: [
         {
-          test: /\.(ts|js)x?$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-          },
+          oneOf: [
+            {
+              resourceQuery: /raw/,
+              type: "asset/source",
+            },
+            {
+              test: /\.(ts|js)x?$/,
+              exclude: /node_modules/,
+              use: [
+                {
+                  loader: "babel-loader",
+                },
+              ],
+            },
+          ],
         },
         {
           // Stylesheets that are imported directly by components

@@ -132,9 +132,10 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
 
         if (archIn instanceof PackageArch) {
             PackageArch arch = (PackageArch) archIn;
-            return new EqualsBuilder().append(this.name, arch.getName()).append(getLabel(),
-                    arch.getLabel()).append(getId(), arch.getId()).append(getArchType(),
-                    arch.getArchType()).isEquals();
+            return new EqualsBuilder()
+                    .append(this.name, arch.getName())
+                    .append(getLabel(), arch.getLabel())
+                    .append(getArchType(), arch.getArchType()).isEquals();
         }
         return false;
     }

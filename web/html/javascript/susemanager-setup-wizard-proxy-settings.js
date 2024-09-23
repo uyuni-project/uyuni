@@ -1,7 +1,7 @@
 // Save and verifiy the proxy settings
 function saveProxySettings() {
   showSpinner('http-proxy-verify');
-  jQuery('#http-proxy-verify').show(100);
+  jQuery('#http-proxy-verify').show(0);
   jQuery('#http-proxy-save').attr('disabled', true);
 
   hostname = jQuery('#http-proxy-input-hostname').val();
@@ -9,7 +9,6 @@ function saveProxySettings() {
   password = jQuery('#http-proxy-input-password').val();
   
   function onSuccess(settings) {
-    console.log("Proxy settings saved!");
     jQuery('#http-proxy-save').prop('disabled', false);
     // TODO make sure it succeeded
     setProxySettings(settings);
@@ -76,16 +75,16 @@ function retrieveProxySettings() {
 function setProxySettingsEditable(editable) {
   if (editable) {
     jQuery('#http-proxy form p.form-control-static').hide();
-    jQuery('#http-proxy form input.form-control').show(100);
-    jQuery('#http-proxy-edit').hide(100);
-    jQuery('#http-proxy-verify').hide(100);
-    jQuery('#http-proxy-save').show(100);
+    jQuery('#http-proxy form input.form-control').show(0);
+    jQuery('#http-proxy-edit').hide(0);
+    jQuery('#http-proxy-verify').hide(0);
+    jQuery('#http-proxy-save').show(0);
   } else {
     jQuery('#http-proxy form input.form-control').hide();
-    jQuery('#http-proxy form p.form-control-static').show(100);
-    jQuery('#http-proxy-edit').show(100);
-    jQuery('#http-proxy-verify').show(100);
-    jQuery('#http-proxy-save').hide(100);
+    jQuery('#http-proxy form p.form-control-static').show(0);
+    jQuery('#http-proxy-edit').show(0);
+    jQuery('#http-proxy-verify').show(0);
+    jQuery('#http-proxy-save').hide(0);
   }
 }
 

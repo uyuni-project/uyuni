@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import _xor from "lodash/xor";
 
 import { LinkButton } from "components/buttons";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { getClmFilterDescription } from "../../../business/filters.enum";

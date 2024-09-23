@@ -5,8 +5,8 @@ import { FromNow } from "components/datetime";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
-import { DateTime as InputDateTime } from "components/input/DateTime";
-import { Form } from "components/input/Form";
+import { DateTime as InputDateTime } from "components/input/datetime/DateTime";
+import { Form } from "components/input/form/Form";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { PopUp } from "components/popup";
 

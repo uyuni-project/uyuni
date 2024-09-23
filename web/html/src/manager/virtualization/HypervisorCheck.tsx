@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 
 type Props = {
   hypervisor: string;

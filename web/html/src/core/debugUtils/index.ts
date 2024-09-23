@@ -15,12 +15,12 @@ const debugUtils = {
     return `the theme is: ${oldTheme.getAttribute("href")} ${newTheme.getAttribute("href")}`;
   },
   toggleTheme() {
-    // const oldWrapper = document.querySelector(".old-theme");
-    // const newWrapper = document.querySelector(".new-theme");
-    // oldWrapper?.classList.remove("old-theme");
-    // oldWrapper?.classList.add("new-theme");
-    // newWrapper?.classList.remove("new-theme");
-    // newWrapper?.classList.add("old-theme");
+    if (document.body.className.includes("theme-susemanager-")) {
+      document.body.className = document.body.className.replace("theme-susemanager-light", "theme-uyuni");
+      document.body.className = document.body.className.replace("theme-susemanager-dark", "theme-uyuni");
+    } else if (document.body.className.includes("theme-uyuni")) {
+      document.body.className = document.body.className.replace("theme-uyuni", "theme-susemanager-light");
+    }
 
     const oldLightTheme = document.querySelector('link[href^="/css/susemanager-light"]');
     const newLightTheme = document.querySelector('link[href^="/css/updated-susemanager-light"]');
@@ -88,4 +88,4 @@ declare global {
 }
 window.debugUtils = debugUtils;
 
-export default {};
+export default debugUtils;

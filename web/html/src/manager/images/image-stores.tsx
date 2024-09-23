@@ -5,7 +5,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { AsyncButton, LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";

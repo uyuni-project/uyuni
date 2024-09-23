@@ -3,12 +3,12 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Check } from "components/input/Check";
-import { Form } from "components/input/Form";
-import { Password } from "components/input/Password";
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
-import { Messages } from "components/messages";
+import { Select } from "components/input";
+import { Check } from "components/input/check/Check";
+import { Form } from "components/input/form/Form";
+import { Password } from "components/input/password/Password";
+import { Text } from "components/input/text/Text";
+import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { Utils } from "utils/functions";
