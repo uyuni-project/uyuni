@@ -163,7 +163,7 @@ end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
   channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel) ||
-                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+    CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
   channels_to_synchronize = filter_channels(channels_to_synchronize, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channel #{channel} or #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil? || channels_to_synchronize.empty?
 
@@ -606,10 +606,10 @@ When(/^the controller starts mocking a Redfish host$/) do
   `curl --output /root/DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip`
   `unzip /root/DSP2043_2019.1.zip -d /root/`
   cmd = "/usr/bin/python3 #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py " \
-        "-H #{hostname} -p 8443 " \
-        '-S -D /root/DSP2043_2019.1/public-catfish/ ' \
-        '--ssl --cert /root/controller.crt --key /root/controller.key ' \
-        '< /dev/null > /dev/null 2>&1 &'
+    "-H #{hostname} -p 8443 " \
+    '-S -D /root/DSP2043_2019.1/public-catfish/ ' \
+    '--ssl --cert /root/controller.crt --key /root/controller.key ' \
+    '< /dev/null > /dev/null 2>&1 &'
   `#{cmd}`
 end
 
@@ -629,8 +629,8 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
 
   # generate top file and copy it to server
   script = "base:\n" \
-           "  '#{system_name}':\n" \
-           "    - user_defined_state\n"
+    "  '#{system_name}':\n" \
+    "    - user_defined_state\n"
   temp_file = generate_temp_file('top.sls', script)
   success = file_inject(get_target('server'), temp_file.path, '/srv/salt/top.sls')
   temp_file.close
@@ -1124,31 +1124,31 @@ end
 When(/^I configure the proxy$/) do
   # prepare the settings file
   settings = "RHN_PARENT=#{get_target('server').full_hostname}\n" \
-             "HTTP_PROXY=''\n" \
-             "VERSION=''\n" \
-             "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
-             "INSTALL_MONITORING=n\n" \
-             "POPULATE_CONFIG_CHANNEL=y\n" \
-             "RHN_USER=admin\n" \
-             "ACTIVATE_SLP=y\n"
+    "HTTP_PROXY=''\n" \
+    "VERSION=''\n" \
+    "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
+    "INSTALL_MONITORING=n\n" \
+    "POPULATE_CONFIG_CHANNEL=y\n" \
+    "RHN_USER=admin\n" \
+    "ACTIVATE_SLP=y\n"
   settings +=
     if running_k3s?
       "USE_EXISTING_CERTS=y\n" \
-      "CA_CERT=/tmp/ca.crt\n" \
-      "SERVER_KEY=/tmp/proxy.key\n" \
-      "SERVER_CERT=/tmp/proxy.crt\n"
+        "CA_CERT=/tmp/ca.crt\n" \
+        "SERVER_KEY=/tmp/proxy.key\n" \
+        "SERVER_CERT=/tmp/proxy.crt\n"
     else
       "USE_EXISTING_CERTS=n\n" \
-      "INSTALL_MONITORING=n\n" \
-      "SSL_PASSWORD=spacewalk\n" \
-      "SSL_ORG=SUSE\n" \
-      "SSL_ORGUNIT=SUSE\n" \
-      "SSL_COMMON=#{get_target('proxy').full_hostname}\n" \
-      "SSL_CITY=Nuremberg\n" \
-      "SSL_STATE=Bayern\n" \
-      "SSL_COUNTRY=DE\n" \
-      "SSL_EMAIL=galaxy-noise@suse.de\n" \
-      "SSL_CNAME_ASK=proxy.example.org\n"
+        "INSTALL_MONITORING=n\n" \
+        "SSL_PASSWORD=spacewalk\n" \
+        "SSL_ORG=SUSE\n" \
+        "SSL_ORGUNIT=SUSE\n" \
+        "SSL_COMMON=#{get_target('proxy').full_hostname}\n" \
+        "SSL_CITY=Nuremberg\n" \
+        "SSL_STATE=Bayern\n" \
+        "SSL_COUNTRY=DE\n" \
+        "SSL_EMAIL=galaxy-noise@suse.de\n" \
+        "SSL_CNAME_ASK=proxy.example.org\n"
     end
   temp_file = generate_temp_file('config-answers.txt', settings)
   step "I copy \"#{temp_file.path}\" to \"proxy\""
@@ -1497,16 +1497,16 @@ When(/^I generate the configuration "([^"]*)" of containerized proxy on the serv
     end
 
     command = 'spacecmd -u admin -p admin ' \
-              "proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
-              '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
+      "proxy_container_config -- -o #{file_path} -p 8022 " \
+      "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+      '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
     command = 'echo spacewalk > ca_pass && ' \
-              'spacecmd --nossl -u admin -p admin ' \
-              "proxy_container_config_generate_cert -- -o #{file_path} " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
-              '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
-              'rm ca_pass'
+      'spacecmd --nossl -u admin -p admin ' \
+      "proxy_container_config_generate_cert -- -o #{file_path} " \
+      "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+      '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
+      'rm ca_pass'
   end
   get_target('server').run(command)
 end
@@ -1623,10 +1623,10 @@ end
 When(/^I run spacewalk-hostname-rename command on the server$/) do
   server_node = get_target('server')
   command = 'spacecmd --nossl -q api api.getVersion -u admin -p admin; ' \
-            "spacewalk-hostname-rename #{server_node.public_ip} " \
-            '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
-            '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
-            '--ssl-ca-password=spacewalk --overwrite_report_db_host=y'
+    "spacewalk-hostname-rename #{server_node.public_ip} " \
+    '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
+    '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
+    '--ssl-ca-password=spacewalk --overwrite_report_db_host=y'
   out_spacewalk, result_code = server_node.run(command, check_errors: false)
   log out_spacewalk.to_s
 
@@ -1763,4 +1763,34 @@ Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^
   count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
   occurences = count.to_i
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
+end
+
+Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
+  system_name = get_system_name(host)
+  # Get the last event ID before the upgrade
+  last_event_id = get_last_event_id(system_name)
+
+  # Trigger the upgrade event
+  trigger_upgrade(system_name, package)
+
+  repeat_until_timeout(timeout: 300, message: "Waiting for the new event to complete") do
+    current_events = fetch_event_history(hostname)
+
+    # Find the event with the highest ID (newest event)
+    new_event = current_events.max_by { |event| event[:id] }
+
+    if new_event && new_event[:id] > last_event_id
+      # Check if the new event's status is "Completed" and completed time is not nil
+      if new_event[:status] == "Completed" && new_event[:completed]
+        puts "Event #{new_event[:id]} has been completed at #{new_event[:completed]}"
+        true  # Break out of the loop
+      else
+        puts "New event is not yet completed, waiting..."
+        false # Continue retrying
+      end
+    else
+      puts "No new event found yet, waiting..."
+      false # Continue retrying
+    end
+  end
 end

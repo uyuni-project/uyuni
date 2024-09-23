@@ -9,6 +9,7 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
 
   Scenario: Migrate this SSH minion to SLE 15 SP4
     Given I am on the Systems overview page of this "sle15sp3_ssh_minion"
+    And I upgrade "sle15sp3_ssh_minion" with the last "salt" version
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page

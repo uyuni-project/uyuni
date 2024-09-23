@@ -728,3 +728,43 @@ def api_unlock
     file.flock(File::LOCK_UN)
   end
 end
+
+# Function to fetch the current list of events
+def fetch_event_history(hostname)
+  output = `spacecmd -u admin -p admin system_listeventhistory #{hostname}`
+
+  events = []
+  current_event = {}
+
+  output.split("\n").each do |line|
+    case line
+    when /^Id:\s+(\d+)$/
+      current_event[:id] = $1.to_i
+    when /^History type:\s+(.+)$/
+      current_event[:history_type] = $1
+    when /^Status:\s+(.+)$/
+      current_event[:status] = $1
+    when /^Completed:\s+(.+)$/
+      current_event[:completed] = Time.parse($1) rescue nil
+    end
+
+    if current_event.key?(:id) && current_event.key?(:completed)
+      events << current_event
+      current_event = {}
+    end
+  end
+
+  events
+end
+
+# Function to get the highest event ID (latest event)
+def get_last_event_id(hostname)
+  events = fetch_event_history(hostname)
+  last_event = events.max_by { |event| event[:id] }
+  last_event ? last_event[:id] : nil
+end
+
+# Function to trigger the upgrade command
+def trigger_upgrade(hostname, package)
+  `spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y`
+end
