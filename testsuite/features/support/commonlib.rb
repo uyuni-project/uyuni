@@ -731,8 +731,7 @@ end
 
 # Function to fetch the current list of events
 def fetch_event_history(hostname)
-  output = `spacecmd -u admin -p admin system_listeventhistory #{hostname}`
-
+  output, _code = get_target('server').run("spacecmd -u admin -p admin system_listeventhistory #{hostname}", check_errors: true)
   events = []
   current_event = {}
 
@@ -766,5 +765,5 @@ end
 
 # Function to trigger the upgrade command
 def trigger_upgrade(hostname, package)
-  `spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y`
+  get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
 end
