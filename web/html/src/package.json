@@ -27,7 +27,9 @@
   },
   "resolutions": {
     "@babel/runtime": "7.16.3",
+    "@babel/traverse": "7.24.0",
     "ansi-regex": "5.0.1",
+    "debug": "4.3.4",
     "glob-parent": "5.1.2",
     "immer": "9.0.6",
     "json5": "2.2.3",
