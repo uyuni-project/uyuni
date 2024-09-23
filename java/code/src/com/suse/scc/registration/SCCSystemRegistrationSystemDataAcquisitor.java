@@ -126,7 +126,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
             });
 
             return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwInfo, products,
-                    srv.getServerInfo().getCheckin());
+                        srv.getServerInfo().getCheckin(), srv.getServerInfo().getUptimeData());
         });
     }
 

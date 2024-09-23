@@ -72,6 +72,12 @@ import java.util.stream.Collectors;
  */
 public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
+    /**
+     * Value for system uptime data.
+     */
+    private static final String UPTIME_TEST = "[\"2024-06-26:000000000000000000001111\"," +
+                                               "\"2024-06-27:111111111111110000000000\"]";
+
     @Test
     public void testSCCSystemRegistrationLifecycle() throws Exception {
         Path tmpSaltRoot = Files.createTempDirectory("salt");
@@ -81,6 +87,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         Server testSystem = ServerTestUtils.createTestSystem();
         ServerInfo serverInfo = testSystem.getServerInfo();
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+        serverInfo.setUptimeData(UPTIME_TEST);
         testSystem.setServerInfo(serverInfo);
 
         SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
@@ -92,6 +99,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals("password", password);
                 assertNotEmpty(systems);
                 assertAll(systems.stream().map(system -> () -> assertEquals(new Date(0), system.getLastSeenAt())));
+                assertAll(systems.stream().map(system -> () -> assertEquals(UPTIME_TEST, system.getOnlineAt())));
 
                 return new SCCOrganizationSystemsUpdateResponse(
                         systems.stream()
@@ -161,6 +169,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         Server testSystem = ServerTestUtils.createTestSystem();
         ServerInfo serverInfo = testSystem.getServerInfo();
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+        serverInfo.setUptimeData(UPTIME_TEST);
         testSystem.setServerInfo(serverInfo);
         testSystem.setPayg(true);
 
@@ -192,6 +201,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         Server testSystem = ServerTestUtils.createTestSystem();
         ServerInfo serverInfo = testSystem.getServerInfo();
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+        serverInfo.setUptimeData(UPTIME_TEST);
         testSystem.setServerInfo(serverInfo);
 
         SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
@@ -203,6 +213,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals("password", password);
                 assertNotEmpty(systems);
                 assertAll(systems.stream().map(system -> () -> assertEquals(new Date(0), system.getLastSeenAt())));
+                assertAll(systems.stream().map(system -> () -> assertEquals(UPTIME_TEST, system.getOnlineAt())));
 
                 return new SCCOrganizationSystemsUpdateResponse(
                         systems.stream()
@@ -225,6 +236,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertEquals(new Date(0), systems.get(0).getLastSeenAt());
+                assertEquals(UPTIME_TEST, systems.get(0).getOnlineAt());
             }
         };
 
@@ -256,6 +268,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             Server testSystem = ServerTestUtils.createTestSystem();
             ServerInfo serverInfo = testSystem.getServerInfo();
             serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
+            serverInfo.setUptimeData(UPTIME_TEST);
             testSystem.setServerInfo(serverInfo);
             c += 1;
         }

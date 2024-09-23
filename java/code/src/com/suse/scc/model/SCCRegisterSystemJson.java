@@ -33,6 +33,8 @@ public class SCCRegisterSystemJson {
     private List<String> regcodes = new LinkedList<>();
     @SerializedName("last_seen_at")
     private Date lastSeenAt;
+    @SerializedName("online_at")
+    private String onlineAt;
 
     /**
      * Constructor
@@ -42,15 +44,18 @@ public class SCCRegisterSystemJson {
      * @param hwinfoIn the hardware data
      * @param productsIn the products
      * @param lastSeenIn the last seen date
+     * @param onlineAtIn the system online data
      */
     public SCCRegisterSystemJson(String loginIn, String passwdIn, String hostnameIn,
-            SCCHwInfoJson hwinfoIn, List<SCCMinProductJson> productsIn, Date lastSeenIn) {
+            SCCHwInfoJson hwinfoIn, List<SCCMinProductJson> productsIn, Date lastSeenIn,
+            String onlineAtIn) {
         login = loginIn;
         password = passwdIn;
         hostname = hostnameIn;
         hwinfo = hwinfoIn;
         products = productsIn;
         lastSeenAt = lastSeenIn;
+        onlineAt = onlineAtIn;
     }
 
     /**
@@ -99,5 +104,11 @@ public class SCCRegisterSystemJson {
      */
     public Date getLastSeenAt() {
         return lastSeenAt;
+    }
+    /**
+     * @return Returns the system online data.
+     */
+    public String getOnlineAt() {
+        return onlineAt;
     }
 }

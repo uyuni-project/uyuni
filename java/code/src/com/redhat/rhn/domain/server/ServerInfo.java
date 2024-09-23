@@ -25,6 +25,7 @@ public class ServerInfo {
     private Server server;
     private Date checkin;
     private Long checkinCounter;
+    private String uptimeData;
 
     /**
      * @return Returns the id.
@@ -73,5 +74,17 @@ public class ServerInfo {
      */
     public void setServer(Server serverIn) {
         this.server = serverIn;
+    }
+    /**
+     * @return Returns the uptimeData.
+     */
+    public String getUptimeData() {
+        return uptimeData;
+    }
+    /**
+     * @param uptimeDataIn The uptimeData to set.
+     */
+    public void setUptimeData(String uptimeDataIn) {
+        this.uptimeData = uptimeDataIn;
     }
 }
