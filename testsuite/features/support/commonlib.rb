@@ -738,13 +738,17 @@ def fetch_event_history(hostname)
   output.split("\n").each do |line|
     case line
     when /^Id:\s+(\d+)$/
-      current_event[:id] = $1.to_i
+      current_event[:id] = Regexp.last_match(1).to_i
     when /^History type:\s+(.+)$/
-      current_event[:history_type] = $1
+      current_event[:history_type] = Regexp.last_match(1)
     when /^Status:\s+(.+)$/
-      current_event[:status] = $1
+      current_event[:status] = Regexp.last_match(1)
     when /^Completed:\s+(.+)$/
-      current_event[:completed] = Time.parse($1) rescue nil
+      begin
+        current_event[:completed] = Time.parse(Regexp.last_match(1))
+      rescue ArgumentError
+        current_event[:completed] = nil
+      end
     end
 
     if current_event.key?(:id) && current_event.key?(:completed)
