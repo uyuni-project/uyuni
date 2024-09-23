@@ -1779,9 +1779,7 @@ Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
     # Find the event with the highest ID (newest event)
     new_event = current_events.max_by { |event| event[:id] }
 
-    if new_event && new_event[:id] > last_event_id
-      # Check if the new event's status is "Completed" and completed time is not nil
-      break if new_event[:status] == 'Completed' && new_event[:completed]
-    end
+    # Check if there is a new event and its status is "Completed"
+    break if new_event && new_event[:id] > last_event_id && new_event[:status] == 'Completed' && new_event[:completed]
   end
 end
