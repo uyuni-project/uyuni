@@ -1773,7 +1773,7 @@ Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
   # Trigger the upgrade event
   trigger_upgrade(system_name, package)
 
-  repeat_until_timeout(timeout: 300, message: "Waiting for the new event to complete") do
+  repeat_until_timeout(timeout: 300, message: 'Waiting for the new event to complete') do
     current_events = fetch_event_history(hostname)
 
     # Find the event with the highest ID (newest event)
@@ -1781,15 +1781,15 @@ Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
 
     if new_event && new_event[:id] > last_event_id
       # Check if the new event's status is "Completed" and completed time is not nil
-      if new_event[:status] == "Completed" && new_event[:completed]
+      if new_event[:status] == 'Completed' && new_event[:completed]
         puts "Event #{new_event[:id]} has been completed at #{new_event[:completed]}"
         true  # Break out of the loop
       else
-        puts "New event is not yet completed, waiting..."
+        puts 'New event is not yet completed, waiting...'
         false # Continue retrying
       end
     else
-      puts "No new event found yet, waiting..."
+      puts 'No new event found yet, waiting...'
       false # Continue retrying
     end
   end
