@@ -772,6 +772,9 @@ def get_last_event_id(hostname)
 end
 
 # Function to trigger the upgrade command
+#
+# @param hostname String The hostname of the system from requested
+# @param package String The package name where it will trigger an upgrade
 def trigger_upgrade(hostname, package)
   get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
 end
