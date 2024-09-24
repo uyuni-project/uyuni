@@ -763,6 +763,8 @@ def fetch_event_history(hostname)
 end
 
 # Function to get the highest event ID (latest event)
+#
+# @param hostname String The hostname of the system from requested
 def get_last_event_id(hostname)
   events = fetch_event_history(hostname)
   last_event = events.max_by { |event| event[:id] }
