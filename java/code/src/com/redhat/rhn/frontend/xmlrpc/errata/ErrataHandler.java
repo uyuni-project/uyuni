@@ -279,37 +279,19 @@ public class ErrataHandler extends BaseHandler {
 
         if (details.containsKey("issue_date")) {
             try {
-                errata.setIssueDate((Date)details.get("issue_date"));
+                errata.setIssueDate(parseInputValue(details.get("issue_date"), Date.class));
             }
-            catch (ClassCastException e) {
-                throw new InvalidParameterException("Wrong 'issue_date' format.");
-            }
-        }
-
-        if (details.containsKey("update_date")) {
-            try {
-                errata.setUpdateDate((Date)details.get("update_date"));
-            }
-            catch (ClassCastException e) {
-                throw new InvalidParameterException("Wrong 'update_date' format.");
-            }
-        }
-
-        if (details.containsKey("issue_date")) {
-            try {
-                errata.setIssueDate((Date)details.get("issue_date"));
-            }
-            catch (ClassCastException e) {
-                throw new InvalidParameterException("Wrong 'issue_date' format.");
+            catch (InvalidParameterException e) {
+                throw new InvalidParameterException("Wrong 'issue_date' format.", e);
             }
         }
 
         if (details.containsKey("update_date")) {
             try {
-                errata.setUpdateDate((Date)details.get("update_date"));
+                errata.setUpdateDate(parseInputValue(details.get("update_date"), Date.class));
             }
-            catch (ClassCastException e) {
-                throw new InvalidParameterException("Wrong 'update_date' format.");
+            catch (InvalidParameterException e) {
+                throw new InvalidParameterException("Wrong 'update_date' format.", e);
             }
         }
 
