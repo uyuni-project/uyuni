@@ -1,0 +1,1 @@
+- Ignore 'buildorder' parsing errors when parsing entries in module metadata (bsc#1230274)
