@@ -60,9 +60,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -289,6 +292,26 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         }
         assertTrue(foundKeyword1);
         assertTrue(foundKeyword2);
+    }
+
+    @Test
+    public void testSetDetailsDates() throws Exception {
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+
+        Map<String, Object> details = new HashMap<>();
+        Date expectedDate = Date.from(LocalDate.of(1989, 4, 1).atStartOfDay().toInstant(ZoneOffset.UTC));
+        // Set using Date instance (XMLRPC)
+        details.put("issue_date", expectedDate);
+        // Set using ISO-8601 String (JSON over HTTP)
+        details.put("update_date", "1989-04-01T00:00:00Z");
+
+        int result = handler.setDetails(user, errata.getAdvisoryName(), details);
+
+        assertEquals(1, result);
+
+        Errata updatedErrata = ErrataManager.lookupErrata(errata.getId(), user);
+        assertEquals(expectedDate, updatedErrata.getIssueDate());
+        assertEquals(expectedDate, updatedErrata.getUpdateDate());
     }
 
     @Test

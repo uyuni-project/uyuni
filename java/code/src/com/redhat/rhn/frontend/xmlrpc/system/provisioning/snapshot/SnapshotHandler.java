@@ -290,10 +290,10 @@ public class SnapshotHandler extends BaseHandler {
         Date endDate = null;
 
         if (dateDetails.containsKey("startDate")) {
-            startDate = (Date)dateDetails.get("startDate");
+            startDate = parseInputValue(dateDetails.get("startDate"), Date.class);
         }
         if (dateDetails.containsKey("endDate")) {
-            endDate = (Date)dateDetails.get("endDate");
+            endDate = parseInputValue(dateDetails.get("endDate"), Date.class);
         }
         return deleteSnapshots(loggedInUser, startDate, endDate);
     }
