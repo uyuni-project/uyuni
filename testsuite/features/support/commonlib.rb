@@ -730,6 +730,8 @@ def api_unlock
 end
 
 # Function to fetch the current list of events
+#
+# @param hostname String The hostname of the system from requested
 def fetch_event_history(hostname)
   output, _code = get_target('server').run("spacecmd -u admin -p admin system_listeventhistory #{hostname}", check_errors: true)
   events = []
