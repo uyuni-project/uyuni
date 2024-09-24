@@ -19,13 +19,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
-import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.domain.credentials.CloudCredentials;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
@@ -174,11 +172,8 @@ public class PaygProductFactory extends HibernateFactory {
 
     private static boolean isSupportedToolsProduct(SUSEProduct product) {
         ChannelFamily family = product.getChannelFamily();
-        ArchType architecture = product.getArch().getArchType();
 
-        return ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL.equals(family.getLabel()) &&
-            // TODO: deb not yet available on RMT
-            PackageFactory.ARCH_TYPE_RPM.equals(architecture.getLabel());
+        return ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL.equals(family.getLabel());
     }
 
     private static boolean isSupportedProxyProduct(SUSEProduct product) {
