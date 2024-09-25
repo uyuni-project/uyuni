@@ -13,26 +13,28 @@ env:
   UYUNI_VERSION: master
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
 jobs:
-  paths-filter:
+  paths-filter-1:
     runs-on: ubuntu-latest
     outputs:
-      require_acceptance_tests: ${{ steps.filter.outputs.require_acceptance_tests }}
+      require_acceptance_tests: ${{ steps.filter.outputs.java || steps.filter.outputs.web || steps.filter.outputs.testsuite }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          predicate-quantifier: 'every'
           filters: |
-            require_acceptance_tests:
+            java:
               - 'java/**'
+            web:
               - 'web/html/src/**'
+            testsuite:
               - 'testsuite/**'
-              - '!.github/workflows/**'
               - '!testsuite/features/build_validation/**'
   test-uyuni:
     runs-on: ubuntu-22.04
-    needs: paths-filter
-    if: needs.paths-filter.outputs.require_acceptance_tests == 'true'
+    needs: paths-filter-1
+    if: ${{ needs.paths-filter-1.outputs.require_acceptance_tests == 'true' }}
     steps:
       - name: fix podman
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
