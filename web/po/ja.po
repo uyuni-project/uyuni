@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-09-15 08:58+0000\n"
+"PO-Revision-Date: 2024-09-25 18:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-5-0/ja/"
 ">\n"
@@ -712,12 +712,13 @@ msgstr "状態設定を空にすることはできません"
 
 #: ../html/src/components/states-picker.tsx:123
 msgid "Reboot state will be put last."
-msgstr ""
+msgstr "再起動状態は最後に置かれます。"
 
 #: ../html/src/components/states-picker.tsx:132
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
+msgstr "「システムを再起動」と「必要な場合はシステムを再起動」の状態は一緒に使用でき"
+"ません。"
 
 #: ../html/src/components/states-picker.tsx:152
 msgid "State assignments have been saved."
@@ -4123,9 +4124,8 @@ msgid "Maintenance Schedules"
 msgstr "メンテナンススケジュール"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
-#, fuzzy
 msgid "Maintenance Calendars"
-msgstr "メンテナンスカレンダーの削除"
+msgstr "メンテナンスカレンダー"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
@@ -4959,9 +4959,8 @@ msgid "Configure states to execute"
 msgstr "実行する状態を設定する"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
-#, fuzzy
 msgid " Recurring Actions "
-msgstr "定期的なアクション"
+msgstr " 定期的なアクション "
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:121
 msgid "The following recurring actions have been created."
@@ -5289,12 +5288,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
-msgstr ""
+msgstr "アクティベーションキーをアップデートしている際にエラーが発生しました。"
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
-#, fuzzy
 msgid "Activation key has been modified."
-msgstr "kiwi イメージに対してはアクティベーションキーが必要です。"
+msgstr "アクティベーションキーが変更されました。"
 
 #: ../html/src/manager/systems/all-list.tsx:37
 msgid " Systems "
