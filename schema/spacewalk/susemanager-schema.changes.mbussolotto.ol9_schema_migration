@@ -1,0 +1,1 @@
+- During schema upgrade, avoid insert problem when Extern - Oracle Linux 9 is not present (bsc#1230021)
