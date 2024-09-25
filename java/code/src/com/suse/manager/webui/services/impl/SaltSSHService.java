@@ -817,6 +817,7 @@ public class SaltSSHService {
             if (!minion.getServerPaths().isEmpty()) {
                 List<ServerPath> paths = sortServerPaths(minion.getServerPaths());
                 ServerPath last = paths.get(paths.size() - 1);
+
                 SaltSSHService.getOrRetrieveSSHPushProxyPubKey(
                         last.getId().getProxyServer().getId())
                         .ifPresent(key ->
@@ -1015,5 +1016,45 @@ public class SaltSSHService {
                                 "/var/tmp/.root_XXXX_salt/minion.d manually. ", minion.getMinionId(), err);
                     }
                 }));
+    }
+
+    /**
+     * Remove server hostname from ssh known_hosts of the proxy where this server is connected to.
+     *
+     * @param server the server to remove from proxy ssh known_hosts
+     * @return return true on success and false otherwise
+     */
+    public static boolean cleanupKnownHostsFromProxy(Server server) {
+        if (server == null || server.getServerPaths().isEmpty()) {
+            return true;
+        }
+        String hostname = server.getHostname();
+        List<ServerPath> paths = sortServerPaths(server.getServerPaths());
+        ServerPath last = paths.get(paths.size() - 1);
+        Server proxy = last.getId().getProxyServer();
+        List<String> proxyPath = proxyPathToHostnames(proxy);
+
+        Map<String, String> options = new HashMap<>();
+        options.put("StrictHostKeyChecking", "no");
+        options.put("ConnectTimeout", ConfigDefaults.get().getSaltSSHConnectTimeout() + "");
+        Optional<MgrUtilRunner.ExecResult> ret = GlobalInstanceHolder.SALT_API
+                .chainSSHCommand(proxyPath,
+                        SSH_KEY_PATH,
+                        PROXY_SSH_PUSH_KEY,
+                        PROXY_SSH_PUSH_USER,
+                        options,
+                        "/usr/bin/ssh-keygen -R " + hostname,
+                        null);
+        if (ret.map(MgrUtilRunner.ExecResult::getReturnCode).orElse(-1) != 0) {
+            String msg = ret.map(r -> "Failed to remove [" + hostname +
+                            "]. from ssh known_hosts on proxy [" + proxy.getHostname() +
+                            "] return code [" + r.getReturnCode() +
+                            "[, stderr [" + r.getStderr() + "]")
+                    .orElse("Could not remove " + hostname + " from ssh known_hosts on proxy " +
+                            proxy.getHostname() + ". Please check the logs.");
+            LOG.error(msg);
+            return false;
+        }
+        return true;
     }
 }
