@@ -44,6 +44,11 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     registry-formula \
     virtualization-formulas \
     uyuni-config-formula \
+    saphanabootstrap-formula \
+    sapnwbootstrap-formula \
+    drbd-formula \
+    habootstrap-formula \
+    salt-shaptools \
     inter-server-sync \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
