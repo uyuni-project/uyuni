@@ -179,6 +179,26 @@ public class ContentSyncManager {
     }
 
     /**
+     * @return return a stream of statically defined upgrade paths not coming from SCC.
+     */
+    protected Stream<Tuple2<Long, Long>> staticUpgradePaths() {
+        Set<Tuple2<Long, Long>> upgradePaths = Set.of(
+                new Tuple2<>(-7L, 2702L), // rhel-base-7-None.x86_64 => res-ltss-7-None.x86_64
+                new Tuple2<>(-12L, 2702L), // centos-7-None.x86_64 => res-ltss-7-None.x86_64
+                new Tuple2<>(-12L, 1251L), // centos-7-None.x86_64 => res-7-None.x86_64
+                new Tuple2<>(-14L, 2702L), // oraclelinux-7-None.x86_64 => res-7-None.x86_64
+                new Tuple2<>(-14L, 2778L), // oraclelinux-7-None.x86_64 => res-ol-ltss-7-None.x86_64
+                new Tuple2<>(-17L, -8L), // oraclelinux-8-None.x86_64 => rhel-base-8-None.x86_64
+                new Tuple2<>(-24L, -8L), // rockylinux-8-None.x86_64 => rhel-base-8-None.x86_64
+                new Tuple2<>(-26L, -8L), // almalinux-8-None.x86_64  => rhel-base-8-None.x86_64
+                new Tuple2<>(-41L, -35L), // oraclelinux-9-None.x86_64 => el-base-9-None.x86_64
+                new Tuple2<>(-36L, -35L), // rockylinux-9-None.x86_64 => el-base-9-None.x86_64
+                new Tuple2<>(-38L, -35L) // almalinux-9-None.x86_64 => el-base-9-None.x86_64
+        );
+        return upgradePaths.stream();
+    }
+
+    /**
      * Set the channel_family.json {@link File} to a different path.
      * @param file the channel_family.json
      */
@@ -2108,9 +2128,15 @@ public class ContentSyncManager {
         Map<Long, SUSEProduct> productsById = allSUSEProducts
                 .stream().collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
 
-        Map<Long, Set<Long>> newPaths = products.stream()
-                    .flatMap(p -> p.getOnlinePredecessorIds().stream().map(pre -> new Tuple2<>(pre, p.getId())))
-                    .collect(Collectors.groupingBy(Tuple2::getA, Collectors.mapping(Tuple2::getB, Collectors.toSet())));
+        Map<Long, Set<Long>> newPaths = Stream.concat(
+                staticUpgradePaths(),
+                        products.stream()
+                                .flatMap(p -> p.getOnlinePredecessorIds()
+                                        .stream()
+                                        .map(pre -> new Tuple2<>(pre, p.getId()))
+                                )
+                )
+                .collect(Collectors.groupingBy(Tuple2::getA, Collectors.mapping(Tuple2::getB, Collectors.toSet())));
 
         allSUSEProducts.forEach(p -> {
             Set<SUSEProduct> successors = newPaths.getOrDefault(p.getProductId(), Collections.emptySet()).stream()

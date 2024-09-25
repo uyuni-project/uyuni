@@ -92,6 +92,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String UPDATESTACK_UPDATE_NEEDED = "updateStackUpdateNeeded";
     private static final String IS_MINION = "isMinion";
     private static final String IS_SUSE_MINION = "isSUSEMinion";
+    private static final String IS_REDHAT_MINION = "isRedHatMinion";
     private static final String IS_SALT_UP_TO_DATE = "isSaltUpToDate";
     private static final String SALT_PACKAGE = "saltPackage";
 
@@ -149,6 +150,11 @@ public class SPMigrationAction extends RhnAction {
         logger.debug("is a SUSE minion? {}", isSUSEMinion);
         request.setAttribute(IS_SUSE_MINION, isSUSEMinion);
 
+        // Check if this is a RedHat system (for minions only)
+        boolean isRedHatMinion = isMinion && minion.get().getOsFamily().equals("RedHat");
+        logger.debug("is a RedHat minion? {}", isRedHatMinion);
+        request.setAttribute(IS_REDHAT_MINION, isRedHatMinion);
+
         // Check if the salt package on the minion is up to date (for minions only)
         String saltPackage = "salt";
         if (PackageFactory.lookupByNameAndServer("venv-salt-minion", server) != null) {
@@ -162,7 +168,8 @@ public class SPMigrationAction extends RhnAction {
 
         // Check if this server supports distribution upgrades via capabilities
         // (for traditional clients only)
-        boolean supported = isSUSEMinion || DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser());
+        boolean supported = isSUSEMinion || isRedHatMinion ||
+                DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser());
         logger.debug("Upgrade supported for '{}'? {}", server.getName(), supported);
         request.setAttribute(UPGRADE_SUPPORTED, supported);
 

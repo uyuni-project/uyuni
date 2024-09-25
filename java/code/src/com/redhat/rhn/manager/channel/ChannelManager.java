@@ -52,7 +52,9 @@ import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -126,6 +128,13 @@ public class ChannelManager extends BaseManager {
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     private static Logger log = LogManager.getLogger(ChannelManager.class);
 
+    private static final Map<InstalledProduct, InstalledProduct> COMPATIBLE_PRODUCTS = new HashMap<>();
+    static {
+        COMPATIBLE_PRODUCTS.put(
+                new InstalledProduct("res", "7", PackageFactory.lookupPackageArchByLabel("x86_64"), null, true),
+                new InstalledProduct("res-ltss", "7", PackageFactory.lookupPackageArchByLabel("x86_64"), null, true)
+        );
+    }
     public static final String QRY_ROLE_MANAGE = "manage";
     public static final String QRY_ROLE_SUBSCRIBE = "subscribe";
     public static final String RHEL7_EUS_VERSION = "7Server";
@@ -1678,12 +1687,11 @@ public class ChannelManager extends BaseManager {
      *
      * @param usr requesting list
      * @param s Server to check against
-     * @return List of Channel objects that match
+     * @return Set of Channel objects that match
      */
-    public static List<EssentialChannelDto> listBaseChannelsForSystem(User usr,
-            Server s) {
+    public static Set<EssentialChannelDto> listBaseChannelsForSystem(User usr, Server s) {
 
-        List<EssentialChannelDto> channelDtos = new LinkedList<>();
+        Set<EssentialChannelDto> channelDtos = new HashSet<>();
         PackageEvr releaseEvr = PackageManager.lookupReleasePackageEvrFor(s);
         if (releaseEvr != null) {
             String rhelVersion =
@@ -1709,6 +1717,7 @@ public class ChannelManager extends BaseManager {
         }
 
         listPossibleSuseBaseChannelsForServer(s).ifPresent(channelDtos::addAll);
+        channelDtos.addAll(listCompatibleBaseChannelsForServer(s));
 
         // Get all the possible base-channels owned by this Org
         channelDtos.addAll(listCustomBaseChannelsForServer(s));
@@ -1721,24 +1730,91 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
+     * Support switching Channels. For a Server using a base channel find the right compatible base channel to switch to
+     * @param s the server to switch the base channel
+     * @return Optional List of possible base channels where this system can change to
+     */
+    public static Set<EssentialChannelDto> listCompatibleBaseChannelsForServer(Server s) {
+        log.debug("listCompatibleChannels called");
+
+        Optional<InstalledProduct> installedBaseProduct = s.getInstalledProducts()
+                .stream()
+                .filter(InstalledProduct::isBaseproduct)
+                .findFirst();
+
+        return Opt.fold(installedBaseProduct,
+                () -> {
+                    log.info("Server has no base product installed");
+                    return Collections.emptySet();
+                },
+                bp -> {
+                    if (COMPATIBLE_PRODUCTS.containsKey(bp)) {
+                        SUSEProduct compatProduct = COMPATIBLE_PRODUCTS.get(bp).getSUSEProduct();
+                        if (compatProduct != null) {
+                            return compatProduct.getSuseProductChannels()
+                                    .stream()
+                                    .map(SUSEProductChannel::getChannel)
+                                    .filter(Channel::isBaseChannel)
+                                    .map(EssentialChannelDto::new)
+                                    .collect(Collectors.toSet());
+                        }
+                    }
+                    return Collections.emptySet();
+                });
+    }
+
+    /**
+     * Support switching Channels. For a channel find the right compatible base channel to switch to
+     * @param baseChannelIn the base channel
+     * @return Set of possible base channels where a system which use current base channel can switch to
+     */
+    public static Set<EssentialChannelDto> listCompatibleBaseChannelsForChannel(Channel baseChannelIn) {
+        Set<EssentialChannelDto> retval = new HashSet<>();
+        for (Map.Entry<InstalledProduct, InstalledProduct> compatProducts : COMPATIBLE_PRODUCTS.entrySet()) {
+            SUSEProduct sourceProduct = compatProducts.getKey().getSUSEProduct();
+            if (sourceProduct != null && sourceProduct
+                    .getSuseProductChannels()
+                    .stream()
+                    .map(SUSEProductChannel::getChannel)
+                    .filter(Channel::isBaseChannel)
+                    .map(Channel::getLabel)
+                    .anyMatch(l -> l.equals(baseChannelIn.getLabel()))) {
+                SUSEProduct targetProduct = compatProducts.getValue().getSUSEProduct();
+                if (targetProduct != null) {
+                    targetProduct
+                            .getSuseProductChannels()
+                            .stream()
+                            .map(SUSEProductChannel::getChannel)
+                            .filter(Channel::isBaseChannel)
+                            .map(EssentialChannelDto::new)
+                            .forEach(retval::add);
+                }
+            }
+        }
+        return retval;
+    }
+
+    /**
      * Given a base-channel, find all the base channels available to the specified user
      * that a system with the specified channel may be re-subscribed to.
      *
-     * @param u User of interest
+     * @param u      User of interest
      * @param inChan Base-channel of interest
-     * @return List of channels that a system subscribed to "c" could be re-subscribed to
+     * @return Set of channels that a system subscribed to "c" could be re-subscribed to
      */
-    public static List<EssentialChannelDto> listCompatibleBaseChannelsForChannel(User u, Channel inChan) {
+    public static Set<EssentialChannelDto> listCompatibleBaseChannelsForChannel(User u, Channel inChan) {
         // Get all the custom-channels owned by this org and add them
-        List<EssentialChannelDto> retval = ChannelFactory.listCustomBaseChannelsForSSM(u, inChan).stream()
-                .map(c -> new EssentialChannelDto(c))
-                .collect(Collectors.toList());
+        Set<EssentialChannelDto> retval = ChannelFactory.listCustomBaseChannelsForSSM(u, inChan)
+                .stream()
+                .map(EssentialChannelDto::new)
+                .collect(Collectors.toSet());
 
-        retval.addAll(ChannelFactory.listCompatibleDcmForChannelSSMInNullOrg(u, inChan).stream()
-                .map(c -> new EssentialChannelDto(c))
-                .collect(Collectors.toList()));
+        ChannelFactory.listCompatibleDcmForChannelSSMInNullOrg(u, inChan)
+               .stream()
+               .map(EssentialChannelDto::new)
+               .forEach(retval::add);
 
-        List<EssentialChannelDto> eusBaseChans = new LinkedList<>();
+        Set<EssentialChannelDto> eusBaseChans = new HashSet<>();
 
         ReleaseChannelMap rcm = lookupDefaultReleaseChannelMapForChannel(inChan);
         if (rcm != null) {
@@ -1758,6 +1834,7 @@ public class ChannelManager extends BaseManager {
             }
         }
         retval.addAll(eusBaseChans);
+        retval.addAll(listCompatibleBaseChannelsForChannel(inChan));
 
         for (EssentialChannelDto dto : retval) {
             if (dto.getId().longValue() == inChan.getId().longValue()) {
