@@ -3,11 +3,11 @@ import { useState } from "react";
 import { Form, Text } from "components/input";
 
 export default () => {
-  const [model, setModel] = useState({ foo: "Foo" });
+  const [model, setModel] = useState({ foo: "Hi" });
 
   const validator = (value: string) => {
-    if (!value.toLowerCase().includes("o")) {
-      return ["Must include the letter 'o'", "It's really gotta"];
+    if (!value.toLowerCase().includes("i")) {
+      return ["Must include the letter 'i'", "It's really gotta"];
     }
   };
 

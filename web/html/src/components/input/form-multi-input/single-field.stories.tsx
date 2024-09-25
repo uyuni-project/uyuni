@@ -1,10 +1,7 @@
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
-
-import { Form } from "../form/Form";
-import { Text } from "../text/Text";
-import { FormMultiInput } from "./FormMultiInput";
+import { Form, FormMultiInput, Text, Validate } from "components/input";
 
 export default () => {
   const [model, setModel] = useState({ user0_login: "jdoe" });
@@ -44,10 +41,9 @@ export default () => {
                 name={`user${index}_login`}
                 label={t("Login")}
                 required
-                invalidHint={t("Minimum 2 characters")}
                 labelClass="col-md-3"
                 divClass="col-md-6"
-                validate={[(value) => value.length > 2]}
+                validate={Validate.minLength(2)}
               />
             </>
           )}

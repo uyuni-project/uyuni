@@ -1,10 +1,7 @@
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
-
-import { Form } from "../form/Form";
-import { Text } from "../text/Text";
-import { FormMultiInput } from "./FormMultiInput";
+import { Form, FormMultiInput, Text, Validate } from "components/input";
 
 export default () => {
   const [model, setModel] = useState({ user0_firstname: "John", user0_lastname: "Doe", user0_age: 42 });
@@ -55,18 +52,16 @@ export default () => {
               <Text
                 name={`user${index}_firstname`}
                 required
-                invalidHint={t("Minimum 2 characters")}
                 divClass="col-md-12"
-                validate={[(value) => value.length > 2]}
+                validate={Validate.minLength(2)}
                 className="col-md-4"
               />
               <Text
                 name={`user${index}_lastname`}
                 required
-                invalidHint={t("Minimum 2 characters")}
                 divClass="col-md-12"
                 className="col-md-4"
-                validate={[(value) => value.length > 2]}
+                validate={Validate.minLength(2)}
               />
               <Text name={`user${index}_age`} required divClass="col-md-12" className="col-md-4" />
             </>

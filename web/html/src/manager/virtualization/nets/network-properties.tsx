@@ -417,6 +417,7 @@ export function NetworkProperties(props: Props) {
                         title={t("NAT port range")}
                         labelClass="col-md-3"
                         divClass="col-md-6"
+                        // TODO: See Range.test.tsx and update this
                         validate={[
                           utils.allOrNone,
                           (value) =>

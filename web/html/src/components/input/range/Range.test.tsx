@@ -68,12 +68,23 @@ describe("Range", () => {
         name="range"
         prefix="port"
         label="Port range"
-        invalidHint={t("Both values need to be positive integers")}
-        validate={[
-          (value) => Object.values(value).every((item) => item != null),
-          (value) => Object.values(value).every((item) => typeof item === "string" && item.match(/^[0-9]+$/)),
-          ({ port_start, port_end }) => parseInt(port_start, 10) <= parseInt(port_end, 10),
-        ]}
+        validate={(value) => {
+          const message = t("Both values need to be positive integers");
+          const hasValues = Object.values(value).every((item) => item != null);
+          if (!hasValues) {
+            return message;
+          }
+          // TODO: Replace this with Validate.isInteger or similar
+          const isInteger = Object.values(value).every((item) => typeof item === "string" && item.match(/^[0-9]+$/));
+          if (!isInteger) {
+            return message;
+          }
+          const { port_start, port_end } = value;
+          const isOrdered = parseInt(port_start, 10) <= parseInt(port_end, 10);
+          if (!isOrdered) {
+            return message;
+          }
+        }}
       />
     );
 

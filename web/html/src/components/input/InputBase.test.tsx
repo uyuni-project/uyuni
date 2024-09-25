@@ -4,6 +4,7 @@ import { render, screen } from "utils/test-utils";
 
 import { Form } from "./form/Form";
 import { InputBase } from "./InputBase";
+import { Validate } from "./validate";
 
 describe("InputBase", () => {
   // Use these to test model changes in tests
@@ -40,7 +41,7 @@ describe("InputBase", () => {
     };
 
     renderWithForm(
-      <InputBase name="foo" invalidHint={t("Minimum 2 characters")} validate={[(value) => value.length > 2]}>
+      <InputBase name="foo" validate={Validate.minLength(2)}>
         {({ setValue }) => {
           if (isFirstFire) {
             // Realistically this should be with a user interaction, but we manually fire it off to see if it propagates
@@ -52,7 +53,7 @@ describe("InputBase", () => {
       </InputBase>
     );
     expect(model).toStrictEqual({ foo: "bar" });
-    expect(screen.queryByText(/Minimum 2 characters/)).toBeNull();
+    expect(screen.queryByText(/Must be at least 2 characters long/)).toBeNull();
   });
 
   test("validation error", () => {
@@ -63,12 +64,7 @@ describe("InputBase", () => {
     };
 
     renderWithForm(
-      <InputBase
-        name="username"
-        label="Username"
-        invalidHint={t("Minimum 2 characters")}
-        validate={[(value) => value.length > 2]}
-      >
+      <InputBase name="username" label="Username" validate={Validate.minLength(2)}>
         {({ setValue }) => {
           if (isFirstFire) {
             setValue("username", "fo");
@@ -79,7 +75,7 @@ describe("InputBase", () => {
       </InputBase>
     );
     expect(model).toStrictEqual({ username: "fo" });
-    screen.findByText(/Minimum 2 characters/);
+    screen.findByText(/Must be at least 2 characters long/);
   });
 
   test("multiple properties", () => {
@@ -91,12 +87,7 @@ describe("InputBase", () => {
     };
 
     renderWithForm(
-      <InputBase
-        name={["firstname", "lastname"]}
-        label="User"
-        invalidHint={t("Minimum 2 characters")}
-        validate={[(value) => Object.values<typeof model>(value).every((v) => v.length > 2)]}
-      >
+      <InputBase name={["firstname", "lastname"]} label="User" validate={Validate.minLength(2)}>
         {({ setValue }) => {
           if (isFirstFire) {
             setValue("firstname", "John");

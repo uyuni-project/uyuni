@@ -6,7 +6,7 @@ import _isNil from "lodash/isNil";
 import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
-import { Validator } from "./validate";
+import { ValidationResult, Validator } from "./validate";
 
 export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.
@@ -31,7 +31,7 @@ export type InputBaseProps<ValueType = string> = {
   hideLabel?: boolean;
 
   /** Hint string to display */
-  hint?: string;
+  hint?: React.ReactNode;
 
   /** CSS class to use for the label */
   labelClass?: string;
@@ -54,8 +54,11 @@ export type InputBaseProps<ValueType = string> = {
     onBlur: () => void;
   }) => React.ReactNode;
 
-  /** Indicates whether the field is required in the form */
-  required?: boolean;
+  /**
+   * Indicates whether the field is required in the form.
+   * You can optionally specify a value that's used as the error message if the value is not filled.
+   */
+  required?: boolean | React.ReactNode;
 
   /** Indicates whether the field is disabled */
   disabled?: boolean;
@@ -97,7 +100,7 @@ type State = {
   /**
    * Validation errors
    */
-  validationErrors: (string | string[] | undefined)[];
+  validationErrors: ValidationResult[];
 };
 
 export class InputBase<ValueType = string> extends React.Component<InputBaseProps<ValueType>, State> {
@@ -210,6 +213,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     return _isNil(input);
   }
 
+  // TODO: Move this into the renderer and cache it
   requiredValidator: Validator = <T extends ValueType>(value: T) => {
     const hasNoValue =
       this.isEmptyValue(value) ||
@@ -217,6 +221,10 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
       (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
 
     if (hasNoValue) {
+      if (typeof this.props.required === "string") {
+        return this.props.required;
+      }
+
       return this.props.label ? t(`${this.props.label} is required.`) : t("required");
     }
   };
@@ -230,7 +238,10 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
    */
   validate = _debounce(
     async <InferredValueType extends unknown = ValueType>(value: InferredValueType): Promise<void> => {
+      // TODO: If it's an array, automatically wrap it in `Validate.all()`
       const validators = Array.isArray(this.props.validate) ? this.props.validate : [this.props.validate] ?? [];
+
+      // TODO: Move this into render so it's always sync and up to date instantly
       if (!this.props.disabled && this.props.required) {
         validators.push(this.requiredValidator);
       }
@@ -300,7 +311,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     if (this.props.onChange) this.props.onChange(name, value);
   };
 
-  pushHint(hints: React.ReactNode[], hint?: string | string[]) {
+  pushHint(hints: React.ReactNode[], hint?: ValidationResult) {
     if (Array.isArray(hint)) {
       hint.forEach((item) => this.pushHint(hints, item));
       return;
@@ -329,7 +340,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
           <Label
             name={this.props.label}
             className={this.props.labelClass}
-            required={this.props.required}
+            required={!!this.props.required}
             key={`${this.props.name}-label`}
             htmlFor={typeof this.props.name === "string" ? this.props.name : undefined}
           />

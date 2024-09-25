@@ -1,3 +1,6 @@
+// TODO: Deprecate this whole file
+
+// TODO: Deprecate this dependency
 // https://github.com/chriso/validator.js
 import validator from "validator";
 
