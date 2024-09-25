@@ -7,5 +7,11 @@ RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/system
       golang-github-prometheus-prometheus golang-github-prometheus-alertmanager prometheus-blackbox_exporter golang-github-prometheus-node_exporter golang-github-lusitaniae-apache_exporter prometheus-postgres_exporter golang-github-QubitProducts-exporter_exporter golang-github-prometheus-promu ansible && \
     zypper clean -a
 RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm/ test_repo_rpm_pool
+# specific to buildhost
+RUN zypper ref -f && \ 
+    zypper -n install docker docker-buildx \
+      && \
+    zypper clean -a
 COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
+
