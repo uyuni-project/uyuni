@@ -54,5 +54,5 @@ RUN ruby -v
 RUN gem env
 
 # TODO: Adjust the URL/branch before merging!
-RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/qe-develop/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
+RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
 RUN gem list
