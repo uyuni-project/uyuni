@@ -36,8 +36,8 @@ public class JarFinderTest {
     // (previously redstone.xmlrpc could find either redstone-xmlrpc.jar or
     //  redstone-xmlrpc-client.jar, making test-results indeterminate)
     private static final String TESTJAR = "org.postgresql";
-    private static final int NUM_CLASSES_IN_TESTJAR = 377;
-    private static final int NUM_SUBDIRS_IN_TESTJAR = 377;
+    private static final int NUM_CLASSES_IN_TESTJAR = 378;
+    private static final int NUM_SUBDIRS_IN_TESTJAR = 378;
 
     @Test
     public void testGetFinder() {
