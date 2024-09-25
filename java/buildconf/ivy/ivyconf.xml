@@ -10,7 +10,7 @@
     </url>
   </resolvers>
   <modules>
-    <module organisation="suse" name="*" resolver="suse"/>
+    <module organisation="manager-50" name="*" resolver="suse"/>
     <module organisation="checkstyle" name="*" resolver="github"/>
   </modules>
 </ivysettings>
