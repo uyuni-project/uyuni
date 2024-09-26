@@ -122,6 +122,11 @@ RUN uyuni-configfiles-sync init /srv/tftpboot/
 RUN uyuni-configfiles-sync init /srv/www/
 RUN uyuni-configfiles-sync init /var/lib/cobbler/
 
+# Set /etc/krb5.conf.d/ as a link to krb5
+COPY krb5.conf /etc/krb5.conf
+COPY krb5-conf-setup.sh /usr/bin/krb5-conf-setup.sh
+RUN /bin/bash krb5-conf-setup.sh
+
 # LABELs
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
