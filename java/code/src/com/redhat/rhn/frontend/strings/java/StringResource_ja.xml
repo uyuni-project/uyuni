@@ -11222,7 +11222,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system</source>
-        <target state="final">システムの更新</target>
+        <target state="final">システムを更新します</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
