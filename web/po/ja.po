@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:29+0200\n"
-"PO-Revision-Date: 2024-09-25 18:48+0000\n"
+"PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1114,7 +1114,7 @@ msgstr "読み込んでいます..."
 #: ../html/src/components/utils/loading/text-border.stories.tsx:7
 #: ../html/src/components/utils/loading/text.stories.tsx:7
 msgid "Loading text"
-msgstr "テキストを読み込んでいます..."
+msgstr "テキストを読み込んでいます"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
@@ -1962,19 +1962,19 @@ msgstr "影響を受ける、割り当てられたチャンネルで部分的な
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
-msgstr "不明、CVEメタデータは利用できません"
+msgstr "不明、CVEメタデータは利用不可"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
 msgid ""
 "It is not possible to scan the client server for CVE vulnerabilities without "
 "channels or OVAL metadata."
-msgstr "チャネルまたはOVALメタデータなしで、クライアントサーバをスキャンしてCVE脆弱性"
-"を検出することはできません。"
+msgstr "チャンネルまたはOVALメタデータがないと、クライアントサーバをスキャンしてCVE脆"
+"弱性を検出することはできません。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
 msgid "Error, see console"
-msgstr "エラーが発生しました。コンソールを確認してください"
+msgstr "エラー、コンソールを参照してください"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:239
 msgid "Unknown patch status"
@@ -1982,11 +1982,11 @@ msgstr "不明パッチステータス"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr "OVALデータに同期外れ。潜在的な脆弱性を逃してしまう可能性があります"
+msgstr "OVALデータが同期していない。潜在的な脆弱性を見逃している可能性がある"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
-msgstr "サーバ製品のチャネルが同期していません。パッチ情報が利用できません"
+msgstr "サーバ製品のチャンネルが同期していない。パッチ情報が利用不可"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
@@ -4265,7 +4265,7 @@ msgstr "メンテナンススケジュール"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
 msgid "Maintenance Calendars"
-msgstr "メンテナンスカレンダー"
+msgstr "メンテナンスカレンダ"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
