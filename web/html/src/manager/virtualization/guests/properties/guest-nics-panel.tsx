@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { FormMultiInput } from "components/input/FormMultiInput";
-import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Select } from "components/input";
+import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
+import { getOrderedItemsFromModel } from "components/input/form-multi-input/FormMultiInput";
+import { Text } from "components/input/text/Text";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 
 function addNic(index: number, model: any, changeModel: Function, networks: Array<any>) {
   const first_nic = networks.length > 0 ? networks[0].name : "";

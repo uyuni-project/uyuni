@@ -8,8 +8,8 @@ import { ActionSchedule } from "components/action-schedule";
 import { ActionChain } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelAnchorLink } from "components/links";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Toggler } from "components/toggler";
 

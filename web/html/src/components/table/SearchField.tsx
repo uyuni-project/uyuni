@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Form } from "components/input/Form";
-import { Select } from "components/input/Select";
+import { Select } from "components/input";
+import { Form } from "components/input/form/Form";
 
 type SearchFieldOption = {
   label: string;

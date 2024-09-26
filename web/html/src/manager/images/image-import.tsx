@@ -3,11 +3,11 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Form } from "components/input/Form";
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Select } from "components/input";
+import { Form } from "components/input/form/Form";
+import { Text } from "components/input/text/Text";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { Utils } from "utils/functions";
