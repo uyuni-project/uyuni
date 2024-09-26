@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:29+0200\n"
-"PO-Revision-Date: 2024-09-26 02:48+0000\n"
+"PO-Revision-Date: 2024-09-26 05:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -857,7 +857,7 @@ msgstr "再起動状態は最後に置かれます。"
 #: ../html/src/components/states-picker.tsx:132
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr "「システムを再起動」と「必要な場合はシステムを再起動」の状態は一緒に使用でき"
+msgstr "「システムの再起動」と「必要に応じてシステムを再起動」の状態は一緒に使用でき"
 "ません。"
 
 #: ../html/src/components/states-picker.tsx:152
@@ -1091,7 +1091,7 @@ msgstr "データがありません"
 
 #: ../html/src/components/utils/HelpIcon.stories.tsx:4
 msgid "Text to display on hover"
-msgstr "マウスポインタを合わせたときに表示されるテキスト"
+msgstr "カーソルを合わせると表示されるテキスト"
 
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
@@ -1982,11 +1982,11 @@ msgstr "不明パッチステータス"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr "OVALデータが同期していない。潜在的な脆弱性を見逃している可能性がある"
+msgstr "OVALデータが同期されていない。脆弱性が見逃されている可能性がある"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
-msgstr "サーバ製品のチャンネルが同期していない。パッチ情報が利用不可"
+msgstr "サーバ製品チャンネルが同期されていない。パッチ情報が利用不可"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
@@ -5402,8 +5402,7 @@ msgstr "開発デバッグページ"
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr "これは開発者が使用する非公開ページです。偶然見つけた場合は、おめでとうござい"
-"ます。"
+msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -5439,7 +5438,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
-msgstr "アクティベーションキーをアップデートしている際にエラーが発生しました。"
+msgstr "アクティベーションキーの更新中にエラーが発生しました。"
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
 msgid "Activation key has been modified."
