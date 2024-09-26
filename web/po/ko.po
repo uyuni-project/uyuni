@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-09-25 09:48+0000\n"
+"PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-5-0/ko/>"
 "\n"
@@ -705,16 +705,13 @@ msgid "State configuration must not be empty"
 msgstr "상태 구성은 비워둘 수 없습니다."
 
 #: ../html/src/components/states-picker.tsx:123
-#, fuzzy
 msgid "Reboot state will be put last."
 msgstr "재부팅 상태는 마지막에 배치됩니다."
 
 #: ../html/src/components/states-picker.tsx:132
-#, fuzzy
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr "''시스템 재부팅''과 ''필요한 경우 시스템 재부팅'' 상태는 함께 사용할 수 "
-"없습니다."
+msgstr "'시스템 재부팅'과 '필요한 경우 시스템 재부팅' 상태는 함께 사용할 수 없습니다."
 
 #: ../html/src/components/states-picker.tsx:152
 msgid "State assignments have been saved."
@@ -4074,7 +4071,6 @@ msgid "Maintenance Schedules"
 msgstr "유지보수 일정"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
-#, fuzzy
 msgid "Maintenance Calendars"
 msgstr "유지보수 달력"
 
@@ -4901,7 +4897,6 @@ msgid "Configure states to execute"
 msgstr "실행할 상태 구성"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
-#, fuzzy
 msgid " Recurring Actions "
 msgstr " 반복 작업 "
 
@@ -5229,12 +5224,10 @@ msgstr ""
 "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
-#, fuzzy
 msgid "Error updating activation key."
 msgstr "활성화 키를 업데이트하는 중 오류가 발생했습니다."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
-#, fuzzy
 msgid "Activation key has been modified."
 msgstr "활성화 키가 수정되었습니다."
 
