@@ -6,14 +6,6 @@ type SyncOrAsync<T> = T | Promise<T>;
 export type ValidationResult = OneOrMany<Exclude<React.ReactNode, boolean> | undefined>;
 export type Validator = (...args: any[]) => SyncOrAsync<ValidationResult>;
 
-// TODO: This is really internal, do we need to expose this?
-const all =
-  (validators: Validator[]): Validator =>
-  async (value: string) => {
-    const result = await Promise.all(validators.map((item) => item(value)));
-    return result.filter((item) => item !== undefined).flat();
-  };
-
 /** String must match `regex` */
 const matches =
   (regex: RegExp, message?: string): Validator =>
@@ -68,7 +60,6 @@ const isInt =
   };
 
 export const Validate = {
-  all,
   matches,
   minLength,
   maxLength,

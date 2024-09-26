@@ -12,7 +12,7 @@ export default () => {
   };
 
   return (
-    <Form model={model} onChange={(newModel) => setModel(newModel)}>
+    <Form model={model} onChange={setModel}>
       <p>You can return multiple validation errors:</p>
       <Text name="foo" validate={[validator]} />
     </Form>

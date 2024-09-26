@@ -89,7 +89,6 @@ export type InputBaseProps<ValueType = string> = {
 };
 
 type State = {
-  isValid: boolean;
   isTouched: boolean;
 
   /**
@@ -98,9 +97,9 @@ type State = {
   formErrors?: string[];
 
   /**
-   * Validation errors
+   * Validation errors, a `Map` from a given validator to its result
    */
-  validationErrors: ValidationResult[];
+  validationErrors: Map<number, ValidationResult>;
 };
 
 export class InputBase<ValueType = string> extends React.Component<InputBaseProps<ValueType>, State> {
@@ -120,10 +119,9 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   constructor(props: InputBaseProps<ValueType>) {
     super(props);
     this.state = {
-      isValid: true,
       isTouched: false,
       formErrors: undefined,
-      validationErrors: [],
+      validationErrors: new Map(),
     };
   }
 
@@ -187,11 +185,11 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
   componentWillUnmount() {
     if (Object.keys(this.context).length > 0) {
-      this.context.unregisterInput(this);
-      if (this.props.name instanceof Array) {
-        this.props.name.forEach((name) => this.context.setModelValue(name, undefined));
-      } else {
-        this.context.setModelValue(this.props.name, undefined);
+      this.context.unregisterInput?.(this);
+      if (Array.isArray(this.props.name)) {
+        this.props.name.forEach((name) => this.context.setModelValue?.(name, undefined));
+      } else if (this.props.name) {
+        this.context.setModelValue?.(this.props.name, undefined);
       }
     }
   }
@@ -201,10 +199,6 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
       isTouched: true,
     });
   };
-
-  isValid() {
-    return this.state.isValid;
-  }
 
   isEmptyValue(input: unknown) {
     if (typeof input === "string") {
@@ -238,7 +232,6 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
    */
   validate = _debounce(
     async <InferredValueType extends unknown = ValueType>(value: InferredValueType): Promise<void> => {
-      // TODO: If it's an array, automatically wrap it in `Validate.all()`
       const validators = Array.isArray(this.props.validate) ? this.props.validate : [this.props.validate] ?? [];
 
       // TODO: Move this into render so it's always sync and up to date instantly
@@ -257,14 +250,14 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
             return;
           }
 
+          // BUG: We don't handle race conditions here, it's a bug, but it will get fixed for free this once we swap this code out for Formik
           const result = await validator(value);
-          // console.log(validator, result);
           this.setState((state) => {
-            const newValidationErrors = [...state.validationErrors];
+            const newValidationErrors = new Map(state.validationErrors);
             if (result) {
-              newValidationErrors[index] = result;
+              newValidationErrors.set(index, result);
             } else {
-              newValidationErrors[index] = undefined;
+              newValidationErrors.delete(index);
             }
 
             return {
@@ -275,12 +268,20 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
         })
       );
 
-      if (this.context.validateForm != null) {
-        this.context.validateForm();
-      }
+      this.context.validateForm?.();
     },
     this.props.debounceValidate ?? 0
   );
+
+  isValid = () => {
+    if (this.state.formErrors && this.state.formErrors.length > 0) {
+      return false;
+    }
+    if (this.state.validationErrors.size > 0) {
+      return false;
+    }
+    return true;
+  };
 
   setFormErrors = (formErrors?: string[]) => {
     this.setState({ formErrors });
@@ -326,13 +327,12 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   }
 
   render() {
-    const hasFormError = !!this.state.formErrors?.length;
-    const hasError = hasFormError || (this.state.isTouched && !this.state.isValid);
-
     const hints: React.ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
     this.state.formErrors?.forEach((error) => this.pushHint(hints, error));
     this.state.validationErrors.forEach((error) => this.pushHint(hints, error));
+
+    const hasError = this.state.isTouched && !this.isValid();
 
     return (
       <FormGroup isError={hasError} key={`${this.props.name}-group`} className={this.props.className}>
