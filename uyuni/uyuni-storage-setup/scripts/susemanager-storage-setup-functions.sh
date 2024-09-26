@@ -30,7 +30,9 @@ linux_device() {
     test -z "$1" && die "linux_device called without argument"
     local device=$(readlink $1 2>/dev/null)
     if [ -z "$device" ];then
-        echo $1
+        device=$(basename $1)
+        device=/dev/$device
+        echo $device
         return
     fi
     device=$(basename $device)
@@ -65,8 +67,6 @@ is_btrfs_subvolume() {
     return 1
 }
 
-
-
 check_mountpoint() {
     test -z "$1" && die "check_mountpoint called without argument"
     local mount_point=${1%/}
@@ -94,8 +94,14 @@ get_first_partition_device() {
         echo $partition
         return
     fi
-    # If we are not on NVMe it just shows up as a scsi device
-    echo ${device}1
+    # If we are not on NVMe it may be a scsi device
+    partition=${device}1
+    if [ -e $partition ]; then
+        echo $partition
+        return
+    fi
+    # no partition available, FS might be directly on the block device
+    echo ${device}
 }
 
 create_filesystem() {
