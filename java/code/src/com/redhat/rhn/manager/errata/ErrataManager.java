@@ -307,8 +307,12 @@ public class ErrataManager extends BaseManager {
         Set<Errata> filteredErrata = tgtErrata.stream().filter(e -> !(srcErrata.contains(e) || asCloned(e)
                 .map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
                 .collect(Collectors.toUnmodifiableSet());
-
         removeErratumAndPackagesFromChannel(filteredErrata, srcErrata, tgtChannel, user);
+        List<OwnedErrata> emptyChannelErrata = filteredErrata.stream()
+            .filter(t -> t.getChannels().isEmpty())
+            .map(OwnedErrata::new)
+            .collect(Collectors.toList());
+        ErrataManager.deleteErrata(user, emptyChannelErrata);
     }
 
     private static Optional<ClonedErrata> asCloned(Errata e) {
@@ -637,9 +641,7 @@ public class ErrataManager extends BaseManager {
      */
     public static void deleteErratum(User user, Errata errata) {
         List<OwnedErrata> eids = new ArrayList<>();
-        OwnedErrata oErrata = new OwnedErrata();
-        oErrata.setId(errata.getId());
-        oErrata.setAdvisory(errata.getAdvisory());
+        OwnedErrata oErrata = new OwnedErrata(errata);
         eids.add(oErrata);
         deleteErrata(user, eids);
     }
