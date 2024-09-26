@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-09-25 18:48+0000\n"
+"PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-5-0/ja/"
 ">\n"
@@ -4125,7 +4125,7 @@ msgstr "メンテナンススケジュール"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
 msgid "Maintenance Calendars"
-msgstr "メンテナンスカレンダー"
+msgstr "メンテナンスカレンダ"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
