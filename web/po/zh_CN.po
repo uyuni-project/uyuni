@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:29+0200\n"
-"PO-Revision-Date: 2024-07-15 05:46+0000\n"
+"PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:441
 msgid "remaining"
@@ -533,9 +533,8 @@ msgid "First Name"
 msgstr "名字"
 
 #: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:56
-#, fuzzy
 msgid "Last Name"
-msgstr "任务名称"
+msgstr "姓氏"
 
 #: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
 #: ../html/src/manager/login/uyuni/login.tsx:76
@@ -842,12 +841,12 @@ msgstr "状态配置不能为空"
 
 #: ../html/src/components/states-picker.tsx:123
 msgid "Reboot state will be put last."
-msgstr ""
+msgstr "重引导状态将置于最后。"
 
 #: ../html/src/components/states-picker.tsx:132
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
+msgstr "“重引导系统”和“根据需要重引导系统”状态不能一起使用。"
 
 #: ../html/src/components/states-picker.tsx:152
 msgid "State assignments have been saved."
@@ -1077,7 +1076,7 @@ msgstr "无数据"
 
 #: ../html/src/components/utils/HelpIcon.stories.tsx:4
 msgid "Text to display on hover"
-msgstr ""
+msgstr "鼠标悬停时显示的文本"
 
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
@@ -1099,9 +1098,8 @@ msgstr "正在装载..."
 
 #: ../html/src/components/utils/loading/text-border.stories.tsx:7
 #: ../html/src/components/utils/loading/text.stories.tsx:7
-#, fuzzy
 msgid "Loading text"
-msgstr "正在装载内容..."
+msgstr "正在加载文本"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
@@ -1913,31 +1911,30 @@ msgstr "受影响，指派的通道中提供了局部补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
-msgstr ""
+msgstr "未知，无法获取 CVE 元数据"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
 msgid ""
 "It is not possible to scan the client server for CVE vulnerabilities without "
 "channels or OVAL metadata."
-msgstr ""
+msgstr "如果没有通道或 OVAL 元数据，将无法扫描客户端或服务器是否存在 CVE 漏洞。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
 msgid "Error, see console"
-msgstr ""
+msgstr "错误，请查看控制台"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:239
-#, fuzzy
 msgid "Unknown patch status"
-msgstr "未知主机名"
+msgstr "未知补丁状态"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
+msgstr "OVAL 数据不同步。可能遗漏了某些漏洞"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
-msgstr ""
+msgstr "服务器产品通道不同步；未获取任何补丁信息"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
@@ -4140,9 +4137,8 @@ msgid "Maintenance Schedules"
 msgstr "维护日程安排"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
-#, fuzzy
 msgid "Maintenance Calendars"
-msgstr "删除维护日历"
+msgstr "维护日历"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
@@ -4959,9 +4955,8 @@ msgid "Configure states to execute"
 msgstr "配置要执行的状态"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
-#, fuzzy
 msgid " Recurring Actions "
-msgstr "重复性操作"
+msgstr " 重复性操作 "
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:121
 msgid "The following recurring actions have been created."
@@ -5251,13 +5246,13 @@ msgstr "创建重复性"
 
 #: ../html/src/manager/storybook/storybook.tsx:47
 msgid "Development debugging page"
-msgstr ""
+msgstr "开发调试页面"
 
 #: ../html/src/manager/storybook/storybook.tsx:49
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr ""
+msgstr "这是开发人员使用的隐藏页面，如果您无意间发现了该页面，那么为您点赞！"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -5291,12 +5286,11 @@ msgstr "使用此激活密钥注册的所有系统都将订阅所选子通道。
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
-msgstr ""
+msgstr "更新激活密钥时出错。"
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
-#, fuzzy
 msgid "Activation key has been modified."
-msgstr "kiwi 映像需要激活密钥。"
+msgstr "激活密钥已修改。"
 
 #: ../html/src/manager/systems/all-list.tsx:37
 msgid " Systems "
