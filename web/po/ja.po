@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-09-26 02:48+0000\n"
+"PO-Revision-Date: 2024-09-26 05:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-5-0/ja/"
 ">\n"
@@ -717,7 +717,7 @@ msgstr "再起動状態は最後に置かれます。"
 #: ../html/src/components/states-picker.tsx:132
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr "「システムを再起動」と「必要な場合はシステムを再起動」の状態は一緒に使用でき"
+msgstr "「システムの再起動」と「必要に応じてシステムを再起動」の状態は一緒に使用でき"
 "ません。"
 
 #: ../html/src/components/states-picker.tsx:152
@@ -5288,7 +5288,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
-msgstr "アクティベーションキーをアップデートしている際にエラーが発生しました。"
+msgstr "アクティベーションキーの更新中にエラーが発生しました。"
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
 msgid "Activation key has been modified."
