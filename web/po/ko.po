@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:29+0200\n"
-"PO-Revision-Date: 2024-09-25 09:48+0000\n"
+"PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -538,7 +538,6 @@ msgid "First Name"
 msgstr "이름"
 
 #: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:56
-#, fuzzy
 msgid "Last Name"
 msgstr "성"
 
@@ -846,16 +845,13 @@ msgid "State configuration must not be empty"
 msgstr "상태 구성은 비워둘 수 없습니다."
 
 #: ../html/src/components/states-picker.tsx:123
-#, fuzzy
 msgid "Reboot state will be put last."
 msgstr "재부팅 상태는 마지막에 배치됩니다."
 
 #: ../html/src/components/states-picker.tsx:132
-#, fuzzy
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr "''시스템 재부팅''과 ''필요한 경우 시스템 재부팅'' 상태는 함께 사용할 수 "
-"없습니다."
+msgstr "'시스템 재부팅'과 '필요한 경우 시스템 재부팅' 상태는 함께 사용할 수 없습니다."
 
 #: ../html/src/components/states-picker.tsx:152
 msgid "State assignments have been saved."
@@ -1084,7 +1080,6 @@ msgid "No data"
 msgstr "데이터 없음"
 
 #: ../html/src/components/utils/HelpIcon.stories.tsx:4
-#, fuzzy
 msgid "Text to display on hover"
 msgstr "마우스를 가리키면 표시할 텍스트"
 
@@ -1108,7 +1103,6 @@ msgstr "로드하는 중..."
 
 #: ../html/src/components/utils/loading/text-border.stories.tsx:7
 #: ../html/src/components/utils/loading/text.stories.tsx:7
-#, fuzzy
 msgid "Loading text"
 msgstr "텍스트 로드 중"
 
@@ -1949,12 +1943,10 @@ msgid "Affected, partial patch available in assigned channel"
 msgstr "영향을 받음, 할당된 채널에서 부분 패치 사용 가능"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
-#, fuzzy
 msgid "Unknown, CVE metadata not available"
-msgstr "알 수 없음, CVE 메타데이터를 사용할 수 없음"
+msgstr "알 수 없음, CVE 메타데이터 사용 불가"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
-#, fuzzy
 msgid ""
 "It is not possible to scan the client server for CVE vulnerabilities without "
 "channels or OVAL metadata."
@@ -1963,24 +1955,20 @@ msgstr "채널 또는 OVAL 메타데이터가 없으면 클라이언트 서버�
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
-#, fuzzy
 msgid "Error, see console"
 msgstr "오류, 콘솔 참조"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:239
-#, fuzzy
 msgid "Unknown patch status"
 msgstr "알 수 없는 패치 상태"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
-#, fuzzy
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr "OVAL 데이터가 동기화되지 않음. 누락된 잠재적 취약점"
+msgstr "OVAL 데이터가 동기화되지 않음. 잠재적 누락된 취약점"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
-#, fuzzy
 msgid "Server product channels out of sync; no patch information available"
-msgstr "서버 제품 채널이 동기화되지 않음, 사용 가능한 패치 정보 없음"
+msgstr "서버 제품 채널이 동기화되지 않음, 패치 정보 확인 불가"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
@@ -4223,7 +4211,6 @@ msgid "Maintenance Schedules"
 msgstr "유지보수 일정"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
-#, fuzzy
 msgid "Maintenance Calendars"
 msgstr "유지보수 달력"
 
@@ -5050,7 +5037,6 @@ msgid "Configure states to execute"
 msgstr "실행할 상태 구성"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
-#, fuzzy
 msgid " Recurring Actions "
 msgstr " 반복 작업 "
 
@@ -5347,12 +5333,10 @@ msgid "Create Recurring"
 msgstr "반복 생성"
 
 #: ../html/src/manager/storybook/storybook.tsx:47
-#, fuzzy
 msgid "Development debugging page"
 msgstr "개발 디버깅 페이지"
 
 #: ../html/src/manager/storybook/storybook.tsx:49
-#, fuzzy
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
@@ -5391,12 +5375,10 @@ msgstr ""
 "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
-#, fuzzy
 msgid "Error updating activation key."
 msgstr "활성화 키를 업데이트하는 중 오류가 발생했습니다."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
-#, fuzzy
 msgid "Activation key has been modified."
 msgstr "활성화 키가 수정되었습니다."
 
