@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-09-18 10:29+0000\n"
+"PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "web-5-0/zh_CN/>\n"
@@ -700,12 +700,12 @@ msgstr "状态配置不能为空"
 
 #: ../html/src/components/states-picker.tsx:123
 msgid "Reboot state will be put last."
-msgstr ""
+msgstr "重引导状态将置于最后。"
 
 #: ../html/src/components/states-picker.tsx:132
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
+msgstr "“重引导系统”和“根据需要重引导系统”状态不能一起使用。"
 
 #: ../html/src/components/states-picker.tsx:152
 msgid "State assignments have been saved."
@@ -3997,9 +3997,8 @@ msgid "Maintenance Schedules"
 msgstr "维护日程安排"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
-#, fuzzy
 msgid "Maintenance Calendars"
-msgstr "删除维护日历"
+msgstr "维护日历"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Schedules available to the current user."
@@ -4816,9 +4815,8 @@ msgid "Configure states to execute"
 msgstr "配置要执行的状态"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
-#, fuzzy
 msgid " Recurring Actions "
-msgstr "重复性操作"
+msgstr " 重复性操作 "
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:121
 msgid "The following recurring actions have been created."
@@ -5138,12 +5136,11 @@ msgstr "使用此激活密钥注册的所有系统都将订阅所选子通道。
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
-msgstr ""
+msgstr "更新激活密钥时出错。"
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
-#, fuzzy
 msgid "Activation key has been modified."
-msgstr "kiwi 映像需要激活密钥。"
+msgstr "激活密钥已修改。"
 
 #: ../html/src/manager/systems/all-list.tsx:37
 msgid " Systems "
