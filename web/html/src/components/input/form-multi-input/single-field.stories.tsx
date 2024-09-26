@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
-import { Form, FormMultiInput, Text, Validate } from "components/input";
+import { Form, FormMultiInput, Text, Validation } from "components/input";
 
 export default () => {
   const [model, setModel] = useState({ user0_login: "jdoe" });
@@ -43,7 +43,7 @@ export default () => {
                 required
                 labelClass="col-md-3"
                 divClass="col-md-6"
-                validate={Validate.minLength(2)}
+                validate={Validation.minLength(2)}
               />
             </>
           )}

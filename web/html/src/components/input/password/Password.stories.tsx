@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
-import { Form, Password, Validate } from "components/input";
+import { Form, Password, Validation } from "components/input";
 
 export default () => {
   const [model, setModel] = useState({
@@ -22,7 +22,7 @@ export default () => {
         required
         labelClass="col-md-3"
         divClass="col-md-6"
-        validate={Validate.minLength(4)}
+        validate={Validation.minLength(4)}
       />
       <SubmitButton className="btn-success" text={t("Submit")} />
     </Form>

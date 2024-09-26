@@ -59,7 +59,7 @@ const isInt =
     }
   };
 
-export const Validate = {
+export const Validation = {
   matches,
   minLength,
   maxLength,

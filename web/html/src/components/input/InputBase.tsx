@@ -6,7 +6,7 @@ import _isNil from "lodash/isNil";
 import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
-import { ValidationResult, Validator } from "./validate";
+import { ValidationResult, Validator } from "./validation/validation";
 
 export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.

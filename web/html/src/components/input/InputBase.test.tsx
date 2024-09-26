@@ -4,7 +4,7 @@ import { render, screen } from "utils/test-utils";
 
 import { Form } from "./form/Form";
 import { InputBase } from "./InputBase";
-import { Validate } from "./validate";
+import { Validation } from "./validation/validation";
 
 describe("InputBase", () => {
   // Use these to test model changes in tests
@@ -41,7 +41,7 @@ describe("InputBase", () => {
     };
 
     renderWithForm(
-      <InputBase name="foo" validate={Validate.minLength(2)}>
+      <InputBase name="foo" validate={Validation.minLength(2)}>
         {({ setValue }) => {
           if (isFirstFire) {
             // Realistically this should be with a user interaction, but we manually fire it off to see if it propagates
@@ -64,7 +64,7 @@ describe("InputBase", () => {
     };
 
     renderWithForm(
-      <InputBase name="username" label="Username" validate={Validate.minLength(2)}>
+      <InputBase name="username" label="Username" validate={Validation.minLength(2)}>
         {({ setValue }) => {
           if (isFirstFire) {
             setValue("username", "fo");
@@ -87,7 +87,7 @@ describe("InputBase", () => {
     };
 
     renderWithForm(
-      <InputBase name={["firstname", "lastname"]} label="User" validate={Validate.minLength(2)}>
+      <InputBase name={["firstname", "lastname"]} label="User" validate={Validation.minLength(2)}>
         {({ setValue }) => {
           if (isFirstFire) {
             setValue("firstname", "John");

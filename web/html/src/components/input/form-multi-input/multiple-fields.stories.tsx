@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
-import { Form, Text, Validate } from "components/input";
+import { Form, Text, Validation } from "components/input";
 
 import { FormMultiInput } from "./FormMultiInput";
 
@@ -47,7 +47,7 @@ export default () => {
                 required
                 labelClass="col-md-3"
                 divClass="col-md-6"
-                validate={[Validate.minLength(2)]}
+                validate={[Validation.minLength(2)]}
               />
               <Text
                 name={`user${index}_lastname`}
@@ -55,7 +55,7 @@ export default () => {
                 required
                 labelClass="col-md-3"
                 divClass="col-md-6"
-                validate={[Validate.minLength(2)]}
+                validate={[Validation.minLength(2)]}
               />
             </>
           )}
