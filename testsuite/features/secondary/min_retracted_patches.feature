@@ -1,8 +1,6 @@
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# skip failing test in master to give us time to fix
-@skip_if_github_validation
 @scope_retracted_patches
 Feature: Retracted patches
 
