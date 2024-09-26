@@ -6073,12 +6073,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>처리할 수 없는 오류</target>
       </trans-unit>
-      <trans-unit approved="no" id="bootstrap.config.success" xml:space="preserve">
+      <trans-unit approved="yes" id="bootstrap.config.success" xml:space="preserve">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="needs-translation">부트스트랩 스크립트가 생성되었습니다. &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 액세스할 수 있습니다.</target>
+        <target state="final">부트스트랩 스크립트가 생성되었습니다. &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 액세스할 수 있습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -11222,9 +11222,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Update information about installed software (packages and products)</source>
         <target state="final">설치된 소프트웨어(패키지 및 제품)에 대한 업데이트 정보</target>
       </trans-unit>
-      <trans-unit approved="no" id="internal_state.uptodate" xml:space="preserve">
+      <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system</source>
-        <target state="needs-translation">시스템을 업데이트하십시오.</target>
+        <target state="final">시스템을 업데이트하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
@@ -11485,21 +11485,21 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="final">기밀 컴퓨팅 구성을 업데이트하는 동안 오류가 발생했습니다. 서버 로그에서 세부 정보를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="internal_state.reboot" xml:space="preserve">
+      <trans-unit id="internal_state.reboot" xml:space="preserve" approved="yes">
         <source>Perform a reboot</source>
-        <target state="needs-translation">재부팅하십시오.</target>
+        <target state="final">재부팅하십시오.</target>
       </trans-unit>
-      <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
+      <trans-unit id="internal_state.rebootifneeded" xml:space="preserve" approved="yes">
         <source>Perform a reboot, only if required</source>
-        <target state="needs-translation">필요한 경우에만 재부팅하십시ㅗ.</target>
+        <target state="final">필요한 경우에만 재부팅하십시오.</target>
       </trans-unit>
-      <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
+      <trans-unit id="task.status.oval-data-sync" xml:space="preserve" approved="yes">
         <source>Sync OVAL Data</source>
-        <target state="needs-translation">OVAL 데이터 동기화</target>
+        <target state="final">OVAL 데이터 동기화</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve" approved="yes">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
-        <target state="needs-translation">CVE 감사 쿼리의 정확도를 향상하기 위해 필요한 OVAL 데이터 생성</target>
+        <target state="final">CVE 감사 쿼리의 정확도를 향상하기 위해 필요한 OVAL 데이터 생성</target>
       </trans-unit>
     </body>
   </file>
