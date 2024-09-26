@@ -6074,12 +6074,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">未处理的错误</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.success" xml:space="preserve">
+      <trans-unit id="bootstrap.config.success" xml:space="preserve" approved="yes">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="needs-adaptation">已成功生成引导脚本。可通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它</target>
+        <target state="final">已成功生成引导脚本。可在 &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt; 中访问该脚本</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -11247,7 +11247,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">您的某些订阅即将失效或已经失效。请查看&lt;a href="/rhn/manager/subscription-matching"&gt;订阅匹配&lt;/a&gt;页面。</target>
       </trans-unit>
       <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
-          <source>No Base Channel selected.</source>
+        <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
