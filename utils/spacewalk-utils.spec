@@ -150,7 +150,7 @@ popd
 %{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
 %{_mandir}/man8/spacewalk-hostname-rename.8%{?ext_man}
 %{_mandir}/man8/spacewalk-sync-setup.8%{?ext_man}
-%{_mandir}/man8/taskotop.8.%{?ext_man}
+%{_mandir}/man8/taskotop.8%{?ext_man}
 
 %files extras
 %defattr(-,root,root)
