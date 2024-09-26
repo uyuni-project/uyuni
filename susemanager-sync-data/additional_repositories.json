@@ -7,7 +7,10 @@
         "description" : "RES 7",
         "enabled" : true,
         "autorefresh" : false,
-        "installer_updates" : false
+        "installer_updates" : false,
+        "arch" : [
+            "x86_64"
+        ]
     },
     {
         "id" : -74,
@@ -17,7 +20,10 @@
         "description" : "RES 6",
         "enabled" : true,
         "autorefresh" : false,
-        "installer_updates" : false
+        "installer_updates" : false,
+        "arch" : [
+            "x86_64"
+        ]
     },
     {
         "id" : -73,
@@ -27,7 +33,10 @@
         "description" : "RES 6",
         "enabled" : true,
         "autorefresh" : false,
-        "installer_updates" : false
+        "installer_updates" : false,
+        "arch" : [
+            "i386"
+        ]
     },
     {
         "id" : -72,
@@ -37,7 +46,10 @@
         "description" : "RES 5",
         "enabled" : true,
         "autorefresh" : false,
-        "installer_updates" : false
+        "installer_updates" : false,
+        "arch" : [
+            "x86_64"
+        ]
     },
     {
         "id" : -71,
@@ -47,6 +59,9 @@
         "description" : "RES 5",
         "enabled" : true,
         "autorefresh" : false,
-        "installer_updates" : false
+        "installer_updates" : false,
+        "arch" : [
+            "i386"
+        ]
     }
 ]
