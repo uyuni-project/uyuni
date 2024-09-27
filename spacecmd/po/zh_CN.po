@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-06-11 09:46+0000\n"
+"PO-Revision-Date: 2024-09-27 12:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"spacecmd/zh_CN/>\n"
+"spacecmd-5-0/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4953,7 +4953,7 @@ msgstr "如果不提供日期，将存档所有已完成操作"
 
 #: ../src/spacecmd/schedule.py:551
 msgid "Do you want to archive ({}) completed actions? [y/N]"
-msgstr "您要删除 ({}) 个已完成操作吗？[y/N]"
+msgstr "您要存档 ({}) 个已完成操作吗？[y/N]"
 
 #: ../src/spacecmd/schedule.py:571
 msgid "No completed actions found."
