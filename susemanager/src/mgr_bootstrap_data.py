@@ -365,6 +365,10 @@ PKGLISTUBUNTU2204 = [
     "venv-salt-minion",
 ]
 
+PKGLISTUBUNTU2404 = [
+    "venv-salt-minion",
+]
+
 PKGLISTDEBIAN9 = [
     "apt-transport-https",
     "bsdmainutils",
@@ -1965,10 +1969,17 @@ DATA = {
         "TYPE": "deb",
     },
     "ubuntu-22.04-amd64": {
-        "PDID": [-33, 2531],
-        "BETAPDID": [2532],
+        "PDID": [-33, 2886],
+        "BETAPDID": [2887],
         "PKGLIST": PKGLISTUBUNTU2204,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/22/4/bootstrap/",
+        "TYPE": "deb",
+    },
+    "ubuntu-24.04-amd64": {
+        "PDID": [-44, 2531],
+        "BETAPDID": [2532],
+        "PKGLIST": PKGLISTUBUNTU2404,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
         "TYPE": "deb",
     },
     "ubuntu-16.04-amd64-uyuni": {
@@ -1993,6 +2004,12 @@ DATA = {
         "BASECHANNEL": "ubuntu-22.04-pool-amd64-uyuni",
         "PKGLIST": PKGLISTUBUNTU2204,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/22/4/bootstrap/",
+        "TYPE": "deb",
+    },
+    "ubuntu-24.04-amd64-uyuni": {
+        "BASECHANNEL": "ubuntu-24.04-pool-amd64-uyuni",
+        "PKGLIST": PKGLISTUBUNTU2404,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
         "TYPE": "deb",
     },
     "debian9-amd64": {
