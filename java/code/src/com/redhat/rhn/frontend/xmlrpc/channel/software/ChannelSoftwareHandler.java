@@ -1516,7 +1516,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     @ReadOnly
     public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
-        return listErrata(loggedInUser, channelLabel, (Date) null);
+        return listErrata(loggedInUser, channelLabel, null);
     }
 
     /**

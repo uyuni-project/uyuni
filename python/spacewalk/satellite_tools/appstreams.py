@@ -149,6 +149,21 @@ class ModuleMdImporter:
         rhnSQL.commit()
         log(2, f"{no_total_added} of {no_total_pkgs} packages matched.")
 
+    @staticmethod
+    def _is_fatal(failures):
+        for f in failures:
+            fatal = True
+            err = f.get_gerror()
+            # Ignore known, safe cases
+            if "buildorder" in err.message and 3 == err.code:
+                # Failed to parse the 'buildorder' value (bsc#1230274)
+                fatal = False
+            # Add more conditions to ignore additional known cases
+
+            if fatal:
+                return True
+        return False
+
     def _index_modulemd(self):
         """Indexes the Modulemd file."""
         idx = Modulemd.ModuleIndex.new()
@@ -156,11 +171,17 @@ class ModuleMdImporter:
             # The following returns a tuple in the following format: (success, [failures])
             result = idx.update_from_file(self.modulemd_file, False)
             if not result[0]:
-                # Parsing error in a YAML subdocument
-                raise ModuleMdIndexingError(
-                    "An error occurred while indexing a module entry:",
-                    [f.get_gerror().message for f in result[1]],
-                )
+                # Errors in a YAML subdocument
+                if self._is_fatal(result[1]):
+                    raise ModuleMdIndexingError(
+                        "Indexing failed due to one of the following errors:",
+                        [str(f.get_gerror()) for f in result[1]],
+                    )
+                else:
+                    log(1, "Following error(s) occurred while indexing module entries:")
+                    for e in result[1]:
+                        log(1, f"  {e.get_gerror()}")
+
         except gi.repository.GLib.GError as e:
             # General parsing error in file
             raise ModuleMdIndexingError(

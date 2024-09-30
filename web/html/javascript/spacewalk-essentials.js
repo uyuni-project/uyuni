@@ -99,7 +99,8 @@ function sstScrollBehaviorSetup(sst) {
 // when the page scrolls down and the toolbar is going up and hidden,
 // the toolbar takes a fixed place right below the header bar
 function handleSst() {
-  var sst = jQuery('.spacewalk-section-toolbar');
+  // Some pages may have multiple instances of this element
+  var sst = jQuery('.spacewalk-section-toolbar').first();
 
   if (jQuery('.move-to-fixed-toolbar').length > 0) {
     // if there is no 'spacewalk-section-toolbar', then create it
@@ -143,7 +144,7 @@ function handleSst() {
 }
 
 function sstStyle() {
-  var sst = jQuery('.spacewalk-section-toolbar');
+  var sst = jQuery('.spacewalk-section-toolbar').first();
   if (sst.hasClass('fixed')) {
     sst.css({
       top: jQuery('header').outerHeight() - 1,
