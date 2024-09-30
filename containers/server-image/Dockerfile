@@ -27,7 +27,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     ${PRODUCT_PATTERN_PREFIX}_server \
     ${PRODUCT_PATTERN_PREFIX}_retail \
     billing-data-service \
-    spacewalk-utils-extras \
     grub2-x86_64-efi \
     ed \
     susemanager-tftpsync \
@@ -44,6 +43,11 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     registry-formula \
     virtualization-formulas \
     uyuni-config-formula \
+    saphanabootstrap-formula \
+    sapnwbootstrap-formula \
+    drbd-formula \
+    habootstrap-formula \
+    salt-shaptools \
     inter-server-sync \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
@@ -117,6 +121,11 @@ RUN uyuni-configfiles-sync init /etc/tomcat/
 RUN uyuni-configfiles-sync init /srv/tftpboot/
 RUN uyuni-configfiles-sync init /srv/www/
 RUN uyuni-configfiles-sync init /var/lib/cobbler/
+
+# Set /etc/krb5.conf.d/ as a link to krb5
+COPY krb5.conf /etc/krb5.conf
+COPY krb5-conf-setup.sh /usr/bin/krb5-conf-setup.sh
+RUN /bin/bash krb5-conf-setup.sh
 
 # LABELs
 ARG PRODUCT=Uyuni

@@ -24,7 +24,7 @@
 # If the DEBLIKE-KEY fails to be created:
 # - features/secondary/min_debike_salt.feature
 # If the SUSE-SSH-KEY-x86_64 fails to be created:
-# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/minssh_tunnel.feature
 # - features/secondary/minssh_move_from_and_to_proxy.feature
 
 

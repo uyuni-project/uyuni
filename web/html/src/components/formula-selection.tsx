@@ -6,8 +6,8 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { AsyncButton, Button } from "../components/buttons";
-import { Messages, MessageType } from "../components/messages";
 import Network from "../utils/network";
+import { Messages, MessageType } from "./messages/messages";
 
 const capitalize = Utils.capitalize;
 

@@ -1,0 +1,1 @@
+- fix NullPointerException when generating subscription matcher input (bsc#1228638)

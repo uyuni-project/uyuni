@@ -11,7 +11,7 @@ import useRoles from "core/auth/use-roles";
 import { LinkButton } from "components/buttons";
 import { FromNow } from "components/datetime/FromNow";
 import withPageWrapper from "components/general/with-page-wrapper";
-import { ServerMessageType } from "components/messages";
+import { ServerMessageType } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";

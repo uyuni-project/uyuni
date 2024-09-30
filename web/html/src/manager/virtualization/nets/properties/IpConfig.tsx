@@ -2,10 +2,10 @@ import * as React from "react";
 
 import _isNil from "lodash/isNil";
 
-import { FormContext } from "components/input/Form";
-import { FormMultiInput } from "components/input/FormMultiInput";
-import { Range } from "components/input/Range";
-import { Text } from "components/input/Text";
+import { FormContext } from "components/input/form/Form";
+import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
+import { Range } from "components/input/range/Range";
+import { Text } from "components/input/text/Text";
 import { Panel } from "components/panels/Panel";
 import Validation from "components/validation";
 

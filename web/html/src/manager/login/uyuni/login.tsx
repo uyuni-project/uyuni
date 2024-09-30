@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";

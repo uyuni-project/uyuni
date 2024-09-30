@@ -76,6 +76,10 @@ Requires:       spacewalk-setup
 Requires:       susemanager-schema
 # Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
 Requires(pre):  uyuni-base-common
+# Required by taskotop
+Requires:       python3-curses
+# Required by taskotop
+Requires:       spacewalk-backend-sql
 
 %description
 Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
@@ -85,8 +89,6 @@ Summary:        Extra utilities that may run against a SUSE Manager/Uyuni server
 # Required by spacewalk-watch-channel-sync.sh
 Group:          Productivity/Other
 Requires:       bash
-# Required by taskotop
-Requires:       python3-curses
 # Required by sw-ldap-user-sync
 Requires:       python3-ldap
 # Required by sw-ldap-user-sync
@@ -97,9 +99,7 @@ Requires:       python3-rhnlib >= 2.5.20
 Requires:       python3-uyuni-common-libs
 # Required by spacewalk-manage-snapshots, systemSnapshot.py
 Requires:       spacewalk-backend
-# Required by taskotop
-Requires:       spacewalk-backend-sql
-# Required by spacewalk-final-archive, spacewalk-watch-channel-sync.sh
+# Required by spacewalk-watch-channel-sync.sh
 Requires:       spacewalk-backend-tools >= 2.2.27
 # As spacewalk-utils owns {python3_sitelib}/utils
 Requires:       spacewalk-utils
@@ -137,6 +137,7 @@ popd
 %attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
 %attr(755,root,root) %{_bindir}/spacewalk-sync-setup
+%attr(755,root,root) %{_bindir}/taskotop
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %dir %{python3_sitelib}/utils
 %{python3_sitelib}/utils/__init__.py*
@@ -151,6 +152,7 @@ popd
 %{_mandir}/man8/spacewalk-clone-by-date.8.gz
 %{_mandir}/man8/spacewalk-hostname-rename.8.gz
 %{_mandir}/man8/spacewalk-sync-setup.8.gz
+%{_mandir}/man8/taskotop.8.gz
 
 %files extras
 %defattr(-,root,root)
@@ -160,12 +162,10 @@ popd
 %attr(755,root,root) %{_bindir}/spacewalk-api
 %attr(755,root,root) %{_bindir}/spacewalk-export
 %attr(755,root,root) %{_bindir}/spacewalk-export-channels
-%attr(755,root,root) %{_bindir}/spacewalk-final-archive
 %attr(755,root,root) %{_bindir}/spacewalk-manage-snapshots
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %attr(755,root,root) %{_bindir}/sw-ldap-user-sync
 %attr(755,root,root) %{_bindir}/sw-system-snapshot
-%attr(755,root,root) %{_bindir}/taskotop
 %{python3_sitelib}/utils/migrateSystemProfile.py*
 %{python3_sitelib}/utils/__pycache__/migrateSystemProfile.*
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
@@ -174,9 +174,7 @@ popd
 %{_mandir}/man8/spacewalk-api.8.gz
 %{_mandir}/man8/spacewalk-export-channels.8.gz
 %{_mandir}/man8/spacewalk-export.8.gz
-%{_mandir}/man8/spacewalk-final-archive.8.gz
 %{_mandir}/man8/spacewalk-manage-snapshots.8.gz
 %{_mandir}/man8/sw-system-snapshot.8.gz
-%{_mandir}/man8/taskotop.8.gz
 
 %changelog

@@ -3,7 +3,7 @@ import * as React from "react";
 import { RolesProvider } from "core/auth/roles-context";
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { ServerMessageType } from "components/messages";
+import { ServerMessageType } from "components/messages/messages";
 import { MessagesContainer } from "components/toastr/toastr";
 
 import ListPayg from "./list-payg";

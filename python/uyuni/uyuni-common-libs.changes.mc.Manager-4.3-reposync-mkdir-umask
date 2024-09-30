@@ -1,0 +1,1 @@
+- enforce directory permissions at repo-sync when creating directories (bsc#1229260)

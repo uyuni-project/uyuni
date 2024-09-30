@@ -1,0 +1,2 @@
+- ErrataManager.truncateErrata now tries to clean orphan erratas 
+  at the end (erratas with no channel)

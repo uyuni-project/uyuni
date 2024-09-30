@@ -1,0 +1,2 @@
+- add SLE-Micro 5 to the list of systems which support monitoring (bsc#1227334)
+- add all SLE-Micro systems to the list of systems which get PTF repositories

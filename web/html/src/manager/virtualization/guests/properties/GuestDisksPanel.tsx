@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { FormContext } from "components/input/Form";
-import { FormMultiInput } from "components/input/FormMultiInput";
-import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { FormContext } from "components/input/form/Form";
+import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
+import { getOrderedItemsFromModel } from "components/input/form-multi-input/FormMultiInput";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 
 import { GuestDiskFields } from "./GuestDiskFields";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import * as Messages from "components/messages";
-import { MessageType } from "components/messages";
+import * as Messages from "components/messages/messages";
+import { MessageType } from "components/messages/messages";
 
 import Network from "utils/network";
 

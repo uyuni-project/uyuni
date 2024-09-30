@@ -1,0 +1,1 @@
+- fix parsing Authority Key Identifier when keyid is not prefixed (bsc#1229079)

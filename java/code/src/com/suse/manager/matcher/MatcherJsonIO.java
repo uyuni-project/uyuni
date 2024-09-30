@@ -182,8 +182,10 @@ public class MatcherJsonIO {
                 boolean virtualHost = entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED) ||
                         !system.getGuests().isEmpty();
                 boolean countVCores = !virtualHost && system.getInstalledProductSet()
-                        .map(s -> s.getBaseProduct().getChannelFamily()).stream()
-                        .anyMatch(cf -> vCoreCountedChannelFamilies.contains(cf.getLabel()));
+                        .map(productSet -> productSet.getBaseProduct())
+                        .map(baseProduct -> baseProduct.getChannelFamily())
+                        .map(cf -> vCoreCountedChannelFamilies.contains(cf.getLabel()))
+                        .orElse(false); // Case when any of the mappings above return empty.
                 if (countVCores) {
                     // HACK: better would be to introduce a field in SystemJson and adapt subscription-matcher
                     // For now it is not worth the effort

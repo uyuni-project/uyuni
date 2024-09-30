@@ -205,6 +205,7 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "python3-iniconfig*",
     "python3-looseversion",
     "python3-jmespath",
+    "python3-ply",
     "xz",
 ]
 

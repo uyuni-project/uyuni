@@ -67,7 +67,6 @@ public class RouteFactoryTest extends BaseControllerTestCase {
             .registerTypeAdapter(Map.class, new MapDeserializer())
             .registerTypeAdapter(List.class, new ListDeserializer())
             .create();
-    private final JsonParser parser = new JsonParser();
     private RouteFactory routeFactory;
     private TestHandler handler;
 
@@ -244,11 +243,12 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Method basicDate = handler.getClass().getMethod("basicDate", Date.class);
         Route route = routeFactory.createRoute(basicDate, handler);
 
-        Request req = createRequest("/manager/api/test/basicDate", Collections.singletonMap("myDate", "2022-04-01"));
+        Request req = createRequest("/manager/api/test/basicDate",
+                Collections.singletonMap("myDate", "2022-04-01T00:00:00+02:00"));
         Response res = createResponse();
         String result = getResult((String) route.handle(req, res), String.class);
 
-        assertEquals("Apr 1, 2022, 12:00:00 AM", result);
+        assertEquals("2022-03-31T22:00:00Z", result);
     }
 
     /**
@@ -260,11 +260,11 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Route route = routeFactory.createRoute(basicDate, handler);
 
         Request req = createRequest("/manager/api/test/basicDate",
-                GSON.toJson(Collections.singletonMap("myDate", "2022-04-01")));
+                GSON.toJson(Collections.singletonMap("myDate", "2022-04-01T00:00:00+02:00")));
         Response res = createResponse();
         String result = getResult((String) route.handle(req, res), String.class);
 
-        assertEquals("Apr 1, 2022, 12:00:00 AM", result);
+        assertEquals("2022-03-31T22:00:00Z", result);
     }
 
     /**
@@ -717,7 +717,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
      * @return the result object
      */
     private <T> T getResult(String response, Type resultType) {
-        JsonObject obj = parser.parse(response).getAsJsonObject();
+        JsonObject obj = JsonParser.parseString(response).getAsJsonObject();
 
         boolean isSuccess = obj.getAsJsonPrimitive("success").getAsBoolean();
         assertTrue(isSuccess);
