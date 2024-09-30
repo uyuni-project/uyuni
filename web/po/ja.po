@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-20 14:29+0200\n"
+"POT-Creation-Date: 2024-09-30 14:26+0200\n"
 "PO-Revision-Date: 2024-09-26 05:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.7.2\n"
 
-#: ../html/javascript/spacewalk-essentials.js:441
+#: ../html/javascript/spacewalk-essentials.js:442
 msgid "remaining"
 msgstr "残り"
 
-#: ../html/javascript/spacewalk-essentials.js:461
+#: ../html/javascript/spacewalk-essentials.js:462
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -857,7 +857,8 @@ msgstr "再起動状態は最後に置かれます。"
 #: ../html/src/components/states-picker.tsx:132
 msgid ""
 "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr "「システムの再起動」と「必要に応じてシステムを再起動」の状態は一緒に使用でき"
+msgstr ""
+"「システムの再起動」と「必要に応じてシステムを再起動」の状態は一緒に使用でき"
 "ません。"
 
 #: ../html/src/components/states-picker.tsx:152
@@ -1968,7 +1969,8 @@ msgstr "不明、CVEメタデータは利用不可"
 msgid ""
 "It is not possible to scan the client server for CVE vulnerabilities without "
 "channels or OVAL metadata."
-msgstr "チャンネルまたはOVALメタデータがないと、クライアントサーバをスキャンしてCVE脆"
+msgstr ""
+"チャンネルまたはOVALメタデータがないと、クライアントサーバをスキャンしてCVE脆"
 "弱性を検出することはできません。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
@@ -5402,7 +5404,8 @@ msgstr "開発デバッグページ"
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
+msgstr ""
+"これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
