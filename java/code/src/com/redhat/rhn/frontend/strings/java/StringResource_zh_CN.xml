@@ -6074,7 +6074,7 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">未处理的错误</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.success" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.config.success" xml:space="preserve">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
@@ -11487,19 +11487,19 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="final">上载机密计算配置时发生错误。请查看服务器日志了解详细信息。</target>
       </trans-unit>
-      <trans-unit id="internal_state.reboot" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.reboot" xml:space="preserve">
         <source>Perform a reboot</source>
         <target state="final">执行重引导</target>
       </trans-unit>
-      <trans-unit id="internal_state.rebootifneeded" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="internal_state.rebootifneeded" xml:space="preserve">
         <source>Perform a reboot, only if required</source>
         <target state="final">仅在需要时执行重引导</target>
       </trans-unit>
-      <trans-unit id="task.status.oval-data-sync" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
         <target state="final">同步 OVAL 数据</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="final">生成所需的 OVAL 数据，以提高 CVE 审计查询的准确度</target>
       </trans-unit>
