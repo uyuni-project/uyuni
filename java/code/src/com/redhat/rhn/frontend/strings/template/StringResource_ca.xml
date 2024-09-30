@@ -206,7 +206,7 @@ Gràcies per usar @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
-          <source>
+        <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -239,7 +239,7 @@ Resum:
 -------------------------------------------------- -----------------------------
     </target>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
         {2} - errata advisory
@@ -249,13 +249,13 @@ Resum:
         {6} - errata notes
         {7} - errata refs
       </context>
-          </context-group>
+        </context-group>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
-          <source>
+        <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -268,7 +268,7 @@ package profile for that server is out of date.
 Llista de sistemes afectats
 ----------------------
 Aquest Avís de Pedaços pot aplicar-se als sistemes que s'indiquen a continuació. Si
-sabeu que aquest pedaç no s'aplica a un sistema llistat, és possible que el
+sabeu que aquest pedaç no s'aplica a un sistema llistat, és possible que
 el perfil del paquet per a aquest servidor no estigui actualitzat.
     </target>
         <context-group name="ctx">
@@ -276,7 +276,7 @@ el perfil del paquet per a aquest servidor no estigui actualitzat.
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
-          <source>
+        <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -289,7 +289,7 @@ sistemes per a què heu activat explícitament les alertes de pedaços).
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
-          <source>
+        <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -298,16 +298,16 @@ Hi ha {0} sistemes afectats registrats a la Visió general (només es mostren
 sistemes per a què heu activat explícitament alertes de pedaços).
     </target>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - system count
       </context>
-          </context-group>
+        </context-group>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
-          <source>
+        <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -336,17 +336,17 @@ Podeu abordar els problemes descrits en aquest assessorament de dues maneres:
      - executeu l'agent d'actualització a cada servidor afectat.
     </target>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
-          </context-group>
+        </context-group>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
-          <source>
+        <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -377,12 +377,12 @@ feu clic a la pestanya "Detalls".
 {2}
     </target>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
-          </context-group>
+        </context-group>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
@@ -577,7 +577,7 @@ Gràcies per utilitzar @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
-          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+        <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
         <target state="translated">Avís: aquesta instància de PAYG de @@PRODUCT_NAME@@ no és compatible i algunes de les funcions estan desactivades.

@@ -3,7 +3,7 @@
 set -x
 export LC_ALL=C
 
-SAFE_BRANCHNAMES=(master-weblate new-translation-strings)
+SAFE_BRANCHNAMES=(weblate-Manager-5.0)
 SAFE_BRANCHNAMES+=($ADDITIONAL_SAFE_BRANCHNAME)
 GIT_ROOT_DIR=$(git rev-parse --show-toplevel)
 
