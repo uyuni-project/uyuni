@@ -3,10 +3,10 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/Range.tsx:46
-#: ../html/src/components/input/Range.tsx:47
-#: ../html/src/components/input/Range.tsx:59
-#: ../html/src/components/input/Range.tsx:60
+#: ../html/src/components/input/range/Range.tsx:46
+#: ../html/src/components/input/range/Range.tsx:47
+#: ../html/src/components/input/range/Range.tsx:59
+#: ../html/src/components/input/range/Range.tsx:60
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:199
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:34+0200\n"
+"POT-Creation-Date: 2024-09-30 14:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,11 +27,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../html/javascript/spacewalk-essentials.js:441
+#: ../html/javascript/spacewalk-essentials.js:442
 msgid "remaining"
 msgstr ""
 
-#: ../html/javascript/spacewalk-essentials.js:461
+#: ../html/javascript/spacewalk-essentials.js:462
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -423,6 +423,14 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: ../html/src/components/dialog/delete.stories.tsx:14
+msgid "Delete project"
+msgstr ""
+
+#: ../html/src/components/dialog/delete.stories.tsx:17
+msgid "Are you sure you want to delete project "
+msgstr ""
+
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr ""
@@ -462,13 +470,17 @@ msgstr ""
 msgid "Toggle section visibility"
 msgstr ""
 
-#: ../html/src/components/input/FormMultiInput.tsx:158
-msgid "Remove"
-msgstr ""
-
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:49
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:58
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:47
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:58
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:66
+#: ../html/src/components/input/form/Form.stories.tsx:25
+#: ../html/src/components/input/text/Text.stories.tsx:25
+#: ../html/src/components/input/text/Text.stories.tsx:34
 msgid "Minimum 2 characters"
 msgstr ""
 
@@ -476,20 +488,149 @@ msgstr ""
 msgid "required"
 msgstr ""
 
-#: ../html/src/components/input/Range.test.tsx:71
+#: ../html/src/components/input/check/Check.stories.tsx:22
+#: ../html/src/components/input/datetime/DateTime.stories.tsx:25
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:66
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:55
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:75
+#: ../html/src/components/input/form/Form.stories.tsx:30
+#: ../html/src/components/input/password/Password.stories.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:37
+#: ../html/src/components/input/radio/horizontal.stories.tsx:36
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:36
+#: ../html/src/components/input/radio/vertical.stories.tsx:35
+#: ../html/src/components/input/range/Range.stories.tsx:24
+#: ../html/src/components/input/select/simple.stories.tsx:32
+#: ../html/src/components/input/text/Text.stories.tsx:38
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
+#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
+msgid "Submit"
+msgstr ""
+
+#: ../html/src/components/input/datetime/DateTime.stories.tsx:24
+msgid "Time"
+msgstr ""
+
+#: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:158
+msgid "Remove"
+msgstr ""
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:24
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:24
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:32
+msgid "Users"
+msgstr ""
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:47
+#: ../html/src/components/input/text/Text.stories.tsx:23
+msgid "First Name"
+msgstr ""
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:56
+msgid "Last Name"
+msgstr ""
+
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
+#: ../html/src/manager/login/uyuni/login.tsx:76
+msgid "Login"
+msgstr ""
+
+#. ref={nameInputRef}
+#: ../html/src/components/input/form/Form.stories.tsx:23
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
+#: ../html/src/manager/images/image-view.tsx:643
+#: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
+msgid "Name"
+msgstr ""
+
+#: ../html/src/components/input/password/Password.stories.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:93
+#: ../html/src/manager/login/uyuni/login.tsx:88
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
+msgid "Password"
+msgstr ""
+
+#: ../html/src/components/input/password/Password.stories.tsx:25
+msgid "Minimum 4 characters"
+msgstr ""
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:26
+#: ../html/src/components/input/radio/horizontal.stories.tsx:26
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:25
+#: ../html/src/components/input/radio/vertical.stories.tsx:25
+#: ../html/src/components/input/select/async.stories.tsx:44
+#: ../html/src/components/input/select/simple.stories.tsx:26
+msgid "Level"
+msgstr ""
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:32
+#: ../html/src/components/input/radio/horizontal.stories.tsx:31
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:31
+#: ../html/src/components/input/radio/vertical.stories.tsx:30
+msgid "Beginner"
+msgstr ""
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:33
+#: ../html/src/components/input/radio/horizontal.stories.tsx:32
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:32
+#: ../html/src/components/input/radio/vertical.stories.tsx:31
+msgid "Normal"
+msgstr ""
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:34
+#: ../html/src/components/input/radio/horizontal.stories.tsx:33
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:33
+#: ../html/src/components/input/radio/vertical.stories.tsx:32
+msgid "Expert"
+msgstr ""
+
+#: ../html/src/components/input/range/Range.stories.tsx:23
+msgid "Port range"
+msgstr ""
+
+#: ../html/src/components/input/range/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr ""
 
-#: ../html/src/components/input/Select.test.tsx:58
+#: ../html/src/components/input/select/Select.test.tsx:58
+#: ../html/src/components/input/select/custom.stories.tsx:34
 msgid "Start typing..."
 msgstr ""
 
-#: ../html/src/components/input/Select.test.tsx:59
+#: ../html/src/components/input/select/Select.test.tsx:59
 msgid "No flavor"
 msgstr ""
 
-#: ../html/src/components/input/Select.tsx:255
+#: ../html/src/components/input/select/Select.tsx:255
 msgid "No options"
+msgstr ""
+
+#: ../html/src/components/input/select/custom.stories.tsx:32
+msgid "Flavor"
+msgstr ""
+
+#: ../html/src/components/input/select/custom.stories.tsx:35
+msgid "No flavors"
 msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
@@ -927,11 +1068,15 @@ msgstr ""
 msgid "No data"
 msgstr ""
 
+#: ../html/src/components/utils/HelpIcon.stories.tsx:4
+msgid "Text to display on hover"
+msgstr ""
+
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr ""
 
-#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/components/utils/loading/Loading.tsx:16
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
@@ -943,6 +1088,11 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:468
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
+msgstr ""
+
+#: ../html/src/components/utils/loading/text-border.stories.tsx:7
+#: ../html/src/components/utils/loading/text.stories.tsx:7
+msgid "Loading text"
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
@@ -1296,17 +1446,6 @@ msgstr ""
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:505
 msgid "User"
-msgstr ""
-
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:88
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
@@ -1781,28 +1920,6 @@ msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:324
 msgid "SUSE Security CVE link"
-msgstr ""
-
-#. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:643
-#: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
-msgid "Name"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
@@ -2721,15 +2838,15 @@ msgstr ""
 msgid "No environments created"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:101
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:100
 msgid "Environment updated successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:116
 msgid "Environment {name} deleted successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
@@ -3774,10 +3891,6 @@ msgstr ""
 msgid "Learn more about"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:76
-msgid "Login"
-msgstr ""
-
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
 msgstr ""
@@ -4451,14 +4564,14 @@ msgid "Delete Notification"
 msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:42
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:338
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 #: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:55
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:358
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 #: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
@@ -4921,20 +5034,20 @@ msgstr ""
 msgid "No target systems found"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:463
 msgid "Not all minions responded on time."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:489
 msgid "No minions matched the target expression."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:491
 msgid "Server returned an error: {message}"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:558
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:567
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
 msgid "Matching ssh-push minions..."
 msgstr ""
 
@@ -5073,6 +5186,16 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:138
 msgid "Create Recurring"
+msgstr ""
+
+#: ../html/src/manager/storybook/storybook.tsx:47
+msgid "Development debugging page"
+msgstr ""
+
+#: ../html/src/manager/storybook/storybook.tsx:49
+msgid ""
+"This is a hidden page used by developers, if you found it by accident, good "
+"job!"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
@@ -5875,11 +5998,6 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Graphics"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
-msgid "Submit"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27

@@ -3,10 +3,10 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/Range.tsx:46
-#: ../html/src/components/input/Range.tsx:47
-#: ../html/src/components/input/Range.tsx:59
-#: ../html/src/components/input/Range.tsx:60
+#: ../html/src/components/input/range/Range.tsx:46
+#: ../html/src/components/input/range/Range.tsx:47
+#: ../html/src/components/input/range/Range.tsx:59
+#: ../html/src/components/input/range/Range.tsx:60
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:199
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:34+0200\n"
+"POT-Creation-Date: 2024-09-30 14:44+0200\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:441
+#: ../html/javascript/spacewalk-essentials.js:442
 msgid "remaining"
 msgstr "zbývající"
 
-#: ../html/javascript/spacewalk-essentials.js:461
+#: ../html/javascript/spacewalk-essentials.js:462
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -453,6 +453,14 @@ msgstr "Zrušit"
 msgid "Delete"
 msgstr "Smazat"
 
+#: ../html/src/components/dialog/delete.stories.tsx:14
+msgid "Delete project"
+msgstr "Smazat projekt"
+
+#: ../html/src/components/dialog/delete.stories.tsx:17
+msgid "Are you sure you want to delete project "
+msgstr "Opravdu chcete smazat projekt "
+
 #: ../html/src/components/formula-selection.tsx:135
 msgid " No group"
 msgstr " Žádná skupina"
@@ -497,13 +505,17 @@ msgstr "Zobrazit/skrýt heslo"
 msgid "Toggle section visibility"
 msgstr "Přepnout viditelnost sekce"
 
-#: ../html/src/components/input/FormMultiInput.tsx:158
-msgid "Remove"
-msgstr "Odstranit"
-
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:49
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:58
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:47
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:58
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:66
+#: ../html/src/components/input/form/Form.stories.tsx:25
+#: ../html/src/components/input/text/Text.stories.tsx:25
+#: ../html/src/components/input/text/Text.stories.tsx:34
 msgid "Minimum 2 characters"
 msgstr "Aspoň dva znaky"
 
@@ -511,22 +523,152 @@ msgstr "Aspoň dva znaky"
 msgid "required"
 msgstr "požadovaný"
 
-#: ../html/src/components/input/Range.test.tsx:71
+#: ../html/src/components/input/check/Check.stories.tsx:22
+#: ../html/src/components/input/datetime/DateTime.stories.tsx:25
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:66
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:55
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:75
+#: ../html/src/components/input/form/Form.stories.tsx:30
+#: ../html/src/components/input/password/Password.stories.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:37
+#: ../html/src/components/input/radio/horizontal.stories.tsx:36
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:36
+#: ../html/src/components/input/radio/vertical.stories.tsx:35
+#: ../html/src/components/input/range/Range.stories.tsx:24
+#: ../html/src/components/input/select/simple.stories.tsx:32
+#: ../html/src/components/input/text/Text.stories.tsx:38
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
+#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
+msgid "Submit"
+msgstr "Předložit"
+
+#: ../html/src/components/input/datetime/DateTime.stories.tsx:24
+msgid "Time"
+msgstr "Čas"
+
+#: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:158
+msgid "Remove"
+msgstr "Odstranit"
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:24
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:24
+#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:32
+msgid "Users"
+msgstr "Uživatelé"
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:47
+#: ../html/src/components/input/text/Text.stories.tsx:23
+msgid "First Name"
+msgstr "První jméno"
+
+#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:56
+#, fuzzy
+msgid "Last Name"
+msgstr "Název úkolu"
+
+#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
+#: ../html/src/manager/login/uyuni/login.tsx:76
+msgid "Login"
+msgstr "Přihlášení"
+
+#. ref={nameInputRef}
+#: ../html/src/components/input/form/Form.stories.tsx:23
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
+#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
+#: ../html/src/manager/images/image-view.tsx:643
+#: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
+msgid "Name"
+msgstr "Název"
+
+#: ../html/src/components/input/password/Password.stories.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:93
+#: ../html/src/manager/login/uyuni/login.tsx:88
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
+msgid "Password"
+msgstr "Heslo"
+
+#: ../html/src/components/input/password/Password.stories.tsx:25
+msgid "Minimum 4 characters"
+msgstr "Aspoň čtyři znaky"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:26
+#: ../html/src/components/input/radio/horizontal.stories.tsx:26
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:25
+#: ../html/src/components/input/radio/vertical.stories.tsx:25
+#: ../html/src/components/input/select/async.stories.tsx:44
+#: ../html/src/components/input/select/simple.stories.tsx:26
+msgid "Level"
+msgstr "Úroveň"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:32
+#: ../html/src/components/input/radio/horizontal.stories.tsx:31
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:31
+#: ../html/src/components/input/radio/vertical.stories.tsx:30
+msgid "Beginner"
+msgstr "Začátečník"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:33
+#: ../html/src/components/input/radio/horizontal.stories.tsx:32
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:32
+#: ../html/src/components/input/radio/vertical.stories.tsx:31
+msgid "Normal"
+msgstr "Normální"
+
+#: ../html/src/components/input/radio/horizontal-open.stories.tsx:34
+#: ../html/src/components/input/radio/horizontal.stories.tsx:33
+#: ../html/src/components/input/radio/vertical-open.stories.tsx:33
+#: ../html/src/components/input/radio/vertical.stories.tsx:32
+msgid "Expert"
+msgstr "Odborník"
+
+#: ../html/src/components/input/range/Range.stories.tsx:23
+msgid "Port range"
+msgstr "Rozsah portů"
+
+#: ../html/src/components/input/range/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr "Obě hodnoty musí být celá kladná čísla"
 
-#: ../html/src/components/input/Select.test.tsx:58
+#: ../html/src/components/input/select/Select.test.tsx:58
+#: ../html/src/components/input/select/custom.stories.tsx:34
 msgid "Start typing..."
 msgstr "Začněte psát..."
 
-#: ../html/src/components/input/Select.test.tsx:59
+#: ../html/src/components/input/select/Select.test.tsx:59
 msgid "No flavor"
 msgstr "Bez variant"
 
-#: ../html/src/components/input/Select.tsx:255
+#: ../html/src/components/input/select/Select.tsx:255
 #, fuzzy
 msgid "No options"
 msgstr "Volby kiwi"
+
+#: ../html/src/components/input/select/custom.stories.tsx:32
+msgid "Flavor"
+msgstr "Varianta"
+
+#: ../html/src/components/input/select/custom.stories.tsx:35
+msgid "No flavors"
+msgstr "Bez variant"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 #, fuzzy
@@ -991,11 +1133,15 @@ msgstr "Neplatná data"
 msgid "No data"
 msgstr "Žádná data"
 
+#: ../html/src/components/utils/HelpIcon.stories.tsx:4
+msgid "Text to display on hover"
+msgstr ""
+
 #: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "Pomoc"
 
-#: ../html/src/components/utils/Loading.tsx:16
+#: ../html/src/components/utils/loading/Loading.tsx:16
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
@@ -1008,6 +1154,12 @@ msgstr "Pomoc"
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "Načítání..."
+
+#: ../html/src/components/utils/loading/text-border.stories.tsx:7
+#: ../html/src/components/utils/loading/text.stories.tsx:7
+#, fuzzy
+msgid "Loading text"
+msgstr "Načítání obsahu..."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
@@ -1381,17 +1533,6 @@ msgstr "Port SSH"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:505
 msgid "User"
 msgstr "Uživatel"
-
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:88
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
-msgstr "Heslo"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
@@ -1896,28 +2037,6 @@ msgstr "Odkaz na MITRE CVE"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:324
 msgid "SUSE Security CVE link"
 msgstr "Odkaz na SUSE Security CVE"
-
-#. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:356
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
-#: ../html/src/manager/images/image-view.tsx:643
-#: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
-msgid "Name"
-msgstr "Název"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:451
@@ -2873,16 +2992,16 @@ msgstr "Vytváření prostředí..."
 msgid "No environments created"
 msgstr "Nebyla vytvořena žádná prostředí"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:101
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:100
 msgid "Environment updated successfully"
 msgstr "Prostředí aktualizováno úspěšně"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:116
 #, fuzzy
 msgid "Environment {name} deleted successfully"
 msgstr "Prostředí {0} úspěšně odstraněno"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
 #, fuzzy
 msgid ""
 "This environment cannot be deleted since it is being used in an "
@@ -3966,10 +4085,6 @@ msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?
 msgid "Learn more about"
 msgstr "Poznat více o"
 
-#: ../html/src/manager/login/uyuni/login.tsx:76
-msgid "Login"
-msgstr "Přihlášení"
-
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
 msgstr "Přeskočit na poslední okno údržby"
@@ -4661,14 +4776,14 @@ msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:338
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 #: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Připojení Websocket uzavřeno. Obnovte stránku a zkuste to znovu."
 
 #: ../html/src/manager/notifications/notifications.tsx:55
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:358
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 #: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
@@ -5162,21 +5277,21 @@ msgstr "Žádné cílové systémy k náhledu"
 msgid "No target systems found"
 msgstr "Nenalezeny žádné cílové systémy"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:463
 msgid "Not all minions responded on time."
 msgstr "Ne všichni sledující klienti odpověděli včas."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:489
 msgid "No minions matched the target expression."
 msgstr "Cílovému výrazu neodpovídají žádní sledující."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:491
 #, fuzzy
 msgid "Server returned an error: {message}"
 msgstr "Server vrátil chybu: {0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:558
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:567
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
 msgid "Matching ssh-push minions..."
 msgstr "Vhodní ssh-push sledující klienti..."
 
@@ -5318,6 +5433,16 @@ msgstr "Použít Highstate"
 #: ../html/src/manager/state/highstate.tsx:138
 msgid "Create Recurring"
 msgstr "Vytvořit opakování"
+
+#: ../html/src/manager/storybook/storybook.tsx:47
+msgid "Development debugging page"
+msgstr ""
+
+#: ../html/src/manager/storybook/storybook.tsx:49
+msgid ""
+"This is a hidden page used by developers, if you found it by accident, good "
+"job!"
+msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -6184,11 +6309,6 @@ msgstr "Cesta ke sdílené složce clusteru pro definice virtuálních počíta�
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Graphics"
 msgstr "Grafika"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
-msgid "Submit"
-msgstr "Předložit"
 
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
 msgid "Retry"
@@ -7157,45 +7277,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Loading.."
 #~ msgstr "Zavádění..."
-
-#~ msgid "Time"
-#~ msgstr "Čas"
-
-#~ msgid "Users"
-#~ msgstr "Uživatelé"
-
-#~ msgid "First Name"
-#~ msgstr "První jméno"
-
-#~ msgid "Minimum 4 characters"
-#~ msgstr "Aspoň čtyři znaky"
-
-#~ msgid "Level"
-#~ msgstr "Úroveň"
-
-#~ msgid "Beginner"
-#~ msgstr "Začátečník"
-
-#~ msgid "Normal"
-#~ msgstr "Normální"
-
-#~ msgid "Expert"
-#~ msgstr "Odborník"
-
-#~ msgid "Port range"
-#~ msgstr "Rozsah portů"
-
-#~ msgid "Flavor"
-#~ msgstr "Varianta"
-
-#~ msgid "No flavors"
-#~ msgstr "Bez variant"
-
-#~ msgid "Delete project"
-#~ msgstr "Smazat projekt"
-
-#~ msgid "Are you sure you want to delete project "
-#~ msgstr "Opravdu chcete smazat projekt "
 
 #~ msgid "Add Cluster"
 #~ msgstr "Přidat cluster"
