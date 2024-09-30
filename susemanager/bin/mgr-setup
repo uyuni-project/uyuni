@@ -1,5 +1,12 @@
 #!/bin/bash
 
+## Exit codes
+
+EXIT_VALIDATION_ERROR=1
+EXIT_ERROR=2
+EXIT_ALREADY_CONFIGURED=3
+
+
 # get product name, default: SUSE Manager
 IFS=" = "
 DEFAULT_RHN_CONF="/usr/share/rhn/config-defaults/rhn.conf"
@@ -34,12 +41,12 @@ case ${DISTRIBUTION_ID} in
             JVM='java-11-openjdk.x86_64'
         fi;;
     *)                        echo 'Unknown distribution!'
-                              exit 1;;
+                              exit $EXIT_VALIDATION_ERROR;;
 esac
 
 if [ ! $UID -eq 0 ]; then
     echo "You need to be superuser (root) to run this script!"
-    exit 1
+    exit $EXIT_VALIDATION_ERROR
 fi
 
 # check for uppercase chars in hostname
@@ -47,7 +54,7 @@ HOSTNAME=`hostname -f`
 if [ "$HOSTNAME" != "$(echo $HOSTNAME | tr '[:upper:]' '[:lower:]')" ]
 then
     echo "Uppercase characters are not allowed for $PRODUCT_NAME hostname."
-    exit 1
+    exit $EXIT_VALIDATION_ERROR
 fi
 
 # ensure correct java version is being used (bsc#1049575)
@@ -55,7 +62,7 @@ echo "Asserting correct java version..."
 update-alternatives --set java ${JVM}
 if [ ! $? -eq 0 ]; then
     echo "Failed to set ${JVM} as default java version!"
-    exit 1
+    exit $EXIT_VALIDATION_ERROR
 fi
 
 if [[ -n "$TZ" ]]; then
@@ -127,7 +134,7 @@ helper script to do migration or setup of $PRODUCT_NAME
 wait_step() {
     if [ $? -ne 0 ]; then
         echo "Something didn't work. Migration failed. Please check logs ($LOGFILE)"
-        exit 1
+        exit $EXIT_ERROR
     fi
 
     if [ "$WAIT_BETWEEN_STEPS" = "1" ];then
@@ -277,7 +284,7 @@ setup_db_postgres() {
                 # Redundant locale flag for clarity
                 runuser -l postgres -c "/usr/bin/initdb --locale=${POSTGRES_LANG} --auth=ident $DATADIR" &> initlog || {
                     echo "Initialisation failed. See $PWD/initlog ."
-                    exit 1
+                    exit $EXIT_ERROR
                 }
             fi
         else
@@ -339,7 +346,7 @@ check_mksubvolume() {
         $(command -v zypper || command -v dnf) --quiet install -y snapper
         if [ $? -ne 0 ]; then
             echo "Please install the package 'snapper' manually."
-            exit 1
+            exit $EXIT_ERROR
         fi
     fi
 }
@@ -425,7 +432,7 @@ if [ -f $MANAGER_COMPLETE ]; then
         salt-key -D -y > /dev/null
     else
         echo "$PRODUCT_NAME is already set up. Exit." >&2
-        exit 1
+        exit $EXIT_ALREADY_CONFIGURED
     fi
 fi
 }
@@ -531,7 +538,7 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
     # rm /root/spacewalk-answers
     if [ "$SWRET" != "0" ]; then
         echo "ERROR: spacewalk-setup failed" >&2
-        exit 1
+        exit $EXIT_ERROR
     fi
 }
 
@@ -543,7 +550,7 @@ dump_remote_db() {
         du -h $TMPDIR/$DBDUMPFILE | cut -f 1
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
-        exit 1
+        exit $EXIT_ERROR
     fi
 }
 
@@ -560,7 +567,7 @@ import_db() {
         rm -f $TMPDIR/$DBDUMPFILE
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
-        exit 1
+        exit $EXIT_ERROR
     fi
 }
 
@@ -570,7 +577,7 @@ upgrade_schema() {
         echo "`date +"%H:%M:%S"`   Schema upgrade successful."
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
-        exit 1
+        exit $EXIT_ERROR
     fi
 }
 
@@ -665,7 +672,7 @@ create_ssh_key() {
         echo "************************************************************************************"
         echo
         rm -f $TMPFILE
-        exit 1
+        exit $EXIT_ERROR
     else
         echo "Ok"
         rm -f $TMPFILE
@@ -697,7 +704,7 @@ check_remote_type() {
             echo "Unknown version to migrate from: \"$FROMVERSION\""
             echo "Type \"$PROGRAM -h\" for valid versions."
             echo
-            exit 1
+            exit $EXIT_VALIDATION_ERROR
             ;;
     esac
 
@@ -721,7 +728,7 @@ check_remote_type() {
             echo "Cannot find /etc/pki/tls/certs/spacewalk.crt nor /etc/pki/tls/certs/spacewalk.crt"
             echo "on source system. Giving up!"
             echo
-            exit 1
+            exit $EXIT_ERROR
         fi
     fi
 
@@ -976,7 +983,7 @@ do
         SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
         if [ -z "$SATELLITE_IP" ]; then
             echo "Something went wrong. IP address of remote host can not be found."
-            exit 1
+            exit $EXIT_VALIDATION_ERROR
         fi
         if [ "$LOGFILE" = "0" ]; then
             LOGFILE=/var/log/rhn/migration.log
@@ -1017,7 +1024,7 @@ do
        echo
        echo "Option \"$p\" is not recognized. Type \"$PROGRAM -h\" for help."
        echo
-       exit 1
+       exit $EXIT_VALIDATION_ERROR
        ;;
     esac
 
@@ -1047,7 +1054,7 @@ wait_step
 if [ "$DO_MIGRATION" = "1" ]; then
     if [ "$DB_BACKEND" != "postgresql" ]; then
         echo "Unknown DB Backend!" >&2
-        exit 1
+        exit $EXIT_VALIDATION_ERROR
     fi
     do_migration
 fi

@@ -125,7 +125,7 @@
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.12.7/checkstyle-10.12.7-all.jar"/>
         </dependency>
         <dependency org="suse" name="hamcrest-core" rev="1.3" transitive="false"/>
-        <dependency org="suse" name="hamcrest-library" rev="2.2" transitive="false"/>
+        <dependency org="suse" name="hamcrest-library" rev="3.0" transitive="false"/>
         <dependency org="suse" name="junit" rev="4.13.2" transitive="false"/>
         <dependency org="org.junit.jupiter" name="junit-jupiter-api" rev="5.8.2" transitive="false"/>
         <dependency org="org.junit.platform" name="junit-platform-commons" rev="1.8.2" transitive="false" />

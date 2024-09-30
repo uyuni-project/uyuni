@@ -1620,15 +1620,7 @@ public class ContentSyncManager {
             return sources.stream().map(source -> {
                 try {
                     SCCClient scc = getSCCClient(source);
-                    var tree1 = scc.productTree();
-                    // Non rpm client tools are not available in cloud rmt so we remove these products.
-                    if (sources.stream().allMatch(c -> c instanceof RMTContentSyncSource)) {
-                        // Remove Ubuntu and Debian products until RMT supports them
-                        tree1.removeIf(product -> product.getChannelLabel().contains("amd64") ||
-                                product.getParentChannelLabel().filter(label -> label.contains("amd64")).isPresent()
-                        );
-                    }
-                    return tree1;
+                    return scc.productTree();
                 }
                 catch (SCCClientException e) {
                     throw new ContentSyncException(e);

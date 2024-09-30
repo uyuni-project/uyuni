@@ -1,0 +1,2 @@
+- Fix error in 'kickstart_delete' when using wildcards 
+  (bsc#1227578)

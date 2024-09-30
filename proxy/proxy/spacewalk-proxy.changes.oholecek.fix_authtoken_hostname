@@ -1,0 +1,2 @@
+- set proxy authtoken FQDN based on config file
+  (bsc#1230255)

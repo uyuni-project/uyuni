@@ -262,6 +262,18 @@ public class PaygAuthDataProcessor {
 
 
         if (paygData.getHeaderAuth() != null) {
+            if (instance.isSUSEManagerPayg()) {
+                // On SUSE Manager 5.0 we need to allow synchronize SUMA older version, like 4.3
+                // SUMA 4.3 is a base product, means it also grants access to sles15sp4 base channels
+                // To access older suma version we are using the authentication credentials collected from localhost
+                // Localhost is sle-micro, and with those headers we cannot access SLES channels needed for 4.3
+                // To overcome this we are forcing the header for OS identifier to be the ones used in suma 4.3
+                // With the version set to 5.0
+                // Then Public Team cloud team can detect that this is a SUMA machine,
+                // with the right credentials and grant the needed access to all the channels
+                paygData.getHeaderAuth().put("X-Instance-Identifier", "SUSE-Manager-Server");
+                paygData.getHeaderAuth().put("X-Instance-Version", "5.1");
+            }
             credentials.setExtraAuthData(GSON.toJson(paygData.getHeaderAuth()).getBytes());
         }
         credentials.setPaygSshData(instance);

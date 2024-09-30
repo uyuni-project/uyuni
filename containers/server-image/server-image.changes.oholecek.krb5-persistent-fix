@@ -1,0 +1,2 @@
+- use /etc/krb5.conf.d for all kerberos related configurations
+  (bsc#1229077)
