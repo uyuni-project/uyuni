@@ -1975,6 +1975,13 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/22/4/bootstrap/",
         "TYPE": "deb",
     },
+    "ubuntu-24.04-amd64": {
+        "PDID": [-44, 2886],
+        "BETAPDID": [2887],
+        "PKGLIST": PKGLISTUBUNTU2404,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
+        "TYPE": "deb",
+    },
     "ubuntu-16.04-amd64-uyuni": {
         "BASECHANNEL": "ubuntu-16.04-pool-amd64-uyuni",
         "PKGLIST": PKGLISTUBUNTU1604,
