@@ -1,4 +1,4 @@
-<button type="submit" name="dispatch" class="btn btn-success"
+<button type="submit" name="dispatch" class="btn btn-default"
   value="<bean:message key="kickstart.powermanagement.jsp.power_on"/>"
 >
   <i class="fa fa-power-off"></i><bean:message key="kickstart.powermanagement.jsp.power_on"/>

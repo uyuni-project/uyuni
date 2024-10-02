@@ -44,7 +44,7 @@
                         <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.cancel" />
                         </button>
-                        <button type="button" class="btn btn-success" onClick="saveCredentials();">
+                        <button type="button" class="btn btn-primary" onClick="saveCredentials();">
                             <bean:message key="mirror-credentials.jsp.bt.save" />
                         </button>
                     </div>
@@ -75,7 +75,7 @@
                         <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.cancel" />
                         </button>
-                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">
+                        <button type="button" class="btn btn-danger" onClick="deleteCredentials();">
                             <bean:message key="mirror-credentials.jsp.bt.delete" />
                         </button>
                     </div>

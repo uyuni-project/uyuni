@@ -608,7 +608,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
         if (getButton() != null && AclManager.hasAcl(getButtonAcl(),
                 (HttpServletRequest) pageContext.getRequest(), getMixins())) {
 
-            out.println("<button class=\"btn btn-primary\"" +
+            out.println("<button class=\"btn btn-default\"" +
                     " type=\"submit\" name=\"dispatch\" value=\"" +
                     LocalizationService.getInstance().getMessage(getButton()) +
                     "\">" +

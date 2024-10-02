@@ -163,7 +163,7 @@
               &nbsp;
             </td>
             <td>
-              <button type="submit" class="btn btn-success btn-sm">
+              <button type="submit" class="btn btn-primary btn-sm">
                 <rhn:icon type="header-search" />
                 <bean:message key="button.search"/>
             </button>

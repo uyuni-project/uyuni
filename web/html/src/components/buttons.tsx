@@ -56,7 +56,7 @@ type AsyncProps = BaseProps & {
   action?: (...args: any[]) => Promise<any> | false | void;
 
   /**
-   * One of Bootstrap button type classes (e.g. 'btn-success', 'btn-primary').
+   * One of Bootstrap button type classes (e.g. 'btn-primary').
    * Defaults to 'btn-default'.
    * @see className
    */

@@ -91,7 +91,7 @@
 
                     <div class="form-group">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                            <html:submit styleClass="btn btn-success">
+                            <html:submit styleClass="btn btn-primary">
                                 <bean:message key="orgdetails.jsp.submit"/>
                             </html:submit>
                         </div>

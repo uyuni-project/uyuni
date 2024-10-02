@@ -351,7 +351,7 @@ class ProductsPageWrapper extends React.Component {
           <Button
             id="addProducts"
             icon="fa-plus"
-            className={"btn-success"}
+            className={"btn-primary"}
             text={
               t("Add products") +
               (this.state.selectedItems.length > 0 ? " (" + this.state.selectedItems.length + ")" : "")
@@ -1127,7 +1127,7 @@ const ChannelsPopUp = (props) => {
       content={contentPopup}
       submitText={t("Confirm")}
       submitIcon="fa-check"
-      btnClass="btn-success"
+      btnClass="btn-primary"
       onConfirm={showConfirm() ? () => addOptionalChannels() : undefined}
     />
   ) : (

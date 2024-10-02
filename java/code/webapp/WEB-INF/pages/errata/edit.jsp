@@ -39,7 +39,7 @@
             <p><bean:message key="errata.edit.youmaynotify" /></p>
             <div class="form-group">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                    <html:submit property="dispatch" styleClass="btn btn-success">
+                    <html:submit property="dispatch" styleClass="btn btn-default">
                         <bean:message key="errata.edit.sendnotification" />
                     </html:submit>
                 </div>
@@ -265,7 +265,7 @@
             <rhn:hidden name="eid" value="${param.eid}" />
             <div class="form-group">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                    <html:submit property="dispatch" styleClass="btn btn-success">
+                    <html:submit property="dispatch" styleClass="btn btn-primary">
                         <bean:message key="errata.edit.updateerrata"/>
                     </html:submit>
                 </div>

@@ -56,7 +56,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-primary">
                             <c:choose>
                                 <c:when test="${empty gid}">
                                     <bean:message key="button.create"/>

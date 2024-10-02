@@ -19,7 +19,7 @@ const NewAnsiblePath = (props) => {
         <AsyncButton
           id={"new_" + props.pathType + "_path_save"}
           action={props.savePath}
-          defaultType="btn-success"
+          defaultType="btn-primary"
           text={t("Save")}
           icon="fa-save"
         />

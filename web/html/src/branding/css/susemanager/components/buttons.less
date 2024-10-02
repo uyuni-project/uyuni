@@ -10,31 +10,6 @@
   }
 }
 
-.btn {
-  &,
-  &:active,
-  &:first-child:active {
-    border-color: transparent;
-  }
-}
-
-.btn,
-.btn-default,
-.btn-primary,
-.btn-warning,
-.btn-danger {
-  // We use flex to ensure icons etc are correctly aligned in buttons
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  font-size: $font-size-base;
-  width: fit-content;
-
-  i.fa:first-child:last-child {
-    margin: 0;
-  }
-}
-
 button.is-plain {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
@@ -53,13 +28,13 @@ button.is-plain {
   padding: 0;
 }
 
-@include onSuma {
-  @import "buttons.suma.scss";
-}
+.onSuma({
+  @import "buttons.suma.less";
+});
 
-@include onUyuni {
-  @import "buttons.uyuni.scss";
-}
+.onUyuni({
+  @import "buttons.uyuni.less";
+});
 
 .btn-link {
   &,
@@ -73,7 +48,7 @@ button.is-plain {
 
     &,
     &:hover {
-      color: $link-color;
+      color: @link-color;
       font-weight: normal;
     }
 

@@ -183,13 +183,13 @@ const SystemPicker = (props: SystemPickerProps) => {
               <ModalButton
                 target="cancel-confirm"
                 text={t("Save Changes")}
-                className="btn-success"
+                className="btn-primary"
                 disabled={!hasChanges}
               />
             ) : (
               <AsyncButton
                 action={onAssign}
-                defaultType="btn-success"
+                defaultType="btn-primary"
                 text={t("Save Changes")}
                 disabled={!hasChanges}
               />

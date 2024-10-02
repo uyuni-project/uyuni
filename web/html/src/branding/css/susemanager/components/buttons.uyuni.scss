@@ -1,7 +1,6 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-success,
 .btn-warning,
 .btn-danger {
   --bs-border-width: 1px;
@@ -17,7 +16,6 @@
 
 .btn-default,
 .btn-primary,
-.btn-success,
 .btn-warning,
 .btn-danger {
   border: 1px solid;
@@ -33,8 +31,7 @@
   }
 }
 
-.btn-primary,
-.btn-success {
+.btn-primary {
   background-image: linear-gradient(to bottom, #00da92 0%, #00C081 100%);
   color: #fff;
 

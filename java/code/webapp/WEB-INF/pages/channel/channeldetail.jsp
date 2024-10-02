@@ -331,7 +331,7 @@
         <c:if test="${has_access}">
             <div class="form-group">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                    <html:submit property="Update" styleClass="btn btn-success">
+                    <html:submit property="Update" styleClass="btn btn-primary">
                         <bean:message key="message.Update"/>
                     </html:submit>
                 </div>
