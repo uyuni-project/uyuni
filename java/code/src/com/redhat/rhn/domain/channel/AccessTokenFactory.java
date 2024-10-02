@@ -25,7 +25,6 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
 import org.jose4j.lang.JoseException;
 
 import java.time.Duration;
@@ -58,12 +57,10 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return optional of AccessToken
      */
     public static Optional<AccessToken> lookupById(long id) {
-        return Optional.ofNullable(
-                (AccessToken)HibernateFactory.getSession()
-                .createCriteria(AccessToken.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult()
-        );
+        return getSession()
+                .createQuery("FROM AccessToken WHERE id = :id", AccessToken.class)
+                .setParameter("id", id)
+                .uniqueResultOptional();
     }
 
     /**
@@ -71,8 +68,21 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return list of AccessTokens
      */
     public static List<AccessToken> all() {
-        return (List<AccessToken>) HibernateFactory.getSession()
-                .createCriteria(AccessToken.class)
+        return getSession()
+                .createQuery("FROM AccessToken", AccessToken.class)
+                .list();
+    }
+
+
+    /**
+     * Queries all AccessTokens for a specific minion
+     * @param minion the minion
+     * @return list of AccessTokens
+     */
+    public static List<AccessToken> listByMinion(MinionServer minion) {
+        return getSession()
+                .createQuery("FROM AccessToken WHERE minion = :minion", AccessToken.class)
+                .setParameter("minion", minion)
                 .list();
     }
 
@@ -82,12 +92,10 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return optional of AccessToken
      */
     public static Optional<AccessToken> lookupByToken(String token) {
-        return Optional.ofNullable(
-            (AccessToken)HibernateFactory.getSession()
-            .createCriteria(AccessToken.class)
-            .add(Restrictions.eq("token", token))
-            .uniqueResult()
-        );
+        return getSession()
+                .createQuery("FROM AccessToken WHERE token = :token", AccessToken.class)
+                .setParameter("token", token)
+                .uniqueResultOptional();
     }
 
     /**
@@ -210,6 +218,8 @@ public class AccessTokenFactory extends HibernateFactory {
             minion.getAccessTokens().add(toActivate);
         });
 
+        LOG.debug("Token refresh finished. Got Unneeded {} Got Updated {} Got New {}",
+                !unneededTokens.isEmpty(), !update.isEmpty(), !newTokens.isEmpty());
         return !unneededTokens.isEmpty() || !update.isEmpty() || !newTokens.isEmpty();
     }
 

@@ -2055,6 +2055,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
+        SaltService saltService = new SaltService() {
+            @Override
+            public void refreshPillar(MinionList minionList) {
+            }
+        };
+        saltServerActionService.setSaltApi(saltService);
+
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
 
@@ -2081,10 +2088,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
 
-        saltServerActionService.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
-
-        HibernateFactory.getSession().flush();
+        saltServerActionService.callsForAction(action);
+        assertTrue(minion.hasValidTokensForAllChannels(), "Unexpected minion miss tokens for some channels");
 
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
@@ -2143,24 +2148,18 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
 
-        saltServerActionService.setCommitTransaction(false);
         Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
-
-        // artifically expire tokens
-        action.getDetails().getAccessTokens().forEach(t -> t.setMinion(null));
         HibernateFactory.getSession().flush();
 
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("subscribe.channels.success.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        // artifically expire tokens
+        minion.getAccessTokens().forEach(t -> t.setMinion(null));
 
-        // Process the event message
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
-        messageAction.execute(message);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
 
+        MinionServer reloaded = HibernateFactory.reload(minion);
         // check that tokens are really gone
-        assertEquals(0, minion.getAccessTokens().size());
+        assertEquals(0, reloaded.getAccessTokens().size());
     }
 
     private void assertTokenChannel(MinionServer minion, Channel channel) {
