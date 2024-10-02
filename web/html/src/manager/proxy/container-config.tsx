@@ -220,7 +220,7 @@ export function ProxyConfig() {
           name="proxyPort"
           label={t("Proxy SSH port")}
           hint={t("Port range: 1 - 65535")}
-          validate={[Validation.intRange(0, 65536)]}
+          validate={[Validation.range(0, 65536)]}
           defaultValue="8022"
           labelClass="col-md-3"
           divClass="col-md-6"

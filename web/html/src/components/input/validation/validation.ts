@@ -6,7 +6,7 @@ export type Validator = (...args: any[]) => SyncOrAsync<ValidationResult>;
 
 /** String must match `regex` */
 const matches =
-  (regex: RegExp, message?: string): Validator =>
+  (regex: RegExp, message = t("Doesn't match expected format")): Validator =>
   (value: string) => {
     // Here and elsewhere, if you want the value to be required, set the `required` flag instead
     if (value === "") {
@@ -14,44 +14,42 @@ const matches =
     }
 
     if (!regex.test(value)) {
-      return message ?? t("Doesn't match expected format");
+      return message;
     }
   };
 
 // TODO: Some places that use this are off by one from what they want to be
 /** String must be at least `length` chars long */
 const minLength =
-  (length: number, message?: string): Validator =>
+  (length: number, message = t(`Must be at least ${length} characters long`)): Validator =>
   (value: Record<string, string> | string) => {
-    const defaultMessage = t(`Must be at least ${length} characters long`);
     if (typeof value === "object") {
       const isInvalid = Object.values(value).some((item) => item.length !== 0 && item.length < length);
       if (isInvalid) {
-        return message ?? defaultMessage;
+        return message;
       }
     } else if (value.length !== 0 && value.length < length) {
-      return message ?? defaultMessage;
+      return message;
     }
   };
 
 /** String must be no more than `length` chars long */
 const maxLength =
-  (length: number, message?: string): Validator =>
+  (length: number, message = t(`Must be no more than ${length} characters long`)): Validator =>
   (value: Record<string, string> | string) => {
-    const defaultMessage = t(`Must be no more than ${length} characters long`);
     if (typeof value === "object") {
       const isInvalid = Object.values(value).some((item) => item.length !== 0 && item.length > length);
       if (isInvalid) {
-        return message ?? defaultMessage;
+        return message;
       }
     } else if (value.length !== 0 && value.length > length) {
-      return message ?? defaultMessage;
+      return message;
     }
   };
 
 /** String is integer */
 const isInt =
-  (message?: string): Validator =>
+  (message = t(`Must be an integer`)): Validator =>
   (value: string) => {
     if (value === "") {
       return;
@@ -59,78 +57,78 @@ const isInt =
 
     const parsed = parseInt(value, 10);
     if (isNaN(parsed) || parsed.toString() !== value) {
-      return message ?? t(`Must be an integer`);
+      return message;
     }
   };
 
-/** Value is no smaller than `minValue` */
+/** Value is an integer no smaller than `minValue` */
 const min =
-  (minValue: number, message?: string): Validator =>
+  (minValue: number, message = t(`Must be an integer no smaller than ${minValue}`)): Validator =>
   (value: string) => {
     if (value === "") {
       return;
     }
 
-    const parsed = parseFloat(value);
-    if (isNaN(parsed) || parsed < minValue) {
-      return message ?? t(`Must be no smaller than ${minValue}`);
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed) || parsed.toString() !== value || parsed < minValue) {
+      return message;
     }
   };
 
-/** Value is no larger than `maxValue` */
+/** Value is an integer no larger than `maxValue` */
 const max =
-  (maxValue: number, message?: string): Validator =>
+  (maxValue: number, message = t(`Must be an integer no larger than ${maxValue}`)): Validator =>
   (value: string) => {
     if (value === "") {
       return;
     }
 
-    const parsed = parseFloat(value);
-    if (isNaN(parsed) || parsed > maxValue) {
-      return message ?? t(`Must be no larger than ${maxValue}`);
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed) || parsed.toString() !== value || parsed > maxValue) {
+      return message;
     }
   };
 
-/** Value is greater than `gtValue` */
+/** Value is an integer greater than `gtValue` */
 const gt =
-  (gtValue: number, message?: string): Validator =>
+  (gtValue: number, message = t(`Must be an integer greater than ${gtValue}`)): Validator =>
   (value: string) => {
     if (value === "") {
       return;
     }
 
-    const parsed = parseFloat(value);
-    if (isNaN(parsed) || parsed <= gtValue) {
-      return message ?? t(`Must be greater than ${gtValue}`);
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed) || parsed.toString() !== value || parsed <= gtValue) {
+      return message;
     }
   };
 
-/** Value is smaller than `ltValue` */
+/** Value is an integer smaller than `ltValue` */
 const lt =
-  (ltValue: number, message?: string): Validator =>
+  (ltValue: number, message = t(`Must be an integer greater than ${ltValue}`)): Validator =>
   (value: string) => {
     if (value === "") {
       return;
     }
 
-    const parsed = parseFloat(value);
-    if (isNaN(parsed) || parsed >= ltValue) {
-      return message ?? t(`Must be greater than ${ltValue}`);
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed) || parsed.toString() !== value || parsed >= ltValue) {
+      return message;
     }
   };
 
 /** Value is an integer that is no smaller than `minValue` and no larger than `maxValue` */
-const intRange =
+const range =
   (minValue: number, maxValue: number, message?: string): Validator =>
   (value: string) => {
-    return isInt(message)(value) || min(minValue, message)(value) || max(maxValue, message)(value);
-  };
+    if (value === "") {
+      return;
+    }
 
-/** Value is a number that is no smaller than `minValue` and no larger than `maxValue` */
-const floatRange =
-  (minValue: number, maxValue: number, message?: string): Validator =>
-  (value: string) => {
-    return min(minValue, message)(value) || max(maxValue, message)(value);
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed) || parsed.toString() !== value || parsed < minValue || parsed > maxValue) {
+      return message;
+    }
   };
 
 export const Validation = {
@@ -142,6 +140,5 @@ export const Validation = {
   gt,
   lt,
   isInt,
-  intRange,
-  floatRange,
+  range,
 };

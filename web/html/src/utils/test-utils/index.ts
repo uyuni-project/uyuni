@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 export * from "@testing-library/react";
 
 export * from "./timer";
+export * from "./timeout";
 export * from "./forms";
 export * from "./server";
 export * from "./mock";

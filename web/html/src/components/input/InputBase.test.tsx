@@ -16,7 +16,9 @@ describe("InputBase", () => {
 
   beforeEach(() => {
     model = {};
-    onChange = () => {};
+    onChange = (newModel) => {
+      model = newModel;
+    };
   });
 
   function renderWithForm(content) {

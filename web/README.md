@@ -24,6 +24,7 @@ The following scripts cover most day-to-day uses, see `web/html/src/package.json
 
  - Run lint with autofixer: `yarn lint`
  - Run unit tests: `yarn test`  
+ - Run a single set of tests: `yarn test path/to/file.test.ts`  
  - Run the Typescript checker: `yarn tsc`  
  - Build the web UI: `yarn build`  
  - Run lint, tests, Typescript checker, and build the application: `yarn all`  

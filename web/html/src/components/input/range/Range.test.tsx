@@ -6,21 +6,25 @@ import { Form } from "../form/Form";
 import { Range } from "./Range";
 
 describe("Range", () => {
-  // Use these to test model changes in tests
-  let model;
-  let onChange;
-
-  beforeEach(() => {
-    model = {};
-    onChange = () => {};
-  });
-
-  function renderWithForm(content) {
-    return render(
-      <Form model={model} onChange={onChange}>
-        {React.Children.toArray(content)}
-      </Form>
-    );
+  function renderWithForm(content, initialModel = {}, onChange?, onSubmit?) {
+    const Wrapper = () => {
+      const [model, setModel] = React.useState(initialModel);
+      return (
+        <Form
+          model={model}
+          onChange={(newModel) => {
+            setModel(newModel);
+            onChange?.(newModel);
+          }}
+          onSubmit={(newModel) => {
+            onSubmit?.(newModel);
+          }}
+        >
+          {React.Children.toArray(content)}
+        </Form>
+      );
+    };
+    return render(<Wrapper />);
   }
 
   test("renders with minimal props", () => {
@@ -30,7 +34,6 @@ describe("Range", () => {
   });
 
   test("renders with default values", () => {
-    model = {};
     renderWithForm(<Range name="range" prefix="port" label="Port range" defaultStart="1000" defaultEnd="1100" />);
     const startInput = screen.getByRole("textbox", { name: "Port range start" }) as HTMLInputElement;
     expect(startInput.value).toBe("1000");
@@ -39,29 +42,29 @@ describe("Range", () => {
   });
 
   test("change values", async () => {
-    model = {
+    const initialModel = {
       port_start: "10",
       port_end: "1100",
     };
-    onChange = () => {};
+    const onChange = jest.fn();
 
-    renderWithForm(<Range name="range" prefix="port" label="Port range" />);
+    renderWithForm(<Range name="range" prefix="port" label="Port range" />, initialModel, onChange);
     const startInput = screen.getByRole("textbox", { name: "Port range start" });
 
     clear(startInput);
-    expect(model).toStrictEqual({ port_start: "", port_end: "1100" });
+    expect(onChange).toHaveBeenCalledWith({ port_start: "", port_end: "1100" });
 
     await type(startInput, "900");
-    expect(model).toStrictEqual({ port_start: "900", port_end: "1100" });
+    expect(onChange).toHaveBeenCalledWith({ port_start: "900", port_end: "1100" });
 
     const endInput = screen.getByRole("textbox", { name: "Port range end" });
     clear(endInput);
     await type(endInput, "903");
-    expect(model).toStrictEqual({ port_start: "900", port_end: "903" });
+    expect(onChange).toHaveBeenCalledWith({ port_start: "900", port_end: "903" });
   });
 
-  test("validation", async (done) => {
-    onChange = () => done();
+  test("validation", async () => {
+    const onChange = jest.fn();
 
     renderWithForm(
       <Range
@@ -85,26 +88,28 @@ describe("Range", () => {
             return message;
           }
         }}
-      />
+      />,
+      {},
+      onChange
     );
 
     const startInput = screen.getByRole("textbox", { name: "Port range start" });
     const endInput = screen.getByRole("textbox", { name: "Port range end" });
 
     await type(startInput, "900");
-    expect(model).toStrictEqual({ port_start: "900" });
+    expect(onChange).toHaveBeenCalledWith({ port_start: "900", port_end: "" });
     screen.findByText(/Both values need to be positive integers/);
 
     await type(endInput, "800");
-    expect(model).toStrictEqual({ port_start: "900", port_end: "800" });
+    expect(onChange).toHaveBeenCalledWith({ port_start: "900", port_end: "800" });
     screen.findByText(/Both values need to be positive integers/);
 
     await type(endInput, "NaN");
-    expect(model).toStrictEqual({ port_start: "900", port_end: "NaN" });
+    expect(onChange).toHaveBeenCalledWith({ port_start: "900", port_end: "NaN" });
     screen.findByText(/Both values need to be positive integers/);
 
     await type(endInput, "901");
-    expect(model).toStrictEqual({ port_start: "900", port_end: "901" });
-    await waitForElementToBeRemoved(() => screen.queryByText(/Both values need to be positive integers/));
+    expect(onChange).toHaveBeenCalledWith({ port_start: "900", port_end: "901" });
+    expect(screen.queryByText(/Both values need to be positive integers/)).toBeNull();
   });
 });

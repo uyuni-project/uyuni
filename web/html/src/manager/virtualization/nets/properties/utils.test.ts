@@ -1,9 +1,9 @@
 import * as utils from "./utils";
 
 describe("allOrNone tests", () => {
-  expect(utils.allOrNone(["one", "two"])).toBeTruthy();
-  expect(utils.allOrNone([null, null])).toBeTruthy();
-  expect(utils.allOrNone(["one", null])).toBeFalsy();
+  expect(utils.allOrNone(["one", "two"])).toEqual(undefined);
+  expect(utils.allOrNone([null, null])).toEqual(undefined);
+  expect(utils.allOrNone(["one", null])).toBeTruthy();
 });
 
 describe("Regex tests", () => {

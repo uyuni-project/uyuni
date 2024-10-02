@@ -101,7 +101,7 @@ describe("validation", () => {
   });
 
   test("intRange", () => {
-    const validator = Validation.intRange(3, 5, errorMessage);
+    const validator = Validation.range(3, 5, errorMessage);
 
     expect(validator("")).toEqual(undefined);
     expect(validator("1.5")).toEqual(errorMessage);
@@ -109,19 +109,6 @@ describe("validation", () => {
     expect(validator("3")).toEqual(undefined);
     expect(validator("4")).toEqual(undefined);
     expect(validator("4.5")).toEqual(errorMessage);
-    expect(validator("5")).toEqual(undefined);
-    expect(validator("6")).toEqual(errorMessage);
-  });
-
-  test("floatRange", () => {
-    const validator = Validation.floatRange(3, 5, errorMessage);
-
-    expect(validator("")).toEqual(undefined);
-    expect(validator("1.5")).toEqual(errorMessage);
-    expect(validator("2")).toEqual(errorMessage);
-    expect(validator("3")).toEqual(undefined);
-    expect(validator("4")).toEqual(undefined);
-    expect(validator("4.5")).toEqual(undefined);
     expect(validator("5")).toEqual(undefined);
     expect(validator("6")).toEqual(errorMessage);
   });

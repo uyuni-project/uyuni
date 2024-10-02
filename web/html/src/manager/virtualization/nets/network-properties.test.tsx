@@ -20,7 +20,7 @@ function fieldValuesByName(name: string) {
   return getFieldValuesByName("network properties", name);
 }
 
-let onSubmit;
+let onSubmit: (model?: any) => any = () => {};
 
 beforeEach(() => {
   onSubmit = () => {};

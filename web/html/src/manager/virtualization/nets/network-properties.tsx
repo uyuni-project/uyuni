@@ -379,7 +379,7 @@ export function NetworkProperties(props: Props) {
                       label={t("VLAN tag")}
                       labelClass="col-md-3"
                       divClass="col-md-6"
-                      validate={[Validation.intRange(0, 4095)]}
+                      validate={[Validation.range(0, 4095)]}
                       invalidHint={t("Integer between 0 and 4095")}
                     />
                   )}

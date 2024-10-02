@@ -57,7 +57,7 @@ export const NetworkAddress = (props: Props) => {
           const errorMessage = t(`Value needs to be a valid IPv${ipVersion} address with prefix`);
           return (
             Validation.matches(ipv6 ? utils.ipv6Pattern : utils.ipv4Pattern, errorMessage)(address) ||
-            Validation.intRange(0, ipv6 ? 128 : 32, errorMessage)(prefix)
+            Validation.range(0, ipv6 ? 128 : 32, errorMessage)(prefix)
           );
         },
       ]}
