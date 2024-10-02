@@ -38,8 +38,6 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
         // setup subject
         return LocalizationService.getInstance().
                 getMessage("web traceback subject", evtIn.getUserLocale()) +
-                // Not sure if getting the local hostname is the correct thing to do
-                // here.  But the traceback emails that I've received seem to do this
                 ConfigDefaults.get().getJavaHostname() +
                 " (" +
                 LocalizationService.getInstance().formatDate(new Date(), evtIn.getUserLocale()) +
