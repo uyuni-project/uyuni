@@ -77,13 +77,16 @@ def __virtual__():
     return HAS_POSTGRES
 
 
-def _is_salt_ssh(opts):
-    """Check if this pillar is computed for Salt SSH.
+def _is_salt_ssh_or_runner(opts):
+    """Check if this pillar is computed for Salt SSH or Salt Runner execution
 
     Only in salt/client/ssh/__init__.py, the master_opts are moved into
     opts[__master_opts__], which we use to detect Salt SSH usage.
+
+    During a Salt Runner execution, the "_master" suffix is appended to the
+    master_minion id.
     """
-    return "__master_opts__" in opts
+    return "__master_opts__" in opts or opts.get("id", "").endswith("_master")
 
 
 def _get_cursor(func):
@@ -111,7 +114,9 @@ def _get_cursor(func):
         try:
             cnx = _connect_db()
             log.debug("Connected to the DB")
-            if not _is_salt_ssh(__opts__):
+            # pylint: disable-next=undefined-variable
+            if not _is_salt_ssh_or_runner(__opts__):
+                # pylint: disable-next=undefined-variable
                 __context__["suma_minion_cnx"] = cnx
         except psycopg2.OperationalError as err:
             log.error("Error on getting database pillar: %s", err.args)
@@ -123,7 +128,9 @@ def _get_cursor(func):
         try:
             cnx = _connect_db()
             log.debug("Reconnected to the DB")
-            if not _is_salt_ssh(__opts__):
+            # pylint: disable-next=undefined-variable
+            if not _is_salt_ssh_or_runner(__opts__):
+                # pylint: disable-next=undefined-variable
                 __context__["suma_minion_cnx"] = cnx
             cursor = cnx.cursor()
         except psycopg2.OperationalError as err:
@@ -135,7 +142,9 @@ def _get_cursor(func):
             if retry:
                 cnx = _connect_db()
                 log.debug("Reconnected to the DB")
-                if not _is_salt_ssh(__opts__):
+                # pylint: disable-next=undefined-variable
+                if not _is_salt_ssh_or_runner(__opts__):
+                    # pylint: disable-next=undefined-variable
                     __context__["suma_minion_cnx"] = cnx
                 cursor = cnx.cursor()
 
@@ -149,7 +158,8 @@ def _get_cursor(func):
             else:
                 log.error("Error on getting database pillar, trying again: %s", err.args)
         finally:
-            if _is_salt_ssh(__opts__):
+            # pylint: disable-next=undefined-variable
+            if _is_salt_ssh_or_runner(__opts__):
                 cnx.close()
 
 
