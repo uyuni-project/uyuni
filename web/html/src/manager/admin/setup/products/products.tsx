@@ -288,8 +288,8 @@ class ProductsPageWrapper extends React.Component {
       const submitButtonTitle = this.state.sccSyncRunning
         ? t("The product catalog is still refreshing, please wait.")
         : this.state.selectedItems.length === 0
-        ? t("Select some product first.")
-        : undefined;
+          ? t("Select some product first.")
+          : undefined;
       const addProductButton =
         this.state.sccSyncRunning || this.state.selectedItems.length === 0 || this.state.addingProducts ? (
           <Button
