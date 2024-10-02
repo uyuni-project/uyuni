@@ -1,0 +1,58 @@
+.btn,
+.btn-link,
+.btn-default,
+.btn-primary,
+.btn-danger {
+  i.fa::before {
+    // No text-decoration for the icon text, see https://stackoverflow.com/a/19529256/1470607
+    display: inline-block;
+  }
+}
+
+button.is-plain {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline;
+  font: inherit;
+  line-height: inherit;
+  outline: none;
+  text-decoration: none;
+  user-select: text;
+  padding: 0;
+}
+
+.onSuma({
+  @import "buttons.suma.less";
+});
+
+.onUyuni({
+  @import "buttons.uyuni.less";
+});
+
+.btn-link {
+  &,
+  &:active,
+  &:focus,
+  &:disabled,
+  &.disabled {
+    border-color: transparent;
+    text-decoration: none;
+    background: transparent;
+
+    &,
+    &:hover {
+      color: @link-color;
+      font-weight: normal;
+    }
+
+    &:not(:disabled):not(.disabled):not(.text-muted):hover {
+      text-decoration: underline;
+    }
+  }
+}

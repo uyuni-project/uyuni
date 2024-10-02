@@ -72,11 +72,18 @@
                 <p><bean:message key="orgconfig.jsp.description"/></p>
                 <hr/>
                 <%@ include file="/WEB-INF/pages/common/fragments/org-config.jspf" %>
+                <div class="form-group">
+                  <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
+                    <html:submit styleClass="btn btn-primary">
+                      <bean:message key="orgdetails.jsp.submit"/>
+                    </html:submit>
+                  </div>
+                </div>
             </div>
         </div>
         <html:submit styleClass="btn btn-primary">
             <bean:message key="orgdetails.jsp.submit"/>
-        </html:submit>
+        </html:submit> -->
     </form>
 </body>
 </html:html>
