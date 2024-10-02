@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { clear, render, screen, type, waitForElementToBeRemoved } from "utils/test-utils";
+import { clear, render, screen, type } from "utils/test-utils";
 
 import { Form } from "../form/Form";
 import { Range } from "./Range";
 
 describe("Range", () => {
-  function renderWithForm(content, initialModel = {}, onChange?, onSubmit?) {
+  function renderWithForm(content: React.ReactNode, initialModel = {}, onChange?, onSubmit?) {
     const Wrapper = () => {
       const [model, setModel] = React.useState(initialModel);
       return (
