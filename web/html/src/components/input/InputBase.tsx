@@ -92,6 +92,8 @@ export type InputBaseProps<ValueType = string> = {
 type State = {
   isTouched: boolean;
 
+  requiredError?: React.ReactNode;
+
   /**
    * Error messages received from FormContext (typically errors messages received from a server response)
    */
@@ -227,6 +229,28 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     }
   };
 
+  private validateRequired = <T,>(value: T) => {
+    let requiredError: React.ReactNode = undefined;
+
+    if (this.props.required && !this.props.disabled) {
+      const hasNoValue =
+        this.isEmptyValue(value) ||
+        (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
+
+      if (hasNoValue) {
+        if (this.props.required && this.props.required !== true) {
+          requiredError = this.props.required;
+        } else {
+          requiredError = this.props.label ? t(`${this.props.label} is required.`) : t("Required");
+        }
+      }
+    }
+
+    if (requiredError !== this.state.requiredError) {
+      this.setState({ requiredError }, () => this.context.validateForm?.());
+    }
+  };
+
   /**
    * Validate the input, updating state and errors if necessary.
    *
@@ -234,45 +258,50 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
    * `this.props.name` is an array. This makes inferring validation types tricky, so we accept whatever inputs make sense
    * for a given branch.
    */
-  validate = _debounce(
-    async <InferredValueType extends unknown = ValueType>(value: InferredValueType): Promise<void> => {
-      const validators = Array.isArray(this.props.validate) ? this.props.validate : [this.props.validate] ?? [];
+  private debouncedValidate = _debounce(async <T,>(value: T): Promise<void> => {
+    const validators = Array.isArray(this.props.validate) ? this.props.validate : [this.props.validate] ?? [];
 
-      /**
-       * Each validator sets its own result independently, this way we can mix and match different speed async
-       * validators without having to wait all of them to finish
-       */
-      await Promise.all(
-        validators.map(async (validator, index) => {
-          // If the validator is debounced, it may be undefined
-          if (!validator) {
-            return;
+    /**
+     * Each validator sets its own result independently, this way we can mix and match different speed async
+     * validators without having to wait all of them to finish
+     */
+    await Promise.all(
+      validators.map(async (validator, index) => {
+        // If the validator is debounced, it may be undefined
+        if (!validator) {
+          return;
+        }
+
+        // BUG: We don't handle race conditions here, it's a bug, but it will get fixed for free this once we swap this code out for Formik
+        const result = await validator(value);
+        this.setState((state) => {
+          const newValidationErrors = new Map(state.validationErrors);
+          if (result) {
+            newValidationErrors.set(index, result);
+          } else {
+            newValidationErrors.delete(index);
           }
 
-          // BUG: We don't handle race conditions here, it's a bug, but it will get fixed for free this once we swap this code out for Formik
-          const result = await validator(value);
-          this.setState((state) => {
-            const newValidationErrors = new Map(state.validationErrors);
-            if (result) {
-              newValidationErrors.set(index, result);
-            } else {
-              newValidationErrors.delete(index);
-            }
+          return {
+            ...state,
+            validationErrors: newValidationErrors,
+          };
+        });
+      })
+    );
 
-            return {
-              ...state,
-              validationErrors: newValidationErrors,
-            };
-          });
-        })
-      );
+    this.context.validateForm?.();
+  }, this.props.debounceValidate ?? 0);
 
-      this.context.validateForm?.();
-    },
-    this.props.debounceValidate ?? 0
-  );
+  validate = <InferredValueType extends unknown = ValueType>(value: InferredValueType): void => {
+    this.validateRequired(value);
+    this.debouncedValidate(value);
+  };
 
   isValid = () => {
+    if (this.state.requiredError) {
+      return false;
+    }
     if (this.state.formErrors && this.state.formErrors.length > 0) {
       return false;
     }
@@ -342,9 +371,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
         }
       }
 
-      if (this.props.required && !this.props.disabled) {
-        this.pushHint(hints, this.requiredHint());
-      }
+      this.pushHint(hints, this.state.requiredError);
     }
 
     const hasError = this.state.isTouched && !this.isValid();

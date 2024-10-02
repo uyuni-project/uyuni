@@ -42,7 +42,8 @@ type Props = {
 
 function clearFields(initialModel, setModel) {
   if (initialModel) {
-    let definition = initialModel;
+    // TODO: Is this safe?
+    let definition = Object.assign({}, initialModel);
 
     // Convert some int properties to string since validators only work with strings
     // TODO Remove once https://github.com/uyuni-project/uyuni/issues/3391 is completed
