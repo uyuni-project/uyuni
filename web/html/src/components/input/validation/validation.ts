@@ -73,7 +73,7 @@ const min =
 
     const parsed = parseFloat(value);
     if (isNaN(parsed) || parsed < minValue) {
-      return message ?? t(`Must be larger than ${minValue}`);
+      return message ?? t(`Must be no smaller than ${minValue}`);
     }
   };
 
@@ -87,7 +87,35 @@ const max =
 
     const parsed = parseFloat(value);
     if (isNaN(parsed) || parsed > maxValue) {
-      return message ?? t(`Must be smaller than ${maxValue}`);
+      return message ?? t(`Must be no larger than ${maxValue}`);
+    }
+  };
+
+/** Value is greater than `gtValue` */
+const gt =
+  (gtValue: number, message?: string): Validator =>
+  (value: string) => {
+    if (value === "") {
+      return;
+    }
+
+    const parsed = parseFloat(value);
+    if (isNaN(parsed) || parsed <= gtValue) {
+      return message ?? t(`Must be greater than ${gtValue}`);
+    }
+  };
+
+/** Value is smaller than `ltValue` */
+const lt =
+  (ltValue: number, message?: string): Validator =>
+  (value: string) => {
+    if (value === "") {
+      return;
+    }
+
+    const parsed = parseFloat(value);
+    if (isNaN(parsed) || parsed >= ltValue) {
+      return message ?? t(`Must be greater than ${ltValue}`);
     }
   };
 
@@ -111,6 +139,8 @@ export const Validation = {
   maxLength,
   min,
   max,
+  gt,
+  lt,
   isInt,
   intRange,
   floatRange,

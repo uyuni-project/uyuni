@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormContext } from "components/input/form/Form";
 import { Radio } from "components/input/radio/Radio";
 import { Text } from "components/input/text/Text";
-import Validation from "components/validation";
+import { Validation } from "components/input";
 
 import * as utils from "./utils";
 

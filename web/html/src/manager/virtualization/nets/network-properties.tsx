@@ -6,6 +6,7 @@ import { ActionChain } from "components/action-schedule";
 import { ActionSchedule } from "components/action-schedule";
 import { Button, SubmitButton } from "components/buttons";
 import { Select } from "components/input";
+import { Validation } from "components/input";
 import { Check } from "components/input/check/Check";
 import { Form } from "components/input/form/Form";
 import { convertNumbers, flattenModel, stripBlankValues, unflattenModel } from "components/input/form-utils";
@@ -16,7 +17,6 @@ import { Messages } from "components/messages/messages";
 import { MessageType } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { Loading } from "components/utils/loading/Loading";
-import Validation from "components/validation";
 
 import { localizedMoment } from "utils";
 
@@ -273,7 +273,7 @@ export function NetworkProperties(props: Props) {
                       label={t("Maximum Transmission Unit (MTU)")}
                       labelClass="col-md-3"
                       divClass="col-md-6"
-                      validate={[Validation.isInt({ min: 0 })]}
+                      validate={[Validation.isInt(), Validation.min(0)]}
                       invalidHint={t("The value has to be a positive integer")}
                     />
                   )}
@@ -379,7 +379,7 @@ export function NetworkProperties(props: Props) {
                       label={t("VLAN tag")}
                       labelClass="col-md-3"
                       divClass="col-md-6"
-                      validate={[Validation.isInt({ min: 0, max: 4095 })]}
+                      validate={[Validation.intRange(0, 4095)]}
                       invalidHint={t("Integer between 0 and 4095")}
                     />
                   )}

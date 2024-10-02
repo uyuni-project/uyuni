@@ -1,10 +1,10 @@
 import * as React from "react";
 
 import { Select } from "components/input";
+import { Validation } from "components/input";
 import { FormContext } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { Text } from "components/input/text/Text";
-import Validation from "components/validation";
 
 type Props = {};
 
@@ -53,7 +53,7 @@ export function Vlans(props: Props) {
                 divClass="col-md-12"
                 className="col-md-6"
                 required
-                validate={[Validation.isInt({ min: 0, max: 4095 })]}
+                validate={[Validation.intRange(0, 4095)]}
                 invalidHint={t("Integer between 0 and 4095")}
               />
               <Select

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { SubmitButton } from "components/buttons";
+import { Validation } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -10,7 +11,6 @@ import { Radio } from "components/input/radio/Radio";
 import { Text } from "components/input/text/Text";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
-import Validation from "components/validation";
 
 import Network from "utils/network";
 
@@ -220,7 +220,7 @@ export function ProxyConfig() {
           name="proxyPort"
           label={t("Proxy SSH port")}
           hint={t("Port range: 1 - 65535")}
-          validate={[Validation.isInt({ gt: 0, lt: 65536 })]}
+          validate={[Validation.intRange(0, 65536)]}
           defaultValue="8022"
           labelClass="col-md-3"
           divClass="col-md-6"
@@ -231,7 +231,7 @@ export function ProxyConfig() {
           label={t("Max Squid cache size")}
           hint={t("The maximum value of the Squid cache in Megabytes")}
           required
-          validate={[Validation.isInt({ gt: 0 })]}
+          validate={[Validation.isInt(), Validation.gt(0)]}
           placeholder={t("e.g., 2048")}
           labelClass="col-md-3"
           divClass="col-md-6"

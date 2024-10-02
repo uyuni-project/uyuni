@@ -64,7 +64,7 @@ export type InputBaseProps<ValueType = string> = {
   disabled?: boolean;
 
   /**
-   *  Validate the input, either sync or async, resolve with `undefined` for valid or an error message for invalid
+   *  Validate the input, either sync or async, return `undefined` when valid, a string or string array for an error message when invalid
    */
   validate?: Validator | Validator[];
 
@@ -74,11 +74,12 @@ export type InputBaseProps<ValueType = string> = {
    */
   debounceValidate?: number;
 
-  // TODO: Refactor this out
   /**
-   * @deprecated
    *
-   * Hint to display on a validation error
+   * Prefer returning an error message from your validator instead
+   *
+   * Fallback validation error
+   *
    */
   invalidHint?: React.ReactNode;
 
@@ -333,7 +334,13 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     this.pushHint(hints, this.props.hint);
     this.state.formErrors?.forEach((error) => this.pushHint(hints, error));
     if (this.state.isTouched) {
-      this.state.validationErrors.forEach((error) => this.pushHint(hints, error));
+      if (this.state.validationErrors.size) {
+        if (this.props.invalidHint) {
+          this.pushHint(hints, this.props.invalidHint);
+        } else {
+          this.state.validationErrors.forEach((error) => this.pushHint(hints, error));
+        }
+      }
 
       if (this.props.required && !this.props.disabled) {
         this.pushHint(hints, this.requiredHint());

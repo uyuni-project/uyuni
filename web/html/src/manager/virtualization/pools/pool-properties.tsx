@@ -4,6 +4,7 @@ import { ActionChain } from "components/action-schedule";
 import { ActionSchedule } from "components/action-schedule";
 import { Button, SubmitButton } from "components/buttons";
 import { Select } from "components/input";
+import { Validation } from "components/input";
 import { Check } from "components/input/check/Check";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
@@ -15,7 +16,6 @@ import { MessageType } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { PanelRow } from "components/panels/PanelRow";
 import { Loading } from "components/utils/loading/Loading";
-import Validation from "components/validation";
 
 import { localizedMoment } from "utils";
 
@@ -400,9 +400,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("PCI address formatted like 0000:00:00.0")}
-                          validate={[
-                            Validation.matches(/^[0-9a-fA-F]{4}:[0-9a-fA-F]{2}:[0-9a-fA-F]{1}.[0-9a-fA-F]$/),
-                          ]}
+                          validate={[Validation.matches(/^[0-9a-fA-F]{4}:[0-9a-fA-F]{2}:[0-9a-fA-F]{1}.[0-9a-fA-F]$/)]}
                         />
                       )}
                       {adapter_fields.includes("parent_address_uid") && (
@@ -413,7 +411,7 @@ export function PoolProperties(props: Props) {
                           labelClass="col-md-3"
                           divClass="col-md-6"
                           invalidHint={t("PCI address formatted like 0000:00:00.0")}
-                          validate={[Validation.isInt]}
+                          validate={[Validation.isInt()]}
                         />
                       )}
                       {adapter_fields.includes("parent") && (
@@ -538,7 +536,7 @@ export function PoolProperties(props: Props) {
                     label={t("Owner UID")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    validate={[Validation.isInt({ min: 0 })]}
+                    validate={[Validation.isInt(), Validation.min(0)]}
                     invalidHint={t("UID is a numeric value")}
                   />
                   <Text
@@ -546,7 +544,7 @@ export function PoolProperties(props: Props) {
                     label={t("Group ID")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    validate={[Validation.isInt({ min: 0 })]}
+                    validate={[Validation.isInt(), Validation.min(0)]}
                     invalidHint={t("GID is a numeric value")}
                   />
                   <Text
@@ -555,7 +553,7 @@ export function PoolProperties(props: Props) {
                     hint={t("target directory permissions in octal form, like 0775")}
                     labelClass="col-md-3"
                     divClass="col-md-6"
-                    validate={[Validation.isInt({ gt: 0 })]}
+                    validate={[Validation.isInt(), Validation.gt(0)]}
                     invalidHint={t("GID is a numeric value")}
                   />
                   {/* TODO Add Link to the UI Reference */}

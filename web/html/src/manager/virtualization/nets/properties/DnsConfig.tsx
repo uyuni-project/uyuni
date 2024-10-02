@@ -1,11 +1,11 @@
 import * as React from "react";
 
 import { Select } from "components/input";
+import { Validation } from "components/input";
 import { FormContext } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { Text } from "components/input/text/Text";
 import { Panel } from "components/panels/Panel";
-import Validation from "components/validation";
 
 import * as utils from "./utils";
 
@@ -175,7 +175,7 @@ export function DnsConfig(props: Props) {
                   label={t("Port")}
                   title={t(`DNS SRV record ${index} port`)}
                   name={`dns_srvs${index}_port`}
-                  validate={[Validation.isInt({ min: 0 })]}
+                  validate={[Validation.isInt(), Validation.min(0)]}
                   invalidHint={t("The value has to be a positive integer")}
                   labelClass="col-md-3"
                   divClass="col-md-6"
@@ -184,7 +184,7 @@ export function DnsConfig(props: Props) {
                   label={t("Target priority")}
                   title={t(`DNS SRV record ${index} priority`)}
                   name={`dns_srvs${index}_priority`}
-                  validate={[Validation.isInt({ min: 0 })]}
+                  validate={[Validation.isInt(), Validation.min(0)]}
                   invalidHint={t("The value has to be a positive integer")}
                   labelClass="col-md-3"
                   divClass="col-md-6"
@@ -193,7 +193,7 @@ export function DnsConfig(props: Props) {
                   label={t("Target weight")}
                   title={t(`DNS SRV record ${index} weight`)}
                   name={`dns_srvs${index}_weight`}
-                  validate={[Validation.isInt({ min: 0 })]}
+                  validate={[Validation.isInt(), Validation.min(0)]}
                   invalidHint={t("The value has to be a positive integer")}
                   labelClass="col-md-3"
                   divClass="col-md-6"

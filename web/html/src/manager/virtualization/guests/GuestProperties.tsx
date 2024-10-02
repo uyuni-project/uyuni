@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { ActionChain } from "components/action-schedule";
 import { Select } from "components/input";
+import { Validation } from "components/input";
 import { Check } from "components/input/check/Check";
 import { Text } from "components/input/text/Text";
 import { MessageType } from "components/messages/messages";
@@ -9,7 +10,6 @@ import { Messages } from "components/messages/messages";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { Loading } from "components/utils/loading/Loading";
-import Validation from "components/validation";
 
 import { VirtualizationPoolCapsApi } from "../pools/virtualization-pools-capabilities-api";
 import { VirtualizationListRefreshApi } from "../virtualization-list-refresh-api";
@@ -166,7 +166,7 @@ export function GuestProperties(props: Props) {
                                   invalidHint={t("A positive integer is required")}
                                   labelClass="col-md-3"
                                   divClass="col-md-6"
-                                  validate={[Validation.isInt({ gt: 0 })]}
+                                  validate={[Validation.isInt(), Validation.gt(0)]}
                                 />
                                 <Text
                                   name="vcpu"
@@ -175,7 +175,7 @@ export function GuestProperties(props: Props) {
                                   invalidHint={t("A positive integer is required")}
                                   labelClass="col-md-3"
                                   divClass="col-md-6"
-                                  validate={[Validation.isInt({ gt: 0 })]}
+                                  validate={[Validation.isInt(), Validation.gt(0)]}
                                 />
                                 {initialModel.arch === undefined && (
                                   <Select

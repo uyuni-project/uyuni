@@ -7,7 +7,7 @@ import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput
 import { Range } from "components/input/range/Range";
 import { Text } from "components/input/text/Text";
 import { Panel } from "components/panels/Panel";
-import Validation from "components/validation";
+import { Validation } from "components/input";
 
 import { NetworkAddress } from "./NetworkAddress";
 import * as utils from "./utils";

@@ -1,11 +1,11 @@
 import * as React from "react";
 
 import { ActionChain } from "components/action-schedule";
+import { Validation } from "components/input";
 import { Text } from "components/input/text/Text";
 import { MessageType } from "components/messages/messages";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
-import Validation from "components/validation";
 
 import { GuestPropertiesForm } from "./guest-properties-form";
 
@@ -58,7 +58,7 @@ class GuestPropertiesTraditional extends React.Component<Props, State> {
               invalidHint={t("A positive integer is required")}
               labelClass="col-md-3"
               divClass="col-md-6"
-              validate={[Validation.isInt({ gt: 0 })]}
+              validate={[Validation.isInt(), Validation.gt(0)]}
             />
             <Text
               name="vcpu"
@@ -67,7 +67,7 @@ class GuestPropertiesTraditional extends React.Component<Props, State> {
               invalidHint={t("A positive integer is required")}
               labelClass="col-md-3"
               divClass="col-md-6"
-              validate={[Validation.isInt({ gt: 0 })]}
+              validate={[Validation.isInt(), Validation.gt(0)]}
             />
           </Panel>
         )}
