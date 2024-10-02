@@ -1,9 +1,9 @@
 import * as React from "react";
 
+import { Validation } from "components/input";
 import { FormContext } from "components/input/form/Form";
 import { Radio } from "components/input/radio/Radio";
 import { Text } from "components/input/text/Text";
-import { Validation } from "components/input";
 
 import * as utils from "./utils";
 

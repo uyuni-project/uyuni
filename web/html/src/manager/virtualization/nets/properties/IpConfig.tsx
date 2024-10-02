@@ -2,12 +2,12 @@ import * as React from "react";
 
 import _isNil from "lodash/isNil";
 
+import { Validation } from "components/input";
 import { FormContext } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { Range } from "components/input/range/Range";
 import { Text } from "components/input/text/Text";
 import { Panel } from "components/panels/Panel";
-import { Validation } from "components/input";
 
 import { NetworkAddress } from "./NetworkAddress";
 import * as utils from "./utils";
