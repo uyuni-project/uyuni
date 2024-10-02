@@ -104,7 +104,7 @@ public class AddressTagTest extends RhnBaseTestCase {
                 "Fax: 650-555-1212<br />" +
                 "</address>" +
                 "<a class=\"btn btn-default\" href=\"/EditAddress.do?type=M&amp;uid=" +
-                uid + "\">" + "Edit this address</a>";
+                uid + "\">" + "Edit</a>";
     }
 
     private String getEmptyReturnValue(HttpServletRequest req, Long uid) {
