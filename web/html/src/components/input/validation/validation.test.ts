@@ -3,9 +3,21 @@ import { Validation } from "./validation";
 const errorMessage = "error message";
 
 describe("validation", () => {
+  test("matches", () => {
+    const validator = Validation.matches(/foo/, errorMessage);
+
+    expect(validator("")).toEqual(undefined);
+    expect(validator("-")).toEqual(errorMessage);
+    expect(validator("-foo")).toEqual(undefined);
+    expect(validator("-foo-")).toEqual(undefined);
+    expect(validator("-fo-")).toEqual(errorMessage);
+  });
+
   test("minLength string", () => {
     const validator = Validation.minLength(3, errorMessage);
 
+    // Here and elsewhere, if you want the value to be required, set the `required` flag instead
+    expect(validator("")).toEqual(undefined);
     expect(validator("foo")).toEqual(undefined);
     expect(validator("fo")).toEqual(errorMessage);
   });
@@ -33,6 +45,7 @@ describe("validation", () => {
   test("maxLength string", () => {
     const validator = Validation.maxLength(3, errorMessage);
 
+    expect(validator("")).toEqual(undefined);
     expect(validator("foo")).toEqual(undefined);
     expect(validator("fooo")).toEqual(errorMessage);
   });
@@ -58,19 +71,58 @@ describe("validation", () => {
   });
 
   test("isInt", () => {
-    const validator = Validation.isInt();
+    const validator = Validation.isInt(errorMessage);
 
-    // If you want the value to be required, set the `required` flag instead
-    expect(validator("")).toEqual(true);
-    expect(validator("0")).toEqual(true);
-    expect(validator("42")).toEqual(true);
-    expect(validator("42.")).toEqual(false);
-    expect(validator("4.2")).toEqual(false);
-    expect(validator("0x1")).toEqual(false);
-    expect(validator("foo")).toEqual(false);
+    expect(validator("")).toEqual(undefined);
+    expect(validator("0")).toEqual(undefined);
+    expect(validator("42")).toEqual(undefined);
+    expect(validator("42.")).toEqual(errorMessage);
+    expect(validator("4.2")).toEqual(errorMessage);
+    expect(validator("0x1")).toEqual(errorMessage);
+    expect(validator("foo")).toEqual(errorMessage);
   });
 
-  test("matches", () => {
-    // TODO: Implement
+  test("min", () => {
+    const validator = Validation.min(7, errorMessage);
+
+    expect(validator("")).toEqual(undefined);
+    expect(validator("6")).toEqual(errorMessage);
+    expect(validator("7")).toEqual(undefined);
+    expect(validator("8")).toEqual(undefined);
+  });
+
+  test("max", () => {
+    const validator = Validation.max(7, errorMessage);
+
+    expect(validator("")).toEqual(undefined);
+    expect(validator("6")).toEqual(undefined);
+    expect(validator("7")).toEqual(undefined);
+    expect(validator("8")).toEqual(errorMessage);
+  });
+
+  test("intRange", () => {
+    const validator = Validation.intRange(3, 5, errorMessage);
+
+    expect(validator("")).toEqual(undefined);
+    expect(validator("1.5")).toEqual(errorMessage);
+    expect(validator("2")).toEqual(errorMessage);
+    expect(validator("3")).toEqual(undefined);
+    expect(validator("4")).toEqual(undefined);
+    expect(validator("4.5")).toEqual(errorMessage);
+    expect(validator("5")).toEqual(undefined);
+    expect(validator("6")).toEqual(errorMessage);
+  });
+
+  test("floatRange", () => {
+    const validator = Validation.floatRange(3, 5, errorMessage);
+
+    expect(validator("")).toEqual(undefined);
+    expect(validator("1.5")).toEqual(errorMessage);
+    expect(validator("2")).toEqual(errorMessage);
+    expect(validator("3")).toEqual(undefined);
+    expect(validator("4")).toEqual(undefined);
+    expect(validator("4.5")).toEqual(undefined);
+    expect(validator("5")).toEqual(undefined);
+    expect(validator("6")).toEqual(errorMessage);
   });
 });

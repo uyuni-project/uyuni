@@ -168,19 +168,22 @@ class CreateImageProfile extends React.Component<Props, State> {
     }
   }
 
-  isLabelValid = (label) => {
+  isLabelValid = async (label: string) => {
     if (this.state.initLabel && this.state.initLabel === label) {
       // Initial state (on edit), always valid.
-      return true;
+      return;
     }
 
     // Should not contain ':' character
-    const isValid = label.indexOf(":") === -1;
+    const matchesFormat = label.indexOf(":") === -1;
 
     // Check for uniqueness
-    return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
-      .then((res) => !res.success && isValid)
+    const isValid = Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
+      .then((res) => !res.success && matchesFormat)
       .catch(() => false);
+    if (!isValid) {
+      return t("Label is required and must be a unique string and it cannot include any colons (:).");
+    }
   };
 
   onUpdate = (model) => {
@@ -527,8 +530,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             name="label"
             label={t("Label")}
             required
-            validate={[this.isLabelValid]}
-            invalidHint={t("Label is required and must be a unique string and it cannot include any colons (:).")}
+            validate={this.isLabelValid}
             labelClass="col-md-3"
             divClass="col-md-6"
           />

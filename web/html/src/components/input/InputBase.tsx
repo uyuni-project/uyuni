@@ -168,18 +168,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   componentDidUpdate(prevProps) {
     // Revalidate when changing the following props on-the-fly
     if (this.props.required !== prevProps.required || this.props.disabled !== prevProps.disabled) {
-      const name = this.props.name;
-      if (name instanceof Array) {
-        const values = Object.keys(this.context.model).reduce((filtered, key) => {
-          if (name.includes(key)) {
-            filtered[key] = this.context.model[key];
-          }
-          return filtered;
-        }, {});
-        this.validate(values);
-      } else if (typeof name !== "undefined") {
-        this.validate(this.context.model[name]);
-      }
+      this.validate(this.getModelValue());
     }
   }
 
@@ -200,6 +189,21 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     });
   };
 
+  getModelValue() {
+    const name = this.props.name;
+    if (Array.isArray(name)) {
+      const values = Object.keys(this.context.model).reduce((filtered, key) => {
+        if (name.includes(key)) {
+          filtered[key] = this.context.model[key];
+        }
+        return filtered;
+      }, {} as ValueType);
+      return values;
+    } else if (typeof name !== "undefined") {
+      return this.context.model[name];
+    }
+  }
+
   isEmptyValue(input: unknown) {
     if (typeof input === "string") {
       return input.trim() === "";
@@ -207,11 +211,10 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     return _isNil(input);
   }
 
-  // TODO: Move this into the renderer and cache it
-  requiredValidator: Validator = <T extends ValueType>(value: T) => {
+  requiredHint = () => {
+    const value = this.getModelValue();
     const hasNoValue =
       this.isEmptyValue(value) ||
-      // TODO: Fix types
       (Array.isArray(this.props.name) && Object.values(value).filter((v) => !this.isEmptyValue(v)).length === 0);
 
     if (hasNoValue) {
@@ -219,7 +222,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
         return this.props.required;
       }
 
-      return this.props.label ? t(`${this.props.label} is required.`) : t("required");
+      return this.props.label ? t(`${this.props.label} is required.`) : t("Required");
     }
   };
 
@@ -233,11 +236,6 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   validate = _debounce(
     async <InferredValueType extends unknown = ValueType>(value: InferredValueType): Promise<void> => {
       const validators = Array.isArray(this.props.validate) ? this.props.validate : [this.props.validate] ?? [];
-
-      // TODO: Move this into render so it's always sync and up to date instantly
-      if (!this.props.disabled && this.props.required) {
-        validators.push(this.requiredValidator);
-      }
 
       /**
        * Each validator sets its own result independently, this way we can mix and match different speed async
@@ -309,10 +307,14 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
       this.validate(value);
     }
 
-    if (this.props.onChange) this.props.onChange(name, value);
+    this.props.onChange?.(name, value);
   };
 
-  pushHint(hints: React.ReactNode[], hint?: ValidationResult) {
+  pushHint(hints: React.ReactNode[], hint?: React.ReactNode) {
+    if (!hint) {
+      return;
+    }
+
     if (Array.isArray(hint)) {
       hint.forEach((item) => this.pushHint(hints, item));
       return;
@@ -330,7 +332,13 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     const hints: React.ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
     this.state.formErrors?.forEach((error) => this.pushHint(hints, error));
-    this.state.validationErrors.forEach((error) => this.pushHint(hints, error));
+    if (this.state.isTouched) {
+      this.state.validationErrors.forEach((error) => this.pushHint(hints, error));
+
+      if (this.props.required && !this.props.disabled) {
+        this.pushHint(hints, this.requiredHint());
+      }
+    }
 
     const hasError = this.state.isTouched && !this.isValid();
 

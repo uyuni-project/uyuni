@@ -58,12 +58,15 @@ export function IpConfig(props: Props) {
                 required
                 validate={[
                   utils.allOrNone,
-                  (value) =>
-                    Object.values(value).every((item) => {
+                  (value) => {
+                    const isValid = Object.values(value).every((item) => {
                       return typeof item === "string" && (item === "" || !_isNil(item.match(address_pattern)));
-                    }),
+                    });
+                    if (!isValid) {
+                      return t(`Both values need to be IPv${ip_version} addresses`);
+                    }
+                  },
                 ]}
-                invalidHint={t(`Both values need to be IPv${ip_version} addresses`)}
               />
             )}
           </FormMultiInput>

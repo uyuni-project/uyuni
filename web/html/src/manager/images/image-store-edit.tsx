@@ -79,14 +79,17 @@ class CreateImageStore extends React.Component<Props, State> {
     });
   };
 
-  isLabelUnique = (label) => {
+  isLabelUnique = async (label: string) => {
     if (this.state.initLabel && this.state.initLabel === label) {
-      return true;
+      return;
     }
 
-    return Network.get("/rhn/manager/api/cm/imagestores/find/" + label)
+    const isUnique = await Network.get("/rhn/manager/api/cm/imagestores/find/" + label)
       .then((res) => !res.success)
       .catch(() => false);
+    if (!isUnique) {
+      return t("Label is required and must be unique.");
+    }
   };
 
   onUpdate = (model) => {
@@ -259,7 +262,6 @@ class CreateImageStore extends React.Component<Props, State> {
             label={t("Label")}
             required
             validate={this.isLabelUnique}
-            invalidHint={t("Label is required and must be unique.")}
             labelClass="col-md-3"
             divClass="col-md-6"
           />

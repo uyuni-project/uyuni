@@ -18,7 +18,7 @@ export default () => {
   return (
     <Form model={model} onChange={setModel}>
       <p>Async validation with debounce:</p>
-      <Text name="foo" validate={[asyncValidator]} debounceValidate={500} />
+      <Text name="foo" required validate={asyncValidator} debounceValidate={500} />
     </Form>
   );
 };

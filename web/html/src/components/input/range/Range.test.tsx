@@ -74,7 +74,7 @@ describe("Range", () => {
           if (!hasValues) {
             return message;
           }
-          // TODO: Replace this with Validate.isInteger or similar
+
           const isInteger = Object.values(value).every((item) => typeof item === "string" && item.match(/^[0-9]+$/));
           if (!isInteger) {
             return message;

@@ -403,13 +403,16 @@ export function NetworkProperties(props: Props) {
                         divClass="col-md-6"
                         validate={[
                           utils.allOrNone,
-                          (value) =>
-                            Object.values(value).every(
+                          (value) => {
+                            const isValid = Object.values(value).every(
                               (item) =>
                                 typeof item === "string" && (item === "" || item.match(utils.ipv4Pattern) != null)
-                            ),
+                            );
+                            if (!isValid) {
+                              return t("Both values has to be IPv4 addresses");
+                            }
+                          },
                         ]}
-                        invalidHint={t("Both values has to be IPv4 addresses")}
                       />
                       <Range
                         prefix="nat_port"
@@ -417,18 +420,28 @@ export function NetworkProperties(props: Props) {
                         title={t("NAT port range")}
                         labelClass="col-md-3"
                         divClass="col-md-6"
-                        // TODO: See Range.test.tsx and update this
                         validate={[
                           utils.allOrNone,
-                          (value) =>
-                            Object.values(value).every(
-                              (item) => typeof item === "string" && (item === "" || item.match(/^[0-9]+$/))
-                            ),
-                          ({ nat_port_start, nat_port_end }) =>
-                            (nat_port_start === "" && nat_port_end === "") ||
-                            parseInt(nat_port_start, 10) <= parseInt(nat_port_end, 10),
+                          (value) => {
+                            const message = t("Both values need to be positive integers");
+                            const hasValues = Object.values(value).every((item) => item != null);
+                            if (!hasValues) {
+                              return message;
+                            }
+
+                            const isInteger = Object.values(value).every(
+                              (item) => typeof item === "string" && item.match(/^[0-9]+$/)
+                            );
+                            if (!isInteger) {
+                              return message;
+                            }
+                            const { port_start, port_end } = value;
+                            const isOrdered = parseInt(port_start, 10) <= parseInt(port_end, 10);
+                            if (!isOrdered) {
+                              return message;
+                            }
+                          },
                         ]}
-                        invalidHint={t("Both values has to be positive integers")}
                       />
                     </>
                   )}
