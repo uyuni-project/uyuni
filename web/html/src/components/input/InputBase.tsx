@@ -338,6 +338,8 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     }
 
     this.props.onChange?.(name, value);
+    // TODO: Document
+    // this.forceUpdate();
   };
 
   pushHint(hints: React.ReactNode[], hint?: React.ReactNode) {

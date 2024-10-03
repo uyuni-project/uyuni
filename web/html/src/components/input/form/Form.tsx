@@ -69,6 +69,9 @@ export class Form extends React.Component<Props> {
   inputs: { [key: string]: InputBaseRef | undefined } = {};
 
   setModelValue = (name: string, value: any) => {
+    if (name === "ipv6-enabled") {
+      debugger;
+    }
     /**
      * NB! This is incorrect, but a lot of other code relies on this bug so we can't change it.
      * We modify the object directly, as opposed to creating a new interface, which means React doesn't know changes have occurred.

@@ -121,6 +121,7 @@ export function NetworkProperties(props: Props) {
 
   const isInitialRender = React.useRef(true);
   React.useEffect(() => {
+    console.log("override");
     if (isInitialRender.current) {
       isInitialRender.current = false;
       return;
@@ -129,7 +130,6 @@ export function NetworkProperties(props: Props) {
   }, [props.initialModel]);
 
   const onValidate = (isValid: boolean) => {
-    console.log("onValidate", isValid);
     setInvalid(!isValid);
   };
 
@@ -203,6 +203,8 @@ export function NetworkProperties(props: Props) {
     value,
     label: FieldsData.getValue(value, "label", value),
   }));
+
+  console.log(model);
 
   return (
     <VirtualizationNetworkDevsApi hostId={props.serverId}>
@@ -455,6 +457,7 @@ export function NetworkProperties(props: Props) {
                 <Panel key="addressing" title={t("Addressing")} headingLevel="h2">
                   <IpConfig />
                   <Check name="ipv6-enabled" label={t("Enable IPv6")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
+                  {model["ipv6-enabled"] ? "true" : "false"}
                   {model["ipv6-enabled"] && <IpConfig ipv6 />}
                   <Text name="domain" label={t("Domain name")} labelClass="col-md-3" divClass="col-md-6" />
                   <DnsConfig />

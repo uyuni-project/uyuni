@@ -116,152 +116,152 @@ describe("Rendering", () => {
     click(screen.getByText("Submit"));
   });
 
-  //   test("Create network with all addressing fields", async (done) => {
-  //     onSubmit = ({ definition }) => {
-  //       expect(definition).toStrictEqual({
-  //         type: "open",
-  //         bridge: "virbr2",
-  //         name: "open0",
-  //         domain: "tf.local",
-  //         ipv4: {
-  //           address: "192.168.10.0",
-  //           prefix: 24,
-  //           dhcpranges: [
-  //             { start: "192.168.10.10", end: "192.168.10.20" },
-  //             { start: "192.168.10.110", end: "192.168.10.120" },
-  //           ],
-  //           hosts: [
-  //             { mac: "2A:C3:A7:A6:01:00", name: "dev-srv", ip: "192.168.10.2" },
-  //             { mac: "2A:C3:A7:A6:01:01", ip: "192.168.10.3" },
-  //           ],
-  //           bootpfile: "pxelinux.0",
-  //           bootpserver: "192.168.10.2",
-  //           tftp: "/path/to/tftproot",
-  //         },
-  //         ipv6: {
-  //           address: "2001:db8:ac10:fd01::",
-  //           prefix: 64,
-  //           dhcpranges: [{ start: "2001:db8:ac10:fd01::10", end: "2001:db8:ac10:fd01::20" }],
-  //           hosts: [{ id: "0:3:0:1:0:16:3e:11:22:33", name: "peter.xyz", ip: "2001:db8:ac10:fd01::2" }],
-  //         },
-  //         dns: {
-  //           hosts: [{ address: "192.168.10.1", names: ["host", "gateway"] }],
-  //           srvs: [
-  //             {
-  //               name: "srv1",
-  //               protocol: "tcp",
-  //               domain: "test-domain-name.com",
-  //               target: "test.example.com",
-  //               port: 1111,
-  //               priority: 11,
-  //               weight: 111,
-  //             },
-  //             {
-  //               name: "srv2",
-  //               protocol: "udp",
-  //             },
-  //           ],
-  //           txts: [
-  //             { name: "example", value: "foo" },
-  //             { name: "bar", value: "other value" },
-  //           ],
-  //           forwarders: [
-  //             { address: "8.8.4.4" },
-  //             { address: "192.168.1.1", domain: "example.com" },
-  //             { domain: "acme.com" },
-  //           ],
-  //         },
-  //       });
-  //       done();
-  //     };
+  test("Create network with all addressing fields", async (done) => {
+    onSubmit = ({ definition }) => {
+      expect(definition).toStrictEqual({
+        type: "open",
+        bridge: "virbr2",
+        name: "open0",
+        domain: "tf.local",
+        ipv4: {
+          address: "192.168.10.0",
+          prefix: 24,
+          dhcpranges: [
+            { start: "192.168.10.10", end: "192.168.10.20" },
+            { start: "192.168.10.110", end: "192.168.10.120" },
+          ],
+          hosts: [
+            { mac: "2A:C3:A7:A6:01:00", name: "dev-srv", ip: "192.168.10.2" },
+            { mac: "2A:C3:A7:A6:01:01", ip: "192.168.10.3" },
+          ],
+          bootpfile: "pxelinux.0",
+          bootpserver: "192.168.10.2",
+          tftp: "/path/to/tftproot",
+        },
+        ipv6: {
+          address: "2001:db8:ac10:fd01::",
+          prefix: 64,
+          dhcpranges: [{ start: "2001:db8:ac10:fd01::10", end: "2001:db8:ac10:fd01::20" }],
+          hosts: [{ id: "0:3:0:1:0:16:3e:11:22:33", name: "peter.xyz", ip: "2001:db8:ac10:fd01::2" }],
+        },
+        dns: {
+          hosts: [{ address: "192.168.10.1", names: ["host", "gateway"] }],
+          srvs: [
+            {
+              name: "srv1",
+              protocol: "tcp",
+              domain: "test-domain-name.com",
+              target: "test.example.com",
+              port: 1111,
+              priority: 11,
+              weight: 111,
+            },
+            {
+              name: "srv2",
+              protocol: "udp",
+            },
+          ],
+          txts: [
+            { name: "example", value: "foo" },
+            { name: "bar", value: "other value" },
+          ],
+          forwarders: [
+            { address: "8.8.4.4" },
+            { address: "192.168.1.1", domain: "example.com" },
+            { domain: "acme.com" },
+          ],
+        },
+      });
+      done();
+    };
 
-  //     await renderWithNetwork();
-  //     await select(screen.getByLabelText("Network type"), "open");
-  //     await type(screen.getByLabelText("Name"), "open0");
-  //     await type(screen.getByLabelText("Bridge"), "virbr2");
-  //     await type(screen.getByLabelText("Domain name"), "tf.local");
+    await renderWithNetwork();
+    await select(screen.getByLabelText("Network type"), "open");
+    await type(screen.getByLabelText("Name"), "open0");
+    await type(screen.getByLabelText("Bridge"), "virbr2");
+    await type(screen.getByLabelText("Domain name"), "tf.local");
 
-  //     // IPv4 fields setting
-  //     const ipv4_address = await screen.findByTitle("IPv4 Network address");
-  //     await type(ipv4_address, "192.168.10.0");
-  //     await type(screen.getByTitle("IPv4 Network address prefix"), "24");
+    // IPv4 fields setting
+    const ipv4_address = await screen.findByTitle("IPv4 Network address");
+    await type(ipv4_address, "192.168.10.0");
+    await type(screen.getByTitle("IPv4 Network address prefix"), "24");
 
-  //     click(screen.getByTitle("Add DHCP Ranges"));
-  //     const dhcp0_start = await screen.findByTitle("DHCP address range 0 start");
-  //     await type(dhcp0_start, "192.168.10.10");
-  //     await type(screen.getByTitle("DHCP address range 0 end"), "192.168.10.20");
-  //     click(screen.getByTitle("Add DHCP Ranges"));
-  //     const dhcp1_start = await screen.findByTitle("DHCP address range 1 start");
-  //     await type(dhcp1_start, "192.168.10.110");
-  //     await type(screen.getByTitle("DHCP address range 1 end"), "192.168.10.120");
-  //     click(screen.getByTitle("Add DHCP Hosts"));
-  //     const dhcp0_host = await screen.findByTitle("DHCP host 0 address");
-  //     await type(dhcp0_host, "192.168.10.2");
-  //     await type(screen.getByTitle("DHCP host 0 MAC address"), "2A:C3:A7:A6:01:00");
-  //     await type(screen.getByTitle("DHCP host 0 name"), "dev-srv");
-  //     click(screen.getByTitle("Add DHCP Hosts"));
-  //     const dhcp1_host = await screen.findByTitle("DHCP host 1 address");
-  //     await type(dhcp1_host, "192.168.10.3");
-  //     await type(screen.getByTitle("DHCP host 1 MAC address"), "2A:C3:A7:A6:01:01");
-  //     await type(screen.getByLabelText("BOOTP image file"), "pxelinux.0");
-  //     await type(screen.getByLabelText("BOOTP server"), "192.168.10.2");
-  //     await type(screen.getByLabelText("TFTP root path"), "/path/to/tftproot");
+    click(screen.getByTitle("Add DHCP Ranges"));
+    const dhcp0_start = await screen.findByTitle("DHCP address range 0 start");
+    await type(dhcp0_start, "192.168.10.10");
+    await type(screen.getByTitle("DHCP address range 0 end"), "192.168.10.20");
+    click(screen.getByTitle("Add DHCP Ranges"));
+    const dhcp1_start = await screen.findByTitle("DHCP address range 1 start");
+    await type(dhcp1_start, "192.168.10.110");
+    await type(screen.getByTitle("DHCP address range 1 end"), "192.168.10.120");
+    click(screen.getByTitle("Add DHCP Hosts"));
+    const dhcp0_host = await screen.findByTitle("DHCP host 0 address");
+    await type(dhcp0_host, "192.168.10.2");
+    await type(screen.getByTitle("DHCP host 0 MAC address"), "2A:C3:A7:A6:01:00");
+    await type(screen.getByTitle("DHCP host 0 name"), "dev-srv");
+    click(screen.getByTitle("Add DHCP Hosts"));
+    const dhcp1_host = await screen.findByTitle("DHCP host 1 address");
+    await type(dhcp1_host, "192.168.10.3");
+    await type(screen.getByTitle("DHCP host 1 MAC address"), "2A:C3:A7:A6:01:01");
+    await type(screen.getByLabelText("BOOTP image file"), "pxelinux.0");
+    await type(screen.getByLabelText("BOOTP server"), "192.168.10.2");
+    await type(screen.getByLabelText("TFTP root path"), "/path/to/tftproot");
 
-  //     // IPv6 fields checks
-  //     click(screen.getByText("Enable IPv6"));
-  //     const ipv6_address = await screen.findByTitle("IPv6 Network address");
-  //     await type(ipv6_address, "2001:db8:ac10:fd01::");
-  //     await type(screen.getByRole("textbox", { name: "IPv6 Network address prefix" }), "64");
-  //     click(screen.getByTitle("Add DHCPv6 Ranges"));
-  //     const dhcpv6_range0 = await screen.findByTitle("DHCPv6 address range 0 start");
-  //     await type(dhcpv6_range0, "2001:db8:ac10:fd01::10");
-  //     await type(screen.getByTitle("DHCPv6 address range 0 end"), "2001:db8:ac10:fd01::20");
-  //     click(screen.getByTitle("Add DHCPv6 Hosts"));
-  //     const dhcpv6_host0 = await screen.findByTitle("DHCPv6 host 0 address");
-  //     await type(dhcpv6_host0, "2001:db8:ac10:fd01::2");
-  //     await type(screen.getByTitle("DHCPv6 host 0 DUID"), "0:3:0:1:0:16:3e:11:22:33");
-  //     await type(screen.getByTitle("DHCPv6 host 0 name"), "peter.xyz");
+    // IPv6 fields checks
+    click(screen.getByText("Enable IPv6"));
+    const ipv6_address = await screen.findByTitle("IPv6 Network address");
+    await type(ipv6_address, "2001:db8:ac10:fd01::");
+    await type(screen.getByRole("textbox", { name: "IPv6 Network address prefix" }), "64");
+    click(screen.getByTitle("Add DHCPv6 Ranges"));
+    const dhcpv6_range0 = await screen.findByTitle("DHCPv6 address range 0 start");
+    await type(dhcpv6_range0, "2001:db8:ac10:fd01::10");
+    await type(screen.getByTitle("DHCPv6 address range 0 end"), "2001:db8:ac10:fd01::20");
+    click(screen.getByTitle("Add DHCPv6 Hosts"));
+    const dhcpv6_host0 = await screen.findByTitle("DHCPv6 host 0 address");
+    await type(dhcpv6_host0, "2001:db8:ac10:fd01::2");
+    await type(screen.getByTitle("DHCPv6 host 0 DUID"), "0:3:0:1:0:16:3e:11:22:33");
+    await type(screen.getByTitle("DHCPv6 host 0 name"), "peter.xyz");
 
-  //     // DNS fields checks
-  //     click(screen.getByTitle("Add Forwarders"));
-  //     const fwd0 = await screen.findByTitle("DNS forwarder 0 address");
-  //     await type(fwd0, "8.8.4.4");
-  //     click(screen.getByTitle("Add Forwarders"));
-  //     const fwd1 = await screen.findByTitle("DNS forwarder 1 domain name");
-  //     await type(fwd1, "example.com");
-  //     await type(screen.getByTitle("DNS forwarder 1 address"), "192.168.1.1");
-  //     click(screen.getByTitle("Add Forwarders"));
-  //     const fwd2 = await screen.findByTitle("DNS forwarder 2 domain name");
-  //     await type(fwd2, "acme.com");
-  //     click(screen.getByTitle("Add Hosts"));
-  //     const dns_host0 = await screen.findByTitle("DNS host 0 names");
-  //     await type(dns_host0, "host,gateway");
-  //     await type(screen.getByTitle("DNS host 0 address"), "192.168.10.1");
-  //     click(screen.getByTitle("Add SRV records"));
-  //     const srv0 = await screen.findByTitle("DNS SRV record 0 service");
-  //     await type(srv0, "srv1");
-  //     await select(screen.getByLabelText("DNS SRV record 0 protocol"), "TCP");
-  //     await type(screen.getByTitle("DNS SRV record 0 domain name"), "test-domain-name.com");
-  //     await type(screen.getByTitle("DNS SRV record 0 target hostname"), "test.example.com");
-  //     await type(screen.getByTitle("DNS SRV record 0 port"), "1111");
-  //     await type(screen.getByTitle("DNS SRV record 0 priority"), "11");
-  //     await type(screen.getByTitle("DNS SRV record 0 weight"), "111");
-  //     click(screen.getByTitle("Add SRV records"));
-  //     const srv1 = await screen.findByTitle("DNS SRV record 1 service");
-  //     await type(srv1, "srv2");
-  //     await select(screen.getByLabelText("DNS SRV record 1 protocol"), "UDP");
-  //     click(screen.getByTitle("Add TXT records"));
-  //     const txt0 = await screen.findByTitle("DNS TXT record 0 name");
-  //     await type(txt0, "example");
-  //     await type(screen.getByTitle("DNS TXT record 0 value"), "foo");
-  //     click(screen.getByTitle("Add TXT records"));
-  //     const txt1 = await screen.findByTitle("DNS TXT record 1 name");
-  //     await type(txt1, "bar");
-  //     await type(screen.getByTitle("DNS TXT record 1 value"), "other value");
+    // DNS fields checks
+    click(screen.getByTitle("Add Forwarders"));
+    const fwd0 = await screen.findByTitle("DNS forwarder 0 address");
+    await type(fwd0, "8.8.4.4");
+    click(screen.getByTitle("Add Forwarders"));
+    const fwd1 = await screen.findByTitle("DNS forwarder 1 domain name");
+    await type(fwd1, "example.com");
+    await type(screen.getByTitle("DNS forwarder 1 address"), "192.168.1.1");
+    click(screen.getByTitle("Add Forwarders"));
+    const fwd2 = await screen.findByTitle("DNS forwarder 2 domain name");
+    await type(fwd2, "acme.com");
+    click(screen.getByTitle("Add Hosts"));
+    const dns_host0 = await screen.findByTitle("DNS host 0 names");
+    await type(dns_host0, "host,gateway");
+    await type(screen.getByTitle("DNS host 0 address"), "192.168.10.1");
+    click(screen.getByTitle("Add SRV records"));
+    const srv0 = await screen.findByTitle("DNS SRV record 0 service");
+    await type(srv0, "srv1");
+    await select(screen.getByLabelText("DNS SRV record 0 protocol"), "TCP");
+    await type(screen.getByTitle("DNS SRV record 0 domain name"), "test-domain-name.com");
+    await type(screen.getByTitle("DNS SRV record 0 target hostname"), "test.example.com");
+    await type(screen.getByTitle("DNS SRV record 0 port"), "1111");
+    await type(screen.getByTitle("DNS SRV record 0 priority"), "11");
+    await type(screen.getByTitle("DNS SRV record 0 weight"), "111");
+    click(screen.getByTitle("Add SRV records"));
+    const srv1 = await screen.findByTitle("DNS SRV record 1 service");
+    await type(srv1, "srv2");
+    await select(screen.getByLabelText("DNS SRV record 1 protocol"), "UDP");
+    click(screen.getByTitle("Add TXT records"));
+    const txt0 = await screen.findByTitle("DNS TXT record 0 name");
+    await type(txt0, "example");
+    await type(screen.getByTitle("DNS TXT record 0 value"), "foo");
+    click(screen.getByTitle("Add TXT records"));
+    const txt1 = await screen.findByTitle("DNS TXT record 1 name");
+    await type(txt1, "bar");
+    await type(screen.getByTitle("DNS TXT record 1 value"), "other value");
 
-  //     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
-  //     click(screen.getByText("Submit"));
-  //   });
+    expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
 
   //   test("Create openVSwitch bridge network", async (done) => {
   //     onSubmit = ({ definition }) => {
