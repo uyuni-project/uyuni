@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Oct 03 16:15:11 CEST 2024 - rosuna@suse.com
+
+- version 5.0.13-0
+  * Fix Find Targets button behavior for the feature Salt > Remote Commands page
+  * Fix the missing background color for the pending status badge
+    and show/hide the response badge component.
+  * Fix stretched button issue in Audit Search and Subscription Matching pages
+  * Fix alert layout in formula catalog
+  * Fix sticky header infinite scroll
+  * Fix layout mismatch in patches management
+  * Fix column alignment on repository and system pages
+  * Integrate UI debugging stories
+  * Fix Extra Packages column in systems list (bsc#1228980)
+  * Update the WebUI version
+
+-------------------------------------------------------------------
 Thu Aug 01 16:45:13 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.12-0
