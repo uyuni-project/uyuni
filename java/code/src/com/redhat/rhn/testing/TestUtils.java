@@ -284,7 +284,7 @@ public class TestUtils {
                                                 String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
-                      .setString("label", label)
+                      .setParameter("label", label)
                       //Retrieve from cache if there
                       .setCacheable(true)
                       .uniqueResult();

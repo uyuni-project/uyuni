@@ -46,6 +46,11 @@ import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Predicate;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -296,12 +301,19 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
+        Server host = ServerTestUtils
+                .createVirtHostWithGuest(systemEntitlementManager);
+        CriteriaBuilder cb = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<VirtualInstance> query
+                = cb.createQuery(VirtualInstance.class);
 
-        VirtualInstance fromDb = (VirtualInstance) HibernateFactory.getSession()
-                .getCriteriaBuilder().createQuery(VirtualInstance.class)
-                .add(Restrictions.eq("hostSystem", host))
-                .add(Restrictions.eq("guestSystem", null))
+        Root<VirtualInstance> root = query.from(VirtualInstance.class);
+
+        Predicate predicate = cb.equal(root.get("hostSystem"), host);
+        predicate = cb.and(predicate, cb.equal(root.get("guestSystem"), null));
+
+        query.select(root).where(predicate);
+        VirtualInstance fromDb = HibernateFactory.getSession().createQuery(query)
                 .uniqueResult();
 
         VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()

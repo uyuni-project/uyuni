@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-
+import jakarta.persistence.TypedQuery;
 
 /**
  * KickstartFactory
@@ -914,11 +914,10 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> listAllKickstartData() {
-        Session session = getSession();
-        Criteria c = session.getCriteriaBuilder().createQuery(KickstartData.class);
-        // Hibernate does not filter out duplicate references by default
-        c.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-        return c.list();
+        String sql = "SELECT DISTINCT * FROM kickstart_data";
+        TypedQuery<KickstartData> query =
+                getSession().createNativeQuery(sql, KickstartData.class);
+        return query.getResultList();
     }
 
     /**

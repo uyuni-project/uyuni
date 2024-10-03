@@ -26,8 +26,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.metadata.ClassMetadata;
 
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
+import jakarta.persistence.metamodel.Metamodel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,9 +36,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-
-import io.prometheus.client.hibernate.HibernateStatisticsCollector;
-
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
@@ -110,16 +108,12 @@ abstract class AbstractConnectionManager implements ConnectionManager {
      * {@inheritDoc}
      */
     @Override
-    public ClassMetadata getMetadata(Object target) {
+    public Metamodel getMetadata(Object target) {
         if (target == null) {
             return null;
         }
 
-        if (target instanceof Class) {
-            return sessionFactory.getClassMetadata((Class<?>) target);
-        }
-
-        return sessionFactory.getClassMetadata(target.getClass());
+        return sessionFactory.getMetamodel();
     }
 
     /**

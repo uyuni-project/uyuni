@@ -48,6 +48,8 @@ import java.util.Optional;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.NoResultException;
 
 /**
  * ConfigurationFactory.  For use when dealing with ConfigChannel, ConfigChannelType,
@@ -379,15 +381,25 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param cct the config channel type of the config channel.
      * @return the ConfigChannel found or null if not found.
      */
-    public static ConfigChannel lookupConfigChannelByLabel(String label,
-                                                            Org org,
-                                                          ConfigChannelType cct) {
-        Session session = HibernateFactory.getSession();
-        return (ConfigChannel) session.getCriteriaBuilder().createQuery(ConfigChannel.class).
-                        add(Restrictions.eq("org", org)).
-                        add(Restrictions.eq("label", label)).
-                        add(Restrictions.eq("configChannelType", cct)).
-                        uniqueResult();
+    public static ConfigChannel lookupConfigChannelByLabel(String label, Org org,
+            ConfigChannelType cct) {
+        String sql
+                = "SELECT * FROM rhnserverconfigchannel WHERE org = :org AND label = :label AND config_channel_type = :cct";
+
+        TypedQuery<ConfigChannel> query
+                = getSession().createNativeQuery(sql, ConfigChannel.class);
+
+        query.setParameter("org", org);
+        query.setParameter("label", label);
+        query.setParameter("cct", cct);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving ConfigChannel", e);
+        }
     }
 
     /**

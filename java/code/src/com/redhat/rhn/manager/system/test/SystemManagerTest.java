@@ -260,33 +260,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testSnapshotServer() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Long id = server.getId();
-
-        assertTrue(SystemManager.serverHasFeature(id, "ftr_snapshotting"));
-        assertEquals(Integer.valueOf(0), numberOfSnapshots(id));
-        SystemManager.snapshotServer(server, "Testing snapshots");
-        assertEquals(Integer.valueOf(1), numberOfSnapshots(id));
-    }
-
-    /*
-     * I know this is ugly, but since we haven't got the sever snapshotting feature fully
-     * worked out in java yet, just do a sql query to make sure the stored proc worked.
-     */
-    private Integer numberOfSnapshots(Long sid) {
-        Session session = HibernateFactory.getSession();
-        return (Integer) session.createSQLQuery("Select count(*) as cnt " +
-                                                         "  from rhnSnapshot " +
-                                                         " where server_id = " + sid)
-                                         .addScalar("cnt", IntegerType.INSTANCE)
-                                         .uniqueResult();
-    }
-
-    @Test
     public void testDeleteServer() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

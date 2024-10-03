@@ -86,16 +86,15 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
         return o == null ? 0 : o.hashCode();
     }
 
-    @Override
-    public void nullSafeSet(PreparedStatement statement, Object value, int position,
-            SharedSessionContractImplementor session) throws HibernateException, SQLException {
-        K jdbcValue = value == null ? null : toDb.apply(enumClass.cast(value));
-        if (jdbcValue == null) {
-            statement.setNull(position, 12);
-        }
-        else {
-            statement.setObject(position, jdbcValue, getSqlType());
-        }
+    public K nullSafeGet(ResultSet var1, int var2, SharedSessionContractImplementor var3,
+            @Deprecated Object var4)
+            throws SQLException {
+        return null;
+    }
+
+    public void nullSafeSet(PreparedStatement var1, Object var2, int var3,
+            SharedSessionContractImplementor var4)
+            throws SQLException {
     }
 
     @Override

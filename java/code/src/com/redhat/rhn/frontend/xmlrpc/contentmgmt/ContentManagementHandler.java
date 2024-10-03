@@ -58,6 +58,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.Predicate;
+
 /**
  * Content Management XMLRPC handler
  *
@@ -643,10 +652,29 @@ public class ContentManagementHandler extends BaseHandler {
         });
 
         ContentFilter.Rule ruleObj = ContentFilter.Rule.lookupByLabel(rule);
-        ContentFilter.EntityType entityTypeObj = ContentFilter.EntityType.lookupByLabel(entityType);
-        FilterCriteria criteriaObj = getCriteriaBuilder().createQuery(criteria).orElseThrow(
-                () -> new InvalidArgsException("criteria must be specified")
-        );
+        ContentFilter.EntityType entityTypeObj =
+                ContentFilter.EntityType.lookupByLabel(entityType);
+
+        CriteriaBuilder cb = HibernateFactory.getSession().getCriteriaBuilder();
+
+        CriteriaQuery<FilterCriteria> cq = cb.createQuery(FilterCriteria.class);
+        Root<FilterCriteria> root = cq.from(FilterCriteria.class);
+
+        Predicate[] predicates = criteria.entrySet().stream()
+                .map(entry -> cb.equal(root.get(entry.getKey()), entry.getValue()))
+                .toArray(Predicate[]::new);
+
+        cq.where(predicates);
+
+        FilterCriteria criteriaObj;
+        try {
+            TypedQuery<FilterCriteria> query =
+                    HibernateFactory.getSession().createQuery(cq);
+            criteriaObj = query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            throw new InvalidArgsException("Criteria must be specified");
+        }
 
         try {
             return contentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj, loggedInUser);
@@ -710,41 +738,49 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Filter is not found
      * @return the updated {@link ContentFilter}
      *
-     * @apidoc.doc Update a Content Filter
-     * #paragraph_end()
-     * #paragraph()
-     * See also: createFilter(), listFilterCriteria()
+     * @apidoc.doc Update a Content Filter #paragraph_end() #paragraph() See
+     * also: createFilter(), listFilterCriteria()
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "filterId", "Filter ID")
      * @apidoc.param #param_desc("string", "name", "New filter name")
-     * @apidoc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
-     * @apidoc.param
-     *  #struct_begin("criteria")
-     *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
-     *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
-     *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
-     *  #struct_end()
+     * @apidoc.param #param_desc("string", "rule", "New filter rule ('deny' or
+     * 'allow')")
+     * @apidoc.param #struct_begin("criteria") #prop_desc("string", "matcher",
+     * "The matcher type of the filter (e.g. 'contains')") #prop_desc("string",
+     * "field", "The entity field to match (e.g. 'name'") #prop_desc("string",
+     * "value", "The field value to match (e.g. 'kernel')") #struct_end()
      * @apidoc.returntype $ContentFilterSerializer
      */
-    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name, String rule,
-            Map<String, Object> criteria) {
+    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name,
+            String rule, Map<String, Object> criteria) {
         ensureOrgAdmin(loggedInUser);
 
-        Optional<ContentFilter.Rule> ruleObj;
-        if (rule.isEmpty()) {
-            ruleObj = empty();
+        Optional<ContentFilter.Rule> ruleObj =
+                rule == null || rule.isEmpty() ? Optional.empty() :
+                        Optional.of(ContentFilter.Rule.lookupByLabel(rule));
+
+        CriteriaBuilder cb = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<FilterCriteria> cq = cb.createQuery(FilterCriteria.class);
+        Root<FilterCriteria> root = cq.from(FilterCriteria.class);
+
+        Predicate[] predicates = criteria.entrySet().stream()
+                .map(entry -> cb.equal(root.get(entry.getKey()), entry.getValue()))
+                .toArray(Predicate[]::new);
+
+        cq.where(predicates);
+
+        TypedQuery<FilterCriteria> query = HibernateFactory.getSession().createQuery(cq);
+        FilterCriteria filterCriteria;
+        try {
+            filterCriteria = query.getSingleResult();
         }
-        else {
-            ruleObj = Optional.of(ContentFilter.Rule.lookupByLabel(rule));
+        catch (NoResultException e) {
+            filterCriteria = null;
         }
-        Optional<FilterCriteria> criteriaObj = getCriteriaBuilder().createQuery(criteria);
 
         try {
-            return contentManager.updateFilter(
-                    filterId.longValue(),
-                    ofNullable(name),
-                    ruleObj,
-                    criteriaObj,
+            return contentManager.updateFilter(filterId.longValue(),
+                    Optional.ofNullable(name), ruleObj, Optional.ofNullable(filterCriteria),
                     loggedInUser);
         }
         catch (EntityNotExistsException e) {

@@ -88,8 +88,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the {@link XccdfBenchmark} if any
      */
     public static Optional<XccdfBenchmark> lookupBenchmarkById(long benchmarkId) {
-        return Optional.ofNullable(
-                (XccdfBenchmark)getSession().get(XccdfBenchmark.class, benchmarkId));
+        return Optional.ofNullable(getSession().get(XccdfBenchmark.class, benchmarkId));
     }
 
     /**
@@ -98,7 +97,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the {@link XccdfIdent} if any
      */
     public static Optional<XccdfIdent> lookupIdentById(long identId) {
-        return Optional.ofNullable((XccdfIdent)getSession().get(XccdfIdent.class, identId));
+        return Optional.ofNullable(getSession().get(XccdfIdent.class, identId));
     }
 
     /**
@@ -107,20 +106,21 @@ public class ScapFactory extends HibernateFactory {
      * @return the {@link XccdfProfile} if any
      */
     public static Optional<XccdfProfile> lookupProfileById(long profileId) {
-        return Optional.ofNullable(
-                (XccdfProfile)getSession().get(XccdfProfile.class, profileId));
+        return Optional.ofNullable(getSession().get(XccdfProfile.class, profileId));
     }
 
     /**
-     * Find a {@link XccdfRuleResultType} by id.
-     * @param label label id
-     * @return the {@link XccdfRuleResultType} if any
+     * Queries an XccdfRuleResultType by its label.
+     *
+     * @param label the label of the XccdfRuleResultType
+     * @return optional of XccdfRuleResultType
      */
     public static Optional<XccdfRuleResultType> lookupRuleResultType(String label) {
-        return getSession().getCriteriaBuilder().createQuery(XccdfRuleResultType.class)
-                .add(Restrictions.eq("label", label))
-                .list()
-                .stream().findFirst();
+        String sql = "SELECT * FROM rhnXccdfRuleResultType WHERE label = :label";
+        XccdfRuleResultType result =
+                getSession().createNativeQuery(sql, XccdfRuleResultType.class)
+                        .setParameter("label", label).getResultStream().findFirst().orElse(null);
+        return Optional.ofNullable(result);
     }
 
     /**

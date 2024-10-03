@@ -156,7 +156,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         Session session = HibernateFactory.getSession();
         return (KickstartSessionState) session
                           .getNamedQuery("KickstartSessionState.findByLabel")
-                          .setString("label", label)
+                          .setParameter("label", label)
                           .uniqueResult();
     }
 

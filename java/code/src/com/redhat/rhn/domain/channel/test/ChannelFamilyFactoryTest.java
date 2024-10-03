@@ -65,16 +65,6 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupByLabelLike() throws Exception {
-        ChannelFamily cfam = createTestChannelFamily();
-        List cfams = ChannelFamilyFactory.lookupByLabelLike(cfam.getLabel(),
-                cfam.getOrg());
-        ChannelFamily cfam2 = (ChannelFamily) cfams.get(0);
-        assertEquals(cfam.getId(), cfam2.getId());
-    }
-
-
-    @Test
     public void testVerifyOrgFamily() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

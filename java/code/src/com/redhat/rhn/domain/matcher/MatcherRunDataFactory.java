@@ -20,6 +20,15 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.NoResultException;
+
 /**
  * MatcherRunData hibernate factory.
  */
@@ -44,9 +53,22 @@ public class MatcherRunDataFactory extends HibernateFactory {
      * @return MatcherRunData instance
      */
     public static MatcherRunData getSingle() {
-        return (MatcherRunData) getSession()
-                .getCriteriaBuilder().createQuery(MatcherRunData.class)
-                .uniqueResult();
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+        CriteriaQuery<MatcherRunData> cq = cb.createQuery(MatcherRunData.class);
+        Root<MatcherRunData> root = cq.from(MatcherRunData.class);
+        cq.select(root);
+
+        TypedQuery<MatcherRunData> query = getSession().createQuery(cq);
+
+        try {
+            return query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error retrieving MatcherRunData", e);
+        }
     }
 
     /**
