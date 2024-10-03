@@ -72,6 +72,24 @@ When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node.run("#{salt_call} saltutil.refresh_grains")
 end
 
+When(/^I setup a git_pillar environment on the Salt Master$/) do
+  file = 'salt_git_pillar_setup.sh'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  # Execute "salt_git_pillar_setup.sh setup" on the server
+  get_target('server').run("sh /tmp/#{file} setup", check_errors: true, verbose: true)
+end
+
+When(/^I clean up the git_pillar environment on the Salt Master$/) do
+  file = 'salt_git_pillar_setup.sh'
+
+  # Execute "salt_git_pillar_setup.sh setup" on the server
+  get_target('server').run("sh /tmp/#{file} clean", check_errors: true, verbose: true)
+end
+
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
@@ -375,6 +393,16 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
 
     sleep 1
   end
+end
+
+Then(/^the pillar data for "([^"]*)" should be empty on the Salt Master$/) do |key|
+  output = salt_master_pillar_get(key)
+  raise "Output value is not empty: #{output}" unless output == ''
+end
+
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on the Salt Master$/) do |key, value|
+  output = salt_master_pillar_get(key)
+  raise "Output value is different than #{value}: #{output}" unless output.to_s.strip == value
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
