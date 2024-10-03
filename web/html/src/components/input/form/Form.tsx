@@ -69,22 +69,24 @@ export class Form extends React.Component<Props> {
   inputs: { [key: string]: InputBaseRef | undefined } = {};
 
   setModelValue = (name: string, value: any) => {
+    /**
+     * NB! This is incorrect, but a lot of other code relies on this bug so we can't change it.
+     * We modify the object directly, as opposed to creating a new interface, which means React doesn't know changes have occurred.
+     * This means we need to force an update to notify all related components.
+     * Hopefully we can throw all of this away once we incorporate Formik.
+     */
     const { model, errors } = this.props;
-
     if (value == null && model[name] != null) {
-      // Ensure the reference changes whenever a value changes
-      // TODO: Do we need structural clone here, or can we get away with a cheap spread?
-      const newModel = { ...model };
-      delete newModel[name];
-      this.props.onChange?.(newModel);
+      delete model[name];
+      this.props.onChange?.(model);
     } else if (value != null) {
-      const newModel = { ...model };
-      newModel[name] = value;
-      this.props.onChange?.(newModel);
+      model[name] = value;
+      this.props.onChange?.(model);
     }
     if (errors) {
       delete errors[name];
     }
+    this.forceUpdate();
 
     // Usually, fields validate themselves bottom up, in this case we pass values top down so we need to validate that way as well
     this.inputs[name]?.validate(value);

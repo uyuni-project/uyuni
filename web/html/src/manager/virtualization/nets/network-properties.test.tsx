@@ -10,6 +10,7 @@ import {
   screen,
   select,
   server,
+  timeout,
   type,
   waitForElementToBeRemoved,
 } from "utils/test-utils";
@@ -59,62 +60,61 @@ describe("Rendering", () => {
   test("Render with minimal properties", async () => {
     await renderWithNetwork();
     expect(fieldValuesByName("type")).toStrictEqual(["bridge"]);
-    screen.debug();
     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeTruthy();
   });
 
-  //   test("Create bridge network", async (done) => {
-  //     onSubmit = ({ definition }) => {
-  //       expect(definition).toStrictEqual({
-  //         name: "bridge0",
-  //         type: "bridge",
-  //         bridge: "br0",
-  //         autostart: true,
-  //       });
-  //       done();
-  //     };
+  test("Create bridge network", async (done) => {
+    onSubmit = ({ definition }) => {
+      expect(definition).toStrictEqual({
+        name: "bridge0",
+        type: "bridge",
+        bridge: "br0",
+        autostart: true,
+      });
+      done();
+    };
 
-  //     await renderWithNetwork();
-  //     expect(fieldValuesByName("type")).toStrictEqual(["bridge"]);
-  //     await type(screen.getByLabelText("Name"), "bridge0");
-  //     await type(screen.getByLabelText("Bridge"), "br0");
-  //     click(screen.getByLabelText("Start during virtual host boot"));
-  //     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
-  //     click(screen.getByText("Submit"));
-  //   });
+    await renderWithNetwork();
+    expect(fieldValuesByName("type")).toStrictEqual(["bridge"]);
+    await type(screen.getByLabelText("Name"), "bridge0");
+    await type(screen.getByLabelText("Bridge"), "br0");
+    click(screen.getByLabelText("Start during virtual host boot"));
+    expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
 
-  //   test("Create NAT network", async (done) => {
-  //     onSubmit = ({ definition }) => {
-  //       expect(definition).toStrictEqual({
-  //         name: "nat0",
-  //         type: "nat",
-  //         mtu: 7000,
-  //         nat: {
-  //           address: { start: "192.168.10.3", end: "192.168.10.4" },
-  //           port: { start: 1234, end: 1236 },
-  //         },
-  //         ipv4: {
-  //           address: "192.168.10.0",
-  //           prefix: 24,
-  //         },
-  //       });
-  //       done();
-  //     };
+  test("Create NAT network", async (done) => {
+    onSubmit = ({ definition }) => {
+      expect(definition).toStrictEqual({
+        name: "nat0",
+        type: "nat",
+        mtu: 7000,
+        nat: {
+          address: { start: "192.168.10.3", end: "192.168.10.4" },
+          port: { start: 1234, end: 1236 },
+        },
+        ipv4: {
+          address: "192.168.10.0",
+          prefix: 24,
+        },
+      });
+      done();
+    };
 
-  //     await renderWithNetwork();
-  //     await select(screen.getByLabelText("Network type"), "nat");
-  //     await type(screen.getByLabelText("Name"), "nat0");
-  //     await type(screen.getByLabelText("Maximum Transmission Unit (MTU)"), "7000");
-  //     const ipv4_address = await screen.findByTitle("IPv4 Network address");
-  //     await type(ipv4_address, "192.168.10.0");
-  //     await type(screen.getByTitle("IPv4 Network address prefix"), "24");
-  //     await type(screen.getByTitle("NAT IPv4 range start"), "192.168.10.3");
-  //     await type(screen.getByTitle("NAT IPv4 range end"), "192.168.10.4");
-  //     await type(screen.getByTitle("NAT port range start"), "1234");
-  //     await type(screen.getByTitle("NAT port range end"), "1236");
-  //     expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
-  //     click(screen.getByText("Submit"));
-  //   });
+    await renderWithNetwork();
+    await select(screen.getByLabelText("Network type"), "nat");
+    await type(screen.getByLabelText("Name"), "nat0");
+    await type(screen.getByLabelText("Maximum Transmission Unit (MTU)"), "7000");
+    const ipv4_address = await screen.findByTitle("IPv4 Network address");
+    await type(ipv4_address, "192.168.10.0");
+    await type(screen.getByTitle("IPv4 Network address prefix"), "24");
+    await type(screen.getByTitle("NAT IPv4 range start"), "192.168.10.3");
+    await type(screen.getByTitle("NAT IPv4 range end"), "192.168.10.4");
+    await type(screen.getByTitle("NAT port range start"), "1234");
+    await type(screen.getByTitle("NAT port range end"), "1236");
+    expect(screen.getByText<HTMLButtonElement>("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
 
   //   test("Create network with all addressing fields", async (done) => {
   //     onSubmit = ({ definition }) => {

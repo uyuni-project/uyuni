@@ -42,8 +42,7 @@ type Props = {
 
 function clearFields(initialModel, setModel) {
   if (initialModel) {
-    // TODO: Is this safe?
-    let definition = Object.assign({}, initialModel);
+    let definition = initialModel;
 
     // Convert some int properties to string since validators only work with strings
     // TODO Remove once https://github.com/uyuni-project/uyuni/issues/3391 is completed
@@ -120,16 +119,18 @@ export function NetworkProperties(props: Props) {
   const [actionChain, setActionChain] = React.useState<ActionChain | null | undefined>(null);
   const [earliest, setEarliest] = React.useState(localizedMoment());
 
+  const isInitialRender = React.useRef(true);
   React.useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     clearFields(props.initialModel, setModel);
   }, [props.initialModel]);
 
   const onValidate = (isValid: boolean) => {
+    console.log("onValidate", isValid);
     setInvalid(!isValid);
-  };
-
-  const onChange = (newModel: any) => {
-    setModel(Object.assign({}, newModel));
   };
 
   const onSubmit = () => {
@@ -211,8 +212,8 @@ export function NetworkProperties(props: Props) {
             <Form
               className="form-horizontal"
               model={model}
+              onChange={setModel}
               onValidate={onValidate}
-              onChange={onChange}
               onSubmit={onSubmit}
               title={t("network properties")}
             >
@@ -430,14 +431,15 @@ export function NetworkProperties(props: Props) {
                               return message;
                             }
 
-                            const isInteger = Object.values(value).every(
-                              (item) => typeof item === "string" && item.match(/^[0-9]+$/)
-                            );
+                            const { nat_port_start, nat_port_end } = value;
+                            const parsedStart = parseInt(nat_port_start, 10);
+                            const parsedEnd = parseInt(nat_port_end, 10);
+                            const isInteger = !isNaN(parsedStart) && !isNaN(parsedEnd);
                             if (!isInteger) {
                               return message;
                             }
-                            const { port_start, port_end } = value;
-                            const isOrdered = parseInt(port_start, 10) <= parseInt(port_end, 10);
+
+                            const isOrdered = parsedStart <= parsedEnd;
                             if (!isOrdered) {
                               return message;
                             }

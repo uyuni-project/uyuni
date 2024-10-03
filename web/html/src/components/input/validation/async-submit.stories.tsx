@@ -18,7 +18,6 @@ export default () => {
   };
 
   const onValidate = (newIsValid: boolean) => {
-    console.log(newIsValid);
     setIsValid(newIsValid);
   };
 

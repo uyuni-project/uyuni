@@ -302,7 +302,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     if (this.state.requiredError) {
       return false;
     }
-    if (this.state.formErrors && this.state.formErrors.length > 0) {
+    if (this.state.formErrors?.some((item) => typeof item !== "undefined")) {
       return false;
     }
     if (this.state.validationErrors.size > 0) {
@@ -375,6 +375,16 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     }
 
     const hasError = this.state.isTouched && !this.isValid();
+
+    // if (!this.isValid()) {
+    //   console.log("+++++++++++++++++++++");
+    //   console.log(this.props.name);
+    //   console.log(this.state.requiredError);
+    //   console.log(this.state.validationErrors);
+    //   console.log(this.state.formErrors);
+    //   console.log(this.getModelValue());
+    //   console.log("+++++++++++++++++++++");
+    // }
 
     return (
       <FormGroup isError={hasError} key={`${this.props.name}-group`} className={this.props.className}>

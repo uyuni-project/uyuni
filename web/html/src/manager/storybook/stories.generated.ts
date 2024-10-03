@@ -412,3 +412,14 @@ export const components_utils_loading_text_stories_tsx = {
   component: components_utils_loading_text_stories_tsx_component,
   raw: components_utils_loading_text_stories_tsx_raw,
 };
+
+import manager_virtualization_nets_network_properties_stories_tsx_component from "manager/virtualization/nets/network-properties.stories.tsx";
+import manager_virtualization_nets_network_properties_stories_tsx_raw from "manager/virtualization/nets/network-properties.stories.tsx?raw";
+
+export const manager_virtualization_nets_network_properties_stories_tsx = {
+  path: "manager/virtualization/nets/network-properties.stories.tsx",
+  title: "network-properties.stories.tsx",
+  groupName: "nets",
+  component: manager_virtualization_nets_network_properties_stories_tsx_component,
+  raw: manager_virtualization_nets_network_properties_stories_tsx_raw,
+};
