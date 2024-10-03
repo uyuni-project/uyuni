@@ -57,7 +57,7 @@ const Build = ({
       <div className="text-center">
         <ModalButton
           id={`build-contentmngt-modal-link`}
-          className={disabled ? `btn-secondary` : `btn-primary`}
+          className={`btn-primary`}
           text={
             changesToBuild.length > 0
               ? t("Build ({count})", {

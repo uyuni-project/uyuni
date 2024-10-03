@@ -89,11 +89,11 @@
       </div>
       <div class="pull-right">
         <c:if test="${!requestScope.completed and !isRedHatMinion}">
-          <html:submit styleClass="btn btn-success" property="dispatch">
+          <html:submit styleClass="btn btn-default" property="dispatch">
             <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
           </html:submit>
         </c:if>
-        <html:submit styleClass="btn btn-danger" property="dispatch">
+        <html:submit styleClass="btn btn-primary" property="dispatch">
           <bean:message key="spmigration.jsp.confirm.submit" />
         </html:submit>
       </div>

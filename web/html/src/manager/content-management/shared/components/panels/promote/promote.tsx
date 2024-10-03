@@ -112,7 +112,7 @@ const Promote = (props: Props) => {
                 }}
               />
               <Button
-                className="btn-success"
+                className="btn-primary"
                 text={t("Promote")}
                 title={t("Promote environment")}
                 handler={() => {

@@ -35,12 +35,12 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-save'/>"
-                    class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
+                    class="btn btn-primary" ${in_progress || inactive ? 'disabled' : ''}>
                     <rhn:icon type="repo-save"/>
                     <bean:message key='repos.jsp.button-save'/>
                 </button>
                 <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-sync'/>"
-                        class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
+                        class="btn btn-primary" ${in_progress || inactive ? 'disabled' : ''}>
                     <rhn:icon type="repo-sync"/>
                     <bean:message key='repos.jsp.button-sync'/>
                 </button>
