@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 03 16:17:46 CEST 2024 - rosuna@suse.com
+
+- version 5.0.12-0
+  * During schema upgrade, avoid insert problem when Extern - Oracle Linux 9
+    is not present (bsc#1230021)
+  * Remove superfluous joins from errata view
+
+-------------------------------------------------------------------
 Thu Aug 01 16:54:53 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.11-0
