@@ -86,12 +86,14 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
         return o == null ? 0 : o.hashCode();
     }
 
+    @Override
     public K nullSafeGet(ResultSet var1, int var2, SharedSessionContractImplementor var3,
             @Deprecated Object var4)
             throws SQLException {
         return null;
     }
 
+    @Override
     public void nullSafeSet(PreparedStatement var1, Object var2, int var3,
             SharedSessionContractImplementor var4)
             throws SQLException {

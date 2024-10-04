@@ -32,10 +32,6 @@ import org.hibernate.MappingException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import jakarta.persistence.FlushModeType;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaDelete;
-import jakarta.persistence.criteria.Root;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +51,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import jakarta.persistence.FlushModeType;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.Root;
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
  * storing Objects from the DB using Hibernate.

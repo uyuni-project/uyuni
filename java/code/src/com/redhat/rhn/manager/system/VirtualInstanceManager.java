@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.manager.system;
 
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.BaseManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 import com.suse.manager.webui.websocket.VirtNotifications;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

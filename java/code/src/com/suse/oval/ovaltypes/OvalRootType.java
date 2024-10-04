@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.suse.oval.ovaltypes;
 
 import com.suse.oval.OsFamily;
@@ -22,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.persistence.Transient;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;

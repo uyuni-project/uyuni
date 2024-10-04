@@ -45,11 +45,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.NoResultException;
 
 /**
  * ConfigurationFactory.  For use when dealing with ConfigChannel, ConfigChannelType,
@@ -384,7 +384,8 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigChannel lookupConfigChannelByLabel(String label, Org org,
             ConfigChannelType cct) {
         String sql
-                = "SELECT * FROM rhnserverconfigchannel WHERE org = :org AND label = :label AND config_channel_type = :cct";
+                = "SELECT * FROM rhnserverconfigchannel WHERE org = :org" +
+                "AND label = :label AND config_channel_type = :cct";
 
         TypedQuery<ConfigChannel> query
                 = getSession().createNativeQuery(sql, ConfigChannel.class);
@@ -395,9 +396,11 @@ public class ConfigurationFactory extends HibernateFactory {
 
         try {
             return query.getSingleResult();
-        } catch (NoResultException e) {
+        }
+        catch (NoResultException e) {
             return null;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException("Error retrieving ConfigChannel", e);
         }
     }

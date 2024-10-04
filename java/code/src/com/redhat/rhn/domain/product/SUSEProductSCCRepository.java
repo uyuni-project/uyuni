@@ -17,8 +17,6 @@ package com.redhat.rhn.domain.product;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
-import org.hibernate.annotations.Type;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

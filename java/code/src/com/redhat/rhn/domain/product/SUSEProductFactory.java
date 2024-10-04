@@ -44,8 +44,8 @@ import java.util.stream.Stream;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -563,7 +563,7 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Find extensions for the product
-     * @param root the root product
+     * @param rootProduct the rootProduct product
      * @param base the base product
      * @param ext the extension product
      * @return the Optional of {@link SUSEProductExtension} product
@@ -588,7 +588,8 @@ public class SUSEProductFactory extends HibernateFactory {
 
         if (result == null) {
             return Optional.empty();
-        } else {
+        }
+        else {
             return Optional.of(result);
         }
     }
@@ -628,7 +629,7 @@ public class SUSEProductFactory extends HibernateFactory {
     /**
      * Find all {@link SUSEProductExtension} of a product for a given root.
      * @param product product to find extensions of
-     * @param root root product to find extensions in
+     * @param rootProduct root product to find extensions in
      * @return list of product extension of the given product
      */
     @SuppressWarnings("unchecked")
@@ -739,7 +740,8 @@ public class SUSEProductFactory extends HibernateFactory {
         predicate = cb.and(predicate, cb.equal(root.get("baseproduct"), isBaseProduct));
         if (StringUtils.isEmpty(release)) {
             predicate = cb.and(predicate, cb.isNull(root.get("release")));
-        } else {
+        }
+        else {
             predicate = cb.and(predicate, cb.equal(root.get("release"), release));
         }
 

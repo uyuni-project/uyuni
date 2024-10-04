@@ -31,8 +31,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 /**
  * ChannelFamilyFactoryTest
  */

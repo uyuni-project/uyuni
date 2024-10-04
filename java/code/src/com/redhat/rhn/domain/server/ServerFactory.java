@@ -54,8 +54,6 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
@@ -75,10 +73,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 
@@ -219,7 +217,8 @@ public class ServerFactory extends HibernateFactory {
 
         if (nameIsFullyQualified) {
             String strippedHostname = name.split("\\.")[0];
-            sql = "SELECT * FROM rhnServer WHERE hostname = :hostname AND id IN (SELECT server_id FROM rhnProxyInfo)";
+            sql = "SELECT * FROM rhnServer WHERE hostname = :hostname AND id IN" +
+                "(SELECT server_id FROM rhnProxyInfo)";
             query = HibernateFactory.getSession().createNativeQuery(sql, Server.class);
             query.setParameter("hostname", strippedHostname);
             servers = query.getResultList();
@@ -227,8 +226,10 @@ public class ServerFactory extends HibernateFactory {
             if (result.isPresent()) {
                 return result;
             }
-        } else {
-            sql = "SELECT * FROM rhnServer WHERE hostname LIKE :hostnamePattern AND id IN (SELECT server_id FROM rhnProxyInfo)";
+        }
+        else {
+            sql = "SELECT * FROM rhnServer WHERE hostname LIKE :hostnamePattern AND " +
+                    "id IN (SELECT server_id FROM rhnProxyInfo)";
             query = HibernateFactory.getSession().createNativeQuery(sql, Server.class);
             query.setParameter("hostnamePattern", name + "%");
             servers = query.getResultList();

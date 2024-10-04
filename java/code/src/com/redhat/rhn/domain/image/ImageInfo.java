@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.server.ServerArch;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
 import java.util.Set;

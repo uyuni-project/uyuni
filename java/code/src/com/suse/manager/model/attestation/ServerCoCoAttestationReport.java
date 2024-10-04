@@ -18,8 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
@@ -45,9 +43,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
+
 @Entity
 @Table(name = "suseServerCoCoAttestationReport")
 public class ServerCoCoAttestationReport extends BaseDomainHelper implements Serializable {
+
     private static final long serialVersionUID = 8161461482693316376L;
     private Long id;
     private Server server;

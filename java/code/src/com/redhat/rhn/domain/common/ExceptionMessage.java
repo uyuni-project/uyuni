@@ -18,8 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.Session;
-import jakarta.persistence.EntityManager;
+
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
@@ -51,9 +50,11 @@ public class ExceptionMessage {
         query.setParameter("negId", -1 * exceptionId);
         try {
             return query.getSingleResult();
-        } catch (NoResultException e) {
+        }
+        catch (NoResultException e) {
             return null;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException("Error retrieving ExceptionMessage", e);
         }
     }

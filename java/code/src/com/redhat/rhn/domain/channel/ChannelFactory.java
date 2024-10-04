@@ -23,7 +23,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -48,14 +47,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Subquery;
 
 /**
  * ChannelFactory
@@ -1254,15 +1251,16 @@ public class ChannelFactory extends HibernateFactory {
         Predicate isOrgNull = cb.isNull(root.get("org"));
         Predicate sourceUrlPredicate;
 
-        if (repoUrl.contains("mirrorlist.centos.org")
-                || repoUrl.contains("mirrors.rockylinux.org")) {
+        if (repoUrl.contains("mirrorlist.centos.org") || repoUrl.contains("mirrors.rockylinux.org")) {
             sourceUrlPredicate = cb.equal(root.get("sourceUrl"), repoUrl);
-        } else {
+        }
+        else {
             String[] parts = repoUrl.split("\\?");
             String repoUrlPrefix = parts[0];
             if (parts.length > 1) {
                 sourceUrlPredicate = cb.like(root.get("sourceUrl"), repoUrlPrefix + '%');
-            } else {
+            }
+            else {
                 sourceUrlPredicate = cb.equal(root.get("sourceUrl"), repoUrlPrefix);
             }
         }
@@ -1275,7 +1273,8 @@ public class ChannelFactory extends HibernateFactory {
         ContentSource contentSource;
         try {
             contentSource = query.getSingleResult();
-        } catch (NoResultException e) {
+        }
+        catch (NoResultException e) {
             contentSource = null;
         }
 
@@ -1314,9 +1313,11 @@ public class ChannelFactory extends HibernateFactory {
         query.setParameter("version", version);
         try {
             return query.getSingleResult();
-        } catch (NoResultException e) {
+        }
+        catch (NoResultException e) {
             return null;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException("Error retrieving ChannelProduct", e);
         }
     }

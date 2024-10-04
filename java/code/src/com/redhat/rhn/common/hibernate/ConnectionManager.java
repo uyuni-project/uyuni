@@ -18,8 +18,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.metadata.ClassMetadata;
 
-import jakarta.persistence.metamodel.Metamodel;
 import java.util.Optional;
+
+import jakarta.persistence.metamodel.Metamodel;
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated

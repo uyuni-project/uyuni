@@ -27,8 +27,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import io.prometheus.client.hibernate.HibernateStatisticsCollector;
-import jakarta.persistence.metamodel.Metamodel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,6 +34,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+
+import jakarta.persistence.metamodel.Metamodel;
+
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated

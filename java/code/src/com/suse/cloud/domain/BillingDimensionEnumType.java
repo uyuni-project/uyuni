@@ -12,18 +12,15 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.suse.cloud.domain;
-
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import org.hibernate.HibernateException;
-import java.sql.ResultSet;
-
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import com.redhat.rhn.domain.errata.CustomEnumType;
 
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 
 /**
@@ -51,13 +48,10 @@ public class BillingDimensionEnumType extends CustomEnumType<BillingDimension, S
         return null;
     }
 
-    ;
-
     @Override
     public void nullSafeSet(PreparedStatement var1, Object var2, int var3,
             SharedSessionContractImplementor var4)
             throws SQLException {
+        return;
     }
-;
-
 }

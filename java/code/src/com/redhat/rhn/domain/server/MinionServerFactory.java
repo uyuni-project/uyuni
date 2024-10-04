@@ -31,21 +31,21 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.NoResultException;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -111,7 +111,8 @@ public class MinionServerFactory extends HibernateFactory {
             // Attempt to get a single result
             MinionServer result = query.getSingleResult();
             return Optional.ofNullable(result);
-        } catch (NoResultException e) {
+        }
+        catch (NoResultException e) {
             return Optional.empty(); // Return empty if no result is found
         }
     }
@@ -173,7 +174,8 @@ public class MinionServerFactory extends HibernateFactory {
         //NOTE: this is needed since empty sets produce invalid sql statemensts
         if (minionIds.isEmpty()) {
             return emptyList();
-        } else {
+        }
+        else {
             CriteriaBuilder cb = getSession().getCriteriaBuilder();
             CriteriaQuery<MinionServer> query = cb.createQuery(MinionServer.class);
             Root<MinionServer> root = query.from(MinionServer.class);
@@ -188,9 +190,9 @@ public class MinionServerFactory extends HibernateFactory {
      * @return map of SSH minion id and its contact method
      */
     public static List<MinionServer> listSSHMinions() {
-        String sql = "SELECT ms.* FROM minion_server ms "
-                + "JOIN contact_method cm ON ms.contact_method_id = cm.id "
-                + "WHERE cm.label IN (:labels)";
+        String sql = "SELECT ms.* FROM minion_server ms " +
+        "JOIN contact_method cm ON ms.contact_method_id = cm.id " +
+        "WHERE cm.label IN (:labels)";
 
         return HibernateFactory.getSession().createNativeQuery(sql, MinionServer.class)
                 .setParameter("labels", Arrays.asList("ssh-push", "ssh-push-tunnel"))

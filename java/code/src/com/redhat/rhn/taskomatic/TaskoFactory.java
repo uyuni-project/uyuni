@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic;
 
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
@@ -26,23 +25,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
 
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 
 /**
  * TaskoFactory
  */
 public class TaskoFactory extends HibernateFactory {
+
     private static TaskoFactory singleton = new TaskoFactory();
     private static Logger log = LogManager.getLogger(TaskoFactory.class);
 
@@ -60,6 +59,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lookup a organization bunch by name
+     *
      * @param bunchName bunch name
      * @return bunch
      */
@@ -69,6 +69,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lookup a satellite bunch by name
+     *
      * @param bunchName bunch name
      * @return bunch
      */
@@ -78,6 +79,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * list all available organizational bunches
+     *
      * @return list of bunches
      */
     public static List<TaskoBunch> listOrgBunches() {
@@ -86,6 +88,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * list all available satellite bunches
+     *
      * @return list of bunches
      */
     public static List<TaskoBunch> listSatBunches() {
@@ -94,6 +97,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save run
+     *
      * @param taskoRun run to save
      */
     public static void save(TaskoRun taskoRun) {
@@ -102,6 +106,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate delete run
+     *
      * @param taskoRun run to delete
      */
     public static void delete(TaskoRun taskoRun) {
@@ -110,6 +115,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate delete schedule
+     *
      * @param taskoSchedule schedule to delete
      */
     public static void delete(TaskoSchedule taskoSchedule) {
@@ -118,6 +124,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save schedule
+     *
      * @param taskoSchedule schedule to save
      */
     public static void save(TaskoSchedule taskoSchedule) {
@@ -126,6 +133,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save template
+     *
      * @param taskoTemplate run to save
      */
     public static void save(TaskoTemplate taskoTemplate) {
@@ -134,6 +142,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate delete template
+     *
      * @param taskoTemplate run to delete
      */
     public static void delete(TaskoTemplate taskoTemplate) {
@@ -142,6 +151,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save bunch
+     *
      * @param taskoBunch run to save
      */
     public static void save(TaskoBunch taskoBunch) {
@@ -150,6 +160,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate delete bunch
+     *
      * @param taskoBunch run to delete
      */
     public static void delete(TaskoBunch taskoBunch) {
@@ -158,6 +169,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save task
+     *
      * @param taskoTask run to save
      */
     public static void save(TaskoTask taskoTask) {
@@ -166,6 +178,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate delete task
+     *
      * @param taskoTask run to delete
      */
     public static void delete(TaskoTask taskoTask) {
@@ -174,6 +187,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists all available tasks
+     *
      * @return list of tasks
      */
     public static List<TaskoTask> listTasks() {
@@ -182,6 +196,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists runs older than given date
+     *
      * @param limitTime date of interest
      * @return list of runs
      */
@@ -191,6 +206,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists runs newer than given date
+     *
      * @param limitTime date of interest
      * @return list of runs
      */
@@ -200,6 +216,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * deletes specified tasko run
+     *
      * @param run run to delete
      */
     public static void deleteRun(TaskoRun run) {
@@ -208,6 +225,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists active schedules for a given org
+     *
      * @param orgId organization id
      * @return list of active schedules
      */
@@ -227,11 +245,12 @@ public class TaskoFactory extends HibernateFactory {
 
         // Remove schedules with bunch names in 'filter'
         schedules.removeIf(schedule -> filter.contains(schedule.getBunch().getName()));
-        return  schedules;
+        return schedules;
     }
 
     /**
      * lists active schedules of given name for a given org
+     *
      * @param orgId organization id
      * @param jobLabel unique job name
      * @return list of active schedules
@@ -250,6 +269,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists active schedule of the given bunch
+     *
      * @param orgId organization id
      * @param bunchName bunch name
      * @return list of schedules
@@ -268,9 +288,9 @@ public class TaskoFactory extends HibernateFactory {
         return singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrgAndBunch", params);
     }
 
-
     /**
      * list schedules, that shall be run sometime in the future
+     *
      * @return list of schedules to be run at least once
      */
     public static List<TaskoSchedule> listFuture() {
@@ -279,6 +299,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * list all schedule runs with (future) timestamps newer than limitTime
+     *
      * @param scheduleId schedule id
      * @param limitTime limit time
      * @return list of runs
@@ -289,7 +310,7 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     private static TaskoBunch lookupBunchByOrgAndName(Integer orgId, String bunchName)
-        throws NoSuchBunchTaskException {
+            throws NoSuchBunchTaskException {
         TaskoBunch bunch;
         if (orgId == null) {
             bunch = lookupSatBunchByName(bunchName);
@@ -305,6 +326,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lookup schedule by id
+     *
      * @param scheduleId schedule id
      * @return schedule
      */
@@ -324,6 +346,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lookup bunch by label
+     *
      * @param bunchName bunch label
      * @return bunch
      */
@@ -333,6 +356,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists all schedules for an org
+     *
      * @param orgId organizational id
      * @return list of all schedules
      */
@@ -345,6 +369,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * list all runs associated with a schedule
+     *
      * @param scheduleId schedule id
      * @return list of runs
      */
@@ -354,6 +379,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * list schedules older than given date
+     *
      * @param limitTime time of interest
      * @return list of schedules
      */
@@ -363,6 +389,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists organizational schedules by name
+     *
      * @param orgId organization id
      * @param jobLabel unique job name
      * @return list of schedules
@@ -380,6 +407,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lookup run by id
+     *
      * @param runId run id
      * @return run
      */
@@ -389,13 +417,14 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lookup organizational run by id
+     *
      * @param orgId organizational id
      * @param runId run id
      * @return run
      * @throws InvalidParamException thrown in case of wrong runId
      */
     public static TaskoRun lookupRunByOrgAndId(Integer orgId, Integer runId)
-        throws InvalidParamException {
+            throws InvalidParamException {
         TaskoRun run = lookupRunById(runId.longValue());
         if ((run == null) || (!runBelongToOrg(orgId, run))) {
             throw new InvalidParamException("No such run id");
@@ -405,6 +434,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists organizational runs by schedule
+     *
      * @param orgId organization id
      * @param scheduleId schedule id
      * @return list of runs
@@ -419,6 +449,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * lists runs by bunch
+     *
      * @param bunchName bunch name
      * @return list of runs
      */
@@ -428,6 +459,7 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * Returns the latest run from the specified bunch
+     *
      * @param bunchName the bunch name
      * @return the latest run or null if none exists
      */
@@ -468,8 +500,9 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     /**
-     * Reinitializes schedule
-     * used, when quartz needs to be updated according to our tasko table entries
+     * Reinitializes schedule used, when quartz needs to be updated according to
+     * our tasko table entries
+     *
      * @param schedule schedule to reinit
      * @param now time to set
      * @return schedule
@@ -494,8 +527,9 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     /**
-     * Lists taskomatic runs those endTime IS NULL (most probably were interrupted by
-     * taskomatic shutdown)
+     * Lists taskomatic runs those endTime IS NULL (most probably were
+     * interrupted by taskomatic shutdown)
+     *
      * @return list of unfinished runs
      */
     public static List<TaskoRun> listUnfinishedRuns() {
@@ -503,8 +537,10 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     /**
-     * List repo-sync-bunch schedules newer than a given date. If the given date is null,
-     * all schedules will be returned with an "activeFrom" date > January 1, 1970.
+     * List repo-sync-bunch schedules newer than a given date. If the given date
+     * is null, all schedules will be returned with an "activeFrom" date >
+     * January 1, 1970.
+     *
      * @param date time of interest
      * @return list of repo sync schedules
      */
