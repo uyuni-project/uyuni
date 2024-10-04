@@ -2357,7 +2357,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
-                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
                 isAlibaba2() || isAmazon2() ||
                 isDebian12() || isDebian11() || isDebian10();
@@ -2435,6 +2435,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isUbuntu2204() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
+    }
+
+    boolean isUbuntu2404() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("24.04");
     }
 
     boolean isDebian12() {
