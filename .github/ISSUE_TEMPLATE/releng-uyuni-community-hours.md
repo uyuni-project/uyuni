@@ -36,3 +36,4 @@ Add more tasks if needed.
 - [ ] Publish the video at [YouTube](https://www.youtube.com/@uyuniproject)
 - [ ] Send the tweet annuncing that the recording is available
 - [ ] Send a message to the [announce](https://lists.opensuse.org/archives/list/announce@lists.uyuni-project.org/) mailing list for sharing the recording
+- [ ] Edit the agenda again, moving the entry to "previous editions", and including the link to the recording. Also make an entry for the next edition, even if still empty.

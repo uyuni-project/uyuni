@@ -796,6 +796,18 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Get cloned errata ids for a channel
+     * @param cid the channel id
+     * @return List of errata ids
+     */
+    public static List<Long> getClonedErrataIds(Long cid) {
+        if (cid == null) {
+            return new ArrayList<>();
+        }
+        return singleton.listObjectsByNamedQuery("Channel.getClonedErrataOriginalIdList", Map.of("cid", cid));
+    }
+
+    /**
      * Looksup the number of Packages in a channel
      * @param channel the Channel who's package count you are interested in.
      * @return number of packages in this channel.

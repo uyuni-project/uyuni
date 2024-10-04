@@ -2223,18 +2223,13 @@ public class ChannelManager extends BaseManager {
      * @param user the user doing the query
      * @param packageAssoc whether to filter packages on what packages are already
      *                      in the channel
+     * @param listAlreadyIncluded whether to list erratas that are already in the channel
      * @return List of Errata
      */
     public static DataResult<ErrataOverview> findErrataFromRhnSetForTarget(
-            Channel targetChannel, boolean packageAssoc, User user) {
+            Channel targetChannel, boolean packageAssoc, boolean listAlreadyIncluded, User user) {
 
-        String mode;
-        if (packageAssoc) {
-             mode =  "in_sources_for_target_package_assoc";
-        }
-        else {
-             mode =  "in_sources_for_target";
-        }
+        String mode = getModeFindErrataFromRhnSet(packageAssoc, listAlreadyIncluded);
 
         Map<String, Long> params = new HashMap<>();
         params.put("custom_cid", targetChannel.getId());
@@ -2245,6 +2240,12 @@ public class ChannelManager extends BaseManager {
                 "Errata_queries", mode);
 
         return m.execute(params);
+    }
+
+    private static String getModeFindErrataFromRhnSet(boolean packageAssoc, boolean listAlreadyIncluded) {
+        return "in_sources_for_target" +
+                (packageAssoc ? "_package_assoc" : "") +
+                (listAlreadyIncluded ? "_with_already_included" : "");
     }
 
     /**

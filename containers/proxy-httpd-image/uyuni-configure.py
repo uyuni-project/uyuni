@@ -141,6 +141,7 @@ with open(config_path + "httpd.yaml") as httpdSource:
         
         # Hostname of Uyuni, SUSE Manager Server or another proxy
         proxy.rhn_parent = {config['server']}
+        proxy.proxy_fqdn = {config['proxy_fqdn']}
         
         # Destination of all tracebacks, etc.
         traceback_mail = {config['email']}

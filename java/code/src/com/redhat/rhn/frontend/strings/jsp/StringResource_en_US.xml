@@ -22497,6 +22497,12 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="channel.manage.errata.packageassocmsg" xml:space="preserve">
         <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
       </trans-unit>
+      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+        <source>List Already Included Patches:</source>
+      </trans-unit>
+      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+        <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
+      </trans-unit>
       <trans-unit id="toolbar.ssm.add" xml:space="preserve">
         <source>Add to SSM</source>
       </trans-unit>
@@ -24919,7 +24925,7 @@ given channel.</source>
         <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
-        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
+        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 5.0 or greater. Consider migrating to salt minions before this release.</source>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>

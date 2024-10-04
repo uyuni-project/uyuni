@@ -1,0 +1,2 @@
+- store proxy FQDN in the rhn.conf for auth token use
+  (bsc#1230255)

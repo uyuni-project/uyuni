@@ -237,7 +237,7 @@ public class AddCustomErrataAction extends RhnListAction {
             set.addElement(selectedChan.getId());
             RhnSetManager.store(set);
             return ChannelManager.findErrataFromRhnSetForTarget(currentChan,
-                    packageAssoc, user);
+                    packageAssoc, false, user);
         }
         else if (selChannelList != null) {
                 RhnSet set = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
@@ -247,7 +247,7 @@ public class AddCustomErrataAction extends RhnListAction {
                 }
                 RhnSetManager.store(set);
                 return ChannelManager.findErrataFromRhnSetForTarget(currentChan,
-                        packageAssoc, user);
+                        packageAssoc, false, user);
         }
         else {
                 return ChannelManager.findCustomErrataForTarget(currentChan,
