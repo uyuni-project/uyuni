@@ -29746,8 +29746,8 @@ given channel.</source>
         <target state="final">사용자 지정 채널의 자동 동기화가 활성화되었습니다. 이 채널은 벤더 채널과 함께 자동으로 동기화됩니다.</target>
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
-        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
-        <target state="translated">기존 스택은 SUSE 관리자 4.3 릴리스부터 더 이상 사용되지 않습니다. 다음 주요 릴리스인 버전 4.4 이상에서는 지원되지 않습니다. 이 릴리스 전에 솔트 미니언으로 마이그레이션하는 것을 고려하십시오.</target>
+        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 5.0 or greater. Consider migrating to salt minions before this release.</source>
+        <target state="needs-adaptation">기존 스택은 SUSE 관리자 4.3 릴리스부터 더 이상 사용되지 않습니다. 다음 주요 릴리스인 버전 4.4 이상에서는 지원되지 않습니다. 이 릴리스 전에 솔트 미니언으로 마이그레이션하는 것을 고려하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
@@ -29887,6 +29887,14 @@ given channel.</source>
         </context-group>
         <target state="final">페이고 서버입니다.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+        <source>List Already Included Patches:</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+        <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
