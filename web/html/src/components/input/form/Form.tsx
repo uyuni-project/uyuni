@@ -74,7 +74,7 @@ export class Form extends React.Component<Props> {
     }
     /**
      * NB! This is incorrect, but a lot of other code relies on this bug so we can't change it.
-     * We modify the object directly, as opposed to creating a new interface, which means React doesn't know changes have occurred.
+     * We modify the object directly, as opposed to creating a new reference, which means React doesn't know changes have occurred.
      * This means we need to force an update to notify all related components.
      * Hopefully we can throw all of this away once we incorporate Formik.
      */
@@ -89,10 +89,12 @@ export class Form extends React.Component<Props> {
     if (errors) {
       delete errors[name];
     }
-    this.forceUpdate();
 
     // Usually, fields validate themselves bottom up, in this case we pass values top down so we need to validate that way as well
     this.inputs[name]?.validate(value);
+
+    // See above
+    this.forceUpdate();
   };
 
   allValid(): boolean {
