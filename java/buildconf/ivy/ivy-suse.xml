@@ -22,7 +22,7 @@
         <dependency org="manager-43" name="commons-discovery" rev="0.4" />
         <dependency org="manager-43" name="commons-el" rev="1.0" />
         <dependency org="manager-43" name="commons-fileupload" rev="1.4" />
-        <dependency org="manager-43" name="commons-io" rev="2.6" />
+        <dependency org="manager-43" name="commons-io" rev="2.15.1" />
         <dependency org="manager-43" name="commons-jexl" rev="2.1.1" />
         <dependency org="manager-43" name="commons-lang3" rev="3.8.1" />
         <dependency org="manager-43" name="commons-logging" rev="1.2" />
@@ -41,7 +41,7 @@
         <dependency org="manager-43" name="hibernate-ehcache" rev="5.3.25" />
         <dependency org="manager-43" name="hibernate-types" rev="2.12.1" />
         <dependency org="manager-43" name="httpasyncclient" rev="4.1.4" />
-        <dependency org="manager-43" name="httpclient" rev="4.5.6" />
+        <dependency org="manager-43" name="httpclient" rev="4.5.12" />
         <dependency org="manager-43" name="httpcore" rev="4.4.13" />
         <dependency org="manager-43" name="httpcore-nio" rev="4.4.13" />
         <dependency org="manager-43" name="ical4j" rev="3.0.18" />
@@ -121,7 +121,7 @@
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.12.7/checkstyle-10.12.7-all.jar"/>
         </dependency>
         <dependency org="manager-43" name="hamcrest-core" rev="1.3" transitive="false"/>
-        <dependency org="manager-43" name="hamcrest-library" rev="2.2" transitive="false"/>
+        <dependency org="manager-43" name="hamcrest-library" rev="3.0" transitive="false"/>
         <dependency org="javax.xml.bind" name="jaxb-api" rev="2.3.0" transitive="false"/>
         <dependency org="com.sun.xml.bind" name="jaxb-core" rev="2.3.0" transitive="false"/>
         <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.3.0" transitive="false"/>
