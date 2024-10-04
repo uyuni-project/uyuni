@@ -1,0 +1,65 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  http_server_read_timeout: 600s
+  http_server_write_timeout: 600s
+  grpc_server_max_recv_msg_size: 20388078
+  grpc_server_max_send_msg_size: 20388078
+
+common:
+  path_prefix: /loki
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+ruler:
+  alertmanager_url: http://localhost:9093
+
+limits_config:
+  # max_cache_freshness_per_query: '10m'
+  max_cache_freshness_per_query: '1m'
+  enforce_metric_name: false
+  reject_old_samples: false
+  reject_old_samples_max_age: 8064h #336d
+  ingestion_rate_mb: 50
+  ingestion_burst_size_mb: 100
+  # parallelize queries in 15min intervals
+  # split_queries_by_interval: 15m
+  split_queries_by_interval: 1h
+  unordered_writes: true
+  # Default: 721h
+  max_query_length: 5000h
+  per_stream_rate_limit: 50MB
+  per_stream_rate_limit_burst: 100MB
+
+chunk_store_config:
+  max_look_back_period: 8064h #336d
+
+# By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
+# analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
+#
+# Statistics help us better understand how Loki is used, and they show us performance
+# levels for most users. This helps us prioritize features and documentation.
+# For more information on what's sent, look at
+# https://github.com/grafana/loki/blob/main/pkg/usagestats/stats.go
+# Refer to the buildReport method to see what goes into a report.
+#
+# If you would like to disable reporting, uncomment the following lines:
+#analytics:
+#  reporting_enabled: false
