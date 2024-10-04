@@ -1,0 +1,7 @@
+build
+dist
+.eggs
+*.egg-info
+logcli-linux-amd64
+promtail-linux-amd64
+__pycache__
