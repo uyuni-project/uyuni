@@ -15,6 +15,10 @@ spec:
       labels:
         app: uyuni-proxy
     spec:
+{{- if .Values.registrySecret }}
+      imagePullSecrets:
+        - name: {{ .Values.registrySecret }}
+{{- end }}
       containers:
         - name: httpd
           image: {{- include "deployment.container.image" (dict "name" "proxy-httpd" "global" .) | indent 1}}

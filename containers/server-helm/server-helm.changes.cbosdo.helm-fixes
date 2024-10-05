@@ -1,1 +1,3 @@
+- Add registrySecret value to the helm chart for authentication 
+  (bsc#1231157)
 - Fix labels indentation (bsc#1231150)
