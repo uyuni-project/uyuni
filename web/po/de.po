@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-30 14:26+0200\n"
-"PO-Revision-Date: 2024-08-25 15:47+0000\n"
+"PO-Revision-Date: 2024-10-05 15:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:442
 msgid "remaining"
@@ -6238,13 +6238,13 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
 msgid "Networks"
-msgstr ""
+msgstr "Netzwerke"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:461
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
 msgid "Clear Fields"
-msgstr ""
+msgstr "Felder leeren"
 
 #: ../html/src/manager/virtualization/guests/properties/templates.ts:2
 msgid "Single virtual machine using almost all the host resources"
