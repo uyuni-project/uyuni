@@ -1,4 +1,14 @@
+include:
+  - channels
+
 {% if grains['os_family'] == 'Suse' %}
+
+{% if grains['osfullname']|upper == 'SLES' and grains['osmajorrelease']|int >= 15 and pillar.get('susemanager:distupgrade:targetbaseproduct:name', '')|lower == 'sles_sap' %}
+{% if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
+{% include 'distupgrade/sap.sls' %}
+{% endif %}
+
+{% else %}
 spmigration:
   mgrcompat.module_run:
     - name: pkg.upgrade
@@ -11,9 +21,11 @@ spmigration:
 {% endif %}
     -   require:
         - file: mgrchannels*
+{% endif %} {# grains['osfullname']|upper == 'SLES' ... #}
+
 {% elif grains['os_family'] == 'RedHat' %}
 {% if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
-{# if pillar liberate:reinstall_packages is not set, it default to true. This is the default we want #}
+{# when pillar liberate:reinstall_packages is not set, it default to true. This is the default we want #}
 {% include 'liberate/init.sls' %}
 
 {% set logname='/var/log/dnf_sll_migration.log' %}
@@ -42,6 +54,3 @@ mgr_release_pkg_removed:
 {%- endfor %}
 {% endif %}
 {% endif %}
-
-include:
-  - channels
