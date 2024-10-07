@@ -15,9 +15,12 @@ General template for leavers of the SUSE Manager team.
 
 # Some days before the member's last work day
 
+- [ ] **General SUSE Procedure:** Team Lead to review the [team members leaving the company](https://intra.suse.net/company/company-news/department/hr/team-leader-hr-quick-links/), in particular the `SUSE Termination Information Guide`? Those documents contain information about everything that needs to be returned, and things to be done by the team lead and the team member (not just hardware!)
 - [ ] **Exit interview:** Conduct an [exit interview](https://en.wikipedia.org/wiki/Exit_interview) and store the notes at [Confluence](https://confluence.suse.com/display/SUSEMANAGER/Exit+Interviews)
-- [ ] **Hardware:** Does this person have access to something special which also needs to get transferred to another person? (ssh access to a server, permissions to special pages on wikis, confluence, resources in the cloud, etc.)
-- [ ] **Bugzilla:** Remind the person to remove all "watches" in Bugzilla before leaving
+- [ ] **Hardware:** 
+  - [ ] Does this person have access to something special which also needs to get transferred to another person? (ssh access to a server, permissions to special pages on wikis, confluence, resources in the cloud, etc.)
+  - [ ] Did IT create a ticket and sent an email to the leaver, explaining how to return their personal hardware?
+- [ ] **Bugzilla:** Remind the person to remove all ["watches"](https://bugzilla.suse.com/userprefs.cgi?tab=email) in Bugzilla before leaving
 - [ ] **Bugzilla:** Review the [responsibles for the bugzilla team accounts](https://confluence.suse.com/display/IAM/5.+UCS+Role+Model+and+Entitlements+Management#id-5.UCSRoleModelandEntitlementsManagement-Bot/Serviceentitlements) and nominate a new one if needed
 - [ ] **Packages:** Run `OUSER=<LEAVER>; osc search -i ${OUSER}; osc -A https://api.suse.de maintainer -U ${OUSER}` (replace `<LEAVER>` with the leaver's username), and if the person is a bugowner of any package, look for a new bugowner (ideally a group, not a single person, home projects can be ignored)
 - [ ] **Code:** Consider any code stored in personal accounts and create forks accordingly (e.g. in GitLab)
@@ -31,8 +34,8 @@ General template for leavers of the SUSE Manager team.
   - [ ] Remove from [SUSE Manager Team](https://github.com/orgs/SUSE/teams/suse-manager-team/members) on GitHub
   - [ ] Remove from [Uyuni organization](https://github.com/orgs/uyuni-project/people) and [teams](https://github.com/orgs/uyuni-project/teams). It can remain a member (but not owner), if it will keep contributing.
 - [ ] Trello access
-  - [ ] Reach out to trello-owners@suse.de for removal from SUSE organization in Trello
   - [ ] Tell the person to leave all SUSE Trello boards, otherwise, they might become paid guests
+  - The account will be removed from the SUSE organization 30 days after termination date, when the OKTA account is removed.
 - [ ] Confluence
   - [ ] Remove from [Confluence overview page](https://confluence.suse.com/display/SUSEMANAGER/SUSE+Manager) of the team
   - [ ] Remove from [SUMA squads](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics) page
@@ -66,7 +69,7 @@ General template for leavers of the SUSE Manager team.
     - [ ] Squad specific group
 - [ ] Remove from Google [SUSE Manager Engineering Team](https://groups.google.com/a/suse.com/g/suma-all/members) and squads groups (if available)
 - [ ] Hardware
-  - [ ] Collect remaining equipment via ticket
+  - [ ] Collect remaining equipment, as explained via ticket created ahead of the termination date.
   - [ ] Are there somewhere machines (e.g. RPI) or VMs around managed by this person? Stop them or transfer the management to other team members
 - [ ] AWS/Azure/Google Cloud access
   - [ ] Remove the person from the IAM of the service and remove any leftover resource
