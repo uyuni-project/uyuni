@@ -196,7 +196,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
             Action action = ActionManager.lookupAction(user, scheduled.getId());
             VirtualizationPoolRefreshAction virtAction = (VirtualizationPoolRefreshAction)action;
             return virtAction.getPoolName();
-        }).collect(Collectors.toList());
+        }).toList();
         assertTrue(containsInAnyOrder("pool0", "pool1").matches(actionsPools));
 
         // Check the returned message
@@ -295,7 +295,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         List<BaseVirtualizationVolumeAction> actions = ActionManager.pendingActions(user, null).stream()
             .filter(action -> ActionFactory.TYPE_VIRTUALIZATION_VOLUME_DELETE.getName().equals(action.getTypeName()))
             .map(action -> (BaseVirtualizationVolumeAction)ActionManager.lookupAction(user, action.getId()))
-            .collect(Collectors.toList());
+            .toList();
 
         assertEquals(3, actions.size());
         Optional<BaseVirtualizationVolumeAction> vol0 = actions.stream()

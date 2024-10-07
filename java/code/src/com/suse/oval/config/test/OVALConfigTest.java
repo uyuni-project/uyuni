@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import wiremock.com.google.common.io.Files;
 
@@ -85,7 +84,7 @@ public class OVALConfigTest {
 
                         return urls.stream();
                     });
-        }).collect(Collectors.toList());
+        }).toList();
 
         assertFalse(allSources.isEmpty());
 

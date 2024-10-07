@@ -82,6 +82,7 @@ public class PaygProductFactory extends HibernateFactory {
      * @param credentials the credentials
      * @return the list of products associated with the credentials or an empty list if none are set.
      */
+    @SuppressWarnings("java:S6204")
     public static List<PaygProductInfo> getProductsForCredentials(CloudRMTCredentials credentials) {
         return getSession().createNamedQuery("PaygCredentialsProduct.listByCredentialsId", PaygCredentialsProduct.class)
             .setParameter("credsId", credentials.getId())

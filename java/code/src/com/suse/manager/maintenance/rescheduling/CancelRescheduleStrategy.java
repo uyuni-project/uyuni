@@ -28,7 +28,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * CancelRescheduleStrategy - Cancel the action for the system
@@ -49,7 +48,7 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
             for (Action action: actionsServers.keySet()) {
                 List<Long> serverIds = actionsServers.get(action).stream()
                         .map(Server::getId)
-                        .collect(Collectors.toList());
+                        .toList();
                 ActionManager.cancelActions(user, Collections.singletonList(action), serverIds);
                 LOG.info("Cancel action '{}' for servers '{}'", action, serverIds);
             }

@@ -20,7 +20,6 @@ import com.google.gson.JsonPrimitive;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Representation of the status of bootstrap and possibly error messages.
@@ -85,7 +84,7 @@ public class BootstrapResult {
      * @return messages
      */
     public List<String> getMessages() {
-        return errors.stream().map(BootstrapError::getMessage).collect(Collectors.toList());
+        return errors.stream().map(BootstrapError::getMessage).toList();
     }
 
     /**

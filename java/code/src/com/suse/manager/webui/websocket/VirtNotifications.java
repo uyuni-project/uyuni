@@ -226,7 +226,7 @@ public class VirtNotifications {
                 List<Long> servers = requests.stream()
                         .filter(req -> req.getGuestUuid().isEmpty() && req.getSid().isPresent())
                         .map(req -> req.getSid().get())
-                        .collect(Collectors.toList());
+                        .toList();
                 Optional<ServerAction> serverAction = action.getServerActions().stream()
                         .filter(sa -> servers.contains(sa.getServerId()))
                         .findFirst();

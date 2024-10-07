@@ -168,13 +168,13 @@ public class CVEAuditController {
             .listSystemsByPatchStatus(user, request.cveIdentifier,
                     request.statuses);
             return cveAuditServers.stream().map(x -> (CVEAuditSystem)x)
-                    .collect(Collectors.toList());
+                    .toList();
         case IMAGE:
             List<CVEAuditImage> cveAuditImages = CVEAuditManagerOVAL
             .listImagesByPatchStatus(user, request.cveIdentifier,
                     request.statuses);
             return cveAuditImages.stream().map(x -> (CVEAuditSystem)x)
-                    .collect(Collectors.toList());
+                    .toList();
         default: throw new RuntimeException("unreachable");
         }
     }
@@ -198,7 +198,7 @@ public class CVEAuditController {
                     catch (IllegalArgumentException e) {
                         return Stream.empty();
                     }
-                }).collect(Collectors.toList());
+                }).toList();
         List<CVEAuditSystem> cveAuditSystems = Collections.emptyList();
         if (!psList.isEmpty()) {
             EnumSet<PatchStatus> statuses = EnumSet.copyOf(psList);

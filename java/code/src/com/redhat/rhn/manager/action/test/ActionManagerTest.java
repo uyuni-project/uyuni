@@ -495,7 +495,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         List<ServerAction> sa = parent.getServerActions().stream()
                 .filter(s -> s.getServer().asMinionServer().isPresent())
-                .collect(Collectors.toList());
+                .toList();
         Map<String, Result<Schedule.Result>> result = new HashMap<>();
         result.put(sa.get(0).getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result(null, true))));
@@ -564,8 +564,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 .map(ServerAction::getServer)
                 .collect(Collectors.toList());
 
-        Server ignoreFirst = servers.remove(0);
-        Collection<Long> activeServers = servers.stream().map(Server::getId).collect(Collectors.toList());
+        servers.remove(0);
+        Collection<Long> activeServers = servers.stream().map(Server::getId).toList();
 
         Map<Action, Set<Server>> actionMap = actionList.stream()
                 .map(a -> new ImmutablePair<>(

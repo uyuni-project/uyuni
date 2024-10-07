@@ -61,7 +61,6 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -147,7 +146,7 @@ public class RemoteMinionCommands {
                         .lookupVisibleToUser(webSession.getUser())
                         .filter(mm::isSystemInMaintenanceMode)
                         .map(MinionServer::getMinionId)
-                        .collect(Collectors.toList());
+                        .toList();
 
                 failAfter = FutureUtils.failAfter(timeOut);
 
@@ -227,7 +226,7 @@ public class RemoteMinionCommands {
                                             entry.getValue().result().orElse(false);
                                 })
                                 .map(Map.Entry::getKey)
-                                .collect(Collectors.toList());
+                                .toList();
 
                         previewedMinions.addAll(sshMinions);
 

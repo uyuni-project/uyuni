@@ -405,14 +405,14 @@ public class ServerSnapshot extends BaseDomainHelper {
                 this.server.getConfigChannelStream().collect(Collectors.toSet());
 
         this.server.unsubscribeConfigChannels(ccs.stream()
-                .filter(ConfigChannel::isGlobalChannel).collect(Collectors.toList()), user);
+                .filter(ConfigChannel::isGlobalChannel).toList(), user);
 
         // get the config_channels recorded from the snapshot
         ccs = getConfigChannels();
         // tie config_channel list to server
         if (ccs != null) {
             this.server.subscribeConfigChannels(ccs.stream()
-                    .filter(ConfigChannel::isGlobalChannel).collect(Collectors.toList()),
+                    .filter(ConfigChannel::isGlobalChannel).toList(),
                     user);
         }
         // deploy the particular config files
