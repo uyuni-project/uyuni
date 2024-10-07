@@ -185,12 +185,12 @@ public class ImageProfileJson {
             json.setChannels(ChannelsJson.fromChannelSet(ak.getChannels()));
         }
 
-        if (profile instanceof DockerfileProfile) {
-            json.setPath(((DockerfileProfile) profile).getPath());
+        if (profile instanceof DockerfileProfile dockerProfile) {
+            json.setPath(dockerProfile.getPath());
         }
-        else if (profile instanceof KiwiProfile) {
-            json.setPath(((KiwiProfile) profile).getPath());
-            json.setKiwiOptions(((KiwiProfile) profile).getKiwiOptions());
+        else if (profile instanceof KiwiProfile kiwiProfile) {
+            json.setPath(kiwiProfile.getPath());
+            json.setKiwiOptions(kiwiProfile.getKiwiOptions());
         }
 
         json.setCustomData(profile.getCustomDataValues().stream().collect(Collectors.toMap(

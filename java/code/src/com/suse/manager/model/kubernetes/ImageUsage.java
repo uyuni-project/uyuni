@@ -75,11 +75,9 @@ public class ImageUsage {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ImageUsage)) {
+        if (!(o instanceof ImageUsage that)) {
             return false;
         }
-
-        ImageUsage that = (ImageUsage) o;
 
         return imageInfo.equals(that.imageInfo);
     }

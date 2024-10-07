@@ -199,10 +199,9 @@ public class PackageStateJson {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof PackageStateJson)) {
+        if (!(other instanceof PackageStateJson otherState)) {
             return false;
         }
-        PackageStateJson otherState = (PackageStateJson) other;
         return new EqualsBuilder()
                 .append(getName(), otherState.getName())
                 .isEquals();

@@ -150,11 +150,9 @@ public class ChannelArch extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ChannelArch)) {
+        if (!(other instanceof ChannelArch castOther)) {
             return false;
         }
-
-        ChannelArch castOther = (ChannelArch) other;
         return new EqualsBuilder().append(this.getId(), castOther.getId()).isEquals();
     }
 

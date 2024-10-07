@@ -179,10 +179,9 @@ public class ConfigChannelJson {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ConfigChannelJson)) {
+        if (!(other instanceof ConfigChannelJson castOther)) {
             return false;
         }
-        ConfigChannelJson castOther = (ConfigChannelJson) other;
         return new EqualsBuilder()
                 .append(name, castOther.name)
                 .append(label, castOther.label)

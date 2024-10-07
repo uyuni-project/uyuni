@@ -166,13 +166,10 @@ public class Pane {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Pane) {
-
-            if (obj == this) {
-                return true;
-            }
-
-            Pane that = (Pane) obj;
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof Pane that) {
             return this.getId().equals(that.getId());
         }
         return false;

@@ -171,10 +171,9 @@ public class PackageState {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof PackageState)) {
+        if (!(other instanceof PackageState otherState)) {
             return false;
         }
-        PackageState otherState = (PackageState) other;
         return new EqualsBuilder()
                 .append(getName(), otherState.getName())
                 .append(getEvr(), otherState.getEvr())

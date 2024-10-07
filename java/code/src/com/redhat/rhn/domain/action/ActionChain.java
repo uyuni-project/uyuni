@@ -178,10 +178,9 @@ public class ActionChain extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ActionChain)) {
+        if (!(other instanceof ActionChain otherActionChain)) {
             return false;
         }
-        ActionChain otherActionChain = (ActionChain) other;
         return new EqualsBuilder()
             .append(getLabel(), otherActionChain.getLabel())
             .isEquals();

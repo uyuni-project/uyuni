@@ -1770,10 +1770,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Server)) {
+        if (!(other instanceof Server castOther)) {
             return false;
         }
-        Server castOther = (Server) other;
 
         Optional<PackageEvr> proxyVersion =
                 Optional.ofNullable(proxyInfo).map(ProxyInfo::getVersion);

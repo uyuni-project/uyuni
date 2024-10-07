@@ -92,8 +92,8 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
 
     private void collectCriterionsHelper(BaseCriteria criteria, int currentLevel, int maxNestingLevel,
                                          List<CriterionType> criterions) {
-        if (criteria instanceof CriterionType) {
-            criterions.add((CriterionType) criteria);
+        if (criteria instanceof CriterionType criteriaCast) {
+            criterions.add(criteriaCast);
         }
         else {
             if (currentLevel > maxNestingLevel) {
@@ -120,8 +120,8 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
         else if (test(criteria)) {
             matches.add(criteria);
         }
-        if (criteria instanceof CriteriaType) {
-            for (BaseCriteria childCriteria : ((CriteriaType) criteria).getChildren()) {
+        if (criteria instanceof CriteriaType criteriaCast) {
+            for (BaseCriteria childCriteria : (criteriaCast).getChildren()) {
                 walkCriteriaTreeHelper(childCriteria, matches);
             }
         }

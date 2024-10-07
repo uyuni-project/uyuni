@@ -109,10 +109,9 @@ public class SaltEvent {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SaltEvent)) {
+        if (!(other instanceof SaltEvent otherSaltEvent)) {
             return false;
         }
-        SaltEvent otherSaltEvent = (SaltEvent) other;
         return new EqualsBuilder()
                 .append(getId(), otherSaltEvent.getId())
                 .isEquals();

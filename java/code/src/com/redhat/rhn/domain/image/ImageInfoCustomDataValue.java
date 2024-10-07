@@ -190,10 +190,9 @@ public class ImageInfoCustomDataValue {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof ImageInfoCustomDataValue)) {
+        if (!(other instanceof ImageInfoCustomDataValue castOther)) {
             return false;
         }
-        ImageInfoCustomDataValue castOther = (ImageInfoCustomDataValue) other;
         return new EqualsBuilder()
                 .append(key, castOther.getKey())
                 .append(imageInfo, castOther.getImageInfo())

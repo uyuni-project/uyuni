@@ -79,15 +79,14 @@ public class StringDto {
             return false;
         }
 
-        if (obj instanceof StringDto) {
+        if (obj instanceof StringDto sdto) {
             if (value == null) {
-                return ((StringDto) obj).getValue() == null;
+                return sdto.getValue() == null;
             }
             else {
-                return value.equals(((StringDto) obj).getValue());
+                return value.equals(sdto.getValue());
             }
         }
-
         return false;
     }
 

@@ -21,6 +21,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -129,10 +130,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreate() {
         Errata e = new Errata();
-        assertTrue(e instanceof Errata);
+        assertInstanceOf(Errata.class, e);
 
         Bug b = ErrataManagerTest.createTestBug(42L, "test bug");
-        assertTrue(b instanceof Bug);
+        assertInstanceOf(Bug.class, b);
     }
 
     @Test

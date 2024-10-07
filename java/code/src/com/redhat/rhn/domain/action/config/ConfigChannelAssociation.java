@@ -71,12 +71,9 @@ public class ConfigChannelAssociation extends ActionChild implements Serializabl
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof ConfigChannelAssociation)) {
+        if (!(obj instanceof ConfigChannelAssociation r)) {
             return false;
         }
-
-        ConfigChannelAssociation r = (ConfigChannelAssociation) obj;
-
         return new EqualsBuilder().append(r.getCreated(), getCreated())
                                   .append(r.getModified(), getModified())
                                   .append(r.getServer(), getServer())

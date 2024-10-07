@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.action.virtualization.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -65,7 +66,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a = ActionFactory.lookupById(id);
 
         assertNotNull(a);
-        assertTrue(a instanceof VirtualizationGuestPackageInstall);
+        assertInstanceOf(VirtualizationGuestPackageInstall.class, a);
 
         Action a2 = ActionFactoryTest.createAction(user,
                 ActionFactory.TYPE_VIRTUALIZATION_HOST_PACKAGE_INSTALL);
@@ -74,7 +75,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
 
         a = ActionFactory.lookupById(id);
         assertNotNull(a);
-        assertTrue(a instanceof VirtualizationHostPackageInstall);
+        assertInstanceOf(VirtualizationHostPackageInstall.class, a);
 
     }
 
@@ -109,7 +110,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a1 = ActionFactory.lookupById(a.getId());
         assertNotNull(a1);
 
-        assertTrue(a1 instanceof VirtualizationShutdownGuestAction);
+        assertInstanceOf(VirtualizationShutdownGuestAction.class, a1);
         VirtualizationShutdownGuestAction rebootAction = (VirtualizationShutdownGuestAction)a1;
         assertTrue(rebootAction.isForce());
     }
@@ -124,7 +125,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a1 = ActionFactory.lookupById(a.getId());
         assertNotNull(a1);
 
-        assertTrue(a1 instanceof VirtualizationRebootGuestAction);
+        assertInstanceOf(VirtualizationRebootGuestAction.class, a1);
         VirtualizationRebootGuestAction rebootAction = (VirtualizationRebootGuestAction)a1;
         assertTrue(rebootAction.isForce());
     }
@@ -196,7 +197,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a = ActionFactory.lookupById(a1.getId());
 
         assertNotNull(a);
-        assertTrue(a instanceof VirtualizationCreateGuestAction);
+        assertInstanceOf(VirtualizationCreateGuestAction.class, a);
         VirtualizationCreateGuestAction actual = (VirtualizationCreateGuestAction)a;
         assertEquals("kvm", actual.getDetails().getType());
         assertEquals("guest0", actual.getDetails().getName());
@@ -239,7 +240,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a = ActionFactory.lookupById(a1.getId());
 
         assertNotNull(a);
-        assertTrue(a instanceof VirtualizationPoolCreateAction);
+        assertInstanceOf(VirtualizationPoolCreateAction.class, a);
         VirtualizationPoolCreateAction actual = (VirtualizationPoolCreateAction)a;
         assertEquals("pool0", actual.getName());
         assertEquals("iscsi", actual.getType());
