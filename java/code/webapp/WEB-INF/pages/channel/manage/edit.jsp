@@ -236,7 +236,7 @@
                     </label>
                     <div class="col-lg-6">
                         <c:if test='${not empty log_url}'>
-                            <a class="btn btn-info" href='${log_url}'><c:out value='${last_sync}'/></a>
+                            <a class="btn btn-default" href='${log_url}'><c:out value='${last_sync}'/></a>
                         </c:if>
                         <c:if test='${empty log_url}'>
                             <div class="form-control">

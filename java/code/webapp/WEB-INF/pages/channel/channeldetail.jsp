@@ -40,7 +40,7 @@
                             (none)
                         </c:if>
                         <c:if test="${!empty channel.parentChannel}">
-                            <a class="btn btn-info" href="/rhn/channels/ChannelDetail.do?cid=${channel.parentChannel.id}">
+                            <a href="/rhn/channels/ChannelDetail.do?cid=${channel.parentChannel.id}">
                                 <c:out value="${channel.parentChannel.name}" /> <rhn:icon type="nav-right" />
                             </a>
                         </c:if>
@@ -145,7 +145,7 @@
                         <bean:message key="header.jsp.packages"/>
                     </label>
                     <div class="col-lg-6">
-                        <a class="btn btn-info" href="/rhn/channels/ChannelPackages.do?cid=${channel.id}">
+                        <a href="/rhn/channels/ChannelPackages.do?cid=${channel.id}">
                             ${pack_size} <rhn:icon type="nav-right" />
                         </a>
                     </div>
@@ -192,7 +192,7 @@
                         <bean:message key="channel.jsp.systemssubsribed"/>
                     </label>
                     <div class="col-lg-6">
-                        <a class="btn btn-info" href="/rhn/channels/ChannelSubscribers.do?cid=${channel.id}">
+                        <a href="/rhn/channels/ChannelSubscribers.do?cid=${channel.id}">
                             ${systems_subscribed} <rhn:icon type="nav-right" />
                         </a>
                     </div>
@@ -202,7 +202,7 @@
                         <bean:message key="channel.jsp.appstreams"/>
                     </label>
                     <div class="col-lg-6">
-                        <a class="btn btn-info" href="/rhn/channels/AppStreams.do?cid=${channel.id}">
+                        <a href="/rhn/channels/AppStreams.do?cid=${channel.id}">
                             ${systems_subscribed} <rhn:icon type="nav-right" />
                         </a>
                     </div>
