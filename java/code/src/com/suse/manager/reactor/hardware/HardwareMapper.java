@@ -767,7 +767,7 @@ public class HardwareMapper {
         else {
             Collection<ServerFQDN> serverFQDNs = serverIn.getFqdns();
             Collection<ServerFQDN> srvFqdnsObj = fqdns.stream().map(fqdn -> new ServerFQDN(serverIn, fqdn))
-                    .collect(Collectors.toList());
+                    .toList();
             serverFQDNs.retainAll(srvFqdnsObj);
             serverFQDNs.addAll(srvFqdnsObj);
         }

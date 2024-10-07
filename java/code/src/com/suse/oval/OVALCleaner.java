@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * This class is responsible for cleaning OVAL resources and filling up missing data. It acts as an adapter that takes
@@ -106,7 +105,7 @@ public class OVALCleaner {
                                     }
 
                                     return "";
-                                }).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                                }).filter(StringUtils::isNotBlank).toList();
                 definition.setCves(cves);
                 break;
             case DEBIAN:
@@ -117,7 +116,7 @@ public class OVALCleaner {
         }
 
         List<String> cleanCves = definition.getCves().stream().map(OVALCleaner::removeWhitespaceChars)
-                .collect(Collectors.toList());
+                .toList();
 
         definition.setCves(cleanCves);
     }

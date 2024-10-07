@@ -75,7 +75,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /** JUnit test case for the User
  *  class.
@@ -570,7 +569,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         Set<String> validTimezones = ZoneId.getAvailableZoneIds();
         assertTrue(lst.stream().filter(timezone ->
                 !validTimezones.contains(timezone.getOlsonName()))
-                .collect(Collectors.toList())
+                .toList()
                 .isEmpty());
 
         assertEquals(UserManager.getTimeZone("GMT"), lst.get(0));

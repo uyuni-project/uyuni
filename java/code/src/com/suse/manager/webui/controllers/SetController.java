@@ -40,7 +40,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import spark.Request;
@@ -85,7 +84,7 @@ public class SetController {
         List<Integer> results = Stream.of(true, false).map(add -> {
             List<String> changes = data.keySet().stream()
                     .filter(item -> data.get(item).equals(add))
-                    .collect(Collectors.toList());
+                    .toList();
             try {
                 return ItemSelector.updateSetFromRequest(request.raw(), setLabel,
                         changes.toArray(new String[0]), add, user);
@@ -93,7 +92,7 @@ public class SetController {
             catch (Exception e) {
                 return null;
             }
-        }).collect(Collectors.toList());
+        }).toList();
         Integer newCount = results.get(results.size() - 1);
         if (newCount == null) {
             return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,

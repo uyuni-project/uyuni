@@ -143,7 +143,7 @@ public class SUSEProductFactory extends HibernateFactory {
         return ((List<SUSEProductSCCRepository>) c.list()).stream()
                 .sorted((a, b) ->
                         RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -185,7 +185,7 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static void removeAllExcept(Collection<SUSEProduct> products) {
         if (!products.isEmpty()) {
-            Collection<Long> ids = products.stream().map(SUSEProduct::getId).collect(Collectors.toList());
+            Collection<Long> ids = products.stream().map(SUSEProduct::getId).toList();
 
             Criteria c = getSession().createCriteria(SUSEProduct.class);
             c.add(Restrictions.not(Restrictions.in("id", ids)));
@@ -205,7 +205,7 @@ public class SUSEProductFactory extends HibernateFactory {
     public static List<SUSEProductChannel> lookupSyncedProductChannelsByLabel(String channelLabel) {
         return Optional.ofNullable(ChannelFactory.lookupByLabel(channelLabel))
                 .map(channel -> channel.getSuseProductChannels().stream())
-                .orElseGet(Stream::empty).collect(Collectors.toList());
+                .orElseGet(Stream::empty).toList();
     }
 
     /**
@@ -302,7 +302,7 @@ public class SUSEProductFactory extends HibernateFactory {
                     List<String> selectedParts = List.of(channel.getLabel().split("-"));
                     List<String> uniqueParts = selectedParts.stream()
                             .filter(s -> !originalParts.contains(s))
-                            .collect(Collectors.toList());
+                            .toList();
 
                     if (channel.isBaseChannel()) {
                         return Stream.<Channel>empty();

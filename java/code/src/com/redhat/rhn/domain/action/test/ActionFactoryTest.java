@@ -74,7 +74,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -415,7 +414,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndReload(a1);
         TestUtils.saveAndReload(a2);
 
-        List<Long> actionIds = Stream.of(a1, a2).map(Action::getId).collect(Collectors.toList());
+        List<Long> actionIds = Stream.of(a1, a2).map(Action::getId).toList();
         ActionFactory.rejectScheduledActions(actionIds, "Test Rejection Reason");
 
         sa1 = HibernateFactory.reload(sa1);

@@ -18,7 +18,6 @@ import org.jose4j.jwt.JwtClaims;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Utility functions to generate download access tokens.
@@ -63,7 +62,7 @@ public class DownloadTokenBuilder extends TokenBuilder {
         claims.setClaim("org", this.orgId);
         onlyChannels.ifPresent(channels ->
                 claims.setStringListClaim("onlyChannels",
-                        channels.stream().collect(Collectors.toList())));
+                        channels.stream().toList()));
         return claims;
     }
 }

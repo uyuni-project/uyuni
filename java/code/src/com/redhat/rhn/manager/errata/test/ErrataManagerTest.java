@@ -681,10 +681,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Action> updateStackErrataActions1 = actionsServer1.stream()
             .filter(a -> errataActionFromAction(a).getErrata().stream()
                 .anyMatch(ErrataManagerTest::doesUpdateStack))
-            .collect(Collectors.toList());
+            .toList();
         List<Action> nonUpdateStackErrataActions1 = actionsServer1.stream()
             .filter(a -> !updateStackErrataActions1.contains(a))
-            .collect(Collectors.toList());
+            .toList();
 
         assertTrue(updateStackErrataActions1.stream()
                 .flatMap(a -> errataActionFromAction(a).getErrata().stream())
@@ -709,10 +709,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Action> updateStackErrataActions2 = actionsServer2.stream()
                 .filter(a -> errataActionFromAction(a).getErrata().stream()
                     .anyMatch(ErrataManagerTest::doesUpdateStack))
-                .collect(Collectors.toList());
+                .toList();
         List<Action> nonUpdateStackErrataActions2 = actionsServer2.stream()
             .filter(a -> !updateStackErrataActions2.contains(a))
-            .collect(Collectors.toList());
+            .toList();
 
         assertTrue(updateStackErrataActions2.stream()
                 .flatMap(a -> errataActionFromAction(a).getErrata().stream())

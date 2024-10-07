@@ -38,7 +38,6 @@ import org.apache.http.HttpStatus;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import spark.Request;
@@ -129,7 +128,7 @@ public class LivePatchingApiController {
         String query = StringUtils.defaultString(req.queryParams("q"));
         List<System> slesSystems = ServerFactory.querySlesSystems(query, 20, user)
                 .map(System::new)
-                .collect(Collectors.toList());
+                .toList();
 
         return result(res, ResultJson.success(slesSystems), new TypeToken<>() { });
     }

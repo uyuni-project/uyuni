@@ -86,7 +86,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
@@ -775,13 +774,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
-                        .flatMap(List::stream).collect(Collectors.toList());
+                        .flatMap(List::stream).toList();
 
         assertEquals(2,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
                     .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
+                    .toList().size());
     }
 
     /**
@@ -828,13 +827,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
-                        .flatMap(List::stream).collect(Collectors.toList());
+                        .flatMap(List::stream).toList();
 
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
                     .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
+                    .toList().size());
     }
 
     /**
@@ -881,12 +880,12 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
-                        .flatMap(List::stream).collect(Collectors.toList());
+                        .flatMap(List::stream).toList();
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
                     .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
+                    .toList().size());
     }
 
     /**
@@ -935,13 +934,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
-                        .flatMap(List::stream).collect(Collectors.toList());
+                        .flatMap(List::stream).toList();
 
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
                     .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
+                    .toList().size());
     }
 
     /**
@@ -989,12 +988,12 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
-                        .flatMap(List::stream).collect(Collectors.toList());
+                        .flatMap(List::stream).toList();
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
                     .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
+                    .toList().size());
     }
 
     /**
@@ -1042,12 +1041,12 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
-                        .flatMap(List::stream).collect(Collectors.toList());
+                        .flatMap(List::stream).toList();
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
                     .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
+                    .toList().size());
     }
 
     /**
@@ -1094,12 +1093,12 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
-                        .flatMap(List::stream).collect(Collectors.toList());
+                        .flatMap(List::stream).toList();
         assertEquals(0,
                 scheduleTimes.stream()
                     .filter(scheduleTime -> scheduleTime.isAfter(now))
                     .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
+                    .toList().size());
     }
 
  }

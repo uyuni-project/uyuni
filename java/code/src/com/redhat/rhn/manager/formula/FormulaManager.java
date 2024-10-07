@@ -87,7 +87,7 @@ public class FormulaManager {
         FormulaFactory.saveGroupFormulaData(content, group, formulaName);
         List<String> minionIds = group.getServers().stream()
             .flatMap(s -> Opt.stream(s.asMinionServer()))
-            .map(MinionServer::getMinionId).collect(Collectors.toList());
+            .map(MinionServer::getMinionId).toList();
         saltApi.refreshPillar(new MinionList(minionIds));
     }
 
@@ -340,7 +340,7 @@ public class FormulaManager {
 
         return minions.stream().map(minion -> getCombinedFormulaDataForSystem(minion,
                 Optional.ofNullable(managedGroupsPerServer.get(minion.getId())), groupsFormulaData, formulaName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private FormulaData getCombinedFormulaDataForSystem(MinionServer minion,
@@ -419,6 +419,6 @@ public class FormulaManager {
                     getCombinedFormulaDataForSystemAndFormula(minion,
                                 Optional.ofNullable(managedGroupsPerServer.get(minion.getId())),
                                 groupsFormulaData, formulaName)).stream())
-        ).collect(Collectors.toList());
+        ).toList();
     }
 }

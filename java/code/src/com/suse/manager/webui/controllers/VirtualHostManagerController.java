@@ -172,7 +172,7 @@ public class VirtualHostManagerController {
         List<String> gathererModuleNames = getGathererModules()
                 .entrySet().stream()
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .toList();
         return json(response, gathererModuleNames);
     }
 
@@ -342,7 +342,7 @@ public class VirtualHostManagerController {
                 Map<String, Object> json = new HashMap<>();
                 json.put("contexts", contexts.stream()
                         .map(ctx -> ctx.get("name"))
-                        .collect(Collectors.toList()));
+                        .toList());
                 json.put("currentContext", currentContext);
                 return result(response, ResultJson.success(json), new TypeToken<>() { });
             }
@@ -393,7 +393,7 @@ public class VirtualHostManagerController {
                                 (List<Map<String, Object>>)map.get("contexts");
                         contextNames = contexts.stream()
                                 .map(ctx -> (String)ctx.get("name"))
-                                .collect(Collectors.toList());
+                                .toList();
                     }
                 }
             }
@@ -695,7 +695,7 @@ public class VirtualHostManagerController {
             json.addProperty("orgName", imageStore.getOrg().getName());
             json.addProperty("gathererModule", imageStore.getGathererModule());
             return json;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private static ResultJson getJsonDetails(VirtualHostManager vhm) {

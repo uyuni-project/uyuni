@@ -40,7 +40,6 @@ import org.cobbler.SystemRecord;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class SaltbootUtils {
     private static final Logger LOG = LogManager.getLogger(SaltbootUtils.class);
@@ -229,7 +228,7 @@ public class SaltbootUtils {
             Network k = new Network(con, hw);
             k.setMacAddress(hw);
             return k;
-        }).collect(Collectors.toList());
+        }).toList();
         system.setNetworkInterfaces(networks);
         system.enableNetboot(true);
         system.save();

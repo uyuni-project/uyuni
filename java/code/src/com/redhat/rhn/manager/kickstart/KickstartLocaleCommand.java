@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * KickstartLocaleCommand - for editing locale-related options
@@ -124,7 +123,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
             row.put("display", dto.getName());
             row.put("value", dto.getLabel());
             return row;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     /**
