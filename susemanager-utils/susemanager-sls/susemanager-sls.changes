@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 04 14:58:37 CEST 2024 - rosuna@suse.com
+
+- version 4.3.45-0
+  * Start using DEB822 format for repository sources beginning with Ubuntu 24.04
+
+-------------------------------------------------------------------
 Mon Sep 02 15:07:48 CEST 2024 - rosuna@suse.com
 
 - version 4.3.44-0
