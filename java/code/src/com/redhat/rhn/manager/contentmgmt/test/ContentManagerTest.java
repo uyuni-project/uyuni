@@ -28,6 +28,7 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -621,7 +622,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         List<ContentFilter> filters = ContentManager.listFilters(user);
         assertEquals(1, filters.size());
         ContentFilter fromDb = filters.get(0);
-        assertTrue(fromDb instanceof PackageFilter);
+        assertInstanceOf(PackageFilter.class, fromDb);
         assertEquals(filter, fromDb);
         assertEquals(Rule.DENY, fromDb.getRule());
         assertEquals(criteria, fromDb.getCriteria());
@@ -1216,7 +1217,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
             fail("An exception must be thrown.");
         }
         catch (RuntimeException e) {
-            assertTrue(e.getCause() instanceof DependencyResolutionException);
+            assertInstanceOf(DependencyResolutionException.class, e.getCause());
         }
     }
 

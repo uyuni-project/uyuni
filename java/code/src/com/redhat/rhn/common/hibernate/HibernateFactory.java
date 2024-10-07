@@ -149,8 +149,7 @@ public abstract class HibernateFactory {
         }
 
         for (Map.Entry<String, Object> entry: parameters.entrySet()) {
-            if (entry.getValue() instanceof Collection) {
-                Collection<?> c = (Collection<?>) entry.getValue();
+            if (entry.getValue() instanceof Collection c) {
                 if (c.size() > 1000) {
                     LOG.error("Query executed with Collection larger than 1000");
                 }
@@ -550,12 +549,12 @@ public abstract class HibernateFactory {
     public static String getBlobContents(Object blob) {
         // Returned by Hibernate, and also returned by mode queries
         // from an Oracle database
-        if (blob instanceof byte[]) {
-            return getByteArrayContents((byte[]) blob);
+        if (blob instanceof byte[] byt) {
+            return getByteArrayContents(byt);
         }
         // Returned only by mode queries from a Postgres database
-        if (blob instanceof Blob) {
-            return getByteArrayContents(blobToByteArray((Blob) blob));
+        if (blob instanceof Blob blb) {
+            return getByteArrayContents(blobToByteArray(blb));
         }
         return null;
     }

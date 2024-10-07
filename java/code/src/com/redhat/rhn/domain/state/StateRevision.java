@@ -120,10 +120,9 @@ public class StateRevision {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof StateRevision)) {
+        if (!(other instanceof StateRevision otherRevision)) {
             return false;
         }
-        StateRevision otherRevision = (StateRevision) other;
         return new EqualsBuilder()
                 .append(getCreated(), otherRevision.getCreated())
                 .append(getCreator(), otherRevision.getCreator())

@@ -88,10 +88,9 @@ public class AbstractLabelNameHelper extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object oth) {
-        if (!(oth instanceof AbstractLabelNameHelper)) {
+        if (!(oth instanceof AbstractLabelNameHelper other)) {
             return false;
         }
-        AbstractLabelNameHelper other = (AbstractLabelNameHelper) oth;
         return new EqualsBuilder().append(this.getId(), other.getId())
                                   .append(this.getName(), other.getName())
                                   .append(this.getLabel(), other.getLabel())

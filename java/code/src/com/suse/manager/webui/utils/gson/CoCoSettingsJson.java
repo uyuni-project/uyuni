@@ -83,10 +83,9 @@ public class CoCoSettingsJson {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CoCoSettingsJson)) {
+        if (!(o instanceof CoCoSettingsJson that)) {
             return false;
         }
-        CoCoSettingsJson that = (CoCoSettingsJson) o;
         return supported == that.supported &&
             enabled == that.enabled &&
             attestOnBoot == that.attestOnBoot &&

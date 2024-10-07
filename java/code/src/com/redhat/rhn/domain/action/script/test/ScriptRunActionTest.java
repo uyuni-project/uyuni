@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.action.script.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -49,7 +49,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
                 "testOrg" + this.getClass().getSimpleName());
         Action newA = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
-        assertTrue(newA instanceof ScriptRunAction);
+        assertInstanceOf(ScriptRunAction.class, newA);
         ScriptRunAction action = (ScriptRunAction) newA;
 
         ScriptResult result1 = new ScriptResult();
@@ -90,7 +90,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
          * getResults().size() is 2
          */
         Action a = ActionFactory.lookupById(id);
-        assertTrue(a instanceof ScriptRunAction);
+        assertInstanceOf(ScriptRunAction.class, a);
         ScriptRunAction scriptaction = (ScriptRunAction) a;
         assertNotNull(scriptaction.getScriptActionDetails().getId());
         assertNotNull(scriptaction.getScriptActionDetails().getParentAction().getId());
@@ -110,7 +110,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
                 "testOrg" + this.getClass().getSimpleName());
         Action newA = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
-        assertTrue(newA instanceof ScriptRunAction);
+        assertInstanceOf(ScriptRunAction.class, newA);
         ScriptRunAction action = (ScriptRunAction) newA;
 
         Date startDate = new Date();

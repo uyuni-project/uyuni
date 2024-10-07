@@ -201,10 +201,9 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SCCRepositoryAuth)) {
+        if (!(other instanceof SCCRepositoryAuth otherSCCRepository)) {
             return false;
         }
-        SCCRepositoryAuth otherSCCRepository = (SCCRepositoryAuth) other;
         return new EqualsBuilder()
             .append(getCredentials(), otherSCCRepository.getCredentials())
             .append(getRepo(), otherSCCRepository.getRepo())

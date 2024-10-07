@@ -134,10 +134,9 @@ public class Extension {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Extension)) {
+        if (!(other instanceof Extension otherProduct)) {
             return false;
         }
-        Extension otherProduct = (Extension) other;
         return new EqualsBuilder()
             .append(getId(), otherProduct.getId())
             .append(getLabel(), otherProduct.getLabel())

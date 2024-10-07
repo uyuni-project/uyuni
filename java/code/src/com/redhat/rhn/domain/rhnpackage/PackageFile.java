@@ -252,10 +252,9 @@ public class PackageFile extends BaseDomainHelper implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof PackageFile)) {
+        if (!(obj instanceof PackageFile fileIn)) {
             return false;
         }
-        PackageFile fileIn = (PackageFile) obj;
         EqualsBuilder equals = new EqualsBuilder();
         equals.append(this.getPack(), fileIn.getPack());
         equals.append(this.getCapability(), fileIn.getCapability());

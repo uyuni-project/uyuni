@@ -86,10 +86,9 @@ public class TrustedOrgDto extends BaseDto {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof OrgDto)) {
+        if (!(o instanceof OrgDto that)) {
             return false;
         }
-        OrgDto that = (OrgDto) o;
         EqualsBuilder b = new EqualsBuilder();
         b.append(this.getId(), that.getId());
         b.append(this.getName(), that.getName());

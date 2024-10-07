@@ -238,8 +238,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             HibernateFactory.commitTransaction();
         }
 
-        if (exception instanceof PGEventListenerException) {
-            PGEventListenerException listenerException = (PGEventListenerException) exception;
+        if (exception instanceof PGEventListenerException listenerException) {
             listenerException.getExceptionHandler().run();
         }
     }

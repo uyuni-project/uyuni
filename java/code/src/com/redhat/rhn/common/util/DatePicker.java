@@ -424,15 +424,14 @@ public class DatePicker {
             if (value == null) {
                 fieldValue = null;
             }
-            else if (value instanceof Integer) {
-                fieldValue = (Integer) value;
+            else if (value instanceof Integer integer) {
+                fieldValue = integer;
             }
-            else if (value instanceof String) {
-                fieldValue = Integer.parseInt((String) value);
+            else if (value instanceof String str) {
+                fieldValue = Integer.parseInt(str);
             }
             //this is necessary for reading request parameters.
-            else if (value instanceof String[]) {
-                String[] s = (String[]) value;
+            else if (value instanceof String[] s) {
                 if (StringUtils.isEmpty(s[0])) {
                     fieldValue = null;
                 }

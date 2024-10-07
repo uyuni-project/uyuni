@@ -57,10 +57,10 @@ public class State {
      */
     @Override
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof State)) {
+        if (!(other instanceof State that)) {
             return false;
         }
-        return label.equals(((State)other).getLabel());
+        return label.equals(that.getLabel());
     }
 
     /**

@@ -25,6 +25,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -141,7 +142,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
             fail("Should throw DependencyResolutionException.");
         }
         catch (DependencyResolutionException e) {
-            assertTrue(e.getCause() instanceof ModuleNotFoundException);
+            assertInstanceOf(ModuleNotFoundException.class, e.getCause());
             ModuleNotFoundException cause = (ModuleNotFoundException) e.getCause();
             assertEquals(1, cause.getModules().size());
             assertEquals("postgresql", cause.getModules().get(0).getName());
@@ -243,7 +244,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         DependencyResolutionException exception = assertThrows(DependencyResolutionException.class,
                 () -> resolver.resolveFilters(List.of(moduleFilter, noModules)));
 
-        assertTrue(exception.getCause() instanceof ModularityDisabledException);
+        assertInstanceOf(ModularityDisabledException.class, exception.getCause());
     }
 
     /**
@@ -305,7 +306,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
             fail("Should throw DependencyResolutionException.");
         }
         catch (DependencyResolutionException e) {
-            assertTrue(e.getCause() instanceof ConflictingStreamsException);
+            assertInstanceOf(ConflictingStreamsException.class, e.getCause());
         }
     }
 

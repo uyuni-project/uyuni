@@ -183,10 +183,9 @@ public class NotificationMessageJson {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof NotificationMessageJson)) {
+        if (!(other instanceof NotificationMessageJson otherNotificationMessage)) {
             return false;
         }
-        NotificationMessageJson otherNotificationMessage = (NotificationMessageJson) other;
         return new EqualsBuilder()
             .append(getId(), otherNotificationMessage.getId())
             .append(getData(), otherNotificationMessage.getData())

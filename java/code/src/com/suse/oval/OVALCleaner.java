@@ -161,8 +161,8 @@ public class OVALCleaner {
      * the id string.
      */
     private static void convertDebianTestRefs(BaseCriteria root, String osVersion) {
-        if (root instanceof CriteriaType) {
-            for (BaseCriteria criteria : ((CriteriaType) root).getChildren()) {
+        if (root instanceof CriteriaType criteriaType) {
+            for (BaseCriteria criteria : (criteriaType).getChildren()) {
                 convertDebianTestRefs(criteria, osVersion);
             }
         }

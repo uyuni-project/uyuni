@@ -135,12 +135,11 @@ public class SaltActionChainGeneratorService {
         for (int i = 0; i < states.size(); i++) {
             SaltState state = states.get(i);
 
-            if (state instanceof AbstractSaltRequisites) {
+            if (state instanceof AbstractSaltRequisites abstSaltReq) {
                 prevRequisiteRef(fileStates)
-                        .ifPresent(ref -> ((AbstractSaltRequisites)state).addRequire(ref.getKey(), ref.getValue()));
+                        .ifPresent(ref -> abstSaltReq.addRequire(ref.getKey(), ref.getValue()));
             }
-            if (state instanceof IdentifiableSaltState) {
-                IdentifiableSaltState modRun = (IdentifiableSaltState)state;
+            if (state instanceof IdentifiableSaltState modRun) {
                 modRun.setId(modRun.getId() + ACTION_STATE_ID_CHUNK_PREFIX + chunk);
             }
             Optional<Long> nextActionId = nextActionId(states, i);
@@ -205,8 +204,7 @@ public class SaltActionChainGeneratorService {
 
     private Optional<Long> nextActionId(List<SaltState> states, int currentPos) {
         SaltState state = states.size() > currentPos + 1 ? states.get(currentPos + 1) : null;
-        if (state instanceof ActionSaltState) {
-            ActionSaltState actionState = (ActionSaltState)state;
+        if (state instanceof ActionSaltState actionState) {
             return Optional.of(actionState.getActionId());
         }
         return Optional.empty();
@@ -214,8 +212,7 @@ public class SaltActionChainGeneratorService {
 
     private Optional<Long> currentActionId(List<SaltState> states, int currentPos) {
         SaltState state = states.get(currentPos);
-        if (state instanceof ActionSaltState) {
-            ActionSaltState actionState = (ActionSaltState)state;
+        if (state instanceof ActionSaltState actionState) {
             return Optional.of(actionState.getActionId());
         }
         return Optional.empty();
@@ -327,9 +324,7 @@ public class SaltActionChainGeneratorService {
     }
 
     private boolean isSaltUpgrade(SaltState state) {
-        if (state instanceof SaltModuleRun) {
-            SaltModuleRun moduleRun = (SaltModuleRun)state;
-
+        if (state instanceof SaltModuleRun moduleRun) {
             Optional<String> mods = getModsString(moduleRun);
 
             if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL)) {
@@ -359,8 +354,7 @@ public class SaltActionChainGeneratorService {
     }
 
     private boolean isRebootAction(SaltState state) {
-        if (state instanceof SaltModuleRun) {
-            SaltModuleRun moduleRun = (SaltModuleRun) state;
+        if (state instanceof SaltModuleRun moduleRun) {
             if ("system.reboot".equalsIgnoreCase(moduleRun.getName()) ||
                     "transactional_update.reboot".equalsIgnoreCase(moduleRun.getName())) {
                 return true;
@@ -373,9 +367,7 @@ public class SaltActionChainGeneratorService {
     }
 
     private boolean isUpgradeWithRebootRequired(SaltState state, MinionSummary minion) {
-        if (state instanceof SaltModuleRun) {
-            SaltModuleRun moduleRun = (SaltModuleRun) state;
-
+        if (state instanceof SaltModuleRun moduleRun) {
             Optional<String> mods = getModsString(moduleRun);
 
             if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL) &&

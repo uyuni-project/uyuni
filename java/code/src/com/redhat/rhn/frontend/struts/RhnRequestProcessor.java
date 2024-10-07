@@ -43,8 +43,8 @@ public class RhnRequestProcessor extends RequestProcessor {
     protected void processPopulate(HttpServletRequest request, HttpServletResponse response,
             ActionForm form, ActionMapping mapping) throws ServletException {
         super.processPopulate(request, response, form, mapping);
-        if (form instanceof ScrubbingDynaActionForm) {
-            ((ScrubbingDynaActionForm) form).scrub();
+        if (form instanceof ScrubbingDynaActionForm sform) {
+            sform.scrub();
         }
     }
 
@@ -67,9 +67,8 @@ public class RhnRequestProcessor extends RequestProcessor {
             String path = processPath(request, response);
             ActionMapping originalMapping = (ActionMapping)
                     moduleConfig.findActionConfig(path);
-            if (originalMapping != null && originalMapping instanceof RhnActionMapping) {
+            if (originalMapping instanceof RhnActionMapping mapping) {
                 //we need to process a list of acls
-                RhnActionMapping mapping = (RhnActionMapping) originalMapping;
 
                 // if postRequired="true", make sure we're using POST
                 if (mapping.postRequired() && !request.getMethod().equals("POST")) {
@@ -132,8 +131,8 @@ public class RhnRequestProcessor extends RequestProcessor {
             if (cause != null && e.getCause() == null) {
                 e.initCause(cause);
             }
-            if (cause instanceof ServletException) {
-                e = (ServletException) cause;
+            if (cause instanceof ServletException sx) {
+                e = sx;
             }
             else {
                 e = null;

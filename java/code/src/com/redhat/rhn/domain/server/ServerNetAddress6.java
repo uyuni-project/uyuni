@@ -94,11 +94,10 @@ public class ServerNetAddress6 extends BaseDomainHelper implements Serializable 
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ServerNetAddress6)) {
+        if (!(other instanceof ServerNetAddress6 castOther)) {
             return false;
         }
 
-        ServerNetAddress6 castOther = (ServerNetAddress6) other;
         return new EqualsBuilder().append(this.getAddress(), castOther.getAddress())
                                   .append(this.getScope(), castOther.getScope())
                                   .append(this.getNetmask(), castOther.getNetmask())

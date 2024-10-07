@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.channel;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.io.Serializable;
 
 public class AppStreamApiKey implements Serializable {
@@ -31,10 +33,9 @@ public class AppStreamApiKey implements Serializable {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof AppStreamApiKey)) {
+        if (!(obj instanceof AppStreamApiKey key)) {
             return false;
         }
-        AppStreamApiKey key = (AppStreamApiKey) obj;
-        return key.id == id && key.rpm.equals(rpm);
+        return new EqualsBuilder().append(id, key.id).append(rpm, key.rpm).isEquals();
     }
 }

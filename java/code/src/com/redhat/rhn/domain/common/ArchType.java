@@ -99,9 +99,7 @@ public class ArchType extends BaseDomainHelper {
         if (this == o) {
             return true;
         }
-        if (o instanceof ArchType) {
-            ArchType archType = (ArchType) o;
-
+        if (o instanceof ArchType archType) {
             return Objects.equals(getLabel(), archType.getLabel());
         }
         return false;

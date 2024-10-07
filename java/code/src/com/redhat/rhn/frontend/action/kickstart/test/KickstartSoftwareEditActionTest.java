@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,7 +64,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
         Collection c = (Collection)
             getRequest().getAttribute(KickstartSoftwareEditAction.CHANNELS);
         assertNotNull(c);
-        assertTrue(c.iterator().next() instanceof LabelValueBean);
+        assertInstanceOf(LabelValueBean.class, c.iterator().next());
 
         // For some reason this assertion fails, even thou i swear its in the request
         //assertNotNull(getRequest().

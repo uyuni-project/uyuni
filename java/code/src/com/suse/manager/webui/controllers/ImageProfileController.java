@@ -324,12 +324,10 @@ public class ImageProfileController {
             p.setTargetStore(store);
             p.setToken(getToken(reqData.getActivationKey()));
 
-            if (p instanceof DockerfileProfile) {
-                DockerfileProfile dp = (DockerfileProfile) p;
+            if (p instanceof DockerfileProfile dp) {
                 dp.setPath(reqData.getPath());
             }
-            else if (p instanceof KiwiProfile) {
-                KiwiProfile kp = (KiwiProfile) p;
+            else if (p instanceof KiwiProfile kp) {
                 kp.setPath(reqData.getPath());
                 kp.setKiwiOptions(reqData.getKiwiOptions());
             }

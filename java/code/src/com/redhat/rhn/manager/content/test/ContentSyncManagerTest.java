@@ -366,14 +366,14 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepositoryAuth upRepoBest = upRepoOpt.flatMap(SCCRepository::getBestAuth).orElse(null);
         assertNotNull(upRepoBest);
-        assertTrue(upRepoBest instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
+        assertInstanceOf(SCCRepositoryTokenAuth.class, upRepoBest, "Best Auth is not token auth");
 
         csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
         upRepoBest = upRepoOpt.flatMap(SCCRepository::getBestAuth).orElse(null);
         assertNotNull(upRepoBest);
-        assertTrue(upRepoBest instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
+        assertInstanceOf(SCCRepositoryTokenAuth.class, upRepoBest, "Best Auth is not token auth");
     }
 
     @Test
@@ -1144,8 +1144,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertTrue(upRepoOpt.get().getBestAuth().isPresent(), "No best auth found for SLE-Product-SLES15-Pool");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
-                    "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Pool");
+                assertInstanceOf(SCCRepositoryCloudRmtAuth.class, bestRepoAuth,
+                        "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Pool");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES15-Pool");
                 Optional<CloudRMTCredentials> bestCred = bestRepoAuth.getOptionalCredentials()
@@ -1169,8 +1169,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     "No best auth found for SLE-Product-SLES15-Updates");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
-                    "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Updates");
+                assertInstanceOf(SCCRepositoryCloudRmtAuth.class, bestRepoAuth,
+                        "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Updates");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES15-Updates");
                 RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
@@ -1190,8 +1190,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertTrue(upRepoOpt.get().getBestAuth().isPresent(), "No best auth found for SLE-Product-SLES12-Pool");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
-                    "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Pool");
+                assertInstanceOf(SCCRepositoryCloudRmtAuth.class, bestRepoAuth,
+                        "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Pool");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES12-Pool");
                 RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
@@ -1212,8 +1212,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     "No best auth found for SLE-Product-SLES12-Update");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryTokenAuth,
-                    "Best Auth is not token auth for SLE-Product-SLES12-Update");
+                assertInstanceOf(SCCRepositoryTokenAuth.class, bestRepoAuth,
+                        "Best Auth is not token auth for SLE-Product-SLES12-Update");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES12-Update");
                 RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();

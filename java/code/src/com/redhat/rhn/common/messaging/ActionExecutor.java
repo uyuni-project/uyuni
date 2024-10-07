@@ -51,8 +51,7 @@ class ActionExecutor implements Runnable {
         for (MessageAction action : actionHandlers) {
             LOG.debug("run() - got action: {}", action.getClass().getName());
             try {
-                if (msg instanceof EventDatabaseMessage) {
-                    EventDatabaseMessage evtdb = (EventDatabaseMessage) msg;
+                if (msg instanceof EventDatabaseMessage evtdb) {
                     LOG.debug("Got a EventDatabaseMessage");
                     while (evtdb.getTransaction().isActive()) {
                         if (LOG.isDebugEnabled()) {

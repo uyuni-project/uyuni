@@ -151,10 +151,9 @@ public class UserNotification {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof UserNotification)) {
+        if (!(other instanceof UserNotification otherUserNotification)) {
             return false;
         }
-        UserNotification otherUserNotification = (UserNotification) other;
         return new EqualsBuilder()
                 .append(getUserId(), otherUserNotification.getUserId())
                 .append(getMessageId(), otherUserNotification.getMessageId())

@@ -115,8 +115,8 @@ public class CSVTag extends BodyTagSupport {
             d = request.getSession(true).getAttribute(dataSetName);
         }
         if (d != null) {
-            if (d instanceof List) {
-                pageData = (List<BaseDto>) d;
+            if (d instanceof List data) {
+                pageData = (List<BaseDto>) data;
             }
             else {
                 throw new JspException("Dataset named \'" + dataSetName +
@@ -229,7 +229,7 @@ public class CSVTag extends BodyTagSupport {
     }
 
     private String exportDataToSession(HttpSession session) {
-        if (pageData != null && pageData instanceof DataResult &&
+        if (pageData instanceof DataResult &&
                 ((DataResult<BaseDto>)pageData).getMode() != null &&
                 ((DataResult<BaseDto>)pageData).getMode().getQuery() != null) {
             /* We better do not export pageList, let's keep the query instead.

@@ -76,17 +76,17 @@ public abstract class ApiResponseSerializer<T> implements XmlRpcCustomSerializer
         JsonObject json = new JsonObject();
 
         serialized.forEach((key, val) -> {
-            if (val instanceof Number) {
-                json.addProperty(key, (Number) val);
+            if (val instanceof Number num) {
+                json.addProperty(key, num);
             }
-            else if (val instanceof String) {
-                json.addProperty(key, (String) val);
+            else if (val instanceof String str) {
+                json.addProperty(key, str);
             }
-            else if (val instanceof Boolean) {
-                json.addProperty(key, (Boolean) val);
+            else if (val instanceof Boolean bool) {
+                json.addProperty(key, bool);
             }
-            else if (val instanceof Character) {
-                json.addProperty(key, (Character) val);
+            else if (val instanceof Character cha) {
+                json.addProperty(key, cha);
             }
             else {
                 json.add(key, context.serialize(val));
