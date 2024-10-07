@@ -152,10 +152,9 @@ public class CoCoAttestationReportJson {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CoCoAttestationReportJson)) {
+        if (!(o instanceof CoCoAttestationReportJson that)) {
             return false;
         }
-        CoCoAttestationReportJson that = (CoCoAttestationReportJson) o;
         return id == that.id;
     }
 

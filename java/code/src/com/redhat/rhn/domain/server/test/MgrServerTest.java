@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,7 +42,7 @@ public class MgrServerTest extends RhnBaseTestCase {
         //flushAndEvict(server);
         Server s = ServerFactory.lookupById(server.getId());
         assertNotNull(s, "Server not found");
-        assertTrue(s instanceof MinionServer, "Server object returned is NOT a MgrServer");
+        assertInstanceOf(MinionServer.class, s, "Server object returned is NOT a MgrServer");
         assertTrue(s.isMgrServer());
         assertFalse(s.isProxy());
     }

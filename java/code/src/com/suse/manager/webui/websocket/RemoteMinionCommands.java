@@ -394,8 +394,8 @@ public class RemoteMinionCommands {
     }
 
     private String parseSaltError(SaltError error) {
-        if (error instanceof JsonParsingError) {
-            JsonObject jsonErr = (JsonObject) ((JsonParsingError) error).getJson();
+        if (error instanceof JsonParsingError jParseErr) {
+            JsonObject jsonErr = (JsonObject) jParseErr.getJson();
             StringBuilder out = new StringBuilder("Error: ");
             if (StringUtils.isNotEmpty(jsonErr.get("retcode").getAsString())) {
                 out.append("[");

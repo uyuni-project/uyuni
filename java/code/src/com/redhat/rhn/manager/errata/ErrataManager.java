@@ -316,8 +316,8 @@ public class ErrataManager extends BaseManager {
     }
 
     private static Optional<ClonedErrata> asCloned(Errata e) {
-        if (e instanceof ClonedErrata) {
-            return Optional.of((ClonedErrata) e);
+        if (e instanceof ClonedErrata clone) {
+            return Optional.of(clone);
         }
         return Optional.empty();
     }

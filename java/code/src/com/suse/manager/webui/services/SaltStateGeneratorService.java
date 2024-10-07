@@ -402,14 +402,14 @@ public enum SaltStateGeneratorService {
      */
     private void removeRecurringStateFiles(Object o) {
         List<RecurringAction> actions = new ArrayList<>();
-        if (o instanceof MinionServer) {
-            actions = RecurringActionFactory.listMinionRecurringActions((MinionServer) o);
+        if (o instanceof MinionServer minSrv) {
+            actions = RecurringActionFactory.listMinionRecurringActions(minSrv);
         }
-        else if (o instanceof ServerGroup) {
-            actions = RecurringActionFactory.listGroupRecurringActions((ServerGroup) o);
+        else if (o instanceof ServerGroup srvGrp) {
+            actions = RecurringActionFactory.listGroupRecurringActions(srvGrp);
         }
-        else if (o instanceof Org) {
-            actions = RecurringActionFactory.listOrgRecurringActions(((Org) o).getId());
+        else if (o instanceof Org org) {
+            actions = RecurringActionFactory.listOrgRecurringActions(org.getId());
         }
         actions.forEach(RecurringActionManager::removeStateFile);
     }
@@ -428,14 +428,14 @@ public enum SaltStateGeneratorService {
      * @param statePath the directory where to generate the files
      */
     public void generateConfigState(StateRevision revision, Path statePath) {
-        if (revision instanceof ServerStateRevision) {
-            generateServerConfigState((ServerStateRevision) revision, statePath);
+        if (revision instanceof ServerStateRevision stateRev) {
+            generateServerConfigState(stateRev, statePath);
         }
-        else if (revision instanceof ServerGroupStateRevision) {
-            generateGroupConfigState((ServerGroupStateRevision) revision, statePath);
+        else if (revision instanceof ServerGroupStateRevision srvGroupRev) {
+            generateGroupConfigState(srvGroupRev, statePath);
         }
-        else if (revision instanceof OrgStateRevision) {
-            generateOrgConfigState((OrgStateRevision) revision, statePath);
+        else if (revision instanceof OrgStateRevision orgRev) {
+            generateOrgConfigState(orgRev, statePath);
         }
     }
 

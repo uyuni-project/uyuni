@@ -362,10 +362,9 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     @Override
     public boolean equals(Object otherObject) {
-        if (!(otherObject instanceof SUSEProduct)) {
+        if (!(otherObject instanceof SUSEProduct other)) {
             return false;
         }
-        SUSEProduct other = (SUSEProduct) otherObject;
         return new EqualsBuilder()
             .append(getName(), other.getName())
             .append(getVersion(), other.getVersion())

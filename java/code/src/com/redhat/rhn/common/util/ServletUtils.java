@@ -83,8 +83,7 @@ public class ServletUtils {
             if (me.getValue() == null) {
                 values = List.of();
             }
-            else if (me.getValue() instanceof Object[]) {
-                Object[] paramValues = (Object[]) me.getValue();
+            else if (me.getValue() instanceof Object[] paramValues) {
                 values = Arrays.stream(paramValues)
                         .map(o -> StringUtil.urlEncode(String.valueOf(o)))
                         .collect(Collectors.toList());

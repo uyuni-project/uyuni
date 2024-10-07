@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +81,8 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         // the postProcess, but that works for ALL methods except
         // logout.  So we do it here.
         if ((arguments != null) && (!arguments.isEmpty())) {
-            if (arguments.get(0) instanceof User) {
-                setCaller((User)arguments.get(0));
+            if (arguments.get(0) instanceof User u) {
+                setCaller(u);
             }
             else {
                 String arg = (String) Translator.convert(
@@ -102,15 +103,15 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         List<Object> rawArguments = invocation.getArguments();
         List<String> paramNames = Arrays
                 .stream(method.getParameters())
-                .map(p -> p.getName())
+                .map(Parameter::getName)
                 .toList();
         return IntStream.range(0, rawArguments.size()).boxed().collect(
                 Collectors.toMap(
                         i -> paramNames.get(i),
                         i -> {
                             Object arg = rawArguments.get(i);
-                            if (arg instanceof User) {
-                                return ((User) arg).getLogin();
+                            if (arg instanceof User u) {
+                                return u.getLogin();
                             }
                             else {
                                 return (String) Translator.convert(arg, String.class);
@@ -178,7 +179,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
      * character in the session key.
      */
     private boolean potentialSessionKey(String key) {
-        if (key == null || key.equals("")) {
+        if (key == null || key.isEmpty()) {
             return false;
         }
 

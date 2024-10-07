@@ -159,11 +159,11 @@ public abstract class BaseTag {
     }
 
     private String convertToString(Object o) {
-        if (o instanceof BaseTag) {
-            return ((BaseTag)o).render();
+        if (o instanceof BaseTag baseTag) {
+            return baseTag.render();
         }
-        else if (o instanceof String) {
-            return (String) o;
+        else if (o instanceof String str) {
+            return str;
         }
         else {
             return o.toString();

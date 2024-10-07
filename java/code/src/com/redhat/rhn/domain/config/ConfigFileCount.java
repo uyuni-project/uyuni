@@ -108,10 +108,9 @@ public class ConfigFileCount {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ConfigFileCount)) {
+        if (!(obj instanceof ConfigFileCount that)) {
             return false;
         }
-        ConfigFileCount that = (ConfigFileCount) obj;
         return new EqualsBuilder().
                     append(files, that.files).
                     append(directories, that.directories).

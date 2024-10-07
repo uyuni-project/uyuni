@@ -461,8 +461,8 @@ public class FormulaFactory {
      */
     public static Map<String, Object> convertIntegers(Map<String, Object> map) {
         map.forEach((key, value) -> {
-            if (value instanceof Double) {
-                if (((Double) value) % 1 == 0) {
+            if (value instanceof Double dbl) {
+                if (dbl % 1 == 0) {
                     map.put(key, ((Double) value).intValue());
                 }
             }

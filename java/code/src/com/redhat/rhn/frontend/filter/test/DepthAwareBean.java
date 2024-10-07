@@ -69,10 +69,9 @@ public class DepthAwareBean implements DepthAware {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DepthAwareBean)) {
+        if (!(o instanceof DepthAwareBean that)) {
             return false;
         }
-        DepthAwareBean that = (DepthAwareBean) o;
 
         return new EqualsBuilder().
                 append(this.content, that.content).

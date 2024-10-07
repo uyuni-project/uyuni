@@ -384,10 +384,9 @@ public class SetupWizardProductDto implements Selectable,
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SetupWizardProductDto)) {
+        if (!(other instanceof SetupWizardProductDto otherProduct)) {
             return false;
         }
-        SetupWizardProductDto otherProduct = (SetupWizardProductDto) other;
         return new EqualsBuilder()
             .append(getIdent(), otherProduct.getIdent())
             .isEquals();

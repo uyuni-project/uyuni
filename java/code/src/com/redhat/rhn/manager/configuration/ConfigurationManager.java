@@ -1396,8 +1396,8 @@ public class ConfigurationManager extends BaseManager {
 
     private void removeChannelFromRecurringActions(List<RecurringAction> actions, ConfigChannel channel) {
         actions.forEach(a -> ((RecurringState) a.getRecurringActionType()).getStateConfig()
-                .removeIf(c -> c instanceof RecurringConfigChannel &&
-                        ((RecurringConfigChannel) c).getConfigChannel().equals(channel)));
+                .removeIf(c -> c instanceof RecurringConfigChannel reConfigChannel &&
+                        reConfigChannel.getConfigChannel().equals(channel)));
     }
 
     /**

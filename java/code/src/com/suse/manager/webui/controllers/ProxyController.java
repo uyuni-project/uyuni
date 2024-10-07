@@ -158,8 +158,7 @@ public class ProxyController {
             return jsonError(response, HttpStatus.SC_BAD_REQUEST, "Configuration file wasn't generated").getBytes();
         }
         Object config = request.session().attribute(filename);
-        if (config instanceof byte[]) {
-            byte[] data = (byte[]) config;
+        if (config instanceof byte[] data) {
             request.session().removeAttribute(filename);
             response.header("Content-Disposition", "attachment; filename=\"" + filename + "\"");
             response.header("Content-Length", Integer.toString(data.length));

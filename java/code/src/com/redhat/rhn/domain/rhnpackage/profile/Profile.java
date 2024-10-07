@@ -158,10 +158,9 @@ public class Profile extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Profile)) {
+        if (!(other instanceof Profile castOther)) {
             return false;
         }
-        Profile castOther = (Profile) other;
         return new EqualsBuilder().append(id, castOther.id)
                                   .append(name, castOther.name)
                                   .append(description, castOther.description)

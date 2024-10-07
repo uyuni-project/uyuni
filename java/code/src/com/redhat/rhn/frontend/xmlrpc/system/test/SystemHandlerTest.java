@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -683,7 +684,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         var actionId = actionIds.get(0);
         Action action = ActionFactory.lookupById(actionId);
         assertEquals(earliest, action.getEarliestAction());
-        assertTrue(action instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
         assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
         assertEquals(1, sca.getDetails().getChannels().size());
@@ -721,7 +722,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Action action = ActionFactory.lookupById(actionId);
         assertEquals(earliest, action.getEarliestAction());
-        assertTrue(action instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
         assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
         assertTrue(sca.getDetails().getChannels().isEmpty());

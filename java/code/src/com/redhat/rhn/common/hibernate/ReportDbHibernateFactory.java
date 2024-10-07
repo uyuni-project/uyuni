@@ -539,12 +539,12 @@ public class ReportDbHibernateFactory {
     public String getBlobContents(Object blob) {
         // Returned by Hibernate, and also returned by mode queries
         // from an Oracle database
-        if (blob instanceof byte[]) {
-            return getByteArrayContents((byte[]) blob);
+        if (blob instanceof byte[] byt) {
+            return getByteArrayContents(byt);
         }
         // Returned only by mode queries from a Postgres database
-        if (blob instanceof Blob) {
-            return getByteArrayContents(blobToByteArray((Blob) blob));
+        if (blob instanceof Blob blb) {
+            return getByteArrayContents(blobToByteArray(blb));
         }
         return null;
     }

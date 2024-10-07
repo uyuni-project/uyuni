@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1026,10 +1027,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<>(profileList),
                 new DataResult<>(systemList), "foo");
 
-        Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
-                new Date());
-        assertTrue(action instanceof PackageAction);
-        PackageAction pa = (PackageAction) action;
+        PackageAction pa = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs, new Date());
+        assertInstanceOf(PackageAction.class, pa);
 
         Map<String, Object> params = new HashMap<>();
         params.put("action_id", pa.getId());
@@ -1063,7 +1062,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = actions.stream().findFirst().get();
 
-        assertTrue(action instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
 
         HibernateFactory.getSession().flush();
@@ -1075,12 +1074,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, dr.size());
 
         Action action2 = ActionFactory.lookupById(action.getId());
-        assertTrue(action2 instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action2);
         SubscribeChannelsAction sca2 = (SubscribeChannelsAction)action2;
         assertEquals(base.getId(), sca2.getDetails().getBaseChannel().getId());
         assertEquals(2, sca2.getDetails().getChannels().size());
-        sca2.getDetails().getChannels().stream().anyMatch(c -> c.getId().equals(ch1.getId()));
-        sca2.getDetails().getChannels().stream().anyMatch(c -> c.getId().equals(ch2.getId()));
+        assertTrue(sca2.getDetails().getChannels().stream().anyMatch(c -> c.getId().equals(ch1.getId())));
+        assertTrue(sca2.getDetails().getChannels().stream().anyMatch(c -> c.getId().equals(ch2.getId())));
         // tokens are generated right when executing the action
         assertEquals(0, sca2.getDetails().getAccessTokens().size());
         assertEquals(1, action2.getServerActions().size());

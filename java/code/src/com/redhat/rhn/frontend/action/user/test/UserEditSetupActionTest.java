@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.user.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -84,7 +85,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
             assertTrue(TestUtils.isLocalized(lv.getName()));
             assertTrue(lv.isDisabled());
             assertNotNull(sah.getRequest().getAttribute("disabledRoles"));
-            assertTrue(sah.getRequest().getAttribute("user") instanceof User);
+            assertInstanceOf(User.class, sah.getRequest().getAttribute("user"));
 
             //If we have pam setup where we're testing, make sure displaypam was set
             String pamAuthService = Config.get().getString(

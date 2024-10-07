@@ -84,10 +84,9 @@ public class RoleImpl extends BaseDomainHelper implements Role {
     /** {@inheritDoc} */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof RoleImpl)) {
+        if (!(other instanceof RoleImpl castOther)) {
             return false;
         }
-        RoleImpl castOther = (RoleImpl) other;
         return new EqualsBuilder().append(getName(),
                 castOther.getName()).append(getLabel(),
                 castOther.getLabel()).isEquals();

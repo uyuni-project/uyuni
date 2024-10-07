@@ -156,12 +156,9 @@ public class PackageActionRemovalFailure implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof PackageActionRemovalFailure)) {
+        if (!(obj instanceof PackageActionRemovalFailure p)) {
             return false;
         }
-
-        PackageActionRemovalFailure p = (PackageActionRemovalFailure) obj;
-
         return new EqualsBuilder().append(this.getAction(), p.getAction())
                                   .append(this.getServer(), p.getServer())
                                   .append(this.getPackageName(), p.getPackageName())

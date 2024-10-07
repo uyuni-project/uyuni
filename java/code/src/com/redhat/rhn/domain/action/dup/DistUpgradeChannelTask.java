@@ -95,10 +95,9 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof DistUpgradeChannelTask)) {
+        if (!(obj instanceof DistUpgradeChannelTask other)) {
             return false;
         }
-        DistUpgradeChannelTask other = (DistUpgradeChannelTask) obj;
         if (channel == null) {
             if (other.channel != null) {
                 return false;
@@ -115,9 +114,6 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
         else if (!details.equals(other.details)) {
             return false;
         }
-        if (task != other.task) {
-            return false;
-        }
-        return true;
+        return task == other.task;
     }
 }
