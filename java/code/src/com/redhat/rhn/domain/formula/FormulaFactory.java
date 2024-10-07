@@ -278,7 +278,7 @@ public class FormulaFactory {
         List<String> formulas = group.getPillars().stream()
                 .filter(pillar -> pillar.getCategory().startsWith(PREFIX))
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
-                .collect(Collectors.toList());
+                .toList();
 
         return orderFormulas(formulas);
     }
@@ -292,7 +292,7 @@ public class FormulaFactory {
         List<String> formulas = orderFormulas(minion.getPillars().stream()
                 .filter(pillar -> pillar.getCategory().startsWith(PREFIX))
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
-                .collect(Collectors.toList()));
+                .toList());
 
         return orderFormulas(formulas);
     }
@@ -788,7 +788,7 @@ public class FormulaFactory {
                             proxyEnabled ? exporterConfig.getProxyModuleOrFallback() : null,
                             proxyPath,
                             tlsEnabled))
-                    .collect(Collectors.toList());
+                    .toList();
         }
         else {
             return new ArrayList<>();

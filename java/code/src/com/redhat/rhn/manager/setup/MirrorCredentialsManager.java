@@ -94,7 +94,7 @@ public class MirrorCredentialsManager {
                             Comparator.comparing(MirrorCredentialsDto::isPrimary).reversed()
                                 .thenComparing(MirrorCredentialsDto::getId)
                         )
-                        .collect(Collectors.toList());
+                        .toList();
         if (log.isDebugEnabled()) {
             log.debug("Found {} mirror credentials", credsList.size());
         }

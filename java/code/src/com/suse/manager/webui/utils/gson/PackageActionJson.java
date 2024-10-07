@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Data required to schedule an action (install/update/remove) on packages
@@ -77,7 +76,7 @@ public class PackageActionJson extends ScheduledRequestJson {
         return selectedPackages.stream()
                                .map(PackageListItem::parse)
                                .map(PackageListItem::getKeyMap)
-                               .collect(Collectors.toList());
+                               .toList();
 
     }
 }

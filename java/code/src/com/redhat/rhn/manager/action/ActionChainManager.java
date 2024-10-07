@@ -359,7 +359,7 @@ public class ActionChainManager {
 
         if (!sids.stream().map(ServerFactory::lookupById)
                 .filter(server -> !MinionServerUtils.isMinionServer(server))
-                .collect(Collectors.toList()).isEmpty()) {
+                .toList().isEmpty()) {
             throw new IllegalArgumentException("Server ids include non minion servers.");
         }
 
@@ -560,10 +560,10 @@ public class ActionChainManager {
 
         // This won't actually apply the errata because we're passing in an action chain
         return ErrataManager.applyErrata(user,
-                errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
+                errataIds.stream().map(Integer::longValue).toList(),
                 earliest,
                 actionChain,
-                servers.stream().map(Server::getId).collect(Collectors.toList()), true, false
+                servers.stream().map(Server::getId).toList(), true, false
         );
 
     }
@@ -587,10 +587,10 @@ public class ActionChainManager {
 
         // This won't actually apply the errata because we're passing in an action chain
         return ErrataManager.applyErrata(user,
-                errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
+                errataIds.stream().map(Integer::longValue).toList(),
                 earliest,
                 actionChain,
-                servers.stream().map(Server::getId).collect(Collectors.toList()), onlyRelevant, false);
+                servers.stream().map(Server::getId).toList(), onlyRelevant, false);
     }
 
 

@@ -20,7 +20,6 @@ import static java.util.Collections.singletonMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Encapsulates the execution of a state.
@@ -69,7 +68,7 @@ public class SaltModuleRun extends AbstractSaltRequisites implements Identifiabl
             arguments.addAll(this.args.entrySet()
                     .stream()
                     .map(e -> singletonMap(e.getKey(), e.getValue()))
-                    .collect(Collectors.toList())
+                    .toList()
             );
         }
         if (this.kwargs != null) {

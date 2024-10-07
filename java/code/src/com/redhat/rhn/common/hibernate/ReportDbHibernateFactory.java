@@ -43,7 +43,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.persistence.FlushModeType;
@@ -803,7 +802,7 @@ public class ReportDbHibernateFactory {
 
         List<List<E>> batches = IntStream.iterate(0, i -> i < size, i -> i + LIST_BATCH_MAX_SIZE)
                 .mapToObj(i -> list.subList(i, Math.min(i + LIST_BATCH_MAX_SIZE, size)))
-                .collect(Collectors.toList());
+                .toList();
         return batches.stream()
                 .map(b -> {
                     query.setParameterList(parameterName, b);

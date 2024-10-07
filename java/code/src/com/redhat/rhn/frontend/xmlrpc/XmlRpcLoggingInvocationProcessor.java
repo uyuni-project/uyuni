@@ -103,7 +103,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         List<String> paramNames = Arrays
                 .stream(method.getParameters())
                 .map(p -> p.getName())
-                .collect(Collectors.toList());
+                .toList();
         return IntStream.range(0, rawArguments.size()).boxed().collect(
                 Collectors.toMap(
                         i -> paramNames.get(i),

@@ -208,10 +208,10 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 }).collect(Collectors.partitioningBy(x -> x.isRight()));
 
         List<Tuple2<Method, Object[]>> candidates = collect.get(true).stream()
-                .flatMap(x -> x.right().stream()).collect(Collectors.toList());
+                .flatMap(x -> x.right().stream()).toList();
 
         List<TranslationException> exceptions = collect.get(false).stream()
-                .flatMap(x -> x.left().stream()).collect(Collectors.toList());
+                .flatMap(x -> x.left().stream()).toList();
 
         if (candidates.isEmpty()) {
            throw exceptions.get(0);

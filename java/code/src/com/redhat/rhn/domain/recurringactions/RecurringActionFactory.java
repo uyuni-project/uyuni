@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -148,7 +147,7 @@ public class RecurringActionFactory extends HibernateFactory {
             "left join web_customer org on org.id = ra.org_id" +
             ") ra ";
         List<Org> orgs = user.hasRole(RoleFactory.SAT_ADMIN) ? OrgFactory.lookupAllOrgs() : List.of(user.getOrg());
-        Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).collect(Collectors.toList()));
+        Map<String, Object> params = Map.of("orgsIds", orgs.stream().map(Org::getId).toList());
 
         return new PagedSqlQueryBuilder("ra.recurring_action_id")
                 .select("ra.*")
@@ -253,7 +252,7 @@ public class RecurringActionFactory extends HibernateFactory {
         // 2. then we filter out the entity of given type
         List<RecurringAction> matches = stream
                 .filter(entity -> entity.getTargetType() == action.getTargetType())
-                .collect(Collectors.toList());
+                .toList();
 
         // we can only have either 0 or 1 matches
         switch (matches.size()) {

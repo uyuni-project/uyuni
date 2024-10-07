@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.system;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
@@ -674,7 +673,7 @@ public class SystemHandler extends BaseHandler {
 
         List<Channel> childChannels = channelIds.stream()
                 .map(cid -> ChannelFactory.lookupByIdAndUser(cid, loggedInUser))
-                .collect(Collectors.toList());
+                .toList();
 
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
@@ -682,7 +681,7 @@ public class SystemHandler extends BaseHandler {
                     baseChannel,
                     childChannels,
                     earliestOccurrence, null);
-            return action.stream().map(Action::getId).collect(toList());
+            return action.stream().map(Action::getId).toList();
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
@@ -1589,7 +1588,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, sid);
         DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
         packageListItems.elaborate();
-        List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
+        return packageListItems.stream().map(pi -> {
             Map<String, Object> item = new LinkedHashMap<>();
             item.put("package_id", Objects.isNull(pi.getPackageId()) ? -1 : pi.getPackageId().intValue());
             item.put("name", pi.getName());
@@ -1601,8 +1600,7 @@ public class SystemHandler extends BaseHandler {
             Optional.ofNullable(pi.getInstallTimeObj()).ifPresent(it -> item.put("installtime", it));
             item.put("retracted", pi.isRetracted());
             return item;
-        }).collect(toList());
-        return maps;
+        }).toList();
     }
 
     /**
@@ -1648,7 +1646,7 @@ public class SystemHandler extends BaseHandler {
                 item.put("pending status", pi.getPending().equals("L") ? "Locking" : "Unlocking");
             }
             return item;
-        }).collect(toList());
+        }).toList();
     }
 
     /**
@@ -3748,7 +3746,7 @@ public class SystemHandler extends BaseHandler {
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = sids.stream()
             .map(Integer::longValue)
-            .collect(toList());
+            .toList();
 
         if (!allowModules) {
             for (Long sid : serverIds) {
@@ -3762,7 +3760,7 @@ public class SystemHandler extends BaseHandler {
         }
         List<Long> eids = errataIds.stream()
             .map(Integer::longValue)
-            .collect(toList());
+            .toList();
 
         try {
             return ErrataManager.applyErrataHelper(loggedInUser,
@@ -4081,20 +4079,20 @@ public class SystemHandler extends BaseHandler {
             Long archId = packageMap.get("arch_id");
 
             return PackageFactory.lookupByNevraIds(org, nameId, evrId, archId).stream();
-        }).collect(toList());
+        }).toList();
 
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(acT)) {
             List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
-                    packages.stream().map(Package::getId).collect(toList()),
-                    sids.stream().map(Integer::longValue).collect(toList())
+                    packages.stream().map(Package::getId).toList(),
+                    sids.stream().map(Integer::longValue).toList()
             );
             if (!pidsidpairs.isEmpty()) {
-                throw new RetractedPackageFault(pidsidpairs.stream().map(Tuple2::getA).collect(toList()));
+                throw new RetractedPackageFault(pidsidpairs.stream().map(Tuple2::getA).toList());
             }
         }
 
         // Check if the package is part of a PTF. If true it cannot be manually installed/updated/ removed
-        List<Long> ptfPackages = packages.stream().filter(Package::isPartOfPtf).map(Package::getId).collect(toList());
+        List<Long> ptfPackages = packages.stream().filter(Package::isPartOfPtf).map(Package::getId).toList();
         if (!ptfPackages.isEmpty()) {
             throw new PtfPackageFault(ptfPackages);
         }
@@ -4104,7 +4102,7 @@ public class SystemHandler extends BaseHandler {
             List<Long> ptfMasterPackages = packages.stream()
                                                    .filter(Package::isMasterPtfPackage)
                                                    .map(Package::getId)
-                                                   .collect(toList());
+                                                   .toList();
             if (!ptfMasterPackages.isEmpty()) {
                 throw new PtfMasterFault(ptfMasterPackages);
             }
@@ -4324,12 +4322,12 @@ public class SystemHandler extends BaseHandler {
                                          List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
         List<Tuple2<Long, Long>> retracted = ErrataFactory.retractedPackages(
-                packageIds.stream().map(Integer::longValue).collect(toList()),
-                sids.stream().map(Integer::longValue).collect(toList()));
+                packageIds.stream().map(Integer::longValue).toList(),
+                sids.stream().map(Integer::longValue).toList());
 
         List<Long> retractedPids = retracted.stream()
                 .map(Tuple2::getA)
-                .collect(toList());
+                .toList();
         if (retracted.isEmpty()) {
             return schedulePackagesAction(loggedInUser, sids,
                     packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
@@ -4834,13 +4832,13 @@ public class SystemHandler extends BaseHandler {
         Set<Package> pkgsAlreadyLocked = new HashSet<>();
         List<Package> pkgsFindAlreadyLocked = PackageManager.lookupByIdAndUser(
                 lockedPackagesResult.stream().map(PackageListItem::getPackageId)
-                        .collect(Collectors.toList()), loggedInUser);
+                        .toList(), loggedInUser);
         pkgsAlreadyLocked.addAll(pkgsFindAlreadyLocked);
 
         Set<Package> pkgsToLock = new HashSet<>();
         List<Package> pkgsFindToLock = PackageManager.lookupByIdAndUser(pkgIdsToLock
 
-                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+                .stream().map(Integer::longValue).toList(), loggedInUser);
         pkgsFindToLock.stream().filter(Objects::nonNull).forEach(pkgsToLock::add);
 
         pkgsToLock.removeAll(pkgsAlreadyLocked);
@@ -4850,7 +4848,7 @@ public class SystemHandler extends BaseHandler {
 
         Set<Package> pkgsToUnlock = new HashSet<>();
         List<Package> pkgsFindToUnlock = PackageManager.lookupByIdAndUser(pkgIdsToUnlock
-                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+                .stream().map(Integer::longValue).toList(), loggedInUser);
         pkgsFindToUnlock.stream().filter(Objects::nonNull).forEach(pkgsToUnlock::add);
 
         pkgsToUnlock.forEach(x -> x.setLockPending(Boolean.TRUE));
@@ -8080,7 +8078,7 @@ public class SystemHandler extends BaseHandler {
                             }
                             return ps.getIsEveryChannelSynced();
                         })
-                        .collect(toList());
+                        .toList();
                 targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
                 log.info("Using migration target: {}", targetProducts);
             }
@@ -8291,7 +8289,7 @@ public class SystemHandler extends BaseHandler {
                 .map(p -> new SUSEInstalledProduct(p.getName(), p.getVersion(),
                         p.getArch().getLabel(), p.getRelease(), p.isBaseproduct(),
                         p.getSUSEProduct().getFriendlyName()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -8668,8 +8666,8 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
-            List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(Server::getId).collect(Collectors.toList());
+            Set<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
+                    .map(Server::getId).collect(toSet());
             if (!visible.containsAll(sysids)) {
                 sysids.removeAll(visible);
                 throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
@@ -8733,10 +8731,10 @@ public class SystemHandler extends BaseHandler {
      */
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
             Date earliestOccurrence, Boolean test) {
-        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+        List<Long> sysids = sids.stream().map(Integer::longValue).toList();
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(Server::getId).collect(Collectors.toList());
+                    .map(Server::getId).toList();
             if (!visible.containsAll(sysids)) {
                 sysids.removeAll(visible);
                 throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
@@ -9054,7 +9052,7 @@ public class SystemHandler extends BaseHandler {
      */
 
     public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
-        List<Long> sysids = sids.stream().map(Integer::longValue).collect(toList());
+        List<Long> sysids = sids.stream().map(Integer::longValue).toList();
         try {
             return ActionManager.changeProxy(loggedInUser, sysids, proxyId.longValue());
         }

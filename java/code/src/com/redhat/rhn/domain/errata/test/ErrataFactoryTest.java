@@ -548,7 +548,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                         p.getPackageName().getName() + "-" +
                                 p.getPackageEvr().toUniversalEvrString() + "." +
                                 p.getPackageArch().getLabel()
-                ).collect(Collectors.toList()),
+                ).toList(),
                 List.of(testMinionServer.getId())
         );
 

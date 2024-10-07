@@ -46,7 +46,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.persistence.FlushModeType;
 
@@ -359,7 +358,7 @@ public class CachedStatement implements Serializable {
                     .map(finalQuery -> executeChecking(finalQuery, qMap, parameters, mode, null))
                     .filter(res -> drClazz.isAssignableFrom(res.getClass()))
                     .map(res -> drClazz.cast(res))
-                    .collect(Collectors.toList());
+                    .toList();
             DataResult<T> result = null;
             if (!results.isEmpty()) {
                 result = results.get(0);

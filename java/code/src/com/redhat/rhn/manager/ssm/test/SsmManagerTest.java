@@ -66,7 +66,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Test for {@link SsmManager}.
@@ -624,7 +623,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(2, details.stream().filter(d -> d.getBaseChannel().getId() == baseChannel.getId()).count());
         assertTrue(details.stream()
                 .allMatch(d -> d.getChannels().size() == 1));
@@ -697,7 +696,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
-                .collect(Collectors.toList());
+                .toList();
 
         Optional<SubscribeChannelsActionDetails> details1 = details.stream()
                 .filter(d -> d.getBaseChannel().getId().equals(baseChannel.getId()))
@@ -879,7 +878,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
-                .collect(Collectors.toList());
+                .toList();
 
         Optional<SubscribeChannelsActionDetails> details1 = details.stream()
                 .filter(d -> d.getBaseChannel().getId().equals(baseChannel.getId()))
@@ -981,7 +980,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<SubscribeChannelsActionDetails> details = results.stream()
                 .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
-                .collect(Collectors.toList());
+                .toList();
 
         Optional<SubscribeChannelsActionDetails> details1 = details.stream()
                 .filter(d -> d.getBaseChannel().getId().equals(baseChannel.getId()))

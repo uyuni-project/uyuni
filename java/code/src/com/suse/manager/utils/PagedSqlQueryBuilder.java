@@ -35,7 +35,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.PersistenceException;
@@ -379,7 +378,7 @@ public class PagedSqlQueryBuilder {
                     LOG.error("Failed to create {} from SQL tuple", clazz.getName(), e);
                     return null;
                 }
-            }).collect(Collectors.toList());
+            }).toList();
         }
         catch (NoSuchMethodException e) {
             LOG.error("Cannot create {} objects from Tuple", clazz.getName());
