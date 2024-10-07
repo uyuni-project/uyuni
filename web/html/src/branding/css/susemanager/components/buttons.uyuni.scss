@@ -1,7 +1,6 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-warning,
 .btn-danger {
   --bs-border-width: 1px;
 
@@ -16,7 +15,6 @@
 
 .btn-default,
 .btn-primary,
-.btn-warning,
 .btn-danger {
   border: 1px solid;
 }
@@ -37,15 +35,6 @@
 
   &, &:disabled, &.disabled {
     border-color: #00C081;
-  }
-}
-
-.btn-warning {
-  color: #fff;
-  background: #f0ad4e;
-
-  &, &:disabled, &.disabled {
-    border-color: #eea236;
   }
 }
 

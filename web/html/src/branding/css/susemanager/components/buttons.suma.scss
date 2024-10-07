@@ -1,7 +1,6 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-warning,
 .btn-danger {
   color: inherit;
   font-weight: bold;
@@ -130,7 +129,6 @@
 }
 
 // Warning shouldn't currently be used anywhere, but cover it just in case
-.btn-warning,
 .btn-danger {
   &,
   &:active,
