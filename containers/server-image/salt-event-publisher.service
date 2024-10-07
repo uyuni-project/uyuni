@@ -1,0 +1,20 @@
+[Unit]
+Description=Salt Event Publisher
+After=network.target salt-master.service
+
+[Service]
+Type=simple
+User=salt
+SyslogIdentifier=salt-event-publisher
+# Check if salt master event publisher IPC socket is availabe.
+# `socat` can start if the unix socket is not present,
+# but will not be able to read the events once salt-master get started
+ExecStartPre=test -S /run/salt/master/master_event_pub.ipc
+ExecStart=/usr/bin/socat TCP4-LISTEN:4512,reuseaddr,fork UNIX-CONNECT:/run/salt/master/master_event_pub.ipc
+Restart=always
+RestartSec=5s
+SuccessExitStatus=0 143
+RestartForceExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
