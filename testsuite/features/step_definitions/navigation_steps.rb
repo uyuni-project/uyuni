@@ -800,7 +800,7 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should not see a warning nor an error sign$/) do
-  raise ScriptError, 'No products synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
+  raise ScriptError, 'No product synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
   raise ScriptError, 'Warning detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
   raise ScriptError, 'Error detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
