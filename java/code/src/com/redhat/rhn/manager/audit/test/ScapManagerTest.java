@@ -352,7 +352,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(ruleIds.size(), resultIds.size());
         assertTrue(resultIds.containsAll(ruleIds),
                 "Expected but missing rules: " + resultIds.stream()
-                             .filter(r -> !ruleIds.contains(r)).collect(Collectors.toList()));
+                             .filter(r -> !ruleIds.contains(r)).toList());
     }
 
     private void assertRuleResultsCount(XccdfTestResult result, String ruleType, int count) {

@@ -52,7 +52,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 public class VirtualizationActionsTest extends BaseTestCaseWithUser {
 
@@ -190,7 +189,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
                 VirtualGuestsUpdateActionJson.InterfaceData detail = a1.getDetails().new InterfaceData();
                 detail.setSource(net);
                 return detail;
-            }).collect(Collectors.toList()));
+            }).toList());
 
         flushAndEvict(a1);
 

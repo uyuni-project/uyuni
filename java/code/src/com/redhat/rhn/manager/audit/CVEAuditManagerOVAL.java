@@ -74,7 +74,7 @@ public class CVEAuditManagerOVAL {
         List<CVEAuditServer> result = new ArrayList<>();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cveIdentifier)
-                .collect(Collectors.toList());
+                .toList();
 
         // Group the results by system
         Map<Long, List<CVEAuditManager.CVEPatchStatus>> resultsBySystem =
@@ -177,11 +177,11 @@ public class CVEAuditManagerOVAL {
             else {
                 List<CVEAuditManager.CVEPatchStatus> patchesInAssignedChannels = results.stream()
                         .filter(CVEAuditManager.CVEPatchStatus::isChannelAssigned)
-                        .collect(Collectors.toList());
+                        .toList();
 
                 List<CVEAuditManager.CVEPatchStatus> patchesInUnassignedChannels = results.stream()
                         .filter(cvePatchStatus -> !cvePatchStatus.isChannelAssigned())
-                        .collect(Collectors.toList());
+                        .toList();
 
                 long numberOfPackagesWithPatchInAssignedChannels =
                         patchedVulnerablePackages.stream().filter(patchedPackage -> patchesInAssignedChannels
@@ -274,7 +274,7 @@ public class CVEAuditManagerOVAL {
             List<ShallowSystemPackage> allInstalledPackages) {
 
         return allInstalledPackages.stream().filter(installed -> Objects.equals(installed.getName(), pkg.getName()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

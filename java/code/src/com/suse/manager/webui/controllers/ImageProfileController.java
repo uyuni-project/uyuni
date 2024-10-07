@@ -432,7 +432,7 @@ public class ImageProfileController {
      */
     private static List<JsonObject> getJsonList(List<ImageProfile> profileList) {
         return profileList.stream().map(ImageProfileController::getJsonObject)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -462,7 +462,7 @@ public class ImageProfileController {
                 .findAllActive(user).stream()
                 .filter(ak -> ak.getBaseChannel() != null)
                 .map(ActivationKey::getKey)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

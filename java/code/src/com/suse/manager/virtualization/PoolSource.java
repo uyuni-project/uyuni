@@ -17,7 +17,6 @@ package com.suse.manager.virtualization;
 import org.jdom.Element;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents a virtual pool storage source definition
@@ -179,14 +178,14 @@ public class PoolSource {
             result.setAuth(PoolSourceAuthentication.parse(node.getChild("auth")));
             result.setDevices(((List<Element>)node.getChildren("device")).stream()
                 .map(PoolSourceDevice::parse)
-                .collect(Collectors.toList()));
+                .toList());
             result.setHosts(((List<Element>)node.getChildren("host")).stream()
                 .map(host -> {
                     String name = host.getAttributeValue("name");
                     String port = host.getAttributeValue("port");
                     return String.format("%s%s", name, port != null ? ":" + port : "");
                 })
-                .collect(Collectors.toList()));
+                .toList());
         }
         return result;
     }

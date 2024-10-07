@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,7 +79,7 @@ public class ListRemoveGroupsAction extends BaseListAction<ManagedServerGroup> {
         List<ManagedServerGroup> groups = key.getServerGroups().stream()
                 .filter(g -> g instanceof ManagedServerGroup)
                 .map(g -> (ManagedServerGroup)g)
-                .collect(Collectors.toList());
+                .toList();
         AddGroupsAction.setupAccessMap(context, groups);
         return groups;
     }

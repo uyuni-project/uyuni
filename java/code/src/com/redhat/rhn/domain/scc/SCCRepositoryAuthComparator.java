@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -39,7 +38,7 @@ public class SCCRepositoryAuthComparator implements Comparator<SCCRepositoryAuth
         null,                        // null means local mirror
         CredentialsType.CLOUD_RMT,   // Cloud RMT PAYG credentials
         CredentialsType.SCC          // Standard SCC credentials
-    ).collect(Collectors.toList());
+    ).toList();
 
     @Override
     public int compare(SCCRepositoryAuth auth1, SCCRepositoryAuth auth2) {

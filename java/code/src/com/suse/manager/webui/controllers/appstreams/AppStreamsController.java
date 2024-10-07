@@ -55,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -151,7 +150,7 @@ public class AppStreamsController {
                     AppStreamsManager.listChannelAppStreams(channel.getId()),
                     server::hasAppStreamModuleEnabled
                 ))
-                .collect(Collectors.toList());
+                .toList();
         data.put("channelsAppStreams", GSON.toJson(channelsAppStreams));
         data.put("actionChains", ActionChainHelper.actionChainsJson(user));
         return new ModelAndView(data, "templates/minion/appstreams.jade");
@@ -183,7 +182,7 @@ public class AppStreamsController {
             List<PackageJson> sortedPackages = appStream.getArtifacts()
                 .stream()
                 .map(PackageJson::new)
-                .collect(Collectors.toList());
+                .toList();
             artifacts.put("packages", sortedPackages);
             return result(res, success(artifacts), new TypeToken<>() { });
         }

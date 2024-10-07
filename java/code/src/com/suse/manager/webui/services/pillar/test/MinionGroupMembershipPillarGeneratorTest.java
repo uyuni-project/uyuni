@@ -37,7 +37,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Tests for {@link MinionGroupMembershipPillarGenerator}
@@ -75,7 +74,7 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
         List<String> addonGroupTypes = Arrays.asList((String[]) map.get("addon_group_types"));
 
         List<String> minionAddonEntitlements =
-                minion.getAddOnEntitlements().stream().map(Entitlement::getLabel).collect(Collectors.toList());
+                minion.getAddOnEntitlements().stream().map(Entitlement::getLabel).toList();
 
         assertTrue(addonGroupTypes.containsAll(minionAddonEntitlements));
         assertContains(addonGroupTypes, minion.getBaseEntitlement().getLabel());

@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Vulnerable package extractor for OVALs
@@ -74,7 +73,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                         c.getComment().endsWith("is installed") ||
                                 c.getComment().endsWith("is affected") ||
                                 c.getComment().endsWith("is not affected"))
-                .collect(Collectors.toList());
+                .toList();
 
         List<VulnerablePackage> vulnerablePackages = new ArrayList<>();
         for (CriterionType packageCriterion : filteredPackageCriterions) {

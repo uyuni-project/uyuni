@@ -340,7 +340,7 @@ public class SaltActionChainGeneratorService {
                             .filter(e -> !e.isEmpty())
                             .map(e -> e.get(0))
                             .filter("salt"::equals)
-                            .collect(Collectors.toList()).isEmpty()) {
+                            .toList().isEmpty()) {
                         return true;
                     }
                 }
@@ -472,7 +472,7 @@ public class SaltActionChainGeneratorService {
         List<String> slsFileRefs = findFileRefsToDelete(slsFile);
         toDelete.addAll(slsFileRefs.stream()
                 .map(f -> suseManagerStatesFilesRoot.resolve(f))
-                .collect(Collectors.toList()));
+                .toList());
 
         for (Path path : toDelete) {
             try {

@@ -58,7 +58,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import spark.Request;
@@ -114,11 +113,11 @@ public class SsmController {
                 compatibles.stream().map(cc ->
                         new SsmChannelDto(
                                 cc.getId(), cc.getName(), cc.isCustom()))
-                        .collect(Collectors.toList()));
+                        .toList());
             List<Server> serversByChannel = SsmManager.findServersInSetByChannel(user, c.getId());
             allowedBaseJson.setServers(serversByChannel.stream()
                     .map(s -> new SsmServerDto(s.getId(), s.getName()))
-                    .collect(Collectors.toList()));
+                    .toList());
             result.add(allowedBaseJson);
         }
 
@@ -149,11 +148,11 @@ public class SsmController {
                         ChannelFactory.listCompatibleBasesForSSMNoBaseInNullOrg(user).stream())
                         .map(c ->
                             new SsmChannelDto(c.getId(), c.getName(), c.isCustom()))
-                        .collect(Collectors.toList());
+                        .toList();
             rslt.setAllowedBaseChannels(allowed);
             rslt.setServers(noBase.stream()
                     .map(s -> new SsmServerDto(s.getId(), s.getName()))
-                    .collect(Collectors.toList()));
+                    .toList());
             return Optional.of(rslt);
 
         }

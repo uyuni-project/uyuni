@@ -258,7 +258,7 @@ public class StatesAPI {
                 }
         ).orElseGet(Collections::emptyList).stream()
                 .filter(c -> c.getName().toLowerCase().contains(targetLowerCase))
-                .collect(Collectors.toList());
+                .toList();
 
         // Find matches among this currently assigned salt states
         Set<ConfigChannelJson> result = new HashSet<>(); // use a set to avoid duplicates
@@ -290,7 +290,7 @@ public class StatesAPI {
         List<ConfigChannel> channels = json.getChannels().stream()
                 .sorted(Comparator.comparingInt(ConfigChannelJson::getPosition))
                 .map(j -> configManager.lookupConfigChannel(user, j.getId()))
-                .collect(Collectors.toList());
+                .toList();
 
         try {
             SaltConfigurable entity = handleTarget(json.getTargetType(), json.getTargetId(),
@@ -434,7 +434,7 @@ public class StatesAPI {
                     MinionServerFactory.lookupByIds(json.getIds()).map(server -> {
                         checkUserHasPermissionsOnServer(server, user);
                         return server.getId();
-                    }).collect(Collectors.toList());
+                    }).toList();
 
             ActionChain actionChain = json.getActionChain()
                     .filter(StringUtils::isNotEmpty)
@@ -495,7 +495,7 @@ public class StatesAPI {
                         List<Long> minionServerIds = MinionServerUtils
                                 .filterSaltMinions(ServerGroupFactory.listServers(group))
                                 .map(Server::getId)
-                                .collect(Collectors.toList());
+                                .toList();
 
                         List<String> states = json.getStates();
                         if (states.size() == 1 && "custom_groups".equals(states.get(0))) {
@@ -516,7 +516,7 @@ public class StatesAPI {
                         List<Long> minionServerIds = MinionServerFactory
                                 .lookupByOrg(org.getId()).stream()
                                 .map(MinionServer::getId)
-                                .collect(Collectors.toList());
+                                .toList();
 
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                                 minionServerIds, json.getStates(), getScheduleDate(json));

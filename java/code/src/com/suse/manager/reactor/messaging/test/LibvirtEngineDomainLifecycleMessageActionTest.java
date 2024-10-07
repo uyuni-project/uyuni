@@ -126,7 +126,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> newGuests = guests.stream().filter(vso -> vso.getName().equals("sles12sp2-new"))
-                .collect(Collectors.toList());
+                .toList();
 
         assertEquals(VirtualInstanceFactory.getInstance().getRunningState().getLabel(),
                      newGuests.get(0).getStateLabel());
@@ -218,7 +218,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(VirtualInstanceFactory.getInstance().getStoppedState().getLabel(),
                      matchingGuests.get(0).getStateLabel());
     }
@@ -237,7 +237,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))
-                .collect(Collectors.toList());
+                .toList();
 
         assertEquals(0, matchingGuests.size());
     }
@@ -254,7 +254,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))
-                .collect(Collectors.toList());
+                .toList();
 
 
         assertEquals(Long.valueOf(2), matchingGuests.get(0).getVcpus());

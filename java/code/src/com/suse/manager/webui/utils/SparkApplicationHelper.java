@@ -55,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
@@ -239,7 +238,7 @@ public class SparkApplicationHelper {
             ModelAndView modelAndView = route.handle(request, response, user);
             List<String> roles = user.getRoles().stream()
                     .map(Role::getLabel)
-                    .collect(Collectors.toList());
+                    .toList();
             Object model = modelAndView.getModel();
             if (model instanceof Map) {
                 ((Map) model).put("roles", GSON.toJson(roles));
