@@ -314,10 +314,9 @@ public class SCCRepository extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SCCRepository)) {
+        if (!(other instanceof SCCRepository otherSCCRepository)) {
             return false;
         }
-        SCCRepository otherSCCRepository = (SCCRepository) other;
         return new EqualsBuilder()
             .append(getUrl(), otherSCCRepository.getUrl())
             .isEquals();

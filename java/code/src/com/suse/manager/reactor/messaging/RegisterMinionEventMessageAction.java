@@ -1114,8 +1114,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     @Override
     public Consumer<Exception> getExceptionHandler() {
         return e -> {
-            if (e instanceof RegisterMinionException) {
-                RegisterMinionException rme = (RegisterMinionException) e;
+            if (e instanceof RegisterMinionException rme) {
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                         new OnboardingFailed(rme.minionId, e.getLocalizedMessage())
                 );

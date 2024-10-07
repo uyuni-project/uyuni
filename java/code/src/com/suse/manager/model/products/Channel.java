@@ -96,10 +96,9 @@ public class Channel {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Channel)) {
+        if (!(other instanceof Channel otherChannel)) {
             return false;
         }
-        Channel otherChannel = (Channel) other;
         return new EqualsBuilder()
             .append(getLabel(), otherChannel.getLabel())
             .append(getStatus(), otherChannel.getStatus())

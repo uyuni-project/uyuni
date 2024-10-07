@@ -141,11 +141,9 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
 
     @Override
     protected boolean test(BaseCriteria criteria) {
-        if (!(criteria instanceof CriteriaType)) {
+        if (!(criteria instanceof CriteriaType criteriaType)) {
             return false;
         }
-        CriteriaType criteriaType = (CriteriaType) criteria;
-
         boolean hasTwoChildren = criteriaType.getChildren().size() == 2;
         boolean hasOperatorAND = criteriaType.getOperator() == LogicOperatorType.AND;
 

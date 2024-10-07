@@ -282,8 +282,8 @@ public class CachedStatement implements Serializable {
 
     private Integer internalExecuteUpdateNoSubClause(Map<String, ?> parameters, Mode mode) {
         Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
-        if (resultObj instanceof Integer) {
-            return (Integer) resultObj;
+        if (resultObj instanceof Integer integer) {
+            return integer;
         }
         return 0;
     }
@@ -315,8 +315,8 @@ public class CachedStatement implements Serializable {
                 Object resultObj = executeChecking(finalQuery, qMap, parameters, mode, null);
                 subStart += subLength;
 
-                if (resultObj instanceof Integer) {
-                    returnInt = returnInt + (Integer) resultObj;
+                if (resultObj instanceof Integer integer) {
+                    returnInt = returnInt + integer;
                 }
             }
             return returnInt;
@@ -383,8 +383,8 @@ public class CachedStatement implements Serializable {
             else {
                 firstValue = false;
             }
-            if (value instanceof String) {
-                sb.append("'").append((String) value).append("'");
+            if (value instanceof String str) {
+                sb.append("'").append(str).append("'");
             }
             else {
                 sb.append(value);
@@ -559,8 +559,8 @@ public class CachedStatement implements Serializable {
         PreparedStatement ps = connection.prepareStatement(sql);
 
         // allow limiting the results for better performance.
-        if (mode != null && mode instanceof SelectMode) {
-            ps.setMaxRows(((SelectMode) mode).getMaxRows());
+        if (mode instanceof SelectMode smode) {
+            ps.setMaxRows(smode.getMaxRows());
         }
         return ps;
     }
@@ -578,8 +578,8 @@ public class CachedStatement implements Serializable {
             // to do otherwise just doesn't make a lot of sense.
             Integer pos = positions.next();
             Object o = cs.getObject(pos);
-            if (o instanceof BigDecimal) {
-                o = ((BigDecimal) o).longValue();
+            if (o instanceof BigDecimal bdec) {
+                o = bdec.longValue();
             }
             result.put(param, o);
         }
@@ -606,8 +606,8 @@ public class CachedStatement implements Serializable {
                         "HibernateException executing CachedStatement", he);
             }
             catch (RuntimeException e) {
-                if (e.getCause() instanceof SQLException) {
-                    throw SqlExceptionTranslator.sqlException((SQLException) e.getCause());
+                if (e.getCause() instanceof SQLException ex) {
+                    throw SqlExceptionTranslator.sqlException(ex);
                 }
                 throw e;
             }
@@ -772,8 +772,7 @@ public class CachedStatement implements Serializable {
         throws SQLException {
 
         List<String> columnSkip;
-        if (elaborator && obj instanceof RowCallback) {
-            RowCallback cb = (RowCallback) obj;
+        if (elaborator && obj instanceof RowCallback cb) {
             cb.callback(rs);
             columnSkip = cb.getCallBackColumns();
         }
@@ -916,8 +915,8 @@ public class CachedStatement implements Serializable {
         while (i.hasNext()) {
             Object row = i.next();
 
-            if (row instanceof Row) {
-                pointers.put(((Row) row).get(key), pos);
+            if (row instanceof Row r) {
+                pointers.put(r.get(key), pos);
             }
             else {
                 Object keyData = MethodUtil.callMethod(row,

@@ -604,10 +604,9 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Org)) {
+        if (!(other instanceof Org otherOrg)) {
             return false;
         }
-        Org otherOrg = (Org) other;
         return new EqualsBuilder()
             .append(getName(), otherOrg.getName())
             .isEquals();

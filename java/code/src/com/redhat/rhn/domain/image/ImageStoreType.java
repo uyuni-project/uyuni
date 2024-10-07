@@ -93,10 +93,9 @@ public class ImageStoreType {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageStoreType)) {
+        if (!(other instanceof ImageStoreType castOther)) {
             return false;
         }
-        ImageStoreType castOther = (ImageStoreType) other;
         return new EqualsBuilder().append(label, castOther.label)
                                   .append(name, castOther.name)
                                   .isEquals();

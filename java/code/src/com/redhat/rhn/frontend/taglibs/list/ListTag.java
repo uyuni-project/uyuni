@@ -342,8 +342,8 @@ public class ListTag extends BodyTagSupport {
             d = request.getSession(true).getAttribute(nameIn);
         }
         if (d != null) {
-            if (d instanceof List) {
-                pageData = (List) d;
+            if (d instanceof List data) {
+                pageData = data;
             }
             else {
                 throw new JspException("Dataset named \'" + nameIn +
@@ -833,8 +833,8 @@ public class ListTag extends BodyTagSupport {
             d = request.getSession(true).getAttribute(dataSetName);
         }
         if (d != null) {
-            if (d instanceof List) {
-                pageData = (List) d;
+            if (d instanceof List data) {
+                pageData = data;
             }
             else {
                 throw new JspException("Dataset named \'" + dataSetName +

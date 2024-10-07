@@ -88,14 +88,14 @@ public enum StateRevisionService {
             boolean cloneConfigChannels) {
         StateRevision revision;
 
-        if (entity instanceof MinionServer) {
-            revision = this.cloneLatest((MinionServer) entity, user, clonePackageStates, cloneConfigChannels);
+        if (entity instanceof MinionServer min) {
+            revision = this.cloneLatest(min, user, clonePackageStates, cloneConfigChannels);
         }
-        else if (entity instanceof ServerGroup) {
-            revision = this.cloneLatest((ServerGroup) entity, user, clonePackageStates, cloneConfigChannels);
+        else if (entity instanceof ServerGroup srvGrp) {
+            revision = this.cloneLatest(srvGrp, user, clonePackageStates, cloneConfigChannels);
         }
-        else if (entity instanceof Org) {
-            revision = this.cloneLatest((Org) entity, user, clonePackageStates, cloneConfigChannels);
+        else if (entity instanceof Org org) {
+            revision = this.cloneLatest(org, user, clonePackageStates, cloneConfigChannels);
         }
         else {
             revision = null;
@@ -114,14 +114,14 @@ public enum StateRevisionService {
     public <T extends StateRevision> Optional<T> getLatest(SaltConfigurable entity) {
         Optional<T> revision;
 
-        if (entity instanceof MinionServer) {
-            revision = (Optional<T>) StateFactory.latestStateRevision((MinionServer) entity);
+        if (entity instanceof MinionServer min) {
+            revision = (Optional<T>) StateFactory.latestStateRevision(min);
         }
-        else if (entity instanceof ServerGroup) {
-            revision = (Optional<T>) StateFactory.latestStateRevision((ServerGroup) entity);
+        else if (entity instanceof ServerGroup srvGrp) {
+            revision = (Optional<T>) StateFactory.latestStateRevision(srvGrp);
         }
-        else if (entity instanceof Org) {
-            revision = (Optional<T>) StateFactory.latestStateRevision((Org) entity);
+        else if (entity instanceof Org org) {
+            revision = (Optional<T>) StateFactory.latestStateRevision(org);
         }
         else {
             revision = Optional.empty();

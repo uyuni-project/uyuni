@@ -52,12 +52,9 @@ public abstract class RemoteCredentials extends PasswordBasedCredentials {
             return true;
         }
 
-        if (!(o instanceof RemoteCredentials)) {
+        if (!(o instanceof RemoteCredentials that)) {
             return false;
         }
-
-        RemoteCredentials that = (RemoteCredentials) o;
-
         return new EqualsBuilder()
             .appendSuper(super.equals(o))
             .append(url, that.url)

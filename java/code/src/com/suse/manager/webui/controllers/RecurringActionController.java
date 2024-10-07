@@ -446,11 +446,10 @@ public class RecurringActionController {
             return;
         }
 
-        if (action.getRecurringActionType() instanceof RecurringHighstate) {
-            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(details.isTest());
+        if (action.getRecurringActionType() instanceof RecurringHighstate recurringHighstate) {
+            recurringHighstate.setTestMode(details.isTest());
         }
-        else if (action.getRecurringActionType() instanceof RecurringState) {
-            RecurringState stateType = (RecurringState) action.getRecurringActionType();
+        else if (action.getRecurringActionType() instanceof RecurringState stateType) {
             stateType.setTestMode(details.isTest());
             if (json.getRecurringActionId() == null ||
                     (json.getRecurringActionId() != null && details.getStates() != null)) {

@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -149,7 +150,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Action a = ActionFactory.lookupById(id);
 
         assertNotNull(a);
-        assertTrue(a instanceof ScriptRunAction);
+        assertInstanceOf(ScriptRunAction.class, a);
         ScriptRunAction s = (ScriptRunAction) a;
         assertNotNull(s.getScriptActionDetails().getUsername());
         assertNotNull(s.getEarliestAction());
@@ -177,7 +178,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     public void testLookupErrataAction() throws Exception {
         Action newA = createAction(user, ActionFactory.TYPE_ERRATA);
         assertNotNull(newA.getId());
-        assertTrue(newA instanceof ErrataAction);
+        assertInstanceOf(ErrataAction.class, newA);
         ErrataAction ea = (ErrataAction) newA;
         assertNotNull(ea.getErrata());
         assertNotNull(((Errata) ea.getErrata().toArray()[0]).getId());
@@ -193,7 +194,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
         assertNotNull(a);
-        assertTrue(a instanceof DaemonConfigAction);
+        assertInstanceOf(DaemonConfigAction.class, a);
         DaemonConfigAction dca = (DaemonConfigAction) a;
         assertNotNull(dca.getId());
         assertNotNull(dca.getDaemonConfigDetails());

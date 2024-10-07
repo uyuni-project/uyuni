@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.user.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -562,8 +563,8 @@ public class UserManagerTest extends RhnBaseTestCase {
     public void testLookupTimeZoneAll() {
         List<RhnTimeZone> lst = UserManager.lookupAllTimeZones();
         assertTrue(lst.size() > 30);
-        assertTrue(lst.get(5) instanceof RhnTimeZone);
-        assertTrue(lst.get(29) instanceof RhnTimeZone);
+        assertInstanceOf(RhnTimeZone.class, lst.get(5));
+        assertInstanceOf(RhnTimeZone.class, lst.get(29));
 
         // Check if all configured timezones are valid
         Set<String> validTimezones = ZoneId.getAvailableZoneIds();

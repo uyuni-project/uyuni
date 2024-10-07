@@ -234,10 +234,9 @@ public class ConfigFileType implements Serializable {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ConfigFileType)) {
+        if (!(other instanceof ConfigFileType castOther)) {
             return false;
         }
-        ConfigFileType castOther = (ConfigFileType) other;
         return new EqualsBuilder().append(this.getId(), castOther.getId()).isEquals();
     }
 

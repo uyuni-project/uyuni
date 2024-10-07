@@ -97,11 +97,10 @@ public class PackageProvider extends BaseDomainHelper implements
      */
     @Override
     public boolean equals(Object archIn) {
-
-        if (archIn instanceof PackageProvider) {
-            PackageProvider arch = (PackageProvider) archIn;
-            return new EqualsBuilder().append(this.name, arch.getName()).append(getId(),
-                    arch.getId()).isEquals();
+        if (archIn instanceof PackageProvider prov) {
+            return new EqualsBuilder()
+                    .append(this.name, prov.getName())
+                    .append(getId(), prov.getId()).isEquals();
         }
         return false;
     }

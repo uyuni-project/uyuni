@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.satellite.test;
 import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -316,13 +317,13 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
     private ConfigChannel createTestStateChannel() {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.state());
-        return (ConfigChannel) HibernateFactory.reload(cc);
+        return HibernateFactory.reload(cc);
     }
 
     private void createTask(String taskName) {
         TaskFactory.createTask(user.getOrg(), taskName, 0L);
-        List l = TaskFactory.getTaskListByNameLike(taskName);
-        assertTrue(l.get(0) instanceof Task);
+        List<Task> l = TaskFactory.getTaskListByNameLike(taskName);
+        assertInstanceOf(Task.class, l.get(0));
     }
 
     private void assertTaskDoesNotExist(String taskName) {

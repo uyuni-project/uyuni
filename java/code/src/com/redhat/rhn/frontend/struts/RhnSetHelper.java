@@ -152,14 +152,12 @@ public class RhnSetHelper {
          * RhnSet containing all of the items.
          */
         for (Object dataObject : result) {
-            if (dataObject instanceof BaseDto) {
-                BaseDto next = (BaseDto) dataObject;
+            if (dataObject instanceof BaseDto next) {
                 if (next.isSelectable()) {
                     next.addToSet(rs);
                 }
             }
-            else if (dataObject instanceof Identifiable) {
-                Identifiable row = (Identifiable) dataObject;
+            else if (dataObject instanceof Identifiable row) {
                 rs.addElement(row.getId());
             }
             else {

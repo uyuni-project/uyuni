@@ -99,10 +99,9 @@ public class CoCoAttestationResultJson {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CoCoAttestationResultJson)) {
+        if (!(o instanceof CoCoAttestationResultJson that)) {
             return false;
         }
-        CoCoAttestationResultJson that = (CoCoAttestationResultJson) o;
         return id == that.id;
     }
 
