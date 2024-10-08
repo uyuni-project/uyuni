@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+        "nickheap.vscode-ant",
+        "shengchen.vscode-checkstyle",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-pack",
+        "redhat.java",
+        "dbaeumer.vscode-eslint"
+      ]
+}
