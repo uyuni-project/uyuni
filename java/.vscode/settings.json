@@ -6,9 +6,29 @@
         "vmArgs": [
             "-Drhn.config.dir=${workspaceFolder}/buildconf/test",
             "-Dlog4j2.configurationFile=${workspaceFolder}/buildconf/test/log4j2.properties"
-         ]
+        ]
     },
     "ant.buildFilenames": "manager-build.xml",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms2G -Xlog:disable",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.checkstyle.version": "10.12.7",
+    "java.checkstyle.autocheck": "false",
+    "java.checkstyle.configuration": "${workspaceFolder}/buildconf/checkstyle.xml",
+    "java.project.sourcePaths": [
+        "lib",
+        "code/src",
+        "buildconf/ivy/repository/suse",
+        "build/java-branding",
+        "build/classes",
+        "build/webapp"
+    ],
+    "java.checkstyle.properties": {
+        "checkstyle.cache.file": "${workspaceFolder}/build/checkstyle.cache.src",
+        "checkstyle.header.file": "${workspaceFolder}/buildconf/LICENSE.txt",
+        "checkstyle.suppressions.file": "${workspaceFolder}/buildconf/checkstyle-suppressions.xml",
+        "javadoc.lazy": "false",
+        "javadoc.method.scope": "public",
+        "javadoc.type.scope": "package",
+        "javadoc.var.scope": "package",
+    },
 }
