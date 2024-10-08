@@ -18,7 +18,7 @@ General template for leavers of the SUSE Manager team.
 - [ ] **General SUSE Procedure:** Team Lead to review the [team members leaving the company](https://intra.suse.net/company/company-news/department/hr/team-leader-hr-quick-links/), in particular the `SUSE Termination Information Guide`? Those documents contain information about everything that needs to be returned, and things to be done by the team lead and the team member (not just hardware!)
 - [ ] **Exit interview:** Conduct an [exit interview](https://en.wikipedia.org/wiki/Exit_interview) and store the notes at [Confluence](https://confluence.suse.com/display/SUSEMANAGER/Exit+Interviews)
 - [ ] **Hardware:** 
-  - [ ] Does this person have access to something special which also needs to get transferred to another person? (ssh access to a server, permissions to special pages on wikis, confluence, resources in the cloud, etc.)
+  - [ ] Does this person have access to something special which also needs to get transferred to another person? (SSH access to a server, permissions to special pages on wikis, Confluence, resources in the cloud, etc.)
   - [ ] Did IT create a ticket and sent an email to the leaver, explaining how to return their personal hardware?
 - [ ] **Bugzilla:** Remind the person to remove all ["watches"](https://bugzilla.suse.com/userprefs.cgi?tab=email) in Bugzilla before leaving
 - [ ] **Bugzilla:** Review the [responsibles for the bugzilla team accounts](https://confluence.suse.com/display/IAM/5.+UCS+Role+Model+and+Entitlements+Management#id-5.UCSRoleModelandEntitlementsManagement-Bot/Serviceentitlements) and nominate a new one if needed
