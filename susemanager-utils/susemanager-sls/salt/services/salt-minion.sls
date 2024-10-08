@@ -27,7 +27,7 @@ mgr_salt_minion_inst:
 {%- if salt_minion_name == 'venv-salt-minion' %}
 rm_old_venv_python_env:
   cmd.run:
-    - name: /usr/lib/venv-salt-minion/bin/post_start_cleanup.sh
+    - name: SALT_HIGHSTATE=1 /usr/lib/venv-salt-minion/bin/post_start_cleanup.sh
     - onlyif: test -f /usr/lib/venv-salt-minion/bin/post_start_cleanup.sh
 {%- endif %}
 
