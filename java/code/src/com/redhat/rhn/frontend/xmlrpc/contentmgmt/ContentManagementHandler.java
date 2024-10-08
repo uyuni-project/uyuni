@@ -737,21 +737,24 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Filter is not found
      * @return the updated {@link ContentFilter}
      *
-     * @apidoc.doc Update a Content Filter #paragraph_end() #paragraph() See
-     * also: createFilter(), listFilterCriteria()
+     * @apidoc.doc Update a Content Filter
+     * #paragraph_end()
+     * #paragraph()
+     * See also: createFilter(), listFilterCriteria()
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "filterId", "Filter ID")
      * @apidoc.param #param_desc("string", "name", "New filter name")
-     * @apidoc.param #param_desc("string", "rule", "New filter rule ('deny' or
-     * 'allow')")
-     * @apidoc.param #struct_begin("criteria") #prop_desc("string", "matcher",
-     * "The matcher type of the filter (e.g. 'contains')") #prop_desc("string",
-     * "field", "The entity field to match (e.g. 'name'") #prop_desc("string",
-     * "value", "The field value to match (e.g. 'kernel')") #struct_end()
+     * @apidoc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
+     * @apidoc.param
+     *  #struct_begin("criteria")
+     *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
+     *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
+     *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
+     *  #struct_end()
      * @apidoc.returntype $ContentFilterSerializer
      */
-    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name,
-            String rule, Map<String, Object> criteria) {
+    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name, String rule,
+            Map<String, Object> criteria) {
         ensureOrgAdmin(loggedInUser);
 
         Optional<ContentFilter.Rule> ruleObj =

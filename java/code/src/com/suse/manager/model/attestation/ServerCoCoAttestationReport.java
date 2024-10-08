@@ -48,7 +48,6 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 @Entity
 @Table(name = "suseServerCoCoAttestationReport")
 public class ServerCoCoAttestationReport extends BaseDomainHelper implements Serializable {
-
     private static final long serialVersionUID = 8161461482693316376L;
     private Long id;
     private Server server;
