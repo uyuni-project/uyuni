@@ -305,6 +305,27 @@ public class Pillar implements Identifiable {
     }
 
     /**
+     * Get a list of ServerGroups for a given category
+     *
+     * @param category the pillar category
+     * @return List of ServerGroups that have pillars with the given category
+     */
+    public static List<ServerGroup> getGroupsForCategory(String category) {
+        CriteriaBuilder criteriaBuilder = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<ServerGroup> criteriaQuery = criteriaBuilder.createQuery(ServerGroup.class);
+        Root<Pillar> root = criteriaQuery.from(Pillar.class);
+
+        criteriaQuery.select(root.get("group"))
+                 .where(criteriaBuilder.and(
+                     criteriaBuilder.equal(root.get("category"), category),
+                     criteriaBuilder.isNotNull(root.get("group"))
+                 ))
+                 .distinct(true);
+
+        return HibernateFactory.getSession().createQuery(criteriaQuery).getResultList();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -129,6 +129,25 @@ public class Profile extends CobblerObject {
     }
 
     /**
+     * Create a new child profile in cobbler
+     *
+     * @param client the xmlrpc client
+     * @param name   the profile name
+     * @param parent the parent profile name.
+     * @return the newly created profile
+     */
+    public static Profile create(CobblerConnection client,
+                                 String name, String parent) {
+        Profile profile = new Profile(client);
+        profile.handle = (String) client.invokeTokenMethod("new_profile");
+        profile.modify(NAME, name, false);
+        profile.modify(PARENT, parent, false);
+        profile.save();
+        profile = lookupByName(client, name);
+        return profile;
+    }
+
+    /**
      * Returns a kickstart profile matching the given name or null
      *
      * @param client the xmlrpc client
@@ -536,7 +555,12 @@ public class Profile extends CobblerObject {
      * @param kickstartIn the Kickstart
      */
     public void setKickstart(String kickstartIn) {
-        modify(KICKSTART, "/" + getRelativeAutoinstallPath(kickstartIn));
+        if (kickstartIn.isEmpty()) {
+            modify(KICKSTART, "");
+        }
+        else {
+            modify(KICKSTART, "/" + getRelativeAutoinstallPath(kickstartIn));
+        }
     }
 
     /**
@@ -756,6 +780,9 @@ public class Profile extends CobblerObject {
      * @return The absolute path on the server
      */
     private String getFullAutoinstallPath(String pathIn) {
+        if (pathIn.isEmpty()) {
+            return "";
+        }
         String cobblerPath = ConfigDefaults.get().getKickstartConfigDir();
         if (pathIn.startsWith(cobblerPath)) {
             return pathIn;
