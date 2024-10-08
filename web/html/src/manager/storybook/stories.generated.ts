@@ -248,6 +248,50 @@ export const components_input_text_Text_stories_tsx = {
   raw: components_input_text_Text_stories_tsx_raw,
 };
 
+import components_input_validation_async_submit_stories_tsx_component from "components/input/validation/async-submit.stories.tsx";
+import components_input_validation_async_submit_stories_tsx_raw from "components/input/validation/async-submit.stories.tsx?raw";
+
+export const components_input_validation_async_submit_stories_tsx = {
+  path: "components/input/validation/async-submit.stories.tsx",
+  title: "async-submit.stories.tsx",
+  groupName: "validation",
+  component: components_input_validation_async_submit_stories_tsx_component,
+  raw: components_input_validation_async_submit_stories_tsx_raw,
+};
+
+import components_input_validation_async_stories_tsx_component from "components/input/validation/async.stories.tsx";
+import components_input_validation_async_stories_tsx_raw from "components/input/validation/async.stories.tsx?raw";
+
+export const components_input_validation_async_stories_tsx = {
+  path: "components/input/validation/async.stories.tsx",
+  title: "async.stories.tsx",
+  groupName: "validation",
+  component: components_input_validation_async_stories_tsx_component,
+  raw: components_input_validation_async_stories_tsx_raw,
+};
+
+import components_input_validation_helpers_stories_tsx_component from "components/input/validation/helpers.stories.tsx";
+import components_input_validation_helpers_stories_tsx_raw from "components/input/validation/helpers.stories.tsx?raw";
+
+export const components_input_validation_helpers_stories_tsx = {
+  path: "components/input/validation/helpers.stories.tsx",
+  title: "helpers.stories.tsx",
+  groupName: "validation",
+  component: components_input_validation_helpers_stories_tsx_component,
+  raw: components_input_validation_helpers_stories_tsx_raw,
+};
+
+import components_input_validation_multiple_messages_stories_tsx_component from "components/input/validation/multiple-messages.stories.tsx";
+import components_input_validation_multiple_messages_stories_tsx_raw from "components/input/validation/multiple-messages.stories.tsx?raw";
+
+export const components_input_validation_multiple_messages_stories_tsx = {
+  path: "components/input/validation/multiple-messages.stories.tsx",
+  title: "multiple-messages.stories.tsx",
+  groupName: "validation",
+  component: components_input_validation_multiple_messages_stories_tsx_component,
+  raw: components_input_validation_multiple_messages_stories_tsx_raw,
+};
+
 import components_messages_severities_stories_tsx_component from "components/messages/severities.stories.tsx";
 import components_messages_severities_stories_tsx_raw from "components/messages/severities.stories.tsx?raw";
 
@@ -367,4 +411,15 @@ export const components_utils_loading_text_stories_tsx = {
   groupName: "loading",
   component: components_utils_loading_text_stories_tsx_component,
   raw: components_utils_loading_text_stories_tsx_raw,
+};
+
+import manager_virtualization_nets_network_properties_stories_tsx_component from "manager/virtualization/nets/network-properties.stories.tsx";
+import manager_virtualization_nets_network_properties_stories_tsx_raw from "manager/virtualization/nets/network-properties.stories.tsx?raw";
+
+export const manager_virtualization_nets_network_properties_stories_tsx = {
+  path: "manager/virtualization/nets/network-properties.stories.tsx",
+  title: "network-properties.stories.tsx",
+  groupName: "nets",
+  component: manager_virtualization_nets_network_properties_stories_tsx_component,
+  raw: manager_virtualization_nets_network_properties_stories_tsx_raw,
 };

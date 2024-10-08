@@ -254,36 +254,21 @@ class ImageImport extends React.Component {
           <Select
             name="storeId"
             label={t("Image Store")}
-            required
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            invalidHint={
+            required={
               <span>
                 Target Image Store is required.&nbsp;
                 <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.
               </span>
             }
+            labelClass="col-md-3"
+            divClass="col-md-6"
             options={this.state.imageStores}
             getOptionValue={(option) => option.id}
           />
 
-          <Text
-            name="name"
-            label={t("Image name")}
-            required
-            invalidHint={t("Image name is required.")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
+          <Text name="name" label={t("Image name")} required labelClass="col-md-3" divClass="col-md-6" />
 
-          <Text
-            name="version"
-            label={t("Image version")}
-            required
-            invalidHint={t("Image version is required.")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
+          <Text name="version" label={t("Image version")} required labelClass="col-md-3" divClass="col-md-6" />
 
           <Select
             name="buildHostId"

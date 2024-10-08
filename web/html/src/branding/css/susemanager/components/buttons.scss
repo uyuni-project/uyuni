@@ -5,6 +5,8 @@
 .btn-success,
 .btn-warning,
 .btn-danger {
+  user-select: auto;
+
   i.fa::before {
     // No text-decoration for the icon text, see https://stackoverflow.com/a/19529256/1470607
     display: inline-block;

@@ -1,8 +1,8 @@
 import * as React from "react";
 
+import { Validation } from "components/input";
 import { FormContext } from "components/input/form/Form";
 import { InputBase } from "components/input/InputBase";
-import Validation from "components/validation";
 
 import * as utils from "./utils";
 
@@ -45,19 +45,22 @@ export const NetworkAddress = (props: Props) => {
   return (
     <InputBase
       name={[`${props.prefix}_address`, `${props.prefix}_prefix`]}
-      validators={[
+      validate={[
         utils.allOrNone,
         (values) => {
           const address = values[`${props.prefix}_address`] || "";
           const prefix = values[`${props.prefix}_prefix`] || "";
+          if (address === "" && prefix === "") {
+            return;
+          }
+
+          const errorMessage = t(`Value needs to be a valid IPv${ipVersion} address with prefix`);
           return (
-            (address === "" && prefix === "") ||
-            (Validation.matches(ipv6 ? utils.ipv6Pattern : utils.ipv4Pattern)(address) &&
-              Validation.isInt({ min: 0, max: ipv6 ? 128 : 32 })(prefix))
+            Validation.matches(ipv6 ? utils.ipv6Pattern : utils.ipv4Pattern, errorMessage)(address) ||
+            Validation.range(0, ipv6 ? 128 : 32, errorMessage)(prefix)
           );
         },
       ]}
-      invalidHint={t(`Value needs to be a valid IPv${ipVersion} address with prefix`)}
       {...propsToPass}
     >
       {({ setValue, onBlur }) => {

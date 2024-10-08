@@ -6,6 +6,7 @@ import { ActionChain } from "components/action-schedule";
 import { ActionSchedule } from "components/action-schedule";
 import { Button, SubmitButton } from "components/buttons";
 import { Select } from "components/input";
+import { Validation } from "components/input";
 import { Check } from "components/input/check/Check";
 import { Form } from "components/input/form/Form";
 import { convertNumbers, flattenModel, stripBlankValues, unflattenModel } from "components/input/form-utils";
@@ -16,7 +17,6 @@ import { Messages } from "components/messages/messages";
 import { MessageType } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { Loading } from "components/utils/loading/Loading";
-import Validation from "components/validation";
 
 import { localizedMoment } from "utils";
 
@@ -119,16 +119,18 @@ export function NetworkProperties(props: Props) {
   const [actionChain, setActionChain] = React.useState<ActionChain | null | undefined>(null);
   const [earliest, setEarliest] = React.useState(localizedMoment());
 
+  const isInitialRender = React.useRef(true);
   React.useEffect(() => {
+    console.log("override");
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     clearFields(props.initialModel, setModel);
   }, [props.initialModel]);
 
   const onValidate = (isValid: boolean) => {
     setInvalid(!isValid);
-  };
-
-  const onChange = (newModel: any) => {
-    setModel(Object.assign({}, newModel));
   };
 
   const onSubmit = () => {
@@ -202,6 +204,8 @@ export function NetworkProperties(props: Props) {
     label: FieldsData.getValue(value, "label", value),
   }));
 
+  console.log(model);
+
   return (
     <VirtualizationNetworkDevsApi hostId={props.serverId}>
       {({ netDevices, messages: netDevicesError }) => {
@@ -210,8 +214,8 @@ export function NetworkProperties(props: Props) {
             <Form
               className="form-horizontal"
               model={model}
+              onChange={setModel}
               onValidate={onValidate}
-              onChange={onChange}
               onSubmit={onSubmit}
               title={t("network properties")}
             >
@@ -273,7 +277,7 @@ export function NetworkProperties(props: Props) {
                       label={t("Maximum Transmission Unit (MTU)")}
                       labelClass="col-md-3"
                       divClass="col-md-6"
-                      validators={[Validation.isInt({ min: 0 })]}
+                      validate={[Validation.isInt(), Validation.min(0)]}
                       invalidHint={t("The value has to be a positive integer")}
                     />
                   )}
@@ -379,7 +383,7 @@ export function NetworkProperties(props: Props) {
                       label={t("VLAN tag")}
                       labelClass="col-md-3"
                       divClass="col-md-6"
-                      validators={[Validation.isInt({ min: 0, max: 4095 })]}
+                      validate={[Validation.range(0, 4095)]}
                       invalidHint={t("Integer between 0 and 4095")}
                     />
                   )}
@@ -401,15 +405,18 @@ export function NetworkProperties(props: Props) {
                         title={t("NAT IPv4 range")}
                         labelClass="col-md-3"
                         divClass="col-md-6"
-                        validators={[
+                        validate={[
                           utils.allOrNone,
-                          (value) =>
-                            Object.values(value).every(
+                          (value) => {
+                            const isValid = Object.values(value).every(
                               (item) =>
                                 typeof item === "string" && (item === "" || item.match(utils.ipv4Pattern) != null)
-                            ),
+                            );
+                            if (!isValid) {
+                              return t("Both values has to be IPv4 addresses");
+                            }
+                          },
                         ]}
-                        invalidHint={t("Both values has to be IPv4 addresses")}
                       />
                       <Range
                         prefix="nat_port"
@@ -417,17 +424,29 @@ export function NetworkProperties(props: Props) {
                         title={t("NAT port range")}
                         labelClass="col-md-3"
                         divClass="col-md-6"
-                        validators={[
+                        validate={[
                           utils.allOrNone,
-                          (value) =>
-                            Object.values(value).every(
-                              (item) => typeof item === "string" && (item === "" || item.match(/^[0-9]+$/))
-                            ),
-                          ({ nat_port_start, nat_port_end }) =>
-                            (nat_port_start === "" && nat_port_end === "") ||
-                            parseInt(nat_port_start, 10) <= parseInt(nat_port_end, 10),
+                          (value) => {
+                            const message = t("Both values need to be positive integers");
+                            const hasValues = Object.values(value).every((item) => item != null);
+                            if (!hasValues) {
+                              return message;
+                            }
+
+                            const { nat_port_start, nat_port_end } = value;
+                            const parsedStart = parseInt(nat_port_start, 10);
+                            const parsedEnd = parseInt(nat_port_end, 10);
+                            const isInteger = !isNaN(parsedStart) && !isNaN(parsedEnd);
+                            if (!isInteger) {
+                              return message;
+                            }
+
+                            const isOrdered = parsedStart <= parsedEnd;
+                            if (!isOrdered) {
+                              return message;
+                            }
+                          },
                         ]}
-                        invalidHint={t("Both values has to be positive integers")}
                       />
                     </>
                   )}
@@ -438,6 +457,7 @@ export function NetworkProperties(props: Props) {
                 <Panel key="addressing" title={t("Addressing")} headingLevel="h2">
                   <IpConfig />
                   <Check name="ipv6-enabled" label={t("Enable IPv6")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
+                  {model["ipv6-enabled"] ? "true" : "false"}
                   {model["ipv6-enabled"] && <IpConfig ipv6 />}
                   <Text name="domain" label={t("Domain name")} labelClass="col-md-3" divClass="col-md-6" />
                   <DnsConfig />

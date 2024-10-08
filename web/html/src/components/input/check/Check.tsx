@@ -22,7 +22,8 @@ export function Check(props: Props) {
     <InputBase {...propsToPass}>
       {({ setValue, onBlur }) => {
         const setChecked = (event: any) => {
-          setValue(event.target.name, event.target.checked);
+          console.log("setChecked", event.target.name, event.target.checked);
+          setValue(props.name, event.target.checked);
         };
         const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
         return (

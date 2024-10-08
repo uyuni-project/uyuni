@@ -77,26 +77,15 @@
   }
 }
 
-.btn-link {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      color: @link-color;
-      font-weight: normal;
-    }
+.btn {
+  background: transparent;
 
-    &:not(:disabled):not(.disabled):not(.text-muted):hover {
-      text-decoration: underline;
-    }
+  &.disabled,
+  &:disabled {
+    border-color: transparent;
   }
 }
 
-// TODO: Add :active and :focus states for green etc
-// NB! Here and below, these are not nested because they're not used consistently along with .btn
 .btn-default {
   &,
   &:active,
@@ -116,6 +105,7 @@
   }
 }
 
+// TODO: Make this obsolete and move it into the search module instead
 .btn-default-inverse {
   &,
   &:active,
@@ -173,6 +163,24 @@
   }
 }
 
+.btn-info {
+  &,
+  &:active,
+  &:focus,
+  &:disabled,
+  &.disabled {
+    &,
+    &:hover {
+      background: @eos-bc-cerulean-400;
+      border-color: @eos-bc-cerulean-400;
+
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+        background: @eos-bc-gray-900;
+      }
+    }
+  }
+}
+
 // Warning shouldn't currently be used anywhere, but cover it just in case
 .btn-warning,
 .btn-danger {
@@ -186,11 +194,6 @@
       background: @eos-bc-red-500;
       border-color: @eos-bc-red-500;
       color: @eos-bc-white;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover {
-        background: @eos-bc-red-900;
-        border-color: @eos-bc-red-900;
-      }
 
       &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: @eos-bc-gray-900;

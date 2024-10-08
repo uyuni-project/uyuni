@@ -1,20 +1,20 @@
-import { SubmitButton } from "components/buttons";
+import { useState } from "react";
 
-import { Form } from "../form/Form";
-import { Range } from "./Range";
+import { SubmitButton } from "components/buttons";
+import { Form, Range } from "components/input";
 
 export default () => {
-  const model = {
+  const [model, setModel] = useState({
     port_start: "1000",
     port_end: "1100",
-  };
+  });
 
   return (
     <Form
       model={model}
       onChange={(newModel) => {
-        model["port_start"] = newModel["port_start"];
-        model["port_end"] = newModel["port_end"];
+        console.log(newModel);
+        setModel(newModel);
       }}
       onSubmit={() => Loggerhead.info(model)}
       divClass="col-md-12"

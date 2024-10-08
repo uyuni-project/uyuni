@@ -10,8 +10,8 @@ type Props = {
    *  object. The value is the one displayed in the form */
   model?: any;
 
-  /** Object storing form field errors */
-  errors?: object;
+  /** Form-wide errors, e.g. from a request response */
+  errors?: Record<string, string>;
 
   /** Function to trigger when the Submit button is clicked */
   onSubmit?: Function;
@@ -69,6 +69,15 @@ export class Form extends React.Component<Props> {
   inputs: { [key: string]: InputBaseRef | undefined } = {};
 
   setModelValue = (name: string, value: any) => {
+    if (name === "ipv6-enabled") {
+      debugger;
+    }
+    /**
+     * NB! This is incorrect, but a lot of other code relies on this bug so we can't change it.
+     * We modify the object directly, as opposed to creating a new reference, which means React doesn't know changes have occurred.
+     * This means we need to force an update to notify all related components.
+     * Hopefully we can throw all of this away once we incorporate Formik.
+     */
     const { model, errors } = this.props;
     if (value == null && model[name] != null) {
       delete model[name];
@@ -83,6 +92,9 @@ export class Form extends React.Component<Props> {
 
     // Usually, fields validate themselves bottom up, in this case we pass values top down so we need to validate that way as well
     this.inputs[name]?.validate(value);
+
+    // See above
+    this.forceUpdate();
   };
 
   allValid(): boolean {
@@ -129,26 +141,27 @@ export class Form extends React.Component<Props> {
     }
   };
 
-  componentDidUpdate(prevProps: any) {
+  componentDidUpdate(prevProps: Props) {
+    /**
+     * Propagate any field errors passed down as props into the respective inputs.
+     * We do this here, not in InputBase, because it's cheaper, the Form knows when the `errors` prop has changed.
+     */
     if (prevProps.model !== this.props.model || prevProps.errors !== this.props.errors) {
       Object.keys(this.inputs).forEach((name) => {
         const names = this.splitComponentName(name);
         if (names.length === 1) {
-          this.inputs[name]?.validate(this.props.model[name], this.props.errors && this.props.errors[name]);
+          const error = this.props.errors?.[name];
+          if (error) {
+            this.inputs[name]?.setFormErrors([error]);
+          }
         } else {
-          const values = Object.keys(this.props.model).reduce((filtered, key) => {
-            if (names.includes(key)) {
-              filtered[key] = this.props.model[key];
-            }
-            return filtered;
-          }, {});
           const errors = Object.keys(this.props.errors || {}).reduce((filtered, key) => {
             if (names.includes(key) && this.props.errors?.[key]) {
               return filtered.concat(this.props.errors[key]);
             }
             return filtered;
-          }, []);
-          this.inputs[name]?.validate(values, errors);
+          }, [] as string[]);
+          this.inputs[name]?.setFormErrors(errors);
         }
       });
     }
