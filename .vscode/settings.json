@@ -12,4 +12,18 @@
     "css.lint.emptyRules": "ignore",
     "less.lint.emptyRules": "ignore",
     "scss.lint.emptyRules": "ignore",
+    "prettier.requireConfig": true,
+    "java.checkstyle.configuration": "java/buildconf/checkstyle.xml",
+    "ant.buildFilenames": "java/manager-build.xml",
+    "java.checkstyle.version": "10.12.7",
+    "java.checkstyle.autocheck": true,
+    "java.checkstyle.properties": {
+        "checkstyle.cache.file": "java/build/checkstyle.cache.src",
+        "checkstyle.header.file": "java/buildconf/LICENSE.txt",
+        "checkstyle.suppressions.file": "java/buildconf/checkstyle-suppressions.xml",
+        "javadoc.lazy": false,
+        "javadoc.method.scope": "public",
+        "javadoc.type.scope": "package",
+        "javadoc.var.scope": "package",
+    }
 }

@@ -12,6 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.suse.oval.ovaltypes;
 
 import com.suse.oval.OsFamily;
@@ -28,23 +29,21 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+
+
 /**
- * The required id attribute is the OVAL-ID of the Definition. The form of an
- * OVAL-ID must follow the specific format described by the
- * oval:DefinitionIDPattern.
+ * The required id attribute is the OVAL-ID of the Definition. The form of an OVAL-ID must follow the specific format
+ * described by the oval:DefinitionIDPattern.
  * <p>
  * The required version attribute holds the current version of the definition.
  * <p>
- * Versions are integers, starting at 1 and incrementing every time a definition
- * is modified. The required class attribute indicates the specific class to
- * which the definition belongs. The class gives a hint to a user, so they can
- * know what the definition writer is trying to say. See the definition of
- * oval-def:ClassEnumeration for more information about the different valid
- * classes.
+ * Versions are integers, starting at 1 and incrementing every time a definition is modified. The required class
+ * attribute indicates the specific class to which the definition belongs. The class gives a hint to a user,
+ * so they can know what the definition writer is trying to say. See the definition of oval-def:ClassEnumeration
+ * for more information about the different valid classes.
  * <p>
- * The optional deprecated attribute signifies that an id is no longer to be
- * used or referenced but the information has been kept around for historic
- * purposes.
+ * The optional deprecated attribute signifies that an id is no longer to be used or referenced but the information
+ * has been kept around for historic purposes.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "definition", namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5")
@@ -69,7 +68,8 @@ public class DefinitionType {
     /**
      * Gets the value of the metadata property.
      *
-     * @return possible object is {@link MetadataType }
+     * @return possible object is
+     * {@link MetadataType }
      */
     public MetadataType getMetadata() {
         return metadata;
@@ -94,7 +94,6 @@ public class DefinitionType {
 
     /**
      * Gets the value of the id property.
-     *
      * @return the id
      */
     public String getId() {
@@ -103,7 +102,6 @@ public class DefinitionType {
 
     /**
      * Sets the value of the id property.
-     *
      * @param valueIn the id to set
      */
     public void setId(String valueIn) {
@@ -112,7 +110,6 @@ public class DefinitionType {
 
     /**
      * Gets the value of the clazz property.
-     *
      * @return the definition class
      */
     public DefinitionClassEnum getDefinitionClass() {
@@ -121,7 +118,6 @@ public class DefinitionType {
 
     /**
      * Sets the value of the clazz property.
-     *
      * @param value the definition class to set
      */
     public void setDefinitionClass(DefinitionClassEnum value) {
@@ -129,12 +125,11 @@ public class DefinitionType {
     }
 
     /**
-     * Returns any CVE in the list of associated CVEs. To be called when the
-     * caller knows that there is a single CVE associated with this definition.
+     * Returns any CVE in the list of associated CVEs. To be called when the caller knows that there is a single CVE
+     * associated with this definition.
      *
      * @return the CVE wrapped in an {@code Optional}
-     *
-     */
+     * */
     public Optional<String> getSingleCve() {
         if (cves.isEmpty()) {
             return Optional.empty();
@@ -146,8 +141,7 @@ public class DefinitionType {
      * Clears the list of associated CVEs and add a single CVE.
      *
      * @param cve the cve to add
-     *
-     */
+     * */
     public void setSingleCve(String cve) {
         this.cves.clear();
         this.cves.add(cve);
@@ -157,8 +151,7 @@ public class DefinitionType {
      * Returns the list of associated CVEs
      *
      * @return the list of CVEs
-     *
-     */
+     * */
     public List<String> getCves() {
         return cves;
     }
