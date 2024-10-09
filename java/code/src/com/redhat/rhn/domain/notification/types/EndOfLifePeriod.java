@@ -48,10 +48,10 @@ public class EndOfLifePeriod implements NotificationData {
         // Mark the notification as error 1 month before the actual expiration
         final LocalDate localEolDate = LocalDate.ofInstant(endOfLifeDate.toInstant(), ZoneId.systemDefault());
         if (ChronoUnit.MONTHS.between(localEolDate, LocalDate.now()) > -1) {
-            return NotificationMessage.NotificationMessageSeverity.error;
+            return NotificationMessage.NotificationMessageSeverity.ERROR;
         }
 
-        return NotificationMessage.NotificationMessageSeverity.warning;
+        return NotificationMessage.NotificationMessageSeverity.WARNING;
     }
 
     private boolean isExpired() {
