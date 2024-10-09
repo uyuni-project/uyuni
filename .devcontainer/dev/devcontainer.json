@@ -4,7 +4,15 @@
   "remoteEnv": {
     "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk"
   },
-  "postCreateCommand": "cd /workspaces/uyuni &&  ant -f java/manager-build.xml ivy"
+  //"postCreateCommand": "cd /workspaces/uyuni &&  ant -f java/manager-build.xml ivy",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": ["vscjava.vscode-java-pack","nickheap.vscode-ant","ms-azuretools.vscode-docker"]
+    }
+  },
   
   // More info: https://containers.dev/implementors/json_reference/
+  "postStartCommand": "mkdir -p /workspaces/uyuni/java/lib && mv /repository /workspaces/uyuni/java/buildconf/ivy/ && mv /uyuni-lib/* /workspaces/uyuni/java/lib/"
+  
 }
