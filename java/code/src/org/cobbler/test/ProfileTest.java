@@ -28,6 +28,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProfileTest {
 
@@ -70,6 +72,35 @@ public class ProfileTest {
 
         // Assert
         Assertions.assertEquals(testDistro.getUid(), result.getUid());
+    }
+
+    @Test
+    public void testList() {
+        // Arrange
+        MockConnection laggingConnection = new MockConnection("http://localhost", "token") {
+            @Override
+            public Object invokeMethod(String name, Object... args) {
+                if (name.equals("get_profile") && "deleted".equals(args[0])) {
+                    return "~";
+                }
+                return super.invokeMethod(name, args);
+            }
+        };
+        Profile testProfile1 = Profile.create(laggingConnection, "profile1", testDistro);
+        Profile testProfile2 = Profile.create(laggingConnection, "profile2", testDistro);
+        Profile.create(laggingConnection, "deleted", testDistro);
+
+        // Act
+        List<Profile> resultExcludes = Profile.list(laggingConnection, Set.of(testProfile2.getId()));
+        List<Profile> resultNoExcludes = Profile.list(laggingConnection);
+
+        // Assert
+        Assertions.assertEquals(1, resultExcludes.size());
+        Assertions.assertEquals(testProfile1.getId(), resultExcludes.get(0).getId());
+
+        Assertions.assertEquals(2, resultNoExcludes.size());
+        Assertions.assertEquals(Set.of(testProfile1.getId(), testProfile2.getId()),
+                resultNoExcludes.stream().map(p -> p.getId()).collect(Collectors.toSet()));
     }
 
     @Test
