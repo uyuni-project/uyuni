@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Oct 09 03:13:11 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.9
+  * Remove the build tag with the release number
+  * Add registrySecret value to the helm chart for authentication
+    (bsc#1231157)
+  * Fix labels indentation (bsc#1231150)
+
+-------------------------------------------------------------------
 Thu Oct 03 16:54:46 CEST 2024 - rosuna@suse.com
 
 - version 5.0.8
