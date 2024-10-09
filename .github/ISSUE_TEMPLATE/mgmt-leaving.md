@@ -32,6 +32,8 @@ General template for leavers of the SUSE Manager team.
 
 - [ ] GitHub
   - [ ] Remove from [SUSE Manager Team](https://github.com/orgs/SUSE/teams/suse-manager-team/members) on GitHub
+  - [ ] Remove from [SUSE Manager Administrators](https://github.com/orgs/SUSE/teams/suse-manager-administrators/members) on GitHub
+  - [ ] Remove from [SUSE Manager CI Administrators](https://github.com/orgs/SUSE/teams/suse-manager-ci-administrators/members) on GitHub
   - [ ] Remove from [Uyuni organization](https://github.com/orgs/uyuni-project/people) and [teams](https://github.com/orgs/uyuni-project/teams). It can remain a member (but not owner), if it will keep contributing.
 - [ ] Trello access
   - [ ] Tell the person to leave all SUSE Trello boards, otherwise, they might become paid guests
@@ -45,8 +47,7 @@ General template for leavers of the SUSE Manager team.
   - [ ] [galaxy-bugs](https://mailman.suse.de/mailman/admin/galaxy-bugs/members/remove)
   - [ ] [galaxy-ci](https://mailman.suse.de/mailman/admin/galaxy-ci/members/remove)
   - [ ] [galaxy-devel](https://mailman.suse.de/mailman/admin/galaxy-devel/members/remove)
-  - [ ] [galaxy-docs](https://mailman.suse.de/mailman/admin/galaxy-docs/members/remove)
-  - [ ] [galaxy-infra](https://mailman.suse.de/mailman/admin/galaxy-infra/members/remove)
+    - [ ] [galaxy-infra](https://mailman.suse.de/mailman/admin/galaxy-infra/members/remove)
   - [ ] [galaxy-noise](https://mailman.suse.de/mailman/admin/galaxy-noise/members/remove)
   - [ ] [galaxy-releng](https://mailman.suse.de/mailman/admin/galaxy-releng/members/remove)
   - [ ] [galaxy-team](https://mailman.suse.de/mailman/admin/galaxy-team/members/remove)
@@ -71,8 +72,10 @@ General template for leavers of the SUSE Manager team.
 - [ ] Hardware
   - [ ] Collect remaining equipment, as explained via ticket created ahead of the termination date.
   - [ ] Are there somewhere machines (e.g. RPI) or VMs around managed by this person? Stop them or transfer the management to other team members
-- [ ] AWS/Azure/Google Cloud access
-  - [ ] Remove the person from the IAM of the service and remove any leftover resource
+- [ ] Cloud resources (accounts for each cloud at the [Landing Zones](https://confluence.suse.com/display/CCOE/Cloud+Landing+Zone+Access#CloudLandingZoneAccess-OktaGroupNaming/PermissionScheme#Roles) confluence page).
+  - [ ] AWS
+  - [ ] Azure
+  - [ ] Google Cloud
 - [ ] Remove from the relevant IBS/OBS groups:
   - [ ] Remove from https://build.suse.de/groups/monitoring (if applicable)
   - [ ] Remove from https://build.suse.de/groups/salt-maintainers (if applicable)
