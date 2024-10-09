@@ -782,7 +782,7 @@ end
 
 Then(/^I should not see a warning nor an error sign$/) do
   raise ScriptError, 'No product synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
-  raise ScriptError, 'At least one product is not fully synchronized' if page.has_ xpath?('//*[contains(@class, \'fa-spinner\')]')
+  raise ScriptError, 'At least one product is not fully synchronized' if page.has_xpath?('//*[contains(@class, \'fa-spinner\')]')
   raise ScriptError, 'Warning detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
   raise ScriptError, 'Error detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
