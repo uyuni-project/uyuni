@@ -1,99 +1,239 @@
 import { hot } from "react-hot-loader/root";
+import * as React from "react";
+import { useState } from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
-
+import { Form, Text } from "components/input";
 import { Panel } from "components/panels/Panel";
+import { TopPanel } from "components/panels/TopPanel";
+import { AsyncButton } from "components/buttons";
+import { showErrorToastr } from "components/toastr/toastr";
+
+// Assume you have an API hook similar to useLifecyclePaygActionsApi
+import usePasswordPolicyApi from "manager/admin/password-policy/use-password-policy-api";
 
 type PasswordPolicyProps = {
-  minLength: bigint,
-  maxLength: bigint,
-  digitsFlag: boolean,
-  lowerCharFlag: boolean,
-  upperCharFlag: boolean,
-  consecutiveCharFlag: boolean,
-  specialCharFlag: boolean,
-  specialCharList: string | null,
-  restrictedOccurrenceFlag: boolean,
-  maxCharOccurrence: bigint
+  minLength: bigint;
+  maxLength: bigint;
+  digitsFlag: boolean;
+  lowerCharFlag: boolean;
+  upperCharFlag: boolean;
+  consecutiveCharFlag: boolean;
+  specialCharFlag: boolean;
+  specialCharList: string | null;
+  restrictedOccurrenceFlag: boolean;
+  maxCharOccurrence: bigint;
 };
 
-const PasswordPolicy = (props : PasswordPolicyProps) => {
+const PasswordPolicy = (props: PasswordPolicyProps) => {
+  const [policy, setPolicy] = useState({
+    properties: {
+      minLength: props.minLength.toString(),
+      maxLength: props.maxLength.toString(),
+      digitsFlag: props.digitsFlag,
+      lowerCharFlag: props.lowerCharFlag,
+      upperCharFlag: props.upperCharFlag,
+      consecutiveCharFlag: props.consecutiveCharFlag,
+      specialCharFlag: props.specialCharFlag,
+      specialCharList: props.specialCharList || "",
+      restrictedOccurrenceFlag: props.restrictedOccurrenceFlag,
+      maxCharOccurrence: props.maxCharOccurrence.toString(),
+    },
+    errors: {},
+  });
 
-  const pageContent = (
-    <Panel
-      key="policy"
-      title={t("Password Policy")}
-      headingLevel="h4"
-      footer={
-        <div className="row">
-          <div className="col-md-offset-3 offset-md-3 col-md-9"></div>
+  const { updatePolicy } = usePasswordPolicyApi();
+
+  return (
+    <TopPanel
+      title={t("SUSE Manager Configuration - Password Policy")}
+      icon="fa-info-circle"
+      button={
+        <div className="pull-right btn-group">
+          <AsyncButton
+            id="savebutton"
+            className="btn-primary"
+            title={t("Save Password Policy")}
+            text={t("Save")}
+            icon="fa-save"
+            action={() =>
+              updatePolicy(policy.properties)
+                .then(() => {
+                  // Handle success, maybe show a success message
+                })
+                .catch((error) => {
+                  setPolicy({ ...policy, errors: error.errors });
+                  showErrorToastr(error.messages, { autoHide: false });
+                })
+            }
+          />
         </div>
       }
     >
-    <div className="row">
-      <div className="col-md-9">
-        <div className="row">
-          <div className="col-md-4 text-left">
-            <label>{t("Password Policy")}</label>
-          </div>
-          <div className="col-md-8">
-          </div>
-        </div>
-      </div>
-    </div>
-  </Panel>
-
-  )
-  return (
-    <div className="responsive-wizard">
-      <div className="spacewalk-toolbar-h1">
-        <div className="spacewalk-toolbar"></div>
-        <h1>
-          <i className="fa fa-info-circle"></i>
-          {t("SUSE Manager Configuration - Password Policy")}
-        </h1>
-      </div>
       <div className="page-summary">
-        <p>{t("Setup your SUSE Manager server local users password policy.")}</p>
+        <p>{t("Set up your SUSE Manager server local users password policy.")}</p>
       </div>
-      <div className="spacewalk-content-nav">
-        <ul className="nav nav-tabs">
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/GeneralConfig.do?">
-              {t("General")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/BootstrapConfig.do?">
-              {t("Bootstrap Script")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/Orgs.do?">
-              {t("Organizations")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/Restart.do?">
-              {t("Restart")}
-            </a>
-          </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/Cobbler.do?">
-              {t("Cobbler")}
-            </a>
-          </li>
-          <li className="js-spa">
-            <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
-          </li>
-          <li className="active js-spa">
-            <a href="/rhn/manager/admin/config/password-policy?">{t("Password Policy")}</a>
-          </li>
-        </ul>
-      </div>
-      {pageContent}
-    </div>
+      <Form
+        model={policy.properties}
+        errors={policy.errors}
+        onChange={(newProperties) => setPolicy({ ...policy, properties: newProperties })}
+      >
+        <Panel headingLevel="h2" title={t("Password Policy Settings")}>
+          <div className="col-md-10">
+            {/* Minimum Length */}
+            <div className="row">
+              <Text
+                required
+                name="minLength"
+                label={t("Minimum Length")}
+                labelClass="col-md-4 text-left"
+                divClass="col-md-8"
+                type="number"
+              />
+            </div>
+            {/* Maximum Length */}
+            <div className="row">
+              <Text
+                required
+                name="maxLength"
+                label={t("Maximum Length")}
+                labelClass="col-md-4 text-left"
+                divClass="col-md-8"
+                type="number"
+              />
+            </div>
+            {/* Require Digits */}
+            <div className="row form-group">
+              <label className="col-md-4 text-left">{t("Require Digits")}</label>
+              <div className="col-md-8">
+                <input
+                  type="checkbox"
+                  name="digitsFlag"
+                  checked={policy.properties.digitsFlag}
+                  onChange={(e) =>
+                    setPolicy({
+                      ...policy,
+                      properties: { ...policy.properties, digitsFlag: e.target.checked },
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {/* Require Lowercase Characters */}
+            <div className="row form-group">
+              <label className="col-md-4 text-left">{t("Require Lowercase Characters")}</label>
+              <div className="col-md-8">
+                <input
+                  type="checkbox"
+                  name="lowerCharFlag"
+                  checked={policy.properties.lowerCharFlag}
+                  onChange={(e) =>
+                    setPolicy({
+                      ...policy,
+                      properties: { ...policy.properties, lowerCharFlag: e.target.checked },
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {/* Require Uppercase Characters */}
+            <div className="row form-group">
+              <label className="col-md-4 text-left">{t("Require Uppercase Characters")}</label>
+              <div className="col-md-8">
+                <input
+                  type="checkbox"
+                  name="upperCharFlag"
+                  checked={policy.properties.upperCharFlag}
+                  onChange={(e) =>
+                    setPolicy({
+                      ...policy,
+                      properties: { ...policy.properties, upperCharFlag: e.target.checked },
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {/* Restrict Consecutive Characters */}
+            <div className="row form-group">
+              <label className="col-md-4 text-left">{t("Restrict Consecutive Characters")}</label>
+              <div className="col-md-8">
+                <input
+                  type="checkbox"
+                  name="consecutiveCharFlag"
+                  checked={policy.properties.consecutiveCharFlag}
+                  onChange={(e) =>
+                    setPolicy({
+                      ...policy,
+                      properties: { ...policy.properties, consecutiveCharFlag: e.target.checked },
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {/* Require Special Characters */}
+            <div className="row form-group">
+              <label className="col-md-4 text-left">{t("Require Special Characters")}</label>
+              <div className="col-md-8">
+                <input
+                  type="checkbox"
+                  name="specialCharFlag"
+                  checked={policy.properties.specialCharFlag}
+                  onChange={(e) =>
+                    setPolicy({
+                      ...policy,
+                      properties: { ...policy.properties, specialCharFlag: e.target.checked },
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {/* Special Characters List */}
+            {policy.properties.specialCharFlag && (
+              <div className="row">
+                <Text
+                  required
+                  name="specialCharList"
+                  label={t("Allowed Special Characters")}
+                  labelClass="col-md-4 text-left"
+                  divClass="col-md-8"
+                />
+              </div>
+            )}
+            {/* Restrict Character Occurrence */}
+            <div className="row form-group">
+              <label className="col-md-4 text-left">{t("Restrict Character Occurrence")}</label>
+              <div className="col-md-8">
+                <input
+                  type="checkbox"
+                  name="restrictedOccurrenceFlag"
+                  checked={policy.properties.restrictedOccurrenceFlag}
+                  onChange={(e) =>
+                    setPolicy({
+                      ...policy,
+                      properties: { ...policy.properties, restrictedOccurrenceFlag: e.target.checked },
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {/* Maximum Character Occurrence */}
+            {policy.properties.restrictedOccurrenceFlag && (
+              <div className="row">
+                <Text
+                  required
+                  name="maxCharOccurrence"
+                  label={t("Maximum Character Occurrence")}
+                  labelClass="col-md-4 text-left"
+                  divClass="col-md-8"
+                  type="number"
+                />
+              </div>
+            )}
+          </div>
+        </Panel>
+      </Form>
+    </TopPanel>
   );
-}
+};
 
 export default hot(withPageWrapper(PasswordPolicy));
