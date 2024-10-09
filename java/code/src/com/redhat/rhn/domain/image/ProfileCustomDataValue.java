@@ -170,10 +170,9 @@ public class ProfileCustomDataValue {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof ProfileCustomDataValue)) {
+        if (!(other instanceof ProfileCustomDataValue castOther)) {
             return false;
         }
-        ProfileCustomDataValue castOther = (ProfileCustomDataValue) other;
         return new EqualsBuilder()
                 .append(key, castOther.getKey())
                 .append(profile, castOther.getProfile())

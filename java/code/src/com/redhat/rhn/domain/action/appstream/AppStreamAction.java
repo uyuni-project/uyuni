@@ -48,13 +48,9 @@ public class AppStreamAction extends Action {
         if (this == oIn) {
             return true;
         }
-
-        if (!(oIn instanceof AppStreamAction)) {
+        if (!(oIn instanceof AppStreamAction that)) {
             return false;
         }
-
-        AppStreamAction that = (AppStreamAction) oIn;
-
         return new EqualsBuilder().appendSuper(super.equals(oIn)).append(details, that.details).isEquals();
     }
 

@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.audit.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -352,7 +353,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(ruleIds.size(), resultIds.size());
         assertTrue(resultIds.containsAll(ruleIds),
                 "Expected but missing rules: " + resultIds.stream()
-                             .filter(r -> !ruleIds.contains(r)).collect(Collectors.toList()));
+                             .filter(r -> !ruleIds.contains(r)).toList());
     }
 
     private void assertRuleResultsCount(XccdfTestResult result, String ruleType, int count) {
@@ -388,7 +389,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
             fail("Expected exception");
         }
         catch (Exception e) {
-            assertTrue(e instanceof RuntimeException);
+            assertInstanceOf(RuntimeException.class, e);
         }
     }
 

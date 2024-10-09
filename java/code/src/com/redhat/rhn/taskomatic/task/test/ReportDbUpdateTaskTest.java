@@ -47,7 +47,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.persistence.Tuple;
@@ -90,7 +89,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
         // Create some servers
         List<Server> servers = IntStream.range(1, 5)
             .mapToObj(index -> ServerFactoryTest.createTestServer(user))
-            .collect(Collectors.toList());
+            .toList();
 
         // Store the packages we create to be able to verify the data at the end
         Map<Long, List<Package>> updatablePackagesMap = new HashMap<>();
@@ -102,7 +101,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
             // Create some packages and add them to the channel
             List<Package> packages = IntStream.range(1, 10)
                 .mapToObj(index -> PackageTest.createTestPackage(user.getOrg()))
-                .collect(Collectors.toList());
+                .toList();
             channel.getPackages().addAll(packages);
 
 
@@ -110,7 +109,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
             List<Package> updatedPackages = packages.stream()
                 .map(originalPackage -> PackageTestUtils.newVersionOfPackage(originalPackage, null, "2.0.0", null,
                     user.getOrg()))
-                .collect(Collectors.toList());
+                .toList();
             channel.getPackages().addAll(updatedPackages);
             updatablePackagesMap.put(server.getId(), updatedPackages);
 
@@ -141,7 +140,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
 
             List<Package> updatablePackagesForServer = updatablePackagesMap.get(testServer.getId()).stream()
                 .sorted(Comparator.comparing(pck -> pck.getId()))
-                .collect(Collectors.toList());
+                .toList();
 
             assertFalse(CollectionUtils.isEmpty(updatablePackagesForServer),
                 "The updatable packages reference list should not be empty");

@@ -244,10 +244,9 @@ public class SCCSubscription extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SCCSubscription)) {
+        if (!(other instanceof SCCSubscription otherSCCSubscription)) {
             return false;
         }
-        SCCSubscription otherSCCSubscription = (SCCSubscription) other;
         return new EqualsBuilder()
                 .append(getSccId(), otherSCCSubscription.getSccId())
                 .append(getRegcode(), otherSCCSubscription.getRegcode())

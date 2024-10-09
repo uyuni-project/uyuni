@@ -287,7 +287,7 @@ public class ActivationKeyHandler extends BaseHandler {
             String token = tokenBuilder.getToken();
             return key.getChannels().stream().map(
                 c -> new ChannelInfo(c.getLabel(), c.getName(), url + c.getLabel(), token)
-            ).collect(Collectors.toList());
+            ).toList();
         }
         catch (JoseException e) {
             throw new TokenCreationException(e);
@@ -858,7 +858,7 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
         List<String> appStreamsKeys = appStreams.stream()
             .map(it -> it.get("module") + ":" + it.get("stream"))
-            .collect(Collectors.toList());
+            .toList();
         Map<String, Channel> channelsProviding = akm.getChannelsProvidingAppStreams(activationKey, appStreamsKeys);
         Map<Channel, List<String>> toIncludeMap = channelsProviding.entrySet().stream()
             .collect(Collectors.groupingBy(
@@ -894,7 +894,7 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
         var toRemove = appStreams.stream().map(it -> it.get("module") + ":" + it.get("stream"))
-                .collect(Collectors.toList());
+                .toList();
         akm.removeAppStreams(activationKey, toRemove);
         return 1;
     }

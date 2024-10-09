@@ -270,10 +270,9 @@ public class ContentEnvironment extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ContentEnvironment)) {
+        if (!(other instanceof ContentEnvironment otherContentEnvironment)) {
             return false;
         }
-        ContentEnvironment otherContentEnvironment = (ContentEnvironment) other;
         return new EqualsBuilder()
             .append(getLabel(), otherContentEnvironment.getLabel())
             .append(getName(), otherContentEnvironment.getName())

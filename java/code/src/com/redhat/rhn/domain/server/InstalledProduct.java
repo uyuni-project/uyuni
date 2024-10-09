@@ -172,8 +172,7 @@ public class InstalledProduct extends BaseDomainHelper {
         if (this == oIn) {
             return true;
         }
-        if (oIn instanceof InstalledProduct) {
-            InstalledProduct that = (InstalledProduct) oIn;
+        if (oIn instanceof InstalledProduct that) {
             return isBaseproduct() == that.isBaseproduct() &&
                     Objects.equals(getName(), that.getName()) &&
                     Objects.equals(getVersion(), that.getVersion()) &&

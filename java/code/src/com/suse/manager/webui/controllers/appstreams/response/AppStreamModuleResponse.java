@@ -61,11 +61,9 @@ public class AppStreamModuleResponse {
             return true;
         }
 
-        if (!(oIn instanceof AppStreamModuleResponse)) {
+        if (!(oIn instanceof AppStreamModuleResponse that)) {
             return false;
         }
-
-        AppStreamModuleResponse that = (AppStreamModuleResponse) oIn;
 
         return new EqualsBuilder()
                 .append(name, that.name)

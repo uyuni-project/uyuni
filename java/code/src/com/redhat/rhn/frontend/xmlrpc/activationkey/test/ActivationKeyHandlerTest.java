@@ -74,7 +74,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -872,8 +871,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         List<ChannelInfo> channelInfo = keyHandler.listChannels(
                 testMinionServer.getMinionId(), machinePassword, key.getKey());
         assertEquals(2, channelInfo.size());
-        List<String> labels = channelInfo.stream().map(ChannelInfo::getLabel).collect(Collectors.toList());
-        List<String> names = channelInfo.stream().map(ChannelInfo::getName).collect(Collectors.toList());
+        List<String> labels = channelInfo.stream().map(ChannelInfo::getLabel).toList();
+        List<String> names = channelInfo.stream().map(ChannelInfo::getName).toList();
 
         channels.stream().forEach(channel -> {
             assertTrue(labels.contains(channel.getLabel()));

@@ -349,11 +349,9 @@ public class CobblerSnippet implements Comparable<CobblerSnippet> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CobblerSnippet)) {
+        if (!(o instanceof CobblerSnippet that)) {
             return false;
         }
-
-        CobblerSnippet that = (CobblerSnippet) o;
         return getPath().equals(that.getPath());
     }
 

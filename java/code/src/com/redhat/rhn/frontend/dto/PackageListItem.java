@@ -727,12 +727,9 @@ public class PackageListItem extends IdComboDto {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PackageListItem)) {
+        if (!(o instanceof PackageListItem that)) {
             return false;
         }
-
-        PackageListItem that = (PackageListItem) o;
-
         return !Objects.equals(idCombo, that.idCombo);
     }
 

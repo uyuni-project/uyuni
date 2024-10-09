@@ -91,11 +91,10 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
 
     @Override
     protected boolean test(BaseCriteria criteria) {
-        if (!(criteria instanceof CriterionType)) {
+        if (!(criteria instanceof CriterionType criterionType)) {
             return false;
         }
 
-        CriterionType criterionType = (CriterionType) criteria;
         return DEBIAN_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment());
     }
 

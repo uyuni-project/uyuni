@@ -110,11 +110,9 @@ public class ServerPath extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ServerPath)) {
+        if (!(other instanceof ServerPath otherServerPath)) {
             return false;
         }
-        ServerPath otherServerPath = (ServerPath) other;
-
         return new EqualsBuilder()
             .append(getId(), otherServerPath.getId())
             .append(getPosition(), otherServerPath.getPosition())

@@ -125,11 +125,9 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
             return true;
         }
 
-        if (!(o instanceof PaygCredentialsProduct)) {
+        if (!(o instanceof PaygCredentialsProduct that)) {
             return false;
         }
-
-        PaygCredentialsProduct that = (PaygCredentialsProduct) o;
 
         return new EqualsBuilder()
             .append(credentialsId, that.credentialsId)

@@ -1019,7 +1019,7 @@ public class UserHandler extends BaseHandler {
             groups.add(group);
         }
 
-        List<Long> groupIds = groups.stream().map(ManagedServerGroup::getId).collect(Collectors.toList());
+        List<Long> groupIds = groups.stream().map(ManagedServerGroup::getId).toList();
         UserManager.grantServerGroupPermission(targetUser.getId(), groupIds);
 
         // Follow up with a call to addDefaultSystemGroups if setDefault is true:

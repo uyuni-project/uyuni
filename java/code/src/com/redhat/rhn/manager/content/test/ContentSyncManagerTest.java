@@ -366,14 +366,14 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepositoryAuth upRepoBest = upRepoOpt.flatMap(SCCRepository::getBestAuth).orElse(null);
         assertNotNull(upRepoBest);
-        assertTrue(upRepoBest instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
+        assertInstanceOf(SCCRepositoryTokenAuth.class, upRepoBest, "Best Auth is not token auth");
 
         csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
         upRepoBest = upRepoOpt.flatMap(SCCRepository::getBestAuth).orElse(null);
         assertNotNull(upRepoBest);
-        assertTrue(upRepoBest instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
+        assertInstanceOf(SCCRepositoryTokenAuth.class, upRepoBest, "Best Auth is not token auth");
     }
 
     @Test
@@ -419,20 +419,20 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Channel> resultAppFeb = SUSEProductFactory
                 .findSyncedMandatoryChannels("sle-module-server-applications15-pool-x86_64-feb")
-                .collect(Collectors.toList());
+                .toList();
 
         assertIterableEquals(
-                List.of(applicationsFeb, basesystemFeb).stream().distinct().sorted().collect(Collectors.toList()),
-                resultAppFeb.stream().distinct().sorted().collect(Collectors.toList())
+                List.of(applicationsFeb, basesystemFeb).stream().distinct().sorted().toList(),
+                resultAppFeb.stream().distinct().sorted().toList()
         );
 
         List<Channel> resultAppJan = SUSEProductFactory
                 .findSyncedMandatoryChannels("sle-module-server-applications15-pool-x86_64-jan")
-                .collect(Collectors.toList());
+                .toList();
 
         assertIterableEquals(
-                List.of(applicationsJan, basesystemJan).stream().distinct().sorted().collect(Collectors.toList()),
-                resultAppJan.stream().distinct().sorted().collect(Collectors.toList())
+                List.of(applicationsJan, basesystemJan).stream().distinct().sorted().toList(),
+                resultAppJan.stream().distinct().sorted().toList()
         );
     }
 
@@ -829,7 +829,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         List<SUSEProductSCCRepository> r = basesystem.getRepositories().stream()
             .filter(pr -> pr.getRootProduct().equals(sles))
             .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
-            .collect(Collectors.toList());
+            .toList();
         assertNotEmpty(r);
         r.forEach(pr -> {
                 assertNotNull(pr.getRepository());
@@ -850,7 +850,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         r = basesystem.getRepositories().stream()
             .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
             .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
-            .collect(Collectors.toList());
+            .toList();
         assertNotEmpty(r);
         r.forEach(pr -> {
             assertNotNull(pr.getRepository());
@@ -872,7 +872,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         r = tools.getRepositories().stream()
             .filter(pr -> pr.getRootProduct().equals(sles))
             .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
-            .collect(Collectors.toList());
+            .toList();
         assertNotEmpty(r);
         r.forEach(pr -> {
                 assertNotNull(pr.getRepository());
@@ -893,7 +893,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         r = tools.getRepositories().stream()
             .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
             .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
-            .collect(Collectors.toList());
+            .toList();
         assertNotEmpty(r);
         r.forEach(pr -> {
                 assertNotNull(pr.getRepository());
@@ -1144,8 +1144,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertTrue(upRepoOpt.get().getBestAuth().isPresent(), "No best auth found for SLE-Product-SLES15-Pool");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
-                    "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Pool");
+                assertInstanceOf(SCCRepositoryCloudRmtAuth.class, bestRepoAuth,
+                        "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Pool");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES15-Pool");
                 Optional<CloudRMTCredentials> bestCred = bestRepoAuth.getOptionalCredentials()
@@ -1169,8 +1169,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     "No best auth found for SLE-Product-SLES15-Updates");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
-                    "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Updates");
+                assertInstanceOf(SCCRepositoryCloudRmtAuth.class, bestRepoAuth,
+                        "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Updates");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES15-Updates");
                 RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
@@ -1190,8 +1190,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertTrue(upRepoOpt.get().getBestAuth().isPresent(), "No best auth found for SLE-Product-SLES12-Pool");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
-                    "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Pool");
+                assertInstanceOf(SCCRepositoryCloudRmtAuth.class, bestRepoAuth,
+                        "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Pool");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES12-Pool");
                 RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
@@ -1212,8 +1212,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     "No best auth found for SLE-Product-SLES12-Update");
 
                 SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
-                assertTrue(bestRepoAuth instanceof SCCRepositoryTokenAuth,
-                    "Best Auth is not token auth for SLE-Product-SLES12-Update");
+                assertInstanceOf(SCCRepositoryTokenAuth.class, bestRepoAuth,
+                        "Best Auth is not token auth for SLE-Product-SLES12-Update");
                 assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
                     "No credentials for auth for SLE-Product-SLES12-Update");
                 RemoteCredentials bestCred = bestRepoAuth.getOptionalCredentials().get();
@@ -1378,7 +1378,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         List<SUSEProductSCCRepository> availableChannels = csm.getAvailableChannels();
 
         List<String> avChanLanbels = availableChannels
-                .stream().map(SUSEProductSCCRepository::getChannelLabel).collect(Collectors.toList());
+                .stream().map(SUSEProductSCCRepository::getChannelLabel).toList();
 
         assertContains(avChanLanbels, "sles12-pool-x86_64");
         assertContains(avChanLanbels, "sle-12-cloud-compute5-updates-x86_64");
@@ -1744,7 +1744,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         // Remove the upgrade path via the predecessor Id
         csm.updateSUSEProducts(Stream.of(product1, product2.copy().setOnlinePredecessorIds(Collections.emptyList())
-                .build()).collect(Collectors.toList()));
+                .build()).toList());
 
         // There should be no upgrade paths
         assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());

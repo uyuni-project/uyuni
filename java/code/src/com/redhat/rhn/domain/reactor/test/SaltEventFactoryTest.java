@@ -89,7 +89,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
 
         // try to pop a salt event when there are none
-        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(1, 0).collect(Collectors.toList());
+        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(1, 0).toList();
         assertEquals(0, popedSaltEvents.size());
 
         // create and pop 1 salt event
@@ -99,7 +99,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 1L, 0L, 0L), saltEventsCount);
 
-        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 1).collect(Collectors.toList());
+        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 1).toList();
         assertEquals(popedSaltEvents.size(), 1);
         assertTrue(popedSaltEvents.stream().allMatch(se -> se.equals(saltEvent1)));
 
@@ -111,7 +111,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
 
         List<SaltEvent> saltEvents = IntStream.range(0, count)
                 .mapToObj(i -> new SaltEvent(i, "minion_" + i, "data_minion_" + i, i % 3 + 1))
-                .collect(Collectors.toList());
+                .toList();
         saltEvents.forEach(this::insertIntoSuseSaltEvent);
 
 
@@ -122,7 +122,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         assertEquals(Arrays.asList(0L, 2L, 1L, 1L), saltEventsCount);
 
         IntStream.range(0, 4).forEach(queue -> {
-            List<SaltEvent> popedEvents = SaltEventFactory.popSaltEvents(count, queue).collect(Collectors.toList());
+            List<SaltEvent> popedEvents = SaltEventFactory.popSaltEvents(count, queue).toList();
             assertEquals(popedEvents.size(), hashedSaltEvents.getOrDefault(queue, new ArrayList<>()).size());
             assertTrue(popedEvents.stream()
                     .allMatch(pse -> hashedSaltEvents.get(queue).stream().anyMatch(pse::equals)));
@@ -172,7 +172,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         saltEvents.add(saltEvent3);
         assertEquals(Arrays.asList(1L, 1L, 1L, 0L), saltEventsCount);
 
-        List<Long> saltEventIds = saltEvents.stream().map(SaltEvent::getId).collect(Collectors.toList());
+        List<Long> saltEventIds = saltEvents.stream().map(SaltEvent::getId).toList();
         deletedEventIds = SaltEventFactory.deleteSaltEvents(saltEventIds);
         assertEquals(saltEvents.size(), deletedEventIds.size());
         assertTrue(deletedEventIds.stream().allMatch(did -> saltEventIds.stream().anyMatch(id -> id.equals(did))));
@@ -209,9 +209,9 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         assertEquals(Arrays.asList(0L, 3L, 1L, 0L, 0L), saltEventsCount);
 
         // pop the events
-        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(3, 1).collect(Collectors.toList());
+        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(3, 1).toList();
         assertEquals(popedSaltEvents.size(), 3);
-        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 2).collect(Collectors.toList());
+        popedSaltEvents = SaltEventFactory.popSaltEvents(1, 2).toList();
         assertEquals(popedSaltEvents.size(), 1);
 
         saltEventsCount = SaltEventFactory.countSaltEvents(5);

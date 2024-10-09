@@ -40,8 +40,7 @@ public class ExceptionTranslator {
      */
     public static XmlRpcFault translateException(Throwable t) {
         // Generic fault exception
-        if (t instanceof FaultException) {
-            FaultException fe = (FaultException) t;
+        if (t instanceof FaultException fe) {
             return new XmlRpcFault(fe.getErrorCode(), fe.getMessage());
         }
 

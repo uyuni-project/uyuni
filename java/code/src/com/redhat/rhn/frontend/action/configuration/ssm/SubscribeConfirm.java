@@ -44,7 +44,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -140,7 +139,7 @@ public class SubscribeConfirm extends RhnAction {
         List<ConfigChannel> configChannels = rankElements.stream()
                 .filter(elm -> selectedChannels.contains(elm.getElement()))
                 .map(elm -> cm.lookupConfigChannel(user, elm.getElement()))
-                .collect(Collectors.toList());
+                .toList();
 
         LOG.debug("Start adding config state");
         int successes = 0;

@@ -56,7 +56,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -115,7 +114,7 @@ public class FilterApiController {
                 .stream()
                 .map(pf -> pf.getFilter().getId())
                 .filter(filterId -> !filtersIdToUpdate.contains(filterId))
-                .collect(Collectors.toList());
+                .toList();
         filterIdsToDetach.forEach(filterId -> CONTENT_MGR.detachFilter(
                 projectLabel,
                 filterId,
@@ -129,7 +128,7 @@ public class FilterApiController {
                                 .stream()
                                 .noneMatch(pf -> pf.getFilter().getId().equals(filterId))
                 )
-                .collect(Collectors.toList());
+                .toList();
         filterIdsToAttach
                 .forEach(filterId ->
                         CONTENT_MGR.attachFilter(

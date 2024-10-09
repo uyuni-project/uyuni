@@ -63,10 +63,9 @@ public class ConfigFileName extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ConfigFileName)) {
+        if (!(other instanceof ConfigFileName castOther)) {
             return false;
         }
-        ConfigFileName castOther = (ConfigFileName)other;
         return new EqualsBuilder().append(id, castOther.id)
                                   .append(path, castOther.path)
                                   .isEquals();

@@ -24,6 +24,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1005,14 +1006,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             if (map.get("id").equals(server1.getId())) {
                 assertEquals(server1.getName(), map.get("system_name"));
 
-                assertTrue(map.get("elaborator0") instanceof List);
+                assertInstanceOf(List.class, map.get("elaborator0"));
                 List result1Packages = (List)map.get("elaborator0");
                 assertEquals(2, result1Packages.size());
             }
             else if (map.get("id").equals(server2.getId())) {
                 assertEquals(server2.getName(), (map.get("system_name")));
 
-                assertTrue(map.get("elaborator0") instanceof List);
+                assertInstanceOf(List.class, map.get("elaborator0"));
                 List result2Packages = (List)map.get("elaborator0");
                 assertEquals(1, result2Packages.size());
             }

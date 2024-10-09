@@ -156,10 +156,9 @@ public class Task implements Serializable {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Task)) {
+        if (!(other instanceof Task castOther)) {
             return false;
         }
-        Task castOther = (Task) other;
         return new EqualsBuilder().append(org, castOther.org)
                                   .append(name, castOther.name)
                                   .append(data, castOther.data)

@@ -122,10 +122,9 @@ public class ActionType implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof ActionType)) {
+        if (!(o instanceof ActionType other)) {
             return false;
         }
-        ActionType other = (ActionType)o;
         return new EqualsBuilder().append(this.getId(), other.getId())
                                   .append(this.getName(), other.getName())
                                   .append(this.getLabel(), other.getLabel())

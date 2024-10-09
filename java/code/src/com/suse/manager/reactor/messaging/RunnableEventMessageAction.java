@@ -31,8 +31,7 @@ public class RunnableEventMessageAction implements MessageAction {
 
     @Override
     public void execute(EventMessage msg) {
-       if (msg instanceof RunnableEventMessage) {
-            RunnableEventMessage event = (RunnableEventMessage) msg;
+       if (msg instanceof RunnableEventMessage event) {
             event.getAction().run();
        }
        else {

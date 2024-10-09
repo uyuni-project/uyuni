@@ -81,10 +81,9 @@ public class ActionArchType extends BaseDomainHelper implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ActionArchType)) {
+        if (!(other instanceof ActionArchType castOther)) {
             return false;
         }
-        ActionArchType castOther = (ActionArchType) other;
         return new EqualsBuilder().append(archTypeId, castOther.archTypeId).append(
                 actionStyle, castOther.actionStyle).isEquals();
     }

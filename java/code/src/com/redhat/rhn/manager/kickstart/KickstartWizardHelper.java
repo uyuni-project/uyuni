@@ -37,7 +37,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Provides convenience methods for creating a kickstart profile.
@@ -157,7 +156,7 @@ public class KickstartWizardHelper {
                 ksdata.getCryptoKeys().addAll(
                         keys.stream()
                             .filter(key -> key.getCryptoKeyType().equals(KickstartFactory.KEY_TYPE_SSL))
-                            .collect(Collectors.toList()));
+                            .toList());
             }
         }
         ksdata.setOrg(currentUser.getOrg());

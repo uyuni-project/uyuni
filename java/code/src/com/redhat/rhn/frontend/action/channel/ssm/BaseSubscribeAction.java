@@ -56,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -232,7 +231,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                             "basesub.jsp.unableToLookupSystemDefaultChannelWithParams",
                             String.join(", ", skippedServers.stream()
                                     .map(s -> "'" + s.getName() + "'")
-                                    .collect(Collectors.toList())), oldBaseChannelMessage);
+                                    .toList()), oldBaseChannelMessage);
                     msgs.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
                     strutsDelegate.saveMessages(request, msgs);
 
