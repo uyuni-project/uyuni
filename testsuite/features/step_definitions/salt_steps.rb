@@ -72,7 +72,7 @@ When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node.run("#{salt_call} saltutil.refresh_grains")
 end
 
-When(/^I setup a git_pillar environment on the Salt Master$/) do
+When(/^I setup a git_pillar environment on the Salt master$/) do
   file = 'salt_git_pillar_setup.sh'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
@@ -83,7 +83,7 @@ When(/^I setup a git_pillar environment on the Salt Master$/) do
   get_target('server').run("sh /tmp/#{file} setup", check_errors: true, verbose: true)
 end
 
-When(/^I clean up the git_pillar environment on the Salt Master$/) do
+When(/^I clean up the git_pillar environment on the Salt master$/) do
   file = 'salt_git_pillar_setup.sh'
 
   # Execute "salt_git_pillar_setup.sh setup" on the server
@@ -393,12 +393,12 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
   end
 end
 
-Then(/^the pillar data for "([^"]*)" should be empty on the Salt Master$/) do |key|
+Then(/^the pillar data for "([^"]*)" should be empty on the Salt master$/) do |key|
   output = salt_master_pillar_get(key)
   raise "Output value is not empty: #{output}" unless output == ''
 end
 
-Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on the Salt Master$/) do |key, value|
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on the Salt master$/) do |key, value|
   output = salt_master_pillar_get(key)
   raise "Output value is different than #{value}: #{output}" unless output.to_s.strip == value
 end
