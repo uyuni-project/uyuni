@@ -207,8 +207,6 @@ rhnVirtualInstance                 :: rhnServer
 rhnVirtualInstanceInfo             :: rhnVirtualInstance rhnVirtualInstanceType \
                                       rhnVirtualInstanceState
 rhnVirtualInstanceInstallLog       :: rhnKickstartSession
-rhnVirtualInstanceEventLog         :: rhnVirtualInstance rhnVirtualInstanceEventType \
-                                      rhnVirtualInstanceState
 rhnVisibleObjects                  :: PXTSessions
 rhnWebContactChangeLog             :: rhnWebContactChangeState
 rhnActionChain                     :: web_contact

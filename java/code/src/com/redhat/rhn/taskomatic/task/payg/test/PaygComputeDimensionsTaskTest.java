@@ -41,10 +41,8 @@ import com.suse.cloud.domain.BillingDimension;
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionFactory;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -74,12 +72,11 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         SaltApi saltApi = new TestSaltApi();
 
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-        VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
 
         systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+            new SystemUnentitler(monitoringManager, serverGroupManager),
+            new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
     }
 

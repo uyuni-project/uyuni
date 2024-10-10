@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
@@ -33,20 +32,15 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.SparkTestUtils;
 
-import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +69,6 @@ public class SystemsControllerTest extends BaseControllerTestCase {
     private static final String PROPERTY_SERVER_NAME = "name";
 
     //
-    private VirtManager virtManager;
     private Map<String, Server> serversByHostServerName;
     private SystemsController systemsController;
 
@@ -86,27 +79,13 @@ public class SystemsControllerTest extends BaseControllerTestCase {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        virtManager = mock(VirtManager.class);
-        context().checking(new Expectations() {
-            {
-                allowing(virtManager).getCapabilities("testminion.local");
-                will(returnValue(
-                        SaltTestUtils.getSaltResponse(
-                                "/com/suse/manager/webui/controllers/virtualization/test/virt.guest.allcaps.json", null,
-                                new TypeToken<Map<String, JsonElement>>() {
-                                })
-                ));
-                allowing(virtManager).updateLibvirtEngine(with(any(MinionServer.class)));
-            }
-        });
-
         SaltApi saltApi = new TestSaltApi();
         systemsController = new SystemsController(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(new TestSaltApi(), monitoringManager, serverGroupManager)
         );
 
         serversByHostServerName = new HashMap<>();
