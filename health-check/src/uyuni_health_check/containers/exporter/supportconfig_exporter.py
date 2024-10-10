@@ -30,9 +30,12 @@ class SupportConfigMetricsCollector(object):
         self.refresh()
 
     def refresh(self):
-        self.salt_jobs = self.read_salt_jobs()
-        self.salt_keys = self.read_salt_keys()
-        self.salt_configuration = self.read_salt_configuration()
+        if self.exists_salt_jobs_file():
+            self.salt_jobs = self.read_salt_jobs()
+        if self.exists_salt_keys_file():
+            self.salt_keys = self.read_salt_keys()
+        if self.exists_salt_configuration_file():
+            self.salt_configuration = self.read_salt_configuration()
 
     def _parse_command(self, command_block):
         lines = command_block.strip().split("\n")
@@ -61,6 +64,10 @@ class SupportConfigMetricsCollector(object):
             ret[cmd] = val
         return ret
 
+    def exists_salt_configuration_file(self):
+        if not os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltconfiguration.txt")):
+            return 
+        
     def read_salt_configuration(self):
         content = None
         with open(
@@ -77,6 +84,10 @@ class SupportConfigMetricsCollector(object):
         for attr in attrs_to_expose:
             ret[attr] = re.findall(f"^{attr}: ([0-9]+)$", content, re.MULTILINE)[-1]
         return ret
+    
+    def exists_salt_keys_file(self):
+        if not os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltminionskeys.txt")):
+            return 
 
     def read_salt_keys(self):
         content = None
@@ -96,6 +107,10 @@ class SupportConfigMetricsCollector(object):
         ret["unaccepted"] = parsed[2].strip().split("\n") if parsed[2].strip() else []
         ret["rejected"] = parsed[3].strip().split("\n") if parsed[3].strip() else []
         return ret
+    
+    def exists_salt_jobs_file(self):
+        if not os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltjobs.txt")):
+            return 
 
     def read_salt_jobs(self):
         content = None
@@ -109,40 +124,44 @@ class SupportConfigMetricsCollector(object):
         gauge = GaugeMetricFamily(
             "salt_master_config", "Salt Master Configuration", labels=["name"]
         )
-        gauge.add_metric(
-            ["worker_threads"],
-            self.salt_configuration["worker_threads"],
-        )
-        gauge.add_metric(
-            ["sock_pool_size"],
-            self.salt_configuration["sock_pool_size"],
-        )
-        gauge.add_metric(["timeout"], self.salt_configuration["timeout"])
-        gauge.add_metric(
-            ["gather_job_timeout"],
-            self.salt_configuration["gather_job_timeout"],
-        )
-        yield gauge
+        if hasattr(self,'salt_configuration'):
+            gauge.add_metric(
+                ["worker_threads"],
+                self.salt_configuration["worker_threads"],
+            )
 
-        gauge2 = GaugeMetricFamily(
-            "salt_keys",
-            "Information about Salt keys",
-            labels=["name"],
-        )
-        gauge2.add_metric(["accepted"], len(self.salt_keys["accepted"]))
-        gauge2.add_metric(["denied"], len(self.salt_keys["denied"]))
-        gauge2.add_metric(["unaccepted"], len(self.salt_keys["unaccepted"]))
-        gauge2.add_metric(["rejected"], len(self.salt_keys["rejected"]))
-        yield gauge2
+            gauge.add_metric(
+                ["sock_pool_size"],
+                self.salt_configuration["sock_pool_size"],
+            )
+            gauge.add_metric(["timeout"], self.salt_configuration["timeout"])
+            gauge.add_metric(
+                ["gather_job_timeout"],
+                self.salt_configuration["gather_job_timeout"],
+            )
+            yield gauge
 
-        gauge3 = GaugeMetricFamily(
-            "salt_jobs",
-            "Information about Salt Jobs",
-            labels=["jid", "fun"],
-        )
-        for jid, fun in self.salt_jobs:
-            gauge3.add_metric([jid, fun], 1)
-        yield gauge3
+        if hasattr(self,'salt_keys'):
+            gauge2 = GaugeMetricFamily(
+                "salt_keys",
+                "Information about Salt keys",
+                labels=["name"],
+            )
+            gauge2.add_metric(["accepted"], len(self.salt_keys["accepted"]))
+            gauge2.add_metric(["denied"], len(self.salt_keys["denied"]))
+            gauge2.add_metric(["unaccepted"], len(self.salt_keys["unaccepted"]))
+            gauge2.add_metric(["rejected"], len(self.salt_keys["rejected"]))
+            yield gauge2
+
+        if hasattr(self,'salt_jobs'):
+            gauge3 = GaugeMetricFamily(
+                "salt_jobs",
+                "Information about Salt Jobs",
+                labels=["jid", "fun"],
+            )
+            for jid, fun in self.salt_jobs:
+                gauge3.add_metric([jid, fun], 1)
+            yield gauge3
 
 
 def main():

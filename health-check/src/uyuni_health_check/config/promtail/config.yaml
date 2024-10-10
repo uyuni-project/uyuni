@@ -15,7 +15,7 @@ scrape_configs:
       - localhost
     labels:
       job: cobbler
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/cobbler-logs/cobbler.log
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/cobbler-logs/cobbler.log
   pipeline_stages:
   - multiline:
       firstline: '^\[.*\] [\dT:-]+ - [A-Z]+ | '
@@ -34,7 +34,7 @@ scrape_configs:
       - localhost
     labels:
       job: postgresql
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/database//postgresql*.log*
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/database//postgresql*.log*
   pipeline_stages:
     - multiline:
         firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} \S+ '
@@ -53,7 +53,7 @@ scrape_configs:
       - localhost
     labels:
       job: salt
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/salt-logs/salt/{api,master}
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/salt-logs/salt/{api,master}
   pipeline_stages:
   - multiline:
       firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(,)\d{3} '
@@ -89,13 +89,13 @@ scrape_configs:
     labels:
       job: rhn
       component: tomcat
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/rhn-logs/rhn/rhn_{salt,web}_*log
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/rhn-logs/rhn/rhn_{salt,web}_*log
   - targets:
       - localhost
     labels:
       job: rhn
       component: taskomatic
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/rhn-logs/rhn/rhn_taskomatic_*log
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/rhn-logs/rhn/rhn_taskomatic_*log
 - job_name: apache
   static_configs:
   - targets:
@@ -103,19 +103,19 @@ scrape_configs:
     labels:
       job: apache
       component: error_log
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/httpd-logs/apache2/error_log*
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/httpd-logs/apache2/error_log*
   - targets:
       - localhost
     labels:
       job: apache
       component: access_log
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/httpd-logs/apache2/access_log*
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/httpd-logs/apache2/access_log*
   - targets:
       - localhost
     labels:
       job: apache
       component: ssl_request_log
-      __path__: /home/ygutierrez/Documents/L3/1227859/scc_lxms-cp-suma01_240828_1131/spacewalk-debug/httpd-logs/apache2/ssl_request_log*
+      __path__: /home/ygutierrez/Documents/L3/1230944/scc_s3p3238_240916_1049/spacewalk-debug/httpd-logs/apache2/ssl_request_log*
   pipeline_stages:
   - match:
       selector: '{job="apache",component="error_log"} |~ "^\\[[A-Z][a-z]{2} "'

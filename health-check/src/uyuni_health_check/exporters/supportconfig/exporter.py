@@ -52,8 +52,6 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
         f"{supportconfig_path}:{supportconfig_path}",
         "-v",
         f"{exporter_config}:/opt/config.yml",
-        "-p",
-        "9000:9000",
     ]
 
     podman_args.extend(
@@ -63,7 +61,7 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
             f"{exporter_name}",
         ]
     )
-
+    console.log(f"Running this command: podman " + ' '.join(podman_args))
     # Run the container
     podman(
         podman_args,
