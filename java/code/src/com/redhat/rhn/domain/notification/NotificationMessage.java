@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.notification;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
@@ -140,7 +141,7 @@ public class NotificationMessage implements Serializable {
                 return new Gson().fromJson(getData(), UpdateAvailable.class);
             case PaygNotCompliantWarning:
                 return new Gson().fromJson(getData(), PaygNotCompliantWarning.class);
-            default: throw new RuntimeException("Notification type not found");
+            default: throw new RhnRuntimeException("Notification type not found");
         }
     }
 
@@ -249,6 +250,6 @@ public class NotificationMessage implements Serializable {
      * The enum type for a {@link NotificationMessage}
      */
     public enum NotificationMessageSeverity {
-        info, warning, error
+        INFO, WARNING, ERROR
     }
 }

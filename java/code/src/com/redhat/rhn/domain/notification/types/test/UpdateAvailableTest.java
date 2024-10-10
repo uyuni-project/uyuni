@@ -45,7 +45,7 @@ class UpdateAvailableTest extends MockObjectTestCase {
     public void testPropertiesAndStrings() {
         UpdateAvailable notification = new UpdateAvailable(runtimeMock);
         assertEquals(NotificationType.UpdateAvailable, notification.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.warning, notification.getSeverity());
+        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, notification.getSeverity());
         assertEquals("Updates are available.", notification.getSummary());
         if (ConfigDefaults.get().isUyuni()) {
             assertEquals("A new update for Uyuni is now available. For further details, please refer to the " +
