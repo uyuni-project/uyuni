@@ -71,9 +71,9 @@ public abstract class BaseConfigurationSource implements ConfigurationSource {
         Set<String> propertyNames = getPropertyNames();
         Properties properties = new Properties(propertyNames.size());
 
-        propertyNames.forEach(property -> {
-            properties.put(property, getRawValue(property));
-        });
+        propertyNames.forEach(property ->
+            properties.put(property, getRawValue(property))
+        );
 
         return properties;
     }
