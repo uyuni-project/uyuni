@@ -68,12 +68,12 @@ def __virtual__():
 
 
 def _is_salt_ssh_or_runner(opts):
-    """Check if this pillar is computed for Salt SSH or Salt Runner execution
+    """Check if this pillar is computed for Salt SSH or Salt runner execution
 
     Only in salt/client/ssh/__init__.py, the master_opts are moved into
     opts[__master_opts__], which we use to detect Salt SSH usage.
 
-    During a Salt Runner execution, the "_master" suffix is appended to the
+    During a Salt runner execution, the "_master" suffix is appended to the
     master_minion id.
     """
     return "__master_opts__" in opts or opts.get("id", "").endswith("_master")

@@ -691,7 +691,7 @@ def pillar_get(key, minion)
   get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
 end
 
-# Get a Salt pillar value from the master via Salt Runner
+# Get a Salt pillar value from the master via Salt runner
 #
 # @param key [String] The key of the pillar to retrieve.
 # @return [String] The value of the specified pillar key.

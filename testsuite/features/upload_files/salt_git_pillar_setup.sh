@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This script create the necessary files to setup a "git_pillar" environment
-# together with SUSE Manager in order to provide some extra pillar data.
+# together with Uyuni in order to provide some extra pillar data.
 #
 # Use as:
 #   salt_git_pillar_setup.sh setup -> Prepare environment
@@ -18,7 +18,7 @@
 GIT_REPO="/tmp/test_salt_git_pillar.git"
 
 if [ "$1" == "setup" ]; then
-	echo "Setting up git_pillar environment and restarting Salt Master and Salt API"
+	echo "Setting up git_pillar environment and restarting Salt master and Salt API"
 	zypper in -y git-core
 	mkdir $GIT_REPO
 	cd $GIT_REPO
@@ -59,7 +59,7 @@ EOF
 fi
 
 if [ "$1" == "clean" ]; then
-	echo "Cleaning git_pillar environment and restarting Salt Master and Salt API"
+	echo "Cleaning git_pillar environment and restarting Salt master and Salt API"
 	rm -rf $GIT_REPO
 	rm /etc/salt/master.d/zz-testing-gitpillar.conf
 	cp /root/.ssh/authorized_keys_backup_gitpillar /root/.ssh/authorized_keys
