@@ -684,7 +684,7 @@ end
 # @return [String] The value of the specified pillar key.
 def salt_master_pillar_get(key)
   output, _code = get_target('server').run('salt-run --out=yaml salt.cmd pillar.items')
-  pillars = YAML.load(output)
+  pillars = YAML.safe_load(output)
   pillars.key?(key) ? pillars[key] : ''
 end
 
