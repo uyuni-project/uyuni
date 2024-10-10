@@ -14,22 +14,30 @@
  */
 package com.redhat.rhn.manager.audit.scap.xml;
 
-import org.simpleframework.xml.Attribute;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Optional;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Profile {
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String title;
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String id;
 
-    @Attribute(required = false)
+    @XmlAttribute
     private String description;
 
     /**
@@ -89,5 +97,42 @@ public class Profile {
      */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Profile)) {
+            return false;
+        }
+
+        Profile profile = (Profile) o;
+
+        return new EqualsBuilder()
+            .append(title, profile.title)
+            .append(id, profile.id)
+            .append(description, profile.description)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(title)
+            .append(id)
+            .append(description)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("title", title)
+            .append("id", id)
+            .append("description", description)
+            .toString();
     }
 }
