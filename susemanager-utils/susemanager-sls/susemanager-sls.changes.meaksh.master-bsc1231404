@@ -1,0 +1,1 @@
+- Prevent a crash on "reboot_info" module for Liberty 6, RHEL 6 & clones (bsc#1231404)
