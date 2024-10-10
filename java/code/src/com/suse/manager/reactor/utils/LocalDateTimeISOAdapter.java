@@ -29,8 +29,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Optional;
-import java.util.TimeZone;
 
 /**
  * Parses a ISO 8601 DateTime String into a LocalDateTime
@@ -64,8 +62,7 @@ public class LocalDateTimeISOAdapter extends TypeAdapter<LocalDateTime> {
         String dateStr = jsonReader.nextString();
         try {
             ZonedDateTime p = ZonedDateTime.parse(dateStr);
-            ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
-                    .orElse(TimeZone.getDefault()).toZoneId();
+            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
             return LocalDateTime.ofInstant(p.toInstant(), zoneId);
         }
         catch (DateTimeParseException e) {
