@@ -1,0 +1,1 @@
+- mark dmidecode and logrotate as optional for Liberty 7 LTSS (bsc#1226958)
