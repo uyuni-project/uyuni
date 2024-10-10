@@ -82,6 +82,8 @@ reports/
 # VS Code
 java/.vscode/launch.json
 python/.vscode
+.vscode/launch.json
+*.code-workspace
 
 # Python
 venv/
