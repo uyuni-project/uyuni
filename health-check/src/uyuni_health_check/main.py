@@ -128,8 +128,7 @@ def run(ctx, logs, from_datetime, to_datetime, since):
         show_error_logs_stats(from_datetime, to_datetime, since, console)
 
         if logs:
-            with console.pager():
-                show_full_error_logs(from_datetime, to_datetime, since)
+            show_full_error_logs(from_datetime, to_datetime, since, console)
 
         console.print(Markdown("# Execution Finished"))
 

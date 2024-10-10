@@ -10,7 +10,7 @@ from json.decoder import JSONDecodeError
 
 conf = ConfigLoader()
 
-def show_full_error_logs(from_datetime=None, to_datetime=None, since=7, loki=None):
+def NO_show_full_error_logs(from_datetime=None, to_datetime=None, since=7, loki=None):
     """
     Get and show the error logs
     """
@@ -44,6 +44,31 @@ def show_full_error_logs(from_datetime=None, to_datetime=None, since=7, loki=Non
         use_print=True,
     )
     print()
+
+def show_full_error_logs(from_datetime, to_datetime, since, console: "Console", loki=None):
+    """
+    Get and show the error logs stats
+    """
+    print(
+        Markdown(f"- Getting summary of errors in logs")
+    )
+    print()
+    query = f"{{job=~\".+\"}} |~ \"(?i)error|(?i)severe|(?i)critical|(?i)fatal\""
+
+    stdout, stderr = query_loki(from_dt=from_datetime, to_dt=to_datetime, since = since, query=query)
+    lines = stdout.strip().split("\n")
+    json_objects = []
+
+    for line in lines:
+        try:
+            json_data = json.loads(line)
+            json_objects.append(json_data)
+        except json.JSONDecodeError as e:
+            console.print(f"[red]Failed to parse JSON:[/red] {e}")
+            console.print(f"[yellow]Raw output:[/yellow] {line}")
+
+    combined_json = json.dumps(json_objects, indent=4)
+    outputter.print_paginated_json(combined_json)
     
 
 def show_error_logs_stats(from_datetime, to_datetime, since, console: "Console", loki=None):

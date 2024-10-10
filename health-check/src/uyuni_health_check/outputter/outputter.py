@@ -34,3 +34,7 @@ def show(data):
             ),
             style="italic green",
         )  
+
+def print_paginated_json(data):
+    with console.pager():
+        console.print_json(data)
