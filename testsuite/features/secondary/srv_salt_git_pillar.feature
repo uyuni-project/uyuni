@@ -8,7 +8,7 @@ Feature: Salt master integration with Git pillar
 
   Scenario: Preparing Git pillar configuration for Salt master
     When I setup a git_pillar environment on the Salt master
-    And I wait for "30" seconds
+    And I wait until Salt master is active and ready
     Then file "/etc/salt/master.d/zz-testing-gitpillar.conf" should exist on server
 
   Scenario: Check for the expected pillar data after enabling Git pillar
@@ -19,7 +19,7 @@ Feature: Salt master integration with Git pillar
 
   Scenario: Cleanup: Remove Git pillar configuration for Salt master
     When I clean up the git_pillar environment on the Salt master
-    And I wait for "30" seconds
+    And I wait until Salt master is active and ready
     Then file "/etc/salt/master.d/zz-testing-gitpillar.conf" should not exist on server
 
 Scenario: Cleanup: Check for the expected pillar data after disabling Git pillar
