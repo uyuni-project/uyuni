@@ -51,7 +51,8 @@ def reboot_required():
     elif __grains__["os_family"] == "RedHat":
         cmd = (
             "dnf -q needs-restarting -r"
-            if __grains__["osmajorrelease"] >= 8
+            # In RHEL6 and clones 'osmajorrelease' is a string
+            if int(__grains__["osmajorrelease"]) >= 8
             else "needs-restarting -r"
         )
         result = _check_cmd_exit_code(cmd, 1)
