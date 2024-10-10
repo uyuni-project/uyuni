@@ -10,40 +10,6 @@ from json.decoder import JSONDecodeError
 
 conf = ConfigLoader()
 
-def NO_show_full_error_logs(from_datetime=None, to_datetime=None, since=7, loki=None):
-    """
-    Get and show the error logs
-    """
-    print()
-    print(Markdown(f"- Getting error messages over the last {since} days..."))
-    #from_time = (datetime.utcnow() - timedelta(days=since)).isoformat()
-    #loki_url = loki or "http://uyuni_health_check_loki:3100"
-    loki_container_name = conf.global_config['loki']['loki_container_name']
-    loki_port = conf.global_config['loki']['loki_port']
-    loki_url = f"http://{loki_container_name}:{loki_port}"
-    podman(
-        [
-            "run",
-            "--rm",
-            "--replace",
-            "--network",
-            "health-check-network",
-            "--name",
-            "uyuni_health_check_logcli",
-            "logcli",
-            "query",
-            "--quiet",
-            "--output=jsonl",
-            f"--addr={loki_url}",
-            f"--from={from_datetime}",
-            f"--to={to_datetime}",
-            "--limit=150",
-            '{job=~".+"} |~ `(?i)error|(?i)severe|(?i)critical|(?i)fatal`',
-        ],
-        quiet=False,
-        use_print=True,
-    )
-    print()
 
 def show_full_error_logs(from_datetime, to_datetime, since, console: "Console", loki=None):
     """
@@ -54,21 +20,22 @@ def show_full_error_logs(from_datetime, to_datetime, since, console: "Console", 
     )
     print()
     query = f"{{job=~\".+\"}} |~ \"(?i)error|(?i)severe|(?i)critical|(?i)fatal\""
-
+    import pdb; pdb.set_trace;
     stdout, stderr = query_loki(from_dt=from_datetime, to_dt=to_datetime, since = since, query=query)
     lines = stdout.strip().split("\n")
     json_objects = []
 
-    for line in lines:
-        try:
-            json_data = json.loads(line)
-            json_objects.append(json_data)
-        except json.JSONDecodeError as e:
-            console.print(f"[red]Failed to parse JSON:[/red] {e}")
-            console.print(f"[yellow]Raw output:[/yellow] {line}")
+    if len(lines[0]) != 0:
+        for line in lines:
+            try:
+                json_data = json.loads(line)
+                json_objects.append(json_data)
+            except json.JSONDecodeError as e:
+                console.print(f"[red]Failed to parse JSON:[/red] {e}")
+                console.print(f"[yellow]Raw output:[/yellow] {line}")
 
-    combined_json = json.dumps(json_objects, indent=4)
-    outputter.print_paginated_json(combined_json)
+        combined_json = json.dumps(json_objects, indent=4)
+        outputter.print_paginated_json(combined_json)
     
 
 def show_error_logs_stats(from_datetime, to_datetime, since, console: "Console", loki=None):
