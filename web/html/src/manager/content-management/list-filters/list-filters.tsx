@@ -134,11 +134,11 @@ const ListFilters = (props: Props) => {
     </div>
   );
 
-  const unusedFilter = <Button className="btn-link" handler={onSelectUnused} text={t("Select unused")}></Button>;
+  const unusedFilter = <Button className="btn-default" handler={onSelectUnused} text={t("Select unused")}></Button>;
 
   const deleteSelected = (
     <Button
-      className={`${selectedIdentifiers.length ? "btn-danger" : "btn-disabled"}`}
+      className={`${selectedIdentifiers.length ? "btn-danger" : "btn-danger disabled"}`}
       disabled={!selectedIdentifiers.length}
       handler={deleteSelectedRows}
       text={t("Delete selected")}
@@ -152,6 +152,7 @@ const ListFilters = (props: Props) => {
       button={panelButtons}
       helpUrl="reference/clm/clm-filters.html"
     >
+      test
       <Table
         data={displayedFilters}
         identifier={identifier}
