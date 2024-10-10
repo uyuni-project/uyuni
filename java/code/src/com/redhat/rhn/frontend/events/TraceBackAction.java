@@ -16,15 +16,14 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageAction;
-import com.redhat.rhn.common.messaging.MessageExecuteException;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.InetAddress;
 import java.util.Date;
 
 /**
@@ -37,31 +36,19 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
     @Override
     protected String getSubject(BaseEvent evtIn) {
         // setup subject
-        StringBuilder subject = new StringBuilder();
-        subject.append(LocalizationService.getInstance().
-                getMessage("web traceback subject", evtIn.getUserLocale()));
-        // Not sure if getting the local hostname is the correct thing to do
-        // here.  But the traceback emails that I've received seem to do this
-        try {
-            subject.append(InetAddress.getLocalHost().getHostName());
-        }
-        catch (java.net.UnknownHostException uhe) {
-            String message = "TraceBackAction can't find localhost!";
-            getLogger().warn(message);
-            throw new MessageExecuteException(message);
-        }
-        subject.append(" (");
-        subject.append(LocalizationService.getInstance().formatDate(new Date(),
-                evtIn.getUserLocale()));
-        subject.append(")");
-        return subject.toString();
+        return LocalizationService.getInstance().
+                getMessage("web traceback subject", evtIn.getUserLocale()) +
+                ConfigDefaults.get().getJavaHostname() +
+                " (" +
+                LocalizationService.getInstance().formatDate(new Date(), evtIn.getUserLocale()) +
+                ")";
     }
 
     @Override
     protected String[] getRecipients(User userIn) {
         Config c = Config.get();
         String[] retval = null;
-        if (c.getString("web.traceback_mail").equals("")) {
+        if (c.getString("web.traceback_mail").isEmpty()) {
 
             retval = new String[1];
             retval[0] = "root@localhost";
