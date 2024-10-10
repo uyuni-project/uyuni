@@ -11,12 +11,15 @@ on:
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
+  NO_AUTH_REGISTRY: no_auth_registry
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
+  AUTH_REGISTRY: "auth_registry"
+  AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
 jobs:
   paths-filter-1:
     runs-on: ubuntu-latest
     outputs:
-      require_acceptance_tests: ${{ steps.filter.outputs.java || steps.filter.outputs.web || steps.filter.outputs.testsuite }}
+      require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || steps.filter.outputs.testsuite == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -67,8 +70,8 @@ jobs:
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
       - name: create-podman-network
         run: ./testsuite/podman_runner/02_setup_network.sh
-      - name: start_controller
-        run: ./testsuite/podman_runner/03_run_controller.sh 
+      - name: start_controller_and_registry_and_buildhost
+        run: ./testsuite/podman_runner/03_run_controller_and_registry_and_buildhost.sh 
       - name: create_ssh_conf
         run: ./testsuite/podman_runner/04_setup_ssh_controller.sh 
       - name: install_gems_in_controller

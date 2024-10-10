@@ -253,6 +253,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -265,6 +266,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -277,6 +279,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             }
         ]
@@ -1216,6 +1219,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1228,6 +1232,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1240,6 +1245,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1252,6 +1258,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1264,6 +1271,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1276,6 +1284,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1288,6 +1297,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -1501,6 +1511,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1513,6 +1524,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1525,6 +1537,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -1537,6 +1550,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -2438,11 +2452,11 @@
         "release_type" : null,
         "arch" : "amd64",
         "friendly_name" : "Ubuntu 22.04",
-        "product_class" : "SLE-M-T-BETA",
+        "product_class" : "SLE-M-T",
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -2683,6 +2697,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -2695,6 +2710,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -2707,6 +2723,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             }
         ]
@@ -2746,6 +2763,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2758,6 +2776,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2770,6 +2789,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2782,6 +2802,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2794,6 +2815,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2806,6 +2828,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2818,6 +2841,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -2857,6 +2881,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2869,6 +2894,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2881,6 +2907,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2893,6 +2920,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2905,6 +2933,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2917,6 +2946,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2929,6 +2959,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2941,6 +2972,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -2980,6 +3012,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -2992,6 +3025,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3004,6 +3038,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3016,6 +3051,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3028,6 +3064,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3040,6 +3077,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -3079,6 +3117,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3091,6 +3130,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3103,6 +3143,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3115,6 +3156,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -3154,6 +3196,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3166,6 +3209,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3178,6 +3222,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3190,6 +3235,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3202,6 +3248,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -3328,6 +3375,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             },
             {
@@ -3340,6 +3388,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "aarch64"
                 ]
             }
         ]
@@ -4029,6 +4078,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4041,6 +4091,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4053,6 +4104,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             }
         ]
@@ -4092,6 +4144,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4104,6 +4157,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             }
         ]
@@ -4143,6 +4197,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4155,6 +4210,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4167,6 +4223,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4179,6 +4236,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4191,6 +4249,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4203,6 +4262,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4215,6 +4275,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4227,6 +4288,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4239,6 +4301,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4251,6 +4314,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4263,6 +4327,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4275,6 +4340,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4287,6 +4353,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4299,6 +4366,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4311,6 +4379,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             },
             {
@@ -4323,6 +4392,7 @@
                 "autorefresh" : true,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             }
         ]
@@ -6146,6 +6216,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             }
         ]
@@ -6185,6 +6256,7 @@
                 "autorefresh" : false,
                 "installer_updates" : false,
                 "arch" : [
+                    "amd64"
                 ]
             }
         ]

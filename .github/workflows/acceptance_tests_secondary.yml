@@ -12,6 +12,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 jobs:
   acceptance-tests-secondary:
+    # Skip running scheduled jobs on forks
+    if: (github.repository == 'uyuni-project/uyuni' || github.event_name != 'schedule')
     uses: ./.github/workflows/acceptance_tests_common.yml
     with:
       secondary_tests: "18_run_secondary_tests.sh"

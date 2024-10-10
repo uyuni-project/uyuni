@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: uyuni-proxy
   namespace: "{{ .Release.Namespace }}"
-labels:
-  app: uyuni-proxy
+  labels:
+    app: uyuni-proxy
 spec:
   replicas: 1
   selector:
@@ -15,6 +15,10 @@ spec:
       labels:
         app: uyuni-proxy
     spec:
+{{- if .Values.registrySecret }}
+      imagePullSecrets:
+        - name: {{ .Values.registrySecret }}
+{{- end }}
       containers:
         - name: httpd
           image: {{- include "deployment.container.image" (dict "name" "proxy-httpd" "global" .) | indent 1}}

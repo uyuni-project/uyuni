@@ -65,7 +65,7 @@ end
 # @return [String, nil] The full product version if the command execution was successful and
 #   the output is not empty, otherwise nil.
 def product_version_full
-  cmd = 'salt-call --local grains.get product_version | tail -n 1'
+  cmd = 'venv-salt-call --local grains.get product_version | tail -n 1'
   out, code = get_target('server').run(cmd)
   out.strip if code.zero? && !out.nil?
 end

@@ -29,7 +29,7 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-sle15-ds-1.2.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-sle15-ds.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
@@ -40,7 +40,7 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-opensuse-ds-1.2.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-opensuse-ds.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
@@ -73,7 +73,7 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-sle15-ds-1.2.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-sle15-ds.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
     When I wait for the OpenSCAP audit to finish
@@ -84,7 +84,7 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-opensuse-ds-1.2.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-opensuse-ds.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
     When I wait for the OpenSCAP audit to finish

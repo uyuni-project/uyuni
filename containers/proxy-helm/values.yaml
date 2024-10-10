@@ -17,6 +17,10 @@ images:
 ##
 pullPolicy: "Always"
 
+## registrySecret defines the name of secret to use to pull the images from the
+## registry with authentication. Leave empty for no authentication.
+registrySecret: ""
+
 ## ingress defines the ingress that is used in the cluster.
 ## It can be either "nginx", "traefik" or any other value.
 ingress: "traefik"
