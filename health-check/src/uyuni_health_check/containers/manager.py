@@ -40,9 +40,6 @@ def build_image(name, image_path=None, build_args=[], verbose=False):
         #        podman_args,
     )
 
-    if process.returncode != 0:
-        raise HealthException(f"Failed to build {name} image")
-
 
 def image_exists(image):
     """
