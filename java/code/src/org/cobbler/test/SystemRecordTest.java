@@ -25,6 +25,7 @@ import org.cobbler.Distro;
 import org.cobbler.Image;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -66,6 +67,11 @@ public class SystemRecordTest {
                 .build(connection);
         Profile profile = Profile.create(connection, "test-profile", distro);
         system = SystemRecord.create(connection, "test-system", profile);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        MockConnection.clear();
     }
 
     /**
