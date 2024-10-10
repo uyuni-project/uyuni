@@ -247,6 +247,10 @@ Before('@skip') do
   skip_this_scenario
 end
 
+Before('@skip_known_issue') do
+  raise Core::Test::Result::Failed, 'This scenario is known to fail, skipping it'
+end
+
 # Create a user for each feature
 Before do |scenario|
   feature_path = scenario.location.file
