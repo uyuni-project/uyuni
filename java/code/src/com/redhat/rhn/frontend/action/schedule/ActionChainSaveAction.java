@@ -25,9 +25,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.suse.utils.Json;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.stringtree.json.JSONWriter;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -136,6 +137,6 @@ public class ActionChainSaveAction {
         Map<String, Object> result = new HashMap<>();
         result.put(SUCCESS_FIELD, success);
         result.put(TEXT_FIELD, LocalizationService.getInstance().getMessage(messageId));
-        return new JSONWriter().write(result);
+        return Json.GSON.toJson(result);
     }
 }
