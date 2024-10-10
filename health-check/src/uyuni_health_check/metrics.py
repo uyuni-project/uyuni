@@ -13,7 +13,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from uyuni_health_check.utils import HealthException, run_command
+from uyuni_health_check.utils import HealthException, run_command, console
 from uyuni_health_check.containers.manager import podman
 
 
@@ -29,72 +29,6 @@ def show_supportconfig_metrics(metrics: dict, console: "Console"):
             "[yellow]Some metrics are still missing. Wait some seconds and execute again",
             justify="center",
         )
-
-
-def show_error_logs_stats(since, console: "Console", loki=None):
-    """
-    Get and show the error logs stats
-    """
-    print(
-        Markdown(f"- Getting summary of errors in logs over the last {since} days...")
-    )
-    print()
-    loki_url = loki or "http://uyuni_health_check_loki:3100"
-    process = podman(
-        [
-            "run",
-            "-ti",
-            "--rm",
-            "--network",
-            "health-check-network",
-            "--name",
-            "uyuni_health_check_logcli",
-            "logcli",
-            "--quiet",
-            f"--addr={loki_url}",
-            "instant-query",
-            "--limit",
-            "150",
-            'count_over_time({job=~".+"} |~ `(?i)error|(?i)severe|(?i)critical|(?i)fatal` ['
-            + str(since)
-            + "d])",
-        ],
-    )
-    response = process.stdout.read()
-    try:
-        data = json.loads(response)
-    except JSONDecodeError:
-        raise HealthException(f"Invalid logcli response: {response}")
-
-    if data:
-        console.print(
-            Panel(
-                Text(
-                    f"Ooops! Errors found in the last {since} days.",
-                    justify="center",
-                )
-            ),
-            style="italic red blink",
-        )
-        table = Table(show_header=True, header_style="bold magenta", expand=True)
-        table.add_column("File")
-        table.add_column("Errors")
-
-        for metric in data:
-            table.add_row(metric["metric"]["filename"], metric["value"][1])
-
-        print(table)
-    else:
-        console.print(
-            Panel(
-                Text(
-                    f"Good news! No errors detected in logs in the last {since} days.",
-                    justify="center",
-                )
-            ),
-            style="italic green",
-        )
-
 
 def show_salt_jobs_summary(metrics: dict):
     table = Table(show_header=True, header_style="bold magenta")

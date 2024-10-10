@@ -1,7 +1,7 @@
 import os
+import configparser
 import yaml
 from jinja2 import Environment, FileSystemLoader
-
 
 class ConfigLoader:
     def __init__(self):
@@ -10,6 +10,12 @@ class ConfigLoader:
         self.config_dir = os.path.join(self.base_dir, "config")
         self.containers_dir = os.path.join(self.base_dir, "containers")
         self.jinja_env = Environment(loader=FileSystemLoader(self.templates_dir))
+        self.load_config()
+
+    
+    def load_config(self, file_path='config.ini'):
+        self.global_config = configparser.ConfigParser()
+        self.global_config.read(os.path.join(self.base_dir, "config.ini"))
 
     def load_yaml(self, filename):
         file_path = os.path.join(self.config_dir, filename)

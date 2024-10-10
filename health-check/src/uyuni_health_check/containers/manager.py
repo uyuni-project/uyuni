@@ -15,7 +15,7 @@ def podman(cmd, quiet=True, use_print=False):
     """
     try:
         if not quiet:
-            console.log(f"[italic]Running command {['podman'] + cmd}[/italic]")
+            console.log(f"[italic]Running command {'podman ' + ' '.join(cmd)}[/italic]")
         return run_command(["podman"] + cmd, console, quiet=quiet, use_print=use_print)
     except OSError:
         raise HealthException("podman is required")
@@ -48,19 +48,16 @@ def image_exists(image):
     """
     Check if the image is present in podman images result
     """
-    return (
-        podman(["images", "--quiet", "-f", f"reference={image}"], quiet=True)
-        .stdout.read()
-        .strip()
-        != ""
-    )
+    stdout, stderr, _ =  podman(["images", "--quiet", "-f", f"reference={image}"], quiet=True)
+    return stdout.strip() != ""
 
 
 def network_exists(network):
     """
     Check if the podman network is up and running
     """
-    return podman(["network", "exists", f"{network}"], quiet=True).returncode == 0
+    stdout, stderr, returncode = podman(["network", "exists", f"{network}"], quiet=True)
+    return returncode == 0
 
 
 def clean_containers(verbose=False):
@@ -131,5 +128,5 @@ def container_is_running(name):
     """
     Check if a container with a given name is running in podman
     """
-    process = podman(["ps", "--quiet", "-f", f"name={name}"])
-    return process.stdout.read() != ""
+    stdout, stderr, _ = podman(["ps", "--quiet", "-f", f"name={name}"])
+    return stdout != ""

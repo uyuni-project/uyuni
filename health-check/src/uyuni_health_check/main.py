@@ -10,7 +10,7 @@ from uyuni_health_check.loki.loki_manager import (
     wait_loki_init,
     download_component_build_image,
 )
-from uyuni_health_check.loki.logs_gatherer import show_full_error_logs
+from uyuni_health_check.loki.logs_gatherer import show_full_error_logs, show_error_logs_stats
 from uyuni_health_check.config_loader import ConfigLoader
 from uyuni_health_check.exporters.supportconfig import exporter
 import uyuni_health_check.containers.manager
@@ -60,8 +60,16 @@ def cli(ctx, supportconfig_path, verbose):
     type=int,
     help="Show logs from last X days. (Default: 7)",
 )
+@click.option(
+    "--from_datetime",
+    help="Start looking for logs at this absolute time ",
+)
+@click.option(
+    "--to_datetime",
+    help="Stop looking for logs at this absolute time",
+)
 @click.pass_context
-def run(ctx, logs, since):
+def run(ctx, logs, from_datetime, to_datetime, since):
     """
     Start execution of Uyuni Health Check
 
@@ -114,14 +122,14 @@ def run(ctx, logs, since):
             prepare_grafana(verbose=verbose)
 
         console.print(Markdown("# Summary of metrics gatherered from Supportconfig"))
-        uyuni_health_check.metrics.show_supportconfig_metrics(metrics, console)
+        #uyuni_health_check.metrics.show_supportconfig_metrics(metrics, console)
 
         console.print(Markdown("## Relevant Errors"))
-        uyuni_health_check.metrics.show_error_logs_stats(since, console)
+        show_error_logs_stats(from_datetime, to_datetime, since, console)
 
         if logs:
             with console.pager():
-                show_full_error_logs(since)
+                show_full_error_logs(from_datetime, to_datetime, since)
 
         console.print(Markdown("# Execution Finished"))
 
