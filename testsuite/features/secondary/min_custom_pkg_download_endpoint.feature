@@ -8,8 +8,8 @@
 @custom_download_endpoint
 Feature: Repos file generation based on custom pillar data
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
 @susemanager
   Scenario: Select the channels of the SLES minion

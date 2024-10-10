@@ -2,8 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 require 'require_all'
-require 'twopence'
-require_relative 'twopence_init'
+require_relative 'remote_node'
 
 # Raise a warning if any of these environment variables is missing
 raise ArgumentError, 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
@@ -19,7 +18,7 @@ unless $build_validation
   warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
 end
 
-# Dictionaries to obtain host or node from the Twopence objects
+# Dictionaries to obtain host or node from the RemoteNode objects
 $node_by_host = {}
 $host_by_node = {}
 
@@ -32,9 +31,9 @@ if ENV['SCC_CREDENTIALS']
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
 end
 
-# Get the Twopence node passing the host (includes lazy initialization)
+# Get the RemoteNode passing the host (includes lazy initialization)
 def get_target(host, refresh: false)
   node = $node_by_host[host]
-  node = twopence_init(host) if node.nil? || refresh == true
+  node = RemoteNode.new(host) if node.nil? || refresh == true
   node
 end
