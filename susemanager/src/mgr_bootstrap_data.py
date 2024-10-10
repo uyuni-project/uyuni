@@ -103,11 +103,11 @@ RES6 = [
 ]
 
 RES7 = [
-    "logrotate",
+    "logrotate*",
     "venv-salt-minion",
 ]
 
-RES7_X86 = ["dmidecode"]
+RES7_X86 = ["dmidecode*"]
 
 RES8 = [
     "redhat-rpm-config",
