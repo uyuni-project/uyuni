@@ -821,3 +821,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
     And I should not see a warning nor an error sign
+
+  Scenario: Detect repository synchronization issues in reposync logs
+    Then the reposync logs should not report errors

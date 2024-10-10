@@ -179,6 +179,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should not see a "Operation not successful" text
     And I should not see a warning nor an error sign
 
+  Scenario: Detect repository synchronization issues in reposync logs
+    Then the reposync logs should not report errors
+
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC
     When I execute mgr-sync refresh
