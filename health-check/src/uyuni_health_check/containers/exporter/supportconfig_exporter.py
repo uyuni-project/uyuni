@@ -65,8 +65,8 @@ class SupportConfigMetricsCollector(object):
         return ret
 
     def exists_salt_configuration_file(self):
-        if not os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltconfiguration.txt")):
-            return 
+        if os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltconfiguration.txt")):
+            return True
         
     def read_salt_configuration(self):
         content = None
@@ -86,8 +86,8 @@ class SupportConfigMetricsCollector(object):
         return ret
     
     def exists_salt_keys_file(self):
-        if not os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltminionskeys.txt")):
-            return 
+        if os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltminionskeys.txt")):
+            return True
 
     def read_salt_keys(self):
         content = None
@@ -109,8 +109,8 @@ class SupportConfigMetricsCollector(object):
         return ret
     
     def exists_salt_jobs_file(self):
-        if not os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltjobs.txt")):
-            return 
+        if os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltjobs.txt")):
+            return True
 
     def read_salt_jobs(self):
         content = None

@@ -5,3 +5,5 @@ dist
 logcli-linux-amd64
 promtail-linux-amd64
 __pycache__
+**/config/exporter/config.yaml
+**/config/promtail/config.yaml

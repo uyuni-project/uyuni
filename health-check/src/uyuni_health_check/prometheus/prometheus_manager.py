@@ -14,7 +14,7 @@ conf = ConfigLoader()
 def prepare_prometheus(verbose=False):
     if container_is_running("uyuni-health-check-prometheus"):
         console.log(
-            "Skipped as the uyuni-health-check-grafana container is already running"
+            "Skipped as the uyuni-health-check-prometheus container is already running"
         )
     else:
         # Copy the prometheus config
