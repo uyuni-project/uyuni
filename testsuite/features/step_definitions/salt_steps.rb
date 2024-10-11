@@ -72,6 +72,24 @@ When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node.run("#{salt_call} saltutil.refresh_grains")
 end
 
+When(/^I setup a git_pillar environment on the Salt master$/) do
+  file = 'salt_git_pillar_setup.sh'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  # Execute "salt_git_pillar_setup.sh setup" on the server
+  get_target('server').run("sh /tmp/#{file} setup", check_errors: true, verbose: true)
+end
+
+When(/^I clean up the git_pillar environment on the Salt master$/) do
+  file = 'salt_git_pillar_setup.sh'
+
+  # Execute "salt_git_pillar_setup.sh setup" on the server
+  get_target('server').run("sh /tmp/#{file} clean", check_errors: true, verbose: true)
+end
+
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
@@ -87,6 +105,10 @@ end
 When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
   salt_minion = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
+end
+
+When(/^I wait until Salt master is active and ready$/) do
+  get_target('server').run_until_ok('bash -c \'until timeout 5s salt-key; do :; done\'')
 end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
@@ -373,6 +395,16 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
 
     sleep 1
   end
+end
+
+Then(/^the pillar data for "([^"]*)" should be empty on the Salt master$/) do |key|
+  output = salt_master_pillar_get(key)
+  raise "Output value is not empty: #{output}" unless output == ''
+end
+
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on the Salt master$/) do |key, value|
+  output = salt_master_pillar_get(key)
+  raise "Output value is different than #{value}: #{output}" unless output.to_s.strip == value
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
