@@ -29,6 +29,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * The ToolbarTag generates a toolbar showing the page title, optional
  * help link, and action buttons to the right of the page.
+ * 
  * <pre>{@literal
  *   <rhn:toolbar base="h1" img="/img/somegraphic.gif">
  * }</pre>
@@ -36,8 +37,10 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Basic Attributes:<br>
  * <ul>
  * <li>base - base html tag for wrapping the toolbar.
- * <li>icon - name of the icon (css class) to be displayed to the left of the page title
- * <li>iconAlt - alternate text for the icon. Don't use it if the icon decorates text.
+ * <li>icon - name of the icon (css class) to be displayed to the left of the
+ * page title
+ * <li>iconAlt - alternate text for the icon. Don't use it if the icon decorates
+ * text.
  * <li>img - img url which is displayed to the left of the page title.
  * <li>altImg - alt text for the img
  * <li>helpUrl - link to the help pages.
@@ -46,27 +49,27 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Action Attributes:<br>
  * <ul>
  * <li>create button
- *     <ul>
- *     <li>url (required) - location of action button
- *     <li>acl - Acl limiting view of button
- *     <li>type (required) - type action is taken upon i.e. user
- *     </ul>
+ * <ul>
+ * <li>url (required) - location of action button
+ * <li>acl - Acl limiting view of button
+ * <li>type (required) - type action is taken upon i.e. user
+ * </ul>
  * <li>delete button
- *     <ul>
- *     <li>url (required) - location of action button
- *     <li>acl - Acl limiting view of button
- *     <li>type (required) - type action is taken upon i.e. user
- *     </ul>
+ * <ul>
+ * <li>url (required) - location of action button
+ * <li>acl - Acl limiting view of button
+ * <li>type (required) - type action is taken upon i.e. user
+ * </ul>
  * <li>misc link
- *     <ul>
- *     <li>url (required) - link location
- *     <li>acl - Acl limiting view of link
- *     <li>text (required) - link text
- *     <li>alt (required) - alternate link text
- *     <li>icon (required) - icon to be displayed for link
- *     <li>img (required if no icon specified) - image to be displayed for link
- *     <li>spaOff - exclude link from single page application
- *     </ul>
+ * <ul>
+ * <li>url (required) - link location
+ * <li>acl - Acl limiting view of link
+ * <li>text (required) - link text
+ * <li>alt (required) - alternate link text
+ * <li>icon (required) - icon to be displayed for link
+ * <li>img (required if no icon specified) - image to be displayed for link
+ * <li>spaOff - exclude link from single page application
+ * </ul>
  * </ul>
  */
 public class ToolbarTag extends TagSupport {
@@ -101,7 +104,6 @@ public class ToolbarTag extends TagSupport {
     private HtmlTag baseTag;
     private HtmlTag toolbarDivTag;
     private HtmlTag headerTag;
-
 
     /**
      * Constructor for tag.
@@ -157,7 +159,7 @@ public class ToolbarTag extends TagSupport {
     }
 
     /**
-     * Sets the Acl classnames to be mixed in.  The mixins
+     * Sets the Acl classnames to be mixed in. The mixins
      * are applied in addition to the other acls.
      *
      * @param mixins A comma separated list of Acl classnames.
@@ -198,7 +200,8 @@ public class ToolbarTag extends TagSupport {
     }
 
     /**
-     * @return Returns the localization key that will resolve to the alt text of the icon.
+     * @return Returns the localization key that will resolve to the alt text of the
+     *         icon.
      */
     public String getIconAlt() {
         return iconAlt;
@@ -231,7 +234,8 @@ public class ToolbarTag extends TagSupport {
     }
 
     /**
-     * @return Returns the localization key that will resolve to the alt text of the img.
+     * @return Returns the localization key that will resolve to the alt text of the
+     *         img.
      */
     public String getImgAlt() {
         return imgAlt;
@@ -280,7 +284,6 @@ public class ToolbarTag extends TagSupport {
     public String getMiscIcon() {
         return miscIcon;
     }
-
 
     /**
      * Sets the deletion type to be acted upon.
@@ -428,7 +431,6 @@ public class ToolbarTag extends TagSupport {
         return creationUrl;
     }
 
-
     /**
      * Sets the clone type to be acted upon.
      *
@@ -483,7 +485,6 @@ public class ToolbarTag extends TagSupport {
     public String getCloneUrl() {
         return cloneUrl;
     }
-
 
     /**
      * Sets the acl used to control access to the miscellaneous link.
@@ -594,7 +595,6 @@ public class ToolbarTag extends TagSupport {
             buf.append(renderCreationLink());
             buf.append(toolbarDivTag.renderCloseTag());
 
-
             headerTag = new HtmlTag(getBase());
             buf.append(headerTag.renderOpenTag());
 
@@ -603,8 +603,7 @@ public class ToolbarTag extends TagSupport {
 
             out.print(buf.toString());
             return (EVAL_BODY_INCLUDE);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
         }
     }
@@ -626,8 +625,7 @@ public class ToolbarTag extends TagSupport {
 
             out.print(buf.toString());
             return (EVAL_PAGE);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
         }
     }
@@ -656,10 +654,6 @@ public class ToolbarTag extends TagSupport {
                 tag.setAttribute("alt", LocalizationService.getInstance().
                         getMessage(imgAlt));
             }
-            return tag.render();
-        }
-        return "";
-    }
 
     private String renderIcon() {
         if (assertNotEmpty(getIcon())) {
@@ -739,8 +733,8 @@ public class ToolbarTag extends TagSupport {
     }
 
     private String renderActionLink(String url, String text, String className,
-                                    String alt, String iconName,
-                                    String imgName, boolean isSpaOff) {
+            String alt, String iconName,
+            String imgName, boolean isSpaOff) {
         if (url == null) {
             return "";
         }
@@ -749,7 +743,6 @@ public class ToolbarTag extends TagSupport {
 
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", url);
-
         if (isSpaOff) {
             a.setAttribute("data-senna-off", "true");
         }
@@ -816,14 +809,12 @@ public class ToolbarTag extends TagSupport {
         super.release();
     }
 
-
     /**
      * @return the uploadUrl
      */
     public String getUploadUrl() {
         return uploadUrl;
     }
-
 
     /**
      * @param url the uploadUrl to set
@@ -832,14 +823,12 @@ public class ToolbarTag extends TagSupport {
         this.uploadUrl = url;
     }
 
-
     /**
      * @return the uploadAcl
      */
     public String getUploadAcl() {
         return uploadAcl;
     }
-
 
     /**
      * @param acl the uploadAcl to set
@@ -848,14 +837,12 @@ public class ToolbarTag extends TagSupport {
         this.uploadAcl = acl;
     }
 
-
     /**
      * @return the uploadType
      */
     public String getUploadType() {
         return uploadType;
     }
-
 
     /**
      * @param type the uploadType to set
