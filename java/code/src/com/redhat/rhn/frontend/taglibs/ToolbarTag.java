@@ -593,7 +593,8 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getCreationUrl())) {
 
             String create = "toolbar.create." + getCreationType();
-            return renderActionLink(getCreationUrl(), create,
+            String className = "btn btn-primary";
+            return renderActionLink(getCreationUrl(), create, className,
                                     create, "item-add", null, false);
         }
         return "";
@@ -604,7 +605,8 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getCloneUrl())) {
 
             String clone = "toolbar.clone." + getCloneType();
-            return renderActionLink(getCloneUrl(), clone,
+            String className = "btn btn-default";
+            return renderActionLink(getCloneUrl(), clone, className,
                                     clone, "item-clone", null, false);
         }
         return "";
@@ -615,7 +617,8 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getDeletionUrl())) {
 
             String del = "toolbar.delete." + getDeletionType();
-            return renderActionLink(getDeletionUrl(), del, del, "item-del", null, false);
+            String className = "btn btn-danger";
+            return renderActionLink(getDeletionUrl(), del, className, del, "item-del", null, false);
         }
         return "";
     }
@@ -625,7 +628,8 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getUploadUrl())) {
 
             String del = "toolbar.upload." + getUploadType();
-            return renderActionLink(getUploadUrl(), del, del, "item-upload", null, false);
+            String className = "btn btn-default";
+            return renderActionLink(getUploadUrl(), del, className, del, "item-upload", null, false);
         }
         return "";
     }
@@ -641,11 +645,13 @@ public class ToolbarTag extends TagSupport {
         if (!assertNotEmpty(getMiscImg()) && !assertNotEmpty(getMiscIcon())) {
             return "";
         }
-        return renderActionLink(getMiscUrl(), getMiscText(),
+
+        String className = "btn btn-default";
+        return renderActionLink(getMiscUrl(), getMiscText(), className,
                                  getMiscAlt(), getMiscIcon(), getMiscImg(), isMiscSpaOff());
     }
 
-    private String renderActionLink(String url, String text,
+    private String renderActionLink(String url, String text, String className,
                                     String alt, String iconName,
                                     String imgName, boolean isSpaOff) {
         if (url == null) {
@@ -656,6 +662,7 @@ public class ToolbarTag extends TagSupport {
 
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", url);
+        a.setAttribute("class", className);
         if (isSpaOff) {
             a.setAttribute("data-senna-off", "true");
         }

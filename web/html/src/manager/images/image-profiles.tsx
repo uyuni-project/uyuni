@@ -128,7 +128,7 @@ class ImageProfiles extends React.Component<Props, State> {
   render() {
     const panelButtons = (
       <div className="pull-right btn-group">
-        {window.isAdmin && this.state.selectedItems.length > 0 && (
+         {window.isAdmin && this.state.selectedItems.length > 0 && (
           <ModalButton
             id="delete-selected"
             icon="fa-trash"
@@ -138,17 +138,17 @@ class ImageProfiles extends React.Component<Props, State> {
             target="delete-selected-modal"
           />
         )}
+        <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
         {window.isAdmin && (
           <LinkButton
             id="create"
             icon="fa-plus"
-            className="btn-default"
+            className="btn-primary"
             title={t("Create")}
             text={t("Create")}
             href="/rhn/manager/cm/imageprofiles/create"
           />
         )}
-        <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
       </div>
     );
 

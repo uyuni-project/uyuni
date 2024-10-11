@@ -12,7 +12,7 @@
 <c:set var="actionMessage" value="toolbar.create.state.configchannel"/>
 <c:set var="actionIcon" value="item-add"/>
 
-<rhn:toolbar base="h1" icon="header-channel-configuration"   miscUrl="${actionLink}" miscIcon="${actionIcon}" miscText="${actionMessage}" miscAlt="${actionMessage}"  miscAcl="user_role(config_admin)"
+<rhn:toolbar base="h1" icon="header-channel-configuration" miscUrl="${actionLink}" miscIcon="${actionIcon}" miscText="${actionMessage}" miscAlt="${actionMessage}"  miscAcl="user_role(config_admin)"
  helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-overview.html"
  creationUrl="/rhn/configuration/ChannelCreate.do?editing=true&type=normal"
  creationType="configchannel"
