@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2014--2024 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -130,8 +131,8 @@ public class DailySummary extends RhnJavaJob {
     }
 
     private void  processUpdateAvailableNotification() {
-        UpdateAvailable uan = new UpdateAvailable(Runtime.getRuntime());
-        if (uan.updateAvailable()) {
+        UpdateAvailable uan = new UpdateAvailable();
+        if (uan.hasUpdateAvailable()) {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(uan);
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
