@@ -28,6 +28,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * The ToolbarTag generates a toolbar showing the page title, optional
  * help link, and action buttons to the right of the page.
+ * 
  * <pre>{@literal
  *   <rhn:toolbar base="h1" img="/img/somegraphic.gif">
  * }</pre>
@@ -35,8 +36,10 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Basic Attributes:<br>
  * <ul>
  * <li>base - base html tag for wrapping the toolbar.
- * <li>icon - name of the icon (css class) to be displayed to the left of the page title
- * <li>iconAlt - alternate text for the icon. Don't use it if the icon decorates text.
+ * <li>icon - name of the icon (css class) to be displayed to the left of the
+ * page title
+ * <li>iconAlt - alternate text for the icon. Don't use it if the icon decorates
+ * text.
  * <li>img - img url which is displayed to the left of the page title.
  * <li>altImg - alt text for the img
  * <li>helpUrl - link to the help pages.
@@ -45,27 +48,27 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Action Attributes:<br>
  * <ul>
  * <li>create button
- *     <ul>
- *     <li>url (required) - location of action button
- *     <li>acl - Acl limiting view of button
- *     <li>type (required) - type action is taken upon i.e. user
- *     </ul>
+ * <ul>
+ * <li>url (required) - location of action button
+ * <li>acl - Acl limiting view of button
+ * <li>type (required) - type action is taken upon i.e. user
+ * </ul>
  * <li>delete button
- *     <ul>
- *     <li>url (required) - location of action button
- *     <li>acl - Acl limiting view of button
- *     <li>type (required) - type action is taken upon i.e. user
- *     </ul>
+ * <ul>
+ * <li>url (required) - location of action button
+ * <li>acl - Acl limiting view of button
+ * <li>type (required) - type action is taken upon i.e. user
+ * </ul>
  * <li>misc link
- *     <ul>
- *     <li>url (required) - link location
- *     <li>acl - Acl limiting view of link
- *     <li>text (required) - link text
- *     <li>alt (required) - alternate link text
- *     <li>icon (required) - icon to be displayed for link
- *     <li>img (required if no icon specified) - image to be displayed for link
- *     <li>spaOff - exclude link from single page application
- *     </ul>
+ * <ul>
+ * <li>url (required) - link location
+ * <li>acl - Acl limiting view of link
+ * <li>text (required) - link text
+ * <li>alt (required) - alternate link text
+ * <li>icon (required) - icon to be displayed for link
+ * <li>img (required if no icon specified) - image to be displayed for link
+ * <li>spaOff - exclude link from single page application
+ * </ul>
  * </ul>
  */
 public class ToolbarTag extends TagSupport {
@@ -99,7 +102,6 @@ public class ToolbarTag extends TagSupport {
     private HtmlTag toolbarDivTag;
     private HtmlTag headerTag;
 
-
     /**
      * Constructor for tag.
      */
@@ -118,6 +120,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the required base HTML tag used to surround the toolbar.
+     * 
      * @param b valid html tag.
      */
     public void setBase(String b) {
@@ -126,6 +129,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the required base HTML tag used to surround the toolbar.
+     * 
      * @return the required base HTML tag used to surround the toolbar.
      */
     public String getBase() {
@@ -135,6 +139,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the help url which is used to link to the help pages.
+     * 
      * @param helpurl the help url which is used to link to the help pages.
      */
     public void setHelpUrl(String helpurl) {
@@ -143,6 +148,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the help url which is used to link to the help pages.
+     * 
      * @return the help url which is used to link to the help pages.
      */
     public String getHelpUrl() {
@@ -150,8 +156,9 @@ public class ToolbarTag extends TagSupport {
     }
 
     /**
-     * Sets the Acl classnames to be mixed in.  The mixins
+     * Sets the Acl classnames to be mixed in. The mixins
      * are applied in addition to the other acls.
+     * 
      * @param mixins A comma separated list of Acl classnames.
      * @see ToolbarTag#getCreationAcl()
      * @see ToolbarTag#getDeletionAcl()
@@ -173,6 +180,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the icon (css class name) which is displayed.
+     * 
      * @param iconId Icon's id (usually the css class)
      */
     public void setIcon(String iconId) {
@@ -181,6 +189,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Getter for the icon id
+     * 
      * @return the icon id to be displayed.
      */
     public String getIcon() {
@@ -188,7 +197,8 @@ public class ToolbarTag extends TagSupport {
     }
 
     /**
-     * @return Returns the localization key that will resolve to the alt text of the icon.
+     * @return Returns the localization key that will resolve to the alt text of the
+     *         icon.
      */
     public String getIconAlt() {
         return iconAlt;
@@ -196,7 +206,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * @param iconAltIn Sets the localization key that will resolve
-     * to the alt text of the icon
+     *                  to the alt text of the icon
      */
     public void setIconAlt(String iconAltIn) {
         this.iconAlt = iconAltIn;
@@ -204,6 +214,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the image location which is displayed.
+     * 
      * @param imgurl the location of the image.
      */
     public void setImg(String imgurl) {
@@ -212,6 +223,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the image location to be displayed.
+     * 
      * @return the image location to be displayed.
      */
     public String getImg() {
@@ -219,7 +231,8 @@ public class ToolbarTag extends TagSupport {
     }
 
     /**
-     * @return Returns the localization key that will resolve to the alt text of the img.
+     * @return Returns the localization key that will resolve to the alt text of the
+     *         img.
      */
     public String getImgAlt() {
         return imgAlt;
@@ -227,7 +240,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * @param imgAltIn Sets the localization key that will resolve
-     * to the alt text of the img
+     *                 to the alt text of the img
      */
     public void setImgAlt(String imgAltIn) {
         this.imgAlt = imgAltIn;
@@ -235,6 +248,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the image used for the misc link.
+     * 
      * @param miscimg URL to image file.
      */
     public void setMiscImg(String miscimg) {
@@ -243,6 +257,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the url for the misc image file.
+     * 
      * @return the url for the misc image file.
      */
     public String getMiscImg() {
@@ -251,6 +266,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the misc icon (css class name) which is displayed.
+     * 
      * @param iconId Misc Icon's id (usually the css class)
      */
     public void setMiscIcon(String iconId) {
@@ -259,15 +275,16 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Getter for the icon id
+     * 
      * @return the icon id to be displayed.
      */
     public String getMiscIcon() {
         return miscIcon;
     }
 
-
     /**
      * Sets the deletion type to be acted upon.
+     * 
      * @param deltype the deletion type to be acted upon.
      */
     public void setDeletionType(String deltype) {
@@ -276,6 +293,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the deletion type to be acted upon.
+     * 
      * @return the deletion type to be acted upon.
      */
     public String getDeletionType() {
@@ -284,8 +302,9 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the acl used to control access to the deletion action button.
+     * 
      * @param delacl the acl used to control access to the deletion action
-     * button.
+     *               button.
      */
     public void setDeletionAcl(String delacl) {
         deletionAcl = delacl;
@@ -293,6 +312,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the acl used to control access to the deletion action button.
+     * 
      * @return the acl used to control access to the deletion action button.
      */
     public String getDeletionAcl() {
@@ -301,6 +321,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the url pointed by the deletion action button.
+     * 
      * @param delurl the url pointed by the deletion action button.
      */
     public void setDeletionUrl(String delurl) {
@@ -309,6 +330,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the url pointed by the deletion action button.
+     * 
      * @return the url pointed by the deletion action button.
      */
     public String getDeletionUrl() {
@@ -317,6 +339,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the creation type to be acted upon.
+     * 
      * @param createtype the creation type to be acted upon.
      */
     public void setCreationType(String createtype) {
@@ -325,6 +348,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the creation type to be acted upon.
+     * 
      * @return the creation type to be acted upon.
      */
     public String getCreationType() {
@@ -333,8 +357,9 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the acl used to control access to the creation action button.
+     * 
      * @param createacl the acl used to control access to the creation
-     * action button.
+     *                  action button.
      */
     public void setCreationAcl(String createacl) {
         creationAcl = createacl;
@@ -342,6 +367,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the acl used to control access to the creation action button.
+     * 
      * @return the acl used to control access to the creation action button.
      */
     public String getCreationAcl() {
@@ -350,6 +376,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the url pointed by the creation action button.
+     * 
      * @param createurl the url pointed by the creation action button.
      */
     public void setCreationUrl(String createurl) {
@@ -358,15 +385,16 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the url pointed by the creation action button.
+     * 
      * @return the url pointed by the creation action button.
      */
     public String getCreationUrl() {
         return creationUrl;
     }
 
-
     /**
      * Sets the clone type to be acted upon.
+     * 
      * @param clonetype the creation type to be acted upon.
      */
     public void setCloneType(String clonetype) {
@@ -375,6 +403,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the clone type to be acted upon.
+     * 
      * @return the clone type to be acted upon.
      */
     public String getCloneType() {
@@ -383,8 +412,9 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the acl used to control access to the clone action button.
+     * 
      * @param cloneacl the acl used to control access to the clone
-     * action button.
+     *                 action button.
      */
     public void setCloneAcl(String cloneacl) {
         cloneAcl = cloneacl;
@@ -392,6 +422,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the acl used to control access to the clone action button.
+     * 
      * @return the acl used to control access to the clone action button.
      */
     public String getCloneAcl() {
@@ -400,6 +431,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the url pointed by the clone action button.
+     * 
      * @param cloneurl the url pointed by the clone action button.
      */
     public void setCloneUrl(String cloneurl) {
@@ -408,15 +440,16 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the url pointed by the clone action button.
+     * 
      * @return the url pointed by the clone action button.
      */
     public String getCloneUrl() {
         return cloneUrl;
     }
 
-
     /**
      * Sets the acl used to control access to the miscellaneous link.
+     * 
      * @param miscacl the acl used to control access to the miscellaneous link.
      */
     public void setMiscAcl(String miscacl) {
@@ -425,6 +458,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the acl used to control access to the miscellaneous link.
+     * 
      * @return the acl used to control access to the miscellaneous link.
      */
     public String getMiscAcl() {
@@ -433,6 +467,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the url pointed by the miscellaneous link.
+     * 
      * @param miscurl url for the miscellaneous link.
      */
     public void setMiscUrl(String miscurl) {
@@ -441,6 +476,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the url pointed by the miscellaneous link.
+     * 
      * @return the url pointed by the miscellaneous link.
      */
     public String getMiscUrl() {
@@ -449,6 +485,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the alternate text for the miscellaneous link.
+     * 
      * @param alt alternate text for the miscellaneous link.
      */
     public void setMiscAlt(String alt) {
@@ -457,6 +494,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the alternate text for the miscellaneous link.
+     * 
      * @return the alternate text for the miscellaneous link.
      */
     public String getMiscAlt() {
@@ -465,6 +503,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Sets the text for the miscellaneous link.
+     * 
      * @param text text for the miscellaneous link.
      */
     public void setMiscText(String text) {
@@ -473,6 +512,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * Returns the text for the miscellaneous link.
+     * 
      * @return the text for the miscellaneous link.
      */
     public String getMiscText() {
@@ -489,6 +529,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * {@inheritDoc}
+     * 
      * @throws JspException JSP exception
      */
     @Override
@@ -514,7 +555,6 @@ public class ToolbarTag extends TagSupport {
             buf.append(renderCreationLink());
             buf.append(toolbarDivTag.renderCloseTag());
 
-
             headerTag = new HtmlTag(getBase());
             buf.append(headerTag.renderOpenTag());
 
@@ -523,8 +563,7 @@ public class ToolbarTag extends TagSupport {
 
             out.print(buf.toString());
             return (EVAL_BODY_INCLUDE);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
         }
     }
@@ -546,8 +585,7 @@ public class ToolbarTag extends TagSupport {
 
             out.print(buf.toString());
             return (EVAL_PAGE);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new JspException("Error writing to JSP file:", e);
         }
     }
@@ -573,13 +611,7 @@ public class ToolbarTag extends TagSupport {
             tag.setAttribute("src", getImg());
 
             if (imgAlt != null) {
-                tag.setAttribute("alt", LocalizationService.getInstance().
-                getMessage(imgAlt));
             }
-            return tag.render();
-        }
-        return "";
-    }
 
     private String renderIcon() {
         if (assertNotEmpty(getIcon())) {
@@ -596,7 +628,7 @@ public class ToolbarTag extends TagSupport {
 
             String create = "toolbar.create." + getCreationType();
             return renderActionLink(getCreationUrl(), create, "btn btn-primary",
-                                    create, "item-add", null, false);
+                    create, "item-add", null, false);
         }
         return "";
     }
@@ -607,7 +639,7 @@ public class ToolbarTag extends TagSupport {
 
             String clone = "toolbar.clone." + getCloneType();
             return renderActionLink(getCloneUrl(), clone, "btn btn-default",
-                                    clone, "item-clone", null, false);
+                    clone, "item-clone", null, false);
         }
         return "";
     }
@@ -645,12 +677,12 @@ public class ToolbarTag extends TagSupport {
         }
 
         return renderActionLink(getMiscUrl(), getMiscText(), "btn btn-default",
-                                 getMiscAlt(), getMiscIcon(), getMiscImg(), isMiscSpaOff());
+                getMiscAlt(), getMiscIcon(), getMiscImg(), isMiscSpaOff());
     }
 
     private String renderActionLink(String url, String text, String className,
-                                    String alt, String iconName,
-                                    String imgName, boolean isSpaOff) {
+            String alt, String iconName,
+            String imgName, boolean isSpaOff) {
         if (url == null) {
             return "";
         }
@@ -659,7 +691,6 @@ public class ToolbarTag extends TagSupport {
 
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", url);
-
         if (isSpaOff) {
             a.setAttribute("data-senna-off", "true");
         }
@@ -726,14 +757,12 @@ public class ToolbarTag extends TagSupport {
         super.release();
     }
 
-
     /**
      * @return the uploadUrl
      */
     public String getUploadUrl() {
         return uploadUrl;
     }
-
 
     /**
      * @param url the uploadUrl to set
@@ -742,14 +771,12 @@ public class ToolbarTag extends TagSupport {
         this.uploadUrl = url;
     }
 
-
     /**
      * @return the uploadAcl
      */
     public String getUploadAcl() {
         return uploadAcl;
     }
-
 
     /**
      * @param acl the uploadAcl to set
@@ -758,14 +785,12 @@ public class ToolbarTag extends TagSupport {
         this.uploadAcl = acl;
     }
 
-
     /**
      * @return the uploadType
      */
     public String getUploadType() {
         return uploadType;
     }
-
 
     /**
      * @param type the uploadType to set
